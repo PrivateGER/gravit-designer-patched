@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		 <style type="text/css">
+   <![CDATA[
+    .fil0 {fill:black;fill-rule:nonzero}
+   ]]>
+  </style>
+    <g id="Edit">
+        <polygon class="fil0" id="New-shape"  points="1 11 1 15 5 15"></polygon>
+        <polygon class="fil0" id="New-shape" points="2 10.0000028 11.0000002 1 15 4.99999995 5.99999976 13.9999981"></polygon>
+    </g>
+</svg>

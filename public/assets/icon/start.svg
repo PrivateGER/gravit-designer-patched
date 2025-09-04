@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;">
+    <g transform="matrix(1,0,0,1,-7815.62,-9487.38)">
+        <g transform="matrix(1,0,0,1,1.6291,1.69182)">
+            <g id="start">
+                <g transform="matrix(0.976014,0,0,0.954823,5488.69,2712.82)">
+                    <g transform="matrix(1.02458,-0,-0,1.04731,2382.45,7093.33)">
+                        <use xlink:href="#_Image1" x="0" y="0" width="35.944px" height="35.944px" transform="matrix(0.998436,0,0,0.998436,0,0)"/>
+                    </g>
+                </g>
+                <g transform="matrix(0.976014,0,0,0.954823,5488.69,2712.82)">
+                    <path d="M2417.26,7103.16C2417.26,7098.54 2413.59,7094.78 2409.06,7094.78L2392.67,7094.78C2388.15,7094.78 2384.47,7098.54 2384.47,7103.16L2384.47,7119.92C2384.47,7124.55 2388.15,7128.3 2392.67,7128.3L2409.06,7128.3C2413.59,7128.3 2417.26,7124.55 2417.26,7119.92L2417.26,7103.16Z" style="fill:url(#_Linear2);"/>
+                </g>
+                <g id="cursor.-filled" transform="matrix(1.05867,0,5.87678e-17,1.05867,7164,9208.72)">
+                    <path d="M633.245,279.616L635.551,283.611C635.772,283.993 635.64,284.482 635.258,284.703L633.873,285.503C633.491,285.724 633.001,285.592 632.78,285.21L630.474,281.216L628.602,282.698L628.559,282.73C628.465,282.789 628.371,282.827 628.262,282.85C628.208,282.857 628.209,282.857 628.155,282.86C628.1,282.859 628.049,282.855 627.995,282.847C627.782,282.798 627.572,282.736 627.361,282.679C627.287,282.656 627.218,282.629 627.153,282.588C627.024,282.506 626.922,282.385 626.863,282.244C626.841,282.191 626.827,282.136 626.815,282.08C626.348,278.507 626.15,274.904 625.819,271.316C625.812,271.2 625.823,271.089 625.865,270.98C625.982,270.671 626.299,270.471 626.628,270.499C626.745,270.509 626.85,270.548 626.951,270.603C629.97,272.571 632.836,274.764 635.777,276.845C635.838,276.892 635.894,276.941 635.941,277.003C636.033,277.124 636.087,277.273 636.093,277.425C636.096,277.483 636.09,277.539 636.081,277.596C636.033,277.81 635.97,278.021 635.913,278.233C635.897,278.285 635.88,278.335 635.855,278.383C635.797,278.495 635.711,278.591 635.607,278.661C635.562,278.691 635.514,278.714 635.465,278.736L633.245,279.616Z" style="fill:white;"/>
+                </g>
+            </g>
+        </g>
+    </g>
+    <defs>
+        <image id="_Image1" width="36px" height="36px" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABoUlEQVRYhe2Y3XKCQAxGDwti7c/7v2hbixa2FySQjYxUpGsv+Ga+ARcwx2wYN1twqcI4GOu1JYpy7IyjcRLcfw5A5XwPlIf5du7MPcmXF0AJ7IC9cSXjYQGMheqAViAa47OMRwukMDXwLD7IZ5+hpbIZOgFH4FN8UqhKbg70mTkAr8AL8CRjJZeZvEXRnbekP9TWUlsxZmdPn5kXOdaM07R0qqbgAmMJIIDqriSdqjc57rm/bqbk32CFHApcA1YCUYv9NK0tW7M148tTaLFW9PWyY/2sXIPS2t0JQwjmgk7fvW/TLfJxCwuUKzNeSfzgLjwKaIg79XeQE+oibs56+ZU2oDltQHPagOa0Ac1pA5qTXbU9WhHSDE02bhkgkpi66rfdZG4l8S3QsPLPCGObxwFIm7ezWGlzwHQSM+k6tA1p6DtIhfrL6dNZOUvMRhhiKTfYdW1pzjHX1wJRGG2n3+nb6QZoy4mHptbWcSX73v5D/CXjnfb2mr6jwOiDOTYbjoxlggLpJsCJtKYeth2j+lcbVnbMb+nZzYGl0sBXt/R+ABApuhZOqZ1CAAAAAElFTkSuQmCC"/>
+        <linearGradient id="_Linear2" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.93289e-15,32.5134,-31.5665,1.99087e-15,2399.53,7095.13)"><stop offset="0" style="stop-color:rgb(91,229,144);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(23,186,85);stop-opacity:1"/></linearGradient>
+    </defs>
+</svg>
