@@ -123,7 +123,7 @@ app.put("/user", (req, res) => {
 
   return res.json({
     id: "12345678",
-    name: "Test User",
+    name: "PlasmaTrap User",
     locale: languageCode,
     email: "example@example.net",
     version: "3.15.0",
@@ -163,9 +163,9 @@ app.get("/user", (req, res) => {
     email_verified: true,
     email_expire: null,
     login: null,
-    name: "Test User",
+    name: "Placeholder User",
     avatar:
-      "https://gravatar.com/avatar/2b6848a6719e6c2e6747d506d1ff57b3?s=64&d=retro",
+      "https://s3.plasmatrap.com/plasmatrap/8482ae21-71f2-4324-8e3e-5fdc5be66d4d.gif",
     admin: null,
     flash: null,
     last_seen: "2025-06-14T09:28:26.899Z",
@@ -182,7 +182,7 @@ app.get("/user", (req, res) => {
     pro_created: null,
     pro_expire: null,
     created: "2021-09-22T19:58:32.748Z",
-    last_name: "Rath",
+    last_name: "PlasmaTrap",
     settings: {
       flags: {
         welcomeMessage: false,
