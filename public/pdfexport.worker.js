@@ -1363,7 +1363,7 @@ var GravitDesigner = (function (t) {
                                             (!!Object({
                                                 NODE_ENV: "production",
                                                 APP_VERSION: "3.15.0",
-                                                APP_VERSION_FRIENDLY: "i015.3",
+                                                APP_VERSION_FRIENDLY: "PlasmaTrap-patched",
                                                 IS_BETA: !1,
                                                 BUILD_NUM: "8795",
                                                 COMMIT_SHA: "566771f4dff3952a55c0d9d3c130f7e787dfdfa7",
@@ -1379,7 +1379,7 @@ var GravitDesigner = (function (t) {
                                                 Object({
                                                     NODE_ENV: "production",
                                                     APP_VERSION: "3.15.0",
-                                                    APP_VERSION_FRIENDLY: "i015.3",
+                                                    APP_VERSION_FRIENDLY: "PlasmaTrap-patched",
                                                     IS_BETA: !1,
                                                     BUILD_NUM: "8795",
                                                     COMMIT_SHA: "566771f4dff3952a55c0d9d3c130f7e787dfdfa7",
