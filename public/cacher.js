@@ -1,7 +1,7 @@
-importScripts("https://storage.googleapis.com/workbox-cdn/releases/5.1.4/workbox-sw.js");
+importScripts("workbox/workbox-sw.js");
 
 if (workbox) {
-    workbox.setConfig({ debug: false });
+    workbox.setConfig({ debug: false, modulePathPrefix: "workbox/" });
     workbox.core.setCacheNameDetails({
         prefix: "gravit-designer",
         precache: "precache",
@@ -1281,7 +1281,6 @@ if (workbox) {
             { revision: "d81e8fe30de861acb21a782321f14fe1_8795", url: "index.html" },
             { revision: "e29764b039e88805ad3a4fcf5590e36d_8795", url: "manifest.json" },
             { revision: "7d1a58a18fe9f6a49e0438a4fe5bdbdb_8795", url: "proxy.html" },
-            { revision: "29d91793715bb3d1d7916f1b4a346ba0_8795", url: ".well-known/assetlinks.json" },
         ],
         {
             // Ignore all URL parameters.

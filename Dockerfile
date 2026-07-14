@@ -1,11 +1,13 @@
-FROM node:18
+FROM node:22-slim
+
+ENV NODE_ENV=production
 
 WORKDIR /app
 
 COPY package*.json ./
 
-# Install project dependencies
-RUN npm install
+# Install project dependencies from the lockfile
+RUN npm ci --omit=dev
 
 # Copy the rest of the application code to the working directory
 COPY . .
@@ -13,5 +15,5 @@ COPY . .
 # Expose the application's port
 EXPOSE 3100
 
-# Define the command to run the application
-CMD ["npm", "start"]
+# Run node directly so SIGTERM reaches the server (npm doesn't forward signals)
+CMD ["node", "server.js"]
