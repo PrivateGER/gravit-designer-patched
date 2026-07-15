@@ -92,6 +92,17 @@ app.get("/maintenance/status", (req, res) => {
     res.json({ cloud: false, clientAllowed: true });
 });
 
+// status 0 = subscriptions disabled, which suppresses the purchase flows
+app.get("/subscription/test", (req, res) => {
+    res.json({ status: 0 });
+});
+
+// Cloud file listing ("Open Recent" and folder browsing): always empty,
+// there is no cloud storage anymore.
+app.get("/file", (req, res) => {
+    res.json([]);
+});
+
 app.get("/user/settings", (req, res) => {
     return res.json({
         notifications_disabled: false,

@@ -98028,7 +98028,7 @@ var GravitDesigner = (function (e) {
             ((e[o] = e[o] || []), e[o].push({ "gtm.start": new Date().getTime(), event: "gtm.js" }));
             var a = t.getElementsByTagName(n)[0],
                 r = t.createElement(n);
-            ((r.async = !0), (r.src = "https://www.googletagmanager.com/gtm.js?id=" + i), a.parentNode.insertBefore(r, a));
+            ((r.async = !0), (r.src = "https://www.googletagmanager.com/gtm.js?id=" + i));
         })(window, document, "script", "dataLayer", d);
         const u = () => {
             switch (i.GSystem.hardware) {

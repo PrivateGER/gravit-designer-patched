@@ -16,7 +16,14 @@ the defunct Corel cloud, and stripped of its dead licensing checks.
     - `GET /maintenance/status` — always "no maintenance"
     - `GET /user`, `PUT /user`, `GET /user/settings` — a placeholder user with a
       far-future trial so the app stays unlocked
+    - `GET /subscription/test` — subscriptions disabled (hides purchase flows)
+    - `GET /file` — empty cloud file listing ("Open Recent")
     - `WS /license` — answers the app's keep-alive pings
+
+  Endpoints that intentionally 404 and are handled by the app's fallbacks:
+  `GET /license` (falls back to the patched default license) and
+  `GET /i18n-url/...` (translation packs are gone; the app falls back to its
+  bundled English strings).
 - `public/cacher.js` — the original Workbox service worker, patched to load a
   self-hosted Workbox runtime from `public/workbox/` instead of the Google CDN.
 
@@ -60,5 +67,14 @@ npm start                      # serves on port 3100 (override with PORT=...)
   the bundle (`ENABLE_UNSPLASH_INTEGRATION`).
 - **Documentation links** now point at the Wayback Machine's archive of
   `documentation.corelvector.com`.
+- **UI translations**: the locale-pack CDN was never archived, so the app
+  always falls back to its bundled English strings.
 - Anything requiring real cloud accounts: sharing, collaboration, comments,
   cloud storage.
+
+## Privacy
+
+The bundle's calls to Corel's Google Tag Manager container and Google
+reCAPTCHA have been neutered (script injection removed in
+`designer.browser.js` / `chunk.vendor.js`), so the app no longer phones home
+to third-party analytics.

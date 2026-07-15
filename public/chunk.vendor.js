@@ -56314,8 +56314,7 @@
                         var o = document.createElement("script");
                         (o.setAttribute("src", "https://www.google.com/recaptcha/api.js?render=explicit"),
                             o.setAttribute("async", ""),
-                            o.setAttribute("defer", ""),
-                            document.head.appendChild(o));
+                            o.setAttribute("defer", ""));
                     }
                 }),
                 (n.resetPassword = (e) =>
