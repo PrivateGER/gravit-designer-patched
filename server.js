@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const compression = require("compression");
+const expressStaticGzip = require("express-static-gzip");
 const WebSocket = require("ws");
 const http = require("http");
 
@@ -15,17 +16,23 @@ app.use((req, res, next) => {
 });
 
 app.use(compression());
+// Serves pre-built .br/.gz variants (scripts/precompress.js) when present,
+// falling back to the plain file (which compression() then handles).
 app.use(
-    express.static(publicDir, {
-        maxAge: "1d",
-        setHeaders: (res, filePath) => {
-            if (filePath.endsWith(".html")) {
-                // The entry point must always revalidate so app updates roll out.
-                res.setHeader("Cache-Control", "no-cache");
-            } else if (filePath.startsWith(path.join(publicDir, "assets"))) {
-                // Versioned assets (requested with ?v=...) can be cached aggressively.
-                res.setHeader("Cache-Control", "public, max-age=604800, immutable");
-            }
+    expressStaticGzip(publicDir, {
+        enableBrotli: true,
+        orderPreference: ["br", "gz"],
+        serveStatic: {
+            maxAge: "1d",
+            setHeaders: (res, filePath) => {
+                if (filePath.endsWith(".html")) {
+                    // The entry point must always revalidate so app updates roll out.
+                    res.setHeader("Cache-Control", "no-cache");
+                } else if (filePath.startsWith(path.join(publicDir, "assets"))) {
+                    // Versioned assets (requested with ?v=...) can be cached aggressively.
+                    res.setHeader("Cache-Control", "public, max-age=604800, immutable");
+                }
+            },
         },
     })
 );
@@ -38,9 +45,24 @@ const wss = new WebSocket.Server({
     path: "/license",
 });
 
+// Terminate connections whose clients stopped answering protocol-level pings.
+const heartbeat = setInterval(() => {
+    wss.clients.forEach((ws) => {
+        if (ws.isAlive === false) return ws.terminate();
+        ws.isAlive = false;
+        ws.ping();
+    });
+}, 30000);
+wss.on("close", () => clearInterval(heartbeat));
+
 wss.on("connection", (ws, req) => {
     const url = new URL(req.url, `http://${req.headers.host}`);
     const lang = url.searchParams.get("lang");
+
+    ws.isAlive = true;
+    ws.on("pong", () => {
+        ws.isAlive = true;
+    });
 
     console.log(`🟢 WebSocket connected with lang=${lang} from ${req.headers.origin}`);
 
