@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        const { gApi: o } = n(10),
-            i = n(536);
+        require(8 /* Symbol */);
+        const { gApi: o } = require(10 /* designerConfig */),
+            i = require(536);
         class a {
             static async checkMaintenance() {
                 try {
@@ -11,8 +11,8 @@ module.exports = function (e, t, n) {
                 } catch (e) {
                     console.log("Maintenance status", e);
                 }
-                return !1;
+                return false;
             }
         }
-        ((a._cache = new i(() => o.maintenance.getStatus(), 6e4)), (e.exports = a));
+        ((a._cache = new i(() => o.maintenance.getStatus(), 6e4)), (module.exports = a));
     };

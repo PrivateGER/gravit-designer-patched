@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(22),
-                r = i(159),
-                o = i(122);
+module.exports = function (module, exports, require) {
+            var n = require(22),
+                r = require(159),
+                o = require(122);
 
             function a(e) {
                 throw new Error("This class cannot be instantiated");
@@ -31,5 +31,5 @@ module.exports = function (e, t, i) {
                 }
                 return i;
             }),
-                (e.exports = a));
+                (module.exports = a));
         };

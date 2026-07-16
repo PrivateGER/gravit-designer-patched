@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1);
-        const i = n(18),
-            a = n(31);
+        require(3);
+        var GObject = require(1);
+        const GCategory = require(18),
+            a = require(31);
         function r() {}
-        (o.GObject.inherit(r, a),
+        (GObject.GObject.inherit(r, a),
             (r.ID = "file.share"),
-            (r.TITLE = new o.GLocaleKey("GShareAction", "title")),
+            (r.TITLE = new GObject.GLocaleKey("GShareAction", "title")),
             (r.prototype.getId = function () {
                 return r.ID;
             }),
@@ -15,7 +15,7 @@ module.exports = function (e, t, n) {
                 return r.TITLE;
             }),
             (r.prototype.getCategory = function () {
-                return i.CATEGORY_FILE_SHARE;
+                return GCategory.CATEGORY_FILE_SHARE;
             }),
             (r.prototype.getGroup = function () {
                 return "file-share/share";
@@ -24,7 +24,7 @@ module.exports = function (e, t, n) {
                 return gDesigner.getApplicationManager().isShareEnabled();
             }),
             (r.prototype.isVisible = function () {
-                return !0;
+                return true;
             }),
             (r.prototype.execute = function () {
                 gDesigner.getShareManager().share();
@@ -32,5 +32,5 @@ module.exports = function (e, t, n) {
             (r.prototype.toString = function () {
                 return "[Object GShareAction]";
             }),
-            (e.exports = r));
+            (module.exports = r));
     };

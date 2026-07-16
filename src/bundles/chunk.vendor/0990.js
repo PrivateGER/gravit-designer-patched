@@ -1,32 +1,32 @@
-module.exports = function (e, t, i) {
-            var n = i(379),
+module.exports = function (module, exports, require) {
+            var n = require(379),
                 r = n.isArabicChar,
                 o = n.isWhiteSpace,
                 a = n.isTashkeelArabicChar;
-            ((e.exports.arabicSentenceStartCheck = function (e) {
+            ((module.exports.arabicSentenceStartCheck = function (e) {
                 var t = e.current,
                     i = e.get(-1);
                 return (r(t) || a(t)) && !r(i);
             }),
-                (e.exports.arabicSentenceEndCheck = function (e) {
+                (module.exports.arabicSentenceEndCheck = function (e) {
                     var t = e.get(1);
-                    switch (!0) {
+                    switch (true) {
                         case null === t:
-                            return !0;
+                            return true;
                         case !r(t) && !a(t):
                             var i = o(t);
-                            if (!i) return !0;
+                            if (!i) return true;
                             if (i) {
                                 if (
                                     !e.lookahead.some(function (e) {
                                         return r(e) || a(e);
                                     })
                                 )
-                                    return !0;
+                                    return true;
                             }
                             break;
                         default:
-                            return !1;
+                            return false;
                     }
                 }));
         };

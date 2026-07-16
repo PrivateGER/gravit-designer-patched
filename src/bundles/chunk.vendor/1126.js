@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(432),
-                o = i(597),
-                a = i(599);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(432),
+                o = require(597),
+                a = require(599);
 
             function s() {
                 o.apply(this, arguments);
             }
-            (n.inherit(s, o),
+            (IsFiniteNonNegativeNumber.inherit(s, o),
                 (o.prototype._getEffect = function () {
                     var e = new a(this._data.color),
                         t = new r();
@@ -19,5 +19,5 @@ module.exports = function (e, t, i) {
                         t
                     );
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

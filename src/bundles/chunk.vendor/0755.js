@@ -1,18 +1,18 @@
-module.exports = function (e, t, i) {
-            var n = i(64),
-                r = i(150),
-                o = i(0),
-                a = i(52),
-                s = i(6),
-                l = i(77),
-                h = i(363),
-                A = i(211),
-                c = i(24);
+module.exports = function (module, exports, require) {
+            var n = require(64),
+                r = require(150),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(52),
+                s = require(6),
+                l = require(77),
+                h = require(363),
+                A = require(211),
+                c = require(24);
 
             function p() {
                 A.call(this);
             }
-            (o.inherit(p, A),
+            (IsFiniteNonNegativeNumber.inherit(p, A),
                 (p.options = {
                     zoomStep: 2,
                     zoomLevels: [0.06, 0.12, 0.25, 0.5, 0.66, 1, 1.5, 2, 3, 4, 8, 16, 32, 64, 128, 256],
@@ -130,5 +130,5 @@ module.exports = function (e, t, i) {
                 (p.prototype.toString = function () {
                     return "[Object GZoomTool]";
                 }),
-                (e.exports = p));
+                (module.exports = p));
         };

@@ -1,37 +1,37 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(105);
+            var n = require(105);
 
             function r(e, t) {
-                return e.getUint16(t, !1);
+                return e.getUint16(t, false);
             }
-            ((t.getByte = function (e, t) {
+            ((exports.getByte = function (e, t) {
                 return e.getUint8(t);
             }),
-                (t.getCard8 = t.getByte),
-                (t.getUShort = t.getCard16 = r),
-                (t.getShort = function (e, t) {
-                    return e.getInt16(t, !1);
+                (exports.getCard8 = exports.getByte),
+                (exports.getUShort = exports.getCard16 = r),
+                (exports.getShort = function (e, t) {
+                    return e.getInt16(t, false);
                 }),
-                (t.getULong = function (e, t) {
-                    return e.getUint32(t, !1);
+                (exports.getULong = function (e, t) {
+                    return e.getUint32(t, false);
                 }),
-                (t.getFixed = function (e, t) {
-                    return e.getInt16(t, !1) + e.getUint16(t + 2, !1) / 65535;
+                (exports.getFixed = function (e, t) {
+                    return e.getInt16(t, false) + e.getUint16(t + 2, false) / 65535;
                 }),
-                (t.getTag = function (e, t) {
+                (exports.getTag = function (e, t) {
                     for (var i = "", n = t; n < t + 4; n += 1) i += String.fromCharCode(e.getInt8(n));
                     return i;
                 }),
-                (t.getOffset = function (e, t, i) {
+                (exports.getOffset = function (e, t, i) {
                     for (var n = 0, r = 0; r < i; r += 1) ((n <<= 8), (n += e.getUint8(t + r)));
                     return n;
                 }),
-                (t.getBytes = function (e, t, i) {
+                (exports.getBytes = function (e, t, i) {
                     for (var n = [], r = t; r < i; r += 1) n.push(e.getUint8(r));
                     return n;
                 }),
-                (t.bytesToString = function (e) {
+                (exports.bytesToString = function (e) {
                     for (var t = "", i = 0; i < e.length; i += 1) t += String.fromCharCode(e[i]);
                     return t;
                 }));
@@ -73,7 +73,7 @@ module.exports = function (e, t, i) {
                     return ((this.relativeOffset += 2), e);
                 }),
                 (a.prototype.parseULong = function () {
-                    var e = t.getULong(this.data, this.offset + this.relativeOffset);
+                    var e = exports.getULong(this.data, this.offset + this.relativeOffset);
                     return ((this.relativeOffset += 4), e);
                 }),
                 (a.prototype.parseULongList = function (e) {
@@ -84,7 +84,7 @@ module.exports = function (e, t, i) {
                 }),
                 (a.prototype.parseOffset32 = a.prototype.parseULong),
                 (a.prototype.parseFixed = function () {
-                    var e = t.getFixed(this.data, this.offset + this.relativeOffset);
+                    var e = exports.getFixed(this.data, this.offset + this.relativeOffset);
                     return ((this.relativeOffset += 4), e);
                 }),
                 (a.prototype.parseString = function (e) {
@@ -99,7 +99,7 @@ module.exports = function (e, t, i) {
                     return this.parseString(4);
                 }),
                 (a.prototype.parseLongDateTime = function () {
-                    var e = t.getULong(this.data, this.offset + this.relativeOffset + 4);
+                    var e = exports.getULong(this.data, this.offset + this.relativeOffset + 4);
                     return ((e -= 2082844800), (this.relativeOffset += 8), e);
                 }),
                 (a.prototype.parseVersion = function (e) {
@@ -358,5 +358,5 @@ module.exports = function (e, t, i) {
                         }) || []
                     );
                 }),
-                (t.Parser = a));
+                (exports.Parser = a));
         };

@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(2);
+module.exports = function (module, exports, require) {
+            var n = require(2);
 
             function r() {}
             ((r.ActionType = {
@@ -15,13 +15,13 @@ module.exports = function (e, t, i) {
                 FinishSelectionUpdate: 9,
             }),
                 (r.prototype._transactionActions = null),
-                (r.prototype._debugOn = !1),
-                (r.prototype._debugBugged = !1),
+                (r.prototype._debugOn = false),
+                (r.prototype._debugBugged = false),
                 (r.prototype.getDebugBugged = function () {
                     return this._debugBugged;
                 }),
                 (r.prototype.beginTransaction = function (e) {
-                    ((this._transactionActions = []), (this._debugOn = !!e), (this._debugBugged = !1));
+                    ((this._transactionActions = []), (this._debugOn = !!e), (this._debugBugged = false));
                 }),
                 (r.prototype.endTransaction = function () {
                     var e = this._transactionActions;
@@ -31,29 +31,29 @@ module.exports = function (e, t, i) {
                     !o &&
                         this._transactionActions &&
                         (this._transactionActions.push({
-                            isPropertyChangeAction: !0,
+                            isPropertyChangeAction: true,
                             node: e,
                             properties: t.slice(),
                             values: n,
                             oldValues: i.slice(),
                             custom: a,
                             action: function () {
-                                var t = !1;
+                                var t = false;
                                 (e.isRecordedTransaction &&
                                     "function" == typeof e.isRecordedTransaction &&
                                     !e.isRecordedTransaction() &&
-                                    ((e.recordedTransaction = !0), (t = !0)),
+                                    ((e.recordedTransaction = true), (t = true)),
                                     e.setProperties(this.properties, this.values, this.custom),
-                                    t && (e.recordedTransaction = !1));
+                                    t && (e.recordedTransaction = false));
                             },
                             revert: function () {
-                                var t = !1;
+                                var t = false;
                                 (e.isRecordedTransaction &&
                                     "function" == typeof e.isRecordedTransaction &&
                                     !e.isRecordedTransaction() &&
-                                    ((e.recordedTransaction = !0), (t = !0)),
+                                    ((e.recordedTransaction = true), (t = true)),
                                     e.setProperties(this.properties, this.oldValues, this.custom),
-                                    t && (e.recordedTransaction = !1));
+                                    t && (e.recordedTransaction = false));
                             },
                         }),
                         this._addDebugData(r.ActionType.PropertyChange, e));
@@ -110,33 +110,33 @@ module.exports = function (e, t, i) {
                 }),
                 (r.prototype.beginBlock = function (e, t, n) {
                     if (this._transactionActions) {
-                        var o = i(22);
+                        var o = require(22);
                         (this._transactionActions.push({
                             withInvalidation: !!n && n[0],
                             noGeometryInvalidation: !!n && n[1],
                             changes: t.slice(),
                             action: function () {
                                 if (this.withInvalidation) {
-                                    var t = !1;
+                                    var t = false;
                                     (e.isRecordedTransaction &&
                                         "function" == typeof e.isRecordedTransaction &&
                                         !e.isRecordedTransaction() &&
-                                        ((e.recordedTransaction = !0), (t = !0)),
+                                        ((e.recordedTransaction = true), (t = true)),
                                         e._notifyChange(o._Change.PrepareGeometryUpdate),
-                                        t && (e.recordedTransaction = !1));
+                                        t && (e.recordedTransaction = false));
                                 }
                                 e._beginBlockChanges(this.changes);
                             },
                             revert: function () {
                                 if ((e._endBlockChanges(this.changes), this.withInvalidation)) {
-                                    var t = !1;
+                                    var t = false;
                                     (e.isRecordedTransaction &&
                                         "function" == typeof e.isRecordedTransaction &&
                                         !e.isRecordedTransaction() &&
-                                        ((e.recordedTransaction = !0), (t = !0)),
+                                        ((e.recordedTransaction = true), (t = true)),
                                         e._notifyChange(o._Change.FinishGeometryUpdate, this.noGeometryInvalidation ? -1 : 0),
                                         e.hasMixin(o.Accelerated) && e._updateQTree(),
-                                        t && (e.recordedTransaction = !1));
+                                        t && (e.recordedTransaction = false));
                                 }
                             },
                         }),
@@ -145,32 +145,32 @@ module.exports = function (e, t, i) {
                 }),
                 (r.prototype.endBlock = function (e, t, n) {
                     if (this._transactionActions) {
-                        var o = i(22);
+                        var o = require(22);
                         (this._transactionActions.push({
                             withInvalidation: !!n && n[0],
                             noGeometryInvalidation: !!n && n[1],
                             changes: t.slice(),
                             action: function () {
                                 if ((e._endBlockChanges(this.changes), this.withInvalidation)) {
-                                    var t = !1;
+                                    var t = false;
                                     (e.isRecordedTransaction &&
                                         "function" == typeof e.isRecordedTransaction &&
                                         !e.isRecordedTransaction() &&
-                                        ((e.recordedTransaction = !0), (t = !0)),
+                                        ((e.recordedTransaction = true), (t = true)),
                                         e._notifyChange(o._Change.FinishGeometryUpdate, this.noGeometryInvalidation ? -1 : 0),
                                         e.hasMixin(o.Accelerated) && e._updateQTree(),
-                                        t && (e.recordedTransaction = !1));
+                                        t && (e.recordedTransaction = false));
                                 }
                             },
                             revert: function () {
                                 if (this.withInvalidation) {
-                                    var t = !1;
+                                    var t = false;
                                     (e.isRecordedTransaction &&
                                         "function" == typeof e.isRecordedTransaction &&
                                         !e.isRecordedTransaction() &&
-                                        ((e.recordedTransaction = !0), (t = !0)),
+                                        ((e.recordedTransaction = true), (t = true)),
                                         e._notifyChange(o._Change.PrepareGeometryUpdate),
-                                        t && (e.recordedTransaction = !1));
+                                        t && (e.recordedTransaction = false));
                                 }
                                 e._beginBlockChanges(this.changes);
                             },
@@ -276,12 +276,12 @@ module.exports = function (e, t, i) {
                                 l.node && (l.node = l.action.node),
                                 s && (l.action.data = t.getTransactionActionSerialized(s)));
                         } catch (e) {
-                            ((this._debugBugged = !0), console.error("Warning: cannot add debug data"));
+                            ((this._debugBugged = true), console.error("Warning: cannot add debug data"));
                         }
                     }
                 }),
                 (r.prototype.toString = function () {
                     return "[GTransactionRecorder]";
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

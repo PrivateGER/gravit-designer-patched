@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(709);
+            var n = require(709);
 
             function r() {
                 ((this.commands = []), (this.fill = "black"), (this.stroke = null), (this.strokeWidth = 1));
@@ -147,5 +147,5 @@ module.exports = function (e, t, i) {
                         i = document.createElementNS("http://www.w3.org/2000/svg", "path");
                     return (i.setAttribute("d", t), i);
                 }),
-                (t.Path = r));
+                (exports.Path = r));
         };

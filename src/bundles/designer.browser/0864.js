@@ -1,59 +1,59 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(168), n(3), n(4), n(41), n(13), n(169), n(26));
-        var o = n(53),
-            i = n(1),
-            a = n(78),
-            r = n(606),
-            s = n(806),
-            l = n(395),
-            c = n(1160),
-            d = n(1261),
-            u = n(1162),
-            p = n(1262),
-            g = n(1264),
-            h = n(1265),
-            f = n(1266),
-            m = n(1269),
-            y = n(1270),
-            v = n(1271),
-            _ = n(1272),
-            b = n(1273),
-            w = n(1274),
-            C = n(1528),
-            x = n(1159);
-        const S = n(135),
-            E = n(198),
-            A = n(807);
+        (require(19), require(168 /* PDFFetchStream */), require(3), require(4), require(41), require(13), require(169 /* PDFNetworkStream */), require(26));
+        var o = require(53),
+            GObject = require(1),
+            a = require(78),
+            r = require(606),
+            s = require(806),
+            l = require(395),
+            GAppearanceProperties = require(1160),
+            GFillPaintLayerProperties = require(1261),
+            GBorderPaintLayerProperties = require(1162),
+            GEffectProperties = require(1262),
+            GBoolOpProperties = require(1264),
+            GEllipseProperties = require(1265),
+            GImageProperties = require(1266),
+            GPathProperties = require(1269),
+            GCommonNames = require(1270),
+            v = require(1271 /* GCommonNames */),
+            _ = require(1272 /* GCommonNames */),
+            GTextProperties = require(1273),
+            w = require(1274),
+            GVersionHistoryProperties = require(1528),
+            x = require(1159);
+        const S = require(135),
+            SidebarsIds = require(198),
+            A = require(807);
         function T() {
             (s.call(this), (this._propertyPanels = []), (this._touchTools = []));
         }
-        (i.GObject.inherit(T, s),
-            (T.ACCORDIONS = [c.prototype.toString(), d.prototype.toString(), u.prototype.toString(), p.prototype.toString()]),
+        (GObject.GObject.inherit(T, s),
+            (T.ACCORDIONS = [GAppearanceProperties.prototype.toString(), GFillPaintLayerProperties.prototype.toString(), GBorderPaintLayerProperties.prototype.toString(), GEffectProperties.prototype.toString()]),
             (T.APPEARANCE_PROPERTIES = [
                 w.prototype.toString(),
-                y.prototype.toString(),
-                m.prototype.toString(),
-                h.prototype.toString(),
-                b.prototype.toString(),
-                f.prototype.toString(),
+                GCommonNames.prototype.toString(),
+                GPathProperties.prototype.toString(),
+                GEllipseProperties.prototype.toString(),
+                GTextProperties.prototype.toString(),
+                GImageProperties.prototype.toString(),
                 v.prototype.toString(),
                 _.prototype.toString(),
-                g.prototype.toString(),
-                c.prototype.toString(),
+                GBoolOpProperties.prototype.toString(),
+                GAppearanceProperties.prototype.toString(),
             ]),
-            (T.ID = E.SidebarsIds.GInspectorSidebar),
-            (T.TITLE = new i.GLocaleKey("GInspectorSidebar", "title")),
+            (T.ID = SidebarsIds.SidebarsIds.GInspectorSidebar),
+            (T.TITLE = new GObject.GLocaleKey("GInspectorSidebar", "title")),
             (T.prototype._touchTools = null),
             (T.prototype._htmlElement = null),
             (T.prototype._propertyPanels = null),
             (T.prototype._document = null),
             (T.prototype._elements = null),
-            (T.prototype._transformMode = !1),
+            (T.prototype._transformMode = false),
             (T.prototype._appearancePanel = null),
             (T.prototype._versionHistoryPanel = null),
             (T.prototype._versionHistoryProperties = null),
-            (T.prototype._versionHistoryMode = !1),
+            (T.prototype._versionHistoryMode = false),
             (T.prototype.getId = function () {
                 return T.ID;
             }),
@@ -73,7 +73,7 @@ module.exports = function (e, t, n) {
                 return 300;
             }),
             (T.prototype.isResizeable = function () {
-                return !1;
+                return false;
             }),
             (T.prototype.getDefaultWidth = function () {
                 return 300;
@@ -89,7 +89,7 @@ module.exports = function (e, t, n) {
                     .addClass("appearance-properties-panel")),
                     $("<label></label>")
                         .addClass("appearance-toolbar-title")
-                        .text(i.GLocale.get(new i.GLocaleKey("GAppearanceProperties", "title")))
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GAppearanceProperties", "title")))
                         .appendTo(o));
                 for (
                     var a = function (e) {
@@ -129,34 +129,34 @@ module.exports = function (e, t, n) {
                 return this._propertyPanels.find((t) => t.properties instanceof e) || null;
             }),
             (T.prototype.openFillPatternChooser = function () {
-                const e = this._getPropertyPanel(d);
+                const e = this._getPropertyPanel(GFillPaintLayerProperties);
                 e && e.properties.openPatternChooser();
             }),
             (T.prototype.openBorderPatternChooser = function () {
-                const e = this._getPropertyPanel(u);
+                const e = this._getPropertyPanel(GBorderPaintLayerProperties);
                 e && e.properties.openPatternChooser();
             }),
             (T.prototype.openFillEyeDropper = function (e, t) {
-                const n = this._getPropertyPanel(d);
+                const n = this._getPropertyPanel(GFillPaintLayerProperties);
                 n && n.properties.openEyeDropper(e, t);
             }),
             (T.prototype.openBorderEyeDropper = function (e, t) {
-                const n = this._getPropertyPanel(u);
+                const n = this._getPropertyPanel(GBorderPaintLayerProperties);
                 n && n.properties.openEyeDropper(e, t);
             }),
             (T.prototype.openTextColorEyeDropper = function (e, t) {
-                const n = this._getPropertyPanel(b);
+                const n = this._getPropertyPanel(GTextProperties);
                 n && n.properties.openEyeDropper(e, t);
             }),
             (T.prototype.setPathPointsNodeType = function (e) {
-                const t = this._getPropertyPanel(m);
+                const t = this._getPropertyPanel(GPathProperties);
                 t && t.properties.assignNodeType(e);
             }),
             (T.prototype._sidebarEvent = function (e) {
                 gDesigner.isTouchEnabled() &&
                     e.type === A.Type.Activated &&
                     e.sidebar &&
-                    e.sidebar.getId() === E.SidebarsIds.GAnnotationsSidebar &&
+                    e.sidebar.getId() === SidebarsIds.SidebarsIds.GAnnotationsSidebar &&
                     this._updatePropertyPanels();
             }),
             (T.prototype.activate = function () {
@@ -177,7 +177,7 @@ module.exports = function (e, t, n) {
                     .appendTo(this._htmlElement);
                 var e = $("<div></div>").addClass("properties-panel version-history-panel"),
                     t = $("<div></div>").addClass("toolbar");
-                ((this._versionHistoryProperties = new C()),
+                ((this._versionHistoryProperties = new GVersionHistoryProperties()),
                     this._versionHistoryProperties.init(e, t),
                     this._versionHistoryPanel.append(t).append(e),
                     gDesigner.addEventListener(x, this._updateVersionsPanel, this));
@@ -185,7 +185,7 @@ module.exports = function (e, t, n) {
             (T.prototype._updateVersionsPanel = function (e) {
                 if (e.type === x.Type.Enable) {
                     var t;
-                    switch (((this._versionHistoryMode = !0), this.getOrientation())) {
+                    switch (((this._versionHistoryMode = true), this.getOrientation())) {
                         case l.Orientation.Left:
                             t = gDesigner.getLeftSidebars();
                             break;
@@ -193,16 +193,16 @@ module.exports = function (e, t, n) {
                             t = gDesigner.getRightSidebars();
                     }
                     (t.setActiveSidebar(this.getId()),
-                        gDesigner.setPartVisible(t.getSidebarsPart(), !0),
+                        gDesigner.setPartVisible(t.getSidebarsPart(), true),
                         this._htmlElement.find(".panels").css("display", "none"),
                         this._versionHistoryPanel.appendTo(this._htmlElement),
                         this._versionHistoryPanel.css("display", ""));
                 } else
                     e.type === x.Type.Disable &&
-                        ((this._versionHistoryMode = !1),
+                        ((this._versionHistoryMode = false),
                         this._htmlElement.find(".panels").css("display", ""),
                         this._versionHistoryPanel.css("display", "none"),
-                        this._updatePropertyPanels(!1));
+                        this._updatePropertyPanels(false));
                 gDesigner.isTouchEnabled() && this._updateVersionsPanelTouch();
             }),
             (T.prototype._documentEvent = function (e) {
@@ -210,7 +210,7 @@ module.exports = function (e, t, n) {
                     ? this._activateDocument(e.document)
                     : e.type === a.Type.Deactivated
                       ? this._deactivateDocument()
-                      : e.type === a.Type.StorageItemUpdated && this._updatePropertyPanels(!1, e.data ? e.data : null);
+                      : e.type === a.Type.StorageItemUpdated && this._updatePropertyPanels(false, e.data ? e.data : null);
             }),
             (T.prototype._activateDocument = function (e) {
                 (this._document && this._deactivateDocument(), (this._document = e));
@@ -218,7 +218,7 @@ module.exports = function (e, t, n) {
                     n = this._document.getEditor();
                 (gDesigner.getToolManager().addEventListener(o.GToolManager.ToolChangedEvent, this._updateFromToolOrSelection, this),
                     n.addEventListener(o.GEditor.SelectionChangedEvent, this._updateFromToolOrSelection, this),
-                    t.addEventListener(i.GNode.AfterFlagChangeEvent, this._afterFlagChangeEvent, this),
+                    t.addEventListener(GObject.GNode.AfterFlagChangeEvent, this._afterFlagChangeEvent, this),
                     this._updateFromToolOrSelection(),
                     this.trigger(r.UPDATE_EVENT));
             }),
@@ -227,10 +227,10 @@ module.exports = function (e, t, n) {
                     t = this._document.getEditor();
                 (gDesigner.getToolManager().removeEventListener(o.GToolManager.ToolChangedEvent, this._updateFromToolOrSelection, this),
                     t.removeEventListener(o.GEditor.SelectionChangedEvent, this._updateFromToolOrSelection, this),
-                    e.removeEventListener(i.GNode.AfterFlagChangeEvent, this._afterFlagChangeEvent, this),
+                    e.removeEventListener(GObject.GNode.AfterFlagChangeEvent, this._afterFlagChangeEvent, this),
                     (this._document = null),
                     (this._elements = null),
-                    this._updatePropertyPanels(!0),
+                    this._updatePropertyPanels(true),
                     this.trigger(r.UPDATE_EVENT));
             }),
             (T.prototype._toolChangedEvent = function (e) {
@@ -238,7 +238,7 @@ module.exports = function (e, t, n) {
                     n = e.newTool;
                 (t &&
                     t instanceof o.GSelectTool &&
-                    (e.light || this._updateTransformMode(!1), t.removeEventListener(o.GSelectTool.Event, this._selectToolEvent, this)),
+                    (e.light || this._updateTransformMode(false), t.removeEventListener(o.GSelectTool.Event, this._selectToolEvent, this)),
                     this._activeTool(n));
             }),
             (T.prototype._activeTool = function (e) {
@@ -249,11 +249,11 @@ module.exports = function (e, t, n) {
                     this._updateTransformMode(e.args.mode === o.GSelectTool.EditMode.Transform);
             }),
             (T.prototype._updateTransformMode = function (e) {
-                e !== this._transformMode && ((this._transformMode = e), this._updatePropertyPanels(!1));
+                e !== this._transformMode && ((this._transformMode = e), this._updatePropertyPanels(false));
             }),
             (T.prototype._afterFlagChangeEvent = function (e) {
-                e.node instanceof i.GPage &&
-                    e.flag === i.GNode.Flag.Active &&
+                e.node instanceof GObject.GPage &&
+                    e.flag === GObject.GNode.Flag.Active &&
                     !this._document.getEditor().hasSelection() &&
                     this._updateFromToolOrSelection();
             }),
@@ -265,7 +265,7 @@ module.exports = function (e, t, n) {
                     ((this._elements = t.getSelection()),
                     this._elements &&
                         this._elements.length &&
-                        (this._elements = t.filterIndividualElements(this._elements.filter((e) => !e.hasMixin(i.GAnnotation)))),
+                        (this._elements = t.filterIndividualElements(this._elements.filter((e) => !e.hasMixin(GObject.GAnnotation)))),
                     !this._elements || 0 === this._elements.length)
                 ) {
                     var n = gDesigner.getToolManager().getActiveTool(),
@@ -274,10 +274,10 @@ module.exports = function (e, t, n) {
                         ? (this._elements = [a])
                         : (this._elements = [this._document.getScene().getActivePage()]);
                 }
-                this._updatePropertyPanels(!1);
+                this._updatePropertyPanels(false);
             }),
             (T.prototype._updatePropertyPanels = function (e, t) {
-                var n = !1,
+                var n = false,
                     o = null,
                     i = null;
                 this._touchTools = [];
@@ -343,10 +343,10 @@ module.exports = function (e, t, n) {
                     this._updatePropertyPanels());
             }),
             (T.prototype._isPropertiesEnabled = function (e) {
-                return !0;
+                return true;
             }),
             (T.prototype.getTouchTools = function () {
-                let { disableContextSensitive: e = !1 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                let { disableContextSensitive: e = false } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 return e ? this._getAllTouchTools() : this._touchTools;
             }),
             (T.prototype._getAllTouchTools = function () {
@@ -362,6 +362,6 @@ module.exports = function (e, t, n) {
             (T.prototype.toString = function () {
                 return "[Object GInspectorSidebar]";
             }),
-            n(1529)(T),
-            (e.exports = T));
+            require(1529)(T),
+            (module.exports = T));
     };

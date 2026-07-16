@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i() {}
             ((i.prototype.paint = function (e, t) {
                 throw new Error("Not implemented");
@@ -7,5 +7,5 @@ module.exports = function (e, t) {
                     throw new Error("Not implemented");
                 }),
                 (i.prototype.execute = function (e, t, i) {}),
-                (e.exports = i));
+                (module.exports = i));
         };

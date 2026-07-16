@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            e.exports = {
+            module.exports = {
                 ACCEPTED: 202,
                 BAD_GATEWAY: 502,
                 BAD_REQUEST: 400,

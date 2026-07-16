@@ -1,18 +1,18 @@
-module.exports = function (e, t, i) {
-            var n = i(7),
-                r = i(5),
-                o = i(147),
-                a = i(158),
-                s = i(138),
-                l = i(11),
-                h = i(28),
-                A = i(1149),
-                c = i(108),
-                p = i(1148),
-                u = i(438),
-                d = i(132),
-                g = i(801),
-                f = i(838);
+module.exports = function (module, exports, require) {
+            var n = require(7),
+                r = require(5),
+                o = require(147),
+                a = require(158),
+                s = require(138),
+                l = require(11),
+                GStylable = require(28),
+                A = require(1149),
+                GFont = require(108),
+                p = require(1148),
+                u = require(438),
+                d = require(132),
+                g = require(801),
+                f = require(838);
 
             function m(e) {
                 ((this._element = e), (this._lines = []));
@@ -66,13 +66,13 @@ module.exports = function (e, t, i) {
                 (y.prototype.origin = new n()),
                 (y.prototype.textUnderline = null),
                 (y.prototype.textStrikeout = null),
-                (y.prototype.textLigatures = !1),
-                (y.prototype.textFractions = !1),
+                (y.prototype.textLigatures = false),
+                (y.prototype.textFractions = false),
                 (y.prototype.append = function (e) {
                     this.text += e.text;
                 }),
                 (y.prototype.merge = function (e) {
-                    if (e.align !== h.ParagraphAlignment.Justify) {
+                    if (e.align !== GStylable.ParagraphAlignment.Justify) {
                         var t = function (e, t) {
                             return e instanceof s && t instanceof s ? s.equals(e, t) : e === t;
                         };
@@ -85,13 +85,13 @@ module.exports = function (e, t, i) {
                             this.lineWidth === e.lineWidth &&
                             this.charSpacing === e.charSpacing &&
                             this.wordSpacing === e.wordSpacing &&
-                            l.equals(this.fontReference, e.fontReference, !0) &&
+                            l.equals(this.fontReference, e.fontReference, true) &&
                             t(this.fillColor, e.fillColor) &&
                             t(this.strokeColor, e.strokeColor)
                         )
-                            return (this.append(e), !0);
+                            return (this.append(e), true);
                     }
-                    return !1;
+                    return false;
                 }),
                 (m.Word = y),
                 (_.prototype.align = null),
@@ -110,7 +110,7 @@ module.exports = function (e, t, i) {
                                 u.setAttributeId(l, i, t),
                                 u.exportAttributes(l, i, t));
                             var h = (function (e, t) {
-                                    void 0 === t && (t = !0);
+                                    void 0 === t && (t = true);
                                     var i =
                                         /((?:[\0-\x08\x0B\f\x0E-\x1F\uFFFD\uFFFE\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]))/g;
                                     return (
@@ -129,7 +129,7 @@ module.exports = function (e, t, i) {
                             (y.set("font-family", "'" + o.fontReference.fontFamily + "'"),
                                 y.set("font-weight", o.fontReference.fontWeight),
                                 y.set("font-size", o.fontReference.fontSize + d.Unit.PX),
-                                y.set("font-style", o.fontReference.fontStyle === c.Style.Normal ? "normal" : "italic"),
+                                y.set("font-style", o.fontReference.fontStyle === GFont.Style.Normal ? "normal" : "italic"),
                                 o.textLigatures
                                     ? "auto" === o.textLigatures && o.charSpacing > 0 && y.set("font-variant-ligatures", "none")
                                     : y.set("font-variant-ligatures", "none"));
@@ -203,5 +203,5 @@ module.exports = function (e, t, i) {
                         e.pop());
                 }),
                 (m.Paragraph = v),
-                (e.exports = m));
+                (module.exports = m));
         };

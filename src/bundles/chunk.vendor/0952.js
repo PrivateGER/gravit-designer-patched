@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            e.exports = {
+            module.exports = {
                 ERR_SUBSCRIPTION_COULD_NOT_BE_DEACTIVATED: 1e3,
                 ERR_SUBSCRIPTION_IS_NOT_EXPIRED: 1001,
                 ERR_SUBSCRIPTION_IS_ACTIVE: 1002,

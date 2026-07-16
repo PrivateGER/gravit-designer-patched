@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(76),
-                o = i(84);
-            i(142);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(76),
+                o = require(84);
+            require(142);
 
             function a() {
                 (r.call(this), this.initializeAnnotation());
@@ -43,5 +43,5 @@ module.exports = function (e, t, i) {
                 (a.prototype.toString = function () {
                     return "[GEmptyAnnotation]";
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

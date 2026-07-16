@@ -1,26 +1,26 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(3), n(26));
-        var o = n(1),
-            i = n(15),
-            a = n(40),
-            r = n(67),
-            s = n(10),
-            l = n(18),
-            c = n(106);
+        (require(19), require(3), require(26));
+        var GObject = require(1),
+            GPlatform = require(15),
+            GSaveAction = require(40),
+            r = require(67),
+            designerConfig = require(10),
+            GCategory = require(18),
+            c = require(106);
         function d() {
             d.TOOLTIP_CONFIG = {
                 [r.TOOLTIP_AREA.TOOLBAR]: r.GRichTooltipConfig.from({
-                    title: o.GLocale.get(new o.GLocaleKey("GClipAction", "tooltip-title")),
-                    description: o.GLocale.get(new o.GLocaleKey("GClipAction", "tooltip-description")),
-                    video: s.gApi.getRichTooltipVideoURL("Clip.mp4"),
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GClipAction", "tooltip-title")),
+                    description: GObject.GLocale.get(new GObject.GLocaleKey("GClipAction", "tooltip-description")),
+                    video: designerConfig.gApi.getRichTooltipVideoURL("Clip.mp4"),
                     learnMore: "/docs/organizing-your-designs/clipping-masking/",
                 }),
             };
         }
-        (o.GObject.inherit(d, c),
+        (GObject.GObject.inherit(d, c),
             (d.ID = "modify.clip"),
-            (d.TITLE = new o.GLocaleKey("GClipAction", "title")),
+            (d.TITLE = new GObject.GLocaleKey("GClipAction", "title")),
             (d.TOOLTIP_CONFIG = null),
             (d.prototype.getId = function () {
                 return d.ID;
@@ -32,27 +32,27 @@ module.exports = function (e, t, n) {
                 return "gravit-icon-clip-circle";
             }),
             (d.prototype.getCategory = function () {
-                return l.CATEGORY_MODIFY;
+                return GCategory.CATEGORY_MODIFY;
             }),
             (d.prototype.getGroup = function () {
                 return "structure-group";
             }),
             (d.prototype.isEnabled = function () {
-                if (!c.prototype.isEnabled.call(this)) return !1;
+                if (!c.prototype.isEnabled.call(this)) return false;
                 var e = gDesigner.getActiveDocument();
                 if (e) {
                     var t = e.getEditor().getIndividualSelection();
                     return t && t.length > 1;
                 }
-                return !1;
+                return false;
             }),
             (d.prototype.getShortcut = function () {
-                return [i.GKey.Constant.OPTION, i.GKey.Constant.META, "M"];
+                return [GPlatform.GKey.Constant.OPTION, GPlatform.GKey.Constant.META, "M"];
             }),
             (d.prototype.execute = function (e, t) {
                 var n = gDesigner.getActiveDocument().getEditor(),
                     i = gDesigner.getActiveDocument().getScene(),
-                    r = o.GNode.order(n.getIndividualSelection().slice(), e),
+                    r = GObject.GNode.order(n.getIndividualSelection().slice(), e),
                     s = r.shift();
                 if (!s.isLocked()) {
                     var l,
@@ -62,7 +62,7 @@ module.exports = function (e, t, n) {
                         l = new Set();
                         for (var d = 0; d < r.length; ++d) l.add(r[d].getParent());
                         try {
-                            (0, a.blockChanges)(n, l, i, s);
+                            (0, GSaveAction.blockChanges)(n, l, i, s);
                             for (d = 0; d < r.length; ++d) {
                                 var u = r[d];
                                 u.validateInsertion(s) &&
@@ -72,10 +72,10 @@ module.exports = function (e, t, n) {
                                     (u.getParent().removeChild(u), s.appendChild(u));
                             }
                         } finally {
-                            ((0, a.releaseChanges)(n, l, i, s), n.updateSelection(!1, [s]));
+                            ((0, GSaveAction.releaseChanges)(n, l, i, s), n.updateSelection(false, [s]));
                         }
                     } finally {
-                        t || n.commitTransaction(o.GLocale.get(new o.GLocaleKey("GClipAction", "text.clip-selecion")));
+                        t || n.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GClipAction", "text.clip-selecion")));
                     }
                 }
             }),
@@ -85,5 +85,5 @@ module.exports = function (e, t, n) {
             (d.prototype.toString = function () {
                 return "[Object GClipAction]";
             }),
-            (e.exports = d));
+            (module.exports = d));
     };

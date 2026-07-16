@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(42),
-                r = i(206),
-                o = i(0);
+module.exports = function (module, exports, require) {
+            var n = require(42),
+                r = require(206),
+                IsFiniteNonNegativeNumber = require(0);
 
             function a(e) {
                 (n.call(
@@ -22,7 +22,7 @@ module.exports = function (e, t, i) {
             }
             ((a.prototype.brightness = null),
                 (a.prototype.blur = null),
-                o.inherit(a, n),
+                IsFiniteNonNegativeNumber.inherit(a, n),
                 (a.prototype.render = function (e, t, i, n, r, o) {
                     (this.glEffect.extraTexture.ensureFormat(this.glEffect.texture),
                         this.brightness.simpleShader.call(
@@ -64,5 +64,5 @@ module.exports = function (e, t, i) {
                 (a.prototype.destroy = function () {
                     (this.brightness && this.brightness.destroy(), this.blur && this.blur.destroy(), n.prototype.destroy.call(this));
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

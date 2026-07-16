@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(14),
-                r = i(0),
-                o = i(6),
-                a = i(118);
-            i(166);
+module.exports = function (module, exports, require) {
+            var n = require(14),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(6),
+                a = require(118);
+            require(166);
 
             function s(e, t) {
                 ((this._paintCanvases = []), (this._itemWidth = e), (this._itemHeight = t));
             }
-            (r.inheritAndMix(s, r, [a]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(s, IsFiniteNonNegativeNumber, [a]),
                 (s.prototype._paintCanvases = null),
                 (s.prototype._itemWidth = 0),
                 (s.prototype._itemHeight = 0),
@@ -64,7 +64,7 @@ module.exports = function (e, t, i) {
                                     m.x === h && m.y === A && (g = m);
                                 }
                                 if (!g) {
-                                    var y = new n(!1, !0);
+                                    var y = new n(false, true);
                                     (y.setRenderAlgorithm(n.RenderAlgorithm.Crisp),
                                         y.setImageSmoothingQuality(n.SmoothingQuality.High),
                                         y.prepare(),
@@ -101,5 +101,5 @@ module.exports = function (e, t, i) {
                 (s.prototype.clear = function () {
                     this.destroy();
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

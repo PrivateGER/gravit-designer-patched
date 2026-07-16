@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o = "undefined" != typeof Uint8Array && "undefined" != typeof Uint16Array && "undefined" != typeof Int32Array;
         function i(e, t) {
             return Object.prototype.hasOwnProperty.call(e, t);
         }
-        ((t.assign = function (e) {
+        ((exports.assign = function (e) {
             for (var t = Array.prototype.slice.call(arguments, 1); t.length; ) {
                 var n = t.shift();
                 if (n) {
@@ -14,7 +14,7 @@ module.exports = function (e, t, n) {
             }
             return e;
         }),
-            (t.shrinkBuf = function (e, t) {
+            (exports.shrinkBuf = function (e, t) {
                 return e.length === t ? e : e.subarray ? e.subarray(0, t) : ((e.length = t), e);
             }));
         var a = {
@@ -37,10 +37,10 @@ module.exports = function (e, t, n) {
                     return [].concat.apply([], e);
                 },
             };
-        ((t.setTyped = function (e) {
+        ((exports.setTyped = function (e) {
             e
-                ? ((t.Buf8 = Uint8Array), (t.Buf16 = Uint16Array), (t.Buf32 = Int32Array), t.assign(t, a))
-                : ((t.Buf8 = Array), (t.Buf16 = Array), (t.Buf32 = Array), t.assign(t, r));
+                ? ((exports.Buf8 = Uint8Array), (exports.Buf16 = Uint16Array), (exports.Buf32 = Int32Array), exports.assign(exports, a))
+                : ((exports.Buf8 = Array), (exports.Buf16 = Array), (exports.Buf32 = Array), exports.assign(exports, r));
         }),
-            t.setTyped(o));
+            exports.setTyped(o));
     };

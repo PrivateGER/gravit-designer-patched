@@ -1,21 +1,21 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(57), n(3));
-        var o = n(1),
-            i = n(15),
-            a = n(10),
-            r = n(40);
+        (require(57), require(3));
+        var GObject = require(1),
+            GPlatform = require(15),
+            designerConfig = require(10),
+            GSaveAction = require(40);
         function s() {}
-        (o.GObject.inherit(s, o.GEvent),
+        (GObject.GObject.inherit(s, GObject.GEvent),
             (s.prototype._startX = 0),
             (s.prototype._startY = 0),
             (s.prototype._timerHandle = null),
             (s.prototype._mouseMove = null),
             (s.prototype._mouseUp = null),
             (s.prototype._mouseDown = null),
-            (s.prototype._isTouchDevice = !1),
+            (s.prototype._isTouchDevice = false),
             (s.prototype._event = null),
-            (s.prototype._touching = !1),
+            (s.prototype._touching = false),
             (s.prototype._clearRequestTimeout = function (e) {
                 e &&
                     (window.cancelAnimationFrame
@@ -67,7 +67,7 @@ module.exports = function (e, t, n) {
             (s.prototype._startLongPressTimer = function (e) {
                 (this._clearLongPressTimer(), (this._event = e));
                 var t = e.target,
-                    n = parseInt(t.getAttribute("data-long-press-delay") || a.LONG_PRESS_TIME_OUT, 10);
+                    n = parseInt(t.getAttribute("data-long-press-delay") || designerConfig.LONG_PRESS_TIME_OUT, 10);
                 this._timerHandle = this._requestTimeout(this._fireLongPressEvent.bind(this), n);
             }),
             (s.prototype._fireLongPressEvent = function () {
@@ -77,8 +77,8 @@ module.exports = function (e, t, n) {
                     n = this._isTouchDevice ? this._event.touches[0].clientY : this._event.clientY,
                     o = e.dispatchEvent(
                         new CustomEvent("long-press", {
-                            bubbles: !0,
-                            cancelable: !0,
+                            bubbles: true,
+                            cancelable: true,
                             detail: { clientX: t, clientY: n },
                         })
                     ),
@@ -89,41 +89,41 @@ module.exports = function (e, t, n) {
                 if (o && i) {
                     const e = (t) => {
                         t.isTrusted &&
-                            (document.removeEventListener("touchend", e, !0),
-                            document.removeEventListener("mouseup", e, !0),
+                            (document.removeEventListener("touchend", e, true),
+                            document.removeEventListener("mouseup", e, true),
                             this._cancelEvent(t));
                     };
-                    (document.addEventListener("touchend", e, !0), document.addEventListener("mouseup", e, !0));
+                    (document.addEventListener("touchend", e, true), document.addEventListener("mouseup", e, true));
                 }
             }),
             (s.prototype.startup = function () {
                 if (
-                    ((this._isTouchDevice = i.GPlatform.constructor.isTouchDevice),
+                    ((this._isTouchDevice = GPlatform.GPlatform.constructor.isTouchDevice),
                     (this._mouseDown = this._isTouchDevice ? "touchstart" : "mousedown"),
                     (this._mouseUp = this._isTouchDevice ? "touchend" : "mouseup"),
                     (this._mouseMove = this._isTouchDevice ? "touchmove" : "mousemove"),
-                    document.addEventListener(this._mouseUp, this._clearLongPressTimer.bind(this), !0),
-                    document.addEventListener(this._mouseMove, this._mouseMoveHandler.bind(this), !0),
-                    document.addEventListener("wheel", this._clearLongPressTimer.bind(this), !0),
-                    document.addEventListener("scroll", this._clearLongPressTimer.bind(this), !0),
+                    document.addEventListener(this._mouseUp, this._clearLongPressTimer.bind(this), true),
+                    document.addEventListener(this._mouseMove, this._mouseMoveHandler.bind(this), true),
+                    document.addEventListener("wheel", this._clearLongPressTimer.bind(this), true),
+                    document.addEventListener("scroll", this._clearLongPressTimer.bind(this), true),
                     document.addEventListener(this._mouseDown, this._mouseDownHandler.bind(this)),
-                    this._isTouchDevice && i.GPlatform.webBrowser === i.GPlatform.constructor.WebBrowser.Safari)
+                    this._isTouchDevice && GPlatform.GPlatform.webBrowser === GPlatform.GPlatform.constructor.WebBrowser.Safari)
                 ) {
-                    const e = !(0, r.isPassiveSupported)() || {
-                        passive: !0,
-                        capture: !0,
+                    const e = !(0, GSaveAction.isPassiveSupported)() || {
+                        passive: true,
+                        capture: true,
                     };
                     (document.addEventListener("touchstart", this._documentTouchStart.bind(this), e),
                         document.addEventListener("touchend", this.documentTouchEnd.bind(this), e),
                         document.addEventListener("touchcancel", this.documentTouchEnd.bind(this), e),
-                        document.addEventListener("mousedown", this._documentMouseDown.bind(this), !0));
+                        document.addEventListener("mousedown", this._documentMouseDown.bind(this), true));
                 }
             }),
             (s.prototype._documentTouchStart = function (e) {
-                e.isTrusted && (this._touching = !0);
+                e.isTrusted && (this._touching = true);
             }),
             (s.prototype.documentTouchEnd = function (e) {
-                e.isTrusted && (this._touching = !1);
+                e.isTrusted && (this._touching = false);
             }),
             (s.prototype._documentMouseDown = function (e) {
                 e.isTrusted && this._touching && e.cancelable && e.stopImmediatePropagation();
@@ -131,7 +131,7 @@ module.exports = function (e, t, n) {
             (s.prototype._mouseMoveHandler = function (e) {
                 if ("touchmove" === e.type) {
                     const { clientX: t, clientY: n } = e.changedTouches[0];
-                    if (Math.abs(t - this._startX) < a.MIN_TOUCH_MOVE_DISTANCE && Math.abs(n - this._startY) < a.MIN_TOUCH_MOVE_DISTANCE)
+                    if (Math.abs(t - this._startX) < designerConfig.MIN_TOUCH_MOVE_DISTANCE && Math.abs(n - this._startY) < designerConfig.MIN_TOUCH_MOVE_DISTANCE)
                         return;
                 }
                 this._clearLongPressTimer();
@@ -140,5 +140,5 @@ module.exports = function (e, t, n) {
                 return "[Object GLongPressEvent]";
             }),
             new s().startup(),
-            (e.exports = s));
+            (module.exports = s));
     };

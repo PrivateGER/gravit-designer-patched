@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(2),
-                o = i(11),
-                a = i(75),
-                s = i(472);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(2),
+                o = require(11),
+                a = require(75),
+                s = require(472);
 
             function l() {
                 this.$refs = [];
             }
-            (n.inheritAndMix(l, r, [r.Identity, r.Multireference, a]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(l, r, [r.Identity, r.Multireference, a]),
                 (l._Change = {
                     SceneAttached: 200,
                     SceneDetached: 201,
@@ -59,7 +59,7 @@ module.exports = function (e, t, i) {
                         if (this.hasMixin(r.Reference) && this._scene.hasLinks(this)) {
                             var a = this;
                             this._scene.visitLinks(this, function (e) {
-                                e.trigger(new s(a, e, !0));
+                                e.trigger(new s(a, e, true));
                             });
                         }
                     }
@@ -74,9 +74,9 @@ module.exports = function (e, t, i) {
                                     e instanceof l && e._setScene(null),
                                     e._setWorkspace(null));
                             },
-                            !1,
-                            !1,
-                            !0
+                            false,
+                            false,
+                            true
                         );
                 }),
                 (l.prototype._referenceEvent = function (e) {
@@ -108,5 +108,5 @@ module.exports = function (e, t, i) {
                     }
                     r.prototype._handleChange.call(this, e, t);
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

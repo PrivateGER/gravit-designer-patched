@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1);
-        const i = n(18),
-            a = n(31);
+        require(3);
+        var GObject = require(1);
+        const GCategory = require(18),
+            a = require(31);
         function r() {}
-        (o.GObject.inherit(r, a),
+        (GObject.GObject.inherit(r, a),
             (r.ID = "account.open"),
-            (r.TITLE = new o.GLocaleKey("GOpenAccountSettingsAction", "title")),
+            (r.TITLE = new GObject.GLocaleKey("GOpenAccountSettingsAction", "title")),
             (r.prototype.getId = function () {
                 return r.ID;
             }),
@@ -15,7 +15,7 @@ module.exports = function (e, t, n) {
                 return r.TITLE;
             }),
             (r.prototype.getCategory = function () {
-                return i.CATEGORY_ACCOUNT;
+                return GCategory.CATEGORY_ACCOUNT;
             }),
             (r.prototype.getGroup = function () {
                 return "account";
@@ -30,5 +30,5 @@ module.exports = function (e, t, n) {
             (r.prototype.toString = function () {
                 return "[Object GOpenAccountSettingsAction]";
             }),
-            (e.exports = r));
+            (module.exports = r));
     };

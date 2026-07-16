@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i(e, t) {
                 t ? this.setAnchor(t) : (this._uid = e);
             }
@@ -19,5 +19,5 @@ module.exports = function (e, t) {
                 (i.prototype.toString = function () {
                     return "[Object GAnchorLink]";
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

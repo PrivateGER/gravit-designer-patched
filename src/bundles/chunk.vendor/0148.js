@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(11),
-                r = i(50);
+module.exports = function (module, exports, require) {
+            var n = require(11),
+                r = require(50);
 
             function o() {}
             ((o.formattingKeys = [
@@ -35,10 +35,10 @@ module.exports = function (e, t, i) {
                     fontWeight: null,
                     fontStyle: null,
                     fontColor: "transparent",
-                    underline: !1,
-                    strikeout: !1,
-                    ligatures: !1,
-                    fractions: !1,
+                    underline: false,
+                    strikeout: false,
+                    ligatures: false,
+                    fractions: false,
                     align: "left",
                     script: "normal",
                     langScript: "auto",
@@ -56,7 +56,7 @@ module.exports = function (e, t, i) {
                 }),
                 (o.sameFormatting = function (e, t) {
                     return o.formattingKeys.every(function (i) {
-                        return n.equals(e[i], t[i], !0);
+                        return n.equals(e[i], t[i], true);
                     });
                 }),
                 (o.clone = function (e) {
@@ -80,7 +80,7 @@ module.exports = function (e, t, i) {
                         if (l in e || l in t) {
                             var h = e[l],
                                 A = t[l];
-                            h instanceof r && A instanceof r && n.equals(h, A, !0) ? (i[l] = h) : (i[l] = h === A ? h : o.multipleValues);
+                            h instanceof r && A instanceof r && n.equals(h, A, true) ? (i[l] = h) : (i[l] = h === A ? h : o.multipleValues);
                         }
                     }
                     return i;
@@ -165,7 +165,7 @@ module.exports = function (e, t, i) {
                             if (Array.isArray(t)) {
                                 var r = 0;
                                 t.some(function (t) {
-                                    if (n <= 0) return !0;
+                                    if (n <= 0) return true;
                                     var a = o.getPieceLength(t);
                                     if (r + a > i)
                                         if (1 === a) (e(t), (n -= 1));
@@ -196,5 +196,5 @@ module.exports = function (e, t, i) {
                     if ("string" == typeof t) for (var i = 0; i < t.length; i++) e(t[i], i);
                     else e(t);
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

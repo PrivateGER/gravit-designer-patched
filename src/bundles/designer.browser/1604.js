@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(1);
-        e.exports = {
+        var GObject = require(1);
+        module.exports = {
             _reInitLayout: function () {
                 ((this._canvasPropertiesRowInTouch = $("<div></div>")
                     .attr("data-property-row", "canvas-size")
@@ -28,7 +28,7 @@ module.exports = function (e, t, n) {
                         .gPropertyRow({
                             columns: [
                                 {
-                                    content: $("<span>" + o.GLocale.get(new o.GLocaleKey("GPageProperties", "text.bleed")) + "</span>"),
+                                    content: $("<span>" + GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.bleed")) + "</span>"),
                                 },
                                 {
                                     clazz: "bleed-selector-column",

@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(161),
-                r = i(508);
+module.exports = function (module, exports, require) {
+            var n = require(161),
+                r = require(508);
 
             function o(e, t) {
                 var i = new r(),
@@ -21,5 +21,5 @@ module.exports = function (e, t, i) {
                     i
                 );
             }
-            ((o.fontManager = null), (e.exports = o));
+            ((o.fontManager = null), (module.exports = o));
         };

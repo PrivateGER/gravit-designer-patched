@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(60),
-                o = i(439),
-                a = i(1134),
-                s = i(601);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(60),
+                o = require(439),
+                a = require(1134),
+                s = require(601);
 
             function l() {
                 o.apply(this, arguments);
             }
-            (n.inherit(l, o),
+            (IsFiniteNonNegativeNumber.inherit(l, o),
                 (l.prototype.parse = function (e, t) {
                     var i = this._getTransform();
                     ((this._node = a.generatePath(
@@ -18,14 +18,14 @@ module.exports = function (e, t, i) {
                         s.parse(this._data.frame),
                         this._data.fixedRadius
                     )),
-                        (this._data.noTransform = !0),
+                        (this._data.noTransform = true),
                         this._node &&
-                            (this._node.setProperty("csc", !0),
+                            (this._node.setProperty("csc", true),
                             this._node.setProperty("evenodd", this.isEvenOdd()),
-                            o.prototype.parse.call(this, !0, t)));
+                            o.prototype.parse.call(this, true, t)));
                 }),
                 (l.prototype._getRelatedNodeClass = function () {
                     return r;
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

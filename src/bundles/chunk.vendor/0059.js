@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
-            var n = i(5),
-                r = i(48),
-                o = i(6),
-                a = i(12);
+module.exports = function (module, exports, require) {
+            var n = require(5),
+                r = require(48),
+                o = require(6),
+                a = require(12);
 
             function s() {}
             ((s.prototype._hitTestSegment = function (e, t, i, n, r, o, s, l, h) {
                 var A = [];
                 return (
                     a.sqrSegmentDist(e, t, i, n, r, o, A, s) <= s &&
-                    (h && ((h.segment = l), (h.x = e + A[0] * (i - e)), (h.y = t + A[0] * (n - t)), (h.slope = A[0]), (h.outline = !0)), !0)
+                    (h && ((h.segment = l), (h.x = e + A[0] * (i - e)), (h.y = t + A[0] * (n - t)), (h.slope = A[0]), (h.outline = true)), true)
                 );
             }),
                 (s.prototype._hitTestCurve = function (e, t, i, n, r, o, s, l, h, A, c) {
@@ -31,34 +31,34 @@ module.exports = function (e, t, i) {
                         P = new Float64Array(5),
                         S = new Float64Array(4),
                         T = [],
-                        I = !1,
-                        F = !0;
+                        I = false,
+                        F = true;
                     if (
                         ((C = (e + i + r) / 3),
                         (w = (t + n + o) / 3),
                         a.sqrSegmentDist(e, t, i, n, s, l, x, h) <= h
-                            ? (I = !0)
-                            : a.segmentSide(e, t, i, n, s, l) * a.segmentSide(e, t, i, n, C, w) < 0 && (F = !1),
+                            ? (I = true)
+                            : a.segmentSide(e, t, i, n, s, l) * a.segmentSide(e, t, i, n, C, w) < 0 && (F = false),
                         I && (0 == x[0] || 1 == x[0]))
                     )
                         return (
                             c &&
                                 ((c.segment = A),
-                                (c.outline = !0),
+                                (c.outline = true),
                                 (c.slope = x[0]),
                                 0 == x[0] ? ((c.x = e), (c.y = t)) : ((c.x = i), (c.y = n))),
-                            !0
+                            true
                         );
                     if (
                         (a.sqrSegmentDist(e, t, r, o, s, l) <= h
-                            ? (I = !0)
-                            : a.segmentSide(e, t, r, o, s, l) * a.segmentSide(e, t, r, o, C, w) < 0 && (F = !1),
+                            ? (I = true)
+                            : a.segmentSide(e, t, r, o, s, l) * a.segmentSide(e, t, r, o, C, w) < 0 && (F = false),
                         a.sqrSegmentDist(r, o, i, n, s, l) <= h
-                            ? (I = !0)
-                            : a.segmentSide(r, o, i, n, s, l) * a.segmentSide(r, o, i, n, C, w) < 0 && (F = !1),
+                            ? (I = true)
+                            : a.segmentSide(r, o, i, n, s, l) * a.segmentSide(r, o, i, n, C, w) < 0 && (F = false),
                         !I && !F)
                     )
-                        return !1;
+                        return false;
                     if (((u = n - 2 * o + t), 0 == (p = i - 2 * r + e) && 0 == u)) return this._hitTestSegment(e, t, i, n, s, l, h, A, c);
                     if (
                         ((d = 2 * (r - e)),
@@ -76,10 +76,10 @@ module.exports = function (e, t, i) {
                         (S[1] = f),
                         (S[2] = m),
                         (S[3] = y),
-                        !1,
-                        0 == (_ = a.getCubicRoots(S, 0, 1, T, !1, 1e-6)))
+                        false,
+                        0 == (_ = a.getCubicRoots(S, 0, 1, T, false, 1e-6)))
                     )
-                        return !1;
+                        return false;
                     for (v = h + 1, b = _ + 1, B = 0; B < _; ++B) v > (E = a.evalPoly(P, 4, T[B])) && ((v = E), (b = B));
                     return (
                         v <= h &&
@@ -87,9 +87,9 @@ module.exports = function (e, t, i) {
                             ((c.segment = A),
                             (c.x = (T[b] * p + d) * T[b] + e),
                             (c.y = (T[b] * u + g) * T[b] + t),
-                            (c.outline = !0),
+                            (c.outline = true),
                             (c.slope = T[b])),
-                        !0)
+                        true)
                     );
                 }),
                 (s.prototype._hitTestCurve2 = function (e, t, i, n, r, o, s, l, h, A, c, p, u) {
@@ -137,8 +137,8 @@ module.exports = function (e, t, i) {
                         te = new Float64Array(4),
                         ie = null,
                         ne = null,
-                        re = !1,
-                        oe = !0,
+                        re = false,
+                        oe = true,
                         ae = [];
                     if (
                         (a.getBezierDerivativeEquationCoeffs(e, t, i, n, r, o, s, l, j, J),
@@ -170,9 +170,9 @@ module.exports = function (e, t, i) {
                             (E <= c || B <= c) &&
                                 (u &&
                                     ((u.segment = p),
-                                    (u.outline = !0),
+                                    (u.outline = true),
                                     E < B ? ((u.x = e), (u.y = t), (u.slope = 0)) : ((u.x = i), (u.y = n), (u.slope = 1))),
-                                !0)
+                                true)
                         );
                     d = a.getCubicCurveSplits(j, J, z);
                     for (var se = 0; se < d - 1; ++se) {
@@ -183,7 +183,7 @@ module.exports = function (e, t, i) {
                                 (F = a.evalCubic(f, b, w, t, S)),
                                 a.ptSqrDist(I, F, h, A) <= c)
                             )
-                                return (u && ((u.segment = p), (u.outline = !0), (u.x = I), (u.y = F), (u.slope = S)), !0);
+                                return (u && ((u.segment = p), (u.outline = true), (u.x = I), (u.y = F), (u.slope = S)), true);
                         } else ((S = T), (I = R), (F = D), k);
                         if (
                             ((T = z[se + 1]),
@@ -191,12 +191,12 @@ module.exports = function (e, t, i) {
                             (D = a.evalCubic(f, b, w, t, T)),
                             (k = a.ptSqrDist(R, D, h, A)) <= c)
                         )
-                            return (u && ((u.segment = p), (u.outline = !0), (u.x = R), (u.y = D), (u.slope = T)), !0);
+                            return (u && ((u.segment = p), (u.outline = true), (u.x = R), (u.y = D), (u.slope = T)), true);
                         for (
                             a.getCtrlPts(e, i, r, s, S, T, ee),
                                 a.getCtrlPts(t, n, o, l, S, T, te),
-                                re = !1,
-                                oe = !0,
+                                re = false,
+                                oe = true,
                                 X = (ee[0] + ee[1] + ee[2] + ee[3]) / 4,
                                 H = (te[0] + te[1] + te[2] + te[3]) / 4,
                                 L = 0;
@@ -204,11 +204,11 @@ module.exports = function (e, t, i) {
                             ++L
                         ) {
                             if (((Y = 3 == L ? 0 : L + 1), a.sqrSegmentDist(ee[L], te[L], ee[Y], te[Y], h, A) <= c)) {
-                                re = !0;
+                                re = true;
                                 break;
                             }
                             a.segmentSide(ee[L], te[L], ee[Y], te[Y], h, A) * a.segmentSide(ee[L], te[L], ee[Y], te[Y], X, H) < 0 &&
-                                (oe = !1);
+                                (oe = false);
                         }
                         if (
                             (re || oe) &&
@@ -228,7 +228,7 @@ module.exports = function (e, t, i) {
                                     (O = a.evalCubic(f, b, w, t, U)),
                                     a.ptSqrDist(V, O, h, A) <= c))
                             )
-                                return (u && ((u.segment = p), (u.outline = !0), (u.x = V), (u.y = O), (u.slope = U)), !0);
+                                return (u && ((u.segment = p), (u.outline = true), (u.x = V), (u.y = O), (u.slope = U)), true);
                             if (M > 1) {
                                 if (
                                     (0 == ae.length && a.getSturmPRS(K, 5, ie, ae),
@@ -244,7 +244,7 @@ module.exports = function (e, t, i) {
                                     (O = a.evalCubic(f, b, w, t, U)),
                                     a.ptSqrDist(V, O, h, A) <= c)
                                 )
-                                    return (u && ((u.segment = p), (u.outline = !0), (u.x = V), (u.y = O), (u.slope = U)), !0);
+                                    return (u && ((u.segment = p), (u.outline = true), (u.x = V), (u.y = O), (u.slope = U)), true);
                                 if (N > 1) {
                                     var le = [];
                                     a.locRootsSturm(K, 5, ie, S, T, ae, N, W, Z, le, 0);
@@ -267,12 +267,12 @@ module.exports = function (e, t, i) {
                                             (O = a.evalCubic(f, b, w, t, U)),
                                             a.ptSqrDist(V, O, h, A) <= c)
                                         )
-                                            return (u && ((u.segment = p), (u.outline = !0), (u.x = V), (u.y = O), (u.slope = U)), !0);
+                                            return (u && ((u.segment = p), (u.outline = true), (u.x = V), (u.y = O), (u.slope = U)), true);
                                 }
                             }
                         }
                     }
-                    return !1;
+                    return false;
                 }),
                 (s.prototype._hitUnderSegment = function (e, t, i, n, r, o, s) {
                     var l, h, A;
@@ -313,7 +313,7 @@ module.exports = function (e, t, i) {
                         g = -a.segmentSide(e, t, i, n, r, o);
                     return 0 == g
                         ? this._hitUnderSegment(e, t, i, n, h, A)
-                        : ((c = this._hitUnderSegment(e, t, i, n, h, A, !0)),
+                        : ((c = this._hitUnderSegment(e, t, i, n, h, A, true)),
                           (p = s(h, A)) < 0
                               ? c
                               : 0 == p
@@ -490,7 +490,7 @@ module.exports = function (e, t, i) {
                         g,
                         f,
                         m = 0,
-                        y = !1,
+                        y = false,
                         _ = new r(),
                         v = n ? (n / 2) * (n / 2) : a.defaultEps,
                         b = 0,
@@ -531,7 +531,7 @@ module.exports = function (e, t, i) {
                             }
                         o &&
                             ((g == h && f == A) || (b += this._hitUnderSegment(h + C, A, g + C, f, e + C, t)),
-                            ((null == l && (2 == b || -2 == b)) || (2 == b && !l) || (-2 == b && l)) && (s && (s.outline = !1), (y = !0)));
+                            ((null == l && (2 == b || -2 == b)) || (2 == b && !l) || (-2 == b && l)) && (s && (s.outline = false), (y = true)));
                     }
                     return y;
                 }),
@@ -719,7 +719,7 @@ module.exports = function (e, t, i) {
                     }
                     if (2 !== e.length) return this._collinearBezier(e, t, i, n, r);
                     if (2 === i.length) {
-                        if (o(e[0], t[0], i[0], n[0], i[1], n[1]) && o(e[1], t[1], i[0], n[0], i[1], n[1])) return !0;
+                        if (o(e[0], t[0], i[0], n[0], i[1], n[1]) && o(e[1], t[1], i[0], n[0], i[1], n[1])) return true;
                     } else if (4 === i.length) {
                         if (
                             o(i[1], n[1], i[0], n[0], i[3], n[3]) &&
@@ -727,15 +727,15 @@ module.exports = function (e, t, i) {
                             o(e[0], t[0], i[0], n[0], i[3], n[3]) &&
                             o(e[1], t[1], i[0], n[0], i[3], n[3])
                         )
-                            return !0;
+                            return true;
                     } else if (
                         3 === i.length &&
                         o(i[1], n[1], i[0], n[0], i[2], n[2]) &&
                         o(e[0], t[0], i[0], n[0], i[2], n[2]) &&
                         o(e[1], t[1], i[0], n[0], i[2], n[2])
                     )
-                        return !0;
-                    return !1;
+                        return true;
+                    return false;
                 }),
                 (s.prototype._collinearBezier = function (e, t, i, n, r) {
                     var o = r ? Math.sqrt(r) : Math.sqrt(a.defaultEps);
@@ -751,7 +751,7 @@ module.exports = function (e, t, i) {
                                 this._hitTestCurve2(e[0], t[0], e[3], t[3], e[1], t[1], e[2], t[2], i[0], n[0], o, 0, {}) &&
                                 this._hitTestCurve2(e[0], t[0], e[3], t[3], e[1], t[1], e[2], t[2], i[3], n[3], o, 0, {})
                             )
-                                return !0;
+                                return true;
                         } else if (
                             3 === e.length &&
                             this._hitTestCurve(e[0], t[0], e[2], t[2], e[1], t[1], s, l, o, 0, {}) &&
@@ -759,7 +759,7 @@ module.exports = function (e, t, i) {
                             this._hitTestCurve(e[0], t[0], e[2], t[2], e[1], t[1], i[0], n[0], o, 0, {}) &&
                             this._hitTestCurve(e[0], t[0], e[2], t[2], e[1], t[1], i[3], n[3], o, 0, {})
                         )
-                            return !0;
+                            return true;
                     } else if (3 === i.length) {
                         ((s = a.getCurveAtT(i[0], i[2], i[1], 0.5)), (l = a.getCurveAtT(n[0], n[2], n[1], 0.5)));
                         if (4 === e.length) {
@@ -768,19 +768,19 @@ module.exports = function (e, t, i) {
                                 this._hitTestCurve2(e[0], t[0], e[3], t[3], e[1], t[1], e[2], t[2], i[0], n[0], o, 0, {}) &&
                                 this._hitTestCurve2(e[0], t[0], e[3], t[3], e[1], t[1], e[2], t[2], i[2], n[2], o, 0, {})
                             )
-                                return !0;
+                                return true;
                         } else if (
                             3 === e.length &&
                             this._hitTestCurve(e[0], t[0], e[2], t[2], e[1], t[1], s, l, o, 0, {}) &&
                             this._hitTestCurve(e[0], t[0], e[2], t[2], e[1], t[1], i[0], n[0], o, 0, {}) &&
                             this._hitTestCurve(e[0], t[0], e[2], t[2], e[1], t[1], i[2], n[2], o, 0, {})
                         )
-                            return !0;
+                            return true;
                     }
-                    return !1;
+                    return false;
                 }),
                 (s.prototype.toString = function () {
                     return "[Object GVertexInfo]";
                 }),
-                (e.exports = new s()));
+                (module.exports = new s()));
         };

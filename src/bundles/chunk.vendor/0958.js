@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            e.exports = {
+            module.exports = {
                 NORMAL_CLOSURE: 1e3,
                 GOING_AWAY: 1001,
                 PROTOCOL_ERROR: 1002,

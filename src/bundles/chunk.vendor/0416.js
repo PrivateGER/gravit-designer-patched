@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(161),
-                r = i(508),
-                o = i(148);
+module.exports = function (module, exports, require) {
+            var n = require(161),
+                r = require(508),
+                o = require(148);
 
             function a(e, t, i, s) {
                 var l = new r(),
@@ -54,19 +54,19 @@ module.exports = function (e, t, i) {
                     }
                 var T = {
                     letterSpacing: w,
-                    kerning: !0,
+                    kerning: true,
                     direction: "ltr",
                     features: {
                         liga: E,
                         rlig: E,
-                        frac: !0 === B,
+                        frac: true === B,
                         stylisticSet: x,
                     },
                 };
                 (P && (T.language = P), g && (T.script = g), f && (T.variant = f));
                 for (var I = c.stringToGlyphs(e, 0, 0, m, T), F = I.length - 1, R = 0; R < F; R++) {
                     var D = I[R],
-                        k = c.getGlyphBoundingRect(m, D.glyph, !0);
+                        k = c.getGlyphBoundingRect(m, D.glyph, true);
                     l.descent = Math.max(l.descent, k.getY() + k.getHeight());
                     var G = k.getWidth() * k.getHeight();
                     0 !== G &&
@@ -92,5 +92,5 @@ module.exports = function (e, t, i) {
                     l
                 );
             }
-            ((a.fontManager = null), (e.exports = a));
+            ((a.fontManager = null), (module.exports = a));
         };

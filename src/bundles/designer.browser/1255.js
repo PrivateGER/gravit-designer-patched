@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(20), n(34));
-        var i = o(n(78)),
-            a = o(n(86)),
-            r = o(n(449)),
-            s = o(n(85)),
-            l = o(n(237)),
-            c = n(1);
-        e.exports = class {
+        var o = require(16);
+        (require(20), require(34));
+        var i = o(require(78)),
+            a = o(require(86)),
+            r = o(require(449 /* GFitAllAction */)),
+            s = o(require(85)),
+            l = o(require(237 /* GDocument */)),
+            GObject = require(1);
+        module.exports = class {
             static handleOpenFileRequest(e, t) {
                 gContainer.openStorageFile(e, t, function (n) {
                     let o = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
@@ -19,7 +19,7 @@ module.exports = function (e, t, n) {
                                 let e = t.document.getStatus();
                                 (e === a.default.LoadFailed ||
                                     e === a.default.LoadCancelled ||
-                                    gDesigner.executeAction(r.default.ID, void 0, void 0, !0),
+                                    gDesigner.executeAction(r.default.ID, void 0, void 0, true),
                                     gDesigner.removeEventListener(i.default, n));
                             }
                         };
@@ -29,19 +29,19 @@ module.exports = function (e, t, n) {
                         ) {
                             if (
                                 (e.setStorageItem(t),
-                                e.setIsShared(!0),
+                                e.setIsShared(true),
                                 e.load(null, o && o.loadingData),
                                 gDesigner.trigger(new i.default(i.default.Type.Modified, e)),
                                 d === s.default.OpenFileRequest.Type.Template)
                             ) {
-                                e.setDocumentFromTemplate(!0);
+                                e.setDocumentFromTemplate(true);
                                 let t = o.category,
                                     n = t && t.split(".");
                                 n.length > 1 && (t = n.splice(1).join("."));
                                 let i = t.toLowerCase().replace(/\./g, "-");
                                 gDesigner.stats("directlink_template_".concat(i), "".concat(o.file.name, " [").concat(o.content.id, "]"));
                             } else if (d === s.default.OpenFileRequest.Type.Preset) {
-                                e.setDocumentFromTemplate(!0);
+                                e.setDocumentFromTemplate(true);
                                 let t = o.preset.presetCategory
                                     .toLowerCase()
                                     .replace(/[\t-\r \/\xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]/g, "-");
@@ -53,17 +53,17 @@ module.exports = function (e, t, n) {
                                 s = t.presetCategory
                                     .toLowerCase()
                                     .replace(/[\t-\r \/\xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]/g, "-");
-                            (n.setProperties(["ut", "dpi"], [o, i || c.GLength.DPI]),
+                            (n.setProperties(["ut", "dpi"], [o, i || GObject.GLength.DPI]),
                                 n
                                     .getActivePage()
                                     .setProperties(
                                         ["bck", "w", "h"],
-                                        [c.GRGBColor.WHITE, new c.GLength(a, o).toPoint(), new c.GLength(r, o).toPoint()]
+                                        [GObject.GRGBColor.WHITE, new GObject.GLength(a, o).toPoint(), new GObject.GLength(r, o).toPoint()]
                                     ),
                                 e.setTitle(t.presetLayout.id),
                                 e.setScene(n),
-                                e.setDocumentFromTemplate(!0),
-                                e.setIsShared(!0),
+                                e.setDocumentFromTemplate(true),
+                                e.setIsShared(true),
                                 gDesigner.stats("directlink_preset_".concat(s), t.presetLayout.name));
                         }
                     }

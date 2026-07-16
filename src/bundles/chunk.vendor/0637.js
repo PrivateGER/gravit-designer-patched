@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(261);
+module.exports = function (module, exports, require) {
+            var n = require(261);
 
             function r(e, t) {
                 ((this._name = n.getName(e)), (this._key = t));
@@ -10,5 +10,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.getKey = function () {
                     return this._key;
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

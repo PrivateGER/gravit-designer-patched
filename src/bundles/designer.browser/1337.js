@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o() {}
-        (n(4),
-            n(13),
+        (require(4),
+            require(13),
             (o.Orientation = { Vertical: "vertical", Horizontal: "horizontal" }),
             (function (e) {
                 const t = {
@@ -40,7 +40,7 @@ module.exports = function (e, t, n) {
                                           .append(e("<span/>").addClass("gravit-icon-touch-arrow-down"))
                                           .on("click", () => {
                                               const e = o.hasClass("expanded");
-                                              (t._toggleTransitions.call(i, !0),
+                                              (t._toggleTransitions.call(i, true),
                                                   t._toggleVisibilty.call(i, !e),
                                                   o.trigger("visibilitychanged", [!e]));
                                           })
@@ -51,18 +51,18 @@ module.exports = function (e, t, n) {
                                           .append(e("<span/>").addClass("gravit-icon-touch-arrow-left"))
                                           .on("click", () => {
                                               const e = o.hasClass("expanded");
-                                              (t._toggleTransitions.call(i, !0),
-                                                  t._toggleVisibilty.call(i, !e, !0),
+                                              (t._toggleTransitions.call(i, true),
+                                                  t._toggleVisibilty.call(i, !e, true),
                                                   o.trigger("visibilitychanged", [!e]));
                                           })
                                   );
                         });
                     },
                     collapse: function () {
-                        return t._toggleVisibilty.call(this, !1);
+                        return t._toggleVisibilty.call(this, false);
                     },
                     expand: function () {
-                        return t._toggleVisibilty.call(this, !0);
+                        return t._toggleVisibilty.call(this, true);
                     },
                 };
                 e.fn.gCollapsible = function (n) {
@@ -73,5 +73,5 @@ module.exports = function (e, t, n) {
                           : t.init.apply(this, arguments);
                 };
             })(jQuery),
-            (e.exports = o));
+            (module.exports = o));
     };

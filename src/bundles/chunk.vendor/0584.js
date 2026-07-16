@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(19), i(4), i(13), i(26));
-            const { Events: n, EventProperties: r, UserProperties: o } = i(431),
-                a = i(979);
-            e.exports = class {
+            (require(19), require(4), require(13), require(26));
+            const { Events: n, EventProperties: r, UserProperties: o } = require(431),
+                a = require(979);
+            module.exports = class {
                 constructor(e) {
                     let { userId: t, apiKey: i } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                     ((this._userId = t), (this._amplitude = e), i && this.init(i));

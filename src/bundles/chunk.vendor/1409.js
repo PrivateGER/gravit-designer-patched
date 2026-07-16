@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(293),
-                o = i(197),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(293),
+                o = require(197),
                 a = function (e) {
                     if ((o.call(this), null != e.opacity && null != e.operation)) {
                         var t = Math.min(1, e.opacity);
@@ -18,7 +18,7 @@ module.exports = function (e, t, i) {
                         e.type && this.put("/Type", "/" + e.type),
                         (this._origin = e.origin && !e.origin.isIdentity() ? e.origin : null));
                 };
-            (n.inherit(a, o),
+            (IsFiniteNonNegativeNumber.inherit(a, o),
                 (a.BlendMode = {
                     NORMAL: "Normal",
                     MULTIPLY: "Multiply",
@@ -37,5 +37,5 @@ module.exports = function (e, t, i) {
                     COLOR: "Color",
                     LUMINOSITY: "Luminosity",
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

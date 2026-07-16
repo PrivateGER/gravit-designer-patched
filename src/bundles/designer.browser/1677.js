@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var { ipcRenderer: o } = n(881);
-        const i = n(1349);
+        require(3);
+        var { ipcRenderer: o } = require(881);
+        const i = require(1349);
         function a() {}
         ((a.prototype.installUpdate = function () {
             (console.info(this.toString() + " Firing install update"), o.send(i.CommandInstallUpdate));
@@ -19,5 +19,5 @@ module.exports = function (e, t, n) {
             (a.prototype.toString = function () {
                 return "[Object GElectronUpdateServiceClient]";
             }),
-            (e.exports = new a()));
+            (module.exports = new a()));
     };

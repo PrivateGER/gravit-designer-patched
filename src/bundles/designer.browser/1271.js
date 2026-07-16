@@ -1,21 +1,21 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(57), n(3), n(4), n(13));
-        var o = n(1),
-            i = n(53),
-            a = n(67),
-            r = n(123),
-            s = (n(173), n(135));
+        (require(57), require(3), require(4), require(13));
+        var GObject = require(1),
+            i = require(53),
+            a = require(67),
+            r = require(123),
+            s = (require(173), require(135));
         function l() {
             this._rectangles = [];
         }
-        (o.GObject.inherit(l, r),
+        (GObject.GObject.inherit(l, r),
             (l.prototype._panel = null),
             (l.prototype._advancedPanel = null),
             (l.prototype._document = null),
             (l.prototype._rectangles = null),
             (l.prototype.isGroup = function (e) {
-                return !0;
+                return true;
             }),
             (l.prototype.init = function (e, t) {
                 this._panel = e;
@@ -114,11 +114,11 @@ module.exports = function (e, t, n) {
                                         min: 0,
                                         max: 100,
                                         richTooltipConfig: a.GRichTooltipConfig.from({
-                                            title: o.GLocale.get(
-                                                new o.GLocaleKey("GCommonNames", "text.corner-radius-slider-tooltip-title")
+                                            title: GObject.GLocale.get(
+                                                new GObject.GLocaleKey("GCommonNames", "text.corner-radius-slider-tooltip-title")
                                             ),
-                                            description: o.GLocale.get(
-                                                new o.GLocaleKey("GCommonNames", "text.corner-radius-slider-tooltip-description")
+                                            description: GObject.GLocale.get(
+                                                new GObject.GLocaleKey("GCommonNames", "text.corner-radius-slider-tooltip-description")
                                             ),
                                             learnMore:
                                                 "/docs/basics/shapes-paths/#advanced-corner-settings",
@@ -131,10 +131,10 @@ module.exports = function (e, t, n) {
                                             }));
                                     })
                                     .on("input", function () {
-                                        var e = n._assignCorners(parseInt($(this).gInputSlider("value")) / 100, void 0, !0),
+                                        var e = n._assignCorners(parseInt($(this).gInputSlider("value")) / 100, void 0, true),
                                             t = n._document.getScene().getProperty("ut"),
                                             a =
-                                                (t == o.GLength.Unit.PX || t == o.GLength.Unit.PT) &&
+                                                (t == GObject.GLength.Unit.PX || t == GObject.GLength.Unit.PT) &&
                                                 i.GGuides.options.guides &&
                                                 i.GGuides.options.guides.indexOf(i.GFullPixelsGuide.ID) >= 0
                                                     ? 0
@@ -145,7 +145,7 @@ module.exports = function (e, t, n) {
                                     })
                                     .on("change", function () {
                                         (gDesigner.stats("rectangleproperties_input_corners-radius"),
-                                            n._assignCorners(parseInt($(this).gInputSlider("value")) / 100, void 0, !1));
+                                            n._assignCorners(parseInt($(this).gInputSlider("value")) / 100, void 0, false));
                                     });
                             if ("corners-radius-input" === e)
                                 return $("<input>")
@@ -156,27 +156,27 @@ module.exports = function (e, t, n) {
                                         gDesigner.stats("rectangleproperties_slide_corners-radius");
                                         var e = n._document.getScene().stringToPoint($(this).gInputBox("value"));
                                         null !== e && "number" == typeof e && e >= 0
-                                            ? n._assignProperties(["uf", "tl_sx"], [!0, e])
+                                            ? n._assignProperties(["uf", "tl_sx"], [true, e])
                                             : n._updateProperties();
                                     })
                                     .gInputBox({ minValue: 0 });
                             throw new Error("Unknown input property: " + e);
                         }
                     }.bind(this),
-                    s = o.GLocale.get(new o.GLocaleKey("GRectangleProperties", "text.uniform-corner-smoothness")),
-                    l = o.GLocale.get(new o.GLocaleKey("GRectangleProperties", "text.horizontal-corner-smoothness")),
-                    c = o.GLocale.get(new o.GLocaleKey("GRectangleProperties", "text.vertical-corner-smoothness")),
-                    d = o.GLocale.get(new o.GLocaleKey("GRectangleProperties", "text.corner-type"));
+                    s = GObject.GLocale.get(new GObject.GLocaleKey("GRectangleProperties", "text.uniform-corner-smoothness")),
+                    l = GObject.GLocale.get(new GObject.GLocaleKey("GRectangleProperties", "text.horizontal-corner-smoothness")),
+                    c = GObject.GLocale.get(new GObject.GLocaleKey("GRectangleProperties", "text.vertical-corner-smoothness")),
+                    d = GObject.GLocale.get(new GObject.GLocaleKey("GRectangleProperties", "text.corner-type"));
                 ((this._advancedPanel = $("<div></div>")
                     .addClass("advanced-panel-wrapper")
                     .addClass("rectangle-properties")
-                    .gOverlay({ releaseOnClose: !1, clazz: "advanced-overlay" })
+                    .gOverlay({ releaseOnClose: false, clazz: "advanced-overlay" })
                     .append(
                         $("<div/>")
                             .css("margin-bottom", "10px")
                             .attr("data-property", "corners-type")
                             .addClass("corner-type")
-                            .gCornerTypePicker({ notOverlay: !0 })
+                            .gCornerTypePicker({ notOverlay: true })
                             .on("cornertypechange", function (e, t) {
                                 n._assignCorners(void 0, t);
                             })
@@ -185,14 +185,14 @@ module.exports = function (e, t, n) {
                         $("<label></label>")
                             .addClass("g-checkbox-label")
                             .append(r("csc"))
-                            .append($("<span></span>").text(o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.autoscale-corners"))))
+                            .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.autoscale-corners"))))
                     )
                     .append(
                         $("<label></label>")
                             .addClass("g-checkbox-label")
                             .append(r("uf"))
                             .append(
-                                $("<span></span>").text(o.GLocale.get(new o.GLocaleKey("GRectangleProperties", "text.uniform-corners")))
+                                $("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GRectangleProperties", "text.uniform-corners")))
                             )
                     )
                     .append(
@@ -233,7 +233,7 @@ module.exports = function (e, t, n) {
                     )),
                     $("<div></div>")
                         .gPropertyRow({
-                            label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.corner")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.corner")),
                             columns: [
                                 {
                                     width: "auto",
@@ -249,7 +249,7 @@ module.exports = function (e, t, n) {
                                 {
                                     clazz: "advanced-settings-col",
                                     content: $("<div></div>")
-                                        .attr("data-title", o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.advanced-settings")))
+                                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.advanced-settings")))
                                         .addClass("g-button g-icon g-advanced-setting")
                                         .css({ display: "flex", justifyContent: "center" })
                                         .append(
@@ -280,25 +280,25 @@ module.exports = function (e, t, n) {
             (l.prototype.update = function (e, t) {
                 if (
                     (this._document &&
-                        (this._document.getScene().removeEventListener(o.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
+                        (this._document.getScene().removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
                         gDesigner.removeEventListener(s, this._settingChanged),
                         (this._document = null)),
                     (this._rectangles = []),
                     e)
                 ) {
-                    for (var n = 0; n < t.length; ++n) t[n] instanceof o.GRectangle && this._rectangles.push(t[n]);
+                    for (var n = 0; n < t.length; ++n) t[n] instanceof GObject.GRectangle && this._rectangles.push(t[n]);
                     if (this._rectangles.length && this._rectangles.length === t.length)
                         return (
                             (this._document = e),
                             this._document
                                 .getScene()
-                                .addEventListener(o.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                                .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                             gDesigner.addEventListener(s, this._settingChanged, this),
                             this._updateProperties(),
-                            !0
+                            true
                         );
                 }
-                return !1;
+                return false;
             }),
             (l.prototype._afterPropertiesChange = function (e) {
                 !e.temporary && this._rectangles.length > 0 && this._rectangles[0] === e.node && this._updateProperties();
@@ -321,7 +321,7 @@ module.exports = function (e, t, n) {
                     var c = (t / (e.getPointsMinDistance() / 2)) * 100,
                         d = this._document.getScene().getProperty("ut"),
                         u =
-                            (d == o.GLength.Unit.PX || d == o.GLength.Unit.PT) &&
+                            (d == GObject.GLength.Unit.PX || d == GObject.GLength.Unit.PT) &&
                             i.GGuides.options.guides &&
                             i.GGuides.options.guides.indexOf(i.GFullPixelsGuide.ID) >= 0
                                 ? 0
@@ -331,7 +331,7 @@ module.exports = function (e, t, n) {
                         s.gCornerTypePicker("value", e.getProperty("tl_ct")),
                         this._advancedPanel
                             .find('input[data-property="csc"]')
-                            .prop("disabled", l || e instanceof o.GImage)
+                            .prop("disabled", l || e instanceof GObject.GImage)
                             .prop("checked", !!e.getProperty("csc")));
                     var p = e.getProperty("uf");
                     if ((this._advancedPanel.find('input[data-property="uf"]').prop("checked", p), p))
@@ -348,8 +348,8 @@ module.exports = function (e, t, n) {
                                     (a.val(this._document.getScene().pointToString(e.getProperty(o + "_sx"), u)),
                                         r.val(this._document.getScene().pointToString(e.getProperty(o + "_sy"), u)),
                                         e.getProperty(o + "_uf")
-                                            ? (i.addClass("g-active"), r.prop("disabled", !0))
-                                            : (i.removeClass("g-active"), r.prop("disabled", !1)),
+                                            ? (i.addClass("g-active"), r.prop("disabled", true))
+                                            : (i.removeClass("g-active"), r.prop("disabled", false)),
                                         i.prop("disabled", p),
                                         s.gCornerTypePicker("value", e.getProperty(o + "_ct")));
                                 }
@@ -370,13 +370,13 @@ module.exports = function (e, t, n) {
                             }
                             ("string" == typeof t && (s = t),
                                 0 === a && (i = r),
-                                this._rectangles[a].setProperties(["uf", "tl_sx", "tl_ct"], [!0, r, s], !1, !1, n));
+                                this._rectangles[a].setProperties(["uf", "tl_sx", "tl_ct"], [true, r, s], false, false, n));
                         }
                 } finally {
                     n ||
                         this._document
                             .getEditor()
-                            .commitTransaction(o.GLocale.get(new o.GLocaleKey("GCommonNames", "action.change-corners")));
+                            .commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.change-corners")));
                 }
                 return i;
             }),
@@ -389,11 +389,11 @@ module.exports = function (e, t, n) {
                 try {
                     for (var i = 0; i < this._rectangles.length; ++i) this._rectangles[i].setProperties(e, t);
                 } finally {
-                    n.commitTransaction(o.GLocale.get(new o.GLocaleKey("GRectangleProperties", "action.modify-rectangle-properties")));
+                    n.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GRectangleProperties", "action.modify-rectangle-properties")));
                 }
             }),
             (l.prototype.toString = function () {
                 return "[Object GRectangleProperties]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

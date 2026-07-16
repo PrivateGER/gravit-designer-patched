@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(0),
-                o = i(228),
-                a = i(133),
-                s = i(1219),
-                l = i(1445);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(228),
+                GScenePaintConfiguration = require(133),
+                s = require(1219),
+                l = require(1445);
 
             function h(e) {
                 ((this._context2d = e),
@@ -20,26 +20,26 @@ module.exports = function (e, t, i) {
 
             function A() {
                 Object.assign(this, {
-                    paintMode: a.PaintMode.Full,
-                    ignoreEffects: !0,
-                    annotations: !1,
-                    enableFxCache: !1,
+                    paintMode: GScenePaintConfiguration.PaintMode.Full,
+                    ignoreEffects: true,
+                    annotations: false,
+                    enableFxCache: false,
                     defaultEffectDetailLevel: 1,
-                    sceneBackground: !0,
-                    multiPageView: !1,
-                    thumbnails: !1,
+                    sceneBackground: true,
+                    multiPageView: false,
+                    thumbnails: false,
                     isOutline: function () {
-                        return !1;
+                        return false;
                     },
                     isClipToPage: function () {
-                        return !1;
+                        return false;
                     },
                     isSlicesVisible: function () {
-                        return !1;
+                        return false;
                     },
                 });
             }
-            (r.inherit(h, o),
+            (IsFiniteNonNegativeNumber.inherit(h, o),
                 (A.prototype.isAnnotationsVisible = function (e) {
                     return !!this.annotations;
                 }),
@@ -59,5 +59,5 @@ module.exports = function (e, t, i) {
                 (h.prototype.toString = function () {
                     return "[Object GPDFPaintContext]";
                 }),
-                (e.exports = h));
+                (module.exports = h));
         };

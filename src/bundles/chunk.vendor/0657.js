@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(17),
-                o = i(513),
-                a = i(5),
-                s = i(569),
-                l = i(14),
-                h = i(45),
-                A = i(12);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(17),
+                o = require(513),
+                a = require(5),
+                s = require(569),
+                l = require(14),
+                h = require(45),
+                A = require(12);
 
             function c() {
                 (s.call(this),
@@ -58,19 +58,19 @@ module.exports = function (e, t, i) {
                     this._data = e;
                 }),
                 (c.prototype.removeEdge = function (e) {
-                    for (var t = !1, i = 0; i < this._outEdges.length && !t; ++i)
-                        this._outEdges[i].getId().isEqual(e.getId()) && (this._outEdges.splice(i, 1), (t = !0));
+                    for (var t = false, i = 0; i < this._outEdges.length && !t; ++i)
+                        this._outEdges[i].getId().isEqual(e.getId()) && (this._outEdges.splice(i, 1), (t = true));
                     for (i = 0; i < this._inEdges.length && !t; ++i)
-                        this._inEdges[i].getId().isEqual(e.getId()) && (this._inEdges.splice(i, 1), (t = !0));
+                        this._inEdges[i].getId().isEqual(e.getId()) && (this._inEdges.splice(i, 1), (t = true));
                     this.orderEdges();
                 }),
                 (c.prototype.removeOutEdge = function (e) {
-                    for (var t = !1, i = 0; i < this._outEdges.length && !t; ++i)
-                        this._outEdges[i].getId().isEqual(e.getId()) && (this._outEdges.splice(i, 1), this.orderEdges(), (t = !0));
+                    for (var t = false, i = 0; i < this._outEdges.length && !t; ++i)
+                        this._outEdges[i].getId().isEqual(e.getId()) && (this._outEdges.splice(i, 1), this.orderEdges(), (t = true));
                 }),
                 (c.prototype.removeInEdge = function (e) {
-                    for (var t = !1, i = 0; i < this._inEdges.length && !t; ++i)
-                        this._inEdges[i].getId().isEqual(e.getId()) && (this._inEdges.splice(i, 1), this.orderEdges(), (t = !0));
+                    for (var t = false, i = 0; i < this._inEdges.length && !t; ++i)
+                        this._inEdges[i].getId().isEqual(e.getId()) && (this._inEdges.splice(i, 1), this.orderEdges(), (t = true));
                 }),
                 (c.prototype.orderEdges = function () {
                     var e;
@@ -129,8 +129,8 @@ module.exports = function (e, t, i) {
                         for (
                             var a = function (e) {
                                     return (
-                                        (o && e.getProperty("cSt", !1, null, !0) && e.hasSameStyle(o)) ||
-                                        (!o && !e.getProperty("cSt", !1, null, !0) && e.hasStyleBorder())
+                                        (o && e.getProperty("cSt", false, null, true) && e.hasSameStyle(o)) ||
+                                        (!o && !e.getProperty("cSt", false, null, true) && e.hasStyleBorder())
                                     );
                                 },
                                 s = 0,
@@ -161,8 +161,8 @@ module.exports = function (e, t, i) {
                                         var _ = d.getAngle(),
                                             v = m.getAngle();
                                         if ((_ > v && (v += A.PI2), v - _ > Math.PI || 2 == s)) {
-                                            var b = d.type == c.EdgeType.Out ? g.getFirstSegment(!0, 0.01) : g.getLastSegment(null, 0.01),
-                                                C = (m.type == c.EdgeType.Out ? y.getFirstSegment(null, 0.01) : y.getLastSegment(!0, 0.01))
+                                            var b = d.type == c.EdgeType.Out ? g.getFirstSegment(true, 0.01) : g.getLastSegment(null, 0.01),
+                                                C = (m.type == c.EdgeType.Out ? y.getFirstSegment(null, 0.01) : y.getLastSegment(true, 0.01))
                                                     .getAnchorPoints()
                                                     .getFirstChild();
                                             b.getAnchorPoints()
@@ -230,5 +230,5 @@ module.exports = function (e, t, i) {
                 (c.prototype.toString = function () {
                     return "[Object GPGAnchor]";
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

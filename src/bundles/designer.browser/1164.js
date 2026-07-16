@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        const o = n(11);
-        e.exports = class {
+        require(8 /* Symbol */);
+        const o = require(11);
+        module.exports = class {
             constructor(e, t) {
                 ((this._worker = e), (this._user = t));
             }

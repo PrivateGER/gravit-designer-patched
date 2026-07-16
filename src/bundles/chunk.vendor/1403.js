@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
-            (i(11), i(83), i(70), i(17), i(281), i(108));
-            var n = i(47),
-                r = i(9),
-                o = (i(122), i(1404));
+module.exports = function (module, exports, require) {
+            (require(11), require(83), require(70), require(17), require(281), require(108 /* GFont */));
+            var n = require(47),
+                String = require(9),
+                o = (require(122), require(1404));
 
             function a() {}
             ((a.import = function (e, t, i, s, l, h, A) {
@@ -25,9 +25,9 @@ module.exports = function (e, t, i) {
                         ((function (e, t) {
                             try {
                                 var i = new URL(e);
-                                if (!i.origin || "null" === i.origin) return !1;
+                                if (!i.origin || "null" === i.origin) return false;
                             } catch (e) {
-                                return !1;
+                                return false;
                             }
                             var n = new URL(t, i);
                             return i.origin === n.origin;
@@ -76,14 +76,14 @@ module.exports = function (e, t, i) {
                                 A(function () {
                                     (null !== f && clearTimeout(f),
                                         g.terminate(),
-                                        l && l(r.get(new n("GEPSParser", o.ErrorCodes.Canceled))));
+                                        l && l(String.get(new n("GEPSParser", o.ErrorCodes.Canceled))));
                                 }),
                             g.postMessage({
                                 func: "init",
                                 data: [
                                     p,
                                     {
-                                        gDevelopment: !1,
+                                        gDevelopment: false,
                                         maxWaitTime: 3e5,
                                         outlineFonts: !!t,
                                     },
@@ -103,5 +103,5 @@ module.exports = function (e, t, i) {
                 }
                 var m, y;
             }),
-                (e.exports = a));
+                (module.exports = a));
         };

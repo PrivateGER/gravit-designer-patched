@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(792).TilingPattern;
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(792 /* GlobalWorkerOptions */).TilingPattern;
 
             function o() {
                 r.apply(this, arguments);
             }
-            (n.inherit(o, r), (o.prototype.clipBbox = function (e, t, i, n, r, o) {}), (e.exports = o));
+            (IsFiniteNonNegativeNumber.inherit(o, r), (o.prototype.clipBbox = function (e, t, i, n, r, o) {}), (module.exports = o));
         };

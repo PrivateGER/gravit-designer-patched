@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(46);
-        e.exports = function (e) {
+        var o = require(46);
+        module.exports = function (e) {
             return o(e) || null === e;
         };
     };

@@ -1,21 +1,21 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(4), n(32), n(33));
-        var o = n(1),
-            i = n(15);
-        e.exports = class {
+        (require(4), require(32), require(33));
+        var GObject = require(1),
+            GPlatform = require(15);
+        module.exports = class {
             constructor() {
                 ((this._dialog = this._createDialog()),
                     this._dialog.append(this._createCloseButton(), this._getTitle(), this._getContent()));
             }
             open() {
-                this._dialog.gDialog("open", !0);
+                this._dialog.gDialog("open", true);
             }
             close() {
                 this._dialog.gDialog("close");
             }
             _getTitle() {
-                const e = o.GLocale.getValue("GShortcutsDialog", "text.title");
+                const e = GObject.GLocale.getValue("GShortcutsDialog", "text.title");
                 return $("<div />").addClass("title").text(e);
             }
             _getContent() {
@@ -24,17 +24,17 @@ module.exports = function (e, t, n) {
                 return (
                     gDesigner.getActions().forEach((e) => {
                         if (!e.isAvailable()) return;
-                        const n = e.getShortcutHint({ isWordMode: !0 });
+                        const n = e.getShortcutHint({ isWordMode: true });
                         if (n) {
-                            const i = o.GLocale.get(e.getFullTitle());
+                            const i = GObject.GLocale.get(e.getFullTitle());
                             this._createTableRow(i, n).appendTo(t);
                         }
                     }),
                     gravit.tools.forEach((e) => {
                         if (e.key) {
-                            const n = i.GKey.shortcutToString(e.key);
+                            const n = GPlatform.GKey.shortcutToString(e.key);
                             if (!n) return;
-                            const a = o.GLocale.get(e.richTooltipConfig.getConfig().title);
+                            const a = GObject.GLocale.get(e.richTooltipConfig.getConfig().title);
                             this._createTableRow(a, n).appendTo(t);
                         }
                     }),
@@ -43,7 +43,7 @@ module.exports = function (e, t, n) {
             }
             _createDialog() {
                 return $("<div/>").gDialog({
-                    releaseOnClose: !0,
+                    releaseOnClose: true,
                     className: "g-shortcuts-dialog",
                 });
             }

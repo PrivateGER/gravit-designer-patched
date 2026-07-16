@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(328), n(57), n(8), n(20), n(34), n(134), n(4), n(41), n(13), n(38));
-        var o = n(1),
-            i = n(381);
-        const { parseNativeFonts: a, getLocalFontsData: r, getFontFamily: s } = n(1200);
+        (require(328), require(57), require(8 /* Symbol */), require(20), require(34), require(134), require(4), require(41), require(13), require(38));
+        var GObject = require(1),
+            i = require(381);
+        const { parseNativeFonts: a, getLocalFontsData: r, getFontFamily: s } = require(1200);
         function l(e) {
             i.call(this, e);
         }
-        o.GObject.inherit(l, i);
-        var c = o.GUtil.uuid();
+        GObject.GObject.inherit(l, i);
+        var c = GObject.GUtil.uuid();
         ((l.VERSION = 1),
             (l.prototype._totalFonts = 0),
             (l.prototype._fontList = []),
@@ -21,7 +21,7 @@ module.exports = function (e, t, n) {
                                 var t = document.createElement("div");
                                 ((t.innerHTML = this.displayname || this.family),
                                     (t.style.fontFamily = this.family),
-                                    (t.style.fontStyle = this.style === o.GFont.Style.Italic ? "italic" : "normal"),
+                                    (t.style.fontStyle = this.style === GObject.GFont.Style.Italic ? "italic" : "normal"),
                                     (t.style.fontWeight = this.weight),
                                     (t.style.fontSize = "13px"),
                                     (t.style.height = "20px"),
@@ -43,7 +43,7 @@ module.exports = function (e, t, n) {
                 this._fontList = [];
             }),
             (l.prototype.resolveFont = function (e, t, n, i) {
-                ((n = parseInt(n) || 400), (t = t || o.GFont.Style.Normal));
+                ((n = parseInt(n) || 400), (t = t || GObject.GFont.Style.Normal));
                 const a = "".concat(e, "_").concat(t, "_").concat(n);
                 return this._cachedParsedFonts[a]
                     ? i.done(this._cachedParsedFonts["".concat(e, "_").concat(t, "_").concat(n)].blob)
@@ -79,7 +79,7 @@ module.exports = function (e, t, n) {
                 o.fail();
             }),
             (l.prototype._createLocalFontList = function (e, t, n, o) {
-                if (this._fontList && this._fontList.length > 0) return o.done(this._getFilteredFontsList.call(this, e, t, n), !0, null);
+                if (this._fontList && this._fontList.length > 0) return o.done(this._getFilteredFontsList.call(this, e, t, n), true, null);
                 this._createLocalFontListPromise
                     ? this._createLocalFontListCallbacks.push(o)
                     : ((this._createLocalFontListCallbacks = [o]),
@@ -92,7 +92,7 @@ module.exports = function (e, t, n) {
                                       let { family: n } = t;
                                       return n === e.family;
                                   });
-                              -1 === i ? n.push({ family: e.family, fonts: [e], isLocalFont: !0 }) : n[i].fonts.push(e);
+                              -1 === i ? n.push({ family: e.family, fonts: [e], isLocalFont: true }) : n[i].fonts.push(e);
                           }
                           ((this._fontList = n.sort((e, t) => {
                               let { family: n } = e,
@@ -104,7 +104,7 @@ module.exports = function (e, t, n) {
                       this._createLocalFontListPromise.then(() => {
                           (this._createLocalFontListCallbacks.map((o) => {
                               let { done: i } = o;
-                              (i(this._getFilteredFontsList.call(this, e, t, n), !0, null),
+                              (i(this._getFilteredFontsList.call(this, e, t, n), true, null),
                                   (this._createLocalFontListPromise = null),
                                   (this._createLocalFontListCallbacks = null));
                           }),
@@ -131,5 +131,5 @@ module.exports = function (e, t, n) {
             (l.prototype.getProviderId = function () {
                 return c;
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        e.exports = {
+        module.exports = {
             Z_NO_FLUSH: 0,
             Z_PARTIAL_FLUSH: 1,
             Z_SYNC_FLUSH: 2,

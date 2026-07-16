@@ -1,26 +1,26 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = (n(15), n(67)),
-            a = n(18),
-            r = n(31),
-            s = n(1245);
+        require(3);
+        var GObject = require(1),
+            i = (require(15 /* GPlatform */), require(67)),
+            GCategory = require(18),
+            r = require(31),
+            s = require(1245);
         function l() {
             l.TOOLTIP_CONFIG = {
                 [i.TOOLTIP_AREA.MAIN_MENU.TRY_PRO_COMMON]: i.GRichTooltipConfig.from({
-                    title: o.GLocale.get(new o.GLocaleKey("GImportFontsAction", "text.try-this-feature-pro-tooltip-title")),
-                    description: o.GLocale.get(new o.GLocaleKey("GImportFontsAction", "text.try-this-feature-pro-tooltip-description")),
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GImportFontsAction", "text.try-this-feature-pro-tooltip-title")),
+                    description: GObject.GLocale.get(new GObject.GLocaleKey("GImportFontsAction", "text.try-this-feature-pro-tooltip-description")),
                     learnMore: "/docs/import-export/import/#import-fonts",
                     upgradeToProStatsValue: "font.import",
-                    middle: !1,
-                    side: !0,
+                    middle: false,
+                    side: true,
                 }),
             };
         }
-        (o.GObject.inherit(l, r),
+        (GObject.GObject.inherit(l, r),
             (l.ID = "font.import"),
-            (l.TITLE = new o.GLocaleKey("GImportFontsAction", "title")),
+            (l.TITLE = new GObject.GLocaleKey("GImportFontsAction", "title")),
             (l.TOOLTIP_CONFIG = null),
             (l.prototype.getId = function () {
                 return l.ID;
@@ -29,7 +29,7 @@ module.exports = function (e, t, n) {
                 return l.TITLE;
             }),
             (l.prototype.getCategory = function () {
-                return a.CATEGORY_FILE_IMPORT;
+                return GCategory.CATEGORY_FILE_IMPORT;
             }),
             (l.prototype.getGroup = function () {
                 return "import/import-fonts";
@@ -55,5 +55,5 @@ module.exports = function (e, t, n) {
             (l.prototype.toString = function () {
                 return "[Object GImportFontsAction]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

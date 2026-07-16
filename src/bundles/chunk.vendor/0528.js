@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
-            var n = i(48),
-                r = i(54),
-                o = i(5),
-                a = i(11);
+module.exports = function (module, exports, require) {
+            var n = require(48),
+                r = require(54),
+                o = require(5),
+                a = require(11);
 
             function s(e, t, i, n) {
                 (t && t.length && i && i.length
@@ -11,10 +11,10 @@ module.exports = function (e, t, i) {
                       this._initParametersFuncs(i),
                       this._parametersFuncs &&
                           this._parametersFuncs.length &&
-                          ((this._initAnnotationsList = a.extend(!0, [], t)), (this._initParametersList = a.extend(!0, [], i))))
+                          ((this._initAnnotationsList = a.extend(true, [], t)), (this._initParametersList = a.extend(true, [], i))))
                     : ((this._annotationsName = null), (this._annotationsFuncs = null), (this._parametersFuncs = null)),
                     this._initVertices(n),
-                    (this._initVerticesList = a.extend(!0, [], n)));
+                    (this._initVerticesList = a.extend(true, [], n)));
             }
             ((s.CoordType = {
                 Direct: 1,
@@ -227,5 +227,5 @@ module.exports = function (e, t, i) {
                     }
                     return r;
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

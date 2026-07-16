@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(366),
-                r = i(2),
-                o = i(142);
+module.exports = function (module, exports, require) {
+            var n = require(366),
+                r = require(2),
+                o = require(142);
 
             function a() {}
             ((a.Flag = {
                 Hidden: 1 << 21,
             }),
                 (a.MetaProperties = {
-                    vis: !0,
+                    vis: true,
                     name: null,
                     text: null,
                     img: null,
@@ -20,7 +20,7 @@ module.exports = function (e, t, i) {
                     loc: null,
                     typ: 0,
                     rsv: void 0,
-                    rmd: !1,
+                    rmd: false,
                     sid: null,
                     read: null,
                     asgn: null,
@@ -34,10 +34,10 @@ module.exports = function (e, t, i) {
                     return (
                         l.setProperties(
                             ["text", "uid", "time", "seq", "name", "img", "email", "type", "rmd"],
-                            [e, t, o.now(), h, i, r, a, s || n.Type.User, !0]
+                            [e, t, o.now(), h, i, r, a, s || n.Type.User, true]
                         ),
                         this.appendChild(l),
-                        l.setProperty("rmd", !1),
+                        l.setProperty("rmd", false),
                         l
                     );
                 }),
@@ -45,7 +45,7 @@ module.exports = function (e, t, i) {
                     return null !== this.$text;
                 }),
                 (a.prototype.isEmptyTextAllowed = function () {
-                    return !0;
+                    return true;
                 }),
                 (a.prototype.getNextAnnotationSequence = function () {
                     var e = 0;
@@ -53,7 +53,7 @@ module.exports = function (e, t, i) {
                 }),
                 (a.prototype.storeAction = function (e, t, i) {
                     if (e && e.options && e.options.copy) {
-                        if ("rsv" === t) return !1;
+                        if ("rsv" === t) return false;
                         if ("time" === t || "mtime" === t) return o.now();
                         if ("Guid" === t || "sid" === t) return null;
                     }
@@ -67,7 +67,7 @@ module.exports = function (e, t, i) {
                 (a.prototype.restoreAction = function (e, t, i) {
                     if (e && e.options && e.options.copy) {
                         if ("time" === t || "mtime" === t) return o.now();
-                        if ("rsv" === t) return !1;
+                        if ("rsv" === t) return false;
                         if ("Guid" === t || "sid" === t) return null;
                     }
                     return i;
@@ -110,6 +110,6 @@ module.exports = function (e, t, i) {
                 }),
                 (a.prototype.initDefaultForLimitedRestore = function () {}),
                 (a.prototype.initSizeAndPosition = function () {}),
-                i(914)(a),
-                (e.exports = a));
+                require(914)(a),
+                (module.exports = a));
         };

@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1);
-        const i = n(18),
-            a = n(31),
-            r = n(1589);
+        require(3);
+        var GObject = require(1);
+        const GCategory = require(18),
+            a = require(31),
+            r = require(1589);
         function s() {}
-        (o.GObject.inherit(s, a),
+        (GObject.GObject.inherit(s, a),
             (s.ID = "help.open-quick-help"),
-            (s.TITLE = new o.GLocaleKey("GOpenQuickHelpScreenAction", "title")),
+            (s.TITLE = new GObject.GLocaleKey("GOpenQuickHelpScreenAction", "title")),
             (s.prototype.getId = function () {
                 return s.ID;
             }),
@@ -16,13 +16,13 @@ module.exports = function (e, t, n) {
                 return s.TITLE;
             }),
             (s.prototype.getCategory = function () {
-                return i.CATEGORY_HELP;
+                return GCategory.CATEGORY_HELP;
             }),
             (s.prototype.getGroup = function () {
                 return "help";
             }),
             (s.prototype.isEnabled = function () {
-                return !0;
+                return true;
             }),
             (s.prototype.isVisible = function () {
                 return gDesigner.isTouchEnabled();
@@ -33,5 +33,5 @@ module.exports = function (e, t, n) {
             (s.prototype.toString = function () {
                 return "[Object GOpenQuickHelpScreenAction]";
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

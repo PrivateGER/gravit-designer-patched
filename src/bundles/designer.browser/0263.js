@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.default = t.GRegex = void 0));
-        const { NOTIFICATION_USER_MENTION_REGEX: o } = n(10),
-            i = (t.GRegex = {
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = exports.GRegex = void 0));
+        const { NOTIFICATION_USER_MENTION_REGEX: o } = require(10 /* designerConfig */),
+            i = (exports.GRegex = {
                 String: {
                     InParenthesis: { NotNegativeNumberInTheEnd: /\(\d+\)$/ },
                     SpacesLineBreak: /\s/,
@@ -21,5 +21,5 @@ module.exports = function (e, t, n) {
                 URLQuery: { NextParameter: /[?&]([^=#]+)=([^&#]*)/g },
                 NavigatorUserAgent: { IS_CHROME_OS: /CrO[S\u017F]/i },
             });
-        t.default = { String: i.String };
+        exports.default = { String: i.String };
     };

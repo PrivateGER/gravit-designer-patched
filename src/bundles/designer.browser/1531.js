@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(4), n(13), n(38));
-        var o = n(1);
-        const { FILE_FORMATS: i, gApi: a } = n(10),
+        (require(8 /* Symbol */), require(4), require(13), require(38));
+        var GObject = require(1);
+        const { FILE_FORMATS: i, gApi: a } = require(10 /* designerConfig */),
             r = i.find((e) => e.default),
-            { COMMAND_SAVE: s, COMMAND_SYNC_IMAGES: l } = n(591),
-            c = n(1164);
-        e.exports = class extends c {
+            { COMMAND_SAVE: s, COMMAND_SYNC_IMAGES: l } = require(591 /* COMMAND_SAVE */),
+            c = require(1164);
+        module.exports = class extends c {
             constructor(e, t) {
                 super(e, t);
             }
@@ -26,7 +26,7 @@ module.exports = function (e, t, n) {
                         r = [];
                     ((i = i.map((e) => (e.hasOwnProperty("cachedCanvas") && (e.cachedCanvas = null), e))),
                         t.acceptChildren((e) => {
-                            e instanceof o.GImage &&
+                            e instanceof GObject.GImage &&
                                 r.push({
                                     name: e.getProperty("name"),
                                     url: e.getProperty("url"),
@@ -43,19 +43,19 @@ module.exports = function (e, t, n) {
                         "message",
                         function (e) {
                             const { cmd: t, id: i, data: a } = e.data;
-                            if (t !== l.SUCCESS || i !== c) return !1;
+                            if (t !== l.SUCCESS || i !== c) return false;
                             let r = s.getDictionary();
                             s.setCloudSynchronization(null);
-                            let d = new o.GDictionary();
-                            return (d.deserialize(a), r.merge(d), n(), !0);
+                            let d = new GObject.GDictionary();
+                            return (d.deserialize(a), r.merge(d), n(), true);
                         }.bind(this),
-                        { once: !0 }
+                        { once: true }
                     );
                 });
             }
             _saveScene(e, t, n) {
                 return new Promise((i, a) => {
-                    let l = o.GNode.serialize(n, { save: !0 });
+                    let l = GObject.GNode.serialize(n, { save: true });
                     const c = Object.create(n),
                         d = this._request(s.REQUEST, {
                             id: e,
@@ -67,11 +67,11 @@ module.exports = function (e, t, n) {
                         "message",
                         function (e) {
                             const { cmd: t, id: n, data: o } = e.data;
-                            if ((t !== s.SUCCESS && t !== s.FAILED) || n !== d) return !1;
+                            if ((t !== s.SUCCESS && t !== s.FAILED) || n !== d) return false;
                             t === s.SUCCESS ? i({ sceneSnapshot: c, urls: o.urls }) : t === s.FAILED && a();
-                            return !0;
+                            return true;
                         }.bind(this),
-                        { once: !0 }
+                        { once: true }
                     );
                 });
             }

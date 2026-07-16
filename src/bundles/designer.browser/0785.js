@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(30), n(8));
-        e.exports = new (class {
+        (require(30), require(8 /* Symbol */));
+        module.exports = new (class {
             constructor() {
-                ((this._cache = {}), (this._initiliazed = !1));
+                ((this._cache = {}), (this._initiliazed = false));
             }
             updateLicense(e) {
                 e._offline || this._update({ license: e });
@@ -36,7 +36,7 @@ module.exports = function (e, t, n) {
                 return gContainer
                     .getProperty("offline_cache")
                     .then((e) => {
-                        ((this._cache = e || {}), (this._initiliazed = !0));
+                        ((this._cache = e || {}), (this._initiliazed = true));
                     })
                     .catch((e) => Promise.reject(e));
             }

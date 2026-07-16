@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(27),
-            a = n(244),
+        var o = require(25),
+            i = require(27),
+            a = require(244),
             r = RangeError,
             s = String.fromCharCode,
             l = String.fromCodePoint,
             c = i([].join);
         o(
-            { target: "String", stat: !0, arity: 1, forced: !!l && 1 !== l.length },
+            { target: "String", stat: true, arity: 1, forced: !!l && 1 !== l.length },
             {
                 fromCodePoint: function (e) {
                     for (var t, n = [], o = arguments.length, i = 0; o > i; ) {

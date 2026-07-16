@@ -1,26 +1,26 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(56),
-                o = i(54),
-                a = i(12),
-                s = i(45),
-                l = i(14),
-                h = i(59),
-                A = i(6),
-                c = i(5),
-                p = i(28),
-                u = i(11),
-                d = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(56),
+                o = require(54),
+                a = require(12),
+                s = require(45),
+                l = require(14),
+                h = require(59),
+                A = require(6),
+                c = require(5),
+                GStylable = require(28),
+                u = require(11),
+                String = require(9);
 
             function g(e, t, i) {
                 (s.call(this, t, i),
                     this._setDefaultProperties(g.GeometryProperties),
                     e && this.setProperty("closed", e),
-                    (this._paintSharp = !0));
+                    (this._paintSharp = true));
             }
             (n.inherit("path", g, s),
                 (g.GeometryProperties = {
-                    closed: !1,
+                    closed: false,
                 }),
                 (g.MetaProperties = {
                     rtxt: null,
@@ -37,7 +37,7 @@ module.exports = function (e, t, i) {
                     return t;
                 }),
                 (g.prototype.getNodeNameTranslated = function () {
-                    return d.getValue("GPath", "name", this.getNodeName());
+                    return String.getValue("GPath", "name", this.getNodeName());
                 }),
                 (g.prototype.assignFrom = function (e) {
                     (e instanceof g && this.transferProperties(e, [g.GeometryProperties]), s.prototype.assignFrom.call(this, e));
@@ -71,19 +71,19 @@ module.exports = function (e, t, i) {
                 }),
                 (g.prototype.getSegmentMiddle = function (e) {
                     var t = new o();
-                    return (this.getAnchorPoints()._generateVertices(t, this.$trf, !1), h.getSegmentPoint(t, e, 0.5));
+                    return (this.getAnchorPoints()._generateVertices(t, this.$trf, false), h.getSegmentPoint(t, e, 0.5));
                 }),
                 (g.prototype.isLine = function () {
                     var e = this.getAnchorPoints().getFirstChild();
-                    if (!e) return !1;
+                    if (!e) return false;
                     var t = e.getNext();
-                    if (!t) return !1;
-                    if (t.getNext()) return !1;
+                    if (!t) return false;
+                    if (t.getNext()) return false;
                     var i = e.getProperty("x"),
                         n = e.getProperty("y"),
                         r = e.getProperty("hrx"),
                         o = e.getProperty("hry");
-                    if (!(null == r || null == o || (a.isEqualEps(r, i) && a.isEqualEps(o, n)))) return !1;
+                    if (!(null == r || null == o || (a.isEqualEps(r, i) && a.isEqualEps(o, n)))) return false;
                     var s = t.getProperty("x"),
                         l = t.getProperty("y"),
                         h = t.getProperty("hlx"),
@@ -92,9 +92,9 @@ module.exports = function (e, t, i) {
                 }),
                 (g.prototype.isMultiPointsLine = function () {
                     var e = this.getAnchorPoints().getFirstChild();
-                    if (!e) return !1;
+                    if (!e) return false;
                     var t = e.getNext();
-                    if (!t) return !1;
+                    if (!t) return false;
                     if (!t.getNext()) return this.isLine();
                     var i,
                         n,
@@ -123,13 +123,13 @@ module.exports = function (e, t, i) {
                                 (a.isEqualEps(r, i) && a.isEqualEps(o, n) && a.isEqualEps(s, i) && a.isEqualEps(l, n))
                             ))
                         )
-                            return !1;
+                            return false;
                         if (h !== e && h !== t) {
                             var d = (n - p) * (c - A) - (i - A) * (u - p);
-                            if (!a.isEqualEps(d, 0)) return !1;
+                            if (!a.isEqualEps(d, 0)) return false;
                         }
                     } while ((h = h.getNext()));
-                    return !0;
+                    return true;
                 }),
                 (g.prototype.insertHitPoint = function (e) {
                     if (!e || !e.slope || a.isEqualEps(e.slope, 0) || a.isEqualEps(e.slope, 1)) return null;
@@ -138,7 +138,7 @@ module.exports = function (e, t, i) {
                     var r = n,
                         o = r ? this.getAnchorPoints().getNextPoint(r) : null;
                     if (r && o) {
-                        (this.beginUpdate(), r.setProperty("ah", !1), o.setProperty("ah", !1));
+                        (this.beginUpdate(), r.setProperty("ah", false), o.setProperty("ah", false));
                         var l,
                             h = r.getProperty("tp"),
                             A = o.getProperty("tp");
@@ -254,7 +254,7 @@ module.exports = function (e, t, i) {
                         (this.beginUpdate(),
                         e.setProperties(["hlx", "hly"], [t.getProperty("hlx"), t.getProperty("hly")]),
                         this.getAnchorPoints().removeChild(t),
-                        this.$closed || this.setProperty("closed", !0),
+                        this.$closed || this.setProperty("closed", true),
                         this.endUpdate());
                 }),
                 (g.prototype.getAngle = function () {
@@ -365,14 +365,14 @@ module.exports = function (e, t, i) {
                         r = i,
                         o = new A(i.getX(), i.getY(), i.getWidth(), i.getHeight());
                     if (this.hasStyleFill()) {
-                        var s = n.getEffectsBBox(i, p.StyleLayer.Fill, o);
+                        var s = n.getEffectsBBox(i, GStylable.StyleLayer.Fill, o);
                         r = r.united(s);
                     }
                     var h = null;
                     return (
                         this.hasStyleBorder() &&
                             u.each(
-                                this.getPaintLayers().getBorderLayers(!0),
+                                this.getPaintLayers().getBorderLayers(true),
                                 function (e, t) {
                                     var o = i,
                                         s = this.getStyleBorderPadding(t);
@@ -404,7 +404,7 @@ module.exports = function (e, t, i) {
                                             o = o.expanded(A, u, d, g);
                                         } else o = o.expanded(s, s, s, s);
                                     o = this._calculateMarkersBorderBBox(o, t);
-                                    var C = n.getEffectsBBox(o, p.StyleLayer.Border, o);
+                                    var C = n.getEffectsBBox(o, GStylable.StyleLayer.Border, o);
                                     ((r = r.united(C)), (h = h ? h.united(o) : o));
                                 }.bind(this)
                             ),
@@ -414,5 +414,5 @@ module.exports = function (e, t, i) {
                 (g.prototype.toString = function () {
                     return "[GPath]";
                 }),
-                (e.exports = g));
+                (module.exports = g));
         };

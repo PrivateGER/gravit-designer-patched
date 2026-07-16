@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.default = t.NoAccessId = t.CloudToGoogleRoleMap = void 0));
-        var i = n(10),
-            a = o(n(788));
-        const r = (t.NoAccessId = "NoAccess"),
-            s = (t.CloudToGoogleRoleMap = {
-                [i.ShareRoles.Viewer.id]: a.default.Reader,
-                [i.ShareRoles.Developer.id]: a.default.Commenter,
-                [i.ShareRoles.Reviewer.id]: a.default.Commenter,
-                [i.ShareRoles.CoAuthor.id]: a.default.Writer,
-                [i.ShareRoles.Owner.id]: a.default.Owner,
-                [i.ShareRoles.NoAccess.id]: r,
+        var o = require(16);
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = exports.NoAccessId = exports.CloudToGoogleRoleMap = void 0));
+        var designerConfig = require(10),
+            a = o(require(788));
+        const r = (exports.NoAccessId = "NoAccess"),
+            s = (exports.CloudToGoogleRoleMap = {
+                [designerConfig.ShareRoles.Viewer.id]: a.default.Reader,
+                [designerConfig.ShareRoles.Developer.id]: a.default.Commenter,
+                [designerConfig.ShareRoles.Reviewer.id]: a.default.Commenter,
+                [designerConfig.ShareRoles.CoAuthor.id]: a.default.Writer,
+                [designerConfig.ShareRoles.Owner.id]: a.default.Owner,
+                [designerConfig.ShareRoles.NoAccess.id]: r,
             });
-        t.default = s;
+        exports.default = s;
     };

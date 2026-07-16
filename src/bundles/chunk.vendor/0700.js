@@ -1,4 +1,4 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
 
             function n(e) {
@@ -7,5 +7,5 @@ module.exports = function (e, t, i) {
             ((n.prototype.getReference = function () {
                 return this._ref;
             }),
-                (e.exports = n));
+                (module.exports = n));
         };

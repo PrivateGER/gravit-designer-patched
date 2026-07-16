@@ -1,30 +1,30 @@
-module.exports = function (e, t, i) {
-            var n = i(147),
-                r = i(68),
-                o = i(0),
-                a = i(17),
-                s = i(138),
-                l = i(345),
-                h = i(112),
-                A = i(5),
-                c = i(48),
-                p = i(6),
-                u = i(7),
-                d = i(158),
-                g = i(139),
-                f = i(12),
-                m = i(103),
-                y = i(111),
-                _ = i(205),
-                v = i(118);
-            i(176);
+module.exports = function (module, exports, require) {
+            var n = require(147),
+                r = require(68),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(17),
+                s = require(138),
+                l = require(345),
+                h = require(112),
+                A = require(5),
+                c = require(48),
+                p = require(6),
+                u = require(7),
+                d = require(158),
+                g = require(139),
+                f = require(12),
+                DUMP_IMAGES = require(103),
+                y = require(111),
+                _ = require(205),
+                v = require(118);
+            require(176);
 
             function b(e, t, n, r) {
-                this._canvasContext = t ? document.createElement("canvas").getContext("2d") : m.getRenderer(e, void 0, void 0, n, r);
-                var o = i(643);
+                this._canvasContext = t ? document.createElement("canvas").getContext("2d") : DUMP_IMAGES.getRenderer(e, void 0, void 0, n, r);
+                var o = require(643);
                 this._blender = new o(this);
             }
-            (o.inheritAndMix(b, o, [v]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(b, IsFiniteNonNegativeNumber, [v]),
                 (b.LineCap = {
                     Butt: "butt",
                     Round: "round",
@@ -125,7 +125,7 @@ module.exports = function (e, t, i) {
             var C = -1,
                 w = -1,
                 E = 1,
-                B = !1;
+                B = false;
             ((b.hasFilters = function () {
                 if (C < 0)
                     if ("undefined" != typeof window) {
@@ -155,7 +155,7 @@ module.exports = function (e, t, i) {
                                 1;
                         E = window.devicePixelRatio / t || 1;
                     }
-                    B = !0;
+                    B = true;
                 }),
                 (b.prototype._canvasContext = null),
                 (b.prototype._bitmap = null),
@@ -258,14 +258,14 @@ module.exports = function (e, t, i) {
                 }),
                 (b.prototype.isClipped = function () {
                     if (this._areas) {
-                        if (this._areas.length > 1) return !0;
+                        if (this._areas.length > 1) return true;
                         if (1 === this._areas.length) {
                             var e = this._areas[0],
                                 t = new p(0, 0, this.getWidth(), this.getHeight());
-                            if (!e.containsRect(t)) return !0;
+                            if (!e.containsRect(t)) return true;
                         }
                     }
-                    return !1;
+                    return false;
                 }),
                 (b.prototype.finish = function () {
                     (this._canvasContext.restore(),
@@ -275,10 +275,10 @@ module.exports = function (e, t, i) {
                         (this._areas = null));
                 }),
                 (b.prototype.destroy = function () {
-                    (this._canvasContext instanceof y && m.destroy(this._canvasContext), this._blender.destroy());
+                    (this._canvasContext instanceof y && DUMP_IMAGES.destroy(this._canvasContext), this._blender.destroy());
                 }),
                 (b.prototype.getPaintExtents = function (e, t, i) {
-                    var n = this.getTransform(!1).mapRect(e),
+                    var n = this.getTransform(false).mapRect(e),
                         r = n.getX(),
                         o = n.getY(),
                         a = n.getWidth(),
@@ -294,7 +294,7 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (b.prototype.getFinalExtents = function (e) {
-                    var t = this.getTransform(!1).inverted().mapRect(e);
+                    var t = this.getTransform(false).inverted().mapRect(e);
                     return new p(t.getX() * this._scale, t.getY() * this._scale, t.getWidth() * this._scale, t.getHeight() * this._scale);
                 }),
                 (b.prototype.getTranslateCorrection = function (e, t) {
@@ -332,7 +332,7 @@ module.exports = function (e, t, i) {
                 }),
                 (b.prototype.createCanvas = function (e, t, i) {
                     var n = new b(),
-                        r = this.getPaintExtents(e, !1, i),
+                        r = this.getPaintExtents(e, false, i),
                         o = r.getX(),
                         a = r.getY(),
                         s = (r.getWidth(), r.getHeight(), this.getFinalExtents(r).toRoundedPrecision());
@@ -351,7 +351,7 @@ module.exports = function (e, t, i) {
                     return (n.setOrigin(c), n.setOffset(c), n.setScale(this._scale), n);
                 }),
                 (b.prototype.clear = function () {
-                    var e = this.getTransform(!1)
+                    var e = this.getTransform(false)
                         .inverted()
                         .mapRect(new p(0, 0, this.getWidth(), this.getHeight()));
                     this._canvasContext.clearRect(e.getX(), e.getY(), e.getWidth(), e.getHeight());
@@ -468,15 +468,15 @@ module.exports = function (e, t, i) {
                                 var r = e[n];
                                 0 === n ? this._canvasContext.moveTo(r.getX(), r.getY()) : this._canvasContext.lineTo(r.getX(), r.getY());
                             }
-                            t ? (this._canvasContext.closePath(), (i = !0)) : (i = !1);
+                            t ? (this._canvasContext.closePath(), (i = true)) : (i = false);
                         }
                     } else if (e.rewindVertices(0)) {
-                        var o = !1;
+                        var o = false;
                         this._canvasContext.beginPath();
                         for (var a = this.getScale(), s = new c(); e.readVertex(s, a); )
                             switch (s.command) {
                                 case c.Command.Move:
-                                    ((o = !1), this._canvasContext.moveTo(s.x, s.y));
+                                    ((o = false), this._canvasContext.moveTo(s.x, s.y));
                                     break;
                                 case c.Command.Line:
                                     this._canvasContext.lineTo(s.x, s.y);
@@ -495,12 +495,12 @@ module.exports = function (e, t, i) {
                                     }
                                     break;
                                 case c.Command.Close:
-                                    ((o = !0), this._canvasContext.closePath());
+                                    ((o = true), this._canvasContext.closePath());
                                     break;
                                 default:
                                     throw new Error("Unknown Command Type - " + s.command);
                             }
-                        (!o && t && (this._canvasContext.closePath(), (o = !0)), (i = o));
+                        (!o && t && (this._canvasContext.closePath(), (o = true)), (i = o));
                     }
                     return i;
                 }),
@@ -525,7 +525,7 @@ module.exports = function (e, t, i) {
                         this._blender.fill(n ? b.FillRule.EvenOdd : b.FillRule.NonZero));
                 }),
                 (b.prototype.fillCanvas = function (e, t, i) {
-                    var n = this.getTransform(!1)
+                    var n = this.getTransform(false)
                         .inverted()
                         .mapRect(new p(0, 0, this.getWidth(), this.getHeight()));
                     this.fillRect(n.getX(), n.getY(), n.getWidth(), n.getHeight(), e, t, i);
@@ -707,7 +707,7 @@ module.exports = function (e, t, i) {
                         r = t && t.dontCopyContents,
                         o = new b(void 0, void 0, t && t.persistent),
                         a = this._canvasContext;
-                    if (m.isRenderPhase() && !n) {
+                    if (DUMP_IMAGES.isRenderPhase() && !n) {
                         ((i = a.__clone()),
                             (o._canvasContext = i),
                             (i.imageRendering = a.imageRendering),
@@ -771,7 +771,7 @@ module.exports = function (e, t, i) {
                     return (e && (o._bitmap = this._bitmap ? this._bitmap.cloneFast() : null), o);
                 }),
                 (b.prototype._drawSmoothImage = function (e, t, i, n, r) {
-                    var o = this.getTransform(!1);
+                    var o = this.getTransform(false);
                     o || (o = new u());
                     var a = o.decomposed(),
                         s = a.skew.multiplied(a.rotate).multiplied(a.translate),
@@ -779,14 +779,14 @@ module.exports = function (e, t, i) {
                         h = l[0],
                         A = l[3],
                         c = 0;
-                    if ((c = Math.abs(1 - h) > Math.abs(1 - A) ? h : A) >= 1) return !1;
+                    if ((c = Math.abs(1 - h) > Math.abs(1 - A) ? h : A) >= 1) return false;
                     var p = Math.ceil(Math.log(Math.max(1, c) / Math.min(1, c)) / Math.log(2));
                     p > 20 && (p = 20);
                     var d = n,
                         g = r,
                         f = d * h,
                         m = g * A;
-                    if (d >= 32768 || g >= 32768 || f >= 32768 || m >= 32768) return !1;
+                    if (d >= 32768 || g >= 32768 || f >= 32768 || m >= 32768) return false;
                     if (p > 1) {
                         var y = document.createElement("canvas"),
                             _ = y.getContext("2d"),
@@ -812,10 +812,10 @@ module.exports = function (e, t, i) {
                         var x = this._transform.getMatrix();
                         this._canvasContext.setTransform(x[0], x[1], x[2], x[3], x[4], x[5]);
                     } else this._blender.drawImage(e, t || 0, i || 0, e.width, e.height);
-                    return !0;
+                    return true;
                 }),
                 (b.prototype._updateTransform = function () {
-                    var e = this.getTransform(!1).getMatrix();
+                    var e = this.getTransform(false).getMatrix();
                     try {
                         this._canvasContext.setTransform(e[0], e[1], e[2], e[3], e[4], e[5]);
                     } catch (e) {
@@ -854,7 +854,7 @@ module.exports = function (e, t, i) {
             ((b.prototype._getImageSmoothingEnabled = function () {
                 for (var e = 0; e < x.length; ++e)
                     if (CanvasRenderingContext2D.prototype.hasOwnProperty(x[e])) return this._canvasContext[x[e]];
-                return !1;
+                return false;
             }),
                 (b.prototype._setImageSmoothingEnabled = function (e) {
                     for (var t = 0; t < x.length; ++t)
@@ -862,7 +862,7 @@ module.exports = function (e, t, i) {
                             this._canvasContext[x[t]] = e;
                             break;
                         }
-                    return !1;
+                    return false;
                 }),
-                (e.exports = b));
+                (module.exports = b));
         };

@@ -1,0 +1,187 @@
+// Make the split webpack modules readable, without changing behavior:
+//   1. rename the webpack params (e, t, n) -> (module, exports, require)
+//   2. rename short variables holding requires of named modules:
+//        var o = n(15)  ->  var GPlatform = require(15)
+//      (names come from src/bundles/<bundle>/names.json)
+//   3. annotate inline require calls: require(820 /* GoogleTagManagerSettings */)
+//   4. replace minifier literals: !0 -> true, !1 -> false, void 0 -> undefined
+//
+// All edits are scope-aware AST renames applied as precise text splices — no
+// code generation. A module is skipped entirely if it uses eval, and a param
+// rename is skipped if the module references that name as a free global
+// (UMD/environment detection would change behavior). Idempotent.
+// Usage: node scripts/refine-bundle.js [bundle ...]
+const fs = require("fs");
+const path = require("path");
+const parser = require("@babel/parser");
+const traverse = require("@babel/traverse").default;
+
+const ROOT = path.join(__dirname, "..");
+const BUNDLES_DIR = path.join(ROOT, "src", "bundles");
+const PARAM_NAMES = ["module", "exports", "require"];
+
+const bundles = process.argv.slice(2).length ? process.argv.slice(2) : fs.readdirSync(BUNDLES_DIR);
+
+const stats = { params: 0, requireVars: 0, annotations: 0, literals: 0, skippedEval: 0, skippedGlobal: 0 };
+
+function refine(src, names) {
+    if (/\beval\b/.test(src)) {
+        stats.skippedEval++;
+        return src;
+    }
+    const ast = parser.parse(src, { sourceType: "script" });
+    const edits = []; // {start, end, text}
+
+    // the module function is the RHS of `module.exports = <fn>`
+    let fnPath = null;
+    traverse(ast, {
+        Program(p) {
+            const expr = p.get("body.0.expression");
+            if (expr && expr.isAssignmentExpression()) {
+                const right = expr.get("right");
+                if (right.isFunctionExpression() || right.isArrowFunctionExpression()) fnPath = right;
+            }
+            p.stop();
+        },
+    });
+    if (!fnPath) return src;
+
+    // Names that renames must not collide with: every binding declared inside
+    // the module function, plus every free (unbound) reference inside it.
+    // Property names don't count — `o.GPlatform` can't conflict with a
+    // variable named GPlatform.
+    const usedNames = new Set();
+    const collectScope = (scope) => {
+        for (const n of Object.keys(scope.bindings)) usedNames.add(n);
+    };
+    collectScope(fnPath.scope);
+    fnPath.traverse({
+        Scopable(p) {
+            collectScope(p.scope);
+        },
+        ReferencedIdentifier(p) {
+            if (!p.scope.getBinding(p.node.name)) usedNames.add(p.node.name); // free/global ref
+        },
+    });
+
+    const renameBinding = (binding, newName) => {
+        if (!binding || usedNames.has(newName)) return false;
+        const ids = [
+            binding.identifier,
+            ...binding.referencePaths.map((r) => r.node),
+            ...binding.constantViolations.map((v) => v.node.left ?? v.node),
+        ];
+        for (const id of ids) {
+            if (id.type !== "Identifier") return false; // be conservative on odd shapes
+        }
+        for (const id of ids) edits.push({ start: id.start, end: id.end, text: newName });
+        usedNames.add(newName);
+        return true;
+    };
+
+    // 1. webpack params. usedNames already blocks the rename when the module
+    // references module/exports/require freely (UMD/environment detection).
+    const params = fnPath.node.params;
+    for (let i = 0; i < Math.min(params.length, 3); i++) {
+        const p = params[i];
+        if (p.type !== "Identifier" || p.name.length > 2) continue; // already renamed or unusual
+        if (usedNames.has(PARAM_NAMES[i])) {
+            stats.skippedGlobal++;
+            continue;
+        }
+        if (renameBinding(fnPath.scope.getBinding(p.name), PARAM_NAMES[i])) stats.params++;
+    }
+
+    // 2 + 3. require bindings and inline annotations. The AST still carries the
+    // ORIGINAL param name (edits are pending text splices), so match on that.
+    const requireOrig = params[2] && params[2].type === "Identifier" ? params[2].name : null;
+    if (requireOrig) {
+        const fnBinding = fnPath.scope.getBinding(requireOrig);
+        fnPath.traverse({
+            CallExpression(callPath) {
+                const callee = callPath.node.callee;
+                if (callee.type !== "Identifier" || callee.name !== requireOrig) return;
+                if (callPath.scope.getBinding(requireOrig) !== fnBinding) return; // shadowed
+                const arg = callPath.node.arguments[0];
+                if (!arg || arg.type !== "NumericLiteral" || callPath.node.arguments.length !== 1) return;
+                const name = names[String(arg.value)];
+
+                // 2. rename `var x = require(15)` when x is a mangled 1-2 char name
+                const parent = callPath.parentPath;
+                if (name && parent.isVariableDeclarator() && parent.node.id.type === "Identifier" && parent.node.id.name.length <= 2) {
+                    const binding = parent.scope.getBinding(parent.node.id.name);
+                    if (renameBinding(binding, name)) {
+                        stats.requireVars++;
+                        return;
+                    }
+                }
+                // 3. annotate the call — unless a comment is already there, or the
+                // result is bound to a variable that already carries the name
+                const boundToName = parent.isVariableDeclarator() && parent.node.id.type === "Identifier" && parent.node.id.name === name;
+                if (name && !boundToName && src.slice(arg.end, arg.end + 4) !== " /* ") {
+                    edits.push({ start: arg.end, end: arg.end, text: ` /* ${name} */` });
+                    stats.annotations++;
+                }
+            },
+        });
+    }
+
+    // 4. minifier literals
+    traverse(ast, {
+        UnaryExpression(p) {
+            const { operator, argument } = p.node;
+            if (operator === "!" && argument.type === "NumericLiteral" && (argument.value === 0 || argument.value === 1)) {
+                edits.push({ start: p.node.start, end: p.node.end, text: argument.value === 0 ? "true" : "false" });
+                stats.literals++;
+            } else if (
+                operator === "void" &&
+                argument.type === "NumericLiteral" &&
+                argument.value === 0 &&
+                !p.scope.hasBinding("undefined")
+            ) {
+                edits.push({ start: p.node.start, end: p.node.end, text: "undefined" });
+                stats.literals++;
+            }
+        },
+    });
+
+    edits.sort((a, b) => b.start - a.start || b.end - a.end);
+    let out = src;
+    let lastStart = Infinity;
+    for (const e of edits) {
+        if (e.end > lastStart) continue; // overlapping edit — skip defensively
+        out = out.slice(0, e.start) + e.text + out.slice(e.end);
+        lastStart = e.start;
+    }
+    return out;
+}
+
+for (const bundle of bundles) {
+    const dir = path.join(BUNDLES_DIR, bundle);
+    const namesPath = path.join(dir, "names.json");
+    const names = fs.existsSync(namesPath) ? JSON.parse(fs.readFileSync(namesPath, "utf8")) : {};
+    // module ids are global across chunks — merge all bundles' names for lookups
+    for (const other of fs.readdirSync(BUNDLES_DIR)) {
+        const p = path.join(BUNDLES_DIR, other, "names.json");
+        if (other !== bundle && fs.existsSync(p)) Object.assign(names, JSON.parse(fs.readFileSync(p, "utf8")));
+    }
+    const files = fs.readdirSync(dir).filter((f) => /^\d+\.js$/.test(f));
+    let changed = 0;
+    for (const f of files) {
+        const file = path.join(dir, f);
+        const src = fs.readFileSync(file, "utf8");
+        let out;
+        try {
+            out = refine(src, names);
+        } catch (e) {
+            console.warn(`  skip ${bundle}/${f}: ${e.message}`);
+            continue;
+        }
+        if (out !== src) {
+            fs.writeFileSync(file, out);
+            changed++;
+        }
+    }
+    console.log(`${bundle}: refined ${changed}/${files.length} modules`);
+}
+console.log(stats);

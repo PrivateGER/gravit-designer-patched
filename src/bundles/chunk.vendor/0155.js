@@ -1,23 +1,23 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(0),
-                o = i(39),
-                a = i(128),
-                s = i(36),
-                l = (i(22), i(45));
-            i(24);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(39),
+                a = require(128),
+                s = require(36),
+                l = (require(22), require(45));
+            require(24);
 
             function h(e) {
-                ((this._catchHandle = !0), a.call(this, e));
+                ((this._catchHandle = true), a.call(this, e));
             }
-            (r.inherit(h, a),
+            (IsFiniteNonNegativeNumber.inherit(h, a),
                 s.exports(h, l),
                 (h.ExtendingMode = {
                     Off: null,
                     Beginning: 1,
                     End: 2,
                 }),
-                (h.prototype._catchHandle = !0),
+                (h.prototype._catchHandle = true),
                 (h.prototype.transformBox = function (e, t) {
                     if ((a.prototype.transformBox.call(this, e, t), e && !e.isIdentity())) {
                         var i = this._element.getSourceBBox();
@@ -80,5 +80,5 @@ module.exports = function (e, t, i) {
                 (h.prototype.toString = function () {
                     return "[Object GPathBaseEditor]";
                 }),
-                (e.exports = h));
+                (module.exports = h));
         };

@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(90),
-                o = i(560),
-                a = i(1218);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(90),
+                o = require(560),
+                a = require(1218);
 
             function s(e) {
                 this._value = e;
             }
-            (n.inherit(s, r),
+            (IsFiniteNonNegativeNumber.inherit(s, r),
                 (s.newFromBytes = function (e) {
                     return new s(new a(new Uint8Array(s.escape(e))));
                 }),
@@ -62,5 +62,5 @@ module.exports = function (e, t, i) {
                 (s.prototype.toString = function () {
                     return "[Object GPDFString]";
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

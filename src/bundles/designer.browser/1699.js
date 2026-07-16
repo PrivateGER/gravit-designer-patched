@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(40);
+        var GSaveAction = require(40);
         function i(e, t, n) {
-            ((this.element = e), (this.mouseMoveCallback = t || o.fakeFunction), (this.mouseUpCallback = n || o.fakeFunction), this.init());
+            ((this.element = e), (this.mouseMoveCallback = t || GSaveAction.fakeFunction), (this.mouseUpCallback = n || GSaveAction.fakeFunction), this.init());
         }
         ((i.prototype.init = function () {
             ((this._handleMouseDown = this._handleMouseDown.bind(this)),
@@ -46,7 +46,7 @@ module.exports = function (e, t, n) {
                 this.moveTo(e.pageX, e.pageY);
             }),
             (i.prototype._onDragStart = function () {
-                return !1;
+                return false;
             }),
             (i.prototype._onMouseUp = function (e) {
                 (this.unmount(), this.mouseUpCallback(e));
@@ -57,5 +57,5 @@ module.exports = function (e, t, n) {
                     this.element.removeEventListener("mousedown", this._handleMouseDown),
                     this.element.removeEventListener("dragstart", this._onDragStart));
             }),
-            (e.exports = i));
+            (module.exports = i));
     };

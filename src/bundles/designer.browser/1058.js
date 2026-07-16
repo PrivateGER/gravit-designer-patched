@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o;
-        e.exports =
-            ((o = n(55)),
-            n(98),
+        module.exports =
+            ((o = require(55)),
+            require(98),
             (o.pad.Iso97971 = {
                 pad: function (e, t) {
                     (e.concat(o.lib.WordArray.create([2147483648], 1)), o.pad.ZeroPadding.pad(e, t));

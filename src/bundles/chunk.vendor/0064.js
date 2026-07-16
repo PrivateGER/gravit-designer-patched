@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(75),
-                r = i(0),
-                o = i(176),
-                a = i(514),
-                s = i(150),
-                l = i(77),
-                h = i(164);
+module.exports = function (module, exports, require) {
+            var n = require(75),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(176),
+                a = require(514),
+                s = require(150),
+                l = require(77),
+                h = require(164);
 
             function A() {
                 ("undefined" != typeof document &&
@@ -31,35 +31,35 @@ module.exports = function (e, t, i) {
                                 })(document.activeElement)) ||
                                 this._updateModifiers(e);
                         }.bind(this),
-                        !0
+                        true
                     ),
                     document.addEventListener(
                         "keyup",
                         function (e) {
                             this._updateModifiers(e);
                         }.bind(this),
-                        !0
+                        true
                     ),
                     document.addEventListener(
                         "mousemove",
                         function (e) {
                             this._updateModifiers(e);
                         }.bind(this),
-                        !0
+                        true
                     ),
                     document.addEventListener(
                         "mousedown",
                         function (e) {
                             this._updateModifiers(e);
                         }.bind(this),
-                        !0
+                        true
                     ),
                     document.addEventListener(
                         "mouseup",
                         function (e) {
                             this._updateModifiers(e);
                         }.bind(this),
-                        !0
+                        true
                     )),
                     this._updateProperties());
             }
@@ -142,7 +142,7 @@ module.exports = function (e, t, i) {
             function g() {
                 return Math.min(4294967295, Math.floor((A.maxPngDataSize / 3) * 4) + 22);
             }
-            (r.inheritAndMix(A, r, [n]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(A, IsFiniteNonNegativeNumber, [n]),
                 (A.prototype._updateProperties = function () {
                     ((this.webBrowser = A.webBrowser),
                         (this.absoluteMaxImgLinearDimension = A.absoluteMaxImgLinearDimension),
@@ -193,35 +193,35 @@ module.exports = function (e, t, i) {
                     "undefined" != typeof window && "function" == typeof window.cancelAnimationFrame && window.cancelAnimationFrame(e);
                 }),
                 (A.prototype._lastKeyEventTime = 0),
-                (A.prototype._hadMetaBefore = !1),
-                (A.prototype._blockCtrl = !1),
-                (A.prototype._altKey = !1),
-                (A.prototype._ctrlKey = !1),
-                (A.prototype._shiftKey = !1),
+                (A.prototype._hadMetaBefore = false),
+                (A.prototype._blockCtrl = false),
+                (A.prototype._altKey = false),
+                (A.prototype._ctrlKey = false),
+                (A.prototype._shiftKey = false),
                 (A.prototype.holdKey = function (e) {
                     switch (e) {
                         case h.Constant.ALT_LEFT:
                         case h.Constant.ALT_RIGHT:
-                            this._altKey = !0;
+                            this._altKey = true;
                             break;
                         case h.Constant.CONTROL:
-                            this._ctrlKey = !0;
+                            this._ctrlKey = true;
                             break;
                         case h.Constant.SHIFT:
-                            this._shiftKey = !0;
+                            this._shiftKey = true;
                     }
                 }),
                 (A.prototype.releaseKey = function (e) {
                     switch (e) {
                         case h.Constant.ALT_LEFT:
                         case h.Constant.ALT_RIGHT:
-                            this._altKey = !1;
+                            this._altKey = false;
                             break;
                         case h.Constant.CONTROL:
-                            this._ctrlKey = !1;
+                            this._ctrlKey = false;
                             break;
                         case h.Constant.SHIFT:
-                            this._shiftKey = !1;
+                            this._shiftKey = false;
                     }
                 }),
                 (A.prototype.isHoldingKey = function (e) {
@@ -234,21 +234,21 @@ module.exports = function (e, t, i) {
                         case h.Constant.SHIFT:
                             return this._shiftKey;
                         default:
-                            return !1;
+                            return false;
                     }
                 }),
                 (A.prototype._updateModifiers = function (e) {
-                    var t = !1,
-                        i = !1,
-                        n = !1,
-                        r = !1,
-                        a = !1,
-                        h = !1,
-                        A = !1,
-                        c = !1,
-                        p = !1,
-                        u = !1,
-                        d = !1,
+                    var t = false,
+                        i = false,
+                        n = false,
+                        r = false,
+                        a = false,
+                        h = false,
+                        A = false,
+                        c = false,
+                        p = false,
+                        u = false,
+                        d = false,
                         g =
                             o.operatingSystem !== o.OperatingSystem.OSX_IOS || o.hardware !== o.Hardware.Desktop
                                 ? e.ctrlKey || this._ctrlKey
@@ -256,48 +256,48 @@ module.exports = function (e, t, i) {
                     (o.operatingSystem === o.OperatingSystem.Windows &&
                         ("keydown" === e.type && e.ctrlKey
                             ? e.altKey && 2 === e.location
-                                ? (new Date().getTime() - this._lastKeyEventTime < 50 && (this._hadMetaBefore || (this._blockCtrl = !0)),
-                                  (this._hadMetaBefore = !1),
+                                ? (new Date().getTime() - this._lastKeyEventTime < 50 && (this._hadMetaBefore || (this._blockCtrl = true)),
+                                  (this._hadMetaBefore = false),
                                   (this._lastKeyEventTime = 0))
                                 : ((this._lastKeyEventTime = new Date().getTime()),
-                                  this.modifiers.metaKey ? (this._hadMetaBefore = !0) : (this._hadMetaBefore = !1))
-                            : this._blockCtrl && !e.altKey && (this._blockCtrl = !1)),
-                        this._blockCtrl && ((g = !1), (r = !1)),
-                        g !== this.modifiers.metaKey && ((n = !0), (this.modifiers.metaKey = g)),
+                                  this.modifiers.metaKey ? (this._hadMetaBefore = true) : (this._hadMetaBefore = false))
+                            : this._blockCtrl && !e.altKey && (this._blockCtrl = false)),
+                        this._blockCtrl && ((g = false), (r = false)),
+                        g !== this.modifiers.metaKey && ((n = true), (this.modifiers.metaKey = g)),
                         (e.ctrlKey || this._ctrlKey) !== this.modifiers.ctrlKey &&
-                            ((r = !0), (this.modifiers.ctrlKey = e.ctrlKey || this._ctrlKey)),
+                            ((r = true), (this.modifiers.ctrlKey = e.ctrlKey || this._ctrlKey)),
                         (e.altKey || this._altKey) !== this.modifiers.optionKey &&
-                            ((t = !0), (this.modifiers.optionKey = e.altKey || this._altKey)),
+                            ((t = true), (this.modifiers.optionKey = e.altKey || this._altKey)),
                         (e.shiftKey || this._shiftKey) !== this.modifiers.shiftKey &&
-                            ((i = !0), (this.modifiers.shiftKey = e.shiftKey || this._shiftKey)));
+                            ((i = true), (this.modifiers.shiftKey = e.shiftKey || this._shiftKey)));
                     var f =
                         ("keydown" === e.type && 32 === e.keyCode) || (("keyup" !== e.type || 32 !== e.keyCode) && this.modifiers.spaceKey);
-                    f !== this.modifiers.spaceKey && ((a = !0), (this.modifiers.spaceKey = f));
+                    f !== this.modifiers.spaceKey && ((a = true), (this.modifiers.spaceKey = f));
                     var m = ("keydown" === e.type && 9 === e.keyCode) || (("keyup" !== e.type || 9 !== e.keyCode) && this.modifiers.tabKey);
-                    (m !== this.modifiers.tabKey && ((A = !0), (this.modifiers.tabKey = m)),
+                    (m !== this.modifiers.tabKey && ((A = true), (this.modifiers.tabKey = m)),
                         27 === e.keyCode &&
                             ("keydown" === e.type
-                                ? ((h = !0), (this.modifiers.escapeKey = !0))
-                                : "keyup" === e.type && ((h = !0), (this.modifiers.escapeKey = !1))),
+                                ? ((h = true), (this.modifiers.escapeKey = true))
+                                : "keyup" === e.type && ((h = true), (this.modifiers.escapeKey = false))),
                         (o.operatingSystem === o.OperatingSystem.OSX_IOS && e.metaKey) ||
                             (90 === e.keyCode &&
                                 ("keydown" === e.type
-                                    ? ((u = !0), (this.modifiers.zKey = !0))
-                                    : "keyup" === e.type && ((u = !1), (this.modifiers.zKey = !1))),
+                                    ? ((u = true), (this.modifiers.zKey = true))
+                                    : "keyup" === e.type && ((u = false), (this.modifiers.zKey = false))),
                             (107 !== e.keyCode && 187 !== e.keyCode) ||
                                 ("keydown" === e.type
-                                    ? ((c = !0), (this.modifiers.plusKey = !0))
-                                    : "keyup" === e.type && ((c = !0), (this.modifiers.plusKey = !1))),
+                                    ? ((c = true), (this.modifiers.plusKey = true))
+                                    : "keyup" === e.type && ((c = true), (this.modifiers.plusKey = false))),
                             (109 !== e.keyCode && 189 !== e.keyCode) ||
                                 ("keydown" === e.type
-                                    ? ((p = !0), (this.modifiers.minusKey = !0))
-                                    : "keyup" === e.type && ((p = !0), (this.modifiers.minusKey = !1)))),
+                                    ? ((p = true), (this.modifiers.minusKey = true))
+                                    : "keyup" === e.type && ((p = true), (this.modifiers.minusKey = false)))),
                         "mouseup" === e.type && e.button === l.BUTTON_MIDDLE && this.modifiers.middleButton
-                            ? ((d = !0), (this.modifiers.middleButton = !1))
+                            ? ((d = true), (this.modifiers.middleButton = false))
                             : "mousedown" !== e.type ||
                               e.button !== l.BUTTON_MIDDLE ||
                               this.modifiers.middleButton ||
-                              ((d = !0), (this.modifiers.middleButton = !0)),
+                              ((d = true), (this.modifiers.middleButton = true)),
                         (n || r || t || i || n || a || h || A || c || p || u || d) &&
                             this.hasEventListeners(s) &&
                             ((this._modifiersChangedEventCache.changed.metaKey = n),
@@ -311,7 +311,7 @@ module.exports = function (e, t, i) {
                             (this._modifiersChangedEventCache.changed.minusKey = p),
                             (this._modifiersChangedEventCache.changed.zKey = u),
                             (this._modifiersChangedEventCache.changed.middleButton = d),
-                            (this._modifiersChangedEventCache.isImmediatePropagationStopped = !1),
+                            (this._modifiersChangedEventCache.isImmediatePropagationStopped = false),
                             this.trigger(this._modifiersChangedEventCache)));
                 }),
                 (A.prototype.setWebBrowser = function (e) {
@@ -343,5 +343,5 @@ module.exports = function (e, t, i) {
                     (window.cancelAnimationFrame = function (e) {
                         clearTimeout(e);
                     }),
-                (e.exports = new A()));
+                (module.exports = new A()));
         };

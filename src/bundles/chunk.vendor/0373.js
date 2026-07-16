@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            const n = i(170),
+            const n = require(170),
                 r = (e) => new Date(new Date(e).setHours(0, 0, 0, 0)),
                 o = (e) => ("string" == typeof e || "number" == typeof e ? new Date(e) : e),
                 a = function (e) {
@@ -63,8 +63,8 @@ module.exports = function (e, t, i) {
                         let i = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
                         return u(e, t, i, p);
                     },
-                    min: (e, t) => (f.lt(e, t, !1) ? e : t),
-                    max: (e, t) => (f.gt(e, t, !1) ? e : t),
+                    min: (e, t) => (f.lt(e, t, false) ? e : t),
+                    max: (e, t) => (f.gt(e, t, false) ? e : t),
                     format: (e) =>
                         n.toLocaleDate(e, {
                             year: "numeric",
@@ -76,5 +76,5 @@ module.exports = function (e, t, i) {
                     now: () => s(new Date()),
                     toDate: o,
                 };
-            e.exports = f;
+            module.exports = f;
         };

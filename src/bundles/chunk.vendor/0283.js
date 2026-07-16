@@ -1,16 +1,16 @@
-module.exports = function (e, t, i) {
-            var n = i(138),
-                r = i(50),
-                o = i(17),
-                a = i(12),
-                s = i(364),
-                l = i(473),
-                h = i(6),
-                A = i(5),
-                c = i(103),
-                p = i(14),
-                u = i(166),
-                d = i(118);
+module.exports = function (module, exports, require) {
+            var n = require(138),
+                r = require(50),
+                o = require(17),
+                a = require(12),
+                s = require(364),
+                l = require(473),
+                h = require(6),
+                A = require(5),
+                DUMP_IMAGES = require(103),
+                p = require(14),
+                u = require(166),
+                d = require(118);
 
             function g(e, t, i, r, o, a) {
                 (n.call(this, e, t, i, r, a),
@@ -18,7 +18,7 @@ module.exports = function (e, t, i) {
                     (this._a0 = "number" == typeof o ? o : -Math.PI));
             }
             (r.inheritAndMix("A", g, n, [l, d]),
-                (g.prototype._isAffectedByGLBug = !0),
+                (g.prototype._isAffectedByGLBug = true),
                 (g.equals = function (e, t, i) {
                     return !(!(e instanceof g && t instanceof g) || (!i && e._a0 !== t._a0)) && n.equals(e, t, i);
                 }),
@@ -26,8 +26,8 @@ module.exports = function (e, t, i) {
                     return s;
                 }),
                 (g.prototype.asCSSBackground = function (e, t, i) {
-                    if (c.isDebug()) return o.WHITE.asCSSBackground();
-                    if (c.isRenderPhase()) throw new Error("Cannot get CSS background, renderer is busy.");
+                    if (DUMP_IMAGES.isDebug()) return o.WHITE.asCSSBackground();
+                    if (DUMP_IMAGES.isRenderPhase()) throw new Error("Cannot get CSS background, renderer is busy.");
                     var n = this.getGradient(e || 1, new h(0, 0, t || 20, i || 20));
                     return n ? "url(" + n._canvasContext.canvas.toDataURL() + ")" : o.WHITE.asCSSBackground();
                 }),
@@ -90,7 +90,7 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (g.prototype.isWebGL = function () {
-                    return !0;
+                    return true;
                 }),
                 (g.prototype.toString = function () {
                     return "[Object GAngularGradient]";
@@ -104,5 +104,5 @@ module.exports = function (e, t, i) {
                         e
                     );
                 }),
-                (e.exports = g));
+                (module.exports = g));
         };

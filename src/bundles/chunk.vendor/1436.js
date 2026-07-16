@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(182),
-                o = i(197),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(182),
+                o = require(197),
                 a = function () {
                     (o.call(this), (this.pages = new r()), this.put("/Type", "/Pages"));
                 };
-            (n.inherit(a, o),
+            (IsFiniteNonNegativeNumber.inherit(a, o),
                 (a.prototype.addPage = function (e) {
                     (this.pages.push(e), this.put("/Kids", this.pages), this.put("/Count", this.pages.size()));
                 }),
@@ -14,5 +14,5 @@ module.exports = function (e, t, i) {
                         i = t && t.getValue();
                     return i ? i.getPDFObject() : null;
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(7),
-                r = (i(6), i(5)),
-                o = i(650);
+module.exports = function (module, exports, require) {
+            var n = require(7),
+                r = (require(6), require(5)),
+                o = require(650);
 
             function a(e, t) {
                 ((this._tlCore = e), (this._type = a.TYPE), (this._direction = t.direction));
             }
-            (i(0).inherit(a, o),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(a, o),
                 (a.TYPE = "direction"),
                 (a.LTR = 0),
                 (a.RTL = 1),
@@ -2092,5 +2092,5 @@ module.exports = function (e, t, i) {
                     [983040, 1048573],
                     [1048576, 1114109],
                 ];
-            e.exports = a;
+            module.exports = a;
         };

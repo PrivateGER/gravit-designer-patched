@@ -1,52 +1,52 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(19),
-            n(168),
-            n(30),
-            n(57),
-            n(8),
-            n(20),
-            n(34),
-            n(134),
-            n(91),
-            n(4),
-            n(41),
-            n(13),
-            n(32),
-            n(38),
-            n(169),
-            n(1175),
-            n(33),
-            n(26),
-            n(125),
-            n(126),
-            n(114));
-        var i = n(1201),
-            a = n(1),
-            r = n(15),
-            s = n(10),
-            l = o(n(1664)),
-            c = n(219),
-            d = n(809),
-            { debounce: u, stringToBase64String: p } = n(40);
+        var o = require(16);
+        (require(19),
+            require(168 /* PDFFetchStream */),
+            require(30),
+            require(57),
+            require(8 /* Symbol */),
+            require(20),
+            require(34),
+            require(134),
+            require(91),
+            require(4),
+            require(41),
+            require(13),
+            require(32),
+            require(38),
+            require(169 /* PDFNetworkStream */),
+            require(1175),
+            require(33),
+            require(26),
+            require(125),
+            require(126),
+            require(114));
+        var i = require(1201),
+            GObject = require(1),
+            GPlatform = require(15),
+            designerConfig = require(10),
+            l = o(require(1664)),
+            c = require(219),
+            GClipAction = require(809),
+            { debounce: u, stringToBase64String: p } = require(40 /* GSaveAction */);
         const g = l.default.getElements();
-        e.exports = class {
+        module.exports = class {
             constructor(e) {
                 ((this._parent = e),
                     (this._CURRENT_SKIP_COUNT = 0),
                     (this._IMAGE_PAGE_COUNT = 1),
                     (this._CURRENT_CATEGORY = null),
                     (this._CURRENT_ROOT_CATEGORY = null),
-                    (this._IMAGE_ASSET_DRAINED = !1),
-                    (this._LOADING = !1),
+                    (this._IMAGE_ASSET_DRAINED = false),
+                    (this._LOADING = false),
                     (this._wrapperWidth = 250),
                     (this._debouncedResizeHandler = u(
                         function () {
                             var e = Array.from(this._parent.find(".assets-wrapper")).filter((e) => $(e).children().length),
                                 t = $(e).css("width") ? parseInt($(e).css("width").split("px")[0]) : 250;
                             Math.abs(t - this._wrapperWidth) > 50 &&
-                                ((this._wrapperWidth = t), this._initMasonryLayoutColumns($(e), null, null, !0));
+                                ((this._wrapperWidth = t), this._initMasonryLayoutColumns($(e), null, null, true));
                         }.bind(this),
                         200
                     )));
@@ -92,12 +92,12 @@ module.exports = function (e, t, n) {
                     var u = d.find(".indicator");
                     ($("<div/>").addClass("selector-container").append(c).insertAfter(u),
                         $("<option/>")
-                            .text(a.GLocale.get(new a.GLocaleKey("GCommonNames", "element.all")))
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "element.all")))
                             .appendTo(c));
                     for (var p = 0; p < s.length; ++p) {
                         var g = "element.child.name." + s[p].name.toLowerCase().trim().replace(/\s+/g, "-");
                         $("<option/>")
-                            .text(a.GLocale.get(new a.GLocaleKey("GCommonNames", g), s[p].name))
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", g), s[p].name))
                             .data("category", s[p])
                             .appendTo(c);
                     }
@@ -116,9 +116,9 @@ module.exports = function (e, t, n) {
                                     .attr("data-title", i.name || ""),
                                 c = $("<img/>")
                                     .on("dragstart", function () {
-                                        return !1;
+                                        return false;
                                     })
-                                    .attr("draggable", !1)
+                                    .attr("draggable", false)
                                     .attr("src", a)
                                     .on("mousedown", function (e) {
                                         r._onItemDragStartHandler(i, e);
@@ -162,10 +162,10 @@ module.exports = function (e, t, n) {
                         var f = this._getPreviewURI(e),
                             m = $("<img/>")
                                 .addClass("asset")
-                                .attr("draggable", !1)
+                                .attr("draggable", false)
                                 .attr("src", f)
                                 .on("dragstart", function () {
-                                    return !1;
+                                    return false;
                                 });
                         (gDesigner.isTouchDevice()
                             ? m.on("click", () => {
@@ -181,11 +181,11 @@ module.exports = function (e, t, n) {
                                 .append(
                                     $("<span/>")
                                         .text(e.user.name)
-                                        .attr("draggable", !1)
+                                        .attr("draggable", false)
                                         .on("click", function (t) {
                                             t.preventDefault();
                                             var n = new URL(e.user.profile);
-                                            (n.searchParams.append("utm_source", encodeURIComponent(s.DESIGNER.TITLE)),
+                                            (n.searchParams.append("utm_source", encodeURIComponent(designerConfig.DESIGNER.TITLE)),
                                                 n.searchParams.append("utm_medium", "referral"),
                                                 gContainer.openExternalLink(t, n));
                                         })
@@ -207,10 +207,10 @@ module.exports = function (e, t, n) {
                 var n = this;
                 !(async function () {
                     if (e.content)
-                        (t && (t.center = !0),
+                        (t && (t.center = true),
                             gDesigner
                                 .getActiveDocument()
-                                .placeOrImport(new Blob([e.content], { type: e.type || "image/svg+xml" }), t, !1, !0));
+                                .placeOrImport(new Blob([e.content], { type: e.type || "image/svg+xml" }), t, false, true));
                     else if (e.path.startsWith("element.ui."))
                         try {
                             var o = await fetch(e.url).then((e) => {
@@ -220,13 +220,13 @@ module.exports = function (e, t, n) {
                                 l = $.parseXML(o);
                             l &&
                                 "svg" === l.documentElement.nodeName &&
-                                gDesigner.getActiveDocument().placeOrImport(new Blob([o], { type: "image/svg+xml" }), t, !1, !0);
+                                gDesigner.getActiveDocument().placeOrImport(new Blob([o], { type: "image/svg+xml" }), t, false, true);
                         } catch (e) {}
                     else if (e.path.startsWith("element.image.")) {
                         var u = e.id;
                         try {
-                            var p = r.GPlatform.modifiers.optionKey,
-                                g = await s.gApi.getUnsplashPhotoUrl({
+                            var p = GPlatform.GPlatform.modifiers.optionKey,
+                                g = await designerConfig.gApi.getUnsplashPhotoUrl({
                                     id: u,
                                     size: "regular",
                                 }),
@@ -235,19 +235,19 @@ module.exports = function (e, t, n) {
                                     return e.blob();
                                 });
                             i.GBitmapImport.import(h, (e, o, i, r) => {
-                                if (e) new c(a.GLocale.get(new a.GLocaleKey("GDocument", "text.image-too-big"))).open();
+                                if (e) new c(GObject.GLocale.get(new GObject.GLocaleKey("GDocument", "text.image-too-big"))).open();
                                 else {
                                     var s = gDesigner.getActiveDocument(),
                                         l = s.getScene(),
                                         u = s.getEditor(),
                                         g = l.getActivePage(),
                                         h = u.hasSelection() && u.getSelection()[0],
-                                        f = a.GLocale.get(new a.GLocaleKey("GImage", "name.unsplash")),
-                                        m = a.GLocale.get(new a.GLocaleKey("GEditor", "action.insert-image"));
+                                        f = GObject.GLocale.get(new GObject.GLocaleKey("GImage", "name.unsplash")),
+                                        m = GObject.GLocale.get(new GObject.GLocaleKey("GEditor", "action.insert-image"));
                                     u.beginTransaction();
                                     try {
-                                        if (!h || h instanceof a.GImage) {
-                                            let e = new a.GImage();
+                                        if (!h || h instanceof GObject.GImage) {
+                                            let e = new GObject.GImage();
                                             (e.setProperties(["name", "iw", "ih", "url"], [f, i, r, o]),
                                                 n._transformNode(e, t),
                                                 g.appendChild(e),
@@ -255,23 +255,23 @@ module.exports = function (e, t, n) {
                                         } else if (p) {
                                             var y = u.getSelection()[0].getTransform(),
                                                 v = y && y.getTranslation();
-                                            let e = new a.GImage();
+                                            let e = new GObject.GImage();
                                             (e.setProperties(["name", "iw", "ih", "url"], [f, i, r, o]),
                                                 !t && v && (t = { x: v.getX(), y: v.getY() }),
                                                 n._transformNode(e, t),
                                                 g.appendChild(e),
-                                                u.updateSelection(!0, [e]),
-                                                gDesigner.executeAction(d.ID, void 0, void 0, !0),
+                                                u.updateSelection(true, [e]),
+                                                gDesigner.executeAction(GClipAction.ID, void 0, void 0, true),
                                                 gDesigner.stats("librarypanel_download_image", "clip"));
                                         } else {
                                             var _ = u.getSelection()[0].getPaintLayers();
                                             if (_) {
-                                                var b = new a.GTexturePattern(o);
-                                                (b.setSizeMode(a.GTexturePattern.SizeMode.Cover), b.setScene(l));
-                                                var w = new a.GStylable.FillPaintLayer(b);
+                                                var b = new GObject.GTexturePattern(o);
+                                                (b.setSizeMode(GObject.GTexturePattern.SizeMode.Cover), b.setScene(l));
+                                                var w = new GObject.GStylable.FillPaintLayer(b);
                                                 _.appendChild(w);
                                             }
-                                            ((m = a.GLocale.get(new a.GLocaleKey("GFillPaintLayerProperties", "action.change-properties"))),
+                                            ((m = GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.change-properties"))),
                                                 gDesigner.stats("librarypanel_download_image", "fill"));
                                         }
                                     } finally {
@@ -304,7 +304,7 @@ module.exports = function (e, t, n) {
                             (A.onload = () => {
                                 i.GSVGImport.import(
                                     A.responseText,
-                                    { baseWidth: _, baseHeight: b, forceBaseSize: !0 },
+                                    { baseWidth: _, baseHeight: b, forceBaseSize: true },
                                     gDesigner.getActiveDocument().getScene()._workspace.getFontManager(),
                                     (o, i) => {
                                         if (i) {
@@ -313,16 +313,16 @@ module.exports = function (e, t, n) {
                                                 if (e.path.startsWith("element.line.tile")) {
                                                     var r,
                                                         s,
-                                                        l = new a.GTexturePattern(i, a.GTexturePattern.RepeatMode.Horizontal);
-                                                    (l.setPosition(a.GTexturePattern.PositionMode.Center),
+                                                        l = new GObject.GTexturePattern(i, GObject.GTexturePattern.RepeatMode.Horizontal);
+                                                    (l.setPosition(GObject.GTexturePattern.PositionMode.Center),
                                                         t ? ((r = t.x - _ / 2), (s = t.y - b / 2)) : ((r = 0.3 * C), (s = (x - b) / 2)));
-                                                    var c = new a.GRectangle();
-                                                    (c.setProperty("trf", new a.GTransform(_ / 2, 0, 0, b / 2, r + _ / 2, s + b / 2)),
-                                                        c.setProperty("isLine", !0, !0, !1),
+                                                    var c = new GObject.GRectangle();
+                                                    (c.setProperty("trf", new GObject.GTransform(_ / 2, 0, 0, b / 2, r + _ / 2, s + b / 2)),
+                                                        c.setProperty("isLine", true, true, false),
                                                         v.appendChild(c),
-                                                        c.getPaintLayers().insertChild(new a.GStylable.FillPaintLayer(l)),
-                                                        gDesigner.getActiveDocument().getEditor().updateSelection(!1, [c]));
-                                                } else (n._transformNode(i, t), m.insertElement(i, !t, !0, !1));
+                                                        c.getPaintLayers().insertChild(new GObject.GStylable.FillPaintLayer(l)),
+                                                        gDesigner.getActiveDocument().getEditor().updateSelection(false, [c]));
+                                                } else (n._transformNode(i, t), m.insertElement(i, !t, true, false));
                                             } finally {
                                                 y.commitTransaction("Add Element");
                                             }
@@ -335,12 +335,12 @@ module.exports = function (e, t, n) {
                 })();
             }
             _transformNode(e, t) {
-                if (t && e.hasMixin(a.GElement.Transform)) {
+                if (t && e.hasMixin(GObject.GElement.Transform)) {
                     var n = e.getGeometryBBox(),
                         o = n && n.getX() ? n.getX() : 0,
                         i = n && n.getY() ? n.getY() : 0;
                     (n && ((o += n.getWidth() / 2), (i += n.getHeight() / 2)),
-                        e.transform(new a.GTransform(1, 0, 0, 1, t.x - o, t.y - i), !0));
+                        e.transform(new GObject.GTransform(1, 0, 0, 1, t.x - o, t.y - i), true));
                 }
             }
             _createScrollEvent() {
@@ -356,7 +356,7 @@ module.exports = function (e, t, n) {
                                           $("<div/>")
                                               .addClass("container")
                                               .append(
-                                                  $("<span/>").text(a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.back-to-top")))
+                                                  $("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.back-to-top")))
                                               )
                                               .append($("<span/>").addClass("gravit-icon-back-to-top"))
                                       )
@@ -388,8 +388,8 @@ module.exports = function (e, t, n) {
                             e &&
                                 e.trim() &&
                                 (n.css("display", "block"),
-                                o._createScrollEvent(null, n, !0),
-                                o._loadAssets(i, e, o._updateUI.bind(o), !0)));
+                                o._createScrollEvent(null, n, true),
+                                o._loadAssets(i, e, o._updateUI.bind(o), true)));
                     };
                 (t
                     .addClass("library-search")
@@ -397,7 +397,7 @@ module.exports = function (e, t, n) {
                         $("<input/>")
                             .attr("type", "text")
                             .addClass("g-input")
-                            .attr("placeholder", a.GLocale.get(new a.GLocaleKey("GCommonNames", "element.search")) + "...")
+                            .attr("placeholder", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "element.search")) + "...")
                             .on("keypress", function (e) {
                                 13 === e.keyCode && i($(this).val());
                             })
@@ -429,7 +429,7 @@ module.exports = function (e, t, n) {
                                     $("<div/>").addClass("assets-wrapper").append($("<div/>").addClass("assets-wrapper images")),
                                 ])
                         )
-                        .append(this._loadMoreButton(n, !0))
+                        .append(this._loadMoreButton(n, true))
                         .appendTo(e));
             }
             _loadMoreButton(e, t) {
@@ -439,16 +439,16 @@ module.exports = function (e, t, n) {
                     .append(
                         $("<button/>")
                             .addClass("load-more")
-                            .text(a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.library-load-more")))
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.library-load-more")))
                             .on("click", () => {
                                 (this._loadAssets(
                                     e.find(".assets-wrapper").first(),
                                     this._CURRENT_CATEGORY,
                                     this._updateUI.bind(this),
                                     t,
-                                    !0
+                                    true
                                 ),
-                                    this._toggleShowMoreButton(!0, !0));
+                                    this._toggleShowMoreButton(true, true));
                             })
                     );
             }
@@ -465,7 +465,7 @@ module.exports = function (e, t, n) {
                                     .append([$("<div/>").addClass("indicator"), $("<div/>").addClass("assets-wrapper")])
                             )
                             .appendTo(e);
-                        t.append(this._loadMoreButton(t, !1));
+                        t.append(this._loadMoreButton(t, false));
                     }
                     var o = this._libraryPanel.find(".category-row:last-child");
                     (0 !== o.length && 3 !== o.children().length) || (o = $("<div/>").addClass("category-row")).appendTo(e);
@@ -515,7 +515,7 @@ module.exports = function (e, t, n) {
                     ($("<img/>").addClass("icon").attr("src", r.url).appendTo(i),
                         $("<span/>")
                             .addClass("title")
-                            .text(a.GLocale.get(new a.GLocaleKey("GCommonNames", r.path.replace(/\.$/, "")), r.name))
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", r.path.replace(/\.$/, "")), r.name))
                             .appendTo(i));
                 }
                 let r = $("<div/>")
@@ -527,10 +527,10 @@ module.exports = function (e, t, n) {
                             .append([$("<div/>").addClass("indicator"), $("<div/>").addClass("assets-wrapper")])
                     )
                     .appendTo(e);
-                r.append(this._loadMoreButton(r, !1));
+                r.append(this._loadMoreButton(r, false));
             }
             _loadAssets(e, t, n, o, i) {
-                (this._toggleShowMoreButton(!1, !1), this._toggleLoading(!0), this._doLoadAssets(e, t, n, o, i));
+                (this._toggleShowMoreButton(false, false), this._toggleLoading(true), this._doLoadAssets(e, t, n, o, i));
             }
             async _doLoadAssets(e, t, n, o, i) {
                 let a = [],
@@ -542,18 +542,18 @@ module.exports = function (e, t, n) {
                         if (l.default.isUnsplashIntegrationEnabled()) {
                             if (!this._IMAGE_ASSET_DRAINED)
                                 try {
-                                    e = await s.gApi.searchUnsplashPhotos({
+                                    e = await designerConfig.gApi.searchUnsplashPhotos({
                                         query: t,
                                         page: this._IMAGE_PAGE_COUNT,
                                     });
                                 } catch (e) {
                                     console.warn("Unsplash search failed", e);
                                 }
-                            ((c = (e || []).length), c || (this._IMAGE_ASSET_DRAINED = !0));
+                            ((c = (e || []).length), c || (this._IMAGE_ASSET_DRAINED = true));
                         }
                         ((a = []),
                             -1 !== this._CURRENT_SKIP_COUNT &&
-                                (a = await s.gApi.listMarket({
+                                (a = await designerConfig.gApi.listMarket({
                                     q: t,
                                     path: "element.",
                                     limit: "90",
@@ -565,17 +565,17 @@ module.exports = function (e, t, n) {
                     } else if (t.path && t.path.startsWith("element.image"))
                         l.default.isUnsplashIntegrationEnabled() &&
                             ((a = t.tag
-                                ? await s.gApi.searchUnsplashPhotos({
+                                ? await designerConfig.gApi.searchUnsplashPhotos({
                                       query: t.tag,
                                       page: this._IMAGE_PAGE_COUNT,
                                   })
-                                : await s.gApi.getUnsplashPhotos({
+                                : await designerConfig.gApi.getUnsplashPhotos({
                                       page: this._IMAGE_PAGE_COUNT,
                                   })),
                             (c = (a || []).length));
                     else {
                         var d = t.path;
-                        ((a = await s.gApi.listMarket({
+                        ((a = await designerConfig.gApi.listMarket({
                             path: "element.line" === d ? "element.line.tile" : d,
                             tag: t.tag,
                             limit: "90",
@@ -584,12 +584,12 @@ module.exports = function (e, t, n) {
                         })),
                             (r = (a || []).length));
                     }
-                    (r < 90 && 0 === c ? this._toggleShowMoreButton(!1, !1) : this._toggleShowMoreButton(!0, !1),
+                    (r < 90 && 0 === c ? this._toggleShowMoreButton(false, false) : this._toggleShowMoreButton(true, false),
                         a.length < 90
                             ? ((this._CURRENT_SKIP_COUNT = -1), this._IMAGE_PAGE_COUNT++)
                             : ((this._CURRENT_SKIP_COUNT += 90), this._IMAGE_PAGE_COUNT++));
                 } catch (e) {}
-                (this._toggleLoading(!1), n.call(this, e, t, a, o, i));
+                (this._toggleLoading(false), n.call(this, e, t, a, o, i));
             }
             _toggleLoading(e) {
                 e ? this._libraryPanel.find(".assets").addClass("loading") : this._libraryPanel.find(".assets").removeClass("loading");
@@ -631,7 +631,7 @@ module.exports = function (e, t, n) {
                     var p = o.left + o.width / 2,
                         g = o.top + o.height / 2;
                     ((this._dragOffset = { x: p - t.clientX, y: g - t.clientY }),
-                        (this._dragging = !0),
+                        (this._dragging = true),
                         (this._currentElement = t.target),
                         (this._currentItem = e),
                         (this._previewSize = { w: i, h: a }),
@@ -654,9 +654,9 @@ module.exports = function (e, t, n) {
                                   .css("width", i + "px")
                                   .css("display", "none")
                                   .on("dragstart", function () {
-                                      return !1;
+                                      return false;
                                   })
-                                  .attr("draggable", !1)
+                                  .attr("draggable", false)
                                   .appendTo("body")));
                     var h = t.clientX,
                         f = t.clientY;
@@ -673,16 +673,16 @@ module.exports = function (e, t, n) {
             _onItemDragEndHandler(e) {
                 if (($(this.dragPreview).remove(), Date.now() - this._clickCheckTime <= 200 || !this._dragMoved))
                     return (
-                        (this._dragMoved = !1),
+                        (this._dragMoved = false),
                         document.removeEventListener("mousemove", this._itemDragListener),
                         document.removeEventListener("touchmove", this._itemDragListener),
                         document.removeEventListener("mouseup", this._itemDragEndListener),
                         document.removeEventListener("touchend", this._itemDragEndListener),
-                        (this._dragging = !1),
+                        (this._dragging = false),
                         (this._currentElement.style.visibility = "visible"),
                         void this._addAsset(this._currentItem)
                     );
-                if (((this._dragMoved = !1), this._dragging)) {
+                if (((this._dragMoved = false), this._dragging)) {
                     var t = gDesigner.getActiveDocument();
                     (document.removeEventListener("mousemove", this._itemDragListener),
                         document.removeEventListener("touchmove", this._itemDragListener),
@@ -704,11 +704,11 @@ module.exports = function (e, t, n) {
                             s = i.getViewTransform(t.scene).mapPoint(r);
                         ((r = { x: s._x, y: s._y }), this._addAsset(this._currentItem, r));
                     }
-                    ((this._dragging = !1), (this._currentElement.style.visibility = "visible"));
+                    ((this._dragging = false), (this._currentElement.style.visibility = "visible"));
                 }
             }
             _onItemDrag(e) {
-                ((this._dragMoved = !0), (this._currentElement.style.visibility = "hidden"));
+                ((this._dragMoved = true), (this._currentElement.style.visibility = "hidden"));
                 var t = e.clientX + (this._dragOffset ? this._dragOffset.x : 0),
                     n = e.clientY + (this._dragOffset ? this._dragOffset.y : 0);
                 ((t -= this._previewSize.w / 2),
@@ -726,7 +726,7 @@ module.exports = function (e, t, n) {
             _getThumbnailSize(e) {
                 const t = 200 / e.image.width,
                     n = parseInt(e.image.height * t) + 4;
-                return new a.GRect(0, 0, 200, n);
+                return new GObject.GRect(0, 0, 200, n);
             }
             _getChildrenHeight(e) {
                 return $(e)

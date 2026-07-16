@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(891);
+module.exports = function (module, exports, require) {
+            var n = require(891);
 
             function r(e, t, i, n) {
                 ((this.project = e), (this.type = t), (this.content = i), (this.data = n));
             }
-            (i(261).inherit(r, n),
+            (require(261).inherit(r, n),
                 (r.Type = {
                     Warning: "Warning",
                 }),
@@ -13,5 +13,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.toString = function () {
                     return "[Object GTranslationNotificationEvent]";
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

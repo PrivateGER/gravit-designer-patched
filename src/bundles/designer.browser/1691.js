@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         ("function" != typeof window.CustomEvent &&
             ((window.CustomEvent = function (e, t) {
-                t = t || { bubbles: !1, cancelable: !1, detail: void 0 };
+                t = t || { bubbles: false, cancelable: false, detail: void 0 };
                 var n = document.createEvent("CustomEvent");
                 return (n.initCustomEvent(e, t.bubbles, t.cancelable, t.detail), n);
             }),
@@ -16,5 +16,5 @@ module.exports = function (e, t, n) {
                 function (e) {
                     window.setTimeout(e, 1e3 / 60);
                 }),
-            n(1692));
+            require(1692));
     };

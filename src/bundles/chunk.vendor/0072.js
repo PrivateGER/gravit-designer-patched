@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(0);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0);
 
             function r() {}
-            (n.inherit(r, n),
+            (IsFiniteNonNegativeNumber.inherit(r, IsFiniteNonNegativeNumber),
                 (r.prototype.sender = null),
                 (r.prototype._paramsToString = function () {
                     return "";
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

@@ -1,20 +1,20 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(7),
-                o = i(11),
-                a = i(122),
-                s = i(95),
-                l = i(6),
-                h = i(561),
-                A = i(796),
-                c = i(795),
-                p = i(1136),
-                u = i(601);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(7),
+                o = require(11),
+                a = require(122),
+                s = require(95),
+                l = require(6),
+                h = require(561),
+                A = require(796),
+                c = require(795),
+                p = require(1136),
+                u = require(601);
 
             function d() {
                 A.apply(this, arguments);
             }
-            (n.inheritAndMix(d, A),
+            (IsFiniteNonNegativeNumber.inheritAndMix(d, A),
                 (d._parseShape = function (e) {
                     try {
                         (e._file.blockEvents(), e.parse());
@@ -102,12 +102,12 @@ module.exports = function (e, t, i) {
                         e.appendChild(this._symbol));
                 }),
                 (d.prototype._hasImagesToResolve = function () {
-                    var e = !1;
+                    var e = false;
                     return (
                         this._symbol.accept(
                             function (t) {
                                 if (t instanceof s && t.getStatus() !== s.ImageStatus.Loaded && t.getStatus() !== s.ImageStatus.Error)
-                                    return ((e = !0), !0);
+                                    return ((e = true), true);
                             }.bind(this)
                         ),
                         e
@@ -162,5 +162,5 @@ module.exports = function (e, t, i) {
                     var e = A.prototype.clone.call(this);
                     return ((e._symbolMaster = this._file.getSymbolMaster(this.getSymbolId())), e.parse(), e);
                 }),
-                (e.exports = d));
+                (module.exports = d));
         };

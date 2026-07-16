@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(105),
+            var n = require(105),
                 r = {},
                 o = {},
                 a = {};
@@ -360,7 +360,7 @@ module.exports = function (e, t, i) {
                 (a.LITERAL = function (e) {
                     return e.length;
                 }),
-                (t.decode = r),
-                (t.encode = o),
-                (t.sizeOf = a));
+                (exports.decode = r),
+                (exports.encode = o),
+                (exports.sizeOf = a));
         };

@@ -1,20 +1,20 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            const n = i(821),
-                r = i(822),
-                o = i(823),
-                a = i(941),
-                s = i(942),
-                l = i(525),
-                h = i(525),
-                A = i(525),
-                c = i(524);
-            e.exports = [
+            const n = require(821),
+                r = require(822),
+                o = require(823),
+                a = require(941),
+                GShareDialog = require(942),
+                l = require(525),
+                h = require(525),
+                A = require(525),
+                c = require(524);
+            module.exports = [
                 {
                     project: c.Designer,
                     translations: n,
-                    temporary: s,
-                    importStack: [s, n],
+                    temporary: GShareDialog,
+                    importStack: [GShareDialog, n],
                 },
                 {
                     project: c.Cloud,

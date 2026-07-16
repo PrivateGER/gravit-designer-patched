@@ -1,25 +1,25 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(36),
-                o = i(66),
-                a = i(274),
-                s = i(154),
-                l = i(22),
-                h = i(216),
-                A = i(39),
-                c = i(17),
-                p = i(73),
-                u = i(7),
-                d = (i(2), i(6));
-            i(12);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(36),
+                o = require(66),
+                a = require(274),
+                s = require(154),
+                l = require(22),
+                h = require(216),
+                A = require(39),
+                c = require(17),
+                p = require(73),
+                u = require(7),
+                d = (require(2), require(6));
+            require(12);
 
             function g(e) {
                 (a.call(this, e), this.setColor(new c([132, 102, 176])));
             }
-            (n.inheritAndMix(g, a, [s.LabelHolder]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(g, a, [s.LabelHolder]),
                 r.exports(g, h),
                 (g.prototype._savedElementPreview = null),
-                (g.prototype._isAttached = !1),
+                (g.prototype._isAttached = false),
                 (g.prototype.createElementPreview = function () {
                     if (!this._elementPreview) {
                         var e = this._element.getSourceBBox();
@@ -38,14 +38,14 @@ module.exports = function (e, t, i) {
                 (g.prototype._attach = function () {
                     var e = this._element.getScene();
                     (null != e && e.addEventListener(l.GeometryChangeEvent, this._geometryChange, this),
-                        (this._isAttached = !0),
+                        (this._isAttached = true),
                         this.requestInvalidation(),
                         a.prototype._attach.call(this));
                 }),
                 (g.prototype._detach = function () {
                     var e = this._element.getScene();
                     (null != e && e.removeEventListener(l.GeometryChangeEvent, this._geometryChange, this),
-                        (this._isAttached = !1),
+                        (this._isAttached = false),
                         a.prototype._detach.call(this));
                 }),
                 (g.prototype._geometryChange = function () {
@@ -96,8 +96,8 @@ module.exports = function (e, t, i) {
                                     point: e,
                                     origTrf: t,
                                 },
-                                !0,
-                                !0
+                                true,
+                                true
                             );
                     }
                     return r;
@@ -113,14 +113,14 @@ module.exports = function (e, t, i) {
                             y = (m = r.mapPoint(m)).subtract(f),
                             _ = new u(1, 0, 0, 1, y.getX(), y.getY()),
                             v = new o.EdTransformOptions();
-                        ((v.isMultiPage = h), (v.fullContentsTransform = !0), this.edTransform(_, null, null, v));
+                        ((v.isMultiPage = h), (v.fullContentsTransform = true), this.edTransform(_, null, null, v));
                     }
                     return A;
                 }),
                 (g.prototype._applyPartMove = function (e, t, i, n) {
                     (e === s.LabelHolder.LABEL_PART_ID &&
                         (this.canApplyTransform()
-                            ? (this._prepareApplyTransform(this._element), this._applyTransform(this._element, !0, n, i))
+                            ? (this._prepareApplyTransform(this._element), this._applyTransform(this._element, true, n, i))
                             : this.resetTransform()),
                         s.prototype._applyPartMove.call(this, e, t, i, n));
                 }),
@@ -146,7 +146,7 @@ module.exports = function (e, t, i) {
                 }),
                 (g.prototype._applyTransform = function (e, t, i, n) {
                     var r = this._transform,
-                        a = !1;
+                        a = false;
                     if (!r)
                         if (this._elementPreview || this._savedElementPreview) {
                             var s = (this._savedElementPreview || this._elementPreview).getTransform() || new u(),
@@ -154,13 +154,13 @@ module.exports = function (e, t, i) {
                             r = s.preMultiplied(l.inverted());
                         } else r = new u();
                     var A = e.findParent(function (e) {
-                        if (e instanceof h) return !0;
+                        if (e instanceof h) return true;
                     });
                     if (((p = A && A.isMaster()), !r.isIdentity())) {
                         var c, p;
                         if ((e.beginUpdate(), t))
                             (e.setTransform((e.getProperty("trf") || new u()).multiplied(r)),
-                                (!p || (p && e.isMaster())) && ((c = e.getProperty("blockEv")), (a = !0), e.setProperty("blockEv", !0)),
+                                (!p || (p && e.isMaster())) && ((c = e.getProperty("blockEv")), (a = true), e.setProperty("blockEv", true)),
                                 this._transformSubElements(e, t, r, i, n));
                         else {
                             var d = e.getProperty("frame"),
@@ -178,7 +178,7 @@ module.exports = function (e, t, i) {
                                 this._transform &&
                                     (e.setTransform((e.getProperty("trf") || new u()).multiplied(this._transform)),
                                     p || this._transformSiblings(r, m, d, i, n));
-                            (p && e.isMaster() && ((c = e.getProperty("blockEv")), (a = !0), e.setProperty("blockEv", !0)),
+                            (p && e.isMaster() && ((c = e.getProperty("blockEv")), (a = true), e.setProperty("blockEv", true)),
                                 this._transformSubElements(e, t, r, i, n));
                         }
                         (a && e.setProperty("blockEv", c), e.endUpdate());
@@ -192,15 +192,15 @@ module.exports = function (e, t, i) {
                                 var h = r.openEditor(s),
                                     A = new g.EdTransformOptions();
                                 ((A.fullContentsTransform = !!t),
-                                    (s.dependentUpdate = !0),
-                                    s.setProperty("subtrf", !0, !0),
+                                    (s.dependentUpdate = true),
+                                    s.setProperty("subtrf", true, true),
                                     (A.storedMoveData = a));
                                 s.getTransform() || new u();
                                 (h instanceof g && (h._preTransform = this._preTransform),
                                     h.edTransform(i, null, null, A),
                                     h.applyTransform(s, t, n, o),
-                                    (s.dependentUpdate = !1),
-                                    s.setProperty("subtrf", !1, !0));
+                                    (s.dependentUpdate = false),
+                                    s.setProperty("subtrf", false, true));
                             }
                 }),
                 (g.prototype._transformSiblings = function (e, t, i, n, o) {
@@ -216,18 +216,18 @@ module.exports = function (e, t, i) {
                             if (d.equals(h, t.getProperty("frame")) && u.equals(l.scale, c.scale) && u.equals(l.skew, c.skew)) {
                                 var p = r.openEditor(t),
                                     f = new g.EdTransformOptions();
-                                ((f.fullContentsTransform = !1), (t.dependentUpdate = s), (f.storedMoveData = a));
+                                ((f.fullContentsTransform = false), (t.dependentUpdate = s), (f.storedMoveData = a));
                                 var m,
                                     y,
                                     _ = p.getBox();
                                 ((m = e || u.getResizeTransform(_, a.side, a.dx, a.dy, a.shift, a.option)),
                                     p.edTransform(i.inverted().multiplied(m).multiplied(i), null, null, f),
                                     (p._preTransform = A),
-                                    t.isMaster() || ((y = t.getProperty("blockEv")), t.setProperty("blockEv", !0)),
-                                    p.applyTransform(t, !1, n, o),
+                                    t.isMaster() || ((y = t.getProperty("blockEv")), t.setProperty("blockEv", true)),
+                                    p.applyTransform(t, false, n, o),
                                     r.closeElementEditor(t),
                                     t.isMaster() || t.setProperty("blockEv", y),
-                                    (t.dependentUpdate = !1));
+                                    (t.dependentUpdate = false));
                             }
                         });
                     }
@@ -235,5 +235,5 @@ module.exports = function (e, t, i) {
                 (g.prototype.toString = function () {
                     return "[Object GSymbolEditor]";
                 }),
-                (e.exports = g));
+                (module.exports = g));
         };

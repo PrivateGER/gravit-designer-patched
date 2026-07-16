@@ -1,24 +1,24 @@
-module.exports = function (e, t, i) {
-            var n = i(284),
-                r = i(0),
-                o = i(11),
-                a = i(56),
-                s = (i(22), i(45)),
-                l = i(128),
-                h = i(36),
-                A = i(5),
-                c = i(24),
-                p = i(155),
-                u = i(39),
-                d = i(12),
-                g = i(81),
-                f = i(17);
-            i(7);
+module.exports = function (module, exports, require) {
+            var n = require(284),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(11),
+                a = require(56),
+                s = (require(22), require(45)),
+                l = require(128),
+                h = require(36),
+                A = require(5),
+                c = require(24),
+                p = require(155),
+                u = require(39),
+                d = require(12),
+                g = require(81),
+                f = require(17);
+            require(7);
 
             function m(e) {
                 p.call(this, e);
             }
-            (r.inherit(m, p),
+            (IsFiniteNonNegativeNumber.inherit(m, p),
                 h.exports(m, n),
                 (m.INSIDE_PART_ID = o.uuid()),
                 (m.OUTSIDE_PART_ID = o.uuid()),
@@ -33,11 +33,11 @@ module.exports = function (e, t, i) {
                         this.getPaintElement().iterateSegments(
                             function (e, t, r) {
                                 var o;
-                                (o = g.getAnnotationBBox(n, e, c.annotationHandles.polygon.size, !0)) &&
+                                (o = g.getAnnotationBBox(n, e, c.annotationHandles.polygon.size, true)) &&
                                     !o.isEmpty() &&
                                     (i = i ? i.united(o) : o);
                             }.bind(this),
-                            !0
+                            true
                         );
                     }
                     return i;
@@ -57,7 +57,7 @@ module.exports = function (e, t, i) {
                         var l = n.mapPoint(i),
                             h = this._element.getProperty("trf");
                         (h && (l = h.inverted().mapPoint(l)), this.createElementPreview());
-                        var c = this._element.getCenter(!1),
+                        var c = this._element.getCenter(false),
                             u = Math.atan2(l.getY() - c.getY(), l.getX() - c.getX()) - t,
                             g = d.ptDist(l.getX(), l.getY(), c.getX(), c.getY()),
                             f = this._element.getProperty("oa"),
@@ -104,7 +104,7 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (m.prototype._hasCenterCross = function () {
-                    return !0;
+                    return true;
                 }),
                 (m.prototype._postPaint = function (e, t) {
                     (p.prototype._postPaint.call(this, e, t), this._showSegmentDetails()) &&
@@ -131,9 +131,9 @@ module.exports = function (e, t, i) {
                                     ),
                                     c.annotationHandles.suppressRedundantCorners && n)
                                 )
-                                    return !0;
+                                    return true;
                             }.bind(this),
-                            !0
+                            true
                         );
                 }),
                 (m.prototype._getPartInfoAt = function (e, t, i) {
@@ -144,15 +144,15 @@ module.exports = function (e, t, i) {
                                 function (i, r, o) {
                                     if (
                                         g
-                                            .getAnnotationBBox(t, i, c.annotationHandles.polygon.size, !1)
+                                            .getAnnotationBBox(t, i, c.annotationHandles.polygon.size, false)
                                             .expanded(c.annotPickDistance, c.annotPickDistance, c.annotPickDistance, c.annotPickDistance)
                                             .containsPoint(e)
                                     ) {
                                         var a = r ? m.INSIDE_PART_ID : m.OUTSIDE_PART_ID;
-                                        return ((n = new u.PartInfo(this, a, o, !0, !0)), !0);
+                                        return ((n = new u.PartInfo(this, a, o, true, true)), true);
                                     }
                                 }.bind(this),
-                                !0
+                                true
                             ),
                             n)
                         )
@@ -166,5 +166,5 @@ module.exports = function (e, t, i) {
                 (m.prototype.toString = function () {
                     return "[Object GPolygonEditor]";
                 }),
-                (e.exports = m));
+                (module.exports = m));
         };

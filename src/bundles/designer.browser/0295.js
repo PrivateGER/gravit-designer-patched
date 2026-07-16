@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(213),
-            i = n(21),
-            a = n(23).String;
-        e.exports =
+        var o = require(213),
+            i = require(21),
+            a = require(23 /* RegExp */).String;
+        module.exports =
             !!Object.getOwnPropertySymbols &&
             !i(function () {
                 var e = Symbol("symbol detection");

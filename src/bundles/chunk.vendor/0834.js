@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            i(30);
+            require(30);
             const {
                 TYPES: { TYPE: n },
                 ACTIONS: { ACTION: r },
-            } = i(585);
+            } = require(585);
             class o {
                 constructor(e) {
                     Object.assign(this, e);
@@ -19,5 +19,5 @@ module.exports = function (e, t, i) {
             ((o.from = function (e) {
                 return new o(e);
             }),
-                (e.exports = o));
+                (module.exports = o));
         };

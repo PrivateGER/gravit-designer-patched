@@ -1,20 +1,20 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(8), n(20), n(3), n(34));
-        var i = n(1),
-            a = o(n(443));
+        var o = require(16);
+        (require(8 /* Symbol */), require(20), require(3), require(34));
+        var GObject = require(1),
+            a = o(require(443));
         const { isExecutingOnMSTeamsSync: r } = a.default;
-        var s = n(18),
-            l = n(31);
-        const c = n(1152),
-            d = n(44),
-            u = n(1631),
-            p = n(78);
+        var GCategory = require(18),
+            l = require(31);
+        const c = require(1152),
+            GSystemDialog = require(44),
+            GFilesPanelViewSharepoint = require(1631),
+            p = require(78);
         function g() {}
-        (i.GObject.inherit(g, l),
+        (GObject.GObject.inherit(g, l),
             (g.ID = "file.sharepoint-checkin"),
-            (g.TITLE = new i.GLocaleKey("GSharePointCheckInAction", "title")),
+            (g.TITLE = new GObject.GLocaleKey("GSharePointCheckInAction", "title")),
             (g.prototype.getId = function () {
                 return g.ID;
             }),
@@ -22,7 +22,7 @@ module.exports = function (e, t, n) {
                 return g.TITLE;
             }),
             (g.prototype.getCategory = function () {
-                return s.CATEGORY_FILE;
+                return GCategory.CATEGORY_FILE;
             }),
             (g.prototype.getGroup = function () {
                 return "file";
@@ -31,9 +31,9 @@ module.exports = function (e, t, n) {
                 return !!this._isSupported() && gDesigner.getActiveDocument().getStorageItem().isCheckedOutByMe();
             }),
             (g.prototype._isSupported = function () {
-                if (!r()) return !1;
+                if (!r()) return false;
                 const e = gDesigner.getActiveDocument();
-                if (!e) return !1;
+                if (!e) return false;
                 const t = e.getStorageItem();
                 return !!t && t instanceof c.Item;
             }),
@@ -44,8 +44,8 @@ module.exports = function (e, t, n) {
                 try {
                     const e = gDesigner.getActiveDocument();
                     if (e.isModified())
-                        return void d.alert(
-                            i.GLocale.get(new i.GLocaleKey("GSharePointCheckInAction", "text.doc-modified-save-before-check-in")).replace(
+                        return void GSystemDialog.alert(
+                            GObject.GLocale.get(new GObject.GLocaleKey("GSharePointCheckInAction", "text.doc-modified-save-before-check-in")).replace(
                                 "%title",
                                 e.getTitle()
                             )
@@ -53,16 +53,16 @@ module.exports = function (e, t, n) {
                     const t = e.getStorageItem(),
                         n = t.getCloudClient(),
                         o = await n.getLibrarySettings();
-                    await u.openCheckInDialog(o).then(async (n) => {
+                    await GFilesPanelViewSharepoint.openCheckInDialog(o).then(async (n) => {
                         let { ok: o, comment: i, type: a } = n;
                         o && (await t.checkIn(i, a), gDesigner.trigger(new p(p.Type.SynchronismUpdated, e)));
                     });
                 } catch (e) {
-                    d.alert(e.message);
+                    GSystemDialog.alert(e.message);
                 }
             }),
             (g.prototype.toString = function () {
                 return "[Object GSharePointCheckInAction]";
             }),
-            (e.exports = g));
+            (module.exports = g));
     };

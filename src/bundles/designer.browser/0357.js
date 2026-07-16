@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(1),
-            i = n(1073);
-        ((i.DESIGNER.HIGHLIGHTOUTLINE_COLOR = new o.GRGBColor([197, 17, 98])),
-            (i.PURCHASEPANEL.HAS_PRODUCT_DESCRIPTION = !1),
+        var GObject = require(1),
+            i = require(1073);
+        ((i.DESIGNER.HIGHLIGHTOUTLINE_COLOR = new GObject.GRGBColor([197, 17, 98])),
+            (i.PURCHASEPANEL.HAS_PRODUCT_DESCRIPTION = false),
             (i.USERLOGIN.loadLogo = () => {}),
-            (e.exports = i));
+            (module.exports = i));
     };

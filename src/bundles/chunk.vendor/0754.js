@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(384);
+module.exports = function (module, exports, require) {
+            var n = require(384);
 
             function r() {
-                n.call(this, !1, !1);
+                n.call(this, false, false);
             }
-            (i(0).inherit(r, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(r, n),
                 (r.prototype._getNumberOfPoints = function () {
                     return 5;
                 }),
@@ -17,5 +17,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.toString = function () {
                     return "[Object GStarTool]";
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

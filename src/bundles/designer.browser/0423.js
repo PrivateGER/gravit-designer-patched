@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(21),
-            i = n(43),
-            a = n(49),
-            r = n(74),
+        var o = require(21),
+            i = require(43),
+            a = require(49),
+            r = require(74),
             s = i("iterator");
-        e.exports = !o(function () {
+        module.exports = !o(function () {
             var e = new URL("b?a=1&b=2&c=3", "https://a"),
                 t = e.searchParams,
                 n = new URLSearchParams("a=1&a=2&b=3"),

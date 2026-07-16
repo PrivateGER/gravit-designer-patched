@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            e.exports = function (e) {
+            module.exports = function (e) {
                 e.QA = {
                     isEnabled: () =>
                         e
                             .GET("/qa")
-                            .then(() => !0)
-                            .catch(() => !1),
+                            .then(() => true)
+                            .catch(() => false),
                     listUsers: (t) => e.GET("/qa/users", t),
                     insertAccount: (t) =>
                         e.fetchJSON("/qa/user", {

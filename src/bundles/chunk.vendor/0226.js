@@ -1,17 +1,17 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             var n,
                 r,
                 o,
-                a = i(0),
-                s = i(103),
-                l = i(111),
-                h = i(205),
-                A = i(470);
+                IsFiniteNonNegativeNumber = require(0),
+                DUMP_IMAGES = require(103),
+                l = require(111),
+                h = require(205),
+                A = require(470);
 
             function c() {
                 throw new Error("This class cannot be instantiated");
             }
-            a.inherit(c, a);
+            IsFiniteNonNegativeNumber.inherit(c, IsFiniteNonNegativeNumber);
             var p,
                 u,
                 d = (function () {
@@ -207,32 +207,32 @@ module.exports = function (e, t, i) {
                 })();
 
             function g() {
-                return s.isRenderPhase()
-                    ? (o || (o = s.getRenderer(void 0, void 0, void 0, !0)), o)
-                    : (r || (r = s.getRenderer(void 0, void 0, void 0, !0)), r);
+                return DUMP_IMAGES.isRenderPhase()
+                    ? (o || (o = DUMP_IMAGES.getRenderer(void 0, void 0, void 0, true)), o)
+                    : (r || (r = DUMP_IMAGES.getRenderer(void 0, void 0, void 0, true)), r);
             }
 
             function f() {
                 var e =
-                        s.getRenderer(
-                            !0,
+                        DUMP_IMAGES.getRenderer(
+                            true,
                             "webgl",
                             {
-                                premultipliedAlpha: !1,
+                                premultipliedAlpha: false,
                             },
-                            !0
+                            true
                         ) ||
-                        s.getRenderer(
-                            !0,
+                        DUMP_IMAGES.getRenderer(
+                            true,
                             "experimental-webgl",
                             {
-                                premultipliedAlpha: !1,
+                                premultipliedAlpha: false,
                             },
-                            !0
+                            true
                         ),
-                    t = !1;
+                    t = false;
                 return (
-                    s.isRenderPhase() || s.isMultiThreaded(e) || (t = !0),
+                    DUMP_IMAGES.isRenderPhase() || DUMP_IMAGES.isMultiThreaded(e) || (t = true),
                     e.SUPPORTED_TEXTURE_FORMAT === e.FLOAT
                         ? (e.getExtension("OES_texture_float", t), e.getExtension("OES_texture_float_linear", t))
                         : e.SUPPORTED_TEXTURE_FORMAT === e.HALF_FLOAT &&
@@ -290,15 +290,15 @@ module.exports = function (e, t, i) {
                     if (p) {
                         if (p instanceof WebGLRenderingContext) return p;
                         if (
-                            (s.isMultiThreaded(p) && (u || s.isMultiThreaded() || (u = f())),
-                            s.isMultiThreaded() && !s.isMultiThreaded(p) && ((u = p), !(p = f()).__multiThreaded))
+                            (DUMP_IMAGES.isMultiThreaded(p) && (u || DUMP_IMAGES.isMultiThreaded() || (u = f())),
+                            DUMP_IMAGES.isMultiThreaded() && !DUMP_IMAGES.isMultiThreaded(p) && ((u = p), !(p = f()).__multiThreaded))
                         )
                             throw new Error("WTF");
-                        return s.isRenderPhase()
-                            ? s.isMultiThreaded(p) && !s.isMultiThreaded()
+                        return DUMP_IMAGES.isRenderPhase()
+                            ? DUMP_IMAGES.isMultiThreaded(p) && !DUMP_IMAGES.isMultiThreaded()
                                 ? u
                                 : p
-                            : s.isMultiThreaded(p)
+                            : DUMP_IMAGES.isMultiThreaded(p)
                               ? u.__realCtx
                               : p.__realCtx;
                     }
@@ -316,18 +316,18 @@ module.exports = function (e, t, i) {
                             function (e) {
                                 e.preventDefault();
                             },
-                            !1
+                            false
                         ),
                         e.addEventListener(
                             "webglcontextrestored",
                             function () {
                                 p = null;
                             },
-                            !1
+                            false
                         ),
                         p
                     );
                 }),
                 (c.GLTexture = d),
-                (e.exports = c));
+                (module.exports = c));
         };

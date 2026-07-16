@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(23),
-            i = n(421),
-            a = n(422),
-            r = n(671),
-            s = n(100),
+        var RegExp = require(23),
+            i = require(421),
+            a = require(422),
+            r = require(671),
+            s = require(100),
             l = function (e) {
                 if (e && e.forEach !== r)
                     try {
@@ -13,6 +13,6 @@ module.exports = function (e, t, n) {
                         e.forEach = r;
                     }
             };
-        for (var c in i) i[c] && l(o[c] && o[c].prototype);
+        for (var c in i) i[c] && l(RegExp[c] && RegExp[c].prototype);
         l(a);
     };

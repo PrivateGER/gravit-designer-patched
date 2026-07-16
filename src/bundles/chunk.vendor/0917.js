@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
-            var n = i(148),
-                r = i(510),
-                o = i(509),
-                a = i(368);
+module.exports = function (module, exports, require) {
+            var n = require(148),
+                r = require(510),
+                o = require(509),
+                a = require(368);
 
             function s(e, t) {
                 var i, n;
@@ -21,7 +21,7 @@ module.exports = function (e, t, i) {
                 if (!(n = s.section(n, t))) throw new Error("Couldn't measure space");
                 ((this.text = i),
                     (this.space = n),
-                    e || (this.eof = !0),
+                    e || (this.eof = true),
                     (this.ascent = Math.max(i.ascent, n.ascent)),
                     (this.descent = Math.max(i.descent, n.descent)),
                     (this.minY = i.minY),
@@ -41,7 +41,7 @@ module.exports = function (e, t, i) {
                 (s.prototype.maxX = 0),
                 (s.prototype.width = 0),
                 (s.prototype.length = 0),
-                (s.prototype.eof = !1),
+                (s.prototype.eof = false),
                 (s.prototype.isNewLine = function () {
                     return 1 == this.text.parts.length && this.text.parts[0].isNewLine;
                 }),
@@ -104,7 +104,7 @@ module.exports = function (e, t, i) {
                     ("number" != typeof n && (n = Number.MAX_VALUE),
                         [this.text, this.space].forEach(function (t) {
                             t.parts.some(function (t) {
-                                if (i >= n || n <= 0) return !0;
+                                if (i >= n || n <= 0) return true;
                                 var r = t.run,
                                     o = r.text;
                                 if ("string" == typeof o) {
@@ -157,5 +157,5 @@ module.exports = function (e, t, i) {
                     var s = a.parts[a.parts.length - 1];
                     return (s && ((a.lastGlyphWidth = s.lastGlyphWidth), (a.lastGlyphAdvance = s.lastGlyphAdvance)), a);
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

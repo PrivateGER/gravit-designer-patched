@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(23),
-            i = n(21),
-            a = n(343),
-            r = n(152).NATIVE_ARRAY_BUFFER_VIEWS,
-            s = o.ArrayBuffer,
-            l = o.Int8Array;
-        e.exports =
+        var RegExp = require(23),
+            i = require(21),
+            a = require(343),
+            r = require(152 /* NATIVE_ARRAY_BUFFER_VIEWS */).NATIVE_ARRAY_BUFFER_VIEWS,
+            s = RegExp.ArrayBuffer,
+            l = RegExp.Int8Array;
+        module.exports =
             !r ||
             !i(function () {
                 l(1);
@@ -16,7 +16,7 @@ module.exports = function (e, t, n) {
             }) ||
             !a(function (e) {
                 (new l(), new l(null), new l(1.5), new l(e));
-            }, !0) ||
+            }, true) ||
             i(function () {
                 return 1 !== new l(new s(2), 1, void 0).length;
             });

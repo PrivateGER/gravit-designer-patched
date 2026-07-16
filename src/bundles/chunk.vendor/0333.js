@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
-            var n = i(7),
-                r = i(5),
-                o = i(24),
-                a = i(14);
+module.exports = function (module, exports, require) {
+            var n = require(7),
+                r = require(5),
+                o = require(24),
+                a = require(14);
 
             function s() {}
             ((s.prototype._isPanning = null),
@@ -12,10 +12,10 @@ module.exports = function (e, t, i) {
                     return this._isPanning;
                 }),
                 (s.prototype.beginPan = function () {
-                    ((this._isPanning = !0),
+                    ((this._isPanning = true),
                         this._view.beginPan({
-                            quickRender: !1,
-                            noWebGL: !1,
+                            quickRender: false,
+                            noWebGL: false,
                         }),
                         this._resetPan());
                 }),
@@ -83,7 +83,7 @@ module.exports = function (e, t, i) {
                     return this._translationMovement;
                 }),
                 (s.prototype.endPan = function (e) {
-                    this.isPanning() && ((this._isPanning = !1), this._view.finishPan(e));
+                    this.isPanning() && ((this._isPanning = false), this._view.finishPan(e));
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

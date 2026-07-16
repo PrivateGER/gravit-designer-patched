@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(15),
-            a = n(18),
-            r = n(106);
+        require(3);
+        var GObject = require(1),
+            GPlatform = require(15),
+            GCategory = require(18),
+            r = require(106);
         function s() {}
-        (o.GObject.inherit(s, r),
+        (GObject.GObject.inherit(s, r),
             (s.ID = "modify.join-paths"),
-            (s.TITLE = new o.GLocaleKey("GJoinPathsAction", "title")),
+            (s.TITLE = new GObject.GLocaleKey("GJoinPathsAction", "title")),
             (s.prototype.getId = function () {
                 return s.ID;
             }),
@@ -16,7 +16,7 @@ module.exports = function (e, t, n) {
                 return s.TITLE;
             }),
             (s.prototype.getCategory = function () {
-                return a.CATEGORY_MODIFY_PATH;
+                return GCategory.CATEGORY_MODIFY_PATH;
             }),
             (s.prototype.getGroup = function () {
                 return "structure/path";
@@ -25,22 +25,22 @@ module.exports = function (e, t, n) {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-join-paths" : null;
             }),
             (s.prototype.getShortcut = function () {
-                return [i.GKey.Constant.META, "J"];
+                return [GPlatform.GKey.Constant.META, "J"];
             }),
             (s.prototype.isEnabled = function () {
-                if (!r.prototype.isEnabled.call(this)) return !1;
+                if (!r.prototype.isEnabled.call(this)) return false;
                 var e = gDesigner.getActiveDocument();
                 if (e) {
                     var t = e.getEditor().getSelection();
                     if (t && t.length > 1)
                         for (var n = 0, i = 0; i < t.length; ++i)
                             if (
-                                !(t[i] instanceof o.GImage) &&
-                                ((t[i] instanceof o.GPathBase || t[i].hasMixin(o.GVertexSource)) && n++, 2 === n)
+                                !(t[i] instanceof GObject.GImage) &&
+                                ((t[i] instanceof GObject.GPathBase || t[i].hasMixin(GObject.GVertexSource)) && n++, 2 === n)
                             )
-                                return !0;
+                                return true;
                 }
-                return !1;
+                return false;
             }),
             (s.prototype.execute = function () {
                 var e = gDesigner.getActiveDocument().getEditor(),
@@ -48,17 +48,17 @@ module.exports = function (e, t, n) {
                 if (t && t.length) {
                     e.beginTransaction();
                     try {
-                        var n = new o.GRectangle();
-                        (o.GElement.prototype.assignFrom.call(n, t[0]), e.convertSelectionToPaths(!0));
+                        var n = new GObject.GRectangle();
+                        (GObject.GElement.prototype.assignFrom.call(n, t[0]), e.convertSelectionToPaths(true));
                         var i = e.joinPaths();
-                        i && (o.GElement.prototype.assignFrom.call(i, n), e.updateSelection(!1, [i]));
+                        i && (GObject.GElement.prototype.assignFrom.call(i, n), e.updateSelection(false, [i]));
                     } finally {
-                        e.commitTransaction(o.GLocale.get(this.getTitle()));
+                        e.commitTransaction(GObject.GLocale.get(this.getTitle()));
                     }
                 }
             }),
             (s.prototype.toString = function () {
                 return "[Object GJoinPathsAction]";
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

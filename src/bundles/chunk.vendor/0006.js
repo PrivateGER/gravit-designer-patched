@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(5),
-                r = i(12);
+module.exports = function (module, exports, require) {
+            var n = require(5),
+                r = require(12);
 
             function o(e, t, i, n) {
                 ((this._x = e || 0), (this._y = t || 0), (this._width = i || 0), (this._height = n || 0));
@@ -69,8 +69,8 @@ module.exports = function (e, t, i) {
                 (o.prototype.containsPointXY = function (e, t, i) {
                     var n = this._x,
                         r = this._x;
-                    if ((this._width < 0 ? (n += this._width) : (r += this._width), !i && n == r)) return !1;
-                    if (e < n || e > r) return !1;
+                    if ((this._width < 0 ? (n += this._width) : (r += this._width), !i && n == r)) return false;
+                    if (e < n || e > r) return false;
                     var o = this._y,
                         a = this._y;
                     return (this._height < 0 ? (o += this._height) : (a += this._height), !(!i && o == a) && !(t < o || t > a));
@@ -78,14 +78,14 @@ module.exports = function (e, t, i) {
                 (o.prototype.containsRect = function (e, t) {
                     var i = this._x,
                         n = this._x;
-                    if ((this._width < 0 ? (i += this._width) : (n += this._width), !t && i == n)) return !1;
+                    if ((this._width < 0 ? (i += this._width) : (n += this._width), !t && i == n)) return false;
                     var r = e._x,
                         o = e._x;
-                    if ((e._width < 0 ? (r += e._width) : (o += e._width), !t && r == o)) return !1;
-                    if (r < i || o > n) return !1;
+                    if ((e._width < 0 ? (r += e._width) : (o += e._width), !t && r == o)) return false;
+                    if (r < i || o > n) return false;
                     var a = this._y,
                         s = this._y;
-                    if ((this._height < 0 ? (a += this._height) : (s += this._height), !t && a == s)) return !1;
+                    if ((this._height < 0 ? (a += this._height) : (s += this._height), !t && a == s)) return false;
                     var l = e._y,
                         h = e._y;
                     return (e._height < 0 ? (l += e._height) : (h += e._height), !(!t && l == h) && !(l < a || h > s));
@@ -96,14 +96,14 @@ module.exports = function (e, t, i) {
                 (o.prototype.intersectsRectXYWH = function (e, t, i, n, r) {
                     var o = this._x,
                         a = this._x;
-                    if ((this._width < 0 ? (o += this._width) : (a += this._width), !r && o == a)) return !1;
+                    if ((this._width < 0 ? (o += this._width) : (a += this._width), !r && o == a)) return false;
                     var s = e,
                         l = e;
-                    if ((i < 0 ? (s += i) : (l += i), !r && s == l)) return !1;
-                    if (o > l || s > a || (!r && (o == l || s == a))) return !1;
+                    if ((i < 0 ? (s += i) : (l += i), !r && s == l)) return false;
+                    if (o > l || s > a || (!r && (o == l || s == a))) return false;
                     var h = this._y,
                         A = this._y;
-                    if ((this._height < 0 ? (h += this._height) : (A += this._height), !r && h == A)) return !1;
+                    if ((this._height < 0 ? (h += this._height) : (A += this._height), !r && h == A)) return false;
                     var c = t,
                         p = t;
                     return (n < 0 ? (c += n) : (p += n), !(!r && c == p) && !(h > p || c > A || !(r || (h != p && c != A))));
@@ -336,5 +336,5 @@ module.exports = function (e, t, i) {
                 (o.prototype.toString = function () {
                     return "[Object GRect(x=" + this._x + ", y=" + this._y + ", width=" + this._width + ", height=" + this._height + ")]";
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(7);
-            e.exports = function (e) {
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(7);
+            module.exports = function (e) {
                 ((e.Transform = function () {}),
                     (e.Transform.MinimalDimention = 1e-6),
                     (e.Transform.prototype.getTransform = function () {
@@ -35,7 +35,7 @@ module.exports = function (e, t, i) {
                     (e.Transform.prototype.isTransformChildren = function (e, t) {
                         var i = this._scene ? this._scene.getTransformSettings() : null,
                             n = i ? i.inheritedGlobal : null;
-                        return t || n || ((void 0 === n || null == n) && this.getProperty("scc", !1, !0));
+                        return t || n || ((void 0 === n || null == n) && this.getProperty("scc", false, true));
                     }),
                     (e.Transform.prototype.assignPreTransformFrom = function (t, i) {
                         var n = (i.hasMixin(e.Transform) && i.getTransform()) || new r();
@@ -47,11 +47,11 @@ module.exports = function (e, t, i) {
                     }),
                     (e.Transform.prototype._transformChildren = function (t, i, r) {
                         if (this.hasMixin(n.Container))
-                            for (var o = this.getFirstChild(!0); null != o; o = o.getNext(!0))
+                            for (var o = this.getFirstChild(true); null != o; o = o.getNext(true))
                                 o instanceof e &&
                                     o.hasMixin(e.Transform) &&
                                     (!r || r.indexOf(o) < 0) &&
-                                    ((o.dependentUpdate = !0), o.transform(t, i, r), (o.dependentUpdate = !1));
+                                    ((o.dependentUpdate = true), o.transform(t, i, r), (o.dependentUpdate = false));
                     }),
                     (e.Transform.prototype.toString = function () {
                         return "[Mixin GElement.Transform]";

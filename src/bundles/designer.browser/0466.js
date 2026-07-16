@@ -1,18 +1,18 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(94),
-            i = n(310),
-            a = n(311),
-            r = n(467),
-            s = n(468);
+        var o = require(94),
+            i = require(310),
+            a = require(311),
+            r = require(467),
+            s = require(468);
         function l(e) {
             return ((e >>> 24) & 255) + ((e >>> 8) & 65280) + ((65280 & e) << 8) + ((255 & e) << 24);
         }
         function c() {
             ((this.mode = 0),
-                (this.last = !1),
+                (this.last = false),
                 (this.wrap = 0),
-                (this.havedict = !1),
+                (this.havedict = false),
                 (this.flags = 0),
                 (this.dmax = 0),
                 (this.check = 0),
@@ -86,7 +86,7 @@ module.exports = function (e, t, n) {
         }
         var h,
             f,
-            m = !0;
+            m = true;
         function y(e) {
             if (m) {
                 var t;
@@ -95,7 +95,7 @@ module.exports = function (e, t, n) {
                 for (; t < 280; ) e.lens[t++] = 7;
                 for (; t < 288; ) e.lens[t++] = 8;
                 for (s(1, e.lens, 0, 288, h, 0, e.work, { bits: 9 }), t = 0; t < 32; ) e.lens[t++] = 5;
-                (s(2, e.lens, 0, 32, f, 0, e.work, { bits: 5 }), (m = !1));
+                (s(2, e.lens, 0, 32, f, 0, e.work, { bits: 5 }), (m = false));
             }
             ((e.lencode = h), (e.lenbits = 9), (e.distcode = f), (e.distbits = 5));
         }
@@ -114,14 +114,14 @@ module.exports = function (e, t, n) {
                 0
             );
         }
-        ((t.inflateReset = u),
-            (t.inflateReset2 = p),
-            (t.inflateResetKeep = d),
-            (t.inflateInit = function (e) {
+        ((exports.inflateReset = u),
+            (exports.inflateReset2 = p),
+            (exports.inflateResetKeep = d),
+            (exports.inflateInit = function (e) {
                 return g(e, 15);
             }),
-            (t.inflateInit2 = g),
-            (t.inflate = function (e, t) {
+            (exports.inflateInit2 = g),
+            (exports.inflate = function (e, t) {
                 var n,
                     c,
                     d,
@@ -183,7 +183,7 @@ module.exports = function (e, t, n) {
                                     (n.mode = 2));
                                 break;
                             }
-                            if (((n.flags = 0), n.head && (n.head.done = !1), !(1 & n.wrap) || (((255 & f) << 8) + (f >> 8)) % 31)) {
+                            if (((n.flags = 0), n.head && (n.head.done = false), !(1 & n.wrap) || (((255 & f) << 8) + (f >> 8)) % 31)) {
                                 ((e.msg = "incorrect header check"), (n.mode = 30));
                                 break;
                             }
@@ -303,7 +303,7 @@ module.exports = function (e, t, n) {
                                 }
                                 ((f = 0), (m = 0));
                             }
-                            (n.head && ((n.head.hcrc = (n.flags >> 9) & 1), (n.head.done = !0)), (e.adler = n.check = 0), (n.mode = 12));
+                            (n.head && ((n.head.hcrc = (n.flags >> 9) & 1), (n.head.done = true)), (e.adler = n.check = 0), (n.mode = 12));
                             break;
                         case 10:
                             for (; m < 32; ) {
@@ -680,16 +680,16 @@ module.exports = function (e, t, n) {
                           L)
                 );
             }),
-            (t.inflateEnd = function (e) {
+            (exports.inflateEnd = function (e) {
                 if (!e || !e.state) return -2;
                 var t = e.state;
                 return (t.window && (t.window = null), (e.state = null), 0);
             }),
-            (t.inflateGetHeader = function (e, t) {
+            (exports.inflateGetHeader = function (e, t) {
                 var n;
-                return e && e.state ? (0 == (2 & (n = e.state).wrap) ? -2 : ((n.head = t), (t.done = !1), 0)) : -2;
+                return e && e.state ? (0 == (2 & (n = e.state).wrap) ? -2 : ((n.head = t), (t.done = false), 0)) : -2;
             }),
-            (t.inflateSetDictionary = function (e, t) {
+            (exports.inflateSetDictionary = function (e, t) {
                 var n,
                     o = t.length;
                 return e && e.state
@@ -702,5 +702,5 @@ module.exports = function (e, t, n) {
                             : ((n.havedict = 1), 0)
                     : -2;
             }),
-            (t.inflateInfo = "pako inflate (from Nodeca project)"));
+            (exports.inflateInfo = "pako inflate (from Nodeca project)"));
     };

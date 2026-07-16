@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(21),
-            i = n(23).RegExp,
+        var o = require(21),
+            i = require(23 /* RegExp */).RegExp,
             a = o(function () {
                 var e = i("a", "y");
                 return ((e.lastIndex = 2), null !== e.exec("abcd"));
@@ -17,5 +17,5 @@ module.exports = function (e, t, n) {
                     var e = i("^r", "gy");
                     return ((e.lastIndex = 2), null !== e.exec("str"));
                 });
-        e.exports = { BROKEN_CARET: s, MISSED_STICKY: r, UNSUPPORTED_Y: a };
+        module.exports = { BROKEN_CARET: s, MISSED_STICKY: r, UNSUPPORTED_Y: a };
     };

@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             (function (e, n) {
-                const r = i(250),
+                const r = require(250),
                     {
                         UTSRoot: o,
                         Page: a,
@@ -12,7 +12,7 @@ module.exports = function (e, t, i) {
                         CommentType: p,
                         AnnotationProperties: u,
                         AuthorProperties: d,
-                    } = i(1096),
+                    } = require(1096),
                     {
                         CDAAnnotationsList: g,
                         CDAAnnotation: f,
@@ -20,26 +20,26 @@ module.exports = function (e, t, i) {
                         CDAComment: y,
                         CDACommentType: _,
                         CDAAnnotationType: v,
-                    } = i(1097),
-                    b = i(17),
-                    C = i(179),
-                    w = i(285),
-                    E = i(316),
-                    B = i(317),
-                    x = i(318),
-                    P = i(320),
-                    S = i(319),
-                    T = i(533),
-                    I = i(160),
-                    F = i(778),
-                    R = (i(45), i(60)),
-                    D = i(2),
-                    k = (i(28), i(48)),
-                    G = i(54),
-                    Q = i(11),
-                    M = i(6),
-                    N = i(7),
-                    U = i(82),
+                    } = require(1097),
+                    b = require(17),
+                    C = require(179),
+                    w = require(285),
+                    E = require(316),
+                    B = require(317),
+                    x = require(318),
+                    P = require(320),
+                    S = require(319),
+                    T = require(533),
+                    I = require(160),
+                    F = require(778),
+                    R = (require(45), require(60)),
+                    D = require(2),
+                    k = (require(28 /* GStylable */), require(48)),
+                    G = require(54),
+                    Q = require(11),
+                    M = require(6),
+                    N = require(7),
+                    GEditor = require(82),
                     V = new RegExp("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
 
                 function O(e) {
@@ -122,7 +122,7 @@ module.exports = function (e, t, i) {
                 function j(e, t) {
                     ((e.CreationTime = t.time),
                         (e.Guid = t.Guid || z(t["@id"])),
-                        (e.IsResolved = t.rsv || !1),
+                        (e.IsResolved = t.rsv || false),
                         (e.ModificationTime = t.mtime || 0),
                         (e.ReadBy = (t.read && t.read.slice()) || []),
                         (e.Removed = t.rmd),
@@ -249,7 +249,7 @@ module.exports = function (e, t, i) {
                                 ((h.x = l.x), (h.y = l.y));
                             }
                             ((e.Curves = A), (e.TargetGuid = t.targetGuid || null));
-                            var w = s.getGeometryBBox(!0);
+                            var w = s.getGeometryBBox(true);
                             w && ((e.TopLeftX = w.getX()), (e.TopLeftY = w.getY()), (e.Width = w.getWidth()), (e.Height = w.getHeight()));
                         })(t.Shape, e, t.Properties.Meta),
                         (t.Properties.Meta.CDA.vis = e.vis),
@@ -375,14 +375,14 @@ module.exports = function (e, t, i) {
                                 e.Annotation.Properties.Meta.CDA &&
                                 e.Annotation.Properties.Meta.CDA.vis),
                             (function (e, t) {
-                                if (t.Annotation && t.Annotation.Properties.IsResolved) return void (e.rsv = !0);
+                                if (t.Annotation && t.Annotation.Properties.IsResolved) return void (e.rsv = true);
                                 if (t.Annotation && t.Comments)
                                     for (let i = t.Comments.length - 1; i >= 0; i--) {
                                         let n = t.Comments[i];
                                         if (n.Properties.Type !== p.COMMON)
                                             return void (n.Properties.Type === p.RESOLVED
-                                                ? (e.rsv = !0)
-                                                : n.Properties.Type === p.REOPENED && (e.rsv = !1));
+                                                ? (e.rsv = true)
+                                                : n.Properties.Type === p.REOPENED && (e.rsv = false));
                                     }
                                 e.rsv = void 0;
                             })(t, e),
@@ -390,7 +390,7 @@ module.exports = function (e, t, i) {
                                 if (!t) return;
                                 var n,
                                     r = new I(new F()),
-                                    o = new U(r);
+                                    o = new GEditor(r);
                                 if (t.Type === c.ARROW) n = new S();
                                 else if (t.Type === c.COLLABORATIVE_TEXT) n = new T();
                                 else if (t.Type === c.ELLIPSE) n = new B();
@@ -401,7 +401,7 @@ module.exports = function (e, t, i) {
                                     if (t.Type !== c.RECTANGLE) return;
                                     n = new E();
                                 }
-                                if ((o.insertElements([n], !1, !0, !1), n.getPaintLayers())) {
+                                if ((o.insertElements([n], false, true, false), n.getPaintLayers())) {
                                     let e = t.FillColor;
                                     !e && i && i.CDA && i.CDA.FillColor && (e = i.CDA.FillColor);
                                     var a = n.getPaintLayers().getFillLayers()[0];
@@ -446,12 +446,12 @@ module.exports = function (e, t, i) {
                                                 ((t = Q.unpackPoint(i[r++])), e.addVertex(o, t[0], t[1]));
                                                 break;
                                             case k.Command.Close:
-                                                (e.addVertex(o), n.setProperty("closed", !0));
+                                                (e.addVertex(o), n.setProperty("closed", true));
                                         }
                                     }
                                     const o = C.createPathFromVertexSource(e);
                                     o && n.setAnchorPoints(o.cloneAnchorPoints());
-                                    const a = n.getGeometryBBox(!0);
+                                    const a = n.getGeometryBBox(true);
                                     let s, l, h, A;
                                     a ? ((s = a.getX()), (l = a.getY()), (h = a.getWidth()), (A = a.getHeight())) : (s = l = h = A = 0);
                                     const c = ee(t.Width, h),
@@ -461,7 +461,7 @@ module.exports = function (e, t, i) {
                                         : n.transform(new N().translated(-s, -l).translated(t.TopLeftX, t.TopLeftY));
                                 } else if (t.Type !== c.HOTSPOT) {
                                     let e = new N(),
-                                        i = n.getGeometryBBox(!0);
+                                        i = n.getGeometryBBox(true);
                                     if (i) {
                                         let t = new M(i.getX(), i.getY(), i.getWidth() || 1, i.getHeight() || 1),
                                             n = N.getNativeRectTransformation(t);
@@ -535,9 +535,9 @@ module.exports = function (e, t, i) {
                     (e.btoa = function (e) {
                         return e ? n.from(e, "binary").toString("base64") : "";
                     }),
-                    (e.TextDecoder = i(784).TextDecoder),
-                    (e.TextEncoder = i(784).TextEncoder)),
-                    (t.CDAtoUTS = function (e, t) {
+                    (e.TextDecoder = require(784 /* TextDecoder */).TextDecoder),
+                    (e.TextEncoder = require(784 /* TextDecoder */).TextEncoder)),
+                    (exports.CDAtoUTS = function (e, t) {
                         if (Y(e)) return e;
                         if (e.annotationsCollection) {
                             if (Y((e = e.annotationsCollection))) return e;
@@ -545,32 +545,32 @@ module.exports = function (e, t, i) {
                         var i = new o();
                         return ((i.Comments.FileId = t), (i.Comments.Pages = $(e)), JSON.parse(JSON.stringify(i)));
                     }),
-                    (t.UTStoCDA = function (e) {
+                    (exports.UTStoCDA = function (e) {
                         if (!Y(e)) return e;
                         var t = e,
                             i = re(t && t.Comments && t.Comments.Pages);
                         return JSON.parse(JSON.stringify(i));
                     }),
-                    (t.AnnotationType = {
+                    (exports.AnnotationType = {
                         COMMENT: "COMMENT",
                         SUB_ROOT: "SUB_ROOT",
                         ROOT: "ROOT",
                         PAGE: "PAGE",
                         THREAD: "THREAD",
                     }),
-                    (t.isUTS = Y),
-                    (t.IdToGuid = z),
-                    (t.GuidToId = W),
-                    (t.isGuid = H),
-                    (t.isFakeCDAGuid = X),
-                    (t.guidReg = V),
-                    (t.convertToPageArray = $),
-                    (t.convertToCDAAnnotationsListArray = re),
-                    (t.atobUtf = O),
-                    (t.btoaUtf = L),
-                    (t.convertProperties = j),
-                    (t.convertAuthor = J),
-                    (t.convertAuthorToCDA = te),
-                    (t.convertToCDAAnnotation = ne));
-            }).call(this, i(109), i(221).Buffer);
+                    (exports.isUTS = Y),
+                    (exports.IdToGuid = z),
+                    (exports.GuidToId = W),
+                    (exports.isGuid = H),
+                    (exports.isFakeCDAGuid = X),
+                    (exports.guidReg = V),
+                    (exports.convertToPageArray = $),
+                    (exports.convertToCDAAnnotationsListArray = re),
+                    (exports.atobUtf = O),
+                    (exports.btoaUtf = L),
+                    (exports.convertProperties = j),
+                    (exports.convertAuthor = J),
+                    (exports.convertAuthorToCDA = te),
+                    (exports.convertToCDAAnnotation = ne));
+            }).call(this, require(109), require(221 /* Buffer */).Buffer);
         };

@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(19), i(8), i(20), i(107), i(3), i(26), i(114));
-            const { DateAPI: n } = i(209),
-                r = i(287);
-            e.exports = {
+            (require(19), require(8 /* Symbol */), require(20), require(107), require(3), require(26), require(114));
+            const { DateAPI: n } = require(209 /* GLocale */),
+                GShareRoles = require(287);
+            module.exports = {
                 sinceVersion: "3.4.5",
                 sinceDate: new Date(2018, 8, 15),
                 providers: {
@@ -56,12 +56,12 @@ module.exports = function (e, t, i) {
                 maxTrialPeriod: 45,
                 defaultTrialPeriod: 15,
                 publicUserSettings: {
-                    trialDays: !0,
+                    trialDays: true,
                     flags: {
-                        welcomeMessage: !0,
-                        windowsStoreAnnouncement: !0,
+                        welcomeMessage: true,
+                        windowsStoreAnnouncement: true,
                     },
-                    subscription: !0,
+                    subscription: true,
                 },
                 defaultLegacyUserSettings: {
                     features: [
@@ -110,11 +110,11 @@ module.exports = function (e, t, i) {
                         proExpireSoon: n.daysToMilliseconds(30),
                     },
                     flags: {
-                        welcomeMessage: !1,
-                        windowsStoreAnnouncement: !1,
-                        proOfferSpecialPrice: !1,
-                        proOfferInTrialExpireSoon: !0,
-                        proOfferInTrialLastWarning: !0,
+                        welcomeMessage: false,
+                        windowsStoreAnnouncement: false,
+                        proOfferSpecialPrice: false,
+                        proOfferInTrialExpireSoon: true,
+                        proOfferInTrialLastWarning: true,
                     },
                 },
                 quotas: {
@@ -122,14 +122,14 @@ module.exports = function (e, t, i) {
                     pro: -1,
                 },
                 share: {
-                    pro: !1,
+                    pro: false,
                     defaults: {
                         public: {
-                            role: r.Viewer,
+                            role: GShareRoles.Viewer,
                         },
                         private: {
-                            pro: !0,
-                            role: r.Reviewer,
+                            pro: true,
+                            role: GShareRoles.Reviewer,
                         },
                     },
                     quotas: {
@@ -143,7 +143,7 @@ module.exports = function (e, t, i) {
                         },
                     },
                 },
-                learnmore: !0,
-                bypassEmailVerification: !0,
+                learnmore: true,
+                bypassEmailVerification: true,
             };
         };

@@ -1,32 +1,32 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o,
             i,
             a,
             r,
-            s = n(23),
-            l = n(200),
-            c = n(124),
-            d = n(35),
-            u = n(61),
-            p = n(21),
-            g = n(406),
-            h = n(157),
-            f = n(242),
-            m = n(303),
-            y = n(410),
-            v = n(245),
-            _ = s.setImmediate,
-            b = s.clearImmediate,
-            w = s.process,
-            C = s.Dispatch,
-            x = s.Function,
-            S = s.MessageChannel,
-            E = s.String,
+            RegExp = require(23),
+            l = require(200),
+            c = require(124),
+            d = require(35),
+            u = require(61),
+            p = require(21),
+            g = require(406),
+            h = require(157),
+            f = require(242),
+            m = require(303),
+            y = require(410),
+            v = require(245),
+            _ = RegExp.setImmediate,
+            b = RegExp.clearImmediate,
+            w = RegExp.process,
+            C = RegExp.Dispatch,
+            x = RegExp.Function,
+            S = RegExp.MessageChannel,
+            E = RegExp.String,
             A = 0,
             T = {};
         p(function () {
-            o = s.location;
+            o = RegExp.location;
         });
         var G = function (e) {
                 if (u(T, e)) {
@@ -43,7 +43,7 @@ module.exports = function (e, t, n) {
                 G(e.data);
             },
             L = function (e) {
-                s.postMessage(E(e), o.protocol + "//" + o.host);
+                RegExp.postMessage(E(e), o.protocol + "//" + o.host);
             };
         ((_ && b) ||
             ((_ = function (e) {
@@ -71,8 +71,8 @@ module.exports = function (e, t, n) {
                     })
                   : S && !y
                     ? ((r = (a = new S()).port2), (a.port1.onmessage = D), (i = c(r.postMessage, r)))
-                    : s.addEventListener && d(s.postMessage) && !s.importScripts && o && "file:" !== o.protocol && !p(L)
-                      ? ((i = L), s.addEventListener("message", D, !1))
+                    : RegExp.addEventListener && d(RegExp.postMessage) && !RegExp.importScripts && o && "file:" !== o.protocol && !p(L)
+                      ? ((i = L), RegExp.addEventListener("message", D, false))
                       : (i =
                             "onreadystatechange" in f("script")
                                 ? function (e) {
@@ -83,5 +83,5 @@ module.exports = function (e, t, n) {
                                 : function (e) {
                                       setTimeout(P(e), 0);
                                   })),
-            (e.exports = { set: _, clear: b }));
+            (module.exports = { set: _, clear: b }));
     };

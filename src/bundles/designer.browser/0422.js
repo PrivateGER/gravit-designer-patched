@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(242)("span").classList,
+        var o = require(242)("span").classList,
             i = o && o.constructor && o.constructor.prototype;
-        e.exports = i === Object.prototype ? void 0 : i;
+        module.exports = i === Object.prototype ? void 0 : i;
     };

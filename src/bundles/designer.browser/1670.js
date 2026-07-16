@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(4), n(32), n(33));
-        n(1);
-        (n(85), n(1671));
+        (require(4), require(32), require(33));
+        require(1 /* GObject */);
+        (require(85), require(1671));
         function o(e) {
             this._storage = e;
         }
@@ -71,5 +71,5 @@ module.exports = function (e, t, n) {
                         }
                     });
             }),
-            (e.exports = o));
+            (module.exports = o));
     };

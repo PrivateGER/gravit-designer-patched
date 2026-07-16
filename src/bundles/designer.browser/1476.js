@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o = (function () {
             "use strict";
             return (
@@ -61,12 +61,12 @@ module.exports = function (e, t, n) {
                         (this.instance = "https://login.microsoftonline.com/"),
                         (this.config = {}),
                         (this.callback = null),
-                        (this.popUp = !1),
-                        (this.isAngular = !1),
+                        (this.popUp = false),
+                        (this.isAngular = false),
                         (this._user = null),
                         (this._activeRenewals = {}),
-                        (this._loginInProgress = !1),
-                        (this._acquireTokenInProgress = !1),
+                        (this._loginInProgress = false),
+                        (this._acquireTokenInProgress = false),
                         (this._renewStates = []),
                         (this._callBackMappedToRenewStates = {}),
                         (this._callBacksMappedToRenewStates = {}),
@@ -78,8 +78,8 @@ module.exports = function (e, t, n) {
                         throw new Error("displayCall is not a function");
                     if (!e.clientId) throw new Error("clientId is required");
                     ((this.config = this._cloneConfig(e)),
-                        void 0 === this.config.navigateToLoginRequestUrl && (this.config.navigateToLoginRequestUrl = !0),
-                        this.config.popUp && (this.popUp = !0),
+                        void 0 === this.config.navigateToLoginRequestUrl && (this.config.navigateToLoginRequestUrl = true),
+                        this.config.popUp && (this.popUp = true),
                         this.config.callback && "function" == typeof this.config.callback && (this.callback = this.config.callback),
                         this.config.instance && (this.instance = this.config.instance),
                         this.config.loginResource || (this.config.loginResource = this.config.clientId),
@@ -92,14 +92,14 @@ module.exports = function (e, t, n) {
                 }),
                 "undefined" != typeof window &&
                     (window.Logging = {
-                        piiLoggingEnabled: !1,
+                        piiLoggingEnabled: false,
                         level: 0,
                         log: function (e) {},
                     }),
                 (o.prototype.login = function () {
                     if (this._loginInProgress) this.info("Login in progress");
                     else {
-                        this._loginInProgress = !0;
+                        this._loginInProgress = true;
                         var e = this._guid();
                         ((this.config.state = e), (this._idTokenNonce = this._guid()));
                         var t = this._getItem(this.CONSTANTS.STORAGE.ANGULAR_LOGIN_REQUEST);
@@ -107,8 +107,8 @@ module.exports = function (e, t, n) {
                             this.verbose("Expected state: " + e + " startPage:" + t),
                             this._saveItem(this.CONSTANTS.STORAGE.LOGIN_REQUEST, t),
                             this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR, ""),
-                            this._saveItem(this.CONSTANTS.STORAGE.STATE_LOGIN, e, !0),
-                            this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN, this._idTokenNonce, !0),
+                            this._saveItem(this.CONSTANTS.STORAGE.STATE_LOGIN, e, true),
+                            this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN, this._idTokenNonce, true),
                             this._saveItem(this.CONSTANTS.STORAGE.ERROR, ""),
                             this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION, ""));
                         var n = this._getNavigateUrl("id_token", null) + "&nonce=" + encodeURIComponent(this._idTokenNonce);
@@ -135,8 +135,8 @@ module.exports = function (e, t, n) {
                     } catch (e) {
                         return (
                             this.warn("Error opening popup, " + e.message),
-                            (this._loginInProgress = !1),
-                            (this._acquireTokenInProgress = !1),
+                            (this._loginInProgress = false),
+                            (this._acquireTokenInProgress = false),
                             null
                         );
                     }
@@ -147,8 +147,8 @@ module.exports = function (e, t, n) {
                         this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION, o),
                         this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR, i),
                         t && this._activeRenewals[t] && (this._activeRenewals[t] = null),
-                        (this._loginInProgress = !1),
-                        (this._acquireTokenInProgress = !1),
+                        (this._loginInProgress = false),
+                        (this._acquireTokenInProgress = false),
                         e && e(o, null, n));
                 }),
                 (o.prototype._loginPopup = function (e, t, n) {
@@ -176,8 +176,8 @@ module.exports = function (e, t, n) {
                                         return (
                                             r.isAngular ? r._broadcast("adal:popUpHashChanged", l.hash) : r.handleWindowCallback(l.hash),
                                             window.clearInterval(s),
-                                            (r._loginInProgress = !1),
-                                            (r._acquireTokenInProgress = !1),
+                                            (r._loginInProgress = false),
+                                            (r._acquireTokenInProgress = false),
                                             r.info("Closing popup window"),
                                             (r._openedWindows = []),
                                             void o.close()
@@ -191,9 +191,9 @@ module.exports = function (e, t, n) {
                 }),
                 (o.prototype._broadcast = function (e, t) {
                     !(function () {
-                        if ("function" == typeof window.CustomEvent) return !1;
+                        if ("function" == typeof window.CustomEvent) return false;
                         function e(e, t) {
-                            t = t || { bubbles: !1, cancelable: !1, detail: void 0 };
+                            t = t || { bubbles: false, cancelable: false, detail: void 0 };
                             var n = document.createEvent("CustomEvent");
                             return (n.initCustomEvent(e, t.bubbles, t.cancelable, t.detail), n);
                         }
@@ -252,7 +252,7 @@ module.exports = function (e, t, n) {
                     var a = this._urlRemoveQueryStringParameter(this._getNavigateUrl(n, e), "prompt");
                     (n === this.RESPONSE_TYPE.ID_TOKEN_TOKEN &&
                         ((this._idTokenNonce = this._guid()),
-                        this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN, this._idTokenNonce, !0),
+                        this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN, this._idTokenNonce, true),
                         (a += "&nonce=" + encodeURIComponent(this._idTokenNonce))),
                         (a += "&prompt=none"),
                         (a = this._addHintParameters(a)),
@@ -266,7 +266,7 @@ module.exports = function (e, t, n) {
                     var n = this._addAdalFrame("adalIdTokenFrame"),
                         o = this._guid() + "|" + this.config.clientId;
                     ((this._idTokenNonce = this._guid()),
-                        this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN, this._idTokenNonce, !0),
+                        this._saveItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN, this._idTokenNonce, true),
                         (this.config.state = o),
                         this._renewStates.push(o),
                         this.verbose("Renew Idtoken Expected state: " + o));
@@ -368,7 +368,7 @@ module.exports = function (e, t, n) {
                         a += "&claims=" + encodeURIComponent(n);
                     else if (n && -1 !== a.indexOf("&claims")) throw new Error("Claims cannot be passed as an extraQueryParameter");
                     ((a = this._addHintParameters(a)),
-                        (this._acquireTokenInProgress = !0),
+                        (this._acquireTokenInProgress = true),
                         this.info("acquireToken interactive is called for the resource " + e),
                         this.registerCallback(i, e, o),
                         this._loginPopup(a, e, o));
@@ -394,10 +394,10 @@ module.exports = function (e, t, n) {
                         a += "&claims=" + encodeURIComponent(n);
                     else if (n && -1 !== a.indexOf("&claims")) throw new Error("Claims cannot be passed as an extraQueryParameter");
                     ((a = this._addHintParameters(a)),
-                        (this._acquireTokenInProgress = !0),
+                        (this._acquireTokenInProgress = true),
                         this.info("acquireToken interactive is called for the resource " + e),
                         this._saveItem(this.CONSTANTS.STORAGE.LOGIN_REQUEST, window.location.href),
-                        this._saveItem(this.CONSTANTS.STORAGE.STATE_RENEW, i, !0),
+                        this._saveItem(this.CONSTANTS.STORAGE.STATE_RENEW, i, true),
                         this.promptUser(a));
                 }),
                 (o.prototype.promptUser = function (e) {
@@ -506,9 +506,9 @@ module.exports = function (e, t, n) {
                     e = this._getHash(e);
                     var t = this._deserialize(e),
                         n = {
-                            valid: !1,
+                            valid: false,
                             parameters: {},
-                            stateMatch: !1,
+                            stateMatch: false,
                             stateResponse: "",
                             requestType: this.REQUEST_TYPE.UNKNOWN,
                         };
@@ -519,7 +519,7 @@ module.exports = function (e, t, n) {
                             t.hasOwnProperty(this.CONSTANTS.ACCESS_TOKEN) ||
                             t.hasOwnProperty(this.CONSTANTS.ID_TOKEN))
                     ) {
-                        n.valid = !0;
+                        n.valid = true;
                         var o = "";
                         if (!t.hasOwnProperty("state")) return (this.warn("No state returned"), n);
                         if ((this.verbose("State: " + t.state), (o = t.state), (n.stateResponse = o), this._matchState(n))) return n;
@@ -527,7 +527,7 @@ module.exports = function (e, t, n) {
                             n.requestType = this._requestType;
                             for (var i = this._renewStates, a = 0; a < i.length; a++)
                                 if (i[a] === n.stateResponse) {
-                                    n.stateMatch = !0;
+                                    n.stateMatch = true;
                                     break;
                                 }
                         }
@@ -538,9 +538,9 @@ module.exports = function (e, t, n) {
                     var t = this._getItem(this.CONSTANTS.STORAGE.NONCE_IDTOKEN);
                     if (t) {
                         t = t.split(this.CONSTANTS.CACHE_DELIMETER);
-                        for (var n = 0; n < t.length; n++) if (t[n] && t[n] === e.profile.nonce) return !0;
+                        for (var n = 0; n < t.length; n++) if (t[n] && t[n] === e.profile.nonce) return true;
                     }
-                    return !1;
+                    return false;
                 }),
                 (o.prototype._matchState = function (e) {
                     var t = this._getItem(this.CONSTANTS.STORAGE.STATE_LOGIN);
@@ -548,16 +548,16 @@ module.exports = function (e, t, n) {
                         t = t.split(this.CONSTANTS.CACHE_DELIMETER);
                         for (var n = 0; n < t.length; n++)
                             if (t[n] && t[n] === e.stateResponse)
-                                return ((e.requestType = this.REQUEST_TYPE.LOGIN), (e.stateMatch = !0), !0);
+                                return ((e.requestType = this.REQUEST_TYPE.LOGIN), (e.stateMatch = true), true);
                     }
                     var o = this._getItem(this.CONSTANTS.STORAGE.STATE_RENEW);
                     if (o) {
                         o = o.split(this.CONSTANTS.CACHE_DELIMETER);
                         for (n = 0; n < o.length; n++)
                             if (o[n] && o[n] === e.stateResponse)
-                                return ((e.requestType = this.REQUEST_TYPE.RENEW_TOKEN), (e.stateMatch = !0), !0);
+                                return ((e.requestType = this.REQUEST_TYPE.RENEW_TOKEN), (e.stateMatch = true), true);
                     }
-                    return !1;
+                    return false;
                 }),
                 (o.prototype._getResourceFromState = function (e) {
                     if (e) {
@@ -579,7 +579,7 @@ module.exports = function (e, t, n) {
                           this._saveItem(this.CONSTANTS.STORAGE.ERROR, e.parameters.error),
                           this._saveItem(this.CONSTANTS.STORAGE.ERROR_DESCRIPTION, e.parameters[this.CONSTANTS.ERROR_DESCRIPTION]),
                           e.requestType === this.REQUEST_TYPE.LOGIN &&
-                              ((this._loginInProgress = !1),
+                              ((this._loginInProgress = false),
                               this._saveItem(this.CONSTANTS.STORAGE.LOGIN_ERROR, e.parameters.error_description)))
                         : e.stateMatch
                           ? (this.info("State is right"),
@@ -597,7 +597,7 @@ module.exports = function (e, t, n) {
                                 )),
                             e.parameters.hasOwnProperty(this.CONSTANTS.ID_TOKEN) &&
                                 (this.info("Fragment has id token"),
-                                (this._loginInProgress = !1),
+                                (this._loginInProgress = false),
                                 (this._user = this._createUser(e.parameters[this.CONSTANTS.ID_TOKEN])),
                                 this._user && this._user.profile
                                     ? this._matchNonce(this._user)
@@ -652,11 +652,11 @@ module.exports = function (e, t, n) {
                 (o.prototype.handleWindowCallback = function (e) {
                     if ((null == e && (e = window.location.hash), this.isCallback(e))) {
                         var t = null,
-                            n = !1;
+                            n = false;
                         this._openedWindows.length > 0 &&
                         this._openedWindows[this._openedWindows.length - 1].opener &&
                         this._openedWindows[this._openedWindows.length - 1].opener._adalInstance
-                            ? ((t = this._openedWindows[this._openedWindows.length - 1].opener._adalInstance), (n = !0))
+                            ? ((t = this._openedWindows[this._openedWindows.length - 1].opener._adalInstance), (n = true))
                             : window.parent && window.parent._adalInstance && (t = window.parent._adalInstance);
                         var o,
                             i,
@@ -853,16 +853,16 @@ module.exports = function (e, t, n) {
                 }),
                 (o.prototype._saveItem = function (e, t, n) {
                     if (this.config && this.config.cacheLocation && "localStorage" === this.config.cacheLocation) {
-                        if (!this._supportsLocalStorage()) return (this.info("Local storage is not supported"), !1);
+                        if (!this._supportsLocalStorage()) return (this.info("Local storage is not supported"), false);
                         if (n) {
                             var o = this._getItem(e) || "";
                             localStorage.setItem(e, o + t + this.CONSTANTS.CACHE_DELIMETER);
                         } else localStorage.setItem(e, t);
-                        return !0;
+                        return true;
                     }
                     return this._supportsSessionStorage()
-                        ? (sessionStorage.setItem(e, t), !0)
-                        : (this.info("Session storage is not supported"), !1);
+                        ? (sessionStorage.setItem(e, t), true)
+                        : (this.info("Session storage is not supported"), false);
                 }),
                 (o.prototype._getItem = function (e) {
                     return this.config && this.config.cacheLocation && "localStorage" === this.config.cacheLocation
@@ -882,7 +882,7 @@ module.exports = function (e, t, n) {
                                 (window.localStorage.removeItem("storageTest"), !window.localStorage.getItem("storageTest")))
                         );
                     } catch (e) {
-                        return !1;
+                        return false;
                     }
                 }),
                 (o.prototype._supportsSessionStorage = function () {
@@ -894,7 +894,7 @@ module.exports = function (e, t, n) {
                                 (window.sessionStorage.removeItem("storageTest"), !window.sessionStorage.getItem("storageTest")))
                         );
                     } catch (e) {
-                        return !1;
+                        return false;
                     }
                 }),
                 (o.prototype._cloneConfig = function (e) {
@@ -939,23 +939,23 @@ module.exports = function (e, t, n) {
                     this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE, e, null);
                 }),
                 (o.prototype.errorPii = function (e, t) {
-                    this.log(this.CONSTANTS.LOGGING_LEVEL.ERROR, e, t, !0);
+                    this.log(this.CONSTANTS.LOGGING_LEVEL.ERROR, e, t, true);
                 }),
                 (o.prototype.warnPii = function (e) {
-                    this.log(this.CONSTANTS.LOGGING_LEVEL.WARN, e, null, !0);
+                    this.log(this.CONSTANTS.LOGGING_LEVEL.WARN, e, null, true);
                 }),
                 (o.prototype.infoPii = function (e) {
-                    this.log(this.CONSTANTS.LOGGING_LEVEL.INFO, e, null, !0);
+                    this.log(this.CONSTANTS.LOGGING_LEVEL.INFO, e, null, true);
                 }),
                 (o.prototype.verbosePii = function (e) {
-                    this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE, e, null, !0);
+                    this.log(this.CONSTANTS.LOGGING_LEVEL.VERBOSE, e, null, true);
                 }),
                 (o.prototype._libVersion = function () {
                     return "1.0.18";
                 }),
-                e.exports &&
-                    ((e.exports = o),
-                    (e.exports.inject = function (e) {
+                module.exports &&
+                    ((module.exports = o),
+                    (module.exports.inject = function (e) {
                         return new o(e);
                     })),
                 o

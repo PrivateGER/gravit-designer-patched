@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(105),
-                r = i(377).encode,
-                o = i(377).sizeOf;
+            var n = require(105),
+                r = require(377).encode,
+                o = require(377).sizeOf;
 
             function a(e, t, i) {
                 var n;
@@ -79,7 +79,7 @@ module.exports = function (e, t, i) {
                               },
                           ].concat(s("glyph", e.glyphs))
                       )
-                    : n.assert(!1, "Can't create coverage table format 2 yet.");
+                    : n.assert(false, "Can't create coverage table format 2 yet.");
             }
 
             function c(e) {
@@ -233,12 +233,12 @@ module.exports = function (e, t, i) {
                 (p.prototype.constructor = p),
                 (u.prototype = Object.create(a.prototype)),
                 (u.prototype.constructor = u),
-                (t.Record = t.Table = a),
-                (t.Coverage = A),
-                (t.ScriptList = c),
-                (t.FeatureList = p),
-                (t.LookupList = u),
-                (t.ushortList = s),
-                (t.tableList = l),
-                (t.recordList = h));
+                (exports.Record = exports.Table = a),
+                (exports.Coverage = A),
+                (exports.ScriptList = c),
+                (exports.FeatureList = p),
+                (exports.LookupList = u),
+                (exports.ushortList = s),
+                (exports.tableList = l),
+                (exports.recordList = h));
         };

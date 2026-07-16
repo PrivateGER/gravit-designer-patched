@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(8), n(20), n(107), n(3), n(34), n(4), n(13), n(26));
-        var o = n(10),
-            i = n(1),
-            a = n(10);
-        const r = n(85),
-            s = n(44),
-            l = n(177);
+        (require(19), require(8 /* Symbol */), require(20), require(107), require(3), require(34), require(4), require(13), require(26));
+        var designerConfig = require(10),
+            GObject = require(1),
+            a = require(10 /* designerConfig */);
+        const r = require(85),
+            GSystemDialog = require(44),
+            l = require(177);
         function c(e) {
             let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : c.Forms.SignIn;
             ((this._callback = e), this._init(t));
         }
-        (i.GObject.inherit(c, i.GObject),
+        (GObject.GObject.inherit(c, GObject.GObject),
             (c.Forms = {
                 SignIn: "sign-in",
                 SignUp: "sign-up",
@@ -20,7 +20,7 @@ module.exports = function (e, t, n) {
             }),
             (c.prototype._init = async function (e) {
                 ((this._dialog = $("<div></div>").gDialog({
-                    releaseOnClose: !0,
+                    releaseOnClose: true,
                     className: "g-login-dialog",
                 })),
                     (this._container = $("<div></div>").addClass("container").appendTo(this._dialog)),
@@ -38,10 +38,10 @@ module.exports = function (e, t, n) {
                     $("<div></div>")
                         .addClass("text")
                         .text(
-                            i.GLocale.get(
+                            GObject.GLocale.get(
                                 gDesigner.getStoreVendor()
-                                    ? new i.GLocaleKey("GLoginDialog", "text.login-dialog-title")
-                                    : new i.GLocaleKey("GLoginDialog", "text.sign-in")
+                                    ? new GObject.GLocaleKey("GLoginDialog", "text.login-dialog-title")
+                                    : new GObject.GLocaleKey("GLoginDialog", "text.sign-in")
                             )
                         )
                         .appendTo(t));
@@ -49,15 +49,15 @@ module.exports = function (e, t, n) {
                 $("<div></div>")
                     .addClass("title")
                     .addClass("simple")
-                    .append($("<span></span>").text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.sign-in-title"))))
+                    .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.sign-in-title"))))
                     .appendTo(n);
                 let s = $("<div></div>").addClass("subtitle").appendTo(n);
                 gDesigner.getStoreVendor() &&
-                    s.append($("<span></span>").text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.not-register")))).append(
+                    s.append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.not-register")))).append(
                         $("<span></span>")
                             .addClass("link")
                             .addClass("panel")
-                            .text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.sign-up")))
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.sign-up")))
                             .on("click", () => {
                                 (gDesigner.stats("login-signup_create-account_open"), this._activatePanel(c.Forms.SignUp));
                             })
@@ -71,10 +71,10 @@ module.exports = function (e, t, n) {
                         n = t.find('input[data-property="email"]').val(),
                         i = t.find('input[data-property="password"]').val();
                     return (
-                        o.gApi
+                        designerConfig.gApi
                             .signin({ email: n, password: i, app: "designer" })
                             .then(() => {
-                                o.gApi
+                                designerConfig.gApi
                                     .getUser()
                                     .then((e) => {
                                         (this.close(), this._callback(new l(e)));
@@ -82,22 +82,22 @@ module.exports = function (e, t, n) {
                                     .catch((e) => this._handlerError(e, u));
                             })
                             .catch((e) => this._handlerError(e, u)),
-                        !1
+                        false
                     );
                 }),
                     a.HAS_ENTERPRISE
                         ? $("<label>")
                               .addClass("label")
-                              .text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.placeholder-sign-in-login")))
+                              .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.placeholder-sign-in-login")))
                               .appendTo(p)
                         : $("<label>")
                               .addClass("label")
-                              .text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.sign-in-login")))
+                              .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.sign-in-login")))
                               .appendTo(p),
-                    $("<input>").attr("type", "text").attr("data-property", "email").attr("required", !0).appendTo(p),
+                    $("<input>").attr("type", "text").attr("data-property", "email").attr("required", true).appendTo(p),
                     $("<label>")
                         .addClass("label")
-                        .text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.sign-in-password")))
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.sign-in-password")))
                         .appendTo(p));
                 let g = this._createPasswordInput(),
                     h = $("<span></span>")
@@ -106,7 +106,7 @@ module.exports = function (e, t, n) {
                             $("<span></span>")
                                 .addClass("txt")
                                 .addClass("link")
-                                .text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.forgot-password")))
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.forgot-password")))
                                 .on("click", () => {
                                     (gDesigner.stats("login-signup_login_forgot-password"),
                                         a.FORGOT_PWD_LINK
@@ -119,7 +119,7 @@ module.exports = function (e, t, n) {
                         .attr("type", "submit")
                         .append(
                             $("<span></span>").text(
-                                i.GLocale.get(new i.GLocaleKey("GLoginDialog", a.HAS_ENTERPRISE ? "text.sign-in-button" : "text.sign-in"))
+                                GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", a.HAS_ENTERPRISE ? "text.sign-in-button" : "text.sign-in"))
                             )
                         )
                         .appendTo(p);
@@ -136,18 +136,18 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<div><div/>")
                                     .addClass("subtitle")
-                                    .html(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.enterprise-sign-in-message")))
+                                    .html(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.enterprise-sign-in-message")))
                             )
                     ),
                         m
                             .append(
-                                this._createGoogleButton(new i.GLocaleKey("GLoginDialog", "text.enterprise-sign-google")).attr(
+                                this._createGoogleButton(new GObject.GLocaleKey("GLoginDialog", "text.enterprise-sign-google")).attr(
                                     "tabindex",
                                     1
                                 )
                             )
                             .append(
-                                this._createMicrosoftButton(new i.GLocaleKey("GLoginDialog", "text.enterprise-sign-microsoft")).attr(
+                                this._createMicrosoftButton(new GObject.GLocaleKey("GLoginDialog", "text.enterprise-sign-microsoft")).attr(
                                     "tabindex",
                                     2
                                 )
@@ -159,30 +159,30 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<span></span>")
                                     .addClass("message")
-                                    .html(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.enterprise-login-message-1")))
+                                    .html(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.enterprise-login-message-1")))
                             )
                             .append(
                                 $("<span></span>")
                                     .addClass("message")
-                                    .html(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.enterprise-login-message-2")))
+                                    .html(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.enterprise-login-message-2")))
                             )
                             .appendTo(t));
                 } else {
                     (gContainer.getRuntime() !== r.Runtime.Chrome &&
                         ($("<div></div>")
                             .addClass("sep")
-                            .append($("<span></span>").text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.or"))))
+                            .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.or"))))
                             .appendTo(n),
                         m
-                            .append(this._createFacebookButton(new i.GLocaleKey("GLoginDialog", "text.sign-facebook")).attr("tabindex", 1))
-                            .append(this._createGoogleButton(new i.GLocaleKey("GLoginDialog", "text.sign-google")).attr("tabindex", 2))
+                            .append(this._createFacebookButton(new GObject.GLocaleKey("GLoginDialog", "text.sign-facebook")).attr("tabindex", 1))
+                            .append(this._createGoogleButton(new GObject.GLocaleKey("GLoginDialog", "text.sign-google")).attr("tabindex", 2))
                             .appendTo(n)),
                         gDesigner.getStoreVendor() &&
                             $("<footer></footer>")
                                 .append(
                                     $("<span></span>")
                                         .addClass("link")
-                                        .text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.continue-without-loggin-in")))
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.continue-without-loggin-in")))
                                         .on("click", () => {
                                             (this.close(), this._callback(null));
                                         })
@@ -195,7 +195,7 @@ module.exports = function (e, t, n) {
                 return $("<button></button>")
                     .addClass("sign-google oauth column-layout")
                     .append($("<span></span>").addClass("icon").addClass("gravit-icon-google"))
-                    .append($("<span></span>").addClass("txt").text(i.GLocale.get(e)))
+                    .append($("<span></span>").addClass("txt").text(GObject.GLocale.get(e)))
                     .on("click", () => {
                         let e = this._getStatMappedForm();
                         (gDesigner.stats("login-signup_".concat(e, "_login-google")), this._oauth("google"));
@@ -205,7 +205,7 @@ module.exports = function (e, t, n) {
                 return $("<button></button>")
                     .addClass("sign-facebook oauth column-layout")
                     .append($("<span></span>").addClass("icon").addClass("gravit-icon-facebook"))
-                    .append($("<span></span>").addClass("txt").text(i.GLocale.get(e)))
+                    .append($("<span></span>").addClass("txt").text(GObject.GLocale.get(e)))
                     .on("click", () => {
                         let e = this._getStatMappedForm();
                         (gDesigner.stats("login-signup_".concat(e, "_login-facebook")), this._oauth("facebook"));
@@ -215,7 +215,7 @@ module.exports = function (e, t, n) {
                 return $("<button></button>")
                     .addClass("sign-microsoft oauth column-layout")
                     .append($("<span></span>").addClass("icon").addClass("gravit-icon-microsoft"))
-                    .append($("<span></span>").addClass("txt").text(i.GLocale.get(e)))
+                    .append($("<span></span>").addClass("txt").text(GObject.GLocale.get(e)))
                     .on("click", () => {
                         let e = this._getStatMappedForm();
                         (gDesigner.stats("login-signup_".concat(e, "_login-microsoft")), this._oauth("microsoft"));
@@ -229,22 +229,22 @@ module.exports = function (e, t, n) {
                 ($("<div></div>").addClass("logo").appendTo(t),
                     $("<div></div>")
                         .addClass("text")
-                        .text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.login-dialog-title")))
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.login-dialog-title")))
                         .appendTo(t));
                 let n = $("<div></div>").addClass("body").appendTo(e);
                 ($("<div></div>")
                     .addClass("title")
                     .addClass("simple")
-                    .append($("<span></span>").text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.sign-up-title"))))
+                    .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.sign-up-title"))))
                     .appendTo(n),
                     $("<div></div>")
                         .addClass("subtitle")
-                        .append($("<span></span>").text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.already-registered"))))
+                        .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.already-registered"))))
                         .append(
                             $("<span></span>")
                                 .addClass("link")
                                 .addClass("panel")
-                                .text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.login-here")))
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.login-here")))
                                 .on("click", () => {
                                     (gDesigner.stats("login-signup_create-account_back-to-login"), this._activatePanel(c.Forms.SignIn));
                                 })
@@ -266,7 +266,7 @@ module.exports = function (e, t, n) {
                             const e = gContainer.getPlatform();
                             (("darwin" !== e && "win32" !== e) || (h = "designer://"), (f = gDesigner.getAssetsURL()));
                         } else f = location.origin;
-                        o.gApi
+                        designerConfig.gApi
                             .signup({
                                 email: t,
                                 name: n,
@@ -278,7 +278,7 @@ module.exports = function (e, t, n) {
                                 webUrl: f,
                             })
                             .then(() => {
-                                o.gApi
+                                designerConfig.gApi
                                     .getUser()
                                     .then((e) => {
                                         ((e = new l(e)),
@@ -303,52 +303,52 @@ module.exports = function (e, t, n) {
                         s(""),
                         e.preventDefault(),
                         p ? grecaptcha.execute(this._recaptchaWidget) : g(),
-                        !1
+                        false
                     )
                 ),
                     $("<label>")
                         .addClass("label")
-                        .text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.placeholder-sign-up-email")))
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.placeholder-sign-up-email")))
                         .appendTo(u),
                     $("<input>")
                         .attr("type", "email")
                         .attr("data-property", "email")
-                        .attr("autofocus", !0)
-                        .attr("required", !0)
-                        .attr("title", i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.placeholder-sign-up-email")))
+                        .attr("autofocus", true)
+                        .attr("required", true)
+                        .attr("title", GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.placeholder-sign-up-email")))
                         .appendTo(u));
                 let h = $("<div></div>").addClass("input-group").appendTo(u);
                 ($("<span>")
                     .append(
                         $("<label>")
                             .addClass("label")
-                            .text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.placeholder-sign-up-first-name")))
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.placeholder-sign-up-first-name")))
                     )
                     .append(
                         $("<input>")
                             .attr("type", "text")
                             .attr("data-property", "firstname")
-                            .attr("required", !0)
-                            .attr("title", i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.placeholder-sign-up-first-name")))
+                            .attr("required", true)
+                            .attr("title", GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.placeholder-sign-up-first-name")))
                     )
                     .appendTo(h),
                     $("<span>")
                         .append(
                             $("<label>")
                                 .addClass("label")
-                                .text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.placeholder-sign-up-last-name")))
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.placeholder-sign-up-last-name")))
                         )
                         .append(
                             $("<input>")
                                 .attr("type", "text")
                                 .attr("data-property", "lastname")
-                                .attr("required", !0)
-                                .attr("title", i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.placeholder-sign-up-last-name")))
+                                .attr("required", true)
+                                .attr("title", GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.placeholder-sign-up-last-name")))
                         )
                         .appendTo(h),
                     $("<label>")
                         .addClass("label")
-                        .text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.placeholder-sign-up-password")))
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.placeholder-sign-up-password")))
                         .appendTo(u),
                     this._createPasswordInput().appendTo(u),
                     $("<label></label>")
@@ -363,17 +363,17 @@ module.exports = function (e, t, n) {
                         )
                         .append(
                             $("<div></div>")
-                                .append($("<span></span>").text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.agree"))))
+                                .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.agree"))))
                                 .append(
                                     $("<span></span>")
                                         .addClass("link")
-                                        .text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.terms-use")))
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.terms-use")))
                                         .on(
                                             "click",
                                             (e) => (
                                                 gDesigner.stats("login-signup_create-account_terms-of-use"),
                                                 gContainer.openExternalLink(e, "https://www.corel.com/en/terms-of-use"),
-                                                !1
+                                                false
                                             )
                                         )
                                 )
@@ -381,26 +381,26 @@ module.exports = function (e, t, n) {
                                 .append(
                                     $("<span></span>")
                                         .addClass("link")
-                                        .text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.privacy-policy")))
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.privacy-policy")))
                                         .on(
                                             "click",
                                             (e) => (
                                                 gDesigner.stats("login-signup_create-account_privacy-policy"),
                                                 gContainer.openExternalLink(e, "https://www.corel.com/en/corel-privacy-policy"),
-                                                !1
+                                                false
                                             )
                                         )
                                 )
                         )
                         .appendTo(u),
                     $("<label></label>")
-                        .append($("<input>").attr("type", "checkbox").attr("data-property", "newsletter").prop("checked", !1))
+                        .append($("<input>").attr("type", "checkbox").attr("data-property", "newsletter").prop("checked", false))
                         .on("change", (e) => {
                             gDesigner.stats("login-signup_create-account_subscribe", $(e.target).is(":checked"));
                         })
-                        .append($("<span></span>").text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.newsletter"))))
+                        .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.newsletter"))))
                         .appendTo(u));
-                let f = await o.gApi.recaptchaKey();
+                let f = await designerConfig.gApi.recaptchaKey();
                 if (p) {
                     let e = $(grecaptchaWidget);
                     this._recaptchaWidget = grecaptcha.render(e[0], {
@@ -412,24 +412,24 @@ module.exports = function (e, t, n) {
                 ($("<button></button>")
                     .attr("type", "submit")
                     .addClass("sign-in")
-                    .append($("<span></span>").text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.sign-up-now"))))
+                    .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.sign-up-now"))))
                     .addClass("g-disabled")
-                    .prop("disabled", !0)
+                    .prop("disabled", true)
                     .appendTo(u),
                     gContainer.getRuntime() !== r.Runtime.Chrome &&
                         ($("<div></div>")
                             .addClass("sep")
-                            .append($("<span></span>").text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.or"))))
+                            .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.or"))))
                             .appendTo(n),
                         $("<div></div>")
                             .addClass("oauth-buttons")
-                            .append(this._createFacebookButton(new i.GLocaleKey("GLoginDialog", "text.sign-facebook")))
-                            .append(this._createGoogleButton(new i.GLocaleKey("GLoginDialog", "text.sign-google")))
+                            .append(this._createFacebookButton(new GObject.GLocaleKey("GLoginDialog", "text.sign-facebook")))
+                            .append(this._createGoogleButton(new GObject.GLocaleKey("GLoginDialog", "text.sign-google")))
                             .appendTo(n)));
                 let m = $("<span></span>").addClass("link");
                 return (
                     gDesigner.getStoreVendor() &&
-                        m.text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.continue-without-loggin-in"))).on("click", () => {
+                        m.text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.continue-without-loggin-in"))).on("click", () => {
                             (this.close(), this._callback(null));
                         }),
                     $("<footer></footer>").append(m).append(m).appendTo(e),
@@ -444,13 +444,13 @@ module.exports = function (e, t, n) {
                 ($("<div></div>").addClass("logo").appendTo(t),
                     $("<div></div>")
                         .addClass("text")
-                        .text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.reset-password-header-title")))
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.reset-password-header-title")))
                         .appendTo(t));
                 let n = $("<div></div>").addClass("body").appendTo(e);
                 $("<div></div>")
                     .addClass("title")
                     .addClass("simple")
-                    .append($("<span></span>").text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.reset-password-title"))))
+                    .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.reset-password-title"))))
                     .appendTo(n);
                 let a = $("<div></div>").addClass("message").append($("<span></span>")).appendTo(n);
                 const s = this._createMessageHandler(a);
@@ -466,32 +466,32 @@ module.exports = function (e, t, n) {
                             (("darwin" !== e && "win32" !== e) || (i = "designer://"), (a = gDesigner.getAssetsURL()));
                         } else a = location.origin;
                         return (
-                            o.gApi
+                            designerConfig.gApi
                                 .resetPassword({ email: t, redirect: n, appUrl: i, webUrl: a })
                                 .then((e) => {
                                     s(e && e.message, "info");
                                 })
                                 .catch((e) => this._handlerError(e, s)),
-                            !1
+                            false
                         );
                     }),
                     $("<label>")
                         .addClass("label")
-                        .text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.sign-in-login")))
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.sign-in-login")))
                         .appendTo(l),
                     $("<input>")
                         .attr("type", "email")
                         .attr("data-property", "email")
-                        .attr("autofocus", !0)
-                        .attr("required", !0)
-                        .attr("title", i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.placeholder-reset-password-email")))
+                        .attr("autofocus", true)
+                        .attr("required", true)
+                        .attr("title", GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.placeholder-reset-password-email")))
                         .appendTo(l),
                     $("<div>")
                         .addClass("login-button-row")
                         .append(
                             $("<span></span>")
                                 .addClass("link")
-                                .text("‹ " + i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.back-sign-in")))
+                                .text("‹ " + GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.back-sign-in")))
                                 .on("click", () => {
                                     (gDesigner.stats("login-signup_forgot-password_back-to-login"), this._activatePanel(c.Forms.SignIn));
                                 })
@@ -500,7 +500,7 @@ module.exports = function (e, t, n) {
                             $("<button></button>")
                                 .attr("type", "submit")
                                 .append(
-                                    $("<span></span>").text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.reset-password-send")))
+                                    $("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.reset-password-send")))
                                 )
                         )
                         .appendTo(l),
@@ -515,7 +515,7 @@ module.exports = function (e, t, n) {
                 ($("<div></div>").addClass("logo").appendTo(n),
                     $("<div></div>")
                         .addClass("text")
-                        .text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.login-dialog-title")))
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.login-dialog-title")))
                         .appendTo(n));
                 let o = $("<div></div>").addClass("body").appendTo(t);
                 return (
@@ -523,12 +523,12 @@ module.exports = function (e, t, n) {
                         .addClass("title")
                         .append(
                             $("<span></span>").html(
-                                i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.sign-up-thanks")).replace("%email", e.getEmail())
+                                GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.sign-up-thanks")).replace("%email", e.getEmail())
                             )
                         )
                         .appendTo(o),
                     $("<button></button>")
-                        .append($("<span></span>").text(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.ok"))))
+                        .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.ok"))))
                         .on("click", this.close.bind(this))
                         .appendTo(o),
                     t
@@ -546,7 +546,7 @@ module.exports = function (e, t, n) {
                     this._container.find(".panel." + e).addClass("g-active"));
             }),
             (c.prototype._oauth = function (e, t) {
-                o.gApi
+                designerConfig.gApi
                     .popup("/auth/" + e)
                     .then((e) => {
                         (this.close(), this._callback(e));
@@ -558,7 +558,7 @@ module.exports = function (e, t, n) {
             }),
             (c.prototype._createPasswordInput = function () {
                 let e = $("<div></div>").addClass("input-field"),
-                    t = $("<input>").attr("type", "password").attr("required", !0).attr("data-property", "password").appendTo(e);
+                    t = $("<input>").attr("type", "password").attr("required", true).attr("data-property", "password").appendTo(e);
                 return (
                     $("<span></span>")
                         .addClass("icon")
@@ -594,11 +594,11 @@ module.exports = function (e, t, n) {
             }),
             (c.prototype.open = function () {
                 gDesigner.isOfflineAsync().then((e) => {
-                    e ? s.alert(i.GLocale.get(new i.GLocaleKey("GLoginDialog", "text.you-are-offline"))) : this._dialog.gDialog("open", !1);
+                    e ? GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GLoginDialog", "text.you-are-offline"))) : this._dialog.gDialog("open", false);
                 });
             }),
             (c.prototype.close = function () {
                 this._dialog.gDialog("close");
             }),
-            (e.exports = c));
+            (module.exports = c));
     };

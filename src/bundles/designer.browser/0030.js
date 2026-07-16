@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(415);
-        o({ target: "Object", stat: !0, arity: 2, forced: Object.assign !== i }, { assign: i });
+        var o = require(25),
+            i = require(415);
+        o({ target: "Object", stat: true, arity: 2, forced: Object.assign !== i }, { assign: i });
     };

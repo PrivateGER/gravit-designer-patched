@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(148);
+module.exports = function (module, exports, require) {
+            var n = require(148);
 
             function r(e) {
                 ((this._runArray = e), this.emit.bind(this));
@@ -57,5 +57,5 @@ module.exports = function (e, t, i) {
                         }
                     };
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

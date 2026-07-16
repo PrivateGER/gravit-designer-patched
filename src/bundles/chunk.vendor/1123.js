@@ -1,17 +1,17 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(282),
-                o = i(839),
-                a = i(265),
-                s = i(28),
-                l = i(22),
-                h = i(597),
-                A = i(598);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(282),
+                o = require(839),
+                a = require(265),
+                GStylable = require(28),
+                l = require(22),
+                h = require(597),
+                A = require(598);
 
             function c() {
                 h.apply(this, arguments);
             }
-            (n.inherit(c, h),
+            (IsFiniteNonNegativeNumber.inherit(c, h),
                 (c.Type = {
                     GaussianBlur: 0,
                     MotionBlur: 1,
@@ -38,11 +38,11 @@ module.exports = function (e, t, i) {
                 (c.prototype.applyTo = function (e) {
                     if (
                         (h.prototype.applyTo.call(this, e),
-                        this._data.isEnabled && this._data.type === c.Type.BackgroundBlur && e.hasMixin(s))
+                        this._data.isEnabled && this._data.type === c.Type.BackgroundBlur && e.hasMixin(GStylable))
                     ) {
                         var t = e.getPaintLayers();
-                        t && (t.appendChild(new s.FillPaintLayer(new a())), e.hasMixin(l) && e._requestInvalidation());
+                        t && (t.appendChild(new GStylable.FillPaintLayer(new a())), e.hasMixin(l) && e._requestInvalidation());
                     }
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

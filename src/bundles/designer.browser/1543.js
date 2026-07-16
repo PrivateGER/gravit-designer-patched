@@ -1,22 +1,22 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(168), n(4), n(13), n(169));
-        const o = n(449),
-            i = n(566),
-            a = n(447),
-            r = n(1171),
-            s = n(1167),
-            l = n(813),
-            c = n(448),
-            d = n(445),
-            u = n(1293),
-            p = n(238),
-            g = n(339),
-            h = n(257),
-            f = n(85),
-            { GSystem: m, GMath: y } = n(1),
-            { FILE_FORMATS: v } = n(10);
-        e.exports = function (e) {
+        (require(168 /* PDFFetchStream */), require(4), require(13), require(169 /* PDFNetworkStream */));
+        const GFitAllAction = require(449),
+            i = require(566),
+            GSaveAction = require(447),
+            GUndoAction = require(1171),
+            s = require(1167),
+            l = require(813),
+            c = require(448),
+            GSaveAsAction = require(445),
+            GCloudSynchronizationAction = require(1293),
+            p = require(238),
+            g = require(339),
+            h = require(257),
+            f = require(85),
+            { GSystem: m, GMath: y } = require(1 /* GObject */),
+            { FILE_FORMATS: v } = require(10 /* designerConfig */);
+        module.exports = function (e) {
             ((e.prototype._windowButton = null),
                 (e.prototype._nativeButton = null),
                 (e.prototype._touchSection = null),
@@ -29,7 +29,7 @@ module.exports = function (e, t, n) {
                                 (this._nativeButton = this._createNativeButton().appendTo(this._htmlElement.find(".export-section")))));
                     (!gDesigner.getApplicationManager().isEditingEnabled() ? this._updateTouchSimpleUI() : this._updateTouchFullUI(),
                         this._updateActiveWindow(),
-                        this._updateZoomFromWindow(!0),
+                        this._updateZoomFromWindow(true),
                         this._updateActions(),
                         this._updateContextTools(),
                         this._updateViewBasedOnPermissions());
@@ -47,7 +47,7 @@ module.exports = function (e, t, n) {
                         this._touchZoomButton.insertBefore(".menu-section > .snap-button"));
                 }),
                 (e.prototype._updateTouchSimpleUI = function () {
-                    (this._updateTouchZoomButtonSimpleUI(), this._updateZoomFromWindow(!0), this._updateTouchPageButton());
+                    (this._updateTouchZoomButtonSimpleUI(), this._updateZoomFromWindow(true), this._updateTouchPageButton());
                 }),
                 (e.prototype._updateTouchZoomButtonSimpleUI = function () {
                     const e = this._htmlElement.find(".view-section > .zoom-button");
@@ -72,7 +72,7 @@ module.exports = function (e, t, n) {
                             menu: () => (
                                 t.clearItems(),
                                 [
-                                    gDesigner.getAction(o.ID),
+                                    gDesigner.getAction(GFitAllAction.ID),
                                     gDesigner.getAction(i.ID),
                                     gDesigner.getAction("".concat(s.ID, ".50")),
                                     gDesigner.getAction("".concat(s.ID, ".100")),
@@ -83,7 +83,7 @@ module.exports = function (e, t, n) {
                             getActiveItem: () => {
                                 var e = gDesigner.getWindows().getActiveWindow(),
                                     n = 100 * (e && e.getView()).getZoom(),
-                                    o = n && y.round(n, !1, 0),
+                                    o = n && y.round(n, false, 0),
                                     i = o && gDesigner.getAction("".concat(s.ID, ".").concat(o)),
                                     a = i && i.getTitle();
                                 return a && t.findItem(a);
@@ -111,7 +111,7 @@ module.exports = function (e, t, n) {
                             .append(
                                 this._createLabelButton({
                                     icon: "gravit-icon-open",
-                                    split: !0,
+                                    split: true,
                                     menu: () => this._createOpenMenu(),
                                     click: () => gDesigner.executeAction(l.ID),
                                 }).addClass("open-toolbar-button")
@@ -119,11 +119,11 @@ module.exports = function (e, t, n) {
                             .append(this._createSaveButtonGroup())
                             .append(
                                 this._createLabelButton({
-                                    action: gDesigner.getAction(r.ID),
+                                    action: gDesigner.getAction(GUndoAction.ID),
                                     icon: "gravit-icon-undo",
-                                    split: !0,
+                                    split: true,
                                     menu: () => this._createQuickHistoryUndoRedoMenu(),
-                                    click: () => gDesigner.executeAction(r.ID),
+                                    click: () => gDesigner.executeAction(GUndoAction.ID),
                                 }).addClass("undo-toolbar-button")
                             )
                             .append(this._touchZoomButton)
@@ -131,16 +131,16 @@ module.exports = function (e, t, n) {
                     );
                 }),
                 (e.prototype._createSaveButtonGroup = function () {
-                    const e = gDesigner.getAction(a.ID);
+                    const e = gDesigner.getAction(GSaveAction.ID);
                     return this._createLabelButton({
                         icon: "gravit-icon-save",
-                        split: !0,
+                        split: true,
                         menu: [
-                            gDesigner.getAction("".concat(d.ID, ".").concat(v.find((e) => e.default).ext)),
+                            gDesigner.getAction("".concat(GSaveAsAction.ID, ".").concat(v.find((e) => e.default).ext)),
                             gDesigner.getAction("".concat(c.ID, ".").concat(c.Actions.SaveAs)),
-                            gDesigner.getAction(u.ID),
+                            gDesigner.getAction(GCloudSynchronizationAction.ID),
                         ].reduce((e, t) => (e.createAddItem(t), e), new p()),
-                        click: () => gDesigner.executeAction(a.ID),
+                        click: () => gDesigner.executeAction(GSaveAction.ID),
                     })
                         .addClass("save-toolbar-button")
                         .attr("data-action", e.getId())
@@ -163,9 +163,9 @@ module.exports = function (e, t, n) {
                 (e.prototype._createAndAppendWindowTabToMenu = function (e, t, n) {
                     const o = this._getWindowTitle(n),
                         i = t.createAddItem(o, () => {
-                            e.activateWindow(n, !0);
+                            e.activateWindow(n, true);
                         });
-                    (i.setDetachable(!0),
+                    (i.setDetachable(true),
                         i.addEventListener(g.DetachEvent, () => {
                             e.removeWindow(n);
                         }));
@@ -193,7 +193,7 @@ module.exports = function (e, t, n) {
                                         .append(e("gravit-icon-close").on("click", () => gContainer.closeWindow()))
                                 )
                                 .gOverlay({
-                                    releaseOnClose: !0,
+                                    releaseOnClose: true,
                                     clazz: "g-toolbar-native-button-overlay",
                                 })
                                 .gOverlay("open", $(t.target));

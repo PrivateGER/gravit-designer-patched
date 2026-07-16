@@ -1,45 +1,45 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(842);
-        var o = n(16);
-        (Object.defineProperty(t, "__esModule", { value: !0 }),
-            (t.default = t.TEAMS_COMMANDS = t.GSharePointClient = void 0),
-            n(58),
-            n(19),
-            n(96),
-            n(30),
-            n(57),
-            n(8),
-            n(356),
-            n(20),
-            n(107),
-            n(3),
-            n(271),
-            n(34),
-            n(134),
-            n(91),
-            n(4),
-            n(13),
-            n(38),
-            n(26),
-            n(125),
-            n(126),
-            n(114));
-        var i = n(1),
-            a = o(n(1476)),
-            r = n(802),
-            s = o(n(119)),
-            l = n(10),
-            c = n(593),
-            d = o(n(594)),
-            u = o(n(1477)),
-            p = o(n(1242)),
-            g = n(40);
-        const h = n(156);
+        require(842);
+        var o = require(16);
+        (Object.defineProperty(exports, "__esModule", { value: true }),
+            (exports.default = exports.TEAMS_COMMANDS = exports.GSharePointClient = void 0),
+            require(58),
+            require(19),
+            require(96),
+            require(30),
+            require(57),
+            require(8 /* Symbol */),
+            require(356),
+            require(20),
+            require(107),
+            require(3),
+            require(271),
+            require(34),
+            require(134),
+            require(91),
+            require(4),
+            require(13),
+            require(38),
+            require(26),
+            require(125),
+            require(126),
+            require(114));
+        var GObject = require(1),
+            a = o(require(1476)),
+            r = require(802),
+            s = o(require(119 /* GCommonNames */)),
+            designerConfig = require(10),
+            c = require(593),
+            d = o(require(594)),
+            u = o(require(1477)),
+            p = o(require(1242 /* GMSTeamsAuthenticator */)),
+            GSaveAction = require(40);
+        const h = require(156);
         let f = null,
             m = {};
-        const y = (t.TEAMS_COMMANDS = p.default.COMMANDS),
-            v = (t.GSharePointClient = function (e) {
+        const y = (exports.TEAMS_COMMANDS = p.default.COMMANDS),
+            v = (exports.GSharePointClient = function (e) {
                 let { tenant: t, domain: n, clientID: o, id: i, authTenant: a, corporate: r, token: s, relativePath: l } = e;
                 ((this.TOKEN = f || s),
                     (this.BASE_URL = t),
@@ -47,7 +47,7 @@ module.exports = function (e, t, n) {
                     (this.DOMAIN = n),
                     (this.CLIENT_ID = o),
                     (this.SETTINGS_ID = i),
-                    (this.CORPORATE = r || !1),
+                    (this.CORPORATE = r || false),
                     (this.RELATIVE_PATH = l),
                     (this.HEADERS = v.requestHeaders));
             });
@@ -62,7 +62,7 @@ module.exports = function (e, t, n) {
             }),
             (v.prototype.getSanitizedFolderRelativePath = function (e) {
                 let t = e;
-                return (this.RELATIVE_PATH && (t = (0, g.trimStart)(t, this.RELATIVE_PATH)), (0, g.trimStart)(t, "/"));
+                return (this.RELATIVE_PATH && (t = (0, GSaveAction.trimStart)(t, this.RELATIVE_PATH)), (0, GSaveAction.trimStart)(t, "/"));
             }),
             (v.prototype.getSanitizedFileRelativePath = function (e) {
                 return this.RELATIVE_PATH ? "".concat(this.RELATIVE_PATH, "/").concat(e) : e;
@@ -133,7 +133,7 @@ module.exports = function (e, t, n) {
                         t.setItemType(h.Type.File),
                         (t.type = v.getFileType({ name: e.Name })),
                         (t.mimeType = e._mimetype || e.mimeType || t.type));
-                    const n = l.FILE_FORMATS.find((e) => {
+                    const n = designerConfig.FILE_FORMATS.find((e) => {
                         let { type: n } = e;
                         return n === t.type;
                     });
@@ -168,26 +168,26 @@ module.exports = function (e, t, n) {
                 return new RegExp("[".concat(v.SpecialCharList.join("|"), "]")).test(e);
             }),
             (v.isNameValid = function (e) {
-                if (!e || !e.trim()) return !1;
-                if (v.hasSpecialChar(e)) return !1;
-                if (v.InvalidNames.indexOf(e) >= 0) return !1;
+                if (!e || !e.trim()) return false;
+                if (v.hasSpecialChar(e)) return false;
+                if (v.InvalidNames.indexOf(e) >= 0) return false;
                 for (let t = 0, n = v.InvalidNameBeginnings.length; t < n; t++) {
                     let n = v.InvalidNameBeginnings[t];
-                    if (e.startsWith(n)) return !1;
+                    if (e.startsWith(n)) return false;
                 }
                 for (let t = 0, n = v.InvalidNameEndings.length; t < n; t++) {
                     let n = v.InvalidNameEndings[t];
-                    if (e.endsWith(n)) return !1;
+                    if (e.endsWith(n)) return false;
                 }
                 for (let t = 0, n = v.InvalidContainings.length; t < n; t++) {
                     let n = v.InvalidContainings[t];
-                    if (e.indexOf(n) >= 0) return !1;
+                    if (e.indexOf(n) >= 0) return false;
                 }
                 for (let t = 0, n = v.InvalidOnlyCharacters.length; t < n; t++) {
                     const n = v.InvalidOnlyCharacters[t];
-                    if (RegExp("^[".concat(n, "]+$")).test(e)) return !1;
+                    if (RegExp("^[".concat(n, "]+$")).test(e)) return false;
                 }
-                return !0;
+                return true;
             }),
             (v.convertFolderToCloudItem = function (e) {
                 const t = (e) => {
@@ -209,17 +209,17 @@ module.exports = function (e, t, n) {
             }),
             (v.getFileType = function (e) {
                 return e.name.toLowerCase().endsWith(".cdrapp")
-                    ? l.FILE_FORMATS.find((e) => {
+                    ? designerConfig.FILE_FORMATS.find((e) => {
                           let { ext: t } = e;
                           return "cdrapp" === t;
                       }).type
                     : e.name.toLowerCase().endsWith(".cdr")
-                      ? l.FILE_FORMATS.find((e) => {
+                      ? designerConfig.FILE_FORMATS.find((e) => {
                             let { ext: t } = e;
                             return "cdr" === t;
                         }).type
                       : e.name.toLowerCase().endsWith(".des")
-                        ? l.FILE_FORMATS.find((e) => {
+                        ? designerConfig.FILE_FORMATS.find((e) => {
                               let { ext: t } = e;
                               return "des" === t;
                           }).type
@@ -302,7 +302,7 @@ module.exports = function (e, t, n) {
                     corporate: this.CORPORATE,
                     token: this.TOKEN,
                     relativePath: this.RELATIVE_PATH,
-                    type: l.EXTERNAL_APP.SHAREPOINT,
+                    type: designerConfig.EXTERNAL_APP.SHAREPOINT,
                 };
             }),
             (v.prototype.getId = function () {
@@ -400,8 +400,8 @@ module.exports = function (e, t, n) {
                 return this.post(t).catch((e) => {
                     if (e.status === v.ExceptionCode.FileAlreadyCheckedOut)
                         throw new v.SharepointException(
-                            i.GLocale.get(
-                                new i.GLocaleKey("GFilesPanelViewSharepoint", "text.error-file-is-already-checked-out-by-someone-else")
+                            GObject.GLocale.get(
+                                new GObject.GLocaleKey("GFilesPanelViewSharepoint", "text.error-file-is-already-checked-out-by-someone-else")
                             ),
                             v.ExceptionCode.FileAlreadyCheckedOut
                         );
@@ -430,7 +430,7 @@ module.exports = function (e, t, n) {
                 const t = await this.getCheckOutFileInfo(e).catch(
                     (e) => (console.error(">>>error retrieving checkout info: ", e.message), null)
                 );
-                if (!t || !0 === t["odata.null"]) return v.FILE_STATUS.AVAILABLE;
+                if (!t || true === t["odata.null"]) return v.FILE_STATUS.AVAILABLE;
                 const n = await this._getUser();
                 return t.UserId.NameId === n.getNameId() ? v.FILE_STATUS.LOCKED_BY_ME : v.FILE_STATUS.LOCKED;
             }),
@@ -486,7 +486,7 @@ module.exports = function (e, t, n) {
                     .concat(encodeURI(t.relativeUrl), "/")
                     .concat(e.name, ".")
                     .concat(e.extension, "',boverwrite=false)");
-                return this.post(n, null, { rawResponse: !0 });
+                return this.post(n, null, { rawResponse: true });
             }),
             (v.prototype.moveFileTo = function (e, t) {
                 var n = "/_api/web/GetFileByServerRelativeUrl('"
@@ -494,14 +494,14 @@ module.exports = function (e, t, n) {
                     .concat(encodeURI(t.relativeUrl), "/")
                     .concat(e.name, ".")
                     .concat(e.extension, "',flags=0)");
-                return this.post(n, null, { rawResponse: !0 });
+                return this.post(n, null, { rawResponse: true });
             }),
             (v.prototype.moveFolderTo = function (e, t) {
                 var n = "/_api/web/GetFolderByServerRelativeUrl('"
                     .concat(encodeURI(e.relativeUrl), "')/moveto(newurl='")
                     .concat(encodeURI(t.relativeUrl), "/")
                     .concat(e.name, "')");
-                return this.post(n, null, { rawResponse: !0 });
+                return this.post(n, null, { rawResponse: true });
             }),
             (v.prototype.folderExists = function (e, t) {
                 const n = this.getSanitizedFolderRelativePath(t.relativeUrl);
@@ -519,7 +519,7 @@ module.exports = function (e, t, n) {
             }),
             (v.prototype.getRawFile = function (e, t) {
                 var n = "/_api/web/GetFileByServerRelativeUrl('".concat(e.relativeUrl, "')/$value");
-                return this.get(n, { rawResponse: !0, progress: t }).then((e) => e.blob());
+                return this.get(n, { rawResponse: true, progress: t }).then((e) => e.blob());
             }),
             (v.prototype.getUser = function () {
                 return this.get("/_api/Web/CurrentUser");
@@ -559,8 +559,8 @@ module.exports = function (e, t, n) {
                     return !!(await this.getFolderDetails(e));
                 } catch (e) {
                     return (
-                        (!e || (e.status !== l.HTTP_STATUS_CODES.FORBIDDEN && e.status !== l.HTTP_STATUS_CODES.NOT_FOUND)) &&
-                        (console.error("GSharePointClient - failed to check folder permissions", e), !1)
+                        (!e || (e.status !== designerConfig.HTTP_STATUS_CODES.FORBIDDEN && e.status !== designerConfig.HTTP_STATUS_CODES.NOT_FOUND)) &&
+                        (console.error("GSharePointClient - failed to check folder permissions", e), false)
                     );
                 }
             }),
@@ -603,7 +603,7 @@ module.exports = function (e, t, n) {
                     if (401 === d.status)
                         (i.clearUserData(),
                             i
-                                .connect(!0)
+                                .connect(true)
                                 .then(() => {
                                     a(r, s);
                                 })
@@ -612,7 +612,7 @@ module.exports = function (e, t, n) {
                                 }));
                     else if (200 === d.status || 201 === d.status || 202 === d.status || 204 === d.status) {
                         if (o && o.progress && "function" == typeof o.progress)
-                            return (0, c.readResponseWithProgress)(d, o.progress, !1).then((e) => r(e));
+                            return (0, c.readResponseWithProgress)(d, o.progress, false).then((e) => r(e));
                         if (o && o.rawResponse) return r(d);
                         let e = {};
                         if (204 !== d.status)
@@ -651,7 +651,7 @@ module.exports = function (e, t, n) {
                 };
             }),
             (v.prototype.clearUserData = function () {
-                ((this.TOKEN = null), (this._toClear = !0), v._logoutAndClearAdalCache(this._getSharePointSettings()));
+                ((this.TOKEN = null), (this._toClear = true), v._logoutAndClearAdalCache(this._getSharePointSettings()));
             }),
             (v.prototype._getCachedToken = function (e) {
                 return (
@@ -674,14 +674,14 @@ module.exports = function (e, t, n) {
                     a = 6e4,
                     s = 3e3;
                 let c,
-                    d = !1;
+                    d = false;
                 const u = await v.getValidCachedTokenOrNull(n.SETTINGS_ID);
                 if (n._connect) return n._connect;
                 const p = gContainer.getSharepointAuthenticator();
                 return p
                     ? !e && u
                         ? void (n.TOKEN = u)
-                        : (l.msTeamsMode
+                        : (designerConfig.msTeamsMode
                               ? (n._connect = p.authenticate(n._getTeamsCommand()))
                               : (n._connect = p.authenticate(o, { clearCache: e })),
                           n._connect.then(
@@ -710,8 +710,8 @@ module.exports = function (e, t, n) {
                                           $(window).off("message", b),
                                           void l({
                                               status: r.WINDOW_STATUS_BLOCKED,
-                                              message: i.GLocale.get(
-                                                  new i.GLocaleKey("GExternalStorage", "text.error-window-blocked-alternative")
+                                              message: GObject.GLocale.get(
+                                                  new GObject.GLocaleKey("GExternalStorage", "text.error-window-blocked-alternative")
                                               ),
                                           })
                                       );
@@ -751,7 +751,7 @@ module.exports = function (e, t, n) {
                                                   id: v.getUserId(),
                                               }),
                                               v.saveTokenToCache(n.SETTINGS_ID, n.TOKEN),
-                                              (d = !0),
+                                              (d = true),
                                               g(y),
                                               c && clearTimeout(c),
                                               $(window).off("message", b),
@@ -762,14 +762,14 @@ module.exports = function (e, t, n) {
                                           if ("User login is required" === e) return;
                                           if ((console.error(">>saveTokenError data", i), c && clearTimeout(c), u))
                                               return void (c = setTimeout(function () {
-                                                  (h(y), v._logoutAndClearAdalCache(o), t(!1));
+                                                  (h(y), v._logoutAndClearAdalCache(o), t(false));
                                               }, a));
                                           (v._logoutAndClearAdalCache(o), h(y), (n._connect = null), l(e));
                                       }
                                   }
                                   u &&
                                       (c = setTimeout(function () {
-                                          (g(y), v._logoutAndClearAdalCache(o), t(!1));
+                                          (g(y), v._logoutAndClearAdalCache(o), t(false));
                                       }, a));
                               });
                           })(t);
@@ -798,7 +798,7 @@ module.exports = function (e, t, n) {
                 const t = this.getSanitizedFolderRelativePath(e.relativeUrl);
                 return this.post("/_api/web/GetFolderByServerRelativeUrl('".concat(t, "')"), null, {
                     headers: { "X-HTTP-Method": "DELETE" },
-                    rawResponse: !0,
+                    rawResponse: true,
                 }).then((e) => {
                     if (200 !== e.status && 204 !== e.status) throw new Error(e.statusText);
                 });
@@ -831,8 +831,8 @@ module.exports = function (e, t, n) {
             (v.prototype._putBlob = function (e, t) {
                 return this.post(e, t, {
                     headers: { "X-HTTP-Method": "PUT" },
-                    blobRequest: !0,
-                    rawResponse: !0,
+                    blobRequest: true,
+                    rawResponse: true,
                 });
             }),
             (v.prototype._getTeamsCommand = function () {
@@ -844,11 +844,11 @@ module.exports = function (e, t, n) {
                 var i = "/_api/web/GetFolderByServerRelativeUrl('"
                     .concat(o, "')/Files/add(url='")
                     .concat(e.getNameWithExtension(), "',overwrite=true)");
-                return this.post(i, t, { blobRequest: !0, rawResponse: !0 });
+                return this.post(i, t, { blobRequest: true, rawResponse: true });
             }),
             (v.prototype.getAccountByEmail = function (e) {
                 if (!e || e.indexOf("@") <= 0)
-                    return Promise.reject(i.GLocale.get(new i.GLocaleKey("GShareDialog", "text.invalid-email")).replace("%email", e));
+                    return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.invalid-email")).replace("%email", e));
                 var t = "/_api/web/EnsureUser('".concat(e, "')");
                 return this.post(t);
             }),
@@ -861,5 +861,5 @@ module.exports = function (e, t, n) {
             (v.prototype.toString = function () {
                 return "[Object GSharePointClient]";
             }));
-        t.default = v;
+        exports.default = v;
     };

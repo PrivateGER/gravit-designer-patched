@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(378).ContextParams;
-            e.exports = function (e) {
+module.exports = function (module, exports, require) {
+            var n = require(378 /* ContextParams */).ContextParams;
+            module.exports = function (e) {
                 var t = this.features.arab;
                 if (t.hasOwnProperty("rlig"))
                     for (var i = this.tokenizer.getRangeTokens(e), r = 0; r < i.length; r++) {
@@ -14,7 +14,7 @@ module.exports = function (e, t, i) {
                             for (var A = 0; A < l.components.length; A++) {
                                 var c = l.components[A],
                                     p = o.get(A + 1);
-                                p.activeState.value === c && (p.state.deleted = !0);
+                                p.activeState.value === c && (p.state.deleted = true);
                             }
                         } else if (s) {
                             var u = s && 1 === s.length && 12 === s[0].id && s[0].substitution;

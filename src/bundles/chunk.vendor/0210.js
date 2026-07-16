@@ -1,27 +1,27 @@
-module.exports = function (e, t, i) {
-            var n = i(5),
-                r = i(75),
-                o = i(0),
-                a = i(72),
-                s = i(363),
-                l = i(24),
-                h = i(6),
-                A = i(11),
-                c = i(7),
-                p = i(540),
-                u = i(12),
-                d = i(81);
+module.exports = function (module, exports, require) {
+            var n = require(5),
+                r = require(75),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(72),
+                s = require(363),
+                l = require(24),
+                h = require(6),
+                A = require(11),
+                c = require(7),
+                p = require(540),
+                u = require(12),
+                d = require(81);
 
             function g(e) {
                 ((this._scene = e), (this._guides = []), (this._counter = 0), (this._visuals = []));
             }
-            (o.inherit(g, r),
+            (IsFiniteNonNegativeNumber.inherit(g, r),
                 (g.options = {
                     snapDistance: 5,
                     visualsLength: 10,
                     guides: [],
-                    disabled: !1,
-                    zones: !1,
+                    disabled: false,
+                    zones: false,
                 }),
                 (g.Orientation = {
                     H: 1,
@@ -31,7 +31,7 @@ module.exports = function (e, t, i) {
                 (g.InvalidationRequestEvent = function (e) {
                     this.area = e;
                 }),
-                o.inherit(g.InvalidationRequestEvent, a),
+                IsFiniteNonNegativeNumber.inherit(g.InvalidationRequestEvent, a),
                 (g.InvalidationRequestEvent.prototype.area = null),
                 (g.InvalidationRequestEvent.prototype.toString = function () {
                     return "[Event GGuides.InvalidationRequestEvent]";
@@ -100,8 +100,8 @@ module.exports = function (e, t, i) {
                                                     d.sort(function (e, t) {
                                                         return e - t;
                                                     });
-                                                    var m = !1,
-                                                        y = !1;
+                                                    var m = false,
+                                                        y = false;
                                                     for (f = 0; f < d.length && !y; ++f)
                                                         (o[0] > d[f] &&
                                                             !m &&
@@ -110,7 +110,7 @@ module.exports = function (e, t, i) {
                                                             h.push({
                                                                 bounds: [d[f], o[0]],
                                                             }),
-                                                            (m = !0)),
+                                                            (m = true)),
                                                             o[1] < d[f] &&
                                                                 !y &&
                                                                 (m ? l.push([o[0], o[1]]) : l.push([A, o[1]]),
@@ -118,7 +118,7 @@ module.exports = function (e, t, i) {
                                                                     bounds: [o[1], d[f]],
                                                                 }),
                                                                 d[f] < u && l.push([d[f], u]),
-                                                                (y = !0)));
+                                                                (y = true)));
                                                     m || y ? y || (o[0] < u && l.push([o[0], u])) : l.push([A, u]);
                                                 } else l.push([A, u]);
                                             (l && l.length && (e.freeSegments = l), h && h.length && (e.valueSegments = h));
@@ -193,7 +193,7 @@ module.exports = function (e, t, i) {
                             ((l = o.map(
                                 e.getX(),
                                 e.getY(),
-                                !0,
+                                true,
                                 g.options.snapDistance,
                                 this._view ? this._view.getLogicalZoom() : null,
                                 r
@@ -277,7 +277,7 @@ module.exports = function (e, t, i) {
                                 if ((t && i) || (b && i && i != C)) {
                                     t || (r = r.add(w));
                                     var o = w;
-                                    (b && i && i != C && (o = i.getPosition(!0)), (r = r.subtract(o)));
+                                    (b && i && i != C && (o = i.getPosition(true)), (r = r.subtract(o)));
                                 } else t || i || !n.isRelativeToPage() || (r = r.add(w));
                                 return r;
                             },
@@ -293,7 +293,7 @@ module.exports = function (e, t, i) {
                                     ((S = x.map(
                                         F.getX(),
                                         F.getY(),
-                                        !1,
+                                        false,
                                         g.options.snapDistance,
                                         this._view ? this._view.getLogicalZoom() : null,
                                         i
@@ -382,7 +382,7 @@ module.exports = function (e, t, i) {
                                                 (S = x.map(
                                                     F.getX(),
                                                     F.getY(),
-                                                    !1,
+                                                    false,
                                                     g.options.snapDistance,
                                                     this._view ? this._view.getLogicalZoom() : null,
                                                     i
@@ -479,7 +479,7 @@ module.exports = function (e, t, i) {
                         o,
                         a = e;
                     if (t.configuration.multiPageView) {
-                        var s = this._scene.getActivePage().getPosition(!0);
+                        var s = this._scene.getActivePage().getPosition(true);
                         a = a.preMultiplied(new c(1, 0, 0, 1, s.getX(), s.getY()));
                     }
                     for (var h = 0; h < this._guides.length; ++h)
@@ -493,7 +493,7 @@ module.exports = function (e, t, i) {
                             if (n) {
                                 var p = e;
                                 if (t.configuration.multiPageView) {
-                                    var u = n.getPosition(!0);
+                                    var u = n.getPosition(true);
                                     p = p.preMultiplied(new c(1, 0, 0, 1, u.getX(), u.getY()));
                                 }
                                 ((a = p.mapPoint(i[0].pt ? i[0].pt : i[0])), (s = p.mapPoint(i[1].pt ? i[1].pt : i[1])));
@@ -505,14 +505,14 @@ module.exports = function (e, t, i) {
                                 Math.floor(s.getY()) + A,
                                 l.outlineWidth,
                                 h,
-                                !1
+                                false
                             ),
-                                i[0].pt && d.paintAnnotation(t, null, a, i[0].annot, !1, i[0].size, h, h),
-                                i[1].pt && d.paintAnnotation(t, null, s, i[1].annot, !1, i[1].size, h, h));
+                                i[0].pt && d.paintAnnotation(t, null, a, i[0].annot, false, i[0].size, h, h),
+                                i[1].pt && d.paintAnnotation(t, null, s, i[1].annot, false, i[1].size, h, h));
                         },
                         u = this._view.getEditor().getDistanceHelper();
                     for (h = 0; h < this._visuals.length; ++h)
-                        if (((r = this._visuals[h].guide), (o = this._visuals[h].page), r instanceof Array)) p(r, o, !0);
+                        if (((r = this._visuals[h].guide), (o = this._visuals[h].page), r instanceof Array)) p(r, o, true);
                         else {
                             var f = r.line;
                             if (r.freeSegments && r.freeSegments.length)
@@ -522,13 +522,13 @@ module.exports = function (e, t, i) {
                                             ? [new n(f[0].getX(), r.freeSegments[y][0]), new n(f[0].getX(), r.freeSegments[y][1])]
                                             : [new n(r.freeSegments[y][0], f[0].getY()), new n(r.freeSegments[y][1], f[0].getY())],
                                         o,
-                                        !0,
+                                        true,
                                         m
                                     );
                             if (r.valueSegments && r.valueSegments.length) {
                                 var _ = e;
                                 if (o && t.configuration.multiPageView) {
-                                    s = o.getPosition(!0);
+                                    s = o.getPosition(true);
                                     _ = _.preMultiplied(new c(1, 0, 0, 1, s.getX(), s.getY()));
                                 }
                                 for (y = 0; y < r.valueSegments.length; ++y) {
@@ -538,7 +538,7 @@ module.exports = function (e, t, i) {
                                             ? [new n(f[0].getX(), v.bounds[0]), new n(f[0].getX(), v.bounds[1])]
                                             : [new n(v.bounds[0], f[0].getY()), new n(v.bounds[1], f[0].getY())],
                                         o,
-                                        !1
+                                        false
                                     ),
                                         null != v.value &&
                                             u &&
@@ -563,12 +563,12 @@ module.exports = function (e, t, i) {
                     for (var e = 0; e < this._guides.length; ++e) this._guides[e].cleanExclusions();
                 }),
                 (g.prototype.getBBoxSnapZones = function (e, t) {
-                    for (var i = null, r = !1, o = 0; o < this._guides.length && !r; ++o) {
+                    for (var i = null, r = false, o = 0; o < this._guides.length && !r; ++o) {
                         var a = this._guides[o];
-                        this.canMapGuide(a, null, null, this._isGuideEnabled(this._fullPixelsGuide)) && !a.mapTopLeftOnly() && (r = !0);
+                        this.canMapGuide(a, null, null, this._isGuideEnabled(this._fullPixelsGuide)) && !a.mapTopLeftOnly() && (r = true);
                     }
                     var s = l.pickDistance;
-                    if (r && e && !e.isEmpty() && e.expanded(s, s, s, s).containsPoint(t, !0)) {
+                    if (r && e && !e.isEmpty() && e.expanded(s, s, s, s).containsPoint(t, true)) {
                         i = [];
                         var A,
                             c = e.getClosestSideName(t),
@@ -631,5 +631,5 @@ module.exports = function (e, t, i) {
                 (g.prototype.toString = function () {
                     return "[Object GGuides]";
                 }),
-                (e.exports = g));
+                (module.exports = g));
         };

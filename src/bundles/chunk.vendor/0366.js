@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(76),
-                o = i(142);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(76),
+                o = require(142);
 
             function a() {
                 (r.call(this), this._setDefaultProperties(a.MetaProperties));
@@ -22,7 +22,7 @@ module.exports = function (e, t, i) {
                     img: null,
                     email: null,
                     type: a.Type.User,
-                    rmd: !1,
+                    rmd: false,
                     sid: null,
                     read: null,
                     asgn: null,
@@ -30,14 +30,14 @@ module.exports = function (e, t, i) {
                     atp: null,
                 }),
                 (a.prototype.validateInsertion = function (e, t) {
-                    var n = i(84);
+                    var n = require(84);
                     return e.hasMixin(n);
                 }),
                 (a.prototype.isFillingCompleted = function () {
                     return null !== this.$text;
                 }),
                 (a.prototype.isEmptyTextAllowed = function () {
-                    return !1;
+                    return false;
                 }),
                 (a.prototype.storeAction = function (e, t, i) {
                     if (e && e.options && e.options.copy) {
@@ -69,5 +69,5 @@ module.exports = function (e, t, i) {
                 (a.prototype.toString = function () {
                     return "[GComment]";
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

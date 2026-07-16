@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(57), n(3), n(4), n(13));
-        var o = n(1),
-            i = n(123);
-        n(173);
+        (require(57), require(3), require(4), require(13));
+        var GObject = require(1),
+            i = require(123);
+        require(173);
         function a() {
             this._ellipses = [];
         }
-        (o.GObject.inherit(a, i),
+        (GObject.GObject.inherit(a, i),
             (a.prototype._panel = null),
             (a.prototype._document = null),
             (a.prototype._ellipses = null),
@@ -19,13 +19,13 @@ module.exports = function (e, t, n) {
                         var n = "",
                             i = parseInt(e.substr("etp-".length));
                         switch (i) {
-                            case o.GEllipse.Type.Pie:
+                            case GObject.GEllipse.Type.Pie:
                                 n = "gravit-icon-circle-pie";
                                 break;
-                            case o.GEllipse.Type.Chord:
+                            case GObject.GEllipse.Type.Chord:
                                 n = "gravit-icon-ellipse-chord";
                                 break;
-                            case o.GEllipse.Type.Arc:
+                            case GObject.GEllipse.Type.Arc:
                                 n = "gravit-icon-ellipse-arc";
                                 break;
                             default:
@@ -39,9 +39,9 @@ module.exports = function (e, t, n) {
                                     t._assignProperty(
                                         "etp",
                                         i,
-                                        o.GLocale.get(new o.GLocaleKey("GEllipseProperties", "action.change-shape"))
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GEllipseProperties", "action.change-shape"))
                                     ),
-                                    i === o.GEllipse.Type.Arc && t._setBorderAlignmentCenter());
+                                    i === GObject.GEllipse.Type.Arc && t._setBorderAlignmentCenter());
                             })
                             .append($("<span></span>").addClass(n));
                     }
@@ -51,13 +51,13 @@ module.exports = function (e, t, n) {
                             .attr("data-property", e)
                             .on("change", function () {
                                 gDesigner.stats("ellipse_change_angle");
-                                var n = o.GLength.parseEquationValue($(this).gInputBox("value"));
+                                var n = GObject.GLength.parseEquationValue($(this).gInputBox("value"));
                                 null !== n
-                                    ? ((n = o.GMath.normalizeAngleRadians(o.GMath.toRadians(n))),
+                                    ? ((n = GObject.GMath.normalizeAngleRadians(GObject.GMath.toRadians(n))),
                                       t._assignProperty(
                                           e,
-                                          o.GMath.PI2 - n,
-                                          o.GLocale.get(new o.GLocaleKey("GEllipseProperties", "action.change-angle"))
+                                          GObject.GMath.PI2 - n,
+                                          GObject.GLocale.get(new GObject.GLocaleKey("GEllipseProperties", "action.change-angle"))
                                       ))
                                     : t._updateProperties();
                             })
@@ -67,7 +67,7 @@ module.exports = function (e, t, n) {
                 ($("<div></div>")
                     .addClass("ellipse-angles-property")
                     .gPropertyRow({
-                        label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.angles")),
+                        label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.angles")),
                         columns: [
                             { width: "50%", content: t("sa") },
                             { width: "50%", content: t("ea") },
@@ -77,25 +77,25 @@ module.exports = function (e, t, n) {
                     $("<div></div>")
                         .addClass("ellipse-shape-property")
                         .gPropertyRow({
-                            label: o.GLocale.get(new o.GLocaleKey("GEllipseProperties", "text.shape")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GEllipseProperties", "text.shape")),
                             columns: [
                                 {
                                     width: "33.3%",
                                     clazz: "shape-type-chooser shape-arc",
-                                    label: o.GLocale.get(new o.GLocaleKey("GEllipse", "type.arc")),
-                                    content: t("etp-" + o.GEllipse.Type.Arc),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GEllipse", "type.arc")),
+                                    content: t("etp-" + GObject.GEllipse.Type.Arc),
                                 },
                                 {
                                     width: "33.3%",
                                     clazz: "shape-type-chooser shape-chord",
-                                    label: o.GLocale.get(new o.GLocaleKey("GEllipse", "type.chord")),
-                                    content: t("etp-" + o.GEllipse.Type.Chord),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GEllipse", "type.chord")),
+                                    content: t("etp-" + GObject.GEllipse.Type.Chord),
                                 },
                                 {
                                     width: "33.3%",
                                     clazz: "shape-type-chooser shape-pie",
-                                    label: o.GLocale.get(new o.GLocaleKey("GEllipse", "type.pie")),
-                                    content: t("etp-" + o.GEllipse.Type.Pie),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GEllipse", "type.pie")),
+                                    content: t("etp-" + GObject.GEllipse.Type.Pie),
                                 },
                             ],
                         })
@@ -104,23 +104,23 @@ module.exports = function (e, t, n) {
             (a.prototype.update = function (e, t) {
                 if (
                     (this._document &&
-                        (this._document.getScene().removeEventListener(o.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
+                        (this._document.getScene().removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
                         (this._document = null)),
                     (this._ellipses = []),
                     e)
                 ) {
-                    for (var n = 0; n < t.length; ++n) t[n] instanceof o.GEllipse && this._ellipses.push(t[n]);
+                    for (var n = 0; n < t.length; ++n) t[n] instanceof GObject.GEllipse && this._ellipses.push(t[n]);
                     if (this._ellipses.length && this._ellipses.length === t.length)
                         return (
                             (this._document = e),
                             this._document
                                 .getScene()
-                                .addEventListener(o.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                                .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                             this._updateProperties(),
-                            !0
+                            true
                         );
                 }
-                return !1;
+                return false;
             }),
             (a.prototype._afterPropertiesChange = function (e) {
                 !e.temporary && this._ellipses.length > 0 && this._ellipses[0] === e.node && this._updateProperties();
@@ -129,17 +129,17 @@ module.exports = function (e, t, n) {
                 var e,
                     t,
                     n = ["_ba"],
-                    i = [o.GStylable.BorderAlignment.Center],
+                    i = [GObject.GStylable.BorderAlignment.Center],
                     a = this._document.getEditor();
                 a.beginTransaction();
                 try {
                     for (var r = 0, s = this._ellipses.length; r < s; ++r) {
                         e = this._ellipses[r].getPaintLayers().getBorderLayers();
                         for (var l = 0, c = e.length; l < c; l++)
-                            (t = e[l]) instanceof o.GStylable.BorderPaintLayer && t.setProperties(n, i);
+                            (t = e[l]) instanceof GObject.GStylable.BorderPaintLayer && t.setProperties(n, i);
                     }
                 } finally {
-                    a.commitTransaction(o.GLocale.get(new o.GLocaleKey("GEllipseProperties", "text.ellipse-to-center")));
+                    a.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GEllipseProperties", "text.ellipse-to-center")));
                 }
             }),
             (a.prototype._updateProperties = function () {
@@ -151,10 +151,10 @@ module.exports = function (e, t, n) {
                 }),
                     this._panel
                         .find('input[data-property="sa"]')
-                        .val(o.GUtil.formatNumber(o.GMath.toDegrees(o.GMath.PI2 - e.getProperty("sa")), 2)),
+                        .val(GObject.GUtil.formatNumber(GObject.GMath.toDegrees(GObject.GMath.PI2 - e.getProperty("sa")), 2)),
                     this._panel
                         .find('input[data-property="ea"]')
-                        .val(o.GUtil.formatNumber(o.GMath.toDegrees(o.GMath.PI2 - e.getProperty("ea")), 2)));
+                        .val(GObject.GUtil.formatNumber(GObject.GMath.toDegrees(GObject.GMath.PI2 - e.getProperty("ea")), 2)));
             }),
             (a.prototype._assignProperty = function (e, t, n) {
                 this._assignProperties([e], [t], n);
@@ -171,5 +171,5 @@ module.exports = function (e, t, n) {
             (a.prototype.toString = function () {
                 return "[Object GEllipseProperties]";
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

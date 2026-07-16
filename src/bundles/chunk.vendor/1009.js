@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i() {}
             ((i.getCurve = function (e) {
                 var t,
@@ -78,5 +78,5 @@ module.exports = function (e, t) {
                     e
                 );
             })();
-            e.exports = i;
+            module.exports = i;
         };

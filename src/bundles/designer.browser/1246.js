@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.GPersona = void 0));
-        t.GPersona = {
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.GPersona = void 0));
+        exports.GPersona = {
             GraphicDesign: {
                 name: "Graphic Designer",
                 icon: "assets/img/brand/logo.svg",

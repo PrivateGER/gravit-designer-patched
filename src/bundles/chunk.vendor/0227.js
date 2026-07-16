@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(11),
-                r = i(0),
-                o = i(75);
+module.exports = function (module, exports, require) {
+            var n = require(11),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(75);
 
             function a() {
                 ((this.EntryClass = a.Entry), (this._map = {}));
             }
-            (r.inherit(a, o),
+            (IsFiniteNonNegativeNumber.inherit(a, o),
                 (a.PROTOCOL = "dictionary"),
                 (a.isDictionary = function (e) {
                     var t = a.PROTOCOL + "://";
@@ -41,7 +41,7 @@ module.exports = function (e, t, i) {
                         .slice();
                 }),
                 (a.prototype.addEntry = function (e) {
-                    return e.uuid in this._map ? (console.warn("Duplicated entry"), !1) : ((this._map[e.uuid] = e), !0);
+                    return e.uuid in this._map ? (console.warn("Duplicated entry"), false) : ((this._map[e.uuid] = e), true);
                 }),
                 (a.prototype.removeEntry = function (e, t) {
                     var i;
@@ -60,7 +60,7 @@ module.exports = function (e, t, i) {
                     var t = null;
                     if (
                         (this.getEntries().some(function (i) {
-                            return i.value == e && ((t = i), !0);
+                            return i.value == e && ((t = i), true);
                         }),
                         t)
                     )
@@ -92,7 +92,7 @@ module.exports = function (e, t, i) {
                 (a.Entry = function (e, t, i) {
                     ((this.value = e), (this.uuid = t || n.uuid()), (this.references = i || 1));
                 }),
-                r.inherit(a.Entry, r),
+                IsFiniteNonNegativeNumber.inherit(a.Entry, IsFiniteNonNegativeNumber),
                 (a.Entry.prototype.uuid = null),
                 (a.Entry.prototype.value = null),
                 (a.Entry.prototype.references = 0),
@@ -116,5 +116,5 @@ module.exports = function (e, t, i) {
                 (a.prototype.toString = function () {
                     return "[GDictionary]";
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

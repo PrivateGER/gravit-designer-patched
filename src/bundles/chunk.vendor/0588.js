@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(51),
-                o = i(14),
-                a = i(12),
-                s = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(51),
+                o = require(14),
+                a = require(12),
+                String = require(9);
 
             function l(e) {
                 (r.call(this),
@@ -22,7 +22,7 @@ module.exports = function (e, t, i) {
                     sh: "GGLColorAdjustShader",
                 }),
                 (l.MetaProperties = {
-                    comp: !0,
+                    comp: true,
                 }),
                 (l.RANGES = {
                     brightness: [-1, 1],
@@ -30,17 +30,17 @@ module.exports = function (e, t, i) {
                     hue: [-1, 1],
                     saturation: [-1, 1],
                 }),
-                (l.prototype._compatibilityMode = !1),
+                (l.prototype._compatibilityMode = false),
                 (l.prototype._lastCanvasScale = null),
                 (l.prototype.getNodeNameTranslated = function () {
-                    return s.getValue("GGLColorAdjustEffect", "name", this.getNodeName());
+                    return String.getValue("GGLColorAdjustEffect", "name", this.getNodeName());
                 }),
                 (l.prototype.getEffectPadding = function () {
                     return 0;
                 }),
                 (l.prototype.isCacheable = function (e) {
                     return (
-                        !(!this._lastCanvasScale || this._lastCanvasScale !== e.getScale()) || ((this._lastCanvasScale = e.getScale()), !1)
+                        !(!this._lastCanvasScale || this._lastCanvasScale !== e.getScale()) || ((this._lastCanvasScale = e.getScale()), false)
                     );
                 }),
                 (l.prototype._handleChange = function (e, t) {
@@ -50,14 +50,14 @@ module.exports = function (e, t, i) {
                         r.prototype._handleChange.call(this, e, t));
                 }),
                 (l.prototype.canApplyNativeEffect = function () {
-                    if (!o.hasFilters()) return !1;
-                    if (this.$shp.brightness > 0) return !1;
+                    if (!o.hasFilters()) return false;
+                    if (this.$shp.brightness > 0) return false;
                     if (this.$comp) {
-                        if (this.$shp.brightness < 0) return !1;
-                        if (this.$shp.saturation < 0) return !1;
-                        if (0 != this.$shp.hue) return !1;
+                        if (this.$shp.brightness < 0) return false;
+                        if (this.$shp.saturation < 0) return false;
+                        if (0 != this.$shp.hue) return false;
                     }
-                    return !0;
+                    return true;
                 }),
                 (l.prototype.applyNativeEffect = function (e, t, i, n) {
                     var r = this.$shp.brightness,
@@ -80,5 +80,5 @@ module.exports = function (e, t, i) {
                         e.setFilter(o.Filter.HueRotate, null),
                         e.setFilter(o.Filter.Saturate, null));
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

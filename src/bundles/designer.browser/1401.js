@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
         !(function (e) {
             "use strict";
             var t = [0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, 65535],
@@ -1128,7 +1128,7 @@ module.exports = function (e, t) {
             f.Inflater = f._jzlib_Inflater = function () {
                 var e = new h(),
                     t = new Uint8Array(512),
-                    n = !1;
+                    n = false;
                 (e.inflateInit(),
                     (e.next_out = t),
                     (this.append = function (o, i) {
@@ -1144,7 +1144,7 @@ module.exports = function (e, t) {
                                 if (
                                     ((e.next_out_index = 0),
                                     (e.avail_out = 512),
-                                    0 !== e.avail_in || n || ((e.next_in_index = 0), (n = !0)),
+                                    0 !== e.avail_in || n || ((e.next_in_index = 0), (n = true)),
                                     (a = e.inflate(0)),
                                     n && -5 === a)
                                 ) {

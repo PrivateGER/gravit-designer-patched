@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(21);
-        e.exports = function (e, t) {
+        var o = require(21);
+        module.exports = function (e, t) {
             var n = [][e];
             return (
                 !!n &&

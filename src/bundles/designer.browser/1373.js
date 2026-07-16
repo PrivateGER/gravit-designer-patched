@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o,
             i,
-            a = n(1374),
-            r = n(1483);
+            GShareManager = require(1374),
+            GCommonNames = require(1483);
         function s() {
-            var e = new a();
+            var e = new GShareManager();
             e.initLanguage(function () {
-                ((o = e.init(r)),
+                ((o = e.init(GCommonNames)),
                     i &&
                         o.then(() => {
                             l(i);

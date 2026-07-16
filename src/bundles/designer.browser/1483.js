@@ -1,256 +1,256 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(58),
-            n(19),
-            n(168),
-            n(30),
-            n(8),
-            n(196),
-            n(20),
-            n(107),
-            n(34),
-            n(4),
-            n(41),
-            n(13),
-            n(32),
-            n(38),
-            n(169),
-            n(33),
-            n(26),
-            n(125),
-            n(126),
-            n(114));
-        var i = n(10),
-            a = n(231),
-            r = n(53),
-            s = n(1),
-            l = n(15),
-            c = n(40),
-            d = n(67),
-            u = o(n(1484)),
-            p = o(n(443)),
-            g = o(n(1485)),
-            h = o(n(1486)),
-            f = o(n(1487));
-        const { nodeEnv: m, isBeta: y, storeVendor: v, isCorel: _, isTeams: b } = n(803),
-            w = n(231),
+        var o = require(16);
+        (require(58),
+            require(19),
+            require(168 /* PDFFetchStream */),
+            require(30),
+            require(8 /* Symbol */),
+            require(196),
+            require(20),
+            require(107),
+            require(34),
+            require(4),
+            require(41),
+            require(13),
+            require(32),
+            require(38),
+            require(169 /* PDFNetworkStream */),
+            require(33),
+            require(26),
+            require(125),
+            require(126),
+            require(114));
+        var designerConfig = require(10),
+            IS_TRUNK = require(231),
+            r = require(53),
+            GObject = require(1),
+            GPlatform = require(15),
+            GSaveAction = require(40),
+            d = require(67),
+            u = o(require(1484)),
+            p = o(require(443)),
+            g = o(require(1485)),
+            h = o(require(1486)),
+            f = o(require(1487));
+        const { nodeEnv: m, isBeta: y, storeVendor: v, isCorel: _, isTeams: b } = require(803),
+            w = require(231 /* IS_TRUNK */),
             C = !v,
-            x = n(859);
-        n(1488);
-        n(1489);
-        const S = n(1490);
-        var E = n(1491),
-            A = n(163),
-            T = n(866),
-            G = n(869),
-            P = n(1176),
-            D = n(1311),
-            L = n(809),
-            I = n(1597),
-            k = n(810),
-            O = n(1320),
-            F = n(608),
-            R = n(1310),
-            M = n(874),
-            N = n(1177),
-            B = n(1316),
-            U = n(1331),
-            j = n(1332),
-            K = n(1334),
-            V = n(1178),
-            H = n(867),
-            W = n(1315),
-            z = n(1312),
-            q = n(861),
-            Y = n(449),
-            X = n(1598),
-            Q = n(566),
-            J = n(811),
-            Z = n(1599),
-            ee = n(1172),
-            te = n(1179),
-            ne = n(1167);
-        const oe = n(812),
-            ie = n(1600);
-        var ae = n(1601),
-            re = n(1602),
-            se = n(1296),
-            le = n(1317),
-            ce = n(1282),
-            de = n(1185),
-            ue = n(1297),
-            pe = n(1603),
-            ge = n(877),
-            he = n(1183);
-        const fe = n(876);
-        var me = n(1184),
-            ye = n(1182),
-            ve = n(875),
-            _e = n(1605),
-            be = n(1606),
-            we = n(1607),
-            Ce = n(1340),
-            xe = n(813),
-            Se = n(1299),
-            Ee = n(1608),
-            Ae = n(1609),
-            Te = n(1284),
-            Ge = n(1611),
-            Pe = n(447),
-            De = n(1612),
-            Le = n(445),
-            Ie = n(1333),
-            ke = n(1180);
-        const Oe = n(1304),
-            Fe = n(1305),
-            Re = n(1306),
-            Me = n(1307),
-            Ne = n(1308),
-            Be = n(1309);
-        var Ue = n(1613),
-            $e = n(1285),
-            je = n(1169),
-            Ke = n(1286),
-            Ve = n(1614),
-            He = n(1615),
-            We = n(1318),
-            ze = n(1295),
-            qe = n(870),
-            Ye = n(1319),
-            Xe = n(873),
-            Qe = n(1287),
-            Je = n(1288),
-            Ze = n(1289),
-            et = n(1283),
-            tt = n(1280),
-            nt = n(871),
-            ot = n(1171),
-            it = n(872),
-            at = n(1616),
-            rt = n(1314),
-            st = n(1290),
-            lt = n(1291),
-            ct = n(1617),
-            dt = n(1619),
-            ut = n(1335),
-            pt = n(448),
-            gt = n(1256),
-            ht = n(1620),
-            ft = n(1621),
-            mt = n(1336),
-            yt = n(1623),
-            vt = n(843),
-            _t = n(1181),
-            bt = n(1624),
-            wt = n(1342),
-            Ct = (n(1298), n(1625)),
-            xt = n(1626),
-            St = n(1293),
-            Et = n(1627),
-            At = n(1628),
-            Tt = n(1629),
-            Gt = n(1630),
-            Pt = n(1632),
-            Dt = n(1633),
-            Lt = (n(1158), n(1634)),
-            It = n(1635),
-            kt = n(1636),
-            Ot = n(1637);
-        const Ft = n(1638);
-        var Rt = n(1254),
-            Mt = n(1639),
-            Nt = n(1641);
-        n(1642);
-        const Bt = n(1643),
-            Ut = n(1645),
-            $t = n(1646),
-            jt = n(1647),
-            Kt = n(1344),
-            Vt = n(1345),
-            Ht = n(1648),
-            Wt = n(1649),
-            zt = n(1650),
-            qt = n(1341),
-            Yt = n(1651),
-            Xt = n(1652),
-            Qt = n(1653);
-        (n(78), n(86));
-        var Jt = n(1346),
-            Zt = (n(1347), n(1160)),
-            en = n(1261),
-            tn = n(1162),
-            nn = n(1264),
-            on = n(1262),
-            an = n(1265),
-            rn = n(1266),
-            sn = n(1654),
-            ln = n(1655),
-            cn = n(1656),
-            dn = n(864),
-            un = n(1260),
-            pn = n(567),
-            gn = n(1269),
-            hn = n(1150),
-            fn = n(1657),
-            mn = n(1270),
-            yn = n(1271),
-            vn = n(1339),
-            _n = n(1658),
-            bn = n(1659),
-            wn = n(1272),
-            Cn = n(1273),
-            xn = n(1294),
-            Sn = n(1660),
-            En = n(1274),
-            An = n(1661),
-            Tn = n(1662),
-            Gn = n(1665),
-            Pn = n(1666),
-            Dn = n(1668),
-            Ln = n(1669),
-            In = n(1670),
-            kn = n(85),
-            On = n(1672),
-            Fn = (n(237), n(1673)),
-            Rn = n(119),
-            Mn = n(1674),
-            Nn = n(44),
-            Bn = n(860),
-            Un = n(1675),
-            $n = n(337),
-            jn = n(1325),
-            Kn = n(785),
-            Vn = n(1676),
-            Hn = n(808),
-            Wn = n(292);
-        const zn = i.FILE_FORMATS.find((e) => e.default).ext,
-            qn = i.FILE_FORMATS.filter((e) => e.secondary).map((e) => e.ext);
-        var Yn = n(1678);
-        const Xn = new (n(1343))();
+            x = require(859);
+        require(1488);
+        require(1489);
+        const S = require(1490);
+        var GCommonNames = require(1491),
+            GDocument = require(163),
+            GAlignAction = require(866),
+            GArrangeAction = require(869),
+            P = require(1176),
+            D = require(1311),
+            GClipAction = require(809),
+            I = require(1597),
+            GConvertToPathAction = require(810),
+            O = require(1320),
+            GCreateSymbolAction = require(608),
+            R = require(1310),
+            M = require(874),
+            N = require(1177),
+            B = require(1316),
+            GCutCopyAction = require(1331),
+            j = require(1332),
+            K = require(1334),
+            V = require(1178),
+            GDistributeAction = require(867),
+            W = require(1315),
+            z = require(1312),
+            GExportAction = require(861),
+            GFitAllAction = require(449),
+            X = require(1598),
+            Q = require(566),
+            GGroupAction = require(811),
+            Z = require(1599),
+            ee = require(1172),
+            te = require(1179),
+            ne = require(1167);
+        const oe = require(812),
+            GMergeSubAction = require(1600);
+        var ae = require(1601),
+            re = require(1602),
+            se = require(1296),
+            GOffsetAction = require(1317),
+            ce = require(1282),
+            GOutlineAction = require(1185),
+            ue = require(1297),
+            pe = require(1603),
+            ge = require(877),
+            he = require(1183);
+        const fe = require(876);
+        var me = require(1184),
+            ye = require(1182),
+            ve = require(875),
+            _e = require(1605),
+            be = require(1606),
+            we = require(1607),
+            Ce = require(1340),
+            xe = require(813),
+            Se = require(1299),
+            GImportFontsAction = require(1608),
+            GPrintAction = require(1609),
+            GRedoAction = require(1284),
+            Ge = require(1611),
+            Pe = require(447 /* GSaveAction */),
+            De = require(1612),
+            GSaveAsAction = require(445),
+            Ie = require(1333),
+            ke = require(1180);
+        const Oe = require(1304),
+            Fe = require(1305),
+            Re = require(1306),
+            Me = require(1307),
+            Ne = require(1308),
+            Be = require(1309);
+        var Ue = require(1613),
+            $e = require(1285),
+            je = require(1169),
+            Ke = require(1286),
+            Ve = require(1614),
+            He = require(1615),
+            GSimplifyAction = require(1318),
+            ze = require(1295),
+            GSplitAction = require(870),
+            Ye = require(1319),
+            Xe = require(873),
+            Qe = require(1287),
+            GToggleSnapAction = require(1288),
+            GToggleSnapZonesAction = require(1289),
+            GPlaceImportAction = require(1283),
+            GLinkImageAction = require(1280),
+            GTransformAction = require(871),
+            GUndoAction = require(1171),
+            GVectorizeBorderAction = require(872),
+            at = require(1616),
+            rt = require(1314),
+            GZoomInAction = require(1290),
+            GZoomOutAction = require(1291),
+            GPlayAction = require(1617),
+            dt = require(1619),
+            ut = require(1335),
+            pt = require(448),
+            GVersionsHistoryAction = require(1256),
+            ht = require(1620),
+            ft = require(1621),
+            mt = require(1336),
+            yt = require(1623),
+            vt = require(843),
+            _t = require(1181),
+            bt = require(1624),
+            wt = require(1342),
+            Ct = (require(1298 /* GUseCouponAction */), require(1625)),
+            xt = require(1626),
+            GCloudSynchronizationAction = require(1293),
+            Et = require(1627),
+            At = require(1628),
+            GSharePointCheckOutAction = require(1629),
+            Gt = require(1630),
+            Pt = require(1632),
+            Dt = require(1633),
+            Lt = (require(1158), require(1634 /* GToggleTouchAction */)),
+            It = require(1635),
+            kt = require(1636),
+            Ot = require(1637);
+        const Ft = require(1638);
+        var GOpenSharedFileAction = require(1254),
+            Mt = require(1639),
+            Nt = require(1641);
+        require(1642);
+        const Bt = require(1643),
+            Ut = require(1645),
+            $t = require(1646),
+            jt = require(1647),
+            Kt = require(1344),
+            Vt = require(1345),
+            Ht = require(1648),
+            Wt = require(1649),
+            zt = require(1650),
+            qt = require(1341),
+            Yt = require(1651),
+            Xt = require(1652),
+            Qt = require(1653);
+        (require(78), require(86));
+        var Jt = require(1346),
+            Zt = (require(1347), require(1160 /* GAppearanceProperties */)),
+            GFillPaintLayerProperties = require(1261),
+            GBorderPaintLayerProperties = require(1162),
+            GBoolOpProperties = require(1264),
+            GEffectProperties = require(1262),
+            GEllipseProperties = require(1265),
+            GImageProperties = require(1266),
+            GFrameProperties = require(1654),
+            GGroupFrameProperties = require(1655),
+            cn = require(1656),
+            dn = require(864),
+            GOutlineSidebar = require(1260),
+            GAnnotationsSidebar = require(567),
+            GPathProperties = require(1269),
+            GPatternChooser = require(1150),
+            fn = require(1657 /* GPatternChooser */),
+            mn = require(1270 /* GCommonNames */),
+            yn = require(1271 /* GCommonNames */),
+            GPageProperties = require(1339),
+            GSymbolProperties = require(1658),
+            GSceneProperties = require(1659),
+            wn = require(1272 /* GCommonNames */),
+            GTextProperties = require(1273),
+            GDimensionProperties = require(1294),
+            GTransformProperties = require(1660),
+            En = require(1274),
+            GSymbolsSidebar = require(1661),
+            GLibrarySidebar = require(1662),
+            GSoftwareUpdatePanel = require(1665),
+            GNotificationPanel = require(1666),
+            GCollaborativeTextPanel = require(1668),
+            Ln = require(1669),
+            In = require(1670),
+            kn = require(85),
+            On = require(1672),
+            Fn = (require(237 /* GDocument */), require(1673)),
+            Rn = require(119 /* GCommonNames */),
+            Mn = require(1674),
+            GSystemDialog = require(44),
+            Bn = require(860),
+            Un = require(1675),
+            $n = require(337),
+            jn = require(1325),
+            Kn = require(785),
+            Vn = require(1676),
+            Hn = require(808),
+            Wn = require(292);
+        const zn = designerConfig.FILE_FORMATS.find((e) => e.default).ext,
+            qn = designerConfig.FILE_FORMATS.filter((e) => e.secondary).map((e) => e.ext);
+        var Yn = require(1678);
+        const Xn = new (require(1343))();
         Xn.init();
-        const Qn = n(1684),
-            Jn = n(1686),
-            Zn = n(1687),
-            eo = n(1255),
+        const Qn = require(1684),
+            GBetaFlow = require(1686),
+            Zn = require(1687),
+            eo = require(1255),
             { isExecutingOnMSTeams: to, isExecutingOnMSTeamsSync: no, isTeamsChannel: oo, getTeamsLocale: io } = p.default;
-        (n(18), n(1688), n(1154), n(1689), n(1690), n(1691), n(1693), n(1694));
+        (require(18 /* GCategory */), require(1688), require(1154), require(1689), require(1690), require(1691), require(1693), require(1694));
         var ao = window;
         const ro = !!/^trunk/.test("production") && !y;
-        ((ao.gApi = n(10).gApi), (ao.gApi.webcdr = null));
+        ((ao.gApi = require(10 /* designerConfig */).gApi), (ao.gApi.webcdr = null));
         const so = async () => S.checkMaintenance();
         (so(),
             ro &&
-                ((ao.gApi.url = i.cloudTrunkURL),
+                ((ao.gApi.url = designerConfig.cloudTrunkURL),
                 (ao.gApi.managementUrl = "https://cloud-management-trunk.herokuapp.com"),
-                i.trunkWebsocketURL && (ao.gApi.websocketURL = i.trunkWebsocketURL),
-                s.GTranslationEvents.addEventListener(
-                    s.GTranslationNotificationEvent,
+                designerConfig.trunkWebsocketURL && (ao.gApi.websocketURL = designerConfig.trunkWebsocketURL),
+                GObject.GTranslationEvents.addEventListener(
+                    GObject.GTranslationNotificationEvent,
                     (e) => {
                         let { project: t, type: n, content: o, data: i } = e;
-                        if (t === s.GTranslation.Projects.Designer)
+                        if (t === GObject.GTranslation.Projects.Designer)
                             switch (n) {
-                                case s.GTranslationNotificationEvent.Type.Warning:
+                                case GObject.GTranslationNotificationEvent.Type.Warning:
                                     gContainer.getRuntime() === kn.Runtime.Electron
                                         ? console.error(o)
                                         : console.error({ content: o, data: i });
@@ -259,15 +259,15 @@ module.exports = function (e, t, n) {
                     void 0
                 )),
             y &&
-                (_ && b && i.cloudTeamsURL ? (ao.gApi.url = i.cloudTeamsURL) : i.cloudBetaURL && (ao.gApi.url = i.cloudBetaURL),
-                i.betaWebsocketURL && (ao.gApi.websocketURL = i.betaWebsocketURL)),
-            w.IS_PRODUCTION && (i.cloudURL && (ao.gApi.url = i.cloudURL), i.websocketURL && (ao.gApi.websocketURL = i.websocketURL)),
-            (ao.gApi.lang = s.GLocale.getLanguage()));
+                (_ && b && designerConfig.cloudTeamsURL ? (ao.gApi.url = designerConfig.cloudTeamsURL) : designerConfig.cloudBetaURL && (ao.gApi.url = designerConfig.cloudBetaURL),
+                designerConfig.betaWebsocketURL && (ao.gApi.websocketURL = designerConfig.betaWebsocketURL)),
+            w.IS_PRODUCTION && (designerConfig.cloudURL && (ao.gApi.url = designerConfig.cloudURL), designerConfig.websocketURL && (ao.gApi.websocketURL = designerConfig.websocketURL)),
+            (ao.gApi.lang = GObject.GLocale.getLanguage()));
         let lo = null;
-        ((ao.gravit = null), n(1738), (ao.gDesigner = new E()), ao.gDesigner.getUser(), (ao.gQA = h.default));
+        ((ao.gravit = null), require(1738), (ao.gDesigner = new GCommonNames()), ao.gDesigner.getUser(), (ao.gQA = h.default));
         const co = ao.gDesigner.isOfflineAsync();
         ao.gInAppPurchase = Yn.newInAppPurchase(v);
-        const { GA: { customDimensions: uo } = {} } = n(10);
+        const { GA: { customDimensions: uo } = {} } = require(10 /* designerConfig */);
         (gDesigner.addEventListener(Wn, (e) => {
             let { user: t } = e;
             t && !gDesigner.isAnonymous() && "undefined" != typeof dataLayer && uo && uo.forEach((e) => dataLayer.push({ [e]: void 0 }));
@@ -281,54 +281,54 @@ module.exports = function (e, t, n) {
             (ao.gPatternChooserNormal = null),
             (ao.gPatternChooserTouch = null),
             (ao.gContainer = null));
-        e.exports = async function (e) {
-            ((ao.gContainer = e), (0, c._tryAndCatch)(() => $n.start()));
+        module.exports = async function (e) {
+            ((ao.gContainer = e), (0, GSaveAction._tryAndCatch)(() => $n.start()));
             let t = null;
             const n = gDesigner.getUser();
             (n.then((e) => {
-                e && (t = i.gApi.isEnabledSubscriptions());
+                e && (t = designerConfig.gApi.isEnabledSubscriptions());
             }),
                 (window.onerror = function (e, t, n, o, i) {
                     Mn.isPluginError(i)
-                        ? Nn.alert(i.message)
+                        ? GSystemDialog.alert(i.message)
                         : ("production" === m || "trunk" === m || "lts" === m || "rc" === m) && Rn.isOnline();
                 }),
-                x.getRuntimeCode() === i.Runtime.WindowsStore.code && new Qn().init(),
-                y && !_ && new Jn().init(),
+                x.getRuntimeCode() === designerConfig.Runtime.WindowsStore.code && new Qn().init(),
+                y && !_ && new GBetaFlow().init(),
                 _
                     ? (gContainer.setCookie({
                           name: "_access_token",
                           value: "b03f5f7f11d50a3a",
                       }),
                       gDesigner.setSupportedBrowsers([
-                          l.GPlatform.constructor.WebBrowser.Chrome,
-                          l.GPlatform.constructor.WebBrowser.Firefox,
-                          l.GPlatform.constructor.WebBrowser.Edge,
+                          GPlatform.GPlatform.constructor.WebBrowser.Chrome,
+                          GPlatform.GPlatform.constructor.WebBrowser.Firefox,
+                          GPlatform.GPlatform.constructor.WebBrowser.Edge,
                       ]),
                       gDesigner.setSupportedTabletBrowsers([
                           {
-                              operatingSystem: s.GSystem.OperatingSystem.Unix,
-                              platform: l.GPlatform.constructor.WebBrowser.Chrome,
+                              operatingSystem: GObject.GSystem.OperatingSystem.Unix,
+                              platform: GPlatform.GPlatform.constructor.WebBrowser.Chrome,
                           },
                           {
-                              operatingSystem: s.GSystem.OperatingSystem.OSX_IOS,
-                              platform: l.GPlatform.constructor.WebBrowser.Safari,
+                              operatingSystem: GObject.GSystem.OperatingSystem.OSX_IOS,
+                              platform: GPlatform.GPlatform.constructor.WebBrowser.Safari,
                           },
                       ]))
                     : (gDesigner.setSupportedBrowsers([
-                          l.GPlatform.constructor.WebBrowser.Chrome,
-                          l.GPlatform.constructor.WebBrowser.Firefox,
-                          l.GPlatform.constructor.WebBrowser.Safari,
-                          l.GPlatform.constructor.WebBrowser.Edge,
+                          GPlatform.GPlatform.constructor.WebBrowser.Chrome,
+                          GPlatform.GPlatform.constructor.WebBrowser.Firefox,
+                          GPlatform.GPlatform.constructor.WebBrowser.Safari,
+                          GPlatform.GPlatform.constructor.WebBrowser.Edge,
                       ]),
                       gDesigner.setSupportedTabletBrowsers([
                           {
-                              operatingSystem: s.GSystem.OperatingSystem.Unix,
-                              platform: l.GPlatform.constructor.WebBrowser.Chrome,
+                              operatingSystem: GObject.GSystem.OperatingSystem.Unix,
+                              platform: GPlatform.GPlatform.constructor.WebBrowser.Chrome,
                           },
                           {
-                              operatingSystem: s.GSystem.OperatingSystem.OSX_IOS,
-                              platform: l.GPlatform.constructor.WebBrowser.Safari,
+                              operatingSystem: GObject.GSystem.OperatingSystem.OSX_IOS,
+                              platform: GPlatform.GPlatform.constructor.WebBrowser.Safari,
                           },
                       ])));
             if (await so()) {
@@ -341,11 +341,11 @@ module.exports = function (e, t, n) {
                 }
             }
             const o = x.getRuntimeCode();
-            o && gContainer.setCookie({ name: "_ginst", value: o, url: i.gApi.url });
+            o && gContainer.setCookie({ name: "_ginst", value: o, url: designerConfig.gApi.url });
             const p = new URL(window.location.href).searchParams;
             if (
                 (p && p.has("pd") && gContainer.setCookie({ name: "_gtpd", value: p.get("pd") }),
-                p && p.has("newuser") && gDesigner.setShowCreateAccount(!0),
+                p && p.has("newuser") && gDesigner.setShowCreateAccount(true),
                 p && p.has("dt")
                     ? gContainer.setCookie({ name: "_gdt", value: p.get("dt") })
                     : gContainer.setCookie({ name: "_gdt", value: "" }),
@@ -368,7 +368,7 @@ module.exports = function (e, t, n) {
                 p &&
                     p.has("magiclink") &&
                     (await gContainer.signWithMagicLink(p.get("magiclink"), p.get("d"), p.get("token")).catch(() => null),
-                    (t = i.gApi.isEnabledSubscriptions())),
+                    (t = designerConfig.gApi.isEnabledSubscriptions())),
                 p)
             ) {
                 gDesigner.setUTM(
@@ -395,10 +395,10 @@ module.exports = function (e, t, n) {
             (gContainer.setCookie({
                 name: "_gdesignerv",
                 value: "3.15.0",
-                url: i.gApi.url,
+                url: designerConfig.gApi.url,
             }),
                 gDesigner.setEnv(m),
-                gContainer.getRuntime() === kn.Runtime.Electron || _ || i.gApi.initRecaptcha(),
+                gContainer.getRuntime() === kn.Runtime.Electron || _ || designerConfig.gApi.initRecaptcha(),
                 (async function (e, t) {
                     const n = await gDesigner.getUser();
                     (0, g.default)(e, t, gDesigner.getAppBaseUrl(), n);
@@ -423,7 +423,7 @@ module.exports = function (e, t, n) {
                 gDesigner.setBuildNum("8795"),
                 gDesigner.setVersionFriendlyName("PlasmaTrap-patched"));
             let E,
-                Wn = (0, c._tryAndCatch)(() => gDesigner.preInit(t)),
+                Wn = (0, GSaveAction._tryAndCatch)(() => gDesigner.preInit(t)),
                 Yn = gContainer.handleDeepLinking();
             Yn &&
                 (E = await gDesigner
@@ -441,48 +441,48 @@ module.exports = function (e, t, n) {
                                 new pt(pt.Actions.Open),
                                 new vt(),
                                 new Pe(),
-                                new Le(zn),
-                                ...qn.map((e) => new Le(e)),
+                                new GSaveAsAction(zn),
+                                ...qn.map((e) => new GSaveAsAction(e)),
                                 new pt(pt.Actions.SaveAs),
-                                new St(),
+                                new GCloudSynchronizationAction(),
                                 new Et(),
                                 new Wt(),
-                                new gt(),
-                                new Rt(),
+                                new GVersionsHistoryAction(),
+                                new GOpenSharedFileAction(),
                             ])
                             .concat([new De()])
                             .concat([
-                                new et(),
+                                new GPlaceImportAction(),
                                 new Ft(Ft.Source.PHOTOS),
                                 new Ft(Ft.Source.FILES),
-                                new tt(),
-                                new xt(new Ee()),
-                                _ ? new xt(new q()) : new q(),
+                                new GLinkImageAction(),
+                                new xt(new GImportFontsAction()),
+                                _ ? new xt(new GExportAction()) : new GExportAction(),
                             ])
                             .concat(
-                                A.FileTypes.filter(
+                                GDocument.FileTypes.filter(
                                     (e) => e.store && "cdrapp" !== e.ext && "des" !== e.ext && "gvdesign" !== e.ext && "pdf" !== e.ext
-                                ).map((e) => new Le(e.ext))
+                                ).map((e) => new GSaveAsAction(e.ext))
                             )
                             .concat([
-                                new Le("pdf", { dpi: 72 }),
-                                new Le("pdf", { dpi: 96 }),
-                                new Le("pdf", { dpi: 150 }),
-                                new xt(new Le("pdf", { dpi: 300 })),
-                                _ ? new xt(new q({ format: "pdf" })) : new q({ format: "pdf" }),
+                                new GSaveAsAction("pdf", { dpi: 72 }),
+                                new GSaveAsAction("pdf", { dpi: 96 }),
+                                new GSaveAsAction("pdf", { dpi: 150 }),
+                                new xt(new GSaveAsAction("pdf", { dpi: 300 })),
+                                _ ? new xt(new GExportAction({ format: "pdf" })) : new GExportAction({ format: "pdf" }),
                             ])
                             .concat(
                                 [
-                                    new Tt(),
+                                    new GSharePointCheckOutAction(),
                                     new Gt(),
                                     new At(),
-                                    new Ae(),
+                                    new GPrintAction(),
                                     new ee(),
                                     new Pt(),
-                                    new ot(),
-                                    new Te(),
-                                    new U(!0),
-                                    new U(!1),
+                                    new GUndoAction(),
+                                    new GRedoAction(),
+                                    new GCutCopyAction(true),
+                                    new GCutCopyAction(false),
                                     new ge(),
                                     new he(),
                                     new fe(),
@@ -509,57 +509,57 @@ module.exports = function (e, t, n) {
                                     new Ut(Ut.Type.Border),
                                     new Ce(),
                                     new jt(),
-                                    new G(r.GEditor.ArrangeOrderType.SendToFront),
-                                    new G(r.GEditor.ArrangeOrderType.BringForward),
-                                    new G(r.GEditor.ArrangeOrderType.SendBackward),
-                                    new G(r.GEditor.ArrangeOrderType.SendToBack),
-                                    new T(r.GEditor.ArrangeAlignType.AlignLeft),
-                                    new T(r.GEditor.ArrangeAlignType.AlignCenter),
-                                    new T(r.GEditor.ArrangeAlignType.AlignRight),
-                                    new T(r.GEditor.ArrangeAlignType.AlignTop),
-                                    new T(r.GEditor.ArrangeAlignType.AlignMiddle),
-                                    new T(r.GEditor.ArrangeAlignType.AlignBottom),
-                                    new T(r.GEditor.ArrangeAlignType.AlignJustifyHorizontal),
-                                    new T(r.GEditor.ArrangeAlignType.AlignJustifyVertical),
-                                    new H(H.Type.Horizontal),
-                                    new H(H.Type.Vertical),
+                                    new GArrangeAction(r.GEditor.ArrangeOrderType.SendToFront),
+                                    new GArrangeAction(r.GEditor.ArrangeOrderType.BringForward),
+                                    new GArrangeAction(r.GEditor.ArrangeOrderType.SendBackward),
+                                    new GArrangeAction(r.GEditor.ArrangeOrderType.SendToBack),
+                                    new GAlignAction(r.GEditor.ArrangeAlignType.AlignLeft),
+                                    new GAlignAction(r.GEditor.ArrangeAlignType.AlignCenter),
+                                    new GAlignAction(r.GEditor.ArrangeAlignType.AlignRight),
+                                    new GAlignAction(r.GEditor.ArrangeAlignType.AlignTop),
+                                    new GAlignAction(r.GEditor.ArrangeAlignType.AlignMiddle),
+                                    new GAlignAction(r.GEditor.ArrangeAlignType.AlignBottom),
+                                    new GAlignAction(r.GEditor.ArrangeAlignType.AlignJustifyHorizontal),
+                                    new GAlignAction(r.GEditor.ArrangeAlignType.AlignJustifyVertical),
+                                    new GDistributeAction(GDistributeAction.Type.Horizontal),
+                                    new GDistributeAction(GDistributeAction.Type.Vertical),
                                     new ze(ze.Type.FullUnit),
                                     new ze(ze.Type.HalfUnit),
-                                    new nt(nt.Type.Rotate45Left),
-                                    new nt(nt.Type.Rotate90Left),
-                                    new nt(nt.Type.Rotate180Left),
-                                    new nt(nt.Type.Rotate45Right),
-                                    new nt(nt.Type.Rotate90Right),
-                                    new nt(nt.Type.Rotate180Right),
-                                    new nt(nt.Type.FlipVertical),
-                                    new nt(nt.Type.FlipHorizontal),
-                                    new J(),
-                                    new L(),
-                                    new qe(),
+                                    new GTransformAction(GTransformAction.Type.Rotate45Left),
+                                    new GTransformAction(GTransformAction.Type.Rotate90Left),
+                                    new GTransformAction(GTransformAction.Type.Rotate180Left),
+                                    new GTransformAction(GTransformAction.Type.Rotate45Right),
+                                    new GTransformAction(GTransformAction.Type.Rotate90Right),
+                                    new GTransformAction(GTransformAction.Type.Rotate180Right),
+                                    new GTransformAction(GTransformAction.Type.FlipVertical),
+                                    new GTransformAction(GTransformAction.Type.FlipHorizontal),
+                                    new GGroupAction(),
+                                    new GClipAction(),
+                                    new GSplitAction(),
                                     new _t(),
                                     new R(),
                                     new D(),
-                                    new oe(ie),
-                                    new ie(ie.Type.Intersect),
-                                    new ie(ie.Type.Difference),
-                                    new ie(ie.Type.Subtract),
-                                    new ie(ie.Type.Union),
+                                    new oe(GMergeSubAction),
+                                    new GMergeSubAction(GMergeSubAction.Type.Intersect),
+                                    new GMergeSubAction(GMergeSubAction.Type.Difference),
+                                    new GMergeSubAction(GMergeSubAction.Type.Subtract),
+                                    new GMergeSubAction(GMergeSubAction.Type.Union),
                                     new B(),
                                     new te(),
                                     new Xe(),
-                                    new k(),
+                                    new GConvertToPathAction(),
                                     new O(),
-                                    new de(),
-                                    new le(),
-                                    new it(),
+                                    new GOutlineAction(),
+                                    new GOffsetAction(),
+                                    new GVectorizeBorderAction(),
                                     new at(),
                                     new P(),
                                     new V(),
-                                    new We(),
+                                    new GSimplifyAction(),
                                     new I(),
                                     new Ye(),
                                     new Ge(),
-                                    new F(),
+                                    new GCreateSymbolAction(),
                                     new M(),
                                     new N(),
                                     new rt(),
@@ -575,9 +575,9 @@ module.exports = function (e, t, n) {
                                     new ce(),
                                     new Q(),
                                     new X(),
-                                    new Y(),
-                                    new _e(!1),
-                                    new _e(!0),
+                                    new GFitAllAction(),
+                                    new _e(false),
+                                    new _e(true),
                                     new we(),
                                     new Kt(Kt.Type.Next),
                                     new Kt(Kt.Type.Previous),
@@ -589,8 +589,8 @@ module.exports = function (e, t, n) {
                                 ].concat(ne.ZOOM_LEVELS.map((e) => new ne(e)))
                             )
                             .concat([
-                                new st(),
-                                new lt(),
+                                new GZoomInAction(),
+                                new GZoomOutAction(),
                                 new ue(),
                                 new pe(),
                                 new Ve(),
@@ -600,16 +600,16 @@ module.exports = function (e, t, n) {
                                 new He(),
                                 new dt(),
                                 new $t(),
-                                new Je(),
-                                ...(i.HAS_SNAPZONES ? [new Ze()] : []),
-                                new Qe(r.GGridGuide.ID, s.GLocale.get(new s.GLocaleKey("GCommonNames", "text.snap-to-grid"))),
-                                new Qe(r.GGuideLinesGuide.ID, s.GLocale.get(new s.GLocaleKey("GCommonNames", "text.snap-to-guide-lines"))),
-                                new Qe(r.GFullPixelsGuide.ID, s.GLocale.get(new s.GLocaleKey("GCommonNames", "text.snap-to-full-pixels"))),
-                                new Qe(r.GPointsGuide.ID, s.GLocale.get(new s.GLocaleKey("GCommonNames", "text.snap-to-anchor-points"))),
-                                new Qe(r.GBBoxGuide.ID, s.GLocale.get(new s.GLocaleKey("GCommonNames", "text.snap-to-shapes"))),
-                                new Qe(r.GPageGuide.ID, s.GLocale.get(new s.GLocaleKey("GCommonNames", "text.snap-to-pages"))),
+                                new GToggleSnapAction(),
+                                ...(designerConfig.HAS_SNAPZONES ? [new GToggleSnapZonesAction()] : []),
+                                new Qe(r.GGridGuide.ID, GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.snap-to-grid"))),
+                                new Qe(r.GGuideLinesGuide.ID, GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.snap-to-guide-lines"))),
+                                new Qe(r.GFullPixelsGuide.ID, GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.snap-to-full-pixels"))),
+                                new Qe(r.GPointsGuide.ID, GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.snap-to-anchor-points"))),
+                                new Qe(r.GBBoxGuide.ID, GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.snap-to-shapes"))),
+                                new Qe(r.GPageGuide.ID, GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.snap-to-pages"))),
                                 new se(),
-                                new ct(),
+                                new GPlayAction(),
                                 new ut(),
                                 new xt(new Lt()),
                             ])
@@ -630,23 +630,23 @@ module.exports = function (e, t, n) {
                                 new Bt(),
                             ])
                             .concat([new It(), new kt()]),
-                        sidebars: [new dn(), ...(i.HAS_ANNOTATIONS ? [new pn()] : []), new un(), new Tn(), new An()],
+                        sidebars: [new dn(), ...(designerConfig.HAS_ANNOTATIONS ? [new GAnnotationsSidebar()] : []), new GOutlineSidebar(), new GLibrarySidebar(), new GSymbolsSidebar()],
                         panels: [],
-                        footer: [new Gn(), new Pn(), ...(_ ? [new Dn(), new Ln()] : [])],
+                        footer: [new GSoftwareUpdatePanel(), new GNotificationPanel(), ...(_ ? [new GCollaborativeTextPanel(), new Ln()] : [])],
                         tools: [
                             {
                                 tool: r.GPointerTool,
                                 toolString: "GPointerTool",
                                 title: _
-                                    ? s.GLocale.get(new s.GLocaleKey("GCommonNames", "tool.pointer"))
-                                    : s.GLocale.get(new s.GLocaleKey("GPointerTool", "name")),
+                                    ? GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "tool.pointer"))
+                                    : GObject.GLocale.get(new GObject.GLocaleKey("GPointerTool", "name")),
                                 group: "select",
                                 key: "V",
                                 icon: "gravit-icon-cursor-filled",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GPointerTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GPointerTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GPointerTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GPointerTool", "tooltip-description")),
+                                    middle: false,
                                     shortcut: ["V"],
                                     video: ao.gApi.getRichTooltipVideoURL("Pointer_Tool.mp4"),
                                     learnMore: "/docs/tools/selection-tools/#pointer-tool",
@@ -655,14 +655,14 @@ module.exports = function (e, t, n) {
                             {
                                 tool: r.GSubSelectTool,
                                 toolString: "GSubSelectTool",
-                                title: s.GLocale.get(new s.GLocaleKey("GSubSelectTool", "name")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GSubSelectTool", "name")),
                                 group: "select",
                                 key: "D",
                                 icon: _ ? "gravit-icon-cursor-subselect" : "gravit-icon-cursor",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GSubSelectTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GSubSelectTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GSubSelectTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GSubSelectTool", "tooltip-description")),
+                                    middle: false,
                                     shortcut: ["D"],
                                     video: ao.gApi.getRichTooltipVideoURL("Subselect_Tool.mp4"),
                                     learnMore: "/docs/tools/selection-tools/#subselect-tool",
@@ -671,15 +671,15 @@ module.exports = function (e, t, n) {
                             {
                                 tool: r.GLassoTool,
                                 toolString: "GLassoTool",
-                                title: s.GLocale.get(new s.GLocaleKey("GLassoTool", "name")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GLassoTool", "name")),
                                 group: "select",
                                 category: "special",
                                 key: "O",
                                 icon: "gravit-icon-rope",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GLassoTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GLassoTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GLassoTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GLassoTool", "tooltip-description")),
+                                    middle: false,
                                     shortcut: ["O"],
                                     video: ao.gApi.getRichTooltipVideoURL("Lasso_Tool.mp4"),
                                     learnMore: "/docs/tools/selection-tools/#lasso-tool",
@@ -688,29 +688,29 @@ module.exports = function (e, t, n) {
                             {
                                 tool: r.GLayerTool,
                                 toolString: "GLayerTool",
-                                title: s.GLocale.get(new s.GLocaleKey("GLayerTool", "name")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GLayerTool", "name")),
                                 group: "select",
                                 category: "special",
                                 icon: "gravit-icon-sheets",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GLayerTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GLayerTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GLayerTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GLayerTool", "tooltip-description")),
+                                    middle: false,
                                     learnMore: "/docs/tools/selection-tools/#layer-tool",
                                 }),
                             },
                             {
                                 tool: r.GSliceTool,
                                 toolString: "GSliceTool",
-                                title: s.GLocale.get(new s.GLocaleKey("GSliceTool", "name")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GSliceTool", "name")),
                                 group: "select",
                                 category: "other",
                                 key: "S",
                                 icon: "gravit-icon-slice",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GSliceTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GSliceTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GSliceTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GSliceTool", "tooltip-description")),
+                                    middle: false,
                                     shortcut: ["S"],
                                     learnMore: "/docs/tools/selection-tools/#slice-tool",
                                 }),
@@ -718,14 +718,14 @@ module.exports = function (e, t, n) {
                             {
                                 tool: r.GPenTool,
                                 toolString: "GPenTool",
-                                title: s.GLocale.get(new s.GLocaleKey("GPenTool", "name")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GPenTool", "name")),
                                 group: "path",
                                 key: "P",
                                 icon: "gravit-icon-pen",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GPenTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GPenTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GPenTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GPenTool", "tooltip-description")),
+                                    middle: false,
                                     shortcut: ["P"],
                                     video: ao.gApi.getRichTooltipVideoURL("Pen_Too.mp4"),
                                     learnMore: "/docs/tools/drawing-tools/#pen-tool",
@@ -734,16 +734,16 @@ module.exports = function (e, t, n) {
                             {
                                 tool: r.GBezigonTool,
                                 toolString: "GBezigonTool",
-                                title: s.GLocale.get(new s.GLocaleKey("GBezigonTool", "name")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GBezigonTool", "name")),
                                 group: "path",
                                 key: "B",
                                 icon: "gravit-icon-pen-filled",
-                                pro: !0,
+                                pro: true,
                                 feature: "bezigon",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GBezigonTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GBezigonTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GBezigonTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GBezigonTool", "tooltip-description")),
+                                    middle: false,
                                     shortcut: ["B"],
                                     isPro: gDesigner.isProTooltipNeeded("bezigon"),
                                     video: ao.gApi.getRichTooltipVideoURL("Bezigon_Tool.mp4"),
@@ -753,15 +753,15 @@ module.exports = function (e, t, n) {
                             {
                                 tool: r.GKnifeTool,
                                 toolString: "GKnifeTool",
-                                title: s.GLocale.get(new s.GLocaleKey("GKnifeTool", "name")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GKnifeTool", "name")),
                                 group: "knife",
                                 category: "modify",
                                 key: "K",
                                 icon: "gravit-icon-scalpel",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GKnifeTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GKnifeTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GKnifeTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GKnifeTool", "tooltip-description")),
+                                    middle: false,
                                     shortcut: ["K"],
                                     video: ao.gApi.getRichTooltipVideoURL("Knife_Tool.mp4"),
                                     learnMore: "/docs/tools/other-tools/#knife-tool",
@@ -770,14 +770,14 @@ module.exports = function (e, t, n) {
                             {
                                 tool: r.GFreehandTool,
                                 toolString: "GFreehandTool",
-                                title: s.GLocale.get(new s.GLocaleKey("GFreehandTool", "name")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GFreehandTool", "name")),
                                 group: "path",
                                 category: "hand",
                                 icon: "gravit-icon-free-hand-draw",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GFreehandTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GFreehandTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GFreehandTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GFreehandTool", "tooltip-description")),
+                                    middle: false,
                                     video: ao.gApi.getRichTooltipVideoURL("Freehand_Tool.mp4"),
                                     learnMore: "/docs/tools/drawing-tools/#freehand-tool",
                                 }),
@@ -785,14 +785,14 @@ module.exports = function (e, t, n) {
                             {
                                 tool: r.GMagicTool,
                                 toolString: "GMagicTool",
-                                title: s.GLocale.get(new s.GLocaleKey("GMagicTool", "name")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GMagicTool", "name")),
                                 group: "knife",
                                 category: "modify",
                                 icon: "gravit-icon-freehand-shape",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GMagicTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GMagicTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GMagicTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GMagicTool", "tooltip-description")),
+                                    middle: false,
                                     video: ao.gApi.getRichTooltipVideoURL("Freehand_Shaping_Tool.mp4"),
                                     learnMore: "/docs/tools/other-tools/#freehand-shaping-tool",
                                 }),
@@ -800,16 +800,16 @@ module.exports = function (e, t, n) {
                             {
                                 tool: r.GLineTool,
                                 toolString: "GLineTool",
-                                title: s.GLocale.get(
-                                    _ ? new s.GLocaleKey("GCommonNames", "tool.line") : new s.GLocaleKey("GLineTool", "name")
+                                title: GObject.GLocale.get(
+                                    _ ? new GObject.GLocaleKey("GCommonNames", "tool.line") : new GObject.GLocaleKey("GLineTool", "name")
                                 ),
                                 group: "shape",
                                 key: "L",
                                 icon: "gravit-icon-line",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GLineTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GLineTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GLineTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GLineTool", "tooltip-description")),
+                                    middle: false,
                                     shortcut: ["L"],
                                     video: ao.gApi.getRichTooltipVideoURL("Line_Tool.mp4"),
                                     learnMore: "/docs/basics/shapes-paths/#line",
@@ -818,15 +818,15 @@ module.exports = function (e, t, n) {
                             {
                                 tool: r.GRectangleTool,
                                 toolString: "GRectangleTool",
-                                title: s.GLocale.get(new s.GLocaleKey("GRectangleTool", "name")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GRectangleTool", "name")),
                                 group: "shape",
                                 key: "R",
                                 shortcuts: [["M"]],
                                 icon: "gravit-icon-rectangle",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GRectangleTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GRectangleTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GRectangleTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GRectangleTool", "tooltip-description")),
+                                    middle: false,
                                     shortcut: ["R"],
                                     video: ao.gApi.getRichTooltipVideoURL("Rectangle_Tool.mp4"),
                                     learnMore: "/docs/basics/shapes-paths/#rectangle-r",
@@ -835,14 +835,14 @@ module.exports = function (e, t, n) {
                             {
                                 tool: r.GEllipseTool,
                                 toolString: "GEllipseTool",
-                                title: s.GLocale.get(new s.GLocaleKey("GEllipseTool", "name")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GEllipseTool", "name")),
                                 group: "shape",
                                 key: "E",
                                 icon: "gravit-icon-ellipse",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GEllipseTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GEllipseTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GEllipseTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GEllipseTool", "tooltip-description")),
+                                    middle: false,
                                     shortcut: ["E"],
                                     video: ao.gApi.getRichTooltipVideoURL("Ellipse_Tool.mp4"),
                                     learnMore: "/docs/basics/shapes-paths/#ellipse-e",
@@ -851,56 +851,56 @@ module.exports = function (e, t, n) {
                             {
                                 tool: r.GPolygonTool,
                                 toolString: "GPolygonTool",
-                                title: s.GLocale.get(new s.GLocaleKey("GPolygonTool", "name")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GPolygonTool", "name")),
                                 group: "shape",
                                 category: "polygon",
                                 icon: "gravit-icon-polygon",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GPolygonTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GPolygonTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GPolygonTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GPolygonTool", "tooltip-description")),
+                                    middle: false,
                                     learnMore: "/docs/basics/shapes-paths/#polygon",
                                 }),
                             },
                             {
                                 tool: r.GTriangleTool,
                                 toolString: "GTriangleTool",
-                                title: s.GLocale.get(new s.GLocaleKey("GTriangleTool", "name")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GTriangleTool", "name")),
                                 group: "shape",
                                 category: "polygon",
                                 icon: "gravit-icon-triangle",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GTriangleTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GTriangleTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GTriangleTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GTriangleTool", "tooltip-description")),
+                                    middle: false,
                                     learnMore: "/docs/basics/shapes-paths/#triangle-star",
                                 }),
                             },
                             {
                                 tool: r.GStarTool,
                                 toolString: "GStarTool",
-                                title: s.GLocale.get(new s.GLocaleKey("GStarTool", "name")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GStarTool", "name")),
                                 group: "shape",
                                 category: "polygon",
                                 icon: "gravit-icon-star",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GStarTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GStarTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GStarTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GStarTool", "tooltip-description")),
+                                    middle: false,
                                     learnMore: "/docs/basics/shapes-paths/#triangle-star",
                                 }),
                             },
                             {
                                 tool: r.GTextTool,
                                 toolString: "GTextTool",
-                                title: s.GLocale.get(new s.GLocaleKey("GTextTool", "name")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GTextTool", "name")),
                                 group: "insert",
                                 key: "T",
                                 icon: "gravit-icon-textbox",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GTextTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GTextTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GTextTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GTextTool", "tooltip-description")),
+                                    middle: false,
                                     video: ao.gApi.getRichTooltipVideoURL("Text_Tool.mp4"),
                                     shortcut: ["T"],
                                     learnMore: "/docs/working-with-text/",
@@ -909,14 +909,14 @@ module.exports = function (e, t, n) {
                             {
                                 tool: r.GHandTool,
                                 toolString: "GHandTool",
-                                title: s.GLocale.get(new s.GLocaleKey("GHandTool", "name")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GHandTool", "name")),
                                 group: "view",
                                 key: "H",
                                 icon: "gravit-icon-move",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GHandTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GHandTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GHandTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GHandTool", "tooltip-description")),
+                                    middle: false,
                                     shortcut: ["H"],
                                     learnMore: "/docs/tools/other-tools/#pan",
                                 }),
@@ -924,61 +924,61 @@ module.exports = function (e, t, n) {
                             {
                                 tool: r.GZoomTool,
                                 toolString: "GZoomTool",
-                                title: s.GLocale.get(new s.GLocaleKey("GZoomTool", "name")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GZoomTool", "name")),
                                 group: "view",
                                 key: "Z",
                                 icon: "gravit-icon-zoom-in",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
-                                    title: s.GLocale.get(new s.GLocaleKey("GZoomTool", "tooltip-title")),
-                                    description: s.GLocale.get(new s.GLocaleKey("GZoomTool", "tooltip-description")),
-                                    middle: !1,
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GZoomTool", "tooltip-title")),
+                                    description: GObject.GLocale.get(new GObject.GLocaleKey("GZoomTool", "tooltip-description")),
+                                    middle: false,
                                     shortcut: ["Z"],
                                     learnMore: "/docs/tools/other-tools/#zoom-tool",
                                 }),
                             },
                         ],
                         properties: [
-                            new xn(),
+                            new GDimensionProperties(),
                             new En(),
-                            new Sn(),
-                            new vn(),
-                            new bn(),
-                            new ln(),
-                            new sn(),
+                            new GTransformProperties(),
+                            new GPageProperties(),
+                            new GSceneProperties(),
+                            new GGroupFrameProperties(),
+                            new GFrameProperties(),
                             new cn(),
                             new mn(),
-                            new gn(),
-                            new an(),
-                            new Cn(),
-                            new rn(),
+                            new GPathProperties(),
+                            new GEllipseProperties(),
+                            new GTextProperties(),
+                            new GImageProperties(),
                             new yn(),
                             new wn(),
-                            new nn(),
-                            new _n(),
+                            new GBoolOpProperties(),
+                            new GSymbolProperties(),
                             new Zt(),
-                            new en(),
-                            new tn(),
-                            new on(),
+                            new GFillPaintLayerProperties(),
+                            new GBorderPaintLayerProperties(),
+                            new GEffectProperties(),
                         ],
                     }),
                     "function" != typeof window.gdb_initsavestepsaction ||
                         y ||
-                        a.IS_RC ||
+                        IS_TRUNK.IS_RC ||
                         window.gdb_initsavestepsaction(window.gravit.actions, Pe),
                     "function" == typeof window.gdb_initsetupsystemdateaction &&
                         window.gdb_initsetupsystemdateaction(window.gravit.actions),
                     "function" != typeof window.gdb_inittranslationtoolaction ||
                         y ||
-                        a.IS_RC ||
+                        IS_TRUNK.IS_RC ||
                         window.gdb_inittranslationtoolaction(window.gravit.actions, Pe),
                     "function" != typeof window.gdb_initrecordgravitaction ||
                         y ||
-                        a.IS_RC ||
+                        IS_TRUNK.IS_RC ||
                         window.gdb_initrecordgravitaction(window.gravit.actions, Pe));
                 let t = new In(e._storage);
                 (t.load(),
                     t.init(gravit),
-                    (ao.gPatternChooserNormal = new hn()),
+                    (ao.gPatternChooserNormal = new GPatternChooser()),
                     (ao.gPatternChooserTouch = new fn()),
                     gDesigner.isTouchEnabled()
                         ? (ao.gPatternChooser = ao.gPatternChooserTouch)
@@ -988,27 +988,27 @@ module.exports = function (e, t, n) {
                     await gDesigner.start().finally(() => {
                         gDesigner.isTouchDevice() &&
                             !gDesigner.isTouchEnabled() &&
-                            i.TOUCH_LAYOUT &&
+                            designerConfig.TOUCH_LAYOUT &&
                             (gDesigner.stats("touch-dialog_open"),
-                            Nn.confirm(
+                            GSystemDialog.confirm(
                                 ""
                                     .concat(
-                                        s.GLocale.get(new s.GLocaleKey("GSystemDialog", "text.supported-touch-title")),
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.supported-touch-title")),
                                         "<br>\n                         "
                                     )
-                                    .concat(s.GLocale.get(new s.GLocaleKey("GSystemDialog", "text.supported-touch-footer"))),
+                                    .concat(GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.supported-touch-footer"))),
                                 (e) => {
                                     (gDesigner.stats("touch-dialog_click_".concat(e ? "ok" : "cancel")),
-                                        e && gDesigner.executeAction(Lt.ID, void 0, void 0, !0));
+                                        e && gDesigner.executeAction(Lt.ID, void 0, void 0, true));
                                 },
-                                s.GLocale.get(new s.GLocaleKey("GLocale", "cancel")),
+                                GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "cancel")),
                                 {
-                                    text: s.GLocale.get(new s.GLocaleKey("GLocale", "ok")),
-                                    pro: !0,
+                                    text: GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")),
+                                    pro: true,
                                 },
-                                !1,
-                                !1,
-                                !1,
+                                false,
+                                false,
+                                false,
                                 "designer.settings.dont_show_supported_touch_dialog"
                             ));
                     }),
@@ -1026,17 +1026,17 @@ module.exports = function (e, t, n) {
                 let o = gDesigner.getSetting("webcdr_choice", y ? "BETA" : "STAGING");
                 if (
                     (ro
-                        ? i.trunkwebcdr &&
-                          (a.IS_LOCALHOST
-                              ? (ao.gApi.webcdr = o && "BETA" === o ? i.cloudBetaURL + "/api/webcdr" : i.cloudTrunkURL + "/api/webcdr")
-                              : (ao.gApi.webcdr = o && "BETA" === o ? i.betaWebcdr : i.trunkwebcdr))
+                        ? designerConfig.trunkwebcdr &&
+                          (IS_TRUNK.IS_LOCALHOST
+                              ? (ao.gApi.webcdr = o && "BETA" === o ? designerConfig.cloudBetaURL + "/api/webcdr" : designerConfig.cloudTrunkURL + "/api/webcdr")
+                              : (ao.gApi.webcdr = o && "BETA" === o ? designerConfig.betaWebcdr : designerConfig.trunkwebcdr))
                         : y
-                          ? (ao.gApi.webcdr = o && "BETA" === o ? i.betaWebcdr : i.stagingWebcdr)
-                          : i.webcdr && (ao.gApi.webcdr = i.webcdr),
+                          ? (ao.gApi.webcdr = o && "BETA" === o ? designerConfig.betaWebcdr : designerConfig.stagingWebcdr)
+                          : designerConfig.webcdr && (ao.gApi.webcdr = designerConfig.webcdr),
                     $("body").removeClass("loading"),
                     (window.onbeforeunload = function (e) {
                         gDesigner.isReloading() ||
-                            gContainer.canUnload(gDesigner.hasModifiedDocuments(), gDesigner.hasSynchronizingDocuments(), !1) ||
+                            gContainer.canUnload(gDesigner.hasModifiedDocuments(), gDesigner.hasSynchronizingDocuments(), false) ||
                             (e.preventDefault(), (e.returnValue = ""));
                     }),
                     (window.onunload = function () {
@@ -1044,7 +1044,7 @@ module.exports = function (e, t, n) {
                     }),
                     n)
                 ) {
-                    let e = new A();
+                    let e = new GDocument();
                     if (
                         gContainer.getRuntime() === kn.Runtime.Browser ||
                         gContainer.getRuntime() === kn.Runtime.PWA ||
@@ -1066,25 +1066,25 @@ module.exports = function (e, t, n) {
                         gDesigner.createNewDocumentDialog());
                 } else f.default.isEnabled() ? gDesigner.handleWelcomeScreenOpenWithUserPermissions() : gDesigner.newInfiniteDocument();
                 (gDesigner.hasEventListeners(Hn) && gDesigner.trigger(new Hn(Hn.Status.Ready)),
-                    (0, c.isSupportedScreenSize)()
-                        ? !(0, c.isSupportedScreenSize)(document.body.clientWidth) &&
-                          i.msTeamsMode &&
+                    (0, GSaveAction.isSupportedScreenSize)()
+                        ? !(0, GSaveAction.isSupportedScreenSize)(document.body.clientWidth) &&
+                          designerConfig.msTeamsMode &&
                           (await oo()) &&
-                          Nn.alert(s.GLocale.get(new s.GLocaleKey("GSystemDialog", "text.unsupported-windows-size-msteams")))
-                        : i.msTeamsMode
-                          ? Nn.alert(s.GLocale.get(new s.GLocaleKey("GSystemDialog", "text.unsupported-screen-size-msteams")))
+                          GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.unsupported-windows-size-msteams")))
+                        : designerConfig.msTeamsMode
+                          ? GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.unsupported-screen-size-msteams")))
                           : (gDesigner.stats("touch-dialog_unsupport-size"),
-                            Nn.showOneTimeDialog(
-                                s.GLocale.get(new s.GLocaleKey("GSystemDialog", "text.unsupported-screen-size")).replace(
+                            GSystemDialog.showOneTimeDialog(
+                                GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.unsupported-screen-size")).replace(
                                     "%app",
-                                    i.DESIGNER.TITLE
+                                    designerConfig.DESIGNER.TITLE
                                 ),
                                 "designer.settings.dont_show_unsupported_screen_size_dialog"
                             )),
                     t.start(),
                     await jn.start(),
                     C &&
-                        (await (0, c._tryAndCatch)(() => {
+                        (await (0, GSaveAction._tryAndCatch)(() => {
                             ((gDesigner._softwareUpdateManager = new Vn()), gDesigner._softwareUpdateManager.start());
                         })),
                     (ao.gMemoryManager = new Zn()),
@@ -1093,7 +1093,7 @@ module.exports = function (e, t, n) {
             if (
                 ("function" != typeof gdb_initSetupSystemDate || y || (await gdb_initSetupSystemDate()),
                 await Wn,
-                await (0, c._tryAndCatch)(() => Kn.init()),
+                await (0, GSaveAction._tryAndCatch)(() => Kn.init()),
                 await null,
                 _ || gDesigner.isEnabledSubscriptions())
             ) {
@@ -1102,15 +1102,15 @@ module.exports = function (e, t, n) {
                     let t;
                     if (e && e.isAnonymous() && Yn && Yn.link === kn.DeepLinking.DirectLink) {
                         let e = Yn.options[kn.DeepLinking.DirectLink];
-                        t = JSON.parse((0, c.base64StringToString)(e)).signup;
+                        t = JSON.parse((0, GSaveAction.base64StringToString)(e)).signup;
                     }
                     if (!e || e.reload || e.deactivated || (e.isAnonymous() && t)) {
                         const n = Yn && Yn.link;
-                        e && !e.isAnonymous() && (await (0, c._tryAndCatch)(() => gDesigner.signout(!0, !0)));
+                        e && !e.isAnonymous() && (await (0, GSaveAction._tryAndCatch)(() => gDesigner.signout(true, true)));
                         const o = new URL(window.location.href).searchParams.get("token");
                         if (o) {
-                            const { enterprise: e } = await i.gApi.checkEnterpriseToken(o).catch({ enterprise: !1 });
-                            e && gDesigner.setEnterpriseLoginForm(!0);
+                            const { enterprise: e } = await designerConfig.gApi.checkEnterpriseToken(o).catch({ enterprise: false });
+                            e && gDesigner.setEnterpriseLoginForm(true);
                         }
                         (await gContainer.preLogin().catch((e) => {
                             console.warn("gContainer preLogin error", e);
@@ -1120,9 +1120,9 @@ module.exports = function (e, t, n) {
                             p &&
                                 p.has(kn.DeepLinking.PWADialog) &&
                                 gDesigner.executeWhenReady(() => {
-                                    gDesigner.showInstallPwaDialog(!0);
+                                    gDesigner.showInstallPwaDialog(true);
                                 }),
-                            E && Nn.error(E));
+                            E && GSystemDialog.error(E));
                     } else
                         (await io(),
                             p &&
@@ -1131,14 +1131,14 @@ module.exports = function (e, t, n) {
                                     gDesigner.showInstallPwaDialog();
                                 }));
                 };
-                if (i.msTeamsMode) (await to()) ? new u.default(io).load() : window.location.replace(window.location.origin);
+                if (designerConfig.msTeamsMode) (await to()) ? new u.default(io).load() : window.location.replace(window.location.origin);
                 else if (navigator.onLine || gDesigner.isEnabledProFeatures("offline")) await e();
                 else {
-                    const t = Nn.custom({
+                    const t = GSystemDialog.custom({
                             icon: "clock",
-                            title: s.GLocale.get(new s.GLocaleKey("GCommonNames", "text.license-offline-title")),
-                            subtitle: s.GLocale.get(new s.GLocaleKey("GCommonNames", "text.license-offline-expired-subtitle")),
-                            closeable: !1,
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.license-offline-title")),
+                            subtitle: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.license-offline-expired-subtitle")),
+                            closeable: false,
                         }),
                         n = () => {
                             navigator.onLine && (e(), t.gDialog("close"), $(window).off("online", n));
@@ -1146,7 +1146,7 @@ module.exports = function (e, t, n) {
                     $(window).on("online", n);
                 }
             } else await io();
-            i.gApi.setHooks({
+            designerConfig.gApi.setHooks({
                 onError: () => {
                     lo || so().then((e) => e && void (lo || ((lo = new Un()), lo.open())));
                 },

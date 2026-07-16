@@ -1,21 +1,21 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(3));
-        var o = n(1),
-            i = n(15),
-            a = n(18),
-            r = n(31),
-            s = n(844),
-            l = n(86),
-            c = n(220),
-            d = n(119),
-            u = n(446);
-        const p = n(256);
+        (require(8 /* Symbol */), require(3));
+        var GObject = require(1),
+            GPlatform = require(15),
+            GCategory = require(18),
+            r = require(31),
+            s = require(844),
+            l = require(86),
+            GCommonNames = require(220),
+            d = require(119 /* GCommonNames */),
+            GLoginPanel = require(446);
+        const GOfflineDialog = require(256);
         function g(e) {
-            ((this._type = e), (this._title = new o.GLocaleKey("GGravitCloudAction", "title." + e)));
+            ((this._type = e), (this._title = new GObject.GLocaleKey("GGravitCloudAction", "title." + e)));
         }
         ((g.Actions = { New: "new", Save: "save", SaveAs: "save-as", Open: "open" }),
-            o.GObject.inherit(g, r),
+            GObject.GObject.inherit(g, r),
             (g.ID = "gravit-cloud"),
             (g.prototype._type = null),
             (g.prototype._title = null),
@@ -29,7 +29,7 @@ module.exports = function (e, t, n) {
                 return this._title;
             }),
             (g.prototype.getCategory = function () {
-                return a.CATEGORY_FILE;
+                return GCategory.CATEGORY_FILE;
             }),
             (g.prototype.getGroup = function () {
                 return this._type === g.Actions.Open ? "file-open" : "file";
@@ -39,20 +39,20 @@ module.exports = function (e, t, n) {
             }),
             (g.prototype.getShortcut = function () {
                 return this._type == g.Actions.Open
-                    ? [i.GKey.Constant.SHIFT, i.GKey.Constant.META, "O"]
+                    ? [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "O"]
                     : this._type == g.Actions.SaveAs
-                      ? [i.GKey.Constant.SHIFT, i.GKey.Constant.META, "S"]
+                      ? [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "S"]
                       : null;
             }),
             (g.prototype.isEnabled = function () {
-                if (!gDesigner.getApplicationManager().isEditingEnabled() && this._type === g.Actions.Save) return !1;
-                if (!gDesigner.getApplicationManager().isOpenFromCloudEnabled() && this._type === g.Actions.Open) return !1;
-                if (!gDesigner.getApplicationManager().isSavingAsEnabled() && this._type === g.Actions.SaveAs) return !1;
+                if (!gDesigner.getApplicationManager().isEditingEnabled() && this._type === g.Actions.Save) return false;
+                if (!gDesigner.getApplicationManager().isOpenFromCloudEnabled() && this._type === g.Actions.Open) return false;
+                if (!gDesigner.getApplicationManager().isSavingAsEnabled() && this._type === g.Actions.SaveAs) return false;
                 return !(!gDesigner.getActiveDocument() && this._type !== g.Actions.Open) && !!d.isOnline();
             }),
             (g.prototype.execute = function (e, t, n) {
                 const o = () =>
-                    new u(
+                    new GLoginPanel(
                         () => {
                             this._executeAction(e, t, n);
                         },
@@ -60,18 +60,18 @@ module.exports = function (e, t, n) {
                             gDesigner.stats("action-cancelled_export", this._type);
                         }
                     );
-                gDesigner.isOffline() ? p.openUnavailableFeature(o) : o();
+                gDesigner.isOffline() ? GOfflineDialog.openUnavailableFeature(o) : o();
             }),
             (g.prototype._executeAction = function (e, t, n) {
                 var o = this;
                 if ("open" === this._type) {
-                    let e = { closable: !0, showCloudOptions: !0, openFromCloud: !0 };
+                    let e = { closable: true, showCloudOptions: true, openFromCloud: true };
                     gDesigner.openNewDocumentDialog(e);
                 } else if ("save" === this._type) {
                     var i = gDesigner.getActiveDocument();
                     if (i.isCommercialProductFile()) return void i.openPaywall(this.getId());
                     var a = i.getStorageItem();
-                    a && a instanceof c.Item
+                    a && a instanceof GCommonNames.Item
                         ? d.performSave(
                               i,
                               () => {
@@ -81,19 +81,19 @@ module.exports = function (e, t, n) {
                                   t && t(l.SaveFailed);
                               }
                           )
-                        : o._saveAs(!1, e, t);
+                        : o._saveAs(false, e, t);
                 } else if ("new" === this._type) {
                     let n = {
-                        closable: !0,
+                        closable: true,
                         cb: function () {
-                            o._saveAs(!0, e, t);
+                            o._saveAs(true, e, t);
                         },
                     };
                     gDesigner.openNewDocumentDialog(n);
-                } else "save-as" === this._type && o._saveAs(!1, e, t, n);
+                } else "save-as" === this._type && o._saveAs(false, e, t, n);
             }),
             (g.prototype._hasUnsupported = async function () {
-                return !1;
+                return false;
             }),
             (g.prototype._saveAs = async function (e, t, n, o) {
                 var i = t || gDesigner.getActiveDocument();
@@ -126,5 +126,5 @@ module.exports = function (e, t, n) {
             (g.prototype.toString = function () {
                 return "[Object GGravitCloudAction]";
             }),
-            (e.exports = g));
+            (module.exports = g));
     };

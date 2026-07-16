@@ -1,7 +1,7 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
         var n,
             o,
-            i = (e.exports = {});
+            i = (module.exports = {});
         function a() {
             throw new Error("setTimeout has not been defined");
         }
@@ -35,21 +35,21 @@ module.exports = function (e, t) {
         })();
         var l,
             c = [],
-            d = !1,
+            d = false,
             u = -1;
         function p() {
-            d && l && ((d = !1), l.length ? (c = l.concat(c)) : (u = -1), c.length && g());
+            d && l && ((d = false), l.length ? (c = l.concat(c)) : (u = -1), c.length && g());
         }
         function g() {
             if (!d) {
                 var e = s(p);
-                d = !0;
+                d = true;
                 for (var t = c.length; t; ) {
                     for (l = c, c = []; ++u < t; ) l && l[u].run();
                     ((u = -1), (t = c.length));
                 }
                 ((l = null),
-                    (d = !1),
+                    (d = false),
                     (function (e) {
                         if (o === clearTimeout) return clearTimeout(e);
                         if ((o === r || !o) && clearTimeout) return ((o = clearTimeout), clearTimeout(e));
@@ -78,7 +78,7 @@ module.exports = function (e, t) {
                 this.fun.apply(null, this.array);
             }),
             (i.title = "browser"),
-            (i.browser = !0),
+            (i.browser = true),
             (i.env = {}),
             (i.argv = []),
             (i.version = ""),

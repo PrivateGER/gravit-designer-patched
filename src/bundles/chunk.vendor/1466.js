@@ -1,32 +1,32 @@
-module.exports = function (e, t, i) {
-            var n = i(161),
-                r = i(0),
-                o = i(11),
-                a = i(367),
-                s = i(369),
-                l = i(655),
-                h = i(195),
-                A = i(7),
-                c = i(1467),
-                p = i(68),
-                u = i(215),
-                d = i(63),
-                g = i(59),
-                f = i(801),
-                m = i(138),
-                y = i(147),
-                _ = i(158),
-                v = i(438),
-                b = i(1148),
-                C = i(1236),
+module.exports = function (module, exports, require) {
+            var n = require(161),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(11),
+                a = require(367),
+                s = require(369),
+                l = require(655),
+                h = require(195),
+                A = require(7),
+                c = require(1467),
+                p = require(68),
+                u = require(215),
+                d = require(63),
+                g = require(59),
+                f = require(801),
+                m = require(138),
+                y = require(147),
+                _ = require(158),
+                v = require(438),
+                b = require(1148),
+                C = require(1236),
                 w =
-                    (i(5),
+                    (require(5),
                     function (e, t) {
                         (o.extend(this, e.getTLCore()),
                             (this._options = t || {}),
                             (this._ctx = new w.GSVGTLRender(this, this._canvas, e, t)));
                     });
-            (r.inherit(w, a),
+            (IsFiniteNonNegativeNumber.inherit(w, a),
                 (w.prototype._options = null),
                 (w.prototype.render = function (e, t, i, n) {
                     ((this._ctx._text = null), a.prototype.render.call(this, e, t, i, n));
@@ -41,7 +41,7 @@ module.exports = function (e, t, i) {
                             n.setAttribute("width", f.formatNumber(i.getWidth())),
                             n.setAttribute("height", f.formatNumber(i.getHeight())),
                             n.setAttribute("transform", "matrix(" + f.formatMatrix(this._ctx._transformOrigin.getMatrix()).join(",") + ")"),
-                            (t = C.createMaskDefinitionFromShape(e.svgDoc, n, !1)));
+                            (t = C.createMaskDefinitionFromShape(e.svgDoc, n, false)));
                     }
                     for (; this._ctx._texts.length; ) {
                         var r = this._ctx._texts.shift();
@@ -89,12 +89,12 @@ module.exports = function (e, t, i) {
                         (this._text = null),
                         (this._texts = []),
                         (this._markers = []),
-                        n && n.fullFFName && (this._fullFFName = !0));
+                        n && n.fullFFName && (this._fullFFName = true));
                 }),
-                r.inherit(w.GSVGTLRender, l),
+                IsFiniteNonNegativeNumber.inherit(w.GSVGTLRender, l),
                 (w.prototype._texts = null),
                 (w.prototype._markers = null),
-                (w.prototype._fullFFName = !1),
+                (w.prototype._fullFFName = false),
                 (w.GSVGTLRender.prototype._transformOrigin = null),
                 (w.GSVGTLRender.prototype.drawMarker = function (e, t, i) {
                     if (!(this._renderMode & s.RENDERFLAG_STROKE)) {
@@ -108,14 +108,14 @@ module.exports = function (e, t, i) {
                                 o = this._node.$trf || new A(),
                                 a = new A(1, 0, 0, 1, t, i).multiplied(o);
                             if (((e = new d(e, a)), this._textTransformer)) {
-                                var l = g.calculateBounds(e, !0);
+                                var l = g.calculateBounds(e, true);
                                 e = this._textTransformer.transform(e, pt.getX(), pt.getY(), l);
                             }
                             (n !== c.Mode.STROKE &&
                                 (r = this._textFillStyle || ("transparent" === this.fillStyle ? this.defaultFill : this.fillStyle)),
                                 n >= c.Mode.STROKE &&
-                                    (r = this._node.getPaintLayers().getBorderLayers(!0)[0].$_pt) instanceof p &&
-                                    (r = r.toScreenCSS(this._node.getPaintLayers().getBorderLayers(!0)[0].$_op)));
+                                    (r = this._node.getPaintLayers().getBorderLayers(true)[0].$_pt) instanceof p &&
+                                    (r = r.toScreenCSS(this._node.getPaintLayers().getBorderLayers(true)[0].$_op)));
                             var h = e.toSVGPath(f.formatNumber);
                             this._markers.push({
                                 path: h,
@@ -141,8 +141,8 @@ module.exports = function (e, t, i) {
                             (a !== c.Mode.STROKE &&
                                 (f = this._textFillStyle || ("transparent" === this.fillStyle ? this.defaultFill : this.fillStyle)),
                                 a >= c.Mode.STROKE &&
-                                    (m = this._node.getPaintLayers().getBorderLayers(!0)[0].$_pt) instanceof p &&
-                                    (m = m.toScreenCSS(this._node.getPaintLayers().getBorderLayers(!0)[0].$_op)),
+                                    (m = this._node.getPaintLayers().getBorderLayers(true)[0].$_pt) instanceof p &&
+                                    (m = m.toScreenCSS(this._node.getPaintLayers().getBorderLayers(true)[0].$_op)),
                                 this._text || ((this._text = new c(this._node)), this._texts.push(this._text)));
                             var y = this.getCurrentFont(),
                                 _ = n.parseFont(this.font);
@@ -157,7 +157,7 @@ module.exports = function (e, t, i) {
                             if (b) {
                                 var C = {
                                         letterSpacing: this.charSpacing,
-                                        kerning: !0,
+                                        kerning: true,
                                         direction: "ltr",
                                         features: {
                                             liga: this.textLigatures,
@@ -166,7 +166,7 @@ module.exports = function (e, t, i) {
                                             stylisticSet: this.textStylisticSet,
                                         },
                                         language: this.textLocalizedForm,
-                                        generateText: !0,
+                                        generateText: true,
                                     },
                                     w = {};
                                 (this.langScript && "auto" !== this.langScript && (C.script = this.langScript),
@@ -175,7 +175,7 @@ module.exports = function (e, t, i) {
                                     var P = E[x],
                                         S = P.glyph.unicode === h.NBSP.charCodeAt(0) ? null : y.getGlyphOutline(v, P.x, P.y, P.glyph);
                                     if (S) {
-                                        var T = y.getGlyphBoundingRect(v, P.glyph, !0);
+                                        var T = y.getGlyphBoundingRect(v, P.glyph, true);
                                         if (
                                             ((w.next = E[x + 1].x - P.x),
                                             (w.prev = x > 0 ? P.x - E[x - 1].x : P.x - t),
@@ -196,7 +196,7 @@ module.exports = function (e, t, i) {
                 }),
                 (w.GSVGTLRender.prototype._putWord = function (e, t, i, n, r, o) {
                     var a,
-                        s = this._node.getPaintLayers().getBorderLayers(!0)[0];
+                        s = this._node.getPaintLayers().getBorderLayers(true)[0];
                     s && (a = s.$_bw);
                     var l = new c.Word({
                             text: t,
@@ -219,5 +219,5 @@ module.exports = function (e, t, i) {
                         h = this._text.getCurrentWord();
                     t.trim().length ? this._text.add(l) : h && h.append(l);
                 }),
-                (e.exports = w));
+                (module.exports = w));
         };

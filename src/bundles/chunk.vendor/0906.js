@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(0),
-                o = i(11),
-                a = i(118);
-            e.exports = function (e) {
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(11),
+                a = require(118);
+            module.exports = function (e) {
                 ((e.Effect = function () {
                     this._setDefaultProperties(e.Effect.GeometryProperties);
                 }),
-                    r.inheritAndMix(e.Effect, n, [n.Store, n.Properties, n.Multireference, a]),
+                    IsFiniteNonNegativeNumber.inheritAndMix(e.Effect, n, [n.Store, n.Properties, n.Multireference, a]),
                     (e.Effect.Type = {
                         PreEffect: 0,
                         PostEffect: 1,
@@ -15,14 +15,14 @@ module.exports = function (e, t, i) {
                         Multi: 3,
                     }),
                     (e.Effect.GeometryProperties = {
-                        vs: !0,
+                        vs: true,
                         ly: null,
                     }),
                     (e.Effect.prototype.assignFrom = function (t) {
                         var i = [];
                         t instanceof e.Effect && i.push(e.Effect.GeometryProperties);
-                        var o = n.getClassFromId(r.getTypeId(this)),
-                            a = n.getClassFromId(r.getTypeId(t));
+                        var o = n.getClassFromId(IsFiniteNonNegativeNumber.getTypeId(this)),
+                            a = n.getClassFromId(IsFiniteNonNegativeNumber.getTypeId(t));
                         if (o && a && o === a) {
                             var s = o.GeometryProperties,
                                 l = o.VisualProperties;
@@ -45,20 +45,20 @@ module.exports = function (e, t, i) {
                         return "number" == typeof e ? Math.max(0, e) : e instanceof Array ? Math.max.apply(null, e) : 0;
                     }),
                     (e.Effect.prototype.isOverlayEffect = function () {
-                        return !1;
+                        return false;
                     }),
                     (e.Effect.prototype.isAffectedByChildren = function () {
                         var e = this.getEffectPadding();
                         return !!e && (e instanceof Array ? Math.max.apply(this, this.getEffectPadding()) > 0 : e);
                     }),
                     (e.Effect.prototype.isAffectedByContents = function () {
-                        return !1;
+                        return false;
                     }),
                     (e.Effect.prototype.isSingleton = function () {
-                        return !1;
+                        return false;
                     }),
                     (e.Effect.prototype.canApplyNativeEffect = function () {
-                        return !1;
+                        return false;
                     }),
                     (e.Effect.prototype.render = function (e, t, i, n) {}),
                     (e.Effect.prototype.applyNativeEffect = function (e, t, i, n) {}),
@@ -91,7 +91,7 @@ module.exports = function (e, t, i) {
                         return e && e.getScene ? e.getScene() : null;
                     }),
                     (e.Effect.prototype.isCacheable = function (e) {
-                        return !0;
+                        return true;
                     }),
                     (e.Effect.prototype._handleGeometryChangeForProperties = function (e, t, i) {
                         if (
@@ -107,16 +107,16 @@ module.exports = function (e, t, i) {
                                     case n._Change.AfterPropertiesChange:
                                         r._styleFinishGeometryChange(this);
                                 }
-                            return !0;
+                            return true;
                         }
-                        return !1;
+                        return false;
                     }),
                     (e.Effect.prototype._handleVisualChangeForProperties = function (e, t, i) {
                         if (e == n._Change.AfterPropertiesChange && o.containsObjectKey(t.properties, i)) {
                             var r = this.getOwnerStylable();
-                            return (r && r._styleRepaint(this), !0);
+                            return (r && r._styleRepaint(this), true);
                         }
-                        return !1;
+                        return false;
                     }),
                     (e.Effect.prototype.toString = function () {
                         return "[Object GStylable.Effect]";

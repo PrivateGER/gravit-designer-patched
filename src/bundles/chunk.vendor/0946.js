@@ -1,4 +1,4 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
 
             function n() {}
@@ -13,5 +13,5 @@ module.exports = function (e, t, i) {
                     };
                     return this.toDate(e).toLocaleDateString(t, i);
                 }),
-                (e.exports = new n()));
+                (module.exports = new n()));
         };

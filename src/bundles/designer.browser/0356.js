@@ -1,31 +1,31 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(49),
-            i = n(23),
-            a = n(27),
-            r = n(277),
-            s = n(288),
-            l = n(100),
-            c = n(136),
-            d = n(243).f,
-            u = n(144),
-            p = n(454),
-            g = n(62),
-            h = n(460),
-            f = n(344),
-            m = n(1040),
-            y = n(79),
-            v = n(21),
-            _ = n(61),
-            b = n(80).enforce,
-            w = n(260),
-            C = n(43),
-            x = n(458),
-            S = n(459),
+        var o = require(49),
+            RegExp = require(23),
+            a = require(27),
+            r = require(277),
+            s = require(288),
+            l = require(100),
+            c = require(136),
+            d = require(243).f,
+            u = require(144),
+            p = require(454),
+            g = require(62),
+            h = require(460),
+            f = require(344),
+            m = require(1040),
+            y = require(79),
+            v = require(21),
+            _ = require(61),
+            b = require(80).enforce,
+            w = require(260),
+            C = require(43),
+            x = require(458),
+            S = require(459),
             E = C("match"),
-            A = i.RegExp,
+            A = RegExp.RegExp,
             T = A.prototype,
-            G = i.SyntaxError,
+            G = RegExp.SyntaxError,
             P = a(T.exec),
             D = a("".charAt),
             L = a("".replace),
@@ -44,7 +44,7 @@ module.exports = function (e, t, n) {
                     x ||
                     S ||
                     v(function () {
-                        return ((R[E] = !1), A(F) !== F || A(R) === R || "/a/i" !== String(A(F, "i")));
+                        return ((R[E] = false), A(F) !== F || A(R) === R || "/a/i" !== String(A(F, "i")));
                     }));
         if (r("RegExp", U)) {
             for (
@@ -72,24 +72,24 @@ module.exports = function (e, t, n) {
                             S &&
                                 ((e = (a = (function (e) {
                                     for (
-                                        var t, n = e.length, o = 0, i = "", a = [], r = c(null), s = !1, l = !1, d = 0, u = "";
+                                        var t, n = e.length, o = 0, i = "", a = [], r = c(null), s = false, l = false, d = 0, u = "";
                                         o <= n;
                                         o++
                                     ) {
                                         if ("\\" === (t = D(e, o))) t += D(e, ++o);
-                                        else if ("]" === t) s = !1;
+                                        else if ("]" === t) s = false;
                                         else if (!s)
-                                            switch (!0) {
+                                            switch (true) {
                                                 case "[" === t:
-                                                    s = !0;
+                                                    s = true;
                                                     break;
                                                 case "(" === t:
                                                     if (((i += t), "?:" === k(e, o + 1, o + 3))) continue;
-                                                    (P(O, k(e, o + 1)) && ((o += 2), (l = !0)), d++);
+                                                    (P(O, k(e, o + 1)) && ((o += 2), (l = true)), d++);
                                                     continue;
                                                 case ">" === t && l:
                                                     if ("" === u || _(r, u)) throw new G("Invalid capture group name");
-                                                    ((r[u] = !0), (a[a.length] = [u, d]), (l = !1), (u = ""));
+                                                    ((r[u] = true), (a[a.length] = [u, d]), (l = false), (u = ""));
                                                     continue;
                                             }
                                         l ? (u += t) : (i += t);
@@ -101,20 +101,20 @@ module.exports = function (e, t, n) {
                             (o || i || v.length) &&
                                 ((d = b(r)),
                                 o &&
-                                    ((d.dotAll = !0),
+                                    ((d.dotAll = true),
                                     (d.raw = $(
                                         (function (e) {
-                                            for (var t, n = e.length, o = 0, i = "", a = !1; o <= n; o++)
+                                            for (var t, n = e.length, o = 0, i = "", a = false; o <= n; o++)
                                                 "\\" !== (t = D(e, o))
                                                     ? a || "." !== t
-                                                        ? ("[" === t ? (a = !0) : "]" === t && (a = !1), (i += t))
+                                                        ? ("[" === t ? (a = true) : "]" === t && (a = false), (i += t))
                                                         : (i += "[\\s\\S]")
                                                     : (i += t + D(e, ++o));
                                             return i;
                                         })(e),
                                         n
                                     ))),
-                                i && (d.sticky = !0),
+                                i && (d.sticky = true),
                                 v.length && (d.groups = v)),
                             e !== w)
                         )
@@ -129,7 +129,7 @@ module.exports = function (e, t, n) {
 
             )
                 m($, A, j[K++]);
-            ((T.constructor = $), ($.prototype = T), y(i, "RegExp", $, { constructor: !0 }));
+            ((T.constructor = $), ($.prototype = T), y(RegExp, "RegExp", $, { constructor: true }));
         }
         w("RegExp");
     };

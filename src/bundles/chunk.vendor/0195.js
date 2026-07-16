@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(148),
-                r = i(161);
+module.exports = function (module, exports, require) {
+            var n = require(148),
+                r = require(161);
 
             function o() {}
             ((o.getFontString = function (e) {
@@ -75,7 +75,7 @@ module.exports = function (e, t, i) {
                 (o.NBSP = String.fromCharCode(160)),
                 (o.ENTER = o.NBSP),
                 (o.measureText = function (e, t, n) {
-                    return i(367).textMeter(e, t, n);
+                    return require(367).textMeter(e, t, n);
                 }),
                 (o.createCachedMeasureText = function () {
                     var e = {};
@@ -88,7 +88,7 @@ module.exports = function (e, t, i) {
                 }),
                 (o.cachedMeasureText = o.createCachedMeasureText()),
                 (o.measure = function (e, t) {
-                    return o.cachedMeasureText(e, o.getRunStyle(t, !0), o.getAdditionalProps(t));
+                    return o.cachedMeasureText(e, o.getRunStyle(t, true), o.getAdditionalProps(t));
                 }),
                 (o.drawMarker = function (e, t, i, n, r) {
                     (o.applyRunStyle(e, i), e.drawMarker(t, n, r));
@@ -103,15 +103,15 @@ module.exports = function (e, t, i) {
                     }
                     (i.transformation && (t = r.transformText(t, i.transformation, e.getCurrentFont())),
                         (e.wordSpacing = i.wordSpacing),
-                        (e.textUnderline = !0 === i.underline),
-                        (e.textStrikeout = !0 === i.strikeout),
+                        (e.textUnderline = true === i.underline),
+                        (e.textStrikeout = true === i.strikeout),
                         (e.textLigatures = i.ligatures),
                         (e.textStylisticSet = i.stylisticSet),
                         (e.textLocalizedForm = i.localizedForm),
                         (e.langScript = i.langScript),
                         (e.textVariant = i.variant),
-                        (e.textFractions = !0 === i.fractions),
+                        (e.textFractions = true === i.fractions),
                         e.drawText("\n" === t || t === o.LS ? o.NBSP : t, n, a, l, s));
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

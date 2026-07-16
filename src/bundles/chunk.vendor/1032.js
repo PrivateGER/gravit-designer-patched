@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(51),
-                o = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(51),
+                String = require(9);
 
             function a() {
                 (r.call(this), this._setDefaultProperties(a.GeometryProperties));
             }
             (n.inherit("GGLBendEffect", a, r),
                 (a.prototype.getNodeNameTranslated = function () {
-                    return o.getValue("GGLBendEffect", "name", this.getNodeName());
+                    return String.getValue("GGLBendEffect", "name", this.getNodeName());
                 }),
                 (a.prototype.getEffectPadding = function () {
                     var e = this.$shp.radius * Math.sin((this.$shp.strengthX * Math.PI) / 2),
@@ -21,7 +21,7 @@ module.exports = function (e, t, i) {
                     return [e, t, e, t];
                 }),
                 (a.prototype.isAffectedByChildren = function () {
-                    return !0;
+                    return true;
                 }),
                 (a.GeometryProperties = {
                     shp: {
@@ -36,5 +36,5 @@ module.exports = function (e, t, i) {
                     strengthY: [-1, 1],
                     radius: [0, 100],
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

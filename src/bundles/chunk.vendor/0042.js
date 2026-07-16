@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(11),
-                r = i(14),
-                o = i(226),
-                a = i(6),
-                s = (i(5), i(12)),
-                l = i(103),
-                h = i(111),
-                A = i(205);
+module.exports = function (module, exports, require) {
+            var n = require(11),
+                r = require(14),
+                o = require(226),
+                a = require(6),
+                s = (require(5), require(12)),
+                DUMP_IMAGES = require(103),
+                h = require(111),
+                A = require(205);
 
             function c(e, t, i) {
                 ((this.vertexAttribute = null),
@@ -20,7 +20,7 @@ module.exports = function (e, t, i) {
                 (c.linkedShaderCache = {}),
                 (c.shaderCacheNoRender = {}),
                 (c.linkedShaderCacheNoRender = {}),
-                (c.cannotReadUINT = !1));
+                (c.cannotReadUINT = false));
 
             function p(e) {
                 var t = [],
@@ -31,9 +31,9 @@ module.exports = function (e, t, i) {
                 for (var r = i * n, o = 0; o < r; o++) t.push(e[o % i][Math.floor(o / i)]);
                 return t;
             }
-            var u = !1,
-                d = !1;
-            ((u = !0),
+            var u = false,
+                d = false;
+            ((u = true),
                 (c.randomShaderFunc =
                     "    float random(vec3 scale, float seed) {        /* use the fragment position for a different seed per-pixel */        return fract(sin(dot(gl_FragCoord.xyz + seed, scale)) * 43758.5453 + seed);    }"),
                 (c.TOLOCAL = "    vec2 toLocal(vec2 coord) {        return ((coord * texSize) - offset)/tileSize;    }"),
@@ -114,12 +114,12 @@ module.exports = function (e, t, i) {
                         this.glEffect.spareTexture.swapWith(i || this.glEffect.texture));
                 }),
                 (c._getShaderCache = function () {
-                    return l.isRenderPhase()
+                    return DUMP_IMAGES.isRenderPhase()
                         ? (c.shaderCache || (c.shaderCache = []), c.shaderCache)
                         : (c.shaderCacheNoRender || (c.shaderCacheNoRender = []), c.shaderCacheNoRender);
                 }),
                 (c._getLinkedShaderCache = function () {
-                    return l.isRenderPhase()
+                    return DUMP_IMAGES.isRenderPhase()
                         ? (c.linkedShaderCache || (c.linkedShaderCache = []), c.linkedShaderCache)
                         : (c.linkedShaderCacheNoRender || (c.linkedShaderCacheNoRender = []), c.linkedShaderCacheNoRender);
                 }),
@@ -208,10 +208,10 @@ module.exports = function (e, t, i) {
                                             s ? i.uniform4fv(r, new Float32Array(p(a))) : i.uniform4iv(r, new Int32Array(p(a)));
                                             break;
                                         case 9:
-                                            i.uniformMatrix3fv(r, !1, new Float32Array(p(a)));
+                                            i.uniformMatrix3fv(r, false, new Float32Array(p(a)));
                                             break;
                                         case 16:
-                                            i.uniformMatrix4fv(r, !1, new Float32Array(p(a)));
+                                            i.uniformMatrix4fv(r, false, new Float32Array(p(a)));
                                             break;
                                         default:
                                             throw "dont't know how to load uniform \"" + n + '" of length ' + a.length;
@@ -252,9 +252,9 @@ module.exports = function (e, t, i) {
                             a.enableVertexAttribArray(this.texCoordAttribute)),
                         a.useProgram(this.program),
                         a.bindBuffer(a.ARRAY_BUFFER, a.vertexBuffer),
-                        a.vertexAttribPointer(this.vertexAttribute, 2, a.FLOAT, !1, 0, 0),
+                        a.vertexAttribPointer(this.vertexAttribute, 2, a.FLOAT, false, 0, 0),
                         a.bindBuffer(a.ARRAY_BUFFER, a.texCoordBuffer),
-                        a.vertexAttribPointer(this.texCoordAttribute, 2, a.FLOAT, !1, 0, 0),
+                        a.vertexAttribPointer(this.texCoordAttribute, 2, a.FLOAT, false, 0, 0),
                         a.drawArrays(a.TRIANGLE_STRIP, 0, 4));
                 }),
                 (c.getDefaultShader = function () {
@@ -281,7 +281,7 @@ module.exports = function (e, t, i) {
                 (c._renderTile = function (e, t, i, n, r, a, l, h) {
                     var A = o.getGLContext(),
                         c = this._getFinalArea(e, n.translated(-a.getX(), -a.getY()).toAlignedRect());
-                    if (!c) return !1;
+                    if (!c) return false;
                     var p,
                         g,
                         f,
@@ -294,9 +294,9 @@ module.exports = function (e, t, i) {
                         (t && ((p = i.getX()), (g = i.getY()), (f = i.getWidth()), (m = i.getHeight())),
                         c.getX() >= a.getWidth() + a.getX() || c.getY() >= a.getHeight() + a.getY())
                     )
-                        return !1;
-                    if (a.getX() > c.getX() + c.getWidth() || a.getY() > c.getY() + c.getHeight()) return !1;
-                    if (y <= 0 || _ <= 0 || (t && f <= 0) || (t && m <= 0)) return !1;
+                        return false;
+                    if (a.getX() > c.getX() + c.getWidth() || a.getY() > c.getY() + c.getHeight()) return false;
+                    if (y <= 0 || _ <= 0 || (t && f <= 0) || (t && m <= 0)) return false;
                     (A.clearColor(0, 0, 0, 0),
                         A.clear(A.COLOR_BUFFER_BIT),
                         d
@@ -314,19 +314,19 @@ module.exports = function (e, t, i) {
                         P = E.glEffect,
                         S = o.createTexture(e._canvasContext.canvas, v - a.getX(), b - a.getY(), y, _);
                     if ((P.draw(S), E.render(B, x, v, b, C, w), P.update(), S.destroy(), t)) {
-                        var T = t.getTransform(!1),
-                            I = t.getTransform(!0);
+                        var T = t.getTransform(false),
+                            I = t.getTransform(true);
                         (t.setTransform(T.inverted()),
                             t.clearRect(p, g, f, m),
                             t.drawImageFragment(A.canvas, p - v, g - b + (A.canvas.height - _), p, g, f, m),
                             t.setTransform(I));
                     }
-                    return !0;
+                    return true;
                 }));
             var y = 1;
             ((c.shouldEnableTiles = function (e, t) {
-                var i = !1;
-                return (!i && e * t > 4194304 ? (i = !0) : i && e <= 2048 && t <= 2048 && (i = !1), i);
+                var i = false;
+                return (!i && e * t > 4194304 ? (i = true) : i && e <= 2048 && t <= 2048 && (i = false), i);
             }),
                 (c._getMaxSize = function (e, t) {
                     var i,
@@ -375,7 +375,7 @@ module.exports = function (e, t, i) {
                         var x = (u = s.scaled(B, B).toAlignedRect()).getWidth(),
                             P = u.getHeight();
                         if (C) {
-                            v = c._copyCanvas(e, s, b, u, d, !0);
+                            v = c._copyCanvas(e, s, b, u, d, true);
                             var S,
                                 T,
                                 I = 0,
@@ -395,13 +395,13 @@ module.exports = function (e, t, i) {
                                 }
                                 F += 0 === F ? T - w[3] : T;
                             }
-                            ((M = 1 !== B || (l && l.getScene()) ? this._copyCanvas(e, s, b, u, d, !1) : e), (n.scale *= B));
+                            ((M = 1 !== B || (l && l.getScene()) ? this._copyCanvas(e, s, b, u, d, false) : e), (n.scale *= B));
                             for (var Q = 0; Q < R.length; Q++) c._renderTile(M, v, R[Q], D[Q], u, d, w, n);
                             n.scale = y;
                         } else {
                             var M;
                             ((n.scale *= B),
-                                (M = 1 !== B ? this._copyCanvas(e, s, b, u, d, !1) : e),
+                                (M = 1 !== B ? this._copyCanvas(e, s, b, u, d, false) : e),
                                 c._renderTile(M, null, null, d, u, d, w, n),
                                 (n.scale = y));
                         }
@@ -413,8 +413,8 @@ module.exports = function (e, t, i) {
                             Y,
                             X,
                             H,
-                            W = e.getTransform(!0),
-                            Z = e.getTransform(!1);
+                            W = e.getTransform(true),
+                            Z = e.getTransform(false);
                         (e.setTransform(Z.inverted()),
                             v
                                 ? ((N = -b.getX()),
@@ -437,7 +437,7 @@ module.exports = function (e, t, i) {
                             "object" == typeof n.properties.opacity &&
                             "opacity" === n.properties.opacity.type &&
                             (z = n.properties.opacity.value),
-                            e.drawImageFragment(v || p.canvas, L, Y, N, U, X, H, !1, z, r.CompositeOperator.Copy, V, O),
+                            e.drawImageFragment(v || p.canvas, L, Y, N, U, X, H, false, z, r.CompositeOperator.Copy, V, O),
                             e.setTransform(W));
                     } else {
                         g = o.createTexture(e, t, i);
@@ -465,7 +465,7 @@ module.exports = function (e, t, i) {
                         h = c._genAreas(t.getAreas(), r, o, s);
                     if (!n.equals(l, h)) {
                         var A = i.getSide(a.Side.TOP_LEFT);
-                        (e.resetClip(), e.prepare(h, !1), e.setOrigin(A), e.setOffset(A), e.setScale(t.getScale() * o));
+                        (e.resetClip(), e.prepare(h, false), e.setOrigin(A), e.setOffset(A), e.setScale(t.getScale() * o));
                     }
                 }),
                 (c._copyCanvas = function (e, t, i, n, o, s) {
@@ -494,7 +494,7 @@ module.exports = function (e, t, i) {
                                   );
                               })
                             : null;
-                    if ((l.prepare(c, !1), h))
+                    if ((l.prepare(c, false), h))
                         for (
                             var p = new a(0, 0, e.getWidth(), e.getHeight()), u = new a(0, 0, l.getWidth(), l.getHeight()), d = 0;
                             d < h.length;
@@ -512,7 +512,7 @@ module.exports = function (e, t, i) {
                                     f.getY(),
                                     g.getWidth(),
                                     g.getHeight(),
-                                    !1,
+                                    false,
                                     1,
                                     r.CompositeOperator.SourceOver,
                                     f.getWidth(),
@@ -528,7 +528,7 @@ module.exports = function (e, t, i) {
                             0,
                             e.getWidth(),
                             e.getHeight(),
-                            !1,
+                            false,
                             1,
                             r.CompositeOperator.Copy,
                             l.getWidth(),
@@ -536,5 +536,5 @@ module.exports = function (e, t, i) {
                         );
                     return (l.setOrigin(A), l.setOffset(A), l);
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

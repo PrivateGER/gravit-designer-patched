@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(1233),
-                r = i(0),
-                o = i(1144);
+module.exports = function (module, exports, require) {
+            var n = require(1233),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(1144);
 
             function a() {}
-            (r.inherit(a, n),
+            (IsFiniteNonNegativeNumber.inherit(a, n),
                 (a.prototype._table = {
                     0: 0,
                     1: 1,
@@ -262,7 +262,7 @@ module.exports = function (e, t, i) {
                     for (var t = [], i = 0; i < e.length; i++) {
                         var n = "string" == typeof e ? e.charCodeAt(i) : e[i],
                             r = this._table[n];
-                        r ? t.push(r) : (t.push(n), !0);
+                        r ? t.push(r) : (t.push(n), true);
                     }
                     return [o.newFromBytes(t)];
                 }),
@@ -271,5 +271,5 @@ module.exports = function (e, t, i) {
                         if (this._table[t[i]] == (255 & e)) return parseInt(t[i]);
                     return null;
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

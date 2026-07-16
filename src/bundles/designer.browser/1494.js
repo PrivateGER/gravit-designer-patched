@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.default = void 0), n(8), n(20), n(271), n(34), n(134), n(38));
-        const { isBeta: o } = n(803);
-        var i = n(1495);
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0), require(8 /* Symbol */), require(20), require(271), require(34), require(134), require(38));
+        const { isBeta: o } = require(803);
+        var i = require(1495);
         let a = 0,
             r = 0;
         const s = {
@@ -109,5 +109,5 @@ module.exports = function (e, t, n) {
                 return e;
             },
         };
-        t.default = s;
+        exports.default = s;
     };

@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(23).navigator,
+        var o = require(23 /* RegExp */).navigator,
             i = o && o.userAgent;
-        e.exports = i ? String(i) : "";
+        module.exports = i ? String(i) : "";
     };

@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.GGoogleAPI = t.GDefaultGoogleAPI = void 0), n(19), n(30), n(8), n(26));
-        var o = n(10),
-            i = n(1);
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.GGoogleAPI = exports.GDefaultGoogleAPI = void 0), require(19), require(30), require(8 /* Symbol */), require(26));
+        var designerConfig = require(10),
+            GObject = require(1);
         class a {
             isLoaded() {
-                return !0;
+                return true;
             }
             init() {
                 let {
@@ -47,8 +47,8 @@ module.exports = function (e, t, n) {
                 throw "Not implemented";
             }
         }
-        t.GGoogleAPI = a;
-        t.GDefaultGoogleAPI = new (class extends a {
+        exports.GGoogleAPI = a;
+        exports.GDefaultGoogleAPI = new (class extends a {
             isLoaded() {
                 return !!window.gapi;
             }
@@ -83,7 +83,7 @@ module.exports = function (e, t, n) {
                             })),
                                 e());
                         } catch (e) {
-                            t(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.loading-failed")));
+                            t(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed")));
                         }
                     })
                 );
@@ -94,16 +94,16 @@ module.exports = function (e, t, n) {
                     return fetch("https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=".concat(e && e.access_token))
                         .then((e) => e.json())
                         .then((e) => !!e.email)
-                        .catch(() => !1);
+                        .catch(() => false);
                 }
-                return !1;
+                return false;
             }
             install(e) {
                 const t = [],
                     n = (t) =>
                         new Promise((n, o) => {
                             let i = document.createElement("script");
-                            ((i.async = !0),
+                            ((i.async = true),
                                 (i.src = t),
                                 (i.onload = n),
                                 (i.onerror = o),
@@ -135,7 +135,7 @@ module.exports = function (e, t, n) {
                                     hint: n || "",
                                 }));
                         } catch (e) {
-                            t(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.loading-failed")));
+                            t(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed")));
                         }
                     })
                 );
@@ -154,7 +154,7 @@ module.exports = function (e, t, n) {
                 return Object.assign(e, {
                     accessToken: t.access_token,
                     expires: t.expires_at,
-                    corporate: !1,
+                    corporate: false,
                 });
             }
             async loadFilePicker() {
@@ -162,8 +162,8 @@ module.exports = function (e, t, n) {
                     gapi.load("picker", {
                         timeout: 2e4,
                         callback: e,
-                        ontimeout: () => t(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.loading-failed"))),
-                        onerror: () => t(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.loading-failed"))),
+                        ontimeout: () => t(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed"))),
+                        onerror: () => t(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed"))),
                     });
                 });
             }
@@ -172,16 +172,16 @@ module.exports = function (e, t, n) {
                     (await this.isSignedIn()) || (await this.signIn());
                     const t = (await gContainer.getProperty("googleapi_auth_key")).access_token;
                     (this._picker && delete this._picker,
-                        (this._picker = (0, o.GooglePickerBuilder)({
+                        (this._picker = (0, designerConfig.GooglePickerBuilder)({
                             appId: this._appId,
                             apiKey: this._apiKey,
                             accessToken: t,
-                            language: i.GLocale.getLanguage(),
+                            language: GObject.GLocale.getLanguage(),
                         })),
                         this._picker.setCallback((t) => {
                             t.action === google.picker.Action.PICKED && e(t.docs);
                         }),
-                        this._picker.setVisible(!0));
+                        this._picker.setVisible(true));
                 } catch (e) {
                     t && t(e);
                 }
@@ -197,7 +197,7 @@ module.exports = function (e, t, n) {
                             { email: e.email, imageUrl: e.picture, name: e.name }
                         )
                     )
-                    .catch(() => reject(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.loading-failed"))));
+                    .catch(() => reject(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed"))));
             }
             async getAccessToken() {
                 (await this.isSignedIn()) || (await this.signIn());

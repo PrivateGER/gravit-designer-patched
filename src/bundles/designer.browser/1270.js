@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(57), n(3), n(4), n(13));
-        var o = n(1),
-            i = n(67),
-            a = n(123),
-            r = (n(173), n(135));
+        (require(57), require(3), require(4), require(13));
+        var GObject = require(1),
+            i = require(67),
+            a = require(123),
+            r = (require(173), require(135));
         function s() {
             this._polygons = [];
         }
-        (o.GObject.inherit(s, a),
+        (GObject.GObject.inherit(s, a),
             (s.prototype._panel = null),
             (s.prototype._advancedPanel = null),
             (s.prototype._document = null),
@@ -29,7 +29,7 @@ module.exports = function (e, t, n) {
                                         ? n._assignProperty(
                                               e,
                                               t,
-                                              o.GLocale.get(new o.GLocaleKey("GPolygonProperties", "action.change-radius"))
+                                              GObject.GLocale.get(new GObject.GLocaleKey("GPolygonProperties", "action.change-radius"))
                                           )
                                         : n._updateProperties();
                                 })
@@ -41,17 +41,17 @@ module.exports = function (e, t, n) {
                                 .attr("data-property", e)
                                 .on("change", function () {
                                     gDesigner.stats("polygonproperties_change_angle");
-                                    var t = o.GLength.parseEquationValue($(this).val());
+                                    var t = GObject.GLength.parseEquationValue($(this).val());
                                     null !== t
-                                        ? ((t = o.GMath.normalizeAngleRadians(o.GMath.toRadians(t))),
+                                        ? ((t = GObject.GMath.normalizeAngleRadians(GObject.GMath.toRadians(t))),
                                           n._assignProperty(
                                               e,
-                                              o.GMath.PI2 - t,
-                                              o.GLocale.get(new o.GLocaleKey("GPolygonProperties", "action.change-angle"))
+                                              GObject.GMath.PI2 - t,
+                                              GObject.GLocale.get(new GObject.GLocaleKey("GPolygonProperties", "action.change-angle"))
                                           ))
                                         : n._updateProperties();
                                 })
-                                .gInputBox({ fixedIncrement: !0 });
+                                .gInputBox({ fixedIncrement: true });
                         if ("ict" === e || "oct" === e)
                             return $("<button></button>")
                                 .addClass("g-flat")
@@ -61,7 +61,7 @@ module.exports = function (e, t, n) {
                                     n._assignProperty(
                                         e,
                                         i,
-                                        o.GLocale.get(new o.GLocaleKey("GPolygonProperties", "action.change-corner-type"))
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GPolygonProperties", "action.change-corner-type"))
                                     );
                                 });
                         if ("icr" === e || "ocr" === e)
@@ -75,7 +75,7 @@ module.exports = function (e, t, n) {
                                         ? n._assignProperty(
                                               e,
                                               i < 0 ? 0 : i,
-                                              o.GLocale.get(new o.GLocaleKey("GPolygonProperties", "action.change-corner-radius"))
+                                              GObject.GLocale.get(new GObject.GLocaleKey("GPolygonProperties", "action.change-corner-radius"))
                                           )
                                         : n._updateProperties();
                                 })
@@ -88,11 +88,11 @@ module.exports = function (e, t, n) {
                                         min: 0,
                                         max: 100,
                                         richTooltipConfig: i.GRichTooltipConfig.from({
-                                            title: o.GLocale.get(
-                                                new o.GLocaleKey("GCommonNames", "text.corner-radius-slider-tooltip-title")
+                                            title: GObject.GLocale.get(
+                                                new GObject.GLocaleKey("GCommonNames", "text.corner-radius-slider-tooltip-title")
                                             ),
-                                            description: o.GLocale.get(
-                                                new o.GLocaleKey("GCommonNames", "text.corner-radius-slider-tooltip-description")
+                                            description: GObject.GLocale.get(
+                                                new GObject.GLocaleKey("GCommonNames", "text.corner-radius-slider-tooltip-description")
                                             ),
                                         }),
                                     })
@@ -103,14 +103,14 @@ module.exports = function (e, t, n) {
                                             }));
                                     })
                                     .on("input", function () {
-                                        var e = n._assignCornersRadius(parseInt($(this).gInputSlider("value")) / 100, !0);
+                                        var e = n._assignCornersRadius(parseInt($(this).gInputSlider("value")) / 100, true);
                                         n._panel
                                             .find('[data-property="corners-radius"]')
                                             .val(n._document.getScene().pointToString(e, n._document.getScene().getOptimalDecimalsCount()));
                                     })
                                     .on("change", function () {
                                         (gDesigner.stats("polygonproperties_change_radius"),
-                                            n._assignCornersRadius(parseInt($(this).gInputSlider("value")) / 100, !1));
+                                            n._assignCornersRadius(parseInt($(this).gInputSlider("value")) / 100, false));
                                     });
                             if ("corners-radius-input" === e)
                                 return $("<input>")
@@ -121,7 +121,7 @@ module.exports = function (e, t, n) {
                                         gDesigner.stats("polygonproperties_change_corners-radius");
                                         var e = n._document.getScene().stringToPoint($(this).gInputBox("value"));
                                         null !== e && "number" == typeof e && e >= 0
-                                            ? n._assignCornersRadius(e, !1, !0)
+                                            ? n._assignCornersRadius(e, false, true)
                                             : n._updateProperties();
                                     })
                                     .gInputBox({ minValue: 0, incrementValue: 1 });
@@ -130,7 +130,7 @@ module.exports = function (e, t, n) {
                     };
                 ($("<div></div>")
                     .gPropertyRow({
-                        label: o.GLocale.get(new o.GLocaleKey("GPolygonProperties", "text.points")),
+                        label: GObject.GLocale.get(new GObject.GLocaleKey("GPolygonProperties", "text.points")),
                         columns: [
                             {
                                 width: "auto",
@@ -140,11 +140,11 @@ module.exports = function (e, t, n) {
                                     .gInputSlider({ min: 3, max: 25 })
                                     .on("input", function () {
                                         var e = $(this).gInputSlider("value");
-                                        (n._assignPoints(parseInt(e), !0), n._panel.find('input[type="text"][data-property="pts"]').val(e));
+                                        (n._assignPoints(parseInt(e), true), n._panel.find('input[type="text"][data-property="pts"]').val(e));
                                     })
                                     .on("change", function (e) {
                                         (gDesigner.stats("polygonproperties_change_number-of-points"),
-                                            n._assignPoints(parseInt($(this).gInputSlider("value")), !1));
+                                            n._assignPoints(parseInt($(this).gInputSlider("value")), false));
                                     }),
                             },
                             {
@@ -154,7 +154,7 @@ module.exports = function (e, t, n) {
                                     .attr("data-property", "pts")
                                     .on("change", function (e) {
                                         (gDesigner.stats("polygonproperties_change_number-of-points"),
-                                            n._assignPoints(o.GLength.parseEquationValue($(this).gInputBox("value")), !1));
+                                            n._assignPoints(GObject.GLength.parseEquationValue($(this).gInputBox("value")), false));
                                     })
                                     .gInputBox({ minValue: 3 }),
                             },
@@ -164,7 +164,7 @@ module.exports = function (e, t, n) {
                     $("<div></div>")
                         .attr("data-plain-edges", "false")
                         .gPropertyRow({
-                            label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.size")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.size")),
                             columns: [
                                 {
                                     width: "auto",
@@ -174,14 +174,14 @@ module.exports = function (e, t, n) {
                                         .gInputSlider({ min: 0, max: 100 })
                                         .on("input", function () {
                                             var e = parseInt($(this).gInputSlider("value"));
-                                            (n._assignSize(e / 100, !0),
+                                            (n._assignSize(e / 100, true),
                                                 n._panel
                                                     .find('[type="text"][data-property="size"]')
-                                                    .gInputBox("value", o.GUtil.formatNumber(e, 0)));
+                                                    .gInputBox("value", GObject.GUtil.formatNumber(e, 0)));
                                         })
                                         .on("change", function () {
                                             (gDesigner.stats("polygonproperties_change_plain-edges"),
-                                                n._assignSize(parseInt($(this).gInputSlider("value")) / 100, !1));
+                                                n._assignSize(parseInt($(this).gInputSlider("value")) / 100, false));
                                         }),
                                 },
                                 {
@@ -191,7 +191,7 @@ module.exports = function (e, t, n) {
                                         .attr("data-property", "size")
                                         .on("change", function () {
                                             (gDesigner.stats("polygonproperties_change_plain-edges"),
-                                                n._assignSize(o.GLength.parseEquationValue($(this).gInputBox("value")) / 100, !1));
+                                                n._assignSize(GObject.GLength.parseEquationValue($(this).gInputBox("value")) / 100, false));
                                         })
                                         .gInputBox({ minValue: 0, maxValue: 100, postfix: "%" }),
                                 },
@@ -201,7 +201,7 @@ module.exports = function (e, t, n) {
                     $("<hr/>").appendTo(this._panel),
                     $("<div></div>")
                         .gPropertyRow({
-                            label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.corner")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.corner")),
                             columns: [
                                 {
                                     width: "auto",
@@ -217,7 +217,7 @@ module.exports = function (e, t, n) {
                                 {
                                     clazz: "advanced-settings-col",
                                     content: $("<div></div>")
-                                        .attr("data-title", o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.advanced-settings")))
+                                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.advanced-settings")))
                                         .addClass("g-button g-icon g-advanced-setting")
                                         .css({ display: "flex", justifyContent: "center" })
                                         .append(
@@ -246,7 +246,7 @@ module.exports = function (e, t, n) {
                         .appendTo(this._panel),
                     (this._advancedPanel = $("<div></div>")
                         .addClass("advanced-panel-wrapper")
-                        .gOverlay({ releaseOnClose: !1, clazz: "advanced-overlay" })),
+                        .gOverlay({ releaseOnClose: false, clazz: "advanced-overlay" })),
                     $("<div></div>")
                         .gPropertyRow({
                             columns: [
@@ -256,12 +256,12 @@ module.exports = function (e, t, n) {
                                         .css("margin-bottom", "10px")
                                         .attr("data-property", "corners-type")
                                         .addClass("corner-type")
-                                        .gCornerTypePicker({ notOverlay: !0 })
+                                        .gCornerTypePicker({ notOverlay: true })
                                         .on("cornertypechange", function (e, t) {
                                             n._assignProperties(
                                                 ["ict", "oct"],
                                                 [t, t],
-                                                o.GLocale.get(new o.GLocaleKey("GPolygonProperties", "action.change-corner-type"))
+                                                GObject.GLocale.get(new GObject.GLocaleKey("GPolygonProperties", "action.change-corner-type"))
                                             );
                                         }),
                                 },
@@ -293,7 +293,7 @@ module.exports = function (e, t, n) {
                                         .append(
                                             $(
                                                 "<span>" +
-                                                    o.GLocale.get(new o.GLocaleKey("GPolygonProperties", "text.plain-edges")) +
+                                                    GObject.GLocale.get(new GObject.GLocaleKey("GPolygonProperties", "text.plain-edges")) +
                                                     "</span>"
                                             )
                                         ),
@@ -328,7 +328,7 @@ module.exports = function (e, t, n) {
                                         .append(
                                             $(
                                                 "<span>" +
-                                                    o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.autoscale-corners")) +
+                                                    GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.autoscale-corners")) +
                                                     "</span>"
                                             )
                                         ),
@@ -339,17 +339,17 @@ module.exports = function (e, t, n) {
                     $("<div></div>")
                         .addClass("corner-row-wrapper")
                         .gPropertyRow({
-                            label: o.GLocale.get(new o.GLocaleKey("GPolygonProperties", "text.corners")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GPolygonProperties", "text.corners")),
                             columns: [
                                 {
                                     width: "50%",
                                     content: $("<div></div>").addClass("corner-wrapper").append(a("ocr")).append(a("oct")),
-                                    label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.outside")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.outside")),
                                 },
                                 {
                                     width: "50%",
                                     content: $("<div></div>").addClass("corner-wrapper").append(a("icr")).append(a("ict")),
-                                    label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.inside")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.inside")),
                                 },
                             ],
                         })
@@ -357,17 +357,17 @@ module.exports = function (e, t, n) {
                     $("<div></div>")
                         .addClass("radius-row-wrapper")
                         .gPropertyRow({
-                            label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.radius")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.radius")),
                             columns: [
                                 {
                                     width: "50%",
                                     content: a("or"),
-                                    label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.outside")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.outside")),
                                 },
                                 {
                                     width: "50%",
                                     content: a("ir"),
-                                    label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.inside")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.inside")),
                                 },
                             ],
                         })
@@ -375,17 +375,17 @@ module.exports = function (e, t, n) {
                     $("<div></div>")
                         .addClass("angles-row-wrapper")
                         .gPropertyRow({
-                            label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.angles")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.angles")),
                             columns: [
                                 {
                                     width: "50%",
                                     content: a("oa"),
-                                    label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.outside")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.outside")),
                                 },
                                 {
                                     width: "50%",
                                     content: a("ia"),
-                                    label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.inside")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.inside")),
                                 },
                             ],
                         })
@@ -394,25 +394,25 @@ module.exports = function (e, t, n) {
             (s.prototype.update = function (e, t) {
                 if (
                     (this._document &&
-                        (this._document.getScene().removeEventListener(o.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
+                        (this._document.getScene().removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
                         gDesigner.removeEventListener(r, this._settingChanged),
                         (this._document = null)),
                     (this._polygons = []),
                     e)
                 ) {
-                    for (var n = 0; n < t.length; ++n) t[n] instanceof o.GPolygon && this._polygons.push(t[n]);
+                    for (var n = 0; n < t.length; ++n) t[n] instanceof GObject.GPolygon && this._polygons.push(t[n]);
                     if (this._polygons.length && this._polygons.length === t.length)
                         return (
                             (this._document = e),
                             this._document
                                 .getScene()
-                                .addEventListener(o.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                                .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                             gDesigner.addEventListener(r, this._settingChanged, this),
-                            this._updateProperties(!0),
-                            !0
+                            this._updateProperties(true),
+                            true
                         );
                 }
-                return !1;
+                return false;
             }),
             (s.prototype._afterPropertiesChange = function (e) {
                 !e.temporary && this._polygons.length > 0 && this._polygons[0] === e.node && this._updateProperties();
@@ -431,7 +431,7 @@ module.exports = function (e, t, n) {
                 (this._panel.find('.g-input-slider[data-property="pts"]').gInputSlider("value", a),
                     this._panel.find('[type="text"][data-property="pts"]').gInputBox("value", a),
                     this._panel.find('.g-input-slider[data-property="size"]').gInputSlider("value", Math.round(r)),
-                    this._panel.find('[type="text"][data-property="size"]').gInputBox("value", o.GUtil.formatNumber(r, 0)),
+                    this._panel.find('[type="text"][data-property="size"]').gInputBox("value", GObject.GUtil.formatNumber(r, 0)),
                     this._advancedPanel.find('[data-property="corners-type"]').gCornerTypePicker("value", t.getProperty("oct")));
                 var c = t.getPointsMinDistance();
                 (s || (c /= 2), (l = Math.min(l, c)));
@@ -445,8 +445,8 @@ module.exports = function (e, t, n) {
                                 .pointToString(t.getProperty("ocr"), this._document.getScene().getOptimalDecimalsCount())
                         ),
                     e && s
-                        ? this._advancedPanel.find('input[data-property="edges"]').prop("checked", !0)
-                        : s || this._advancedPanel.find('input[data-property="edges"]').prop("checked", !1),
+                        ? this._advancedPanel.find('input[data-property="edges"]').prop("checked", true)
+                        : s || this._advancedPanel.find('input[data-property="edges"]').prop("checked", false),
                     this._advancedPanel.find('input[data-property="csc"]').prop("checked", !!t.getProperty("csc")),
                     this._advancedPanel.find('button[data-property="oct"]').gCornerTypePicker("value", t.getProperty("oct")),
                     this._advancedPanel.find('button[data-property="ict"]').gCornerTypePicker("value", t.getProperty("ict")),
@@ -480,10 +480,10 @@ module.exports = function (e, t, n) {
                         ),
                     this._advancedPanel
                         .find('input[data-property="oa"]')
-                        .val(o.GUtil.formatNumber(o.GMath.toDegrees(o.GMath.PI2 - t.getProperty("oa")), 2)),
+                        .val(GObject.GUtil.formatNumber(GObject.GMath.toDegrees(GObject.GMath.PI2 - t.getProperty("oa")), 2)),
                     this._advancedPanel
                         .find('input[data-property="ia"]')
-                        .val(o.GUtil.formatNumber(o.GMath.toDegrees(o.GMath.PI2 - t.getProperty("ia")), 2)),
+                        .val(GObject.GUtil.formatNumber(GObject.GMath.toDegrees(GObject.GMath.PI2 - t.getProperty("ia")), 2)),
                     this._panel
                         .find('[data-plain-edges="false"]')
                         .css("display", this._advancedPanel.find('input[data-property="edges"]').prop("checked") ? "none" : ""));
@@ -498,8 +498,8 @@ module.exports = function (e, t, n) {
                             var s = e;
                             if (!n) s = e * r.getPointsMinDistance();
                             (r.isPlainEdges()
-                                ? r.setProperties(["ocr"], [s], !1, !1, t)
-                                : (n || (s /= 2), r.setProperties(["ocr", "icr"], [s, s], !1, !1, t)),
+                                ? r.setProperties(["ocr"], [s], false, false, t)
+                                : (n || (s /= 2), r.setProperties(["ocr", "icr"], [s, s], false, false, t)),
                                 0 === a && (i = s));
                         }
                     }
@@ -507,7 +507,7 @@ module.exports = function (e, t, n) {
                     t ||
                         this._document
                             .getEditor()
-                            .commitTransaction(o.GLocale.get(new o.GLocaleKey("GCommonNames", "action.change-corners")));
+                            .commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.change-corners")));
                 }
                 return i;
             }),
@@ -529,13 +529,13 @@ module.exports = function (e, t, n) {
                     for (var n = 0; n < this._polygons.length; ++n) {
                         var i = this._polygons[n],
                             a = i.getProperty("or") * e;
-                        i.setProperty("ir", a, !1, !1, t);
+                        i.setProperty("ir", a, false, false, t);
                     }
                 } finally {
                     t ||
                         this._document
                             .getEditor()
-                            .commitTransaction(o.GLocale.get(new o.GLocaleKey("GPolygonProperties", "action.change-polygon-size")));
+                            .commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPolygonProperties", "action.change-polygon-size")));
                 }
             }),
             (s.prototype._assignPoints = function (e, t) {
@@ -545,17 +545,17 @@ module.exports = function (e, t, n) {
                         var i = this._polygons[n],
                             a = i.isPlainEdges(),
                             r = Math.PI / e,
-                            s = o.GMath.normalizeAngleRadians(i.getProperty("oa") + r);
+                            s = GObject.GMath.normalizeAngleRadians(i.getProperty("oa") + r);
                         if (a) {
                             var l = i.getProperty("or") * Math.cos(r);
-                            i.setProperties(["pts", "ia", "ir"], [e, s, l], !1, !1, t);
-                        } else i.setProperties(["pts", "ia"], [e, s], !1, !1, t);
+                            i.setProperties(["pts", "ia", "ir"], [e, s, l], false, false, t);
+                        } else i.setProperties(["pts", "ia"], [e, s], false, false, t);
                     }
                 } finally {
                     t ||
                         this._document
                             .getEditor()
-                            .commitTransaction(o.GLocale.get(new o.GLocaleKey("GPolygonProperties", "action.change-polygon-points")));
+                            .commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPolygonProperties", "action.change-polygon-points")));
                 }
             }),
             (s.prototype._assignEdges = function (e, t) {
@@ -570,18 +570,18 @@ module.exports = function (e, t, n) {
                                 l = Math.PI / r,
                                 c = s + l,
                                 d = a * Math.cos(l);
-                            i.setProperties(["ir", "ia"], [d, c], !1, !1, t);
+                            i.setProperties(["ir", "ia"], [d, c], false, false, t);
                         }
                     } finally {
                         t ||
                             this._document
                                 .getEditor()
-                                .commitTransaction(o.GLocale.get(new o.GLocaleKey("GPolygonProperties", "action.change-polygon-size")));
+                                .commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPolygonProperties", "action.change-polygon-size")));
                     }
                 }
             }),
             (s.prototype.toString = function () {
                 return "[Object GPolygonProperties]";
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

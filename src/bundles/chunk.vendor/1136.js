@@ -1,19 +1,19 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(439),
-                o = i(70),
-                a = i(17),
-                s = i(188),
-                l = i(1137),
-                h = i(28),
-                A = i(108),
-                c = i(416),
-                p = i(7),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(439),
+                o = require(70),
+                a = require(17),
+                s = require(188),
+                l = require(1137),
+                GStylable = require(28),
+                GFont = require(108),
+                c = require(416),
+                p = require(7),
                 u = {
-                    left: h.ParagraphAlignment.Left,
-                    right: h.ParagraphAlignment.Right,
-                    center: h.ParagraphAlignment.Center,
-                    justify: h.ParagraphAlignment.Justify,
+                    left: GStylable.ParagraphAlignment.Left,
+                    right: GStylable.ParagraphAlignment.Right,
+                    center: GStylable.ParagraphAlignment.Center,
+                    justify: GStylable.ParagraphAlignment.Justify,
                 };
 
             function d(e, t) {
@@ -26,7 +26,7 @@ module.exports = function (e, t, i) {
             }
 
             function g() {
-                (r.apply(this, arguments), this._node && this._node instanceof o && this._node.setProperty("sc", !0));
+                (r.apply(this, arguments), this._node && this._node instanceof o && this._node.setProperty("sc", true));
             }
 
             function f(e) {
@@ -45,7 +45,7 @@ module.exports = function (e, t, i) {
                 }
                 return new a(a.BLACK.getValue());
             }
-            (n.inherit(g, r),
+            (IsFiniteNonNegativeNumber.inherit(g, r),
                 (g.composeQuery = function (e) {
                     var t = /normal|italic|oblique|regular/i,
                         i = /normal|bold|bolder|lighter|100|200|300|400|500|600|700|800|900/i;
@@ -53,7 +53,7 @@ module.exports = function (e, t, i) {
                         return e.replace(/^\s+|\s+$/g, "");
                     })(e.replace(/[\s\r\t\n]+/gm, " "));
                     var n = "normal",
-                        r = A.Weight.Regular;
+                        r = GFont.Weight.Regular;
                     (t.test(e) && (n = t.exec(e).pop().toLowerCase()), i.test(e) && (r = i.exec(e).pop().toLowerCase()));
                     var o;
                     return {
@@ -62,7 +62,7 @@ module.exports = function (e, t, i) {
                             var t = (e = e.replace(/["']/g, "").replace(" ", "").trim()).indexOf("-");
                             if (-1 !== t) {
                                 var i = e.substring(t + 1, e.length).trim();
-                                (A.Weight[i] || "normal" === i.toLowerCase()) && (e = e.substring(0, t).trim());
+                                (GFont.Weight[i] || "normal" === i.toLowerCase()) && (e = e.substring(0, t).trim());
                             }
                             return e
                                 .replace(/([a-z])([A-Z])/g, "$1 $2")
@@ -74,13 +74,13 @@ module.exports = function (e, t, i) {
                         fontWeight: (function (e) {
                             if (isNaN(e)) {
                                 if ("normal" !== e)
-                                    for (var t = Object.keys(A.Weight), i = 0; i < t.length; i++)
-                                        if (t[i].toLowerCase() === e.toLowerCase()) return A.Weight[t[i]];
-                                return A.Weight.Regular;
+                                    for (var t = Object.keys(GFont.Weight), i = 0; i < t.length; i++)
+                                        if (t[i].toLowerCase() === e.toLowerCase()) return GFont.Weight[t[i]];
+                                return GFont.Weight.Regular;
                             }
                             return parseInt(e);
                         })(r),
-                        fontStyle: ((o = n), "normal" === o ? A.Style.Normal : A.Style.Italic),
+                        fontStyle: ((o = n), "normal" === o ? GFont.Style.Normal : GFont.Style.Italic),
                     };
                 }),
                 (g.prototype._promise = null),
@@ -99,8 +99,8 @@ module.exports = function (e, t, i) {
                                             .getFontSearch()
                                             .getFont(
                                                 i.fontFamily,
-                                                "normal" !== i.fontStyle ? A.Style.Italic : A.Style.Normal,
-                                                i.fontWeight || A.Weight.Regular
+                                                "normal" !== i.fontStyle ? GFont.Style.Italic : GFont.Style.Normal,
+                                                i.fontWeight || GFont.Weight.Regular
                                             )
                                             .then(
                                                 function (e) {
@@ -118,7 +118,7 @@ module.exports = function (e, t, i) {
                     if (t) {
                         var i = [];
                         (i.push("font:"),
-                            i.push(e.getStyle() === A.Style.Normal ? "normal" : "italic"),
+                            i.push(e.getStyle() === GFont.Style.Normal ? "normal" : "italic"),
                             i.push(e.getWeight()),
                             i.push(t.fontSize + "px"),
                             i.push(e.getFamily()));
@@ -171,13 +171,13 @@ module.exports = function (e, t, i) {
                                     w = m[y[b + 1]],
                                     E = i,
                                     B = n,
-                                    x = d(t || 0, !0).toLowerCase();
+                                    x = d(t || 0, true).toLowerCase();
                                 if (
                                     (w &&
                                         (w.MSAttributedStringFontAttribute &&
                                             (E = h.toMap(h.getByRef(w.MSAttributedStringFontAttribute.NSFontDescriptorAttributes))),
                                         w.NSColor && (B = f(w.NSColor)),
-                                        w.NSParagraphStyle && (x = d(w.NSParagraphStyle.NSAlignment || 0, !0).toLowerCase())),
+                                        w.NSParagraphStyle && (x = d(w.NSParagraphStyle.NSAlignment || 0, true).toLowerCase())),
                                     E && B && x)
                                 ) {
                                     var P = this._file.getFontSearch().getDefaultFont(),
@@ -211,7 +211,7 @@ module.exports = function (e, t, i) {
                                             function (i) {
                                                 ((t.fontFamily = i ? i.family : P.family),
                                                     (t.fontWeight = i ? i.weight : P.weight),
-                                                    (t.fontStyle = i && i.style !== A.Style.Normal ? "italic" : "normal"));
+                                                    (t.fontStyle = i && i.style !== GFont.Style.Normal ? "italic" : "normal"));
                                                 var n = function () {
                                                     ++v >= _.length && (this._node.setText(_), e.resolve());
                                                 }.bind(this);
@@ -219,7 +219,7 @@ module.exports = function (e, t, i) {
                                                     .getFontSearch()
                                                     .getFont(
                                                         t.fontFamily,
-                                                        "normal" === t.fontStyle ? A.Style.Normal : A.Style.Italic,
+                                                        "normal" === t.fontStyle ? GFont.Style.Normal : GFont.Style.Italic,
                                                         t.fontWeight
                                                     )
                                                     .then(n)
@@ -239,12 +239,12 @@ module.exports = function (e, t, i) {
                         t && (F.push("_pal"), R.push(d(t))),
                         i && (F.push("_tfi", "_tff"), R.push(E.NSFontSizeAttribute, E.NSFontNameAttribute))),
                         0 === this._data.textBehaviour &&
-                            (this._node._geometryBBox ? (F.push("ah"), R.push(!0)) : (F.push("aw", "ah"), R.push(!0, !0))),
+                            (this._node._geometryBBox ? (F.push("ah"), R.push(true)) : (F.push("aw", "ah"), R.push(true, true))),
                         this._node.setProperties(F, R),
                         (this._node._geometryBBox = this._getGeometryBBox()));
                 }),
                 (g.prototype._getRelatedNodeClass = function () {
                     return o;
                 }),
-                (e.exports = g));
+                (module.exports = g));
         };

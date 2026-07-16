@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(30);
-        const o = n(177);
+        require(30);
+        const o = require(177);
         class i extends o {
             constructor() {
                 let {
@@ -15,7 +15,7 @@ module.exports = function (e, t, n) {
                     fontWeight: s = "normal",
                     type: l = "contact",
                     trigger: c = "@",
-                    additional: d = !1,
+                    additional: d = false,
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 (super({
                     id: e,
@@ -55,5 +55,5 @@ module.exports = function (e, t, n) {
                 return (Object.assign(t, e), t);
             }
         }
-        e.exports = i;
+        module.exports = i;
     };

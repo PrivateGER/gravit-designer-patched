@@ -1,16 +1,16 @@
-module.exports = function (e, t, i) {
-            i(7);
-            var n = i(551),
-                r = i(317),
-                o = i(0),
-                a = i(212),
-                s = i(52);
+module.exports = function (module, exports, require) {
+            require(7);
+            var n = require(551),
+                r = require(317),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(212),
+                s = require(52);
 
             function l() {
-                n.call(this, !0, !0);
+                n.call(this, true, true);
             }
-            (i(766),
-                o.inheritAndMix(l, n, [a]),
+            (require(766),
+                IsFiniteNonNegativeNumber.inheritAndMix(l, n, [a]),
                 (l.prototype._getRelatedItemClass = function () {
                     return r;
                 }),
@@ -18,10 +18,10 @@ module.exports = function (e, t, i) {
                     return s.CrossEllipse;
                 }),
                 (l.prototype._showMousePositionInlineHint = function () {
-                    return !1;
+                    return false;
                 }),
                 (l.prototype.toString = function () {
                     return "[Object GEllipseAnnotationTool]";
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

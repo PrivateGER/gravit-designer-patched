@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(1145);
+module.exports = function (module, exports, require) {
+            var n = require(1145);
 
             function r(e) {
                 this._buffer = e;
             }
-            (i(0).inherit(r, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(r, n),
                 (r.prototype.write = function (e) {
                     e.writeBuffer(this._buffer);
                 }),
@@ -17,5 +17,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.toString = function () {
                     return "[Object GPDFRawBuffer]";
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

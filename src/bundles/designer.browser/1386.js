@@ -1,34 +1,34 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        var o = n(1),
-            i = n(10),
-            a = n(237),
-            r = (n(220), n(40).decrypt);
-        n(173);
+        require(8 /* Symbol */);
+        var GObject = require(1),
+            designerConfig = require(10),
+            GDocument = require(237),
+            r = (require(220 /* GCommonNames */), require(40 /* GSaveAction */).decrypt);
+        require(173);
         function s() {}
-        (o.GObject.inherit(s, a),
+        (GObject.GObject.inherit(s, GDocument),
             (s.prototype.canPromptOpen = function () {
-                return !1;
+                return false;
             }),
             (s.prototype.canPromptSave = function (e) {
-                return !0;
+                return true;
             }),
             (s.prototype.canSave = function () {
-                return !0;
+                return true;
             }),
             (s.prototype.canDownload = function () {
-                return !0;
+                return true;
             }),
             (s.Item = function (e, t, n, o, i) {
-                (a.Item.call(this, e), (this._filename = n), (this._id = t), (this._file = o), (this._hash = i));
+                (GDocument.Item.call(this, e), (this._filename = n), (this._id = t), (this._file = o), (this._hash = i));
             }),
-            o.GObject.inherit(s.Item, a.Item),
+            GObject.GObject.inherit(s.Item, GDocument.Item),
             (s.Item.prototype.getName = function () {
-                return this._filename ? this._filename : o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.image"));
+                return this._filename ? this._filename : GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.image"));
             }),
             (s.Item.prototype.getFullName = function () {
-                return this._filename ? this._filename : o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.image"));
+                return this._filename ? this._filename : GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.image"));
             }),
             (s.Item.prototype.setFile = function (e) {
                 if (!e) throw new Error("File can not be null");
@@ -39,7 +39,7 @@ module.exports = function (e, t, n) {
             }),
             (s.Item.prototype.read = async function (e, t, n) {
                 try {
-                    var o = await i.gApi.getProviderExternalAsset(this._hash || this._file.hash);
+                    var o = await designerConfig.gApi.getProviderExternalAsset(this._hash || this._file.hash);
                     return e(new TextEncoder().encode(r(o)));
                 } catch (e) {
                     return t(e);
@@ -48,5 +48,5 @@ module.exports = function (e, t, n) {
             (s.Item.prototype.getExtension = function () {
                 return this._file.extension && this._file.extension.toUpperCase();
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

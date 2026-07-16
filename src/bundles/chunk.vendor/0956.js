@@ -1,17 +1,17 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            e.exports = function (e) {
+            module.exports = function (e) {
                 e.fetchSync = function () {
                     let {
                         path: t = "",
                         method: i = "GET",
-                        withCredentials: n = !0,
+                        withCredentials: n = true,
                     } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                     const r = {
                             token: e.token,
                         },
                         o = new XMLHttpRequest();
-                    return (o.open(i, e.getUrl(e.url + t, r), !1), (o.withCredentials = n), o.send(null), o);
+                    return (o.open(i, e.getUrl(e.url + t, r), false), (o.withCredentials = n), o.send(null), o);
                 };
             };
         };

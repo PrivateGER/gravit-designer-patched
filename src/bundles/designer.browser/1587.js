@@ -1,49 +1,49 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(58), n(19), n(168), n(20), n(71), n(247), n(4), n(13), n(32), n(38), n(169), n(33), n(26));
-        var i = n(15),
-            a = n(53),
-            r = n(1),
-            s = o(n(78)),
-            l = o(n(1330)),
-            c = o(n(238)),
-            d = o(n(339)),
-            u = o(n(1331)),
-            p = o(n(877)),
-            g = o(n(1183)),
-            h = o(n(1184)),
-            f = o(n(875)),
-            m = o(n(876)),
-            y = o(n(1332)),
-            v = o(n(811)),
-            _ = o(n(870)),
-            b = o(n(1333)),
-            w = o(n(1334)),
-            C = o(n(869)),
-            x = o(n(1335)),
-            S = o(n(810)),
-            E = o(n(1336)),
-            A = o(n(1337)),
-            T = o(n(1590)),
-            G = o(n(878)),
-            P = o(n(879));
+        var o = require(16);
+        (require(58), require(19), require(168 /* PDFFetchStream */), require(20), require(71), require(247), require(4), require(13), require(32), require(38), require(169 /* PDFNetworkStream */), require(33), require(26));
+        var GPlatform = require(15),
+            a = require(53),
+            GObject = require(1),
+            s = o(require(78)),
+            l = o(require(1330)),
+            c = o(require(238)),
+            d = o(require(339)),
+            u = o(require(1331 /* GCutCopyAction */)),
+            p = o(require(877)),
+            g = o(require(1183)),
+            h = o(require(1184)),
+            f = o(require(875)),
+            m = o(require(876)),
+            y = o(require(1332)),
+            v = o(require(811 /* GGroupAction */)),
+            _ = o(require(870 /* GSplitAction */)),
+            b = o(require(1333)),
+            w = o(require(1334)),
+            C = o(require(869 /* GArrangeAction */)),
+            x = o(require(1335)),
+            S = o(require(810 /* GConvertToPathAction */)),
+            E = o(require(1336)),
+            A = o(require(1337)),
+            T = o(require(1590)),
+            G = o(require(878)),
+            P = o(require(879));
         class D extends G.default {
             constructor(e) {
-                (super(e), this.addGesture(new P.default()), this.setDelayedTouchEventsEnabled(!1));
+                (super(e), this.addGesture(new P.default()), this.setDelayedTouchEventsEnabled(false));
             }
             _handleEvent(e) {
                 (e.cancelable && (e.preventDefault(), e.stopPropagation()), super._handleEvent(e));
             }
         }
         const L = {
-                [i.GKey.Constant.LEFT]: 37,
-                [i.GKey.Constant.UP]: 38,
-                [i.GKey.Constant.RIGHT]: 39,
-                [i.GKey.Constant.DOWN]: 40,
-                [i.GKey.Constant.SHIFT]: 16,
-                [i.GKey.Constant.CONTROL]: 17,
-                [i.GKey.Constant.ALT_LEFT]: 18,
+                [GPlatform.GKey.Constant.LEFT]: 37,
+                [GPlatform.GKey.Constant.UP]: 38,
+                [GPlatform.GKey.Constant.RIGHT]: 39,
+                [GPlatform.GKey.Constant.DOWN]: 40,
+                [GPlatform.GKey.Constant.SHIFT]: 16,
+                [GPlatform.GKey.Constant.CONTROL]: 17,
+                [GPlatform.GKey.Constant.ALT_LEFT]: 18,
             },
             I = Object.values(L),
             k = (e, t) => {
@@ -54,11 +54,11 @@ module.exports = function (e, t, n) {
                 a && a.dispatchEvent(new KeyboardEvent(e, { keyCode: t }));
             },
             O = (e) =>
-                e === i.GKey.Constant.ALT_LEFT ||
-                e === i.GKey.Constant.ALT_RIGHT ||
-                e === i.GKey.Constant.SHIFT ||
-                e === i.GKey.Constant.CONTROL,
-            F = [i.GKey.Constant.UP, i.GKey.Constant.LEFT, i.GKey.Constant.RIGHT, i.GKey.Constant.DOWN];
+                e === GPlatform.GKey.Constant.ALT_LEFT ||
+                e === GPlatform.GKey.Constant.ALT_RIGHT ||
+                e === GPlatform.GKey.Constant.SHIFT ||
+                e === GPlatform.GKey.Constant.CONTROL,
+            F = [GPlatform.GKey.Constant.UP, GPlatform.GKey.Constant.LEFT, GPlatform.GKey.Constant.RIGHT, GPlatform.GKey.Constant.DOWN];
         function R(e) {
             ((this._htmlElement = e),
                 (this._keyState = {}),
@@ -80,11 +80,11 @@ module.exports = function (e, t, n) {
             (R.prototype._keyUpBound = null),
             (R.prototype._mouseUpBound = null),
             (R.prototype.init = function () {
-                (i.GPlatform.constructor.bypassKeyDownRestrictionByClassName("g-virtual-key"), this._htmlElement.gCollapsible());
+                (GPlatform.GPlatform.constructor.bypassKeyDownRestrictionByClassName("g-virtual-key"), this._htmlElement.gCollapsible());
                 const e = $("<div/>").addClass("container").appendTo(this._htmlElement),
                     t = (e) => {
                         const t = this._keyDownInveral[e];
-                        (t && (clearInterval(t), delete this._keyDownInveral[e]), O(e) && i.GPlatform.releaseKey(e), k("keyup", L[e]));
+                        (t && (clearInterval(t), delete this._keyDownInveral[e]), O(e) && GPlatform.GPlatform.releaseKey(e), k("keyup", L[e]));
                     },
                     n = (e) => {
                         const t = this._keyDownInveral[e];
@@ -93,13 +93,13 @@ module.exports = function (e, t, n) {
                                 (this._keyDownInveral[e] = setInterval(() => {
                                     k("keydown", L[e]);
                                 }, 100)),
-                            O(e) && i.GPlatform.holdKey(e),
+                            O(e) && GPlatform.GPlatform.holdKey(e),
                             k("keydown", L[e]));
                     },
                     o = (e) => {
                         let { key: o, icon: a, dblclick: r, actionClass: l } = e;
                         const c = s({
-                            name: a ? null : i.GKey.toLocalizedShort(o, !0),
+                            name: a ? null : GPlatform.GKey.toLocalizedShort(o, true),
                             icon: a,
                             actionClass: "g-virtual-key" + (l ? " " + l : ""),
                             mousedown: (e) => {
@@ -158,7 +158,7 @@ module.exports = function (e, t, n) {
                             touchmove: d,
                             touchend: u,
                             touchcancel: p,
-                            split: g = !1,
+                            split: g = false,
                             active: h,
                             actionClass: f,
                         } = e;
@@ -191,7 +191,7 @@ module.exports = function (e, t, n) {
                                           .append($("<span></span>").addClass("gravit-icon-touch-arrow-up"))
                                           .appendTo(m)
                                     : y.append($("<span></span>").addClass("gravit-icon-touch-arrow-up"))),
-                                e.gMenuButton({ menu: o, touch: !0 }));
+                                e.gMenuButton({ menu: o, touch: true }));
                         }
                         return m;
                     },
@@ -211,9 +211,9 @@ module.exports = function (e, t, n) {
                             {
                                 width: "86px",
                                 content: o({
-                                    key: i.GKey.Constant.SHIFT,
-                                    actionClass: "g-virtual-key-".concat(i.GKey.Constant.SHIFT),
-                                    dblclick: () => this._toggleModifierKey(i.GKey.Constant.SHIFT),
+                                    key: GPlatform.GKey.Constant.SHIFT,
+                                    actionClass: "g-virtual-key-".concat(GPlatform.GKey.Constant.SHIFT),
+                                    dblclick: () => this._toggleModifierKey(GPlatform.GKey.Constant.SHIFT),
                                 }),
                             },
                             {
@@ -249,7 +249,7 @@ module.exports = function (e, t, n) {
                                         ],
                                         "paste-menu"
                                     ),
-                                    split: !0,
+                                    split: true,
                                 }),
                             },
                             {
@@ -306,17 +306,17 @@ module.exports = function (e, t, n) {
                                 {
                                     width: "86px",
                                     content: o({
-                                        key: i.GKey.Constant.CONTROL,
-                                        actionClass: "g-virtual-key-".concat(i.GKey.Constant.CONTROL),
-                                        dblclick: () => this._toggleModifierKey(i.GKey.Constant.CONTROL),
+                                        key: GPlatform.GKey.Constant.CONTROL,
+                                        actionClass: "g-virtual-key-".concat(GPlatform.GKey.Constant.CONTROL),
+                                        dblclick: () => this._toggleModifierKey(GPlatform.GKey.Constant.CONTROL),
                                     }),
                                 },
                                 {
                                     width: "114px",
                                     content: o({
-                                        key: i.GKey.Constant.ALT_LEFT,
-                                        actionClass: "g-virtual-key-".concat(i.GKey.Constant.ALT_LEFT),
-                                        dblclick: () => this._toggleModifierKey(i.GKey.Constant.ALT_LEFT),
+                                        key: GPlatform.GKey.Constant.ALT_LEFT,
+                                        actionClass: "g-virtual-key-".concat(GPlatform.GKey.Constant.ALT_LEFT),
+                                        dblclick: () => this._toggleModifierKey(GPlatform.GKey.Constant.ALT_LEFT),
                                     }),
                                 },
                                 {
@@ -357,14 +357,14 @@ module.exports = function (e, t, n) {
                                 {
                                     width: "auto",
                                     content: o({
-                                        key: i.GKey.Constant.UP,
+                                        key: GPlatform.GKey.Constant.UP,
                                         icon: "gravit-icon-touch-arrow-key-up",
                                     }),
                                 },
                                 {
                                     width: "auto",
                                     content: o({
-                                        key: i.GKey.Constant.DOWN,
+                                        key: GPlatform.GKey.Constant.DOWN,
                                         icon: "gravit-icon-touch-arrow-key-down",
                                     }),
                                 },
@@ -378,14 +378,14 @@ module.exports = function (e, t, n) {
                                 {
                                     width: "auto",
                                     content: o({
-                                        key: i.GKey.Constant.LEFT,
+                                        key: GPlatform.GKey.Constant.LEFT,
                                         icon: "gravit-icon-touch-arrow-key-left",
                                     }),
                                 },
                                 {
                                     width: "auto",
                                     content: o({
-                                        key: i.GKey.Constant.RIGHT,
+                                        key: GPlatform.GKey.Constant.RIGHT,
                                         icon: "gravit-icon-touch-arrow-key-right",
                                     }),
                                 },
@@ -397,19 +397,19 @@ module.exports = function (e, t, n) {
                     }));
             }),
             (R.prototype._toggleModifierKey = function (e) {
-                const t = !i.GPlatform.isHoldingKey(e);
+                const t = !GPlatform.GPlatform.isHoldingKey(e);
                 (this._toggleKey(e, t),
                     this._htmlElement.find(".g-virtual-key-".concat(e)).toggleClass("g-held", t),
                     this._updateActions());
             }),
             (R.prototype._toggleKey = function (e, t) {
-                t ? (i.GPlatform.holdKey(e), this._heldKeys.set(e, !0)) : (i.GPlatform.releaseKey(e), this._heldKeys.delete(e));
+                t ? (GPlatform.GPlatform.holdKey(e), this._heldKeys.set(e, true)) : (GPlatform.GPlatform.releaseKey(e), this._heldKeys.delete(e));
             }),
             (R.prototype._isHoldingKey = function (e) {
                 return !!this._heldKeys && !!this._heldKeys.get(e);
             }),
             (R.prototype._keyDown = function (e) {
-                I.includes(e.which || e.keyCode) && ((this._keyState[e.which || e.keyCode] = !0), this._updateActions());
+                I.includes(e.which || e.keyCode) && ((this._keyState[e.which || e.keyCode] = true), this._updateActions());
             }),
             (R.prototype._keyUp = function (e) {
                 I.includes(e.which || e.keyCode) && (delete this._keyState[e.which || e.keyCode], this._updateActions());
@@ -422,29 +422,29 @@ module.exports = function (e, t, n) {
                     (this._keyDownInveral = []));
             }),
             (R.prototype.activate = function () {
-                (document.addEventListener("keydown", this._keyDownBound, !0),
-                    document.addEventListener("keyup", this._keyUpBound, !0),
-                    document.addEventListener("mouseup", this._mouseUpBound, !0),
+                (document.addEventListener("keydown", this._keyDownBound, true),
+                    document.addEventListener("keyup", this._keyUpBound, true),
+                    document.addEventListener("mouseup", this._mouseUpBound, true),
                     gDesigner.addEventListener(s.default, this._documentEvent, this),
                     gDesigner.addEventListener(l.default, this._fullScreenEvent, this),
-                    i.GPlatform.addEventListener(i.GModifiersChangedEvent, this._modifiersChangedEvent, this),
+                    GPlatform.GPlatform.addEventListener(GPlatform.GModifiersChangedEvent, this._modifiersChangedEvent, this),
                     this._activateDocument(gDesigner.getActiveDocument()),
                     this._touchHandler.activate(this._htmlElement[0]),
                     (this._heldKeys = new Map()),
                     this._updateActions());
             }),
             (R.prototype.deactivate = function () {
-                (document.removeEventListener("keydown", this._keyDownBound, !0),
-                    document.removeEventListener("keyup", this._keyUpBound, !0),
-                    document.removeEventListener("mouseup", this._mouseUpBound, !0),
+                (document.removeEventListener("keydown", this._keyDownBound, true),
+                    document.removeEventListener("keyup", this._keyUpBound, true),
+                    document.removeEventListener("mouseup", this._mouseUpBound, true),
                     gDesigner.removeEventListener(s.default, this._documentEvent, this),
                     gDesigner.removeEventListener(l.default, this._fullScreenEvent, this),
-                    i.GPlatform.removeEventListener(i.GModifiersChangedEvent, this._modifiersChangedEvent, this),
+                    GPlatform.GPlatform.removeEventListener(GPlatform.GModifiersChangedEvent, this._modifiersChangedEvent, this),
                     this._deactivateDocument(gDesigner.getActiveDocument()),
-                    i.GPlatform.releaseKey(i.GKey.Constant.ALT_LEFT),
-                    i.GPlatform.releaseKey(i.GKey.Constant.ALT_RIGHT),
-                    i.GPlatform.releaseKey(i.GKey.Constant.SHIFT),
-                    i.GPlatform.releaseKey(i.GKey.Constant.CONTROL),
+                    GPlatform.GPlatform.releaseKey(GPlatform.GKey.Constant.ALT_LEFT),
+                    GPlatform.GPlatform.releaseKey(GPlatform.GKey.Constant.ALT_RIGHT),
+                    GPlatform.GPlatform.releaseKey(GPlatform.GKey.Constant.SHIFT),
+                    GPlatform.GPlatform.releaseKey(GPlatform.GKey.Constant.CONTROL),
                     this._touchHandler.deactivate(this._htmlElement[0]),
                     (this._heldKeys = null));
             }),
@@ -492,10 +492,10 @@ module.exports = function (e, t, n) {
                 });
             }),
             (R.prototype._isArrangeActionEnabled = function (e) {
-                if (!gDesigner.getAction(C.default.ID + "." + e).isEnabled()) return !1;
+                if (!gDesigner.getAction(C.default.ID + "." + e).isEnabled()) return false;
                 const t = this._document ? this._document.getEditor().getIndividualSelection() : null;
-                if (!t) return !1;
-                if (t.length > 1) return !0;
+                if (!t) return false;
+                if (t.length > 1) return true;
                 const n = t[0],
                     o = n.getParent();
                 switch (e) {
@@ -503,48 +503,48 @@ module.exports = function (e, t, n) {
                         if (n.getNext()) {
                             let e = n.getNext(),
                                 t = null;
-                            for (; !t && e; ) (e instanceof r.GElement && (t = e), (e = e.getNext()));
+                            for (; !t && e; ) (e instanceof GObject.GElement && (t = e), (e = e.getNext()));
                             return !!t && a.GEditor.validateBlockInsertion(o, n);
                         }
-                        return !1;
+                        return false;
                     case a.GEditor.ArrangeOrderType.BringForward: {
                         let e = n.getNext();
                         if (e) {
                             let t = null;
-                            for (; !t && e; ) (e instanceof r.GElement && (e.hasFlag(r.GNode.Flag.Selected) || (t = e)), (e = e.getNext()));
+                            for (; !t && e; ) (e instanceof GObject.GElement && (e.hasFlag(GObject.GNode.Flag.Selected) || (t = e)), (e = e.getNext()));
                             if (null !== t) {
                                 const e = t.getNext();
                                 return a.GEditor.validateBlockInsertion(o, n, e);
                             }
                         }
-                        return !1;
+                        return false;
                     }
                     case a.GEditor.ArrangeOrderType.SendBackward: {
                         let e = n.getPrevious();
                         if (null !== e) {
                             let t = null;
                             for (; !t && e; )
-                                (e instanceof r.GElement &&
-                                    (e.hasFlag(r.GNode.Flag.Selected) || (a.GEditor.validateBlockInsertion(o, n, e) && (t = e))),
+                                (e instanceof GObject.GElement &&
+                                    (e.hasFlag(GObject.GNode.Flag.Selected) || (a.GEditor.validateBlockInsertion(o, n, e) && (t = e))),
                                     (e = e.getPrevious()));
                             return !!t;
                         }
-                        return !1;
+                        return false;
                     }
                     case a.GEditor.ArrangeOrderType.SendToBack:
                         if (null !== n.getPrevious()) {
                             let e = o.getFirstChild(),
                                 t = null;
                             for (; !t && e && e !== n; )
-                                (e instanceof r.GElement && a.GEditor.validateBlockInsertion(o, n, e) && (t = e), (e = e.getNext()));
+                                (e instanceof GObject.GElement && a.GEditor.validateBlockInsertion(o, n, e) && (t = e), (e = e.getNext()));
                             return !!t;
                         }
-                        return !1;
+                        return false;
                 }
-                return !0;
+                return true;
             }),
             (R.prototype.getHtmlElement = function () {
                 return this._htmlElement;
             }),
-            (e.exports = R));
+            (module.exports = R));
     };

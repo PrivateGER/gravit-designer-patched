@@ -1,8 +1,8 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             var i = function () {
-                this._abort = !1;
+                this._abort = false;
             };
-            ((i.prototype._abort = !1),
+            ((i.prototype._abort = false),
                 (i.prototype.getPosition = function () {
                     return 0;
                 }),
@@ -29,7 +29,7 @@ module.exports = function (e, t) {
                 (i.prototype._writeBuffer = function () {}),
                 (i.prototype._concat = function () {}),
                 (i.prototype.abort = function () {
-                    this._abort = !0;
+                    this._abort = true;
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

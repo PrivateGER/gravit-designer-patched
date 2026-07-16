@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
-            var n = i(90),
-                r = i(182),
-                o = i(0),
-                a = i(338),
+module.exports = function (module, exports, require) {
+            var n = require(90),
+                r = require(182),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(338),
                 s = function (e, t, i, n) {
                     ((this.top = t), (this.left = e), (this.width = i), (this.height = n));
                 };
@@ -10,7 +10,7 @@ module.exports = function (e, t, i) {
                 (s.prototype.top = null),
                 (s.prototype.width = null),
                 (s.prototype.height = null),
-                o.inherit(s, n),
+                IsFiniteNonNegativeNumber.inherit(s, n),
                 (s.prototype.relativeY = function (e) {
                     return a.normalizeNumber(this.height - e);
                 }),
@@ -18,5 +18,5 @@ module.exports = function (e, t, i) {
                     var t = new r();
                     (t.push(this.top), t.push(this.left), t.push(this.width), t.push(this.height), t.write(e));
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

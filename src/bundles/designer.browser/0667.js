@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(27),
-            i = n(93),
+        var o = require(27),
+            i = require(93),
             a = Math.floor,
             r = o("".charAt),
             s = o("".replace),
             l = o("".slice),
             c = /\$([$&'`]|\d{1,2}|<[^>]*>)/g,
             d = /\$([$&'`]|\d{1,2})/g;
-        e.exports = function (e, t, n, o, u, p) {
+        module.exports = function (e, t, n, o, u, p) {
             var g = n + e.length,
                 h = o.length,
                 f = d;

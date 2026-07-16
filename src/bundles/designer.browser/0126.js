@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(29);
+        var o = require(25),
+            i = require(29);
         o(
-            { target: "URL", proto: !0, enumerable: !0 },
+            { target: "URL", proto: true, enumerable: true },
             {
                 toJSON: function () {
                     return i(URL.prototype.toString, this);

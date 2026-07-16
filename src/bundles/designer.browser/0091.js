@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(262).trim;
+        var o = require(25),
+            i = require(262).trim;
         o(
-            { target: "String", proto: !0, forced: n(461)("trim") },
+            { target: "String", proto: true, forced: require(461)("trim") },
             {
                 trim: function () {
                     return i(this);

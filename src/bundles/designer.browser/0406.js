@@ -1,5 +1,5 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(110);
-        e.exports = o("document", "documentElement");
+        var o = require(110);
+        module.exports = o("document", "documentElement");
     };

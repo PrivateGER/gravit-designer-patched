@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        e.exports = "\t\n\v\f\r                　\u2028\u2029\ufeff";
+        module.exports = "\t\n\v\f\r                　\u2028\u2029\ufeff";
     };

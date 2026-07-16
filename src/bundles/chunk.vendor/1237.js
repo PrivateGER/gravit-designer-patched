@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(138),
-                r = i(0),
-                o = i(17),
-                a = i(188),
-                s = i(228),
-                l = (i(133), i(1456)),
-                h = i(1457),
-                A = i(1149);
+module.exports = function (module, exports, require) {
+            var n = require(138),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(17),
+                a = require(188),
+                s = require(228),
+                l = (require(133 /* GScenePaintConfiguration */), require(1456)),
+                h = require(1457),
+                A = require(1149);
 
             function c(e) {
                 ((this._context2d = e),
@@ -18,7 +18,7 @@ module.exports = function (e, t, i) {
                     (this.canvasStack = [this.canvas]),
                     (this.outlineColors = []));
             }
-            (r.inherit(c, s),
+            (IsFiniteNonNegativeNumber.inherit(c, s),
                 (c.prototype.getSvgPaths = function () {
                     return (this.canvas._canvasContext._push(), this.canvas._canvasContext._svgs);
                 }),
@@ -107,5 +107,5 @@ module.exports = function (e, t, i) {
                 (c.prototype.toString = function () {
                     return "[Object GSVGPaintContext]";
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

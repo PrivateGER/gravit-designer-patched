@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.default = t.GoogleShareRoles = void 0));
-        const o = (t.GoogleShareRoles = {
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = exports.GoogleShareRoles = void 0));
+        const o = (exports.GoogleShareRoles = {
             Owner: "owner",
             Writer: "writer",
             Commenter: "commenter",
@@ -9,5 +9,5 @@ module.exports = function (e, t, n) {
             Organizer: "organizer",
             FileOrganizer: "fileOrganizer",
         });
-        t.default = o;
+        exports.default = o;
     };

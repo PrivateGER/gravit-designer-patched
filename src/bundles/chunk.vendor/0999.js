@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(70),
-                o = i(327),
-                a = i(532);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(70),
+                o = require(327),
+                a = require(532);
 
             function s() {
                 r.apply(this, arguments);
             }
-            (n.inheritAndMix(s, r, [o, a]), (e.exports = s));
+            (IsFiniteNonNegativeNumber.inheritAndMix(s, r, [o, a]), (module.exports = s));
         };

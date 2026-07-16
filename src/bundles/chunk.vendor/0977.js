@@ -1,38 +1,38 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(58),
-                i(19),
-                i(30),
-                i(57),
-                i(8),
-                i(20),
-                i(527),
-                i(107),
-                i(71),
-                i(151),
-                i(34),
-                i(91),
-                i(4),
-                i(41),
-                i(13),
-                i(26),
-                i(125),
-                i(126),
-                i(114));
-            const n = i(170),
-                r = i(325),
-                o = i(171),
-                a = i(375),
-                s = (i(373), i(354)),
-                l = i(582),
-                { PasswordLength: h } = i(581),
-                A = i(978),
-                { Events: c } = (i(584), i(431)),
-                { learnmore: p } = i(253),
-                u = i(980),
-                { PRIVACY_URL: d, SUPPORT_URL: g, IMPORT_EXPORT_DOCUMENTATION: f, VECTOR_PRODUCT_PAGE: m, CORELDRAW_PAGE: y } = i(374),
-                { getSupportUrl: _, getSubscriptionUrl: v, getUrlWithQueryParams: b } = i(254),
-                C = (i(430), /xmas/),
+            (require(58),
+                require(19),
+                require(30),
+                require(57),
+                require(8 /* Symbol */),
+                require(20),
+                require(527),
+                require(107),
+                require(71),
+                require(151),
+                require(34),
+                require(91),
+                require(4),
+                require(41),
+                require(13),
+                require(26),
+                require(125),
+                require(126),
+                require(114));
+            const n = require(170),
+                r = require(325),
+                o = require(171),
+                a = require(375),
+                s = (require(373), require(354)),
+                l = require(582),
+                { PasswordLength: h } = require(581),
+                A = require(978),
+                { Events: c } = (require(584), require(431)),
+                { learnmore: p } = require(253),
+                GOfflineDialog = require(980),
+                { PRIVACY_URL: d, SUPPORT_URL: g, IMPORT_EXPORT_DOCUMENTATION: f, VECTOR_PRODUCT_PAGE: m, CORELDRAW_PAGE: y } = require(374 /* SUPPORT_URL */),
+                { getSupportUrl: _, getSubscriptionUrl: v, getUrlWithQueryParams: b } = require(254),
+                C = (require(430), /xmas/),
                 w = (e) => {
                     32 === (e.which || e.keyCode) && (e.preventDefault(), o(e.target).click());
                 },
@@ -57,7 +57,7 @@ module.exports = function (e, t, i) {
                         e.preventDefault();
                         let n = 0;
                         (i.each(function (e) {
-                            if (o(this).closest(t)[0]) return ((n = ++e), !1);
+                            if (o(this).closest(t)[0]) return ((n = ++e), false);
                         }),
                             n >= i.length && (n = 0),
                             i.eq(n).focus());
@@ -66,7 +66,7 @@ module.exports = function (e, t, i) {
             });
             const x = () => {
                 let e = o("<div></div>").addClass("input-field"),
-                    t = o("<input>").attr("type", "password").attr("required", !0).attr("data-property", "password").appendTo(e);
+                    t = o("<input>").attr("type", "password").attr("required", true).attr("data-property", "password").appendTo(e);
                 return (
                     o("<span></span>")
                         .addClass("g-cloud-icon-hide")
@@ -88,15 +88,15 @@ module.exports = function (e, t, i) {
                     (this._version = l),
                     (this._runtimeCode = h),
                     (this._options = A),
-                    (this._closeable = !0),
+                    (this._closeable = true),
                     (this._flow = c),
                     (this._query = p),
                     n.setLanguage(this._impl.getLanguage()),
                     this._gApi.setLanguage(this._impl.getLanguage()));
                 let u,
                     d,
-                    g = !1,
-                    f = !0,
+                    g = false,
+                    f = true,
                     m = new URL(window.location.href);
                 if (m.searchParams) {
                     ((u = m.searchParams.get("webUrl")), (d = m.searchParams.get("appUrl")));
@@ -151,7 +151,7 @@ module.exports = function (e, t, i) {
                         "click",
                         function () {
                             let e = this._getStatMappedForm();
-                            (a("login-signup_".concat(e, "_support"), null, !1),
+                            (a("login-signup_".concat(e, "_support"), null, false),
                                 this._impl.openExternalLink({
                                     dialog: this,
                                     link: b(_(), this._getUTMCampaignParams()),
@@ -180,7 +180,7 @@ module.exports = function (e, t, i) {
                 (P.prototype._runtimeCode = null),
                 (P.prototype._query = null),
                 (P.prototype._flow = null),
-                (P.prototype._anonymous = !1),
+                (P.prototype._anonymous = false),
                 (P.prototype._formContent = null),
                 (P.prototype._title = null),
                 (P.prototype._dialog = null),
@@ -208,7 +208,7 @@ module.exports = function (e, t, i) {
                         this._isNewPurchaseFlow() || this._buildProInfo().appendTo(this._container),
                         o("<span></span>").addClass("version").html(this._getFormattedVersion()).appendTo(this._dialog),
                         o("<footer></footer>").appendTo(this._dialog),
-                        a("login-signup_login_open", null, !0),
+                        a("login-signup_login_open", null, true),
                         this._activatePanel(P.Forms.SignIn),
                         this._anonymous && this._closeable && this._closeButton.css("display", ""),
                         e
@@ -239,14 +239,14 @@ module.exports = function (e, t, i) {
                     return null;
                 }),
                 (P.prototype.close = function () {
-                    (this._toggleLoading(!0),
+                    (this._toggleLoading(true),
                         this._impl.close({
                             dialog: this,
                         }));
                 }),
                 (P.prototype.openPurchaseFlow = function () {
                     let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    (this._toggleLoading(!0),
+                    (this._toggleLoading(true),
                         this._impl.openPurchaseFlow({
                             dialog: this,
                             options: this._getOptions(e),
@@ -267,7 +267,7 @@ module.exports = function (e, t, i) {
                                                 "click",
                                                 function () {
                                                     let e = this._getStatMappedForm();
-                                                    (a("login-signup_".concat(e, "_help"), null, !0), this._helpTip.toggleClass("visible"));
+                                                    (a("login-signup_".concat(e, "_help"), null, true), this._helpTip.toggleClass("visible"));
                                                 }.bind(this)
                                             )
                                     )
@@ -316,17 +316,17 @@ module.exports = function (e, t, i) {
                         t.on(
                             "submit",
                             (e) => (
-                                a("login-signup_forgot-password_send-request", null, !0),
+                                a("login-signup_forgot-password_send-request", null, true),
                                 this._showMessage(),
                                 e.preventDefault(),
                                 A.isAvailable()
                                     ? navigator.onLine
                                         ? grecaptcha.execute(this._resetPasswordRecaptchaWidget)
-                                        : u.openRetryConnection(null, () => {
+                                        : GOfflineDialog.openRetryConnection(null, () => {
                                               grecaptcha.execute(this._resetPasswordRecaptchaWidget);
                                           })
                                     : this._onResetPasswordSubmit(t),
-                                !1
+                                false
                             )
                         ),
                         o("<label></label>")
@@ -335,8 +335,8 @@ module.exports = function (e, t, i) {
                         o("<input>")
                             .attr("type", "email")
                             .attr("data-property", "email")
-                            .attr("autofocus", !0)
-                            .attr("required", !0)
+                            .attr("autofocus", true)
+                            .attr("required", true)
                             .appendTo(t),
                         o("<button></button>")
                             .attr("type", "submit")
@@ -352,7 +352,7 @@ module.exports = function (e, t, i) {
                                     .text(n.get(new r("GLoginDialog", "text.sign-up-go-back")))
                                     .keydown(w)
                                     .on("click", () => {
-                                        (a("login-signup_forgot-password_back-to-login", null, !0), this._activatePanel(P.Forms.SignIn));
+                                        (a("login-signup_forgot-password_back-to-login", null, true), this._activatePanel(P.Forms.SignIn));
                                     })
                             )
                             .appendTo(e),
@@ -377,7 +377,7 @@ module.exports = function (e, t, i) {
                                 .text(n.get(new r("GLoginDialog", "text.sign-up-go-back")))
                                 .keydown(w)
                                 .on("click enter", () => {
-                                    (a("login-signup_create-account_back-to-login", null, !0), this._activatePanel(P.Forms.SignIn));
+                                    (a("login-signup_create-account_back-to-login", null, true), this._activatePanel(P.Forms.SignIn));
                                 })
                         )
                         .appendTo(e);
@@ -393,7 +393,7 @@ module.exports = function (e, t, i) {
                                 h = this._appUrl,
                                 A = this._webUrl,
                                 c = this._flow;
-                            (this._toggleLoading(!0),
+                            (this._toggleLoading(true),
                                 this._gApi
                                     .signup({
                                         email: n,
@@ -410,28 +410,28 @@ module.exports = function (e, t, i) {
                                     .then((e) =>
                                         this._postLogin(
                                             Object.assign(e, {
-                                                new: !0,
+                                                new: true,
                                             })
                                         )
                                     )
                                     .catch((e) => {
-                                        (this._toggleLoading(!1), this._handleError(e), i && grecaptcha.reset(this._recaptchaWidget));
+                                        (this._toggleLoading(false), this._handleError(e), i && grecaptcha.reset(this._recaptchaWidget));
                                     }));
                         };
                     t.on(
                         "submit",
                         (e) => (
-                            a("login-signup_create-account_create-account", null, !0),
+                            a("login-signup_create-account_create-account", null, true),
                             this._showMessage(),
                             e.preventDefault(),
                             i
                                 ? navigator.onLine
                                     ? grecaptcha.execute(this._recaptchaWidget)
-                                    : u.openRetryConnection(null, () => {
+                                    : GOfflineDialog.openRetryConnection(null, () => {
                                           grecaptcha.execute(this._recaptchaWidget);
                                       })
                                 : s(),
-                            !1
+                            false
                         )
                     );
                     const { firstName: l = "", lastName: c = "", email: p = "" } = this._query || {};
@@ -442,8 +442,8 @@ module.exports = function (e, t, i) {
                         o("<input>")
                             .attr("type", "email")
                             .attr("data-property", "email")
-                            .attr("autofocus", !0)
-                            .attr("required", !0)
+                            .attr("autofocus", true)
+                            .attr("required", true)
                             .val(E(p))
                             .appendTo(t),
                         o("<div></div>")
@@ -453,7 +453,7 @@ module.exports = function (e, t, i) {
                                     .addClass("row-layout")
                                     .append(o("<label></label>").text(n.get(new r("GLoginDialog", "text.first-name"))))
                                     .append(
-                                        o("<input>").attr("type", "text").attr("data-property", "firstname").attr("required", !0).val(E(l))
+                                        o("<input>").attr("type", "text").attr("data-property", "firstname").attr("required", true).val(E(l))
                                     )
                             )
                             .append(
@@ -461,7 +461,7 @@ module.exports = function (e, t, i) {
                                     .addClass("row-layout")
                                     .append(o("<label></label>").text(n.get(new r("GLoginDialog", "text.last-name"))))
                                     .append(
-                                        o("<input>").attr("type", "text").attr("data-property", "lastname").attr("required", !0).val(E(c))
+                                        o("<input>").attr("type", "text").attr("data-property", "lastname").attr("required", true).val(E(c))
                                     )
                             )
                             .appendTo(t),
@@ -485,7 +485,7 @@ module.exports = function (e, t, i) {
                                     .attr("type", "checkbox")
                                     .on("change", (e) => {
                                         let i = o(e.target).is(":checked");
-                                        (a("login-signup_create-account_i-agree", i, !0),
+                                        (a("login-signup_create-account_i-agree", i, true),
                                             t.find('button[type="submit"]').prop("disabled", !i).toggleClass("g-disabled", !i));
                                     })
                             )
@@ -525,12 +525,12 @@ module.exports = function (e, t, i) {
                                             .on(
                                                 "click",
                                                 () => (
-                                                    a("login-signup_create-account_privacy-policy", null, !0),
+                                                    a("login-signup_create-account_privacy-policy", null, true),
                                                     this._impl.openExternalLink({
                                                         dialog: this,
                                                         link: b(d, this._getUTMCampaignParams()),
                                                     }),
-                                                    !1
+                                                    false
                                                 )
                                             )
                                     )
@@ -542,12 +542,12 @@ module.exports = function (e, t, i) {
                             .on(
                                 "click",
                                 () => (
-                                    a("login-signup_create-account_terms-of-use", null, !0),
+                                    a("login-signup_create-account_terms-of-use", null, true),
                                     this._impl.openExternalLink({
                                         dialog: this,
                                         link: b("https://www.corel.com/terms/", this._getUTMCampaignParams()),
                                     }),
-                                    !1
+                                    false
                                 )
                             ),
                         t
@@ -556,12 +556,12 @@ module.exports = function (e, t, i) {
                             .on(
                                 "click",
                                 () => (
-                                    a("login-signup_create-account_eula", null, !0),
+                                    a("login-signup_create-account_eula", null, true),
                                     this._impl.openExternalLink({
                                         dialog: this,
                                         link: b("https://www.corel.com/eula", this._getUTMCampaignParams()),
                                     }),
-                                    !1
+                                    false
                                 )
                             ),
                         o("<label></label>")
@@ -570,9 +570,9 @@ module.exports = function (e, t, i) {
                             .appendTo(t),
                         o("<label></label>")
                             .addClass("column-layout normal")
-                            .append(o("<input>").attr("type", "checkbox").attr("data-property", "newsletter").prop("checked", !1))
+                            .append(o("<input>").attr("type", "checkbox").attr("data-property", "newsletter").prop("checked", false))
                             .on("change", (e) => {
-                                a("login-signup_create-account_subscribe", o(e.target).is(":checked"), !0);
+                                a("login-signup_create-account_subscribe", o(e.target).is(":checked"), true);
                             })
                             .append(o("<span></span>").text(n.get(new r("GLoginDialog", "text.newsletter"))))
                             .appendTo(t),
@@ -604,7 +604,7 @@ module.exports = function (e, t, i) {
                             )
                         )
                         .addClass("g-disabled")
-                        .prop("disabled", !0)
+                        .prop("disabled", true)
                         .appendTo(t),
                         o("<div></div>")
                             .addClass("column-layout separator")
@@ -634,12 +634,12 @@ module.exports = function (e, t, i) {
                                 const t = o(e.target).closest("a").attr("href"),
                                     i = t.includes("terms") ? "terms-of-use" : "privacy-policy";
                                 return (
-                                    a("login-signup_create-account_".concat(i), null, !0),
+                                    a("login-signup_create-account_".concat(i), null, true),
                                     this._impl.openExternalLink({
                                         dialog: this,
                                         link: b(t, this._getUTMCampaignParams()),
                                     }),
-                                    !1
+                                    false
                                 );
                             }),
                         e
@@ -652,7 +652,7 @@ module.exports = function (e, t, i) {
                         .append(o("<span></span>").addClass("txt").text(n.get(e)))
                         .on("click", () => {
                             let e = this._getStatMappedForm();
-                            (a("login-signup_".concat(e, "_login-google"), null, !0), this._oauth("google"));
+                            (a("login-signup_".concat(e, "_login-google"), null, true), this._oauth("google"));
                         });
                 }),
                 (P.prototype._createFacebookButton = function (e) {
@@ -662,7 +662,7 @@ module.exports = function (e, t, i) {
                         .append(o("<span></span>").addClass("txt").text(n.get(e)))
                         .on("click", () => {
                             let e = this._getStatMappedForm();
-                            (a("login-signup_".concat(e, "_login-facebook"), null, !0), this._oauth("facebook"));
+                            (a("login-signup_".concat(e, "_login-facebook"), null, true), this._oauth("facebook"));
                         });
                 }),
                 (P.prototype._buildThanks = function (e) {
@@ -679,7 +679,7 @@ module.exports = function (e, t, i) {
                             .empty()
                             .append(o("<label></label>").text(n.get(new r("GLoginDialog", "text.title-title-account-created")))),
                         e.trial_created ||
-                            (a("login-signup_account-created_trial-activated", null, !0),
+                            (a("login-signup_account-created_trial-activated", null, true),
                             this._gApi.license
                                 .activateTrial()
                                 .then(() => {
@@ -713,17 +713,17 @@ module.exports = function (e, t, i) {
                                         .text(n.get(new r("GLoginDialog", "text.email-not-received-part-2")))
                                         .keydown(w)
                                         .on("click", async () => {
-                                            (a("login-signup_account-created_send-activation-email", null, !0),
+                                            (a("login-signup_account-created_send-activation-email", null, true),
                                                 i.css("min-height", ""),
                                                 this._showMessage(),
-                                                this._toggleLoading(!0));
+                                                this._toggleLoading(true));
                                             try {
                                                 const t = this._webUrl,
                                                     n = this._appUrl;
                                                 this._gApi
                                                     .resendEmailConfirmation({
                                                         email: e.email,
-                                                        force: !0,
+                                                        force: true,
                                                         webUrl: t,
                                                         appUrl: n,
                                                     })
@@ -732,7 +732,7 @@ module.exports = function (e, t, i) {
                                                     })
                                                     .catch((e) => this._handleError(e));
                                             } finally {
-                                                this._toggleLoading(!1);
+                                                this._toggleLoading(false);
                                             }
                                         })
                                 )
@@ -751,13 +751,13 @@ module.exports = function (e, t, i) {
                         .css("color", "#e3006e")
                         .appendTo(t),
                         t.on("submit", (e) => {
-                            (a("login-signup_login_login", null, !0), this._showMessage(), e.preventDefault());
+                            (a("login-signup_login_login", null, true), this._showMessage(), e.preventDefault());
                             const t = o(e.target),
                                 i = t.find('input[data-property="login"]').val(),
                                 n = t.find('input[data-property="password"]').val(),
                                 r = this._flow;
                             return (
-                                this._toggleLoading(!0),
+                                this._toggleLoading(true),
                                 this._gApi
                                     .signin({
                                         login: i,
@@ -767,13 +767,13 @@ module.exports = function (e, t, i) {
                                     })
                                     .then((e) => this._postLogin(e))
                                     .catch((e) => this._handleError(e)),
-                                !1
+                                false
                             );
                         }),
                         o("<label></label>")
                             .text(n.get(new r("GLoginDialog", "text.sign-in-login")))
                             .appendTo(t),
-                        o("<input>").attr("type", "text").attr("data-property", "login").attr("required", !0).appendTo(t),
+                        o("<input>").attr("type", "text").attr("data-property", "login").attr("required", true).appendTo(t),
                         o("<label></label>")
                             .text(n.get(new r("GLoginDialog", "text.sign-in-password")))
                             .appendTo(t),
@@ -792,7 +792,7 @@ module.exports = function (e, t, i) {
                             .text(n.get(new r("GLoginDialog", "text.forgot-password")))
                             .keydown(w)
                             .on("click", () => {
-                                (a("login-signup_login_forgot-password", null, !0), this._activatePanel(P.Forms.ResetPassword));
+                                (a("login-signup_login_forgot-password", null, true), this._activatePanel(P.Forms.ResetPassword));
                             })
                             .appendTo(t),
                         o("<div></div>")
@@ -823,12 +823,12 @@ module.exports = function (e, t, i) {
                                 const t = o(e.target).closest("a").attr("href"),
                                     i = t.includes("terms") ? "terms-of-use" : "privacy-policy";
                                 return (
-                                    a("login-signup_login_".concat(i), null, !0),
+                                    a("login-signup_login_".concat(i), null, true),
                                     this._impl.openExternalLink({
                                         dialog: this,
                                         link: b(t, this._getUTMCampaignParams()),
                                     }),
-                                    !1
+                                    false
                                 );
                             }),
                         e
@@ -986,14 +986,14 @@ module.exports = function (e, t, i) {
                             dataLayer.push({
                                 event: "USER_SIGN_UP_EVENT",
                             })),
-                            this._toggleLoading(!0));
+                            this._toggleLoading(true));
                         const { flags: { welcomeMessage: t } = {} } = await this._gApi.getUserSettings().catch(() => Object.create({}));
                         if (
                             !t &&
                             e.new &&
                             (await this._gApi.updateUserSettings({
                                 flags: {
-                                    welcomeMessage: !0,
+                                    welcomeMessage: true,
                                 },
                             }),
                             !(this._isNewPurchaseFlow() || (e.trial_created && e.email_verified)))
@@ -1004,11 +1004,11 @@ module.exports = function (e, t, i) {
                             );
                         if (this._isNewPurchaseFlow())
                             return void this.openPurchaseFlow({
-                                immediatePurchase: !0,
+                                immediatePurchase: true,
                             });
                         this.close();
                     } finally {
-                        this._toggleLoading(!1);
+                        this._toggleLoading(false);
                     }
                 }),
                 (P.prototype._toggleLoading = function (e) {
@@ -1016,10 +1016,10 @@ module.exports = function (e, t, i) {
                         this._welcomeback && this._welcomeback.toggleClass("g-cloud-ui-loading", e));
                 }),
                 (P.prototype._handleError = async function (e) {
-                    if ((this._toggleLoading(!1), navigator.onLine)) this._showMessage(this._gApi.formatError(e));
+                    if ((this._toggleLoading(false), navigator.onLine)) this._showMessage(this._gApi.formatError(e));
                     else {
                         let e = await this._gApi.getUser().catch(() => null);
-                        u.openRetryConnection(e);
+                        GOfflineDialog.openRetryConnection(e);
                     }
                 }),
                 (P.prototype._showMessage = function (e) {
@@ -1061,23 +1061,23 @@ module.exports = function (e, t, i) {
                                             .addClass("link")
                                             .text(n.get(new r("GLoginDialog", "text.email-not-received-part-2")))
                                             .on("click", async () => {
-                                                (a("login-signup_account-created_send-activation-email", null, !0),
+                                                (a("login-signup_account-created_send-activation-email", null, true),
                                                     this._showMessage(),
-                                                    this._toggleLoading(!0));
+                                                    this._toggleLoading(true));
                                                 try {
                                                     const t = this._webUrl,
                                                         i = this._appUrl;
                                                     this._gApi
                                                         .resendEmailConfirmation({
                                                             email: e.email,
-                                                            force: !0,
+                                                            force: true,
                                                             webUrl: t,
                                                             appUrl: i,
                                                         })
                                                         .then((e) => this._showMessage(e && e.message, "info"))
                                                         .catch((e) => this._handleError(e));
                                                 } finally {
-                                                    this._toggleLoading(!1);
+                                                    this._toggleLoading(false);
                                                 }
                                             })
                                     )
@@ -1130,5 +1130,5 @@ module.exports = function (e, t, i) {
                         throw new Error("Not implemented");
                     }
                 }),
-                (e.exports = P));
+                (module.exports = P));
         };

@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(49),
-            i = n(400),
-            a = n(88),
-            r = n(37),
-            s = n(184),
-            l = n(405);
-        t.f =
+        var o = require(49),
+            i = require(400),
+            a = require(88),
+            r = require(37),
+            s = require(184),
+            l = require(405);
+        exports.f =
             o && !i
                 ? Object.defineProperties
                 : function (e, t) {

@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(1);
+        var GObject = require(1);
         function i(e, t) {
             ((this.type = e), (this.fileId = t));
         }
-        (o.GObject.inherit(i, o.GEvent),
+        (GObject.GObject.inherit(i, GObject.GEvent),
             (i.Type = { Enable: 1, Disable: 0, Close: 2 }),
             (i.prototype.fileId = null),
             (i.prototype.type = null),
-            (e.exports = i));
+            (module.exports = i));
     };

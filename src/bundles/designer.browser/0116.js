@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(27),
+        var o = require(27),
             i = o({}.toString),
             a = o("".slice);
-        e.exports = function (e) {
+        module.exports = function (e) {
             return a(i(e), 8, -1);
         };
     };

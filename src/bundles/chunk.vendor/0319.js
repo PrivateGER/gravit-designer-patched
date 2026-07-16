@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(60),
-                o = i(84),
-                a = i(0);
-            i(142);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(60),
+                o = require(84),
+                IsFiniteNonNegativeNumber = require(0);
+            require(142);
 
             function s() {
                 (r.call(this), this.initializeAnnotation());
@@ -33,7 +33,7 @@ module.exports = function (e, t, i) {
                         var u = t.blob;
                         t.options.separateSaving &&
                             ((u.own = {
-                                "@": n._nodeClassToNameMap[a.getTypeId(this)],
+                                "@": n._nodeClassToNameMap[IsFiniteNonNegativeNumber.getTypeId(this)],
                             }),
                             (t.blob = u.own));
                     } else
@@ -53,5 +53,5 @@ module.exports = function (e, t, i) {
                 (s.prototype.toString = function () {
                     return "[GArrowAnnotation]";
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(4), n(13), n(32), n(33));
-        var o = n(1246),
-            i = n(1250);
-        e.exports = class {
+        (require(4), require(13), require(32), require(33));
+        var o = require(1246),
+            i = require(1250);
+        module.exports = class {
             constructor() {
                 ((this._htmlElement = $("<div></div>").addClass("g-persona-bar")),
                     (this._container = $("<div></div>").addClass("g-persona-container").appendTo(this._htmlElement)));
@@ -32,7 +32,7 @@ module.exports = function (e, t, n) {
                 (this._htmlElement.find(".g-persona-item").removeClass("g-active"),
                     this._htmlElement.find(".g-persona-item").each(function (t, n) {
                         var o = $(n);
-                        if (o.data("persona") === e) return (o.addClass("g-active"), !1);
+                        if (o.data("persona") === e) return (o.addClass("g-active"), false);
                     }));
             }
             _personaChangeEvent(e) {

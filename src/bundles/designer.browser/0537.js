@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o, i, a, r, s, l, c, d;
-        e.exports =
-            ((d = n(55)),
+        module.exports =
+            ((d = require(55)),
             (i = (o = d).lib),
             (a = i.WordArray),
             (r = i.Hasher),

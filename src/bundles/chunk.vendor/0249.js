@@ -1,29 +1,29 @@
-module.exports = function (e, t, i) {
-            var n = i(931),
-                r = i(2),
-                o = i(28),
-                a = i(282),
-                s = i(226),
-                l = i(14),
-                h = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(931),
+                r = require(2),
+                GStylable = require(28),
+                a = require(282),
+                s = require(226),
+                l = require(14),
+                String = require(9);
 
             function A() {
-                (o.Effect.call(this), this._setDefaultProperties(A.GeometryProperties), s.getGLContext() && (this._glblur = new a()));
+                (GStylable.Effect.call(this), this._setDefaultProperties(A.GeometryProperties), s.getGLContext() && (this._glblur = new a()));
             }
-            (r.inherit("blurEffect", A, o.Effect),
+            (r.inherit("blurEffect", A, GStylable.Effect),
                 (A.prototype._glblur = null),
                 (A.equals = function (e, t) {
                     return e instanceof A && t instanceof A && e.arePropertiesEqual(t, Object.keys(A.GeometryProperties));
                 }),
                 (A.GeometryProperties = {
                     r: 5,
-                    b: !1,
+                    b: false,
                 }),
                 (A.prototype.getEffectType = function () {
-                    return o.Effect.Type.Filter;
+                    return GStylable.Effect.Type.Filter;
                 }),
                 (A.prototype.getNodeNameTranslated = function () {
-                    return h.getValue("GBlurEffect", "name", this.getNodeName());
+                    return String.getValue("GBlurEffect", "name", this.getNodeName());
                 }),
                 (A.prototype.getEffectPadding = function () {
                     return this.$b ? (this._glblur ? 0 : -1) : this.$r;
@@ -68,7 +68,7 @@ module.exports = function (e, t, i) {
                         ? this.storeProperties(t.blob, A.GeometryProperties)
                         : e === r._Change.Restore && this.restoreProperties(t.blob, A.GeometryProperties),
                         this._handleGeometryChangeForProperties(e, t, A.GeometryProperties),
-                        o.Effect.prototype._handleChange.call(this, e, t));
+                        GStylable.Effect.prototype._handleChange.call(this, e, t));
                 }),
                 (A.prototype.setAffectedByGLBug = function (e) {
                     this._glblur && this._glblur.setAffectedByGLBug(e);
@@ -79,5 +79,5 @@ module.exports = function (e, t, i) {
                 (A.prototype.destroy = function () {
                     this._glblur && this._glblur.destroy();
                 }),
-                (e.exports = A));
+                (module.exports = A));
         };

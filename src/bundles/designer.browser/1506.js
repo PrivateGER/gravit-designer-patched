@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
-        var o = n(1251).default;
-        ((e.exports = function (e, t) {
+module.exports = function (module, exports, require) {
+        var o = require(1251).default;
+        ((module.exports = function (e, t) {
             if ("object" != o(e) || !e) return e;
             var n = e[Symbol.toPrimitive];
             if (void 0 !== n) {
@@ -10,6 +10,6 @@ module.exports = function (e, t, n) {
             }
             return ("string" === t ? String : Number)(e);
         }),
-            (e.exports.__esModule = !0),
-            (e.exports.default = e.exports));
+            (module.exports.__esModule = true),
+            (module.exports.default = module.exports));
     };

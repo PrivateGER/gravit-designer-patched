@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(618), n(627), n(628), n(629), n(630), n(631));
+        (require(618), require(627), require(628), require(629), require(630), require(631));
     };

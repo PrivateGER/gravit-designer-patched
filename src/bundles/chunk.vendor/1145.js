@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i(e) {
                 this.name = e;
             }
@@ -14,5 +14,5 @@ module.exports = function (e, t) {
                 (i.prototype.toString = function () {
                     return "[Object GPDFFilter]";
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

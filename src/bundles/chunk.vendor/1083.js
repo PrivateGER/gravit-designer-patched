@@ -1,24 +1,24 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(534),
-                o = i(63),
-                a = i(128),
-                s = i(36),
-                l = i(141),
-                h = i(39),
-                A = i(24);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(534),
+                o = require(63),
+                a = require(128),
+                s = require(36),
+                l = require(141),
+                h = require(39),
+                A = require(24);
 
             function c(e) {
                 a.call(this, e);
             }
-            (n.inherit(c, a),
+            (IsFiniteNonNegativeNumber.inherit(c, a),
                 s.exports(c, r),
                 (c.prototype._paintOutline = function (e, t, i, n, r) {
                     var a,
                         s = this.getPaintElement(),
                         c = new o(s, e);
                     (a = new l(c)) &&
-                        (t.canvas.putVertices(a, !1),
+                        (t.canvas.putVertices(a, false),
                         t.canvas.strokeVertices(
                             n || (this.hasFlag(h.Flag.Highlighted) ? t.highlightOutlineColor : t.selectionOutlineColor),
                             A.outlineWidth
@@ -40,5 +40,5 @@ module.exports = function (e, t, i) {
                 (c.prototype.toString = function () {
                     return "[Object GImageGridEditor]";
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

@@ -1,35 +1,35 @@
-module.exports = function (e, t, i) {
-            var n = i(64),
-                r = i(150),
-                o = i(99),
-                a = i(2),
-                s = i(0),
-                l = i(127),
-                h = i(52),
-                A = i(45),
-                c = i(36),
-                p = i(77),
-                u = i(5),
-                d = i(24),
-                g = i(235),
-                f = i(332),
-                m = i(60),
-                y = i(167),
-                _ = i(164),
-                v = i(39),
-                b = i(81),
-                C = i(17),
-                w = i(12),
-                E = i(22),
-                B = i(82),
-                x = i(155),
-                P = i(9),
-                S = i(47);
+module.exports = function (module, exports, require) {
+            var n = require(64),
+                r = require(150),
+                o = require(99),
+                a = require(2),
+                IsFiniteNonNegativeNumber = require(0),
+                l = require(127),
+                h = require(52),
+                A = require(45),
+                c = require(36),
+                p = require(77),
+                u = require(5),
+                d = require(24),
+                g = require(235),
+                f = require(332),
+                m = require(60),
+                y = require(167),
+                _ = require(164),
+                v = require(39),
+                b = require(81),
+                C = require(17),
+                w = require(12),
+                E = require(22),
+                GEditor = require(82),
+                x = require(155),
+                String = require(9),
+                S = require(47);
 
             function T() {
                 f.call(this);
             }
-            (s.inherit(T, f),
+            (IsFiniteNonNegativeNumber.inherit(T, f),
                 (T.prototype._getRelatedItemClass = function () {
                     return m;
                 }),
@@ -40,10 +40,10 @@ module.exports = function (e, t, i) {
                 (T.prototype._refPt = null),
                 (T.prototype._pathEditor = null),
                 (T.prototype._compoundPathEditor = null),
-                (T.prototype._released = !0),
-                (T.prototype._dragStarted = !1),
+                (T.prototype._released = true),
+                (T.prototype._dragStarted = false),
                 (T.prototype._dragStartPt = null),
-                (T.prototype._firstAlt = !1),
+                (T.prototype._firstAlt = false),
                 (T.Transaction = {
                     NoTransaction: 0,
                     InsertPoint: 1,
@@ -70,7 +70,7 @@ module.exports = function (e, t, i) {
                 }),
                 (T.prototype._cursor = null),
                 (T.prototype._lastMouseEvent = null),
-                (T.prototype._deactivationAllowed = !0),
+                (T.prototype._deactivationAllowed = true),
                 (T.prototype._cached = null),
                 (T.prototype._sideConnectPoints = null),
                 (T.prototype.getCursor = function () {
@@ -86,13 +86,13 @@ module.exports = function (e, t, i) {
                             e.addEventListener(p.Release, this._mouseRelease, this),
                             e.addEventListener(y.Down, this._keyDown, this),
                             n.addEventListener(r, this._modifiersChanged, this),
-                            this._editor.addEventListener(B.MODIFIED_EVENT, this._sceneModified, this)),
+                            this._editor.addEventListener(GEditor.MODIFIED_EVENT, this._sceneModified, this)),
                         (this._cursor = h.PenStart),
                         (this._transactionType = T.Transaction.NoTransaction),
-                        this._editor.setPathResize(!1, !0),
+                        this._editor.setPathResize(false, true),
                         this._initialSelectCorrection(),
                         this._findSideConnectPoints(),
-                        (this._lightDeactivationHandled = !1));
+                        (this._lightDeactivationHandled = false));
                 }),
                 (T.prototype.deactivate = function (e, t) {
                     (this._pathEditor &&
@@ -109,8 +109,8 @@ module.exports = function (e, t, i) {
                         this._reset(),
                         this._editor &&
                             (this._editor.getGuides().invalidate(),
-                            this._editor.removeEventListener(B.MODIFIED_EVENT, this._sceneModified),
-                            t || this._lightDeactivationHandled || this._editor.setPathResize(!0)),
+                            this._editor.removeEventListener(GEditor.MODIFIED_EVENT, this._sceneModified),
+                            t || this._lightDeactivationHandled || this._editor.setPathResize(true)),
                         f.prototype.deactivate.call(this, e, t),
                         e.removeEventListener(p.Down, this._mouseDown),
                         e.removeEventListener(p.Release, this._mouseRelease),
@@ -129,7 +129,7 @@ module.exports = function (e, t, i) {
                             this._view.getWorldTransform(this._view.getScene().getActivePage()),
                             this._cached.middlePoint,
                             t.type,
-                            !1,
+                            false,
                             t.size,
                             C.WHITE,
                             e.annotationColor
@@ -137,10 +137,10 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (T.prototype._allowDeactivation = function () {
-                    this._deactivationAllowed = !0;
+                    this._deactivationAllowed = true;
                 }),
                 (T.prototype._blockDeactivation = function () {
-                    this._deactivationAllowed = !1;
+                    this._deactivationAllowed = false;
                 }),
                 (T.prototype._checkPathEditor = function () {
                     var e = this._editor.getPathSelection();
@@ -243,7 +243,7 @@ module.exports = function (e, t, i) {
                                     this._dpathRef.getAnchorPoints().appendChild(e),
                                     n || e.setFlag(a.Flag.Selected),
                                     (this._editPt = this._dpathRef.getAnchorPoints().getLastChild()),
-                                    (this._newPoint = !0),
+                                    (this._newPoint = true),
                                     this._pathEditor.setActiveExtendingMode(x.ExtendingMode.End))
                                   : this._mode == T.Mode.Prepend &&
                                     (n || this._dpathRef.getAnchorPoints().getFirstChild().removeFlag(a.Flag.Selected),
@@ -251,7 +251,7 @@ module.exports = function (e, t, i) {
                                     n || e.setFlag(a.Flag.Selected),
                                     this._pathEditor.shiftPreviewTable(1),
                                     (this._editPt = this._dpathRef.getAnchorPoints().getFirstChild()),
-                                    (this._newPoint = !0),
+                                    (this._newPoint = true),
                                     this._pathEditor.setActiveExtendingMode(x.ExtendingMode.Beginning)),
                               this._pathEditor.requestInvalidation())
                             : (this._startTransaction(T.Transaction.InsertElement),
@@ -309,32 +309,32 @@ module.exports = function (e, t, i) {
                     var t = new u(e.$x, e.$y),
                         i = this._view.getScene().getActivePage(),
                         n = this._view.getWorldTransform(i).mapPoint(t);
-                    this._editor.updateByMousePosition(n, this._view.getWorldTransform(this._scene), !1, this._view.getViewConfiguration());
+                    this._editor.updateByMousePosition(n, this._view.getWorldTransform(this._scene), false, this._view.getViewConfiguration());
                     var r = this._view.getScene().getActivePage();
                     i !== r && ((t = this._view.getViewTransform(r).mapPoint(n)), e.setProperties(["x", "y"], [t.getX(), t.getY()]));
                     var o = new (this._getRelatedItemClass())();
                     (o.getAnchorPoints().appendChild(e),
                         o.setFlag(a.Flag.Selected),
-                        this._editor.insertElements([o], !1, !0, !0),
+                        this._editor.insertElements([o], false, true, true),
                         e.setFlag(a.Flag.Selected),
                         this._checkPathEditor());
                 }),
                 (T.prototype._mouseDown = function (e) {
-                    ((this._released = !1), this._pathEditor && this._pathEditor.blockRemoval());
+                    ((this._released = false), this._pathEditor && this._pathEditor.blockRemoval());
                 }),
                 (T.prototype._mouseDblClick = function (e) {
                     ((this._lastMouseEvent = null),
                         this._checkMode(),
                         this._pathEditor &&
-                            (this._pathEditor.updatePartSelection(!1),
+                            (this._pathEditor.updatePartSelection(false),
                             this._pathEditor instanceof l && this._pathEditor.setActiveExtendingMode(x.ExtendingMode.Off),
                             this._commitChanges()),
                         (this._mode = T.Mode.Edit),
                         this._setCursorForPosition(null, e.client));
                 }),
                 (T.prototype._mouseRelease = function (e) {
-                    ((this._released = !0),
-                        (this._dragStarted = !1),
+                    ((this._released = true),
+                        (this._dragStarted = false),
                         (this._dragStartPt = null),
                         this._pathEditor && this._pathEditor.allowRemoval(),
                         this._editor.getGuides().invalidate());
@@ -348,7 +348,7 @@ module.exports = function (e, t, i) {
                         (this._dpathRef = null),
                         (this._pathRef = null),
                         (this._pathEditor = null),
-                        (this._newPoint = !1),
+                        (this._newPoint = false),
                         (this._editPt = null),
                         (this._dragStartPt = null),
                         (this._refPt = null),
@@ -371,7 +371,7 @@ module.exports = function (e, t, i) {
                             ? this._mouseMove(this._lastMouseEvent)
                             : this._mouseDrag(this._lastMouseEvent)
                         : e.changed.optionKey &&
-                          ((this._firstAlt = !1),
+                          ((this._firstAlt = false),
                           this._released ||
                               (n.modifiers.optionKey && (this._firstAlt = !this._dragStarted),
                               this._lastMouseEvent && this._mouseDrag(this._lastMouseEvent)));
@@ -380,7 +380,7 @@ module.exports = function (e, t, i) {
                     this._released &&
                         (this._checkMode(),
                         this._pathEditor &&
-                            (this._pathEditor.updatePartSelection(!1),
+                            (this._pathEditor.updatePartSelection(false),
                             this._pathEditor instanceof l &&
                                 (this._pathEditor.setActiveExtendingMode(x.ExtendingMode.Off),
                                 this._pathRef && this._pathRef.removeFlag(a.Flag.Selected)),
@@ -412,14 +412,14 @@ module.exports = function (e, t, i) {
                 }),
                 (T.prototype._makePointMajor = function (e) {
                     (this._compoundPathEditor &&
-                        (this._compoundPathEditor.updatePartSelection(!1),
+                        (this._compoundPathEditor.updatePartSelection(false),
                         this._compoundPathEditor.releasePathPreview(),
                         this._compoundPathEditor.requestInvalidation()),
                         this._pathEditor.selectOnePoint(e),
                         (this._dpathRef = null),
                         this._pathEditor.releasePathPreview(),
                         this._pathEditor.requestInvalidation(),
-                        (this._dpathRef = this._pathEditor.getPathPreview(!1, e)));
+                        (this._dpathRef = this._pathEditor.getPathPreview(false, e)));
                 }),
                 (T.prototype._startTransaction = function (e) {
                     (this._transactionType == T.Transaction.NoTransaction && this._editor.beginTransaction(), (this._transactionType = e));
@@ -428,28 +428,28 @@ module.exports = function (e, t, i) {
                     try {
                         switch (this._transactionType) {
                             case T.Transaction.AppendPoint:
-                                this._editor.commitTransaction(P.get(new S("GPathTool", "action.append-point")));
+                                this._editor.commitTransaction(String.get(new S("GPathTool", "action.append-point")));
                                 break;
                             case T.Transaction.InsertElement:
-                                this._editor.commitTransaction(P.get(new S("GPathTool", "action.insert-elements")));
+                                this._editor.commitTransaction(String.get(new S("GPathTool", "action.insert-elements")));
                                 break;
                             case T.Transaction.InsertPoint:
-                                this._editor.commitTransaction(P.get(new S("GPathTool", "action.insert-point")));
+                                this._editor.commitTransaction(String.get(new S("GPathTool", "action.insert-point")));
                                 break;
                             case T.Transaction.MovePoint:
-                                this._editor.commitTransaction(P.get(new S("GPathTool", "action.move-point")));
+                                this._editor.commitTransaction(String.get(new S("GPathTool", "action.move-point")));
                                 break;
                             case T.Transaction.DeletePoint:
-                                this._editor.commitTransaction(P.get(new S("GPathTool", "action.delete-point")));
+                                this._editor.commitTransaction(String.get(new S("GPathTool", "action.delete-point")));
                                 break;
                             case T.Transaction.ModifyPointProperties:
-                                this._editor.commitTransaction(P.get(new S("GPathTool", "action.modify-point-properties")));
+                                this._editor.commitTransaction(String.get(new S("GPathTool", "action.modify-point-properties")));
                                 break;
                             case T.Transaction.ModifyPathProperties:
-                                this._editor.commitTransaction(P.get(new S("GPathTool", "action.modify-path-properties")));
+                                this._editor.commitTransaction(String.get(new S("GPathTool", "action.modify-path-properties")));
                                 break;
                             case T.Transaction.JoinPaths:
-                                this._editor.commitTransaction(P.get(new S("GPathTool", "action.join-paths")));
+                                this._editor.commitTransaction(String.get(new S("GPathTool", "action.join-paths")));
                         }
                     } finally {
                         this._transactionType = T.Transaction.NoTransaction;
@@ -504,7 +504,7 @@ module.exports = function (e, t, i) {
                             } else (this._finishTransaction(), this._reset(), (this._mode = T.Mode.Append));
                         } else
                             (this._setCursorForPosition(h.PenStart),
-                                this._pathEditor.updatePartSelection(!1),
+                                this._pathEditor.updatePartSelection(false),
                                 this._commitChanges(),
                                 (this._mode = T.Mode.Append));
                     }
@@ -517,7 +517,7 @@ module.exports = function (e, t, i) {
                         null != this._refPt.getProperty("hry")
                             ? (this._transactionType == T.Transaction.NoTransaction &&
                                   this._startTransaction(T.Transaction.ModifyPointProperties),
-                              this._refPt.setProperties(["ah", "hlx", "hly", "hrx", "hry"], [!1, null, null, null, null]),
+                              this._refPt.setProperties(["ah", "hlx", "hly", "hrx", "hry"], [false, null, null, null, null]),
                               this._makePointMajor(this._refPt),
                               this._setCursorForPosition(h.PenMinus))
                             : (this._pathRef.getAnchorPoints().getFirstChild() != this._pathRef.getAnchorPoints().getLastChild() &&
@@ -625,7 +625,7 @@ module.exports = function (e, t, i) {
                             this._view.getWorldTransform(this._view.getScene().getActivePage()),
                             this._cached.middlePoint,
                             e.size,
-                            !0
+                            true
                         );
                     }
                     return null;
@@ -662,10 +662,10 @@ module.exports = function (e, t, i) {
                                             end: 2,
                                         })));
                             }
-                            return !0;
+                            return true;
                         }.bind(this),
-                        !1,
-                        !0
+                        false,
+                        true
                     );
                 }),
                 (T.prototype._hitSideConnectPoints = function (e) {
@@ -710,5 +710,5 @@ module.exports = function (e, t, i) {
                 (T.prototype.toString = function () {
                     return "[Object GPathTool]";
                 }),
-                (e.exports = T));
+                (module.exports = T));
         };

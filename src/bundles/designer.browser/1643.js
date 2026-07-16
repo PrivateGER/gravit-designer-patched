@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        const { GObject: o, GLocaleKey: i } = n(1),
-            a = n(31),
-            r = n(18),
-            s = n(1644);
+        require(3);
+        const { GObject: o, GLocaleKey: i } = require(1 /* GObject */),
+            a = require(31),
+            GCategory = require(18),
+            s = require(1644);
         function l() {}
         (o.inherit(l, a),
             (l.ID = "help.shortcuts"),
@@ -16,7 +16,7 @@ module.exports = function (e, t, n) {
                 return l.TITLE;
             }),
             (l.prototype.getCategory = function () {
-                return r.CATEGORY_HELP_LEARN;
+                return GCategory.CATEGORY_HELP_LEARN;
             }),
             (l.prototype.getGroup = function () {
                 return "help/learn";
@@ -27,5 +27,5 @@ module.exports = function (e, t, n) {
             (l.prototype.toString = function () {
                 return "[Object GShowShortcutsAction]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

@@ -1,18 +1,18 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(20), n(3), n(34), n(4), n(13));
-        var o = n(1);
+        (require(8 /* Symbol */), require(20), require(3), require(34), require(4), require(13));
+        var GObject = require(1);
         const {
                 DESIGNER: { TITLE: i },
-            } = n(10),
-            a = n(606),
-            r = n(394),
-            s = n(1321),
-            l = n(78),
-            c = n(860),
-            d = n(1667);
+            } = require(10 /* designerConfig */),
+            a = require(606),
+            r = require(394),
+            s = require(1321),
+            l = require(78),
+            c = require(860),
+            d = require(1667);
         function u() {}
-        (o.GObject.inherit(u, a),
+        (GObject.GObject.inherit(u, a),
             (u.ID = "notification-panel"),
             (u.prototype._htmlElement = null),
             (u.prototype._lastNotification = null),
@@ -23,13 +23,13 @@ module.exports = function (e, t, n) {
                         .addClass("g-hide")
                         .addClass("g-notification-panel")
                         .on("click", function () {
-                            ($(this).toggleClass("bring-to-front", !0), gDesigner.sendSideBarAndAssistBarToBack());
+                            ($(this).toggleClass("bring-to-front", true), gDesigner.sendSideBarAndAssistBarToBack());
                         }),
                     $("<div></div>")
                         .addClass("g-btn-close")
                         .append($("<span></span>").addClass("gravit-icon-close"))
                         .on("click", () => {
-                            this._close(!0);
+                            this._close(true);
                         })
                         .appendTo(this._htmlElement),
                     gDesigner.addEventListener(s, this._notificationEvent, this),
@@ -57,7 +57,7 @@ module.exports = function (e, t, n) {
                     ((this._lastNotification = e.notification),
                     (this._closeCallback = e.notification.closeCallback),
                     this._htmlElement.removeClass("g-hide"),
-                    this._htmlElement.toggleClass("bring-to-front", !0),
+                    this._htmlElement.toggleClass("bring-to-front", true),
                     gDesigner.sendSideBarAndAssistBarToBack(),
                     this._htmlElement.toggleClass("popup", !!e.notification.popup && !e.notification.anonymous),
                     e.notification.anonymous)
@@ -68,8 +68,8 @@ module.exports = function (e, t, n) {
                             e && !e.isAnonymous() && ((this._lastNotification = null), this._htmlElement.addClass("g-hide"));
                         };
                     let r = n
-                        ? o.GLocale.get(new o.GLocaleKey("GNotificationPanel", "text.create-account-template"))
-                        : o.GLocale.get(new o.GLocaleKey("GNotificationPanel", "text.create-account"));
+                        ? GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.create-account-template"))
+                        : GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.create-account"));
                     const s = $("<div/>")
                         .addClass("anonymous")
                         .append($("<div/>").addClass("logo"))
@@ -80,7 +80,7 @@ module.exports = function (e, t, n) {
                                     $("<span/>")
                                         .addClass("title")
                                         .text(
-                                            o.GLocale.get(new o.GLocaleKey("GNotificationPanel", "text.title-welcome")).replace("%app", i)
+                                            GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.title-welcome")).replace("%app", i)
                                         )
                                 )
                                 .append(
@@ -95,14 +95,14 @@ module.exports = function (e, t, n) {
                                                 $("<span/>")
                                                     .attr("id", "signup-link")
                                                     .addClass("link")
-                                                    .text(o.GLocale.get(new o.GLocaleKey("GNotificationPanel", "text.sign-up")))
+                                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.sign-up")))
                                                     .prop("outerHTML")
                                             )
                                             .replace("%signin", () =>
                                                 $("<span/>")
                                                     .attr("id", "signin-link")
                                                     .addClass("link")
-                                                    .text(o.GLocale.get(new o.GLocaleKey("GNotificationPanel", "text.sign-in")))
+                                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.sign-in")))
                                                     .prop("outerHTML")
                                             )
                                     )
@@ -111,17 +111,17 @@ module.exports = function (e, t, n) {
                                     $("<span/>")
                                         .addClass("footer")
                                         .html(
-                                            o.GLocale.get(new o.GLocaleKey("GNotificationPanel", "text.footer")).replace("%app", () =>
+                                            GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.footer")).replace("%app", () =>
                                                 $("<span/>").attr("id", "learnmore-link").addClass("link").text(i).prop("outerHTML")
                                             )
                                         )
                                 )
                         );
                     (s.find("#signup-link").on("click", () => {
-                        (gDesigner.stats("open-shared_click_create-account"), new c(a).open({ anonymous: !0, signup: !0, animate: !0 }));
+                        (gDesigner.stats("open-shared_click_create-account"), new c(a).open({ anonymous: true, signup: true, animate: true }));
                     }),
                         s.find("#signin-link").on("click", () => {
-                            (gDesigner.stats("open-shared_click_login"), new c(a).open({ anonymous: !0, animate: !0 }));
+                            (gDesigner.stats("open-shared_click_login"), new c(a).open({ anonymous: true, animate: true }));
                         }),
                         s.find("#learnmore-link").on("click", (e) => {
                             (gDesigner.stats("open-shared_click_learn-more"),
@@ -138,11 +138,11 @@ module.exports = function (e, t, n) {
                         let t = this;
                         new Promise(function (n) {
                             setTimeout(function () {
-                                (t._htmlElement.removeClass(e.notification.enter), t._htmlElement.addClass(e.notification.exit), n(!0));
+                                (t._htmlElement.removeClass(e.notification.enter), t._htmlElement.addClass(e.notification.exit), n(true));
                             }, e.notification.timeout);
                         }).then(function () {
                             setTimeout(function () {
-                                (t._htmlElement.removeClass(e.notification.exit), t._close(!1));
+                                (t._htmlElement.removeClass(e.notification.exit), t._close(false));
                             }, 600);
                         });
                     }
@@ -174,5 +174,5 @@ module.exports = function (e, t, n) {
             (u.prototype.getId = function () {
                 return u.ID;
             }),
-            (e.exports = u));
+            (module.exports = u));
     };

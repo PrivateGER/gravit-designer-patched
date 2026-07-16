@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(29),
-            i = n(35),
-            a = n(46),
+        var o = require(29),
+            i = require(35),
+            a = require(46),
             r = TypeError;
-        e.exports = function (e, t) {
+        module.exports = function (e, t) {
             var n, s;
             if ("string" === t && i((n = e.toString)) && !a((s = o(n, e)))) return s;
             if (i((n = e.valueOf)) && !a((s = o(n, e)))) return s;

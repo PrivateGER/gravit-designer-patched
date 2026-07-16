@@ -1,20 +1,20 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(58), n(19), n(8), n(20), n(107), n(71), n(4), n(41), n(13), n(32), n(38), n(97), n(1175), n(33), n(26));
-        var i = n(53),
-            a = n(1),
-            r = n(882),
-            s = n(10),
-            l = o(n(1354));
-        const c = n(44),
-            d = n(358),
-            u = n(1355),
-            p = n(1713),
-            g = n(1357),
-            h = n(1356),
-            f = n(1279),
-            m = n(177),
+        var o = require(16);
+        (require(58), require(19), require(8 /* Symbol */), require(20), require(107), require(71), require(4), require(41), require(13), require(32), require(38), require(97), require(1175), require(33), require(26));
+        var i = require(53),
+            GObject = require(1),
+            r = require(882),
+            designerConfig = require(10),
+            l = o(require(1354));
+        const GSystemDialog = require(44),
+            d = require(358),
+            u = require(1355),
+            p = require(1713),
+            GAnnotationPanel = require(1357),
+            h = require(1356 /* GAnnotationPanel */),
+            f = require(1279),
+            m = require(177),
             y = ["text"];
         function v() {}
         function _(e) {
@@ -66,18 +66,18 @@ module.exports = function (e, t, n) {
             var t = $(this).data("gannotationpanel"),
                 n = [];
             if (t.annotTreeNodeMap)
-                for (var o in (e instanceof a.GComment && n.push(E.call(this, e.getParent())), t.annotTreeNodeMap))
+                for (var o in (e instanceof GObject.GComment && n.push(E.call(this, e.getParent())), t.annotTreeNodeMap))
                     t.annotTreeNodeMap[o] &&
                         t.annotTreeNodeMap[o].annot &&
                         (t.annotTreeNodeMap[o].annot === e ||
-                            (t.annotTreeNodeMap[o].annot instanceof a.GComment && t.annotTreeNodeMap[o].annot.getParent() === e)) &&
+                            (t.annotTreeNodeMap[o].annot instanceof GObject.GComment && t.annotTreeNodeMap[o].annot.getParent() === e)) &&
                         n.push(o);
             return n;
         }
         function P() {
             return (
                 !!gDesigner.getApplicationManager().isCommentingEditingEnabled() ||
-                (c.alert(a.GLocale.get(new a.GLocaleKey("GAnnotationPanel", "text.document-approved-no-annotations-update"))), !1)
+                (GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.document-approved-no-annotations-update"))), false)
             );
         }
         function D() {
@@ -96,14 +96,14 @@ module.exports = function (e, t, n) {
                 l = s ? s.annot : null,
                 u = null;
             if (l) {
-                var p = !1,
+                var p = false,
                     f = $(n);
                 if (
-                    (f.attr("draggable", !1),
-                    l.hasMixin(a.GAnnotation) ? f.addClass("parent") : f.addClass("child"),
+                    (f.attr("draggable", false),
+                    l.hasMixin(GObject.GAnnotation) ? f.addClass("parent") : f.addClass("child"),
                     !r.showResolved &&
-                        ((l.hasMixin(a.GAnnotation) && l.getProperty("rsv")) ||
-                            (l instanceof a.GComment && l.getParent().getProperty("rsv"))))
+                        ((l.hasMixin(GObject.GAnnotation) && l.getProperty("rsv")) ||
+                            (l instanceof GObject.GComment && l.getParent().getProperty("rsv"))))
                 )
                     return void f.css("display", "none");
                 if (
@@ -111,26 +111,26 @@ module.exports = function (e, t, n) {
                         () => G.call(this, l).forEach((e) => $("#".concat(e)).addClass("on-hover")),
                         () => G.call(this, l).forEach((e) => $("#".concat(e)).removeClass("on-hover"))
                     ),
-                    !(l.hasMixin(a.GAnnotation) ? l : l.getParent()).hasFlag(a.GNode.Flag.Selected) &&
-                        ((l.hasMixin(a.GAnnotation) && !B(l).length) || U(l)) &&
-                        (p = !0),
+                    !(l.hasMixin(GObject.GAnnotation) ? l : l.getParent()).hasFlag(GObject.GNode.Flag.Selected) &&
+                        ((l.hasMixin(GObject.GAnnotation) && !B(l).length) || U(l)) &&
+                        (p = true),
                     !r.blockHighlight)
                 ) {
-                    var m = l.hasFlag(a.GNode.Flag.Highlighted);
+                    var m = l.hasFlag(GObject.GNode.Flag.Highlighted);
                     (!m &&
-                        l.hasMixin(a.GNode.Container) &&
+                        l.hasMixin(GObject.GNode.Container) &&
                         (m = l.acceptChildren(
                             function (e) {
-                                return e.hasFlag(a.GNode.Flag.Highlighted);
+                                return e.hasFlag(GObject.GNode.Flag.Highlighted);
                             },
-                            !1,
-                            !0
+                            false,
+                            true
                         )),
                         $(f).toggleClass("g-highlighted-row", m));
                 }
                 var y = k.call(this, l),
                     v = S.call(this, y);
-                void 0 === v.expanded && (v.expanded = !0);
+                void 0 === v.expanded && (v.expanded = true);
                 var _ = gDesigner.getActiveDocument();
                 _ &&
                     l.getId() === _.getFocusAnnotationId() &&
@@ -138,10 +138,10 @@ module.exports = function (e, t, n) {
                     (_.getScene().updateActivePageForElem(v.annot),
                     _.getScene().updateActiveLayerForElem(v.annot),
                     _.setAnnotationFocused(),
-                    (v.expanded = !0),
-                    v.annot.setFlag(a.GNode.Flag.Selected));
+                    (v.expanded = true),
+                    v.annot.setFlag(GObject.GNode.Flag.Selected));
                 var b = O.call(this, l);
-                l.hasMixin(a.GAnnotation) && (u = I.call(this, l, r.showResolved));
+                l.hasMixin(GObject.GAnnotation) && (u = I.call(this, l, r.showResolved));
                 var w = new h({
                     isCommentingEditingEnable: o,
                     container: f,
@@ -153,10 +153,10 @@ module.exports = function (e, t, n) {
                     hasReopenAccess: r.vtree.hasReopenAccess(),
                     mentionData: r.vtree.getMentionData(),
                     onMouseEnter: () => {
-                        l.hasMixin(a.GAnnotation) && !l.hasFlag(a.GAnnotation.Flag.Hidden) && l.setFlag(a.GNode.Flag.Highlighted);
+                        l.hasMixin(GObject.GAnnotation) && !l.hasFlag(GObject.GAnnotation.Flag.Hidden) && l.setFlag(GObject.GNode.Flag.Highlighted);
                     },
                     onMouseLeave: () => {
-                        l.hasMixin(a.GAnnotation) && !l.hasFlag(a.GAnnotation.Flag.Hidden) && l.removeFlag(a.GNode.Flag.Highlighted);
+                        l.hasMixin(GObject.GAnnotation) && !l.hasFlag(GObject.GAnnotation.Flag.Hidden) && l.removeFlag(GObject.GNode.Flag.Highlighted);
                     },
                     onChange: (e) => {
                         P() &&
@@ -167,7 +167,7 @@ module.exports = function (e, t, n) {
                                       function () {
                                           l.setProperty("text", e);
                                       },
-                                      a.GLocale.get(new a.GLocaleKey("GAnnotationPanel", "text.edit-comment"))
+                                      GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.edit-comment"))
                                   ));
                     },
                     onToggleState: () => {
@@ -177,13 +177,13 @@ module.exports = function (e, t, n) {
                                 function () {
                                     (r.showResolved ||
                                         l.getProperty("rsv") ||
-                                        !l.hasFlag(a.GNode.Flag.Selected) ||
-                                        l.removeFlag(a.GNode.Flag.Selected),
+                                        !l.hasFlag(GObject.GNode.Flag.Selected) ||
+                                        l.removeFlag(GObject.GNode.Flag.Selected),
                                         l.setProperty("rsv", !l.getProperty("rsv")));
                                 },
                                 l.getProperty("rsv")
-                                    ? a.GLocale.get(new a.GLocaleKey("GAnnotationPanel", "text.reopen"))
-                                    : a.GLocale.get(new a.GLocaleKey("GAnnotationPanel", "text.resolve"))
+                                    ? GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.reopen"))
+                                    : GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.resolve"))
                             ),
                             ne.call(this),
                             te.call(this));
@@ -193,10 +193,10 @@ module.exports = function (e, t, n) {
                             (i.GEditor.tryRunTransaction(
                                 l,
                                 function () {
-                                    (!r.showResolved && l.hasFlag(a.GNode.Flag.Selected) && l.removeFlag(a.GNode.Flag.Selected),
-                                        l.setProperty("rsv", !0));
+                                    (!r.showResolved && l.hasFlag(GObject.GNode.Flag.Selected) && l.removeFlag(GObject.GNode.Flag.Selected),
+                                        l.setProperty("rsv", true));
                                 },
-                                a.GLocale.get(new a.GLocaleKey("GAnnotationPanel", "text.resolve"))
+                                GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.resolve"))
                             ),
                             ne.call(this),
                             te.call(this));
@@ -206,26 +206,26 @@ module.exports = function (e, t, n) {
                             (i.GEditor.tryRunTransaction(
                                 l,
                                 function () {
-                                    l.setProperty("rsv", !1);
+                                    l.setProperty("rsv", false);
                                 },
-                                a.GLocale.get(new a.GLocaleKey("GAnnotationPanel", "text.reopen"))
+                                GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.reopen"))
                             ),
                             ne.call(this),
                             te.call(this));
                     },
                     onDelete: () => {
                         P() &&
-                            c.confirm(
-                                a.GLocale.get(new a.GLocaleKey("GAnnotationPanel", "text.confirm-remove")),
+                            GSystemDialog.confirm(
+                                GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.confirm-remove")),
                                 (e) => {
                                     e &&
                                         d.removeAnnotations(
                                             [l],
                                             l.getParent(),
-                                            a.GLocale.get(
-                                                new a.GLocaleKey(
+                                            GObject.GLocale.get(
+                                                new GObject.GLocaleKey(
                                                     "GAnnotationPanel",
-                                                    "text.remove-".concat(l.hasMixin(a.GAnnotation) ? "annotation" : "comment")
+                                                    "text.remove-".concat(l.hasMixin(GObject.GAnnotation) ? "annotation" : "comment")
                                                 )
                                             )
                                         );
@@ -233,8 +233,8 @@ module.exports = function (e, t, n) {
                                 null,
                                 null,
                                 null,
-                                !0,
-                                !0
+                                true,
+                                true
                             );
                     },
                     onCancel: () => {
@@ -268,9 +268,9 @@ module.exports = function (e, t, n) {
                         }
                     },
                     onAssignTo: (e) => {
-                        l.hasMixin(a.GAnnotation)
+                        l.hasMixin(GObject.GAnnotation)
                             ? l.setProperty("asgn", e)
-                            : l.getParent() && l.getParent().hasMixin(a.GAnnotation) && l.getParent().setProperty("asgn", e);
+                            : l.getParent() && l.getParent().hasMixin(GObject.GAnnotation) && l.getParent().setProperty("asgn", e);
                     },
                     mainAnnotObject: v,
                 });
@@ -280,7 +280,7 @@ module.exports = function (e, t, n) {
                 if (
                     (e.addClass("last-row"),
                     !o ||
-                        !s.replyAnnot.hasFlag(a.GNode.Flag.Selected) ||
+                        !s.replyAnnot.hasFlag(GObject.GNode.Flag.Selected) ||
                         s.replyAnnot.getProperty("rsv") ||
                         (!r.showResolved && s.replyAnnot.getProperty("rsv")))
                 )
@@ -294,20 +294,20 @@ module.exports = function (e, t, n) {
                                     u = d && i.GEditor.getEditor(d);
                                 let p, g;
                                 ((p = t
-                                    ? a.GLocale.get(new a.GLocaleKey("GAnnotationPanel", "text.set-annotation-text"))
-                                    : a.GLocale.get(new a.GLocaleKey("GAnnotationPanel", "text.add-comment"))),
+                                    ? GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.set-annotation-text"))
+                                    : GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.add-comment"))),
                                     u && u.beginTransaction());
                                 try {
                                     if (t) {
                                         (s.replyAnnot.setProperty("text", e),
                                             s.replyAnnot.setProperty("email", c.getAccountName()),
                                             V.call(this, s.replyAnnot));
-                                        var n = a.GUtil.uuid(),
+                                        var n = GObject.GUtil.uuid(),
                                             o = A.call(this, s.replyAnnot),
                                             l = {
                                                 element: null,
                                                 annot: null,
-                                                treeNode: M.call(this, n, o, !0, !0),
+                                                treeNode: M.call(this, n, o, true, true),
                                                 replyAnnot: s.replyAnnot,
                                                 treeId: n,
                                             };
@@ -339,7 +339,7 @@ module.exports = function (e, t, n) {
                     u = (e) => {
                         s.replyAnnot.setProperty("asgn", e);
                     };
-                var C = new g({
+                var C = new GAnnotationPanel({
                         container: e,
                         annotation: s.replyAnnot,
                         onSubmit: l,
@@ -364,8 +364,8 @@ module.exports = function (e, t, n) {
                     $("<span/>")
                         .addClass("assign-to-text")
                         .html(
-                            a.GLocale.get(new a.GLocaleKey("GAnnotationPanel", "text.assigned-to")) +
-                                (n && n.name ? r : a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.unknown-user")))
+                            GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.assigned-to")) +
+                                (n && n.name ? r : GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.unknown-user")))
                         )
                         .appendTo(l);
                     const s = !o;
@@ -380,8 +380,8 @@ module.exports = function (e, t, n) {
                                     .attr(
                                         "data-title",
                                         s
-                                            ? a.GLocale.get(new a.GLocaleKey("GAnnotationPanel", "text.assign-resolve"))
-                                            : a.GLocale.get(new a.GLocaleKey("GAnnotationPanel", "text.reopen"))
+                                            ? GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.assign-resolve"))
+                                            : GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.reopen"))
                                     )
                                     .on("click", () => {
                                         P() &&
@@ -389,17 +389,17 @@ module.exports = function (e, t, n) {
                                                 ? i.GEditor.tryRunTransaction(
                                                       e,
                                                       function () {
-                                                          (!t && e.hasFlag(a.GNode.Flag.Selected) && e.removeFlag(a.GNode.Flag.Selected),
-                                                              e.setProperty("rsv", !0));
+                                                          (!t && e.hasFlag(GObject.GNode.Flag.Selected) && e.removeFlag(GObject.GNode.Flag.Selected),
+                                                              e.setProperty("rsv", true));
                                                       },
-                                                      a.GLocale.get(new a.GLocaleKey("GAnnotationPanel", "text.resolve"))
+                                                      GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.resolve"))
                                                   )
                                                 : i.GEditor.tryRunTransaction(
                                                       e,
                                                       function () {
-                                                          e.setProperty("rsv", !1);
+                                                          e.setProperty("rsv", false);
                                                       },
-                                                      a.GLocale.get(new a.GLocaleKey("GAnnotationPanel", "text.reopen"))
+                                                      GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.reopen"))
                                                   ),
                                             ne.call(this),
                                             te.call(this));
@@ -418,27 +418,27 @@ module.exports = function (e, t, n) {
         }
         function F(e, t, n) {
             var o = new u.GSimpleTreeNodeNamed(e);
-            return (n && (o.virtualNode = !0), $(this).data("gannotationpanel").vtree.insertNodeAfter(t, o), o);
+            return (n && (o.virtualNode = true), $(this).data("gannotationpanel").vtree.insertNodeAfter(t, o), o);
         }
         function R(e, t, n) {
             var o = new u.GSimpleTreeNodeNamed(e);
-            return (n && (o.virtualNode = !0), $(this).data("gannotationpanel").vtree.insertNodeBefore(t, o), o);
+            return (n && (o.virtualNode = true), $(this).data("gannotationpanel").vtree.insertNodeBefore(t, o), o);
         }
         function M(e, t, n, o) {
             var i = new u.GSimpleTreeNodeNamed(e);
-            return (n && (i.virtualNode = !0), $(this).data("gannotationpanel").vtree.appendNode(t, i, o), i);
+            return (n && (i.virtualNode = true), $(this).data("gannotationpanel").vtree.appendNode(t, i, o), i);
         }
         function N(e) {
             $(this).data("gannotationpanel").vtree.removeNode(e);
         }
         function B(e) {
-            return e.getChildren().filter((e) => e instanceof a.GComment && !e.getProperty("rmd"));
+            return e.getChildren().filter((e) => e instanceof GObject.GComment && !e.getProperty("rmd"));
         }
         function U(e) {
-            if (!(e instanceof a.GComment)) return !1;
-            for (var t = !0, n = e.getNext(); n; ) {
-                if (n instanceof a.GComment && !n.getProperty("rmd")) {
-                    t = !1;
+            if (!(e instanceof GObject.GComment)) return false;
+            for (var t = true, n = e.getNext(); n; ) {
+                if (n instanceof GObject.GComment && !n.getProperty("rmd")) {
+                    t = false;
                     break;
                 }
                 n = n.getNext();
@@ -449,15 +449,15 @@ module.exports = function (e, t, n) {
             var t = gDesigner.getSyncUser();
             t && e.getProperty("uid") && d.isOwner(t, e)
                 ? (e.$plkt = null)
-                : (e.$plkt = a.GBlock.ProgramLck.NoSizeChanges | a.GBlock.ProgramLck.NoMove | a.GBlock.ProgramLck.NoDelete);
+                : (e.$plkt = GObject.GBlock.ProgramLck.NoSizeChanges | GObject.GBlock.ProgramLck.NoMove | GObject.GBlock.ProgramLck.NoDelete);
         }
         function K(e, t, n) {
-            var o = a.GUtil.uuid(),
+            var o = GObject.GUtil.uuid(),
                 i = $(this).data("gannotationpanel"),
                 r = i.vtree;
-            if (t || !e.getParent() || e.getParent() instanceof a.GAnnotationsList || E.call(this, e.getParent())) {
+            if (t || !e.getParent() || e.getParent() instanceof GObject.GAnnotationsList || E.call(this, e.getParent())) {
                 var s;
-                if ((r.beginUpdate(), e.hasMixin(a.GAnnotation))) {
+                if ((r.beginUpdate(), e.hasMixin(GObject.GAnnotation))) {
                     V.call(this, e);
                     var l = (function (e) {
                             for (var t = null, n = e; !t && n.getPrevious(); )
@@ -465,33 +465,33 @@ module.exports = function (e, t, n) {
                             return t;
                         })(e),
                         c = l ? A.call(this, l) : null;
-                    s = c ? R.call(this, o, c, !1) : M.call(this, o, null, !1);
+                    s = c ? R.call(this, o, c, false) : M.call(this, o, null, false);
                 } else {
                     var d = e.getParent();
                     V.call(this, d);
                     var u = A.call(this, d);
-                    s = M.call(this, o, u, !1, !0);
+                    s = M.call(this, o, u, false, true);
                 }
                 var p = { element: null, annot: e, treeNode: s, treeId: o };
-                if (((i.annotTreeNodeMap[o] = p), i.annotTreeNodeMapByNodes.set(e, p), e.hasMixin(a.GAnnotation))) {
+                if (((i.annotTreeNodeMap[o] = p), i.annotTreeNodeMapByNodes.set(e, p), e.hasMixin(GObject.GAnnotation))) {
                     for (var g = e.getFirstChild(); null !== g; g = g.getNext())
-                        g instanceof a.GComment && !g.getProperty("rmd") && K.call(this, g, t);
+                        g instanceof GObject.GComment && !g.getProperty("rmd") && K.call(this, g, t);
                     if (!B(e).length) {
-                        var h = a.GUtil.uuid(),
+                        var h = GObject.GUtil.uuid(),
                             f = {
                                 element: null,
                                 annot: null,
-                                treeNode: e.isFillingCompleted() ? M.call(this, h, s, !0, !0) : F.call(this, h, s, !0),
+                                treeNode: e.isFillingCompleted() ? M.call(this, h, s, true, true) : F.call(this, h, s, true),
                                 replyAnnot: e,
                                 treeId: h,
                             };
                         ((i.annotTreeNodeMap[h] = f), i.replyNodes.set(e, f));
                     }
                     j(e);
-                } else if (e instanceof a.GComment && U(e)) {
+                } else if (e instanceof GObject.GComment && U(e)) {
                     let t,
-                        n = a.GUtil.uuid();
-                    t = F.call(this, n, s, !0);
+                        n = GObject.GUtil.uuid();
+                    t = F.call(this, n, s, true);
                     var m = e.getParent();
                     let o = {
                         element: null,
@@ -521,7 +521,7 @@ module.exports = function (e, t, n) {
                     d.removeAnnotations(
                         [t],
                         t.getParent(),
-                        a.GLocale.get(new a.GLocaleKey("GAnnotationPanel", "text.remove-empty-annotation"))
+                        GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.remove-empty-annotation"))
                     );
             else {
                 var n = gDesigner.getActiveDocument();
@@ -529,7 +529,7 @@ module.exports = function (e, t, n) {
                     var o = n.getEditor().getSelection();
                     o &&
                         o.map((t) => {
-                            t.hasMixin(a.GAnnotation) && H(e, t);
+                            t.hasMixin(GObject.GAnnotation) && H(e, t);
                         });
                 }
             }
@@ -555,21 +555,21 @@ module.exports = function (e, t, n) {
         }
         function X(e, t) {
             let n = $(this).data("gannotationpanel"),
-                o = !1;
+                o = false;
             const i = {};
             if (!n) return;
             if (n.blockAnnotationsUpdate) return;
-            if (null !== n.scheduledUpdate) return void (n.updateInProgress && (n.scheduleNextUpdate = !0));
+            if (null !== n.scheduledUpdate) return void (n.updateInProgress && (n.scheduleNextUpdate = true));
             if (
                 e &&
                 e.node &&
                 e.node.recordedTransaction &&
-                ((o = !0), e.properties && e.values && e.properties.length === e.values.length)
+                ((o = true), e.properties && e.values && e.properties.length === e.values.length)
             )
                 for (var r = 0, s = e.values.length; r < s; r++) i[e.properties[r]] = e.values[r];
             if (e && e.node) {
                 if (e.custom) return;
-                if (e.node.hasMixin(a.GAnnotation) && e.node.isPropertiesIgnorable(e.properties)) return;
+                if (e.node.hasMixin(GObject.GAnnotation) && e.node.isPropertiesIgnorable(e.properties)) return;
             }
             let l = gDesigner.getActiveDocument();
             l &&
@@ -578,19 +578,19 @@ module.exports = function (e, t, n) {
                     let e = $(this).data("gannotationpanel");
                     if (!e) return;
                     if (Y.call(this) || e.vtree.isPendingInvalidation()) return ((e.scheduledUpdate = null), void X.call(this));
-                    (console.log("updating annotations"), (e.updateInProgress = !0));
+                    (console.log("updating annotations"), (e.updateInProgress = true));
                     let n = e.page.getAnnotations();
-                    d.updateAndReturnCloudAnnotationsForDocument(l, a.GNode.store(n, { recordedTransaction: o, recordedProperties: i }))
+                    d.updateAndReturnCloudAnnotationsForDocument(l, GObject.GNode.store(n, { recordedTransaction: o, recordedProperties: i }))
                         .then((e) => {
                             let n = e.annotationsCollection,
-                                r = !1,
+                                r = false,
                                 s = $(this).data("gannotationpanel");
                             if (!s) return r;
                             if (!s.updateInProgress) return r;
-                            if ((Y.call(this) && (s.scheduleNextUpdate = !0), (s.updateInProgress = !1), !s.scheduleNextUpdate)) {
+                            if ((Y.call(this) && (s.scheduleNextUpdate = true), (s.updateInProgress = false), !s.scheduleNextUpdate)) {
                                 let e = d.findAnnotationsListForPage(s.page, n);
                                 if (e) {
-                                    let n = a.GNode.restore(e),
+                                    let n = GObject.GNode.restore(e),
                                         l = n.getChildren();
                                     (n.clearChildren(), s.vtree.beginUpdate());
                                     let c = d.mergeAnnotations(
@@ -605,7 +605,7 @@ module.exports = function (e, t, n) {
                                 (e || (s.vtree.beginUpdate(), s.page.getAnnotations().clearChildren(), s.vtree.endUpdate(t), ne.call(this)),
                                     s.options.updateAnnotationCache(n));
                             }
-                            if (((s.scheduledUpdate = null), s.scheduleNextUpdate && ((s.scheduleNextUpdate = !1), X.call(this)), r)) {
+                            if (((s.scheduledUpdate = null), s.scheduleNextUpdate && ((s.scheduleNextUpdate = false), X.call(this)), r)) {
                                 let t = s.page.getScene();
                                 (t &&
                                     t.getLastTimeAnnotationsFromCloudModified() < e.lastUpdateTime &&
@@ -617,24 +617,24 @@ module.exports = function (e, t, n) {
                         .catch((t) => {
                             (console.warn("error during annotations list update: " + t),
                                 (e.scheduledUpdate = null),
-                                (e.updateInProgress = !1),
-                                e.scheduleNextUpdate && ((e.scheduleNextUpdate = !1), X.call(this)));
+                                (e.updateInProgress = false),
+                                e.scheduleNextUpdate && ((e.scheduleNextUpdate = false), X.call(this)));
                         });
                 }, 500));
         }
         function Q(e) {
             var t = $(this).data("gannotationpanel");
             if (q(t, e.node)) {
-                const n = e.node.findParent((e) => e instanceof a.GAnnotationsList),
+                const n = e.node.findParent((e) => e instanceof GObject.GAnnotationsList),
                     o = () => {
                         const t = new l.default();
-                        if (e.node instanceof a.GComment) {
+                        if (e.node instanceof GObject.GComment) {
                             const n = e.node.getProperty("text");
-                            (n && s.NOTIFICATION_USER_MENTION_REGEX.test(n)) || (t.collaboratorsCache = !1);
+                            (n && designerConfig.NOTIFICATION_USER_MENTION_REGEX.test(n)) || (t.collaboratorsCache = false);
                         }
                         return t;
                     };
-                let i = !1;
+                let i = false;
                 const r = () => {
                         if (!e.node.getProperty("rmd")) {
                             const t = n ? l.default.NO_CACHE_INVALIDATION : o();
@@ -644,8 +644,8 @@ module.exports = function (e, t, n) {
                     c = () => {
                         n && X.call(this, null, o());
                     };
-                ((e.node.hasMixin(a.GAnnotation) || e.node instanceof a.GComment || e.node instanceof a.GAnnotationsList) &&
-                    (e.node.getProperty("rmd") ? (i = !0) : r()),
+                ((e.node.hasMixin(GObject.GAnnotation) || e.node instanceof GObject.GComment || e.node instanceof GObject.GAnnotationsList) &&
+                    (e.node.getProperty("rmd") ? (i = true) : r()),
                     i
                         ? "number" != typeof t.delayedUpdate &&
                           (t.delayedUpdate = setTimeout(() => {
@@ -656,18 +656,18 @@ module.exports = function (e, t, n) {
         }
         function J(e) {
             q($(this).data("gannotationpanel"), e.node) &&
-                (z.call(this, e.node), e.node.findParent((e) => e instanceof a.GAnnotationsList) && X.call(this));
+                (z.call(this, e.node), e.node.findParent((e) => e instanceof GObject.GAnnotationsList) && X.call(this));
         }
         function Z(e) {
             if (!e.temporary && !$(this).data("gannotationpanel").blockHandlers) {
                 e.properties.some((e) => y.indexOf(e) >= 0) && oe.requestInvalidation.call(this);
                 let t = gDesigner.getSyncUser();
                 (d.canUpdate(t) &&
-                    e.node.hasMixin(a.GAnnotation) &&
+                    e.node.hasMixin(GObject.GAnnotation) &&
                     e.properties.includes("rsv") &&
                     setTimeout(() => {
                         let n = e.values[e.properties.indexOf("rsv")];
-                        (void 0 !== n && !1 !== n) !== e.node.getProperty("rsv") &&
+                        (void 0 !== n && false !== n) !== e.node.getProperty("rsv") &&
                             (V.call(this, e.node),
                             e.node.addComment(
                                 "",
@@ -675,16 +675,16 @@ module.exports = function (e, t, n) {
                                 i.GEditorOptions.userConfig.userName,
                                 t.avatar,
                                 t.getAccountName(),
-                                e.node.getProperty("rsv") ? a.GComment.Type.Close : a.GComment.Type.Open
+                                e.node.getProperty("rsv") ? GObject.GComment.Type.Close : GObject.GComment.Type.Open
                             ));
                     }),
-                    (e.node instanceof a.GAnnotationsList || e.node.findParent((e) => e instanceof a.GAnnotationsList)) &&
-                        (e.node.hasMixin(a.GAnnotation) && e.properties.indexOf("uid") >= 0 && j(e.node), X.call(this, e)),
+                    (e.node instanceof GObject.GAnnotationsList || e.node.findParent((e) => e instanceof GObject.GAnnotationsList)) &&
+                        (e.node.hasMixin(GObject.GAnnotation) && e.properties.indexOf("uid") >= 0 && j(e.node), X.call(this, e)),
                     e.properties.includes("rmd") && e.node.getProperty("rmd")
-                        ? (e.node.hasMixin(a.GAnnotation) && W(this, e.node), ne.call(this), te.call(this))
+                        ? (e.node.hasMixin(GObject.GAnnotation) && W(this, e.node), ne.call(this), te.call(this))
                         : e.properties.includes("text") &&
                           e.node.isFillingCompleted() &&
-                          e.node.hasMixin(a.GAnnotation) &&
+                          e.node.hasMixin(GObject.GAnnotation) &&
                           W(this, e.node));
             }
         }
@@ -692,17 +692,17 @@ module.exports = function (e, t, n) {
             var t,
                 n = $(this).data("gannotationpanel");
             if (q(n, e.node)) {
-                var o = !1;
-                if (e.node instanceof a.GComment || e.node.hasMixin(a.GAnnotation))
-                    if (e.flag === a.GAnnotation.Flag.Hidden || e.flag === a.GNode.Flag.Selected || e.flag === a.GNode.Flag.Active) {
+                var o = false;
+                if (e.node instanceof GObject.GComment || e.node.hasMixin(GObject.GAnnotation))
+                    if (e.flag === GObject.GAnnotation.Flag.Hidden || e.flag === GObject.GNode.Flag.Selected || e.flag === GObject.GNode.Flag.Active) {
                         var r = e.node.getPage(),
                             s = e.node.getScene(),
                             d = s && s.getActivePage();
                         if (
-                            ((d && r && d !== r) || (o = !0),
-                            e.node.hasMixin(a.GAnnotation) &&
-                                e.flag === a.GNode.Flag.Selected &&
-                                !1 === e.set &&
+                            ((d && r && d !== r) || (o = true),
+                            e.node.hasMixin(GObject.GAnnotation) &&
+                                e.flag === GObject.GNode.Flag.Selected &&
+                                false === e.set &&
                                 !e.node.isFillingCompleted() &&
                                 !(t = e.node).getProperty("rmd") &&
                                 t.getParent())
@@ -711,14 +711,14 @@ module.exports = function (e, t, n) {
                                 let t = n.annotTreeNodeMapByNodes.get(e.node);
                                 t && t.reply && t.reply.isVisible() && setTimeout(() => t.reply.forceSubmit());
                             } else
-                                c.confirm(a.GLocale.get(new a.GLocaleKey("GAnnotationPanel", "text.confirm-discard-annotation")), (t) => {
+                                GSystemDialog.confirm(GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.confirm-discard-annotation")), (t) => {
                                     if (t)
                                         setTimeout(() => {
                                             H(this, e.node);
                                         });
                                     else {
-                                        (gDesigner.getActiveDocument().getEditor().updateSelection(!1, [e.node]),
-                                            gDesigner.getToolManager().activateTool(i.GPointerTool, null, !0));
+                                        (gDesigner.getActiveDocument().getEditor().updateSelection(false, [e.node]),
+                                            gDesigner.getToolManager().activateTool(i.GPointerTool, null, true));
                                         var o = n.annotTreeNodeMapByNodes.get(e.node);
                                         o &&
                                             o.reply &&
@@ -727,7 +727,7 @@ module.exports = function (e, t, n) {
                                             });
                                     }
                                 });
-                    } else if (!n.blockHighlight && e.flag === a.GNode.Flag.Highlighted) {
+                    } else if (!n.blockHighlight && e.flag === GObject.GNode.Flag.Highlighted) {
                         var u = e.node,
                             p = function (e) {
                                 var t = A.call(this, e);
@@ -745,7 +745,7 @@ module.exports = function (e, t, n) {
             var e = $(this).data("gannotationpanel");
             if ((e.vtree.beginUpdate(), e.page))
                 for (var t = e.page.getAnnotations().getFirstChild(); null !== t; t = t.getNext())
-                    t.getProperty("rmd") || K.call(this, t, !0);
+                    t.getProperty("rmd") || K.call(this, t, true);
             e.vtree.endUpdate();
         }
         function ne(e) {
@@ -757,7 +757,7 @@ module.exports = function (e, t, n) {
                 void 0 !== e && (t.page = e),
                 "number" == typeof t.delayedUpdate && (clearTimeout(t.delayedUpdate), (t.delayedUpdate = null)));
         }
-        a.GObject.inheritAndMix(v, a.GObject);
+        GObject.GObject.inheritAndMix(v, GObject.GObject);
         var oe = {
             init: function (e) {
                 return (
@@ -804,9 +804,9 @@ module.exports = function (e, t, n) {
                                 replyNodes: new Map(),
                                 page: null,
                                 scheduledUpdate: null,
-                                scheduleNextUpdate: !1,
-                                blockAnnotationsUpdate: !1,
-                                updateInProgress: !1,
+                                scheduleNextUpdate: false,
+                                blockAnnotationsUpdate: false,
+                                updateInProgress: false,
                                 showResolved: "boolean" == typeof e.showResolved && e.showResolved,
                                 currentFocus: null,
                                 sidebarActive: e.sidebarActive,
@@ -845,25 +845,25 @@ module.exports = function (e, t, n) {
                 return arguments.length
                     ? (e !== n.page &&
                           (n.page &&
-                              n.page.hasMixin(a.GEventTarget) &&
-                              (n.page.removeEventListener(a.GNode.AfterInsertEvent, n.afterNodeInsertHandler, this),
-                              n.page.removeEventListener(a.GNode.BeforeRemoveEvent, n.beforeNodeRemoveHandler, this),
-                              n.page.removeEventListener(a.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
-                              n.page.removeEventListener(a.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this),
+                              n.page.hasMixin(GObject.GEventTarget) &&
+                              (n.page.removeEventListener(GObject.GNode.AfterInsertEvent, n.afterNodeInsertHandler, this),
+                              n.page.removeEventListener(GObject.GNode.BeforeRemoveEvent, n.beforeNodeRemoveHandler, this),
+                              n.page.removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
+                              n.page.removeEventListener(GObject.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this),
                               null !== n.scheduledUpdate && (clearTimeout(n.scheduledUpdate), (n.scheduledUpdate = null)),
-                              (n.updateInProgress = !1)),
+                              (n.updateInProgress = false)),
                           ne.call(this, e),
                           (n.page = e),
                           n.page &&
-                              (n.page.hasMixin(a.GEventTarget) &&
+                              (n.page.hasMixin(GObject.GEventTarget) &&
                                   ((n.beforeNodeRemoveHandler = J.bind(this)),
                                   (n.afterPropertiesChangeHandler = Z.bind(this)),
                                   (n.afterFlagChangeHandler = ee.bind(this)),
                                   (n.afterNodeInsertHandler = Q.bind(this)),
-                                  n.page.addEventListener(a.GNode.AfterInsertEvent, n.afterNodeInsertHandler, this),
-                                  n.page.addEventListener(a.GNode.BeforeRemoveEvent, n.beforeNodeRemoveHandler, this),
-                                  n.page.addEventListener(a.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
-                                  n.page.addEventListener(a.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this)),
+                                  n.page.addEventListener(GObject.GNode.AfterInsertEvent, n.afterNodeInsertHandler, this),
+                                  n.page.addEventListener(GObject.GNode.BeforeRemoveEvent, n.beforeNodeRemoveHandler, this),
+                                  n.page.addEventListener(GObject.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
+                                  n.page.addEventListener(GObject.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this)),
                               te.call(this))),
                       this)
                     : n.page;
@@ -872,18 +872,18 @@ module.exports = function (e, t, n) {
                 $(this).data("gannotationpanel").syncCallback = e;
             },
             annotations: function (e) {
-                let t = !1;
+                let t = false;
                 if (Y.call(this)) return f.DELAYED;
                 let n = $(this).data("gannotationpanel"),
-                    o = a.GNode.restore(e),
+                    o = GObject.GNode.restore(e),
                     i = o.getChildren();
                 return (
                     o.clearChildren(),
-                    (n.blockAnnotationsUpdate = !0),
+                    (n.blockAnnotationsUpdate = true),
                     n.vtree.beginUpdate(),
                     (t = d.mergeAnnotations(n.page.getAnnotations(), n.page.getAnnotations().getChildren(), o, i)),
                     n.vtree.endUpdate(),
-                    (n.blockAnnotationsUpdate = !1),
+                    (n.blockAnnotationsUpdate = false),
                     ne.call(this),
                     te.call(this),
                     t ? f.UPDATED : f.SKIPPED
@@ -913,7 +913,7 @@ module.exports = function (e, t, n) {
                 return x.call(this, e.id);
             },
         };
-        ((e.exports = v),
+        ((module.exports = v),
             ($.fn.gAnnotationPanel = function (e) {
                 return oe[e]
                     ? oe[e].apply(this, Array.prototype.slice.call(arguments, 1))

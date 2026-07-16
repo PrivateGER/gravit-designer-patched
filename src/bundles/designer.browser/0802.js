@@ -1,29 +1,29 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (Object.defineProperty(t, "__esModule", { value: !0 }),
-            (t.default = t.WINDOW_STATUS_BLOCKED = void 0),
-            n(58),
-            n(19),
-            n(96),
-            n(57),
-            n(8),
-            n(71),
-            n(134),
-            n(4),
-            n(41),
-            n(13),
-            n(38),
-            n(97),
-            n(26));
-        var i = n(1),
-            a = o(n(355)),
-            r = o(n(594)),
-            s = n(858);
-        const l = n(1240),
-            c = n(520),
-            { FILE_FORMATS: d } = n(10);
-        t.WINDOW_STATUS_BLOCKED = "window-blocked";
+        var o = require(16);
+        (Object.defineProperty(exports, "__esModule", { value: true }),
+            (exports.default = exports.WINDOW_STATUS_BLOCKED = void 0),
+            require(58),
+            require(19),
+            require(96),
+            require(57),
+            require(8 /* Symbol */),
+            require(71),
+            require(134),
+            require(4),
+            require(41),
+            require(13),
+            require(38),
+            require(97),
+            require(26));
+        var GObject = require(1),
+            a = o(require(355)),
+            r = o(require(594)),
+            s = require(858);
+        const l = require(1240),
+            c = require(520),
+            { FILE_FORMATS: d } = require(10 /* designerConfig */);
+        exports.WINDOW_STATUS_BLOCKED = "window-blocked";
         function u(e) {
             ((this._settings = e),
                 this.setQueryLimit(10),
@@ -36,12 +36,12 @@ module.exports = function (e, t, n) {
                     e && this.setCurrentFolder(e);
                 }));
         }
-        (i.GObject.inheritAndMix(u, i.GObject, [i.GEventTarget]),
+        (GObject.GObject.inheritAndMix(u, GObject.GObject, [GObject.GEventTarget]),
             (u.DriveEvent = function (e, t) {
                 let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null;
                 ((this.source = e), (this.type = t), (this.data = n));
             }),
-            i.GObject.inherit(u.DriveEvent, i.GEvent),
+            GObject.GObject.inherit(u.DriveEvent, GObject.GEvent),
             (u.DriveEvent.type = null),
             (u.DriveEvent.source = null),
             (u.DriveEvent.data = null),
@@ -86,12 +86,12 @@ module.exports = function (e, t, n) {
             (u.prototype.getUser = function () {
                 throw Error("Not implemented!");
             }),
-            (u.prototype._driveInstalled = !1),
+            (u.prototype._driveInstalled = false),
             (u.getInstance = function () {
                 throw Error("Not implemented!");
             }),
             (u.prototype.hasUserProfile = function () {
-                return !1;
+                return false;
             }),
             (u.prototype.getSortType = function () {
                 return this._sortType;
@@ -126,7 +126,7 @@ module.exports = function (e, t, n) {
                 Object.values(s.GFilesPanelSortDirections).includes(e) && (this._sortDirection = e);
             }),
             (u.prototype.hasMoreItemsToLoad = function () {
-                return !1;
+                return false;
             }),
             (u.prototype.setQueryLimit = function (e) {
                 return ((this._queryLimit = parseInt(e, 10)), this);
@@ -135,10 +135,10 @@ module.exports = function (e, t, n) {
                 return this._driveInstalled;
             }),
             (u.prototype.install = function (e) {
-                return ((this._driveInstalled = !0), Promise.resolve());
+                return ((this._driveInstalled = true), Promise.resolve());
             }),
             (u.prototype.uninstall = function () {
-                return ((this._driveInstalled = !1), Promise.resolve());
+                return ((this._driveInstalled = false), Promise.resolve());
             }),
             (u.prototype.getQueryLimit = function () {
                 return this._queryLimit;
@@ -147,7 +147,7 @@ module.exports = function (e, t, n) {
                 return ((this._currentFolder = e), gContainer.setProperty(this.CURRENT_FOLDER_PROP, JSON.stringify(e)), this);
             }),
             (u.prototype.isFolderSharedWithMeFolder = function (e) {
-                return !1;
+                return false;
             }),
             (u.prototype.getCurrentFolder = function () {
                 return this._currentFolder;
@@ -156,7 +156,7 @@ module.exports = function (e, t, n) {
                 throw Error("Not implemented!");
             }),
             (u.prototype.isLoadFoldersOnDemandSupported = function () {
-                return !1;
+                return false;
             }),
             (u.prototype.hasFolders = async function () {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : null;
@@ -206,7 +206,7 @@ module.exports = function (e, t, n) {
                 throw Error("Not implemented!");
             }),
             (u.prototype.itemRequiresLazyUpdate = async function (e) {
-                return !1;
+                return false;
             }),
             (u.prototype.getItemLazyUpdate = async function (e) {
                 return e;
@@ -227,7 +227,7 @@ module.exports = function (e, t, n) {
                 throw Error("Not implemented!");
             }),
             (u.prototype.supportsCorporateStorage = function () {
-                return !1;
+                return false;
             }),
             (u.prototype.setCorporateStorage = async function (e) {
                 this._corporateStorage = e;
@@ -264,10 +264,10 @@ module.exports = function (e, t, n) {
                 throw new Error("Not implemented!");
             }),
             (u.prototype.supportsSaveCollisionFlow = function () {
-                return !1;
+                return false;
             }),
             (u.prototype.requiresOverwriteCollisionHandling = function () {
-                return !1;
+                return false;
             }),
             (u.prototype.fileExists = async function (e, t, n) {
                 throw new Error("Not implemented!");
@@ -345,7 +345,7 @@ module.exports = function (e, t, n) {
                 );
             }),
             (u.prototype.canAccessFile = async function () {
-                return !0;
+                return true;
             }),
             (u.prototype.addAction = function (e) {
                 this._actions.push(e);
@@ -372,7 +372,7 @@ module.exports = function (e, t, n) {
                 this.PREVIOUS_SELECTED_FOLDER_PATH = this.PREVIOUS_SELECTED_FOLDER_PATH.filter((t) => t !== e.getId());
             }),
             (u.prototype.hasTitleValidation = function () {
-                return !1;
+                return false;
             }),
             (u.prototype.getTitleValidator = function () {
                 throw Error("NOT IMPLEMENTED");
@@ -381,7 +381,7 @@ module.exports = function (e, t, n) {
                 return Promise.resolve([]);
             }),
             (u.prototype.isAssetsSharedWithMeFolder = function () {
-                return !1;
+                return false;
             }),
             (u.prototype.getSharedFilesWithMeFolder = function () {
                 return null;
@@ -390,5 +390,5 @@ module.exports = function (e, t, n) {
                 return "id";
             }),
             (u.Provider = c.Provider));
-        t.default = u;
+        exports.default = u;
     };

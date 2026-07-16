@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(160),
-                r = i(2),
-                o = i(22),
+module.exports = function (module, exports, require) {
+            var n = require(160),
+                r = require(2),
+                o = require(22),
                 a = {},
                 s = function (e, t, i, n) {
                     e = "string" == typeof e ? e.replace(/^\s+|\s+$/g, "") : "";
@@ -14,13 +14,13 @@ module.exports = function (e, t, i) {
             var l,
                 h = (s.initialize.prototype = s.prototype),
                 A = function () {
-                    return !0;
+                    return true;
                 };
             ((h.queryAll = function (e, t, i) {
                 var n, o;
                 if (((i = i || {}), !(e && e instanceof r))) throw new Error("Missing context or invalid context");
                 if (!(e instanceof r))
-                    if ("string" == typeof e) ((e = s.queryAll(e)), (n = !0));
+                    if ("string" == typeof e) ((e = s.queryAll(e)), (n = true));
                     else if ("[object Array]" == Object.prototype.toString.call(e) || ("number" == typeof e.length && e.item)) {
                         var a = [];
                         for (y = 0; (o = e[y]); y++) o instanceof r && a.push(o);
@@ -34,7 +34,7 @@ module.exports = function (e, t, i) {
                     d = s.getUid,
                     g = function (e) {
                         var t = d(e);
-                        return u[t] ? null : (u[t] = !0);
+                        return u[t] ? null : (u[t] = true);
                     };
                 if (t && t.length) for (y = 0; (o = t[y]); y++) g(o);
                 var f = this.parse();
@@ -42,7 +42,7 @@ module.exports = function (e, t, i) {
                 for (var m, y = 0; (m = f[y]); y++) {
                     var _ = g;
                     if (
-                        (m.first && (t ? !0 : (_ = A), n ? (h = e) : m.combinator && (h = [e])),
+                        (m.first && (t ? true : (_ = A), n ? (h = e) : m.combinator && (h = [e])),
                         m.last && t ? ((u = c), (l = t)) : ((u = {}), (l = [])),
                         m.combinator || n)
                     )
@@ -58,8 +58,8 @@ module.exports = function (e, t, i) {
                 (h.match = function (e, t) {
                     if (1 == this.parse().length) return !!this.parse()[0].match(e, {});
                     if (!t) for (t = e; t.getParent(); ) t = t.getParent();
-                    for (var i = this.queryAll(t), n = i.length; n--; ) if (i[n] == e) return !0;
-                    return !1;
+                    for (var i = this.queryAll(t), n = i.length; n--; ) if (i[n] == e) return true;
+                    return false;
                 }),
                 (h.filter = function (e) {
                     for (var t, i = [], n = this.parse(), r = 0; (t = e[r]); r++)
@@ -116,7 +116,7 @@ module.exports = function (e, t, i) {
                     n = e ? p : this.compute,
                     r = [],
                     o = c(null);
-                o.first = !0;
+                o.first = true;
                 var a,
                     h,
                     A = function (e) {
@@ -157,7 +157,7 @@ module.exports = function (e, t, i) {
                             var u = a[1];
                             if (u) {
                                 if ("," == u) {
-                                    ((o.last = !0), A(null), (o.first = !0));
+                                    ((o.last = true), A(null), (o.first = true));
                                     continue;
                                 }
                                 o.first && !o.ident.length ? (o.combinator = u) : A(u);
@@ -165,10 +165,10 @@ module.exports = function (e, t, i) {
                     }
                     o.ident.push(h);
                 }
-                return ((o.last = !0), r.push(n(o)), (this[t] = r));
+                return ((o.last = true), r.push(n(o)), (this[t] = r));
             };
             var d = function () {
-                    return !0;
+                    return true;
                 },
                 g = function (e, t) {
                     return !!e.hasMixin(r.Identity) && t === e.getId();
@@ -184,7 +184,7 @@ module.exports = function (e, t, i) {
                         var i = e.getTags();
                         return i && t.test(i);
                     }
-                    return !1;
+                    return false;
                 },
                 _ = function (e) {
                     if (!e.operator || !e.value) return e;
@@ -215,7 +215,7 @@ module.exports = function (e, t, i) {
                     A = e.tags;
                 if (
                     (h &&
-                        ((a = !0),
+                        ((a = true),
                         (o = u(null, g, h)),
                         (r = function (e) {
                             var t = e._scene.getById(h);
@@ -225,7 +225,7 @@ module.exports = function (e, t, i) {
                 )
                     if (r || 1 != A.length) for (t = 0; (i = A[t]); t++) n = u(n, y, m(i));
                     else {
-                        a = !0;
+                        a = true;
                         var c = m(A[0]);
                         ((o = u(o, y, c)),
                             (r = function (e) {
@@ -341,13 +341,13 @@ module.exports = function (e, t, i) {
                         return i.positions[r] % n.a == n.b;
                     },
                     empty: function (e) {
-                        return !1;
+                        return false;
                     },
                     contains: function (e, t) {
-                        return !1;
+                        return false;
                     },
                     index: function (e, t) {
-                        for (var i = 1; (e = e.getPrevious()); ) if (++i > t) return !1;
+                        for (var i = 1; (e = e.getPrevious()); ) if (++i > t) return false;
                         return i == t;
                     },
                     even: function (e, t, i) {
@@ -416,7 +416,7 @@ module.exports = function (e, t, i) {
             ((s.parseNth = function (e) {
                 if (x[e]) return x[e];
                 var t = e.match(/^([+-]?\d*)?([a-z]+)?([+-]?\d*)?$/);
-                if (!t) return !1;
+                if (!t) return false;
                 var i = parseInt(t[1], 10),
                     n = (parseInt(t[3], 10) || 0) - 1;
                 if ((i = isNaN(i) ? 1 : i)) {
@@ -497,5 +497,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.filtered = function (e) {
                     return 1 === s.filter(e, [this]).length;
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        const { PasswordlessAuthenticationActions: o, gApi: i } = n(10),
-            a = n(44),
-            r = n(604),
-            s = n(337);
-        e.exports = class {
+        require(8 /* Symbol */);
+        const { PasswordlessAuthenticationActions: o, gApi: i } = require(10 /* designerConfig */),
+            GSystemDialog = require(44),
+            GProfileDialog = require(604),
+            s = require(337);
+        module.exports = class {
             async execute() {
                 let { [o.ResetPassword]: e } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 try {
@@ -13,14 +13,14 @@ module.exports = function (e, t, n) {
                     const t = await gDesigner.getUser();
                     t &&
                         gDesigner.executeWhenReady(() => {
-                            new r(t, r.Tabs.ChangePassword, {
+                            new GProfileDialog(t, GProfileDialog.Tabs.ChangePassword, {
                                 token: e,
-                                tabs: [r.Tabs.ChangePassword],
+                                tabs: [GProfileDialog.Tabs.ChangePassword],
                             }).open();
                         });
                 } catch (e) {
                     gDesigner.executeWhenReady(() => {
-                        a.error(e);
+                        GSystemDialog.error(e);
                     });
                 }
             }

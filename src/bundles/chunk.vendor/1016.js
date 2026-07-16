@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(51),
-                o = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(51),
+                String = require(9);
 
             function a() {
                 (r.call(this), this._setDefaultProperties(a.GeometryProperties));
             }
             (n.inherit("GGLSwirlEffect", a, r),
                 (a.prototype.getNodeNameTranslated = function () {
-                    return o.getValue("GGLSwirlEffect", "name", this.getNodeName());
+                    return String.getValue("GGLSwirlEffect", "name", this.getNodeName());
                 }),
                 (a.prototype.getEffectPadding = function (e) {
                     e && (this.swirlBBox = e);
@@ -48,5 +48,5 @@ module.exports = function (e, t, i) {
                     radius: [0, 100],
                     angle: [-Math.PI, Math.PI],
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

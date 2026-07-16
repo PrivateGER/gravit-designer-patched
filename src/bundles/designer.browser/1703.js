@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(4), n(13), n(32), n(38), n(33));
-        var o = n(1);
-        const i = n(238),
-            a = n(444);
+        (require(4), require(13), require(32), require(38), require(33));
+        var GObject = require(1);
+        const i = require(238),
+            a = require(444);
         var r = {
             value: function (e) {
                 return arguments.length > 0
@@ -13,7 +13,7 @@ module.exports = function (e, t, n) {
             init: function (e) {
                 return (
                     this.each(function () {
-                        e = o.GUtil.extend({ list: [] }, e);
+                        e = GObject.GUtil.extend({ list: [] }, e);
                         const t = new i();
                         e.list
                             .map((e) => ("object" != typeof e ? { title: e, data: e } : e))

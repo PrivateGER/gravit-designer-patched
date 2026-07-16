@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i(e) {
                 this._buffer = e;
             }
@@ -16,5 +16,5 @@ module.exports = function (e, t) {
                         type: "image/jpeg",
                     });
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

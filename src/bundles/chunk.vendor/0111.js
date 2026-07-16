@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(166),
-                r = i(0),
+module.exports = function (module, exports, require) {
+            var n = require(166),
+                IsFiniteNonNegativeNumber = require(0),
                 o = n.MAX_INITIAL_RENDER_BUFFER_SIZE,
                 a = n.MIN_INITIAL_RENDER_BUFFER_SIZE,
                 s = n.MAX_MEMORY_POOL_SIZE,
@@ -27,8 +27,8 @@ module.exports = function (e, t, i) {
                     (this.__execPtr = 0),
                     (this.__maxSize = o),
                     (this.__resetPoint = 0),
-                    (this.__persistent = A || !1),
-                    (this.__isRoot = !1),
+                    (this.__persistent = A || false),
+                    (this.__isRoot = false),
                     (this.__lastFlush = -1),
                     (this.__contextId = l++));
                 for (var c = 0; c < this.__mem.length; c++) {
@@ -39,7 +39,7 @@ module.exports = function (e, t, i) {
                     (this.$type = f.INSTANCE_RENDERERCTX),
                     s
                         ? ((this.canvas = new f.RendererCanvas(this)),
-                          (this.__multiThreaded = h || !1),
+                          (this.__multiThreaded = h || false),
                           (this.__offscreen = !!s._renderParameters.offscreen),
                           s.preInitializeContext(this))
                         : ((this.__multiThreaded = h), (this.canvas = null)));
@@ -48,14 +48,14 @@ module.exports = function (e, t, i) {
             function m(e, t) {
                 if ("2d" !== t) return e ? new OffscreenCanvas(1, 1) : document.createElement("canvas");
                 var i = null,
-                    n = !1;
+                    n = false;
                 if (
                     (e
                         ? (i = u.shift())
-                            ? (n = !0)
+                            ? (n = true)
                             : (i = new OffscreenCanvas(1, 1))
                         : (i = p.shift())
-                          ? (n = !0)
+                          ? (n = true)
                           : (i = document.createElement("canvas")),
                     n)
                 ) {
@@ -85,9 +85,9 @@ module.exports = function (e, t, i) {
                     ((this.parent = e), (this.$type = f.INSTANCE_RENDERERCANVAS));
                 }),
                 (f.RendererCanvas.prototype.parent = null),
-                (f.RendererCanvas.prototype.rendered = !1),
-                (f.RendererCanvas.prototype.rendering = !1),
-                (f.RendererCanvas.prototype.renderingSkipped = !1),
+                (f.RendererCanvas.prototype.rendered = false),
+                (f.RendererCanvas.prototype.rendering = false),
+                (f.RendererCanvas.prototype.renderingSkipped = false),
                 (f.RendererCanvas.prototype.renderedName = null),
                 (f.RendererCanvas.prototype.renderingName = null),
                 (f.RendererCanvas.prototype._w = 0),
@@ -99,7 +99,7 @@ module.exports = function (e, t, i) {
                 Object.defineProperties(f.RendererCanvas.prototype, {
                     width: {
                         set: function (e) {
-                            ((this._w = e), this.parent._setWidth(e), (this.rendered = !1));
+                            ((this._w = e), this.parent._setWidth(e), (this.rendered = false));
                         },
                         get: function () {
                             return this._w;
@@ -107,7 +107,7 @@ module.exports = function (e, t, i) {
                     },
                     height: {
                         set: function (e) {
-                            ((this._h = e), this.parent._setHeight(e), (this.rendered = !1));
+                            ((this._h = e), this.parent._setHeight(e), (this.rendered = false));
                         },
                         get: function () {
                             return this._h;
@@ -118,8 +118,8 @@ module.exports = function (e, t, i) {
                             return (
                                 this.$realCanvas ||
                                     (this.parent.__multiThreaded || this.parent.__offscreen
-                                        ? this.parent.__multiThreaded || (this.$realCanvas = m(!0, this.parent.__contextType))
-                                        : (this.$realCanvas = m(!1, this.parent.__contextType))),
+                                        ? this.parent.__multiThreaded || (this.$realCanvas = m(true, this.parent.__contextType))
+                                        : (this.$realCanvas = m(false, this.parent.__contextType))),
                                 this.parent.__multiThreaded ? this.$renderedBitmap : this.$realCanvas
                             );
                         },
@@ -153,12 +153,12 @@ module.exports = function (e, t, i) {
                     (this.$renderable_type = this.RENDERABLE_TYPE),
                     e.__persistent && !t && (this.__renderableId = h++));
             }),
-                r.inherit(f.Renderable, r),
+                IsFiniteNonNegativeNumber.inherit(f.Renderable, IsFiniteNonNegativeNumber),
                 (f.Renderable.inherit = function (e, t) {
-                    (r.inherit(e, t), (e.prototype.RENDERABLE_TYPE = ++_), (v[_] = e.prototype));
+                    (IsFiniteNonNegativeNumber.inherit(e, t), (e.prototype.RENDERABLE_TYPE = ++_), (v[_] = e.prototype));
                 }),
                 (f.Renderable.inheritAndMix = function (e, t, i) {
-                    (r.inheritAndMix(e, t, i), (e.prototype.RENDERABLE_TYPE = ++_), (v[_] = e.prototype));
+                    (IsFiniteNonNegativeNumber.inheritAndMix(e, t, i), (e.prototype.RENDERABLE_TYPE = ++_), (v[_] = e.prototype));
                 }),
                 (f.Renderable.render = function (e, t, i, n) {
                     if (void 0 === e.$rendered) {
@@ -209,12 +209,12 @@ module.exports = function (e, t, i) {
                 (f.prototype.__resetPoint = 0),
                 (f.prototype.__memPtr = 0),
                 (f.prototype.__maxSize = o),
-                (f.prototype.__offscreen = !1),
-                (f.prototype.__multiThreaded = !1),
-                (f.prototype.__persistent = !1),
+                (f.prototype.__offscreen = false),
+                (f.prototype.__multiThreaded = false),
+                (f.prototype.__persistent = false),
                 (f.prototype.__contextId = 0),
                 (f.prototype.__lastFlush = -1),
-                (f.prototype.__isRoot = !1),
+                (f.prototype.__isRoot = false),
                 (f.prototype.$type = f.INSTANCE_RENDERERCTX),
                 (f.clone = function (e) {
                     return new f(
@@ -400,7 +400,7 @@ module.exports = function (e, t, i) {
                                 "function" == typeof t.canvas.$realCanvas.close &&
                                 (t.canvas.$realCanvas.close(), (t.canvas.$realCanvas = null)),
                             delete A[e.__contextId],
-                            (e.__persistent = !1),
+                            (e.__persistent = false),
                             f.dispose(e));
                     }
                 }),
@@ -421,8 +421,8 @@ module.exports = function (e, t, i) {
                     if (!e.canvas.$realCanvas)
                         if (e.__multiThreaded || e.__offscreen) {
                             if (e.canvas.$renderedBitmap) return null;
-                            e.canvas.$realCanvas = m(!0, e.__contextType);
-                        } else e.canvas.$realCanvas = m(!1, e.__contextType);
+                            e.canvas.$realCanvas = m(true, e.__contextType);
+                        } else e.canvas.$realCanvas = m(false, e.__contextType);
                     return ((e.$realCtx = e.canvas.$realCanvas.getContext(e.__contextType, e.__contextAttributes)), e.$realCtx);
                 }),
                 (f.postInitializeContext = function (e) {
@@ -443,8 +443,8 @@ module.exports = function (e, t, i) {
                             }));
                 }),
                 (f.propertiesToSync = {}),
-                i(897)(f),
-                i(899)(f),
+                require(897)(f),
+                require(899)(f),
                 Object.defineProperties(f.prototype, {
                     __realCtx: {
                         get: function () {
@@ -548,5 +548,5 @@ module.exports = function (e, t, i) {
                 (f.__getters[f.DELETE] = f.getDelete),
                 (f.__getters[f.FINISH] = f.getFinish),
                 (f.__getters[f.TYPE_BOOL] = f.getBool),
-                (e.exports = f));
+                (module.exports = f));
         };

@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(42),
-                r = i(0);
+module.exports = function (module, exports, require) {
+            var n = require(42),
+                IsFiniteNonNegativeNumber = require(0);
 
             function o(e) {
                 n.call(
@@ -12,12 +12,12 @@ module.exports = function (e, t, i) {
             }
             ((o.prototype.colorize = null),
                 (o.prototype.blur = null),
-                r.inherit(o, n),
+                IsFiniteNonNegativeNumber.inherit(o, n),
                 (o.prototype.render = function (e, t) {
                     this.simpleShader.call(this, {
                         hue: n.clamp(-1, e.hue, 1),
                         saturation: n.clamp(-1, e.saturation, 1),
                     });
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

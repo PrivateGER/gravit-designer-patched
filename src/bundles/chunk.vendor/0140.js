@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i(e, t, i, n) {
                 ((this.max_objects = t || 10),
                     (this.max_levels = i || 4),
@@ -94,8 +94,8 @@ module.exports = function (e, t) {
                 }),
                 (i.prototype.remove = function (e) {
                     var t = this.objects.indexOf(e),
-                        i = !1;
-                    if (t >= 0) (this.objects.splice(t, 1), (i = !0));
+                        i = false;
+                    if (t >= 0) (this.objects.splice(t, 1), (i = true));
                     else if (this.nodes) {
                         if (-1 !== (t = this.getIndex(e)))
                             if ((i = this.nodes[t].remove(e))) {
@@ -147,5 +147,5 @@ module.exports = function (e, t) {
                     for (var e = 0; e < this.nodes.length; e++) this.nodes && this.nodes[e].clear();
                     this.nodes = null;
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

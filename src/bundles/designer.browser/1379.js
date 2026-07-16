@@ -1,19 +1,19 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(57), n(4), n(41), n(32), n(33));
-        var o = n(1),
-            i = n(381);
+        (require(57), require(4), require(41), require(32), require(33));
+        var GObject = require(1),
+            i = require(381);
         function a(e) {
             i.call(this, e);
         }
-        o.GObject.inherit(a, i);
-        var r = o.GUtil.uuid(),
+        GObject.GObject.inherit(a, i);
+        var r = GObject.GUtil.uuid(),
             s = [],
             l = {};
-        (o.GObject.inherit(a, i),
+        (GObject.GObject.inherit(a, i),
             (a.prototype._totalFonts = 0),
-            (a.prototype._initialized = !1),
-            (a.prototype._initializing = !1),
+            (a.prototype._initialized = false),
+            (a.prototype._initializing = false),
             (a.prototype._resolveCallbacks = []),
             (a.prototype._loadCallbacks = []),
             (a.prototype._clearCallbacks = function (e) {
@@ -29,7 +29,7 @@ module.exports = function (e, t, n) {
             (a.prototype.addPreviews = function (e, t) {
                 for (
                     var n = new DOMParser(),
-                        o = !1,
+                        o = false,
                         i = function (e, t) {
                             e ? ((this.cb = e), this.svg && e(this.svg)) : ((this.svg = t), this.cb && this.cb(t));
                         },
@@ -53,7 +53,7 @@ module.exports = function (e, t, n) {
                     }
                     for (a = 0; a < r.length; a++) {
                         c = r[a];
-                        if ((s[10 * c].cachedPreview || (o = !0), o)) {
+                        if ((s[10 * c].cachedPreview || (o = true), o)) {
                             var d = new XMLHttpRequest(),
                                 u = gContainer.getRootPath();
                             (d.open("GET", u + "/assets/data/google_previews/previews" + c + ".json"),
@@ -91,7 +91,7 @@ module.exports = function (e, t, n) {
                 this._initialized || this._initializing || this._load.apply(this, arguments);
             }),
             (a.prototype._load = function () {
-                this._initializing = !0;
+                this._initializing = true;
                 var e = Array.prototype.slice.call(arguments),
                     t = gContainer.getRootPath(),
                     n = new XMLHttpRequest(),
@@ -99,16 +99,16 @@ module.exports = function (e, t, n) {
                 (n.open("GET", t + "/assets/data/googlefonts.json?" + o),
                     (n.onload = function () {
                         n.status >= 200 && n.status < 300
-                            ? ((this._initialized = !0),
-                              (this._initializing = !1),
+                            ? ((this._initialized = true),
+                              (this._initializing = false),
                               (s = JSON.parse(n.response)),
                               (this._totalFonts = s.length),
                               e.length,
                               this._clearCallbacks())
-                            : n.status >= 400 && ((this._initialized = !0), (this._initializing = !1), this._clearCallbacks(!0));
+                            : n.status >= 400 && ((this._initialized = true), (this._initializing = false), this._clearCallbacks(true));
                     }.bind(this)),
                     (n.onerror = function () {
-                        ((this._initialized = !0), (this._initializing = !1), this._clearCallbacks(i.Errors.ConnectionError));
+                        ((this._initialized = true), (this._initializing = false), this._clearCallbacks(i.Errors.ConnectionError));
                     }.bind(this)),
                     n.send());
             }),
@@ -128,7 +128,7 @@ module.exports = function (e, t, n) {
                               i ? o.fail(i) : this.load(e, t, n, o);
                           }.bind(this)
                       )
-                    : o.done(s.filter(this._searchFilter(e)).slice(t, t + n), !0, null);
+                    : o.done(s.filter(this._searchFilter(e)).slice(t, t + n), true, null);
             }),
             (a.prototype.getTotalFonts = function (e) {
                 return e ? s.filter(this._searchFilter(e)).length : this._totalFonts;
@@ -155,7 +155,7 @@ module.exports = function (e, t, n) {
                         if (c.family === e)
                             for (var d = c.fonts, u = 0; u < d.length; u++) {
                                 var p = d[u];
-                                if (p.weight === (n || 400) && p.style === (t || o.GFont.Style.Normal)) {
+                                if (p.weight === (n || 400) && p.style === (t || GObject.GFont.Style.Normal)) {
                                     if (l[p.url]) l[p.url].push(a);
                                     else {
                                         var g = new XMLHttpRequest();
@@ -190,5 +190,5 @@ module.exports = function (e, t, n) {
             (a.prototype.resetProvider = function () {
                 this._load();
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

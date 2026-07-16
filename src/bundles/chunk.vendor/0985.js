@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(723);
+module.exports = function (module, exports, require) {
+            var n = require(723);
 
             function r(e) {
                 n.call(this, e, "gpos");
@@ -33,5 +33,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.getKerningTables = function (e, t) {
                     if (this.font.tables.gpos) return this.getLookupTables(e, t, "kern", 2);
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

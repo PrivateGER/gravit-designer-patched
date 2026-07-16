@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            e.exports = {
+            module.exports = {
                 ANNOTATION_EVENT: "ANNOTATION_EVENT",
                 SHARE_EVENT: "SHARE_EVENT",
                 USER_EVENT: "USER_EVENT",

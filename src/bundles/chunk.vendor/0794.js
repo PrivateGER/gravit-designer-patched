@@ -1,19 +1,19 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(28),
-                o = i(14),
-                a = i(72),
-                s = i(795),
-                l = i(1126),
-                h = i(1125),
-                A = i(1123),
-                c = i(1124),
-                p = i(561);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                GStylable = require(28),
+                o = require(14),
+                a = require(72),
+                s = require(795),
+                l = require(1126),
+                h = require(1125),
+                A = require(1123),
+                c = require(1124),
+                p = require(561);
 
             function u() {
                 s.apply(this, arguments);
             }
-            (n.inherit(u, s),
+            (IsFiniteNonNegativeNumber.inherit(u, s),
                 (u.Process = {
                     AfterParse: 2,
                     ParentAttached: 3,
@@ -21,7 +21,7 @@ module.exports = function (e, t, i) {
                 (u.ProcessEvent = function (e, t) {
                     ((this.type = e), (this.source = t));
                 }),
-                n.inherit(u.ProcessEvent, a),
+                IsFiniteNonNegativeNumber.inherit(u.ProcessEvent, a),
                 (u.ProcessEvent.source = null),
                 (u.ProcessEvent.type = null),
                 (u.BlendMode = [
@@ -51,7 +51,7 @@ module.exports = function (e, t, i) {
                             this._node.setProperty("name", this._data.name));
                         var e = this._data.style;
                         (e &&
-                            (this._node.hasMixin(r) &&
+                            (this._node.hasMixin(GStylable) &&
                                 e.contextSettings &&
                                 (this._node.setProperty(
                                     "_sbl",
@@ -84,5 +84,5 @@ module.exports = function (e, t, i) {
                         this._file.hasEventListeners(e.constructor) &&
                         this._file.trigger(e);
                 }),
-                (e.exports = u));
+                (module.exports = u));
         };

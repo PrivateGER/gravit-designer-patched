@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(63);
-            (i(7), i(6), i(5));
+module.exports = function (module, exports, require) {
+            var n = require(63);
+            (require(7), require(6), require(5));
 
             function r(e) {
                 this._tlCore = e;
@@ -66,5 +66,5 @@ module.exports = function (e, t, i) {
                     for (var e = this._prev, t = this; e; ) ((t = e), (e = e._prev));
                     return t;
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(15),
-            a = n(18),
-            r = n(106);
+        require(3);
+        var GObject = require(1),
+            GPlatform = require(15),
+            GCategory = require(18),
+            r = require(106);
         function s() {}
-        (o.GObject.inherit(s, r),
+        (GObject.GObject.inherit(s, r),
             (s.ID = "modify.split-path"),
-            (s.TITLE = new o.GLocaleKey("GSplitPathAction", "title")),
+            (s.TITLE = new GObject.GLocaleKey("GSplitPathAction", "title")),
             (s.prototype.getId = function () {
                 return s.ID;
             }),
@@ -16,13 +16,13 @@ module.exports = function (e, t, n) {
                 return s.TITLE;
             }),
             (s.prototype.getCategory = function () {
-                return a.CATEGORY_MODIFY_PATH;
+                return GCategory.CATEGORY_MODIFY_PATH;
             }),
             (s.prototype.getGroup = function () {
                 return "structure/path";
             }),
             (s.prototype.getShortcut = function () {
-                return [i.GKey.Constant.SHIFT, i.GKey.Constant.META, "J"];
+                return [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "J"];
             }),
             (s.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-split-path" : null;
@@ -31,12 +31,12 @@ module.exports = function (e, t, n) {
                 var e = gDesigner.getActiveDocument();
                 if (e) {
                     var t = e.getEditor().getSelection();
-                    if (t) for (var n = 0; n < t.length; ++n) if (t[n] instanceof o.GCompoundPath) return !0;
+                    if (t) for (var n = 0; n < t.length; ++n) if (t[n] instanceof GObject.GCompoundPath) return true;
                 }
-                return !1;
+                return false;
             }),
             (s.prototype.execute = function () {
-                if (!r.prototype.isEnabled.call(this)) return !1;
+                if (!r.prototype.isEnabled.call(this)) return false;
                 var e = gDesigner.getActiveDocument().getEditor(),
                     t = e.getSelection().slice();
                 if (t && t.length) {
@@ -44,25 +44,25 @@ module.exports = function (e, t, n) {
                     try {
                         for (var n = [], i = 0; i < t.length; ++i) {
                             var a = t[i];
-                            if (a instanceof o.GCompoundPath) {
-                                var s = new o.GRectangle();
-                                o.GElement.prototype.assignFrom.call(s, a);
+                            if (a instanceof GObject.GCompoundPath) {
+                                var s = new GObject.GRectangle();
+                                GObject.GElement.prototype.assignFrom.call(s, a);
                                 var l = e.splitCompoundPath(a);
                                 if (l && l.length)
                                     for (var c = 0; c < l.length; ++c) {
                                         var d = l[c];
-                                        (o.GElement.prototype.assignFrom.call(d, s), n.push(d));
+                                        (GObject.GElement.prototype.assignFrom.call(d, s), n.push(d));
                                     }
                             }
                         }
-                        n.length && e.updateSelection(!1, n);
+                        n.length && e.updateSelection(false, n);
                     } finally {
-                        e.commitTransaction(o.GLocale.get(this.getTitle()));
+                        e.commitTransaction(GObject.GLocale.get(this.getTitle()));
                     }
                 }
             }),
             (s.prototype.toString = function () {
                 return "[Object GSplitPathAction]";
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

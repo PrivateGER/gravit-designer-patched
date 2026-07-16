@@ -1,19 +1,19 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(3));
-        var o = n(1);
-        const i = n(606),
-            a = n(394),
-            r = n(78),
-            s = n(291),
-            l = n(217),
-            c = n(86);
-        n(1348);
+        (require(8 /* Symbol */), require(3));
+        var GObject = require(1);
+        const i = require(606),
+            a = require(394),
+            r = require(78),
+            s = require(291),
+            l = require(217),
+            c = require(86);
+        require(1348);
         function d() {}
-        (o.GObject.inherit(d, i),
+        (GObject.GObject.inherit(d, i),
             (d.ID = "document-notifications-panel"),
             (d.prototype._htmlElement = null),
-            (d.prototype._isModified = !1),
+            (d.prototype._isModified = false),
             (d.prototype._documentEvent = function (e) {
                 if (!e.document.isLockedByVersionHistory())
                     switch (e.type) {
@@ -22,13 +22,13 @@ module.exports = function (e, t, n) {
                                 (this._document = e.document),
                                 gDesigner.addEventListener(s, this._networkAvailabilityChangedEvent, this),
                                 this._document.addEventListener(l, this._handleDocumentStatusEvent, this),
-                                this._update(!0));
+                                this._update(true));
                             break;
                         case r.Type.Deactivated:
-                            e.document === this._document && (this._deactivate(), this._update(!0));
+                            e.document === this._document && (this._deactivate(), this._update(true));
                             break;
                         case r.Type.UpdateAvailable:
-                            this._document === e.document && this._update(!1);
+                            this._document === e.document && this._update(false);
                     }
             }),
             (d.prototype._deactivate = function () {
@@ -38,7 +38,7 @@ module.exports = function (e, t, n) {
                     (this._document = null));
             }),
             (d.prototype._handleDocumentStatusEvent = function (e) {
-                e.status === c.Loaded && this._update(!0);
+                e.status === c.Loaded && this._update(true);
             }),
             (d.prototype._networkAvailabilityChangedEvent = function (e) {
                 this._htmlElement.toggleClass("offline", !e.connected);
@@ -51,7 +51,7 @@ module.exports = function (e, t, n) {
                     this._document.isIgnoringCurrentUpdate() ||
                     this._document.getStatus() === c.Loading
                 )
-                    return void this._close(!0);
+                    return void this._close(true);
                 let t = !e || (await this._document.isUpdateAvailable());
                 (t ? this._showUpdatePanel() : this._close(), this.trigger(a.UPDATE_EVENT));
             }),
@@ -67,7 +67,7 @@ module.exports = function (e, t, n) {
                         .append(
                             $("<span/>")
                                 .addClass("message")
-                                .text(o.GLocale.get(new o.GLocaleKey("GCollaborativeTextPanel", "text.update-available-message")))
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GCollaborativeTextPanel", "text.update-available-message")))
                         )
                         .append(
                             $("<div/>")
@@ -76,9 +76,9 @@ module.exports = function (e, t, n) {
                                     $("<button/>")
                                         .addClass("g-highlight-button")
                                         .addClass("secondary")
-                                        .text(o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.cancel")))
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.cancel")))
                                         .on("click", () => {
-                                            (this._document.ignoreCurrentUpdate(), this._close(!0));
+                                            (this._document.ignoreCurrentUpdate(), this._close(true));
                                         })
                                 )
                                 .append(
@@ -86,9 +86,9 @@ module.exports = function (e, t, n) {
                                         .addClass("g-highlight-button")
                                         .addClass("highlighted")
                                         .addClass("online-action")
-                                        .text(o.GLocale.get(new o.GLocaleKey("GCollaborativeTextPanel", "text.update-now")))
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GCollaborativeTextPanel", "text.update-now")))
                                         .on("click", () => {
-                                            (this._close(!0), this._document.reload());
+                                            (this._close(true), this._document.reload());
                                         })
                                 )
                         )
@@ -109,5 +109,5 @@ module.exports = function (e, t, n) {
             (d.prototype.getId = function () {
                 return d.ID;
             }),
-            (e.exports = d));
+            (module.exports = d));
     };

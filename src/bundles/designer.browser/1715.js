@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(57),
-            n(20),
-            n(3),
-            n(34),
+        (require(57),
+            require(20),
+            require(3),
+            require(34),
             (function (e) {
                 jQuery.fn.extend({
                     elastic: function () {
@@ -31,7 +31,7 @@ module.exports = function (e, t, n) {
                             "borderLeftColor",
                         ];
                         return this.each(function () {
-                            if ("textarea" !== this.type) return !1;
+                            if ("textarea" !== this.type) return false;
                             var n = jQuery(this),
                                 o = jQuery("<div />").css({
                                     position: "absolute",
@@ -46,7 +46,7 @@ module.exports = function (e, t, n) {
                             for (var s = t.length; s--; ) o.css(t[s].toString(), n.css(t[s].toString()));
                             function l() {
                                 var e = Math.floor(parseInt(n.width(), 10));
-                                o.width() !== e && (o.css({ width: e + "px" }), d(!0));
+                                o.width() !== e && (o.css({ width: e + "px" }), d(true));
                             }
                             function c(e, t) {
                                 var o = Math.floor(parseInt(e, 10));

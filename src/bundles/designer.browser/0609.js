@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(53);
-        const a = n(18),
-            r = n(106);
+        require(3);
+        var GObject = require(1),
+            i = require(53);
+        const GCategory = require(18),
+            r = require(106);
         function s(e, t) {
             (r.call(this), (this._id = e), (this._title = t));
         }
-        (o.GObject.inherit(s, r),
+        (GObject.GObject.inherit(s, r),
             (s.EmptyValue = {}),
             (s.EmptyPattern = {}),
             (s.prototype._id = null),
@@ -20,14 +20,14 @@ module.exports = function (e, t, n) {
                 return this._title;
             }),
             (s.prototype.getCategory = function () {
-                return a.CATEGORY_EDIT_SELECT_SAME;
+                return GCategory.CATEGORY_EDIT_SELECT_SAME;
             }),
             (s.prototype.isEnabled = function () {
-                if (!r.prototype.isEnabled.call(this)) return !1;
+                if (!r.prototype.isEnabled.call(this)) return false;
                 const e = gDesigner.getActiveDocument(),
                     t = e && e.getEditor(),
                     n = t && t.getSelection();
-                if (!n || !n.length) return !1;
+                if (!n || !n.length) return false;
                 return this._createPattern(n) !== s.EmptyPattern;
             }),
             (s.prototype._createPattern = function (e) {
@@ -44,7 +44,7 @@ module.exports = function (e, t, n) {
                 return n;
             }),
             (s.prototype._matches = function (e, t) {
-                return e !== s.EmptyPattern && t !== s.EmptyPattern && o.GUtil.equals(e, t, !0);
+                return e !== s.EmptyPattern && t !== s.EmptyPattern && GObject.GUtil.equals(e, t, true);
             }),
             (s.prototype._getValue = function (e) {
                 throw "Not implemented";
@@ -59,7 +59,7 @@ module.exports = function (e, t, n) {
                 if (r === s.EmptyPattern) return;
                 const l = [];
                 (t.accept((e) => {
-                    if (e instanceof o.GElement && !e.hasMixin(o.GAnnotation)) {
+                    if (e instanceof GObject.GElement && !e.hasMixin(GObject.GAnnotation)) {
                         const t = this._createPattern([e]);
                         this._matches(r, t) && l.push(e);
                     }
@@ -68,13 +68,13 @@ module.exports = function (e, t, n) {
                         i.GEditor.tryRunTransaction(
                             t,
                             () => {
-                                n.updateSelection(!1, l);
+                                n.updateSelection(false, l);
                             },
-                            o.GLocale.get(this.getTitle())
+                            GObject.GLocale.get(this.getTitle())
                         ));
             }),
             (s.prototype.toString = function () {
                 return "[Object GSelectByAction]";
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

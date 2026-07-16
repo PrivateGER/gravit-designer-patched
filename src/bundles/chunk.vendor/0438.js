@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(11),
-                r = i(17),
+module.exports = function (module, exports, require) {
+            var n = require(11),
+                r = require(17),
                 o = function () {};
             ((o.PIXEL_RATE_STDDEVIATION = 2.3290429691304455),
                 (o.createIdUrl = function (e) {
@@ -62,16 +62,16 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (o.setAttributeId = function (e, t, i) {
-                    i.layerNamesAsId ? e.setAttribute("id", t.getProperty("name") || t.getNodeNameTranslated()) : (e._keepIt = !0);
+                    i.layerNamesAsId ? e.setAttribute("id", t.getProperty("name") || t.getNodeNameTranslated()) : (e._keepIt = true);
                 }),
                 (o.exportAttributes = function (e, t, i) {
                     if (i.layerNamesAsId) {
-                        var n = t.getProperty("svgattrs", !0);
+                        var n = t.getProperty("svgattrs", true);
                         n &&
                             Object.keys(n).forEach(function (t) {
                                 e.setAttribute(t, n[t]);
                             });
                     }
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

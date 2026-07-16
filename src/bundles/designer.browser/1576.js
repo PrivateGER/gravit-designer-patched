@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(30);
-        const o = n(1186);
-        e.exports = class extends o {
+        require(30);
+        const o = require(1186);
+        module.exports = class extends o {
             constructor(e) {
                 (super(), (this._crossViewClass = e), (this._dialogOptions = {}));
             }

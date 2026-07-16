@@ -1,16 +1,16 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(290), n(57), n(4), n(13));
+        var o = require(16);
+        (require(290), require(57), require(4), require(13));
         var i,
             a,
             r,
-            s = n(15),
-            l = n(1),
-            c = o(n(11)),
-            d = n(10),
-            u = n(67),
-            p = o(n(1342)),
+            GPlatform = require(15),
+            GObject = require(1),
+            c = o(require(11)),
+            designerConfig = require(10),
+            u = require(67),
+            p = o(require(1342)),
             g = {
                 init: function (e) {
                     if (e) {
@@ -19,23 +19,23 @@ module.exports = function (e, t, n) {
                             (e = $.extend(
                                 {
                                     title: "No title",
-                                    isPro: !1,
+                                    isPro: false,
                                     shortcut: null,
                                     video: null,
                                     pic: null,
                                     description: null,
                                     videoTimeout: 2e3,
-                                    middle: !0,
+                                    middle: true,
                                     marginLeft: 0,
-                                    side: !1,
+                                    side: false,
                                     learnMore: null,
                                     upgradeToProStatsValue: null,
-                                    forceShow: !1,
-                                    flipHorizontal: !1,
+                                    forceShow: false,
+                                    flipHorizontal: false,
                                 },
                                 e.getConfig()
                             )),
-                            d.IS_COREL && !e.forceShow
+                            designerConfig.IS_COREL && !e.forceShow
                                 ? this
                                 : this.each(function () {
                                       const t = $(this);
@@ -44,13 +44,13 @@ module.exports = function (e, t, n) {
                                           t.on("mouseover", function (e) {
                                               (i && (clearTimeout(i), (i = null)), a && (clearTimeout(a), (a = null)));
                                               var n = function () {
-                                                  (t.data("g-rich-tooltip-container-hovered", !0), g.showTooltip.call(t, e));
+                                                  (t.data("g-rich-tooltip-container-hovered", true), g.showTooltip.call(t, e));
                                               };
                                               r ? n() : (a = setTimeout(n, 500));
                                           }),
                                           t.on("mouseout", function (e) {
                                               (a && (clearTimeout(a), (a = null)),
-                                                  t.data("g-rich-tooltip-container-hovered", !1),
+                                                  t.data("g-rich-tooltip-container-hovered", false),
                                                   g.hideTooltip.call(t, e));
                                           }),
                                           t.on("mousedown", function () {
@@ -70,10 +70,10 @@ module.exports = function (e, t, n) {
                     gContainer.getProperty(p.default.StoragePropertyName).then((n) => {
                         ((t.enhanced = "boolean" != typeof n || n),
                             (r = g.createTooltip(t)).on("mouseover", function () {
-                                (i && (clearTimeout(i), (i = null)), e.data("g-rich-tooltip-self-tooltip-hovered", !0));
+                                (i && (clearTimeout(i), (i = null)), e.data("g-rich-tooltip-self-tooltip-hovered", true));
                             }),
                             r.on("mouseout", function () {
-                                (e.data("g-rich-tooltip-self-tooltip-hovered", !1), g.hideTooltip.call(e));
+                                (e.data("g-rich-tooltip-self-tooltip-hovered", false), g.hideTooltip.call(e));
                             }),
                             r.on("click", function () {
                                 g.close.call(e);
@@ -99,15 +99,15 @@ module.exports = function (e, t, n) {
                             .data("g-rich-tooltip-id", e._id)
                             .append(g.createTooltipContent(e))
                             .gOverlay({
-                                padding: !0,
-                                releaseOnClose: !0,
+                                padding: true,
+                                releaseOnClose: true,
                                 bottomClazz: "from-bottom",
                                 rightClazz: "from-right",
                                 offsetY: n,
                                 offsetX: t,
                                 bottomOffsetY: 6,
                                 clazz: "g-tooltip-content-overlay " + (e.flipHorizontal ? "flip-horizontal" : ""),
-                                disableDarkShadow: !0,
+                                disableDarkShadow: true,
                                 middle: e.middle,
                                 side: e.side,
                                 flipHorizontal: e.flipHorizontal,
@@ -133,7 +133,7 @@ module.exports = function (e, t, n) {
                         m = u
                             ? '<a href="'
                                   .concat(u, '" target="_blank">')
-                                  .concat(l.GLocale.get(new l.GLocaleKey("GCommonNames", "text.learn-more")), "</a>")
+                                  .concat(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.learn-more")), "</a>")
                             : "";
                     g = g ? "".concat(g, " ").concat(m) : m;
                     const y = $("<div />")
@@ -145,7 +145,7 @@ module.exports = function (e, t, n) {
                                 .toggleClass("simple", !d)
                                 .append(
                                     o && o.length
-                                        ? $("<div />").addClass("g-tooltip-content-shortcut").text(s.GKey.shortcutToString(o))
+                                        ? $("<div />").addClass("g-tooltip-content-shortcut").text(GPlatform.GKey.shortcutToString(o))
                                         : ""
                                 )
                                 .append(
@@ -175,8 +175,8 @@ module.exports = function (e, t, n) {
                                                   $("<div />")
                                                       .addClass("g-tooltip-pro-text")
                                                       .text(
-                                                          l.GLocale.get(
-                                                              new l.GLocaleKey("GCommonNames", "text.try-this-feature-pro-tooltip-text")
+                                                          GObject.GLocale.get(
+                                                              new GObject.GLocaleKey("GCommonNames", "text.try-this-feature-pro-tooltip-text")
                                                           )
                                                       )
                                               )
@@ -196,8 +196,8 @@ module.exports = function (e, t, n) {
                                         .attr("width", 298)
                                         .attr("height", 160)
                                         .attr("src", i)
-                                        .attr("autoplay", !0)
-                                        .attr("loop", !0);
+                                        .attr("autoplay", true)
+                                        .attr("loop", true);
                                     (t.on("loadeddata", function () {
                                         e.removeClass("loading");
                                     }),

@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(96), n(3), n(26), n(125), n(126), n(114));
-        var o = n(10),
-            i = n(40);
-        const a = n(1186),
-            r = n(1575);
-        e.exports = class extends a {
+        (require(19), require(96), require(3), require(26), require(125), require(126), require(114));
+        var designerConfig = require(10),
+            GSaveAction = require(40);
+        const a = require(1186),
+            r = require(1575);
+        module.exports = class extends a {
             constructor() {
-                (super(), (this._url = new URL(o.gApi.url)));
+                (super(), (this._url = new URL(designerConfig.gApi.url)));
             }
             setId(e) {
                 return ((this._id = e), this);
@@ -31,7 +31,7 @@ module.exports = function (e, t, n) {
                 return (e && this._url.searchParams.set("dashboard", e), this);
             }
             setProduct(e) {
-                return (e && this._url.searchParams.set("product", (0, i.stringToBase64String)(JSON.stringify(e))), this);
+                return (e && this._url.searchParams.set("product", (0, GSaveAction.stringToBase64String)(JSON.stringify(e))), this);
             }
             setInAppPurchasesAvailable(e) {
                 return (this._url.searchParams.set("iap", e), this);

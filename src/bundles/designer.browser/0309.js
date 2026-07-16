@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(27),
-            i = n(130),
-            a = n(62),
-            r = n(92),
+        var o = require(27),
+            i = require(130),
+            a = require(62),
+            r = require(92),
             s = o("".charAt),
             l = o("".charCodeAt),
             c = o("".slice),
@@ -27,5 +27,5 @@ module.exports = function (e, t, n) {
                             : d - 56320 + ((o - 55296) << 10) + 65536;
                 };
             };
-        e.exports = { codeAt: d(!1), charAt: d(!0) };
+        module.exports = { codeAt: d(false), charAt: d(true) };
     };

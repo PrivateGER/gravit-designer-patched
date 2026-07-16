@@ -1,24 +1,24 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (Object.defineProperty(t, "__esModule", { value: !0 }),
-            (t.cdrFormatVersionToReleaseYear = function (e) {
+        var o = require(16);
+        (Object.defineProperty(exports, "__esModule", { value: true }),
+            (exports.cdrFormatVersionToReleaseYear = function (e) {
                 return parseFloat(e) + 2e3 - 2;
             }),
-            (t.prepareCDRforSaving = t.default = void 0),
-            (t.releaseYearToCdrFormatVersion = function (e) {
+            (exports.prepareCDRforSaving = exports.default = void 0),
+            (exports.releaseYearToCdrFormatVersion = function (e) {
                 return e && e >= 2020 ? e - 2e3 + 2 : 0;
             }),
-            n(193),
-            n(8));
-        var i = n(1),
-            a = o(n(217)),
-            r = o(n(86));
-        const s = n(1101),
-            l = (t.prepareCDRforSaving = async function (e, t, n, o, l) {
-                if (!gDesigner.getCDRIntegrationEngine()) return (t(), !1);
+            require(193),
+            require(8 /* Symbol */));
+        var GObject = require(1),
+            a = o(require(217)),
+            r = o(require(86));
+        const s = require(1101),
+            l = (exports.prepareCDRforSaving = async function (e, t, n, o, l) {
+                if (!gDesigner.getCDRIntegrationEngine()) return (t(), false);
                 const c = await gDesigner.getUser();
-                n.userName = c ? c.getFullUserName() : i.GLocale.get(new i.GLocaleKey("GDocument", "text.default-export-author"));
+                n.userName = c ? c.getFullUserName() : GObject.GLocale.get(new GObject.GLocaleKey("GDocument", "text.default-export-author"));
                 const d = (n) => {
                     if ((n.status !== r.default.Saving && e.removeEventListener(a.default, d), n.status === r.default.SaveFailed)) {
                         let e = "unexpected";
@@ -28,7 +28,7 @@ module.exports = function (e, t, n) {
                                 let n = new Error(
                                     this.getTitle() +
                                         ": " +
-                                        i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.file-too-large-cannot-be-processed"))
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.file-too-large-cannot-be-processed"))
                                 );
                                 ((n.code = 507), t(n));
                             }
@@ -50,5 +50,5 @@ module.exports = function (e, t, n) {
                     )
                 );
             });
-        t.default = { prepareCDRforSaving: l };
+        exports.default = { prepareCDRforSaving: l };
     };

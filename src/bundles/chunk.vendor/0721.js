@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(105),
-                r = i(89).Parser,
+            var n = require(105),
+                r = require(89 /* Parser */).Parser,
                 o = new Array(9),
-                a = i(115);
+                a = require(115);
             ((o[1] = function () {
                 var e = this.offset + this.relativeOffset,
                     t = this.parseUShort();
@@ -19,7 +19,7 @@ module.exports = function (e, t, i) {
                             coverage: this.parsePointer(r.coverage),
                             substitute: this.parseOffset16List(),
                         }
-                      : void n.assert(!1, "0x" + e.toString(16) + ": lookup type 1 format must be 1 or 2.");
+                      : void n.assert(false, "0x" + e.toString(16) + ": lookup type 1 format must be 1 or 2.");
             }),
                 (o[2] = function () {
                     var e = this.parseUShort();
@@ -102,7 +102,7 @@ module.exports = function (e, t, i) {
                         lookupRecords: this.parseRecordList(o, s),
                     };
                 }
-                n.assert(!1, "0x" + e.toString(16) + ": lookup type 5 format must be 1, 2 or 3.");
+                n.assert(false, "0x" + e.toString(16) + ": lookup type 5 format must be 1, 2 or 3.");
             }),
                 (o[6] = function () {
                     var e = this.offset + this.relativeOffset,
@@ -144,7 +144,7 @@ module.exports = function (e, t, i) {
                                   lookaheadCoverage: this.parseList(r.pointer(r.coverage)),
                                   lookupRecords: this.parseRecordList(s),
                               }
-                            : void n.assert(!1, "0x" + e.toString(16) + ": lookup type 6 format must be 1, 2 or 3.");
+                            : void n.assert(false, "0x" + e.toString(16) + ": lookup type 6 format must be 1, 2 or 3.");
                 }),
                 (o[7] = function () {
                     var e = this.parseUShort();
@@ -268,7 +268,7 @@ module.exports = function (e, t, i) {
                         )
                     );
                 }),
-                (t.parse = function (e, t) {
+                (exports.parse = function (e, t) {
                     var i = new r(e, (t = t || 0)),
                         a = i.parseVersion(1);
                     return (
@@ -289,7 +289,7 @@ module.exports = function (e, t, i) {
                               }
                     );
                 }),
-                (t.make = function (e) {
+                (exports.make = function (e) {
                     return new a.Table("GSUB", [
                         {
                             name: "version",

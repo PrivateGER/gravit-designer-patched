@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(89),
-                r = i(115),
+            var Parser = require(89),
+                r = require(115),
                 o = [
                     {
                         begin: 0,
@@ -496,17 +496,17 @@ module.exports = function (e, t, i) {
                         end: 127135,
                     },
                 ];
-            ((t.unicodeRanges = o),
-                (t.getUnicodeRange = function (e) {
+            ((exports.unicodeRanges = o),
+                (exports.getUnicodeRange = function (e) {
                     for (var t = 0; t < o.length; t += 1) {
                         var i = o[t];
                         if (e >= i.begin && e < i.end) return t;
                     }
                     return -1;
                 }),
-                (t.parse = function (e, t) {
+                (exports.parse = function (e, t) {
                     var i = {},
-                        r = new n.Parser(e, t);
+                        r = new Parser.Parser(e, t);
                     ((i.version = r.parseUShort()),
                         (i.xAvgCharWidth = r.parseShort()),
                         (i.usWeightClass = r.parseUShort()),
@@ -549,7 +549,7 @@ module.exports = function (e, t, i) {
                         i
                     );
                 }),
-                (t.make = function (e) {
+                (exports.make = function (e) {
                     return new r.Table(
                         "OS/2",
                         [

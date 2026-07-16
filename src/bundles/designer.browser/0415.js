@@ -1,18 +1,18 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(49),
-            i = n(27),
-            a = n(29),
-            r = n(21),
-            s = n(405),
-            l = n(404),
-            c = n(396),
-            d = n(93),
-            u = n(240),
+        var o = require(49),
+            i = require(27),
+            a = require(29),
+            r = require(21),
+            s = require(405),
+            l = require(404),
+            c = require(396),
+            d = require(93),
+            u = require(240),
             p = Object.assign,
             g = Object.defineProperty,
             h = i([].concat);
-        e.exports =
+        module.exports =
             !p ||
             r(function () {
                 if (
@@ -22,16 +22,16 @@ module.exports = function (e, t, n) {
                             { b: 1 },
                             p(
                                 g({}, "a", {
-                                    enumerable: !0,
+                                    enumerable: true,
                                     get: function () {
-                                        g(this, "b", { value: 3, enumerable: !1 });
+                                        g(this, "b", { value: 3, enumerable: false });
                                     },
                                 }),
                                 { b: 2 }
                             )
                         ).b
                 )
-                    return !0;
+                    return true;
                 var e = {},
                     t = {},
                     n = Symbol("assign detection");

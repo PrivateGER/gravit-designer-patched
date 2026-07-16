@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(240),
-            i = n(92);
-        e.exports = function (e) {
+        var o = require(240),
+            i = require(92);
+        module.exports = function (e) {
             return o(i(e));
         };
     };

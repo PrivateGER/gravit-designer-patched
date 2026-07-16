@@ -1,21 +1,21 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(124),
-            i = n(29),
-            a = n(37),
-            r = n(185),
-            s = n(305),
-            l = n(101),
-            c = n(144),
-            d = n(246),
-            u = n(204),
-            p = n(102),
+        var o = require(124),
+            i = require(29),
+            a = require(37),
+            r = require(185),
+            s = require(305),
+            l = require(101),
+            c = require(144),
+            d = require(246),
+            u = require(204),
+            p = require(102),
             g = TypeError,
             h = function (e, t) {
                 ((this.stopped = e), (this.result = t));
             },
             f = h.prototype;
-        e.exports = function (e, t, n) {
+        module.exports = function (e, t, n) {
             var m,
                 y,
                 v,
@@ -30,7 +30,7 @@ module.exports = function (e, t, n) {
                 T = !(!n || !n.INTERRUPTED),
                 G = o(t, x),
                 P = function (e) {
-                    return (m && p(m, "normal", e), new h(!0, e));
+                    return (m && p(m, "normal", e), new h(true, e));
                 },
                 D = function (e) {
                     return S ? (a(e), T ? G(e[0], e[1], P) : G(e[0], e[1])) : T ? G(e, P) : G(e);
@@ -41,7 +41,7 @@ module.exports = function (e, t, n) {
                 if (!(y = u(e))) throw new g(r(e) + " is not iterable");
                 if (s(y)) {
                     for (v = 0, _ = l(e); _ > v; v++) if ((b = D(e[v])) && c(f, b)) return b;
-                    return new h(!1);
+                    return new h(false);
                 }
                 m = d(e, y);
             }
@@ -53,6 +53,6 @@ module.exports = function (e, t, n) {
                 }
                 if ("object" == typeof b && b && c(f, b)) return b;
             }
-            return new h(!1);
+            return new h(false);
         };
     };

@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            e.exports = {
+            module.exports = {
                 SetPassword: "set-password",
                 ResetPassword: "reset-password",
                 PasswordlessToken: "passwordless-token",

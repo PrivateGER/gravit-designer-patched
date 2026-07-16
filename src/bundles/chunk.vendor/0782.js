@@ -1,32 +1,32 @@
-module.exports = function (e, t, i) {
-            var n = i(147),
-                r = i(2),
-                o = i(0),
-                a = i(17),
-                s = i(5),
-                l = i(24),
-                h = i(48),
-                A = i(276),
-                c = i(54),
-                p = i(7),
-                u = i(12),
-                d = i(39),
-                g = i(81),
-                f = i(64),
-                m = i(14);
+module.exports = function (module, exports, require) {
+            var n = require(147),
+                r = require(2),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(17),
+                s = require(5),
+                l = require(24),
+                h = require(48),
+                A = require(276),
+                c = require(54),
+                p = require(7),
+                u = require(12),
+                d = require(39),
+                g = require(81),
+                f = require(64),
+                m = require(14);
 
             function y() {
                 A.call(this);
             }
-            (o.inherit(y, A),
+            (IsFiniteNonNegativeNumber.inherit(y, A),
                 (y.prototype.activate = function (e) {
                     if (
                         e.propName &&
                         e.propHolder instanceof r &&
-                        e.propHolder.getProperty(e.propName, !1, null, e.propTemporary) instanceof n
+                        e.propHolder.getProperty(e.propName, false, null, e.propTemporary) instanceof n
                     )
                         return A.prototype.activate.call(this, e);
-                    return !1;
+                    return false;
                 }),
                 (y.prototype.paint = function (e, t) {
                     var i = this._getAnnotationPoints();
@@ -55,10 +55,10 @@ module.exports = function (e, t, i) {
                         for (n = 0; n < i.length; ++n) {
                             this._partSelection && this._partSelection.length && this._partSelection[0].idx == n
                                 ? (d = n)
-                                : g.paintAnnotation(t, null, i[n], r.type, !1, r.size, a.WHITE, a.WHITE, r.outlineWidth, r.shadowColor);
+                                : g.paintAnnotation(t, null, i[n], r.type, false, r.size, a.WHITE, a.WHITE, r.outlineWidth, r.shadowColor);
                         }
                         null !== d &&
-                            g.paintAnnotation(t, null, i[d], r.type, !1, r.sizeBig, a.WHITE, u[d].color, r.outlineWidth, r.shadowColor);
+                            g.paintAnnotation(t, null, i[d], r.type, false, r.sizeBig, a.WHITE, u[d].color, r.outlineWidth, r.shadowColor);
                     }
                     A.prototype.paint.call(this, e, t);
                 }),
@@ -69,7 +69,7 @@ module.exports = function (e, t, i) {
                             function (i, n) {
                                 if (
                                     g
-                                        .getAnnotationBBox(t, i, l.annotationHandles.gradient.size, !1)
+                                        .getAnnotationBBox(t, i, l.annotationHandles.gradient.size, false)
                                         .expanded(l.annotPickDistance, l.annotPickDistance, l.annotPickDistance, l.annotPickDistance)
                                         .containsPoint(e) &&
                                     ((r = new d.PartInfo(
@@ -79,14 +79,14 @@ module.exports = function (e, t, i) {
                                             idx: n,
                                         },
                                         {
-                                            noEditorSelectionChangedEvent: !0,
+                                            noEditorSelectionChangedEvent: true,
                                         },
-                                        !0,
-                                        !0
+                                        true,
+                                        true
                                     )),
                                     this._partSelection && this._partSelection.length && this._partSelection[0].idx == n)
                                 )
-                                    return !0;
+                                    return true;
                             }.bind(this)
                         ),
                         r)
@@ -113,10 +113,10 @@ module.exports = function (e, t, i) {
                                         pos: m,
                                     },
                                     {
-                                        noEditorSelectionChangedEvent: !0,
+                                        noEditorSelectionChangedEvent: true,
                                     },
-                                    !0,
-                                    !0
+                                    true,
+                                    true
                                 )));
                         }
                     }
@@ -125,7 +125,7 @@ module.exports = function (e, t, i) {
                 (y.prototype.movePart = function (e, t, i, n, r, o, a) {
                     if ((A.prototype.movePart.call(this, e, t, i, n, r, o, a), e && e.type === A.STOP_HANDLE_PART_ID)) {
                         var l = i,
-                            h = this._getCompositeTransform(!1).inverted(),
+                            h = this._getCompositeTransform(false).inverted(),
                             c = this._getGradientPoints(),
                             d = e.idx,
                             g = this._getAnnotationPoints();
@@ -173,11 +173,11 @@ module.exports = function (e, t, i) {
                                 (this._angleDelta = k),
                                 (this._scaleDelta = R),
                                 this._gradient.setTransform(P),
-                                this._propHolder.setProperty(this._propName, this._gradient.clone(), !1, !1, !0));
+                                this._propHolder.setProperty(this._propName, this._gradient.clone(), false, false, true));
                         } else if (d > 0 && d < c.length - 1 && m && y) {
                             var U = n ? n.inverted() : null;
                             (U && ((m = U.mapPoint(m)), (y = U.mapPoint(y))),
-                                (l = u.getVectorProjection(m.getX(), m.getY(), y.getX(), y.getY(), l.getX(), l.getY(), !0, !0)),
+                                (l = u.getVectorProjection(m.getX(), m.getY(), y.getX(), y.getY(), l.getX(), l.getY(), true, true)),
                                 (l = n ? n.mapPoint(l) : l),
                                 (l = h.mapPoint(l)));
                             var V = u.ptDist(l.getX(), l.getY(), this._gradient._fx, this._gradient._fy),
@@ -186,7 +186,7 @@ module.exports = function (e, t, i) {
                             (O < L[0].position ? (O = L[0].position) : O > L[L.length - 1].position && (O = L[L.length - 1].position),
                                 (L[d].position = O),
                                 this._synchIdx(e),
-                                this._propHolder.setProperty(this._propName, this._gradient.clone(), !1, !1, !0));
+                                this._propHolder.setProperty(this._propName, this._gradient.clone(), false, false, true));
                         }
                     }
                 }),
@@ -216,7 +216,7 @@ module.exports = function (e, t, i) {
                         A.prototype.resetPartMove.call(this, e, t));
                 }),
                 (y.prototype._getAnnotationPoints = function () {
-                    for (var e = this._getGradientPoints(), t = this._getCompositeTransform(!0), i = 0; i < e.length; ++i)
+                    for (var e = this._getGradientPoints(), t = this._getCompositeTransform(true), i = 0; i < e.length; ++i)
                         e[i] = t.mapPoint(e[i]);
                     return e;
                 }),
@@ -240,5 +240,5 @@ module.exports = function (e, t, i) {
                 (y.prototype.toString = function () {
                     return "[Object GLinearGradientEditor]";
                 }),
-                (e.exports = y));
+                (module.exports = y));
         };

@@ -1,4 +1,4 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
 
             function n(e, t, i, n, r) {
@@ -67,5 +67,5 @@ module.exports = function (e, t, i) {
                         h = s + (1 / 3) * (o - t);
                     this.addBezier(e, t, a, s, l, h, r, o);
                 }),
-                (t.BoundingBox = r));
+                (exports.BoundingBox = r));
         };

@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(1);
+        var GObject = require(1);
         function i() {}
         ((i.CheckingForUpdate = function () {
             let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
             this.isSilent = e.isSilent;
         }),
-            o.GObject.inherit(i.CheckingForUpdate, o.GEvent),
+            GObject.GObject.inherit(i.CheckingForUpdate, GObject.GEvent),
             (i.InstallUpdate = function () {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 this.isSilent = e.isSilent;
             }),
-            o.GObject.inherit(i.InstallUpdate, o.GEvent),
+            GObject.GObject.inherit(i.InstallUpdate, GObject.GEvent),
             (i.UpdateAvailable = function () {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 ((this.newVersion = e.newVersion),
@@ -19,36 +19,36 @@ module.exports = function (e, t, n) {
                     (this.forceUpdate = e.forceUpdate),
                     (this.isSilent = e.isSilent));
             }),
-            o.GObject.inherit(i.UpdateAvailable, o.GEvent),
+            GObject.GObject.inherit(i.UpdateAvailable, GObject.GEvent),
             (i.UpdateError = function () {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 ((this.error = e.error), (this.isSilent = e.isSilent));
             }),
-            o.GObject.inherit(i.UpdateError, o.GEvent),
+            GObject.GObject.inherit(i.UpdateError, GObject.GEvent),
             (i.Downloading = function () {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 ((this.percent = e.percent), (this.size = e.size), (this.newVersion = e.newVersion), (this.isSilent = e.isSilent));
             }),
-            o.GObject.inherit(i.Downloading, o.GEvent),
+            GObject.GObject.inherit(i.Downloading, GObject.GEvent),
             (i.DownloadComplete = function () {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 ((this.newVersion = e.newVersion), (this.forceUpdate = e.forceUpdate), (this.isSilent = e.isSilent));
             }),
-            o.GObject.inherit(i.DownloadComplete, o.GEvent),
+            GObject.GObject.inherit(i.DownloadComplete, GObject.GEvent),
             (i.AfterUpdate = function () {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 ((this.currentVersion = e.currentVersion), (this.isSilent = e.isSilent));
             }),
-            o.GObject.inherit(i.AfterUpdate, o.GEvent),
+            GObject.GObject.inherit(i.AfterUpdate, GObject.GEvent),
             (i.UpdateNotAvailable = function () {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 ((this.currentVersion = e.currentVersion), (this.isSilent = e.isSilent));
             }),
-            o.GObject.inherit(i.UpdateNotAvailable, o.GEvent),
+            GObject.GObject.inherit(i.UpdateNotAvailable, GObject.GEvent),
             (i.BeforeInstallUpdate = function () {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 this.isSilent = e.isSilent;
             }),
-            o.GObject.inherit(i.BeforeInstallUpdate, o.GEvent),
-            (e.exports = i));
+            GObject.GObject.inherit(i.BeforeInstallUpdate, GObject.GEvent),
+            (module.exports = i));
     };

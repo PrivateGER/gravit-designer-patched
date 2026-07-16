@@ -1,5 +1,5 @@
-module.exports = function (e, t) {
-            e.exports = {
+module.exports = function (module, exports) {
+            module.exports = {
                 Designer: "Designer",
                 Cloud: "Cloud",
                 Analytics: "Analytics",

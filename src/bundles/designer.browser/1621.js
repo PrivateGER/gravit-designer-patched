@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = (n(18), n(31));
+        require(3);
+        var GObject = require(1),
+            i = (require(18 /* GCategory */), require(31));
         function a(e) {
             let { name: t, category: n, group: i, link: a, icon: r, builder: s } = e;
             ((this._name = t),
@@ -10,11 +10,11 @@ module.exports = function (e, t, n) {
                 (this._group = i),
                 (this._link = a),
                 (this._builder = s),
-                (this._title = new o.GLocaleKey("GOpenLinkAction", "title." + t)),
+                (this._title = new GObject.GLocaleKey("GOpenLinkAction", "title." + t)),
                 (this._icon = r));
         }
-        ((a.Links = n(1622)),
-            o.GObject.inherit(a, i),
+        ((a.Links = require(1622)),
+            GObject.GObject.inherit(a, i),
             (a.ID = "open-link"),
             (a.prototype._name = null),
             (a.prototype._title = null),
@@ -34,7 +34,7 @@ module.exports = function (e, t, n) {
                 return this._group;
             }),
             (a.prototype.isEnabled = function () {
-                return !0;
+                return true;
             }),
             (a.prototype.execute = function () {
                 if (this._link || this._builder) {
@@ -45,5 +45,5 @@ module.exports = function (e, t, n) {
             (a.prototype.toString = function () {
                 return "[Object GOpenLinkAction]";
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

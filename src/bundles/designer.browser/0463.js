@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o,
-            i = n(94),
-            a = n(464),
-            r = n(310),
-            s = n(311),
-            l = n(225);
+            i = require(94),
+            a = require(464),
+            r = require(310),
+            s = require(311),
+            l = require(225);
         function c(e, t) {
             return ((e.msg = l[t]), t);
         }
@@ -173,11 +173,11 @@ module.exports = function (e, t, n) {
                             (e.ins_h = e.window[e.strstart]),
                             (e.ins_h = ((e.ins_h << e.hash_shift) ^ e.window[e.strstart + 1]) & e.hash_mask));
                 else ((o = a._tr_tally(e, 0, e.window[e.strstart])), e.lookahead--, e.strstart++);
-                if (o && (g(e, !1), 0 === e.strm.avail_out)) return 1;
+                if (o && (g(e, false), 0 === e.strm.avail_out)) return 1;
             }
             return (
                 (e.insert = e.strstart < 2 ? e.strstart : 2),
-                4 === t ? (g(e, !0), 0 === e.strm.avail_out ? 3 : 4) : e.last_lit && (g(e, !1), 0 === e.strm.avail_out) ? 1 : 2
+                4 === t ? (g(e, true), 0 === e.strm.avail_out ? 3 : 4) : e.last_lit && (g(e, false), 0 === e.strm.avail_out) ? 1 : 2
             );
         }
         function _(e, t) {
@@ -214,10 +214,10 @@ module.exports = function (e, t, n) {
                             (n = e.prev[e.strstart & e.w_mask] = e.head[e.ins_h]),
                             (e.head[e.ins_h] = e.strstart));
                     } while (0 != --e.prev_length);
-                    if (((e.match_available = 0), (e.match_length = 2), e.strstart++, o && (g(e, !1), 0 === e.strm.avail_out))) return 1;
+                    if (((e.match_available = 0), (e.match_length = 2), e.strstart++, o && (g(e, false), 0 === e.strm.avail_out))) return 1;
                 } else if (e.match_available) {
                     if (
-                        ((o = a._tr_tally(e, 0, e.window[e.strstart - 1])) && g(e, !1), e.strstart++, e.lookahead--, 0 === e.strm.avail_out)
+                        ((o = a._tr_tally(e, 0, e.window[e.strstart - 1])) && g(e, false), e.strstart++, e.lookahead--, 0 === e.strm.avail_out)
                     )
                         return 1;
                 } else ((e.match_available = 1), e.strstart++, e.lookahead--);
@@ -225,7 +225,7 @@ module.exports = function (e, t, n) {
             return (
                 e.match_available && ((o = a._tr_tally(e, 0, e.window[e.strstart - 1])), (e.match_available = 0)),
                 (e.insert = e.strstart < 2 ? e.strstart : 2),
-                4 === t ? (g(e, !0), 0 === e.strm.avail_out ? 3 : 4) : e.last_lit && (g(e, !1), 0 === e.strm.avail_out) ? 1 : 2
+                4 === t ? (g(e, true), 0 === e.strm.avail_out ? 3 : 4) : e.last_lit && (g(e, false), 0 === e.strm.avail_out) ? 1 : 2
             );
         }
         function b(e, t, n, o, i) {
@@ -381,14 +381,14 @@ module.exports = function (e, t, n) {
                     var o = e.block_start + n;
                     if (
                         (0 === e.strstart || e.strstart >= o) &&
-                        ((e.lookahead = e.strstart - o), (e.strstart = o), g(e, !1), 0 === e.strm.avail_out)
+                        ((e.lookahead = e.strstart - o), (e.strstart = o), g(e, false), 0 === e.strm.avail_out)
                     )
                         return 1;
-                    if (e.strstart - e.block_start >= e.w_size - 262 && (g(e, !1), 0 === e.strm.avail_out)) return 1;
+                    if (e.strstart - e.block_start >= e.w_size - 262 && (g(e, false), 0 === e.strm.avail_out)) return 1;
                 }
                 return (
                     (e.insert = 0),
-                    4 === t ? (g(e, !0), 0 === e.strm.avail_out ? 3 : 4) : (e.strstart > e.block_start && (g(e, !1), e.strm.avail_out), 1)
+                    4 === t ? (g(e, true), 0 === e.strm.avail_out ? 3 : 4) : (e.strstart > e.block_start && (g(e, false), e.strm.avail_out), 1)
                 );
             }),
             new b(4, 4, 8, 4, v),
@@ -401,16 +401,16 @@ module.exports = function (e, t, n) {
             new b(32, 128, 258, 1024, _),
             new b(32, 258, 258, 4096, _),
         ]),
-            (t.deflateInit = function (e, t) {
+            (exports.deflateInit = function (e, t) {
                 return S(e, t, 8, 15, 8, 0);
             }),
-            (t.deflateInit2 = S),
-            (t.deflateReset = x),
-            (t.deflateResetKeep = C),
-            (t.deflateSetHeader = function (e, t) {
+            (exports.deflateInit2 = S),
+            (exports.deflateReset = x),
+            (exports.deflateResetKeep = C),
+            (exports.deflateSetHeader = function (e, t) {
                 return e && e.state ? (2 !== e.state.wrap ? -2 : ((e.state.gzhead = t), 0)) : -2;
             }),
-            (t.deflate = function (e, t) {
+            (exports.deflate = function (e, t) {
                 var n, i, r, l;
                 if (!e || !e.state || t > 5 || t < 0) return e ? c(e, -2) : -2;
                 if (((i = e.state), !e.output || (!e.input && 0 !== e.avail_in) || (666 === i.status && 4 !== t)))
@@ -540,15 +540,15 @@ module.exports = function (e, t, n) {
                                           (n = a._tr_tally(e, 0, e.window[e.strstart])),
                                           e.lookahead--,
                                           e.strstart++,
-                                          n && (g(e, !1), 0 === e.strm.avail_out))
+                                          n && (g(e, false), 0 === e.strm.avail_out))
                                       )
                                           return 1;
                                   }
                                   return (
                                       (e.insert = 0),
                                       4 === t
-                                          ? (g(e, !0), 0 === e.strm.avail_out ? 3 : 4)
-                                          : e.last_lit && (g(e, !1), 0 === e.strm.avail_out)
+                                          ? (g(e, true), 0 === e.strm.avail_out ? 3 : 4)
+                                          : e.last_lit && (g(e, false), 0 === e.strm.avail_out)
                                             ? 1
                                             : 2
                                   );
@@ -590,15 +590,15 @@ module.exports = function (e, t, n) {
                                                   (e.strstart += e.match_length),
                                                   (e.match_length = 0))
                                                 : ((n = a._tr_tally(e, 0, e.window[e.strstart])), e.lookahead--, e.strstart++),
-                                            n && (g(e, !1), 0 === e.strm.avail_out))
+                                            n && (g(e, false), 0 === e.strm.avail_out))
                                         )
                                             return 1;
                                     }
                                     return (
                                         (e.insert = 0),
                                         4 === t
-                                            ? (g(e, !0), 0 === e.strm.avail_out ? 3 : 4)
-                                            : e.last_lit && (g(e, !1), 0 === e.strm.avail_out)
+                                            ? (g(e, true), 0 === e.strm.avail_out ? 3 : 4)
+                                            : e.last_lit && (g(e, false), 0 === e.strm.avail_out)
                                               ? 1
                                               : 2
                                     );
@@ -611,7 +611,7 @@ module.exports = function (e, t, n) {
                         (1 === t
                             ? a._tr_align(i)
                             : 5 !== t &&
-                              (a._tr_stored_block(i, 0, 0, !1),
+                              (a._tr_stored_block(i, 0, 0, false),
                               3 === t && (u(i.head), 0 === i.lookahead && ((i.strstart = 0), (i.block_start = 0), (i.insert = 0)))),
                         p(e),
                         0 === e.avail_out)
@@ -636,7 +636,7 @@ module.exports = function (e, t, n) {
                         i.wrap > 0 && (i.wrap = -i.wrap),
                         0 !== i.pending ? 0 : 1);
             }),
-            (t.deflateEnd = function (e) {
+            (exports.deflateEnd = function (e) {
                 var t;
                 return e && e.state
                     ? 42 !== (t = e.state.status) && 69 !== t && 73 !== t && 91 !== t && 103 !== t && 113 !== t && 666 !== t
@@ -644,7 +644,7 @@ module.exports = function (e, t, n) {
                         : ((e.state = null), 113 === t ? c(e, -3) : 0)
                     : -2;
             }),
-            (t.deflateSetDictionary = function (e, t) {
+            (exports.deflateSetDictionary = function (e, t) {
                 var n,
                     o,
                     a,
@@ -698,5 +698,5 @@ module.exports = function (e, t, n) {
                     0
                 );
             }),
-            (t.deflateInfo = "pako deflate (from Nodeca project)"));
+            (exports.deflateInfo = "pako deflate (from Nodeca project)"));
     };

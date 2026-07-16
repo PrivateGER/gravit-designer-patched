@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(108),
-                r = i(281),
-                o = i(11);
+module.exports = function (module, exports, require) {
+            var GFont = require(108),
+                r = require(281),
+                o = require(11);
 
             function a(e, t) {
                 ((this._fontManager = t),
@@ -36,8 +36,8 @@ module.exports = function (e, t, i) {
                 (a.prototype.getDefaultFont = function () {
                     return {
                         family: this._fontManager.getDefaultFont() ? this._fontManager.getDefaultFont().getFamily() : "Open Sans",
-                        style: this._fontManager.getDefaultFont() ? this._fontManager.getDefaultFont().getStyle() : n.Style.Normal,
-                        weight: this._fontManager.getDefaultFont() ? this._fontManager.getDefaultFont().getWeight() : n.Weight.Regular,
+                        style: this._fontManager.getDefaultFont() ? this._fontManager.getDefaultFont().getStyle() : GFont.Style.Normal,
+                        weight: this._fontManager.getDefaultFont() ? this._fontManager.getDefaultFont().getWeight() : GFont.Weight.Regular,
                     };
                 }),
                 (a.prototype.queryFirst = function (e, t) {
@@ -64,7 +64,7 @@ module.exports = function (e, t, i) {
                         var r = this._fontManager.getFont(e, t, i);
                         if (!r.isResolved() && !r.isFailed()) {
                             var a = o.find(this._unresolvedFonts, function (e) {
-                                return n.equals(r, e.font);
+                                return GFont.equals(r, e.font);
                             });
                             if (!a) {
                                 var s = {};
@@ -86,11 +86,11 @@ module.exports = function (e, t, i) {
                 (a.prototype._fontEvent = function (e) {
                     if (
                         !this._resolvedFonts.some(function (t) {
-                            return n.equals(e.font, t);
+                            return GFont.equals(e.font, t);
                         })
                     ) {
                         var t = o.find(this._unresolvedFonts, function (t) {
-                            return n.equals(e.font, t.font);
+                            return GFont.equals(e.font, t.font);
                         });
                         t && (this._resolvedFonts.push(e.font), t.promiseCapability.resolve());
                     }
@@ -107,5 +107,5 @@ module.exports = function (e, t, i) {
                         this._promise
                     );
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

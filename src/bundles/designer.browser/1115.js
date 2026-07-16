@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         (function (e) {
             var o = (void 0 !== e && e) || ("undefined" != typeof self && self) || window,
                 i = Function.prototype.apply;
             function a(e, t) {
                 ((this._id = e), (this._clearFn = t));
             }
-            ((t.setTimeout = function () {
+            ((exports.setTimeout = function () {
                 return new a(i.call(setTimeout, o, arguments), clearTimeout);
             }),
-                (t.setInterval = function () {
+                (exports.setInterval = function () {
                     return new a(i.call(setInterval, o, arguments), clearInterval);
                 }),
-                (t.clearTimeout = t.clearInterval =
+                (exports.clearTimeout = exports.clearInterval =
                     function (e) {
                         e && e.close();
                     }),
@@ -19,13 +19,13 @@ module.exports = function (e, t, n) {
                 (a.prototype.close = function () {
                     this._clearFn.call(o, this._id);
                 }),
-                (t.enroll = function (e, t) {
+                (exports.enroll = function (e, t) {
                     (clearTimeout(e._idleTimeoutId), (e._idleTimeout = t));
                 }),
-                (t.unenroll = function (e) {
+                (exports.unenroll = function (e) {
                     (clearTimeout(e._idleTimeoutId), (e._idleTimeout = -1));
                 }),
-                (t._unrefActive = t.active =
+                (exports._unrefActive = exports.active =
                     function (e) {
                         clearTimeout(e._idleTimeoutId);
                         var t = e._idleTimeout;
@@ -34,12 +34,12 @@ module.exports = function (e, t, n) {
                                 e._onTimeout && e._onTimeout();
                             }, t));
                     }),
-                n(1116),
-                (t.setImmediate =
+                require(1116),
+                (exports.setImmediate =
                     ("undefined" != typeof self && self.setImmediate) || (void 0 !== e && e.setImmediate) || (this && this.setImmediate)),
-                (t.clearImmediate =
+                (exports.clearImmediate =
                     ("undefined" != typeof self && self.clearImmediate) ||
                     (void 0 !== e && e.clearImmediate) ||
                     (this && this.clearImmediate)));
-        }).call(this, n(109));
+        }).call(this, require(109));
     };

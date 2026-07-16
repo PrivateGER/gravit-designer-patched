@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         let o;
-        (n(19), n(8), n(26));
+        (require(19), require(8 /* Symbol */), require(26));
         class i {
             static async getInstance() {
                 if (!o) {
-                    const e = await n.e(12).then(n.t.bind(null, 1740, 7));
+                    const e = await require.e(12).then(require.t.bind(null, 1740, 7));
                     o = e.default;
                 }
                 return new i();
@@ -14,5 +14,5 @@ module.exports = function (e, t, n) {
                 return o({ blob: e });
             }
         }
-        e.exports = i;
+        module.exports = i;
     };

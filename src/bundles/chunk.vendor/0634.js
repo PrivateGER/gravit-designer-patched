@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
-            var n = i(455),
-                r = i(884),
-                o = i(887),
-                a = i(888);
+module.exports = function (module, exports, require) {
+            var n = require(455),
+                r = require(884),
+                o = require(887),
+                a = require(888);
 
             function s() {}
             ((r = r.map(function (e) {
@@ -77,5 +77,5 @@ module.exports = function (e, t, i) {
                         });
                 }),
                 (s.Projects = n),
-                (e.exports = s));
+                (module.exports = s));
         };

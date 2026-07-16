@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(184),
-            i = n(244),
-            a = n(101),
+        var o = require(184),
+            i = require(244),
+            a = require(101),
             r = function (e) {
                 return function (t, n, r) {
                     var s = o(t),
@@ -11,10 +11,10 @@ module.exports = function (e, t, n) {
                     var c,
                         d = i(r, l);
                     if (e && n != n) {
-                        for (; l > d; ) if ((c = s[d++]) != c) return !0;
+                        for (; l > d; ) if ((c = s[d++]) != c) return true;
                     } else for (; l > d; d++) if ((e || d in s) && s[d] === n) return e || d || 0;
                     return !e && -1;
                 };
             };
-        e.exports = { includes: r(!0), indexOf: r(!1) };
+        module.exports = { includes: r(true), indexOf: r(false) };
     };

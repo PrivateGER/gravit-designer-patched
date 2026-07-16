@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         (function (e, o) {
-            var i = n(570),
-                a = n(660).spawn,
-                r = n(178);
-            t.XMLHttpRequest = function () {
+            var i = require(570),
+                a = require(660).spawn,
+                r = require(178);
+            exports.XMLHttpRequest = function () {
                 "use strict";
                 var t,
                     s,
                     l = this,
-                    c = n(571),
-                    d = n(572),
+                    c = require(571),
+                    d = require(572),
                     u = {},
-                    p = !1,
+                    p = false,
                     g = { "User-Agent": "node-XMLHttpRequest", Accept: "*/*" },
                     h = {},
                     f = {},
@@ -38,8 +38,8 @@ module.exports = function (e, t, n) {
                         "via",
                     ],
                     y = ["TRACE", "TRACK", "CONNECT"],
-                    v = !1,
-                    _ = !1,
+                    v = false,
+                    _ = false,
                     b = {};
                 ((this.UNSENT = 0),
                     (this.OPENED = 1),
@@ -52,11 +52,11 @@ module.exports = function (e, t, n) {
                     (this.responseXML = ""),
                     (this.status = null),
                     (this.statusText = null),
-                    (this.withCredentials = !1));
+                    (this.withCredentials = false));
                 ((this.open = function (e, t, n, o, i) {
                     if (
                         (this.abort(),
-                        (_ = !1),
+                        (_ = false),
                         !(function (e) {
                             return e && -1 === y.indexOf(e);
                         })(e))
@@ -105,17 +105,17 @@ module.exports = function (e, t, n) {
                             throw new Error("INVALID_STATE_ERR: connection must be opened before send() is called");
                         if (v) throw new Error("INVALID_STATE_ERR: send has already been called");
                         var p,
-                            m = !1,
-                            y = !1,
+                            m = false,
+                            y = false,
                             b = i.parse(u.url);
                         switch (b.protocol) {
                             case "https:":
-                                m = !0;
+                                m = true;
                             case "http:":
                                 p = b.hostname;
                                 break;
                             case "file:":
-                                y = !0;
+                                y = true;
                                 break;
                             case void 0:
                             case null:
@@ -158,12 +158,12 @@ module.exports = function (e, t, n) {
                                 path: x,
                                 method: u.method,
                                 headers: h,
-                                agent: !1,
+                                agent: false,
                                 withCredentials: l.withCredentials,
                             };
-                            if (((_ = !1), u.async)) {
+                            if (((_ = false), u.async)) {
                                 var T = m ? d.request : c.request;
-                                ((v = !0), l.dispatchEvent("readystatechange"));
+                                ((v = true), l.dispatchEvent("readystatechange"));
                                 var G = function (e) {
                                     l.handleError(e);
                                 };
@@ -176,7 +176,7 @@ module.exports = function (e, t, n) {
                                                 (e && (l.responseText += e), v && w(l.LOADING));
                                             }),
                                             s.on("end", function () {
-                                                v && (w(l.DONE), (v = !1));
+                                                v && (w(l.DONE), (v = false));
                                             }),
                                             s.on("error", function (e) {
                                                 l.handleError(e);
@@ -241,7 +241,7 @@ module.exports = function (e, t, n) {
                         ((this.status = 0),
                             (this.statusText = e),
                             (this.responseText = e.stack),
-                            (_ = !0),
+                            (_ = true),
                             w(this.DONE),
                             this.dispatchEvent("error"));
                     }),
@@ -251,11 +251,11 @@ module.exports = function (e, t, n) {
                             (this.status = 0),
                             (this.responseText = ""),
                             (this.responseXML = ""),
-                            (_ = !0),
+                            (_ = true),
                             this.readyState === this.UNSENT ||
                                 (this.readyState === this.OPENED && !v) ||
                                 this.readyState === this.DONE ||
-                                ((v = !1), w(this.DONE)),
+                                ((v = false), w(this.DONE)),
                             (this.readyState = this.UNSENT),
                             this.dispatchEvent("abort"));
                     }),
@@ -279,5 +279,5 @@ module.exports = function (e, t, n) {
                         l.readyState !== l.DONE || _ || (l.dispatchEvent("load"), l.dispatchEvent("loadend")));
                 };
             };
-        }).call(this, n(221).Buffer, n(183));
+        }).call(this, require(221 /* Buffer */).Buffer, require(183));
     };

@@ -1,5 +1,5 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(23);
-        e.exports = o.Promise;
+        var RegExp = require(23);
+        module.exports = RegExp.Promise;
     };

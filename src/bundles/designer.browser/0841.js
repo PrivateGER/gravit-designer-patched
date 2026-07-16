@@ -1,25 +1,25 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(96), n(4), n(13), n(32), n(33));
-        var o = n(1);
+        (require(96), require(4), require(13), require(32), require(33));
+        var GObject = require(1);
         function i(e, t, n, i) {
             ((this._dialog = $("<div></div>")),
                 (this._replacedFonts = {}),
-                (this.opened = !1),
+                (this.opened = false),
                 (this._document = e),
                 (this._callbacks = []),
                 (this._keepFontsButton = $(
-                    "<button>" + o.GLocale.get(new o.GLocaleKey("GMissingFontsDialog", "action.keep-fonts")) + "</button>"
+                    "<button>" + GObject.GLocale.get(new GObject.GLocaleKey("GMissingFontsDialog", "action.keep-fonts")) + "</button>"
                 ).on("click", () => this._keepFonts())),
-                this._hasFakeTextNodes() || (this._keepFontsButton.addClass("g-disabled"), this._keepFontsButton.attr("disabled", !0)),
+                this._hasFakeTextNodes() || (this._keepFontsButton.addClass("g-disabled"), this._keepFontsButton.attr("disabled", true)),
                 i && this._callbacks.push(i),
                 $("<div></div>")
                     .addClass("title")
-                    .text(o.GLocale.get(new o.GLocaleKey("GMissingFontsDialog", "text.fonts-missing")))
+                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GMissingFontsDialog", "text.fonts-missing")))
                     .appendTo(this._dialog),
                 $("<div></div>")
                     .addClass("subtitle")
-                    .text(o.GLocale.get(new o.GLocaleKey("GMissingFontsDialog", "text.fonts-not-found")))
+                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GMissingFontsDialog", "text.fonts-not-found")))
                     .appendTo(this._dialog),
                 (this._fontsContainer = $("<div></div>").addClass("fonts-container").appendTo(this._dialog)),
                 this.setMissingFonts(t));
@@ -27,19 +27,19 @@ module.exports = function (e, t, n) {
             (a.push(this._keepFontsButton),
                 e &&
                     a.unshift(
-                        $("<button>" + o.GLocale.get(new o.GLocaleKey("GMissingFontsDialog", "action.replace-fonts")) + "</button>").on(
+                        $("<button>" + GObject.GLocale.get(new GObject.GLocaleKey("GMissingFontsDialog", "action.replace-fonts")) + "</button>").on(
                             "click",
                             this._replaceFonts.bind(this)
                         )
                     ),
                 this.setProviderEnablers(n),
                 this._dialog.gDialog({
-                    releaseOnClose: !0,
+                    releaseOnClose: true,
                     className: "g-missingfonts-dialog",
                     buttons: a,
                 }));
         }
-        (o.GObject.inherit(i, o.GObject),
+        (GObject.GObject.inherit(i, GObject.GObject),
             (i.prototype.getMissingFonts = function () {
                 var e = [];
                 return (this._fontsContainer.find(".postscriptname").each((t, n) => e.push($(n).data("font"))), e);
@@ -48,7 +48,7 @@ module.exports = function (e, t, n) {
                 if (e && e.length > 0) {
                     $("<div></div>")
                         .addClass("subtitle")
-                        .text(o.GLocale.get(new o.GLocaleKey("GMissingFontsDialog", "text.turn-disabled-function")) + ":")
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GMissingFontsDialog", "text.turn-disabled-function")) + ":")
                         .css({ marginTop: "5px" })
                         .appendTo(this._dialog);
                     for (var t = 0; t < e.length; t++) $(e[t]).appendTo(this._dialog);
@@ -89,11 +89,11 @@ module.exports = function (e, t, n) {
                 } else this._keepFontsButton.hide();
             }),
             (i.prototype.open = function (e) {
-                var t = e || o.GLocale.get(new o.GLocaleKey("GMissingFontsDialog", "action.keep-fonts"));
-                (this._keepFontsButton.text(t), (this.opened = !0), this._dialog.gDialog("open", !1));
+                var t = e || GObject.GLocale.get(new GObject.GLocaleKey("GMissingFontsDialog", "action.keep-fonts"));
+                (this._keepFontsButton.text(t), (this.opened = true), this._dialog.gDialog("open", false));
             }),
             (i.prototype.close = function (e) {
-                ((this.opened = !1),
+                ((this.opened = false),
                     this._callbacks.forEach((t) => {
                         t(e ? this._replacedFonts : null);
                     }),
@@ -112,12 +112,12 @@ module.exports = function (e, t, n) {
                 } else this.close();
             }),
             (i.prototype._hasFakeTextNodes = function () {
-                var e = !1;
+                var e = false;
                 const t = this._document && this._document.getScene();
                 return (
                     t &&
                         t.acceptChildren((t) => {
-                            if (t instanceof o.GText && (t.isFakeText() || t.hasEmbeddedFonts())) return ((e = !0), !1);
+                            if (t instanceof GObject.GText && (t.isFakeText() || t.hasEmbeddedFonts())) return ((e = true), false);
                         }),
                     e
                 );
@@ -125,7 +125,7 @@ module.exports = function (e, t, n) {
             (i.prototype._replaceFonts = function () {
                 (gDesigner.stats("missingfonts_replace_fonts"),
                     this._document.getScene().acceptChildren((e) => {
-                        if (e instanceof o.GText)
+                        if (e instanceof GObject.GText)
                             if (e.isFakeText() || !e.$fontFamilies) e.replaceFonts(this._replacedFonts, e.hasEmbeddedFonts());
                             else {
                                 var t = gDesigner.getWorkspace().getFontManager().getDefaultFont(),
@@ -136,14 +136,14 @@ module.exports = function (e, t, n) {
                                         var a = (e.$fontFamilies && e.$fontFamilies[i]) || o.fontFamily;
                                         -1 !== n.indexOf(a) && (o.fontFamily = this._replacedFonts[a] || t.getFamily());
                                     }),
-                                    (e._runsDirty = !0),
+                                    (e._runsDirty = true),
                                     (e.$content = JSON.stringify(i)),
                                     e.setText(i),
                                     e.repaint());
                             }
-                        else if (e instanceof o.GStyle) {
+                        else if (e instanceof GObject.GStyle) {
                             var a = e.getProperty("_tff");
-                            this._replacedFonts instanceof o.GFont
+                            this._replacedFonts instanceof GObject.GFont
                                 ? e.setProperties(
                                       ["_tff", "_tfs", "_tfw"],
                                       [this._replacedFonts.getFamily(), this._replacedFonts.getStyle(), this._replacedFonts.getWeight()]
@@ -151,7 +151,7 @@ module.exports = function (e, t, n) {
                                 : a && this._replacedFonts[a] && e.setProperty("_tff", this._replacedFonts[a]);
                         }
                     }),
-                    this.close(!0));
+                    this.close(true));
             }),
-            (e.exports = i));
+            (module.exports = i));
     };

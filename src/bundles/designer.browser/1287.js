@@ -1,31 +1,31 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(20), n(3), n(34));
-        var o = n(1),
-            i = n(18),
-            a = n(31);
-        n(173);
+        (require(20), require(3), require(34));
+        var GObject = require(1),
+            GCategory = require(18),
+            a = require(31);
+        require(173);
         function r(e, t) {
             ((this._guideId = e), (this._guideName = t));
         }
-        (o.GObject.inherit(r, a),
+        (GObject.GObject.inherit(r, a),
             (r.ID = "view.toggle-guide"),
             (r.prototype._guideId = null),
-            (r.prototype._guideName = !1),
+            (r.prototype._guideName = false),
             (r.prototype.getId = function () {
                 return r.ID + "." + this._guideId;
             }),
             (r.prototype.getTitle = function () {
-                return o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.snap-to-action")).replace("%action", this._guideName);
+                return GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.snap-to-action")).replace("%action", this._guideName);
             }),
             (r.prototype.getCategory = function () {
-                return i.CATEGORY_VIEW_SNAP;
+                return GCategory.CATEGORY_VIEW_SNAP;
             }),
             (r.prototype.getGroup = function () {
                 return "snap/guide";
             }),
             (r.prototype.isCheckable = function () {
-                return !0;
+                return true;
             }),
             (r.prototype.isEnabled = function () {
                 return !gDesigner.getSetting("snap_disabled");
@@ -41,5 +41,5 @@ module.exports = function (e, t, n) {
             (r.prototype.toString = function () {
                 return "[Object GToggleGuideAction]";
             }),
-            (e.exports = r));
+            (module.exports = r));
     };

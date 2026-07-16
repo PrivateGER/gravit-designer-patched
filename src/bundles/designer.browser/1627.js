@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(20), n(3), n(34));
-        var o = n(1);
-        const i = n(18),
-            a = n(31),
-            r = n(85),
-            { CLOUD_SYNC_FEATURE: { NEW_LAYOUT: s } = {} } = n(10);
+        (require(20), require(3), require(34));
+        var GObject = require(1);
+        const GCategory = require(18),
+            a = require(31),
+            r = require(85),
+            { CLOUD_SYNC_FEATURE: { NEW_LAYOUT: s } = {} } = require(10 /* designerConfig */);
         function l() {}
-        (o.GObject.inherit(l, a),
+        (GObject.GObject.inherit(l, a),
             (l.ID = "sync.info"),
             (l.prototype.getId = function () {
                 return l.ID;
@@ -17,9 +17,9 @@ module.exports = function (e, t, n) {
                 if (e && e.getScene()) {
                     const t = e.getScene().lastModifiedDate();
                     return t
-                        ? o.GLocale.get(new o.GLocaleKey("GCloudSynchronizationAction", "text.last-synced-at")).replace(
+                        ? GObject.GLocale.get(new GObject.GLocaleKey("GCloudSynchronizationAction", "text.last-synced-at")).replace(
                               "%date",
-                              o.GLocale.toLocaleDate(t, {
+                              GObject.GLocale.toLocaleDate(t, {
                                   year: "numeric",
                                   month: "numeric",
                                   day: "numeric",
@@ -28,12 +28,12 @@ module.exports = function (e, t, n) {
                                   second: "numeric",
                               })
                           )
-                        : o.GLocale.get(new o.GLocaleKey("GDocumentChooser", "text.unavailable"));
+                        : GObject.GLocale.get(new GObject.GLocaleKey("GDocumentChooser", "text.unavailable"));
                 }
-                return o.GLocale.get(new o.GLocaleKey("GDocumentChooser", "text.unavailable"));
+                return GObject.GLocale.get(new GObject.GLocaleKey("GDocumentChooser", "text.unavailable"));
             }),
             (l.prototype.getCategory = function () {
-                return i.CATEGORY_FILE;
+                return GCategory.CATEGORY_FILE;
             }),
             (l.prototype.getGroup = function () {
                 return "file";
@@ -43,15 +43,15 @@ module.exports = function (e, t, n) {
                 return e && e.isCloudSyncOn() && e.isCloudSynchronismAvailable();
             }),
             (l.prototype.isEnabled = function () {
-                return !1;
+                return false;
             }),
             (l.prototype.isAvailable = function () {
                 return (
-                    !!s && gContainer.getRuntime() === r.Runtime.Electron && o.GSystem.operatingSystem === o.GSystem.OperatingSystem.OSX_IOS
+                    !!s && gContainer.getRuntime() === r.Runtime.Electron && GObject.GSystem.operatingSystem === GObject.GSystem.OperatingSystem.OSX_IOS
                 );
             }),
             (l.prototype.toString = function () {
                 return "[Object GCloudSynchronizationInfoAction]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

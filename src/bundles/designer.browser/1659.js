@@ -1,23 +1,23 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(193), n(57), n(8), n(3), n(4), n(13));
-        var o = n(1),
-            i = n(357),
-            a = n(67),
-            r = n(123),
-            s = n(448),
-            l = n(445),
-            c = n(86),
-            d = n(163),
-            u = n(119),
-            p = n(78),
-            g = n(135),
-            h = (n(446), n(44)),
-            f = n(257);
-        const { FILE_FORMATS: m, CLOUD_SYNC_FEATURE: { NEW_LAYOUT: y } = {} } = n(10);
+        (require(193), require(57), require(8 /* Symbol */), require(3), require(4), require(13));
+        var GObject = require(1),
+            i = require(357),
+            a = require(67),
+            r = require(123),
+            s = require(448),
+            GSaveAsAction = require(445),
+            c = require(86),
+            GDocument = require(163),
+            GCommonNames = require(119),
+            p = require(78),
+            g = require(135),
+            h = (require(446 /* GLoginPanel */), require(44 /* GSystemDialog */)),
+            f = require(257);
+        const { FILE_FORMATS: m, CLOUD_SYNC_FEATURE: { NEW_LAYOUT: y } = {} } = require(10 /* designerConfig */);
         var v = "." + m.find((e) => e.default).ext;
         function _() {}
-        (o.GObject.inherit(_, r),
+        (GObject.GObject.inherit(_, r),
             (_.prototype._panel = null),
             (_.prototype._document = null),
             (_.prototype._scene = null),
@@ -34,12 +34,12 @@ module.exports = function (e, t, n) {
                                 $("<div/>")
                                     .attr("data-property", e)
                                     .on("change", function () {
-                                        const t = parseInt($(this).gInputSelect("value")) || o.GLength.DPI;
+                                        const t = parseInt($(this).gInputSelect("value")) || GObject.GLength.DPI;
                                         (gDesigner.stats("sceneproperties_change_canvas-dpi", t),
                                             n._assignProperty(
                                                 e,
                                                 t,
-                                                o.GLocale.get(new o.GLocaleKey("GSceneProperties", "action.change-canvas-dpi"))
+                                                GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "action.change-canvas-dpi"))
                                             ));
                                     })
                                     .gInputSelect({
@@ -64,7 +64,7 @@ module.exports = function (e, t, n) {
                                     ? n._assignProperty(
                                           e,
                                           t,
-                                          o.GLocale.get(new o.GLocaleKey("GSceneProperties", "action.change-grid-settings"))
+                                          GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "action.change-grid-settings"))
                                       )
                                     : n._updateProperties();
                             })
@@ -79,14 +79,14 @@ module.exports = function (e, t, n) {
                                     : gDesigner.stats("sceneproperties_change_axono-grid-settings", "angle2");
                                 var t = parseFloat($(this).gInputBox("value"));
                                 null !== t && "number" == typeof t
-                                    ? ((t = o.GMath.normalizeAngleDegrees(t)),
+                                    ? ((t = GObject.GMath.normalizeAngleDegrees(t)),
                                       "ga1" == e && (t = (t = t >= 180 ? t - 180 : t) >= 90 ? 89 : t),
                                       "ga2" == e && (t = (t = (t = t > 0 ? t - 360 : t) <= -180 ? t + 180 : t) <= -90 ? -89 : t),
-                                      (t = o.GMath.toRadians(t)),
+                                      (t = GObject.GMath.toRadians(t)),
                                       n._assignProperty(
                                           e,
                                           t,
-                                          o.GLocale.get(new o.GLocaleKey("GSceneProperties", "action.change-grid-settings"))
+                                          GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "action.change-grid-settings"))
                                       ))
                                     : n._updateProperties();
                             })
@@ -95,14 +95,14 @@ module.exports = function (e, t, n) {
                         var i = "",
                             a = e.substr("gm-".length);
                         switch (a) {
-                            case o.GScene.GridMode.Boxed:
-                                i = o.GLocale.get(new o.GLocaleKey("GSceneProperties", "text.on"));
+                            case GObject.GScene.GridMode.Boxed:
+                                i = GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "text.on"));
                                 break;
-                            case o.GScene.GridMode.Axonometric:
-                                i = o.GLocale.get(new o.GLocaleKey("GSceneProperties", "text.isometric"));
+                            case GObject.GScene.GridMode.Axonometric:
+                                i = GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "text.isometric"));
                                 break;
                             default:
-                                i = o.GLocale.get(new o.GLocaleKey("GSceneProperties", "text.off"));
+                                i = GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "text.off"));
                         }
                         return $("<label></label>")
                             .append(
@@ -118,7 +118,7 @@ module.exports = function (e, t, n) {
                                             n._assignProperty(
                                                 "gm",
                                                 a || null,
-                                                o.GLocale.get(new o.GLocaleKey("GSceneProperties", "action.change-grid-settings"))
+                                                GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "action.change-grid-settings"))
                                             ),
                                             n._updateUI());
                                     })
@@ -139,13 +139,13 @@ module.exports = function (e, t, n) {
                                 gDesigner.stats("sceneproperties_change_color-mode", a);
                                 var r = i.getActivePage().getChildren();
                                 (!!r &&
-                                    r.find((e) => !(e instanceof o.GAnnotationsList)) &&
-                                    h.alert(o.GLocale.get(new o.GLocaleKey("GSceneProperties", "text.reminder"))),
+                                    r.find((e) => !(e instanceof GObject.GAnnotationsList)) &&
+                                    h.alert(GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "text.reminder"))),
                                     gDesigner.setSetting("color_mode", a),
                                     n._assignProperty(
                                         e,
                                         a,
-                                        o.GLocale.get(new o.GLocaleKey("GSceneProperties", "action.change-color-mode"))
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "action.change-color-mode"))
                                     ),
                                     t.setColorModeElms(r));
                             });
@@ -159,11 +159,11 @@ module.exports = function (e, t, n) {
                                     n._assignProperty(
                                         e,
                                         $(this).val(),
-                                        o.GLocale.get(new o.GLocaleKey("GSceneProperties", "action.change-canvas-unit"))
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "action.change-canvas-unit"))
                                     ));
                             });
                     if (0 === e.indexOf("sync-")) {
-                        i = o.GLocale.get(new o.GLocaleKey("GSceneProperties", "text." + e.substring("sync-".length)));
+                        i = GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "text." + e.substring("sync-".length)));
                         return $("<label></label>")
                             .append(
                                 $("<input>")
@@ -180,7 +180,7 @@ module.exports = function (e, t, n) {
                     if (0 === e.indexOf("action-")) {
                         var r = e.substring("action-".length);
                         return $("<button></button>")
-                            .append($("<span></span>").text(o.GLocale.get(gDesigner.getAction(r).getTitle())))
+                            .append($("<span></span>").text(GObject.GLocale.get(gDesigner.getAction(r).getTitle())))
                             .on(
                                 "click",
                                 function (e) {
@@ -192,7 +192,7 @@ module.exports = function (e, t, n) {
                 }.bind(this);
                 if (
                     ($("<label></label>")
-                        .text(o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.document")))
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.document")))
                         .appendTo(t),
                     $("<div></div>")
                         .addClass("unit-row")
@@ -200,18 +200,18 @@ module.exports = function (e, t, n) {
                             columns: [
                                 {
                                     clazz: "unit-title-column",
-                                    content: $("<span>" + o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.unit")) + "</span>"),
+                                    content: $("<span>" + GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.unit")) + "</span>"),
                                 },
                                 {
                                     clazz: "unit-selector-column",
                                     content: n(
                                         "ut",
                                         a.GRichTooltipConfig.from({
-                                            title: o.GLocale.get(new o.GLocaleKey("GSceneProperties", "text.unit-tooltip-title")),
-                                            description: o.GLocale.get(
-                                                new o.GLocaleKey("GSceneProperties", "text.unit-tooltip-description")
+                                            title: GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "text.unit-tooltip-title")),
+                                            description: GObject.GLocale.get(
+                                                new GObject.GLocaleKey("GSceneProperties", "text.unit-tooltip-description")
                                             ),
-                                            middle: !1,
+                                            middle: false,
                                         })
                                     ),
                                 },
@@ -226,7 +226,7 @@ module.exports = function (e, t, n) {
                                 {
                                     clazz: "color-mode-title-column",
                                     content: $("<span></span>").text(
-                                        o.GLocale.get(new o.GLocaleKey("GSceneProperties", "text.color-mode"))
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "text.color-mode"))
                                     ),
                                 },
                                 {
@@ -234,11 +234,11 @@ module.exports = function (e, t, n) {
                                     content: n(
                                         "cm",
                                         a.GRichTooltipConfig.from({
-                                            title: o.GLocale.get(new o.GLocaleKey("GSceneProperties", "text.color-mode-tooltip-title")),
-                                            description: o.GLocale.get(
-                                                new o.GLocaleKey("GSceneProperties", "text.color-mode-tooltip-description")
+                                            title: GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "text.color-mode-tooltip-title")),
+                                            description: GObject.GLocale.get(
+                                                new GObject.GLocaleKey("GSceneProperties", "text.color-mode-tooltip-description")
                                             ),
-                                            middle: !1,
+                                            middle: false,
                                         })
                                     ),
                                 },
@@ -252,15 +252,15 @@ module.exports = function (e, t, n) {
                             columns: [
                                 {
                                     clazz: "dpi-title-column",
-                                    content: $("<span></span>").text(o.GLocale.get(new o.GLocaleKey("GSceneProperties", "text.dpi"))),
+                                    content: $("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "text.dpi"))),
                                 },
                                 {
                                     clazz: "dpi-selector-column",
                                     content: n(
                                         "dpi",
                                         a.GRichTooltipConfig.from({
-                                            title: o.GLocale.get(new o.GLocaleKey("GSceneProperties", "text.dpi-tooltip-title")),
-                                            middle: !1,
+                                            title: GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "text.dpi-tooltip-title")),
+                                            middle: false,
                                         })
                                     ),
                                 },
@@ -274,16 +274,16 @@ module.exports = function (e, t, n) {
                             columns: [
                                 {
                                     clazz: "grid-mode-title-column",
-                                    content: $("<span>" + o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.grid")) + "</span>"),
+                                    content: $("<span>" + GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.grid")) + "</span>"),
                                 },
                                 {
                                     clazz: "grid-mode-off-column",
                                     content: n(
                                         "gm-",
                                         a.GRichTooltipConfig.from({
-                                            title: o.GLocale.get(new o.GLocaleKey("GSceneProperties", "text.grid-tooltip-title")),
-                                            description: o.GLocale.get(
-                                                new o.GLocaleKey("GSceneProperties", "text.grid-tooltip-description-off")
+                                            title: GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "text.grid-tooltip-title")),
+                                            description: GObject.GLocale.get(
+                                                new GObject.GLocaleKey("GSceneProperties", "text.grid-tooltip-description-off")
                                             ),
                                             learnMore: "/docs/design-aids/grid/",
                                         })
@@ -292,11 +292,11 @@ module.exports = function (e, t, n) {
                                 {
                                     clazz: "grid-mode-box-column",
                                     content: n(
-                                        "gm-" + o.GScene.GridMode.Boxed,
+                                        "gm-" + GObject.GScene.GridMode.Boxed,
                                         a.GRichTooltipConfig.from({
-                                            title: o.GLocale.get(new o.GLocaleKey("GSceneProperties", "text.grid-tooltip-title")),
-                                            description: o.GLocale.get(
-                                                new o.GLocaleKey("GSceneProperties", "text.grid-tooltip-description-on")
+                                            title: GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "text.grid-tooltip-title")),
+                                            description: GObject.GLocale.get(
+                                                new GObject.GLocaleKey("GSceneProperties", "text.grid-tooltip-description-on")
                                             ),
                                             learnMore: "/docs/design-aids/grid/",
                                         })
@@ -305,11 +305,11 @@ module.exports = function (e, t, n) {
                                 {
                                     clazz: "grid-mode-axo-column",
                                     content: n(
-                                        "gm-" + o.GScene.GridMode.Axonometric,
+                                        "gm-" + GObject.GScene.GridMode.Axonometric,
                                         a.GRichTooltipConfig.from({
-                                            title: o.GLocale.get(new o.GLocaleKey("GSceneProperties", "text.grid-tooltip-title")),
-                                            description: o.GLocale.get(
-                                                new o.GLocaleKey("GSceneProperties", "text.grid-tooltip-description-isometric")
+                                            title: GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "text.grid-tooltip-title")),
+                                            description: GObject.GLocale.get(
+                                                new GObject.GLocaleKey("GSceneProperties", "text.grid-tooltip-description-isometric")
                                             ),
                                             learnMore: "/docs/design-aids/grid/",
                                         })
@@ -320,18 +320,18 @@ module.exports = function (e, t, n) {
                         .appendTo(e),
                     $("<div></div>")
                         .addClass("grid-mode-type")
-                        .attr("data-grid-mode", o.GScene.GridMode.Boxed)
+                        .attr("data-grid-mode", GObject.GScene.GridMode.Boxed)
                         .gPropertyRow({
                             label: "",
                             columns: [
                                 {
                                     width: "33.3%",
-                                    label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.width")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.width")),
                                     content: n("gx"),
                                 },
                                 {
                                     width: "33.3%",
-                                    label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.height")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.height")),
                                     content: n("gy"),
                                 },
                             ],
@@ -339,23 +339,23 @@ module.exports = function (e, t, n) {
                         .appendTo(e),
                     $("<div></div>")
                         .addClass("grid-mode-type")
-                        .attr("data-grid-mode", o.GScene.GridMode.Axonometric)
+                        .attr("data-grid-mode", GObject.GScene.GridMode.Axonometric)
                         .gPropertyRow({
                             label: "",
                             columns: [
                                 {
                                     width: "33.3%",
-                                    label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.size")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.size")),
                                     content: n("gaw"),
                                 },
                                 {
                                     width: "33.3%",
-                                    label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.angle")) + " 1",
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.angle")) + " 1",
                                     content: n("ga1"),
                                 },
                                 {
                                     width: "33.3%",
-                                    label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.angle")) + " 2",
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.angle")) + " 2",
                                     content: n("ga2"),
                                 },
                             ],
@@ -369,7 +369,7 @@ module.exports = function (e, t, n) {
                         .append(
                             $("<button></button>")
                                 .addClass(f["sync-button"])
-                                .text(o.GLocale.get(new o.GLocaleKey("GSceneProperties", "sync.enable")))
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "sync.enable")))
                                 .on("click", () => {
                                     (gDesigner.stats("sceneproperties_enable_cloud-sync"), this._enableCloudSync());
                                 })
@@ -412,12 +412,12 @@ module.exports = function (e, t, n) {
                                                                     t,
                                                                     (e, n) => {
                                                                         if (e !== t || n) {
-                                                                            var o = new d(this._document.getStorageItem());
+                                                                            var o = new GDocument(this._document.getStorageItem());
                                                                             (o.setScene(e), gDesigner.replaceDocument(this._document, o));
                                                                         } else
                                                                             this._document.storeToCloud(e, async () => {
                                                                                 if (gDesigner.getDefaultStorage().canSave()) {
-                                                                                    let e = !1,
+                                                                                    let e = false,
                                                                                         n =
                                                                                             (await this._document.saveAnnotations(e),
                                                                                             this._document.updateSaveOptionsLastModifiedDate(
@@ -444,7 +444,7 @@ module.exports = function (e, t, n) {
                                     .append(
                                         $("<span></span>")
                                             .addClass("label")
-                                            .text(o.GLocale.get(new o.GLocaleKey("GSceneProperties", "sync.label")))
+                                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "sync.label")))
                                     )
                                     .append($("<span></span>").addClass("last-modified-date"))
                             )
@@ -455,7 +455,7 @@ module.exports = function (e, t, n) {
             (_.prototype._getWelcomeLink = function () {
                 return $("<div></div>")
                     .addClass("more")
-                    .append($("<span></span>").text(o.GLocale.get(new o.GLocaleKey("GSceneProperties", "sync.more"))))
+                    .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "sync.more"))))
                     .on("click", () => {
                         (gDesigner.stats("sceneproperties_click_welcome-to-gravit-cloud-medium-com"),
                             gContainer.openExternalLink(
@@ -469,18 +469,18 @@ module.exports = function (e, t, n) {
                     this._document &&
                         (this._document
                             .getScene()
-                            .removeEventListener(o.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                            .removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                         gDesigner.removeEventListener(g, this._settingChanged),
                         (this._document = null)),
                     (this._scene = null),
-                    !(!e || (1 === t.length && t[0] instanceof o.GPage && (this._scene = t[0].getScene()), !this._scene)) &&
+                    !(!e || (1 === t.length && t[0] instanceof GObject.GPage && (this._scene = t[0].getScene()), !this._scene)) &&
                         ((this._document = e),
-                        this._document.getScene().addEventListener(o.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                        this._document.getScene().addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                         gDesigner.addEventListener(g, this._settingChanged, this),
                         this._updateColorMode(),
                         this._updateProperties(),
                         this._updateUI(),
-                        !0)
+                        true)
                 );
             }),
             (_.prototype._afterPropertiesChange = function (e) {
@@ -498,16 +498,16 @@ module.exports = function (e, t, n) {
                     (n.find(".dpi-text").length ||
                         $("<span/>")
                             .addClass("dpi-text")
-                            .text(o.GLocale.get(new o.GLocaleKey("GSceneProperties", "text.dpi")))
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "text.dpi")))
                             .insertAfter(n.find("input")),
                         this._panel
                             .find(".unit-title-column span")
-                            .text(o.GLocale.get(new o.GLocaleKey("GSceneProperties", "text.unit-tooltip-title"))));
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GSceneProperties", "text.unit-tooltip-title"))));
                 } else
                     (t.find(".dpi-selector-column .g-input-select .dpi-text").remove(),
                         e.insertBefore(t.prev()),
                         this._panel.find(".grid-mode").removeClass("mode-on"),
-                        this._panel.find(".unit-title-column span").text(o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.unit"))));
+                        this._panel.find(".unit-title-column span").text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.unit"))));
             }),
             (_.prototype._settingChanged = function (e) {
                 "decimals_num" === e.key ? this._updateProperties() : "touch" === e.key && this._updateUI();
@@ -521,9 +521,9 @@ module.exports = function (e, t, n) {
             (_.prototype._updateColorMode = function () {
                 var e = this._panel.find('select[data-property="cm"]').empty(),
                     t = [
-                        { value: o.GColor.ColorModes.RGB, pro: !1, text: "RGB" },
-                        { value: o.GColor.ColorModes.HSB, pro: !0, text: "HSB" },
-                        { value: o.GColor.ColorModes.CMYK, pro: !0, text: "CMYK" },
+                        { value: GObject.GColor.ColorModes.RGB, pro: false, text: "RGB" },
+                        { value: GObject.GColor.ColorModes.HSB, pro: true, text: "HSB" },
+                        { value: GObject.GColor.ColorModes.CMYK, pro: true, text: "CMYK" },
                     ];
                 Array.prototype.forEach.call(t, (t) => {
                     var n = $("<option></option>").attr("value", t.value).text(t.text).appendTo(e);
@@ -532,14 +532,14 @@ module.exports = function (e, t, n) {
             }),
             (_.prototype._updateProperties = function () {
                 var e = this._document.getScene();
-                this._panel.find('[data-property="dpi"]').gInputSelect("value", this._scene.getProperty("dpi") || o.GLength.DPI);
+                this._panel.find('[data-property="dpi"]').gInputSelect("value", this._scene.getProperty("dpi") || GObject.GLength.DPI);
                 var t = this._document.hasCDR();
                 (this._panel.find('[data-property="dpi"]').find('[type="text"]').prop("disabled", t),
                     this._panel.find('[data-property="dpi"]').find("button").prop("disabled", t),
                     this._panel
                         .find('[data-property="dpi"]')
-                        .attr("data-title", t ? o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.cant-change-cdr-limitations")) : ""));
-                const n = gDesigner.getSetting("color_mode", o.GColor.ColorModes.RGB);
+                        .attr("data-title", t ? GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.cant-change-cdr-limitations")) : ""));
+                const n = gDesigner.getSetting("color_mode", GObject.GColor.ColorModes.RGB);
                 (n && this._scene.setProperty("cm", n),
                     this._panel.find('select[data-property="cm"]').val(n),
                     this._panel.find('select[data-property="ut"]').val(this._scene.getProperty("ut")),
@@ -554,10 +554,10 @@ module.exports = function (e, t, n) {
                         .gInputBox("value", e.pointToString(this._scene.getProperty("gaw"), this._scene.getOptimalDecimalsCount())),
                     this._panel
                         .find('[type="text"][data-property="ga1"]')
-                        .gInputBox("value", o.GUtil.formatNumber(o.GMath.toDegrees(this._scene.getProperty("ga1")), 1)),
+                        .gInputBox("value", GObject.GUtil.formatNumber(GObject.GMath.toDegrees(this._scene.getProperty("ga1")), 1)),
                     this._panel
                         .find('[type="text"][data-property="ga2"]')
-                        .gInputBox("value", o.GUtil.formatNumber(o.GMath.toDegrees(this._scene.getProperty("ga2")), 1)));
+                        .gInputBox("value", GObject.GUtil.formatNumber(GObject.GMath.toDegrees(this._scene.getProperty("ga2")), 1)));
                 var i = this._scene.getProperty("gm");
                 if (
                     (this._panel.find('[data-property^="gm"]').each(function (e, t) {
@@ -622,28 +622,28 @@ module.exports = function (e, t, n) {
                     var e = this._document;
                     gDesigner.getDefaultStorage().canSave()
                         ? this._document.isNew()
-                            ? u.createFile(e, (t) => {
+                            ? GCommonNames.createFile(e, (t) => {
                                   (e.getScene().setCloudSynchronization(t.id),
                                       gDesigner.executeAction(
-                                          l.ID + v,
+                                          GSaveAsAction.ID + v,
                                           [
                                               null,
                                               e,
                                               () => {
-                                                  u.renameFile(t, e.getTitle(), () => {
+                                                  GCommonNames.renameFile(t, e.getTitle(), () => {
                                                       e.storeToCloud(e.getScene(), this._updateProperties.bind(this));
                                                   });
                                               },
                                           ],
                                           void 0,
-                                          !0
+                                          true
                                       ));
                               })
                             : this._document.isCloudFile()
-                              ? gDesigner.executeAction(l.ID + v, void 0, (void 0).true)
+                              ? gDesigner.executeAction(GSaveAsAction.ID + v, void 0, (void 0).true)
                               : this._document.hasCloudReference()
                                 ? console.warn("Enable Sync for referenced file")
-                                : u.createFile(e, (t) => {
+                                : GCommonNames.createFile(e, (t) => {
                                       (e.getScene().setCloudSynchronization(t.id),
                                           e.storeToCloud(e.getScene(), () => {
                                               e.store();
@@ -655,14 +655,14 @@ module.exports = function (e, t, n) {
                                 [
                                     this._document,
                                     (t) => {
-                                        t === c.Loaded && gDesigner.removeDocument(e, null, !0);
+                                        t === c.Loaded && gDesigner.removeDocument(e, null, true);
                                     },
                                 ],
                                 void 0,
-                                !0
+                                true
                             )
                           : this._document.isCloudFile()
-                            ? gDesigner.executeAction(l.ID + v, void 0, void 0, !0)
+                            ? gDesigner.executeAction(GSaveAsAction.ID + v, void 0, void 0, true)
                             : this._document.hasCloudReference()
                               ? console.warn("Enable Sync for referenced file")
                               : gDesigner.executeAction(
@@ -670,17 +670,17 @@ module.exports = function (e, t, n) {
                                     [
                                         this._document,
                                         (t) => {
-                                            t === c.Loaded && gDesigner.removeDocument(e, null, !0);
+                                            t === c.Loaded && gDesigner.removeDocument(e, null, true);
                                         },
                                     ],
                                     void 0,
-                                    !0
+                                    true
                                 );
                 };
                 gDesigner.getUser().then((t) => {
                     t
                         ? e()
-                        : u.performLogin().then((t) => {
+                        : GCommonNames.performLogin().then((t) => {
                               t && e();
                           });
                 });
@@ -688,5 +688,5 @@ module.exports = function (e, t, n) {
             (_.prototype.toString = function () {
                 return "[Object GSceneProperties]";
             }),
-            (e.exports = _));
+            (module.exports = _));
     };

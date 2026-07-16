@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i() {}
             ((i.getTypeId = function (e) {
                 return "number" == typeof e
@@ -27,7 +27,7 @@ module.exports = function (e, t) {
                         delete e.prototype.__gmixins__,
                         t.prototype.__gmixins__)
                     )
-                        for (var n in ((e.prototype.__gmixins__ = {}), t.prototype.__gmixins__)) e.prototype.__gmixins__[n] = !0;
+                        for (var n in ((e.prototype.__gmixins__ = {}), t.prototype.__gmixins__)) e.prototype.__gmixins__[n] = true;
                     if (t != i)
                         for (var r in t)
                             r &&
@@ -62,13 +62,13 @@ module.exports = function (e, t) {
                                     } else e.prototype[s] = a[s];
                             if (
                                 (a.__gtype_id__ || (a.__gtype_id__ = i._internalTypeIdCounter++),
-                                (e.prototype.__gmixins__[a.__gtype_id__] = !0),
+                                (e.prototype.__gmixins__[a.__gtype_id__] = true),
                                 a.__gmixins__)
                             )
-                                for (var l in a.__gmixins__) e.prototype.__gmixins__[l] = !0;
+                                for (var l in a.__gmixins__) e.prototype.__gmixins__[l] = true;
                             for (var h = Object.getPrototypeOf(a); null != h && h !== Object.prototype; h = Object.getPrototypeOf(h))
                                 (h.__gtype_id__ || (h.__gtype_id__ = i._internalTypeIdCounter++),
-                                    (e.prototype.__gmixins__[h.__gtype_id__] = !0));
+                                    (e.prototype.__gmixins__[h.__gtype_id__] = true));
                         }
                     }
                 }),
@@ -82,5 +82,5 @@ module.exports = function (e, t) {
                     var e = this.constructor.toString().match(/^function ([^\(]*)/);
                     return "[Object " + (e ? e[1] : "object") + "]";
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

@@ -1,4 +1,4 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
             const {
                 getRequestNewFeatureUrl: n,
@@ -7,8 +7,8 @@ module.exports = function (e, t, i) {
                 getDiscussBetaUrl: a,
                 getSubscriptionUrl: s,
                 getProductVectorUrl: l,
-            } = i(254);
-            e.exports = function (e) {
+            } = require(254);
+            module.exports = function (e) {
                 e.link = {
                     getRequestNewFeatureUrl: n,
                     getSupportUrl: r,

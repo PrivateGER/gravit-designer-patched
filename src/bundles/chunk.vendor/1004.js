@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(51),
-                o = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(51),
+                String = require(9);
 
             function a() {
                 (r.call(this), this._setDefaultProperties(a.GeometryProperties));
             }
             (n.inherit("GGLBulgePinchEffect", a, r),
                 (a.prototype.getNodeNameTranslated = function () {
-                    return o.getValue("GGLBulgePinchEffect", "name", this.getNodeName());
+                    return String.getValue("GGLBulgePinchEffect", "name", this.getNodeName());
                 }),
                 (a.prototype._savedBBox = null),
                 (a.prototype.getEffectPadding = function (e) {
@@ -37,7 +37,7 @@ module.exports = function (e, t, i) {
                     return (n < 0 && (n *= 0.5), (i *= n), [(i = Math.min(Math.abs(i), t.getHeight() / 2, t.getWidth() / 2)), i, i, i]);
                 }),
                 (a.prototype.isAffectedByChildren = function () {
-                    return !0;
+                    return true;
                 }),
                 (a.GeometryProperties = {
                     shp: {
@@ -54,5 +54,5 @@ module.exports = function (e, t, i) {
                     radius: [0, 100],
                     strength: [-1, 1],
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

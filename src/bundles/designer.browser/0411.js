@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(23),
-            i = n(49),
+        var RegExp = require(23),
+            i = require(49),
             a = Object.getOwnPropertyDescriptor;
-        e.exports = function (e) {
-            if (!i) return o[e];
-            var t = a(o, e);
+        module.exports = function (e) {
+            if (!i) return RegExp[e];
+            var t = a(RegExp, e);
             return t && t.value;
         };
     };

@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(65),
+        var o = require(65),
             i = TypeError,
             a = function (e) {
                 var t, n;
@@ -11,7 +11,7 @@ module.exports = function (e, t, n) {
                     (this.resolve = o(t)),
                     (this.reject = o(n)));
             };
-        e.exports.f = function (e) {
+        module.exports.f = function (e) {
             return new a(e);
         };
     };

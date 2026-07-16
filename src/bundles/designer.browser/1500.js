@@ -1,64 +1,64 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(19), n(57), n(8), n(356), n(20), n(107), n(3), n(151), n(34), n(91), n(4), n(41), n(13), n(26));
-        var i = n(1),
-            a = n(15),
-            r = n(10),
-            s = n(357),
-            l = o(n(238)),
-            c = o(n(339)),
-            d = o(n(1501)),
-            u = o(n(1502)),
-            p = o(n(603)),
-            g = o(n(78)),
-            h = o(n(217)),
-            f = o(n(86)),
-            m = o(n(119)),
-            y = o(n(447)),
-            v = o(n(448)),
-            _ = o(n(861)),
-            b = o(n(1254)),
-            w = o(n(1256)),
-            C = o(n(388)),
-            x = o(n(220)),
-            S = o(n(44)),
-            E = o(n(862)),
-            A = o(n(156)),
-            T = o(n(163)),
-            G = n(263),
-            P = n(1517);
-        const D = n(257);
+        var o = require(16);
+        (require(19), require(57), require(8 /* Symbol */), require(356), require(20), require(107), require(3), require(151), require(34), require(91), require(4), require(41), require(13), require(26));
+        var GObject = require(1),
+            GPlatform = require(15),
+            designerConfig = require(10),
+            s = require(357),
+            l = o(require(238)),
+            c = o(require(339)),
+            d = o(require(1501)),
+            u = o(require(1502)),
+            p = o(require(603)),
+            g = o(require(78)),
+            h = o(require(217)),
+            f = o(require(86)),
+            m = o(require(119 /* GCommonNames */)),
+            y = o(require(447 /* GSaveAction */)),
+            v = o(require(448)),
+            _ = o(require(861 /* GExportAction */)),
+            b = o(require(1254 /* GOpenSharedFileAction */)),
+            w = o(require(1256 /* GVersionsHistoryAction */)),
+            C = o(require(388)),
+            x = o(require(220 /* GCommonNames */)),
+            S = o(require(44 /* GSystemDialog */)),
+            E = o(require(862 /* GCommonNames */)),
+            A = o(require(156)),
+            T = o(require(163 /* GDocument */)),
+            GRegex = require(263),
+            P = require(1517);
+        const D = require(257);
         let L = null;
-        r.LICENSE.UPGRADEABLE && (L = n(441));
-        const I = n(135),
-            k = n(392),
-            O = n(805),
+        designerConfig.LICENSE.UPGRADEABLE && (L = require(441));
+        const I = require(135),
+            k = require(392),
+            O = require(805),
             {
                 InParenthesis: { NotNegativeNumberInTheEnd: F },
                 NotNegativeNumber: R,
-            } = G.GRegex.String,
+            } = GRegex.GRegex.String,
             M = [
                 {
-                    title: new i.GLocaleKey("GFilesPanel", "action.rename"),
+                    title: new GObject.GLocaleKey("GFilesPanel", "action.rename"),
                     shortcut: null,
                     callback: function (e, t) {
                         const n = this,
                             o = e.getDocument(),
                             a = o.getStorageItem();
-                        let s = !0;
-                        if ((a && (s = !(a instanceof C.default.Item)), !s)) return !1;
+                        let s = true;
+                        if ((a && (s = !(a instanceof C.default.Item)), !s)) return false;
                         const l = () => {
                             const s = t.find("input"),
                                 c = e.getTitle();
                             let d = c;
-                            (a && r.USE_EXTENSION_IN_FILENAME && (d += "." + a.getExtension().toLowerCase()),
+                            (a && designerConfig.USE_EXTENSION_IN_FILENAME && (d += "." + a.getExtension().toLowerCase()),
                                 s.off("focusout"),
                                 s.off("keypress"));
                             var u = t.find("span.cover");
                             (u.text(d), s.css("width", u.outerWidth()), s.val(c));
                             var p = s.val(),
-                                h = !1;
+                                h = false;
                             (s.show(), u.hide(), s.focus());
                             var f = async function () {
                                 try {
@@ -70,8 +70,8 @@ module.exports = function (e, t, n) {
                                             if (
                                                 (n._updateSyncStatus(
                                                     t,
-                                                    i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.synchronizing")) + "...",
-                                                    !0
+                                                    GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.synchronizing")) + "...",
+                                                    true
                                                 ),
                                                 a instanceof x.default.Item)
                                             ) {
@@ -81,19 +81,19 @@ module.exports = function (e, t, n) {
                                                     let o = 0;
                                                     if (c.supportsSaveCollisionFlow()) {
                                                         if (
-                                                            (e.ext || (e.ext = r.FILE_FORMATS.find((e) => e.default).ext.toUpperCase()),
+                                                            (e.ext || (e.ext = designerConfig.FILE_FORMATS.find((e) => e.default).ext.toUpperCase()),
                                                             (await c.fileExists(h, e.ext, e.parent || c.getRootFolder())) &&
                                                                 !(await ((e) => {
                                                                     let t;
                                                                     return (
-                                                                        (t = i.GLocale.get(
-                                                                            new i.GLocaleKey(
+                                                                        (t = GObject.GLocale.get(
+                                                                            new GObject.GLocaleKey(
                                                                                 "GFilesPanel",
                                                                                 "text.file-already-exists-on-current-location"
                                                                             )
                                                                         ).replace("%filename", '"'.concat(e, '"'))),
                                                                         new Promise((e) => {
-                                                                            S.default.confirm(t, (t) => e(!!t), null, null, !1, !0, !0);
+                                                                            S.default.confirm(t, (t) => e(!!t), null, null, false, true, true);
                                                                         })
                                                                     );
                                                                 })(h)))
@@ -110,14 +110,14 @@ module.exports = function (e, t, n) {
                                                         s.val(p),
                                                         n._updateSyncStatus(
                                                             t,
-                                                            i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.failed-to-synch")),
-                                                            !1,
-                                                            !1,
-                                                            !0,
+                                                            GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.failed-to-synch")),
+                                                            false,
+                                                            false,
+                                                            true,
                                                             o.isCloudFile()
                                                         ),
                                                         void S.default.alert(
-                                                            i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.error-renaming"))
+                                                            GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-renaming"))
                                                         )
                                                     );
                                                 }
@@ -127,7 +127,7 @@ module.exports = function (e, t, n) {
                                                 a.setFileName(d),
                                                 gDesigner.trigger(new g.default(g.default.Type.Modified, o)),
                                                 n._updateSyncStatus(t, ""),
-                                                u.text(d + (r.USE_EXTENSION_IN_FILENAME ? "." + a.getExtension().toLowerCase() : "")),
+                                                u.text(d + (designerConfig.USE_EXTENSION_IN_FILENAME ? "." + a.getExtension().toLowerCase() : "")),
                                                 s.css("width", u.outerWidth()));
                                         } else e.getDocument().setTitle(h);
                                     else s.val(p);
@@ -136,15 +136,15 @@ module.exports = function (e, t, n) {
                                 }
                             };
                             s.on("focusout", function () {
-                                h || (f(), (h = !0));
+                                h || (f(), (h = true));
                             }).on("keypress", function (e) {
-                                13 !== e.which || h || (f(), (h = !0));
+                                13 !== e.which || h || (f(), (h = true));
                             });
                         };
-                        return (l(), !0);
+                        return (l(), true);
                     },
                     stats: "header_contextmenu_rename",
-                    requiresPro: !1,
+                    requiresPro: false,
                     isEnabled: () => gDesigner.getApplicationManager().isEditingEnabled(),
                     isVisible: (e) => {
                         const t = e.getDocument().getStorageItem();
@@ -152,7 +152,7 @@ module.exports = function (e, t, n) {
                     },
                 },
                 {
-                    separator: !0,
+                    separator: true,
                     isVisible: (e) => {
                         const t = e.getDocument().getStorageItem();
                         return !(t && t instanceof C.default.Item);
@@ -162,21 +162,21 @@ module.exports = function (e, t, n) {
                     title: y.default.TITLE,
                     shortcut: y.default.SHORTCUT,
                     id: y.default.ID,
-                    needsAction: !0,
+                    needsAction: true,
                     stats: "header_contextmenu_save",
                     icon: () => gDesigner.getAction(y.default.ID).getIcon(),
-                    requiresPro: !1,
+                    requiresPro: false,
                 },
                 {
-                    title: new i.GLocaleKey("GSaveAsAction", "title"),
-                    shortcut: [a.GKey.Constant.SHIFT, a.GKey.Constant.META, "S"],
+                    title: new GObject.GLocaleKey("GSaveAsAction", "title"),
+                    shortcut: [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "S"],
                     id: () => "".concat(v.default.ID, ".").concat(v.default.Actions.SaveAs),
-                    needsAction: !0,
-                    requiresPro: !1,
+                    needsAction: true,
+                    requiresPro: false,
                 },
-                { separator: !0 },
+                { separator: true },
                 {
-                    title: new i.GLocaleKey("GToolbar", "text.share"),
+                    title: new GObject.GLocaleKey("GToolbar", "text.share"),
                     shortcut: null,
                     callback: function () {
                         gDesigner.getShareManager().share();
@@ -186,23 +186,23 @@ module.exports = function (e, t, n) {
                         const t = e.getDocument().getStorageItem();
                         return gDesigner.getApplicationManager().isShareEnabled() && t instanceof x.default.Item;
                     },
-                    requiresPro: !1,
+                    requiresPro: false,
                 },
                 {
-                    title: new i.GLocaleKey("GOpenSharedFileAction", "title"),
+                    title: new GObject.GLocaleKey("GOpenSharedFileAction", "title"),
                     stats: "header_contextmenu_open-shared-file",
                     id: () => b.default.ID,
-                    needsAction: !0,
-                    requiresPro: !1,
+                    needsAction: true,
+                    requiresPro: false,
                 },
                 {
-                    title: new i.GLocaleKey("GVersionsHistoryAction", "title"),
+                    title: new GObject.GLocaleKey("GVersionsHistoryAction", "title"),
                     shortcut: null,
                     stats: "header_contextmenu_version-history",
                     icon: () => gDesigner.getAction(w.default.ID).getIcon(),
                     id: w.default.ID,
-                    needsAction: !0,
-                    requiresPro: !0,
+                    needsAction: true,
+                    requiresPro: true,
                 },
                 {
                     title: _.default.TITLE,
@@ -210,11 +210,11 @@ module.exports = function (e, t, n) {
                     stats: "header_contextmenu_advanced-export",
                     icon: () => gDesigner.getAction(_.default.ID).getGroupIcon(),
                     id: _.default.ID,
-                    needsAction: !0,
-                    requiresPro: !0,
+                    needsAction: true,
+                    requiresPro: true,
                 },
                 {
-                    title: new i.GLocaleKey("GHeader", "action.context-menu.duplicate"),
+                    title: new GObject.GLocaleKey("GHeader", "action.context-menu.duplicate"),
                     shortcut: null,
                     callback: function (e) {
                         const t = e.getDocument(),
@@ -247,16 +247,16 @@ module.exports = function (e, t, n) {
                             : o();
                     },
                     isEnabled: (e) => {
-                        if (!gDesigner.getApplicationManager().isSavingAsEnabled()) return !1;
+                        if (!gDesigner.getApplicationManager().isSavingAsEnabled()) return false;
                         return !(e.getDocument().getStorageItem() instanceof C.default.Item);
                     },
                     stats: "header_contextmenu_duplicate",
                     icon: "gravit-icon-duplicate",
-                    requiresPro: !1,
+                    requiresPro: false,
                 },
-                { separator: !0 },
+                { separator: true },
                 {
-                    title: new i.GLocaleKey("GHeader", "action.context-menu.close-other"),
+                    title: new GObject.GLocaleKey("GHeader", "action.context-menu.close-other"),
                     shortcut: null,
                     callback: function (e) {
                         const t = gDesigner
@@ -265,15 +265,15 @@ module.exports = function (e, t, n) {
                             .slice()
                             .filter((t) => t !== e);
                         S.default.confirm(
-                            i.GLocale.get(new i.GLocaleKey("GHeader", "text.close-other-tabs-confirmation")),
+                            GObject.GLocale.get(new GObject.GLocaleKey("GHeader", "text.close-other-tabs-confirmation")),
                             (e) => {
                                 e && N(t);
                             },
                             null,
                             null,
                             null,
-                            !0,
-                            !0
+                            true,
+                            true
                         );
                     },
                     isEnabled: (e) =>
@@ -283,27 +283,27 @@ module.exports = function (e, t, n) {
                             .slice()
                             .filter((t) => t !== e).length > 0,
                     stats: "header_contextmenu_close-other",
-                    requiresPro: !1,
+                    requiresPro: false,
                 },
                 {
-                    title: new i.GLocaleKey("GHeader", "action.context-menu.close-all"),
+                    title: new GObject.GLocaleKey("GHeader", "action.context-menu.close-all"),
                     shortcut: null,
                     callback: function () {
                         S.default.confirm(
-                            i.GLocale.get(new i.GLocaleKey("GHeader", "text.close-all-tabs-confirmation")),
+                            GObject.GLocale.get(new GObject.GLocaleKey("GHeader", "text.close-all-tabs-confirmation")),
                             (e) => {
                                 e && N(gDesigner.getWindows().getWindows().slice());
                             },
                             null,
                             null,
                             null,
-                            !0,
-                            !0
+                            true,
+                            true
                         );
                     },
                     stats: "header_contextmenu_close-all",
                     icon: "gravit-icon-close",
-                    requiresPro: !1,
+                    requiresPro: false,
                 },
             ];
         function N(e) {
@@ -347,12 +347,12 @@ module.exports = function (e, t, n) {
                         .text("βETA")
                         .appendTo(this._htmlElement),
                     $("<div></div>").addClass("section menu").append(this._menuBar._htmlElement).appendTo(this._htmlElement),
-                    r.LICENSE.UPGRADEABLE &&
+                    designerConfig.LICENSE.UPGRADEABLE &&
                         gDesigner.getLicense().canUpgrade() &&
                         $("<div></div>")
                             .addClass("section tryout")
                             .append(
-                                $("<span></span>").text(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.try-out-coreldrawpp-pro")))
+                                $("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.try-out-coreldrawpp-pro")))
                             )
                             .on("click", () => gDesigner.activateTrialLicense())
                             .appendTo(this._htmlElement),
@@ -361,7 +361,7 @@ module.exports = function (e, t, n) {
                         .addClass("section windows")
                         .append(this._createWindows())
                         .appendTo(this._htmlElement)),
-                    r.ALLOW_REARRANGE_TABS && (0, P.allowRearrangeTabs)(this._htmlElement),
+                    designerConfig.ALLOW_REARRANGE_TABS && (0, P.allowRearrangeTabs)(this._htmlElement),
                     (this._busy = $("<div></div>")
                         .addClass("section busy")
                         .css({ display: "none", color: "$(BRAND_COLOR}" })
@@ -391,7 +391,7 @@ module.exports = function (e, t, n) {
                             this.checkUser();
                         }.bind(this)
                     ),
-                    r.LICENSE.UPGRADEABLE && gDesigner.addEventListener(L, this._licenseChangeEvent, this),
+                    designerConfig.LICENSE.UPGRADEABLE && gDesigner.addEventListener(L, this._licenseChangeEvent, this),
                     (this._documentStatusEvent = this._documentStatusEvent.bind(this)),
                     this._personaBar.init(),
                     this._updateViewBasedOnPermissions());
@@ -406,10 +406,10 @@ module.exports = function (e, t, n) {
                     : this._htmlElement.addClass("lone");
             }),
             (B.prototype._licenseChangeEvent = function (e) {
-                r.LICENSE.UPGRADEABLE && (e.license.isDefault() || this._htmlElement.find(".tryout").remove());
+                designerConfig.LICENSE.UPGRADEABLE && (e.license.isDefault() || this._htmlElement.find(".tryout").remove());
             }),
             (B.prototype._documentEvent = function (e) {
-                r.ALLOW_REARRANGE_TABS && (0, P.updateTabsInterface)();
+                designerConfig.ALLOW_REARRANGE_TABS && (0, P.updateTabsInterface)();
                 var t = e.document || gDesigner.getActiveDocument(),
                     n = this.getWindowTab(gDesigner.getWindows().getWindow(t)),
                     o = e.type === g.default.Type.StorageItemUpdated;
@@ -428,23 +428,23 @@ module.exports = function (e, t, n) {
                                         .find(".title")
                                         .find("input")
                                         .val(a[s].getTitle() + (e.document.isModified() ? "*" : "")),
-                                    !1
+                                    false
                                 );
                         });
                     (e.type !== g.default.Type.Modified && e.type !== g.default.Type.AutoSaveSynchronized) ||
-                        (this._updateSyncStatus(n, ""), this.updateWindowIcon(n, !1, !0, t));
+                        (this._updateSyncStatus(n, ""), this.updateWindowIcon(n, false, true, t));
                 } else
                     e.type === g.default.Type.SynchronismUpdated || e.type === g.default.Type.AutoSaveSynchronizing
                         ? (t.isSynchronizing() || e.type === g.default.Type.AutoSaveSynchronizing) &&
-                          (this.updateWindowIcon(n, !0, !0, t),
-                          this._updateSyncStatus(n, i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.synchronizing")) + "...", !0))
+                          (this.updateWindowIcon(n, true, true, t),
+                          this._updateSyncStatus(n, GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.synchronizing")) + "...", true))
                         : e.type === g.default.Type.SynchronismUpdateFailed || e.type === g.default.Type.AutoSaveSynchronizationFailed
                           ? this._updateSyncStatus(
                                 n,
-                                i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.failed-to-synch")),
-                                !1,
-                                !1,
-                                !0,
+                                GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.failed-to-synch")),
+                                false,
+                                false,
+                                true,
                                 t.isCloudFile()
                             )
                           : e.type === g.default.Type.Activated
@@ -496,7 +496,7 @@ module.exports = function (e, t, n) {
                         )
                         .on("click", function () {
                             (gDesigner.stats("header_change_tab", e.getTitleWithExtension()),
-                                gDesigner.getWindows().activateWindow($(this).data("window"), !0));
+                                gDesigner.getWindows().activateWindow($(this).data("window"), true));
                         }),
                     o.on("contextmenu", function (t) {
                         (t.stopPropagation(), n.handleContextMenu(e, o));
@@ -509,7 +509,7 @@ module.exports = function (e, t, n) {
                                 .on("click", function (e) {
                                     (gDesigner.stats("header_remove_tab"),
                                         e.stopPropagation(),
-                                        gDesigner.getWindows().removeWindow($(this).parents(".tab").data("window"), void 0, void 0, !0));
+                                        gDesigner.getWindows().removeWindow($(this).parents(".tab").data("window"), void 0, void 0, true));
                                 })
                         ),
                     this.setWindowTabEnable(gDesigner.getLicense().canAccessFreemium()));
@@ -539,7 +539,7 @@ module.exports = function (e, t, n) {
                 ($(".login").css("display", e && e.isAnonymous() ? "none" : ""),
                     $(".login .username")
                         .find("span")
-                        .text(e ? e.getFullUserName() : i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.cloud-login"))),
+                        .text(e ? e.getFullUserName() : GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.cloud-login"))),
                     e
                         ? e.hasOwnPictureAvatar()
                             ? ($(".login .avatar").css("background-image", 'url("' + e.avatar + '")'),
@@ -558,7 +558,7 @@ module.exports = function (e, t, n) {
             (B.prototype._removeWindowTab = function (e) {
                 this._windows.find(".tab").each(function (t, n) {
                     var o = $(n);
-                    if (o.data("window") === e) return (o.remove(), !1);
+                    if (o.data("window") === e) return (o.remove(), false);
                 });
             }),
             (B.prototype._updateActiveWindowTab = function () {
@@ -630,8 +630,8 @@ module.exports = function (e, t, n) {
                     (this._contextMenu = this._createContextMenu(e, t)),
                     this._contextMenu
                         .gOverlay({
-                            padding: !1,
-                            releaseOnClose: !0,
+                            padding: false,
+                            releaseOnClose: true,
                             clazz: "g-header-context-overlay",
                             bottomClazz: "from-bottom",
                             customRight: n,
@@ -662,7 +662,7 @@ module.exports = function (e, t, n) {
                                 isEnabled: v,
                                 isVisible: _,
                             } = a;
-                        const b = l instanceof i.GLocaleKey ? i.GLocale.get(l) : l;
+                        const b = l instanceof GObject.GLocaleKey ? GObject.GLocale.get(l) : l;
                         if ((f && (r = "function" == typeof f ? f() : f), g)) {
                             const t = n.createAddDivider();
                             return (_ instanceof Function ? t.setVisible(_(e)) : "boolean" == typeof _ && t.setVisible(_), t);
@@ -710,5 +710,5 @@ module.exports = function (e, t, n) {
             (B.prototype.setWindowTabEnable = function (e) {
                 $(".tab > span").css("pointer-events", e ? "auto" : "none");
             }),
-            (e.exports = B));
+            (module.exports = B));
     };

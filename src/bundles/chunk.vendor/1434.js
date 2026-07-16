@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i(e, t, i) {
                 ((this.cid = e), (this.width = t), (this.unicode = i));
             }
@@ -12,5 +12,5 @@ module.exports = function (e, t) {
                 (i.prototype.toString = function () {
                     return "[GPDFGlyph]";
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

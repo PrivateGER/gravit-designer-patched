@@ -1,40 +1,40 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(0),
-                o = i(17),
-                a = i(11),
-                s = i(52),
-                l = i(5),
-                h = i(24),
-                A = i(276),
-                c = i(7),
-                p = i(12),
-                u = i(283),
-                d = i(39),
-                g = i(81),
-                f = i(64),
-                m = i(6),
-                y = i(14),
-                _ = i(48),
-                v = i(54),
-                b = i(214),
-                C = i(63),
-                w = i(59);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(17),
+                a = require(11),
+                s = require(52),
+                l = require(5),
+                h = require(24),
+                A = require(276),
+                c = require(7),
+                p = require(12),
+                u = require(283),
+                d = require(39),
+                g = require(81),
+                f = require(64),
+                m = require(6),
+                y = require(14),
+                _ = require(48),
+                v = require(54),
+                b = require(214),
+                C = require(63),
+                w = require(59);
 
             function E() {
                 A.call(this);
             }
-            (r.inherit(E, A),
+            (IsFiniteNonNegativeNumber.inherit(E, A),
                 (E.END_HANDLE_PART_ID = a.uuid()),
                 (E.CENTER_HANDLE_PART_ID = a.uuid()),
                 (E.prototype.activate = function (e) {
                     if (
                         e.propName &&
                         e.propHolder instanceof n &&
-                        e.propHolder.getProperty(e.propName, !1, null, e.propTemporary) instanceof u
+                        e.propHolder.getProperty(e.propName, false, null, e.propTemporary) instanceof u
                     )
                         return A.prototype.activate.call(this, e);
-                    return !1;
+                    return false;
                 }),
                 (E.prototype.paint = function (e, t) {
                     var i = this._getAnnotationPoints(),
@@ -63,7 +63,7 @@ module.exports = function (e, t, i) {
                             t.canvas.strokeVertices(o.WHITE, a.outlineWidth));
                         var u = new b(),
                             d = new c(0.5, 0, 0, 0.5, this._gradient._fx, this._gradient._fy),
-                            f = this._getCompositeTransform(!0);
+                            f = this._getCompositeTransform(true);
                         ((f = d.multiplied(f)),
                             e && !e.isIdentity() && (f = f.multiplied(e)),
                             (p = new C(u, f)),
@@ -78,17 +78,17 @@ module.exports = function (e, t, i) {
                                 0.6
                             ),
                             t.canvas.strokeVertices(o.WHITE, a.outlineWidth),
-                            g.paintAnnotation(t, null, l, a.type, !1, a.size, o.WHITE, o.WHITE, a.outlineWidth, a.shadowColor));
+                            g.paintAnnotation(t, null, l, a.type, false, a.size, o.WHITE, o.WHITE, a.outlineWidth, a.shadowColor));
                         var m = this._gradient.getStops();
                         (!m.length || (0 != m[0].position && 1 != m[m.length - 1].position)) && this._paintCross(s, t);
                         var w = null;
                         for (r = 0; r < i.length; ++r) {
                             this._partSelection && this._partSelection.length && this._partSelection[0].idx == r
                                 ? (w = r)
-                                : g.paintAnnotation(t, null, i[r], a.type, !1, a.size, o.WHITE, o.WHITE, a.outlineWidth, a.shadowColor);
+                                : g.paintAnnotation(t, null, i[r], a.type, false, a.size, o.WHITE, o.WHITE, a.outlineWidth, a.shadowColor);
                         }
                         null !== w &&
-                            g.paintAnnotation(t, null, i[w], a.type, !1, a.sizeBig, o.WHITE, m[w].color, a.outlineWidth, a.shadowColor);
+                            g.paintAnnotation(t, null, i[w], a.type, false, a.sizeBig, o.WHITE, m[w].color, a.outlineWidth, a.shadowColor);
                     }
                     A.prototype.paint.call(this, e, t);
                 }),
@@ -99,7 +99,7 @@ module.exports = function (e, t, i) {
                             function (i, n) {
                                 if (
                                     g
-                                        .getAnnotationBBox(t, i, h.annotationHandles.gradient.size, !1)
+                                        .getAnnotationBBox(t, i, h.annotationHandles.gradient.size, false)
                                         .expanded(h.annotPickDistance, h.annotPickDistance, h.annotPickDistance, h.annotPickDistance)
                                         .containsPoint(e) &&
                                     ((r = new d.PartInfo(
@@ -109,14 +109,14 @@ module.exports = function (e, t, i) {
                                             idx: n,
                                         },
                                         {
-                                            noEditorSelectionChangedEvent: !0,
+                                            noEditorSelectionChangedEvent: true,
                                         },
-                                        !0,
-                                        !0
+                                        true,
+                                        true
                                     )),
                                     this._partSelection && this._partSelection.length && this._partSelection[0].idx == n)
                                 )
-                                    return !0;
+                                    return true;
                             }.bind(this)
                         ),
                         r)
@@ -127,7 +127,7 @@ module.exports = function (e, t, i) {
                         (o &&
                             2 == o.length &&
                             (g
-                                .getAnnotationBBox(t, o[1], h.annotationHandles.gradient.size, !1)
+                                .getAnnotationBBox(t, o[1], h.annotationHandles.gradient.size, false)
                                 .expanded(h.annotPickDistance, h.annotPickDistance, h.annotPickDistance, h.annotPickDistance)
                                 .containsPoint(e)
                                 ? (r = new d.PartInfo(
@@ -135,13 +135,13 @@ module.exports = function (e, t, i) {
                                       E.CENTER_HANDLE_PART_ID,
                                       {
                                           point: o[1],
-                                          noEditorSelectionChangedEvent: !0,
+                                          noEditorSelectionChangedEvent: true,
                                       },
-                                      !0,
-                                      !1
+                                      true,
+                                      false
                                   ))
                                 : g
-                                      .getAnnotationBBox(t, o[0], h.annotationHandles.gradient.size, !1)
+                                      .getAnnotationBBox(t, o[0], h.annotationHandles.gradient.size, false)
                                       .expanded(h.annotPickDistance, h.annotPickDistance, h.annotPickDistance, h.annotPickDistance)
                                       .containsPoint(e) &&
                                   (r = new d.PartInfo(
@@ -149,20 +149,20 @@ module.exports = function (e, t, i) {
                                       E.END_HANDLE_PART_ID,
                                       {
                                           point: o[0],
-                                          noEditorSelectionChangedEvent: !0,
+                                          noEditorSelectionChangedEvent: true,
                                       },
-                                      !0,
-                                      !1
+                                      true,
+                                      false
                                   ))),
                         r)
                     )
                         return r;
                     var a = new b(),
                         s = new c(0.5, 0, 0, 0.5, this._gradient._fx, this._gradient._fy),
-                        l = this._getCompositeTransform(!0);
+                        l = this._getCompositeTransform(true);
                     ((l = s.multiplied(l)), t && !t.isIdentity() && (l = l.multiplied(t)));
                     var u = new C(a, l);
-                    if (w.hitTest(e.getX(), e.getY(), u, 2 * n, !1) && l.invertible()) {
+                    if (w.hitTest(e.getX(), e.getY(), u, 2 * n, false) && l.invertible()) {
                         var f = l.inverted().mapPoint(e),
                             m = Math.atan2(-f.getY(), -f.getX());
                         m < this._gradient._a0 && (m += p.PI2);
@@ -175,10 +175,10 @@ module.exports = function (e, t, i) {
                                     pos: y,
                                 },
                                 {
-                                    noEditorSelectionChangedEvent: !0,
+                                    noEditorSelectionChangedEvent: true,
                                 },
-                                !0,
-                                !0
+                                true,
+                                true
                             )));
                     }
                     return r;
@@ -190,11 +190,11 @@ module.exports = function (e, t, i) {
                     if (e === E.CENTER_HANDLE_PART_ID)
                         (f.modifiers.metaKey || (s = this._snapPosition(s)),
                             (s = n.mapPoint(s)),
-                            (g = this._getCompositeTransform(!0).inverted()) &&
+                            (g = this._getCompositeTransform(true).inverted()) &&
                                 ((s = g.mapPoint(s)),
                                 (this._gradient._fx = s.getX()),
                                 (this._gradient._fy = s.getY()),
-                                this._propHolder.setProperty(this._propName, this._gradient.clone(), !1, !1, !0)));
+                                this._propHolder.setProperty(this._propName, this._gradient.clone(), false, false, true)));
                     else if (
                         e &&
                         ((e.type === A.STOP_HANDLE_PART_ID && 0 == e.idx && h.length && 0 == h[0].position) ||
@@ -204,12 +204,12 @@ module.exports = function (e, t, i) {
                         if ((f.modifiers.metaKey || (s = this._snapPosition(s)), o))
                             (d = this._getPivotPoints()) && 2 == d.length && (s = this._constrainPosition(s, n.inverted(), null, d[1]));
                         s = n.mapPoint(s);
-                        if ((g = this._getCompositeTransform(!0).inverted())) {
+                        if ((g = this._getCompositeTransform(true).inverted())) {
                             s = g.mapPoint(s);
                             var c = new l(this._gradient._fx, this._gradient._fy),
                                 u = s.subtract(c);
                             ((this._gradient._a0 = Math.atan2(-u.getY(), -u.getX())),
-                                this._propHolder.setProperty(this._propName, this._gradient.clone(), !1, !1, !0));
+                                this._propHolder.setProperty(this._propName, this._gradient.clone(), false, false, true));
                         }
                     } else if (e && e.type === A.STOP_HANDLE_PART_ID && h.length && e.idx >= 0 && e.idx <= h.length - 1) {
                         var d;
@@ -217,7 +217,7 @@ module.exports = function (e, t, i) {
                             (d = this._getPivotPoints()) && 2 == d.length && (s = this._constrainPosition(s, n.inverted(), null, d[1]));
                         var g;
                         s = n.mapPoint(s);
-                        if ((g = this._getCompositeTransform(!0).inverted())) {
+                        if ((g = this._getCompositeTransform(true).inverted())) {
                             s = g.mapPoint(s);
                             ((c = new l(this._gradient._fx, this._gradient._fy)), (u = s.subtract(c)));
                             var m = Math.atan2(-u.getY(), -u.getX());
@@ -226,7 +226,7 @@ module.exports = function (e, t, i) {
                             (p.isEqualEps(y, 1, A.DEFAULT_EPS) || y > 1 ? (y = 1) : (p.isEqualEps(y, 0, A.DEFAULT_EPS) || y < 0) && (y = 0),
                                 (h[e.idx].position = y),
                                 this._synchIdx(e),
-                                this._propHolder.setProperty(this._propName, this._gradient.clone(), !1, !1, !0));
+                                this._propHolder.setProperty(this._propName, this._gradient.clone(), false, false, true));
                         }
                     }
                 }),
@@ -237,14 +237,14 @@ module.exports = function (e, t, i) {
                 (E.prototype.getCustomBBox = function (e, t) {
                     var i = A.prototype.getCustomBBox.call(this, e, t),
                         n = new m(this._gradient._fx - 0.5, this._gradient._fy - 0.5, 1, 1),
-                        r = this._getCompositeTransform(!0),
+                        r = this._getCompositeTransform(true),
                         o = (r = e ? r.multiplied(e) : r).mapRect(n);
                     i = i ? i.united(o) : o;
                     var a = h.annotationHandles.gradient.sizeBig + 1;
                     return (i = i.expanded(a, a, a, a));
                 }),
                 (E.prototype._getAnnotationPoints = function () {
-                    for (var e = this._getGradientPoints(), t = this._getCompositeTransform(!0), i = 0; i < e.length; ++i)
+                    for (var e = this._getGradientPoints(), t = this._getCompositeTransform(true), i = 0; i < e.length; ++i)
                         e[i] = t.mapPoint(e[i]);
                     return e;
                 }),
@@ -256,7 +256,7 @@ module.exports = function (e, t, i) {
                         e
                     )),
                         (t[1] = e));
-                    for (var i = this._getCompositeTransform(!0), n = 0; n < t.length; ++n) t[n] = i.mapPoint(t[n]);
+                    for (var i = this._getCompositeTransform(true), n = 0; n < t.length; ++n) t[n] = i.mapPoint(t[n]);
                     return t;
                 }),
                 (E.prototype._getGradientPoints = function () {
@@ -276,5 +276,5 @@ module.exports = function (e, t, i) {
                 (E.prototype.toString = function () {
                     return "[Object GAngularGradientEditor]";
                 }),
-                (e.exports = E));
+                (module.exports = E));
         };

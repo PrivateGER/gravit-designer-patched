@@ -1,26 +1,26 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(99),
-                o = i(5),
-                a = i(104),
-                s = i(22),
-                l = i(36),
-                h = i(2),
-                A = i(24),
-                c = i(45),
-                p = i(6),
-                u = i(113),
-                d = i(140),
-                g = (i(11), [u]);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(99),
+                o = require(5),
+                a = require(104),
+                s = require(22),
+                l = require(36),
+                h = require(2),
+                A = require(24),
+                c = require(45),
+                p = require(6),
+                u = require(113),
+                d = require(140),
+                g = (require(11), [u]);
 
             function f(e) {
                 r.call(this, e);
             }
-            (n.inheritAndMix(f, r, [r.Map, r.DetailMap]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(f, r, [r.Map, r.DetailMap]),
                 (f.ID = "guide.points"),
                 (f.prototype._priority = null),
                 (f.prototype._snapElems = null),
-                (f.prototype._scoped = !1),
+                (f.prototype._scoped = false),
                 (f.prototype._snapMainPage = null),
                 (f.prototype._eSnapElems = null),
                 (f.prototype.getId = function () {
@@ -43,15 +43,15 @@ module.exports = function (e, t, i) {
                         T = S,
                         I = this._scene.getActivePage();
                     this._guides.isMultiPageEnabled()
-                        ? (I && ((m = I.getPosition(!0)), u ? (S = S.subtract(m)) : (T = S.add(m))),
+                        ? (I && ((m = I.getPosition(true)), u ? (S = S.subtract(m)) : (T = S.add(m))),
                           this._scene.iteratePages(
                               function (e) {
                                   var t = e.getGeometryBBox(),
-                                      i = e.getPosition(!0);
-                                  if (t && t.translated(i.getX(), i.getY()).containsPoint(T)) return ((B = e), (x = t), (P = i), !1);
+                                      i = e.getPosition(true);
+                                  if (t && t.translated(i.getX(), i.getY()).containsPoint(T)) return ((B = e), (x = t), (P = i), false);
                               }.bind(this)
                           ))
-                        : I && ((m = (B = I).getPosition(!1)), (x = B.getGeometryBBox()), (P = m), u && (S = S.subtract(m)));
+                        : I && ((m = (B = I).getPosition(false)), (x = B.getGeometryBBox()), (P = m), u && (S = S.subtract(m)));
                     var F = S;
                     (P && (F = F.subtract(P)), m && (F = F.add(m)));
                     var R = function (e, t, i) {
@@ -74,13 +74,13 @@ module.exports = function (e, t, i) {
                                 for (var t = 0; t < this._exclusions.length; ++t) if (this._exclusions[t] == e) return;
                             var i,
                                 r = (function (e) {
-                                    for (var t = 0; t < g.length; t++) if (e instanceof g[t]) return !0;
-                                    return !1;
+                                    for (var t = 0; t < g.length; t++) if (e instanceof g[t]) return true;
+                                    return false;
                                 })(e),
                                 a = l.getEditor(e),
                                 s = e.getGeometryBBox(),
                                 h = new p(F.getX() - n, s.getY() - n, 2 * n, s.getHeight() + 2 * n);
-                            if ((x && (h = h.intersected(x)), (i = a ? a.findPivots(h) : e.findPivots(!1, h))))
+                            if ((x && (h = h.intersected(x)), (i = a ? a.findPivots(h) : e.findPivots(false, h))))
                                 for (t = 0; t < i.length; ++t) {
                                     var A = (B = i[t]).point ? B.point : B;
                                     if (r || h.containsPoint(A)) {
@@ -106,7 +106,7 @@ module.exports = function (e, t, i) {
                                     }
                                 }
                             var E = new p(s.getX() - n, F.getY() - n, s.getWidth() + 2 * n, 2 * n);
-                            if ((x && (E = E.intersected(x)), r && (i = a ? a.findPivots(E) : e.findPivots(!1, E)), i))
+                            if ((x && (E = E.intersected(x)), r && (i = a ? a.findPivots(E) : e.findPivots(false, E)), i))
                                 for (t = 0; t < i.length; ++t) {
                                     var B;
                                     A = (B = i[t]).point ? B.point : B;
@@ -198,10 +198,10 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (f.prototype.isRelativeToPage = function () {
-                    return !0;
+                    return true;
                 }),
                 (f.prototype.isScopeSupported = function () {
-                    return !0;
+                    return true;
                 }),
                 (f.prototype.setScope = function (e) {
                     if (e && e.length) {
@@ -211,8 +211,8 @@ module.exports = function (e, t, i) {
                             if (i.hasMixin(h.Container))
                                 for (var n = i.getFirstChild(); null != n; n = n.getNext()) n instanceof a && this._snapElems.push(n);
                         }
-                        ((this._scoped = !0), (this._snapMainPage = this._scene.getActivePage()));
-                    } else ((this._snapElems = null), (this._scoped = !1), (this._snapMainPage = null));
+                        ((this._scoped = true), (this._snapMainPage = this._scene.getActivePage()));
+                    } else ((this._snapElems = null), (this._scoped = false), (this._snapMainPage = null));
                     this._eSnapElems = null;
                 }),
                 (f.prototype._setEffectiveScope = function (e) {
@@ -225,5 +225,5 @@ module.exports = function (e, t, i) {
                 (f.prototype.toString = function () {
                     return "[Object GPointsGuide]";
                 }),
-                (e.exports = f));
+                (module.exports = f));
         };

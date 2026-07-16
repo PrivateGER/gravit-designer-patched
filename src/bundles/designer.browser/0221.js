@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         (function (e) {
-            var o = n(250),
-                i = n(515),
-                a = n(516);
+            var o = require(250),
+                i = require(515),
+                a = require(516);
             function r() {
                 return l.TYPED_ARRAY_SUPPORT ? 2147483647 : 1073741823;
             }
@@ -91,7 +91,7 @@ module.exports = function (e, t, n) {
                 "string" != typeof e && (e = "" + e);
                 var n = e.length;
                 if (0 === n) return 0;
-                for (var o = !1; ; )
+                for (var o = false; ; )
                     switch (t) {
                         case "ascii":
                         case "latin1":
@@ -112,11 +112,11 @@ module.exports = function (e, t, n) {
                             return $(e).length;
                         default:
                             if (o) return U(e).length;
-                            ((t = ("" + t).toLowerCase()), (o = !0));
+                            ((t = ("" + t).toLowerCase()), (o = true));
                     }
             }
             function f(e, t, n) {
-                var o = !1;
+                var o = false;
                 if (((void 0 === t || t < 0) && (t = 0), t > this.length)) return "";
                 if (((void 0 === n || n > this.length) && (n = this.length), n <= 0)) return "";
                 if ((n >>>= 0) <= (t >>>= 0)) return "";
@@ -141,7 +141,7 @@ module.exports = function (e, t, n) {
                             return D(this, t, n);
                         default:
                             if (o) throw new TypeError("Unknown encoding: " + e);
-                            ((e = (e + "").toLowerCase()), (o = !0));
+                            ((e = (e + "").toLowerCase()), (o = true));
                     }
             }
             function m(e, t, n) {
@@ -195,9 +195,9 @@ module.exports = function (e, t, n) {
                         } else (-1 !== d && (a -= a - d), (d = -1));
                 } else
                     for (n + l > s && (n = s - l), a = n; a >= 0; a--) {
-                        for (var u = !0, p = 0; p < l; p++)
+                        for (var u = true, p = 0; p < l; p++)
                             if (c(e, a + p) !== c(t, p)) {
-                                u = !1;
+                                u = false;
                                 break;
                             }
                         if (u) return a;
@@ -306,12 +306,12 @@ module.exports = function (e, t, n) {
                     return n;
                 })(o);
             }
-            ((t.Buffer = l),
-                (t.SlowBuffer = function (e) {
+            ((exports.Buffer = l),
+                (exports.SlowBuffer = function (e) {
                     +e != e && (e = 0);
                     return l.alloc(+e);
                 }),
-                (t.INSPECT_MAX_BYTES = 50),
+                (exports.INSPECT_MAX_BYTES = 50),
                 (l.TYPED_ARRAY_SUPPORT =
                     void 0 !== e.TYPED_ARRAY_SUPPORT
                         ? e.TYPED_ARRAY_SUPPORT
@@ -328,10 +328,10 @@ module.exports = function (e, t, n) {
                                       42 === e.foo() && "function" == typeof e.subarray && 0 === e.subarray(1, 1).byteLength
                                   );
                               } catch (e) {
-                                  return !1;
+                                  return false;
                               }
                           })()),
-                (t.kMaxLength = r()),
+                (exports.kMaxLength = r()),
                 (l.poolSize = 8192),
                 (l._augment = function (e) {
                     return ((e.__proto__ = l.prototype), e);
@@ -347,7 +347,7 @@ module.exports = function (e, t, n) {
                         l[Symbol.species] === l &&
                         Object.defineProperty(l, Symbol.species, {
                             value: null,
-                            configurable: !0,
+                            configurable: true,
                         })),
                 (l.alloc = function (e, t, n) {
                     return (function (e, t, n, o) {
@@ -389,9 +389,9 @@ module.exports = function (e, t, n) {
                         case "ucs-2":
                         case "utf16le":
                         case "utf-16le":
-                            return !0;
+                            return true;
                         default:
-                            return !1;
+                            return false;
                     }
                 }),
                 (l.concat = function (e, t) {
@@ -409,7 +409,7 @@ module.exports = function (e, t, n) {
                     return o;
                 }),
                 (l.byteLength = h),
-                (l.prototype._isBuffer = !0),
+                (l.prototype._isBuffer = true),
                 (l.prototype.swap16 = function () {
                     var e = this.length;
                     if (e % 2 != 0) throw new RangeError("Buffer size must be a multiple of 16-bits");
@@ -438,7 +438,7 @@ module.exports = function (e, t, n) {
                 }),
                 (l.prototype.inspect = function () {
                     var e = "",
-                        n = t.INSPECT_MAX_BYTES;
+                        n = exports.INSPECT_MAX_BYTES;
                     return (
                         this.length > 0 && ((e = this.toString("hex", 0, n).match(/.{2}/g).join(" ")), this.length > n && (e += " ... ")),
                         "<Buffer " + e + ">"
@@ -478,10 +478,10 @@ module.exports = function (e, t, n) {
                     return -1 !== this.indexOf(e, t, n);
                 }),
                 (l.prototype.indexOf = function (e, t, n) {
-                    return y(this, e, t, n, !0);
+                    return y(this, e, t, n, true);
                 }),
                 (l.prototype.lastIndexOf = function (e, t, n) {
-                    return y(this, e, t, n, !1);
+                    return y(this, e, t, n, false);
                 }),
                 (l.prototype.write = function (e, t, n, o) {
                     if (void 0 === t) ((o = "utf8"), (n = this.length), (t = 0));
@@ -494,7 +494,7 @@ module.exports = function (e, t, n) {
                     if (((void 0 === n || n > i) && (n = i), (e.length > 0 && (n < 0 || t < 0)) || t > this.length))
                         throw new RangeError("Attempt to write outside buffer bounds");
                     o || (o = "utf8");
-                    for (var a = !1; ; )
+                    for (var a = false; ; )
                         switch (o) {
                             case "hex":
                                 return _(this, e, t, n);
@@ -515,7 +515,7 @@ module.exports = function (e, t, n) {
                                 return S(this, e, t, n);
                             default:
                                 if (a) throw new TypeError("Unknown encoding: " + o);
-                                ((o = ("" + o).toLowerCase()), (a = !0));
+                                ((o = ("" + o).toLowerCase()), (a = true));
                         }
                 }),
                 (l.prototype.toJSON = function () {
@@ -646,16 +646,16 @@ module.exports = function (e, t, n) {
                     return (t || L(e, 4, this.length), (this[e] << 24) | (this[e + 1] << 16) | (this[e + 2] << 8) | this[e + 3]);
                 }),
                 (l.prototype.readFloatLE = function (e, t) {
-                    return (t || L(e, 4, this.length), i.read(this, e, !0, 23, 4));
+                    return (t || L(e, 4, this.length), i.read(this, e, true, 23, 4));
                 }),
                 (l.prototype.readFloatBE = function (e, t) {
-                    return (t || L(e, 4, this.length), i.read(this, e, !1, 23, 4));
+                    return (t || L(e, 4, this.length), i.read(this, e, false, 23, 4));
                 }),
                 (l.prototype.readDoubleLE = function (e, t) {
-                    return (t || L(e, 8, this.length), i.read(this, e, !0, 52, 8));
+                    return (t || L(e, 8, this.length), i.read(this, e, true, 52, 8));
                 }),
                 (l.prototype.readDoubleBE = function (e, t) {
-                    return (t || L(e, 8, this.length), i.read(this, e, !1, 52, 8));
+                    return (t || L(e, 8, this.length), i.read(this, e, false, 52, 8));
                 }),
                 (l.prototype.writeUIntLE = function (e, t, n, o) {
                     ((e = +e), (t |= 0), (n |= 0), o) || I(this, e, t, n, Math.pow(2, 8 * n) - 1, 0);
@@ -686,7 +686,7 @@ module.exports = function (e, t, n) {
                         (e = +e),
                         (t |= 0),
                         n || I(this, e, t, 2, 65535, 0),
-                        l.TYPED_ARRAY_SUPPORT ? ((this[t] = 255 & e), (this[t + 1] = e >>> 8)) : k(this, e, t, !0),
+                        l.TYPED_ARRAY_SUPPORT ? ((this[t] = 255 & e), (this[t + 1] = e >>> 8)) : k(this, e, t, true),
                         t + 2
                     );
                 }),
@@ -695,7 +695,7 @@ module.exports = function (e, t, n) {
                         (e = +e),
                         (t |= 0),
                         n || I(this, e, t, 2, 65535, 0),
-                        l.TYPED_ARRAY_SUPPORT ? ((this[t] = e >>> 8), (this[t + 1] = 255 & e)) : k(this, e, t, !1),
+                        l.TYPED_ARRAY_SUPPORT ? ((this[t] = e >>> 8), (this[t + 1] = 255 & e)) : k(this, e, t, false),
                         t + 2
                     );
                 }),
@@ -706,7 +706,7 @@ module.exports = function (e, t, n) {
                         n || I(this, e, t, 4, 4294967295, 0),
                         l.TYPED_ARRAY_SUPPORT
                             ? ((this[t + 3] = e >>> 24), (this[t + 2] = e >>> 16), (this[t + 1] = e >>> 8), (this[t] = 255 & e))
-                            : O(this, e, t, !0),
+                            : O(this, e, t, true),
                         t + 4
                     );
                 }),
@@ -717,7 +717,7 @@ module.exports = function (e, t, n) {
                         n || I(this, e, t, 4, 4294967295, 0),
                         l.TYPED_ARRAY_SUPPORT
                             ? ((this[t] = e >>> 24), (this[t + 1] = e >>> 16), (this[t + 2] = e >>> 8), (this[t + 3] = 255 & e))
-                            : O(this, e, t, !1),
+                            : O(this, e, t, false),
                         t + 4
                     );
                 }),
@@ -761,7 +761,7 @@ module.exports = function (e, t, n) {
                         (e = +e),
                         (t |= 0),
                         n || I(this, e, t, 2, 32767, -32768),
-                        l.TYPED_ARRAY_SUPPORT ? ((this[t] = 255 & e), (this[t + 1] = e >>> 8)) : k(this, e, t, !0),
+                        l.TYPED_ARRAY_SUPPORT ? ((this[t] = 255 & e), (this[t + 1] = e >>> 8)) : k(this, e, t, true),
                         t + 2
                     );
                 }),
@@ -770,7 +770,7 @@ module.exports = function (e, t, n) {
                         (e = +e),
                         (t |= 0),
                         n || I(this, e, t, 2, 32767, -32768),
-                        l.TYPED_ARRAY_SUPPORT ? ((this[t] = e >>> 8), (this[t + 1] = 255 & e)) : k(this, e, t, !1),
+                        l.TYPED_ARRAY_SUPPORT ? ((this[t] = e >>> 8), (this[t + 1] = 255 & e)) : k(this, e, t, false),
                         t + 2
                     );
                 }),
@@ -781,7 +781,7 @@ module.exports = function (e, t, n) {
                         n || I(this, e, t, 4, 2147483647, -2147483648),
                         l.TYPED_ARRAY_SUPPORT
                             ? ((this[t] = 255 & e), (this[t + 1] = e >>> 8), (this[t + 2] = e >>> 16), (this[t + 3] = e >>> 24))
-                            : O(this, e, t, !0),
+                            : O(this, e, t, true),
                         t + 4
                     );
                 }),
@@ -793,21 +793,21 @@ module.exports = function (e, t, n) {
                         e < 0 && (e = 4294967295 + e + 1),
                         l.TYPED_ARRAY_SUPPORT
                             ? ((this[t] = e >>> 24), (this[t + 1] = e >>> 16), (this[t + 2] = e >>> 8), (this[t + 3] = 255 & e))
-                            : O(this, e, t, !1),
+                            : O(this, e, t, false),
                         t + 4
                     );
                 }),
                 (l.prototype.writeFloatLE = function (e, t, n) {
-                    return R(this, e, t, !0, n);
+                    return R(this, e, t, true, n);
                 }),
                 (l.prototype.writeFloatBE = function (e, t, n) {
-                    return R(this, e, t, !1, n);
+                    return R(this, e, t, false, n);
                 }),
                 (l.prototype.writeDoubleLE = function (e, t, n) {
-                    return M(this, e, t, !0, n);
+                    return M(this, e, t, true, n);
                 }),
                 (l.prototype.writeDoubleBE = function (e, t, n) {
-                    return M(this, e, t, !1, n);
+                    return M(this, e, t, false, n);
                 }),
                 (l.prototype.copy = function (e, t, n, o) {
                     if (
@@ -919,5 +919,5 @@ module.exports = function (e, t, n) {
                 for (var i = 0; i < o && !(i + n >= t.length || i >= e.length); ++i) t[i + n] = e[i];
                 return i;
             }
-        }).call(this, n(109));
+        }).call(this, require(109));
     };

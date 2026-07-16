@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(51),
-                o = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(51),
+                String = require(9);
 
             function a() {
                 (r.call(this), this._setDefaultProperties(a.GeometryProperties));
@@ -11,7 +11,7 @@ module.exports = function (e, t, i) {
                     return 0;
                 }),
                 (a.prototype.getNodeNameTranslated = function () {
-                    return o.getValue("GGLSketchEffect", "name", this.getNodeName());
+                    return String.getValue("GGLSketchEffect", "name", this.getNodeName());
                 }),
                 (a.GeometryProperties = {
                     shp: {
@@ -22,5 +22,5 @@ module.exports = function (e, t, i) {
                 (a.RANGES = {
                     strength: [0, 2],
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

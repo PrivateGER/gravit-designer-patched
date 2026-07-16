@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(105),
-                r = i(89),
-                o = i(115);
-            ((t.make = function (e) {
+            var n = require(105),
+                Parser = require(89),
+                o = require(115);
+            ((exports.make = function (e) {
                 for (
                     var t = new o.Table("ltag", [
                             {
@@ -50,8 +50,8 @@ module.exports = function (e, t, i) {
                     t
                 );
             }),
-                (t.parse = function (e, t) {
-                    var i = new r.Parser(e, t),
+                (exports.parse = function (e, t) {
+                    var i = new Parser.Parser(e, t),
                         o = i.parseULong();
                     (n.argument(1 === o, "Unsupported ltag table version."), i.skip("uLong", 1));
                     for (var a = i.parseULong(), s = [], l = 0; l < a; l++) {

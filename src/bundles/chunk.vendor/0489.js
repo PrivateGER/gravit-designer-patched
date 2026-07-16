@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(42);
+module.exports = function (module, exports, require) {
+            var n = require(42);
 
             function r(e) {
                 n.call(
@@ -27,7 +27,7 @@ module.exports = function (e, t, i) {
                         texture1: 1,
                     })));
             }
-            (i(0).inherit(r, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(r, n),
                 (r.prototype.lensBlurPrePass = null),
                 (r.prototype.lensBlur0 = null),
                 (r.prototype.lensBlur1 = null),
@@ -75,5 +75,5 @@ module.exports = function (e, t, i) {
                         this.lensBlur2 && this.lensBlur2.destroy(),
                         n.prototype.destroy.call(this));
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

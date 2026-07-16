@@ -1,24 +1,24 @@
-module.exports = function (e, t, i) {
-            var n = i(22),
-                r = i(63),
-                o = (i(75), i(2)),
-                a = i(0),
-                s = i(347),
-                l = i(187),
-                h = i(56),
-                A = i(112),
-                c = i(28),
-                p = i(5),
-                u = i(818),
-                d = i(14),
-                g = i(6),
-                f = i(656),
-                m = i(7),
-                y = i(657),
-                _ = i(45),
-                v = i(12),
-                b = ((c = i(28)), i(11)),
-                C = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(22),
+                r = require(63),
+                o = (require(75), require(2)),
+                IsFiniteNonNegativeNumber = require(0),
+                s = require(347),
+                l = require(187),
+                h = require(56),
+                A = require(112),
+                GStylable = require(28),
+                p = require(5),
+                u = require(818),
+                d = require(14),
+                g = require(6),
+                f = require(656),
+                m = require(7),
+                y = require(657),
+                _ = require(45),
+                v = require(12),
+                b = ((GStylable = require(28 /* GStylable */)), require(11)),
+                String = require(9);
 
             function w() {
                 (h.call(this),
@@ -96,7 +96,7 @@ module.exports = function (e, t, i) {
                 (w.FacetsTree = function (e, t) {
                     ((this._facet = e), (this._extInsidePoint = t || null));
                 }),
-                a.inheritAndMix(w.FacetsTree, o, [o.Container]),
+                IsFiniteNonNegativeNumber.inheritAndMix(w.FacetsTree, o, [o.Container]),
                 (w.FacetsTree.prototype._facet = null),
                 (w.FacetsTree.prototype._extInsidePoint = null),
                 (w.FacetsTree.prototype.validateInsertion = function (e, t) {
@@ -109,7 +109,7 @@ module.exports = function (e, t, i) {
                     return this._facet;
                 }),
                 (w.FacetsTree.prototype.insert = function (e) {
-                    var t = !1;
+                    var t = false;
                     if (this.getFirstChild() && e.getExtPoint()) {
                         for (var i = null, n = this.getFirstChild(); n; n = i)
                             if (((i = n.getNext()), n.getFacet().isInside(e.getExtPoint(), null))) {
@@ -117,14 +117,14 @@ module.exports = function (e, t, i) {
                             } else
                                 n.getExtPoint() &&
                                     e.getFacet().isInside(n.getExtPoint(), null) &&
-                                    (this.removeChild(n), e.insert(n), t || (this.insertChild(e, i), (t = !0)));
-                        t || (this.appendChild(e), (t = !0));
-                    } else (this.appendChild(e), (t = !0));
+                                    (this.removeChild(n), e.insert(n), t || (this.insertChild(e, i), (t = true)));
+                        t || (this.appendChild(e), (t = true));
+                    } else (this.appendChild(e), (t = true));
                     return t;
                 }),
                 (w.prototype._facets = null),
                 (w.prototype.getNodeNameTranslated = function () {
-                    return C.getValue("GPathsGraph", "name", this.getNodeName());
+                    return String.getValue("GPathsGraph", "name", this.getNodeName());
                 }),
                 (w.prototype._facetsHash = null),
                 (w.prototype._facetsUpdateCounter = 0),
@@ -173,7 +173,7 @@ module.exports = function (e, t, i) {
                     )
                         try {
                             this.prepareFacetsUpdate();
-                            for (var o = e.getAnchorPoints().getFirstChild(); null != o; o = o.getNext()) o.setProperty("ah", !1);
+                            for (var o = e.getAnchorPoints().getFirstChild(); null != o; o = o.getNext()) o.setProperty("ah", false);
                             if (t && t.getType() == w.GraphPosition.PosType.Anchor) {
                                 var a = t.getPosSpec().getAnchor();
                                 e.getAnchorPoints()
@@ -207,7 +207,7 @@ module.exports = function (e, t, i) {
                                 };
                             for (u = 0; u < A.length; ++u) {
                                 for (var m = A[u], y = [], _ = this._edges.getFirstChild(); _; _ = _.getNext()) {
-                                    var b = d.intersect(m, _.getPathBase(), !1);
+                                    var b = d.intersect(m, _.getPathBase(), false);
                                     if (b && b.length) {
                                         b.sort(f);
                                         for (
@@ -226,7 +226,7 @@ module.exports = function (e, t, i) {
                                                 }),
                                                 S = [],
                                                 T = [];
-                                            (this.splitEdge(_, P, !0, S, T), (_ = S[S.length - 1]));
+                                            (this.splitEdge(_, P, true, S, T), (_ = S[S.length - 1]));
                                             for (x = 0; x < C.length; ++x) y.push([C[x], T[x]]);
                                         }
                                     }
@@ -246,7 +246,7 @@ module.exports = function (e, t, i) {
                                                 return new s.SplitPoint(e[0].polySeg0.seg - 1, e[0].slope0, e[0].pt);
                                             }),
                                             D = [];
-                                        this._splitPathBase(m, R, !0, D);
+                                        this._splitPathBase(m, R, true, D);
                                         for (x = 0; x < I.length; ++x)
                                             c.push({
                                                 pathBase: D[x],
@@ -402,15 +402,15 @@ module.exports = function (e, t, i) {
                                     }
                                     t && (t.assignStyleFrom(this), this._facets.insertChild(t));
                                 }
-                                return !0;
+                                return true;
                             }.bind(this);
-                            e.acceptChildren(i, !1, !0);
+                            e.acceptChildren(i, false, true);
                         }
                     }
                 }),
                 (w.prototype._detailHitTest = function (e, t, i, n) {
                     for (var r = null, o = this._edges.getFirstChild(); o; o = o.getNext()) {
-                        if ((r = o.getPathBase()._detailHitTest(e, this.$trf ? this.$trf.multiplied(t) : t, i, !1)))
+                        if ((r = o.getPathBase()._detailHitTest(e, this.$trf ? this.$trf.multiplied(t) : t, i, false)))
                             return new A(this, {
                                 hitRes: new h.HitResult(h.HitResult.Type.Stroke, r.data.vertex),
                                 edge: o,
@@ -429,8 +429,8 @@ module.exports = function (e, t, i) {
                     for (
                         var t = {},
                             i = function (e, t) {
-                                if (e) for (var i = 0; i < e.length; ++i) if (e[i] == t) return !0;
-                                return !1;
+                                if (e) for (var i = 0; i < e.length; ++i) if (e[i] == t) return true;
+                                return false;
                             },
                             n = 0;
                         n < e.edges.length;
@@ -456,8 +456,8 @@ module.exports = function (e, t, i) {
                             ) {
                                 (l.push(g), a ? a.push(u) : ((a = [u]), (t[d.getId()] = a)));
                                 var m,
-                                    _ = !1;
-                                (e.extFacet || h || (_ = !0),
+                                    _ = false;
+                                (e.extFacet || h || (_ = true),
                                     (m =
                                         g.getProperty("direction") == f.DirectedEdge.Direction.Straight
                                             ? (u = d.getDestination()).getNextEdgeOrdered(d, y.EdgeType.In, _)
@@ -476,7 +476,7 @@ module.exports = function (e, t, i) {
                             }
                             if (!p && l && l.length)
                                 s.init(l) &&
-                                    (e.extFacet || !h || s.isInside(h, !1)
+                                    (e.extFacet || !h || s.isInside(h, false)
                                         ? e.intFacets
                                             ? e.intFacets.push(s)
                                             : (e.intFacets = [s])
@@ -497,10 +497,10 @@ module.exports = function (e, t, i) {
                                     var i = e[t];
                                     if (i)
                                         for (var n = this._facetsHash[t], r = 0; r < n.length; ++r)
-                                            for (var o = !1, a = 0; a < i.length && !o; ++a)
+                                            for (var o = false, a = 0; a < i.length && !o; ++a)
                                                 (o = n[r].isSame(i[a])) &&
                                                     i[a].getProperty("cSt") &&
-                                                    (n[r].assignStyleFrom(i[a]), n[r].setProperty("cSt", !0));
+                                                    (n[r].assignStyleFrom(i[a]), n[r].setProperty("cSt", true));
                                 }
                         }
                         this._oldGraph = null;
@@ -533,7 +533,7 @@ module.exports = function (e, t, i) {
                         l = new Float64Array(4),
                         h = e.getAnchorPoints().getFirstChild();
                     if (h) {
-                        for (var A = !1, c = null, p = null, u = h.getNext(), d = 0; null != u; h = u, u = u.getNext(), ++d) {
+                        for (var A = false, c = null, p = null, u = h.getNext(), d = 0; null != u; h = u, u = u.getNext(), ++d) {
                             var g = h.getProperty("x"),
                                 f = h.getProperty("y"),
                                 m = u.getProperty("x"),
@@ -548,7 +548,7 @@ module.exports = function (e, t, i) {
                                     : ((p = new _.AnchorPoint()).deserialize(h.serialize()),
                                       A && p.setProperties(["hlx", "hly"], [null, null]),
                                       a.getAnchorPoints().appendChild(p)),
-                                (A = !1),
+                                (A = false),
                                 r.length && o < r.length && r[o].seg == d)
                             ) {
                                 for (var B = 0; o < r.length && r[o].seg == d; ++o) {
@@ -562,7 +562,7 @@ module.exports = function (e, t, i) {
                                             (p = new _.AnchorPoint()).deserialize(h.serialize()),
                                             p.setProperties(["hlx", "hly"], [null, null]),
                                             a.getAnchorPoints().appendChild(p),
-                                            (A = !0));
+                                            (A = true));
                                     else if (v.isEqualEps(x, 1) && (!P || (v.isEqualEps(P.getX(), m) && v.isEqualEps(P.getY(), y)))) {
                                         if (!A) {
                                             if (((c = new _.AnchorPoint()), 1 == x && 0 == B))
@@ -593,10 +593,10 @@ module.exports = function (e, t, i) {
                                                     [c.getProperty("x"), c.getProperty("y")]
                                                 ),
                                                 (c = null),
-                                                (A = !0));
+                                                (A = true));
                                         }
                                     } else {
-                                        if (((A = !1), (c = new _.AnchorPoint()), null !== b && null !== w && null !== C && null !== E))
+                                        if (((A = false), (c = new _.AnchorPoint()), null !== b && null !== w && null !== C && null !== E))
                                             (v.getCtrlPts(g, m, b, w, B, x, s),
                                                 v.getCtrlPts(f, y, C, E, B, x, l),
                                                 p.setProperties(["hrx", "hry"], [s[1], l[1]]),
@@ -671,10 +671,10 @@ module.exports = function (e, t, i) {
                         n = [];
                     (new Float64Array(4), new Float64Array(4));
                     if ((M = e.getAnchorPoints().getFirstChild())) {
-                        var r = !1;
+                        var r = false;
                         v.isEqualEps(M.getProperty("x"), e.getAnchorPoints().getLastChild().getProperty("x")) &&
                             v.isEqualEps(M.getProperty("y"), e.getAnchorPoints().getLastChild().getProperty("y")) &&
-                            (r = !0);
+                            (r = true);
                         for (var o = M.getNext(), a = 0; null != o; M = o, o = o.getNext(), ++a) {
                             var h = new _(),
                                 A = new _.AnchorPoint();
@@ -688,7 +688,7 @@ module.exports = function (e, t, i) {
                                     g.getAnchorPoints().appendChild(A),
                                     (A = new _.AnchorPoint()).deserialize(u.serialize()),
                                     g.getAnchorPoints().appendChild(A));
-                                var f = i.intersect(h, g, !1);
+                                var f = i.intersect(h, g, false);
                                 if (f && f.length)
                                     for (var m = 0; m < f.length; ++m)
                                         (1 != f[m].slope0 ||
@@ -777,7 +777,7 @@ module.exports = function (e, t, i) {
                             L = e.getAnchorPoints().getChildByIndex(V.seg);
                             Q.push(new s.SplitPoint(V.seg, 1, new p(L.getProperty("x"), L.getProperty("y"))));
                         }
-                        this._splitPathBase(e, Q, !1, t);
+                        this._splitPathBase(e, Q, false, t);
                     } else t.push(e);
                 }),
                 (w.prototype._addGraphLine = function (e, t, i, n) {
@@ -814,7 +814,7 @@ module.exports = function (e, t, i) {
                                 (A = c);
                         A
                             ? ((o = A), p.setProperties(["x", "y"], [A.getProperty("x"), A.getProperty("y")]))
-                            : ((o = new y()).setProperties(["x", "y"], [l, h]), this.addAnchor(o), !0);
+                            : ((o = new y()).setProperties(["x", "y"], [l, h]), this.addAnchor(o), true);
                     }
                     if (r != o) {
                         var u = new s();
@@ -823,13 +823,13 @@ module.exports = function (e, t, i) {
                     return new w.GraphPosition(w.GraphPosition.PosType.Anchor, new w.GraphPosition.AnchorSpec(o));
                 }),
                 (w.prototype._styleRepaint = function (e) {
-                    if (e instanceof c.PaintLayer) {
+                    if (e instanceof GStylable.PaintLayer) {
                         for (var t = this._facets.getFirstChild(); null != t; t = t.getNext())
                             t.getProperty("cSt") || t.assignStyleFrom(this);
                         for (var i = this._edges.getFirstChild(); null != i; i = i.getNext())
                             i.getProperty("cSt") || i.assignStyleFrom(this);
                     }
-                    c.prototype._styleRepaint.call(this, e);
+                    GStylable.prototype._styleRepaint.call(this, e);
                 }),
                 (w.prototype._handleChange = function (e, t) {
                     if (e === o._Change.Store)
@@ -850,8 +850,8 @@ module.exports = function (e, t, i) {
                                 s && l && (i.removeChild(a), this.connectAnchors(s, l, a));
                             }
                         if (n) {
-                            for (var A = !0, c = ((r = null), n.getFirstChild()); null != c && A; c = r) {
-                                ((A = !1), (r = c.getNext()));
+                            for (var A = true, c = ((r = null), n.getFirstChild()); null != c && A; c = r) {
+                                ((A = false), (r = c.getNext()));
                                 var p = c.getDirectedEdges(),
                                     u = [];
                                 if (p && p.getFirstChild())
@@ -870,8 +870,8 @@ module.exports = function (e, t, i) {
                 }),
                 (w.prototype.rewindVertices = function (e) {
                     ((this._currentEdge = this._edges.getFirstChild()), (this._vertexSource = null));
-                    for (var t = this._currentEdge; t; t = t.getNext()) if (!t.getPathBase().rewindVertices(0)) return !1;
-                    return !0;
+                    for (var t = this._currentEdge; t; t = t.getNext()) if (!t.getPathBase().rewindVertices(0)) return false;
+                    return true;
                 }),
                 (w.prototype.readVertex = function (e) {
                     return this._currentEdge && !this._currentFacet
@@ -882,11 +882,11 @@ module.exports = function (e, t, i) {
                                         ? (this._vertexSource = new r(this._currentEdge.getPathBase(), this.$trf))
                                         : (this._vertexSource = this._currentEdge.getPathBase()),
                                     this._vertexSource.readVertex(e))
-                                  : ((this._vertexSource = null), !1))
-                        : (this._currentFacet, !1);
+                                  : ((this._vertexSource = null), false))
+                        : (this._currentFacet, false);
                 }),
                 (w.prototype.hasStyleFill = function () {
-                    var e = !1;
+                    var e = false;
                     if (this._facets.getFirstChild())
                         for (var t = this._facets.getFirstChild(); t && !e; t = t.getNext()) e = t.getPaintLayers().hasStyleFill();
                     return e;
@@ -901,17 +901,17 @@ module.exports = function (e, t, i) {
                             l = new d();
                         (l.resize(a.getWidth(), a.getHeight()), l.prepare(), l.setTransform(new m(1, 0, 0, 1, -s.getX(), -s.getY())));
                         for (var h = e.pushCanvas(l), A = this._facets.getFirstChild(); A; A = A.getNext())
-                            ((A._scene = this._scene), A._paintFill(e, t, this.$trf ? this.$trf.multiplied(n) : n, !0));
+                            ((A._scene = this._scene), A._paintFill(e, t, this.$trf ? this.$trf.multiplied(n) : n, true));
                         for (A = this._facets.getFirstChild(); A; A = A.getNext())
-                            ((A._scene = this._scene), A._paintFill(e, t, this.$trf ? this.$trf.multiplied(n) : n, !1, !0));
-                        var c = h.setTransform(h.getTransform(!0).preMultiplied(r));
-                        (h.drawImage(l, s.getX(), s.getY(), !1, null, null, !0), l.finish(), h.setTransform(c), e.popCanvas());
+                            ((A._scene = this._scene), A._paintFill(e, t, this.$trf ? this.$trf.multiplied(n) : n, false, true));
+                        var c = h.setTransform(h.getTransform(true).preMultiplied(r));
+                        (h.drawImage(l, s.getX(), s.getY(), false, null, null, true), l.finish(), h.setTransform(c), e.popCanvas());
                         for (A = this._facets.getFirstChild(); A; A = A.getNext())
                             ((A._scene = this._scene), A._paintFill(e, t, this.$trf));
                     }
                 }),
                 (w.prototype.hasStyleBorder = function () {
-                    for (var e = !1, t = this._edges.getFirstChild(); t && !e; t = t.getNext()) {
+                    for (var e = false, t = this._edges.getFirstChild(); t && !e; t = t.getNext()) {
                         var i = t.getPaintLayers();
                         i && (e = i.hasStyleBorder());
                     }
@@ -920,22 +920,22 @@ module.exports = function (e, t, i) {
                 (w.prototype._isSeparateStylePaintLayer = function (e, t) {
                     return (
                         !!n.Stylable.prototype._isSeparateStylePaintLayer.call(this, e, t) ||
-                        !!(t === c.StyleLayer.Fill || (t === c.StyleLayer.Border && this.hasStyleBorder()))
+                        !!(t === GStylable.StyleLayer.Fill || (t === GStylable.StyleLayer.Border && this.hasStyleBorder()))
                     );
                 }),
                 (w.prototype._paintBorder = function (e, t, i) {
                     if (e.configuration.isOutline(e)) h.prototype._paintBorder.call(this, e, t, i);
                     else if (this.hasStyleBorder() && t) {
-                        if (i.$_pt && i.$_bw > 0 && i.$_op > 0 && !0 === i.$_vs) {
+                        if (i.$_pt && i.$_bw > 0 && i.$_op > 0 && true === i.$_vs) {
                             var n = this._createStyleCanvas(e, this.getPaintBBox()),
                                 r = e.pushCanvas(n);
                             try {
                                 for (var o = this._edges.getFirstChild(); o; o = o.getNext())
-                                    o.getProperty("cSt", !1, null, !0)
-                                        ? (o.painted = !1)
-                                        : (o._paintBorder(e, this.$trf, this._scene, !0, i), (o.painted = !0));
+                                    o.getProperty("cSt", false, null, true)
+                                        ? (o.painted = false)
+                                        : (o._paintBorder(e, this.$trf, this._scene, true, i), (o.painted = true));
                                 for (var a = this._anchors.getFirstChild(); a; a = a.getNext())
-                                    a._paintBorder(e, this.$trf, this._scene, !0);
+                                    a._paintBorder(e, this.$trf, this._scene, true);
                                 var s = this.getPatternBBox(e.isIncludingInvisible());
                                 if (s) {
                                     var l = 0.5 * i.$_bw;
@@ -957,7 +957,7 @@ module.exports = function (e, t, i) {
                                     var m = e.canvas;
                                     if (f) {
                                         g = f.inverted().mapRect(g);
-                                        var y = m.setTransform(m.getTransform(!0).multiplied(f));
+                                        var y = m.setTransform(m.getTransform(true).multiplied(f));
                                         (m.fillRect(
                                             g.getX(),
                                             g.getY(),
@@ -998,27 +998,27 @@ module.exports = function (e, t, i) {
                                     return (t || w.push(e), t);
                                 };
                             for (o = this._edges.getFirstChild(); o; o = o.getNext())
-                                if (!o.painted && o.getProperty("cSt", !1, null, !0)) {
+                                if (!o.painted && o.getProperty("cSt", false, null, true)) {
                                     ((_ = this._createStyleCanvas(e, v)), (r = e.pushCanvas(_)), (C = o), (w = []));
                                     try {
                                         var T = o.getSource();
                                         (x.initWhite(E), P.initWhite(B), this.depthFirstSearch(S, null, T, x, P));
                                         for (var I = x.getItemsOfColor(u.ColorMap.Colors.Black), F = 0; F < I.length; ++F)
-                                            I[F]._paintBorder(e, this.$trf, this._scene, !0, C);
+                                            I[F]._paintBorder(e, this.$trf, this._scene, true, C);
                                         (b.each(
-                                            C.getPaintLayers().getBorderLayers(!0),
+                                            C.getPaintLayers().getBorderLayers(true),
                                             function (t, i) {
                                                 var n = this._createStyleCanvas(e, v),
                                                     r = e.pushCanvas(n);
                                                 try {
                                                     for (var o = null, a = null, s = 0; s < w.length; ++s) {
-                                                        (w[s]._paintBorder(e, this.$trf, this._scene, !0, i), (w[s].painted = !0));
+                                                        (w[s]._paintBorder(e, this.$trf, this._scene, true, i), (w[s].painted = true));
                                                         var l = w[s].getPathBase().getGeometryBBox();
                                                         o = o ? o.united(l) : l;
                                                         var h = w[s].getMarkersBorderBBox(this.$trf, i);
                                                         h && (a = a ? a.united(h) : h);
                                                     }
-                                                    var A = this.createShapePaint(e, i.getProperty("_pt", !1, null, !0), o);
+                                                    var A = this.createShapePaint(e, i.getProperty("_pt", false, null, true), o);
                                                     if (A && A.paint) {
                                                         var c = this.$trf ? this.$trf.mapRect(o) : o,
                                                             p = C.getStyleBorderPadding(i);
@@ -1027,19 +1027,19 @@ module.exports = function (e, t, i) {
                                                             g = null;
                                                         if (A.transform && A.transform.isValid()) {
                                                             ((g = A.transform), this.$trf && (g = g.multiplied(this.$trf)));
-                                                            var f = i.getProperty("_px", !1, null, !0);
+                                                            var f = i.getProperty("_px", false, null, true);
                                                             f && !f.isIdentity() && (g = g.preMultiplied(f));
                                                         }
                                                         if (g) {
                                                             u = g.inverted().mapRect(u);
-                                                            var m = n.setTransform(n.getTransform(!0).multiplied(g));
+                                                            var m = n.setTransform(n.getTransform(true).multiplied(g));
                                                             (n.fillRect(
                                                                 u.getX(),
                                                                 u.getY(),
                                                                 u.getWidth(),
                                                                 u.getHeight(),
                                                                 A.paint,
-                                                                i.getProperty("_op", !1, null, !0),
+                                                                i.getProperty("_op", false, null, true),
                                                                 d.CompositeOperator.SourceIn
                                                             ),
                                                                 n.setTransform(m));
@@ -1050,7 +1050,7 @@ module.exports = function (e, t, i) {
                                                                 u.getWidth(),
                                                                 u.getHeight(),
                                                                 A.paint,
-                                                                i.getProperty("_op", !1, null, !0),
+                                                                i.getProperty("_op", false, null, true),
                                                                 d.CompositeOperator.SourceIn
                                                             );
                                                         r.drawCanvas(n, null, null, i.$_op, i.getBlendingForContext(e));
@@ -1071,12 +1071,12 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (w.prototype.hasCustomStyleEdges = function () {
-                    for (var e = !1, t = this._edges.getFirstChild(); t && !e; t = t.getNext())
-                        t.getProperty("cSt", !1, null, !0) && (e = !0);
+                    for (var e = false, t = this._edges.getFirstChild(); t && !e; t = t.getNext())
+                        t.getProperty("cSt", false, null, true) && (e = true);
                     return e;
                 }),
                 (w.prototype._requireMiterLimitApproximation = function () {
-                    return !0;
+                    return true;
                 }),
                 (w.prototype._calculateMarkersBorderBBox = function (e, t) {
                     for (var i = this._edges.getFirstChild(); i; i = i.getNext()) {
@@ -1092,22 +1092,22 @@ module.exports = function (e, t, i) {
                         r = i,
                         o = new g(i.getX(), i.getY(), i.getWidth(), i.getHeight());
                     if (this.hasStyleFill()) {
-                        var a = n.getEffectsBBox(i, c.StyleLayer.Fill, o);
+                        var a = n.getEffectsBBox(i, GStylable.StyleLayer.Fill, o);
                         r = r.united(a);
                     }
                     var s = null;
                     if (this.hasStyleBorder()) {
                         var l = i;
                         b.each(
-                            this.getPaintLayers().getBorderLayers(!0),
+                            this.getPaintLayers().getBorderLayers(true),
                             function (e, t) {
                                 for (var i = this.getStyleBorderPadding(t), o = this._edges.getFirstChild(); o; o = o.getNext())
-                                    if (o.getProperty("cSt", !1, null, !0)) {
+                                    if (o.getProperty("cSt", false, null, true)) {
                                         var a = o.getStyleBorderPadding(t);
                                         a > i && (i = a);
                                     }
                                 (i && (l = l.expanded(i, i, i, i)), (l = this._calculateMarkersBorderBBox(l, t)));
-                                var h = n.getEffectsBBox(l, c.StyleLayer.Border, l);
+                                var h = n.getEffectsBBox(l, GStylable.StyleLayer.Border, l);
                                 ((r = r.united(h)), (s = s ? s.united(l) : l));
                             }.bind(this)
                         );
@@ -1123,5 +1123,5 @@ module.exports = function (e, t, i) {
                 (w.prototype.toString = function () {
                     return "[Object GPathsGraph]";
                 }),
-                (e.exports = w));
+                (module.exports = w));
         };

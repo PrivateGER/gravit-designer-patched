@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(52),
-                r = i(0),
-                o = i(24),
-                a = i(167);
+module.exports = function (module, exports, require) {
+            var n = require(52),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(24),
+                a = require(167);
 
             function s() {}
-            (r.inherit(s, r),
+            (IsFiniteNonNegativeNumber.inherit(s, IsFiniteNonNegativeNumber),
                 (s.prototype._manager = null),
                 (s.prototype._scene = null),
                 (s.prototype._view = null),
@@ -14,7 +14,7 @@ module.exports = function (e, t, i) {
                     return n.Default;
                 }),
                 (s.prototype.supportsElementClick = function () {
-                    return !1;
+                    return false;
                 }),
                 (s.prototype.activate = function (e, t) {
                     ((this._scene = e ? e.getScene() : null),
@@ -29,10 +29,10 @@ module.exports = function (e, t, i) {
                         t || ((this._scene = null), (this._view = null), (this._editor = null)));
                 }),
                 (s.prototype.isDeactivatable = function () {
-                    return !0;
+                    return true;
                 }),
                 (s.prototype.isActivatable = function (e) {
-                    return !0;
+                    return true;
                 }),
                 (s.prototype.paint = function (e) {}),
                 (s.prototype.updateCursor = function () {
@@ -45,7 +45,7 @@ module.exports = function (e, t, i) {
                     this._manager && this == this._manager.getActiveTool() && this._manager._invalidateActiveToolArea(e);
                 }),
                 (s.prototype.catchesContextMenu = function (e) {
-                    return !1;
+                    return false;
                 }),
                 (s.prototype._keyDown = function (e) {
                     o.toolExitKey && e.key === o.toolExitKey && this._manager.notifyJobDone(this);
@@ -53,5 +53,5 @@ module.exports = function (e, t, i) {
                 (s.prototype.toString = function () {
                     return "[Object GTool]";
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(29),
-            a = n(65),
-            r = n(202),
-            s = n(304),
-            l = n(121);
+        var o = require(25),
+            i = require(29),
+            a = require(65),
+            r = require(202),
+            s = require(304),
+            l = require(121);
         o(
-            { target: "Promise", stat: !0, forced: n(413) },
+            { target: "Promise", stat: true, forced: require(413) },
             {
                 all: function (e) {
                     var t = this,
@@ -21,10 +21,10 @@ module.exports = function (e, t, n) {
                                 d = 1;
                             (l(e, function (e) {
                                 var a = s++,
-                                    l = !1;
+                                    l = false;
                                 (d++,
                                     i(n, t, e).then(function (e) {
-                                        l || ((l = !0), (r[a] = e), --d || o(r));
+                                        l || ((l = true), (r[a] = e), --d || o(r));
                                     }, c));
                             }),
                                 --d || o(r));

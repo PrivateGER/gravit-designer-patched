@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o(e, t) {
             ((this.description = e), (this.cid = t));
         }
-        (n(290), (o.description = null), (o.cid = null), (e.exports = o));
+        (require(290), (o.description = null), (o.cid = null), (module.exports = o));
     };

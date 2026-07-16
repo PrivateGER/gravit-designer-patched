@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(20), n(3), n(34), n(4), n(41));
-        var o = n(1),
-            i = n(53),
-            a = n(15),
-            r = n(10),
-            s = n(40);
-        const l = n(18),
-            c = n(31),
-            d = n(607),
-            u = n(44);
+        (require(20), require(3), require(34), require(4), require(41));
+        var GObject = require(1),
+            i = require(53),
+            GPlatform = require(15),
+            designerConfig = require(10),
+            GSaveAction = require(40);
+        const GCategory = require(18),
+            c = require(31),
+            d = require(607),
+            GSystemDialog = require(44);
         function p(e) {
             ((this._isCut = e),
                 document.addEventListener(this._isCut ? "cut" : "copy", this._documentCutOrCopyEvent.bind(this)),
@@ -20,7 +20,7 @@ module.exports = function (e, t, n) {
                         .prop("tabindex", -1)
                         .appendTo($("body"))));
         }
-        (o.GObject.inherit(p, c),
+        (GObject.GObject.inherit(p, c),
             (p.ID_COPY = "edit.copy"),
             (p.ID_CUT = "edit.cut"),
             (p.prototype._cutCopyArea = null),
@@ -28,25 +28,25 @@ module.exports = function (e, t, n) {
                 return this._isCut ? p.ID_CUT : p.ID_COPY;
             }),
             (p.prototype.getTitle = function () {
-                return new o.GLocaleKey("GCutCopyAction", "title." + (this._isCut ? "cut" : "copy"));
+                return new GObject.GLocaleKey("GCutCopyAction", "title." + (this._isCut ? "cut" : "copy"));
             }),
             (p.prototype.getIcon = function () {
                 return "gravit-icon-" + (this._isCut ? "cut" : "copy");
             }),
             (p.prototype.getCategory = function () {
-                return l.CATEGORY_EDIT;
+                return GCategory.CATEGORY_EDIT;
             }),
             (p.prototype.getGroup = function () {
                 return "ccp";
             }),
             (p.prototype.getShortcut = function () {
-                return this._isCut ? [a.GKey.Constant.META, "X"] : [a.GKey.Constant.META, "C"];
+                return this._isCut ? [GPlatform.GKey.Constant.META, "X"] : [GPlatform.GKey.Constant.META, "C"];
             }),
             (p.prototype.isEnabled = function () {
                 return gDesigner.getActiveDocument() && !!gDesigner.getActiveDocument().getEditor().getSelection();
             }),
             (p.prototype.executeFromShortcut = function () {
-                return (this._isEditableElementFocused() || (this._cutCopyArea && this._cutCopyArea.focus()), !1);
+                return (this._isEditableElementFocused() || (this._cutCopyArea && this._cutCopyArea.focus()), false);
             }),
             (p.prototype.execute = function () {
                 this._documentCutOrCopyEvent(null);
@@ -77,10 +77,10 @@ module.exports = function (e, t, n) {
             }),
             (p.prototype._filterOutSelectionWithSameParent = function () {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
-                e = o.GNode.order(e.slice());
+                e = GObject.GNode.order(e.slice());
                 let t = [];
                 const n = function (e) {
-                    let n = !1;
+                    let n = false;
                     return (
                         t.forEach((t) => {
                             e.findParent((e) => {
@@ -123,16 +123,16 @@ module.exports = function (e, t, n) {
             }),
             (p.prototype._serializeData = function (e) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
-                return o.GNode.serialize(e, {
+                return GObject.GNode.serialize(e, {
                     exceptions: t,
-                    copy: !0,
+                    copy: true,
                     copyIgnoreProperties: i.GEditorOptions.propertiesExcludedFromCopying,
                 });
             }),
             (p.prototype._copyStyleToClipboard = function (e, t) {
                 const n = this._serializeData([e]),
-                    i = '<gravit mimeType="' + o.GNode.MIME_TYPE + '">' + $("<div/>").text(n).html() + "</gravit>";
-                t ? t.clipboardData.setData("text/xml", i) : gDesigner.setClipboardContent(o.GNode.MIME_TYPE, n);
+                    i = '<gravit mimeType="' + GObject.GNode.MIME_TYPE + '">' + $("<div/>").text(n).html() + "</gravit>";
+                t ? t.clipboardData.setData("text/xml", i) : gDesigner.setClipboardContent(GObject.GNode.MIME_TYPE, n);
             }),
             (p.prototype._isRestricted = function () {
                 return gDesigner.getActiveDocument().isCommercialProductFile() || !gDesigner.getApplicationManager().isCopyPasteEnabled();
@@ -140,12 +140,12 @@ module.exports = function (e, t, n) {
             (p.prototype._filterSupportedCopyNodes = function () {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
                 return e.filter(function (e) {
-                    return e instanceof o.GItem || e instanceof o.GLayer;
+                    return e instanceof GObject.GItem || e instanceof GObject.GLayer;
                 });
             }),
             (p.prototype._parseTextSelectionToEventClipboard = function (e, t) {
                 for (let n = 0; n < e.length; n++)
-                    if (e[n] instanceof o.GText) {
+                    if (e[n] instanceof GObject.GText) {
                         let o,
                             a = e[n];
                         const r = a.getTLCore();
@@ -162,7 +162,7 @@ module.exports = function (e, t, n) {
                     t = [];
                 for (let n = 0; n < e.length; n++)
                     t = t.concat(gDesigner.getActiveDocument().getEditor().getLinkedElementsInSelection(e[n], e));
-                return (r.HAS_ANNOTATIONS && (t = t.concat(gDesigner.getActiveDocument().getEditor().getAnnotationsExceptions(e))), t);
+                return (designerConfig.HAS_ANNOTATIONS && (t = t.concat(gDesigner.getActiveDocument().getEditor().getAnnotationsExceptions(e))), t);
             }),
             (p.prototype._extractStylesFromSelection = function (e) {
                 const t = [];
@@ -173,7 +173,7 @@ module.exports = function (e, t, n) {
                 return t;
             }),
             (p.prototype._deleteCutSelection = function () {
-                let e = o.GLocale.get(new o.GLocaleKey("text.cut-selection"));
+                let e = GObject.GLocale.get(new GObject.GLocaleKey("text.cut-selection"));
                 const t = gDesigner.getActiveDocument(),
                     n = t && t.getEditor(),
                     i = gDesigner.getMouseOverContext(),
@@ -189,11 +189,11 @@ module.exports = function (e, t, n) {
                             : i.context === d.BorderPropertiesPanel
                               ? ((t = a.Border), (r = "border"))
                               : i.context === d.EffectPropertiesPanel && ((t = a.Effect), (r = "effect")),
-                            (0, s.iterateEqualStyleLayers)(r, t, l, function (e) {
+                            (0, GSaveAction.iterateEqualStyleLayers)(r, t, l, function (e) {
                                 e.getParent().removeChild(e);
                             }),
-                            (e = o.GLocale.get(this.getTitle())));
-                    } else n.deleteSelection(!0);
+                            (e = GObject.GLocale.get(this.getTitle())));
+                    } else n.deleteSelection(true);
                 } finally {
                     n.commitTransaction(e);
                 }
@@ -206,12 +206,12 @@ module.exports = function (e, t, n) {
                         a = this._extractStylesFromSelection(e);
                     (e.push.apply(e, a), this._isRestricted() && (e = n.restrictElements(e)));
                     let r = this._serializeData(e, i);
-                    gDesigner.setClipboardContent(o.GNode.MIME_TYPE, r);
+                    gDesigner.setClipboardContent(GObject.GNode.MIME_TYPE, r);
                     const s = 1 === e.length && e[0];
-                    if (!(s && s.hasMixin(o.GNode.Properties) && s.getProperty("collab"))) {
+                    if (!(s && s.hasMixin(GObject.GNode.Properties) && s.getProperty("collab"))) {
                         const i =
                             '<gravit mimeType="' +
-                            o.GNode.MIME_TYPE +
+                            GObject.GNode.MIME_TYPE +
                             '" restricted="' +
                             (!!this._isRestricted() && n.getStorageItem().getId()) +
                             '">' +
@@ -237,16 +237,16 @@ module.exports = function (e, t, n) {
             }),
             (p.prototype._showError = function () {
                 const e = this._isCut
-                    ? o.GLocale.get(new o.GLocaleKey("GCutCopyAction", "title.cut"))
-                    : o.GLocale.get(new o.GLocaleKey("GCutCopyAction", "title.copy"));
-                u.alert(
-                    o.GLocale.get(new o.GLocaleKey("GCutCopyAction", "text.security-issues"))
+                    ? GObject.GLocale.get(new GObject.GLocaleKey("GCutCopyAction", "title.cut"))
+                    : GObject.GLocale.get(new GObject.GLocaleKey("GCutCopyAction", "title.copy"));
+                GSystemDialog.alert(
+                    GObject.GLocale.get(new GObject.GLocaleKey("GCutCopyAction", "text.security-issues"))
                         .replace("%cutcopy", e)
-                        .replace("%shortcut", a.GKey.shortcutToString(this.getShortcut()))
+                        .replace("%shortcut", GPlatform.GKey.shortcutToString(this.getShortcut()))
                 );
             }),
             (p.prototype.toString = function () {
                 return "[Object GCutCopyAction]";
             }),
-            (e.exports = p));
+            (module.exports = p));
     };

@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(30);
-        const { FILE_FORMATS: o } = n(10);
+        require(30);
+        const { FILE_FORMATS: o } = require(10 /* designerConfig */);
         class i {
             constructor() {
-                ((this.onlyListFilesOwnedByUser = !1), (this.supportedFileFormats = o));
+                ((this.onlyListFilesOwnedByUser = false), (this.supportedFileFormats = o));
             }
             static from() {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -14,5 +14,5 @@ module.exports = function (e, t, n) {
         ((i.prototype.onlyListFilesOwnedByUser = null),
             (i.prototype.supportedFileFormats = null),
             (i.prototype.supportedFileFilters = null),
-            (e.exports = i));
+            (module.exports = i));
     };

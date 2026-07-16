@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(6);
+module.exports = function (module, exports, require) {
+            var n = require(6);
 
             function r(e, t, i, n) {
                 ((this.l = e), (this.t = t), (this.w = i), (this.h = n), (this.r = e + i), (this.b = t + n));
@@ -55,5 +55,5 @@ module.exports = function (e, t, i) {
                         y: this.t + this.h / 2,
                     };
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

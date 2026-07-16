@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(42),
-                r = i(0),
-                o = i(226),
-                a = i(111),
-                s = i(205);
+module.exports = function (module, exports, require) {
+            var n = require(42),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(226),
+                a = require(111),
+                s = require(205);
 
             function l(e) {
                 ((this.glEffect = e), (this.shaders = []));
             }
-            (r.inherit(l, n),
+            (IsFiniteNonNegativeNumber.inherit(l, n),
                 (l.prototype.shaders = null),
                 (l.BlendModes = [
                     "linear_burn",
@@ -58,10 +58,10 @@ module.exports = function (e, t, i) {
                                   texture1: 1,
                               }));
                         var A,
-                            c = !1;
+                            c = false;
                         if (i instanceof HTMLCanvasElement || i instanceof a.RendererCanvas || i instanceof s.RendererCanvas) {
                             var p = e.area;
-                            ((A = p ? o.createTexture(i, p.getX(), p.getY(), p.getWidth(), p.getHeight()) : o.createTexture(i)), (c = !0));
+                            ((A = p ? o.createTexture(i, p.getX(), p.getY(), p.getWidth(), p.getHeight()) : o.createTexture(i)), (c = true));
                         } else A = i;
                         (h.glEffect.texture.use(0), A.use(1));
                         var u = h.glEffect.spareTexture.width,
@@ -79,5 +79,5 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (l.prototype.destroy = function () {}),
-                (e.exports = l));
+                (module.exports = l));
         };

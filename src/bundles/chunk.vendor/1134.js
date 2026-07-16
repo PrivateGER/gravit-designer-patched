@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(60),
-                r = i(113),
-                o = i(45),
-                a = i(2),
-                s = i(5),
-                l = i(12),
-                h = i(1127),
+module.exports = function (module, exports, require) {
+            var n = require(60),
+                r = require(113),
+                o = require(45),
+                a = require(2),
+                s = require(5),
+                l = require(12),
+                h = require(1127),
                 A = {
                     Straight: 1,
                     Mirror: 2,
@@ -22,7 +22,7 @@ module.exports = function (e, t, i) {
                     d,
                     g = [],
                     f = function (e) {
-                        (e._beginBlockCompositeEvents(!0, !0),
+                        (e._beginBlockCompositeEvents(true, true),
                             e._beginBlockChanges([
                                 a._Change.BeforeChildRemove,
                                 a._Change.AfterChildRemove,
@@ -31,7 +31,7 @@ module.exports = function (e, t, i) {
                             ]));
                     },
                     m = function (e) {
-                        (e._endBlockCompositeEvents(!0, !0),
+                        (e._endBlockCompositeEvents(true, true),
                             e._endBlockChanges([
                                 a._Change.BeforeChildRemove,
                                 a._Change.AfterChildRemove,
@@ -44,7 +44,7 @@ module.exports = function (e, t, i) {
                         var r = new h(e);
                         switch ((r.transform(t), r.curveMode)) {
                             case A.Straight:
-                                (p || ((p = new n()), (u = p.getAnchorPoints()), p.setSketchPath(!0), f(p), f(u)),
+                                (p || ((p = new n()), (u = p.getAnchorPoints()), p.setSketchPath(true), f(p), f(u)),
                                     (d = new o.AnchorPoint()).setProperties(
                                         ["x", "y", "tp"],
                                         [r.point.getX(), r.point.getY(), o.CornerType.Rounded]
@@ -54,7 +54,7 @@ module.exports = function (e, t, i) {
                             case A.Symmetric:
                             case A.Asymmetric:
                             case A.Mirror:
-                                p || ((p = new n()), (u = p.getAnchorPoints()), p.setSketchPath(!0));
+                                p || ((p = new n()), (u = p.getAnchorPoints()), p.setSketchPath(true));
                                 var a = o.AnchorPoint.Type[Object.keys(A)[r.curveMode - 1]],
                                     g = r.point,
                                     m = r.curveFrom,
@@ -74,7 +74,7 @@ module.exports = function (e, t, i) {
                             (v < _ && (_ = v), d.setProperties(["cl", "cr"], [_, _]));
                         }
                     }),
-                    p && i && p.setProperty("closed", !0),
+                    p && i && p.setProperty("closed", true),
                     p && u && u.getFirstChild() != u.getLastChild() && (p.correctClosedAttribute(), g.push(p)),
                     g.forEach(function (e) {
                         (m(e), m(e.getAnchorPoints()));
@@ -94,5 +94,5 @@ module.exports = function (e, t, i) {
                         n = new s(e.getX(), e.getY() + e.getHeight());
                     return Math.min(l.ptDist(t.getX(), t.getY(), i.getX(), i.getY()), l.ptDist(t.getX(), t.getY(), n.getX(), n.getY()));
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

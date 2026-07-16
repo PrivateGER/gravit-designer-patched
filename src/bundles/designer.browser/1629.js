@@ -1,18 +1,18 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(8), n(3));
-        var i = n(1),
-            a = o(n(443));
+        var o = require(16);
+        (require(8 /* Symbol */), require(3));
+        var GObject = require(1),
+            a = o(require(443));
         const { isExecutingOnMSTeamsSync: r } = a.default;
-        var s = n(18),
-            l = n(31);
-        const c = n(1152),
-            d = n(44);
+        var GCategory = require(18),
+            l = require(31);
+        const c = require(1152),
+            GSystemDialog = require(44);
         function u() {}
-        (i.GObject.inherit(u, l),
+        (GObject.GObject.inherit(u, l),
             (u.ID = "file.sharepoint-checkout"),
-            (u.TITLE = new i.GLocaleKey("GSharePointCheckOutAction", "title")),
+            (u.TITLE = new GObject.GLocaleKey("GSharePointCheckOutAction", "title")),
             (u.prototype.getId = function () {
                 return u.ID;
             }),
@@ -20,15 +20,15 @@ module.exports = function (e, t, n) {
                 return u.TITLE;
             }),
             (u.prototype.getCategory = function () {
-                return s.CATEGORY_FILE;
+                return GCategory.CATEGORY_FILE;
             }),
             (u.prototype.getGroup = function () {
                 return "file";
             }),
             (u.prototype.isEnabled = function () {
-                if (!r()) return !1;
+                if (!r()) return false;
                 const e = gDesigner.getActiveDocument();
-                if (!e) return !1;
+                if (!e) return false;
                 const t = e.getStorageItem();
                 return !!t && t instanceof c.Item;
             }),
@@ -39,14 +39,14 @@ module.exports = function (e, t, n) {
                 try {
                     const e = gDesigner.getActiveDocument().getStorageItem();
                     if ((await e.refreshCheckOutStatus(), e.isCheckedOutByMe()))
-                        return d.alert(i.GLocale.get(new i.GLocaleKey("GSharePointCheckOutAction", "text.already-checkout")));
-                    (await e.checkOut(), d.alert(i.GLocale.get(new i.GLocaleKey("GSharePointCheckOutAction", "text.successul-checkout"))));
+                        return GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GSharePointCheckOutAction", "text.already-checkout")));
+                    (await e.checkOut(), GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GSharePointCheckOutAction", "text.successul-checkout"))));
                 } catch (e) {
-                    d.alert(e.message);
+                    GSystemDialog.alert(e.message);
                 }
             }),
             (u.prototype.toString = function () {
                 return "[Object GSharePointCheckOutAction]";
             }),
-            (e.exports = u));
+            (module.exports = u));
     };

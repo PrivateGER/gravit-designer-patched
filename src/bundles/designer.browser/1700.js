@@ -1,38 +1,38 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(4), n(13));
-        var o = n(1),
-            i = n(40),
-            a = n(255),
-            r = n(1118),
-            s = n(1199),
-            l = n(85),
-            c = n(44);
-        const { GPlatform: d } = n(15);
+        (require(8 /* Symbol */), require(4), require(13));
+        var GObject = require(1),
+            GSaveAction = require(40),
+            a = require(255),
+            r = require(1118),
+            s = require(1199),
+            l = require(85),
+            GSystemDialog = require(44);
+        const { GPlatform: d } = require(15 /* GPlatform */);
         function u() {}
-        (o.GObject.inheritAndMix(u, o.GObject),
+        (GObject.GObject.inheritAndMix(u, GObject.GObject),
             (u.DISABLE_LOCAL_FONTS_ACCESS_WARING = "disable-local-fonts-access-warning"),
             (u._showLocalFontsAccessDialog = async function () {
-                if (gDesigner.getSetting(u.DISABLE_LOCAL_FONTS_ACCESS_WARING, !1)) return !1;
+                if (gDesigner.getSetting(u.DISABLE_LOCAL_FONTS_ACCESS_WARING, false)) return false;
                 if (!window.queryLocalFonts)
-                    return (c.alert(o.GLocale.get(new o.GLocaleKey("GLocalFontsProvider", "text.current-browser-unsupported"))), !1);
+                    return (GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GLocalFontsProvider", "text.current-browser-unsupported"))), false);
                 if ("denied" === (await navigator.permissions.query({ name: "local-fonts" })).state) {
                     const e = [
                         {
-                            label: o.GLocale.get(new o.GLocaleKey("GLocale", "close")),
-                            highlighted: !0,
-                            shortcut: c.Shortcut.Enter,
-                            closeOnClick: !0,
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "close")),
+                            highlighted: true,
+                            shortcut: GSystemDialog.Shortcut.Enter,
+                            closeOnClick: true,
                         },
                     ];
-                    let t = o.GLocale.get(new o.GLocaleKey("GLocalFontsProvider", "text.permission-required-subtitle-others"));
+                    let t = GObject.GLocale.get(new GObject.GLocaleKey("GLocalFontsProvider", "text.permission-required-subtitle-others"));
                     (d.webBrowser === d.constructor.WebBrowser.Edge &&
-                        (t = o.GLocale.get(new o.GLocaleKey("GLocalFontsProvider", "text.permission-required-subtitle-edge"))),
-                        c.custom({
+                        (t = GObject.GLocale.get(new GObject.GLocaleKey("GLocalFontsProvider", "text.permission-required-subtitle-edge"))),
+                        GSystemDialog.custom({
                             icon: "error",
                             className: "g-local-fonts-warning-dialog",
-                            closeable: !0,
-                            title: o.GLocale.get(new o.GLocaleKey("GLocalFontsProvider", "text.permission-required-title")),
+                            closeable: true,
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GLocalFontsProvider", "text.permission-required-title")),
                             subtitle: t,
                             buttons: e,
                             dontShowAgainCb: (e) => {
@@ -40,7 +40,7 @@ module.exports = function (e, t, n) {
                             },
                         }));
                 }
-                return !1;
+                return false;
             }));
         var p = function () {
                 return (
@@ -54,14 +54,14 @@ module.exports = function (e, t, n) {
                 var r = $("<a></a>")
                         .data("provider", t)
                         .addClass("tablinks")
-                        .append(o.GLocale.get(e))
+                        .append(GObject.GLocale.get(e))
                         .on(
                             "click",
-                            i.watchDog.trap(
+                            GSaveAction.watchDog.trap(
                                 function (t) {
                                     n
-                                        ? gDesigner.stats("fonts_click_protab", o.GLocale.get(e, void 0, o.GLocaleLanguage.English))
-                                        : gDesigner.stats("fonts_click_tab", o.GLocale.get(e, void 0, o.GLocaleLanguage.English));
+                                        ? gDesigner.stats("fonts_click_protab", GObject.GLocale.get(e, void 0, GObject.GLocaleLanguage.English))
+                                        : gDesigner.stats("fonts_click_tab", GObject.GLocale.get(e, void 0, GObject.GLocaleLanguage.English));
                                     var i = $(t.target),
                                         r = i.closest(".tab");
                                     (r.find(".tablinks").removeClass("active"), i.addClass("active"));
@@ -84,7 +84,7 @@ module.exports = function (e, t, n) {
                                 },
                                 () => !n,
                                 (t) => {
-                                    gDesigner.stats("fonts_nonprotriespro_protab", o.GLocale.get(e));
+                                    gDesigner.stats("fonts_nonprotriespro_protab", GObject.GLocale.get(e));
                                 },
                                 n
                             )
@@ -111,14 +111,14 @@ module.exports = function (e, t, n) {
                     var i = $("<div></div>").addClass("header");
                     n.fontList = $("<div></div>")
                         .on("mousedown", function (e) {
-                            n.mouseMoved = !1;
+                            n.mouseMoved = false;
                         })
                         .on("mousemove", function (e) {
-                            n.mouseMoved || (n.mouseMoved = !0);
+                            n.mouseMoved || (n.mouseMoved = true);
                         })
                         .on("mouseup", function (t) {
                             "_SPECIAL_" === t.target.name || "g-fonts-panel" === t.target.className || n.mouseMoved
-                                ? (n.mouseMoved = !1)
+                                ? (n.mouseMoved = false)
                                 : gDesigner.isTouchEnabled() || f.call(e);
                         })
                         .gFontsPanel({
@@ -141,15 +141,15 @@ module.exports = function (e, t, n) {
                             (function (e) {
                                 var t = $("<ul></ul>")
                                     .addClass("tab")
-                                    .append(g(new o.GLocaleKey("GFontsButton", "text.web-fonts")));
+                                    .append(g(new GObject.GLocaleKey("GFontsButton", "text.web-fonts")));
                                 if (
-                                    (t.append(g(new o.GLocaleKey("GFontsButton", "text.imported-fonts"), r, "font.import")),
+                                    (t.append(g(new GObject.GLocaleKey("GFontsButton", "text.imported-fonts"), r, "font.import")),
                                     gContainer.supportsLocalFonts() &&
-                                        t.append(g(new o.GLocaleKey("GFontsButton", "text.system-fonts"), s)),
+                                        t.append(g(new GObject.GLocaleKey("GFontsButton", "text.system-fonts"), s)),
                                     p())
                                 ) {
                                     var n = gContainer.getSystemFontsProvider();
-                                    n && t.append(g(new o.GLocaleKey("GFontsButton", "text.system-fonts"), n));
+                                    n && t.append(g(new GObject.GLocaleKey("GFontsButton", "text.system-fonts"), n));
                                 }
                                 return (t.find(".tablinks:first").trigger("click"), t);
                             })()
@@ -158,8 +158,8 @@ module.exports = function (e, t, n) {
                     n.fontListContainer
                         .append(n.fontList)
                         .gOverlay({
-                            releaseOnClose: !1,
-                            padding: !1,
+                            releaseOnClose: false,
+                            padding: false,
                             enterCallback: function (e) {
                                 $(".g-fonts-panel").trigger("keydown", [e.which || e.keyCode]);
                             },
@@ -197,7 +197,7 @@ module.exports = function (e, t, n) {
                                         tempFontFamily: void 0,
                                         fontList: void 0,
                                         fontContainer: void 0,
-                                        mouseMoved: !1,
+                                        mouseMoved: false,
                                     })
                                     .on("focusin", function (e) {
                                         n.attr("type", "text");
@@ -233,7 +233,7 @@ module.exports = function (e, t, n) {
                                         var o = n.data("gfontsbutton").fontList,
                                             i = n.data("gfontsbutton").fontListContainer;
                                         o
-                                            ? (i.gOverlay("open", t, t), o.gFontsPanel("refresh", !0))
+                                            ? (i.gOverlay("open", t, t), o.gFontsPanel("refresh", true))
                                             : (m(this),
                                               (o = n.data("gfontsbutton").fontList),
                                               (i = n.data("gfontsbutton").fontListContainer).gOverlay("open", t, t),
@@ -252,7 +252,7 @@ module.exports = function (e, t, n) {
                     );
                 },
             };
-        ((e.exports = u),
+        ((module.exports = u),
             ($.fn.gFontsButton = function (e) {
                 return y[e]
                     ? y[e].apply(this, Array.prototype.slice.call(arguments, 1))

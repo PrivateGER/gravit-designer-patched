@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(852),
-                r = i(11);
-            i(1119);
+module.exports = function (module, exports, require) {
+            var n = require(852),
+                r = require(11);
+            require(1119);
 
             function o(e, t, i) {
                 ((this.paintContext = t),
@@ -95,5 +95,5 @@ module.exports = function (e, t, i) {
                         i
                     );
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

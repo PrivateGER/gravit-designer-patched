@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(118),
+module.exports = function (module, exports, require) {
+            var n = require(118),
                 r = [
                     "DEPTH_BUFFER_BIT",
                     "STENCIL_BUFFER_BIT",
@@ -302,7 +302,7 @@ module.exports = function (e, t, i) {
             var o,
                 a = [];
             if (
-                ((e.exports = function (e) {
+                ((module.exports = function (e) {
                     var t = {},
                         i = [];
 
@@ -316,7 +316,7 @@ module.exports = function (e, t, i) {
                         t[l] = {
                             get: o(l),
                             set: function () {},
-                            enumerable: !0,
+                            enumerable: true,
                         };
                     }
                     (Object.defineProperties(e.prototype, t),
@@ -356,7 +356,7 @@ module.exports = function (e, t, i) {
                         (e.WebGLProgram = function (t) {
                             var i = void 0;
                             ((this.ctx = new e(e.SMALL_SIZE, i, i, i, i, i, i, t.__multiThreaded, t.__persistent)),
-                                this.ctx.__pushPtrT(t, !0),
+                                this.ctx.__pushPtrT(t, true),
                                 e.Renderable.call(this, this.ctx));
                         }),
                         e.Renderable.inherit(e.WebGLProgram, e.Renderable),
@@ -377,7 +377,7 @@ module.exports = function (e, t, i) {
                         (e.WebGLShader = function (t, i) {
                             var n = void 0;
                             ((this.ctx = new e(e.SMALL_SIZE, n, n, n, n, n, n, t.__multiThreaded, t.__persistent)),
-                                this.ctx.__pushPtrT(t, !0),
+                                this.ctx.__pushPtrT(t, true),
                                 e.Renderable.call(this, this.ctx),
                                 (this.type = i));
                         }),
@@ -464,7 +464,7 @@ module.exports = function (e, t, i) {
                             return 0 === e
                                 ? null
                                 : (r.some(function (i) {
-                                      return a[i] === e && ((t = i), !0);
+                                      return a[i] === e && ((t = i), true);
                                   }),
                                   t);
                         }),
@@ -685,10 +685,10 @@ module.exports = function (e, t, i) {
                             e.ctx.__pushPtrT(t);
                         }),
                         (e.prototype.getProgramParameter = function (t, i) {
-                            return (this.__pushByte(e.getProgramParameter), this.__pushPtr(t), this.__pushInt(i), this.__call(), !0);
+                            return (this.__pushByte(e.getProgramParameter), this.__pushPtr(t), this.__pushInt(i), this.__call(), true);
                         }),
                         (e.prototype.getShaderParameter = function (t, i) {
-                            return (this.__pushByte(e.getShaderParameter), this.__pushPtr(t), this.__pushInt(i), this.__call(), !0);
+                            return (this.__pushByte(e.getShaderParameter), this.__pushPtr(t), this.__pushInt(i), this.__call(), true);
                         }),
                         (e.prototype.scissor = function (t, i, n, r) {
                             (this.__pushByte(e.scissor),
@@ -805,13 +805,13 @@ module.exports = function (e, t, i) {
                             (this.__pushByte(e.uniform4iv), this.__pushPtr(t), this.__pushPtr(i.slice()), this.__call());
                         }),
                         (e.prototype.uniformMatrix2fv = function (t, i, n) {
-                            (this.__pushByte(e.uniformMatrix2fv), this.__pushPtr(t), this.__pushBool(!1), this.__pushPtr(n), this.__call());
+                            (this.__pushByte(e.uniformMatrix2fv), this.__pushPtr(t), this.__pushBool(false), this.__pushPtr(n), this.__call());
                         }),
                         (e.prototype.uniformMatrix3fv = function (t, i, n) {
-                            (this.__pushByte(e.uniformMatrix3fv), this.__pushPtr(t), this.__pushBool(!1), this.__pushPtr(n), this.__call());
+                            (this.__pushByte(e.uniformMatrix3fv), this.__pushPtr(t), this.__pushBool(false), this.__pushPtr(n), this.__call());
                         }),
                         (e.prototype.uniformMatrix4fv = function (t, i, n) {
-                            (this.__pushByte(e.uniformMatrix4fv), this.__pushPtr(t), this.__pushBool(!1), this.__pushPtr(n), this.__call());
+                            (this.__pushByte(e.uniformMatrix4fv), this.__pushPtr(t), this.__pushBool(false), this.__pushPtr(n), this.__call());
                         }),
                         (e.prototype.useProgram = function (t) {
                             (this.__pushByte(e.useProgram), this.__pushPtr(t), this.__call());
@@ -865,7 +865,7 @@ module.exports = function (e, t, i) {
                         var t;
 
                         function i(e, i, n) {
-                            for (var r = 0; r < n.length; r++) if (!e.getExtension(n[r])) return !1;
+                            for (var r = 0; r < n.length; r++) if (!e.getExtension(n[r])) return false;
                             var o = e.framebuffer || e.createFramebuffer();
                             e.framebuffer = o;
                             var a,
@@ -881,7 +881,7 @@ module.exports = function (e, t, i) {
                                 e.framebufferTexture2D(e.FRAMEBUFFER, e.COLOR_ATTACHMENT0, e.TEXTURE_2D, s, 0),
                                 e.checkFramebufferStatus(e.FRAMEBUFFER) !== e.FRAMEBUFFER_COMPLETE)
                             )
-                                return !1;
+                                return false;
                             a = i === e.FLOAT ? new Float32Array([1, 1, 0, 0]) : new Uint16Array([16256, 16256, 0, 0]);
                             var l = e.createTexture();
                             (e.bindTexture(e.TEXTURE_2D, l),
@@ -894,7 +894,7 @@ module.exports = function (e, t, i) {
                             (e.bindBuffer(e.ARRAY_BUFFER, h),
                                 e.bufferData(e.ARRAY_BUFFER, new Float32Array([0, 0]), e.STREAM_DRAW),
                                 e.enableVertexAttribArray(0),
-                                e.vertexAttribPointer(0, 2, e.FLOAT, !1, 0, 0));
+                                e.vertexAttribPointer(0, 2, e.FLOAT, false, 0, 0));
                             var A = new Uint8Array(4);
                             return (
                                 e.useProgram(t),
@@ -910,8 +910,8 @@ module.exports = function (e, t, i) {
                         }
 
                         function n() {}
-                        var r = !1,
-                            o = !1;
+                        var r = false,
+                            o = false;
                         if (e) {
                             if (
                                 ((t = (function (e) {
@@ -937,7 +937,7 @@ module.exports = function (e, t, i) {
                                 })(e)),
                                 -1 === e.getSupportedExtensions().indexOf("OES_texture_float_linear") &&
                                     (function (e) {
-                                        if (!e.getExtension("OES_texture_float")) return !1;
+                                        if (!e.getExtension("OES_texture_float")) return false;
                                         var i = e.framebuffer || e.createFramebuffer();
                                         e.framebuffer = i;
                                         var n = e.createTexture();
@@ -970,7 +970,7 @@ module.exports = function (e, t, i) {
                                         (e.bindBuffer(e.ARRAY_BUFFER, o),
                                             e.bufferData(e.ARRAY_BUFFER, new Float32Array([0, 0]), e.STREAM_DRAW));
                                         var a = e.getAttribLocation(t, "vertex");
-                                        (e.enableVertexAttribArray(a), e.vertexAttribPointer(0, 2, e.FLOAT, !1, 0, 0));
+                                        (e.enableVertexAttribArray(a), e.vertexAttribPointer(0, 2, e.FLOAT, false, 0, 0));
                                         var s = new Uint8Array(4);
                                         return (
                                             e.useProgram(t),
@@ -993,9 +993,9 @@ module.exports = function (e, t, i) {
                                               return (
                                                   void 0 === e.$OES_texture_float_linear$ &&
                                                       Object.defineProperty(e, "$OES_texture_float_linear$", {
-                                                          enumerable: !1,
-                                                          configurable: !1,
-                                                          writable: !1,
+                                                          enumerable: false,
+                                                          configurable: false,
+                                                          writable: false,
                                                           value: new n(),
                                                       }),
                                                   e.$OES_texture_float_linear$
@@ -1017,13 +1017,13 @@ module.exports = function (e, t, i) {
                             var l = WebGLRenderingContext.prototype.readPixels;
                             WebGLRenderingContext.prototype.readPixels = function (t, i, n, a, s, h, A) {
                                 if (!o) {
-                                    var c = !1;
+                                    var c = false;
                                     try {
                                         l.call(this, t, i, n, a, s, h, A);
                                     } catch (e) {
-                                        c = !0;
+                                        c = true;
                                     }
-                                    (c || r || ((c = this.getError() !== e.NO_ERROR), (r = !0)), c && (o = !0));
+                                    (c || r || ((c = this.getError() !== e.NO_ERROR), (r = true)), c && (o = true));
                                 }
                                 if (o)
                                     try {

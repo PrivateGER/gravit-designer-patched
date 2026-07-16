@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             var i = {
                 Default: null,
                 Pixel: "pixel",
@@ -54,7 +54,7 @@ module.exports = function (e, t) {
                 Pipette: "pipette",
                 Knife: "knife",
                 Text: "!text",
-                _styleElement: !1,
+                _styleElement: false,
                 initStyle: function () {
                     if (!this._styleElement && document && document.createElement) {
                         ((this._styleElement = document.createElement("style")), this._styleElement.setAttribute("type", "text/css"));
@@ -88,5 +88,5 @@ module.exports = function (e, t) {
                     }
                 },
             };
-            e.exports = i;
+            module.exports = i;
         };

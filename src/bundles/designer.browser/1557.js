@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.default = void 0));
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0));
         class o extends Error {
             constructor() {
                 (super("REPEAT"), (this.name = "GRepeatActionError"));
             }
         }
-        t.default = o;
+        exports.default = o;
     };

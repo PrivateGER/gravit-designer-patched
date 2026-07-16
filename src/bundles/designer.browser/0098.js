@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o, i, a, r, s, l, c, d, u, p, g, h, f, m, y, v, _, b, w;
-        e.exports =
-            ((o = n(55)),
-            n(234),
+        module.exports =
+            ((o = require(55)),
+            require(234),
             void (
                 o.lib.Cipher ||
                 ((i = o),
@@ -57,7 +57,7 @@ module.exports = function (e, t, n) {
                     })),
                 (a.StreamCipher = p.extend({
                     _doFinalize: function () {
-                        return this._process(!0);
+                        return this._process(true);
                     },
                     blockSize: 1,
                 })),
@@ -141,8 +141,8 @@ module.exports = function (e, t, n) {
                         var e = this.cfg.padding;
                         if (this._xformMode == this._ENC_XFORM_MODE) {
                             e.pad(this._data, this.blockSize);
-                            var t = this._process(!0);
-                        } else ((t = this._process(!0)), e.unpad(t));
+                            var t = this._process(true);
+                        } else ((t = this._process(true)), e.unpad(t));
                         return t;
                     },
                     blockSize: 4,

@@ -1,32 +1,32 @@
-module.exports = function (e, t, i) {
-            var n = i(22),
-                r = i(2),
-                o = i(28),
-                a = i(76);
+module.exports = function (module, exports, require) {
+            var n = require(22),
+                r = require(2),
+                GStylable = require(28),
+                a = require(76);
 
             function s() {
                 (a.call(this), this._setDefaultProperties(s.MetaProperties), this._setStyleDefaultProperties());
             }
-            (r.inheritAndMix("style", s, a, [r.Properties, r.Store, r.Reference, o]),
+            (r.inheritAndMix("style", s, a, [r.Properties, r.Store, r.Reference, GStylable]),
                 (s.MetaProperties = {
                     name: null,
                     ps: [
-                        o.PropertySet.Style,
-                        o.PropertySet.Effects,
-                        o.PropertySet.Text,
-                        o.PropertySet.Paragraph,
-                        o.PropertySet.BorderPaintLayers,
-                        o.PropertySet.FillPaintLayers,
+                        GStylable.PropertySet.Style,
+                        GStylable.PropertySet.Effects,
+                        GStylable.PropertySet.Text,
+                        GStylable.PropertySet.Paragraph,
+                        GStylable.PropertySet.BorderPaintLayers,
+                        GStylable.PropertySet.FillPaintLayers,
                     ],
-                    defaultStyle: !0,
+                    defaultStyle: true,
                 }),
                 (s.prototype.assignStyleFrom = function (e) {
-                    (o.prototype.assignStyleFrom.call(this, e, !0),
+                    (GStylable.prototype.assignStyleFrom.call(this, e, true),
                         this._scene &&
                             this._scene.visitLinks(
                                 this,
                                 function (t) {
-                                    t !== e && t.hasMixin(o) && t.assignStyleFrom(this, !0);
+                                    t !== e && t.hasMixin(GStylable) && t.assignStyleFrom(this, true);
                                 }.bind(this)
                             ));
                 }),
@@ -52,5 +52,5 @@ module.exports = function (e, t, i) {
                 (s.prototype.toString = function () {
                     return "[Mixin GStyle]";
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

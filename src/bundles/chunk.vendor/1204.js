@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(108),
-                r = i(11),
-                o = i(7);
+module.exports = function (module, exports, require) {
+            var GFont = require(108),
+                r = require(11),
+                o = require(7);
 
             function a() {}
             ((a.Transform = {
@@ -18,7 +18,7 @@ module.exports = function (e, t, i) {
                         for (var t, i = a.Font.Weight, r = 0; r < i.length; r++) {
                             var o = i[r];
                             if (-1 !== e.indexOf(o.toLowerCase())) {
-                                t = n.Weight[o];
+                                t = GFont.Weight[o];
                                 break;
                             }
                         }
@@ -26,25 +26,25 @@ module.exports = function (e, t, i) {
                             t ||
                                 (t =
                                     -1 !== e.indexOf("bolder")
-                                        ? n.Weight.ExtraBold
+                                        ? GFont.Weight.ExtraBold
                                         : -1 !== e.indexOf("bold")
-                                          ? n.Weight.Bold
-                                          : n.Weight.Regular),
+                                          ? GFont.Weight.Bold
+                                          : GFont.Weight.Regular),
                             t
                         );
                     },
                     getStyle: function (e) {
-                        return -1 !== (e = e.toLowerCase()).indexOf("italic") ? n.Style.Italic : n.Style.Normal;
+                        return -1 !== (e = e.toLowerCase()).indexOf("italic") ? GFont.Style.Italic : GFont.Style.Normal;
                     },
                 }),
                 (a.Word = {
                     sameFormatting: function (e, t, i, n) {
                         return ["fontWeight", "fontStyle", "fontColor", "fontFamily", "fontSize"].concat(i || []).every(function (i) {
-                            return !(!n || -1 === n.indexOf(i)) || r.equals(e[i], t[i], !0);
+                            return !(!n || -1 === n.indexOf(i)) || r.equals(e[i], t[i], true);
                         });
                     },
                 }),
                 (a.prototype.createTexts = function (e) {}),
                 (a.prototype.mergeTexts = function (e, t) {}),
-                (e.exports = a));
+                (module.exports = a));
         };

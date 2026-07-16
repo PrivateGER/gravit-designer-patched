@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(105),
-                r = i(89),
-                o = i(115),
-                a = r.Parser,
+            var n = require(105),
+                Parser = require(89),
+                o = require(115),
+                a = Parser.Parser,
                 s = new Array(10);
             ((s[1] = function () {
                 var e = this.offset + this.relativeOffset,
@@ -20,7 +20,7 @@ module.exports = function (e, t, i) {
                             coverage: this.parsePointer(a.coverage),
                             values: this.parseValueRecordList(),
                         }
-                      : void n.assert(!1, "0x" + e.toString(16) + ": GPOS lookup type 1 format must be 1 or 2.");
+                      : void n.assert(false, "0x" + e.toString(16) + ": GPOS lookup type 1 format must be 1 or 2.");
             }),
                 (s[2] = function () {
                     var e = this.offset + this.relativeOffset,
@@ -109,7 +109,7 @@ module.exports = function (e, t, i) {
                     };
                 }));
             var l = new Array(10);
-            ((t.parse = function (e, t) {
+            ((exports.parse = function (e, t) {
                 var i = new a(e, (t = t || 0)),
                     r = i.parseVersion(1);
                 return (
@@ -130,7 +130,7 @@ module.exports = function (e, t, i) {
                           }
                 );
             }),
-                (t.make = function (e) {
+                (exports.make = function (e) {
                     return new o.Table("GPOS", [
                         {
                             name: "version",

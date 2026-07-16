@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = (i(28), i(11)),
-                o = i(90),
-                a = i(1410),
-                s = i(5),
-                l = i(338),
-                h = i(7),
-                A = i(182),
-                c = i(1411),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = (require(28 /* GStylable */), require(11)),
+                o = require(90),
+                a = require(1410),
+                s = require(5),
+                l = require(338),
+                h = require(7),
+                A = require(182),
+                c = require(1411),
                 p = function (e) {
                     ((this._doc = e), (this._lines = []));
                 };
@@ -28,7 +28,7 @@ module.exports = function (e, t, i) {
                 STROKE: 1,
                 BOTH: 2,
             }),
-                n.inherit(p, o),
+                IsFiniteNonNegativeNumber.inherit(p, o),
                 (p.prototype.add = function (e) {
                     var t = this._lines.slice(-1).pop();
                     t
@@ -59,8 +59,8 @@ module.exports = function (e, t, i) {
                 (u.prototype.fillColor = null),
                 (u.prototype.strokeColor = null),
                 (u.prototype.origin = new h()),
-                (u.prototype.textLigatures = !1),
-                (u.prototype.textFractions = !1),
+                (u.prototype.textLigatures = false),
+                (u.prototype.textFractions = false),
                 (u.prototype.script = null),
                 (u.prototype.textStylisticSet = null),
                 (u.prototype.textLocalizedForm = null),
@@ -68,10 +68,10 @@ module.exports = function (e, t, i) {
                     this.text += e.text;
                 }),
                 (u.prototype.merge = function (e) {
-                    return !1;
+                    return false;
                 }),
                 (p.Word = u),
-                n.inherit(d, o),
+                IsFiniteNonNegativeNumber.inherit(d, o),
                 (d.prototype.font = null),
                 (d.prototype.strokeColor = null),
                 (d.prototype.fillColor = null),
@@ -105,7 +105,7 @@ module.exports = function (e, t, i) {
                                 (this.mode = i.mode));
                             var n = {
                                 letterSpacing: this.charSpacing,
-                                kerning: !0,
+                                kerning: true,
                                 features: {
                                     liga: i.textLigatures,
                                     rlig: i.textLigatures,
@@ -145,5 +145,5 @@ module.exports = function (e, t, i) {
                     });
                 }),
                 (p.Paragraph = g),
-                (e.exports = p));
+                (module.exports = p));
         };

@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(148),
-                r = i(108),
-                o = i(12);
+module.exports = function (module, exports, require) {
+            var n = require(148),
+                GFont = require(108),
+                o = require(12);
 
             function a() {}
             ((a.UNSUBSCRIBE = 1638),
@@ -49,16 +49,16 @@ module.exports = function (e, t, i) {
                             case "normal":
                                 break;
                             case "italic":
-                                l = r.Style.Italic;
+                                l = GFont.Style.Italic;
                                 break;
                             case "oblique":
-                                s = !0;
+                                s = true;
                                 break;
                             case "small-caps":
                                 A = t;
                                 break;
                             case "bold":
-                                h = r.Weight.Bold;
+                                h = GFont.Weight.Bold;
                                 break;
                             case "bolder":
                                 h = 900;
@@ -89,12 +89,12 @@ module.exports = function (e, t, i) {
                     var d = a.match(/[0-9]+pt$/);
                     return (
                         d && d.length
-                            ? ((a = parseFloat(a)), (a *= 96 / 72), (a = o.round(a, !1, 1)))
-                            : ((a = parseFloat(a)), (a = o.round(a, !1, 1)), Number.isNaN(a) && (a = 10)),
+                            ? ((a = parseFloat(a)), (a *= 96 / 72), (a = o.round(a, false, 1)))
+                            : ((a = parseFloat(a)), (a = o.round(a, false, 1)), Number.isNaN(a) && (a = 10)),
                         {
-                            fontStyle: "normal" == l ? r.Style.Normal : l,
+                            fontStyle: "normal" == l ? GFont.Style.Normal : l,
                             fontVariant: A,
-                            fontWeight: "normal" == h ? r.Weight.Regular : h,
+                            fontWeight: "normal" == h ? GFont.Weight.Regular : h,
                             fontSize: a,
                             lineHeight: c,
                             fontFamily: i.replace(/^"(.*)"$/, "$1"),
@@ -127,14 +127,14 @@ module.exports = function (e, t, i) {
                                 return e.toUpperCase();
                             });
                         case "smallcaps":
-                            if (i && i.hasFeature(r.Features.SmallCaps))
+                            if (i && i.hasFeature(GFont.Features.SmallCaps))
                                 return Array.from(e)
                                     .map(function (e) {
-                                        return r.SmallCapsUnicodeMap[e] || e;
+                                        return GFont.SmallCapsUnicodeMap[e] || e;
                                     })
                                     .join("");
                     }
                     return e;
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

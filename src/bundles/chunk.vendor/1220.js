@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(90),
-                r = i(182),
-                o = i(564);
+module.exports = function (module, exports, require) {
+            var n = require(90),
+                r = require(182),
+                o = require(564);
 
             function a(e) {
                 ((this._offset = 0), (this._dashArray = new r(e)));
             }
-            (i(0).inherit(a, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(a, n),
                 (a.prototype._dashArray = null),
                 (a.prototype._offset = 0),
                 (a.prototype._isDashPatternValid = function () {
@@ -21,5 +21,5 @@ module.exports = function (e, t, i) {
                     this._isDashPatternValid() &&
                         (this._dashArray.write(e), e.writeSpace(), e.write(String(this._offset)), e.writeSpace(), e.write(o.setLineDash));
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

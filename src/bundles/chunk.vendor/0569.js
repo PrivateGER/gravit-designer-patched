@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i() {}
             ((i.prototype._uid = null),
                 (i.prototype._outEdges = null),
@@ -27,5 +27,5 @@ module.exports = function (e, t) {
                 (i.prototype.toString = function () {
                     return "[Object GAnchor]";
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(2);
-            e.exports = function (e) {
+module.exports = function (module, exports, require) {
+            var n = require(2);
+            module.exports = function (e) {
                 ((e.Effects = function () {}),
                     n.inheritAndMix("effects", e.Effects, n, [n.Container, n.Store, n.Multireference]),
                     (e.Effects.prototype.getLayersEffects = function (e, t) {
@@ -18,7 +18,7 @@ module.exports = function (e, t, i) {
                         for (var n = null, r = [], o = [], a = [], s = this.getFirstChild(); null !== s; s = s.getNext())
                             if (s instanceof e.Effect) {
                                 var l = s.getProperty("ly");
-                                if (i && !1 === s.getProperty("vs")) continue;
+                                if (i && false === s.getProperty("vs")) continue;
                                 if (l === t)
                                     switch (s.getEffectType()) {
                                         case e.Effect.Type.PreEffect:
@@ -63,14 +63,14 @@ module.exports = function (e, t, i) {
                         return n ? e.expanded(n[0], n[1], n[2], n[3]) : e;
                     }),
                     (e.Effects.prototype.getEffectsPadding = function (t, i, n) {
-                        var r = this.getEffectsForLayer(i, !0) || [],
+                        var r = this.getEffectsForLayer(i, true) || [],
                             o = r.length;
                         if (
                             (this.getParent() &&
                                 this.getParent().findParent(function (t) {
                                     if (t.hasMixin(e)) {
                                         var n = t.getEffects();
-                                        n && (r = r.concat(n.getEffectsForLayer(i, !0) || []));
+                                        n && (r = r.concat(n.getEffectsForLayer(i, true) || []));
                                     }
                                 }),
                             !r.length)

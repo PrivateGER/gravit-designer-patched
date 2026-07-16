@@ -1,19 +1,19 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o,
             i,
             a,
-            r = n(21),
-            s = n(35),
-            l = n(46),
-            c = n(136),
-            d = n(208),
-            u = n(79),
-            p = n(43),
-            g = n(74),
+            r = require(21),
+            s = require(35),
+            l = require(46),
+            c = require(136),
+            d = require(208),
+            u = require(79),
+            p = require(43),
+            g = require(74),
             h = p("iterator"),
-            f = !1;
-        ([].keys && ("next" in (a = [].keys()) ? (i = d(d(a))) !== Object.prototype && (o = i) : (f = !0)),
+            f = false;
+        ([].keys && ("next" in (a = [].keys()) ? (i = d(d(a))) !== Object.prototype && (o = i) : (f = true)),
             !l(o) ||
             r(function () {
                 var e = {};
@@ -25,5 +25,5 @@ module.exports = function (e, t, n) {
                 u(o, h, function () {
                     return this;
                 }),
-            (e.exports = { IteratorPrototype: o, BUGGY_SAFARI_ITERATORS: f }));
+            (module.exports = { IteratorPrototype: o, BUGGY_SAFARI_ITERATORS: f }));
     };

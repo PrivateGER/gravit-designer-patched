@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            t.line = function (e, t, i, n, r) {
+            exports.line = function (e, t, i, n, r) {
                 (e.beginPath(), e.moveTo(t, i), e.lineTo(n, r), e.stroke());
             };
         };

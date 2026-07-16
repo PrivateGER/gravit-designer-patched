@@ -1,18 +1,18 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(744),
-                o = i(5),
-                a = (i(14), i(12), i(17), i(14), i(6)),
-                s = i(2),
-                l = i(83),
-                h = (i(216), i(9)),
-                A = i(47);
-            i(133);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(744),
+                o = require(5),
+                a = (require(14), require(12), require(17), require(14), require(6)),
+                s = require(2),
+                l = require(83),
+                h = (require(216), require(9 /* String */)),
+                A = require(47);
+            require(133 /* GScenePaintConfiguration */);
 
             function c(e) {
                 r.call(this, e);
             }
-            (n.inherit(c, r),
+            (IsFiniteNonNegativeNumber.inherit(c, r),
                 (c.ID = "guide.symbollabel"),
                 (c.prototype.getId = function () {
                     return c.ID;
@@ -29,7 +29,7 @@ module.exports = function (e, t, i) {
                             return e.isMaster() && e.getScene();
                         })).map(function (e) {
                             return e.findParent(function (e) {
-                                if (e instanceof l) return !0;
+                                if (e instanceof l) return true;
                             });
                         });
                         for (var u = 0; u < n.length; ++u)
@@ -69,5 +69,5 @@ module.exports = function (e, t, i) {
                 (c.prototype.toString = function () {
                     return "[Object GSymbolLabelGuide]";
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

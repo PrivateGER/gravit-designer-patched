@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(3));
-        var o = n(1),
-            i = n(18),
-            a = n(31),
-            r = n(1275),
-            s = n(1277);
+        (require(8 /* Symbol */), require(3));
+        var GObject = require(1),
+            GCategory = require(18),
+            a = require(31),
+            GSettingsDialog = require(1275),
+            s = require(1277);
         function l() {}
-        (o.GObject.inherit(l, a),
+        (GObject.GObject.inherit(l, a),
             (l.ID = s.ID),
-            (l.TITLE = new o.GLocaleKey("GSettingsAction", "title")),
+            (l.TITLE = new GObject.GLocaleKey("GSettingsAction", "title")),
             (l.prototype.getId = function () {
                 return l.ID;
             }),
@@ -17,7 +17,7 @@ module.exports = function (e, t, n) {
                 return l.TITLE;
             }),
             (l.prototype.getCategory = function () {
-                return i.CATEGORY_EDIT;
+                return GCategory.CATEGORY_EDIT;
             }),
             (l.prototype.getGroup = function () {
                 return "settings";
@@ -26,10 +26,10 @@ module.exports = function (e, t, n) {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-setting-touch" : "";
             }),
             (l.prototype.execute = async function () {
-                new r().then((e) => e.open());
+                new GSettingsDialog().then((e) => e.open());
             }),
             (l.prototype.toString = function () {
                 return "[Object GSettingsAction]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

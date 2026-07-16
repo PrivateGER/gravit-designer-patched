@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16),
-            i = n(1),
-            a = n(15),
-            r = o(n(31)),
-            s = o(n(18)),
-            l = n(198),
-            c = o(n(1170));
+        var o = require(16),
+            GObject = require(1),
+            GPlatform = require(15),
+            r = o(require(31)),
+            s = o(require(18 /* GCategory */)),
+            SidebarsIds = require(198),
+            c = o(require(1170));
         class d extends r.default {
             getId() {
                 return d.ID;
@@ -18,10 +18,10 @@ module.exports = function (e, t, n) {
                 return s.default.CATEGORY_MODIFY;
             }
             isVisible() {
-                return !1;
+                return false;
             }
             getShortcut() {
-                return [a.GKey.Constant.META, a.GKey.Constant.M];
+                return [GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.M];
             }
             isEnabled() {
                 return gDesigner.getApplicationManager().isEditingEnabled();
@@ -29,15 +29,15 @@ module.exports = function (e, t, n) {
             execute() {
                 this._showOutlineSidebar();
                 const e = gDesigner.getLeftSidebars();
-                (e && e.getSidebar(l.SidebarsIds.GOutlineSidebar)).insertLayer();
+                (e && e.getSidebar(SidebarsIds.SidebarsIds.GOutlineSidebar)).insertLayer();
             }
             _showOutlineSidebar() {
-                const e = gDesigner.getAction("".concat(c.default.ID, ".").concat(l.SidebarsIds.GOutlineSidebar));
+                const e = gDesigner.getAction("".concat(c.default.ID, ".").concat(SidebarsIds.SidebarsIds.GOutlineSidebar));
                 e.isChecked() || e.execute();
             }
             toString() {
                 return "[Object GCreateNewLayerAction]";
             }
         }
-        ((d.ID = "modify.create-new-layer"), (d.TITLE = new i.GLocaleKey("GCreateNewLayerAction", "title")), (e.exports = d));
+        ((d.ID = "modify.create-new-layer"), (d.TITLE = new GObject.GLocaleKey("GCreateNewLayerAction", "title")), (module.exports = d));
     };

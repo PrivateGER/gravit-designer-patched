@@ -1,23 +1,23 @@
-module.exports = function (e, t, i) {
-            var n = i(50),
-                r = i(7),
-                o = i(11),
-                a = i(6),
-                s = i(345),
-                l = i(2),
-                h = i(280),
-                A = i(75),
-                c = i(227),
-                p = i(111),
-                u = i(205);
+module.exports = function (module, exports, require) {
+            var n = require(50),
+                r = require(7),
+                o = require(11),
+                a = require(6),
+                s = require(345),
+                l = require(2),
+                h = require(280),
+                A = require(75),
+                c = require(227),
+                p = require(111),
+                u = require(205);
 
             function d(e, t, i) {
                 ((this._sizeMode = d.SizeMode.Auto),
                     (this._repeatMode = t || d.RepeatMode.None),
                     (this._angle = 0),
                     (this._tileSize = 1),
-                    (this._mask = !1),
-                    (this._invalidate = !1),
+                    (this._mask = false),
+                    (this._invalidate = false),
                     this.setTexture(e));
             }
             ((d.UpdateEvent = function (e) {
@@ -81,18 +81,18 @@ module.exports = function (e, t, i) {
                 (d.prototype._height = null),
                 (d.prototype._position = d.PositionMode.Auto),
                 (d.prototype._tileSize = 1),
-                (d.prototype._mask = !1),
+                (d.prototype._mask = false),
                 (d.prototype._angle = 0),
                 (d.prototype._scaleX = 1),
                 (d.prototype._scaleY = 1),
-                (d.prototype._cloned = !1),
+                (d.prototype._cloned = false),
                 (d.prototype._scene = null),
                 (d.prototype._storedUrl = null),
                 (d.prototype._cachedBitmap = null),
-                (d.prototype._invalidate = !1),
+                (d.prototype._invalidate = false),
                 (d.equals = function (e, t) {
-                    if (!e && e === t) return !0;
-                    var i = !0;
+                    if (!e && e === t) return true;
+                    var i = true;
                     return (
                         [
                             "_url",
@@ -123,7 +123,7 @@ module.exports = function (e, t, i) {
                 (d.prototype.setTexture = function (e) {
                     (this._url && this._scene && c.isDictionary(this._url) && this._scene.getDictionary().removeEntry(this._url),
                         e &&
-                            ((this._invalidate = !0),
+                            ((this._invalidate = true),
                             this._cachedBitmap &&
                                 !this._cloned &&
                                 this._scene &&
@@ -142,7 +142,7 @@ module.exports = function (e, t, i) {
                     if (!this._node) return null;
                     var e = new r().scaled(this._scaleX, this._scaleY),
                         t = this._node.clone();
-                    ((t._paintSharp = !1), t.transform(e));
+                    ((t._paintSharp = false), t.transform(e));
                     var i = [];
                     if (
                         ("image" === l.getName(t) && i.push(t),
@@ -163,7 +163,7 @@ module.exports = function (e, t, i) {
                                     (e.status !== n.ImageStatus.Loaded && e.status !== n.ImageStatus.Error) ||
                                         (i.pop(),
                                         i.length ||
-                                            ((this._invalidate = !1), (this._cachedBitmap = t.toBitmap()), this.requestInvalidation()));
+                                            ((this._invalidate = false), (this._cachedBitmap = t.toBitmap()), this.requestInvalidation()));
                                 }.bind(this),
                                 this
                             ),
@@ -182,7 +182,7 @@ module.exports = function (e, t, i) {
                             );
                         }
                     } else
-                        ((this._invalidate = !1),
+                        ((this._invalidate = false),
                             (this._cachedBitmap = t.toBitmap()),
                             this._scene &&
                                 this._cachedBitmap &&
@@ -200,7 +200,7 @@ module.exports = function (e, t, i) {
                             ((!t || (this._storedUrl && t !== this._storedUrl)) && (this._url = this._storedUrl),
                             !this._url || !this._initializeImage())
                         ) {
-                            var n = i(14).createChessboard(8, "#fcc", "#cfc"),
+                            var n = require(14).createChessboard(8, "#fcc", "#cfc"),
                                 r = new s(n);
                             ((this._url = r.toImageDataUrl(s.ImageType.PNG)), d.ScaleSettings.tile(this), this._initializeImage());
                         }
@@ -312,7 +312,7 @@ module.exports = function (e, t, i) {
                         this._initializeImage());
                 }),
                 (d.prototype._initializeImage = function (e) {
-                    var t = !0;
+                    var t = true;
                     if (e) this._image = e;
                     else if (this._url)
                         if (((this._image = new Image()), this._scene)) {
@@ -321,8 +321,8 @@ module.exports = function (e, t, i) {
                                 i && (this._url = i.getUrl());
                             }
                             this._scene.getWorkspace().resolveUrl(this._url, this._resolvedImage.bind(this), this._scene);
-                        } else c.isDictionary(this._url) ? (t = !1) : this._resolvedImage(this._url);
-                    else t = !1;
+                        } else c.isDictionary(this._url) ? (t = false) : this._resolvedImage(this._url);
+                    else t = false;
                     return t;
                 }),
                 (d.prototype._resolvedImage = function (e) {
@@ -336,7 +336,7 @@ module.exports = function (e, t, i) {
                     this._image &&
                         0 !== this._image.naturalWidth &&
                         0 !== this._image.naturalHeight &&
-                        ((this._invalidate = !0), (this._cachedBitmap = null), this.requestInvalidation());
+                        ((this._invalidate = true), (this._cachedBitmap = null), this.requestInvalidation());
                 }),
                 (d.prototype.createTextureTransform = function (e, t, i) {
                     var n = new r();
@@ -375,7 +375,7 @@ module.exports = function (e, t, i) {
                         A && c && (this._image && (n = n.scaled(A, c)), (l *= A), (h *= c)),
                         (A = (A || 1) * Math.max(1, i || 1)),
                         (c = (c || 1) * Math.max(1, i || 1)),
-                        (A === this._scaleX && c === this._scaleY) || (this._invalidate = !0),
+                        (A === this._scaleX && c === this._scaleY) || (this._invalidate = true),
                         (this._scaleX = A),
                         (this._scaleY = c));
                     var u = t.decomposed(),
@@ -418,8 +418,8 @@ module.exports = function (e, t, i) {
                     return (
                         t.deserialize(e),
                         (t._cachedBitmap = this._cachedBitmap),
-                        this._cachedBitmap && (this._cloned = !0),
-                        (t._invalidate = !0),
+                        this._cachedBitmap && (this._cloned = true),
+                        (t._invalidate = true),
                         t.setScene(this._scene),
                         t
                     );
@@ -452,5 +452,5 @@ module.exports = function (e, t, i) {
                 (d.prototype.toString = function () {
                     return "[Object GTexturePattern]";
                 }),
-                (e.exports = d));
+                (module.exports = d));
         };

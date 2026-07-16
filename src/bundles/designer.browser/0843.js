@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(18),
-            a = n(31);
+        require(3);
+        var GObject = require(1),
+            GCategory = require(18),
+            a = require(31);
         function r() {}
-        (o.GObject.inherit(r, a),
+        (GObject.GObject.inherit(r, a),
             (r.ID = "file.open-recent"),
-            (r.TITLE = new o.GLocaleKey("GOpenRecentAction", "title")),
+            (r.TITLE = new GObject.GLocaleKey("GOpenRecentAction", "title")),
             (r.prototype.getId = function () {
                 return r.ID;
             }),
@@ -15,17 +15,17 @@ module.exports = function (e, t, n) {
                 return r.TITLE;
             }),
             (r.prototype.getCategory = function () {
-                return i.CATEGORY_FILE_OPEN_RECENT;
+                return GCategory.CATEGORY_FILE_OPEN_RECENT;
             }),
             (r.prototype.getGroup = function () {
                 return "file-open/open-recent";
             }),
             (r.prototype.isEnabled = function (e) {
-                return !1;
+                return false;
             }),
             (r.prototype.execute = function () {}),
             (r.prototype.toString = function () {
                 return "[Object GOpenRecentAction]";
             }),
-            (e.exports = r));
+            (module.exports = r));
     };

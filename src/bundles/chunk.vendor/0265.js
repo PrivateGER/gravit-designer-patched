@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(50),
+module.exports = function (module, exports, require) {
+            var n = require(50),
                 r = null;
 
             function o() {}
@@ -25,5 +25,5 @@ module.exports = function (e, t, i) {
                 (o.prototype.toString = function () {
                     return "[Object GBackground]";
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

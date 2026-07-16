@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(1233),
-                o = i(1234),
-                a = i(1434),
-                s = i(1144);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(1233),
+                o = require(1234),
+                a = require(1434),
+                s = require(1144);
 
             function l(e) {
                 ((this._glyphMap = {}), (this._openTypeFont = e));
             }
-            (n.inherit(l, r),
+            (IsFiniteNonNegativeNumber.inherit(l, r),
                 (l.prototype._glyphMap = null),
                 (l.prototype._openTypeFont = null),
                 (l.prototype.getGlyphs = function () {
@@ -37,5 +37,5 @@ module.exports = function (e, t, i) {
                 (l.prototype.toString = function () {
                     return "[GPDFIdentityEncoding]";
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(230),
-                r = i(0);
+module.exports = function (module, exports, require) {
+            var n = require(230),
+                IsFiniteNonNegativeNumber = require(0);
 
             function o() {}
-            (r.inherit(o, r),
+            (IsFiniteNonNegativeNumber.inherit(o, IsFiniteNonNegativeNumber),
                 (o.prototype.getLastValidCharSpacing = function () {
                     return 0;
                 }),
@@ -43,7 +43,7 @@ module.exports = function (e, t, i) {
                 (o.prototype.byOrdinal = function (e) {
                     var t = null;
                     return this.children().some(function (i) {
-                        if (e >= i.ordinal && e < i.ordinal + i.length && (t = i.byOrdinal(e))) return !0;
+                        if (e >= i.ordinal && e < i.ordinal + i.length && (t = i.byOrdinal(e))) return true;
                     })
                         ? t
                         : this;
@@ -52,7 +52,7 @@ module.exports = function (e, t, i) {
                     var i;
                     if (
                         (this.children().some(function (n) {
-                            if (n.bounds().contains(e, t) && (i = n.byCoordinate(e, t))) return !0;
+                            if (n.bounds().contains(e, t) && (i = n.byCoordinate(e, t))) return true;
                         }),
                         !i)
                     ) {
@@ -96,5 +96,5 @@ module.exports = function (e, t, i) {
                 (o.prototype.parent = function () {
                     return null;
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

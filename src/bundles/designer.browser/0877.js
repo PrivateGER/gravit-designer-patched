@@ -1,16 +1,16 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        n(53);
-        var o = n(1),
-            i = n(15),
-            a = n(18),
-            r = n(31);
-        n(44);
+        require(3);
+        require(53);
+        var GObject = require(1),
+            GPlatform = require(15),
+            GCategory = require(18),
+            r = require(31);
+        require(44 /* GSystemDialog */);
         function s() {}
-        (o.GObject.inherit(s, r),
+        (GObject.GObject.inherit(s, r),
             (s.ID = "paste.paste"),
-            (s.TITLE = new o.GLocaleKey("GPasteAction", "title")),
+            (s.TITLE = new GObject.GLocaleKey("GPasteAction", "title")),
             (s.prototype.getId = function () {
                 return s.ID;
             }),
@@ -21,13 +21,13 @@ module.exports = function (e, t, n) {
                 return "gravit-icon-paste";
             }),
             (s.prototype.getCategory = function () {
-                return a.CATEGORY_EDIT_PASTE;
+                return GCategory.CATEGORY_EDIT_PASTE;
             }),
             (s.prototype.getGroup = function () {
                 return "ccp/paste";
             }),
             (s.prototype.getShortcut = function () {
-                return [i.GKey.Constant.META, "V"];
+                return [GPlatform.GKey.Constant.META, "V"];
             }),
             (s.prototype.isEnabled = function () {
                 return !!gDesigner.getActiveDocument();
@@ -40,8 +40,8 @@ module.exports = function (e, t, n) {
                     (document.activeElement &&
                         $(document.activeElement).is(":editable") &&
                         !gDesigner.isGravitIME(document.activeElement)) ||
-                        (t && (e.setAllowFocus(!0), t.focus())),
-                    !1
+                        (t && (e.setAllowFocus(true), t.focus())),
+                    false
                 );
             }),
             (s.prototype.execute = function () {
@@ -53,14 +53,14 @@ module.exports = function (e, t, n) {
                     });
             }),
             (s.prototype._pasteFromInternalClipboard = function () {
-                gDesigner.getClipboardContent(o.GNode.MIME_TYPE) &&
+                gDesigner.getClipboardContent(GObject.GNode.MIME_TYPE) &&
                     (gDesigner.getPaste().assignCallback(null),
                     gDesigner.getPaste().handlePasteData({
-                        [o.GNode.MIME_TYPE]: gDesigner.getClipboardContent(o.GNode.MIME_TYPE),
+                        [GObject.GNode.MIME_TYPE]: gDesigner.getClipboardContent(GObject.GNode.MIME_TYPE),
                     }));
             }),
             (s.prototype.toString = function () {
                 return "[Object GPasteAction]";
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

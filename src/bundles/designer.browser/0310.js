@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        e.exports = function (e, t, n, o) {
+        module.exports = function (e, t, n, o) {
             for (var i = (65535 & e) | 0, a = ((e >>> 16) & 65535) | 0, r = 0; 0 !== n; ) {
                 n -= r = n > 2e3 ? 2e3 : n;
                 do {

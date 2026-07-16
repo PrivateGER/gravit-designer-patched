@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i() {}
             ((i.prototype.toDate = function (e) {
                 return "string" == typeof e || "number" == typeof e ? new Date(e) : e;
@@ -11,5 +11,5 @@ module.exports = function (e, t) {
                     };
                     return this.toDate(e).toLocaleDateString(t, i);
                 }),
-                (e.exports = new i()));
+                (module.exports = new i()));
         };

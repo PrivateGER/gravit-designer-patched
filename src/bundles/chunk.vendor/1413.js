@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(197),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(197),
                 o = function (e) {
                     if ((r.call(this), !e.subType)) throw "GPDFSoftMask.SubType is required";
                     if (!e.stream) throw "GPDFStream is required";
                     (this.put("/Type", "/Mask"), this.put("/S", "/" + e.subType), this.put("/G", e.stream));
                 };
-            (n.inherit(o, r),
+            (IsFiniteNonNegativeNumber.inherit(o, r),
                 (o.SubType = {
                     ALPHA: "Alpha",
                     LUMINOSITY: "Luminosity",
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(148),
-                o = i(230),
-                a = i(195),
-                s = i(510),
-                l = i(267);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(148),
+                o = require(230),
+                a = require(195),
+                s = require(510),
+                l = require(267);
 
             function h(e, t, i, n, r) {
                 ((this.word = e),
@@ -14,7 +14,7 @@ module.exports = function (e, t, i) {
                     (this.ordinal = n),
                     (this.length = e.text.length + e.space.length));
             }
-            n.inherit(h, l);
+            IsFiniteNonNegativeNumber.inherit(h, l);
             var A = function (e) {
                 return a.measure(a.ENTER, e).width;
             };
@@ -26,7 +26,7 @@ module.exports = function (e, t, i) {
                     (this.length = r),
                     (this.baseline = i.line.baseline));
             }),
-                n.inherit(h.PositionedChar, l),
+                IsFiniteNonNegativeNumber.inherit(h.PositionedChar, l),
                 (h.PositionedChar.prototype.word = null),
                 (h.PositionedChar.prototype.left = NaN),
                 (h.PositionedChar.prototype.part = null),
@@ -91,11 +91,11 @@ module.exports = function (e, t, i) {
                             }),
                             (this.word.isNewLine() || (this.word.code() && this.word.code().eof)) &&
                                 Object.defineProperty(a, "newLine", {
-                                    value: !0,
+                                    value: true,
                                 }),
                             this.word.isEndOfList() &&
                                 Object.defineProperty(a, "endOfList", {
-                                    value: !0,
+                                    value: true,
                                 })),
                             (this._characters = e));
                     }
@@ -113,5 +113,5 @@ module.exports = function (e, t, i) {
                 (h.prototype.width = NaN),
                 (h.prototype.ordinal = null),
                 (h.prototype.length = NaN),
-                (e.exports = h));
+                (module.exports = h));
         };

@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(147),
-                r = i(11),
-                o = i(1237),
-                a = i(158),
-                s = i(7),
-                l = i(801),
+module.exports = function (module, exports, require) {
+            var n = require(147),
+                r = require(11),
+                o = require(1237),
+                a = require(158),
+                s = require(7),
+                l = require(801),
                 h = function () {};
             ((h.GradientUnits = {
                 UserSpaceOnUse: "userSpaceOnUse",
@@ -149,5 +149,5 @@ module.exports = function (e, t, i) {
                         p
                     );
                 }),
-                (e.exports = h));
+                (module.exports = h));
         };

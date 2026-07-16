@@ -1,41 +1,41 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (Object.defineProperty(t, "__esModule", { value: !0 }),
-            (t.lookupByMimeType =
-                t.lookupByExtension =
-                t.default =
-                t.TYPES =
-                t.FILE_MIME_TYPES =
-                t.FILE_EXTENSIONS =
-                t.DEFAULT_TYPE =
+        var o = require(16);
+        (Object.defineProperty(exports, "__esModule", { value: true }),
+            (exports.lookupByMimeType =
+                exports.lookupByExtension =
+                exports.default =
+                exports.TYPES =
+                exports.FILE_MIME_TYPES =
+                exports.FILE_EXTENSIONS =
+                exports.DEFAULT_TYPE =
                     void 0),
-            n(58),
-            n(19),
-            n(168),
-            n(96),
-            n(30),
-            n(57),
-            n(8),
-            n(71),
-            n(4),
-            n(41),
-            n(13),
-            n(32),
-            n(38),
-            n(169),
-            n(33),
-            n(26));
-        var i = n(1),
-            a = n(10),
-            r = o(n(119)),
-            s = o(n(220)),
-            l = o(n(163)),
-            c = o(n(86)),
-            d = o(n(802)),
-            u = n(593);
-        const p = n(156),
-            { FILE_FORMATS: g, FOLDER_FORMAT: h, MAX_FOLDER_DEPTH_FOR_CLOUD: f } = n(10);
+            require(58),
+            require(19),
+            require(168 /* PDFFetchStream */),
+            require(96),
+            require(30),
+            require(57),
+            require(8 /* Symbol */),
+            require(71),
+            require(4),
+            require(41),
+            require(13),
+            require(32),
+            require(38),
+            require(169 /* PDFNetworkStream */),
+            require(33),
+            require(26));
+        var GObject = require(1),
+            designerConfig = require(10),
+            r = o(require(119 /* GCommonNames */)),
+            s = o(require(220 /* GCommonNames */)),
+            l = o(require(163 /* GDocument */)),
+            c = o(require(86)),
+            d = o(require(802)),
+            u = require(593);
+        const p = require(156),
+            { FILE_FORMATS: g, FOLDER_FORMAT: h, MAX_FOLDER_DEPTH_FOR_CLOUD: f } = require(10 /* designerConfig */);
         let m;
         function y() {
             (d.default.apply(this, arguments),
@@ -47,10 +47,10 @@ module.exports = function (e, t, n) {
                     e && this.setCurrentFolder(e);
                 }),
                 this.setDefaultEmptyMessage({
-                    title: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.message-explore-cloud-templates")),
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.message-explore-cloud-templates")),
                 }));
         }
-        (i.GObject.inherit(y, d.default),
+        (GObject.GObject.inherit(y, d.default),
             (y.prototype.CURRENT_FOLDER_PROP = "designer.filespanel.cloud-drive.current-folder"),
             (y.getInstance = function () {
                 return (m || (m = new y()), m);
@@ -72,11 +72,11 @@ module.exports = function (e, t, n) {
             (y.prototype.getRootFolder = function () {
                 return p.from({
                     id: null,
-                    name: i.GLocale.get(new i.GLocaleKey("GFilesPanel", "action.my-cloud")),
+                    name: GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "action.my-cloud")),
                 });
             }),
             (y.prototype.getFolder = function (e) {
-                return a.gApi.getFile(e.id || e).then((e) => this._convertToFolderElement(e));
+                return designerConfig.gApi.getFile(e.id || e).then((e) => this._convertToFolderElement(e));
             }),
             (y.prototype.getCurrentFolder = function () {
                 return this.CURRENT_FOLDER;
@@ -110,7 +110,7 @@ module.exports = function (e, t, n) {
                 );
             }),
             (y.prototype.isLoadFoldersOnDemandSupported = function () {
-                return !0;
+                return true;
             }),
             (y.prototype.fetchFolders = async function (e, t) {
                 let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : -1,
@@ -119,7 +119,7 @@ module.exports = function (e, t, n) {
                     Object.keys(this.FOLDERS).length || (await this._buildFolderStructure(e)),
                     this.isRootFolder(t) && this.generatePreviousSelectedFolderPath(),
                     (t = t || this.CURRENT_FOLDER),
-                    a.gApi
+                    designerConfig.gApi
                         .listFiles({
                             type: h,
                             parent: this._extractId(t),
@@ -151,7 +151,7 @@ module.exports = function (e, t, n) {
             (y.prototype._buildFolderStructure = async function () {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "asc";
                 if (Object.keys(this.FOLDERS).length) return;
-                const t = await a.gApi.listFiles({
+                const t = await designerConfig.gApi.listFiles({
                     type: h,
                     parent: "*",
                     sort: e + "",
@@ -165,7 +165,7 @@ module.exports = function (e, t, n) {
                         this.setCurrentFolder(null));
             }),
             (y.prototype._isCustomFolder = function (e) {
-                return !1;
+                return false;
             }),
             (y.prototype.getFolders = function () {
                 return this.FOLDERS;
@@ -178,12 +178,12 @@ module.exports = function (e, t, n) {
                 return (this.setCurrentFolder(e), this);
             }),
             (y.prototype.getFile = function (e) {
-                return a.gApi.getFile(e, !0).then((e) => r.default.convertToCloudItem(e));
+                return designerConfig.gApi.getFile(e, true).then((e) => r.default.convertToCloudItem(e));
             }),
             (y.prototype.getRawFile = async function (e, t, n) {
-                const o = await a.gApi.getFileExtended(e.id),
+                const o = await designerConfig.gApi.getFileExtended(e.id),
                     i = await fetch(o.getFileDataURL(), { signal: t });
-                return (0, u.readResponseWithProgress)(i, n.progress, !0).then((e) => e.blob());
+                return (0, u.readResponseWithProgress)(i, n.progress, true).then((e) => e.blob());
             }),
             (y.prototype.openFile = function (e, t) {
                 return new Promise(async (n, o) => {
@@ -203,8 +203,8 @@ module.exports = function (e, t, n) {
                 var u = e.getScene();
                 if (e.hasPagesWithInfiniteEmptyCanvas())
                     return Promise.reject({
-                        message: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.error-emtpy-infinite-canvas")),
-                        dontExtend: !0,
+                        message: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.error-emtpy-infinite-canvas")),
+                        dontExtend: true,
                     });
                 let p = gDesigner.getWindows().getActiveWindow().getView();
                 const g = p.getZoom(),
@@ -213,7 +213,7 @@ module.exports = function (e, t, n) {
                     m = u.getActivePage(),
                     y = m.getReferenceId(),
                     v = u.getActivePage().getGeometryBBox();
-                return a.gApi
+                return designerConfig.gApi
                     .createFile({
                         name: t,
                         parent: this._extractId(this.CURRENT_FOLDER),
@@ -232,20 +232,20 @@ module.exports = function (e, t, n) {
                         e.setStorageItem(v);
                         var b = new l.default(v);
                         return b
-                            .deserializeData(i.GNode.serialize(u, o))
+                            .deserializeData(GObject.GNode.serialize(u, o))
                             .then(
                                 async () => (
                                     e.getFileFormatVersion() && b.setFileFormatVersion(e.getFileFormatVersion()),
-                                    await b.saveAnnotations(m, !0),
+                                    await b.saveAnnotations(m, true),
                                     (u = b.getScene()).iteratePages((e) => {
-                                        if (e.getReferenceId() === y) return (u.setActivePage(e), !1);
+                                        if (e.getReferenceId() === y) return (u.setActivePage(e), false);
                                     }),
                                     gDesigner.addDocument(b),
-                                    d ? d(c.default.Loaded) : gDesigner.removeDocument(e, null, !0),
+                                    d ? d(c.default.Loaded) : gDesigner.removeDocument(e, null, true),
                                     (p = gDesigner.getWindows().getActiveWindow().getView()),
                                     p.transform(h, f, g),
                                     (o = b.updateSaveOptionsLastModifiedDate(o)),
-                                    i.GUtil.prepareForSaving(u, n),
+                                    GObject.GUtil.prepareForSaving(u, n),
                                     r.default.performSave(
                                         b,
                                         () => {
@@ -266,7 +266,7 @@ module.exports = function (e, t, n) {
                                 (e) => (
                                     console.error(e),
                                     new Promise((e, t) => {
-                                        t(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.error-saving-file")));
+                                        t(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.error-saving-file")));
                                     })
                                 )
                             );
@@ -275,7 +275,7 @@ module.exports = function (e, t, n) {
                         (e) => (
                             console.error(e),
                             new Promise((e, t) => {
-                                t(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.error-saving-file")));
+                                t(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.error-saving-file")));
                             })
                         )
                     );
@@ -292,7 +292,7 @@ module.exports = function (e, t, n) {
                     skip: t + "",
                     sort: n + "",
                 };
-                return (e && ((o.name = e), (o.parent = "*")), a.gApi.listFiles(o).then((e) => this._convertAndUpdateCloudItems(e)));
+                return (e && ((o.name = e), (o.parent = "*")), designerConfig.gApi.listFiles(o).then((e) => this._convertAndUpdateCloudItems(e)));
             }),
             (y.prototype._convertAndUpdateCloudItems = function (e) {
                 return r.default.convertToCloudItem(e);
@@ -302,7 +302,7 @@ module.exports = function (e, t, n) {
                 return 0 !== e.length ? e : this.getSupportedMIMETypes();
             }),
             (y.prototype.renameItem = function (e, t) {
-                return a.gApi.updateFile(e.id, { name: t });
+                return designerConfig.gApi.updateFile(e.id, { name: t });
             }),
             (y.prototype.isItemAllowedToBeRendered = function (e) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] && arguments[1],
@@ -310,7 +310,7 @@ module.exports = function (e, t, n) {
                 return !(!t && !n) || r.default.definePath(this.CURRENT_FOLDER) === e.parent;
             }),
             (y.prototype.deleteItem = function (e) {
-                return a.gApi.updateFile(e.id, { trashed: !0 }).then(() => a.gApi.deleteFile(e.id));
+                return designerConfig.gApi.updateFile(e.id, { trashed: true }).then(() => designerConfig.gApi.deleteFile(e.id));
             }),
             (y.prototype.cutPaste = function (e) {
                 var t = r.default.definePath(this.CURRENT_FOLDER);
@@ -323,13 +323,13 @@ module.exports = function (e, t, n) {
                 const t = r.default.definePath(this.CURRENT_FOLDER);
                 return Promise.all(
                     e.map(async (e) => {
-                        const { id: n } = await a.gApi.copyFile(e.id, { parent: t });
+                        const { id: n } = await designerConfig.gApi.copyFile(e.id, { parent: t });
                         return { id: n, parent: t };
                     })
                 );
             }),
             (y.prototype.supportsSaveCollisionFlow = function () {
-                return !0;
+                return true;
             }),
             (y.prototype._extractId = function (e) {
                 return e ? ("string" == typeof e ? e || null : e.id || null) : null;
@@ -341,12 +341,12 @@ module.exports = function (e, t, n) {
                     parent: this._extractId(n),
                     name: '"'.concat(e, '"'),
                 };
-                return a.gApi.listFiles(o).then((e) => !!e.length);
+                return designerConfig.gApi.listFiles(o).then((e) => !!e.length);
             }),
             (y.prototype.folderExists = function (e, t) {
                 return (
                     (t = t || this.CURRENT_FOLDER),
-                    a.gApi
+                    designerConfig.gApi
                         .listFiles({
                             type: h,
                             parent: this._extractId(t),
@@ -365,7 +365,7 @@ module.exports = function (e, t, n) {
                 }
             }),
             (y.prototype.loadExampleFiles = async function () {
-                0 === this.EXAMPLE_FILES_CACHE.length && (this.EXAMPLE_FILES_CACHE = await a.gApi.getExampleFiles().catch(() => []));
+                0 === this.EXAMPLE_FILES_CACHE.length && (this.EXAMPLE_FILES_CACHE = await designerConfig.gApi.getExampleFiles().catch(() => []));
                 const e = this.getSelectedFilterForFileTypes();
                 let t = this.EXAMPLE_FILES_CACHE;
                 return (
@@ -376,21 +376,21 @@ module.exports = function (e, t, n) {
                     })
                 );
             }));
-        t.default = y;
-        const v = (t.TYPES = Object.assign(
+        exports.default = y;
+        const v = (exports.TYPES = Object.assign(
                 { FOLDER: h },
                 g.reduce((e, t) => ((e[t.ext.toUpperCase() + "_FILE"] = t), e), {})
             )),
-            _ = (t.DEFAULT_TYPE = Object.values(v).find((e) => e.default));
-        ((t.FILE_EXTENSIONS = g.map((e) => {
+            _ = (exports.DEFAULT_TYPE = Object.values(v).find((e) => e.default));
+        ((exports.FILE_EXTENSIONS = g.map((e) => {
             let { ext: t } = e;
             return t.toUpperCase();
         })),
-            (t.FILE_MIME_TYPES = g.map((e) => {
+            (exports.FILE_MIME_TYPES = g.map((e) => {
                 let { type: t } = e;
                 return t;
             })));
-        t.lookupByMimeType = (e) =>
+        exports.lookupByMimeType = (e) =>
             Object.values(v).find((t) => {
                 let { type: n } = t;
                 return !!n && n.toLowerCase() === e.toLowerCase();
@@ -400,5 +400,5 @@ module.exports = function (e, t, n) {
                 let { ext: n } = t;
                 return !!n && n.toLowerCase() === e.toLowerCase();
             });
-        t.lookupByExtension = b;
+        exports.lookupByExtension = b;
     };

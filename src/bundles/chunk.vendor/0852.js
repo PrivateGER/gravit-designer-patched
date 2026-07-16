@@ -1,28 +1,28 @@
-module.exports = function (e, t, i) {
-            var n = i(11),
-                r = i(95),
-                o = i(289),
-                a = i(6),
-                s = i(83);
+module.exports = function (module, exports, require) {
+            var n = require(11),
+                r = require(95),
+                o = require(289),
+                a = require(6),
+                s = require(83);
 
             function l() {}
             ((l.hasEffects = function (e) {
                 var t = e._paintContext,
-                    i = !1,
+                    i = false,
                     n = e.getStyleLayers();
                 if (t.configuration.isOutline(t));
                 else if (e.$_stop > 0) {
-                    var r = e._effects ? e._effects.getLayersEffects(n, !0) : null;
-                    if (r) for (var o = 0; o < r.length; ++o) if (r[o]) for (var a = 0; a < r[o].length; ++a) i = !0;
+                    var r = e._effects ? e._effects.getLayersEffects(n, true) : null;
+                    if (r) for (var o = 0; o < r.length; ++o) if (r[o]) for (var a = 0; a < r[o].length; ++a) i = true;
                 }
                 return i;
             }),
                 (l.containsImages = function (e) {
-                    if (e instanceof r) return !0;
+                    if (e instanceof r) return true;
                     for (var t = 0; t < e.getChildren().length; t++) {
-                        if (1 == l.containsImages(e.getChildren()[t])) return !0;
+                        if (1 == l.containsImages(e.getChildren()[t])) return true;
                     }
-                    return !1;
+                    return false;
                 }),
                 (l.formatHTMLTags = function (e) {
                     return n
@@ -94,5 +94,5 @@ module.exports = function (e, t, i) {
                     } else e instanceof s && (i = e.getClipBBox() || i);
                     return i;
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

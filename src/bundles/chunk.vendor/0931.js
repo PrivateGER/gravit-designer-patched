@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i() {}
             i.apply = function (e, t, i, a) {
                 var s = a || 0;
@@ -192,5 +192,5 @@ module.exports = function (e, t) {
             function o() {
                 ((this.r = 0), (this.g = 0), (this.b = 0), (this.a = 0), (this.next = null));
             }
-            e.exports = i;
+            module.exports = i;
         };

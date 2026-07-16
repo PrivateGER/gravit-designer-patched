@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(27),
-            i = n(93),
+        var o = require(27),
+            i = require(93),
             a = o({}.hasOwnProperty);
-        e.exports =
+        module.exports =
             Object.hasOwn ||
             function (e, t) {
                 return a(i(e), t);

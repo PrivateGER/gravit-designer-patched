@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(30), n(8));
-        var i = n(10),
-            a = n(1),
-            r = o(n(1187));
-        class s extends i.GReminderDialog.Impl {
+        var o = require(16);
+        (require(30), require(8 /* Symbol */));
+        var designerConfig = require(10),
+            GObject = require(1),
+            r = o(require(1187));
+        class s extends designerConfig.GReminderDialog.Impl {
             open(e) {
                 let { dialog: t } = e;
-                this._dialog = t.getHTMLElement().gDialog({ releaseOnClose: !0, nowrap: !0 }).gDialog("open");
+                this._dialog = t.getHTMLElement().gDialog({ releaseOnClose: true, nowrap: true }).gDialog("open");
             }
             async openPurchaseFlow(e) {
                 let { dialog: t, options: n = {} } = e;
@@ -39,7 +39,7 @@ module.exports = function (e, t, n) {
                 });
             }
             getLanguage() {
-                return a.GLocale.getLanguage();
+                return GObject.GLocale.getLanguage();
             }
         }
         class l extends r.default {
@@ -51,21 +51,21 @@ module.exports = function (e, t, n) {
                     t = Object.assign(this._dialogOptions, { impl: e });
                 switch (this._dialogOptions.endpoint) {
                     case "/pro/reminder/proexpiresoon":
-                        (await i.GReminderDialogFactory.newProExpireSoon(t)).open();
+                        (await designerConfig.GReminderDialogFactory.newProExpireSoon(t)).open();
                         break;
                     case "/pro/reminder/proexpired":
-                        (await i.GReminderDialogFactory.newProExpired(t)).open();
+                        (await designerConfig.GReminderDialogFactory.newProExpired(t)).open();
                         break;
                     case "/pro/reminder/trialexpired":
-                        (await i.GReminderDialogFactory.newTrialExpired(t)).open();
+                        (await designerConfig.GReminderDialogFactory.newTrialExpired(t)).open();
                         break;
                     case "/pro/reminder/trialmessage":
-                        (await i.GReminderDialogFactory.newTrialMessage(t)).open();
+                        (await designerConfig.GReminderDialogFactory.newTrialMessage(t)).open();
                         break;
                     case "/pro/reminder/upgrade":
-                        (await i.GReminderDialogFactory.newUpgradeScreen(t)).open();
+                        (await designerConfig.GReminderDialogFactory.newUpgradeScreen(t)).open();
                 }
             }
         }
-        e.exports = l;
+        module.exports = l;
     };

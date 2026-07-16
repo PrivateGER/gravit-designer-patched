@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1);
+        require(3);
+        var GObject = require(1);
         function i() {}
-        (o.GObject.inherit(i, o.GEventTarget),
+        (GObject.GObject.inherit(i, GObject.GEventTarget),
             (i.UpdateEvent = function () {}),
-            o.GObject.inherit(i.UpdateEvent, o.GEvent),
+            GObject.GObject.inherit(i.UpdateEvent, GObject.GEvent),
             (i.UpdateEvent.prototype.toString = function () {
                 return "[Object GView.UpdateEvent]";
             }),
@@ -17,10 +17,10 @@ module.exports = function (e, t, n) {
                 throw new Error("Not Supported");
             }),
             (i.prototype.isEnabled = function () {
-                return !0;
+                return true;
             }),
             (i.prototype.isVisible = function () {
-                return !0;
+                return true;
             }),
             (i.prototype._fireUpdateEvent = function () {
                 this.trigger(i.UPDATE_EVENT);
@@ -28,5 +28,5 @@ module.exports = function (e, t, n) {
             (i.prototype.toString = function () {
                 return "[Object GView]";
             }),
-            (e.exports = i));
+            (module.exports = i));
     };

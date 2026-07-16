@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(23),
+        var RegExp = require(23),
             i = Object.defineProperty;
-        e.exports = function (e, t) {
+        module.exports = function (e, t) {
             try {
-                i(o, e, { value: t, configurable: !0, writable: !0 });
+                i(RegExp, e, { value: t, configurable: true, writable: true });
             } catch (n) {
-                o[e] = t;
+                RegExp[e] = t;
             }
             return t;
         };

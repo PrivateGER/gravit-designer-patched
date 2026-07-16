@@ -1,17 +1,17 @@
-module.exports = function (e, t, i) {
-            var n = i(161),
-                r = i(0),
-                o = i(916),
-                a = i(230),
-                s = i(917),
-                l = i(653),
-                h = i(920),
-                A = i(926),
-                c = i(148),
-                p = i(509),
-                u = i(927),
-                d = i(267),
-                g = i(368);
+module.exports = function (module, exports, require) {
+            var n = require(161),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(916),
+                a = require(230),
+                s = require(917),
+                l = require(653),
+                h = require(920),
+                A = require(926),
+                c = require(148),
+                p = require(509),
+                u = require(927),
+                d = require(267),
+                g = require(368);
 
             function f() {
                 ((this._width = 0),
@@ -20,8 +20,8 @@ module.exports = function (e, t, i) {
                         end: 0,
                     }),
                     (this.nextInsertFormatting = {}),
-                    (this.caretVisible = !0),
-                    (this._noWrap = !1),
+                    (this.caretVisible = true),
+                    (this._noWrap = false),
                     (this.customCodes = function (e, t, i) {}),
                     (this.codes = function (e, t) {
                         return h.codeFactory(e, t, this.codes) || this.customCodes(e, t, this.codes);
@@ -37,17 +37,17 @@ module.exports = function (e, t, i) {
             }
 
             function y(e) {
-                if (e.isNewLine()) return !0;
+                if (e.isNewLine()) return true;
                 var t = e.code();
                 return !(!t || (!t.block && !t.eof));
             }
-            (r.inherit(f, d),
+            (IsFiniteNonNegativeNumber.inherit(f, d),
                 (f.prototype.type = "document"),
                 (f.prototype._width = 0),
-                (f.prototype._noWrap = !1),
+                (f.prototype._noWrap = false),
                 (f.prototype._wordOrdinals = null),
                 (f.prototype.selection = null),
-                (f.prototype.caretVisible = !0),
+                (f.prototype.caretVisible = true),
                 (f.prototype.customCodes = null),
                 (f.prototype.codes = null),
                 (f.prototype.selectionChanged = null),
@@ -60,7 +60,7 @@ module.exports = function (e, t, i) {
                 (f.prototype.undo = null),
                 (f.prototype.redo = null),
                 (f.prototype.frame = null),
-                (f.prototype.selectionJustChanged = !1),
+                (f.prototype.selectionJustChanged = false),
                 (f.prototype._currentTransaction = null),
                 (f.prototype._lastSpacingPadding = null),
                 (f.prototype.makeEditCommand = function (e, t, i) {
@@ -108,9 +108,9 @@ module.exports = function (e, t, i) {
                             })
                             .all();
                     } catch (e) {
-                        return !1;
+                        return false;
                     }
-                    return (this.layout(), this.contentChanged.fire(i), this.select(0, 0, t), !0);
+                    return (this.layout(), this.contentChanged.fire(i), this.select(0, 0, t), true);
                 }),
                 (f.prototype.layout = function () {
                     this.frame = null;
@@ -171,7 +171,7 @@ module.exports = function (e, t, i) {
                                 r.$ !== g.List.Close &&
                                     i.push({
                                         start: a,
-                                        code: !0,
+                                        code: true,
                                     });
                             } else
                                 ((t = i[i.length - 1]) ||
@@ -186,7 +186,7 @@ module.exports = function (e, t, i) {
                             var t;
                             return (
                                 n.some(function (i) {
-                                    if (e >= i.start && e < i.end) return ((t = i), !0);
+                                    if (e >= i.start && e < i.end) return ((t = i), true);
                                 }),
                                 t
                             );
@@ -276,7 +276,7 @@ module.exports = function (e, t, i) {
                                           index: r,
                                           offset: e - i,
                                       }),
-                                      !0
+                                      true
                                   );
                               i += n.length;
                           }),
@@ -318,10 +318,10 @@ module.exports = function (e, t, i) {
                     } catch (e) {
                         return;
                     }
-                    var l = !1;
+                    var l = false;
                     if ("_filtersRunning" in r) r._filtersRunning++;
                     else {
-                        for (var h = 0; h < t; h++) this.words[e + h].code() && (l = !0);
+                        for (var h = 0; h < t; h++) this.words[e + h].code() && (l = true);
                         l ||
                             (l = n.some(function (e) {
                                 return !!e.code();
@@ -357,7 +357,7 @@ module.exports = function (e, t, i) {
                     } catch (e) {
                         console.warn("Document sanity - A bug somewhere would produce an invalid state", e);
                     }
-                    return !1;
+                    return false;
                 }),
                 (f.prototype.clone = function () {
                     var e = new f();
@@ -450,7 +450,7 @@ module.exports = function (e, t, i) {
                     var e = this.caretVisible;
                     return (
                         this.selection.start === this.selection.end &&
-                            (this.selectionJustChanged ? (this.selectionJustChanged = !1) : (this.caretVisible = !this.caretVisible)),
+                            (this.selectionJustChanged ? (this.selectionJustChanged = false) : (this.caretVisible = !this.caretVisible)),
                         this.caretVisible !== e
                     );
                 }),
@@ -508,7 +508,7 @@ module.exports = function (e, t, i) {
                         (e.save(),
                             (e.fillStyle = t ? "rgba(0, 100, 200, 0.3)" : "rgba(160, 160, 160, 0.3)"),
                             this.selectedRange().parts(function (t) {
-                                t.bounds(!1, !0).fill(e);
+                                t.bounds(false, true).fill(e);
                             }),
                             e.restore());
                 }),
@@ -523,8 +523,8 @@ module.exports = function (e, t, i) {
                     this.frame &&
                         ((this.selection.start = Math.max(0, e)),
                         (this.selection.end = Math.min("number" == typeof t ? t : this.selection.start, this.frame.length - 1)),
-                        (this.selectionJustChanged = !0),
-                        (this.caretVisible = !0),
+                        (this.selectionJustChanged = true),
+                        (this.caretVisible = true),
                         (this.nextInsertFormatting = {}),
                         this.notifySelectionChanged(i));
                 }),
@@ -547,7 +547,7 @@ module.exports = function (e, t, i) {
                     else {
                         for (; this.undo.length > 50; ) this.undo.shift();
                         this.redo.length = 0;
-                        var t = !1;
+                        var t = false;
                         (this.undo.push(
                             this._makeTransaction(
                                 function (i) {
@@ -563,5 +563,5 @@ module.exports = function (e, t, i) {
                             t && (this.layout(), this.contentChanged.fire()));
                     }
                 }),
-                (e.exports = f));
+                (module.exports = f));
         };

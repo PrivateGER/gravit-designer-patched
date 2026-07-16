@@ -1,23 +1,23 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(3), n(26));
-        var o = n(1),
-            i = n(40),
-            a = n(67),
-            r = n(18),
-            s = n(106);
+        (require(19), require(3), require(26));
+        var GObject = require(1),
+            GSaveAction = require(40),
+            a = require(67),
+            GCategory = require(18),
+            s = require(106);
         function l() {
             l.TOOLTIP_CONFIG = {
                 [a.TOOLTIP_AREA.TOOLBAR]: a.GRichTooltipConfig.from({
-                    title: o.GLocale.get(new o.GLocaleKey("GVectorizeBorderAction", "tooltip-title")),
-                    description: o.GLocale.get(new o.GLocaleKey("GVectorizeBorderAction", "tooltip-description")),
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GVectorizeBorderAction", "tooltip-title")),
+                    description: GObject.GLocale.get(new GObject.GLocaleKey("GVectorizeBorderAction", "tooltip-description")),
                     learnMore: "/docs/basics/modify-paths/#vectorize-borders",
                 }),
             };
         }
-        (o.GObject.inherit(l, s),
+        (GObject.GObject.inherit(l, s),
             (l.ID = "modify.vectorize"),
-            (l.TITLE = new o.GLocaleKey("GVectorizeBorderAction", "title")),
+            (l.TITLE = new GObject.GLocaleKey("GVectorizeBorderAction", "title")),
             (l.TOOLTIP_CONFIG = null),
             (l.prototype.getId = function () {
                 return l.ID;
@@ -26,7 +26,7 @@ module.exports = function (e, t, n) {
                 return l.TITLE;
             }),
             (l.prototype.getCategory = function () {
-                return r.CATEGORY_MODIFY_PATH;
+                return GCategory.CATEGORY_MODIFY_PATH;
             }),
             (l.prototype.getGroup = function () {
                 return "structure/modify";
@@ -35,14 +35,14 @@ module.exports = function (e, t, n) {
                 return "gravit-icon-vectorize-border";
             }),
             (l.prototype.isEnabled = function () {
-                if (!s.prototype.isEnabled.call(this)) return !1;
+                if (!s.prototype.isEnabled.call(this)) return false;
                 var e = gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getIndividualSelection() : null,
-                    t = !1;
+                    t = false;
                 if (e)
                     for (var n = 0; !t && n < e.length; ++n)
-                        if (!(e[n] instanceof o.GImage) && e[n].hasMixin(o.GVertexSource) && e[n].hasMixin(o.GStylable)) {
+                        if (!(e[n] instanceof GObject.GImage) && e[n].hasMixin(GObject.GVertexSource) && e[n].hasMixin(GObject.GStylable)) {
                             var i = e[n].getPaintLayers(),
-                                a = i ? i.getBorderLayers(!0) : null;
+                                a = i ? i.getBorderLayers(true) : null;
                             t = a && a.length >= 1;
                         }
                 return t;
@@ -56,11 +56,11 @@ module.exports = function (e, t, n) {
                 if (a)
                     for (var s = 0; s < a.length; ++s) {
                         var l = a[s];
-                        !l.hasMixin(o.GVertexSource) || l instanceof o.GImage || !l.hasMixin(o.GStylable) || r.push(l);
+                        !l.hasMixin(GObject.GVertexSource) || l instanceof GObject.GImage || !l.hasMixin(GObject.GStylable) || r.push(l);
                     }
                 if (r.length) {
                     var c = function (e, t) {
-                        if (t instanceof o.GPath) e.getPaths().appendChild(t);
+                        if (t instanceof GObject.GPath) e.getPaths().appendChild(t);
                         else
                             for (var n, i = t.cloneSubPaths(), a = i.getFirstChild(); null !== a; a = n)
                                 ((n = a.getNext()), i.removeChild(a), e.getPaths().appendChild(a));
@@ -74,27 +74,27 @@ module.exports = function (e, t, n) {
                                     n = e.getProperty("_bw");
                                 n = n || 1;
                                 var i,
-                                    a = t == o.GStylable.BorderAlignment.Center ? 0.5 * n : n,
-                                    r = new o.GVertexOffsetter(
-                                        o.GPathUtil.makeClockWise(d),
+                                    a = t == GObject.GStylable.BorderAlignment.Center ? 0.5 * n : n,
+                                    r = new GObject.GVertexOffsetter(
+                                        GObject.GPathUtil.makeClockWise(d),
                                         a,
-                                        t != o.GStylable.BorderAlignment.Outside,
-                                        t != o.GStylable.BorderAlignment.Inside,
+                                        t != GObject.GStylable.BorderAlignment.Outside,
+                                        t != GObject.GStylable.BorderAlignment.Inside,
                                         0,
                                         e.getProperty("_blc"),
                                         e.getProperty("_bml")
                                     );
-                                if (t == o.GStylable.BorderAlignment.Center) i = o.GPathUtil.createPathFromVertexSource(r);
+                                if (t == GObject.GStylable.BorderAlignment.Center) i = GObject.GPathUtil.createPathFromVertexSource(r);
                                 else {
-                                    var s = o.GPathUtil.createPathFromVertexSource(d),
-                                        l = o.GPathUtil.createPathFromVertexSource(r);
-                                    s && ((i = new o.GCompoundPath()), c(i, s), l && c(i, l));
+                                    var s = GObject.GPathUtil.createPathFromVertexSource(d),
+                                        l = GObject.GPathUtil.createPathFromVertexSource(r);
+                                    s && ((i = new GObject.GCompoundPath()), c(i, s), l && c(i, l));
                                 }
                                 return (
                                     i &&
-                                        (o.GElement.prototype.assignFrom.call(i, d),
+                                        (GObject.GElement.prototype.assignFrom.call(i, d),
                                         i.getPaintLayers().clearLayers(),
-                                        e.$_pt && i.getPaintLayers().appendChild(new o.GStylable.FillPaintLayer(e.$_pt))),
+                                        e.$_pt && i.getPaintLayers().appendChild(new GObject.GStylable.FillPaintLayer(e.$_pt))),
                                     i
                                 );
                             };
@@ -104,16 +104,16 @@ module.exports = function (e, t, n) {
                             g && e.add(g);
                         }
                         try {
-                            (0, i.blockChanges)(n, e);
+                            (0, GSaveAction.blockChanges)(n, e);
                             for (s = 0; s < r.length; ++s) {
                                 var h = (d = r[s]).getParent(),
                                     f = d.getNext(),
                                     m = null,
-                                    y = d.getPaintLayers().getBorderLayers(!0);
+                                    y = d.getPaintLayers().getBorderLayers(true);
                                 if (y.length > 1)
-                                    o.GUtil.each(y, function (e, t) {
+                                    GObject.GUtil.each(y, function (e, t) {
                                         var n = p(t);
-                                        n && (m || (m = new o.GGroup()), m.appendChild(n));
+                                        n && (m || (m = new GObject.GGroup()), m.appendChild(n));
                                     });
                                 else if (1 == y.length) {
                                     var v = y.pop();
@@ -122,10 +122,10 @@ module.exports = function (e, t, n) {
                                 m ? (h.insertChild(m, f), u.push(m), h.removeChild(d)) : u.push(d);
                             }
                         } finally {
-                            ((0, i.releaseChanges)(n, e), u.length && n.updateSelection(!1, u));
+                            ((0, GSaveAction.releaseChanges)(n, e), u.length && n.updateSelection(false, u));
                         }
                     } finally {
-                        n.commitTransaction(o.GLocale.get(this.getTitle()));
+                        n.commitTransaction(GObject.GLocale.get(this.getTitle()));
                     }
                 }
             }),
@@ -135,5 +135,5 @@ module.exports = function (e, t, n) {
             (l.prototype.toString = function () {
                 return "[Object GVectorizeBorderAction]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

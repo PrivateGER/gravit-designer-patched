@@ -1,24 +1,24 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(58), n(20), n(3), n(71), n(34), n(4), n(41), n(13), n(32), n(33));
-        var i = n(1),
-            a = n(53),
-            r = n(40),
-            s = n(10),
-            l = n(67),
-            c = o(n(340)),
-            d = n(123),
-            u = n(1153),
-            p = n(135),
-            g = n(603),
-            h = n(1328),
-            f = n(442);
-        const m = n(44),
-            y = n(1604),
-            v = n(78);
+        var o = require(16);
+        (require(58), require(20), require(3), require(71), require(34), require(4), require(41), require(13), require(32), require(33));
+        var GObject = require(1),
+            a = require(53),
+            GSaveAction = require(40),
+            designerConfig = require(10),
+            l = require(67),
+            c = o(require(340)),
+            d = require(123),
+            GPresets = require(1153),
+            p = require(135),
+            g = require(603),
+            h = require(1328),
+            f = require(442);
+        const GSystemDialog = require(44),
+            y = require(1604),
+            v = require(78);
         function _() {}
-        (i.GObject.inherit(_, d),
+        (GObject.GObject.inherit(_, d),
             (_.prototype._panel = null),
             (_.prototype._canvasPropertiesRowInTouch = null),
             (_.prototype._canvasPropertiesRowInNormal = null),
@@ -31,12 +31,12 @@ module.exports = function (e, t, n) {
             (_.prototype._document = null),
             (_.prototype._oldDocument = null),
             (_.prototype._pages = null),
-            (_.prototype._styleEditorChange = !1),
-            (_.prototype._styleEdOn = !1),
-            (_.prototype._ownChange = !1),
+            (_.prototype._styleEditorChange = false),
+            (_.prototype._styleEdOn = false),
+            (_.prototype._ownChange = false),
             (_.prototype._chooserElem = null),
             (_.prototype._clipContentButton = null),
-            (_.prototype._excludedPresets = [u.TYPE.MERCH]),
+            (_.prototype._excludedPresets = [GPresets.TYPE.MERCH]),
             (_.prototype._createInput = function (e) {
                 var t = this,
                     n = this;
@@ -44,11 +44,11 @@ module.exports = function (e, t, n) {
                     return $("<div></div>")
                         .attr("data-property", e)
                         .gPatternChooser({
-                            types: [i.GColor, i.GGradient, i.GTexturePattern],
+                            types: [GObject.GColor, GObject.GGradient, GObject.GTexturePattern],
                         })
                         .on("chooseropen", function () {
-                            (gDesigner.getWorkspace().getStyleEdManager().updateEditor(n._pages[0], e, !1),
-                                (n._styleEdOn = !0),
+                            (gDesigner.getWorkspace().getStyleEdManager().updateEditor(n._pages[0], e, false),
+                                (n._styleEdOn = true),
                                 (n._chooserElem = $(this)),
                                 n.updatePropertiesAvailability(gDesigner.getActiveDocument().getScene().getActivePage()));
                         })
@@ -57,9 +57,9 @@ module.exports = function (e, t, n) {
                             else {
                                 if (n._document && n._document.hasCDR()) {
                                     var a = gPatternChooser.getPattern();
-                                    !a || a instanceof i.GRGBColor || m.showCDRUnsupportedObjectWarning();
+                                    !a || a instanceof GObject.GRGBColor || GSystemDialog.showCDRUnsupportedObjectWarning();
                                 }
-                                ((n._styleEdOn = !1), gDesigner.getWorkspace().getStyleEdManager().deactivateEditor());
+                                ((n._styleEdOn = false), gDesigner.getWorkspace().getStyleEdManager().deactivateEditor());
                             }
                             n._chooserElem = null;
                         })
@@ -69,15 +69,15 @@ module.exports = function (e, t, n) {
                             if ((void 0 !== t && (l.push("bck"), c.push(t)), "number" == typeof o && (l.push("bop"), c.push(o)), n._pages))
                                 if (a)
                                     n._pages.forEach(function (e) {
-                                        e.setProperties(l, c, !1, !1, a);
+                                        e.setProperties(l, c, false, false, a);
                                     });
                                 else {
                                     var d = null;
-                                    (r && ((d = { chooserOn: !0, pagePattern: !0 }), null !== s && (d.activeStopIdx = s)),
+                                    (r && ((d = { chooserOn: true, pagePattern: true }), null !== s && (d.activeStopIdx = s)),
                                         n._assignProperties(
                                             l,
                                             c,
-                                            i.GLocale.get(new i.GLocaleKey("GPageProperties", "action.change-background")),
+                                            GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "action.change-background")),
                                             d
                                         ));
                                 }
@@ -93,7 +93,7 @@ module.exports = function (e, t, n) {
                             ((o = n || t.text()), gDesigner.stats("pageproperties_preset_size", o), this._assignPresetSize(e.target.value));
                         });
                 if ("w" === e || "h" === e) {
-                    var o = i.GLocale.get(new i.GLocaleKey("GCommonNames", "property-".concat(e.toLowerCase())), e);
+                    var o = GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "property-".concat(e.toLowerCase())), e);
                     return $("<div>")
                         .append(
                             $("<input>")
@@ -107,13 +107,13 @@ module.exports = function (e, t, n) {
                                         ? n._assignProperties(
                                               ["w", "h"],
                                               [o, o],
-                                              i.GLocale.get(new i.GLocaleKey("GPageProperties", "action.change-size"))
+                                              GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "action.change-size"))
                                           )
                                         : null !== o && "number" == typeof o && o >= 0
                                           ? n._assignProperty(
                                                 e,
                                                 o,
-                                                i.GLocale.get(new i.GLocaleKey("GPageProperties", "action.change-size"))
+                                                GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "action.change-size"))
                                             )
                                           : n._updateProperties();
                                 })
@@ -129,7 +129,7 @@ module.exports = function (e, t, n) {
                             gDesigner.stats("pageproperties_change_bleeding");
                             var t = n._document.getScene().stringToPoint($(this).gInputBox("value"));
                             null !== t && "number" == typeof t && t >= 0
-                                ? n._assignProperty(e, t, i.GLocale.get(new i.GLocaleKey("GPageProperties", "action.change-bleeding")))
+                                ? n._assignProperty(e, t, GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "action.change-bleeding")))
                                 : n._updateProperties();
                         })
                         .gInputBox();
@@ -145,9 +145,9 @@ module.exports = function (e, t, n) {
                                     ? n._assignProperties(
                                           ["mt", "mb", "ml", "mr"],
                                           [t, t, t, t],
-                                          i.GLocale.get(new i.GLocaleKey("GPageProperties", "action.change-margins"))
+                                          GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "action.change-margins"))
                                       )
-                                    : n._assignProperty(e, t, i.GLocale.get(new i.GLocaleKey("GPageProperties", "action.change-margin")))
+                                    : n._assignProperty(e, t, GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "action.change-margin")))
                                 : n._updateProperties();
                         })
                         .gInputBox();
@@ -162,7 +162,7 @@ module.exports = function (e, t, n) {
                                     ? e.attr("data-lock-margin", "no").find("span:first-child").attr("class", "gravit-icon-unlinked")
                                     : e.attr("data-lock-margin", "yes").find("span:first-child").attr("class", "gravit-icon-linked"));
                         })
-                        .attr("data-title", i.GLocale.get(new i.GLocaleKey("GPageProperties", "action.equal-margin")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "action.equal-margin")))
                         .attr("data-lock-margin", "yes");
                 if ("master-page" === e)
                     return $("<select></select>")
@@ -171,11 +171,11 @@ module.exports = function (e, t, n) {
                         .gPro()
                         .on(
                             "mousedown",
-                            r.watchDog.trap(null, null, () => gDesigner.stats("pageproperties_nonprotriespro_masterpages"))
+                            GSaveAction.watchDog.trap(null, null, () => gDesigner.stats("pageproperties_nonprotriespro_masterpages"))
                         )
                         .on(
                             "change",
-                            r.watchDog.trap(
+                            GSaveAction.watchDog.trap(
                                 (e) => {
                                     (gDesigner.stats("pageproperties_change_masterpages"),
                                         this._assignMasterPage(
@@ -196,8 +196,8 @@ module.exports = function (e, t, n) {
                             (gDesigner.stats("pageproperties_change_canvas-opacity"),
                                 n._assignProperty(
                                     e,
-                                    i.GLength.parseEquationValue($(this).gInputBox("value")) / 100,
-                                    i.GLocale.get(new i.GLocaleKey("GPageProperties", "action.change-canvas-opacity"))
+                                    GObject.GLength.parseEquationValue($(this).gInputBox("value")) / 100,
+                                    GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "action.change-canvas-opacity"))
                                 ));
                         })
                         .gInputBox({
@@ -209,7 +209,7 @@ module.exports = function (e, t, n) {
                 if ("rotate-canvas" === e)
                     return $("<button>")
                         .attr("data-property", e)
-                        .attr("data-title", i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.rotate-canvas")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.rotate-canvas")))
                         .append($("<span/>").addClass("gravit-icon-flip-canvas"))
                         .on("click", function () {
                             gDesigner.stats("pageproperties_change_rotate");
@@ -220,13 +220,13 @@ module.exports = function (e, t, n) {
                                 n._assignProperties(
                                     ["w", "h"],
                                     [e.getProperty("h"), e.getProperty("w")],
-                                    i.GLocale.get(new i.GLocaleKey("GPageProperties", "action.change-size"))
+                                    GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "action.change-size"))
                                 );
                         });
                 if ("trim-canvas" === e)
                     return $("<button>")
                         .attr("data-property", e)
-                        .attr("data-title", i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.size-trim")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.size-trim")))
                         .append($("<span/>").addClass("gravit-icon-trim-canvas"))
                         .on("click", function () {
                             (gDesigner.stats("pageproperties_trim_page"),
@@ -236,16 +236,16 @@ module.exports = function (e, t, n) {
                 if ("clip-content" === e) {
                     this._clipContentButton = $("<button>")
                         .attr("data-property", e)
-                        .attr("disabled", !0)
+                        .attr("disabled", true)
                         .addClass("g-disabled")
-                        .attr("data-title", i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.clip-content")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.clip-content")))
                         .append($("<span/>").addClass("gravit-icon-clip-content"))
                         .on("click", function () {
                             var e = gDesigner.getWindows().getActiveWindow();
                             if (e) {
                                 var t = e.getView().getViewConfiguration().paintMode;
-                                (gDesigner.stats("pageproperties_clip_content", t !== i.GScenePaintConfiguration.PaintMode.Output),
-                                    n(t !== i.GScenePaintConfiguration.PaintMode.Output, !1));
+                                (gDesigner.stats("pageproperties_clip_content", t !== GObject.GScenePaintConfiguration.PaintMode.Output),
+                                    n(t !== GObject.GScenePaintConfiguration.PaintMode.Output, false));
                             }
                         });
                     const n = function (e) {
@@ -253,8 +253,8 @@ module.exports = function (e, t, n) {
                         var o;
                         (n && e) ||
                             (e
-                                ? ((o = i.GScenePaintConfiguration.PaintMode.Output), t._updatePageSetting(f.PAGE_CLIP_CONTENT_ENABLED))
-                                : ((o = i.GScenePaintConfiguration.PaintMode.Full), t._updatePageSetting(f.PAGE_CLIP_CONTENT_DISABLED)),
+                                ? ((o = GObject.GScenePaintConfiguration.PaintMode.Output), t._updatePageSetting(f.PAGE_CLIP_CONTENT_ENABLED))
+                                : ((o = GObject.GScenePaintConfiguration.PaintMode.Full), t._updatePageSetting(f.PAGE_CLIP_CONTENT_DISABLED)),
                             gDesigner.setPaintMode(o));
                     };
                     return this._clipContentButton;
@@ -267,21 +267,21 @@ module.exports = function (e, t, n) {
                     return void (
                         t === g.WindowEvent.Type.Removed &&
                         this._lastScene &&
-                        (this._lastScene.removeEventListener(i.GNode.AfterPropertiesChangeEvent, this._propertiesUpdateEventHandler, this),
-                        this._lastScene.removeEventListener(i.GNode.AfterFlagChangeEvent, this._pageActivationEventHandler, this),
+                        (this._lastScene.removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._propertiesUpdateEventHandler, this),
+                        this._lastScene.removeEventListener(GObject.GNode.AfterFlagChangeEvent, this._pageActivationEventHandler, this),
                         (this._lastScene = null))
                     );
                 if (n.getDocument() !== gDesigner.getActiveDocument()) return;
                 const o = gDesigner.getActiveDocument().getScene();
-                (o.addEventListener(i.GNode.AfterFlagChangeEvent, this._pageActivationEventHandler, this),
-                    o.addEventListener(i.GNode.AfterPropertiesChangeEvent, this._propertiesUpdateEventHandler, this),
+                (o.addEventListener(GObject.GNode.AfterFlagChangeEvent, this._pageActivationEventHandler, this),
+                    o.addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._propertiesUpdateEventHandler, this),
                     this._lastScene &&
-                        (this._lastScene.removeEventListener(i.GNode.AfterPropertiesChangeEvent, this._propertiesUpdateEventHandler, this),
-                        this._lastScene.removeEventListener(i.GNode.AfterFlagChangeEvent, this._pageActivationEventHandler, this)),
+                        (this._lastScene.removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._propertiesUpdateEventHandler, this),
+                        this._lastScene.removeEventListener(GObject.GNode.AfterFlagChangeEvent, this._pageActivationEventHandler, this)),
                     (this._lastScene = o),
                     this._pageActivationEventHandler({
                         node: o.getActivePage(),
-                        flag: i.GNode.Flag.Active,
+                        flag: GObject.GNode.Flag.Active,
                     }));
             }),
             (_.prototype._paintModeEvent = function () {
@@ -289,20 +289,20 @@ module.exports = function (e, t, n) {
             }),
             (_.prototype._pageActivationEventHandler = function (e) {
                 let { node: t, flag: n } = e;
-                if (t instanceof i.GPage && n === i.GNode.Flag.Active) {
+                if (t instanceof GObject.GPage && n === GObject.GNode.Flag.Active) {
                     const e = gDesigner.getWindows().getActiveWindow().getView().getViewConfiguration().paintMode,
                         n = !t.isFixedSized();
-                    if (n && e === i.GScenePaintConfiguration.PaintMode.Output)
-                        (gDesigner.setPaintMode(i.GScenePaintConfiguration.PaintMode.Full),
+                    if (n && e === GObject.GScenePaintConfiguration.PaintMode.Output)
+                        (gDesigner.setPaintMode(GObject.GScenePaintConfiguration.PaintMode.Full),
                             this._updatePageSetting(f.PAGE_CLIP_CONTENT_DISABLED));
                     else if (!n) {
                         var o =
-                            t.getProperty(f.PAGE_CLIP_PROPERTY_NAME, !0) ||
-                            (s.PAGE_CLIP_DEFAULT ? f.PAGE_CLIP_CONTENT_ENABLED : f.PAGE_CLIP_CONTENT_DISABLED);
+                            t.getProperty(f.PAGE_CLIP_PROPERTY_NAME, true) ||
+                            (designerConfig.PAGE_CLIP_DEFAULT ? f.PAGE_CLIP_CONTENT_ENABLED : f.PAGE_CLIP_CONTENT_DISABLED);
                         gDesigner.setPaintMode(
                             o === f.PAGE_CLIP_CONTENT_ENABLED
-                                ? i.GScenePaintConfiguration.PaintMode.Output
-                                : i.GScenePaintConfiguration.PaintMode.Full
+                                ? GObject.GScenePaintConfiguration.PaintMode.Output
+                                : GObject.GScenePaintConfiguration.PaintMode.Full
                         );
                     }
                     this.updatePropertiesAvailability(t);
@@ -310,17 +310,17 @@ module.exports = function (e, t, n) {
             }),
             (_.prototype._propertiesUpdateEventHandler = function (e) {
                 let { node: t, temporary: n, properties: o } = e;
-                if (!n && t instanceof i.GPage && (o.indexOf("w") >= 0 || o.indexOf("h") >= 0)) {
+                if (!n && t instanceof GObject.GPage && (o.indexOf("w") >= 0 || o.indexOf("h") >= 0)) {
                     var a = gDesigner.getWindows().getActiveWindow().getView().getViewConfiguration().paintMode,
                         r = !t.isFixedSized();
-                    r && a === i.GScenePaintConfiguration.PaintMode.Output
-                        ? (gDesigner.setPaintMode(i.GScenePaintConfiguration.PaintMode.Full),
+                    r && a === GObject.GScenePaintConfiguration.PaintMode.Output
+                        ? (gDesigner.setPaintMode(GObject.GScenePaintConfiguration.PaintMode.Full),
                           this._updatePageSetting(f.PAGE_CLIP_CONTENT_DISABLED))
-                        : this._manageClipButtonState(!1, !r);
+                        : this._manageClipButtonState(false, !r);
                 }
             }),
             (_.prototype._updatePageSetting = function (e) {
-                gDesigner.getActiveDocument().getScene().getActivePage().setProperty(f.PAGE_CLIP_PROPERTY_NAME, e, !0);
+                gDesigner.getActiveDocument().getScene().getActivePage().setProperty(f.PAGE_CLIP_PROPERTY_NAME, e, true);
             }),
             (_.prototype._reInitLayout = function () {
                 ((this._canvasPropertiesRowInNormal = $("<div></div>")
@@ -331,22 +331,22 @@ module.exports = function (e, t, n) {
                             {
                                 width: "25%",
                                 content: this._createInput("bck"),
-                                label: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.color")),
+                                label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.color")),
                             },
                             {
                                 width: "25%",
                                 content: this._createInput("w"),
-                                label: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.width")),
+                                label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.width")),
                             },
                             {
                                 width: "25%",
                                 content: this._createInput("h"),
-                                label: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.height")),
+                                label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.height")),
                             },
                             {
                                 width: "25%",
                                 content: this._createInput("bop"),
-                                label: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.opacity")),
+                                label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.opacity")),
                             },
                         ],
                     })
@@ -358,7 +358,7 @@ module.exports = function (e, t, n) {
                             columns: [
                                 {
                                     width: "25%",
-                                    content: $("<span>" + i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.page-size")) + "</span>"),
+                                    content: $("<span>" + GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.page-size")) + "</span>"),
                                 },
                                 { width: "30%", content: this._createInput("preset-size") },
                                 { width: "15%", content: this._createInput("rotate-canvas") },
@@ -375,7 +375,7 @@ module.exports = function (e, t, n) {
                             columns: [
                                 {
                                     width: "25%",
-                                    content: $("<span>" + i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.bleed")) + "</span>"),
+                                    content: $("<span>" + GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.bleed")) + "</span>"),
                                 },
                                 { width: "20%", content: this._createInput("bl") },
                             ],
@@ -402,12 +402,12 @@ module.exports = function (e, t, n) {
                     t.addClass("page-properties-toolbar"),
                     e.addClass("page-properties-panel"),
                     $("<label></label>")
-                        .text(i.GLocale.get(new i.GLocaleKey("GPageProperties", "title")).toUpperCase())
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "title")).toUpperCase())
                         .appendTo(t),
                     (this._hrAfterbleedRow = $("<hr/>").attr("data-property-row", "fixed-size").appendTo(e)));
                 const n = l.GRichTooltipConfig.from({
-                    title: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.margin-tooltip-title")),
-                    description: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.margin-tooltip-description")),
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.margin-tooltip-title")),
+                    description: GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.margin-tooltip-description")),
                     learnMore: "/docs/organizing-your-designs/pages/#margins-7",
                 });
                 ($("<div></div>")
@@ -418,31 +418,31 @@ module.exports = function (e, t, n) {
                             {
                                 clazz: "margin-title-column",
                                 content: $(
-                                    "<span>" + i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.margin")) + "</span>"
+                                    "<span>" + GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.margin")) + "</span>"
                                 ).addClass("margin-title"),
                             },
                             {
                                 clazz: "margin-input-column",
                                 labelClass: "margin-input-labels",
-                                label: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.left")),
+                                label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.left")),
                                 content: this._createInput("ml").gRichTooltip(n),
                             },
                             {
                                 clazz: "margin-input-column",
                                 labelClass: "margin-input-labels",
-                                label: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.top")),
+                                label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.top")),
                                 content: this._createInput("mt").gRichTooltip(n),
                             },
                             {
                                 clazz: "margin-input-column",
                                 labelClass: "margin-input-labels",
-                                label: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.right")),
+                                label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.right")),
                                 content: this._createInput("mr").gRichTooltip(n),
                             },
                             {
                                 clazz: "margin-input-column",
                                 labelClass: "margin-input-labels",
-                                label: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.bottom")),
+                                label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.bottom")),
                                 content: this._createInput("mb").gRichTooltip(n),
                             },
                             {
@@ -462,7 +462,7 @@ module.exports = function (e, t, n) {
                         columns: [
                             {
                                 clazz: "master-property-title",
-                                content: $("<span>" + i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.master")) + "</span>"),
+                                content: $("<span>" + GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.master")) + "</span>"),
                             },
                             {
                                 clazz: "master-property-selector",
@@ -471,11 +471,11 @@ module.exports = function (e, t, n) {
                                     .append($("<span></span>").gPro())
                                     .gRichTooltip(
                                         l.GRichTooltipConfig.from({
-                                            title: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.master-tooltip-title")),
-                                            description: i.GLocale.get(
-                                                new i.GLocaleKey("GPageProperties", "text.master-tooltip-description")
+                                            title: GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.master-tooltip-title")),
+                                            description: GObject.GLocale.get(
+                                                new GObject.GLocaleKey("GPageProperties", "text.master-tooltip-description")
                                             ),
-                                            middle: !1,
+                                            middle: false,
                                             isPro: !gDesigner.isEnabledProFeatures() || !(o.isPro() && !o.isExpired()),
                                             learnMore:
                                                 "/docs/organizing-your-designs/pages/#master-pages",
@@ -490,8 +490,8 @@ module.exports = function (e, t, n) {
                         .parent(".content")
                         .gRichTooltip(
                             l.GRichTooltipConfig.from({
-                                title: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.rotate-canvas-tooltip-title")),
-                                description: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.rotate-canvas-tooltip-description")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.rotate-canvas-tooltip-title")),
+                                description: GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.rotate-canvas-tooltip-description")),
                                 learnMore: "/docs/organizing-your-designs/pages/#orientation-4",
                             })
                         ),
@@ -500,8 +500,8 @@ module.exports = function (e, t, n) {
                         .parent(".content")
                         .gRichTooltip(
                             l.GRichTooltipConfig.from({
-                                title: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.trim-canvas-tooltip-title")),
-                                description: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.trim-canvas-tooltip-description")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.trim-canvas-tooltip-title")),
+                                description: GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.trim-canvas-tooltip-description")),
                                 learnMore: "/docs/organizing-your-designs/pages/#trim-canvas-5",
                             })
                         ),
@@ -510,8 +510,8 @@ module.exports = function (e, t, n) {
                         .parent(".content")
                         .gRichTooltip(
                             l.GRichTooltipConfig.from({
-                                title: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.clip-content-tooltip-title")),
-                                description: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.clip-content-tooltip-description")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.clip-content-tooltip-title")),
+                                description: GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.clip-content-tooltip-description")),
                             })
                         ),
                     e
@@ -519,9 +519,9 @@ module.exports = function (e, t, n) {
                         .parent(".content")
                         .gRichTooltip(
                             l.GRichTooltipConfig.from({
-                                title: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.bleed-tooltip-title")),
-                                description: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.bleed-tooltip-description")),
-                                middle: !1,
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.bleed-tooltip-title")),
+                                description: GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.bleed-tooltip-description")),
+                                middle: false,
                                 learnMore: "/docs/organizing-your-designs/pages/#bleed-6",
                             })
                         ),
@@ -539,19 +539,19 @@ module.exports = function (e, t, n) {
                     this._assignProperties(
                         ["w", "h"],
                         [0, 0],
-                        i.GLocale.get(new i.GLocaleKey("GPageProperties", "action.change-size")),
+                        GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "action.change-size")),
                         null,
-                        !0
+                        true
                     );
                 else if ("@trim" === e) {
-                    this._ownChange = !0;
+                    this._ownChange = true;
                     var t = this._document.getEditor();
                     t.beginTransaction();
                     try {
                         this._pages.forEach((e) => e.trimToContent());
                     } finally {
-                        (t.commitTransaction(i.GLocale.get(new i.GLocaleKey("GPageProperties", "action.change-size"))),
-                            (this._ownChange = !1));
+                        (t.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "action.change-size"))),
+                            (this._ownChange = false));
                     }
                 } else {
                     var n = this._document.getScene(),
@@ -563,7 +563,7 @@ module.exports = function (e, t, n) {
                         this._assignProperties(
                             ["w", "h"],
                             [a, r],
-                            i.GLocale.get(new i.GLocaleKey("GPageProperties", "action.change-size"))
+                            GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "action.change-size"))
                         ));
                 }
             }),
@@ -575,15 +575,15 @@ module.exports = function (e, t, n) {
                     try {
                         (this._pages.forEach((n) => {
                             var o = n.getMasterPages(),
-                                i = !1;
+                                i = false;
                             (o.forEach(function (o) {
-                                e !== o ? t.unlink(o, n) : (i = !0);
+                                e !== o ? t.unlink(o, n) : (i = true);
                             }),
                                 i || t.link(e, n));
                         }),
                             this._updateSlavePages(e));
                     } finally {
-                        n.commitTransaction(i.GLocale.get(new i.GLocaleKey("GPageProperties", "action.assign-master-page")));
+                        n.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "action.assign-master-page")));
                     }
                 } else {
                     n.beginTransaction();
@@ -594,13 +594,13 @@ module.exports = function (e, t, n) {
                             });
                         });
                     } finally {
-                        n.commitTransaction(i.GLocale.get(new i.GLocaleKey("GPageProperties", "action.assign-master-page")));
+                        n.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "action.assign-master-page")));
                     }
                 }
             }),
             (_.prototype.update = function (e, t, n) {
-                if ((this._updateUI(), this._styleEditorChange)) return ((this._styleEditorChange = !1), !0);
-                if (this._ownChange) return !0;
+                if ((this._updateUI(), this._styleEditorChange)) return ((this._styleEditorChange = false), true);
+                if (this._ownChange) return true;
                 this._chooserElem && this._chooserElem.gPatternChooser("close");
                 var o = e !== this._oldDocument;
                 if (
@@ -608,20 +608,20 @@ module.exports = function (e, t, n) {
                     this._document &&
                         (this._document
                             .getScene()
-                            .removeEventListener(i.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                            .removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                         gDesigner.removeEventListener(p, this._settingChanged),
                         (this._document = null)),
                     (this._pages = null),
-                    e && (t = t.filter((e) => e instanceof i.GPage)).length)
+                    e && (t = t.filter((e) => e instanceof GObject.GPage)).length)
                 )
                     return (
                         (this._pages = t.slice()),
                         (this._document = e),
-                        this._document.getScene().addEventListener(i.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                        this._document.getScene().addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                         gDesigner.addEventListener(p, this._settingChanged, this),
                         o && this._updatePresetSizes(),
                         this._updateProperties(n),
-                        !0
+                        true
                     );
                 const r = gDesigner.getActiveDocument(),
                     s = r && r.getScene();
@@ -630,10 +630,10 @@ module.exports = function (e, t, n) {
                         t = e && e.getViewConfiguration();
                     if (t && t.elementAnnotations) {
                         const e = gDesigner.getToolManager().getActiveTool();
-                        if (!e || e instanceof a.GSelectTool) return !0;
+                        if (!e || e instanceof a.GSelectTool) return true;
                     }
                 }
-                return !1;
+                return false;
             }),
             (_.prototype._afterPropertiesChange = function (e) {
                 (e.node === this._pages[0]
@@ -675,7 +675,7 @@ module.exports = function (e, t, n) {
             }),
             (_.prototype._updateSlavePages = function (e, t) {
                 var n = ["mt", "mb", "ml", "mr", "bop", "bl", "bck"];
-                if (e instanceof i.GPage) {
+                if (e instanceof GObject.GPage) {
                     t || (t = n);
                     var o = n.filter((e) => t.indexOf(e) >= 0);
                     o.length &&
@@ -688,15 +688,15 @@ module.exports = function (e, t, n) {
             (_.prototype._updatePresetSizes = function () {
                 var e = (this._document || this._oldDocument).getScene().getProperty("ut"),
                     t = this._panel.find('select[data-property="preset-size"]').empty(),
-                    n = $("<optgroup></optgroup>").attr("label", i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.size-custom")));
+                    n = $("<optgroup></optgroup>").attr("label", GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.size-custom")));
                 ($("<option></option>")
                     .attr("value", "@infinite")
-                    .text(i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.size-infinite")))
+                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GPageProperties", "text.size-infinite")))
                     .appendTo(n),
                     t.append(n),
-                    u.getPresets().forEach((n) => {
+                    GPresets.getPresets().forEach((n) => {
                         var o = $("<optgroup></optgroup>").attr("label", n.name),
-                            a = !1;
+                            a = false;
                         (n.layouts.forEach((t) => {
                             if (t.unit === e) {
                                 var r = t.includes;
@@ -705,7 +705,7 @@ module.exports = function (e, t, n) {
                                         var l = r[s];
                                         $("<option></option>")
                                             .attr("data-preset-id", n.id)
-                                            .attr("data-preset-locale-en", i.GLocale.get(l.localeClass, null, i.GLocaleLanguage.English))
+                                            .attr("data-preset-locale-en", GObject.GLocale.get(l.localeClass, null, GObject.GLocaleLanguage.English))
                                             .attr("value", l.width + "x" + l.height + "x" + (t.dpi || 72))
                                             .text("".concat(l.name).concat(l.displaySize ? " " + l.width + "x" + l.height : ""))
                                             .appendTo(o);
@@ -713,11 +713,11 @@ module.exports = function (e, t, n) {
                                 else
                                     $("<option></option>")
                                         .attr("data-preset-id", n.id)
-                                        .attr("data-preset-locale-en", i.GLocale.get(t.localeClass, null, i.GLocaleLanguage.English))
+                                        .attr("data-preset-locale-en", GObject.GLocale.get(t.localeClass, null, GObject.GLocaleLanguage.English))
                                         .attr("value", t.width + "x" + t.height + "x" + (t.dpi || 72))
                                         .text("".concat(t.name).concat(t.displaySize ? " " + t.width + "x" + t.height : ""))
                                         .appendTo(o);
-                                a = !0;
+                                a = true;
                             }
                         }),
                             n.hidden && o.css({ display: "none" }),
@@ -725,23 +725,23 @@ module.exports = function (e, t, n) {
                     }));
             }),
             (_.prototype._styleEditorEventHandler = function (e) {
-                this._styleEdOn && e.type === a.GStyleEdManager.EditorEventType.PrepareModifiedEvent && (this._styleEditorChange = !0);
+                this._styleEdOn && e.type === a.GStyleEdManager.EditorEventType.PrepareModifiedEvent && (this._styleEditorChange = true);
             }),
             (_.prototype._updateProperties = function (e) {
                 var t = this._document.getScene(),
                     n = this._pages[0],
                     o = t.isFixedSized(),
-                    r = i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.page"));
+                    r = GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.page"));
                 gDesigner.isTouchEnabled() && (r = r.toUpperCase());
                 var s = r + " (";
                 (this._pages.length > 1
-                    ? (s += this._pages.length + " " + i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.pages")))
-                    : (s += n.getProperty("name") || i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.active"))),
+                    ? (s += this._pages.length + " " + GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.pages")))
+                    : (s += n.getProperty("name") || GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.active"))),
                     (s += ")"),
                     this._toolbar.find("label:first-child").text(s),
                     this._panel.find('input[data-property="bl"]').val(t.pointToString(n.getProperty("bl"), t.getOptimalDecimalsCount())),
-                    n.getProperty("bck") || (n.setProperty("bck", i.GRGBColor.WHITE), n.setProperty("bop", 0)));
-                var l = n.getProperty("bck", !1, !1, !0);
+                    n.getProperty("bck") || (n.setProperty("bck", GObject.GRGBColor.WHITE), n.setProperty("bop", 0)));
+                var l = n.getProperty("bck", false, false, true);
                 if (
                     (this._panel.find('[data-property-row="background"]').css("display", ""),
                     this._panel
@@ -749,15 +749,15 @@ module.exports = function (e, t, n) {
                         .css("display", l ? "" : "none")
                         .gPatternChooser(
                             "updateSettings",
-                            o ? { types: [i.GColor, i.GGradient, i.GTexturePattern] } : { types: [i.GColor] }
+                            o ? { types: [GObject.GColor, GObject.GGradient, GObject.GTexturePattern] } : { types: [GObject.GColor] }
                         )
                         .gPatternChooser("setPattern", l)
                         .gPatternChooser("value", l)
-                        .gPatternChooser("opacity", n.getProperty("bop", !1, !1, !0)),
+                        .gPatternChooser("opacity", n.getProperty("bop", false, false, true)),
                     this._panel
                         .find('input[data-property="bop"]')
                         .css("display", l ? "" : "none")
-                        .gInputBox("value", i.GUtil.formatOpacity(100 * n.getProperty("bop"))),
+                        .gInputBox("value", GObject.GUtil.formatOpacity(100 * n.getProperty("bop"))),
                     o)
                 ) {
                     var c =
@@ -798,9 +798,9 @@ module.exports = function (e, t, n) {
                         if (this._pages.indexOf(e) < 0) {
                             p++;
                             var t = $("<option></option>").data("page", e).attr("value", p).text(e.getProperty("name")).appendTo(u);
-                            g === e && t.prop("selected", !0);
+                            g === e && t.prop("selected", true);
                         }
-                    }, !0),
+                    }, true),
                     e &&
                         (e.evtType === a.GEditor.ModifiedEvent.Type.Undo || e.evtType === a.GEditor.ModifiedEvent.Type.Redo) &&
                         e.chooserOn &&
@@ -814,60 +814,60 @@ module.exports = function (e, t, n) {
             (_.prototype.updatePropertiesAvailability = function (e) {
                 var t = e.getProperty("plkt"),
                     n = e.isFixedSized(),
-                    o = !1;
-                if (t && t & i.GBlock.ProgramLck.NoSizeChanges)
-                    (this._panel.find('[data-property="bck"]').attr("disabled", !0),
-                        this._panel.find('input[data-property="bop"]').attr("disabled", !0),
-                        this._panel.find('input[data-property="w"]').attr("disabled", !0),
-                        this._panel.find('input[data-property="h"]').attr("disabled", !0),
-                        this._panel.find('button[data-property="rotate-canvas"]').attr("disabled", !0),
-                        this._panel.find('select[data-property="preset-size"]').attr("disabled", !0),
-                        this._panel.find('button[data-property="trim-canvas"]').attr("disabled", !0),
-                        this._manageClipButtonState(!1, !1),
-                        this._panel.find('input[data-property="bl"]').attr("disabled", !0),
-                        this._panel.find('input[data-property="mt"]').attr("disabled", !0),
-                        this._panel.find('input[data-property="mb"]').attr("disabled", !0),
-                        this._panel.find('input[data-property="ml"]').attr("disabled", !0),
-                        this._panel.find('input[data-property="mr"]').attr("disabled", !0),
-                        this._panel.find("[data-lock-margin]").attr("disabled", !0),
-                        this._panel.find('select[data-property="master-page"]').attr("disabled", !0));
+                    o = false;
+                if (t && t & GObject.GBlock.ProgramLck.NoSizeChanges)
+                    (this._panel.find('[data-property="bck"]').attr("disabled", true),
+                        this._panel.find('input[data-property="bop"]').attr("disabled", true),
+                        this._panel.find('input[data-property="w"]').attr("disabled", true),
+                        this._panel.find('input[data-property="h"]').attr("disabled", true),
+                        this._panel.find('button[data-property="rotate-canvas"]').attr("disabled", true),
+                        this._panel.find('select[data-property="preset-size"]').attr("disabled", true),
+                        this._panel.find('button[data-property="trim-canvas"]').attr("disabled", true),
+                        this._manageClipButtonState(false, false),
+                        this._panel.find('input[data-property="bl"]').attr("disabled", true),
+                        this._panel.find('input[data-property="mt"]').attr("disabled", true),
+                        this._panel.find('input[data-property="mb"]').attr("disabled", true),
+                        this._panel.find('input[data-property="ml"]').attr("disabled", true),
+                        this._panel.find('input[data-property="mr"]').attr("disabled", true),
+                        this._panel.find("[data-lock-margin]").attr("disabled", true),
+                        this._panel.find('select[data-property="master-page"]').attr("disabled", true));
                 else {
                     o = this._document && this._document.isDocumentFromTemplate();
-                    var a = e.getProperty("bck", !1, !1, !0),
+                    var a = e.getProperty("bck", false, false, true),
                         r = this._panel.find('select[data-property="preset-size"]'),
                         s = r.find('option[value="' + r.val() + '"]').data("preset-id"),
                         l = o && this._excludedPresets.includes(s);
                     (r.attr("disabled", l),
                         this._panel.find('[data-property="bck"]').attr("disabled", !a),
                         this._panel.find('input[data-property="bop"]').attr("disabled", !a),
-                        this._panel.find('input[data-property="w"]').attr("disabled", !1),
-                        this._panel.find('input[data-property="h"]').attr("disabled", !1),
+                        this._panel.find('input[data-property="w"]').attr("disabled", false),
+                        this._panel.find('input[data-property="h"]').attr("disabled", false),
                         n
-                            ? this._panel.find('button[data-property="rotate-canvas"]').attr("disabled", !1)
-                            : this._panel.find('button[data-property="rotate-canvas"]').attr("disabled", !0),
-                        this._panel.find('button[data-property="trim-canvas"]').attr("disabled", !1),
+                            ? this._panel.find('button[data-property="rotate-canvas"]').attr("disabled", false)
+                            : this._panel.find('button[data-property="rotate-canvas"]').attr("disabled", true),
+                        this._panel.find('button[data-property="trim-canvas"]').attr("disabled", false),
                         this._manageClipButtonState(
                             gDesigner.getWindows().getActiveWindow() &&
                                 gDesigner.getWindows().getActiveWindow().getView() &&
                                 gDesigner.getWindows().getActiveWindow().getView().getViewConfiguration().paintMode ===
-                                    i.GScenePaintConfiguration.PaintMode.Output,
+                                    GObject.GScenePaintConfiguration.PaintMode.Output,
                             n
                         ),
-                        this._panel.find('input[data-property="bl"]').attr("disabled", !1),
-                        this._panel.find('input[data-property="mt"]').attr("disabled", !1),
-                        this._panel.find('input[data-property="mb"]').attr("disabled", !1),
-                        this._panel.find('input[data-property="ml"]').attr("disabled", !1),
-                        this._panel.find('input[data-property="mr"]').attr("disabled", !1),
-                        this._panel.find("[data-lock-margin]").attr("disabled", !1));
-                    var c = !1,
+                        this._panel.find('input[data-property="bl"]').attr("disabled", false),
+                        this._panel.find('input[data-property="mt"]').attr("disabled", false),
+                        this._panel.find('input[data-property="mb"]').attr("disabled", false),
+                        this._panel.find('input[data-property="ml"]').attr("disabled", false),
+                        this._panel.find('input[data-property="mr"]').attr("disabled", false),
+                        this._panel.find("[data-lock-margin]").attr("disabled", false));
+                    var c = false,
                         d = e.getScene();
-                    (d && f.CDR_ORIGIN_PROPERTY_NAME && (c = !!d.getProperty(f.CDR_ORIGIN_PROPERTY_NAME, !0)),
+                    (d && f.CDR_ORIGIN_PROPERTY_NAME && (c = !!d.getProperty(f.CDR_ORIGIN_PROPERTY_NAME, true)),
                         this._panel
                             .find('select[data-property="master-page"]')
                             .attr("disabled", c)
                             .attr("i18n", "text.plkt-no-size-changes"));
                 }
-                var u = t && t & i.GBlock.ProgramLck.NoSizeChanges ? "text.plkt-no-size-changes" : "text.infinite-canvas-no-size-changes";
+                var u = t && t & GObject.GBlock.ProgramLck.NoSizeChanges ? "text.plkt-no-size-changes" : "text.infinite-canvas-no-size-changes";
                 (this._panel.find("[data-title]:not([default-data-title])").each(function () {
                     const e = $(this);
                     e.attr("default-data-title", e.attr("data-title") || "");
@@ -878,7 +878,7 @@ module.exports = function (e, t, n) {
                             (e.attr("default-data-title", e.attr("default-data-title") || ""),
                             e.attr(
                                 "data-title",
-                                i.GLocale.get(new i.GLocaleKey("GCommonNames", e.attr("i18n") || u)).replace(
+                                GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", e.attr("i18n") || u)).replace(
                                     "%name",
                                     e.attr("default-data-title") || ""
                                 )
@@ -894,7 +894,7 @@ module.exports = function (e, t, n) {
                 const p = (e) =>
                     $("<div></div>")
                         .addClass("tooltip-wrapper")
-                        .attr("data-title", i.GLocale.get(new i.GLocaleKey("GCommonNames", (e && e.attr("i18n")) || u)));
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", (e && e.attr("i18n")) || u)));
                 (this._panel.find(".tooltip-wrapper").remove(),
                     this._panel.find("select:disabled").each(function () {
                         l || p($(this)).insertAfter($(this));
@@ -908,7 +908,7 @@ module.exports = function (e, t, n) {
                           (this._clipContentButton.hasClass("g-disabled") &&
                               (this._clipContentButton.removeAttr("disabled"), this._clipContentButton.removeClass("g-disabled")),
                           e ? this._clipContentButton.addClass("g-active") : this._clipContentButton.removeClass("g-active"))
-                        : (this._clipContentButton.attr("disabled", !0),
+                        : (this._clipContentButton.attr("disabled", true),
                           this._clipContentButton.addClass("g-disabled"),
                           this._clipContentButton.removeClass("g-active")));
             }),
@@ -916,7 +916,7 @@ module.exports = function (e, t, n) {
                 this._assignProperties([e], [t], n);
             }),
             (_.prototype._assignProperties = function (e, t, n, o, a) {
-                this._ownChange = !0;
+                this._ownChange = true;
                 var r = this._document.getEditor();
                 r.beginTransaction();
                 try {
@@ -926,16 +926,16 @@ module.exports = function (e, t, n) {
                         a &&
                             ((o = e.slice()),
                             (r = t.slice()),
-                            n.getProperty("bck") instanceof i.GColor ||
-                                (o.push("bck"), r.push(i.GRGBColor.WHITE), o.push("bop"), r.push(1)));
+                            n.getProperty("bck") instanceof GObject.GColor ||
+                                (o.push("bck"), r.push(GObject.GRGBColor.WHITE), o.push("bop"), r.push(1)));
                         n.setProperties(o, r);
                     });
                 } finally {
-                    (r.commitTransaction(n, o || null), (this._ownChange = !1));
+                    (r.commitTransaction(n, o || null), (this._ownChange = false));
                 }
             }),
             (_.prototype.toString = function () {
                 return "[Object GPageProperties]";
             }),
-            (e.exports = _));
+            (module.exports = _));
     };

@@ -1,25 +1,25 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(27),
-            a = n(259),
-            r = n(46),
-            s = n(61),
-            l = n(88).f,
-            c = n(243),
-            d = n(1103),
-            u = n(1104),
-            p = n(258),
-            g = n(786),
-            h = !1,
+        var o = require(25),
+            i = require(27),
+            a = require(259),
+            r = require(46),
+            s = require(61),
+            l = require(88).f,
+            c = require(243),
+            d = require(1103),
+            u = require(1104),
+            p = require(258),
+            g = require(786),
+            h = false,
             f = p("meta"),
             m = 0,
             y = function (e) {
                 l(e, f, { value: { objectID: "O" + m++, weakData: {} } });
             },
-            v = (e.exports = {
+            v = (module.exports = {
                 enable: function () {
-                    ((v.enable = function () {}), (h = !0));
+                    ((v.enable = function () {}), (h = true));
                     var e = c.f,
                         t = i([].splice),
                         n = {};
@@ -33,7 +33,7 @@ module.exports = function (e, t, n) {
                                     }
                                 return o;
                             }),
-                            o({ target: "Object", stat: !0, forced: !0 }, { getOwnPropertyNames: d.f })));
+                            o({ target: "Object", stat: true, forced: true }, { getOwnPropertyNames: d.f })));
                 },
                 fastKey: function (e, t) {
                     if (!r(e)) return "symbol" == typeof e ? e : ("string" == typeof e ? "S" : "P") + e;
@@ -46,8 +46,8 @@ module.exports = function (e, t, n) {
                 },
                 getWeakData: function (e, t) {
                     if (!s(e, f)) {
-                        if (!u(e)) return !0;
-                        if (!t) return !1;
+                        if (!u(e)) return true;
+                        if (!t) return false;
                         y(e);
                     }
                     return e[f].weakData;
@@ -56,5 +56,5 @@ module.exports = function (e, t, n) {
                     return (g && h && u(e) && !s(e, f) && y(e), e);
                 },
             });
-        a[f] = !0;
+        a[f] = true;
     };

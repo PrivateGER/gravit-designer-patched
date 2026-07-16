@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(11);
+module.exports = function (module, exports, require) {
+            var n = require(11);
 
             function r() {}
             ((r._list = [
@@ -707,5 +707,5 @@ module.exports = function (e, t, i) {
                         return t.toLowerCase() === e.toLowerCase();
                     });
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

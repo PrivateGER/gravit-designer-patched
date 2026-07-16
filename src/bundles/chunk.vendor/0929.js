@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(512),
-                r = i(569);
+module.exports = function (module, exports, require) {
+            var n = require(512),
+                r = require(569);
 
             function o() {}
             ((o.prototype._uid = null),
@@ -51,5 +51,5 @@ module.exports = function (e, t, i) {
                 (o.prototype.toString = function () {
                     return "[Object GEdge]";
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

@@ -1,19 +1,19 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(1503),
-            a = n(44),
-            r = n(447),
-            s = n(86);
+        require(3);
+        var GObject = require(1),
+            GCommonNames = require(1503),
+            GSystemDialog = require(44),
+            GSaveAction = require(447),
+            s = require(86);
         function l(e) {
             ((this._htmlElement = e), (this._windows = []));
         }
-        (o.GObject.inherit(l, o.GEventTarget),
+        (GObject.GObject.inherit(l, GObject.GEventTarget),
             (l.WindowEvent = function (e, t, n) {
                 ((this.type = e), (this.window = t), (this.index = n));
             }),
-            o.GObject.inherit(l.WindowEvent, o.GEvent),
+            GObject.GObject.inherit(l.WindowEvent, GObject.GEvent),
             (l.WindowEvent.Type = {
                 Added: 0,
                 Removed: 1,
@@ -40,9 +40,9 @@ module.exports = function (e, t, n) {
                 if (e !== this._activeWindow) {
                     (this._activeWindow && (this._activeWindow.deactivate(), this._activeWindow._container.detach()),
                         null === e
-                            ? gDesigner.activateDocument(null, !0)
+                            ? gDesigner.activateDocument(null, true)
                             : ((e && this._activeWindow && e.getDocument() !== this._activeWindow.getDocument()) || !this._activeWindow) &&
-                              gDesigner.activateDocument(e.getDocument(), !0));
+                              gDesigner.activateDocument(e.getDocument(), true));
                     var n = this._activeWindow;
                     ((this._activeWindow = e),
                         n && this.hasEventListeners(l.WindowEvent) && this.trigger(new l.WindowEvent(l.WindowEvent.Type.Deactivated, n)),
@@ -55,9 +55,9 @@ module.exports = function (e, t, n) {
                 }
             }),
             (l.prototype.addWindow = function (e, t, n) {
-                var o = e instanceof i ? e.getDocument() : e,
+                var o = e instanceof GCommonNames ? e.getDocument() : e,
                     a = this._addWindow(o, t, n);
-                if (e instanceof i) {
+                if (e instanceof GCommonNames) {
                     var r = e.getView();
                     a.getView() && a.getView().transform(r.getScrollX(), r.getScrollY(), r.getZoom());
                 }
@@ -88,15 +88,15 @@ module.exports = function (e, t, n) {
                 n
                     ? d()
                     : c.isSynchronizing()
-                      ? a.alert(o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.please-wait-avoid-losing-progress")))
+                      ? GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.please-wait-avoid-losing-progress")))
                       : 1 === c._windows.length && c.isModified()
                         ? gDesigner
                               .canUnloadDocument(c)
                               .then((e) => {
                                   e
                                       ? d()
-                                      : (gDesigner.stats("action_execute_windowalert", r.ID),
-                                        gDesigner.executeAction(r.ID, [c, d], void 0, !0));
+                                      : (gDesigner.stats("action_execute_windowalert", GSaveAction.ID),
+                                        gDesigner.executeAction(GSaveAction.ID, [c, d], void 0, true));
                               })
                               .catch((e) => {
                                   e && !e.documentStatus && console.log(e);
@@ -111,7 +111,7 @@ module.exports = function (e, t, n) {
                 e.relayout(this._htmlElement.width(), this._htmlElement.height(), this._viewOffset, t);
             }),
             (l.prototype._addWindow = function (e, t, n) {
-                var o = new i(e, t);
+                var o = new GCommonNames(e, t);
                 return (
                     e._windows.push(o),
                     "number" == typeof n ? this._windows.splice(n, 0, o) : this._windows.push(o),
@@ -131,5 +131,5 @@ module.exports = function (e, t, n) {
                     }
                 return t;
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

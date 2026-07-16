@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(681).left,
-            a = n(350),
-            r = n(213);
+        var o = require(25),
+            i = require(681).left,
+            a = require(350),
+            r = require(213);
         o(
             {
                 target: "Array",
-                proto: !0,
-                forced: (!n(245) && r > 79 && r < 83) || !a("reduce"),
+                proto: true,
+                forced: (!require(245) && r > 79 && r < 83) || !a("reduce"),
             },
             {
                 reduce: function (e) {

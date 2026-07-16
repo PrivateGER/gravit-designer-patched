@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(182),
-                o = i(197),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(182),
+                o = require(197),
                 a = function (e, t) {
                     (o.call(this), (this._font = e));
                     var i = this.getOpenTypeFont().ascender,
@@ -27,7 +27,7 @@ module.exports = function (e, t, i) {
                         this.put("/Flags", 32),
                         t && this.put("/FontFile2", t));
                 };
-            (n.inherit(a, o),
+            (IsFiniteNonNegativeNumber.inherit(a, o),
                 (a.prototype._font = null),
                 (a.prototype.getFont = function () {
                     return this._font;
@@ -35,5 +35,5 @@ module.exports = function (e, t, i) {
                 (a.prototype.getOpenTypeFont = function () {
                     return this.getFont()._openTypeFont;
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

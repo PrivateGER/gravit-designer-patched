@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(58), n(19), n(30), n(8), n(196), n(20), n(3), n(71), n(34), n(91), n(4), n(41), n(13), n(38), n(26), n(125), n(126), n(114));
-        var o = n(1),
-            i = n(15);
+        (require(58), require(19), require(30), require(8 /* Symbol */), require(196), require(20), require(3), require(71), require(34), require(91), require(4), require(41), require(13), require(38), require(26), require(125), require(126), require(114));
+        var GObject = require(1),
+            GPlatform = require(15);
         const {
                 FileExtended: a,
                 gApi: r,
@@ -17,19 +17,19 @@ module.exports = function (e, t, n) {
                 REMOVE_GUEST_USER_WHEN_ROLE_IS_NO_ACCESS: f,
                 ENABLE_GUEST_ACCESS: m,
                 defaultUserSettings: {
-                    share: { defaults: { private: { pro: y = !0 } = {} } = {}, quotas: { free: { private: v = 0 } = {} } = {} } = {},
+                    share: { defaults: { private: { pro: y = true } = {} } = {}, quotas: { free: { private: v = 0 } = {} } = {} } = {},
                 } = {},
-            } = n(10),
-            { IS_TRUNK: _, IS_BETA: b, IS_RC: w, IS_LTS: C } = n(231),
-            { sleep: x } = n(40),
-            S = n(177),
-            E = n(44),
-            A = n(85),
-            T = n(388),
-            G = n(433),
-            P = n(257),
-            D = n(436),
-            L = n(336);
+            } = require(10 /* designerConfig */),
+            { IS_TRUNK: _, IS_BETA: b, IS_RC: w, IS_LTS: C } = require(231 /* IS_TRUNK */),
+            { sleep: x } = require(40 /* GSaveAction */),
+            S = require(177),
+            GSystemDialog = require(44),
+            A = require(85),
+            T = require(388),
+            G = require(433),
+            P = require(257),
+            D = require(436),
+            L = require(336);
         class I {
             constructor(e, t, n) {
                 ((this._user = e),
@@ -43,15 +43,15 @@ module.exports = function (e, t, n) {
                 if (!this._isInitialized)
                     return (
                         this._initLayout(),
-                        this._toggleLoading(!0),
+                        this._toggleLoading(true),
                         this._loadShare()
                             .then(() => this._loadShareInit())
                             .then(() => this._updateProperties())
                             .then(() => {
-                                this._isInitialized = !0;
+                                this._isInitialized = true;
                             })
                             .catch((e) => this._handleException(e))
-                            .finally(() => this._toggleLoading(!1))
+                            .finally(() => this._toggleLoading(false))
                     );
             }
             async _loadShareInit() {
@@ -83,7 +83,7 @@ module.exports = function (e, t, n) {
                     .addClass("share-info-section")
                     .css("display", "none")
                     .append($("<span/>").addClass("gravit-icon-info"))
-                    .append($("<span/>").text(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.participants-will-be-invited"))))),
+                    .append($("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.participants-will-be-invited"))))),
                     (this._dialog = $("<div/>")
                         .append(
                             $("<div/>")
@@ -91,7 +91,7 @@ module.exports = function (e, t, n) {
                                 .append(
                                     $("<span/>")
                                         .addClass("title")
-                                        .text(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.title")))
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.title")))
                                 )
                         )
                         .append(
@@ -100,11 +100,11 @@ module.exports = function (e, t, n) {
                                 .append(
                                     $("<div/>")
                                         .addClass("share-input")
-                                        .append($("<input>").attr("type", "text").attr("readonly", !0))
+                                        .append($("<input>").attr("type", "text").attr("readonly", true))
                                         .append(
                                             $("<div/>")
                                                 .addClass("share-copied")
-                                                .append($("<span/>").text(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.copied"))))
+                                                .append($("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.copied"))))
                                         )
                                 )
                                 .append(
@@ -113,7 +113,7 @@ module.exports = function (e, t, n) {
                                         .addClass("g-highlight-button")
                                         .addClass("highlighted")
                                         .append($("<span/>").addClass("icon").addClass(P["gravit-icon-share-copy"]))
-                                        .append($("<span/>").text(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.copy"))))
+                                        .append($("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.copy"))))
                                         .on("click", async (e) => {
                                             const t = $(e.target).closest(".share-link"),
                                                 n = t.find("input").val();
@@ -127,10 +127,10 @@ module.exports = function (e, t, n) {
                                                             (e.addClass("visible"), await x(2e3), e.removeClass("visible"));
                                                         })
                                                         .catch((e) => {
-                                                            E.alert(
+                                                            GSystemDialog.alert(
                                                                 (e && e.message) ||
-                                                                    o.GLocale.get(
-                                                                        new o.GLocaleKey("GShareDialog", "text.failed-copying-to-clipboard")
+                                                                    GObject.GLocale.get(
+                                                                        new GObject.GLocaleKey("GShareDialog", "text.failed-copying-to-clipboard")
                                                                     )
                                                             );
                                                         })
@@ -143,7 +143,7 @@ module.exports = function (e, t, n) {
                         .append(this._buildShareByUser())
                         .append(this._infoSection)
                         .gDialog({
-                            releaseOnClose: !0,
+                            releaseOnClose: true,
                             className: "g-share-dialog",
                             closeCallback: () => {
                                 (this._sendInvitationEmails(), this._closeCallback && this._closeCallback());
@@ -169,8 +169,8 @@ module.exports = function (e, t, n) {
                         if (t && t.trim().length) {
                             const e = this._user.getFullUserName(),
                                 n = this._sharedFile.name,
-                                i = o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.native-link-share-title")).replace("%filename", n),
-                                a = o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.native-link-share-description")).replace(
+                                i = GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.native-link-share-title")).replace("%filename", n),
+                                a = GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.native-link-share-description")).replace(
                                     "%username",
                                     e
                                 );
@@ -203,7 +203,7 @@ module.exports = function (e, t, n) {
                 }
             }
             _handleException(e) {
-                (console.error(e.stack ? e.stack : e), E.alert(r.formatError(e)), this._toggleLoading(!1));
+                (console.error(e.stack ? e.stack : e), GSystemDialog.alert(r.formatError(e)), this._toggleLoading(false));
             }
             _getPrivateAndInvitedShareList() {
                 const e = this._sharedFile.getPrivateShareList().filter((e) => !e.owner || e.id !== this._user.getUID()),
@@ -211,35 +211,35 @@ module.exports = function (e, t, n) {
                 return e.concat(t);
             }
             _getShareListLayout(e) {
-                return o.GUtil.bubbleSort(e, (e, t) => {
+                return GObject.GUtil.bubbleSort(e, (e, t) => {
                     let { created: n } = e,
                         { created: o } = t;
-                    return p.gt(n, o, !1) ? 1 : p.lt(n, o, !1) ? -1 : 0;
+                    return p.gt(n, o, false) ? 1 : p.lt(n, o, false) ? -1 : 0;
                 }).map((e) => {
                     const t = new S(e),
                         n = t.getUID(),
                         i = t.getEmail(),
-                        { guest: a = !1 } = e,
+                        { guest: a = false } = e,
                         s = this._getRole(e),
                         l = this._canResendInvitationEmail(e)
                             ? [
                                   {
                                       icon: "gravit-icon-resend-invitation-email",
-                                      label: o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.resend-invitation-email")),
+                                      label: GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.resend-invitation-email")),
                                       click: () => {
                                           (gDesigner.stats("sharedialog_private-share_resend"),
-                                              this._toggleLoading(!0),
+                                              this._toggleLoading(true),
                                               r.share
                                                   .sendInvitationEmails(this._storageItem.getId(), [i])
                                                   .then(() => {
-                                                      E.alert(
-                                                          o.GLocale.get(
-                                                              new o.GLocaleKey("GShareDialog", "text.resent-invitation-email")
+                                                      GSystemDialog.alert(
+                                                          GObject.GLocale.get(
+                                                              new GObject.GLocaleKey("GShareDialog", "text.resent-invitation-email")
                                                           ).replace("%email", i)
                                                       );
                                                   })
                                                   .catch((e) => this._handleException(e))
-                                                  .finally(() => this._toggleLoading(!1)));
+                                                  .finally(() => this._toggleLoading(false)));
                                       },
                                   },
                               ]
@@ -269,7 +269,7 @@ module.exports = function (e, t, n) {
                                         : this._shareWithUser({ id: n, email: i, role: r }, e.assignRole(r)).catch(() => {
                                               $(t.target).closest(".g-role-selector").gRoleSelector("restoreRole");
                                           })
-                                    : E.alert(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.role-required")));
+                                    : GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.role-required")));
                             }),
                         c
                     );
@@ -296,12 +296,12 @@ module.exports = function (e, t, n) {
                     this._dialog
                         .find(".share-by-user .subtitle")
                         .css("display", "")
-                        .text(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.projects-left")).replace("%number", i));
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.projects-left")).replace("%number", i));
                     const a = i <= 0 && !(e && e.length);
                     this._dialog.find(".share-by-user .add-button").prop("disabled", a);
                 } else
                     (this._dialog.find(".share-by-user .subtitle").css("display", "none"),
-                        this._dialog.find(".share-by-user .add-button").prop("disabled", !1));
+                        this._dialog.find(".share-by-user .add-button").prop("disabled", false));
                 (this._dialog.find(".share-by-user > .share-settings").empty(),
                     e && e.length && this._dialog.find(".share-by-user > .share-settings").append(this._getShareListLayout(e)));
                 let n = "";
@@ -329,19 +329,19 @@ module.exports = function (e, t, n) {
             _buildShareByLink() {
                 const e = this._createShareSetting({
                         icon: $("<span/>").addClass("gravit-icon-public-share-link").addClass("icon"),
-                        label: o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.public-share-link")),
+                        label: GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.public-share-link")),
                         defaultRole: G.ROLES.DEFAULT_PUBLIC_ROLE,
                     }),
                     t = e.find(".g-role-selector");
                 return (
                     e.find(".g-role-selector").on("rolechange", () => {
                         const n = t.gRoleSelector("role");
-                        if (!n) return void E.alert(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.role-required")));
+                        if (!n) return void GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.role-required")));
                         gDesigner.stats("sharedialog_public-share_role", n.name);
                         const i = this._sharedFile.getPublicShare();
                         if (i)
                             return (
-                                this._toggleLoading(!0),
+                                this._toggleLoading(true),
                                 this._storageItem.supportsExternalSharingByLink()
                                     ? this._storageItem
                                           .updateDomainShare(n)
@@ -349,9 +349,9 @@ module.exports = function (e, t, n) {
                                               a.call(this);
                                           })
                                           .catch((t) => {
-                                              (E.alert(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.error-change-role-failed"))),
+                                              (GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.error-change-role-failed"))),
                                                   e.find(".g-role-selector").gRoleSelector("restoreRole"),
-                                                  this._toggleLoading(!1),
+                                                  this._toggleLoading(false),
                                                   console.error("updateDomainShare error: ", t));
                                           })
                                     : a.call(this)
@@ -361,7 +361,7 @@ module.exports = function (e, t, n) {
                                 .then(() => this._loadShare())
                                 .then(() => this._updateProperties())
                                 .catch((e) => this._handleException(e))
-                                .finally(() => this._toggleLoading(!1));
+                                .finally(() => this._toggleLoading(false));
                         }
                     }),
                     $("<div/>")
@@ -377,16 +377,16 @@ module.exports = function (e, t, n) {
             _buildShareByUser() {
                 const e = $("<input/>")
                         .addClass("private-share-email-input")
-                        .attr("placeholder", o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.private-share-placeholder")))
+                        .attr("placeholder", GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.private-share-placeholder")))
                         .attr("type", "email")
                         .on("keypress", (e) => {
                             const t = e.which || e.charCode || e.keyCode;
-                            if (i.GKey.translateKey(t) === i.GKey.Constant.ENTER)
+                            if (GPlatform.GKey.translateKey(t) === GPlatform.GKey.Constant.ENTER)
                                 return (
                                     e.preventDefault(),
                                     e.stopPropagation(),
                                     $(e.target).closest(".share-by-user").find(".add-button").trigger("click"),
-                                    !1
+                                    false
                                 );
                         }),
                     t = $("<div/>").gRoleSelector({
@@ -412,10 +412,10 @@ module.exports = function (e, t, n) {
                                                 .append(
                                                     $("<span/>")
                                                         .addClass("title")
-                                                        .text(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.private-sharing")))
+                                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.private-sharing")))
                                                         .gPro({
                                                             pro: y || -1 !== v,
-                                                            badgeAlwaysVisible: !0,
+                                                            badgeAlwaysVisible: true,
                                                         })
                                                 )
                                                 .append($("<span/>").addClass("subtitle"))
@@ -428,7 +428,7 @@ module.exports = function (e, t, n) {
                                                     $("<button/>")
                                                         .addClass("add-button")
                                                         .addClass("g-highlight-button highlighted")
-                                                        .text(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.private-sharing-add")))
+                                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.private-sharing-add")))
                                                         .on("click", (n) => {
                                                             const o = (e.val() || "").trim(),
                                                                 i = t.gRoleSelector("role");
@@ -443,25 +443,25 @@ module.exports = function (e, t, n) {
             }
             async _tryPrivateShareWithUser(e, t, n) {
                 if ((gDesigner.stats("sharedialog_private-share_add"), !e))
-                    return void E.alert(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.empty-email")));
-                if (!t) return void E.alert(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.role-required")));
-                this._toggleLoading(!0);
+                    return void GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.empty-email")));
+                if (!t) return void GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.role-required")));
+                this._toggleLoading(true);
                 try {
                     if (this._storageItem instanceof T.Item && !(await this._storageItem.isEmailFromCorporateDomain(e)))
                         return (
                             this._handleException(
-                                o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.you-can-not-invite-user-from-another-domain"))
+                                GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.you-can-not-invite-user-from-another-domain"))
                             ),
-                            void this._toggleLoading(!1)
+                            void this._toggleLoading(false)
                         );
                 } catch (e) {}
                 const i = (e) => {
-                    this._toggleLoading(!0);
+                    this._toggleLoading(true);
                     const n = new h().assignRole(t),
                         o = this._dialog.find(".share-settings-header-input"),
                         i = o.find(".g-role-selector"),
                         a = o.find(".private-share-email-input");
-                    this._shareWithUser(e, n, !1)
+                    this._shareWithUser(e, n, false)
                         .then((e) => {
                             e ? a.val(null) : gDesigner.stats("sharedialog_invalid-email");
                         })
@@ -469,15 +469,15 @@ module.exports = function (e, t, n) {
                             i.gRoleSelector("restoreRole");
                         })
                         .finally(() => {
-                            this._toggleLoading(!1);
+                            this._toggleLoading(false);
                         });
                 };
                 try {
                     let t = await r
-                        .listUsers({ q: e, all: !0 })
+                        .listUsers({ q: e, all: true })
                         .then((e) => e.filter((e) => e.id !== this._user.getUID()).map((e) => new S(e)));
                     const a = t && t.length > 0;
-                    let s = !0;
+                    let s = true;
                     if (a) {
                         this._storageItem instanceof T.Item &&
                             this._storageItem.getCloudClient().isCorporate() &&
@@ -493,10 +493,10 @@ module.exports = function (e, t, n) {
                                 let { id: n } = t;
                                 return !e.includes(n);
                             })),
-                            (s = !1));
+                            (s = false));
                     }
                     if (t && t.length > 0)
-                        if ((this._toggleLoading(!1), t.length > 1)) {
+                        if ((this._toggleLoading(false), t.length > 1)) {
                             const o = $(n.target).closest(".share-settings-header-input");
                             this._pickUser(e, t, o)
                                 .then((t) => {
@@ -508,7 +508,7 @@ module.exports = function (e, t, n) {
                         s
                             ? i({ id: e, email: e })
                             : this._handleException(
-                                  o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.private-share-no-options-left")).replace("%email", e)
+                                  GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.private-share-no-options-left")).replace("%email", e)
                               );
                 } catch (e) {
                     this._handleException(e);
@@ -588,15 +588,15 @@ module.exports = function (e, t, n) {
                 (({ email: i, id: n } = e), n || (n = i));
                 const r = this._user;
                 return n === r.id || n === r.email || n === r.login
-                    ? (E.alert(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.you-can-not-invite-yourself"))), Promise.reject())
-                    : (this._toggleLoading(!0),
+                    ? (GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.you-can-not-invite-yourself"))), Promise.reject())
+                    : (this._toggleLoading(true),
                       this._storageItem instanceof T.Item
                           ? this._storageItem
                                 .isEmailFromCorporateDomain(i)
                                 .then((e) => {
                                     if (e) return this._prepareShare(i, t, n, a);
-                                    throw o.GLocale.get(
-                                        new o.GLocaleKey("GShareDialog", "text.you-can-not-invite-user-from-another-domain")
+                                    throw GObject.GLocale.get(
+                                        new GObject.GLocaleKey("GShareDialog", "text.you-can-not-invite-user-from-another-domain")
                                     );
                                 })
                                 .catch((e) => {
@@ -615,9 +615,9 @@ module.exports = function (e, t, n) {
                     : this._processShare(e, t, n, o);
             }
             _processShare(e, t, n, i) {
-                const a = i ? t : Object.assign(t, { sendEmail: i, validated: !0 }),
+                const a = i ? t : Object.assign(t, { sendEmail: i, validated: true }),
                     s = this._storageItem.toString();
-                let l = !1;
+                let l = false;
                 return (
                     this._storageItem instanceof T.Item && (l = this._storageItem.getCloudClient().isCorporate()),
                     s.indexOf("GCloudStorage") >= 0
@@ -633,32 +633,32 @@ module.exports = function (e, t, n) {
                             if (t.status)
                                 switch (t.status) {
                                     case r.HTTP_STATUS_CODES.CONFLICT:
-                                        return void E.alert(
-                                            o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.you-can-not-invite-yourself"))
+                                        return void GSystemDialog.alert(
+                                            GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.you-can-not-invite-yourself"))
                                         );
                                     case r.HTTP_STATUS_CODES.NOT_FOUND:
-                                        return void E.alert(
-                                            o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.invalid-email")).replace("%email", e)
+                                        return void GSystemDialog.alert(
+                                            GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.invalid-email")).replace("%email", e)
                                         );
                                     case r.HTTP_STATUS_CODES.FORBIDDEN:
                                         return void ("only same domain users allowed" === t.message
-                                            ? E.alert(
-                                                  o.GLocale.get(
-                                                      new o.GLocaleKey("GShareDialog", "text.you-can-not-invite-user-from-another-domain")
+                                            ? GSystemDialog.alert(
+                                                  GObject.GLocale.get(
+                                                      new GObject.GLocaleKey("GShareDialog", "text.you-can-not-invite-user-from-another-domain")
                                                   )
                                               )
-                                            : E.alert(o.GLocale.get(new o.GLocaleKey("GCommonNames", "error.http.forbidden"))));
+                                            : GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "error.http.forbidden"))));
                                 }
                             this._handleException(t);
                         })
-                        .finally(() => this._toggleLoading(!1))
+                        .finally(() => this._toggleLoading(false))
                 );
             }
             _unshareWithUser(e) {
                 const { email: t, role: n } = e,
                     { id: o = t } = e;
                 return (
-                    this._toggleLoading(!0),
+                    this._toggleLoading(true),
                     this._storageItem.supportsExternalSharing()
                         ? this._storageItem
                               .requestExternalUnShare(t, n)
@@ -675,14 +675,14 @@ module.exports = function (e, t, n) {
                         .then(() => this._loadShare())
                         .then(() => this._updateProperties())
                         .catch((e) => this._handleException(e))
-                        .finally(() => this._toggleLoading(!1));
+                        .finally(() => this._toggleLoading(false));
                 }
             }
             _toggleLoading(e) {
                 ((this._isLoading = !!e), ($(this._dialog).data("gdialog").closable = !e), this._dialog.toggleClass("g-loading", !!e));
             }
             async open() {
-                (await this._initialize(), this._dialog.gDialog("open", !0));
+                (await this._initialize(), this._dialog.gDialog("open", true));
             }
             close() {
                 this._isLoading || this._dialog.gDialog("close");
@@ -699,7 +699,7 @@ module.exports = function (e, t, n) {
                         []
                     ).includes(e.id);
                 }
-                return !1;
+                return false;
             }
             _hasNewInvitationEmails() {
                 return this._getNewAddedShareEmails().length > 0;
@@ -734,8 +734,8 @@ module.exports = function (e, t, n) {
                     });
             }
             _showSentInvitationEmailAlert(e) {
-                E.alert(
-                    o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.sent-invitation-email")).replace("%emails", e.join(", ")),
+                GSystemDialog.alert(
+                    GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.sent-invitation-email")).replace("%emails", e.join(", ")),
                     null,
                     { className: "g-sent-invitation-email-dialog" }
                 );
@@ -767,8 +767,8 @@ module.exports = function (e, t, n) {
                         )
                         .gOverlay({
                             clazz: "g-share-dialog-user-selector",
-                            releaseOnClose: !0,
-                            padding: !1,
+                            releaseOnClose: true,
+                            padding: false,
                             closeCallback: () => o(i),
                         })
                         .gOverlay("open", n);
@@ -790,5 +790,5 @@ module.exports = function (e, t, n) {
                     );
             }
         }
-        ((I.prototype._isInitialized = !1), (I.prototype._sharedFile = null), (I.prototype._isLoading = !1), (e.exports = I));
+        ((I.prototype._isInitialized = false), (I.prototype._sharedFile = null), (I.prototype._isLoading = false), (module.exports = I));
     };

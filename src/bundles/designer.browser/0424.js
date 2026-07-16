@@ -1,36 +1,36 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(677));
-        var o = n(25),
-            i = n(23),
-            a = n(411),
-            r = n(110),
-            s = n(29),
-            l = n(27),
-            c = n(49),
-            d = n(423),
-            u = n(79),
-            p = n(120),
-            g = n(232),
-            h = n(137),
-            f = n(419),
-            m = n(80),
-            y = n(146),
-            v = n(35),
-            _ = n(61),
-            b = n(124),
-            w = n(131),
-            C = n(37),
-            x = n(46),
-            S = n(62),
-            E = n(136),
-            A = n(174),
-            T = n(246),
-            G = n(204),
-            P = n(252),
-            D = n(303),
-            L = n(43),
-            I = n(351),
+        (require(19), require(677));
+        var o = require(25),
+            RegExp = require(23),
+            a = require(411),
+            r = require(110),
+            s = require(29),
+            l = require(27),
+            c = require(49),
+            d = require(423),
+            u = require(79),
+            p = require(120),
+            g = require(232),
+            h = require(137),
+            f = require(419),
+            m = require(80),
+            y = require(146),
+            v = require(35),
+            _ = require(61),
+            b = require(124),
+            w = require(131),
+            C = require(37),
+            x = require(46),
+            S = require(62),
+            E = require(136),
+            A = require(174),
+            T = require(246),
+            G = require(204),
+            P = require(252),
+            D = require(303),
+            L = require(43),
+            I = require(351),
             k = L("iterator"),
             O = m.set,
             F = m.getterFor("URLSearchParams"),
@@ -40,8 +40,8 @@ module.exports = function (e, t, n) {
             B = a("Headers"),
             U = N && N.prototype,
             $ = B && B.prototype,
-            j = i.TypeError,
-            K = i.encodeURIComponent,
+            j = RegExp.TypeError,
+            K = RegExp.encodeURIComponent,
             V = String.fromCharCode,
             H = r("String", "fromCodePoint"),
             W = parseInt,
@@ -152,17 +152,17 @@ module.exports = function (e, t, n) {
                     var e = R(this),
                         t = e.target,
                         n = e.index++;
-                    if (!t || n >= t.length) return ((e.target = null), P(void 0, !0));
+                    if (!t || n >= t.length) return ((e.target = null), P(void 0, true));
                     var o = t[n];
                     switch (e.kind) {
                         case "keys":
-                            return P(o.key, !1);
+                            return P(o.key, false);
                         case "values":
-                            return P(o.value, !1);
+                            return P(o.value, false);
                     }
-                    return P([o.key, o.value], !1);
+                    return P([o.key, o.value], false);
                 },
-                !0
+                true
             ),
             ge = function (e) {
                 ((this.entries = []),
@@ -266,15 +266,15 @@ module.exports = function (e, t, n) {
 
                         ) {
                             var s = t[r++];
-                            if (s.key === o && (void 0 === a || s.value === a)) return !0;
+                            if (s.key === o && (void 0 === a || s.value === a)) return true;
                         }
-                        return !1;
+                        return false;
                     },
                     set: function (e, t) {
                         var n = F(this);
                         D(arguments.length, 1);
-                        for (var o, i = n.entries, a = !1, r = S(e), s = S(t), l = 0; l < i.length; l++)
-                            (o = i[l]).key === r && (a ? J(i, l--, 1) : ((a = !0), (o.value = s)));
+                        for (var o, i = n.entries, a = false, r = S(e), s = S(t), l = 0; l < i.length; l++)
+                            (o = i[l]).key === r && (a ? J(i, l--, 1) : ((a = true), (o.value = s)));
                         (a || Y(i, { key: r, value: s }), c || (this.size = i.length), n.updateURL());
                     },
                     sort: function () {
@@ -298,7 +298,7 @@ module.exports = function (e, t, n) {
                         return new pe(this, "entries");
                     },
                 },
-                { enumerable: !0 }
+                { enumerable: true }
             ),
             u(fe, k, fe.entries, { name: "entries" }),
             u(
@@ -307,18 +307,18 @@ module.exports = function (e, t, n) {
                 function () {
                     return F(this).serialize();
                 },
-                { enumerable: !0 }
+                { enumerable: true }
             ),
             c &&
                 p(fe, "size", {
                     get: function () {
                         return F(this).entries.length;
                     },
-                    configurable: !0,
-                    enumerable: !0,
+                    configurable: true,
+                    enumerable: true,
                 }),
             h(he, "URLSearchParams"),
-            o({ global: !0, constructor: !0, forced: !d }, { URLSearchParams: he }),
+            o({ global: true, constructor: true, forced: !d }, { URLSearchParams: he }),
             !d && v(B))
         ) {
             var me = l($.has),
@@ -339,7 +339,7 @@ module.exports = function (e, t, n) {
             if (
                 (v(M) &&
                     o(
-                        { global: !0, enumerable: !0, dontCallGetSet: !0, forced: !0 },
+                        { global: true, enumerable: true, dontCallGetSet: true, forced: true },
                         {
                             fetch: function (e) {
                                 return M(e, arguments.length > 1 ? ve(arguments[1]) : {});
@@ -353,8 +353,8 @@ module.exports = function (e, t, n) {
                 };
                 ((U.constructor = _e),
                     (_e.prototype = U),
-                    o({ global: !0, constructor: !0, dontCallGetSet: !0, forced: !0 }, { Request: _e }));
+                    o({ global: true, constructor: true, dontCallGetSet: true, forced: true }, { Request: _e }));
             }
         }
-        e.exports = { URLSearchParams: he, getState: F };
+        module.exports = { URLSearchParams: he, getState: F };
     };

@@ -1,17 +1,17 @@
-module.exports = function (e, t, i) {
-            var n = i(50),
-                r = i(2),
-                o = i(28),
-                a = i(17),
-                s = i(14),
-                l = i(6),
-                h = i(249),
-                A = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(50),
+                r = require(2),
+                GStylable = require(28),
+                a = require(17),
+                s = require(14),
+                l = require(6),
+                h = require(249),
+                String = require(9);
 
             function c() {
-                (o.Effect.call(this), this._setDefaultProperties(c.GeometryProperties, c.VisualProperties), (this._blur = new h()));
+                (GStylable.Effect.call(this), this._setDefaultProperties(c.GeometryProperties, c.VisualProperties), (this._blur = new h()));
             }
-            (r.inherit("innerShadowEffect", c, o.Effect),
+            (r.inherit("innerShadowEffect", c, GStylable.Effect),
                 (c.prototype._blur = null),
                 (c.equals = function (e, t) {
                     return (
@@ -30,16 +30,16 @@ module.exports = function (e, t, i) {
                     opc: 0.5,
                 }),
                 (c.prototype.getEffectType = function () {
-                    return o.Effect.Type.PostEffect;
+                    return GStylable.Effect.Type.PostEffect;
                 }),
                 (c.prototype.isOverlayEffect = function () {
-                    return !0;
+                    return true;
                 }),
                 (c.prototype.getEffectPadding = function () {
                     return 0;
                 }),
                 (c.prototype.getNodeNameTranslated = function () {
-                    return A.getValue("GInnerShadowEffect", "name", this.getNodeName());
+                    return String.getValue("GInnerShadowEffect", "name", this.getNodeName());
                 }),
                 (c.prototype.getAbsoluteEffectPadding = function () {
                     return [
@@ -52,13 +52,13 @@ module.exports = function (e, t, i) {
                 (c.prototype.render = function (e, t, i, n, r, o) {
                     if (this.$pat && this.$opc > 0 && this.$r >= 0) {
                         var a = t
-                                .getTransform(!1)
+                                .getTransform(false)
                                 .inverted()
                                 .mapRect(new l(0, 0, t.getWidth(), t.getHeight())),
                             h = t.createPatternPaint(this.$pat, a);
                         if (h)
                             if (h.transform) {
-                                var A = t.setTransform(t.getTransform(!0).preMultiplied(h.transform));
+                                var A = t.setTransform(t.getTransform(true).preMultiplied(h.transform));
                                 (t.fillRect(0, 0, 1, 1, h.paint, this.$opc), t.setTransform(A));
                             } else t.fillRect(a.getX(), a.getY(), a.getWidth(), a.getHeight(), h.paint, this.$opc);
                         var c = this.$x * n,
@@ -67,7 +67,7 @@ module.exports = function (e, t, i) {
                         (t.drawCanvas(e, c, p, 1, s.CompositeOperator.DestinationOut),
                             u > 0 &&
                                 (s.disableFilters(),
-                                !s.hasFilters() && this._blur._glblur && (this._blur._glblur._isAffectedByGLBug = !0),
+                                !s.hasFilters() && this._blur._glblur && (this._blur._glblur._isAffectedByGLBug = true),
                                 (this._blur.$r = this.$r),
                                 this._blur.render(t, null, null, n, r, o),
                                 s.enableFilters()),
@@ -87,7 +87,7 @@ module.exports = function (e, t, i) {
                           })),
                         this._handleGeometryChangeForProperties(e, t, c.GeometryProperties),
                         this._handleVisualChangeForProperties(e, t, c.VisualProperties),
-                        o.Effect.prototype._handleChange.call(this, e, t));
+                        GStylable.Effect.prototype._handleChange.call(this, e, t));
                 }),
                 (c.prototype.toString = function () {
                     return "[Object GInnerShadowEffect]";
@@ -98,5 +98,5 @@ module.exports = function (e, t, i) {
                 (c.prototype.destroy = function () {
                     this._blur && this._blur.destroy();
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

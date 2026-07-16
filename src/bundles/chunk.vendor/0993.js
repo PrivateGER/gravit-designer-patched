@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(378).ContextParams,
-                r = i(379).isTashkeelArabicChar,
+module.exports = function (module, exports, require) {
+            var n = require(378 /* ContextParams */).ContextParams,
+                r = require(379).isTashkeelArabicChar,
                 o = "ltr";
 
             function a(e, t) {
@@ -113,9 +113,9 @@ module.exports = function (e, t, i) {
                         n = function (e, t) {
                             if (e.length > t.length) return null;
                             for (var i = 0; i < e.length; i++) {
-                                if (e[i] !== t[i]) return !1;
+                                if (e[i] !== t[i]) return false;
                             }
-                            return !0;
+                            return true;
                         },
                         r = 0;
                     r < i.length;
@@ -237,6 +237,6 @@ module.exports = function (e, t, i) {
                               FAIL: "No font was found",
                           };
                 }),
-                (t.FeatureQuery = a),
-                (t.Feature = s));
+                (exports.FeatureQuery = a),
+                (exports.Feature = s));
         };

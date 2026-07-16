@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(3));
-        var o = n(1);
-        const i = n(237),
-            a = n(156);
+        (require(8 /* Symbol */), require(3));
+        var GObject = require(1);
+        const GDocument = require(237),
+            a = require(156);
         function r() {}
-        (o.GObject.inherit(r, i),
+        (GObject.GObject.inherit(r, GDocument),
             (r.Item = function (e, t) {
-                (i.Item.call(this, e), this.setFile(t));
+                (GDocument.Item.call(this, e), this.setFile(t));
             }),
-            o.GObject.inherit(r.Item, i.Item),
+            GObject.GObject.inherit(r.Item, GDocument.Item),
             (r.Item.prototype._app = null),
             (r.Item.prototype._filename = null),
             (r.Item.prototype._ext = null),
@@ -37,7 +37,7 @@ module.exports = function (e, t, n) {
                 return (this._ext && this._ext.toUpperCase()) || "CDRAPP";
             }),
             (r.Item.prototype.setFile = function (e) {
-                if (!e) throw new Error(o.GLocale.get(new o.GLocaleKey("GExternalStorage", "text.error-file-cant-be-null")));
+                if (!e) throw new Error(GObject.GLocale.get(new GObject.GLocaleKey("GExternalStorage", "text.error-file-cant-be-null")));
                 ((e = a.createOrReturnSelfInstance(e)), (this._file = e), (this._id = e.id), (this._filename = e.name));
             }),
             (r.Item.prototype.getFile = function () {
@@ -57,7 +57,7 @@ module.exports = function (e, t, n) {
                 throw Error("Not implemented!");
             }),
             (r.Item.prototype.hasVersionControl = function () {
-                return !1;
+                return false;
             }),
             (r.Item.prototype.hasUpdates = async function () {
                 throw Error("Not implemented!");
@@ -92,5 +92,5 @@ module.exports = function (e, t, n) {
             (r.Item.prototype.toString = function () {
                 return "[Object GExternalStorage.Item]";
             }),
-            (e.exports = r));
+            (module.exports = r));
     };

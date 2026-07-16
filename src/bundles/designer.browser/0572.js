@@ -1,3 +1,3 @@
-module.exports = function (e, t) {
-        e.exports = require("https");
+module.exports = function (module, exports) {
+        module.exports = require("https");
     };

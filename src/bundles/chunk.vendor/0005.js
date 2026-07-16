@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i(e, t) {
                 ((this._x = e), (this._y = t));
             }
@@ -66,5 +66,5 @@ module.exports = function (e, t) {
                 (i.prototype.toString = function () {
                     return "[Object GPoint(x=" + this._x + ", y=" + this._y + "]";
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

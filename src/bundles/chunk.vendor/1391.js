@@ -1,51 +1,51 @@
-module.exports = function (e, t, i) {
-            var n = i(179),
-                r = i(12),
-                o = i(147),
-                a = i(60),
-                s = i(214),
-                l = i(17),
-                h = i(113),
-                A = i(5),
-                c = i(48),
-                p = i(87),
-                u = i(233),
-                d = i(264),
-                g = i(14),
-                f = i(28),
-                m = i(158),
-                y = i(139),
-                _ = i(54),
-                v = i(7),
-                b = i(122),
-                C = i(73),
-                w = (i(284), i(45)),
-                E = i(70),
-                B = i(11),
-                x = i(95),
-                P = i(69),
-                S = i(22),
-                T = i(6),
-                I = i(215),
-                F = i(1392),
-                R = i(416),
-                D = i(108),
-                k = i(281),
-                G = i(280),
-                Q = i(367),
-                M = i(249),
-                N = i(321),
-                U = i(2),
-                V = i(1202),
-                O = i(83),
-                L = i(438),
-                Y = i(132),
-                X = i(0);
+module.exports = function (module, exports, require) {
+            var n = require(179),
+                r = require(12),
+                o = require(147),
+                a = require(60),
+                s = require(214),
+                l = require(17),
+                h = require(113),
+                A = require(5),
+                c = require(48),
+                p = require(87),
+                u = require(233),
+                d = require(264),
+                g = require(14),
+                GStylable = require(28),
+                m = require(158),
+                y = require(139),
+                _ = require(54),
+                v = require(7),
+                b = require(122),
+                C = require(73),
+                w = (require(284), require(45)),
+                E = require(70),
+                B = require(11),
+                x = require(95),
+                P = require(69),
+                S = require(22),
+                T = require(6),
+                I = require(215),
+                F = require(1392),
+                R = require(416),
+                GFont = require(108),
+                k = require(281),
+                G = require(280),
+                Q = require(367),
+                M = require(249),
+                N = require(321),
+                U = require(2),
+                V = require(1202),
+                O = require(83),
+                L = require(438),
+                Y = require(132),
+                IsFiniteNonNegativeNumber = require(0);
 
             function H(e, t, i) {
                 return e + "_" + t + "_" + i;
             }
-            e.exports = function (e, t) {
+            module.exports = function (e, t) {
                 var i = {
                     opts: e,
                     jobs: 0,
@@ -123,7 +123,7 @@ module.exports = function (e, t, i) {
                     (i.hasFontsToResolve = function () {
                         return !!Object.keys(i.FontsToResolve).length;
                     }),
-                    (i._hasFontListener = !1),
+                    (i._hasFontListener = false),
                     (i.MAX_VIRTUAL_PIXELS = 3e4),
                     (i.log = function (e) {}),
                     1 == i.opts.log &&
@@ -182,21 +182,21 @@ module.exports = function (e, t, i) {
                     }),
                     (i.isReferenced = function (e) {
                         for (var t = Object.keys(this.References), i = 0; i < t.length; i++)
-                            if (-1 !== this.References[t[i]].indexOf(e)) return !0;
-                        return !1;
+                            if (-1 !== this.References[t[i]].indexOf(e)) return true;
+                        return false;
                     }),
                     (i.addFontToResolve = function (e, t) {
                         this._hasFontListener ||
                             (this.beginJob(),
-                            (this._hasFontListener = !0),
+                            (this._hasFontListener = true),
                             this.fontManager.addEventListener(k.FontAvailableEvent, this._fontAvailableEvent, this),
                             this.fontManager.addEventListener(k.FontUnavailableEvent, this._fontUnavailableEvent, this));
                         var i = H(e.getFamily(), e.getStyle(), e.getWeight());
                         (this.FontsToResolve[i] || (this.FontsToResolve[i] = []), this.FontsToResolve[i].push(t));
                     }),
                     (i.ImagesLoaded = function () {
-                        for (var e = 0; e < i.Images.length; e++) if (!i.Images[e].loaded) return !1;
-                        return !0;
+                        for (var e = 0; e < i.Images.length; e++) if (!i.Images[e].loaded) return false;
+                        return true;
                     }),
                     (i.trim = function (e) {
                         return e.replace(/^\s+|\s+$/g, "");
@@ -206,7 +206,7 @@ module.exports = function (e, t, i) {
                     }),
                     (i.ajax = function (e) {
                         var t = new XMLHttpRequest();
-                        return (t.open("GET", e, !1), t.send(null), t.responseText);
+                        return (t.open("GET", e, false), t.send(null), t.responseText);
                     }),
                     (i.parseXml = function (e) {
                         return new DOMParser().parseFromString(e, "text/xml");
@@ -346,10 +346,10 @@ module.exports = function (e, t, i) {
                                 var n = {},
                                     r = i.trim(i.compressSpaces(t || "")).split(" "),
                                     o = {
-                                        fontSize: !1,
-                                        fontStyle: !1,
-                                        fontWeight: !1,
-                                        fontVariant: !1,
+                                        fontSize: false,
+                                        fontStyle: false,
+                                        fontWeight: false,
+                                        fontVariant: false,
                                     },
                                     a = "",
                                     s = 0;
@@ -362,11 +362,11 @@ module.exports = function (e, t, i) {
                                             ? o.fontSize
                                                 ? "inherit" != r[s] && (a += r[s])
                                                 : ("inherit" != r[s] && (n.fontSize = r[s].split("/")[0]),
-                                                  (o.fontStyle = o.fontVariant = o.fontWeight = o.fontSize = !0))
+                                                  (o.fontStyle = o.fontVariant = o.fontWeight = o.fontSize = true))
                                             : ("inherit" != r[s] && (n.fontWeight = r[s]),
-                                              (o.fontStyle = o.fontVariant = o.fontWeight = !0))
-                                        : ("inherit" != r[s] && (n.fontVariant = r[s]), (o.fontStyle = o.fontVariant = !0))
-                                    : ("inherit" != r[s] && (n.fontStyle = r[s]), (o.fontStyle = !0));
+                                              (o.fontStyle = o.fontVariant = o.fontWeight = true))
+                                        : ("inherit" != r[s] && (n.fontVariant = r[s]), (o.fontStyle = o.fontVariant = true))
+                                    : ("inherit" != r[s] && (n.fontStyle = r[s]), (o.fontStyle = true));
                             return ("" != a && (n.fontFamily = a), n);
                         };
                     })()),
@@ -583,7 +583,7 @@ module.exports = function (e, t, i) {
                             (this.styles = {}),
                             (this.children = []),
                             (this.clone = function () {
-                                return new this.constructor(e.cloneNode(!0));
+                                return new this.constructor(e.cloneNode(true));
                             }),
                             (this.attribute = function (e, t) {
                                 var n = this.attributes[e];
@@ -618,11 +618,11 @@ module.exports = function (e, t, i) {
                                     n instanceof P &&
                                         n !== t &&
                                         (("none" != this.style("display").value && "hidden" != this.style("visibility").value) ||
-                                            n.setProperty("vis", !1));
+                                            n.setProperty("vis", false));
                                     var r = {
                                         transform: e.length ? e[e.length - 1].transform : new v(),
                                     };
-                                    if ((e.push(r), this.style("filter", !1, !0).hasValue())) {
+                                    if ((e.push(r), this.style("filter", false, true).hasValue())) {
                                         var o = this.style("filter").getDefinition();
                                         null != o && o.apply(r, this, n);
                                     }
@@ -685,7 +685,7 @@ module.exports = function (e, t, i) {
                             for (t = 0; t < e.childNodes.length; t++) {
                                 var A = e.childNodes[t];
                                 if (
-                                    (1 == A.nodeType && this.addChild(A, !0), this.captureTextNodes && (3 == A.nodeType || 4 == A.nodeType))
+                                    (1 == A.nodeType && this.addChild(A, true), this.captureTextNodes && (3 == A.nodeType || 4 == A.nodeType))
                                 ) {
                                     var c = A.nodeValue || A.text || "";
                                     if ("" != i.trim(i.compressSpaces(c)) && !(this instanceof i.Element.tspan)) {
@@ -693,7 +693,7 @@ module.exports = function (e, t, i) {
                                             u = this.children.slice(-1).pop();
                                         u instanceof i.Element.tspan
                                             ? (u.text += p.getText())
-                                            : ((p.attributes = B.extend({}, p.attributes, this.attributes)), this.addChild(p, !1));
+                                            : ((p.attributes = B.extend({}, p.attributes, this.attributes)), this.addChild(p, false));
                                     }
                                 }
                             }
@@ -729,7 +729,7 @@ module.exports = function (e, t, i) {
                                             }.bind(this),
                                             {}
                                         );
-                                    Object.keys(o).length && t.setProperty("svgattrs", o, !0);
+                                    Object.keys(o).length && t.setProperty("svgattrs", o, true);
                                 }
                                 if (
                                     (t &&
@@ -738,12 +738,12 @@ module.exports = function (e, t, i) {
                                         t.setProperty("name", this.attribute("id").value),
                                     t &&
                                         t.hasMixin(S.Transform) &&
-                                        (e.transform.isIdentity() || ((this._transform = e.transform), t.transform(e.transform, !0))),
-                                    t && t.hasMixin(f))
+                                        (e.transform.isIdentity() || ((this._transform = e.transform), t.transform(e.transform, true))),
+                                    t && t.hasMixin(GStylable))
                                 ) {
                                     var s = t.getStylePropertySets(),
                                         h = {};
-                                    s.indexOf(f.PropertySet.Style) >= 0 &&
+                                    s.indexOf(GStylable.PropertySet.Style) >= 0 &&
                                         this.style("opacity").hasValue() &&
                                         (h._stop = this.style("opacity").numValue());
                                     var A = t.getPaintLayers();
@@ -757,17 +757,17 @@ module.exports = function (e, t, i) {
                                                 var t = L.getDefaultFillForElement(this.type),
                                                     i = this.style("fill").hasValue() && "none" === this.style("fill").getValue();
                                                 e._pt
-                                                    ? (e._vs = !0)
+                                                    ? (e._vs = true)
                                                     : e._pt || i || !t
-                                                      ? ((e._pt = l.BLACK), (e._vs = !1))
-                                                      : ((e._pt = t), (e._vs = !0));
+                                                      ? ((e._pt = l.BLACK), (e._vs = false))
+                                                      : ((e._pt = t), (e._vs = true));
                                                 var n = [],
                                                     r = [];
                                                 for (var o in e) (r.push(o), n.push(e[o]));
                                                 (d.setProperties(r, n), A.appendChild(d));
                                             }.bind(this),
                                             u = 1,
-                                            d = new f.FillPaintLayer(),
+                                            d = new GStylable.FillPaintLayer(),
                                             m = [];
                                         if (this.style("fill").isUrlDefinition())
                                             this.style("fill")
@@ -794,10 +794,10 @@ module.exports = function (e, t, i) {
                                         } else t instanceof x || ((c = l.BLACK), (u = 1), (m._op = u), (m._pt = c), p(m));
                                     }
                                     if (A) {
-                                        var _ = new f.BorderPaintLayer(),
+                                        var _ = new GStylable.BorderPaintLayer(),
                                             b = function (i) {
                                                 if (
-                                                    (t instanceof a && (i._ba = f.BorderAlignment.Center),
+                                                    (t instanceof a && (i._ba = GStylable.BorderAlignment.Center),
                                                     this.style("stroke-opacity").hasValue())
                                                 ) {
                                                     var n = i.hasOwnProperty("_op") ? i._op : 1;
@@ -825,7 +825,7 @@ module.exports = function (e, t, i) {
                                                     var p = this.attribute("mask").getDefinition();
                                                     if (p) {
                                                         var u = p.attribute("x").numValue() < 0;
-                                                        i._ba = u ? f.BorderAlignment.Outside : f.BorderAlignment.Inside;
+                                                        i._ba = u ? GStylable.BorderAlignment.Outside : GStylable.BorderAlignment.Inside;
                                                     }
                                                 }
                                                 if ("non-scaling-stroke" !== this.attribute("vector-effect").value) {
@@ -867,8 +867,8 @@ module.exports = function (e, t, i) {
                                                 if (!i._pt) {
                                                     var v = L.getDefaultFillForElement(this.type);
                                                     !(this.style("fill").hasValue() && "none" === this.style("fill").getValue()) && v
-                                                        ? ((m._pt = v), (m._vs = !0))
-                                                        : ((m._pt = l.BLACK), (m._vs = !1));
+                                                        ? ((m._pt = v), (m._vs = true))
+                                                        : ((m._pt = l.BLACK), (m._vs = false));
                                                 }
                                                 for (var b in i) (m.push(b), y.push(i[b]));
                                                 (_.setProperties(m, y), A.appendChild(_));
@@ -883,7 +883,7 @@ module.exports = function (e, t, i) {
                                                     ("number" == typeof e.opacity && (i = e.opacity),
                                                         "number" != typeof i && (i = 1),
                                                         (t._pt = e.color),
-                                                        (t._vs = !0),
+                                                        (t._vs = true),
                                                         (t._op = Math.min(1, i)),
                                                         b(t));
                                                 });
@@ -897,19 +897,19 @@ module.exports = function (e, t, i) {
                                             b(C);
                                         } else ((C._pt = null), b(C));
                                     }
-                                    s.indexOf(f.PropertySet.Text);
+                                    s.indexOf(GStylable.PropertySet.Text);
                                     m = [];
                                     var B = [];
                                     for (var T in h) (m.push(T), B.push(h[T]));
                                     m.length && t.setProperties(m, B);
                                 }
-                                if (this.style("clip-path", !1, !0).hasValue()) {
-                                    var I = this.style("clip-path", !1, !0).getDefinition();
+                                if (this.style("clip-path", false, true).hasValue()) {
+                                    var I = this.style("clip-path", false, true).getDefinition();
                                     I && (e.clipPath = I.getPath(e));
                                 }
                             }));
                     }),
-                    X.inherit(i.Element.RenderedElementBase, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.RenderedElementBase, i.Element.ElementBase),
                     (i.Element.PromiseCapability = function (e) {
                         ((this.base = i.Element.RenderedElementBase), this.base(e));
                         var t = {};
@@ -918,7 +918,7 @@ module.exports = function (e, t, i) {
                         })),
                             (this.promiseCapability = t));
                     }),
-                    X.inherit(i.Element.PromiseCapability, i.Element.RenderedElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.PromiseCapability, i.Element.RenderedElementBase),
                     Object.defineProperties(i.Element.PromiseCapability.prototype, {
                         resolve: {
                             get: function () {
@@ -944,7 +944,7 @@ module.exports = function (e, t, i) {
                                 (t instanceof w || t instanceof h) &&
                                     ("inherit" != this.style("fill-rule").valueOrDefault("inherit")
                                         ? t.setProperty("evenodd", "evenodd" === this.style("fill-rule").value)
-                                        : t.setProperty("evenodd", !1));
+                                        : t.setProperty("evenodd", false));
                             }),
                             (this.renderChildren = function (e) {
                                 (this.path(e),
@@ -969,7 +969,7 @@ module.exports = function (e, t, i) {
                                 return null;
                             }));
                     }),
-                    X.inherit(i.Element.PathElementBase, i.Element.RenderedElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.PathElementBase, i.Element.RenderedElementBase),
                     (i.Element.svg = function (e) {
                         ((this.base = i.Element.RenderedElementBase),
                             this.base(e),
@@ -982,8 +982,8 @@ module.exports = function (e, t, i) {
                             }),
                             (this.baseSetSceneContext = this.setSceneContext),
                             (this.setSceneContext = function (e) {
-                                (this.attribute("x").hasValue() || (this.attribute("x", !0).value = 0),
-                                    this.attribute("y").hasValue() || (this.attribute("y", !0).value = 0),
+                                (this.attribute("x").hasValue() || (this.attribute("x", true).value = 0),
+                                    this.attribute("y").hasValue() || (this.attribute("y", true).value = 0),
                                     (e.transform = new v(
                                         1,
                                         0,
@@ -996,8 +996,8 @@ module.exports = function (e, t, i) {
                                 var t = i.ViewPort.width(),
                                     n = i.ViewPort.height();
                                 if (
-                                    (this.attribute("width").hasValue() || (this.attribute("width", !0).value = "100%"),
-                                    this.attribute("height").hasValue() || (this.attribute("height", !0).value = "100%"),
+                                    (this.attribute("width").hasValue() || (this.attribute("width", true).value = "100%"),
+                                    this.attribute("height").hasValue() || (this.attribute("height", true).value = "100%"),
                                     void 0 === this.root)
                                 ) {
                                     ((t = this.attribute("width").toPixels("x")), (n = this.attribute("height").toPixels("y")));
@@ -1042,8 +1042,8 @@ module.exports = function (e, t, i) {
                                         void 0 !== window.getComputedStyle &&
                                         (e.font = window.getComputedStyle(e.canvas).getPropertyValue("font")),
                                     this.baseSetContext(e),
-                                    this.attribute("x").hasValue() || (this.attribute("x", !0).value = 0),
-                                    this.attribute("y").hasValue() || (this.attribute("y", !0).value = 0),
+                                    this.attribute("x").hasValue() || (this.attribute("x", true).value = 0),
+                                    this.attribute("y").hasValue() || (this.attribute("y", true).value = 0),
                                     (e.transform = e.transform.translated(
                                         this.attribute("x").toPixels("x"),
                                         this.attribute("y").toPixels("y")
@@ -1051,8 +1051,8 @@ module.exports = function (e, t, i) {
                                 var t = i.ViewPort.width(),
                                     n = i.ViewPort.height();
                                 if (
-                                    (this.attribute("width").hasValue() || (this.attribute("width", !0).value = "100%"),
-                                    this.attribute("height").hasValue() || (this.attribute("height", !0).value = "100%"),
+                                    (this.attribute("width").hasValue() || (this.attribute("width", true).value = "100%"),
+                                    this.attribute("height").hasValue() || (this.attribute("height", true).value = "100%"),
                                     void 0 === this.root)
                                 ) {
                                     ((t = this.attribute("width").toPixels("x")), (n = this.attribute("height").toPixels("y")));
@@ -1116,7 +1116,7 @@ module.exports = function (e, t, i) {
                             return t.call(this, e, n);
                         };
                     }),
-                    X.inherit(i.Element.svg, i.Element.RenderedElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.svg, i.Element.RenderedElementBase),
                     (i.Element.rect = function (e) {
                         ((this.base = i.Element.RenderedElementBase),
                             this.base(e),
@@ -1142,7 +1142,7 @@ module.exports = function (e, t, i) {
                                 return this._bbox;
                             }));
                     }),
-                    X.inherit(i.Element.rect, i.Element.RenderedElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.rect, i.Element.RenderedElementBase),
                     (i.Element.circle = function (e) {
                         ((this.base = i.Element.RenderedElementBase),
                             this.base(e),
@@ -1184,7 +1184,7 @@ module.exports = function (e, t, i) {
                                 return this._bbox;
                             }));
                     }),
-                    X.inherit(i.Element.ellipse, i.Element.RenderedElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.ellipse, i.Element.RenderedElementBase),
                     (i.Element.line = function (e) {
                         ((this.base = i.Element.PathElementBase),
                             this.base(e),
@@ -1218,7 +1218,7 @@ module.exports = function (e, t, i) {
                                 ];
                             }));
                     }),
-                    X.inherit(i.Element.line, i.Element.PathElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.line, i.Element.PathElementBase),
                     (i.Element.polyline = function (e) {
                         ((this.base = i.Element.PathElementBase),
                             this.base(e),
@@ -1244,17 +1244,17 @@ module.exports = function (e, t, i) {
                                 return (e.push([this.points[this.points.length - 1], e[e.length - 1][1]]), e);
                             }));
                     }),
-                    X.inherit(i.Element.polyline, i.Element.PathElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.polyline, i.Element.PathElementBase),
                     (i.Element.polygon = function (e) {
                         ((this.base = i.Element.polyline),
                             this.base(e),
                             (this.baseCreateSceneNode = this.createSceneNode),
                             (this.createSceneNode = function () {
                                 var e = this.baseCreateSceneNode();
-                                return (e.setProperty("closed", !0), e);
+                                return (e.setProperty("closed", true), e);
                             }));
                     }),
-                    X.inherit(i.Element.polygon, i.Element.polyline),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.polygon, i.Element.polyline),
                     (i.Element.path = function (e) {
                         ((this.base = i.Element.PathElementBase), this.base(e), (this._bbox = null));
                         var t = this.attribute("d").value;
@@ -1300,9 +1300,9 @@ module.exports = function (e, t, i) {
                                             case "t":
                                             case "a":
                                             case "z":
-                                                return !0;
+                                                return true;
                                         }
-                                        return !1;
+                                        return false;
                                     }),
                                     (this.getToken = function () {
                                         return (this.i++, this.tokens[this.i]);
@@ -1493,7 +1493,7 @@ module.exports = function (e, t, i) {
                                         case "z":
                                             (t.addVertex(c.Command.Close), (e.current = e.start));
                                     }
-                                var v = n.createPathFromVertexSource(t, !1, !0);
+                                var v = n.createPathFromVertexSource(t, false, true);
                                 if (v) {
                                     var b = v.getGeometryBBox();
                                     b && (this._bbox = new i.Rect(b.getX(), b.getY(), b.getWidth(), b.getHeight()));
@@ -1513,7 +1513,7 @@ module.exports = function (e, t, i) {
                                 return i;
                             }));
                     }),
-                    X.inherit(i.Element.path, i.Element.PathElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.path, i.Element.PathElementBase),
                     (i.Element.switch = function (e) {
                         ((this.base = i.Element.RenderedElementBase),
                             this.base(e),
@@ -1540,14 +1540,14 @@ module.exports = function (e, t, i) {
                                 return this.getGraphicSource().renderGraphicSource();
                             }));
                     }),
-                    X.inherit(i.Element.switch, i.Element.RenderedElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.switch, i.Element.RenderedElementBase),
                     (i.Element.pattern = function (e) {
                         ((this.base = i.Element.PromiseCapability),
                             this.base(e),
                             (this.createPattern = function (e, t) {
                                 var n = function (e) {
-                                    var n = this.attribute("width").toPixels("x", !0),
-                                        r = this.attribute("height").toPixels("y", !0),
+                                    var n = this.attribute("width").toPixels("x", true),
+                                        r = this.attribute("height").toPixels("y", true),
                                         o = new i.Element.svg();
                                     ((o.attributes.viewBox = new i.Property("viewBox", this.attribute("viewBox").value)),
                                         (o.attributes.width = new i.Property("width", n + "px")),
@@ -1592,7 +1592,7 @@ module.exports = function (e, t, i) {
                                 return new Promise(n);
                             }));
                     }),
-                    X.inherit(i.Element.pattern, i.Element.PromiseCapability),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.pattern, i.Element.PromiseCapability),
                     (i.Element.marker = function (e) {
                         ((this.base = i.Element.ElementBase),
                             this.base(e),
@@ -1620,7 +1620,7 @@ module.exports = function (e, t, i) {
                                     (e.transform = e.transform.translated(-t.x, -t.y)));
                             }));
                     }),
-                    X.inherit(i.Element.marker, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.marker, i.Element.ElementBase),
                     (i.Element.defs = function (e) {
                         ((this.base = i.Element.ElementBase),
                             this.base(e),
@@ -1633,7 +1633,7 @@ module.exports = function (e, t, i) {
                                 (this.clearSceneContext(i, e), t.pop({}));
                             }));
                     }),
-                    X.inherit(i.Element.defs, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.defs, i.Element.ElementBase),
                     (i.Element.GradientBase = function (e) {
                         ((this.base = i.Element.ElementBase),
                             this.base(e),
@@ -1681,7 +1681,7 @@ module.exports = function (e, t, i) {
                                 );
                             }));
                     }),
-                    X.inherit(i.Element.GradientBase, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.GradientBase, i.Element.ElementBase),
                     (i.Element.linearGradient = function (e) {
                         ((this.base = i.Element.GradientBase),
                             this.base(e),
@@ -1692,10 +1692,10 @@ module.exports = function (e, t, i) {
                                         this.attribute("y1").hasValue() ||
                                         this.attribute("x2").hasValue() ||
                                         this.attribute("y2").hasValue() ||
-                                        ((this.attribute("x1", !0).value = 0),
-                                        (this.attribute("y1", !0).value = 0),
-                                        (this.attribute("x2", !0).value = 1),
-                                        (this.attribute("y2", !0).value = 0));
+                                        ((this.attribute("x1", true).value = 0),
+                                        (this.attribute("y1", true).value = 0),
+                                        (this.attribute("x2", true).value = 1),
+                                        (this.attribute("y2", true).value = 0));
                                     var h =
                                             "objectBoundingBox" == this.gradientUnits
                                                 ? s.x() + s.width() * this.attribute("x1").numValue()
@@ -1728,9 +1728,9 @@ module.exports = function (e, t, i) {
                                     }
                                     var _ = p - h,
                                         b = u - c,
-                                        C = !1;
+                                        C = false;
                                     if ("objectBoundingBox" == this.gradientUnits && _ < 0) {
-                                        ((C = !0), (_ = -_), (b = -b));
+                                        ((C = true), (_ = -_), (b = -b));
                                         var w = p;
                                         ((p = h),
                                             (h = w),
@@ -1774,8 +1774,8 @@ module.exports = function (e, t, i) {
                                         z = [],
                                         j = function (e, t, n, r) {
                                             var o = i.getColor(e.color),
-                                                a = o[0].toScreen(!1),
-                                                s = t[0].toScreen(!1),
+                                                a = o[0].toScreen(false),
+                                                s = t[0].toScreen(false),
                                                 h = o[1],
                                                 A = t[1];
                                             (r && (n = 1 - n),
@@ -1795,7 +1795,7 @@ module.exports = function (e, t, i) {
                                                 var K = E < n.length - 1 ? n[E + 1] : null;
                                                 if (K) {
                                                     if (K.offset * Z + N <= 0) continue;
-                                                    j(K, J, -q / Z, !0);
+                                                    j(K, J, -q / Z, true);
                                                 }
                                                 q = 0;
                                             } else if (q > 1) {
@@ -1878,7 +1878,7 @@ module.exports = function (e, t, i) {
                                 return new Promise(s);
                             }));
                     }),
-                    X.inherit(i.Element.linearGradient, i.Element.GradientBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.linearGradient, i.Element.GradientBase),
                     (i.Element.radialGradient = function (e) {
                         ((this.base = i.Element.GradientBase),
                             this.base(e),
@@ -1890,9 +1890,9 @@ module.exports = function (e, t, i) {
                                         h,
                                         c = t.getAbsoluteBoundingBox();
                                     i.ViewPort.viewPorts[0];
-                                    (this.attribute("cx").hasValue() || (this.attribute("cx", !0).value = "50%"),
-                                        this.attribute("cy").hasValue() || (this.attribute("cy", !0).value = "50%"),
-                                        this.attribute("r").hasValue() || (this.attribute("r", !0).value = "50%"),
+                                    (this.attribute("cx").hasValue() || (this.attribute("cx", true).value = "50%"),
+                                        this.attribute("cy").hasValue() || (this.attribute("cy", true).value = "50%"),
+                                        this.attribute("r").hasValue() || (this.attribute("r", true).value = "50%"),
                                         "objectBoundingBox" == this.gradientUnits
                                             ? ((o = this.attribute("cx").hasValue() ? this.attribute("cx").numValue() : void 0),
                                               (a = this.attribute("cy").hasValue() ? this.attribute("cy").numValue() : void 0),
@@ -1955,7 +1955,7 @@ module.exports = function (e, t, i) {
                                 return new Promise(o);
                             }));
                     }),
-                    X.inherit(i.Element.radialGradient, i.Element.GradientBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.radialGradient, i.Element.GradientBase),
                     (i.Element.stop = function (e) {
                         ((this.base = i.Element.ElementBase),
                             this.base(e),
@@ -1965,13 +1965,13 @@ module.exports = function (e, t, i) {
                         var t = this.style("stop-color");
                         (this.style("stop-opacity").hasValue() && (t = t.addOpacity(this.style("stop-opacity"))), (this.color = t.value));
                     }),
-                    X.inherit(i.Element.stop, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.stop, i.Element.ElementBase),
                     (i.Element.font = function (e) {
                         ((this.base = i.Element.ElementBase),
                             this.base(e),
                             (this.horizAdvX = this.attribute("horiz-adv-x").numValue()),
-                            (this.isRTL = !1),
-                            (this.isArabic = !1),
+                            (this.isRTL = false),
+                            (this.isArabic = false),
                             (this.fontFace = null),
                             (this.missingGlyph = null),
                             (this.glyphs = []));
@@ -1984,14 +1984,14 @@ module.exports = function (e, t, i) {
                                   ? (this.missingGlyph = n)
                                   : "glyph" == n.type &&
                                     ("" != n.arabicForm
-                                        ? ((this.isRTL = !0),
-                                          (this.isArabic = !0),
+                                        ? ((this.isRTL = true),
+                                          (this.isArabic = true),
                                           void 0 === this.glyphs[n.unicode] && (this.glyphs[n.unicode] = []),
                                           (this.glyphs[n.unicode][n.arabicForm] = n))
                                         : (this.glyphs[n.unicode] = n));
                         }
                     }),
-                    X.inherit(i.Element.font, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.font, i.Element.ElementBase),
                     (i.Element.fontface = function (e) {
                         ((this.base = i.Element.ElementBase),
                             this.base(e),
@@ -1999,11 +1999,11 @@ module.exports = function (e, t, i) {
                             (this.descent = this.attribute("descent").value),
                             (this.unitsPerEm = this.attribute("units-per-em").numValue()));
                     }),
-                    X.inherit(i.Element.fontface, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.fontface, i.Element.ElementBase),
                     (i.Element.missingglyph = function (e) {
                         ((this.base = i.Element.path), this.base(e), (this.horizAdvX = 0));
                     }),
-                    X.inherit(i.Element.missingglyph, i.Element.path),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.missingglyph, i.Element.path),
                     (i.Element.glyph = function (e) {
                         ((this.base = i.Element.path),
                             this.base(e),
@@ -2011,7 +2011,7 @@ module.exports = function (e, t, i) {
                             (this.unicode = this.attribute("unicode").value),
                             (this.arabicForm = this.attribute("arabic-form").value));
                     }),
-                    X.inherit(i.Element.glyph, i.Element.path),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.glyph, i.Element.path),
                     (i.Element.TextElementBase = function (e) {
                         ((this.base = i.Element.PromiseCapability),
                             this.base(e),
@@ -2036,9 +2036,9 @@ module.exports = function (e, t, i) {
                                     : new i.Rect(0, 0, 0, 0);
                             }));
                     }),
-                    X.inherit(i.Element.TextElementBase, i.Element.PromiseCapability),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.TextElementBase, i.Element.PromiseCapability),
                     (i.Element.text = function (e) {
-                        ((this.captureTextNodes = !0),
+                        ((this.captureTextNodes = true),
                             (this.base = i.Element.TextElementBase),
                             this.base(e),
                             (this.baseSetContext = this.setContext),
@@ -2095,7 +2095,7 @@ module.exports = function (e, t, i) {
                                             var r = new E();
                                             (r.setProperty("_tfi", n), r.setText(t.getText()));
                                             var o = new v().translated(t.attribute("x").toPixels(), t.attribute("y").toPixels() - n);
-                                            (r.setProperty("sc", !0), r.transform(o));
+                                            (r.setProperty("sc", true), r.transform(o));
                                             i.fontManager.getDefaultFont();
                                             var a,
                                                 s = function (e, t, i) {
@@ -2104,7 +2104,7 @@ module.exports = function (e, t, i) {
                                                         if (t.isResolved()) {
                                                             var r = [];
                                                             (r.push("font:"),
-                                                                r.push(t.getStyle() === D.Style.Normal ? "normal" : "italic"),
+                                                                r.push(t.getStyle() === GFont.Style.Normal ? "normal" : "italic"),
                                                                 r.push(t.getWeight()),
                                                                 r.push(n + "px"),
                                                                 r.push(t.getFamily()));
@@ -2145,17 +2145,17 @@ module.exports = function (e, t, i) {
                                                 h = function (e) {
                                                     if (isNaN(e)) {
                                                         if ("inherit" !== e && "normal" !== e)
-                                                            for (var t = Object.keys(D.Weight), i = 0; i < t.length; i++)
-                                                                if (t[i].toLowerCase() === e.toLowerCase()) return D.Weight[t[i]];
-                                                        return D.Weight.Regular;
+                                                            for (var t = Object.keys(GFont.Weight), i = 0; i < t.length; i++)
+                                                                if (t[i].toLowerCase() === e.toLowerCase()) return GFont.Weight[t[i]];
+                                                        return GFont.Weight.Regular;
                                                     }
                                                     return parseInt(e);
                                                 },
                                                 A = function (e) {
-                                                    return "normal" === e ? D.Style.Normal : D.Style.Italic;
+                                                    return "normal" === e ? GFont.Style.Normal : GFont.Style.Italic;
                                                 },
-                                                c = D.Style.Normal,
-                                                p = D.Weight.Regular;
+                                                c = GFont.Style.Normal,
+                                                p = GFont.Weight.Regular;
                                             if (
                                                 (t.style("font-weight").hasValue() && (p = h(t.style("font-weight").value)),
                                                 t.style("font-style").hasValue() && (c = A(t.style("font-style").value)),
@@ -2176,7 +2176,7 @@ module.exports = function (e, t, i) {
                                                             var t = (e = e.replace(/["']/g, "").replace(" ", "").trim()).indexOf("-");
                                                             if (-1 !== t) {
                                                                 var i = e.substring(t + 1, e.length).trim();
-                                                                (D.Weight[i] || "normal" === i.toLowerCase()) &&
+                                                                (GFont.Weight[i] || "normal" === i.toLowerCase()) &&
                                                                     (e = e.substring(0, t).trim());
                                                             }
                                                             return e
@@ -2260,9 +2260,9 @@ module.exports = function (e, t, i) {
                                 return e;
                             }));
                     }),
-                    X.inherit(i.Element.text, i.Element.TextElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.text, i.Element.TextElementBase),
                     (i.Element.tspan = function (e) {
-                        ((this.captureTextNodes = !0),
+                        ((this.captureTextNodes = true),
                             (this.base = i.Element.TextElementBase),
                             this.base(e),
                             (this.text = e.nodeValue || e.text || e.textContent || ""),
@@ -2280,11 +2280,11 @@ module.exports = function (e, t, i) {
                                 return this.parent.getBoundingBox();
                             }));
                     }),
-                    X.inherit(i.Element.tspan, i.Element.TextElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.tspan, i.Element.TextElementBase),
                     (i.Element.textPath = function (e) {
                         ((this.base = i.Element.text), this.base(e));
                     }),
-                    X.inherit(i.Element.textPath, i.Element.text),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.textPath, i.Element.text),
                     (i.Element.tref = function (e) {
                         ((this.base = i.Element.TextElementBase),
                             this.base(e),
@@ -2293,10 +2293,10 @@ module.exports = function (e, t, i) {
                                 if (null != e) return e.children[0].getText();
                             }));
                     }),
-                    X.inherit(i.Element.tref, i.Element.TextElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.tref, i.Element.TextElementBase),
                     (i.Element.a = function (e) {
-                        this.hasText = !0;
-                        for (var t = 0; t < e.childNodes.length; t++) 3 != e.childNodes[t].nodeType && (this.hasText = !1);
+                        this.hasText = true;
+                        for (var t = 0; t < e.childNodes.length; t++) 3 != e.childNodes[t].nodeType && (this.hasText = false);
                         (this.hasText
                             ? ((this.base = i.Element.TextElementBase), this.base(e))
                             : ((this.base = i.Element.RenderedElementBase),
@@ -2309,7 +2309,7 @@ module.exports = function (e, t, i) {
                                 return this.text;
                             }));
                     }),
-                    X.inherit(i.Element.a, i.Element.TextElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.a, i.Element.TextElementBase),
                     (i.Element.image = function (e) {
                         ((this.base = i.Element.rect),
                             this.base(e),
@@ -2348,15 +2348,15 @@ module.exports = function (e, t, i) {
                         var t = this.getHrefAttribute().value;
                         if ("" != t) {
                             var n = t.match(/\.svg$/);
-                            if ((i.Images.push(this), (this.loaded = !1), n)) ((this.img = i.ajax(t)), (this.loaded = !0));
+                            if ((i.Images.push(this), (this.loaded = false), n)) ((this.img = i.ajax(t)), (this.loaded = true));
                             else {
                                 ((this.img = document.createElement("img")), 1 == i.opts.useCORS && (this.img.crossOrigin = "Anonymous"));
                                 var r = this;
                                 ((this.img.onload = function () {
-                                    r.loaded = !0;
+                                    r.loaded = true;
                                 }),
                                     (this.img.onerror = function () {
-                                        (i.log('ERROR: image "' + t + '" not found'), (r.loaded = !0));
+                                        (i.log('ERROR: image "' + t + '" not found'), (r.loaded = true));
                                     }),
                                     (this.img.src = t));
                             }
@@ -2384,7 +2384,7 @@ module.exports = function (e, t, i) {
                             };
                         }
                     }),
-                    X.inherit(i.Element.image, i.Element.rect),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.image, i.Element.rect),
                     (i.Element.g = function (e) {
                         ((this.base = i.Element.RenderedElementBase),
                             this.base(e),
@@ -2392,7 +2392,7 @@ module.exports = function (e, t, i) {
                                 return new b();
                             }));
                     }),
-                    X.inherit(i.Element.g, i.Element.RenderedElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.g, i.Element.RenderedElementBase),
                     (i.Element.symbol = function (e) {
                         ((this.base = i.Element.RenderedElementBase),
                             this.base(e),
@@ -2403,11 +2403,11 @@ module.exports = function (e, t, i) {
                                     i instanceof P &&
                                         i !== t &&
                                         (("none" != this.style("display").value && "hidden" != this.style("visibility").value) ||
-                                            i.setProperty("vis", !1));
+                                            i.setProperty("vis", false));
                                     var n = {
                                         transform: e.length ? e[e.length - 1].transform : new v(),
                                     };
-                                    if ((e.push(n), this.style("filter", !1, !0).hasValue())) {
+                                    if ((e.push(n), this.style("filter", false, true).hasValue())) {
                                         var r = this.style("filter").getDefinition();
                                         null != r && r.apply(n, this, i);
                                     }
@@ -2435,7 +2435,7 @@ module.exports = function (e, t, i) {
                                 return null;
                             }));
                     }),
-                    X.inherit(i.Element.symbol, i.Element.RenderedElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.symbol, i.Element.RenderedElementBase),
                     (i.Element.style = function (e) {
                         ((this.base = i.Element.ElementBase), this.base(e));
                         for (var t = "", n = 0; n < e.childNodes.length; n++) t += e.childNodes[n].nodeValue;
@@ -2477,7 +2477,7 @@ module.exports = function (e, t, i) {
                                     }
                             }
                     }),
-                    X.inherit(i.Element.style, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.style, i.Element.ElementBase),
                     (i.Element.use = function (e) {
                         ((this.base = i.Element.RenderedElementBase),
                             this.base(e),
@@ -2566,7 +2566,7 @@ module.exports = function (e, t, i) {
                                 return this.element ? this.element.getBoundingBox() : null;
                             }));
                     }),
-                    X.inherit(i.Element.use, i.Element.RenderedElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.use, i.Element.RenderedElementBase),
                     (i.Element.mask = function (e) {
                         ((this.base = i.Element.ElementBase),
                             this.base(e),
@@ -2591,11 +2591,11 @@ module.exports = function (e, t, i) {
                                     i instanceof P &&
                                         i !== t &&
                                         (("none" != this.style("display").value && "hidden" != this.style("visibility").value) ||
-                                            i.setProperty("vis", !1));
+                                            i.setProperty("vis", false));
                                     var n = {
                                         transform: e.length ? e[e.length - 1].transform : new v(),
                                     };
-                                    if ((e.push(n), this.style("filter", !1, !0).hasValue())) {
+                                    if ((e.push(n), this.style("filter", false, true).hasValue())) {
                                         var r = this.style("filter").getDefinition();
                                         null != r && r.apply(n, this, i);
                                     }
@@ -2609,7 +2609,7 @@ module.exports = function (e, t, i) {
                             (this._createSceneNode = function (e) {
                                 for (
                                     var t = function (e, t) {
-                                            var i = e && e.hasMixin(f) && e.getPaintLayers(),
+                                            var i = e && e.hasMixin(GStylable) && e.getPaintLayers(),
                                                 n = i && i.getFillLayers();
                                             return n.length
                                                 ? n.some(
@@ -2618,10 +2618,10 @@ module.exports = function (e, t, i) {
                                                           return t && l.equals(t, l.BLACK);
                                                       }.bind(this)
                                                   )
-                                                : t || !1;
+                                                : t || false;
                                         },
                                         i = function (e) {
-                                            var t = e && e.hasMixin(f) && e.getPaintLayers();
+                                            var t = e && e.hasMixin(GStylable) && e.getPaintLayers();
                                             (t && t.getFillLayers()).forEach(function (e) {
                                                 e.setProperties(["_pt", "_op"], [l.WHITE, 0]);
                                             });
@@ -2682,7 +2682,7 @@ module.exports = function (e, t, i) {
                             }),
                             (this.render = function (e) {}));
                     }),
-                    X.inherit(i.Element.mask, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.mask, i.Element.ElementBase),
                     (i.Element.clipPath = function (e) {
                         ((this.base = i.Element.ElementBase),
                             this.base(e),
@@ -2710,10 +2710,10 @@ module.exports = function (e, t, i) {
                                             l = new _(),
                                             h = new c();
                                         for (i = 0; i < t.length; ++i) s(t[i]);
-                                        a = n.createPathFromVertexSource(l, !1, !0);
+                                        a = n.createPathFromVertexSource(l, false, true);
                                     }
                                     if (a) {
-                                        if (a.hasMixin(f)) {
+                                        if (a.hasMixin(GStylable)) {
                                             var A = a.getPaintLayers();
                                             A && A.clearLayers();
                                         }
@@ -2751,7 +2751,7 @@ module.exports = function (e, t, i) {
                             }),
                             (this.render = function (e) {}));
                     }),
-                    X.inherit(i.Element.clipPath, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.clipPath, i.Element.ElementBase),
                     (i.Element.filter = function (e) {
                         ((this.base = i.Element.ElementBase),
                             this.base(e),
@@ -2781,18 +2781,18 @@ module.exports = function (e, t, i) {
                                 }
                                 var h = ["feOffset", "feGaussianBlur"],
                                     A = ["feBlend", "feComposite"],
-                                    c = !1;
+                                    c = false;
                                 if (
                                     !this.children.every(function (e) {
-                                        if (!c && A.indexOf(e.type) >= 0) return ((c = !0), !!h.length);
+                                        if (!c && A.indexOf(e.type) >= 0) return ((c = true), !!h.length);
                                         if (h.length) {
                                             var t = h.indexOf(e.type);
                                             if (t >= 0) return (h.splice(t, 1), !c || h.length);
                                         }
-                                        return !0;
+                                        return true;
                                     })
                                 ) {
-                                    if (i.hasMixin(f)) {
+                                    if (i.hasMixin(GStylable)) {
                                         var p = i.getEffects();
                                         if (p) {
                                             var u = B.find(this.children, function (e) {
@@ -2815,19 +2815,19 @@ module.exports = function (e, t, i) {
                                 } else
                                     for (s = 0; s < this.children.length; s++)
                                         "function" == typeof this.children[s].apply && this.children[s].apply(e, i, o, a);
-                                t.style("filter", !0).value = r;
+                                t.style("filter", true).value = r;
                             }),
                             (this.render = function (e) {}));
                     }),
-                    X.inherit(i.Element.filter, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.filter, i.Element.ElementBase),
                     (i.Element.feMorphology = function (e) {
                         ((this.base = i.Element.ElementBase), this.base(e), (this.apply = function (e, t, i, n, r) {}));
                     }),
-                    X.inherit(i.Element.feMorphology, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.feMorphology, i.Element.ElementBase),
                     (i.Element.feComposite = function (e) {
                         ((this.base = i.Element.ElementBase), this.base(e), (this.apply = function (e, t, i, n, r) {}));
                     }),
-                    X.inherit(i.Element.feComposite, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.feComposite, i.Element.ElementBase),
                     (i.Element.feColorMatrix = function (e) {
                         ((this.base = i.Element.ElementBase), this.base(e));
                         var t = i.ToNumberArray(this.attribute("values").value);
@@ -2927,7 +2927,7 @@ module.exports = function (e, t, i) {
                             (e.clearRect(0, 0, n, r), e.putImageData(o, 0, 0));
                         };
                     }),
-                    X.inherit(i.Element.feColorMatrix, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.feColorMatrix, i.Element.ElementBase),
                     (i.Element.feOffset = function (e) {
                         ((this.base = i.Element.ElementBase),
                             this.base(e),
@@ -2935,7 +2935,7 @@ module.exports = function (e, t, i) {
                             (this.dy = this.attribute("dy").toPixels("y")),
                             (this.apply = function (e, t, i, n, r, o) {}));
                     }),
-                    X.inherit(i.Element.feOffset, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.feOffset, i.Element.ElementBase),
                     (i.Element.feFlood = function (e) {
                         ((this.base = i.Element.ElementBase), this.base(e));
                         var t = this.style("flood-color"),
@@ -2970,7 +2970,7 @@ module.exports = function (e, t, i) {
                             this.style("flood-opacity").hasValue() && (r = this.style("flood-opacity").numValue() * Math.min(r, 1)),
                             (this.floodOpacity = r),
                             (this.apply = function (e, t) {
-                                if (t.hasMixin(f)) {
+                                if (t.hasMixin(GStylable)) {
                                     var i = t.getEffects();
                                     if (i) {
                                         var n,
@@ -3042,14 +3042,14 @@ module.exports = function (e, t, i) {
                                 return e && e.renderGraphicSource();
                             }));
                     }),
-                    X.inherit(i.Element.gravitElementRef, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.gravitElementRef, i.Element.ElementBase),
                     (i.Element.feGaussianBlur = function (e) {
                         ((this.base = i.Element.ElementBase),
                             this.base(e),
                             (this.blurRadius = this.attribute("stdDeviation").numValue()),
                             (this.extraFilterDistance = this.blurRadius),
                             (this.apply = function (e, t, i, n, r, o) {
-                                if (t.hasMixin(f)) {
+                                if (t.hasMixin(GStylable)) {
                                     var a = t.getEffects();
                                     if (a) {
                                         var s = new M(),
@@ -3064,21 +3064,21 @@ module.exports = function (e, t, i) {
                                 }
                             }));
                     }),
-                    X.inherit(i.Element.feGaussianBlur, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.feGaussianBlur, i.Element.ElementBase),
                     (i.Element.title = function (e) {
                         ((this.base = i.Element.ElementBase), this.base(e));
                     }),
-                    X.inherit(i.Element.title, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.title, i.Element.ElementBase),
                     (i.Element.desc = function (e) {
                         ((this.base = i.Element.ElementBase), this.base(e));
                     }),
-                    X.inherit(i.Element.desc, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.desc, i.Element.ElementBase),
                     (i.Element.MISSING = function (e) {
                         ((this.base = i.Element.ElementBase),
                             this.base(e),
                             i.log("ERROR: Element '" + e.nodeName + "' not yet implemented."));
                     }),
-                    X.inherit(i.Element.MISSING, i.Element.ElementBase),
+                    IsFiniteNonNegativeNumber.inherit(i.Element.MISSING, i.Element.ElementBase),
                     (i.CreateElement = function (e) {
                         var t = e.nodeName.replace(/^[^:]+:/, "");
                         t = t.replace(/\-/g, "");

@@ -1,23 +1,23 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o,
             i,
             a,
             r,
             s,
-            l = n(23),
-            c = n(411),
-            d = n(124),
-            u = n(409).set,
-            p = n(412),
-            g = n(410),
-            h = n(624),
-            f = n(625),
-            m = n(245),
-            y = l.MutationObserver || l.WebKitMutationObserver,
-            v = l.document,
-            _ = l.process,
-            b = l.Promise,
+            RegExp = require(23),
+            c = require(411),
+            d = require(124),
+            u = require(409).set,
+            p = require(412),
+            g = require(410),
+            h = require(624),
+            f = require(625),
+            m = require(245),
+            y = RegExp.MutationObserver || RegExp.WebKitMutationObserver,
+            v = RegExp.document,
+            _ = RegExp.process,
+            b = RegExp.Promise,
             w = c("queueMicrotask");
         if (!w) {
             var C = new p(),
@@ -42,13 +42,13 @@ module.exports = function (e, t, n) {
                       ? (o = function () {
                             _.nextTick(x);
                         })
-                      : ((u = d(u, l)),
+                      : ((u = d(u, RegExp)),
                         (o = function () {
                             u(x);
                         }))
-                : ((i = !0),
+                : ((i = true),
                   (a = v.createTextNode("")),
-                  new y(x).observe(a, { characterData: !0 }),
+                  new y(x).observe(a, { characterData: true }),
                   (o = function () {
                       a.data = i = !i;
                   })),
@@ -56,5 +56,5 @@ module.exports = function (e, t, n) {
                     (C.head || o(), C.add(e));
                 }));
         }
-        e.exports = w;
+        module.exports = w;
     };

@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(8), n(4), n(41), n(32), n(97), n(33), n(26));
-        const { GObject: o } = n(1),
-            { GPlatform: i } = n(15),
-            a = n(1355),
-            r = n(1191),
-            s = n(1356),
-            l = n(1357),
-            { handleCollabsData: c } = (n(536), n(882)),
-            d = n(1354),
-            u = n(434);
+        (require(19), require(8 /* Symbol */), require(4), require(41), require(32), require(97), require(33), require(26));
+        const { GObject: o } = require(1 /* GObject */),
+            { GPlatform: i } = require(15 /* GPlatform */),
+            a = require(1355),
+            r = require(1191),
+            GAnnotationPanel = require(1356),
+            l = require(1357 /* GAnnotationPanel */),
+            { handleCollabsData: c } = (require(536), require(882)),
+            d = require(1354),
+            u = require(434);
         function p() {
             for (var e = arguments.length, t = new Array(e), n = 0; n < e; n++) t[n] = arguments[n];
             (a.call(this, ...t), r.call(this));
@@ -30,12 +30,12 @@ module.exports = function (e, t, n) {
                         .filter((e) => e instanceof l)
                         .some((e) => e.isVisible()) ||
                     !!this.getChildren()
-                        .filter((e) => e instanceof s)
+                        .filter((e) => e instanceof GAnnotationPanel)
                         .some((e) => e.isEditMode())
                 );
             }),
-            (p.prototype._hasResolveAccess = !1),
-            (p.prototype._hasReopenAccess = !1),
+            (p.prototype._hasResolveAccess = false),
+            (p.prototype._hasReopenAccess = false),
             (p.prototype._mentionData = {}),
             (p.prototype.hasResolveAccess = function () {
                 return this._hasResolveAccess;
@@ -75,12 +75,12 @@ module.exports = function (e, t, n) {
                     i = o && o.options;
                 (n &&
                     n.forEach((n) => {
-                        n instanceof s && !n.isParentAnnotationResolved() && (n.isRead() || t++, e++);
+                        n instanceof GAnnotationPanel && !n.isParentAnnotationResolved() && (n.isRead() || t++, e++);
                     }),
                     i && i.updateCommentCount && i.updateCommentCount(e, t));
             }),
             (p.prototype.getCommentStats = function () {
                 return this._commentStats;
             }),
-            (e.exports = p));
+            (module.exports = p));
     };

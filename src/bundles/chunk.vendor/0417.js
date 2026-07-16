@@ -1,29 +1,29 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(58),
-                i(19),
-                i(96),
-                i(30),
-                i(8),
-                i(20),
-                i(107),
-                i(3),
-                i(151),
-                i(34),
-                i(4),
-                i(322),
-                i(32),
-                i(33),
-                i(26),
-                i(125),
-                i(126),
-                i(114));
-            const n = t,
-                r = i(938),
-                o = i(574),
-                a = i(577),
-                s = i(952);
-            i(824);
+            (require(58),
+                require(19),
+                require(96),
+                require(30),
+                require(8 /* Symbol */),
+                require(20),
+                require(107),
+                require(3),
+                require(151),
+                require(34),
+                require(4),
+                require(322),
+                require(32),
+                require(33),
+                require(26),
+                require(125),
+                require(126),
+                require(114));
+            const n = exports,
+                r = require(938),
+                o = require(574),
+                a = require(577),
+                s = require(952);
+            require(824);
             const {
                     getUserName: l,
                     isSharePointFileId: h,
@@ -34,21 +34,21 @@ module.exports = function (e, t, i) {
                     isExternalFileId: d,
                     sameDomain: g,
                     buildQueryParams: f,
-                } = i(254),
-                { providers: m } = i(253);
+                } = require(254),
+                { providers: m } = require(253);
             if (
                 ((n.version = "v1"),
                 Object({
                     NODE_ENV: "production",
                     APP_VERSION: "3.15.0",
                     APP_VERSION_FRIENDLY: "PlasmaTrap-patched",
-                    IS_BETA: !1,
+                    IS_BETA: false,
                     BUILD_NUM: "8795",
                     COMMIT_SHA: "566771f4dff3952a55c0d9d3c130f7e787dfdfa7",
                     STORE_VENDOR: "",
-                    IS_COREL: !1,
-                    IS_TRUNK: !1,
-                    IS_PROD: !0,
+                    IS_COREL: false,
+                    IS_TRUNK: false,
+                    IS_PROD: true,
                 }).INCLUDE_POLYFILL_ON_CLIENT_API &&
                     "undefined" != typeof window &&
                     (!window.hasOwnProperty("URLSearchParams") || !window.hasOwnProperty("fetch") || !Array.hasOwnProperty("from")))
@@ -171,7 +171,7 @@ module.exports = function (e, t, i) {
                         signal: o,
                     })
                         .then((i) => {
-                            if (!1 === i.ok) {
+                            if (false === i.ok) {
                                 const { onError: n } = E || {};
                                 n && n.call(null, i, e, t);
                             }
@@ -187,7 +187,7 @@ module.exports = function (e, t, i) {
                         if (e.text) return;
                         return Promise.accept({
                             status: e.status,
-                            cloud: !0,
+                            cloud: true,
                         });
                     }
                     return e.status < 400
@@ -195,20 +195,20 @@ module.exports = function (e, t, i) {
                             ? e.json()
                             : Promise.accept({
                                   status: e.status,
-                                  cloud: !0,
+                                  cloud: true,
                               })
                         : e.json
                           ? e.json().then((t) =>
                                 Promise.reject(
                                     Object.assign(t, {
                                         status: e.status,
-                                        cloud: !0,
+                                        cloud: true,
                                     })
                                 )
                             )
                           : Promise.reject({
                                 status: e.status || e.message,
-                                cloud: !0,
+                                cloud: true,
                             });
                 };
 
@@ -347,7 +347,7 @@ module.exports = function (e, t, i) {
                 }),
                 (n.license = {
                     get: () => b("/license"),
-                    listen: (e) => n.listen("/license", e, !1),
+                    listen: (e) => n.listen("/license", e, false),
                     activateTrial: (e) =>
                         T("".concat(n.url, "/activate-trial/").concat(e || ""), {
                             method: "POST",
@@ -367,11 +367,11 @@ module.exports = function (e, t, i) {
                                 resolve: e,
                             })
                         ),
-                        a = n.listen("/payload", (e) => r.resolve(e), !0);
+                        a = n.listen("/payload", (e) => r.resolve(e), true);
                     if (t instanceof HTMLElement) {
                         let n = document.createElement("iframe"),
                             { events: r } = i;
-                        (r && Object.keys(r).forEach((e) => n.addEventListener(e, r[e], !1)), t.appendChild(n), n.setAttribute("src", e));
+                        (r && Object.keys(r).forEach((e) => n.addEventListener(e, r[e], false)), t.appendChild(n), n.setAttribute("src", e));
                     } else {
                         let i;
                         if ("_blank" === t) i = window.open(e, "Checkout");
@@ -548,7 +548,7 @@ module.exports = function (e, t, i) {
                               : b("/file/" + e.id + (t ? "/full" : "") + (i ? "/version/" + i + r : ""))
                     );
                 }),
-                (n.getFileExtended = (e) => n.getFile(e, !0).then((e) => new o(e))),
+                (n.getFileExtended = (e) => n.getFile(e, true).then((e) => new o(e))),
                 (n.getCollaborators = (e) => b("/file/" + e + "/collaborators")),
                 (n.getExternalFile = (e) => b("/file/external/".concat(e)).then((e) => new o(e))),
                 (n.annotations = {}),
@@ -867,7 +867,7 @@ module.exports = function (e, t, i) {
                 (n.searchUnsplashPhotos = (e) => b("/unsplash/search/photos", e)),
                 (n.getUnsplashPhotoUrl = (e) => b("/unsplash/download/photo", e)),
                 (n.getExampleFiles = (e) => b("/example-files", e)),
-                (n.getUserName = (e) => l(e, !0)),
+                (n.getUserName = (e) => l(e, true)),
                 (n.listAutoSaves = (e) => b("/file/".concat(e, "/autosave/versions"))),
                 (n.getAutoSave = (e, t) => b("/file/".concat(e, "/autosave").concat(t ? "/version/".concat(t) : ""))),
                 (n.getAutoSaveThumbnail = (e, t) => b("/file/".concat(e, "/autosave/thumbnail").concat(t ? "/version/".concat(t) : ""))),
@@ -953,23 +953,23 @@ module.exports = function (e, t, i) {
                 (n.client = {
                     getConfiguration: () => b("/client/configuration"),
                 }),
-                (n.HTTP_STATUS_CODES = i(578)),
+                (n.HTTP_STATUS_CODES = require(578)),
                 (n.ERROR_CODES = s),
-                (n.COLLABORATION_EVENTS = i(953)),
-                (n.AUTHENTICATION_EVENTS = i(954)),
-                (n.PAYMENT_EVENTS = i(955)),
-                i(956)(n),
-                i(957)(n),
-                i(959)(n),
-                i(960)(n),
-                i(961)(n),
-                i(962)(n),
-                i(963)(n),
-                i(964)(n),
-                i(965)(n),
-                i(966)(n),
-                i(967)(n),
-                i(968)(n),
-                i(969)(n),
-                i(970)(n));
+                (n.COLLABORATION_EVENTS = require(953)),
+                (n.AUTHENTICATION_EVENTS = require(954)),
+                (n.PAYMENT_EVENTS = require(955)),
+                require(956)(n),
+                require(957)(n),
+                require(959)(n),
+                require(960)(n),
+                require(961)(n),
+                require(962)(n),
+                require(963)(n),
+                require(964)(n),
+                require(965)(n),
+                require(966)(n),
+                require(967)(n),
+                require(968)(n),
+                require(969)(n),
+                require(970)(n));
         };

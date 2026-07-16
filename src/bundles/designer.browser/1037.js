@@ -1,38 +1,38 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(19), n(8), n(134), n(4), n(13), n(26));
-        var i = n(1),
-            a = n(10),
-            r = o(n(536));
+        var o = require(16);
+        (require(19), require(8 /* Symbol */), require(134), require(4), require(13), require(26));
+        var GObject = require(1),
+            designerConfig = require(10),
+            r = o(require(536));
         class s {
             static async setLanguage(e) {
                 try {
-                    const t = i.GLocale.getTranslations(),
-                        n = i.GTranslation.Projects.Cloud,
-                        o = i.GTranslation.Projects.Designer,
+                    const t = GObject.GLocale.getTranslations(),
+                        n = GObject.GTranslation.Projects.Cloud,
+                        o = GObject.GTranslation.Projects.Designer,
                         r = t.find((t) => t.keyValue === e);
                     if (!r) return;
                     const s = await this._fetchTranslation(o, r),
                         l = await this._fetchTranslation(n, r);
-                    (i.GLocale.replaceValues(o, e, s.translations),
-                        i.GLocale.replaceValues(n, e, l.translations),
-                        i.GLocale.setLanguage(e),
-                        a.GLocaleFactory.setLanguage(e),
-                        a.gApi.setLanguage(e));
+                    (GObject.GLocale.replaceValues(o, e, s.translations),
+                        GObject.GLocale.replaceValues(n, e, l.translations),
+                        GObject.GLocale.setLanguage(e),
+                        designerConfig.GLocaleFactory.setLanguage(e),
+                        designerConfig.gApi.setLanguage(e));
                 } catch (e) {}
             }
             static async _shouldFetchTranslation(e, t) {
-                if (t.keyValue === i.GLocale.getLanguage())
+                if (t.keyValue === GObject.GLocale.getLanguage())
                     try {
                         const n = await fetch(await this._getCDNURL(e, t), {
                             method: "HEAD",
                         }).then((e) => {
                             if (e.ok) return e.headers.get("etag");
                         });
-                        if (this._isEtagsEqual(n, t.etag)) return !1;
+                        if (this._isEtagsEqual(n, t.etag)) return false;
                     } catch (e) {}
-                return !0;
+                return true;
             }
             static _isEtagsEqual(e, t) {
                 return (e.startsWith("W/") && (e = e.substring(3, e.length - 1)), e === t);
@@ -52,7 +52,7 @@ module.exports = function (e, t, n) {
                             .set(
                                 i,
                                 new r.default(() =>
-                                    a.gApi
+                                    designerConfig.gApi
                                         .fetchTranslationsURL(n, o)
                                         .then((e) => e.url)
                                         .catch(() => null)
@@ -63,5 +63,5 @@ module.exports = function (e, t, n) {
                 );
             }
         }
-        ((s.translationsCacheMap = new Map()), (e.exports = s));
+        ((s.translationsCacheMap = new Map()), (module.exports = s));
     };

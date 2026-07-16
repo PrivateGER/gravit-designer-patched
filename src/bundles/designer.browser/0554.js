@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
         class n {
             getImageAsBlob() {
                 return new Blob([this.getImageAsBinary()], {
@@ -32,5 +32,5 @@ module.exports = function (e, t) {
                 return ((t.image = o), (t.mimeType = e.type), t);
             }
         }
-        e.exports = n;
+        module.exports = n;
     };

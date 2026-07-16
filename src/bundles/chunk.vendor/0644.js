@@ -1,19 +1,19 @@
-module.exports = function (e, t, i) {
-            var n = i(75),
-                r = i(0),
-                o = i(14),
-                a = i(77),
-                s = i(5),
-                l = i(505),
-                h = i(167),
-                A = i(164),
-                c = (i(645), i(52));
-            i(72);
+module.exports = function (module, exports, require) {
+            var n = require(75),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(14),
+                a = require(77),
+                s = require(5),
+                l = require(505),
+                h = require(167),
+                A = require(164),
+                c = (require(645), require(52));
+            require(72);
 
             function p(e) {
                 ((this._htmlElement = this._createHTMLElement()), null != e && e.appendChild(this._htmlElement));
             }
-            (r.inheritAndMix(p, r, [n]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(p, IsFiniteNonNegativeNumber, [n]),
                 (p.ButtonsFlag = {
                     Left: 1 << a.BUTTON_LEFT,
                     Middle: 1 << a.BUTTON_MIDDLE,
@@ -80,11 +80,11 @@ module.exports = function (e, t, i) {
                         this._cursor && (c.initStyle(), this._addCSSClass("g-cursor-" + this._cursor)));
                 }),
                 (p.prototype.hasFocus = function () {
-                    var e = !1;
+                    var e = false;
                     try {
                         ((this._inputHtmlElement && document.activeElement === this._inputHtmlElement) ||
                             document.activeElement === this._htmlElement) &&
-                            (e = !0);
+                            (e = true);
                     } catch (e) {}
                     return e;
                 }),
@@ -92,7 +92,7 @@ module.exports = function (e, t, i) {
                     return null == this._htmlElement.className || this._htmlElement.className.indexOf("g-disabled") < 0;
                 }),
                 (p.prototype.setEnabled = function (e) {
-                    e != this.isEnabled() && (e ? this._removeCSSClass("g-disabled", !0) : this._addCSSClass("g-disabled", !0));
+                    e != this.isEnabled() && (e ? this._removeCSSClass("g-disabled", true) : this._addCSSClass("g-disabled", true));
                 }),
                 (p.prototype.isDisplayed = function () {
                     return "none" != this._htmlElement.style.display;
@@ -138,13 +138,13 @@ module.exports = function (e, t, i) {
                     if (this.isDisplayed())
                         try {
                             for (var e = this._htmlElement.children, t = 0; t < e.length; t++)
-                                if ("0" === e[t].getAttribute("tabindex")) return (e[t].focus(), !0);
+                                if ("0" === e[t].getAttribute("tabindex")) return (e[t].focus(), true);
                             if (this._inputHtmlElement && "0" === this._inputHtmlElement.getAttribute("tabindex"))
-                                return (this._inputHtmlElement.focus(), !0);
+                                return (this._inputHtmlElement.focus(), true);
                         } catch (e) {
-                            return !1;
+                            return false;
                         }
-                    return !1;
+                    return false;
                 }),
                 (p.prototype.setInputRecorder = function (e) {
                     this._inputRecorder = e;
@@ -171,7 +171,7 @@ module.exports = function (e, t, i) {
                 }),
                 (p.prototype._registerInputEventListener = function (e) {
                     var t = a.isDragEvent(e),
-                        i = r.getTypeId(e);
+                        i = IsFiniteNonNegativeNumber.getTypeId(e);
                     this._inputEventCache && i in this._inputEventCache
                         ? this._inputEventCache && i in this._inputEventCache && this._inputEventCache[i].counter++
                         : (this._inputEventCache || (this._inputEventCache = {}),
@@ -183,7 +183,7 @@ module.exports = function (e, t, i) {
                 }),
                 (p.prototype._unregisterInputEventListener = function (e) {
                     var t = a.isDragEvent(e),
-                        i = r.getTypeId(e);
+                        i = IsFiniteNonNegativeNumber.getTypeId(e);
                     this._inputEventCache &&
                         i in this._inputEventCache &&
                         0 == --this._inputEventCache[i].counter &&
@@ -192,7 +192,7 @@ module.exports = function (e, t, i) {
                         0 == Object.keys(this._inputEventCache).length && (this._inputEventCache = null));
                 }),
                 (p.prototype._startListeningInputEvent = function (e) {
-                    var t = r.getTypeId(e),
+                    var t = IsFiniteNonNegativeNumber.getTypeId(e),
                         i = function (t) {
                             this._updateAndTriggerInputEvent(t, e);
                         }.bind(this);
@@ -203,30 +203,30 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (p.prototype._stopListeningInputEvent = function (e) {
-                    var t = r.getTypeId(e),
+                    var t = IsFiniteNonNegativeNumber.getTypeId(e),
                         i = this._getDomEventNameForEventClass(e);
                     this._inputEventCache &&
                         (this._htmlElement.removeEventListener(i, this._inputEventCache[t].domListener),
                         delete this._inputEventCache[t].domListener);
                 }),
                 (p.prototype._dragMouseDown = function (e) {
-                    this.hasButtonFlag(1 << e.button) && ((this._dragStartPosition = e.client), (this._dragIsDragging = !1));
+                    this.hasButtonFlag(1 << e.button) && ((this._dragStartPosition = e.client), (this._dragIsDragging = false));
                 }),
                 (p.prototype._dragMouseMove = function (e) {
                     if (this._dragStartPosition && !this._dragIsDragging) {
                         var t = this._dragStartPosition;
                         if (
                             (Math.abs(t.getX() - e.client.getX()) >= 1 || Math.abs(t.getY() - e.client.getY()) >= 1) &&
-                            ((this._dragIsDragging = !0),
+                            ((this._dragIsDragging = true),
                             (this._dragPreviousPosition = this._dragStartPosition),
                             this.hasEventListeners(a.DragStart))
                         ) {
-                            var i = this._inputEventCache[r.getTypeId(a.DragStart)].event;
+                            var i = this._inputEventCache[IsFiniteNonNegativeNumber.getTypeId(a.DragStart)].event;
                             (this._dragAssignMouseEvent(e, i), (i.client = this._dragStartPosition), this.trigger(i));
                         }
                     }
                     if (this._dragIsDragging && this.hasEventListeners(a.Drag)) {
-                        i = this._inputEventCache[r.getTypeId(a.Drag)].event;
+                        i = this._inputEventCache[IsFiniteNonNegativeNumber.getTypeId(a.Drag)].event;
                         (this._dragAssignMouseEvent(e, i),
                             this._dragAssignDragEvent(i, e),
                             this.trigger(i),
@@ -236,7 +236,7 @@ module.exports = function (e, t, i) {
                 (p.prototype._dragMouseRelease = function (e) {
                     if (this.hasButtonFlag(1 << e.button)) {
                         if (this._dragIsDragging && this.hasEventListeners(a.DragEnd)) {
-                            var t = this._inputEventCache[r.getTypeId(a.DragEnd)].event;
+                            var t = this._inputEventCache[IsFiniteNonNegativeNumber.getTypeId(a.DragEnd)].event;
                             (this._dragAssignMouseEvent(e, t), this._dragAssignDragEvent(t, e), this.trigger(t));
                         }
                         (delete this._dragStartPosition, delete this._dragPreviousPosition, delete this._dragIsDragging);
@@ -272,7 +272,7 @@ module.exports = function (e, t, i) {
                         (t.preventDefault = e.preventDefault.bind(e)),
                         (t.stopPropagation = e.stopPropagation.bind(e)),
                         (t.stopImmediatePropagation = function () {
-                            (this.stopPropagation(), (this.isImmediatePropagationStopped = !0));
+                            (this.stopPropagation(), (this.isImmediatePropagationStopped = true));
                         }),
                         this.trigger(t));
                 }),
@@ -289,8 +289,8 @@ module.exports = function (e, t, i) {
                                 if (!i) return;
                             } else this._inputRecorder.record(e, t, e.target === this._htmlElement);
                         a.prototype.isPrototypeOf(t.prototype)
-                            ? this._updateAndTriggerMouseEvent(e, r.getTypeId(t))
-                            : h.prototype.isPrototypeOf(t.prototype) && this._updateAndTriggerKeyEvent(e, r.getTypeId(t));
+                            ? this._updateAndTriggerMouseEvent(e, IsFiniteNonNegativeNumber.getTypeId(t))
+                            : h.prototype.isPrototypeOf(t.prototype) && this._updateAndTriggerKeyEvent(e, IsFiniteNonNegativeNumber.getTypeId(t));
                     }
                 }),
                 (p.prototype._updateAndTriggerMouseEvent = function (e, t) {
@@ -358,25 +358,25 @@ module.exports = function (e, t, i) {
                             ((e._savedDocumentListeners[i] = function (i) {
                                 i.target != this._htmlElement && (e._updateAndTriggerInputEvent(i, t), i.stopImmediatePropagation());
                             }.bind(e)),
-                            document.addEventListener(i, e._savedDocumentListeners[i], !0)));
+                            document.addEventListener(i, e._savedDocumentListeners[i], true)));
                 }
                 for (var i = 0; i < u.length; ++i) {
                     var n = u[i];
-                    this._inputEventCache[r.getTypeId(n)] && t(n);
+                    this._inputEventCache[IsFiniteNonNegativeNumber.getTypeId(n)] && t(n);
                 }
             }),
                 (p.prototype._releaseCapture = function () {
                     if (this._savedDocumentListeners) {
-                        for (var e in this._savedDocumentListeners) document.removeEventListener(e, this._savedDocumentListeners[e], !0);
+                        for (var e in this._savedDocumentListeners) document.removeEventListener(e, this._savedDocumentListeners[e], true);
                         delete this._savedDocumentListeners;
                     }
                 }),
                 (p.prototype._addCSSClass = function (e) {
                     var t = this._htmlElement.className;
                     if (t && 0 != t.trim().length) {
-                        for (var i = !0, n = t.trim().split(" "), r = 0; r < n.length; ++r) {
+                        for (var i = true, n = t.trim().split(" "), r = 0; r < n.length; ++r) {
                             if (n[r].trim() == e) {
-                                i = !1;
+                                i = false;
                                 break;
                             }
                         }
@@ -409,5 +409,5 @@ module.exports = function (e, t, i) {
                 (p.prototype.toString = function () {
                     return "[Object GWidget]";
                 }),
-                (e.exports = p));
+                (module.exports = p));
         };

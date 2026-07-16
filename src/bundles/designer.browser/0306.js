@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o,
             i,
-            a = n(29),
-            r = n(27),
-            s = n(62),
-            l = n(307),
-            c = n(344),
-            d = n(296),
-            u = n(136),
-            p = n(80).get,
-            g = n(458),
-            h = n(459),
+            a = require(29),
+            r = require(27),
+            s = require(62),
+            l = require(307),
+            c = require(344),
+            d = require(296),
+            u = require(136),
+            p = require(80).get,
+            g = require(458),
+            h = require(459),
             f = d("native-string-replace", String.prototype.replace),
             m = RegExp.prototype.exec,
             y = m,
@@ -70,5 +70,5 @@ module.exports = function (e, t, n) {
                     for (i.groups = c = u(null), r = 0; r < T.length; r++) c[(d = T[r])[0]] = i[d[1]];
                 return i;
             }),
-            (e.exports = y));
+            (module.exports = y));
     };

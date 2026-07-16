@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i(e, t, i, n, r, o) {
                 ((this.width = e), (this.height = t), (this.ascent = i), (this.descent = n), (this.minY = r), (this.maxY = o));
             }
@@ -10,5 +10,5 @@ module.exports = function (e, t) {
                 (i.prototype.maxY = 0),
                 (i.prototype.minX = 0),
                 (i.prototype.maxX = 0),
-                (e.exports = i));
+                (module.exports = i));
         };

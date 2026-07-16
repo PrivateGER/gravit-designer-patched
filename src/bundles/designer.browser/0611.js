@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         (function (e) {
-            n.d(t, "a", function () {
+            require.d(exports, "a", function () {
                 return o;
             });
             var o = function () {
@@ -15,5 +15,5 @@ module.exports = function (e, t, n) {
                           ? e
                           : void 0;
             };
-        }).call(this, n(109));
+        }).call(this, require(109));
     };

@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
 
             function n() {}
-            (i(58),
-                i(8),
+            (require(58),
+                require(8 /* Symbol */),
                 (n.extend = function (e, t) {
-                    var i = !1,
+                    var i = false,
                         r = null,
                         o = 1;
-                    "boolean" == typeof e ? ((i = e), (r = t || {}), (o = 2)) : ((i = !1), (r = e || {}));
+                    "boolean" == typeof e ? ((i = e), (r = t || {}), (o = 2)) : ((i = false), (r = e || {}));
                     for (var a = o; a < arguments.length; a++)
                         if (arguments[a])
                             for (var s in arguments[a])
@@ -30,5 +30,5 @@ module.exports = function (e, t, i) {
                         setTimeout(t, e);
                     });
                 }),
-                (e.exports = n));
+                (module.exports = n));
         };

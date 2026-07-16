@@ -1,5 +1,5 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o = {};
-        ((o[n(43)("toStringTag")] = "z"), (e.exports = "[object z]" === String(o)));
+        ((o[require(43)("toStringTag")] = "z"), (module.exports = "[object z]" === String(o)));
     };

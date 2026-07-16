@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(42);
+module.exports = function (module, exports, require) {
+            var n = require(42);
 
             function r(e) {
                 n.call(
@@ -12,7 +12,7 @@ module.exports = function (e, t, i) {
                     )
                 );
             }
-            (i(0).inherit(r, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(r, n),
                 (r.prototype.render = function (e, t, i, r, o, a) {
                     var s = o,
                         l = a,
@@ -29,5 +29,5 @@ module.exports = function (e, t, i) {
                         offset: [i, r],
                     });
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

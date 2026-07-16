@@ -1,19 +1,19 @@
-module.exports = function (e, t, i) {
-            i(561);
-            var n = i(1135),
-                r = i(1141),
-                o = i(160),
-                a = i(70),
-                s = i(280),
-                l = i(1140),
-                h = i(1139),
-                A = i(1142),
-                c = i(640),
-                p = i(0),
-                u = i(75),
-                d = i(794),
-                g = i(1401).Inflater,
-                f = i(1402).zip;
+module.exports = function (module, exports, require) {
+            require(561);
+            var n = require(1135),
+                r = require(1141),
+                o = require(160),
+                a = require(70),
+                s = require(280),
+                l = require(1140),
+                h = require(1139),
+                A = require(1142),
+                c = require(640),
+                IsFiniteNonNegativeNumber = require(0),
+                u = require(75),
+                d = require(794),
+                g = require(1401 /* Inflater */).Inflater,
+                f = require(1402).zip;
 
             function m(e) {
                 ((this._data = e),
@@ -23,8 +23,8 @@ module.exports = function (e, t, i) {
                     this.addEventListener(d.ProcessEvent, this._processEvent, this));
             }
             ((f.Inflater = g),
-                (f.useWebWorkers = !1),
-                p.inherit(m, u),
+                (f.useWebWorkers = false),
+                IsFiniteNonNegativeNumber.inherit(m, u),
                 (m.prototype._promise = null),
                 (m.prototype._promiseCapability = null),
                 (m.prototype._data = null),
@@ -39,7 +39,7 @@ module.exports = function (e, t, i) {
                 (m.prototype._progress = null),
                 (m.prototype._objectsTotal = 0),
                 (m.prototype._objectsProcessed = 0),
-                (m.prototype._ignoreSymbolPage = !1),
+                (m.prototype._ignoreSymbolPage = false),
                 (m.prototype._progressStage = 0),
                 (m.prototype._progressValue = 0),
                 (m.prototype._blockedEvents = null),
@@ -47,10 +47,10 @@ module.exports = function (e, t, i) {
                     return !this._blockedEvents;
                 }),
                 (m.prototype.blockEvents = function (e) {
-                    this._blockedEvents = !0;
+                    this._blockedEvents = true;
                 }),
                 (m.prototype.releaseEvents = function (e) {
-                    this._blockedEvents = !1;
+                    this._blockedEvents = false;
                 }),
                 (m.prototype._processEvent = function (e) {
                     var t = (++this._objectsProcessed / this._objectsTotal) * 50;
@@ -178,7 +178,7 @@ module.exports = function (e, t, i) {
                         function () {
                             e.forEach(function (e) {
                                 e.accept(function (e) {
-                                    e instanceof a && ((e._runsDirty = !0), e.repaint());
+                                    e instanceof a && ((e._runsDirty = true), e.repaint());
                                 });
                             });
                         }.bind(this),
@@ -186,9 +186,9 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (m.prototype._isSymbolPage = function (e) {
-                    if ("symbolMaster" === e._class) return !0;
-                    if (e.layers) for (var t = 0; t < e.layers.length; t++) if (this._isSymbolPage(e.layers[t])) return !0;
-                    return !1;
+                    if ("symbolMaster" === e._class) return true;
+                    if (e.layers) for (var t = 0; t < e.layers.length; t++) if (this._isSymbolPage(e.layers[t])) return true;
+                    return false;
                 }),
                 (m.prototype._createPromiseCapability = function (e) {
                     return new Promise(function (t, i) {
@@ -202,11 +202,11 @@ module.exports = function (e, t, i) {
                             this._preProcess(this._pages);
                             var e = [],
                                 t = [],
-                                i = new o(this._workspace, !0),
+                                i = new o(this._workspace, true),
                                 r = new c();
                             this._objectsProcessed = 0;
                             var a = function (t) {
-                                    (this._ignoreSymbolPage && this._isSymbolPage(t)) || ((t = new n(t, this)).parse(!0, r), e.push(t));
+                                    (this._ignoreSymbolPage && this._isSymbolPage(t)) || ((t = new n(t, this)).parse(true, r), e.push(t));
                                 }.bind(this),
                                 s = function () {
                                     ((this._objectsProcessed = 0), (this._progressStage = 50), r.execute(e, l, h));
@@ -243,5 +243,5 @@ module.exports = function (e, t, i) {
                     }
                     return this._promise;
                 }),
-                (e.exports = m));
+                (module.exports = m));
         };

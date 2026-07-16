@@ -1,17 +1,17 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(99),
-                o = i(160),
-                a = i(5),
-                s = (i(14), i(12)),
-                l = i(6),
-                h = i(24),
-                A = i(132);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(99),
+                o = require(160),
+                a = require(5),
+                s = (require(14), require(12)),
+                l = require(6),
+                h = require(24),
+                A = require(132);
 
             function c(e) {
                 (r.call(this, e), this.disallowSnapZone(l.Side.CENTER));
             }
-            (n.inheritAndMix(c, r, [r.Visual, r.Map, r.DetailMap]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(c, r, [r.Visual, r.Map, r.DetailMap]),
                 (c.ID = "guide.grid"),
                 (c.MIN_CELL_SPACE = 10),
                 (c.prototype.getId = function () {
@@ -158,7 +158,7 @@ module.exports = function (e, t, i) {
                                                     L && H)
                                                 ) {
                                                     var Y = [L, H];
-                                                    (t.canvas.putVertices(Y, !0),
+                                                    (t.canvas.putVertices(Y, true),
                                                         t.canvas.strokeVertices(h.gridColor, 1, null, null, null, null, h.gridOpacity));
                                                 }
                                             }
@@ -196,7 +196,7 @@ module.exports = function (e, t, i) {
                                                     L && H)
                                                 ) {
                                                     Y = [L, H];
-                                                    (t.canvas.putVertices(Y, !0),
+                                                    (t.canvas.putVertices(Y, true),
                                                         t.canvas.strokeVertices(h.gridColor, 1, null, null, null, null, h.gridOpacity));
                                                 }
                                             }
@@ -245,5 +245,5 @@ module.exports = function (e, t, i) {
                 (c.prototype.toString = function () {
                     return "[Object GGridGuide]";
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

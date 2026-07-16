@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(65),
-            i = n(93),
-            a = n(240),
-            r = n(101),
+        var o = require(65),
+            i = require(93),
+            a = require(240),
+            r = require(101),
             s = TypeError,
             l = "Reduce of empty array with no initial value",
             c = function (e) {
@@ -26,5 +26,5 @@ module.exports = function (e, t, n) {
                     return d;
                 };
             };
-        e.exports = { left: c(!1), right: c(!0) };
+        module.exports = { left: c(false), right: c(true) };
     };

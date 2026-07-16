@@ -1,21 +1,21 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(180), n(181), n(57), n(20), n(34), n(134), n(4), n(41), n(32), n(38), n(33));
-        var o = n(1),
-            i = n(381),
-            a = n(255),
-            r = n(1198),
-            s = n(44);
+        (require(180), require(181), require(57), require(20), require(34), require(134), require(4), require(41), require(32), require(38), require(33));
+        var GObject = require(1),
+            i = require(381),
+            a = require(255),
+            r = require(1198),
+            GSystemDialog = require(44);
         function l(e) {
             i.call(this, e);
         }
-        o.GObject.inherit(l, i);
-        var c = o.GUtil.uuid();
+        GObject.GObject.inherit(l, i);
+        var c = GObject.GUtil.uuid();
         ((l.prototype._totalFonts = 0),
             (l.prototype._fontList = null),
             (l.prototype._formattedFontList = null),
-            (l.prototype._initialized = !1),
-            (l.prototype._initializing = !1),
+            (l.prototype._initialized = false),
+            (l.prototype._initializing = false),
             (l.prototype._queue = null),
             (l.prototype.addPreviews = function (e) {
                 for (var t = 0; t < e.length; t++) {
@@ -83,7 +83,7 @@ module.exports = function (e, t, n) {
                                                                 if (
                                                                     (gDesigner.getDocuments().forEach((e) => {
                                                                         e.getScene().acceptChildren((e) => {
-                                                                            e instanceof o.GText && e.replaceFonts(n, !0);
+                                                                            e instanceof GObject.GText && e.replaceFonts(n, true);
                                                                         });
                                                                     }),
                                                                     gDesigner.getWorkspace())
@@ -94,7 +94,7 @@ module.exports = function (e, t, n) {
                                                                             .getFontManager()
                                                                             .removeFont(this.families[i]);
                                                                 (a.getInstance().reset(),
-                                                                    t && t.setShowMissingFontsDialog(!0),
+                                                                    t && t.setShowMissingFontsDialog(true),
                                                                     console.log("successfully updated font list"),
                                                                     this._queue && this._queue.length && this._queue.shift().call(this));
                                                             }));
@@ -106,12 +106,12 @@ module.exports = function (e, t, n) {
                                                     });
                                                 }
                                             };
-                                        s.confirm(o.GLocale.get(new o.GLocaleKey("GImportedFontsProvider", "confirm.delete-font")), (e) => {
+                                        GSystemDialog.confirm(GObject.GLocale.get(new GObject.GLocaleKey("GImportedFontsProvider", "confirm.delete-font")), (e) => {
                                             e &&
                                                 (this._queue || (this._queue = []),
                                                 this._queue.push(() => {
                                                     r.getInstance((e) => {
-                                                        e && (t && t.setShowMissingFontsDialog(!1), n(e, 0));
+                                                        e && (t && t.setShowMissingFontsDialog(false), n(e, 0));
                                                     });
                                                 }),
                                                 1 === this._queue.length && this._queue.shift().call(this));
@@ -164,7 +164,7 @@ module.exports = function (e, t, n) {
             }),
             (l.prototype.initialize = function () {
                 if (!this._initialized && !this._initializing) {
-                    this._initializing = !0;
+                    this._initializing = true;
                     var e = Array.prototype.slice.call(arguments);
                     this.load(
                         "%",
@@ -172,16 +172,16 @@ module.exports = function (e, t, n) {
                         1,
                         {
                             done: function (t, n, o) {
-                                ((this._initialized = !0),
-                                    (this._initializing = !1),
+                                ((this._initialized = true),
+                                    (this._initializing = false),
                                     e.length && e[0].apply(this, e.slice(1)),
                                     this._clearCallbacks());
                             }.bind(this),
                             fail: function () {
-                                ((this._initializing = !1), (this._initialized = !0), this._clearCallbacks(!0));
+                                ((this._initializing = false), (this._initialized = true), this._clearCallbacks(true));
                             }.bind(this),
                         },
-                        !0
+                        true
                     );
                 }
             }),
@@ -205,7 +205,7 @@ module.exports = function (e, t, n) {
                                           : (t.displayname || t.family).toLowerCase() == e.toLowerCase()
                                   )
                                   .slice(t, t + n),
-                              !0,
+                              true,
                               null
                           )
                         : r.getInstance((i) => {
@@ -222,7 +222,7 @@ module.exports = function (e, t, n) {
                                                       : (t.displayname || t.family).toLowerCase() == e.toLowerCase()
                                               )
                                               .slice(t, t + n),
-                                          !0,
+                                          true,
                                           null
                                       ),
                                       this._clearCallbacks());
@@ -316,7 +316,7 @@ module.exports = function (e, t, n) {
                         }.bind(this)
                     );
                 else {
-                    ((n = String(n) || "400"), (t = t || o.GFont.Style.Normal));
+                    ((n = String(n) || "400"), (t = t || GObject.GFont.Style.Normal));
                     var a = e + "_" + n + "_" + t;
                     r.getInstance((o) => {
                         if (!o) return i.fail();
@@ -342,5 +342,5 @@ module.exports = function (e, t, n) {
             (l.prototype.getProviderId = function () {
                 return c;
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

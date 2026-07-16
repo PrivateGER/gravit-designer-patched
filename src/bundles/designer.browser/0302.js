@@ -1,40 +1,40 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(27),
-            i = n(21),
-            a = n(35),
-            r = n(131),
-            s = n(110),
-            l = n(299),
+        var o = require(27),
+            i = require(21),
+            a = require(35),
+            r = require(131),
+            s = require(110),
+            l = require(299),
             c = function () {},
             d = s("Reflect", "construct"),
             u = /^\s*(?:class|function)\b/,
             p = o(u.exec),
             g = !u.test(c),
             h = function (e) {
-                if (!a(e)) return !1;
+                if (!a(e)) return false;
                 try {
-                    return (d(c, [], e), !0);
+                    return (d(c, [], e), true);
                 } catch (e) {
-                    return !1;
+                    return false;
                 }
             },
             f = function (e) {
-                if (!a(e)) return !1;
+                if (!a(e)) return false;
                 switch (r(e)) {
                     case "AsyncFunction":
                     case "GeneratorFunction":
                     case "AsyncGeneratorFunction":
-                        return !1;
+                        return false;
                 }
                 try {
                     return g || !!p(u, l(e));
                 } catch (e) {
-                    return !0;
+                    return true;
                 }
             };
-        ((f.sham = !0),
-            (e.exports =
+        ((f.sham = true),
+            (module.exports =
                 !d ||
                 i(function () {
                     var e;
@@ -42,7 +42,7 @@ module.exports = function (e, t, n) {
                         h(h.call) ||
                         !h(Object) ||
                         !h(function () {
-                            e = !0;
+                            e = true;
                         }) ||
                         e
                     );

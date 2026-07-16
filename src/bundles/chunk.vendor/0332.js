@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(211);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(211);
 
             function o() {}
-            (i(274),
-                n.inherit(o, r),
+            (require(274),
+                IsFiniteNonNegativeNumber.inherit(o, r),
                 (o.prototype.getDefaultStyle = function () {
                     var e = this._scene
-                        ? this._scene.getStyles().querySingle('style[_sdf="' + n.getTypeId(this._getRelatedItemClass()) + '"]')
+                        ? this._scene.getStyles().querySingle('style[_sdf="' + IsFiniteNonNegativeNumber.getTypeId(this._getRelatedItemClass()) + '"]')
                         : null;
                     return e || null;
                 }),
@@ -17,5 +17,5 @@ module.exports = function (e, t, i) {
                 (o.prototype.toString = function () {
                     return "[Object GItemTool]";
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

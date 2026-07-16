@@ -1,24 +1,24 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(196), n(4), n(13));
-        const o = n(1190),
-            i = n(292),
-            a = n(291),
+        (require(8 /* Symbol */), require(196), require(4), require(13));
+        const o = require(1190),
+            i = require(292),
+            a = require(291),
             {
                 gApi: r,
                 MicrosoftB2BKeyType: s,
                 PaymentProviders: l,
                 DateAPI: c,
                 IN_APP_PURCHASE: { WINDOWS: { production: d, trunk: u, rc: p, beta: g, lts: h } = {} } = {},
-            } = n(10),
-            { IS_PRODUCTION: f, IS_LTS: m, IS_RC: y, IS_BETA: v } = n(231),
+            } = require(10 /* designerConfig */),
+            { IS_PRODUCTION: f, IS_LTS: m, IS_RC: y, IS_BETA: v } = require(231 /* IS_TRUNK */),
             {
                 ERROR_CODES: { ERR_MICROSOFT_STORE_SERVICES_B2B_KEY_NOT_FOUND: _ },
             } = r;
-        e.exports = class extends o {
+        module.exports = class extends o {
             constructor() {
                 if ((super(), !window.napi)) return;
-                const { remote: e } = n(881),
+                const { remote: e } = require(881),
                     t = e.getCurrentWindow().getNativeWindowHandle();
                 ((this._store = new window.napi.windowsStore.StoreContext()),
                     this._store.initialize(t),
@@ -28,9 +28,9 @@ module.exports = function (e, t, n) {
             }
             async purchase(e, t) {
                 try {
-                    if ((gDesigner.toggleLoading(!0), e || (e = await this.getProduct()), !e)) return;
+                    if ((gDesigner.toggleLoading(true), e || (e = await this.getProduct()), !e)) return;
                 } finally {
-                    gDesigner.toggleLoading(!1);
+                    gDesigner.toggleLoading(false);
                 }
                 return new Promise((t, n) => {
                     const o = setTimeout(() => {
@@ -40,12 +40,12 @@ module.exports = function (e, t, n) {
                         (clearTimeout(o),
                             e
                                 ? n(e)
-                                : (gDesigner.toggleLoading(!0),
+                                : (gDesigner.toggleLoading(true),
                                   this.syncLicense()
                                       .then(t)
                                       .catch(n)
                                       .finally(() => {
-                                          gDesigner.toggleLoading(!1);
+                                          gDesigner.toggleLoading(false);
                                       })));
                     });
                 });

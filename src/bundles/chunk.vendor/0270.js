@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            ((e.exports = {
-                GCommonNames: i(974),
-                GReminderDialog: i(706),
-                GReminderDialogFactory: i(975),
-                GLoginDialog: i(977),
-                GPaywallDialog: i(707),
+            ((module.exports = {
+                GCommonNames: require(974),
+                GReminderDialog: require(706),
+                GReminderDialogFactory: require(975 /* GReminderDialog */),
+                GLoginDialog: require(977 /* GLoginDialog */),
+                GPaywallDialog: require(707 /* GPaywallDialog */),
             }),
-                i(981));
+                require(981));
         };

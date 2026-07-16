@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        ((t.byteLength = function (e) {
+        ((exports.byteLength = function (e) {
             var t = c(e),
                 n = t[0],
                 o = t[1];
             return (3 * (n + o)) / 4 - o;
         }),
-            (t.toByteArray = function (e) {
+            (exports.toByteArray = function (e) {
                 var t,
                     n,
                     o = c(e),
@@ -35,7 +35,7 @@ module.exports = function (e, t, n) {
                     (l[d++] = 255 & t));
                 return l;
             }),
-            (t.fromByteArray = function (e) {
+            (exports.fromByteArray = function (e) {
                 for (var t, n = e.length, i = n % 3, a = [], r = 0, s = n - i; r < s; r += 16383)
                     a.push(d(e, r, r + 16383 > s ? s : r + 16383));
                 1 === i

@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(11),
-                o = i(90),
-                a = i(560),
-                s = i(1144),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(11),
+                o = require(90),
+                a = require(560),
+                s = require(1144),
                 l = function () {
                     this.hashmap = {};
                 };
-            (n.inherit(l, o),
+            (IsFiniteNonNegativeNumber.inherit(l, o),
                 (l.prototype.putText = function (e, t) {
                     this.put(e, s.newFromString(t));
                 }),
@@ -32,5 +32,5 @@ module.exports = function (e, t, i) {
                         }),
                         e.write(">>"));
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

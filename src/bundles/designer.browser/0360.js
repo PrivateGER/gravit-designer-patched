@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(43),
-            i = n(136),
-            a = n(88).f,
+        var o = require(43),
+            i = require(136),
+            a = require(88).f,
             r = o("unscopables"),
             s = Array.prototype;
-        (void 0 === s[r] && a(s, r, { configurable: !0, value: i(null) }),
-            (e.exports = function (e) {
-                s[r][e] = !0;
+        (void 0 === s[r] && a(s, r, { configurable: true, value: i(null) }),
+            (module.exports = function (e) {
+                s[r][e] = true;
             }));
     };

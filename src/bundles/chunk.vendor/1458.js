@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             var i = function (e) {
                 this._document = e;
             };
@@ -26,5 +26,5 @@ module.exports = function (e, t) {
                         }
                     }
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

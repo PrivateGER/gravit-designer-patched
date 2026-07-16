@@ -1,19 +1,19 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(4), n(13));
-        var o = n(1);
-        const { FILE_FORMATS: i } = n(10),
+        (require(8 /* Symbol */), require(4), require(13));
+        var GObject = require(1);
+        const { FILE_FORMATS: i } = require(10 /* designerConfig */),
             a = i.find((e) => e.default),
-            { COMMAND_SAVE: r } = n(591),
-            s = n(1164),
-            l = n(556);
-        e.exports = class extends s {
+            { COMMAND_SAVE: r } = require(591 /* COMMAND_SAVE */),
+            s = require(1164),
+            GGoogleDrive = require(556);
+        module.exports = class extends s {
             constructor(e, t) {
                 super(e, t);
             }
             async updateFileSceneAndMetadata(e, t, n, o) {
                 const i = await this._requestWorkerToSave(e, t, n, o);
-                return l.convertToCloudItem(i);
+                return GGoogleDrive.convertToCloudItem(i);
             }
             _requestWorkerToSave(e, t, n, i) {
                 return new Promise((s, l) => {
@@ -21,18 +21,18 @@ module.exports = function (e, t, n) {
                         id: e,
                         file: t,
                         metadata: i,
-                        scene: o.GNode.serialize(n, { save: !0 }),
+                        scene: GObject.GNode.serialize(n, { save: true }),
                         type: a.type,
                     });
                     this._worker.addEventListener(
                         "message",
                         function (e) {
                             const { cmd: t, id: n, data: o } = e.data;
-                            if ((t !== r.SUCCESS && t !== r.FAILED) || n !== c) return !1;
+                            if ((t !== r.SUCCESS && t !== r.FAILED) || n !== c) return false;
                             t === r.SUCCESS ? s(o.file) : t === r.FAILED && l();
-                            return !0;
+                            return true;
                         }.bind(this),
-                        { once: !0 }
+                        { once: true }
                     );
                 });
             }

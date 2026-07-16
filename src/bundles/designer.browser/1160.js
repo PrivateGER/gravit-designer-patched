@@ -1,19 +1,19 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(19), n(30), n(193), n(57), n(3), n(4), n(13), n(26));
-        var i = n(53),
-            a = n(1),
-            r = n(67),
-            s = o(n(340)),
-            l = n(123),
-            c = n(857);
-        n(173);
-        const d = n(135);
+        var o = require(16);
+        (require(19), require(30), require(193), require(57), require(3), require(4), require(13), require(26));
+        var i = require(53),
+            GObject = require(1),
+            r = require(67),
+            s = o(require(340)),
+            l = require(123),
+            c = require(857);
+        require(173);
+        const d = require(135);
         function u() {
             this._elements = [];
         }
-        (a.GObject.inherit(u, l),
+        (GObject.GObject.inherit(u, l),
             (u.prototype._panel = null),
             (u.prototype._document = null),
             (u.prototype._elements = null),
@@ -23,23 +23,23 @@ module.exports = function (e, t, n) {
                     .attr("data-property", "_sbl")
                     .gBlendMode()
                     .append(
-                        $('<optgroup label="' + a.GLocale.get(new a.GLocaleKey("GAppearanceProperties", "text.masking")) + '"></optgroup>')
+                        $('<optgroup label="' + GObject.GLocale.get(new GObject.GLocaleKey("GAppearanceProperties", "text.masking")) + '"></optgroup>')
                             .append(
                                 $("<option></option>")
                                     .attr("value", "m")
-                                    .text(a.GLocale.get(new a.GLocaleKey("GAppearanceProperties", "blending.mask")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GAppearanceProperties", "blending.mask")))
                             )
                             .append(
                                 $("<option></option>")
                                     .attr("value", "!m")
-                                    .text(a.GLocale.get(new a.GLocaleKey("GAppearanceProperties", "blending.inverse-mask")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GAppearanceProperties", "blending.inverse-mask")))
                             )
                     )
                     .gRichTooltip(
                         r.GRichTooltipConfig.from({
-                            title: a.GLocale.get(new a.GLocaleKey("GAppearanceProperties", "text.blend-tooltip-title")),
-                            description: a.GLocale.get(new a.GLocaleKey("GAppearanceProperties", "text.blend-tooltip-description")),
-                            middle: !1,
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GAppearanceProperties", "text.blend-tooltip-title")),
+                            description: GObject.GLocale.get(new GObject.GLocaleKey("GAppearanceProperties", "text.blend-tooltip-description")),
+                            middle: false,
                             learnMore: "/docs/colors-gradients-textures/blending-modes/",
                         })
                     )
@@ -48,7 +48,7 @@ module.exports = function (e, t, n) {
                             e._assignProperty(
                                 "_sbl",
                                 $(t.target).val(),
-                                a.GLocale.get(new a.GLocaleKey("GCommonNames", "action.change-blending-mode"))
+                                GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.change-blending-mode"))
                             ));
                     });
             }),
@@ -62,19 +62,19 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<option></option>")
                                     .attr("value", "0")
-                                    .text(a.GLocale.get(new a.GLocaleKey("GCommonNames", "evenodd.non-zero")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "evenodd.non-zero")))
                             )
                             .append(
                                 $("<option></option>")
                                     .attr("value", "1")
-                                    .text(a.GLocale.get(new a.GLocaleKey("GCommonNames", "evenodd.non-odd")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "evenodd.non-odd")))
                             )
                             .on("change", function () {
                                 (gDesigner.stats("appearance_toggle_evenodd", "1" === $(this).val() ? "activate" : "deactivate"),
                                     t._assignProperty(
                                         "evenodd",
                                         "1" === $(this).val(),
-                                        a.GLocale.get(new a.GLocaleKey("GCommonNames", "action.change-fill-rule"))
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.change-fill-rule"))
                                     ));
                             });
                     if ("_sbl" === e) return t._getBlendingProperties();
@@ -85,11 +85,11 @@ module.exports = function (e, t, n) {
                             .gInputSlider(
                                 Object.assign({}, c.prototype.OPACITY_DEFAULT, {
                                     richTooltipConfig: r.GRichTooltipConfig.from({
-                                        title: a.GLocale.get(
-                                            new a.GLocaleKey("GAppearanceProperties", "text.opacity-slider-tooltip-title")
+                                        title: GObject.GLocale.get(
+                                            new GObject.GLocaleKey("GAppearanceProperties", "text.opacity-slider-tooltip-title")
                                         ),
-                                        description: a.GLocale.get(
-                                            new a.GLocaleKey("GAppearanceProperties", "text.opacity-slider-tooltip-description")
+                                        description: GObject.GLocale.get(
+                                            new GObject.GLocaleKey("GAppearanceProperties", "text.opacity-slider-tooltip-description")
                                         ),
                                     }),
                                 })
@@ -106,10 +106,10 @@ module.exports = function (e, t, n) {
                                     r < t._elements.length;
                                     ++r
                                 )
-                                    t._elements[r].setProperty(o, i, !1, !1, !0);
+                                    t._elements[r].setProperty(o, i, false, false, true);
                                 t._panel
                                     .find('[type="text"][data-property="' + o + '"]')
-                                    .gInputBox("value", a.GUtil.formatOpacity(100 * i));
+                                    .gInputBox("value", GObject.GUtil.formatOpacity(100 * i));
                             })
                             .on("change", function (e) {
                                 (gDesigner.stats("appearance_change_opacity"),
@@ -127,7 +127,7 @@ module.exports = function (e, t, n) {
                                 (gDesigner.stats("appearance_change_opacity"),
                                     t._assignProperty(
                                         $(this).attr("data-property"),
-                                        a.GLength.parseEquationValue($(this).gInputBox("value")) / 100,
+                                        GObject.GLength.parseEquationValue($(this).gInputBox("value")) / 100,
                                         "Change opacity"
                                     ));
                             })
@@ -142,7 +142,7 @@ module.exports = function (e, t, n) {
                 ($("<div></div>")
                     .addClass("appearance-opacity-property")
                     .gPropertyRow({
-                        label: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.opacity")),
+                        label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.opacity")),
                         columns: [
                             {
                                 width: "auto",
@@ -157,7 +157,7 @@ module.exports = function (e, t, n) {
                     $("<div></div>")
                         .addClass("appearance-blending-property")
                         .gPropertyRow({
-                            label: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.blending")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.blending")),
                             columns: [{ width: "100%", content: n("_sbl") }],
                         })
                         .appendTo(this._panel));
@@ -171,7 +171,7 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<span />")
                                     .addClass("vertical-align")
-                                    .text(a.GLocale.get(new a.GLocaleKey("GAppearanceProperties", "text.style")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GAppearanceProperties", "text.style")))
                             )
                     )
                     .append(
@@ -211,13 +211,13 @@ module.exports = function (e, t, n) {
                                             .gDesignerStyleEditor()
                                             .gRichTooltip(
                                                 r.GRichTooltipConfig.from({
-                                                    title: a.GLocale.get(
-                                                        new a.GLocaleKey("GAppearanceProperties", "text.shared-styles-tooltip-title")
+                                                    title: GObject.GLocale.get(
+                                                        new GObject.GLocaleKey("GAppearanceProperties", "text.shared-styles-tooltip-title")
                                                     ),
-                                                    description: a.GLocale.get(
-                                                        new a.GLocaleKey("GAppearanceProperties", "text.shared-styles-tooltip-description")
+                                                    description: GObject.GLocale.get(
+                                                        new GObject.GLocaleKey("GAppearanceProperties", "text.shared-styles-tooltip-description")
                                                     ),
-                                                    middle: !1,
+                                                    middle: false,
                                                     isPro: !gDesigner.isEnabledProFeatures() || !(i.isPro() && !i.isExpired()),
                                                     learnMore:
                                                         "/docs/organizing-your-designs/shared-styles/",
@@ -236,7 +236,7 @@ module.exports = function (e, t, n) {
                                         ) {
                                             var e = o._elements[0].getReferencedStyle();
                                             e.assignStyleFrom(o._elements[0]);
-                                            var t = gDesigner.createNewStylePreview(e, !0, o._elements[0] instanceof a.GText);
+                                            var t = gDesigner.createNewStylePreview(e, true, o._elements[0] instanceof GObject.GText);
                                             (t && o._addPreview(t), $(this).addClass("g-disabled"));
                                         }
                                     })
@@ -249,10 +249,10 @@ module.exports = function (e, t, n) {
                     (this._updateUI(),
                     this._document &&
                         (gDesigner.removeEventListener(d, this._settingChanged, this),
-                        this._document.getScene().removeEventListener(a.GNode.AfterInsertEvent, this._styleChanged),
-                        this._document.getScene().removeEventListener(a.GNode.AfterRemoveEvent, this._styleChanged),
-                        this._document.getScene().removeEventListener(a.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
-                        this._document.getScene().removeEventListener(a.GElement.AfterFlagChangeEvent, this._afterFlagChange),
+                        this._document.getScene().removeEventListener(GObject.GNode.AfterInsertEvent, this._styleChanged),
+                        this._document.getScene().removeEventListener(GObject.GNode.AfterRemoveEvent, this._styleChanged),
+                        this._document.getScene().removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
+                        this._document.getScene().removeEventListener(GObject.GElement.AfterFlagChangeEvent, this._afterFlagChange),
                         (this._document = null)),
                     (this._elements = []),
                     e)
@@ -260,36 +260,36 @@ module.exports = function (e, t, n) {
                     gDesigner.addEventListener(d, this._settingChanged, this);
                     for (var n = 0; n < t.length; ++n) {
                         var o = t[n];
-                        o.hasMixin(a.GStylable) &&
-                            o.getStylePropertySets().indexOf(a.GStylable.PropertySet.Style) >= 0 &&
+                        o.hasMixin(GObject.GStylable) &&
+                            o.getStylePropertySets().indexOf(GObject.GStylable.PropertySet.Style) >= 0 &&
                             this._elements.push(o);
                     }
                     if (this._elements.length)
                         return (
                             (this._document = e),
-                            this._document.getScene().addEventListener(a.GNode.AfterInsertEvent, this._styleChanged, this),
-                            this._document.getScene().addEventListener(a.GNode.AfterRemoveEvent, this._styleChanged, this),
+                            this._document.getScene().addEventListener(GObject.GNode.AfterInsertEvent, this._styleChanged, this),
+                            this._document.getScene().addEventListener(GObject.GNode.AfterRemoveEvent, this._styleChanged, this),
                             this._document
                                 .getScene()
-                                .addEventListener(a.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
-                            this._document.getScene().addEventListener(a.GElement.AfterFlagChangeEvent, this._afterFlagChange, this),
+                                .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                            this._document.getScene().addEventListener(GObject.GElement.AfterFlagChangeEvent, this._afterFlagChange, this),
                             this._updateProperties(),
-                            !0
+                            true
                         );
                 }
-                return !1;
+                return false;
             }),
             (u.prototype._updateUI = function () {
                 let e = this._panel.find(".g-style-sync");
                 gDesigner.isTouchEnabled()
                     ? (e.text(""), e.append($("<span></span>").addClass("g-style-sync-refresh-item")))
-                    : e.text(a.GLocale.get(new a.GLocaleKey("GAppearanceProperties", "action.sync")));
+                    : e.text(GObject.GLocale.get(new GObject.GLocaleKey("GAppearanceProperties", "action.sync")));
             }),
             (u.prototype._settingChanged = function (e) {
                 "touch" === e.key && this._updateUI();
             }),
             (u.prototype._afterFlagChange = function (e) {
-                if (e.flag === a.GNode.Flag.Selected && (e.node instanceof a.GPGEdge || e.node instanceof a.GPGFacet)) {
+                if (e.flag === GObject.GNode.Flag.Selected && (e.node instanceof GObject.GPGEdge || e.node instanceof GObject.GPGFacet)) {
                     var t = e.node.getParent() ? e.node.getParent().getParent() : null;
                     t && this._elements.indexOf(t) >= 0 && this._updateProperties();
                 }
@@ -316,35 +316,35 @@ module.exports = function (e, t, n) {
                             }
                             return e.getProperty(n);
                         },
-                        o = 100 * n("_stop", !1, null);
+                        o = 100 * n("_stop", false, null);
                     (this._panel.find('.g-input-slider[data-property="_stop"]').gInputSlider("value", null !== o ? o : 100),
-                        this._panel.find('[type="text"][data-property="_stop"]').gInputBox("value", a.GUtil.formatOpacity(o)),
-                        this._panel.find('[data-property="_sbl"]').val(n("_sbl", !0)));
+                        this._panel.find('[type="text"][data-property="_stop"]').gInputBox("value", GObject.GUtil.formatOpacity(o)),
+                        this._panel.find('[data-property="_sbl"]').val(n("_sbl", true)));
                     var r = null,
                         s = null;
                     if (1 === this._elements.length && this._elements[0].hasProperty("sref") && this._elements[0].getReferencedStyle()) {
                         var l = this._elements[0].getReferencedStyle();
-                        ((r = gDesigner.getStylePreview(l, this._elements[0] instanceof a.GText)), (s = l.getProperty("name")));
+                        ((r = gDesigner.getStylePreview(l, this._elements[0] instanceof GObject.GText)), (s = l.getProperty("name")));
                     }
                     if ((this._checkSyncState(), r))
                         (this._addPreview(r),
                             this._panel.find(".g-styles-field").text(s),
                             this._panel.find(".g-styles-field").removeClass("g-disabled"));
                     else {
-                        for (var c = !1, d = 0; d < this._elements.length; ++d)
-                            this._elements[0].hasProperty("sref") && this._elements[d].getReferencedStyle() && (c = !0);
+                        for (var c = false, d = 0; d < this._elements.length; ++d)
+                            this._elements[0].hasProperty("sref") && this._elements[d].getReferencedStyle() && (c = true);
                         c && this._elements.length > 1
                             ? (this._panel.find(".g-styles-preview").empty(),
                               this._panel.find(".g-styles-preview").css("display", "none"),
                               this._panel
                                   .find(".g-styles-field")
-                                  .text(a.GLocale.get(new a.GLocaleKey("GAppearanceProperties", "text.multiple-selection"))),
+                                  .text(GObject.GLocale.get(new GObject.GLocaleKey("GAppearanceProperties", "text.multiple-selection"))),
                               this._panel.find(".g-styles-field").addClass("g-disabled"))
                             : (this._panel.find(".g-styles-preview").empty(),
                               this._panel.find(".g-styles-preview").css("display", "none"),
                               this._panel
                                   .find(".g-styles-field")
-                                  .text(a.GLocale.get(new a.GLocaleKey("GAppearanceProperties", "text.no-style"))),
+                                  .text(GObject.GLocale.get(new GObject.GLocaleKey("GAppearanceProperties", "text.no-style"))),
                               this._panel.find(".g-styles-field").removeClass("g-disabled"));
                     }
                 } else console.warn("GAppearanceProperties: empty _elements array");
@@ -382,5 +382,5 @@ module.exports = function (e, t, n) {
             (u.prototype.toString = function () {
                 return "[Object GAppearanceProperties]";
             }),
-            (e.exports = u));
+            (module.exports = u));
     };

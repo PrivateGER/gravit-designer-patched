@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         (function (e) {
             (!(function (e) {
                 var t = (function () {
                         try {
                             return !!Symbol.iterator;
                         } catch (e) {
-                            return !1;
+                            return false;
                         }
                     })(),
                     n = function (e) {
@@ -38,13 +38,13 @@ module.exports = function (e, t, n) {
                             "function" == typeof t.prototype.entries
                         );
                     } catch (e) {
-                        return !1;
+                        return false;
                     }
                 })() ||
                     (function () {
                         var i = function (e) {
                                 Object.defineProperty(this, "_entries", {
-                                    writable: !0,
+                                    writable: true,
                                     value: {},
                                 });
                                 var t = typeof e;
@@ -156,9 +156,9 @@ module.exports = function (e, t, n) {
                     }),
                     "function" != typeof a._fromString &&
                         Object.defineProperty(a, "_fromString", {
-                            enumerable: !1,
-                            configurable: !1,
-                            writable: !1,
+                            enumerable: false,
+                            configurable: false,
+                            writable: false,
                             value: function (e) {
                                 if (this._entries) this._entries = {};
                                 else {
@@ -182,7 +182,7 @@ module.exports = function (e, t, n) {
                                 var t = new e.URL("b", "http://a");
                                 return ((t.pathname = "c d"), "http://a/c%20d" === t.href && t.searchParams);
                             } catch (e) {
-                                return !1;
+                                return false;
                             }
                         })() ||
                             (function () {
@@ -212,28 +212,28 @@ module.exports = function (e, t, n) {
                                             throw new TypeError("Invalid URL");
                                         Object.defineProperty(this, "_anchorElement", { value: a });
                                         var s = new e.URLSearchParams(this.search),
-                                            l = !0,
-                                            c = !0,
+                                            l = true,
+                                            c = true,
                                             d = this;
                                         (["append", "delete", "set"].forEach(function (e) {
                                             var t = s[e];
                                             s[e] = function () {
-                                                (t.apply(s, arguments), l && ((c = !1), (d.search = s.toString()), (c = !0)));
+                                                (t.apply(s, arguments), l && ((c = false), (d.search = s.toString()), (c = true)));
                                             };
                                         }),
                                             Object.defineProperty(this, "searchParams", {
                                                 value: s,
-                                                enumerable: !0,
+                                                enumerable: true,
                                             }));
                                         var u = void 0;
                                         Object.defineProperty(this, "_updateSearchParams", {
-                                            enumerable: !1,
-                                            configurable: !1,
-                                            writable: !1,
+                                            enumerable: false,
+                                            configurable: false,
+                                            writable: false,
                                             value: function () {
                                                 this.search !== u &&
                                                     ((u = this.search),
-                                                    c && ((l = !1), this.searchParams._fromString(this.search), (l = !0)));
+                                                    c && ((l = false), this.searchParams._fromString(this.search), (l = true)));
                                             },
                                         });
                                     },
@@ -247,7 +247,7 @@ module.exports = function (e, t, n) {
                                             set: function (t) {
                                                 this._anchorElement[e] = t;
                                             },
-                                            enumerable: !0,
+                                            enumerable: true,
                                         });
                                     })(e);
                                 }),
@@ -258,7 +258,7 @@ module.exports = function (e, t, n) {
                                         set: function (e) {
                                             ((this._anchorElement.search = e), this._updateSearchParams());
                                         },
-                                        enumerable: !0,
+                                        enumerable: true,
                                     }),
                                     Object.defineProperties(o, {
                                         toString: {
@@ -276,7 +276,7 @@ module.exports = function (e, t, n) {
                                             set: function (e) {
                                                 ((this._anchorElement.href = e), this._updateSearchParams());
                                             },
-                                            enumerable: !0,
+                                            enumerable: true,
                                         },
                                         pathname: {
                                             get: function () {
@@ -285,7 +285,7 @@ module.exports = function (e, t, n) {
                                             set: function (e) {
                                                 this._anchorElement.pathname = e;
                                             },
-                                            enumerable: !0,
+                                            enumerable: true,
                                         },
                                         origin: {
                                             get: function () {
@@ -298,21 +298,21 @@ module.exports = function (e, t, n) {
                                                     (t ? ":" + this._anchorElement.port : "")
                                                 );
                                             },
-                                            enumerable: !0,
+                                            enumerable: true,
                                         },
                                         password: {
                                             get: function () {
                                                 return "";
                                             },
                                             set: function (e) {},
-                                            enumerable: !0,
+                                            enumerable: true,
                                         },
                                         username: {
                                             get: function () {
                                                 return "";
                                             },
                                             set: function (e) {},
-                                            enumerable: !0,
+                                            enumerable: true,
                                         },
                                     }),
                                     (n.createObjectURL = function (e) {
@@ -331,7 +331,7 @@ module.exports = function (e, t, n) {
                         try {
                             Object.defineProperty(e.location, "origin", {
                                 get: t,
-                                enumerable: !0,
+                                enumerable: true,
                             });
                         } catch (n) {
                             setInterval(function () {
@@ -340,5 +340,5 @@ module.exports = function (e, t, n) {
                         }
                     }
                 })(void 0 !== e ? e : "undefined" != typeof window ? window : "undefined" != typeof self ? self : this));
-        }).call(this, n(109));
+        }).call(this, require(109));
     };

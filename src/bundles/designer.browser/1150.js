@@ -1,33 +1,33 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(193), n(57), n(20), n(107), n(34), n(134), n(4), n(13), n(32), n(38), n(33));
-        var o = n(53),
-            i = n(1),
-            a = n(15),
-            r = n(40),
-            s = n(67),
-            l = n(1151),
-            c = n(857),
-            d = n(44);
+        (require(193), require(57), require(20), require(107), require(34), require(134), require(4), require(13), require(32), require(38), require(33));
+        var o = require(53),
+            GObject = require(1),
+            GPlatform = require(15),
+            GSaveAction = require(40),
+            s = require(67),
+            l = require(1151),
+            c = require(857),
+            GSystemDialog = require(44);
         function u() {
-            (this.initLayout(), this._container.gOverlay({ releaseOnClose: !1, padding: !1 }));
+            (this.initLayout(), this._container.gOverlay({ releaseOnClose: false, padding: false }));
         }
         ((u.ColorMode = { RGB: "rgb", HSV: "hsv", CMYK: "cmyk" }),
             (u._ColorModeToFrameworkColorMode = {
-                [u.ColorMode.RGB]: i.GColor.ColorModes.RGB,
-                [u.ColorMode.HSV]: i.GColor.ColorModes.HSB,
-                [u.ColorMode.CMYK]: i.GColor.ColorModes.CMYK,
+                [u.ColorMode.RGB]: GObject.GColor.ColorModes.RGB,
+                [u.ColorMode.HSV]: GObject.GColor.ColorModes.HSB,
+                [u.ColorMode.CMYK]: GObject.GColor.ColorModes.CMYK,
             }),
             (u.ColorModeLabel = { RGB: "RGB", HSV: "HSB", CMYK: "CMYK" }),
-            (u.ColorModelFree = { RGB: !0 }),
+            (u.ColorModelFree = { RGB: true }),
             (u.ExtendedGamut = { COMPONENTS: "cp", COLOR_SLIDER: "cs", MAP: "map" }),
-            (u.canDragSwatch = !1),
+            (u.canDragSwatch = false),
             (u.dragSwatch = null),
             (u.dragDeltaX = 0),
             (u.dragDeltaY = 0),
-            (u.hasDropped = !1),
+            (u.hasDropped = false),
             (u.EXTEND_DRAG_RANGE = 50),
-            i.GObject.inheritAndMix(u, i.GObject),
+            GObject.GObject.inheritAndMix(u, GObject.GObject),
             (u.enableFileTypes = [
                 { ext: "png", mime: "image/png" },
                 { ext: "jpg", mime: "image/jpeg" },
@@ -57,18 +57,18 @@ module.exports = function (e, t, n) {
             (u.prototype._activePalette = null),
             (u.prototype._swatchesScope = "user"),
             (u.prototype._colorMode = null),
-            (u.prototype._oldColor = i.GRGBColor.BLACK),
-            (u.prototype._color = i.GRGBColor.BLACK),
+            (u.prototype._oldColor = GObject.GRGBColor.BLACK),
+            (u.prototype._color = GObject.GRGBColor.BLACK),
             (u.prototype._oldColorOpacity = 100),
             (u.prototype._colorOpacity = 100),
             (u.prototype._activeGradientStop = null),
             (u.prototype._activeGradient = null),
             (u.prototype._pattern = null),
-            (u.prototype._patternUpdateBlocker = !1),
+            (u.prototype._patternUpdateBlocker = false),
             (u.prototype._texture = null),
             (u.prototype._opacity = null),
             (u.prototype._settings = null),
-            (u.prototype._isVisible = !1),
+            (u.prototype._isVisible = false),
             (u.prototype._extendedGamutInitiated = null),
             (u.prototype._sliderColorThumb = null),
             (u.prototype._sliderOpacityThumb = null),
@@ -95,7 +95,7 @@ module.exports = function (e, t, n) {
                                 var i = gDesigner.getActiveDocument();
                                 (i &&
                                     (i.getEditor().removeEventListener(o.GEditor.ModifiedEvent, this._closeIfNeeded, this),
-                                    i.getEditor().keysOn([a.GKey.Constant.OPTION])),
+                                    i.getEditor().keysOn([GPlatform.GKey.Constant.OPTION])),
                                     gDesigner.getWorkspace().getStyleEdManager() &&
                                         gDesigner.getWorkspace().getStyleEdManager().isActivated() &&
                                         gDesigner
@@ -118,19 +118,19 @@ module.exports = function (e, t, n) {
                                 o = t.createDefault(this._pattern);
                             (null === o
                                 ? gDesigner.stats("patternchooser_change_type", "transparent")
-                                : o instanceof i.GBackground
+                                : o instanceof GObject.GBackground
                                   ? gDesigner.stats("patternchooser_change_type", "background")
-                                  : o instanceof i.GTexturePattern
+                                  : o instanceof GObject.GTexturePattern
                                     ? gDesigner.stats("patternchooser_change_type", "texture")
-                                    : o instanceof i.GNoisePattern
+                                    : o instanceof GObject.GNoisePattern
                                       ? gDesigner.stats("patternchooser_change_type", "noise")
-                                      : o instanceof i.GRadialGradient
+                                      : o instanceof GObject.GRadialGradient
                                         ? gDesigner.stats("patternchooser_change_type", "radialgradient")
-                                        : o instanceof i.GLinearGradient
+                                        : o instanceof GObject.GLinearGradient
                                           ? gDesigner.stats("patternchooser_change_type", "lineargradient")
-                                          : o instanceof i.GAngularGradient
+                                          : o instanceof GObject.GAngularGradient
                                             ? gDesigner.stats("patternchooser_change_type", "angulargradient")
-                                            : o instanceof i.GColor && gDesigner.stats("patternchooser_change_type", "color"),
+                                            : o instanceof GObject.GColor && gDesigner.stats("patternchooser_change_type", "color"),
                                 this._updateOpacity(1),
                                 this._updatePattern(o, "set_type"),
                                 this._updateSwatchesPalette(this._getSwatchScope("global", this._pattern)),
@@ -151,7 +151,7 @@ module.exports = function (e, t, n) {
                     t
                         .on(
                             "change",
-                            r.watchDog.trap(
+                            GSaveAction.watchDog.trap(
                                 (e) => {
                                     var t = $(e.target).children("option:selected").data("colormode");
                                     u.ColorModelFree[(t || "").toUpperCase()]
@@ -169,7 +169,7 @@ module.exports = function (e, t, n) {
                                 },
                                 (e) => {
                                     var t = $(e.target).children("option:selected").data("colormode");
-                                    (this.setColorMode(this._colorMode, !0),
+                                    (this.setColorMode(this._colorMode, true),
                                         gDesigner.stats("patternchooser_nonprotriespro_procolormode", t));
                                 }
                             )
@@ -206,7 +206,7 @@ module.exports = function (e, t, n) {
                         .on(
                             "change",
                             function (e) {
-                                this._updateColor(i.GRGBColor.fromCSSColor($(e.target).val()));
+                                this._updateColor(GObject.GRGBColor.fromCSSColor($(e.target).val()));
                             }.bind(this)
                         )
                         .appendTo(this._colorEditor)),
@@ -230,7 +230,7 @@ module.exports = function (e, t, n) {
                     .on(
                         "colorchange",
                         function (e, t) {
-                            (this._updateColor(new i.GRGBColor(t)), this._updateOpacity(t[3] / 255, "eyedropper"));
+                            (this._updateColor(new GObject.GRGBColor(t)), this._updateOpacity(t[3] / 255, "eyedropper"));
                         }.bind(this)
                     )
                     .appendTo(n);
@@ -241,7 +241,7 @@ module.exports = function (e, t, n) {
                     .on(
                         "input",
                         function () {
-                            this._updateColorFromColorSlider(!0);
+                            this._updateColorFromColorSlider(true);
                         }.bind(this)
                     )
                     .on(
@@ -257,14 +257,14 @@ module.exports = function (e, t, n) {
                         .on(
                             "input",
                             function (e) {
-                                this._updateOpacity($(e.target).gInputSlider("value") / 100, "slider", !0);
+                                this._updateOpacity($(e.target).gInputSlider("value") / 100, "slider", true);
                             }.bind(this)
                         )
                         .on(
                             "change",
                             function (e) {
                                 (gDesigner.stats("patternchooser_change_opacity"),
-                                    this._updateOpacity($(e.target).gInputSlider("value") / 100, "slider", !1, !0));
+                                    this._updateOpacity($(e.target).gInputSlider("value") / 100, "slider", false, true));
                             }.bind(this)
                         )
                         .appendTo(s)),
@@ -273,7 +273,7 @@ module.exports = function (e, t, n) {
                 var l = $("<div/>").addClass("color-preview-container").appendTo(n);
                 ((this._colorPreview = $("<div/>")
                     .addClass("color-preview")
-                    .css("background", i.GPattern.asCSSBackground(null, 0))
+                    .css("background", GObject.GPattern.asCSSBackground(null, 0))
                     .appendTo(l)),
                     (this._colorPreviewOld = $("<div/>").addClass("color-preview-old").appendTo(this._colorPreview)),
                     (this._colorPreviewNew = $("<div/>").addClass("color-preview-new").appendTo(this._colorPreview)),
@@ -285,7 +285,7 @@ module.exports = function (e, t, n) {
                             $("<button />")
                                 .addClass("g-flat")
                                 .attr("data-action", "exchange")
-                                .attr("data-title", i.GLocale.get(new i.GLocaleKey("GPatternChooser", "action.change-stops-order")))
+                                .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "action.change-stops-order")))
                                 .on(
                                     "click",
                                     function () {
@@ -307,7 +307,7 @@ module.exports = function (e, t, n) {
                                         .attr("data-action", "rotate-left")
                                         .attr(
                                             "data-title",
-                                            i.GLocale.get(new i.GLocaleKey("GPatternChooser", "action.rotate-gradient-left"))
+                                            GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "action.rotate-gradient-left"))
                                         )
                                         .on(
                                             "click",
@@ -324,7 +324,7 @@ module.exports = function (e, t, n) {
                                         .attr("data-action", "rotate-right")
                                         .attr(
                                             "data-title",
-                                            i.GLocale.get(new i.GLocaleKey("GPatternChooser", "action.rotate-gradient-right"))
+                                            GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "action.rotate-gradient-right"))
                                         )
                                         .on(
                                             "click",
@@ -372,17 +372,17 @@ module.exports = function (e, t, n) {
                     .append(
                         $("<button />")
                             .attr("data-palette", "colors")
-                            .text(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.colors")))
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.colors")))
                             .on("click", e)
                     )
                     .append(
                         $("<button />")
                             .gPro({ feature: "swatches" })
                             .attr("data-palette", "swatches")
-                            .text(i.GLocale.get(new i.GLocaleKey("GPatternChooser", "text.swatches")))
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.swatches")))
                             .on(
                                 "click",
-                                r.watchDog.trap(
+                                GSaveAction.watchDog.trap(
                                     e,
                                     null,
                                     () => gDesigner.stats("patternchooser_nonprotriespro_palette", "swatches"),
@@ -393,20 +393,20 @@ module.exports = function (e, t, n) {
                     .append(
                         $("<button />")
                             .attr("data-palette", "used")
-                            .text(i.GLocale.get(new i.GLocaleKey("GPatternChooser", "text.in-use")))
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.in-use")))
                             .on("click", e)
                     )
                     .append(
                         $("<button />")
                             .attr("data-palette", "mixer")
-                            .text(i.GLocale.get(new i.GLocaleKey("GPatternChooser", "text.mixer")))
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.mixer")))
                             .on("click", e)
                     );
             }),
             (u.prototype.__getColorModeParams = function () {
                 return {
                     hexWidth: "27%",
-                    isTouchEnabled: !1,
+                    isTouchEnabled: false,
                     rgbWidth: "15%",
                     cmykWidth: "18%",
                 };
@@ -415,9 +415,9 @@ module.exports = function (e, t, n) {
                 if (this._activeGradient) {
                     const e = this._activeGradient.getStops();
                     if (e && e.length) {
-                        const t = u._ColorModeToFrameworkColorMode[this._colorMode] || i.GColor.ColorModes.RGB;
+                        const t = u._ColorModeToFrameworkColorMode[this._colorMode] || GObject.GColor.ColorModes.RGB;
                         (e.forEach((e) => {
-                            const n = i.GColorHelper.convertColor(e.color, t);
+                            const n = GObject.GColorHelper.convertColor(e.color, t);
                             (n && (e.color = n), this._updateGradientStop(e));
                         }),
                             this._updatePatternFromActiveGradient());
@@ -440,8 +440,8 @@ module.exports = function (e, t, n) {
                     ) {
                         (this._colorMap.css("display", ""),
                             this._colorSlider.css("display", ""),
-                            this._colorEditor.toggleClass("cmyk-mode", !1),
-                            this._opacitySlider.toggleClass("cmyk-mode", !1),
+                            this._colorEditor.toggleClass("cmyk-mode", false),
+                            this._opacitySlider.toggleClass("cmyk-mode", false),
                             $("<label />")
                                 .css("width", n.hexWidth)
                                 .attr("data-css", "")
@@ -450,9 +450,9 @@ module.exports = function (e, t, n) {
                                         .attr("type", "text")
                                         .attr("data-long-press-delay", "500")
                                         .gInputBox({
-                                            keyIncrement: !1,
-                                            wheelIncrement: !1,
-                                            mousemoveIncrement: !1,
+                                            keyIncrement: false,
+                                            wheelIncrement: false,
+                                            mousemoveIncrement: false,
                                         })
                                         .on("long-press", (e) => {
                                             n.isTouchEnabled &&
@@ -461,11 +461,11 @@ module.exports = function (e, t, n) {
                                         .on(
                                             "change",
                                             function (t) {
-                                                var n = i.GRGBColor.fromCSSColor($(t.target).val());
+                                                var n = GObject.GRGBColor.fromCSSColor($(t.target).val());
                                                 (n || (n = this._color),
-                                                    e === u.ColorMode.HSV && (n = new i.GHSVColor(i.GColor.rgbToHSV(n.getValue()))),
+                                                    e === u.ColorMode.HSV && (n = new GObject.GHSVColor(GObject.GColor.rgbToHSV(n.getValue()))),
                                                     gDesigner.stats("patternchooser_update_color", e),
-                                                    this._updateColor(n, null, !1, !0));
+                                                    this._updateColor(n, null, false, true));
                                             }.bind(this)
                                         )
                                         .on("paste keydown keyup", (e) => {
@@ -474,14 +474,14 @@ module.exports = function (e, t, n) {
                                                 o = t.val();
                                             if ("keydown" === e.type) {
                                                 var i = /[0-9a-z\u017F\u212A]/i.test(String.fromCharCode(e.keyCode || e.charCode));
-                                                if (o.length >= 7 && i && n.selectionStart === n.selectionEnd) return !1;
+                                                if (o.length >= 7 && i && n.selectionStart === n.selectionEnd) return false;
                                             }
                                             o.startsWith("#") || ((o = "#" + o), t.val(o));
                                             var a = /^#[0-9A-Za-z]{0,6}/.exec(o);
                                             a && a[0] && o !== a[0] && t.val(a[0]);
                                         })
                                 )
-                                .append($("<span />").text(i.GLocale.get(new i.GLocaleKey("GPatternChooser", "text.hex"))))
+                                .append($("<span />").text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.hex"))))
                                 .appendTo(this._colorComponents),
                             n.isTouchEnabled && $("<div/>").css("width", "11%").appendTo(this._colorComponents));
                         var a = this._colorMode === u.ColorMode.RGB ? ["R", "G", "B"] : ["H", "S", "B"];
@@ -512,8 +512,8 @@ module.exports = function (e, t, n) {
                     } else
                         this._colorMode === u.ColorMode.CMYK &&
                             (this._colorMap.css("display", "none"),
-                            this._colorEditor.toggleClass("cmyk-mode", !0),
-                            this._opacitySlider.toggleClass("cmyk-mode", !0),
+                            this._colorEditor.toggleClass("cmyk-mode", true),
+                            this._opacitySlider.toggleClass("cmyk-mode", true),
                             this._colorSlider.css("display", "none"),
                             Array.prototype.forEach.call(
                                 ["C", "M", "Y", "K"],
@@ -527,7 +527,7 @@ module.exports = function (e, t, n) {
                                         .appendTo(this._colorComponents);
                                 }.bind(this)
                             ),
-                            this._color instanceof i.GCMYKColor || (o = new i.GCMYKColor(i.GColor.rgbToCMYK(this._color.toScreen()))));
+                            this._color instanceof GObject.GCMYKColor || (o = new GObject.GCMYKColor(GObject.GColor.rgbToCMYK(this._color.toScreen()))));
                     var r = this._updateColorFromColorComponents.bind(this);
                     (this._colorComponents.find("[data-component-index] input").each(function (e, t) {
                         $(t).on("change", () => {
@@ -541,13 +541,13 @@ module.exports = function (e, t, n) {
                                 $("<input>")
                                     .attr("type", "text")
                                     .gInputBox({ minValue: 0, maxValue: 100, postfix: "%" })
-                                    .gInputBox("value", i.GUtil.formatOpacity(100 * this._colorOpacity))
+                                    .gInputBox("value", GObject.GUtil.formatOpacity(100 * this._colorOpacity))
                                     .on(
                                         "change",
                                         function (e) {
                                             (gDesigner.stats("patternchooser_change_opacity"),
                                                 this._updateOpacity(
-                                                    i.GLength.parseEquationValue($(e.target).gInputBox("value")) / 100,
+                                                    GObject.GLength.parseEquationValue($(e.target).gInputBox("value")) / 100,
                                                     "input"
                                                 ));
                                         }.bind(this)
@@ -561,7 +561,7 @@ module.exports = function (e, t, n) {
                 }
             }),
             (u.prototype.open = function (e, t) {
-                (this._updateSettings(t, !0),
+                (this._updateSettings(t, true),
                     this._container.gOverlay("open", e),
                     "used" === this._activePalette && this._updateUsedPalette(),
                     gDesigner.getWorkspace().getStyleEdManager() &&
@@ -573,7 +573,7 @@ module.exports = function (e, t, n) {
                 var n = gDesigner.getActiveDocument();
                 n &&
                     (n.getEditor().addEventListener(o.GEditor.ModifiedEvent, this._closeIfNeeded, this),
-                    n.getEditor().keysOff([a.GKey.Constant.OPTION]));
+                    n.getEditor().keysOff([GPlatform.GKey.Constant.OPTION]));
             }),
             (u.prototype.close = function () {
                 this._container.gOverlay("close");
@@ -603,7 +603,7 @@ module.exports = function (e, t, n) {
                         if (!a)
                             for (var r = 0; r < n.length; ++r)
                                 if (i.isCompatible(n[r])) {
-                                    a = !0;
+                                    a = true;
                                     break;
                                 }
                         if (a) {
@@ -620,7 +620,7 @@ module.exports = function (e, t, n) {
                 var e = $("<div/>").addClass("noise-editor");
                 $("<div/>")
                     .gPropertyRow({
-                        label: i.GLocale.get(new i.GLocaleKey("GPatternChooser", "text.intensity")),
+                        label: GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.intensity")),
                         columns: [
                             {
                                 width: "auto",
@@ -635,11 +635,11 @@ module.exports = function (e, t, n) {
                                             if (
                                                 (e
                                                     .find('[type="text"][data-property="noise_amount"]')
-                                                    .gInputBox("value", i.GUtil.formatNumber(100 * o, 0)),
+                                                    .gInputBox("value", GObject.GUtil.formatNumber(100 * o, 0)),
                                                 this._pattern)
                                             ) {
                                                 var a = this._pattern.clone();
-                                                (a.setAmount(o), this._updatePattern(a, "noise_amount", null, !0));
+                                                (a.setAmount(o), this._updatePattern(a, "noise_amount", null, true));
                                             }
                                         }.bind(this)
                                     )
@@ -664,7 +664,7 @@ module.exports = function (e, t, n) {
                                         function (e) {
                                             if ((gDesigner.stats("patternchooser_change_noise", "amount"), this._pattern)) {
                                                 var t = this._pattern.clone();
-                                                (t.setAmount(i.GLength.parseEquationValue($(e.target).gInputBox("value")) / 100),
+                                                (t.setAmount(GObject.GLength.parseEquationValue($(e.target).gInputBox("value")) / 100),
                                                     this._updatePattern(t, "noise_amount"));
                                             }
                                         }.bind(this)
@@ -678,18 +678,18 @@ module.exports = function (e, t, n) {
                 return (
                     $("<div/>")
                         .gPropertyRow({
-                            label: i.GLocale.get(new i.GLocaleKey("GPatternChooser", "text.type")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.type")),
                             columns: [
                                 {
                                     width: "auto",
-                                    content: ((t = i.GNoisePattern.Type),
+                                    content: ((t = GObject.GNoisePattern.Type),
                                     (n = "type"),
                                     (o = $("<select></select>")),
                                     (t = t || []),
                                     Array.prototype.forEach.call(Object.keys(t), function (e) {
                                         $("<option></option>")
                                             .attr("value", t[e])
-                                            .text(i.GLocale.get(new i.GLocaleKey("GCommonNames", "noise." + n + "." + t[e])))
+                                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "noise." + n + "." + t[e])))
                                             .appendTo(o);
                                     }),
                                     o)
@@ -713,8 +713,8 @@ module.exports = function (e, t, n) {
             (u.prototype._createPatternEditorFirstRow = function (e, t) {
                 return [
                     {
-                        padding: !1,
-                        content: $("<button>" + i.GLocale.get(new i.GLocaleKey("GPatternChooser", "action.choose-image")) + "...</button>")
+                        padding: false,
+                        content: $("<button>" + GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "action.choose-image")) + "...</button>")
                             .addClass("pattern-choose-image-button")
                             .on("click", e),
                     },
@@ -727,7 +727,7 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<span />")
                                     .addClass("title")
-                                    .html(i.GLocale.get(new i.GLocaleKey("GPasteAction", "title")))
+                                    .html(GObject.GLocale.get(new GObject.GLocaleKey("GPasteAction", "title")))
                             )
                             .on("click", t),
                     },
@@ -736,12 +736,12 @@ module.exports = function (e, t, n) {
             (u.prototype._createPatternEditorMaskRow = function (e) {
                 return [
                     {
-                        padding: !1,
+                        padding: false,
                         width: "auto",
-                        content: $("<span />").text(i.GLocale.get(new i.GLocaleKey("GPatternChooser", "action.set-transparency-mask"))),
+                        content: $("<span />").text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "action.set-transparency-mask"))),
                     },
                     {
-                        padding: !1,
+                        padding: false,
                         width: "40px",
                         content: $("<label />")
                             .addClass("g-switch")
@@ -749,7 +749,7 @@ module.exports = function (e, t, n) {
                                 $("<input>")
                                     .attr("type", "checkbox")
                                     .attr("data-property", "texture_mask")
-                                    .prop("disabled", !0)
+                                    .prop("disabled", true)
                                     .on("change", e)
                             )
                             .append($("<div/>")),
@@ -781,7 +781,7 @@ module.exports = function (e, t, n) {
                 return [
                     {
                         width: "auto",
-                        content: $("<button>" + i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.advanced")) + "</button>").on(
+                        content: $("<button>" + GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.advanced")) + "</button>").on(
                             "click",
                             function () {
                                 (gDesigner.stats("patternchooser_click_advanced"), e.slideToggle());
@@ -792,7 +792,7 @@ module.exports = function (e, t, n) {
             }),
             (u.prototype.__getCreatePatternEditorParams = function () {
                 return {
-                    isTouchEnabled: !1,
+                    isTouchEnabled: false,
                     repeatWidth: "50%",
                     ghostWidth: "0%",
                     postionWith: "50%",
@@ -810,7 +810,7 @@ module.exports = function (e, t, n) {
                             Array.prototype.forEach.call(Object.keys(e), function (o) {
                                 $("<option></option>")
                                     .attr("value", e[o])
-                                    .text(i.GLocale.get(new i.GLocaleKey("GCommonNames", "texture." + t + "." + e[o])))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "texture." + t + "." + e[o])))
                                     .appendTo(n);
                             }),
                             n
@@ -826,11 +826,11 @@ module.exports = function (e, t, n) {
                             o = n.attr("data-property"),
                             a = parseFloat(n.gInputSlider("value")) / 100;
                         if (
-                            (t.find('[type="text"][data-property="' + o + '"]').gInputBox("value", i.GUtil.formatNumber(100 * a, 0)),
+                            (t.find('[type="text"][data-property="' + o + '"]').gInputBox("value", GObject.GUtil.formatNumber(100 * a, 0)),
                             this._pattern)
                         ) {
                             var r = this._pattern.clone();
-                            (r.setTileSize(a), this._updatePattern(r, "texture_tile", null, !0));
+                            (r.setTileSize(a), this._updatePattern(r, "texture_tile", null, true));
                         }
                     },
                     r = (e) => {
@@ -842,7 +842,7 @@ module.exports = function (e, t, n) {
                     s = (e) => {
                         if ((gDesigner.stats("patternchooser_change_texture", "tile"), this._pattern)) {
                             var t = this._pattern.clone();
-                            (t.setTileSize(i.GLength.parseEquationValue($(e.target).gInputBox("value")) / 100),
+                            (t.setTileSize(GObject.GLength.parseEquationValue($(e.target).gInputBox("value")) / 100),
                                 this._updatePattern(t, "texture_tile"));
                         }
                     };
@@ -870,9 +870,9 @@ module.exports = function (e, t, n) {
                                                             ((t.onload = () => {
                                                                 var e,
                                                                     n = t.result;
-                                                                (this._pattern instanceof i.GTexturePattern
+                                                                (this._pattern instanceof GObject.GTexturePattern
                                                                     ? (e = this._pattern.clone()).setTexture(n)
-                                                                    : (e = new i.GTexturePattern(n)).setScene(
+                                                                    : (e = new GObject.GTexturePattern(n)).setScene(
                                                                           gDesigner.getActiveDocument().getScene()
                                                                       ),
                                                                     this._updatePattern(e, "texture_upload"));
@@ -880,26 +880,26 @@ module.exports = function (e, t, n) {
                                                                 t.readAsDataURL(new Blob([e])));
                                                         });
                                                     },
-                                                    !1
+                                                    false
                                                 );
                                         },
                                         () => {
                                             gDesigner.stats("patternchooser_paste_texture");
-                                            var e = !1,
-                                                t = i.GNode.deserialize(gDesigner.getClipboardContent(i.GNode.MIME_TYPE));
+                                            var e = false,
+                                                t = GObject.GNode.deserialize(gDesigner.getClipboardContent(GObject.GNode.MIME_TYPE));
                                             if (t && t.length)
                                                 for (var n = 0; n < t.length; ++n) {
                                                     var o = t[n];
-                                                    if (o.hasMixin(i.GVertexSource) || o instanceof i.GGroup) {
+                                                    if (o.hasMixin(GObject.GVertexSource) || o instanceof GObject.GGroup) {
                                                         if (this._pattern) {
                                                             var a = this._pattern.clone();
                                                             (a.setTexture(o), this._updatePattern(a, "texture_paste"));
                                                         }
-                                                        e = !0;
+                                                        e = true;
                                                         break;
                                                     }
                                                 }
-                                            e || window.alert(i.GLocale.get(new i.GLocaleKey("GCommonNames", "arrow-paste.alert")));
+                                            e || window.alert(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "arrow-paste.alert")));
                                         }
                                     ),
                                 })
@@ -909,7 +909,7 @@ module.exports = function (e, t, n) {
                                     columns: [
                                         {
                                             width: "100%",
-                                            content: n(i.GTexturePattern.ScaleMode, "scale")
+                                            content: n(GObject.GTexturePattern.ScaleMode, "scale")
                                                 .attr("data-property", "texture_scale")
                                                 .on(
                                                     "change",
@@ -917,7 +917,7 @@ module.exports = function (e, t, n) {
                                                         if (this._pattern) {
                                                             var t = this._pattern.clone();
                                                             (t.setScaleMode($(e.target).val()),
-                                                                (0, i.GTexturePattern.ScaleSettings[$(e.target).val()])(t),
+                                                                (0, GObject.GTexturePattern.ScaleSettings[$(e.target).val()])(t),
                                                                 gDesigner.stats("patternchooser_change_texture", t.getScaleMode()),
                                                                 this._updatePattern(t, "texture_pattern"));
                                                         }
@@ -951,9 +951,9 @@ module.exports = function (e, t, n) {
                         .gPropertyRow({
                             columns: [
                                 {
-                                    label: i.GLocale.get(new i.GLocaleKey("GPatternChooser", "text.repeat")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.repeat")),
                                     width: e.repeatWidth,
-                                    content: n(i.GTexturePattern.RepeatMode, "repeat")
+                                    content: n(GObject.GTexturePattern.RepeatMode, "repeat")
                                         .attr("data-property", "texture_repeat")
                                         .on(
                                             "change",
@@ -967,9 +967,9 @@ module.exports = function (e, t, n) {
                                 },
                                 { width: e.ghostWidth },
                                 {
-                                    label: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.position")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.position")),
                                     width: e.postionWith,
-                                    content: n(i.GTexturePattern.PositionMode, "position")
+                                    content: n(GObject.GTexturePattern.PositionMode, "position")
                                         .attr("data-property", "texture_position")
                                         .on(
                                             "change",
@@ -986,9 +986,9 @@ module.exports = function (e, t, n) {
                         .gPropertyRow({
                             columns: [
                                 {
-                                    label: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.size")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.size")),
                                     width: e.sizeWidth,
-                                    content: n(i.GTexturePattern.SizeMode, "size")
+                                    content: n(GObject.GTexturePattern.SizeMode, "size")
                                         .attr("data-property", "texture_size")
                                         .on(
                                             "change",
@@ -1002,7 +1002,7 @@ module.exports = function (e, t, n) {
                                 },
                                 { width: e.ghostWidth },
                                 {
-                                    label: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.width")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.width")),
                                     width: "20%",
                                     content: $("<input>")
                                         .attr("data-property", "texture_size_w")
@@ -1011,7 +1011,7 @@ module.exports = function (e, t, n) {
                                             "change",
                                             function (e) {
                                                 if ((gDesigner.stats("patternchooser_change_texture", "size"), this._pattern)) {
-                                                    var t = i.GLength.parseEquationValue($(e.target).val());
+                                                    var t = GObject.GLength.parseEquationValue($(e.target).val());
                                                     if (null !== t && t >= 0) {
                                                         var n = this._pattern.clone();
                                                         (n.setWidth(t), this._updatePattern(n, "texture_size"));
@@ -1022,7 +1022,7 @@ module.exports = function (e, t, n) {
                                         .gInputBox(),
                                 },
                                 {
-                                    label: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.height")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.height")),
                                     width: "20%",
                                     content: $("<input>")
                                         .attr("data-property", "texture_size_h")
@@ -1031,7 +1031,7 @@ module.exports = function (e, t, n) {
                                             "change",
                                             function (e) {
                                                 if ((gDesigner.stats("patternchooser_change_texture", "size-h"), this._pattern)) {
-                                                    var t = i.GLength.parseEquationValue($(e.target).val());
+                                                    var t = GObject.GLength.parseEquationValue($(e.target).val());
                                                     if (null !== t && t >= 0) {
                                                         var n = this._pattern.clone();
                                                         (n.setHeight(t), this._updatePattern(n, "texture_size"));
@@ -1042,7 +1042,7 @@ module.exports = function (e, t, n) {
                                         .gInputBox(),
                                 },
                                 {
-                                    label: e.isTouchEnabled ? "" : i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.unit")),
+                                    label: e.isTouchEnabled ? "" : GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.unit")),
                                     width: e.unitWidth,
                                     content: $("<label />").attr("data-property", "texture_size_u"),
                                 },
@@ -1054,7 +1054,7 @@ module.exports = function (e, t, n) {
                 );
             }),
             (u.prototype.__getCreatePaletteSwatchParamas = function () {
-                return { isTouchEnabled: !1 };
+                return { isTouchEnabled: false };
             }),
             (u.prototype._findOrCreateLastSwitchContiner = function (e) {
                 var t = e.find(".swatches:last");
@@ -1065,7 +1065,7 @@ module.exports = function (e, t, n) {
             }),
             (u.prototype._createPaletteSwatch = function (e, t, n, o) {
                 var r = this.__getCreatePaletteSwatchParamas(),
-                    s = e instanceof i.GSwatch ? e : new i.GSwatch(e),
+                    s = e instanceof GObject.GSwatch ? e : new GObject.GSwatch(e),
                     l = t;
                 r.isTouchEnabled && (l = o ? $("<div/>").addClass("swatches").appendTo(t) : this._findOrCreateLastSwitchContiner(t));
                 var c = function (e) {
@@ -1075,7 +1075,7 @@ module.exports = function (e, t, n) {
                             o = e.originalEvent;
                         (o.stopPropagation(),
                             (u.dragSwatch = t),
-                            (u.hasDropped = !1),
+                            (u.hasDropped = false),
                             (u.dragDeltaX = o.pageX - n.left),
                             (u.dragDeltaY = o.pageY - n.top),
                             (o.dataTransfer.effectAllowed = "move"),
@@ -1084,7 +1084,7 @@ module.exports = function (e, t, n) {
                     d = function (e) {
                         var t = e.originalEvent;
                         (t.stopPropagation(), l.find(".grid-drag-overlay").remove());
-                        var n = !1,
+                        var n = false,
                             o = $(".pattern-chooser"),
                             a = o.offset().top,
                             r = o.offset().left,
@@ -1092,7 +1092,7 @@ module.exports = function (e, t, n) {
                             c = a + o.height(),
                             d = t.pageX,
                             p = t.pageY;
-                        if (((d > s || d < r || p > c || p < a) && (n = !0), u.dragSwatch && n)) {
+                        if (((d > s || d < r || p > c || p < a) && (n = true), u.dragSwatch && n)) {
                             var g = gDesigner.getActiveDocument().getEditor();
                             g.beginTransaction();
                             try {
@@ -1104,27 +1104,27 @@ module.exports = function (e, t, n) {
                                     m = gDesigner.getSwatches(f);
                                 if (h && m) {
                                     for (var y = 0; y < m.length; ++y)
-                                        if (i.GUtil.equals(h, m[y])) {
+                                        if (GObject.GUtil.equals(h, m[y])) {
                                             (m = m.slice()).splice(y, 1);
                                             break;
                                         }
                                     gDesigner.setSwatches(f, m);
                                 }
                             } finally {
-                                g.commitTransaction(i.GLocale.get(new i.GLocaleKey("GPatternChooser", "action.remove-swatch")), {
-                                    chooserOn: !0,
+                                g.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "action.remove-swatch")), {
+                                    chooserOn: true,
                                 });
                             }
                         }
-                        u.hasDropped = !1;
+                        u.hasDropped = false;
                     }.bind(this),
                     p = s.getProperty("_pt");
-                const g = p instanceof i.GTexturePattern && !(p instanceof i.GNoisePattern);
+                const g = p instanceof GObject.GTexturePattern && !(p instanceof GObject.GNoisePattern);
                 gDesigner.getActiveDocument() && g && (p = this._clonePattern(p));
                 var h = s.getProperty("_op"),
                     f = $("<div/>")
                         .addClass("swatch")
-                        .css("background", i.GPattern.asCSSBackground(p, h))
+                        .css("background", GObject.GPattern.asCSSBackground(p, h))
                         .data("swatch", s)
                         .attr("draggable", n)
                         .attr("data-long-press-delay", "500")
@@ -1139,22 +1139,22 @@ module.exports = function (e, t, n) {
                                     n = t.getProperty("_pt"),
                                     o = t.getProperty("_op"),
                                     r = $(".colormode-selector").children("option:selected").data("colormode");
-                                if (a.GPlatform.modifiers.optionKey) {
-                                    var s = gDesigner.getActiveDocument().getEditor().selectFromPattern(n, !0);
+                                if (GPlatform.GPlatform.modifiers.optionKey) {
+                                    var s = gDesigner.getActiveDocument().getEditor().selectFromPattern(n, true);
                                     if (s) {
                                         ($(".g-overlay .pattern-chooser").length > 0 && $(".g-overlay .pattern-chooser").gOverlay("close"),
-                                            gDesigner.getActiveDocument().getEditor().updateSelection(!1, s),
+                                            gDesigner.getActiveDocument().getEditor().updateSelection(false, s),
                                             gDesigner.getActiveDocument().getEditor().blinkSelection(2e3, 4));
                                         for (var l = $(".fill-properties-panel .g-pattern-chooser .preview"), c = 0; c < l.length; ++c)
                                             if (
                                                 $(l[c]).data("gpatterntarget") &&
-                                                i.GUtil.equals($(l[c]).data("gpatterntarget").pattern, n)
+                                                GObject.GUtil.equals($(l[c]).data("gpatterntarget").pattern, n)
                                             ) {
                                                 $(l[c]).trigger("click");
                                                 break;
                                             }
                                     }
-                                } else (this._updateOpacity(o), this._updatePattern(n, "set_type", !0));
+                                } else (this._updateOpacity(o), this._updatePattern(n, "set_type", true));
                                 this.setColorMode(r);
                             }.bind(this)
                         )
@@ -1199,7 +1199,7 @@ module.exports = function (e, t, n) {
                                             s = -1;
                                         if (t && a && n) {
                                             for (var c = 0; c < a.length; ++c)
-                                                i.GUtil.equals(t, a[c]) ? (r = c) : i.GUtil.equals(n, a[c]) && (s = c);
+                                                GObject.GUtil.equals(t, a[c]) ? (r = c) : GObject.GUtil.equals(n, a[c]) && (s = c);
                                             (r > -1 && s > -1 && ((a = a.slice()).splice(r, 1), a.splice(s, 0, t)),
                                                 gDesigner.setSwatches(o, a));
                                         }
@@ -1210,10 +1210,10 @@ module.exports = function (e, t, n) {
                 ) {
                     const e = () => {
                         p.isReady() &&
-                            (f.css("background", i.GPattern.asCSSBackground(p, h)),
-                            p.removeEventListener(i.GTexturePattern.UpdateEvent, e));
+                            (f.css("background", GObject.GPattern.asCSSBackground(p, h)),
+                            p.removeEventListener(GObject.GTexturePattern.UpdateEvent, e));
                     };
-                    p.addEventListener(i.GTexturePattern.UpdateEvent, e);
+                    p.addEventListener(GObject.GTexturePattern.UpdateEvent, e);
                 }
             }),
             (u.prototype._addCmykIcon = function (e) {
@@ -1227,7 +1227,7 @@ module.exports = function (e, t, n) {
                 );
             }),
             (u.prototype.__getCreateColorsPaletteParams = function () {
-                return { isTouchEnabled: !1 };
+                return { isTouchEnabled: false };
             }),
             (u.prototype._createColorsPalette = function (e) {
                 var t = this.__getCreatePaletteSwatchParamas(),
@@ -1235,10 +1235,10 @@ module.exports = function (e, t, n) {
                 t.isTouchEnabled && (n = e);
                 var o = [0, 0, 0],
                     a = [255, 255, 255];
-                this._createPaletteSwatch(new i.GRGBColor(o), n, !1, !1);
+                this._createPaletteSwatch(new GObject.GRGBColor(o), n, false, false);
                 for (var r = 1; r <= 10; r += 1)
-                    this._createPaletteSwatch(new i.GRGBColor(i.GRGBColor.blend(o, a, r * (1 / 11))), n, !1, !1);
-                this._createPaletteSwatch(new i.GRGBColor(a), n, !1, !1);
+                    this._createPaletteSwatch(new GObject.GRGBColor(GObject.GRGBColor.blend(o, a, r * (1 / 11))), n, false, false);
+                this._createPaletteSwatch(new GObject.GRGBColor(a), n, false, false);
                 var s = [
                         [152, 0, 0],
                         [255, 0, 0],
@@ -1262,8 +1262,8 @@ module.exports = function (e, t, n) {
                     n >= 0 && ((d = l[n].color), (u = l[n].factor));
                     for (let e = 0; e < s.length; ++e) {
                         var p = s[e],
-                            g = d ? i.GRGBColor.blend(p, d, u) : p;
-                        this._createPaletteSwatch(new i.GRGBColor(g), c, !1, !1);
+                            g = d ? GObject.GRGBColor.blend(p, d, u) : p;
+                        this._createPaletteSwatch(new GObject.GRGBColor(g), c, false, false);
                     }
                 }
             }),
@@ -1272,31 +1272,31 @@ module.exports = function (e, t, n) {
                     var t = $("<div/>")
                             .attr("data-container", "tints")
                             .addClass("swatches")
-                            .append($("<label />").text(i.GLocale.get(new i.GLocaleKey("GPatternChooser", "text.tints"))))
+                            .append($("<label />").text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.tints"))))
                             .appendTo(e),
                         n = $("<div/>")
                             .attr("data-container", "shades")
-                            .append($("<label />").text(i.GLocale.get(new i.GLocaleKey("GPatternChooser", "text.shades"))))
+                            .append($("<label />").text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.shades"))))
                             .addClass("swatches")
                             .appendTo(e),
                         o = $("<div/>")
                             .attr("data-container", "tones")
-                            .append($("<label />").text(i.GLocale.get(new i.GLocaleKey("GPatternChooser", "text.tones"))))
+                            .append($("<label />").text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.tones"))))
                             .addClass("swatches")
                             .appendTo(e),
                         a = $("<div/>")
                             .attr("data-container", "mixes")
-                            .append($("<label />").text(i.GLocale.get(new i.GLocaleKey("GPatternChooser", "text.mixes"))))
+                            .append($("<label />").text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.mixes"))))
                             .addClass("swatches")
                             .appendTo(e),
                         r = 1;
                     r <= 10;
                     r += 1
                 )
-                    (this._createPaletteSwatch(i.GRGBColor.WHITE, t),
-                        this._createPaletteSwatch(i.GRGBColor.WHITE, n),
-                        this._createPaletteSwatch(i.GRGBColor.WHITE, o),
-                        this._createPaletteSwatch(i.GRGBColor.WHITE, a));
+                    (this._createPaletteSwatch(GObject.GRGBColor.WHITE, t),
+                        this._createPaletteSwatch(GObject.GRGBColor.WHITE, n),
+                        this._createPaletteSwatch(GObject.GRGBColor.WHITE, o),
+                        this._createPaletteSwatch(GObject.GRGBColor.WHITE, a));
                 this._updateMixerPalette();
             }),
             (u.prototype.__getUpdateMixerPaletteParams = function () {
@@ -1305,7 +1305,7 @@ module.exports = function (e, t, n) {
             (u.prototype._updateMixerPalette = function () {
                 var e = this.__getUpdateMixerPaletteParams();
                 function t(e, t, n) {
-                    $(t[n]).css("background", i.GPattern.asCSSBackground(e)).data("swatch", new i.GSwatch(e));
+                    $(t[n]).css("background", GObject.GPattern.asCSSBackground(e)).data("swatch", new GObject.GSwatch(e));
                 }
                 for (
                     var n = [255, 255, 255],
@@ -1321,20 +1321,20 @@ module.exports = function (e, t, n) {
                     u += 1
                 ) {
                     var p = (u + 1) / (1 * e.maxCount);
-                    (t(new i.GRGBColor(i.GRGBColor.blend(r, n, p)), s, u),
-                        t(new i.GRGBColor(i.GRGBColor.blend(r, o, p)), l, u),
-                        t(new i.GRGBColor(i.GRGBColor.blend(r, a, p)), c, u),
-                        t(new i.GRGBColor(i.GRGBColor.blend(r, this._oldColor.toScreen(), p)), d, u));
+                    (t(new GObject.GRGBColor(GObject.GRGBColor.blend(r, n, p)), s, u),
+                        t(new GObject.GRGBColor(GObject.GRGBColor.blend(r, o, p)), l, u),
+                        t(new GObject.GRGBColor(GObject.GRGBColor.blend(r, a, p)), c, u),
+                        t(new GObject.GRGBColor(GObject.GRGBColor.blend(r, this._oldColor.toScreen(), p)), d, u));
                 }
             }),
             (u.prototype.__getCreateUsedPaletteParams = function () {
-                return { isTouchEnabled: !1, maxCount: 12 };
+                return { isTouchEnabled: false, maxCount: 12 };
             }),
             (u.prototype._createUsedPalette = function (e) {
                 var t = this.__getCreateUsedPaletteParams();
                 let n;
                 t.isTouchEnabled || (n = $("<div/>").addClass("swatches").appendTo(e));
-                for (var o = 0; o < t.maxCount; o += 1) this._createPaletteSwatch(i.GRGBColor.WHITE, t.isTouchEnabled ? e : n, !1, !1);
+                for (var o = 0; o < t.maxCount; o += 1) this._createPaletteSwatch(GObject.GRGBColor.WHITE, t.isTouchEnabled ? e : n, false, false);
             }),
             (u.prototype._updateUsedPalette = function () {
                 var e = gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getDocumentColors() : [];
@@ -1343,8 +1343,8 @@ module.exports = function (e, t, n) {
                     var o = n < e.length,
                         a = o ? e[n] : null,
                         r = this._palettes.find(".used-palette .swatches .swatch")[n],
-                        s = new i.GSwatch(a);
-                    (o && $(r).css("background", i.GPattern.asCSSBackground(a)).data("swatch", s),
+                        s = new GObject.GSwatch(a);
+                    (o && $(r).css("background", GObject.GPattern.asCSSBackground(a)).data("swatch", s),
                         $(r).css("display", o ? "" : "none"),
                         s.isCMYK() && this._addCmykIcon($(r)),
                         n % 11 == 0 && o && ((t += 12), this._createUsedPalette($(".palettes > .used-palette"))));
@@ -1353,8 +1353,8 @@ module.exports = function (e, t, n) {
             (u.prototype._createSwatchesPalette = function (e, t) {
                 var n = $("<span/>").text(
                         "global" === t
-                            ? i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.global"))
-                            : i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.document"))
+                            ? GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.global"))
+                            : GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.document"))
                     ),
                     o = $("<div/>").addClass("swatches-wrapper").addClass(t),
                     a = $("<div/>")
@@ -1364,7 +1364,7 @@ module.exports = function (e, t, n) {
                         .append(
                             $("<button/>")
                                 .append("<span/>")
-                                .attr("data-title", i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.import-swatches")))
+                                .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.import-swatches")))
                                 .addClass("swatch-icon")
                                 .addClass("gravit-icon-swatches-import")
                                 .on("click", () => {
@@ -1374,7 +1374,7 @@ module.exports = function (e, t, n) {
                         .append(
                             $("<button/>")
                                 .append("<span/>")
-                                .attr("data-title", i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.export-swatches")))
+                                .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.export-swatches")))
                                 .addClass("swatch-icon")
                                 .addClass("gravit-icon-swatches-export")
                                 .on("click", () => {
@@ -1382,23 +1382,23 @@ module.exports = function (e, t, n) {
                                 })
                         )
                         .appendTo(e);
-                (o.appendTo(e), a.gAccordion(o, "span", !1));
+                (o.appendTo(e), a.gAccordion(o, "span", false));
             }),
             (u.prototype._getSwatchScope = function (e, t) {
-                return t && t instanceof i.GLinearGradient
+                return t && t instanceof GObject.GLinearGradient
                     ? e + "-linear-gradient"
-                    : t && t instanceof i.GRadialGradient
+                    : t && t instanceof GObject.GRadialGradient
                       ? e + "-radial-gradient"
-                      : t && t instanceof i.GAngularGradient
+                      : t && t instanceof GObject.GAngularGradient
                         ? e + "-angular-gradient"
-                        : t && t instanceof i.GTexturePattern && !(t instanceof i.GNoisePattern)
+                        : t && t instanceof GObject.GTexturePattern && !(t instanceof GObject.GNoisePattern)
                           ? e + "-texture-pattern"
-                          : t && t instanceof i.GNoisePattern
+                          : t && t instanceof GObject.GNoisePattern
                             ? e + "-noise-pattern"
                             : e;
             }),
             (u.prototype.__getUpdateSwatchesPaletteParams = function () {
-                return { isTouchEnabled: !1 };
+                return { isTouchEnabled: false };
             }),
             (u.prototype._updateSwatchesPalette = function (e) {
                 var t = this.__getUpdateSwatchesPaletteParams(),
@@ -1408,7 +1408,7 @@ module.exports = function (e, t, n) {
                 if (!a)
                     return void $("<div/>")
                         .addClass("info")
-                        .text(i.GLocale.get(new i.GLocaleKey("GPatternChooser", "text.error-on-loading")))
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.error-on-loading")))
                         .appendTo(o);
                 var r = [],
                     s = [];
@@ -1419,26 +1419,26 @@ module.exports = function (e, t, n) {
                 if (!t.isTouchEnabled && r.length)
                     for (let e = 0; e < r.length; ++e)
                         (l || (l = $("<div/>").addClass("swatches").appendTo(o)),
-                            this._createPaletteSwatch(r[e], l, !0, !1),
+                            this._createPaletteSwatch(r[e], l, true, false),
                             14 == ++c && ((c = 1), (l = null)));
                 if (
                     (l || (l = $("<div/>").addClass("swatches").appendTo(o)),
                     $("<button />")
                         .addClass(t.isTouchEnabled ? "add-button swatch-button" : "swatch-button")
                         .addClass("g-flat")
-                        .attr("data-title", i.GLocale.get(new i.GLocaleKey("GPatternChooser", "action.add-swatch")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "action.add-swatch")))
                         .append($('<span class="gravit-icon-plus"/>'))
                         .on(
                             "click",
                             function () {
                                 gDesigner.stats("patternchooser_add_swatch", e);
-                                var t = new i.GSwatch(this._pattern, this._opacity),
+                                var t = new GObject.GSwatch(this._pattern, this._opacity),
                                     n = gDesigner.getSwatches(e);
                                 if (n) {
                                     for (var o = 0; o < n.length; ++o)
-                                        if (i.GUtil.equals(t, n[o], !0))
-                                            return void d.alert(
-                                                i.GLocale.get(new i.GLocaleKey("GPatternChooser", "text.equal-swatch-alert"))
+                                        if (GObject.GUtil.equals(t, n[o], true))
+                                            return void GSystemDialog.alert(
+                                                GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.equal-swatch-alert"))
                                             );
                                     (n.push(t), gDesigner.setSwatches(e, n));
                                 }
@@ -1447,18 +1447,18 @@ module.exports = function (e, t, n) {
                         .appendTo(l),
                     t.isTouchEnabled && ((l = null), r.length))
                 )
-                    for (var u = 0; u < r.length; ++u) this._createPaletteSwatch(r[u], o, !0, 7 === u);
+                    for (var u = 0; u < r.length; ++u) this._createPaletteSwatch(r[u], o, true, 7 === u);
                 this._updateActiveSwatch(n ? e.substring(0, e.indexOf("-")) : e);
             }),
             (u.prototype._updateActiveSwatch = function (e) {
                 if ("swatches" === this._activePalette) {
                     var t = this._palettes.find(".swatches-palette." + e),
-                        n = !1;
+                        n = false;
                     (t.find(".swatches-wrapper .swatches .swatch").each(
                         function (e, t) {
                             var o = $(t),
-                                a = i.GUtil.equals(o.data("swatch"), new i.GSwatch(this._pattern, this._opacity), !0);
-                            (a && (n = !0), o.data("isActive", a).toggleClass("g-active", a));
+                                a = GObject.GUtil.equals(o.data("swatch"), new GObject.GSwatch(this._pattern, this._opacity), true);
+                            (a && (n = true), o.data("isActive", a).toggleClass("g-active", a));
                         }.bind(this)
                     ),
                         t.find(".toolbar button[data-active-swatch]").each(function (e, t) {
@@ -1527,7 +1527,7 @@ module.exports = function (e, t, n) {
                     var t = gDesigner.getWorkspace().getStyleEdManager().getActiveEditor(),
                         n = null;
                     (null !== e && t && (n = { type: o.GGradientStyleEditor.STOP_HANDLE_PART_ID, idx: e }),
-                        t && t.updatePartSelection(!1, n ? [n] : null, !0));
+                        t && t.updatePartSelection(false, n ? [n] : null, true));
                 }
             }),
             (u.prototype._insertGradientStop = function (e) {
@@ -1539,18 +1539,18 @@ module.exports = function (e, t, n) {
                     s = function (t, i) {
                         var s = Math.max(0, Math.min(n, Math.round(t.pageX - a.left)));
                         (t.pageY < a.top - u.EXTEND_DRAG_RANGE || t.pageY > a.top + o + u.EXTEND_DRAG_RANGE
-                            ? this._activeGradient.getStops().length >= 3 && (r.css("display", "none"), (e.remove = !0))
-                            : (r.css("display", ""), (e.remove = !1)),
+                            ? this._activeGradient.getStops().length >= 3 && (r.css("display", "none"), (e.remove = true))
+                            : (r.css("display", ""), (e.remove = false)),
                             (e.position = s / n),
                             this._updateGradientStop(e),
                             this._updatePatternFromActiveGradient(!i));
                     }.bind(this),
                     l = function (t) {
                         if (
-                            (s(t, !0),
+                            (s(t, true),
                             t.stopPropagation(),
-                            document.removeEventListener("mouseup", l, !0),
-                            document.removeEventListener("mousemove", s, !0),
+                            document.removeEventListener("mouseup", l, true),
+                            document.removeEventListener("mousemove", s, true),
                             e.remove)
                         ) {
                             var n = this._activeGradient.getStops(),
@@ -1568,14 +1568,14 @@ module.exports = function (e, t, n) {
                                 (t.stopPropagation(),
                                     this._setActiveGradientStop(e),
                                     this._updateOnlineEditorStops(),
-                                    document.addEventListener("mouseup", l, !0),
-                                    document.addEventListener("mousemove", s, !0));
+                                    document.addEventListener("mouseup", l, true),
+                                    document.addEventListener("mousemove", s, true));
                                 var n = this._activeGradient.getStops()[0].color;
-                                n instanceof i.GCMYKColor
+                                n instanceof GObject.GCMYKColor
                                     ? this.setColorMode(u.ColorMode.CMYK)
-                                    : n instanceof i.GHSVColor
+                                    : n instanceof GObject.GHSVColor
                                       ? this.setColorMode(u.ColorMode.HSV)
-                                      : n instanceof i.GRGBColor && this.setColorMode(u.ColorMode.RGB);
+                                      : n instanceof GObject.GRGBColor && this.setColorMode(u.ColorMode.RGB);
                             }.bind(this)
                         )
                         .appendTo(t)),
@@ -1584,7 +1584,7 @@ module.exports = function (e, t, n) {
                 );
             }),
             (u.prototype.__getUpdateGradientStopParams = function () {
-                return { isTouchEnabled: !1 };
+                return { isTouchEnabled: false };
             }),
             (u.prototype._updateGradientStop = function (e) {
                 var t = this.__getUpdateGradientStopParams(),
@@ -1618,28 +1618,28 @@ module.exports = function (e, t, n) {
                 }
             }),
             (u.prototype._rotateActiveGradient = function (e) {
-                var t = i.GMath.toRadians(e),
-                    n = new i.GPoint(this._activeGradient._fx, this._activeGradient._fy);
-                ((n = n.rotatedAt(t, new i.GPoint(0.5, 0.5))),
+                var t = GObject.GMath.toRadians(e),
+                    n = new GObject.GPoint(this._activeGradient._fx, this._activeGradient._fy);
+                ((n = n.rotatedAt(t, new GObject.GPoint(0.5, 0.5))),
                     (this._activeGradient._fx = n.getX()),
                     (this._activeGradient._fy = n.getY()),
                     (this._activeGradient._angle = this._activeGradient._angle + t),
                     this._updatePatternFromActiveGradient());
             }),
             (u.prototype._updateTexture = function (e) {
-                i.GUtil.equals(e, this._texture) || (this._texture = e);
+                GObject.GUtil.equals(e, this._texture) || (this._texture = e);
             }),
             (u.prototype.__getUpdateColorParams = function () {
-                return { isTouchEnabled: !1 };
+                return { isTouchEnabled: false };
             }),
             (u.prototype._updateColor = function (e, t, n, o) {
                 var a = this.__getUpdateColorParams();
-                (i.GUtil.equals(e, this._color) && "set_pattern" !== t && !o) ||
+                (GObject.GUtil.equals(e, this._color) && "set_pattern" !== t && !o) ||
                     ((this._color = e),
                     this._updateSwatchesPalette(this._getSwatchScope("global", this._pattern)),
                     this._updateSwatchesPalette(this._getSwatchScope("document", this._pattern)),
                     this._pattern &&
-                        this._pattern instanceof i.GColor &&
+                        this._pattern instanceof GObject.GColor &&
                         "set_pattern" !== t &&
                         "update_pattern" !== t &&
                         this._updatePattern(this._color, "set_color", null, n),
@@ -1647,11 +1647,11 @@ module.exports = function (e, t, n) {
                         "gradient-stop" !== t &&
                         ((this._activeGradientStop.color = this._color), this._updatePatternFromActiveGradient(n)),
                     "mode" !== t &&
-                        (this._color instanceof i.GCMYKColor
+                        (this._color instanceof GObject.GCMYKColor
                             ? this.setColorMode(u.ColorMode.CMYK)
-                            : this._color instanceof i.GHSVColor
+                            : this._color instanceof GObject.GHSVColor
                               ? this.setColorMode(u.ColorMode.HSV)
-                              : this._color instanceof i.GRGBColor && this.setColorMode(u.ColorMode.RGB)),
+                              : this._color instanceof GObject.GRGBColor && this.setColorMode(u.ColorMode.RGB)),
                     this._updateColorComponentsFromColor(),
                     "slider" !== t && "map" !== t && this._updateColorSliderFromColor(),
                     this._systemColorInput.val(this._color.toScreenCSS()),
@@ -1660,14 +1660,14 @@ module.exports = function (e, t, n) {
                         ((this._oldColor = this._color),
                         this._colorPreviewOld.css("background", this._oldColor.toScreenCSS(this._oldColorOpacity))),
                     "swatch" !== t && "mixer" === this._activePalette && this._updateMixerPalette(),
-                    i.GUtil.equals(this._oldColor, this._color) || (0 === this._oldColorOpacity && this._updateOpacity(1)),
+                    GObject.GUtil.equals(this._oldColor, this._color) || (0 === this._oldColorOpacity && this._updateOpacity(1)),
                     a.isTouchEnabled &&
                         (this._sliderColorThumb.css("background", this._color.toScreenCSS(1)),
                         this._sliderOpacityThumb.css("background", this._color.toScreenCSS(this._colorOpacity))),
                     this._colorPreviewNew.css("background", this._color.toScreenCSS(this._colorOpacity)));
             }),
             (u.prototype.__getUpdateOpacityParams = function () {
-                return { isTouchEnabled: !1 };
+                return { isTouchEnabled: false };
             }),
             (u.prototype._updateOpacity = function (e, t, n, o) {
                 var a = this.__getUpdateColorParams();
@@ -1686,7 +1686,7 @@ module.exports = function (e, t, n) {
                             .find("[data-opacity]")
                             .find("input")
                             .prop("disabled", this._settings && this._settings.hasOwnProperty("hasOpacity") && !this._settings.hasOpacity)
-                            .gInputBox("value", i.GUtil.formatOpacity(100 * this._colorOpacity)),
+                            .gInputBox("value", GObject.GUtil.formatOpacity(100 * this._colorOpacity)),
                         this._activeGradientStop &&
                             "gradient-stop" !== t &&
                             ((this._activeGradientStop.opacity = this._colorOpacity), this._updatePatternFromActiveGradient(n)),
@@ -1697,19 +1697,19 @@ module.exports = function (e, t, n) {
             }),
             (u.prototype._updatePattern = function (e, t, n, o) {
                 if (!this._patternUpdateBlocker) {
-                    (("set_pattern" !== t && "gradient" !== t) || (this._patternUpdateBlocker = !0),
-                        (!n || e instanceof i.GGradient) &&
+                    (("set_pattern" !== t && "gradient" !== t) || (this._patternUpdateBlocker = true),
+                        (!n || e instanceof GObject.GGradient) &&
                             ((this._pattern = e),
                             this._toolbar.find(".pattern-type").each(function (t, n) {
                                 var o = $(n),
                                     i = o.data("type");
                                 i && o.prop("selected", !!i.isInstance(e));
                             })));
-                    var a = this._pattern && this._pattern instanceof i.GGradient,
-                        r = this._pattern && this._pattern instanceof i.GColor,
-                        s = this._pattern && this._pattern instanceof i.GTexturePattern && !(e instanceof i.GNoisePattern),
-                        l = this._pattern && this._pattern instanceof i.GNoisePattern,
-                        c = this._pattern && this._pattern instanceof i.GBackground;
+                    var a = this._pattern && this._pattern instanceof GObject.GGradient,
+                        r = this._pattern && this._pattern instanceof GObject.GColor,
+                        s = this._pattern && this._pattern instanceof GObject.GTexturePattern && !(e instanceof GObject.GNoisePattern),
+                        l = this._pattern && this._pattern instanceof GObject.GNoisePattern,
+                        c = this._pattern && this._pattern instanceof GObject.GBackground;
                     (this._gradientEditor.css("display", a ? "" : "none"),
                         this._gradientActions.css("display", a ? "" : " none"),
                         this._colorEditor.css("display", r || a ? "" : "none"),
@@ -1727,7 +1727,7 @@ module.exports = function (e, t, n) {
                         if (
                             (this._gradientEditor.css(
                                 "background",
-                                i.GPattern.asCSSBackground(new i.GLinearGradient(this._pattern.getStops()), this._opacity)
+                                GObject.GPattern.asCSSBackground(new GObject.GLinearGradient(this._pattern.getStops()), this._opacity)
                             ),
                             "set_pattern" === t || "set_type" === t)
                         ) {
@@ -1752,14 +1752,14 @@ module.exports = function (e, t, n) {
                                 h && null !== m && h.length > m && ((p = h[m]), (d = m));
                             }
                             (p || (p = u),
-                                this._setActiveGradientStop(p, e && e instanceof i.GColor ? e : null, n),
+                                this._setActiveGradientStop(p, e && e instanceof GObject.GColor ? e : null, n),
                                 this._gradientActions.find("[data-action]").each(function (t, n) {
                                     var o = $(n),
-                                        a = !0;
+                                        a = true;
                                     switch (o.attr("data-action")) {
                                         case "rotate-left":
                                         case "rotate-right":
-                                            a = e instanceof i.GLinearGradient;
+                                            a = e instanceof GObject.GLinearGradient;
                                     }
                                     o.css("display", a ? "" : "none");
                                 }));
@@ -1777,26 +1777,26 @@ module.exports = function (e, t, n) {
                         (this._noiseEditor.find('.g-input-slider[data-property="noise_amount"]').gInputSlider("value", y),
                             this._noiseEditor
                                 .find('[type="text"][data-property="noise_amount"]')
-                                .gInputBox("value", i.GUtil.formatNumber(y, 0)));
+                                .gInputBox("value", GObject.GUtil.formatNumber(y, 0)));
                         var v = this._patternEditor.find('[data-property="noise_type"]');
-                        (v.children("option").attr("selected", !1), v.children('option[value="' + e.getType() + '"]').attr("selected", !0));
+                        (v.children("option").attr("selected", false), v.children('option[value="' + e.getType() + '"]').attr("selected", true));
                     } else if (s) {
                         this._updateTexture(e, t || "update_pattern");
                         var _ = !!e.getTexture(),
                             b =
                                 -1 !==
-                                i.GTexturePattern.SizeMode.Length.concat(i.GTexturePattern.SizeMode.Percent).indexOf(e.getSizeMode()),
+                                GObject.GTexturePattern.SizeMode.Length.concat(GObject.GTexturePattern.SizeMode.Percent).indexOf(e.getSizeMode()),
                             w = function (e, t) {
                                 var n = this._patternEditor.find('[data-property="' + e + '"]').prop("disabled", !_);
-                                (n.children("option").attr("selected", !1),
-                                    n.children('option[value="' + t + '"]').attr("selected", !0),
+                                (n.children("option").attr("selected", false),
+                                    n.children('option[value="' + t + '"]').attr("selected", true),
                                     n.val(t));
                             }.bind(this),
                             C = function (e, t) {
                                 this._patternEditor
                                     .find('[data-property="' + e + '"]')
                                     .prop("disabled", !(_ && b))
-                                    .val(i.GUtil.formatNumber(t));
+                                    .val(GObject.GUtil.formatNumber(t));
                             }.bind(this);
                         (w("texture_repeat", e.getRepeatMode()),
                             w("texture_position", e.getPosition()),
@@ -1809,13 +1809,13 @@ module.exports = function (e, t, n) {
                             (this._patternEditor.find('.g-input-slider[data-property="texture_tile"]').gInputSlider("value", x),
                             this._patternEditor
                                 .find('[type="text"][data-property="texture_tile"]')
-                                .gInputBox("value", i.GUtil.formatNumber(x, 0)),
+                                .gInputBox("value", GObject.GUtil.formatNumber(x, 0)),
                             this._patternEditor
                                 .find('[data-property="texture_tile"]')
-                                .gInputSlider("disabled", e.getScaleMode() !== i.GTexturePattern.ScaleMode.Tile),
+                                .gInputSlider("disabled", e.getScaleMode() !== GObject.GTexturePattern.ScaleMode.Tile),
                             this._patternEditor
                                 .find('[data-property="texture_size_u"]')
-                                .text(e.getSizeMode() === i.GTexturePattern.SizeMode.Length ? "px" : "%"),
+                                .text(e.getSizeMode() === GObject.GTexturePattern.SizeMode.Length ? "px" : "%"),
                             this._patternEditor.find('[data-property="texture_mask"]').prop("checked", e.isMask()),
                             this._patternEditor
                                 .find(".pattern-preview")
@@ -1838,7 +1838,7 @@ module.exports = function (e, t, n) {
                         "swatches" === this._activePalette &&
                             (this._updateSwatchesPalette(this._getSwatchScope("global", this._pattern)),
                             this._updateSwatchesPalette(this._getSwatchScope("document", this._pattern))),
-                        (this._patternUpdateBlocker = !1));
+                        (this._patternUpdateBlocker = false));
                 }
             }),
             (u.prototype._styleEditorHandler = function (e) {
@@ -1859,7 +1859,7 @@ module.exports = function (e, t, n) {
                 if (this._colorMode === u.ColorMode.RGB || this._colorMode === u.ColorMode.HSV) {
                     switch (this._colorMode) {
                         case u.ColorMode.RGB:
-                            o = i.GColor.rgbToHSV(this._color.toScreen());
+                            o = GObject.GColor.rgbToHSV(this._color.toScreen());
                             break;
                         case u.ColorMode.HSV:
                             ((o = []),
@@ -1871,9 +1871,9 @@ module.exports = function (e, t, n) {
                     }
                     o &&
                         ((o = [t, o[1], o[2]]),
-                        (n = this._colorMode === u.ColorMode.RGB ? new i.GRGBColor(i.GColor.hsvToRGB(o)) : new i.GHSVColor(o)),
+                        (n = this._colorMode === u.ColorMode.RGB ? new GObject.GRGBColor(GObject.GColor.hsvToRGB(o)) : new GObject.GHSVColor(o)),
                         (this._extendedGamutInitiated = u.ExtendedGamut.COLOR_SLIDER),
-                        this._updateColor(n, "slider", e, !0),
+                        this._updateColor(n, "slider", e, true),
                         this._updateColorMap(),
                         (this._extendedGamutInitiated = null));
                 }
@@ -1893,7 +1893,7 @@ module.exports = function (e, t, n) {
                             this._extValue &&
                             this._colorMode === u.ColorMode.HSV
                                 ? this._extValue[0]
-                                : i.GColor.rgbToHSV(this._color.toScreen())[0]),
+                                : GObject.GColor.rgbToHSV(this._color.toScreen())[0]),
                             parseInt(this._colorSlider.gColorSlider("value")) !== e &&
                                 (this._colorSlider.gColorSlider("value", e), this._updateColorMap()));
                         break;
@@ -1910,24 +1910,24 @@ module.exports = function (e, t, n) {
                 var t = null;
                 switch (this._colorMode) {
                     case u.ColorMode.RGB:
-                        t = new i.GRGBColor(e);
+                        t = new GObject.GRGBColor(e);
                         break;
                     case u.ColorMode.HSV: {
                         const n = e.map(function (e, t) {
                             return 0 === t ? e : e / 100;
                         });
-                        t = new i.GHSVColor(n);
+                        t = new GObject.GHSVColor(n);
                         break;
                     }
                     case u.ColorMode.CMYK:
-                        t = new i.GCMYKColor(
+                        t = new GObject.GCMYKColor(
                             e.map(function (e) {
                                 return e / 100;
                             })
                         );
                 }
                 ((this._extendedGamutInitiated = u.ExtendedGamut.COMPONENTS),
-                    t && this._updateColor(t, "components", !1, !0),
+                    t && this._updateColor(t, "components", false, true),
                     (this._extendedGamutInitiated = null));
             }),
             (u.prototype._updateColorComponentsFromColor = function () {
@@ -1948,19 +1948,19 @@ module.exports = function (e, t, n) {
                                 (this._extendedGamutInitiated !== u.ExtendedGamut.COLOR_SLIDER &&
                                     this._extendedGamutInitiated !== u.ExtendedGamut.MAP) ||
                                 !this._extValue
-                                    ? this._color instanceof i.GHSVColor
+                                    ? this._color instanceof GObject.GHSVColor
                                         ? this._color.getValue()
-                                        : i.GColor.rgbToHSV(this._color.toScreen())
+                                        : GObject.GColor.rgbToHSV(this._color.toScreen())
                                     : this._extValue),
                                 (t = function (e, t) {
-                                    return 0 === e ? t : i.GUtil.formatNumber(100 * t, 0);
+                                    return 0 === e ? t : GObject.GUtil.formatNumber(100 * t, 0);
                                 }));
                             break;
                         case u.ColorMode.CMYK:
                             ((e =
-                                this._color instanceof i.GCMYKColor ? this._color.getValue() : i.GColor.rgbToCMYK(this._color.toScreen())),
+                                this._color instanceof GObject.GCMYKColor ? this._color.getValue() : GObject.GColor.rgbToCMYK(this._color.toScreen())),
                                 (t = function (e, t) {
-                                    return i.GUtil.formatNumber(100 * t, 0);
+                                    return GObject.GUtil.formatNumber(100 * t, 0);
                                 }));
                     }
                     this._colorComponents.find("[data-component-index]").each(function (n, o) {
@@ -1981,7 +1981,7 @@ module.exports = function (e, t, n) {
                             this._extendedGamutInitiated !== u.ExtendedGamut.COMPONENTS) ||
                         !this._extValue ||
                         this._colorMode !== u.ColorMode.HSV
-                            ? i.GColor.rgbToHSV(this._color.toScreen())
+                            ? GObject.GColor.rgbToHSV(this._color.toScreen())
                             : this._extValue;
                     var a = Math.round(e[1] * n),
                         r = Math.round((1 - e[2]) * o);
@@ -2014,7 +2014,7 @@ module.exports = function (e, t, n) {
                 if (r) {
                     for (var s = 0; s < t; ++s)
                         for (var l = 0; l < n; ++l) {
-                            var c = i.GColor.hsvToRGB([parseInt(a), s / t, 1 - l / n]),
+                            var c = GObject.GColor.hsvToRGB([parseInt(a), s / t, 1 - l / n]),
                                 d = 4 * (l * t + s);
                             ((r.data[d] = c[0]), (r.data[d + 1] = c[1]), (r.data[d + 2] = c[2]), (r.data[d + 3] = 255));
                         }
@@ -2040,23 +2040,23 @@ module.exports = function (e, t, n) {
                                 d = Math.max(0, Math.min(s, Math.round(o - l.top)));
                             const p = [parseInt(this._colorSlider.gColorSlider("value")), c / r, 1 - d / s];
                             var g;
-                            ((g = this._colorMode === u.ColorMode.HSV ? new i.GHSVColor(p) : new i.GRGBColor(i.GColor.hsvToRGB(p))),
+                            ((g = this._colorMode === u.ColorMode.HSV ? new GObject.GHSVColor(p) : new GObject.GRGBColor(GObject.GColor.hsvToRGB(p))),
                                 this._setMarkerPosition(c, d),
                                 (this._extendedGamutInitiated = u.ExtendedGamut.MAP),
                                 this._updateColor(g, "map", !t, t),
                                 (this._extendedGamutInitiated = null));
                         }.bind(this),
                         n = function (e) {
-                            (t(e, !0),
+                            (t(e, true),
                                 e.stopPropagation(),
-                                document.removeEventListener("mouseup", n, !0),
-                                document.removeEventListener("mousemove", t, !0),
-                                document.removeEventListener("touchmove", t, !0));
+                                document.removeEventListener("mouseup", n, true),
+                                document.removeEventListener("mousemove", t, true),
+                                document.removeEventListener("touchmove", t, true));
                         };
                     (t(e.originalEvent),
-                        document.addEventListener("mouseup", n, !0),
-                        document.addEventListener("mousemove", t, !0),
-                        document.addEventListener("touchmove", t, !0));
+                        document.addEventListener("mouseup", n, true),
+                        document.addEventListener("mousemove", t, true),
+                        document.addEventListener("touchmove", t, true));
                 }
             }),
             (u.prototype._defineStopInitColor = function (e) {
@@ -2066,7 +2066,7 @@ module.exports = function (e, t, n) {
                     },
                     o = function (e) {
                         var t = $(e).data("stop");
-                        return t && t.color instanceof i.GColor ? t.color.toScreen() : [0, 0, 0];
+                        return t && t.color instanceof GObject.GColor ? t.color.toScreen() : [0, 0, 0];
                     },
                     a = [],
                     r = [],
@@ -2085,11 +2085,11 @@ module.exports = function (e, t, n) {
                 })(o(s), o(l), p);
                 switch (this._colorMode) {
                     case u.ColorMode.CMYK:
-                        return new i.GCMYKColor(i.GColor.rgbToCMYK(g));
+                        return new GObject.GCMYKColor(GObject.GColor.rgbToCMYK(g));
                     case u.ColorMode.HSV:
-                        return new i.GHSVColor(i.GColor.rgbToHSV(g));
+                        return new GObject.GHSVColor(GObject.GColor.rgbToHSV(g));
                     default:
-                        return new i.GRGBColor(g);
+                        return new GObject.GRGBColor(g);
                 }
             }),
             (u._createPatternOption = function (e) {
@@ -2101,18 +2101,18 @@ module.exports = function (e, t, n) {
                     .text(e.name);
             }),
             (u.prototype._relayout = function () {
-                this._container.gOverlay("relayout", { preserveTop: !1 });
+                this._container.gOverlay("relayout", { preserveTop: false });
             }),
             (u.getGradientStopsFromCurrentPattern = function (e) {
                 var t;
                 return (
-                    e instanceof i.GGradient
+                    e instanceof GObject.GGradient
                         ? (t = e.getClonedStops())
                         : ((t = [
-                              { color: i.GRGBColor.WHITE, position: 0, opacity: 1 },
-                              { color: i.GRGBColor.BLACK, position: 1, opacity: 1 },
+                              { color: GObject.GRGBColor.WHITE, position: 0, opacity: 1 },
+                              { color: GObject.GRGBColor.BLACK, position: 1, opacity: 1 },
                           ]),
-                          e instanceof i.GColor && !i.GUtil.equals(e.toScreen(), t[1].color.toScreen()) && (t[0].color = e)),
+                          e instanceof GObject.GColor && !GObject.GUtil.equals(e.toScreen(), t[1].color.toScreen()) && (t[0].color = e)),
                     t
                 );
             }),
@@ -2120,81 +2120,81 @@ module.exports = function (e, t, n) {
             (u.initPatternType = function () {
                 return [
                     {
-                        name: i.GLocale.get(new i.GLocaleKey("GPatternChooser", "pattern-type.color")),
-                        cssBackgroundImage: new i.GLinearGradient(
+                        name: GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "pattern-type.color")),
+                        cssBackgroundImage: new GObject.GLinearGradient(
                             [
-                                { color: i.GRGBColor.WHITE, position: 0, opacity: 0.5 },
-                                { color: i.GRGBColor.WHITE, position: 1, opacity: 0.5 },
+                                { color: GObject.GRGBColor.WHITE, position: 0, opacity: 0.5 },
+                                { color: GObject.GRGBColor.WHITE, position: 1, opacity: 0.5 },
                             ],
                             1,
-                            i.GMath.toRadians(90)
+                            GObject.GMath.toRadians(90)
                         ).asCSSBackground(),
                         isCompatible: function (e) {
-                            return e === i.GColor;
+                            return e === GObject.GColor;
                         },
                         isInstance: function (e) {
-                            return e && e instanceof i.GColor;
+                            return e && e instanceof GObject.GColor;
                         },
                         createDefault: function (e) {
-                            if (e instanceof i.GGradient)
+                            if (e instanceof GObject.GGradient)
                                 for (var t = e.getStops(), n = 0; n < t.length; ++n) if (t[n].hasOwnProperty("color")) return t[n].color;
-                            return new i.GRGBColor();
+                            return new GObject.GRGBColor();
                         },
                     },
                     {
-                        name: i.GLocale.get(new i.GLocaleKey("GPatternChooser", "pattern-type.lineargradient")),
-                        cssBackgroundImage: new i.GLinearGradient(
+                        name: GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "pattern-type.lineargradient")),
+                        cssBackgroundImage: new GObject.GLinearGradient(
                             [
-                                { color: i.GRGBColor.WHITE, position: 0, opacity: 1 },
-                                { color: i.GRGBColor.BLACK, position: 1, opacity: 0 },
+                                { color: GObject.GRGBColor.WHITE, position: 0, opacity: 1 },
+                                { color: GObject.GRGBColor.BLACK, position: 1, opacity: 0 },
                             ],
                             1,
-                            i.GMath.toRadians(90)
+                            GObject.GMath.toRadians(90)
                         ).asCSSBackground(),
                         isCompatible: function (e) {
-                            return e === i.GLinearGradient || e === i.GGradient;
+                            return e === GObject.GLinearGradient || e === GObject.GGradient;
                         },
                         isInstance: function (e) {
-                            return e && e instanceof i.GLinearGradient;
+                            return e && e instanceof GObject.GLinearGradient;
                         },
                         createDefault: function (e) {
-                            return new i.GLinearGradient(u.getGradientStopsFromCurrentPattern(e));
+                            return new GObject.GLinearGradient(u.getGradientStopsFromCurrentPattern(e));
                         },
                     },
                     {
-                        name: i.GLocale.get(new i.GLocaleKey("GPatternChooser", "pattern-type.radialgradient")),
-                        cssBackgroundImage: new i.GRadialGradient([
-                            { color: i.GRGBColor.WHITE, position: 0, opacity: 1 },
-                            { color: i.GRGBColor.BLACK, position: 1, opacity: 0 },
+                        name: GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "pattern-type.radialgradient")),
+                        cssBackgroundImage: new GObject.GRadialGradient([
+                            { color: GObject.GRGBColor.WHITE, position: 0, opacity: 1 },
+                            { color: GObject.GRGBColor.BLACK, position: 1, opacity: 0 },
                         ]).asCSSBackground(),
                         isCompatible: function (e) {
-                            return e === i.GRadialGradient || e === i.GGradient;
+                            return e === GObject.GRadialGradient || e === GObject.GGradient;
                         },
                         isInstance: function (e) {
-                            return e && e instanceof i.GRadialGradient;
+                            return e && e instanceof GObject.GRadialGradient;
                         },
                         createDefault: function (e) {
-                            return new i.GRadialGradient(u.getGradientStopsFromCurrentPattern(e));
+                            return new GObject.GRadialGradient(u.getGradientStopsFromCurrentPattern(e));
                         },
                     },
                     {
-                        name: i.GLocale.get(new i.GLocaleKey("GPatternChooser", "pattern-type.angulargradient")),
-                        cssBackgroundImage: new i.GAngularGradient([
-                            { color: i.GRGBColor.WHITE, position: 0, opacity: 1 },
-                            { color: i.GRGBColor.BLACK, position: 1, opacity: 0 },
+                        name: GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "pattern-type.angulargradient")),
+                        cssBackgroundImage: new GObject.GAngularGradient([
+                            { color: GObject.GRGBColor.WHITE, position: 0, opacity: 1 },
+                            { color: GObject.GRGBColor.BLACK, position: 1, opacity: 0 },
                         ]).asCSSBackground(),
                         isCompatible: function (e) {
-                            return e === i.GAngularGradient || e === i.GGradient;
+                            return e === GObject.GAngularGradient || e === GObject.GGradient;
                         },
                         isInstance: function (e) {
-                            return e && e instanceof i.GAngularGradient;
+                            return e && e instanceof GObject.GAngularGradient;
                         },
                         createDefault: function (e) {
-                            return new i.GAngularGradient(u.getGradientStopsFromCurrentPattern(e));
+                            return new GObject.GAngularGradient(u.getGradientStopsFromCurrentPattern(e));
                         },
                     },
                     {
-                        name: i.GLocale.get(new i.GLocaleKey("GPatternChooser", "pattern-type.texture")),
+                        name: GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "pattern-type.texture")),
                         cssBackgroundImage:
                             'url("data:image/svg+xml;base64,' +
                             btoa(
@@ -2202,21 +2202,21 @@ module.exports = function (e, t, n) {
                             ) +
                             '")',
                         isCompatible: function (e) {
-                            return e === i.GTexturePattern;
+                            return e === GObject.GTexturePattern;
                         },
                         isInstance: function (e) {
-                            return e && e instanceof i.GTexturePattern && !(e instanceof i.GNoisePattern);
+                            return e && e instanceof GObject.GTexturePattern && !(e instanceof GObject.GNoisePattern);
                         },
                         createDefault: function () {
-                            var e = i.GNode.deserialize(
+                            var e = GObject.GNode.deserialize(
                                     '[{"@":"group","$":[{"@":"rectangle","uf":true,"ct":"R","sl":0,"reftxt":null,"trf":[9.948817641447532,0,0,9.692411708290129,370.93546258325506,25.987797270522503],"_sdf":84,"_layers":{"@":"paintLayers","$":[{"@":"fillPaintLayer","_pt":"C#[0,0,0]"}]}},{"@":"rectangle","uf":true,"ct":"R","sl":0,"reftxt":null,"trf":[9.948817641447532,0,0,9.692411708290129,410.7307331490452,25.987797270522503],"_sdf":84,"_layers":{"@":"paintLayers","$":[{"@":"fillPaintLayer","_pt":"C#[0,0,0]"}]}},{"@":"rectangle","uf":true,"ct":"R","sl":0,"reftxt":null,"trf":[9.948817641447532,0,0,9.692411708290129,390.7793771686299,44.58515959609013],"_sdf":84,"_layers":{"@":"paintLayers","$":[{"@":"fillPaintLayer","_pt":"C#[0,0,0]"}]}},{"@":"rectangle","uf":true,"ct":"R","sl":0,"reftxt":null,"trf":[9.948817641447532,0,0,9.692411708290129,430.57464773441995,44.58515959609013],"_sdf":84,"_layers":{"@":"paintLayers","$":[{"@":"fillPaintLayer","_pt":"C#[0,0,0]"}]}},{"@":"rectangle","uf":true,"ct":"R","sl":0,"reftxt":null,"trf":[9.948817641447532,0,0,9.692411708290129,370.9623229320152,63.96998301267038],"_sdf":84,"_layers":{"@":"paintLayers","$":[{"@":"fillPaintLayer","_pt":"C#[0,0,0]"}]}},{"@":"rectangle","uf":true,"ct":"R","sl":0,"reftxt":null,"trf":[9.948817641447532,0,0,9.692411708290129,410.75759349780526,63.96998301267038],"_sdf":84,"_layers":{"@":"paintLayers","$":[{"@":"fillPaintLayer","_pt":"C#[0,0,0]"}]}},{"@":"rectangle","uf":true,"ct":"R","sl":0,"reftxt":null,"trf":[9.948817641447532,0,0,9.692411708290129,390.80623751739,82.56734533823798],"_sdf":84,"_layers":{"@":"paintLayers","$":[{"@":"fillPaintLayer","_pt":"C#[0,0,0]"}]}},{"@":"rectangle","uf":true,"ct":"R","sl":0,"reftxt":null,"trf":[9.948817641447532,0,0,9.692411708290129,430.60150808318014,82.56734533823798],"_sdf":84,"_layers":{"@":"paintLayers","$":[{"@":"fillPaintLayer","_pt":"C#[0,0,0]"}]}}]}]'
                                 ).pop(),
-                                t = new i.GTexturePattern(e, i.GTexturePattern.RepeatMode.Both);
+                                t = new GObject.GTexturePattern(e, GObject.GTexturePattern.RepeatMode.Both);
                             return (t.setScene(gDesigner.getActiveDocument().getScene()), t);
                         },
                     },
                     {
-                        name: i.GLocale.get(new i.GLocaleKey("GPatternChooser", "pattern-type.noise")),
+                        name: GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "pattern-type.noise")),
                         cssBackgroundImage:
                             'url("data:image/svg+xml;base64,' +
                             btoa(
@@ -2224,17 +2224,17 @@ module.exports = function (e, t, n) {
                             ) +
                             '")',
                         isCompatible: function (e) {
-                            return e === i.GNoisePattern;
+                            return e === GObject.GNoisePattern;
                         },
                         isInstance: function (e) {
-                            return e && e instanceof i.GNoisePattern;
+                            return e && e instanceof GObject.GNoisePattern;
                         },
                         createDefault: function () {
-                            return new i.GNoisePattern();
+                            return new GObject.GNoisePattern();
                         },
                     },
                     {
-                        name: i.GLocale.get(new i.GLocaleKey("GPatternChooser", "pattern-type.backgroundfill")),
+                        name: GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "pattern-type.backgroundfill")),
                         cssBackgroundImage:
                             'url("data:image/svg+xml;base64,' +
                             btoa(
@@ -2242,13 +2242,13 @@ module.exports = function (e, t, n) {
                             ) +
                             '")',
                         isCompatible: function (e) {
-                            return e === i.GBackground;
+                            return e === GObject.GBackground;
                         },
                         isInstance: function (e) {
-                            return e && e instanceof i.GBackground;
+                            return e && e instanceof GObject.GBackground;
                         },
                         createDefault: function () {
-                            return new i.GBackground();
+                            return new GObject.GBackground();
                         },
                     },
                 ];
@@ -2257,8 +2257,8 @@ module.exports = function (e, t, n) {
                 var t = {
                     init: function (n) {
                         return (
-                            (n = e.extend({ asButton: !0, label: "", singleOption: !1 }, n)),
-                            window.gPatternChooser._updateSettings(n, !0),
+                            (n = e.extend({ asButton: true, label: "", singleOption: false }, n)),
+                            window.gPatternChooser._updateSettings(n, true),
                             this.each(function () {
                                 var o = this,
                                     a = e(this),
@@ -2286,21 +2286,21 @@ module.exports = function (e, t, n) {
                                                         c = e.extend(l, {
                                                             onPattern: function (e, n, i) {
                                                                 (t.value.call(o, e),
-                                                                    a.trigger("patternchange", [e, null, n, !0, null !== i ? i : null]));
+                                                                    a.trigger("patternchange", [e, null, n, true, null !== i ? i : null]));
                                                             },
                                                             onOpacity: function (e, n) {
-                                                                (t.opacity.call(o, e), a.trigger("patternchange", [void 0, e, n, !0]));
+                                                                (t.opacity.call(o, e), a.trigger("patternchange", [void 0, e, n, true]));
                                                             },
                                                             onClose: function (e, t, n, o) {
-                                                                var i = !1;
+                                                                var i = false;
                                                                 return (
                                                                     a.trigger("chooserclose", [
                                                                         function () {
-                                                                            ((i = !0), n && n());
+                                                                            ((i = true), n && n());
                                                                         },
                                                                         o,
                                                                     ]),
-                                                                    !i && (s.options.asButton && a.removeClass("g-active"), !0)
+                                                                    !i && (s.options.asButton && a.removeClass("g-active"), true)
                                                                 );
                                                             },
                                                         });
@@ -2315,11 +2315,11 @@ module.exports = function (e, t, n) {
                                         .gPatternTarget()
                                         .gRichTooltip(
                                             s.GRichTooltipConfig.from({
-                                                title: i.GLocale.get(
-                                                    new i.GLocaleKey("GPatternChooser", "text.color-picker-tooltip-title")
+                                                title: GObject.GLocale.get(
+                                                    new GObject.GLocaleKey("GPatternChooser", "text.color-picker-tooltip-title")
                                                 ),
-                                                description: i.GLocale.get(
-                                                    new i.GLocaleKey("GPatternChooser", "text.color-picker-tooltip-description")
+                                                description: GObject.GLocale.get(
+                                                    new GObject.GLocaleKey("GPatternChooser", "text.color-picker-tooltip-description")
                                                 ),
                                                 learnMore:
                                                     "/docs/colors-gradients-textures/color-picker-fill-types/",
@@ -2337,14 +2337,14 @@ module.exports = function (e, t, n) {
                                         .addClass("eye-drop")
                                         .gEyeDropper({ onClick: n.onClickEyedropper })
                                         .on("colorchange", function (e, t) {
-                                            a.trigger("patternchange", [new i.GRGBColor(t), t[3] / 255, !1]);
+                                            a.trigger("patternchange", [new GObject.GRGBColor(t), t[3] / 255, false]);
                                         })
                                         .removeClass("g-button")
                                         .gRichTooltip(
                                             s.GRichTooltipConfig.from({
-                                                title: i.GLocale.get(new i.GLocaleKey("GPatternChooser", "text.eyedropper-tooltip-title")),
-                                                description: i.GLocale.get(
-                                                    new i.GLocaleKey("GPatternChooser", "text.eyedropper-tooltip-description")
+                                                title: GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.eyedropper-tooltip-title")),
+                                                description: GObject.GLocale.get(
+                                                    new GObject.GLocaleKey("GPatternChooser", "text.eyedropper-tooltip-description")
                                                 ),
                                             })
                                         );
@@ -2381,7 +2381,7 @@ module.exports = function (e, t, n) {
                         gPatternChooser.isOpenned(e(this)) && gPatternChooser.close();
                     },
                     openEyeDropper: function (t, n) {
-                        e(this).find(".eye-drop").gEyeDropper("setActive", !0, t, n);
+                        e(this).find(".eye-drop").gEyeDropper("setActive", true, t, n);
                     },
                     _updateBackground: function () {
                         var t = e(this),
@@ -2390,8 +2390,8 @@ module.exports = function (e, t, n) {
                             a = t.find(".preview");
                         let r;
                         (!o && n && n.nullValue && (o = n.nullValue),
-                            o instanceof i.GTexturePattern
-                                ? ((r = i.GPattern.asCSSBackground(o, n && "number" == typeof n.opacity ? n.opacity : 1)),
+                            o instanceof GObject.GTexturePattern
+                                ? ((r = GObject.GPattern.asCSSBackground(o, n && "number" == typeof n.opacity ? n.opacity : 1)),
                                   a
                                       .css("background-image", r)
                                       .css("background-repeat", o.getRepeatMode())
@@ -2399,7 +2399,7 @@ module.exports = function (e, t, n) {
                                   t.find(".eye-drop").gEyeDropper("setValue", o))
                                 : o &&
                                   "function" == typeof o.asCSSBackground &&
-                                  ((r = i.GPattern.asCSSBackground(o, n && "number" == typeof n.opacity ? n.opacity : 1)),
+                                  ((r = GObject.GPattern.asCSSBackground(o, n && "number" == typeof n.opacity ? n.opacity : 1)),
                                   a.css("background", r),
                                   t.find(".eye-drop").gEyeDropper("setValue", r)));
                     },
@@ -2420,5 +2420,5 @@ module.exports = function (e, t, n) {
                 const t = e.clone();
                 return (t.setScene(gDesigner.getActiveDocument().getScene()), t);
             }),
-            (e.exports = u));
+            (module.exports = u));
     };

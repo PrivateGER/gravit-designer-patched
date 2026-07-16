@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o, i, a, r;
-        e.exports =
-            ((o = n(55)),
+        module.exports =
+            ((o = require(55)),
             (a = (i = o).lib.Base),
             (r = i.enc.Utf8),
             void (i.algo.HMAC = a.extend({

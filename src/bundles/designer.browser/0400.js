@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(49),
-            i = n(21);
-        e.exports =
+        var o = require(49),
+            i = require(21);
+        module.exports =
             o &&
             i(function () {
                 return (
                     42 !==
                     Object.defineProperty(function () {}, "prototype", {
                         value: 42,
-                        writable: !1,
+                        writable: false,
                     }).prototype
                 );
             });

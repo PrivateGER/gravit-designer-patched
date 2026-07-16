@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(4), n(13), n(38));
-        const { GLocale: o, GLocaleKey: i } = n(1);
+        (require(4), require(13), require(38));
+        const { GLocale: o, GLocaleKey: i } = require(1 /* GObject */);
         function a() {
             throw "No instantiate";
         }
@@ -103,5 +103,5 @@ module.exports = function (e, t, n) {
                   ? void $.error("Method " + e + " does not exist on jQuery.gCollaborators")
                   : r.init.apply(this, arguments);
         }),
-            (e.exports = a));
+            (module.exports = a));
     };

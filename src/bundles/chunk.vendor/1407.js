@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(90),
-                r = i(440),
+module.exports = function (module, exports, require) {
+            var n = require(90),
+                r = require(440),
                 o = function (e) {
                     this.resource = e;
                 };
-            (i(0).inherit(o, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(o, n),
                 (o.prototype.getGState = function () {
                     return this.resource.getPDFObject();
                 }),
@@ -17,5 +17,5 @@ module.exports = function (e, t, i) {
                         e.write("gs"),
                         t && (e.writeln(), new r(t).write(e)));
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

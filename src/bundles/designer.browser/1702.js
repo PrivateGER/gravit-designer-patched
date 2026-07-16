@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(193), n(20), n(3), n(34));
-        var i = n(1),
-            a = n(15);
-        n(1259);
-        var r = o(n(1278)),
+        var o = require(16);
+        (require(193), require(20), require(3), require(34));
+        var GObject = require(1),
+            GPlatform = require(15);
+        require(1259);
+        var r = o(require(1278)),
             s = {
                 value: function (e) {
                     var t = $(this),
@@ -27,7 +27,7 @@ module.exports = function (e, t, n) {
                     function a(e) {
                         if (n) {
                             var t = "" === (e = o(e)),
-                                a = t ? null : i.GLength.parseEquationValue(e),
+                                a = t ? null : GObject.GLength.parseEquationValue(e),
                                 r = n.options ? n.options.minValue : null,
                                 s = n.options ? n.options.maxValue : null;
                             ("number" != typeof r && "number" != typeof s) ||
@@ -61,13 +61,13 @@ module.exports = function (e, t, n) {
                     var s = t.val();
                     s = o(s);
                     var l = "" === s,
-                        c = l ? null : i.GLength.parseEquationValue(s);
+                        c = l ? null : GObject.GLength.parseEquationValue(s);
                     return ((s = a(s)), (n && (n.options.allowEmptyValue || (s && null !== c && isFinite(c)))) || (s = "0"), s);
                 },
                 increment: function (e, t, n) {
                     var o = $(this),
                         a = o.data("ginputbox"),
-                        r = parseFloat(i.GUtil.parseNumber(s.value.call(this)));
+                        r = parseFloat(GObject.GUtil.parseNumber(s.value.call(this)));
                     if ("number" == typeof r && !isNaN(r) && a) {
                         var l,
                             c = e
@@ -80,13 +80,13 @@ module.exports = function (e, t, n) {
                             gDesigner.getActiveDocument() &&
                             ((l = gDesigner.getActiveDocument().getScene().getProperty("ut")),
                             (d = gDesigner.getActiveDocument().getScene().getOptimalDecimalsCount())),
-                            (l !== i.GLength.Unit.IN && l !== i.GLength.Unit.CM) ||
+                            (l !== GObject.GLength.Unit.IN && l !== GObject.GLength.Unit.CM) ||
                                 (a.options.postfix !== l && null !== a.options.postfix) ||
                                 a.fixedIncrement ||
                                 (c *= 0.1),
                             c < 1 && 0 == d && (c = 1),
                             n ? (r -= c) : (r += c),
-                            s.value.call(this, i.GUtil.formatNumber(r, d)),
+                            s.value.call(this, GObject.GUtil.formatNumber(r, d)),
                             o.change());
                     }
                 },
@@ -105,27 +105,27 @@ module.exports = function (e, t, n) {
                             gDesigner.getActiveDocument() &&
                             ((l = gDesigner.getActiveDocument().getScene().getProperty("ut")),
                             (d = gDesigner.getActiveDocument().getScene().getOptimalDecimalsCount())),
-                            (l !== i.GLength.Unit.IN && l !== i.GLength.Unit.CM) ||
+                            (l !== GObject.GLength.Unit.IN && l !== GObject.GLength.Unit.CM) ||
                                 (r.options.postfix !== l && null !== r.options.postfix) ||
                                 r.fixedIncrement ||
                                 (c *= 0.1),
                             c < 1 && 0 == d && (c = 1));
                         var u = n + c;
-                        return (s.value.call(this, i.GUtil.formatNumber(u, d)), a.change(), u);
+                        return (s.value.call(this, GObject.GUtil.formatNumber(u, d)), a.change(), u);
                     }
                 },
                 onFocusIn: function () {
                     var e = $(this);
-                    ((e.data("ginputbox").receivingFocus = !0), e.css("border", "1px solid rgba(215, 46, 99, 0.3)"));
+                    ((e.data("ginputbox").receivingFocus = true), e.css("border", "1px solid rgba(215, 46, 99, 0.3)"));
                 },
                 onFocusOut: function () {
                     var e = $(this);
-                    ((e.data("ginputbox").insideClicked = !1), (e.data("ginputbox").leftMouseMoved = !1), e.css("border", ""));
+                    ((e.data("ginputbox").insideClicked = false), (e.data("ginputbox").leftMouseMoved = false), e.css("border", ""));
                 },
                 requestFocus: function () {
                     var e = $(this),
                         t = e.data("ginputbox");
-                    t.receivingFocus && (t.options.selectOnFocus && e.select(), (t.receivingFocus = !1));
+                    t.receivingFocus && (t.options.selectOnFocus && e.select(), (t.receivingFocus = false));
                 },
                 onMouseEnter: function () {
                     var e = $(this),
@@ -144,8 +144,8 @@ module.exports = function (e, t, n) {
                     var t = $(this),
                         n = t.data("ginputbox");
                     if (((n.strValue = t.val()), !n.insideClicked && n.options.mousemoveIncrement)) {
-                        (t.css("border", "1px solid rgba(215, 46, 99, 0.3)"), (n.leftMouseMoved = !1));
-                        var o = parseFloat(i.GUtil.parseNumber(s.value.call(this)));
+                        (t.css("border", "1px solid rgba(215, 46, 99, 0.3)"), (n.leftMouseMoved = false));
+                        var o = parseFloat(GObject.GUtil.parseNumber(s.value.call(this)));
                         "" === n.strValue && isNaN(o) && (o = 0);
                         var r = null,
                             l = t.scrollParent();
@@ -162,13 +162,13 @@ module.exports = function (e, t, n) {
                                     ? ($("html").css("cursor", "url(assets/cursor/cursor-scrub.svg) 16 16, auto"),
                                       $("html").css("user-select", "none"),
                                       $("body").css("pointer-events", "none"),
-                                      (n.leftMouseMoved = !0),
+                                      (n.leftMouseMoved = true),
                                       (r = l))
                                     : ((i = r - l), (r = l)),
                                     (o = s.mousemoveIncrement.call(
                                         t[0],
-                                        a.GPlatform.modifiers.shiftKey || e.shiftKey,
-                                        a.GPlatform.modifiers.optionKey || e.altKey,
+                                        GPlatform.GPlatform.modifiers.shiftKey || e.shiftKey,
+                                        GPlatform.GPlatform.modifiers.optionKey || e.altKey,
                                         o,
                                         i
                                     )));
@@ -192,7 +192,7 @@ module.exports = function (e, t, n) {
                     var e = $(this),
                         t = e.data("ginputbox");
                     t.options.mousemoveIncrement &&
-                        (t.leftMouseMoved || ((t.insideClicked = !0), e.css("cursor", "")),
+                        (t.leftMouseMoved || ((t.insideClicked = true), e.css("cursor", "")),
                         "undefined" != typeof gDesigner &&
                             gDesigner.isTouchDevice() &&
                             t.leftMouseMoved &&
@@ -209,15 +209,15 @@ module.exports = function (e, t, n) {
                                 n = $(this);
                             ((e = $.extend(
                                 {
-                                    selectOnFocus: !0,
-                                    triggerChangeOnEnter: !0,
-                                    keyIncrement: !0,
-                                    wheelIncrement: !0,
-                                    mousemoveIncrement: !0,
+                                    selectOnFocus: true,
+                                    triggerChangeOnEnter: true,
+                                    keyIncrement: true,
+                                    wheelIncrement: true,
+                                    mousemoveIncrement: true,
                                     incrementValue: 1,
                                     fastIncrementValue: 10,
                                     slowIncrementValue: 0.1,
-                                    fixedIncrement: !1,
+                                    fixedIncrement: false,
                                     minValue: null,
                                     maxValue: null,
                                     postfix: null,
@@ -227,13 +227,13 @@ module.exports = function (e, t, n) {
                                 n
                                     .data("ginputbox", {
                                         options: e,
-                                        receivingFocus: !1,
+                                        receivingFocus: false,
                                         enterKeyValue: void 0,
-                                        insideClicked: !1,
-                                        leftMouseMoved: !1,
+                                        insideClicked: false,
+                                        leftMouseMoved: false,
                                         strValue: void 0,
                                     })
-                                    .prop("draggable", !1),
+                                    .prop("draggable", false),
                                 e.created ||
                                     n
                                         .on("change", function (e) {
@@ -254,8 +254,8 @@ module.exports = function (e, t, n) {
                                                 var o = 0 != e.originalEvent.deltaX ? e.originalEvent.deltaX : e.originalEvent.deltaY;
                                                 s.increment.call(
                                                     t,
-                                                    a.GPlatform.modifiers.shiftKey || e.shiftKey,
-                                                    a.GPlatform.modifiers.optionKey || e.altKey,
+                                                    GPlatform.GPlatform.modifiers.shiftKey || e.shiftKey,
+                                                    GPlatform.GPlatform.modifiers.optionKey || e.altKey,
                                                     o > 0
                                                 );
                                             }
@@ -267,8 +267,8 @@ module.exports = function (e, t, n) {
                                                 (e.preventDefault(),
                                                 s.increment.call(
                                                     t,
-                                                    a.GPlatform.modifiers.shiftKey || e.shiftKey,
-                                                    a.GPlatform.modifiers.optionKey || e.altKey,
+                                                    GPlatform.GPlatform.modifiers.shiftKey || e.shiftKey,
+                                                    GPlatform.GPlatform.modifiers.optionKey || e.altKey,
                                                     40 === e.keyCode
                                                 ),
                                                 n.trigger("focus")),

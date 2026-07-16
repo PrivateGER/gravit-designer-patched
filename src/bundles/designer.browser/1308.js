@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        n(3);
-        var i = n(1),
-            a = o(n(609));
+        var o = require(16);
+        require(3);
+        var GObject = require(1),
+            a = o(require(609));
         function r() {
             a.default.call(this, r.ID, r.TITLE);
         }
-        (i.GObject.inherit(r, a.default),
+        (GObject.GObject.inherit(r, a.default),
             (r.ID = "edit.select-by-shape"),
-            (r.TITLE = new i.GLocaleKey("GSelectByShapeAction", "title")),
+            (r.TITLE = new GObject.GLocaleKey("GSelectByShapeAction", "title")),
             (r.prototype.getGroup = function () {
                 return "edit/select-by-style";
             }),
@@ -19,5 +19,5 @@ module.exports = function (e, t, n) {
             (r.prototype.toString = function () {
                 return "[Object GSelectByShapeAction]";
             }),
-            (e.exports = r));
+            (module.exports = r));
     };

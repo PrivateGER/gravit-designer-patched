@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(892);
+module.exports = function (module, exports, require) {
+            var n = require(892);
 
             function r() {}
-            (i(261).inherit(r, n), (e.exports = new r()));
+            (require(261).inherit(r, n), (module.exports = new r()));
         };

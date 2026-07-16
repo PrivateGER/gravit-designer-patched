@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(111),
+module.exports = function (module, exports, require) {
+            var n = require(111),
                 r = "undefined" != typeof window ? window.WebGLTexture : function () {};
 
             function o() {}
@@ -21,7 +21,7 @@ module.exports = function (e, t, i) {
                     });
                 }),
                 (o.destroyTextures = function () {
-                    var e = i(226),
+                    var e = require(226),
                         t = this;
                     (this.flush(),
                         this._textures.slice().forEach(function (i) {
@@ -53,5 +53,5 @@ module.exports = function (e, t, i) {
                         }
                     );
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

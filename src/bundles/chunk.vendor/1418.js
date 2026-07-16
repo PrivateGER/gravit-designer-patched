@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(1227),
-                o = i(182),
-                a = i(1146),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(1227),
+                o = require(182),
+                a = require(1146),
                 s = function (e) {
                     var t = e.color,
                         i = new o();
@@ -15,5 +15,5 @@ module.exports = function (e, t, i) {
                         (e.coords = i),
                         r.call(this, a.Type.RADIAL, e));
                 };
-            (n.inherit(s, r), (e.exports = s));
+            (IsFiniteNonNegativeNumber.inherit(s, r), (module.exports = s));
         };

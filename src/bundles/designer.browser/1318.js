@@ -1,16 +1,16 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(865), n(193), n(3), n(4), n(13), n(26));
-        var o = n(1),
-            i = n(15),
-            a = n(40),
-            r = n(18),
-            s = n(106),
-            l = n(44);
+        (require(19), require(865), require(193), require(3), require(4), require(13), require(26));
+        var GObject = require(1),
+            GPlatform = require(15),
+            GSaveAction = require(40),
+            GCategory = require(18),
+            s = require(106),
+            GSystemDialog = require(44);
         function c() {}
-        (o.GObject.inherit(c, s),
+        (GObject.GObject.inherit(c, s),
             (c.ID = "modify.simplify"),
-            (c.TITLE = new o.GLocaleKey("GSimplifyAction", "title")),
+            (c.TITLE = new GObject.GLocaleKey("GSimplifyAction", "title")),
             (c.prototype.getId = function () {
                 return c.ID;
             }),
@@ -18,7 +18,7 @@ module.exports = function (e, t, n) {
                 return c.TITLE;
             }),
             (c.prototype.getCategory = function () {
-                return r.CATEGORY_MODIFY_PATH;
+                return GCategory.CATEGORY_MODIFY_PATH;
             }),
             (c.prototype.getGroup = function () {
                 return "structure/modify";
@@ -27,13 +27,13 @@ module.exports = function (e, t, n) {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-simplity" : null;
             }),
             (c.prototype.getShortcut = function () {
-                return [i.GKey.Constant.META, i.GKey.Constant.OPTION, "S"];
+                return [GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.OPTION, "S"];
             }),
             (c.prototype.isEnabled = function () {
-                if (!s.prototype.isEnabled.call(this)) return !1;
+                if (!s.prototype.isEnabled.call(this)) return false;
                 var e = gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getIndividualSelection() : null,
-                    t = !1;
-                if (e) for (var n = 0; !t && n < e.length; ++n) e[n] instanceof o.GImage || !e[n].hasMixin(o.GVertexSource) || (t = !0);
+                    t = false;
+                if (e) for (var n = 0; !t && n < e.length; ++n) e[n] instanceof GObject.GImage || !e[n].hasMixin(GObject.GVertexSource) || (t = true);
                 return t;
             }),
             (c.prototype.execute = function () {
@@ -45,7 +45,7 @@ module.exports = function (e, t, n) {
                 if (n)
                     for (var s = 0; s < n.length; ++s) {
                         var c = n[s];
-                        c.hasMixin(o.GVertexSource) && r.push(c);
+                        c.hasMixin(GObject.GVertexSource) && r.push(c);
                     }
                 if (r.length) {
                     var d = $("<div></div>")
@@ -75,15 +75,15 @@ module.exports = function (e, t, n) {
                                             $(this).parent().find(".g-input-slider").gInputSlider("value", t);
                                         })
                                 )
-                                .append($("<label>").html(o.GLocale.get(new o.GLocaleKey("GSimplifyAction", "text.tolerance"))))
+                                .append($("<label>").html(GObject.GLocale.get(new GObject.GLocaleKey("GSimplifyAction", "text.tolerance"))))
                         );
-                    l.prompt(
-                        o.GLocale.get(new o.GLocaleKey("GSimplifyAction", "text.simplification")),
+                    GSystemDialog.prompt(
+                        GObject.GLocale.get(new GObject.GLocaleKey("GSimplifyAction", "text.simplification")),
                         (e) => {
                             if (e) {
                                 var n = parseFloat(d.find(".g-input-slider").gInputSlider("value"));
-                                if (isNaN(n) || !isFinite(n) || o.GMath.isEqualEps(n, 0))
-                                    l.alert(o.GLocale.get(new o.GLocaleKey("GSimplifyAction", "text.invalid-value")));
+                                if (isNaN(n) || !isFinite(n) || GObject.GMath.isEqualEps(n, 0))
+                                    GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GSimplifyAction", "text.invalid-value")));
                                 else {
                                     t.beginTransaction();
                                     try {
@@ -92,21 +92,21 @@ module.exports = function (e, t, n) {
                                             u && s.add(u);
                                         }
                                         try {
-                                            (0, a.blockChanges)(t, s);
+                                            (0, GSaveAction.blockChanges)(t, s);
                                             for (c = 0; c < r.length; ++c) {
                                                 var p = r[c],
                                                     g = p.getParent(),
                                                     h = p.getNext(),
                                                     f = this._makeSimplified(n, p),
-                                                    m = o.GPathUtil.createPathFromVertexSource(f);
-                                                (m && (o.GElement.prototype.assignFrom.call(m, p), g.insertChild(m, h), i.push(m)),
+                                                    m = GObject.GPathUtil.createPathFromVertexSource(f);
+                                                (m && (GObject.GElement.prototype.assignFrom.call(m, p), g.insertChild(m, h), i.push(m)),
                                                     g.removeChild(p));
                                             }
                                         } finally {
-                                            ((0, a.releaseChanges)(t, s), i.length && t.updateSelection(!1, i));
+                                            ((0, GSaveAction.releaseChanges)(t, s), i.length && t.updateSelection(false, i));
                                         }
                                     } finally {
-                                        t.commitTransaction(o.GLocale.get(this.getTitle()));
+                                        t.commitTransaction(GObject.GLocale.get(this.getTitle()));
                                     }
                                 }
                             }
@@ -117,10 +117,10 @@ module.exports = function (e, t, n) {
             }),
             (c.prototype._makeSimplified = function (e, t) {
                 var n = e > 0 ? e : -e;
-                return new o.GVertexSimplifier(t).simplify(n / 2, !1, !0);
+                return new GObject.GVertexSimplifier(t).simplify(n / 2, false, true);
             }),
             (c.prototype.toString = function () {
                 return "[Object GSimplifyAction]";
             }),
-            (e.exports = c));
+            (module.exports = c));
     };

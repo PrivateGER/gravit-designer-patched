@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(58), n(19), n(8), n(71), n(4), n(41), n(13), n(32), n(38), n(97), n(33), n(26));
-        var o = n(1),
-            i = n(53),
-            a = n(40),
-            r = n(10),
-            s = n(592),
-            l = n(1094);
-        const c = n(434);
+        (require(58), require(19), require(8 /* Symbol */), require(71), require(4), require(41), require(13), require(32), require(38), require(97), require(33), require(26));
+        var GObject = require(1),
+            i = require(53),
+            GSaveAction = require(40),
+            designerConfig = require(10),
+            s = require(592),
+            l = require(1094);
+        const c = require(434);
         function d() {}
         async function u(e, t) {
             const n = gDesigner.getSyncUser(),
@@ -47,7 +47,7 @@ module.exports = function (e, t, n) {
                     ((n = n || e.getScene()),
                     (!e.isCloudFile() && !e.isExternalFile()) || !n || (!n.hasAnnotations() && !n.isCloudAnnotations()))
                 )
-                    return !1;
+                    return false;
                 var r = e.getId(),
                     s = n.getProperty("cid"),
                     c = e.getReservedId();
@@ -56,10 +56,10 @@ module.exports = function (e, t, n) {
                 n.iteratePages((e) => {
                     let t = e.getAnnotations();
                     (i && (d.removeSidFromAnnotations(t), e.getProperty("Guid") || d.removeGuidFromAnnotations(t)), u.push(t));
-                }, !0);
+                }, true);
                 var g = null;
                 const h = async () => {
-                    let e = await gApi.getFile(p, !0).catch(() => null);
+                    let e = await gApi.getFile(p, true).catch(() => null);
                     if (e && e.link_accesses && e.link_accesses.length)
                         for (var t = 0; t < e.link_accesses.length && !g; ++t) {
                             let n = e.link_accesses[t];
@@ -75,9 +75,9 @@ module.exports = function (e, t, n) {
                     } catch (e) {
                         console.warn("Failed to record annotations");
                     }
-                if (!p) return !1;
+                if (!p) return false;
                 a && !g && (g = await h());
-                const f = this._prepareAnnotations(e, u.map(o.GNode.store));
+                const f = this._prepareAnnotations(e, u.map(GObject.GNode.store));
                 return (
                     f instanceof Array || (f.suppressNewPageNotifications = !!i),
                     gDesigner
@@ -92,20 +92,20 @@ module.exports = function (e, t, n) {
                                 c && c.length
                                     ? (n.iteratePages((e) => {
                                           let t = d.findAnnotationsListForPage(e, c);
-                                          t && e.setAnnotations(o.GNode.restore(t));
-                                      }, !0),
+                                          t && e.setAnnotations(GObject.GNode.restore(t));
+                                      }, true),
                                       n.getProperty("cid") !== p && n.setCloudAnnotations(p),
                                       a && g && n.setProperty("asec", g))
                                     : (n.setCloudAnnotations(null), n.cleanAnnotations(), a && g && n.setProperty("asec", g)),
                                 n.setLastTimeAnnotationsFromCloudModified(s),
-                                !0
+                                true
                             );
                         })
-                        .catch((e) => (n.setCloudAnnotations(null), console.warn("Failed to record annotations: " + e), !1))
+                        .catch((e) => (n.setCloudAnnotations(null), console.warn("Failed to record annotations: " + e), false))
                 );
             }),
             (d.findAnnotationsListForPage = function (e, t) {
-                const n = e.getProperty("Guid", !0) || e.getAnnotations().getProperty("Guid");
+                const n = e.getProperty("Guid", true) || e.getAnnotations().getProperty("Guid");
                 let o = null;
                 if (!t || !t.length) return o;
                 if (
@@ -137,17 +137,17 @@ module.exports = function (e, t, n) {
                 return o;
             }),
             (d._findInAnnotationsObj = function (e, t, n) {
-                return e.find((e) => (e instanceof o.GAnnotationsList ? n(e) : t(e)));
+                return e.find((e) => (e instanceof GObject.GAnnotationsList ? n(e) : t(e)));
             }),
             (d.mergeAnnotations = function (e, t, n, i, r) {
                 let s = {},
                     l = {},
-                    c = !1;
+                    c = false;
                 (t.forEach((e) => {
-                    ((l[e.getId()] = e), e.hasFlag(o.GNode.Flag.Selected) && (s[e.getId()] = 1));
+                    ((l[e.getId()] = e), e.hasFlag(GObject.GNode.Flag.Selected) && (s[e.getId()] = 1));
                 }),
                     t.forEach((t) => {
-                        i.some((e) => e.getId() === t.getId()) || (e.removeChild(t), (c = !0));
+                        i.some((e) => e.getId() === t.getId()) || (e.removeChild(t), (c = true));
                     }));
                 const d = ["$lmd", "$storedUrl", "$__ids", "$plkt", "$mtime", "$lkt", "@_lkt"];
                 r && r instanceof Object && d.push(...Object.keys(r).map((e) => "$" + e));
@@ -155,11 +155,11 @@ module.exports = function (e, t, n) {
                     let n = i[t],
                         r = l[n.getId()];
                     (r &&
-                        ((0, a.isDifferent)(n, r, d.concat(n instanceof o.GRectangleAnnotation ? ["$cu"] : [])) &&
-                            ((0, a.mergeNode)(r, n), (c = !0)),
+                        ((0, GSaveAction.isDifferent)(n, r, d.concat(n instanceof GObject.GRectangleAnnotation ? ["$cu"] : [])) &&
+                            ((0, GSaveAction.mergeNode)(r, n), (c = true)),
                         r.setProperty("mtime", n.getProperty("mtime"))),
-                        1 === s[n.getId()] && n.setFlag(o.GNode.Flag.Selected),
-                        l[n.getId()] || (e.appendChild(n), (c = !0)));
+                        1 === s[n.getId()] && n.setFlag(GObject.GNode.Flag.Selected),
+                        l[n.getId()] || (e.appendChild(n), (c = true)));
                 }
                 e.setProperty("sid", n.getProperty("sid") || null);
                 const u = n.getProperty("Guid");
@@ -180,7 +180,7 @@ module.exports = function (e, t, n) {
                 }
             }),
             (d.filterAnnotationElements = function (e) {
-                return e.filter((e) => e.hasMixin(o.GAnnotation) || e instanceof o.GComment);
+                return e.filter((e) => e.hasMixin(GObject.GAnnotation) || e instanceof GObject.GComment);
             }),
             (d.canResolveAnnotation = function (e) {
                 return u(e, c.RESOLVE_COMMENT_ANNOTATION);
@@ -193,10 +193,10 @@ module.exports = function (e, t, n) {
                     const n = t.getProperty ? t.getProperty("uid") : t.uid;
                     return e.getUID() === n;
                 }
-                return !1;
+                return false;
             }),
             (d.canUpdate = function (e) {
-                return !(gDesigner.isAnonymous() && !r.ANONYMOUS_SESSION_ENABLED) && !!e;
+                return !(gDesigner.isAnonymous() && !designerConfig.ANONYMOUS_SESSION_ENABLED) && !!e;
             }),
             (d.resolveAllComments = function (e) {
                 var t = e.getScene();
@@ -206,9 +206,9 @@ module.exports = function (e, t, n) {
                         function () {
                             t.iteratePages((e) => {
                                 e.getAnnotations().resolve();
-                            }, !0);
+                            }, true);
                         },
-                        o.GLocale.get(new o.GLocaleKey("GAnnotationsSidebar", "text.resolve-all-comments"))
+                        GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationsSidebar", "text.resolve-all-comments"))
                     );
             }),
             (d.getCommentsCount = function (e) {
@@ -242,8 +242,8 @@ module.exports = function (e, t, n) {
             }),
             (d.setPropertyValueInAnnotations = function (e, t, n, i) {
                 e.accept((e) => {
-                    (e instanceof o.GAnnotationsList || e.hasMixin(o.GAnnotation) || e instanceof o.GComment) && e.setProperty(t, n, i);
+                    (e instanceof GObject.GAnnotationsList || e.hasMixin(GObject.GAnnotation) || e instanceof GObject.GComment) && e.setProperty(t, n, i);
                 });
             }),
-            (e.exports = d));
+            (module.exports = d));
     };

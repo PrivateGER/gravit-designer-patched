@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(40);
+        require(3);
+        var GObject = require(1),
+            GSaveAction = require(40);
         function a(e, t, n, a, r, s, l) {
             var c = e && t && n && a && l;
             if (((this._htmlElement = $("<li></li>").addClass("g-effects-button")), c)) {
@@ -14,9 +14,9 @@ module.exports = function (e, t, n) {
                         .append($("<span></span>").addClass("g-effects-button-caption").append(e))
                         .on(
                             "click",
-                            i.watchDog.trap(
+                            GSaveAction.watchDog.trap(
                                 function () {
-                                    let e = (n && o.GLocale.getValue((s && s.i18n) || n, "name", "unknown", 0)) || "unkn";
+                                    let e = (n && GObject.GLocale.getValue((s && s.i18n) || n, "name", "unknown", 0)) || "unkn";
                                     (r
                                         ? gDesigner.stats("effects_add_proeffectdefault", c + e)
                                         : gDesigner.stats("effects_add_effectdefault", c + e),
@@ -26,7 +26,7 @@ module.exports = function (e, t, n) {
                                 () =>
                                     gDesigner.stats(
                                         "effects_nonprotriespro_proeffectdefault",
-                                        c + ((n && o.GLocale.getValue((s && s.i18n) || n, "name", "unknown", 0)) || "unkn")
+                                        c + ((n && GObject.GLocale.getValue((s && s.i18n) || n, "name", "unknown", 0)) || "unkn")
                                     )
                             )
                         )
@@ -48,5 +48,5 @@ module.exports = function (e, t, n) {
             (a.prototype.toString = function () {
                 return "[Object GEffectsButton]";
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

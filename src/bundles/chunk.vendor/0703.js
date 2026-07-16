@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(269);
+            var n = require(269);
 
             function r(e, t) {
                 ((this._name = n.getName(e)), (this._key = t));
@@ -11,5 +11,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.getKey = function () {
                     return this._key;
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(8), i(20), i(3), i(34), i(38));
-            const n = i(171),
-                r = i(170),
-                o = i(325),
-                { SUPPORT_URL: a } = i(374);
+            (require(8 /* Symbol */), require(20), require(3), require(34), require(38));
+            const n = require(171),
+                r = require(170),
+                o = require(325),
+                { SUPPORT_URL: a } = require(374 /* SUPPORT_URL */);
 
             function s(e, t, i) {
                 ((this._dialog = n("<div></div>").addClass("g-dialog-content")),
@@ -40,7 +40,7 @@ module.exports = function (e, t, i) {
                 new s(r.get(new o("GOfflineDialog", "text.retry-connection")).replace("%name", e ? e.name || e.email : "there"), "", [
                     {
                         label: r.get(new o("GOfflineDialog", "text.retry")),
-                        highlighted: !0,
+                        highlighted: true,
                         onclick: async (e) => {
                             var i;
                             (e._dialog.addClass("g-cloud-ui-loading"),
@@ -65,5 +65,5 @@ module.exports = function (e, t, i) {
                 (s.prototype.toString = function () {
                     return "[Object GOfflineDialog]";
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

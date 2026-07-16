@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(8), n(4), n(322), n(32), n(38), n(97), n(33), n(26));
-        const { GObject: o } = n(1),
-            i = n(1069);
+        (require(19), require(8 /* Symbol */), require(4), require(322), require(32), require(38), require(97), require(33), require(26));
+        const { GObject: o } = require(1 /* GObject */),
+            i = require(1069);
         function a() {
-            ((this._resourceMap = new i()), (this._controlSubjectState = { locked: !1 }));
+            ((this._resourceMap = new i()), (this._controlSubjectState = { locked: false }));
         }
         (o.inherit(a, o),
             (a.prototype._controlSubjectState = null),
             (a.prototype.lockPermissions = function () {
-                ((this._controlSubjectState.locked = !0), Object.freeze(this._controlSubjectState), Object.freeze(this._resourceMap));
+                ((this._controlSubjectState.locked = true), Object.freeze(this._controlSubjectState), Object.freeze(this._resourceMap));
             }),
             (a.prototype.grant = function (e, t) {
                 if (this._controlSubjectState.locked) return this;
@@ -30,7 +30,7 @@ module.exports = function (e, t, n) {
                     (e = e instanceof Array ? e : [e]),
                     Promise.all(
                         e.map(async (e) => {
-                            if (!this._resourceMap.has(e)) return !1;
+                            if (!this._resourceMap.has(e)) return false;
                             var t = this._resourceMap.get(e);
                             return !t || !!(await t(this, e));
                         })
@@ -39,9 +39,9 @@ module.exports = function (e, t, n) {
             }),
             (a.prototype.canSync = function (e) {
                 return (e = e instanceof Array ? e : [e]).every((e) => {
-                    if (!this._resourceMap.has(e)) return !1;
+                    if (!this._resourceMap.has(e)) return false;
                     const t = this._resourceMap.get(e);
-                    if (!t) return !0;
+                    if (!t) return true;
                     return !!t(this, e);
                 });
             }),
@@ -55,5 +55,5 @@ module.exports = function (e, t, n) {
                     return e instanceof Map ? e : new Map(Object.entries(e));
                 }
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

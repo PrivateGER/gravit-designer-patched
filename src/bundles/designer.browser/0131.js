@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(622),
-            i = n(35),
-            a = n(116),
-            r = n(43)("toStringTag"),
+        var o = require(622),
+            i = require(35),
+            a = require(116),
+            r = require(43)("toStringTag"),
             s = Object,
             l =
                 "Arguments" ===
@@ -12,7 +12,7 @@ module.exports = function (e, t, n) {
                         return arguments;
                     })()
                 );
-        e.exports = o
+        module.exports = o
             ? a
             : function (e) {
                   var t, n, o;

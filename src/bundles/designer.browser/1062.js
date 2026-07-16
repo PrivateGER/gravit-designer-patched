@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o;
-        e.exports =
-            ((o = n(55)),
-            n(272),
-            n(273),
-            n(234),
-            n(98),
+        module.exports =
+            ((o = require(55)),
+            require(272),
+            require(273),
+            require(234),
+            require(98),
             (function () {
                 var e = o,
                     t = e.lib.BlockCipher,

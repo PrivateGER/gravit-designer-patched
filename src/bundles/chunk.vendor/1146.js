@@ -1,20 +1,20 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(197),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(197),
                 o = function (e, t) {
                     (r.call(this), this.put("/ShadingType", e), this.put("/ColorSpace", t.name));
                 };
-            (n.inherit(o, r),
-                (o.prototype._hasTransparency = !1),
+            (IsFiniteNonNegativeNumber.inherit(o, r),
+                (o.prototype._hasTransparency = false),
                 (o.prototype.hasTransparency = function () {
                     return this._hasTransparency;
                 }),
                 (o.prototype.isValid = function () {
-                    return !0;
+                    return true;
                 }),
                 (o.Type = {
                     AXIAL: 2,
                     RADIAL: 3,
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

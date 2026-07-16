@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(76),
-                o = i(11);
-            e.exports = function (e) {
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(76),
+                o = require(11);
+            module.exports = function (e) {
                 ((e.PaintLayers = function () {}),
                     n.inheritAndMix("paintLayers", e.PaintLayers, r, [n.Container, n.Store]),
                     (e.PaintLayers.PropertySetInfo = {
@@ -10,13 +10,13 @@ module.exports = function (e, t, i) {
                             $class: e.FillPaintLayer,
                             _fpt: null,
                             _fop: 1,
-                            _fvs: !0,
+                            _fvs: true,
                             _fpx: null,
                         },
                         B: {
                             $class: e.BorderPaintLayer,
                             _bop: 1,
-                            _bvs: !0,
+                            _bvs: true,
                             _bpt: null,
                             _bpx: null,
                             _bw: 1,
@@ -25,8 +25,8 @@ module.exports = function (e, t, i) {
                             _blc: "square",
                             _blj: "miter",
                             _bml: 3,
-                            _bmo: !1,
-                            _bmi: !0,
+                            _bmo: false,
+                            _bmi: true,
                             _bhm: null,
                             _bhms: 1,
                             _btm: null,
@@ -34,10 +34,10 @@ module.exports = function (e, t, i) {
                         },
                     }),
                     (e.PaintLayers.prototype.hasStyleFill = function () {
-                        return !!this.getFillLayers(!0).length;
+                        return !!this.getFillLayers(true).length;
                     }),
                     (e.PaintLayers.prototype.hasStyleBorder = function () {
-                        return !!this.getBorderLayers(!0).length;
+                        return !!this.getBorderLayers(true).length;
                     }),
                     (e.PaintLayers.prototype.getLayers = function (e, t) {
                         var i = this.getChildren();
@@ -73,23 +73,23 @@ module.exports = function (e, t, i) {
                         );
                     }),
                     (e.PaintLayers.prototype.hasFillMaskLayers = function () {
-                        var e = this.getFillLayers(!0);
+                        var e = this.getFillLayers(true);
                         if (
                             e.filter(function (e) {
                                 return e.isMask();
                             }).length > 1
                         )
-                            return !0;
+                            return true;
                         for (var t = 1; t < e.length; t++) {
                             var i = e[t - 1],
                                 n = e[t];
-                            if (i && n && i.isMask() && !n.isMask()) return !0;
+                            if (i && n && i.isMask() && !n.isMask()) return true;
                         }
-                        return !1;
+                        return false;
                     }),
                     (e.PaintLayers.prototype.hasSeparateFillLayer = function () {
-                        for (var e = this.getFillLayers(!0), t = 0; t < e.length; t++) if (e[t].isSeparateLayer()) return !0;
-                        return !1;
+                        for (var e = this.getFillLayers(true), t = 0; t < e.length; t++) if (e[t].isSeparateLayer()) return true;
+                        return false;
                     }),
                     (e.PaintLayers.prototype._handleChange = function (t, i) {
                         var r = this.getParent();

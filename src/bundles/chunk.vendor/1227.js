@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(391),
-                r = i(0),
-                o = i(11),
-                a = i(182),
-                s = i(1146),
-                l = i(1416),
-                h = i(1417),
+module.exports = function (module, exports, require) {
+            var n = require(391),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(11),
+                a = require(182),
+                s = require(1146),
+                l = require(1416),
+                h = require(1417),
                 A = function (e, t) {
                     if (t && t.transform && t.doc) {
                         var i = t.doc,
@@ -32,7 +32,7 @@ module.exports = function (e, t, i) {
                                         var r = e < g.length - 1 ? e + 1 : e,
                                             o = c.parseColor(g[e].color),
                                             a = c.parseColor(g[r].color);
-                                        (o.hasTransparency() || a.hasTransparency()) && (this._hasTransparency = !0);
+                                        (o.hasTransparency() || a.hasTransparency()) && (this._hasTransparency = true);
                                         var s = new h();
                                         (s.put("/C0", o.asArray()), s.put("/C1", a.asArray()), s.put("/N", 1));
                                         var l = i.getIndirectObject(s);
@@ -42,15 +42,15 @@ module.exports = function (e, t, i) {
                             var m = i.getIndirectObject(new l(u, p, d));
                             i.addIndirectObject(m);
                             var y = new a();
-                            (y.push(!0),
-                                y.push(!0),
+                            (y.push(true),
+                                y.push(true),
                                 this.put("/Coords", t.coords),
                                 this.put("/Extend", y),
                                 this.put("/Function", new n(m)));
                         }
                     }
                 };
-            (r.inherit(A, s),
+            (IsFiniteNonNegativeNumber.inherit(A, s),
                 (A.prototype.isValid = function () {
                     return !!this.transform && this.transform.invertible();
                 }),
@@ -60,5 +60,5 @@ module.exports = function (e, t, i) {
                 (A.prototype.equals = function (e) {
                     return e instanceof A && this._gradient == e._gradient;
                 }),
-                (e.exports = A));
+                (module.exports = A));
         };

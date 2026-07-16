@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(99),
-                r = i(5),
-                o = i(0),
-                a = i(24);
+module.exports = function (module, exports, require) {
+            var n = require(99),
+                r = require(5),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(24);
 
             function s(e) {
                 n.call(this, e);
             }
-            (o.inheritAndMix(s, n, [n.Visual, n.Map, n.DetailMap]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(s, n, [n.Visual, n.Map, n.DetailMap]),
                 (s.ID = "guide.guide-lines"),
                 (s.MIN_CELL_SPACE = 10),
                 (s.prototype.getId = function () {
@@ -66,5 +66,5 @@ module.exports = function (e, t, i) {
                 (s.prototype.toString = function () {
                     return "[Object GGuideLinesGuide]";
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

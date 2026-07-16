@@ -1,16 +1,16 @@
-module.exports = function (e, t, i) {
-            i(5);
-            var n = i(24),
-                r = i(81),
-                o = i(17),
-                a = i(95),
-                s = i(6),
-                l = i(7),
-                h = i(14);
+module.exports = function (module, exports, require) {
+            require(5);
+            var n = require(24),
+                r = require(81),
+                o = require(17),
+                a = require(95),
+                s = require(6),
+                l = require(7),
+                h = require(14);
 
             function A() {}
             ((A.prototype._icon = null),
-                (A.prototype._iconVisible = !1),
+                (A.prototype._iconVisible = false),
                 (A.prototype.getAnnotationOptions = function () {
                     throw new Error("Not implemented");
                 }),
@@ -44,7 +44,7 @@ module.exports = function (e, t, i) {
                         if (c) {
                             t && (i = t.mapPoint(i));
                             var p,
-                                u = e.canvas.getTransform(!0),
+                                u = e.canvas.getTransform(true),
                                 d = new l(),
                                 g = this._icon.getGeometryBBox(),
                                 f = g.getSide(s.Side.CENTER),
@@ -53,11 +53,11 @@ module.exports = function (e, t, i) {
                             (n && (d = new l().translated(-f.getX(), -f.getY()).rotated(-n).translated(f.getX(), f.getY())),
                                 A.iconDynamicColor &&
                                     ((p = e.canvas.createCanvas(g)).fillCanvas(a || e.selectionOutlineColor, 1),
-                                    p.drawImage(c, 0, 0, !0, 1, h.CompositeOperator.DestinationIn, !0, g.getWidth(), g.getHeight()),
+                                    p.drawImage(c, 0, 0, true, 1, h.CompositeOperator.DestinationIn, true, g.getWidth(), g.getHeight()),
                                     (c = p)),
                                 (d = d.translated(m, y)),
                                 e.canvas.setTransform(u.preMultiplied(d)),
-                                e.canvas.drawImage(c, 0, 0, !1, 1, null, !1, g.getWidth(), g.getHeight()),
+                                e.canvas.drawImage(c, 0, 0, false, 1, null, false, g.getWidth(), g.getHeight()),
                                 e.canvas.setTransform(u),
                                 p && p.destroy());
                         }
@@ -86,7 +86,7 @@ module.exports = function (e, t, i) {
                             }.bind(this)
                         ),
                             (t.responseType = "blob"),
-                            t.open("GET", e, !0),
+                            t.open("GET", e, true),
                             t.send(null));
                     } else this._icon = null;
                 }),
@@ -113,5 +113,5 @@ module.exports = function (e, t, i) {
                         ("object" == typeof e && ((t = e.width), (i = e.height)), this._icon.setBounds(0, 0, t, i));
                     }
                 }),
-                (e.exports = A));
+                (module.exports = A));
         };

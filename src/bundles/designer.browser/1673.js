@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(57);
+        require(57);
         var o,
             i,
             a = null,
             r = null,
-            s = !1;
+            s = false;
         class l {
             static _getTooltipElement() {
                 return r;
@@ -37,13 +37,13 @@ module.exports = function (e, t, n) {
                                 let n = t.offset().left - (t.offset().left + t.outerWidth() - e) + d;
                                 t.css("left", n + "px");
                             }
-                            (l.resetIdle(), (s = !0), (i = setTimeout(l.resetIdle, 500)));
+                            (l.resetIdle(), (s = true), (i = setTimeout(l.resetIdle, 500)));
                         }
                     }
                 }
             }
             static resetIdle() {
-                (void 0 !== i && clearTimeout(i), (s = !1));
+                (void 0 !== i && clearTimeout(i), (s = false));
             }
             static resetTooltip() {
                 (void 0 !== o && (clearTimeout(o), (o = void 0)), r.removeClass("visible").text("").css({ left: "", top: "" }));
@@ -63,13 +63,13 @@ module.exports = function (e, t, n) {
                     document.addEventListener("mouseout", l.documentOutListener));
             }
         }
-        e.exports = l;
+        module.exports = l;
         var c = {
             show: function () {
                 (l.showTooltip($(this)),
                     document.addEventListener("click", l.resetTooltip, {
-                        once: !0,
-                        capture: !0,
+                        once: true,
+                        capture: true,
                     }));
             },
         };

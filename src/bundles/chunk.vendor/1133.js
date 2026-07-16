@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(518),
-                o = i(600);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(518),
+                o = require(600);
 
             function a() {
                 o.apply(this, arguments);
             }
-            (n.inherit(a, r),
+            (IsFiniteNonNegativeNumber.inherit(a, r),
                 (a.prototype._pattern = null),
                 (a.prototype.parse = function () {
                     var e = Object.keys(r.Type).map(function (e) {
@@ -17,5 +17,5 @@ module.exports = function (e, t, i) {
                 (a.prototype.applyTo = function (e) {
                     e.setProperty("_pt", this._pattern);
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

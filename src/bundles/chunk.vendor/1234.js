@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i() {
                 throw new Error("This class can not be instantiated");
             }
@@ -36,5 +36,5 @@ module.exports = function (e, t) {
                         ((t = "string" == typeof e ? e.charCodeAt(n) : e[n]), i.push(t % 256), i.push(t >> 8));
                     return i;
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

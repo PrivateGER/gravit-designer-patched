@@ -1,30 +1,30 @@
-module.exports = function (e, t, i) {
-            var n = i(82),
-                r = i(0),
-                o = i(233),
-                a = i(63),
-                s = i(128),
-                l = i(36),
-                h = i(141),
-                A = i(22),
-                c = i(39),
-                p = i(24),
-                u = i(9),
-                d = i(47);
+module.exports = function (module, exports, require) {
+            var GEditor = require(82),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(233),
+                a = require(63),
+                s = require(128),
+                l = require(36),
+                h = require(141),
+                A = require(22),
+                c = require(39),
+                p = require(24),
+                String = require(9),
+                d = require(47);
 
             function g(e) {
                 s.call(this, e);
             }
-            (r.inherit(g, s),
+            (IsFiniteNonNegativeNumber.inherit(g, s),
                 l.exports(g, o),
                 (g.prototype.setBooleanOp = function (e, t) {
-                    var i = n.getEditor(this.getElement().getScene());
-                    if (!i) return !1;
-                    if (!this._editors || !this._editors.length) return !1;
-                    for (var r = !1, o = 0; o < this._editors.length; ++o) {
-                        (a = this._editors[o]) instanceof s && (r = !0);
+                    var i = GEditor.getEditor(this.getElement().getScene());
+                    if (!i) return false;
+                    if (!this._editors || !this._editors.length) return false;
+                    for (var r = false, o = 0; o < this._editors.length; ++o) {
+                        (a = this._editors[o]) instanceof s && (r = true);
                     }
-                    if (!r) return !1;
+                    if (!r) return false;
                     i.beginTransaction();
                     try {
                         for (o = 0; o < this._editors.length; ++o) {
@@ -32,16 +32,16 @@ module.exports = function (e, t, i) {
                             (a = this._editors[o]) instanceof s && a.getElement().setProperty("bool", e);
                         }
                     } finally {
-                        i.commitTransaction(u.get(new d("GCompoundShapeEditor", "action.drop-pattern")));
+                        i.commitTransaction(String.get(new d("GCompoundShapeEditor", "action.drop-pattern")));
                     }
-                    return !0;
+                    return true;
                 }),
                 (g.prototype._paintOutline = function (e, t, i, n, r) {
                     var o,
                         s = this.getPaintElement(),
                         l = new a(s, e);
                     (o = new h(l)) &&
-                        (t.canvas.putVertices(o, !1),
+                        (t.canvas.putVertices(o, false),
                         t.canvas.strokeVertices(
                             n || (this.hasFlag(c.Flag.Highlighted) ? t.highlightOutlineColor : t.selectionOutlineColor),
                             p.outlineWidth
@@ -71,5 +71,5 @@ module.exports = function (e, t, i) {
                 (g.prototype.toString = function () {
                     return "[Object GCompoundShapeEditor]";
                 }),
-                (e.exports = g));
+                (module.exports = g));
         };

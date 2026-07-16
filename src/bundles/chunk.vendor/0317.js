@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(2),
-                o = i(214),
-                a = i(84);
-            i(142);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(2),
+                o = require(214),
+                a = require(84);
+            require(142);
 
             function s() {
                 (o.call(this), this.initializeAnnotation());
@@ -33,7 +33,7 @@ module.exports = function (e, t, i) {
                         var u = t.blob;
                         t.options.separateSaving &&
                             ((u.own = {
-                                "@": r._nodeClassToNameMap[n.getTypeId(this)],
+                                "@": r._nodeClassToNameMap[IsFiniteNonNegativeNumber.getTypeId(this)],
                             }),
                             (t.blob = u.own));
                     } else
@@ -49,5 +49,5 @@ module.exports = function (e, t, i) {
                 (s.prototype.toString = function () {
                     return "[GEllipseAnnotation]";
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

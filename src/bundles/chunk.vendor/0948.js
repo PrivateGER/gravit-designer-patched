@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(269);
+            var n = require(269);
 
             function r() {}
             ((r.prototype._listeners = null),
-                (r.prototype.temporaryReceiver = !1),
+                (r.prototype.temporaryReceiver = false),
                 (r.prototype.addEventListener = function (e, t, i, r, o) {
                     var a = n.getTypeId(e);
                     this._listeners || (this._listeners = {});
@@ -23,21 +23,21 @@ module.exports = function (e, t, i) {
                                   listener: t,
                                   sourceListener: s,
                                   target: i,
-                                  registered: !0,
+                                  registered: true,
                               })
                             : this._listeners[a].listeners.push({
                                   listener: t,
                                   sourceListener: s,
                                   target: i,
-                                  registered: !0,
+                                  registered: true,
                               }));
                 }),
                 (r.prototype.removeEventListener = function (e, t, i) {
                     var r = n.getTypeId(e),
-                        o = !1;
+                        o = false;
                     if (this._listeners && r in this._listeners) {
                         for (var a = this._listeners[r].listeners, s = 0; s < a.length; ++s)
-                            a[s].sourceListener != t || (i && a[s].target !== i) || ((a[s].registered = !1), a.splice(s, 1), (o = !0), --s);
+                            a[s].sourceListener != t || (i && a[s].target !== i) || ((a[s].registered = false), a.splice(s, 1), (o = true), --s);
                         0 == a.length && delete this._listeners[r];
                     }
                     return o;
@@ -58,5 +58,5 @@ module.exports = function (e, t, i) {
                             }
                     }
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

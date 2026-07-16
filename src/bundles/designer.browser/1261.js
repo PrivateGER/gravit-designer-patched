@@ -1,31 +1,31 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(57), n(4), n(13));
-        var i = n(15),
-            a = n(53),
-            r = n(1),
-            s = n(10),
-            l = n(67),
-            c = o(n(340)),
-            d = o(n(807)),
-            u = o(n(198)),
-            p = n(1161),
-            g = o(n(565)),
-            h = n(123),
-            f = n(450);
-        const m = n(607),
-            y = n(44);
+        var o = require(16);
+        (require(57), require(4), require(13));
+        var GPlatform = require(15),
+            a = require(53),
+            GObject = require(1),
+            designerConfig = require(10),
+            l = require(67),
+            c = o(require(340)),
+            d = o(require(807)),
+            u = o(require(198 /* SidebarsIds */)),
+            p = require(1161),
+            g = o(require(565)),
+            h = require(123),
+            f = require(450);
+        const m = require(607),
+            GSystemDialog = require(44);
         function v() {}
-        (r.GObject.inherit(v, h),
+        (GObject.GObject.inherit(v, h),
             (v.prototype._panel = null),
             (v.prototype._advancedFillPanel = null),
             (v.prototype._toolbar = null),
             (v.prototype._elements = null),
             (v.prototype._document = null),
-            (v.prototype._styleEditorChange = !1),
-            (v.prototype._styleEdOn = !1),
-            (v.prototype._ownChange = !1),
+            (v.prototype._styleEditorChange = false),
+            (v.prototype._styleEdOn = false),
+            (v.prototype._ownChange = false),
             (v.prototype._chooserElem = null),
             (v.prototype.init = function (e, t) {
                 ((this._panel = e.addClass("fill-properties-panel")),
@@ -41,7 +41,7 @@ module.exports = function (e, t, n) {
                     ]));
                 var n = this;
                 this._advancedFillPanel = $("<div></div>").gOverlay({
-                    releaseOnClose: !1,
+                    releaseOnClose: false,
                 });
                 var o = function (e) {
                     if ("evenodd" === e)
@@ -50,29 +50,29 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<option></option>")
                                     .attr("value", "0")
-                                    .text(r.GLocale.get(new r.GLocaleKey("GCommonNames", "evenodd.non-zero")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "evenodd.non-zero")))
                             )
                             .append(
                                 $("<option></option>")
                                     .attr("value", "1")
-                                    .text(r.GLocale.get(new r.GLocaleKey("GCommonNames", "evenodd.even-odd")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "evenodd.even-odd")))
                             )
                             .on("change", function () {
                                 (gDesigner.stats("fill_toggle_fill-rule", "1" === $(this).val() ? "enable" : "disable"),
                                     n._assignProperty(
                                         "evenodd",
                                         "1" === $(this).val(),
-                                        r.GLocale.get(new r.GLocaleKey("GCommonNames", "action.change-fill-rule"))
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.change-fill-rule"))
                                     ));
                             });
                     throw new Error("Unknown input property: " + e);
                 }.bind(this);
                 (this._toolbar.addClass("list-toolbar fill-toolbar"),
                     $("<label></label>")
-                        .text(r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "title")))
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "title")))
                         .appendTo(this._toolbar),
                     $("<button></button>")
-                        .attr("data-title", r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "action.advanced-settings")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.advanced-settings")))
                         .addClass("fill completely-fill g-active")
                         .append($("<span></span>").addClass("gravit-icon-touch-completely-fill"))
                         .on(
@@ -82,14 +82,14 @@ module.exports = function (e, t, n) {
                                     $(".winding-fill").removeClass("g-active"),
                                     n._assignProperty(
                                         "evenodd",
-                                        !1,
-                                        r.GLocale.get(new r.GLocaleKey("GCommonNames", "action.change-fill-rule"))
+                                        false,
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.change-fill-rule"))
                                     ));
                             }.bind(this)
                         )
                         .appendTo(this._toolbar),
                     $("<button></button>")
-                        .attr("data-title", r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "action.advanced-settings")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.advanced-settings")))
                         .addClass("fill winding-fill")
                         .append($("<span></span>").addClass("gravit-icon-touch-winding-fill"))
                         .on(
@@ -99,14 +99,14 @@ module.exports = function (e, t, n) {
                                     $(".completely-fill").removeClass("g-active"),
                                     n._assignProperty(
                                         "evenodd",
-                                        !0,
-                                        r.GLocale.get(new r.GLocaleKey("GCommonNames", "action.change-fill-rule"))
+                                        true,
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.change-fill-rule"))
                                     ));
                             }.bind(this)
                         )
                         .appendTo(this._toolbar),
                     $("<button></button>")
-                        .attr("data-title", r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "action.advanced-settings")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.advanced-settings")))
                         .attr("data-action", "settings")
                         .addClass("fill-settings")
                         .append($("<span></span>").addClass("gravit-icon-settings"))
@@ -119,9 +119,9 @@ module.exports = function (e, t, n) {
                         )
                         .gRichTooltip(
                             l.GRichTooltipConfig.from({
-                                title: r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "text.fill-rule-tooltip-title")),
-                                description: r.GLocale.get(
-                                    new r.GLocaleKey("GFillPaintLayerProperties", "text.fill-rule-tooltip-description")
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "text.fill-rule-tooltip-title")),
+                                description: GObject.GLocale.get(
+                                    new GObject.GLocaleKey("GFillPaintLayerProperties", "text.fill-rule-tooltip-description")
                                 ),
                                 learnMore:
                                     "/docs/colors-gradients-textures/fills/#advanced-fill-settings",
@@ -130,7 +130,7 @@ module.exports = function (e, t, n) {
                         .appendTo(this._toolbar),
                     $("<button></button>")
                         .attr("data-action", "remove")
-                        .attr("data-title", r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "action.remove-selected")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.remove-selected")))
                         .append($("<span></span>").addClass("gravit-icon-trash"))
                         .append($("<span></span>").addClass("gravit-icon-touch-trash"))
                         .on("click", function (e) {
@@ -144,20 +144,20 @@ module.exports = function (e, t, n) {
                                         (n._iterateEqualPaintLayer(t, function (t) {
                                             e.push(t);
                                         }),
-                                            r.GUtil.each(e, function (e, t) {
+                                            GObject.GUtil.each(e, function (e, t) {
                                                 t.getParent().removeChild(t);
                                             }));
                                     },
-                                    r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "action.remove"))
+                                    GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.remove"))
                                 );
                             const o = gDesigner.getRightSidebars().getSidebar(u.default.SidebarsIds.GInspectorSidebar);
                             o.trigger(new d.default(d.default.Type.ChildRemoved, o));
                         })
                         .gRichTooltip(
                             l.GRichTooltipConfig.from({
-                                title: r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "text.remove-layer-tooltip-title")),
-                                description: r.GLocale.get(
-                                    new r.GLocaleKey("GFillPaintLayerProperties", "text.remove-layer-tooltip-description")
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "text.remove-layer-tooltip-title")),
+                                description: GObject.GLocale.get(
+                                    new GObject.GLocaleKey("GFillPaintLayerProperties", "text.remove-layer-tooltip-description")
                                 ),
                                 learnMore: "/docs/colors-gradients-textures/fills/",
                             })
@@ -165,7 +165,7 @@ module.exports = function (e, t, n) {
                         .appendTo(this._toolbar),
                     $("<button></button>")
                         .attr("data-action", "add")
-                        .attr("data-title", r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "action.add")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.add")))
                         .append($("<span></span>").addClass("gravit-icon-plus"))
                         .append($("<span></span>").addClass("gravit-icon-touch-plus"))
                         .on(
@@ -177,15 +177,15 @@ module.exports = function (e, t, n) {
                                         function () {
                                             const e = n._document && n._document.getScene(),
                                                 t = e && e.getProperty("cm"),
-                                                o = r.GColorHelper.convertColor(r.GRGBColor.BLACK, t || r.GColor.ColorModes.RGB);
+                                                o = GObject.GColorHelper.convertColor(GObject.GRGBColor.BLACK, t || GObject.GColor.ColorModes.RGB);
                                             for (var i = 0; i < n._elements.length; ++i) {
-                                                var a = new r.GStylable.FillPaintLayer();
+                                                var a = new GObject.GStylable.FillPaintLayer();
                                                 (a.setProperty("_pt", o), n._elements[i].getPaintLayers().appendChild(a));
                                             }
                                         },
-                                        r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "action.add"))
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.add"))
                                     ),
-                                    $(this._toolbar).gAccordion("toggleOpen", !0),
+                                    $(this._toolbar).gAccordion("toggleOpen", true),
                                     $(this._toolbar).gAccordion("init", $(this._panel)));
                                 const t = gDesigner.getRightSidebars().getSidebar(u.default.SidebarsIds.GInspectorSidebar);
                                 t.trigger(new d.default(d.default.Type.ChildAdded, t));
@@ -193,9 +193,9 @@ module.exports = function (e, t, n) {
                         )
                         .gRichTooltip(
                             l.GRichTooltipConfig.from({
-                                title: r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "text.add-layer-tooltip-title")),
-                                description: r.GLocale.get(
-                                    new r.GLocaleKey("GFillPaintLayerProperties", "text.add-layer-tooltip-description")
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "text.add-layer-tooltip-title")),
+                                description: GObject.GLocale.get(
+                                    new GObject.GLocaleKey("GFillPaintLayerProperties", "text.add-layer-tooltip-description")
                                 ),
                                 learnMore: "/docs/colors-gradients-textures/fills/",
                             })
@@ -203,7 +203,7 @@ module.exports = function (e, t, n) {
                         .appendTo(this._toolbar),
                     $("<div></div>")
                         .gPropertyRow({
-                            label: r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "text.fill-rule")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "text.fill-rule")),
                             columns: [{ width: "100%", content: o("evenodd") }],
                         })
                         .appendTo(this._advancedFillPanel),
@@ -211,7 +211,7 @@ module.exports = function (e, t, n) {
                         .getWorkspace()
                         .getStyleEdManager()
                         .addEventListener(a.GStyleEdManager.EditorEvent, this._styleEditorEventHandler, this),
-                    this._panel.data("contextmenu", !0),
+                    this._panel.data("contextmenu", true),
                     this._panel.on("mouseenter", (e) => {
                         (gDesigner.setMouseOverContext(
                             m.FillPropertiesPanel,
@@ -223,7 +223,7 @@ module.exports = function (e, t, n) {
                                     i = $("<span/>")
                                         .addClass("copy-info-overlay")
                                         .css({ top: o })
-                                        .text(r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "text.copy-fill")));
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "text.copy-fill")));
                                 (t && t.remove(),
                                     this._panel.append(i),
                                     setTimeout(() => {
@@ -244,15 +244,15 @@ module.exports = function (e, t, n) {
             }),
             (v.prototype.update = function (e, t, n) {
                 const o = this._styleEditorChange;
-                if ((this._styleEditorChange && (this._styleEditorChange = !1), this._ownChange)) return !0;
+                if ((this._styleEditorChange && (this._styleEditorChange = false), this._ownChange)) return true;
                 if (
                     (this._chooserElem && this._chooserElem.gPatternChooser("close"),
                     this._document &&
-                        (this._document.getScene().removeEventListener(r.GNode.AfterInsertEvent, this._afterInsert, this),
-                        this._document.getScene().removeEventListener(r.GNode.BeforeRemoveEvent, this._beforeRemove, this),
+                        (this._document.getScene().removeEventListener(GObject.GNode.AfterInsertEvent, this._afterInsert, this),
+                        this._document.getScene().removeEventListener(GObject.GNode.BeforeRemoveEvent, this._beforeRemove, this),
                         this._document
                             .getScene()
-                            .removeEventListener(r.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                            .removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                         (this._document = null)),
                     (this._elements = []),
                     e)
@@ -261,36 +261,36 @@ module.exports = function (e, t, n) {
                     for (var i = 0; i < t.length; ++i) {
                         var s = t[i],
                             l = function (e, t) {
-                                t.hasMixin(r.GStylable) &&
-                                    t.getStylePropertySets().indexOf(r.GStylable.PropertySet.FillPaintLayers) >= 0 &&
+                                t.hasMixin(GObject.GStylable) &&
+                                    t.getStylePropertySets().indexOf(GObject.GStylable.PropertySet.FillPaintLayers) >= 0 &&
                                     this._elements.push(t);
                             }.bind(this),
                             c = a.GElementEditor.getEditor(s);
-                        c && c.getStylableParts() ? r.GUtil.each(c.getStylableParts(), l) : l(null, s);
+                        c && c.getStylableParts() ? GObject.GUtil.each(c.getStylableParts(), l) : l(null, s);
                     }
                     if (this._elements.length)
                         return (
                             (this._document = e),
-                            this._document.getScene().addEventListener(r.GNode.AfterInsertEvent, this._afterInsert, this),
-                            this._document.getScene().addEventListener(r.GNode.BeforeRemoveEvent, this._beforeRemove, this),
+                            this._document.getScene().addEventListener(GObject.GNode.AfterInsertEvent, this._afterInsert, this),
+                            this._document.getScene().addEventListener(GObject.GNode.BeforeRemoveEvent, this._beforeRemove, this),
                             this._document
                                 .getScene()
-                                .addEventListener(r.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                                .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                             o || this._updateProperties(n),
-                            !0
+                            true
                         );
                 }
-                return !1;
+                return false;
             }),
             (v.prototype._styleEditorEventHandler = function (e) {
-                this._styleEdOn && e.type == a.GStyleEdManager.EditorEventType.PrepareModifiedEvent && (this._styleEditorChange = !0);
+                this._styleEdOn && e.type == a.GStyleEdManager.EditorEventType.PrepareModifiedEvent && (this._styleEditorChange = true);
             }),
             (v.prototype._updateProperties = function (e) {
                 if (this._elements && this._elements.length) {
                     var t = this._elements[0];
                     this._panel.find(".fill-block").remove();
                     var n = t.getPaintLayers().getFillLayers();
-                    (r.GUtil.each(
+                    (GObject.GUtil.each(
                         n,
                         function (t, n) {
                             n && this._insertPaintLayer(n, e);
@@ -308,14 +308,14 @@ module.exports = function (e, t, n) {
             }),
             (v.prototype._assignProperties = function (e, t, n) {
                 if (this._document) {
-                    this._ownChange = !0;
+                    this._ownChange = true;
                     var o = this._document.getEditor();
                     o.beginTransaction();
                     try {
                         for (var i = 0; i < this._elements.length; ++i) this._elements[i].setProperties(e, t);
                     } finally {
-                        (o.commitTransaction(n || r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "action.modify"))),
-                            (this._ownChange = !1));
+                        (o.commitTransaction(n || GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.modify"))),
+                            (this._ownChange = false));
                     }
                 } else console.warn("GFillPaintLayerProperties: empty _document property");
             }),
@@ -327,7 +327,7 @@ module.exports = function (e, t, n) {
             }),
             (v.prototype._insertPaintLayer = function (e, t) {
                 var n = this,
-                    o = !1,
+                    o = false,
                     c = null,
                     d = null,
                     u = null,
@@ -338,7 +338,7 @@ module.exports = function (e, t, n) {
                     b = function (t, n, o, i) {
                         if (o)
                             this._iterateEqualPaintLayer(e, function (e) {
-                                e.setProperties(t, n, !1, !1, !0);
+                                e.setProperties(t, n, false, false, true);
                             });
                         else {
                             if (!this._document) return;
@@ -347,7 +347,7 @@ module.exports = function (e, t, n) {
                                 var l = e.getParent().getIndexOfChild(e);
                                 s = $.extend({ fillLayerIndex: l }, i);
                             }
-                            this._ownChange = !0;
+                            this._ownChange = true;
                             var c = this._document.getEditor();
                             c.beginTransaction();
                             try {
@@ -357,19 +357,19 @@ module.exports = function (e, t, n) {
                                 });
                             } finally {
                                 (c.commitTransaction(
-                                    r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "action.change-properties")),
+                                    GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.change-properties")),
                                     s
                                 ),
-                                    (this._ownChange = !1));
+                                    (this._ownChange = false));
                             }
                         }
                     }.bind(this),
                     w = function (e) {
                         if (c) {
                             var t = $(e).data("paintLayer");
-                            if (t && (t !== c || i.GPlatform.modifiers.shiftKey)) return c.getParent() === t.getParent();
+                            if (t && (t !== c || GPlatform.GPlatform.modifiers.shiftKey)) return c.getParent() === t.getParent();
                         }
-                        return !1;
+                        return false;
                     },
                     C = $("<div/>").addClass("g-drop-indicator"),
                     x = function (e) {
@@ -378,13 +378,13 @@ module.exports = function (e, t, n) {
                                   .gBlendMode()
                                   .gRichTooltip(
                                       l.GRichTooltipConfig.from({
-                                          title: r.GLocale.get(new r.GLocaleKey("GAppearanceProperties", "text.blend-tooltip-title")),
-                                          description: r.GLocale.get(
-                                              new r.GLocaleKey("GAppearanceProperties", "text.blend-tooltip-description")
+                                          title: GObject.GLocale.get(new GObject.GLocaleKey("GAppearanceProperties", "text.blend-tooltip-title")),
+                                          description: GObject.GLocale.get(
+                                              new GObject.GLocaleKey("GAppearanceProperties", "text.blend-tooltip-description")
                                           ),
-                                          middle: !1,
-                                          forceShow: !0,
-                                          learnMore: s.LINKS.BLENDING_MODES_DOCUMENTATION_URL,
+                                          middle: false,
+                                          forceShow: true,
+                                          learnMore: designerConfig.LINKS.BLENDING_MODES_DOCUMENTATION_URL,
                                       })
                                   )
                                   .attr("data-property", "_bl")
@@ -398,11 +398,11 @@ module.exports = function (e, t, n) {
                                     .attr("type", "text")
                                     .on("change", function (e, t) {
                                         (gDesigner.stats("fill_change_opacity"),
-                                            b(["_vs", "_op"], [!0, (t || r.GLength.parseEquationValue($(this).gInputBox("value"))) / 100]),
+                                            b(["_vs", "_op"], [true, (t || GObject.GLength.parseEquationValue($(this).gInputBox("value"))) / 100]),
                                             $(e.target)
                                                 .parents(".touch")
                                                 .find(".transparency")
-                                                .gInputSlider("value", r.GLength.parseEquationValue($(this).gInputBox("value"))));
+                                                .gInputSlider("value", GObject.GLength.parseEquationValue($(this).gInputBox("value"))));
                                     })
                                     .gInputBox({
                                         minValue: 0,
@@ -414,7 +414,7 @@ module.exports = function (e, t, n) {
                                 ? $("<span></span>")
                                       .attr("data-property", "_vs")
                                       .addClass("fill-action fill-visibility gravit-icon-touch-show")
-                                      .attr("data-title", r.GLocale.get(new r.GLocaleKey("GCommonNames", "action.toggle-visibility")))
+                                      .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-visibility")))
                                       .on("click", function (e) {
                                           (gDesigner.stats("fill_hide_show"), e.stopPropagation());
                                           var t = $(this).hasClass("gravit-icon-touch-hide");
@@ -500,16 +500,16 @@ module.exports = function (e, t, n) {
                                                     (a.GEditor.tryRunTransaction(
                                                         o,
                                                         function () {
-                                                            if (i.GPlatform.modifiers.shiftKey) {
+                                                            if (GPlatform.GPlatform.modifiers.shiftKey) {
                                                                 var e = c.clone();
                                                                 o.insertChild(e, s < l ? t.getNext() : t);
                                                             } else s !== l && (o.removeChild(c), o.insertChild(c, s < l ? t.getNext() : t));
                                                         },
-                                                        i.GPlatform.modifiers.shiftKey
-                                                            ? r.GLocale.get(
-                                                                  new r.GLocaleKey("GFillPaintLayerProperties", "action.duplicate")
+                                                        GPlatform.GPlatform.modifiers.shiftKey
+                                                            ? GObject.GLocale.get(
+                                                                  new GObject.GLocaleKey("GFillPaintLayerProperties", "action.duplicate")
                                                               )
-                                                            : r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "action.move"))
+                                                            : GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.move"))
                                                     ),
                                                         n._updateProperties(),
                                                         n._setSelectedPaintLayer(c));
@@ -536,14 +536,14 @@ module.exports = function (e, t, n) {
                                 (a.GEditor.tryRunTransaction(
                                     s,
                                     function () {
-                                        if (i.GPlatform.modifiers.shiftKey) {
+                                        if (GPlatform.GPlatform.modifiers.shiftKey) {
                                             var e = c.clone();
                                             s.insertChild(e, l < p ? o.getNext() : o);
                                         } else l !== p && (s.removeChild(c), s.insertChild(c, l < p ? o.getNext() : o.getPrevious()));
                                     },
-                                    i.GPlatform.modifiers.shiftKey
-                                        ? r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "action.duplicate"))
-                                        : r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "action.move"))
+                                    GPlatform.GPlatform.modifiers.shiftKey
+                                        ? GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.duplicate"))
+                                        : GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.move"))
                                 ),
                                     n._updateProperties(),
                                     n._setSelectedPaintLayer(c));
@@ -557,11 +557,11 @@ module.exports = function (e, t, n) {
                                         (n._iterateEqualPaintLayer(c, function (t) {
                                             e.push(t);
                                         }),
-                                            r.GUtil.each(e, function (e, t) {
+                                            GObject.GUtil.each(e, function (e, t) {
                                                 t.getParent().removeChild(t);
                                             }));
                                     },
-                                    r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "action.remove"))
+                                    GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.remove"))
                                 ),
                                 d && d.css("display", "none"),
                                 (d = null),
@@ -586,42 +586,42 @@ module.exports = function (e, t, n) {
                                         .attr("data-property", "_pt")
                                         .gPatternChooser({
                                             types: [
-                                                r.GColor,
-                                                r.GLinearGradient,
-                                                r.GRadialGradient,
-                                                r.GAngularGradient,
-                                                r.GBackground,
-                                                r.GTexturePattern,
-                                                r.GNoisePattern,
+                                                GObject.GColor,
+                                                GObject.GLinearGradient,
+                                                GObject.GRadialGradient,
+                                                GObject.GAngularGradient,
+                                                GObject.GBackground,
+                                                GObject.GTexturePattern,
+                                                GObject.GNoisePattern,
                                             ],
-                                            hasMask: !0,
+                                            hasMask: true,
                                         })
                                         .on("chooseropen", function () {
                                             (n._document.getEditor().hideSelection(),
-                                                gDesigner.getWorkspace().getStyleEdManager().updateEditor(e, "_pt", !1),
+                                                gDesigner.getWorkspace().getStyleEdManager().updateEditor(e, "_pt", false),
                                                 n._setSelectedPaintLayer(e),
-                                                (n._styleEdOn = !0),
+                                                (n._styleEdOn = true),
                                                 (n._chooserElem = $(this)));
                                         })
                                         .on("chooserclose", function (e, t, o) {
                                             if (gDesigner.getWorkspace().getStyleEdManager().getOverlayLock(o)) t();
                                             else if (
-                                                ((n._styleEdOn = !1),
+                                                ((n._styleEdOn = false),
                                                 gDesigner.getWorkspace().getStyleEdManager().deactivateEditor(),
                                                 n._document && (n._document.getEditor().resetHideSelection(), n._document.hasCDR()))
                                             ) {
                                                 var i = gPatternChooser.getPattern();
-                                                !i || i instanceof r.GRGBColor || y.showCDRUnsupportedObjectWarning();
+                                                !i || i instanceof GObject.GRGBColor || GSystemDialog.showCDRUnsupportedObjectWarning();
                                             }
                                             n._chooserElem = null;
                                         })
                                         .on("patternchange", function (e, t, n, o, i, a) {
                                             var r = ["_vs"],
-                                                s = [!0];
+                                                s = [true];
                                             (void 0 !== t && (r.push("_pt"), s.push(t)),
                                                 "number" == typeof n && (r.push("_op"), s.push(n)));
                                             var l = null;
-                                            (i && ((l = { chooserOn: !0 }), null != a && (l.activeStopIdx = a)), b(r, s, o, l));
+                                            (i && ((l = { chooserOn: true }), null != a && (l.activeStopIdx = a)), b(r, s, o, l));
                                         }),
                                 },
                                 {
@@ -631,13 +631,13 @@ module.exports = function (e, t, n) {
                                         .gBlendMode()
                                         .gRichTooltip(
                                             l.GRichTooltipConfig.from({
-                                                title: r.GLocale.get(new r.GLocaleKey("GAppearanceProperties", "text.blend-tooltip-title")),
-                                                description: r.GLocale.get(
-                                                    new r.GLocaleKey("GAppearanceProperties", "text.blend-tooltip-description")
+                                                title: GObject.GLocale.get(new GObject.GLocaleKey("GAppearanceProperties", "text.blend-tooltip-title")),
+                                                description: GObject.GLocale.get(
+                                                    new GObject.GLocaleKey("GAppearanceProperties", "text.blend-tooltip-description")
                                                 ),
-                                                middle: !1,
-                                                forceShow: !0,
-                                                learnMore: s.LINKS.BLENDING_MODES_DOCUMENTATION_URL,
+                                                middle: false,
+                                                forceShow: true,
+                                                learnMore: designerConfig.LINKS.BLENDING_MODES_DOCUMENTATION_URL,
                                             })
                                         )
                                         .attr("data-property", "_bl")
@@ -653,7 +653,7 @@ module.exports = function (e, t, n) {
                                         .attr("type", "text")
                                         .on("change", function (e) {
                                             (gDesigner.stats("fill_change_opacity"),
-                                                b(["_vs", "_op"], [!0, r.GLength.parseEquationValue($(this).gInputBox("value")) / 100]));
+                                                b(["_vs", "_op"], [true, GObject.GLength.parseEquationValue($(this).gInputBox("value")) / 100]));
                                         })
                                         .gInputBox({
                                             minValue: 0,
@@ -667,7 +667,7 @@ module.exports = function (e, t, n) {
                                     content: $("<span></span>")
                                         .attr("data-property", "_vs")
                                         .addClass("fill-action fill-visibility gravit-icon-display normal")
-                                        .attr("data-title", r.GLocale.get(new r.GLocaleKey("GCommonNames", "action.toggle-visibility")))
+                                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-visibility")))
                                         .on("click", function (e) {
                                             (gDesigner.stats("fill_hide_show"), e.stopPropagation());
                                             var t = $(this).hasClass("gravit-icon-hide");
@@ -741,7 +741,7 @@ module.exports = function (e, t, n) {
             (v.prototype._removePaintLayer = function (e) {
                 this._panel.find(".fill-block").each(function (t, n) {
                     var o = $(n);
-                    if (o.data("paintLayer") === e) return (o.remove(), !1);
+                    if (o.data("paintLayer") === e) return (o.remove(), false);
                 });
             }),
             (v.prototype._updatePaintLayer = function (e, t) {
@@ -751,11 +751,11 @@ module.exports = function (e, t, n) {
                         if (i.data("paintLayer") === e) {
                             (i
                                 .find('[data-property="_pt"]')
-                                .gPatternChooser("setPattern", e.getProperty("_pt", !1, !1, !0))
-                                .gPatternChooser("value", e.getProperty("_pt", !1, !1, !0))
-                                .gPatternChooser("opacity", e.getProperty("_op", !1, !1, !0)),
+                                .gPatternChooser("setPattern", e.getProperty("_pt", false, false, true))
+                                .gPatternChooser("value", e.getProperty("_pt", false, false, true))
+                                .gPatternChooser("opacity", e.getProperty("_op", false, false, true)),
                                 i.find('[data-property="_op"]').each(function (t, n) {
-                                    $(n).gInputBox("value", r.GUtil.formatOpacity(100 * e.getProperty("_op", !1, !1, !0)));
+                                    $(n).gInputBox("value", GObject.GUtil.formatOpacity(100 * e.getProperty("_op", false, false, true)));
                                 }),
                                 i.find('[data-property="_bl"]').val(e.getProperty("_bl")));
                             var s = e.getProperty("_vs");
@@ -775,21 +775,21 @@ module.exports = function (e, t, n) {
                     });
             }),
             (v.prototype._afterInsert = function (e) {
-                e.node instanceof r.GStylable.FillPaintLayer &&
+                e.node instanceof GObject.GStylable.FillPaintLayer &&
                     e.node.getOwnerStylable() === this._elements[0] &&
                     (this._insertPaintLayer(e.node), this._updateToolbar());
             }),
             (v.prototype._beforeRemove = function (e) {
-                if (e.node instanceof r.GStylable.FillPaintLayer && e.node.getOwnerStylable() === this._elements[0]) {
+                if (e.node instanceof GObject.GStylable.FillPaintLayer && e.node.getOwnerStylable() === this._elements[0]) {
                     this._removePaintLayer(e.node);
-                    for (var t = e.node.getPrevious(); t && !(t instanceof r.GStylable.FillPaintLayer); ) t = t.getPrevious();
-                    if (!(t instanceof r.GStylable.FillPaintLayer))
-                        for (t = e.node.getNext(); t && !(t instanceof r.GStylable.FillPaintLayer); ) t = t.getNext();
+                    for (var t = e.node.getPrevious(); t && !(t instanceof GObject.GStylable.FillPaintLayer); ) t = t.getPrevious();
+                    if (!(t instanceof GObject.GStylable.FillPaintLayer))
+                        for (t = e.node.getNext(); t && !(t instanceof GObject.GStylable.FillPaintLayer); ) t = t.getNext();
                     (this._setSelectedPaintLayer(t), this._updateToolbar());
                 }
             }),
             (v.prototype._afterPropertiesChange = function (e) {
-                e.node instanceof r.GStylable.FillPaintLayer &&
+                e.node instanceof GObject.GStylable.FillPaintLayer &&
                     e.node.getOwnerStylable() === this._elements[0] &&
                     this._updatePaintLayer(e.node);
             }),
@@ -797,7 +797,7 @@ module.exports = function (e, t, n) {
                 if (e)
                     for (var n = e.getParent().getIndexOfChild(e), o = 0; o < this._elements.length; ++o) {
                         var i = this._elements[o].getPaintLayers();
-                        r.GUtil.each(
+                        GObject.GUtil.each(
                             i.getFillLayers(),
                             function (a, r) {
                                 ((r && r === e) || (r.constructor === e.constructor && i.getIndexOfChild(r) === n)) &&
@@ -806,5 +806,5 @@ module.exports = function (e, t, n) {
                         );
                     }
             }),
-            (e.exports = v));
+            (module.exports = v));
     };

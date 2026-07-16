@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(563);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(563);
 
             function o() {
                 r.apply(this, arguments);
             }
-            (n.inherit(o, r), (e.exports = o));
+            (IsFiniteNonNegativeNumber.inherit(o, r), (module.exports = o));
         };

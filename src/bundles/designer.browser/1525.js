@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(130),
-            i = n(62),
-            a = n(92),
+        var o = require(130),
+            i = require(62),
+            a = require(92),
             r = RangeError;
-        e.exports = function (e) {
+        module.exports = function (e) {
             var t = i(a(this)),
                 n = "",
                 s = o(e);

@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o = Math.ceil,
             i = Math.floor;
-        e.exports =
+        module.exports =
             Math.trunc ||
             function (e) {
                 var t = +e;

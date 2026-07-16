@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16),
-            i = n(15),
-            a = o(n(85));
+        var o = require(16),
+            GPlatform = require(15),
+            a = o(require(85));
         class r {
             static isSupported() {
                 return r.isRuntimeSupported() && r.isWebBrowserSupported() && r.isPWAEventSupported();
@@ -12,13 +12,13 @@ module.exports = function (e, t, n) {
             }
             static isWebBrowserSupported() {
                 return (
-                    i.GPlatform.webBrowser === i.GPlatform.constructor.WebBrowser.Chrome ||
-                    i.GPlatform.webBrowser === i.GPlatform.constructor.WebBrowser.Edge
+                    GPlatform.GPlatform.webBrowser === GPlatform.GPlatform.constructor.WebBrowser.Chrome ||
+                    GPlatform.GPlatform.webBrowser === GPlatform.GPlatform.constructor.WebBrowser.Edge
                 );
             }
             static isPWAEventSupported() {
                 return void 0 !== window.BeforeInstallPromptEvent;
             }
         }
-        e.exports = r;
+        module.exports = r;
     };

@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(49),
-            i = n(399),
-            a = n(400),
-            r = n(37),
-            s = n(294),
+        var o = require(49),
+            i = require(399),
+            a = require(400),
+            r = require(37),
+            s = require(294),
             l = TypeError,
             c = Object.defineProperty,
             d = Object.getOwnPropertyDescriptor;
-        t.f = o
+        exports.f = o
             ? a
                 ? function (e, t, n) {
                       if (
@@ -24,7 +24,7 @@ module.exports = function (e, t, n) {
                               (n = {
                                   configurable: "configurable" in n ? n.configurable : o.configurable,
                                   enumerable: "enumerable" in n ? n.enumerable : o.enumerable,
-                                  writable: !1,
+                                  writable: false,
                               }));
                       }
                       return c(e, t, n);

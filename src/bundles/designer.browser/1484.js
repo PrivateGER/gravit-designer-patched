@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        n(8);
-        var i = o(n(176)),
-            a = n(1),
-            r = o(n(1242)),
-            s = o(n(44)),
-            l = o(n(443)),
-            c = n(1243);
+        var o = require(16);
+        require(8 /* Symbol */);
+        var i = o(require(176)),
+            GObject = require(1),
+            r = o(require(1242 /* GMSTeamsAuthenticator */)),
+            s = o(require(44 /* GSystemDialog */)),
+            l = o(require(443)),
+            c = require(1243);
         const { isPrivateChat: d, isTeamsChannel: u } = l.default;
         function p(e) {
             if ("function" != typeof e) throw "GMSTeamsAppLoader constructor error: Wrong argument is provided";
@@ -19,7 +19,7 @@ module.exports = function (e, t, n) {
             (p.prototype.load = async function () {
                 if (this.isExeuteOnMobileDevice())
                     return void s.default.splashScreenError(
-                        a.GLocale.get(new a.GLocaleKey("GSystemDialog", "text.unsupported-mobile-for-msteams-new"))
+                        GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.unsupported-mobile-for-msteams-new"))
                     );
                 const e = [c.MS_TEAMS_COMMAND];
                 ((await d()) ? e.push(c.ONE_DRIVE_BUSINESS_COMMAND) : (await u()) && e.push(c.SHAREPOINT_COMMAND),
@@ -30,5 +30,5 @@ module.exports = function (e, t, n) {
                             this._callback();
                         }));
             }),
-            (e.exports = p));
+            (module.exports = p));
     };

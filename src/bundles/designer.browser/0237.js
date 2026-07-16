@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        n(8);
-        var i = n(1),
-            a = n(10),
-            r = o(n(1091)),
-            s = n(165),
-            l = n(219),
-            c = n(9),
-            d = n(47);
+        var o = require(16);
+        require(8 /* Symbol */);
+        var GObject = require(1),
+            designerConfig = require(10),
+            r = o(require(1091)),
+            PDFNodeStream = require(165),
+            l = require(219),
+            String = require(9),
+            d = require(47);
         function u() {}
         ((u.Directory = function (e) {
             this._storage = e;
@@ -29,11 +29,11 @@ module.exports = function (e, t, n) {
             (u.Item = function (e) {
                 this._storage = e;
             }),
-            i.GObject.inherit(u.Item, i.GObject),
+            GObject.GObject.inherit(u.Item, GObject.GObject),
             (u.Item.prototype._storage = null),
             (u.Item.prototype._fileFormatVersion = null),
             (u.Item.prototype.isRegistrable = function () {
-                return !1;
+                return false;
             }),
             (u.Item.prototype.release = function () {
                 this._data && (this._data = null);
@@ -94,22 +94,22 @@ module.exports = function (e, t, n) {
                 throw new Error("Not implemented");
             }),
             (u.Item.prototype.supportsShadowFile = function () {
-                return !1;
+                return false;
             }),
             (u.Item.prototype.isEditingEnabled = function () {
-                return !0;
+                return true;
             }),
             (u.Item.prototype.supportsSharing = function () {
-                return !1;
+                return false;
             }),
             (u.Item.prototype.hasVersionControl = function () {
-                return !1;
+                return false;
             }),
             (u.Item.prototype.supportsExternalSharing = function () {
-                return !1;
+                return false;
             }),
             (u.Item.prototype.supportsExternalSharingByLink = function () {
-                return !1;
+                return false;
             }),
             (u.Item.prototype.getPermissionsList = function () {}),
             (u.Item.prototype._fileSizeBeforeSaved = 0),
@@ -117,7 +117,7 @@ module.exports = function (e, t, n) {
             (u.Item.prototype.documentRealFileSize = 0),
             (u.Item.prototype._fileLastModifiedDate = null),
             (u.Item.prototype._fileAutoSaveLastModifiedDate = null),
-            (u.Item.prototype._isSaveCounterMeasureEnabled = !1),
+            (u.Item.prototype._isSaveCounterMeasureEnabled = false),
             (u.Item.prototype.getFileSizeBeforeSaved = function () {
                 return this._fileSizeBeforeSaved;
             }),
@@ -150,9 +150,9 @@ module.exports = function (e, t, n) {
             }),
             (u.Item.prototype._verifyFileNotTooSmall = function (e, t) {
                 try {
-                    (e < a.UN_BELIVEVABLE_FEW_BYTES_TO_SAVE &&
+                    (e < designerConfig.UN_BELIVEVABLE_FEW_BYTES_TO_SAVE &&
                         !this.isSaveCounterMeasureEnabled() &&
-                        new l(c.get(new d("GDocument", "text.saveing-error"))).open(),
+                        new l(String.get(new d("GDocument", "text.saveing-error"))).open(),
                         this.getDocumentRealSizeAfterSave(t));
                 } catch (e) {
                     console.error(e);
@@ -165,43 +165,43 @@ module.exports = function (e, t, n) {
                         this.getFileSizeBeforeSaved() / 2 > this.getFileSizeAfterSaved())() &&
                         this.getFileSizeAfterSaved() &&
                         this.getFileSizeAfterSaved() > 0 &&
-                        new l(c.get(new d("GDocument", "text.saveing-error"))).open();
+                        new l(String.get(new d("GDocument", "text.saveing-error"))).open();
                 } catch (e) {
                     console.error(e);
                 }
             }),
             (u.Item.prototype.notEnoughDiskSpace = function () {
-                new l(c.get(new d("GDocument", "text.save-no-space"))).open();
+                new l(String.get(new d("GDocument", "text.save-no-space"))).open();
             }),
             (u.Item.prototype.getDocumentRealSizeAfterSave = function (e) {
                 let t = null;
                 e = e || gDesigner.getActiveDocument();
                 try {
-                    t = i.GNode.serialize(e.getScene(), { save: !0, singleton: !1 });
+                    t = GObject.GNode.serialize(e.getScene(), { save: true, singleton: false });
                 } catch (e) {
                     return (console.error(e), (this.documentRealFileSize = 0), this.documentRealFileSize);
                 }
                 return null === t || "" === t
                     ? ((this.documentRealFileSize = 0), this.documentRealFileSize)
-                    : ((this.documentRealFileSize = s.gzip(t, { level: 9 }).length), this.documentRealFileSize);
+                    : ((this.documentRealFileSize = PDFNodeStream.gzip(t, { level: 9 }).length), this.documentRealFileSize);
             }),
             (u.Item.prototype.hasUpdates = async function () {
                 throw Error("Not implemented!");
             }),
             (u.prototype.canChooseDirectory = function () {
-                return !1;
+                return false;
             }),
             (u.prototype.canPromptOpen = function () {
-                return !1;
+                return false;
             }),
             (u.prototype.canPromptSave = function () {
-                return !1;
+                return false;
             }),
             (u.prototype.canSave = function () {
-                return !1;
+                return false;
             }),
             (u.prototype.canDownload = function () {
-                return !1;
+                return false;
             }),
             (u.prototype.chooseDirectory = function (e, t) {
                 throw new Error("Not implemented.");
@@ -219,7 +219,7 @@ module.exports = function (e, t, n) {
                 gDesigner.setSetting("lastDirectory", e);
             }),
             (u.prototype.getLastDirectory = function () {
-                var e = i.GSystem.operatingSystem === i.GSystem.OperatingSystem.Windows ? "\\" : "/";
+                var e = GObject.GSystem.operatingSystem === GObject.GSystem.OperatingSystem.Windows ? "\\" : "/";
                 if (gDesigner.getSetting("lastDirectory")) return gDesigner.getSetting("lastDirectory");
                 if (gDesigner.getActiveDocument() && gDesigner.getActiveDocument().getStorageItem()) {
                     let t = gDesigner.getActiveDocument().getStorageItem().getUniqueId();
@@ -242,7 +242,7 @@ module.exports = function (e, t, n) {
                 return null;
             }),
             (u.prototype.getWritePermission = async function (e) {
-                return new r.default(!0);
+                return new r.default(true);
             }),
-            (e.exports = u));
+            (module.exports = u));
     };

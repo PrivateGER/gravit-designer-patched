@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
-            var n = i(230),
-                r = i(919),
-                o = i(0),
-                a = i(267);
+module.exports = function (module, exports, require) {
+            var n = require(230),
+                r = require(919),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(267);
 
             function s(e, t, i, n, o, a, s, l, h, A, c) {
                 var p = s[0].align();
@@ -71,7 +71,7 @@ module.exports = function (e, t, i) {
                         value: l - this.ordinal,
                     }));
             }
-            (o.inherit(s, a),
+            (IsFiniteNonNegativeNumber.inherit(s, a),
                 (s.prototype.bounds = function (e, t) {
                     if (e) return a.prototype.bounds.call(this, e);
                     if (t) {
@@ -109,7 +109,7 @@ module.exports = function (e, t, i) {
                         var e = this.positionedWords[0];
                         return !!e && !!e.word && !!e.word.eof;
                     }
-                    return !1;
+                    return false;
                 }),
                 (s.prototype.type = "line"),
                 (s.prototype.doc = null),
@@ -127,5 +127,5 @@ module.exports = function (e, t, i) {
                 (s.prototype.lineSpacing = 1),
                 (s.prototype.paragraphSpacing = "0"),
                 (s.prototype.paragraphIndent = 0),
-                (e.exports = s));
+                (module.exports = s));
         };

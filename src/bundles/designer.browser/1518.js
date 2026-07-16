@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o, i, a;
-        ((i = [n(171), n(1519), n(1520), n(1257), n(1259), n(605), n(1258)]),
+        ((i = [require(171), require(1519), require(1520), require(1257), require(1259), require(605), require(1258)]),
             void 0 ===
                 (a =
                     "function" ==
@@ -8,25 +8,25 @@ module.exports = function (e, t, n) {
                         return e.widget("ui.sortable", e.ui.mouse, {
                             version: "1.12.1",
                             widgetEventPrefix: "sort",
-                            ready: !1,
+                            ready: false,
                             options: {
                                 appendTo: "parent",
-                                axis: !1,
-                                connectWith: !1,
-                                containment: !1,
+                                axis: false,
+                                connectWith: false,
+                                containment: false,
                                 cursor: "auto",
-                                cursorAt: !1,
-                                dropOnEmpty: !0,
-                                forcePlaceholderSize: !1,
-                                forceHelperSize: !1,
-                                grid: !1,
-                                handle: !1,
+                                cursorAt: false,
+                                dropOnEmpty: true,
+                                forcePlaceholderSize: false,
+                                forceHelperSize: false,
+                                grid: false,
+                                handle: false,
                                 helper: "original",
                                 items: "> *",
-                                opacity: !1,
-                                placeholder: !1,
-                                revert: !1,
-                                scroll: !0,
+                                opacity: false,
+                                placeholder: false,
+                                revert: false,
+                                scroll: true,
                                 scrollSensitivity: 20,
                                 scrollSpeed: 20,
                                 scope: "default",
@@ -58,7 +58,7 @@ module.exports = function (e, t, n) {
                                     (this.offset = this.element.offset()),
                                     this._mouseInit(),
                                     this._setHandleClassName(),
-                                    (this.ready = !0));
+                                    (this.ready = true));
                             },
                             _setOption: function (e, t) {
                                 (this._super(e, t), "handle" === e && this._setHandleClassName());
@@ -80,7 +80,7 @@ module.exports = function (e, t, n) {
                             },
                             _mouseCapture: function (t, n) {
                                 var o = null,
-                                    i = !1,
+                                    i = false,
                                     a = this;
                                 return !(
                                     this.reverting ||
@@ -90,7 +90,7 @@ module.exports = function (e, t, n) {
                                     e(t.target)
                                         .parents()
                                         .each(function () {
-                                            if (e.data(this, a.widgetName + "-item") === a) return ((o = e(this)), !1);
+                                            if (e.data(this, a.widgetName + "-item") === a) return ((o = e(this)), false);
                                         }),
                                     e.data(t.target, a.widgetName + "-item") === a && (o = e(t.target)),
                                     !o ||
@@ -100,7 +100,7 @@ module.exports = function (e, t, n) {
                                                 .find("*")
                                                 .addBack()
                                                 .each(function () {
-                                                    this === t.target && (i = !0);
+                                                    this === t.target && (i = true);
                                                 }),
                                             !i)) ||
                                         ((this.currentItem = o), this._removeCurrentsFromItems(), 0))
@@ -169,10 +169,10 @@ module.exports = function (e, t, n) {
                                 return (
                                     e.ui.ddmanager && (e.ui.ddmanager.current = this),
                                     e.ui.ddmanager && !r.dropBehaviour && e.ui.ddmanager.prepareOffsets(this, t),
-                                    (this.dragging = !0),
+                                    (this.dragging = true),
                                     this._addClass(this.helper, "ui-sortable-helper"),
                                     this._mouseDrag(t),
-                                    !0
+                                    true
                                 );
                             },
                             _mouseDrag: function (t) {
@@ -181,7 +181,7 @@ module.exports = function (e, t, n) {
                                     i,
                                     a,
                                     r = this.options,
-                                    s = !1;
+                                    s = false;
                                 for (
                                     this.position = this._generatePosition(t),
                                         this.positionAbs = this._convertPositionTo("absolute"),
@@ -212,7 +212,7 @@ module.exports = function (e, t, n) {
                                                       : this.window.width() - (t.pageX - this.document.scrollLeft()) <
                                                             r.scrollSensitivity &&
                                                         (s = this.document.scrollLeft(this.document.scrollLeft() + r.scrollSpeed))),
-                                            !1 !== s && e.ui.ddmanager && !r.dropBehaviour && e.ui.ddmanager.prepareOffsets(this, t)),
+                                            false !== s && e.ui.ddmanager && !r.dropBehaviour && e.ui.ddmanager.prepareOffsets(this, t)),
                                         this.positionAbs = this._convertPositionTo("absolute"),
                                         (this.options.axis && "y" === this.options.axis) ||
                                             (this.helper[0].style.left = this.position.left + "px"),
@@ -246,7 +246,7 @@ module.exports = function (e, t, n) {
                                     e.ui.ddmanager && e.ui.ddmanager.drag(this, t),
                                     this._trigger("sort", t, this._uiHash()),
                                     (this.lastPositionAbs = this.positionAbs),
-                                    !1
+                                    false
                                 );
                             },
                             _mouseStop: function (t, n) {
@@ -270,12 +270,12 @@ module.exports = function (e, t, n) {
                                                     this.offset.parent.top -
                                                     this.margins.top +
                                                     (this.offsetParent[0] === this.document[0].body ? 0 : this.offsetParent[0].scrollTop)),
-                                            (this.reverting = !0),
+                                            (this.reverting = true),
                                             e(this.helper).animate(r, parseInt(this.options.revert, 10) || 500, function () {
                                                 o._clear(t);
                                             }));
                                     } else this._clear(t, n);
-                                    return !1;
+                                    return false;
                                 }
                             },
                             cancel: function () {
@@ -300,8 +300,8 @@ module.exports = function (e, t, n) {
                                             this.helper.remove(),
                                         e.extend(this, {
                                             helper: null,
-                                            dragging: !1,
-                                            reverting: !1,
+                                            dragging: false,
+                                            reverting: false,
                                             _noFinalSort: null,
                                         }),
                                         this.domPosition.prev
@@ -445,8 +445,8 @@ module.exports = function (e, t, n) {
                             _removeCurrentsFromItems: function () {
                                 var t = this.currentItem.find(":data(" + this.widgetName + "-item)");
                                 this.items = e.grep(this.items, function (e) {
-                                    for (var n = 0; n < t.length; n++) if (t[n] === e.item[0]) return !1;
-                                    return !0;
+                                    for (var n = 0; n < t.length; n++) if (t[n] === e.item[0]) return false;
+                                    return true;
                                 });
                             },
                             _refreshItems: function (t) {
@@ -621,8 +621,8 @@ module.exports = function (e, t, n) {
                                             e.contains(this.containers[g].element[0], this.items[o].item[0]) &&
                                                 this.items[o].item[0] !== this.currentItem[0] &&
                                                 ((l = this.items[o].item.offset()[r]),
-                                                (c = !1),
-                                                t[u] - l > this.items[o][s] / 2 && (c = !0),
+                                                (c = false),
+                                                t[u] - l > this.items[o][s] / 2 && (c = true),
                                                 Math.abs(t[u] - l) < i &&
                                                     ((i = Math.abs(t[u] - l)), (a = this.items[o]), (this.direction = c ? "up" : "down")));
                                         if (!a && !this.options.dropOnEmpty) return;
@@ -632,7 +632,7 @@ module.exports = function (e, t, n) {
                                                 (this.containers[g]._trigger("over", t, this._uiHash()),
                                                 (this.currentContainer.containerCache.over = 1))
                                             );
-                                        (a ? this._rearrange(t, a, null, !0) : this._rearrange(t, null, this.containers[g].element, !0),
+                                        (a ? this._rearrange(t, a, null, true) : this._rearrange(t, null, this.containers[g].element, true),
                                             this._trigger("change", t, this._uiHash()),
                                             this.containers[g]._trigger("change", t, this._uiHash(this)),
                                             (this.currentContainer = this.containers[g]),
@@ -858,7 +858,7 @@ module.exports = function (e, t, n) {
                                 });
                             },
                             _clear: function (e, t) {
-                                this.reverting = !1;
+                                this.reverting = false;
                                 var n,
                                     o = [];
                                 if (
@@ -920,7 +920,7 @@ module.exports = function (e, t, n) {
                                     this._storedOpacity && this.helper.css("opacity", this._storedOpacity),
                                     this._storedZIndex &&
                                         this.helper.css("zIndex", "auto" === this._storedZIndex ? "" : this._storedZIndex),
-                                    (this.dragging = !1),
+                                    (this.dragging = false),
                                     t || this._trigger("beforeStop", e, this._uiHash()),
                                     this.placeholder[0].parentNode.removeChild(this.placeholder[0]),
                                     this.cancelHelperRemoval ||
@@ -930,10 +930,10 @@ module.exports = function (e, t, n) {
                                     for (n = 0; n < o.length; n++) o[n].call(this, e);
                                     this._trigger("stop", e, this._uiHash());
                                 }
-                                return ((this.fromOutside = !1), !this.cancelHelperRemoval);
+                                return ((this.fromOutside = false), !this.cancelHelperRemoval);
                             },
                             _trigger: function () {
-                                !1 === e.Widget.prototype._trigger.apply(this, arguments) && this.cancel();
+                                false === e.Widget.prototype._trigger.apply(this, arguments) && this.cancel();
                             },
                             _uiHash: function (t) {
                                 var n = t || this;
@@ -949,6 +949,6 @@ module.exports = function (e, t, n) {
                             },
                         });
                     })
-                        ? o.apply(t, i)
-                        : o) || (e.exports = a));
+                        ? o.apply(exports, i)
+                        : o) || (module.exports = a));
     };

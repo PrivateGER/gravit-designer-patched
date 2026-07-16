@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o, i, a;
-        e.exports =
-            ((a = n(55)),
-            n(98),
+        module.exports =
+            ((a = require(55)),
+            require(98),
             (a.mode.CTR =
                 ((o = a.lib.BlockCipherMode.extend()),
                 (i = o.Encryptor =

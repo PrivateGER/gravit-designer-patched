@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(1232),
-                r = i(0),
-                o = i(197);
+module.exports = function (module, exports, require) {
+            var n = require(1232),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(197);
 
             function a(e) {
                 (o.call(this), (this.name = e), (this._encoding = n.WINANSI));
             }
-            (r.inherit(a, o),
+            (IsFiniteNonNegativeNumber.inherit(a, o),
                 (a.prototype._encoding = null),
                 (a.prototype.encode = function (e, t) {
                     return this._encoding.encode(e, t);
@@ -20,5 +20,5 @@ module.exports = function (e, t, i) {
                 (a.prototype.toString = function () {
                     return "[GPDFFont]";
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(1423),
-                r = i(293),
-                o = i(338),
-                a = i(359),
-                s = i(1442),
-                l = i(1443),
-                h = i(640),
-                A = i(11),
-                c = i(7),
-                p = i(791),
+module.exports = function (module, exports, require) {
+            var n = require(1423),
+                r = require(293),
+                o = require(338),
+                a = require(359),
+                s = require(1442),
+                l = require(1443),
+                h = require(640),
+                A = require(11),
+                c = require(7),
+                p = require(791),
                 u = function (e) {
                     ((this.compress = e.compress),
                         e.jpegQuality && (this._jpegQuality = e.jpegQuality),
@@ -21,7 +21,7 @@ module.exports = function (e, t, i) {
                         (this._workers = e.workers),
                         (this._stackGraphics = []),
                         (this._jobs = []),
-                        (this._tasksAreSubmitted = !1),
+                        (this._tasksAreSubmitted = false),
                         (this._promiseCapability = {}),
                         (this._promise = new p(
                             function (e, t) {
@@ -34,13 +34,13 @@ module.exports = function (e, t, i) {
                 (u.prototype._lastJob = null),
                 (u.prototype._promise = null),
                 (u.prototype._promiseCapability = null),
-                (u.prototype._tasksAreSubmitted = !1),
+                (u.prototype._tasksAreSubmitted = false),
                 (u.prototype._abort = null),
                 (u.prototype._writer = null),
                 (u.prototype._executors = null),
                 (u.prototype._promises = null),
                 (u.prototype._jpegQuality = 85),
-                (u.prototype._downsampleImages = !1),
+                (u.prototype._downsampleImages = false),
                 (u.prototype._resetPromise = function () {
                     ((this._promiseCapability = {}),
                         (this._promise = new p(
@@ -76,7 +76,7 @@ module.exports = function (e, t, i) {
                     return this._abort;
                 }),
                 (u.prototype.abort = function (e) {
-                    ((this._abort = !0),
+                    ((this._abort = true),
                         this._promiseCapability.reject(e),
                         this._writer && this._writer.abort(),
                         this._executors &&
@@ -103,7 +103,7 @@ module.exports = function (e, t, i) {
                         i = function (e) {
                             t._promises &&
                                 t._promises.some(function (i, n) {
-                                    if (i === e && t._promises) return (t._promises.splice(n, 1), !0);
+                                    if (i === e && t._promises) return (t._promises.splice(n, 1), true);
                                 });
                         },
                         n = new p(function (i, n) {
@@ -120,13 +120,13 @@ module.exports = function (e, t, i) {
                         n = new h(e, t, function () {
                             i._executors &&
                                 i._executors.some(function (e, t) {
-                                    if (e === n && i._executors) return (i._executors.splice(t, 1), !0);
+                                    if (e === n && i._executors) return (i._executors.splice(t, 1), true);
                                 });
                         });
                     return (this._executors.push(n), n);
                 }),
                 (u.prototype.ready = function () {
-                    return ((this._tasksAreSubmitted = !0), this._jobs.length || this._promiseCapability.resolve(), this._promise);
+                    return ((this._tasksAreSubmitted = true), this._jobs.length || this._promiseCapability.resolve(), this._promise);
                 }),
                 (u.prototype.getWorkers = function () {
                     return this._workers;
@@ -233,7 +233,7 @@ module.exports = function (e, t, i) {
                     this._updateStatus(u.Job.Status.COMPLETED) && this._doc.endJob(this);
                 }),
                 (u.Job.prototype._updateStatus = function (e) {
-                    if (this._status !== e && e > this._status) return ((this._status = e), !0);
+                    if (this._status !== e && e > this._status) return ((this._status = e), true);
                 }),
                 (u.Job.prototype.getStatus = function () {
                     return this._status;
@@ -244,5 +244,5 @@ module.exports = function (e, t, i) {
                         status: this._status,
                     });
                 }),
-                (e.exports = u));
+                (module.exports = u));
         };

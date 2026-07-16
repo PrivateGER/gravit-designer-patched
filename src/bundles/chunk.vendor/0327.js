@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(6),
-                r = (i(7), i(112)),
-                o = i(0);
+module.exports = function (module, exports, require) {
+            var n = require(6),
+                r = (require(7), require(112)),
+                IsFiniteNonNegativeNumber = require(0);
 
             function a() {}
-            (o.inherit(a, o),
+            (IsFiniteNonNegativeNumber.inherit(a, IsFiniteNonNegativeNumber),
                 (a.prototype._actions = null),
                 (a.prototype.addAction = function (e) {
                     (this._actions || (this._actions = []), this._actions.push(e));
@@ -48,5 +48,5 @@ module.exports = function (e, t, i) {
                     }
                     return null;
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

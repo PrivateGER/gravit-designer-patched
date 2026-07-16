@@ -1,67 +1,67 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(76),
-                o = i(11),
-                a = i(6),
-                s = i(77),
-                l = i(5),
-                h = i(104),
-                A = i(83),
-                c = i(167),
-                p = i(159),
-                u = i(39),
-                d = i(216),
-                g = i(64),
-                f = i(150),
-                m = i(0),
-                y = (i(17), i(72)),
-                _ = i(52),
-                v = i(289),
-                b = i(545),
-                C = i(24),
-                w = i(60),
-                E = i(113),
-                B = i(162),
-                x = i(385),
-                P = i(276),
-                S = i(164),
-                T = i(75),
-                I = i(546),
-                F = i(56),
-                R = i(211),
-                D = i(54),
-                k = i(22),
-                G = i(122),
-                Q = i(82),
-                M = i(99),
-                N = i(127),
-                U = i(235),
-                V = i(233),
-                O = i(36),
-                L = i(154),
-                Y = i(275),
-                X = i(210),
-                H = i(66),
-                W = i(329),
-                Z = i(48),
-                z = i(59),
-                j = i(187),
-                J = i(95),
-                q = i(70),
-                K = i(45),
-                $ = (i(73), i(87)),
-                ee = i(7),
-                te = i(534),
-                ie = i(331),
-                ne = i(141),
-                re = i(63),
-                oe = i(12),
-                ae = (i(132), i(128), i(9)),
-                se = i(47),
-                le = i(140),
-                he = i(69),
-                Ae = i(84),
-                ce = i(333);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(76),
+                o = require(11),
+                a = require(6),
+                s = require(77),
+                l = require(5),
+                h = require(104),
+                A = require(83),
+                c = require(167),
+                p = require(159),
+                u = require(39),
+                d = require(216),
+                g = require(64),
+                f = require(150),
+                IsFiniteNonNegativeNumber = require(0),
+                y = (require(17), require(72)),
+                _ = require(52),
+                v = require(289),
+                b = require(545),
+                C = require(24),
+                w = require(60),
+                E = require(113),
+                B = require(162),
+                x = require(385),
+                P = require(276),
+                S = require(164),
+                T = require(75),
+                I = require(546),
+                F = require(56),
+                R = require(211),
+                D = require(54),
+                k = require(22),
+                G = require(122),
+                GEditor = require(82),
+                M = require(99),
+                N = require(127),
+                U = require(235),
+                V = require(233),
+                O = require(36),
+                L = require(154),
+                Y = require(275),
+                X = require(210),
+                H = require(66),
+                W = require(329),
+                Z = require(48),
+                z = require(59),
+                j = require(187),
+                J = require(95),
+                q = require(70),
+                K = require(45),
+                $ = (require(73), require(87)),
+                ee = require(7),
+                te = require(534),
+                MOVE_MASTER = require(331),
+                ne = require(141),
+                re = require(63),
+                oe = require(12),
+                ae = (require(132), require(128), require(9 /* String */)),
+                se = require(47),
+                le = require(140),
+                he = require(69),
+                Ae = require(84),
+                ce = require(333);
 
             function pe(e) {
                 (R.call(this),
@@ -70,7 +70,7 @@ module.exports = function (e, t, i) {
                     (this._selectAcceptorFunc = this._selectAcceptor.bind(this)),
                     (this._areaSelector = e || new pe._AreaSelector()));
             }
-            (m.inheritAndMix(pe, R, [T, ce]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(pe, R, [T, ce]),
                 (pe.EditMode = {
                     Select: 0,
                     Transform: 1,
@@ -101,7 +101,7 @@ module.exports = function (e, t, i) {
                 (pe.Event = function (e, t) {
                     ((this.type = e), (this.args = t));
                 }),
-                m.inherit(pe.Event, y),
+                IsFiniteNonNegativeNumber.inherit(pe.Event, y),
                 (pe.Event.Type = {
                     EditModeChanged: 0,
                 }),
@@ -171,7 +171,7 @@ module.exports = function (e, t, i) {
                     var t = null;
                     if (this._pixelTransformer || this._areaLastPos) {
                         var i = new ne(this._pixelTransformer ? this._pixelTransformer : this._vertexContainer);
-                        t = z.calculateBounds(i, !1);
+                        t = z.calculateBounds(i, false);
                     }
                     return (e || (t = t ? t.expanded(C.outlineWidth, C.outlineWidth, C.outlineWidth, C.outlineWidth) : null), t);
                 }),
@@ -184,7 +184,7 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (pe._AreaSelector.prototype.paint = function (e) {
-                    var t = this.getAreaPaintRect(!0);
+                    var t = this.getAreaPaintRect(true);
                     if (t && (t.getWidth() || t.getHeight())) {
                         var i = t.getHeight();
                         i = i > 0 ? Math.ceil(i) - 1 : 0;
@@ -207,39 +207,39 @@ module.exports = function (e, t, i) {
                 (pe.prototype._handlingDragEnd = null),
                 (pe.prototype._selectAcceptorFunc = null),
                 (pe.prototype._areaSelector = null),
-                (pe.prototype._releaseOnlySelection = !1),
+                (pe.prototype._releaseOnlySelection = false),
                 (pe.prototype._mode = null),
                 (pe.prototype._clickedElement = null),
-                (pe.prototype._clickGoDown = !0),
-                (pe.prototype._selectionDone = !1),
+                (pe.prototype._clickGoDown = true),
+                (pe.prototype._selectionDone = false),
                 (pe.prototype._elementUnderMouse = null),
                 (pe.prototype._editorUnderMouseInfo = null),
                 (pe.prototype._editorMovePartInfo = null),
                 (pe.prototype._guideLineUnderMouse = null),
-                (pe.prototype._shiftConstraining = !1),
+                (pe.prototype._shiftConstraining = false),
                 (pe.prototype._keyDelta = null),
                 (pe.prototype._moveStart = null),
                 (pe.prototype._moveStartTransformed = null),
                 (pe.prototype._moveCurrent = null),
-                (pe.prototype._dragHandling = !1),
+                (pe.prototype._dragHandling = false),
                 (pe.prototype._visuals = null),
                 (pe.prototype._visualsArea = null),
                 (pe.prototype._editMode = pe.EditMode.Select),
                 (pe.prototype._itemsToAddToImageMask = null),
                 (pe.prototype._itemsToAddToPage = null),
                 (pe.prototype._pageCandidates = null),
-                (pe.prototype._allowDistanceHelper = !1),
-                (pe.prototype._elementMeasurementsToggle = !1),
+                (pe.prototype._allowDistanceHelper = false),
+                (pe.prototype._elementMeasurementsToggle = false),
                 (pe.prototype._mDownTime1 = null),
                 (pe.prototype._mDownTime2 = null),
                 (pe.prototype._lastMouseEvent = null),
                 (pe.prototype._clickToDragTimeout = null),
                 (pe.prototype._styleEdManager = null),
-                (pe.prototype._isBackgroundSelectEnabled = !0),
+                (pe.prototype._isBackgroundSelectEnabled = true),
                 (pe.prototype._selectIgnoreBackgroundElements = null),
-                (pe.prototype._backgroundSelectShouldBeEnabled = !1),
+                (pe.prototype._backgroundSelectShouldBeEnabled = false),
                 (pe.prototype.supportsElementClick = function () {
-                    return !0;
+                    return true;
                 }),
                 (pe.prototype.clearClickedElement = function () {
                     this._clickedElement = null;
@@ -255,9 +255,9 @@ module.exports = function (e, t, i) {
                         var t = this._editMode;
                         switch (this._editMode) {
                             case pe.EditMode.Edit:
-                                (this._editor.setSelectionDetail(!1),
+                                (this._editor.setSelectionDetail(false),
                                     this._editor.setPathResize(this._hasPathResize()),
-                                    this._editor.setSelectionEdit(!1));
+                                    this._editor.setSelectionEdit(false));
                                 break;
                             case pe.EditMode.Transform:
                                 (this._closeTransformBox(),
@@ -267,14 +267,14 @@ module.exports = function (e, t, i) {
                                     void 0 !== C.scaleCorners
                                         ? this._scene.setCornersScale(C.scaleCorners)
                                         : this._scene.setCornersScale(null),
-                                    this._editor.setFullContentTransform(!1));
+                                    this._editor.setFullContentTransform(false));
                         }
                         switch (((this._editMode = e), this._editMode)) {
                             case pe.EditMode.Edit:
-                                (this._editor.setSelectionDetail(!0), this._editor.setPathResize(!1), this._editor.setSelectionEdit(!0));
+                                (this._editor.setSelectionDetail(true), this._editor.setPathResize(false), this._editor.setSelectionEdit(true));
                                 break;
                             case pe.EditMode.Transform:
-                                (this._openTransformBox(), this._editor.setFullContentTransform(!0));
+                                (this._openTransformBox(), this._editor.setFullContentTransform(true));
                         }
                         this.hasEventListeners(pe.Event) &&
                             this.trigger(
@@ -319,11 +319,11 @@ module.exports = function (e, t, i) {
                             e.addEventListener(c.Down, this._keyDown, this),
                             e.addEventListener(c.Release, this._keyRelease, this),
                             g.addEventListener(f, this._modifiersChanged, this),
-                            this._editor.addEventListener(Q.SelectionChangedEvent, this._selectionChanged, this)),
-                        this._editor.setPathResize(this._hasPathResize(), !0),
-                        (this._shiftConstraining = !1),
-                        this._view.setRightDrag(!0),
-                        (this._releaseOnlySelection = !1),
+                            this._editor.addEventListener(GEditor.SelectionChangedEvent, this._selectionChanged, this)),
+                        this._editor.setPathResize(this._hasPathResize(), true),
+                        (this._shiftConstraining = false),
+                        this._view.setRightDrag(true),
+                        (this._releaseOnlySelection = false),
                         (this._lastMouseEvent = null));
                 }),
                 (pe.prototype.deactivate = function (e, t) {
@@ -334,8 +334,8 @@ module.exports = function (e, t, i) {
                             this._editor &&
                             this._editor.getDistanceHelper().isActivated() &&
                             this._editor.getDistanceHelper().deactivateMeasurement(),
-                        !t && this._editor && this._editor.setPathResize(!0),
-                        this._editor && this._editor.removeEventListener(Q.SelectionChangedEvent, this._selectionChanged, this),
+                        !t && this._editor && this._editor.setPathResize(true),
+                        this._editor && this._editor.removeEventListener(GEditor.SelectionChangedEvent, this._selectionChanged, this),
                         this.updateInlineHint(null),
                         e.removeEventListener(s.DragStart, this._mouseDragStart),
                         e.removeEventListener(s.Drag, this._mouseDrag),
@@ -347,7 +347,7 @@ module.exports = function (e, t, i) {
                         e.removeEventListener(c.Down, this._keyDown),
                         e.removeEventListener(c.Release, this._keyRelease),
                         g.removeEventListener(f, this._modifiersChanged),
-                        this._view && this._view.setRightDrag(!1),
+                        this._view && this._view.setRightDrag(false),
                         R.prototype.deactivate.call(this, e, t));
                 }),
                 (pe.prototype.isDeactivatable = function () {
@@ -383,11 +383,11 @@ module.exports = function (e, t, i) {
                 (pe.prototype._selectionChanged = function () {
                     if (this._mode == pe._Mode.Transforming) {
                         var e = this._editor.getIndividualSelection();
-                        e && e.length ? this.setEditMode(pe.EditMode.Transform, !0) : this.setEditMode(pe.EditMode.Select);
+                        e && e.length ? this.setEditMode(pe.EditMode.Transform, true) : this.setEditMode(pe.EditMode.Select);
                     }
                 }),
                 (pe.prototype._hasPathResize = function () {
-                    return !0;
+                    return true;
                 }),
                 (pe.prototype._mouseMove = function (e) {
                     if (
@@ -403,7 +403,7 @@ module.exports = function (e, t, i) {
                             this._editor.updateByMousePosition(
                                 e.client,
                                 this._view.getWorldTransform(this._scene),
-                                !0,
+                                true,
                                 this._view.getViewConfiguration()
                             ),
                             this._updateEditorUnderMouse(e.client));
@@ -426,7 +426,7 @@ module.exports = function (e, t, i) {
                             i.expanded(r, r, r, r).containsPoint(e.client) || this._editor.closeInlineEditor();
                         }
                     } else {
-                        ((this._clickedElement = null), (this._selectionDone = !1));
+                        ((this._clickedElement = null), (this._selectionDone = false));
                         var a = g.modifiers.metaKey && null == this._manager.getTemporaryActiveTool(),
                             l = g.modifiers.shiftKey && !this._shiftConstraining,
                             h = O.getEditor(this._scene);
@@ -443,7 +443,7 @@ module.exports = function (e, t, i) {
                                     this._editorMovePartInfo.id !== I.INSIDE &&
                                     this._editorMovePartInfo.id !== I.FAR_OUTSIDE)
                                     ? this._editorMovePartInfo.id === I.FAR_OUTSIDE && this.setEditMode(pe.EditMode.Select)
-                                    : (this._updateMode(pe._Mode.MoveGuideLine), (this._selectionDone = !0)));
+                                    : (this._updateMode(pe._Mode.MoveGuideLine), (this._selectionDone = true)));
                         else if ((this._updateMode(pe._Mode.Select), !a)) {
                             var c = O.getEditor(this._scene);
                             if (c) {
@@ -456,10 +456,10 @@ module.exports = function (e, t, i) {
                                         this._view.getWorldTransform(p),
                                         function (e) {
                                             if (e.allowPartSelection()) {
-                                                if (!e.isRelativeToPage()) return !0;
-                                                if (Q.getEditorPage(e) === p) return !0;
+                                                if (!e.isRelativeToPage()) return true;
+                                                if (GEditor.getEditorPage(e) === p) return true;
                                             }
-                                            return !1;
+                                            return false;
                                         }.bind(this),
                                         C.pickDistance,
                                         this._view.getViewConfiguration().multiPageView
@@ -492,11 +492,11 @@ module.exports = function (e, t, i) {
                                                         d.data &&
                                                         d.data.rightButton &&
                                                         d.data.rightButton.selectable))),
-                                                !this._editor.hasEventListeners(Q.SelectionChangedEvent) ||
+                                                !this._editor.hasEventListeners(GEditor.SelectionChangedEvent) ||
                                                     (d.data && d.data.noEditorSelectionChangedEvent) ||
-                                                    this._editor.trigger(Q.SELECTION_CHANGED_EVENT));
+                                                    this._editor.trigger(GEditor.SELECTION_CHANGED_EVENT));
                                         }
-                                        this._selectionDone = !0;
+                                        this._selectionDone = true;
                                     }
                                     ((y && !f.isPartSelected(m) && m !== L.LabelHolder.LABEL_PART_ID) || (this._editorMovePartInfo = d),
                                         this._updateMode(pe._Mode.Move),
@@ -504,7 +504,7 @@ module.exports = function (e, t, i) {
                                             this._editor.updateByMousePosition(
                                                 e.client,
                                                 this._view.getWorldTransform(this._scene),
-                                                !1,
+                                                false,
                                                 this._view.getViewConfiguration()
                                             ));
                                 }
@@ -514,13 +514,13 @@ module.exports = function (e, t, i) {
                             (this._editor.updateByMousePosition(
                                 e.client,
                                 this._view.getWorldTransform(this._scene),
-                                !1,
+                                false,
                                 this._view.getViewConfiguration()
                             ),
-                            this._guideLineUnderMouse && (this._updateMode(pe._Mode.MoveGuideLine), (this._selectionDone = !0)),
+                            this._guideLineUnderMouse && (this._updateMode(pe._Mode.MoveGuideLine), (this._selectionDone = true)),
                             this._selectionDone ||
                                 (this._isBackgroundSelectEnabled
-                                    ? (this._clickedElement = this._getSelectableForPosition(e.client, !0, e.button === s.BUTTON_RIGHT))
+                                    ? (this._clickedElement = this._getSelectableForPosition(e.client, true, e.button === s.BUTTON_RIGHT))
                                     : (this._selectIgnoreBackgroundElements = this._getAllHitTestedElems(e.client)),
                                 (this._clickedToggle = l),
                                 this._clickedElement
@@ -550,20 +550,20 @@ module.exports = function (e, t, i) {
                                 C.pickDistance,
                                 s,
                                 this._selectFilterFunc,
-                                !0,
-                                !1,
+                                true,
+                                false,
                                 this._view.getViewConfiguration().multiPageView,
                                 t
                             );
                         }.bind(this);
                     this._interactionMode === pe.InteractionMode.Mixed
-                        ? ((o = c(!1)) && o.length) || (o = c(!0))
+                        ? ((o = c(false)) && o.length) || (o = c(true))
                         : (o = c(this._view.getViewConfiguration().isElementAnnotationsVisible()));
                     var u = null,
                         d = null;
                     if (o && !(o[0] instanceof A)) {
                         for (var f = [], m = 0; m < o.length; ++m) f.push(o[m].element);
-                        d = this._getSelectableElements(f, !0);
+                        d = this._getSelectableElements(f, true);
                     }
                     if (!d || !d.length) return null;
                     if (a && d.length > 0) {
@@ -584,8 +584,8 @@ module.exports = function (e, t, i) {
                                                 function (e) {
                                                     return !(e instanceof h && e.hasFlag(n.Flag.Selected));
                                                 },
-                                                !1,
-                                                !1
+                                                false,
+                                                false
                                             ) && b instanceof h
                                                 ? (u = _)
                                                 : b instanceof h && (v = b);
@@ -599,8 +599,8 @@ module.exports = function (e, t, i) {
                                             function (e) {
                                                 return !(e instanceof h && e.hasFlag(n.Flag.Selected));
                                             },
-                                            !1,
-                                            !1
+                                            false,
+                                            false
                                         ) && (u = _),
                                             !u && !b.hasFlag(n.Flag.Selected) && b instanceof h && !b.getProperty("clk") && (_ = b));
                                 }
@@ -617,13 +617,13 @@ module.exports = function (e, t, i) {
                             e,
                             this._view.getWorldTransform(this._scene),
                             this._selectAcceptorFunc,
-                            !0,
+                            true,
                             -1,
                             0,
-                            !0,
+                            true,
                             this._selectFilterFunc,
-                            !0,
-                            !1,
+                            true,
+                            false,
                             this._view.getViewConfiguration().multiPageView,
                             this._view.getViewConfiguration().isElementAnnotationsVisible()
                         );
@@ -633,13 +633,13 @@ module.exports = function (e, t, i) {
                                     e,
                                     this._view.getWorldTransform(this._scene),
                                     this._selectAcceptorFunc,
-                                    !0,
+                                    true,
                                     -1,
                                     C.pickDistance,
-                                    !0,
+                                    true,
                                     this._selectFilterFunc,
-                                    !0,
-                                    !1,
+                                    true,
+                                    false,
                                     this._view.getViewConfiguration().multiPageView,
                                     this._view.getViewConfiguration().isElementAnnotationsVisible()
                                 )),
@@ -660,20 +660,20 @@ module.exports = function (e, t, i) {
                 (pe.prototype._mouseRelease = function (e) {
                     function t() {
                         this._lastMouseEvent = e;
-                        var t = !1;
+                        var t = false;
                         if (
                             (this._elementUnderMouse &&
-                                (this._elementUnderMouse.removeFlag(n.Flag.Highlighted), (this._elementUnderMouse = null), (t = !0)),
+                                (this._elementUnderMouse.removeFlag(n.Flag.Highlighted), (this._elementUnderMouse = null), (t = true)),
                             this._backgroundSelectShouldBeEnabled &&
-                                ((this._backgroundSelectShouldBeEnabled = !1),
-                                (this._isBackgroundSelectEnabled = !0),
+                                ((this._backgroundSelectShouldBeEnabled = false),
+                                (this._isBackgroundSelectEnabled = true),
                                 (this._selectIgnoreBackgroundElements = null)),
                             this._mode == pe._Mode.Select && !this._selectionDone)
                         )
                             if (this._clickedElement) {
                                 if (
                                     !this._isDistanceHelperActivatedByClick() &&
-                                    ((this._clickedElement = this._getSelectableForPosition(e.client, !1, e.button === s.BUTTON_RIGHT)),
+                                    ((this._clickedElement = this._getSelectableForPosition(e.client, false, e.button === s.BUTTON_RIGHT)),
                                     this._clickedElement instanceof A &&
                                         this._scene.getActivePage() === this._clickedElement &&
                                         !t &&
@@ -684,12 +684,12 @@ module.exports = function (e, t, i) {
                                     (g.modifiers.shiftKey &&
                                         this._clickedElement instanceof q &&
                                         this._editor.getCurrentInlineEditorNode() &&
-                                        (i = !1),
-                                        this._updateSelectionWithElement(i, this._clickedElement, !1),
-                                        (this._selectionDone = !0));
+                                        (i = false),
+                                        this._updateSelectionWithElement(i, this._clickedElement, false),
+                                        (this._selectionDone = true));
                                 }
                             } else
-                                (this._releaseOnlySelection && (this._updateSelection(this._clickedToggle, []), (this._selectionDone = !0)),
+                                (this._releaseOnlySelection && (this._updateSelection(this._clickedToggle, []), (this._selectionDone = true)),
                                     this._isDistanceHelperActivated() &&
                                         this._isDistanceHelperClickBehaviour() &&
                                         this._editor.getDistanceHelper().invalidate());
@@ -715,7 +715,7 @@ module.exports = function (e, t, i) {
                                 (!g.modifiers.shiftKey &&
                                     r._parentEditor &&
                                     r._parentEditor instanceof U &&
-                                    r._parentEditor.updatePartSelection(!1, null),
+                                    r._parentEditor.updatePartSelection(false, null),
                                 r.updatePartSelection(g.modifiers.shiftKey, [
                                     {
                                         type: N.PartType.Point,
@@ -727,13 +727,13 @@ module.exports = function (e, t, i) {
                             (this._moveStart = null),
                             (this._moveStartTransformed = null),
                             (this._moveCurrent = null),
-                            (this._selectionDone = !1),
+                            (this._selectionDone = false),
                             this._mode != pe._Mode.Transforming && (this._updateMode(null), this.updateCursor()),
                             this._updateEditorUnderMouse(e.client),
                             this._isDistanceHelperActivatedByClick() &&
                                 this._editor.getSelection() &&
                                 this._editor.getSelection().length &&
-                                this._updateDistanceHelper(!0));
+                                this._updateDistanceHelper(true));
                     }
                     this._handlingDragEnd
                         ? this._handlingDragEnd.then(
@@ -750,8 +750,8 @@ module.exports = function (e, t, i) {
                             (r = []),
                             (t.hasFlag(n.Flag.Selected) && i) || r.push(t));
                         for (var o = t.getParent(); null != o; o = o.getParent()) o.hasFlag(n.Flag.Selected) && r.push(o);
-                        this._updateSelection(!0, r);
-                    } else t.hasFlag(n.Flag.Selected) || this._updateSelection(!1, [t]);
+                        this._updateSelection(true, r);
+                    } else t.hasFlag(n.Flag.Selected) || this._updateSelection(false, [t]);
                 }),
                 (pe.prototype._mouseDragStart = function (e) {
                     if (
@@ -774,11 +774,11 @@ module.exports = function (e, t, i) {
                             (this._areaSelector.clearArea(), !this._selectionDone))
                     )
                         if (this._releaseOnlySelection) {
-                            var t = !1;
+                            var t = false;
                             if ((o = this._editor.getSelection()) && o.length)
                                 for (var i = 0; i < o.length && !t; ++i) {
                                     var r = o[i];
-                                    (r instanceof w || r instanceof E || r instanceof B) && (t = !0);
+                                    (r instanceof w || r instanceof E || r instanceof B) && (t = true);
                                 }
                             !this._clickedElement ||
                             this._clickedElement instanceof w ||
@@ -796,13 +796,13 @@ module.exports = function (e, t, i) {
                                   this._updateSelection(this._clickedToggle, [])
                                 : (this._clickedElement.hasFlag(n.Flag.Selected) ||
                                       t ||
-                                      this._updateSelectionWithElement(this._clickedToggle, this._clickedElement, !0),
+                                      this._updateSelectionWithElement(this._clickedToggle, this._clickedElement, true),
                                   this._clickedElement.hasFlag(n.Flag.Selected) &&
-                                      (this._updateMode(pe._Mode.Move), (this._selectionDone = !0)));
+                                      (this._updateMode(pe._Mode.Move), (this._selectionDone = true)));
                         } else
                             this._clickedElement &&
-                                (this._updateSelectionWithElement(this._clickedToggle, this._clickedElement, !0),
-                                (this._selectionDone = !0),
+                                (this._updateSelectionWithElement(this._clickedToggle, this._clickedElement, true),
+                                (this._selectionDone = true),
                                 this._updateMode(pe._Mode.Move));
                     if (this._mode == pe._Mode.Move) {
                         var o;
@@ -814,7 +814,7 @@ module.exports = function (e, t, i) {
                             this.catchesContextMenu() || e.button === s.BUTTON_LEFT)
                         )
                             if (
-                                ((this._dragHandling = !0),
+                                ((this._dragHandling = true),
                                 (this._clickToDragTimeout = setTimeout(
                                     function () {
                                         this._updateMode(pe._Mode.Moving);
@@ -886,7 +886,7 @@ module.exports = function (e, t, i) {
                             }
                         else this._areaSelector.startArea(e.clientStart);
                         if (this._areaSelector.hasSelectArea()) {
-                            this._processElementsUnderCollision(!0);
+                            this._processElementsUnderCollision(true);
                             t = this._areaSelector.getAreaPaintRect();
                             (this.isPanning() && (t = this._calculateInvalidationPanAreaForRect(t)), this.invalidateArea(t));
                         } else this._editor.clearHighlighted();
@@ -899,7 +899,7 @@ module.exports = function (e, t, i) {
                             this._dragHandling &&
                                 setTimeout(
                                     function () {
-                                        this._dragHandling = !1;
+                                        this._dragHandling = false;
                                     }.bind(this),
                                     0
                                 );
@@ -937,7 +937,7 @@ module.exports = function (e, t, i) {
                                     (f || (f = ae.get(new se("GSelectTool", "text.element"))),
                                         (i = ae.get(new se("GSelectTool", "action.modify-element")).replace("%element", f)));
                                 } else
-                                    (this._editor.applySelectionTransform(h, !0, h && (a || l), !0),
+                                    (this._editor.applySelectionTransform(h, true, h && (a || l), true),
                                         (i = h
                                             ? ae.get(new se("GSelectTool", "action.transform-clone-selection"))
                                             : ae.get(new se("GSelectTool", "action.transform-selection"))));
@@ -959,7 +959,7 @@ module.exports = function (e, t, i) {
                                                 };
                                             });
                                     });
-                                    !1;
+                                    false;
                                     for (u = 0; u < _.length; u++) {
                                         var v = _[u],
                                             b = y[u];
@@ -968,7 +968,7 @@ module.exports = function (e, t, i) {
                                             (t.getParent().removeChild(t), b instanceof te ? b.addImage(t, e.box) : b.appendChild(t));
                                         });
                                     }
-                                    (this._editor.updateSelection(!1, y), (i = "Create image mask"), (this._itemsToAddToImageMask = null));
+                                    (this._editor.updateSelection(false, y), (i = "Create image mask"), (this._itemsToAddToImageMask = null));
                                 } else if (l) {
                                     ((m = this._itemsToAddToPage),
                                         (y = m.map(function (e) {
@@ -984,12 +984,12 @@ module.exports = function (e, t, i) {
                                                 return e.source;
                                             });
                                     });
-                                    var w = !1;
-                                    (m[0].source instanceof A && (w = !0),
+                                    var w = false;
+                                    (m[0].source instanceof A && (w = true),
                                         this._scene.startBlockReferenceChanges(),
                                         w
                                             ? ((i += " & Switch Pages"),
-                                              ie.SWITCH_ORDER && this._editor.clearSelection(),
+                                              MOVE_MASTER.SWITCH_ORDER && this._editor.clearSelection(),
                                               this._scene.beginUpdate())
                                             : (i += " & Move to Page"));
                                     for (u = 0; u < _.length; u++) {
@@ -1006,7 +1006,7 @@ module.exports = function (e, t, i) {
                                                         w)
                                                     )
                                                         (e.getParent().removeChild(e),
-                                                            ie.SWITCH_ORDER &&
+                                                            MOVE_MASTER.SWITCH_ORDER &&
                                                                 (b._requestInvalidation(),
                                                                 t < i
                                                                     ? b.getNext()
@@ -1018,13 +1018,13 @@ module.exports = function (e, t, i) {
                                                         if (e instanceof A && b instanceof A)
                                                             return void console.warn("tried to insert page into page, aborting");
                                                         (e.getParent().removeChild(e), b.appendChild(e));
-                                                        var r = Q.getElementPage(n),
-                                                            o = Q.getElementPage(b);
+                                                        var r = GEditor.getElementPage(n),
+                                                            o = GEditor.getElementPage(b);
                                                         if (r && o && e.hasMixin(k.Transform)) {
-                                                            var a = r.getPosition(!0),
-                                                                s = o.getPosition(!0),
+                                                            var a = r.getPosition(true),
+                                                                s = o.getPosition(true),
                                                                 l = a.subtract(s);
-                                                            e.transform(new ee(1, 0, 0, 1, l.getX(), l.getY()), !0);
+                                                            e.transform(new ee(1, 0, 0, 1, l.getX(), l.getY()), true);
                                                         }
                                                     }
                                             }.bind(this)
@@ -1034,15 +1034,15 @@ module.exports = function (e, t, i) {
                                     (w
                                         ? (this._scene.endUpdate(),
                                           this._editor.updateSelection(
-                                              !1,
+                                              false,
                                               m.map(function (e) {
                                                   return e.source;
                                               })
                                           ))
-                                        : ie.SWITCH_ORDER
+                                        : MOVE_MASTER.SWITCH_ORDER
                                           ? this._scene.setActivePage(y[0])
                                           : this._editor.updateSelection(
-                                                !1,
+                                                false,
                                                 m.map(function (e) {
                                                     return e.source;
                                                 })
@@ -1057,13 +1057,13 @@ module.exports = function (e, t, i) {
                                 this._editor.updateByMousePosition(
                                     e.client,
                                     this._view.getWorldTransform(this._scene),
-                                    !1,
+                                    false,
                                     this._view.getViewConfiguration()
                                 );
                         } else if (this._mode == pe._Mode.Select && e.button != s.BUTTON_RIGHT) {
                             if ((this._editor.clearHighlighted(), this._areaSelector.hasSelectArea())) {
-                                (this._isDistanceHelperActivatedByClick() || this._processElementsUnderCollision(!1),
-                                    (this._selectionDone = !0));
+                                (this._isDistanceHelperActivatedByClick() || this._processElementsUnderCollision(false),
+                                    (this._selectionDone = true));
                                 var B = this._areaSelector.getAreaPaintRect();
                                 (this._areaSelector.clearArea(), this.invalidateArea(B));
                             }
@@ -1092,7 +1092,7 @@ module.exports = function (e, t, i) {
                     var t,
                         i = this._areaSelector.getCollisionArea(this._view.getViewTransform(this._view.getScene())),
                         n = this._getCollisionFlags(),
-                        r = !1;
+                        r = false;
                     if (n) {
                         t = this._scene.getCollisions(
                             i,
@@ -1105,7 +1105,7 @@ module.exports = function (e, t, i) {
                             this._view.getViewConfiguration().multiPageView,
                             this._view.getViewConfiguration().isElementAnnotationsVisible()
                         );
-                    } else ((t = this._editor.getSelection()), (r = !0));
+                    } else ((t = this._editor.getSelection()), (r = true));
                     var a = this._getSelectableElements(t);
                     (!this._isBackgroundSelectEnabled &&
                         this._selectIgnoreBackgroundElements &&
@@ -1145,9 +1145,9 @@ module.exports = function (e, t, i) {
                 (pe.prototype._mouseDblClick = function (e) {
                     this._lastMouseEvent = e;
                     var t = null != this._mDownTime1 && null != this._mDownTime2 && this._mDownTime2 - this._mDownTime1 > pe.DBLCLICKTM;
-                    if (((this._mDownTime1 = null), (this._mDownTime2 = null), t)) return !0;
-                    if (this._editor.getCurrentInlineEditorNode()) return !0;
-                    var i = !1;
+                    if (((this._mDownTime1 = null), (this._mDownTime2 = null), t)) return true;
+                    if (this._editor.getCurrentInlineEditorNode()) return true;
+                    var i = false;
                     if (
                         (this._clickedElement && (i = this._editor.openInlineEditor(this._clickedElement, this._view, e.client)),
                         i || C.selectDoubleClickBehavior === pe._DblClick.Disabled)
@@ -1207,7 +1207,7 @@ module.exports = function (e, t, i) {
                                 }
                         e = e.getParent();
                     }
-                    this._updateSelection(!1, i);
+                    this._updateSelection(false, i);
                 }),
                 (pe.prototype._keyDown = function (e) {
                     if ((R.prototype._keyDown.call(this, e), !this._editor.getCurrentInlineEditorNode())) {
@@ -1269,7 +1269,7 @@ module.exports = function (e, t, i) {
                                           )
                                         : this._editor.moveSelection(
                                               this._keyDelta,
-                                              !1,
+                                              false,
                                               null,
                                               null,
                                               null,
@@ -1293,7 +1293,7 @@ module.exports = function (e, t, i) {
                             if (this._editor.getCurrentInlineEditorNode()) return;
                             var r = this._editor.getSelection();
                             if (r && r.length) {
-                                for (var o = !1, s = 0; s < r.length && !o; ++s) {
+                                for (var o = false, s = 0; s < r.length && !o; ++s) {
                                     var h = O.getEditor(r[s]);
                                     h &&
                                         h.canInlineEdit() &&
@@ -1349,9 +1349,9 @@ module.exports = function (e, t, i) {
                                 e.button != s.BUTTON_RIGHT &&
                                 !this._editor.getCurrentInlineEditorNode() &&
                                 this._areaSelector.hasSelectArea() &&
-                                (this._processElementsUnderCollision(!0), this.invalidateArea(this._areaSelector.getAreaPaintRect()));
+                                (this._processElementsUnderCollision(true), this.invalidateArea(this._areaSelector.getAreaPaintRect()));
                     else
-                        (e.changed.shiftKey && g.modifiers.shiftKey && (this._shiftConstraining = !0),
+                        (e.changed.shiftKey && g.modifiers.shiftKey && (this._shiftConstraining = true),
                             this._updateSelectionTransform(),
                             e.changed.optionKey && this._mode === pe._Mode.Moving && this.updateCursor());
                     (this._allowDistanceHelper &&
@@ -1364,19 +1364,19 @@ module.exports = function (e, t, i) {
                         e.changed.shiftKey &&
                             (!g.modifiers.shiftKey ||
                                 (g.modifiers.shiftKey && this._mode !== pe._Mode.Moving && this._mode !== pe._Mode.Transforming)) &&
-                            (this._shiftConstraining = !1),
+                            (this._shiftConstraining = false),
                         e.changed.metaKey &&
                             this._lastMouseEvent &&
                             (this._editor.updateByMousePosition(
                                 this._lastMouseEvent.client,
                                 this._view.getWorldTransform(this._scene),
-                                !0,
+                                true,
                                 this._view.getViewConfiguration()
                             ),
                             this._updateEditorUnderMouse(this._lastMouseEvent.client)));
                 }),
                 (pe.prototype._updateSelection = function (e, t) {
-                    (this.setEditMode(pe.EditMode.Select), this._editor.updateSelection(e, t), (this._elementMeasurementsToggle = !1));
+                    (this.setEditMode(pe.EditMode.Select), this._editor.updateSelection(e, t), (this._elementMeasurementsToggle = false));
                 }),
                 (pe.prototype._getAllHitTestedElems = function (e) {
                     var t = function (e) {
@@ -1385,16 +1385,16 @@ module.exports = function (e, t, i) {
                         i = this._view.getWorldTransform(this._scene),
                         n = this._view.getViewConfiguration(),
                         r = n.isElementAnnotationsVisible(),
-                        o = this._scene.hitTest(e, i, t, !0, -1, 0, !1, this._selectFilterFunc, !0, !0, n.multiPageView, r);
+                        o = this._scene.hitTest(e, i, t, true, -1, 0, false, this._selectFilterFunc, true, true, n.multiPageView, r);
                     (o && o.length) ||
-                        (o = this._scene.hitTest(e, i, t, !0, -1, C.pickDistance, !1, this._selectFilterFunc, !0, !0, n.multiPageView, r));
+                        (o = this._scene.hitTest(e, i, t, true, -1, C.pickDistance, false, this._selectFilterFunc, true, true, n.multiPageView, r));
                     var a = [];
                     return (
                         o &&
                             o.length &&
                             (a = o.map(
                                 function (e) {
-                                    return this._getSelectableElement(e.element, !0);
+                                    return this._getSelectableElement(e.element, true);
                                 }.bind(this)
                             )),
                         a
@@ -1414,9 +1414,9 @@ module.exports = function (e, t, i) {
                         !!i,
                         -1,
                         0,
-                        !1,
+                        false,
                         this._selectFilterFunc,
-                        !0,
+                        true,
                         !!i,
                         this._view.getViewConfiguration().multiPageView,
                         this._view.getViewConfiguration().isElementAnnotationsVisible()
@@ -1429,15 +1429,15 @@ module.exports = function (e, t, i) {
                             !!i,
                             -1,
                             C.pickDistance,
-                            !1,
+                            false,
                             this._selectFilterFunc,
-                            !0,
+                            true,
                             !!i,
                             this._view.getViewConfiguration().multiPageView,
                             this._view.getViewConfiguration().isElementAnnotationsVisible()
                         ));
                     var o = null;
-                    if (r && r.length) for (var a = 0; a < r.length && !o; ++a) o = this._getSelectableElement(r[a].element, !0);
+                    if (r && r.length) for (var a = 0; a < r.length && !o; ++a) o = this._getSelectableElement(r[a].element, true);
                     return o;
                 }),
                 (pe.prototype._applyKeyTransformation = function () {
@@ -1445,7 +1445,7 @@ module.exports = function (e, t, i) {
                         (this._editorMovePartInfo && this._editorMovePartInfo.id === H.RESIZE_HANDLE_PART_ID
                             ? (this._editor.applyResizeSelection(this._editorMovePartInfo.id, this._editorMovePartInfo.data),
                               (this._editorMovePartInfo = null))
-                            : this._editor.applySelectionTransform(!1, !1, !1, !0),
+                            : this._editor.applySelectionTransform(false, false, false, true),
                         (this._keyDelta = null),
                         this._updateMode(null));
                 }),
@@ -1453,18 +1453,18 @@ module.exports = function (e, t, i) {
                     var e = O.openEditor(this._scene);
                     return (
                         !(!e || e.isTransformBoxActive() || this._editor.getCurrentInlineEditorNode()) &&
-                        (e.setTransformBoxActive(!0),
+                        (e.setTransformBoxActive(true),
                         this._updateMode(pe._Mode.Transforming),
                         this.invalidateArea(),
                         this.updateCursor(),
-                        !0)
+                        true)
                     );
                 }),
                 (pe.prototype._closeTransformBox = function () {
                     var e = O.getEditor(this._scene);
                     return e && e.isTransformBoxActive()
-                        ? (e.setTransformBoxActive(!1), this._updateMode(null), this.invalidateArea(), this.updateCursor(), !0)
-                        : (this._updateMode(null), this.invalidateArea(), this.updateCursor(), !1);
+                        ? (e.setTransformBoxActive(false), this._updateMode(null), this.invalidateArea(), this.updateCursor(), true)
+                        : (this._updateMode(null), this.invalidateArea(), this.updateCursor(), false);
                 }),
                 (pe.prototype._updateSelectionTransform = function () {
                     if (this._mode == pe._Mode.Moving) {
@@ -1492,7 +1492,7 @@ module.exports = function (e, t, i) {
                                 var s = [a.Side.TOP_LEFT, a.Side.TOP_RIGHT, a.Side.BOTTOM_LEFT, a.Side.BOTTOM_RIGHT];
                                 o = !!this._editorMovePartInfo.data && -1 !== s.indexOf(this._editorMovePartInfo.data.side);
                             }
-                            (this._editor.getGuides().useExclusions(this._editor.getAlignExclusions(!1, t)),
+                            (this._editor.getGuides().useExclusions(this._editor.getAlignExclusions(false, t)),
                                 this._editor.getGuides().beginMap(this._editor.getMappingScopes()));
                             var l = this._editorMovePartInfo.editor.movePart(
                                 this._editorMovePartInfo.id,
@@ -1505,8 +1505,8 @@ module.exports = function (e, t, i) {
                                 this._view.getViewConfiguration().multiPageView
                             );
                             (this._editor.getGuides().finishMap(),
-                                this._editor.hasEventListeners(Q.EdGeometryChangeEvent) &&
-                                    this._editor.trigger(new Q.EdGeometryChangeEvent()),
+                                this._editor.hasEventListeners(GEditor.EdGeometryChangeEvent) &&
+                                    this._editor.trigger(new GEditor.EdGeometryChangeEvent()),
                                 this._updateResizeHint(l));
                         } else {
                             if (g.modifiers.shiftKey) {
@@ -1523,8 +1523,8 @@ module.exports = function (e, t, i) {
                                               this._view.getWorldTransform(this._view.getScene().getActivePage()),
                                               this._editorMovePartInfo.id.point
                                           )
-                                        : Q.convertToConstrain(h.getX(), h.getY(), e.getX(), e.getY(), C.cursorConstraint)),
-                                    (this._shiftConstraining = !0));
+                                        : GEditor.convertToConstrain(h.getX(), h.getY(), e.getX(), e.getY(), C.cursorConstraint)),
+                                    (this._shiftConstraining = true));
                             }
                             var c = this._view.getViewTransform(this._view.getScene()).mapPoint(e);
                             e = this._view.getViewTransform(this._view.getScene().getActivePage()).mapPoint(e);
@@ -1553,7 +1553,7 @@ module.exports = function (e, t, i) {
                                         r < t.length && i == t[r] && t.splice(r, 1);
                                     }
                                     if (
-                                        (this._editor.getGuides().useExclusions(this._editor.getAlignExclusions(!1, t)),
+                                        (this._editor.getGuides().useExclusions(this._editor.getAlignExclusions(false, t)),
                                         this._editor.getGuides().beginMap(this._editor.getMappingScopes()),
                                         (this._editorMovePartInfo.editor instanceof N &&
                                             this._editorMovePartInfo.id.type == N.PartType.Segment) ||
@@ -1597,7 +1597,7 @@ module.exports = function (e, t, i) {
                                 }
                                 (this._editor.moveSelection(
                                     p,
-                                    !1,
+                                    false,
                                     this._editorMovePartInfo ? this._editorMovePartInfo.id : null,
                                     this._editorMovePartInfo ? this._editorMovePartInfo.data : null,
                                     null,
@@ -1609,7 +1609,7 @@ module.exports = function (e, t, i) {
                             } else
                                 p = this._editor.moveSelection(
                                     e.subtract(this._moveStartTransformed),
-                                    !0,
+                                    true,
                                     this._editorMovePartInfo ? this._editorMovePartInfo.id : null,
                                     this._editorMovePartInfo ? this._editorMovePartInfo.data : null,
                                     this._moveStartTransformed,
@@ -1633,11 +1633,11 @@ module.exports = function (e, t, i) {
                                     if (!u) {
                                         var b = this._editor.getIndividualSelection();
                                         if (b) {
-                                            var w = Q.getGroupGeometryBBox(b, this._view.getViewConfiguration().multiPageView);
+                                            var w = GEditor.getGroupGeometryBBox(b, this._view.getViewConfiguration().multiPageView);
                                             if (w)
                                                 ((_ = (_ = w.getSide(a.Side.TOP_LEFT)).add(p)),
                                                     this._view.getViewConfiguration().multiPageView &&
-                                                        (_ = _.subtract(this._scene.getActivePage().getPosition(!0))),
+                                                        (_ = _.subtract(this._scene.getActivePage().getPosition(true))),
                                                     (u = _));
                                         }
                                     }
@@ -1658,7 +1658,7 @@ module.exports = function (e, t, i) {
                             if (this._view.getViewConfiguration().multiPageView && c) {
                                 var x = new a(c.getX(), c.getY(), 0, 0),
                                     P = this._scene.retrieveChildrenInPaintBBox(x, le.RETRIEVE_MODE_INTERSECT).filter(function (e) {
-                                        var t = e.getPosition(!0);
+                                        var t = e.getPosition(true);
                                         return e.getGeometryBBox().translated(t.getX(), t.getY()).containsPoint(c);
                                     });
                                 if (P.indexOf(this._scene.getActivePage()) < 0) {
@@ -1668,7 +1668,7 @@ module.exports = function (e, t, i) {
                                         P.length && (P = [P[0]]),
                                         (this._itemsToAddToPage = this._gatherItemsForAdd(
                                             function (e) {
-                                                return !0;
+                                                return true;
                                             },
                                             function (e) {
                                                 return e instanceof A;
@@ -1693,11 +1693,11 @@ module.exports = function (e, t, i) {
                                         },
                                         function (e) {
                                             if (!(e instanceof J)) {
-                                                if (e instanceof te) return !0;
+                                                if (e instanceof te) return true;
                                                 if (e.hasMixin(n.Container))
                                                     return g.modifiers.metaKey && (e instanceof K || e.hasMixin($));
                                             }
-                                            return !1;
+                                            return false;
                                         },
                                         null,
                                         c
@@ -1793,7 +1793,7 @@ module.exports = function (e, t, i) {
                                         if (null === i) {
                                             var r = c(e, e.getGeometryBBox());
                                             if (r) {
-                                                if (r.containsRect(y, !0))
+                                                if (r.containsRect(y, true))
                                                     return (
                                                         e.setFlag(n.Flag.Highlighted),
                                                         s.push({
@@ -1808,13 +1808,13 @@ module.exports = function (e, t, i) {
                                                                 sourceBox: y,
                                                             });
                                                         }),
-                                                        !1
+                                                        false
                                                     );
                                                 if (
                                                     ((o && r.containsPoint(o)) || (a && e !== u && e instanceof a && u instanceof a)) &&
-                                                    r.intersectsRect(y, !0)
+                                                    r.intersectsRect(y, true)
                                                 ) {
-                                                    if (!e.hasMixin($) || v.intersect(_, e, !1, !0, b))
+                                                    if (!e.hasMixin($) || v.intersect(_, e, false, true, b))
                                                         return (
                                                             e.setFlag(n.Flag.Highlighted),
                                                             s.push({
@@ -1829,7 +1829,7 @@ module.exports = function (e, t, i) {
                                                                     sourceBox: y,
                                                                 });
                                                             }),
-                                                            !1
+                                                            false
                                                         );
                                                     b = v._polyLine0;
                                                 }
@@ -1909,7 +1909,7 @@ module.exports = function (e, t, i) {
                                     var u = i.mapPoint(new l(0, s[p])).getY();
                                     if (u >= a - C.pickDistance / 2 && u <= a + C.pickDistance / 2) {
                                         r = {
-                                            isVertical: !1,
+                                            isVertical: false,
                                             guideIndex: p,
                                         };
                                         break;
@@ -1920,7 +1920,7 @@ module.exports = function (e, t, i) {
                                     var d = i.mapPoint(new l(c[p], 0)).getX();
                                     if (d >= o - C.pickDistance / 2 && d <= o + C.pickDistance / 2) {
                                         r = {
-                                            isVertical: !0,
+                                            isVertical: true,
                                             guideIndex: p,
                                         };
                                         break;
@@ -1943,8 +1943,8 @@ module.exports = function (e, t, i) {
                         }
                         var _ = null;
                         if (!this._mode) {
-                            var v = !1,
-                                b = !1,
+                            var v = false,
+                                b = false,
                                 w = O.getEditor(this._scene);
                             if (
                                 (w &&
@@ -1967,7 +1967,7 @@ module.exports = function (e, t, i) {
                                             (_ && _.editor == this._editorUnderMouseInfo.editor) ||
                                             this._editorUnderMouseInfo.editor.requestInvalidation(),
                                         (this._editorUnderMouseInfo = _),
-                                        (v = !0),
+                                        (v = true),
                                         this._editorUnderMouseInfo &&
                                             this._editorUnderMouseInfo.editor.highlightPart &&
                                             this._editorUnderMouseInfo.editor.highlightPart(
@@ -1980,7 +1980,7 @@ module.exports = function (e, t, i) {
                                 !r && this._guideLineUnderMouse && ((this._guideLineUnderMouse = null), this.updateCursor()),
                                 !v && !r)
                             ) {
-                                var E = this._getSelectableForPosition(e, !1);
+                                var E = this._getSelectableForPosition(e, false);
                                 !E ||
                                     E.hasFlag(n.Flag.Selected) ||
                                     (E instanceof A && this._scene.getActivePage() === E) ||
@@ -1989,7 +1989,7 @@ module.exports = function (e, t, i) {
                                         this._elementUnderMouse.removeFlag(n.Flag.Highlighted),
                                     (this._elementUnderMouse = E),
                                     C.highlightOnHover && this._elementUnderMouse.setFlag(n.Flag.Highlighted),
-                                    (b = !0),
+                                    (b = true),
                                     this.updateCursor());
                             }
                             (!b &&
@@ -2011,7 +2011,7 @@ module.exports = function (e, t, i) {
                         if (((!this._mode && !_) || this._mode == pe._Mode.Select) && !x && P) {
                             var S,
                                 T = this._editor.getSelection();
-                            x = !1;
+                            x = false;
                             if (
                                 (T &&
                                     1 == T.length &&
@@ -2025,8 +2025,8 @@ module.exports = function (e, t, i) {
                                         C.pickDistance,
                                         P,
                                         null,
-                                        !0,
-                                        !1,
+                                        true,
+                                        false,
                                         this._view.getViewConfiguration().multiPageView
                                     ) &&
                                     (S = T[0]),
@@ -2047,12 +2047,12 @@ module.exports = function (e, t, i) {
                 (pe.prototype._updateDistanceHelper = function (e) {
                     var t = null,
                         i = this._editor.getSelection()[0],
-                        r = Q.getElementPage(i),
+                        r = GEditor.getElementPage(i),
                         o = null,
-                        a = !1,
-                        s = !1,
+                        a = false,
+                        s = false,
                         l = this._editor.getSelectionEditor();
-                    if (l && !l.hasFlag(u.Flag.HideEditor)) t = l.getBox(!0);
+                    if (l && !l.hasFlag(u.Flag.HideEditor)) t = l.getBox(true);
                     else if (1 == this._editor.getSelection().length) {
                         var h = O.getEditor(i);
                         t = i.hasMixin(k.Transform) && h ? h.getPEGeometryBBox() : i.getGeometryBBox();
@@ -2063,15 +2063,15 @@ module.exports = function (e, t, i) {
                             oe.isEqualEps(A, oe.PIHALF, 1e-4)) &&
                             h &&
                             h._showResizeBox()) ||
-                            (a = !0);
+                            (a = true);
                     }
                     if (t) {
                         var c = r,
                             p = !e || this._elementMeasurementsToggle,
                             d = this._elementUnderMouse && !this._elementUnderMouse.hasFlag(n.Flag.Selected);
                         (p && d
-                            ? ((o = this._elementUnderMouse.getGeometryBBox()), (c = Q.getElementPage(this._elementUnderMouse)), (s = !0))
-                            : c && ((o = c.getGeometryBBox()), c.getProperty("h") || c.getProperty("w") || (s = !0)),
+                            ? ((o = this._elementUnderMouse.getGeometryBBox()), (c = GEditor.getElementPage(this._elementUnderMouse)), (s = true))
+                            : c && ((o = c.getGeometryBBox()), c.getProperty("h") || c.getProperty("w") || (s = true)),
                             e && d && (this._elementMeasurementsToggle = !this._elementMeasurementsToggle),
                             o && c == r && this._editor.getDistanceHelper().refreshVisuals(t, o, a, s));
                     }
@@ -2134,15 +2134,15 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (pe.prototype._disableBackgroundSelect = function () {
-                    this._isBackgroundSelectEnabled = !1;
+                    this._isBackgroundSelectEnabled = false;
                 }),
                 (pe.prototype._enableBackgroundSelect = function () {
                     this._mode === pe._Mode.Select
-                        ? (this._backgroundSelectShouldBeEnabled = !0)
-                        : ((this._isBackgroundSelectEnabled = !0), (this._selectIgnoreBackgroundElements = null));
+                        ? (this._backgroundSelectShouldBeEnabled = true)
+                        : ((this._isBackgroundSelectEnabled = true), (this._selectIgnoreBackgroundElements = null));
                 }),
                 (pe.prototype.toString = function () {
                     return "[Object GSelectTool]";
                 }),
-                (e.exports = pe));
+                (module.exports = pe));
         };

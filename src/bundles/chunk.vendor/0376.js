@@ -1,4 +1,4 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
 
             function n(e) {
@@ -17,17 +17,17 @@ module.exports = function (e, t, i) {
                 var i;
                 switch (e.version) {
                     case 1:
-                        this.names = t.standardNames.slice();
+                        this.names = exports.standardNames.slice();
                         break;
                     case 2:
                         for (this.names = new Array(e.numberOfGlyphs), i = 0; i < e.numberOfGlyphs; i++)
-                            e.glyphNameIndex[i] < t.standardNames.length
-                                ? (this.names[i] = t.standardNames[e.glyphNameIndex[i]])
-                                : (this.names[i] = e.names[e.glyphNameIndex[i] - t.standardNames.length]);
+                            e.glyphNameIndex[i] < exports.standardNames.length
+                                ? (this.names[i] = exports.standardNames[e.glyphNameIndex[i]])
+                                : (this.names[i] = e.names[e.glyphNameIndex[i] - exports.standardNames.length]);
                         break;
                     case 2.5:
                         for (this.names = new Array(e.numberOfGlyphs), i = 0; i < e.numberOfGlyphs; i++)
-                            this.names[i] = t.standardNames[i + e.glyphNameIndex[i]];
+                            this.names[i] = exports.standardNames[i + e.glyphNameIndex[i]];
                         break;
                     case 3:
                     default:
@@ -56,7 +56,7 @@ module.exports = function (e, t, i) {
                 (a.prototype.glyphIndexToName = function (e) {
                     return this.names[e];
                 }),
-                (t.cffStandardStrings = [
+                (exports.cffStandardStrings = [
                     ".notdef",
                     "space",
                     "exclam",
@@ -449,7 +449,7 @@ module.exports = function (e, t, i) {
                     "Roman",
                     "Semibold",
                 ]),
-                (t.cffStandardEncoding = [
+                (exports.cffStandardEncoding = [
                     "",
                     "",
                     "",
@@ -703,7 +703,7 @@ module.exports = function (e, t, i) {
                     "oe",
                     "germandbls",
                 ]),
-                (t.cffExpertEncoding = [
+                (exports.cffExpertEncoding = [
                     "",
                     "",
                     "",
@@ -960,7 +960,7 @@ module.exports = function (e, t, i) {
                     "Thornsmall",
                     "Ydieresissmall",
                 ]),
-                (t.standardNames = [
+                (exports.standardNames = [
                     ".notdef",
                     ".null",
                     "nonmarkingreturn",
@@ -1220,11 +1220,11 @@ module.exports = function (e, t, i) {
                     "ccaron",
                     "dcroat",
                 ]),
-                (t.DefaultEncoding = n),
-                (t.CmapEncoding = r),
-                (t.CffEncoding = o),
-                (t.GlyphNames = a),
-                (t.addGlyphNames = function (e) {
+                (exports.DefaultEncoding = n),
+                (exports.CmapEncoding = r),
+                (exports.CffEncoding = o),
+                (exports.GlyphNames = a),
+                (exports.addGlyphNames = function (e) {
                     for (var t, i = e.tables.cmap.glyphIndexMap, n = Object.keys(i), r = 0; r < n.length; r += 1) {
                         var o = n[r],
                             a = i[o];

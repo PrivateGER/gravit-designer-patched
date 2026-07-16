@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(140);
-            e.exports = function (e) {
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(140);
+            module.exports = function (e) {
                 ((e.Accelerated = function () {}),
-                    (e.Accelerated.PAINT_QTREES = !1),
+                    (e.Accelerated.PAINT_QTREES = false),
                     (e.Accelerated.prototype._childrenPaintQTree = null),
                     (e.Accelerated.prototype._childrenGeometryQTree = null),
-                    (e.Accelerated.prototype._dirtyIndex = !1));
+                    (e.Accelerated.prototype._dirtyIndex = false));
                 ((e.Accelerated.prototype._updateQTree = function () {
                     this._createQTreeIfNotExists();
                     for (var t = 0, i = this.getFirstChild(); null !== i; i = i.getNext())
@@ -54,7 +54,7 @@ module.exports = function (e, t, i) {
                             if (a && (a.getWidth() > 0 || a.getHeight() > 0)) {
                                 var s = e.getCustomCollisionBBox();
                                 (s && (a = (a && a.united(s)) || s),
-                                    (o = !0),
+                                    (o = true),
                                     (n = this._getAccelElementOffset(e)) && (a = a.translated(n.getX(), n.getY())));
                                 var l = new r.Element(a.getX(), a.getY(), a.getWidth(), a.getHeight());
                                 ((l.data = e), this._childrenPaintQTree.insert(l), (e._containingPaintQTreeElement = l));
@@ -77,11 +77,11 @@ module.exports = function (e, t, i) {
                                     ((o._elementIndex = r++),
                                     (o._containingGeometryQTreeElement && o._containingPaintQTreeElement) || this._insertAccelElement(o));
                         } else if (t === n._Change.BeforeChildRemove) i instanceof e && this._refreshIndicesForward(i, i._elementIndex - 1);
-                        else if (t === n._Change.AfterChildRemove) i instanceof e && (this._removeAccelElement(i), (i._dirtyIndex = !0));
+                        else if (t === n._Change.AfterChildRemove) i instanceof e && (this._removeAccelElement(i), (i._dirtyIndex = true));
                         else if (t === n._Change.AfterChildInsert) {
                             if (i instanceof e && i._dirtyIndex) {
                                 r = this._getIndexOfPrevious(i);
-                                (this._refreshIndicesForward(i, r + 1), (i._dirtyIndex = !1));
+                                (this._refreshIndicesForward(i, r + 1), (i._dirtyIndex = false));
                             }
                         } else if (t === e._Change.ChildGeometryUpdate) {
                             if (i[0] instanceof e && i[0].getParent() === this)
@@ -97,9 +97,9 @@ module.exports = function (e, t, i) {
                                 }
                         } else if (t === e._Change.ChildVisualUpdate && i[0] instanceof e && i[0].getParent() === this)
                             if ((this._createQTreeIfNotExists(), i[0]._containingPaintQTreeElement))
-                                (this._removeAccelElement(i[0], !1, !0), this._insertAccelElement(i[0], !1, !0));
+                                (this._removeAccelElement(i[0], false, true), this._insertAccelElement(i[0], false, true));
                             else {
-                                this._insertAccelElement(i[0], !1, !0);
+                                this._insertAccelElement(i[0], false, true);
                                 r = this._getIndexOfPrevious(i[0]);
                                 this._refreshIndicesForward(i[0], r);
                             }

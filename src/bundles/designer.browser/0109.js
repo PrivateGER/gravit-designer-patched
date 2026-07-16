@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
         var n;
         n = (function () {
             return this;
@@ -8,5 +8,5 @@ module.exports = function (e, t) {
         } catch (e) {
             "object" == typeof window && (n = window);
         }
-        e.exports = n;
+        module.exports = n;
     };

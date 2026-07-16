@@ -1,3 +1,3 @@
-module.exports = function (e, t) {
-        e.exports = require("zlib");
+module.exports = function (module, exports) {
+        module.exports = require("zlib");
     };

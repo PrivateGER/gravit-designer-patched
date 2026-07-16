@@ -1,21 +1,21 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(57);
-        var o = n(15),
+        require(57);
+        var GPlatform = require(15),
             i = [],
             a = function (e) {
-                var t = !1;
+                var t = false;
                 if (i.length > 0)
                     for (var n = i.length - 1; n >= 0; --n) {
                         var o = $(i[n]),
                             a = o.closest(".g-overlay"),
                             r = $(e.target).closest("body > *"),
-                            s = !1;
+                            s = false;
                         (a.parent().length > 0 &&
                             a.parent().hasClass("g-dialog-container") &&
                             0 === $(e.target).closest(".g-overlay").length &&
-                            (s = !0),
-                            ($(r).index() < a.index() || s) && ((t = !0), o.gOverlay("close", e, n)));
+                            (s = true),
+                            ($(r).index() < a.index() || s) && ((t = true), o.gOverlay("close", e, n)));
                     }
                 return t;
             };
@@ -24,7 +24,7 @@ module.exports = function (e, t, n) {
             function (e) {
                 a(e);
             },
-            !0
+            true
         ),
             document.addEventListener(
                 "keydown",
@@ -38,7 +38,7 @@ module.exports = function (e, t, n) {
                             r.enterCallback && r.enterCallback(e);
                         }
                 },
-                !0
+                true
             ),
             window.addEventListener("resize", function () {
                 for (var e = 0; e < i.length; ++e) {
@@ -46,16 +46,16 @@ module.exports = function (e, t, n) {
                 }
             }));
         var r = function (e) {
-                e.changed.escapeKey && (e.isImmediatePropagationStopped = !0);
+                e.changed.escapeKey && (e.isImmediatePropagationStopped = true);
             },
             s = {
                 init: function (e) {
                     return (
                         (e = $.extend(
                             {
-                                modal: !1,
-                                padding: !0,
-                                releaseOnClose: !1,
+                                modal: false,
+                                padding: true,
+                                releaseOnClose: false,
                                 clazz: "",
                                 enterCallback: null,
                                 offsetX: 0,
@@ -65,11 +65,11 @@ module.exports = function (e, t, n) {
                                 bottomClazz: null,
                                 rightClazz: null,
                                 closeCallback: null,
-                                disableDarkShadow: !1,
-                                middle: !1,
-                                side: !1,
+                                disableDarkShadow: false,
+                                middle: false,
+                                side: false,
                                 sideClazz: "g-overlay-side",
-                                flipHorizontal: !1,
+                                flipHorizontal: false,
                             },
                             e
                         )),
@@ -88,7 +88,7 @@ module.exports = function (e, t, n) {
                 },
                 relayout: function () {
                     let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    e = $.extend({ preserveTop: !1 }, e);
+                    e = $.extend({ preserveTop: false }, e);
                     var t = $(this),
                         n = t.data("goverlay");
                     if (!n || (!n.target && !n.isPoint)) return;
@@ -124,7 +124,7 @@ module.exports = function (e, t, n) {
                           p + c > s && (p = s - c - parseInt(n.options.bottomOffsetY))),
                         u < 0 && (u = 0),
                         p < 0 && (p = 0));
-                    let w = !1;
+                    let w = false;
                     if (e.preserveTop) {
                         const e = i.offset(),
                             t = e && e.top;
@@ -151,7 +151,7 @@ module.exports = function (e, t, n) {
                     }
                     return (
                         d && d.modal ? $("<div></div>").addClass("g-overlay-modal").append(p).appendTo(u) : p.appendTo(u),
-                        o.GPlatform.addEventListener(o.GModifiersChangedEvent, r, this[0], null, !0),
+                        GPlatform.GPlatform.addEventListener(GPlatform.GModifiersChangedEvent, r, this[0], null, true),
                         s.relayout.call(this),
                         i.push(this[0]),
                         a.trigger("open"),
@@ -163,13 +163,13 @@ module.exports = function (e, t, n) {
                     var n = $(this),
                         a = n.data("goverlay");
                     if (i.length && i[t >= 0 ? t : i.length - 1] === this[0]) {
-                        var s = !1;
+                        var s = false;
                         const t = function () {
-                            s = !0;
+                            s = true;
                         };
                         if ((n.trigger("close", [t, e]), s)) return;
                         var l;
-                        (o.GPlatform.removeEventListener(o.GModifiersChangedEvent, r, this[0]),
+                        (GPlatform.GPlatform.removeEventListener(GPlatform.GModifiersChangedEvent, r, this[0]),
                             a &&
                                 (a.target &&
                                     ($(".sidebar-inspector").removeClass("sidebar-overlay"),

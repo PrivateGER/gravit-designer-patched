@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(84),
-                r = i(366),
-                o = i(24),
-                a = i(142),
-                s = i(2),
-                l = i(82);
+module.exports = function (module, exports, require) {
+            var n = require(84),
+                r = require(366),
+                o = require(24),
+                a = require(142),
+                s = require(2),
+                GEditor = require(82);
 
             function h() {}
             ((h.TransactionType = {
@@ -17,7 +17,7 @@ module.exports = function (e, t, i) {
                         l = this._element.getParent();
                     if (!l || !s.hasMixin(n)) throw new Error("Annotation setup without valid annotation");
                     for (var h = l.getFirstChild(); null !== h; h = h.getNext()) r = Math.max(r, h.getProperty("seq") || 0);
-                    ((this._element.$rmd = !0),
+                    ((this._element.$rmd = true),
                         this._element.setProperties(
                             ["name", "uid", "time", "seq", "loc", "typ", "rmd"],
                             [
@@ -27,7 +27,7 @@ module.exports = function (e, t, i) {
                                 r + 1,
                                 t || n.MetaProperties.loc,
                                 i || n.MetaProperties.typ,
-                                !1,
+                                false,
                             ]
                         ));
                 }),
@@ -48,13 +48,13 @@ module.exports = function (e, t, i) {
                 (h.removeAnnotations = function (e, t, i, o, a) {
                     var A = t.getScene();
                     if (A) {
-                        var c = l.getEditor(A);
+                        var c = GEditor.getEditor(A);
                         if (c) {
-                            o = !1 !== o;
+                            o = false !== o;
                             try {
                                 (o && c.beginTransaction(),
                                     e.forEach(function (e) {
-                                        (e.setProperties(["rmd", "vis", "mtime"], [!0, !1, Date.now()]),
+                                        (e.setProperties(["rmd", "vis", "mtime"], [true, false, Date.now()]),
                                             (e.hasMixin(n) || e instanceof r) &&
                                                 (e.removeFlag(s.Flag.Selected), e.removeFlag(s.Flag.Highlighted)),
                                             a && t.removeChild(e));
@@ -65,5 +65,5 @@ module.exports = function (e, t, i) {
                         }
                     }
                 }),
-                (e.exports = h));
+                (module.exports = h));
         };

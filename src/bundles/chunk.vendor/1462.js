@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(11);
+module.exports = function (module, exports, require) {
+            var n = require(11);
 
             function r() {
                 ((this.filters = []),
@@ -158,7 +158,7 @@ module.exports = function (e, t, i) {
                                 a = function (i, r) {
                                     if (
                                         (n.each(i.defs, function (i, n) {
-                                            (t.appendChild(e.ownerDocument.importNode(n.documentElement, !0)), t.appendChild(o));
+                                            (t.appendChild(e.ownerDocument.importNode(n.documentElement, true)), t.appendChild(o));
                                         }),
                                         r)
                                     ) {
@@ -178,13 +178,13 @@ module.exports = function (e, t, i) {
                                         );
                                     else {
                                         var t = e[0];
-                                        (t.setResult(this._generateResultId()), a(t, !0));
+                                        (t.setResult(this._generateResultId()), a(t, true));
                                     }
                                 }.bind(this)
                             );
                         } else
                             n.each(i[0].defs, function (i, n) {
-                                t.appendChild(e.ownerDocument.importNode(n.documentElement, !0));
+                                t.appendChild(e.ownerDocument.importNode(n.documentElement, true));
                             });
                 }),
                 (r.prototype._createSeriesFilters = function (e, t, i) {
@@ -227,7 +227,7 @@ module.exports = function (e, t, i) {
                                     }));
                         n.each(i, function (i, r) {
                             n.each(r.defs, function (i, n) {
-                                t.appendChild(e.ownerDocument.importNode(n.documentElement, !0));
+                                t.appendChild(e.ownerDocument.importNode(n.documentElement, true));
                             });
                         });
                     }
@@ -252,5 +252,5 @@ module.exports = function (e, t, i) {
                         (this._createParallelFilters(e, t, i), this._createSeriesFilters(e, t, n));
                     }
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

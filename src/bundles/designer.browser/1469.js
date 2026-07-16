@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.getOS = void 0));
-        var o = n(1);
-        t.getOS = () => {
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.getOS = void 0));
+        var GObject = require(1);
+        exports.getOS = () => {
             let e = null;
-            switch (o.GSystem.operatingSystem) {
-                case o.GSystem.OperatingSystem.Unix:
+            switch (GObject.GSystem.operatingSystem) {
+                case GObject.GSystem.OperatingSystem.Unix:
                     e = "Unix";
                     break;
-                case o.GSystem.OperatingSystem.Windows:
+                case GObject.GSystem.OperatingSystem.Windows:
                     e = "Windows";
                     break;
-                case o.GSystem.OperatingSystem.OSX_IOS:
+                case GObject.GSystem.OperatingSystem.OSX_IOS:
                     e = "OSX";
             }
             return e;

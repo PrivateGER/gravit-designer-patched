@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(76),
-                o = i(84),
-                a = i(22),
-                s = i(6),
-                l = i(59),
-                h = i(7),
-                A = i(142);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(76),
+                o = require(84),
+                a = require(22),
+                s = require(6),
+                l = require(59),
+                h = require(7),
+                A = require(142);
 
             function c() {
                 (r.call(this), this._setDefaultProperties(c.MetaProperties), this.setProperty("aid", this.getId()));
@@ -16,10 +16,10 @@ module.exports = function (e, t, i) {
                     pgid: null,
                     Guid: null,
                     aid: null,
-                    rmd: !1,
+                    rmd: false,
                     sid: null,
                 }),
-                (c.prototype.restored = !1),
+                (c.prototype.restored = false),
                 (c.prototype._geometryBBox = null),
                 (c.prototype._paintBBox = null),
                 (c.prototype._savedPaintBBox = null),
@@ -114,24 +114,24 @@ module.exports = function (e, t, i) {
                 }),
                 (c.prototype._checkElementCollision = function (e, t, i, n, r) {
                     if (0 != (t & a.CollisionFlag.GeometryBBox) || 0 != (t & a.CollisionFlag.PaintBBox)) {
-                        if (i && !1 === i(this)) return !1;
+                        if (i && false === i(this)) return false;
                         var o = 0 != (t & a.CollisionFlag.PaintBBox) ? this.getPaintBBox() : this.getGeometryBBox(),
                             s = this.getCustomCollisionBBox();
                         (s && (o = (o && o.united(s)) || s),
                             o &&
                                 (0 != (t & a.CollisionFlag.Partial)
-                                    ? this._checkPartialCollision(r, o, e, !0, t, n)
-                                    : r.containsRect(o, !0) && n(this)));
+                                    ? this._checkPartialCollision(r, o, e, true, t, n)
+                                    : r.containsRect(o, true) && n(this)));
                     }
-                    return !0;
+                    return true;
                 }),
                 (c.prototype._checkPartialCollision = function (e, t, i, n, r, o) {
                     e.intersectsRect(t, n) && o(this);
                 }),
                 (c.prototype.isFullUnderCollision = function (e) {
-                    var t = !1,
+                    var t = false,
                         i = this.getPaintBBox();
-                    i && (t = l.calculateBounds(e, !0).containsRect(i, !0));
+                    i && (t = l.calculateBounds(e, true).containsRect(i, true));
                     return t;
                 }),
                 (c.prototype.beginUpdate = function (e) {
@@ -139,26 +139,26 @@ module.exports = function (e, t, i) {
                         ? this._updateCounter++
                         : ((this._updateCounter = 1),
                           this._notifyChange(a._Change.PrepareGeometryUpdate),
-                          this._blockUpdateChanges([!0, !!e]));
+                          this._blockUpdateChanges([true, !!e]));
                 }),
                 (c.prototype.endUpdate = function (e) {
                     null != this._updateCounter &&
                         0 == --this._updateCounter &&
-                        (this._releaseUpdateChanges([!0, !!e]),
+                        (this._releaseUpdateChanges([true, !!e]),
                         this._notifyChange(a._Change.FinishGeometryUpdate, e ? -1 : 0),
                         delete this._updateCounter);
                 }),
                 (c.prototype.isPaintable = function (e, t) {
-                    if (this.hasFlag(a.Flag.NoPaint)) return !1;
+                    if (this.hasFlag(a.Flag.NoPaint)) return false;
                     if (!e) return !!this._scene && !!this.getParent();
                     var i = this.getPaintBBox(e.configuration.multiPageView, t);
-                    if (null == i || i.isEmpty()) return !1;
+                    if (null == i || i.isEmpty()) return false;
                     if (e) {
-                        if (!e.configuration.isElementAnnotationsVisible()) return !1;
-                        if (e.dirtyMatcher && !e.dirtyMatcher.isDirty(i)) return !1;
-                        if (e.configuration && e.configuration.clipArea && !e.configuration.clipArea.intersectsRect(i)) return !1;
+                        if (!e.configuration.isElementAnnotationsVisible()) return false;
+                        if (e.dirtyMatcher && !e.dirtyMatcher.isDirty(i)) return false;
+                        if (e.configuration && e.configuration.clipArea && !e.configuration.clipArea.intersectsRect(i)) return false;
                     }
-                    return !0;
+                    return true;
                 }),
                 (c.prototype._requestInvalidateNode = function (e) {
                     if (e.isPaintable()) {
@@ -176,7 +176,7 @@ module.exports = function (e, t, i) {
                     this._savedPaintBBox && !this._savedPaintBBox.isEmpty() && this._requestInvalidationArea(this._savedPaintBBox);
                 }),
                 (c.prototype._handleChange = function (e, t) {
-                    if (e === n._Change.PrepareRestore) this.restored = !0;
+                    if (e === n._Change.PrepareRestore) this.restored = true;
                     else if (e === n._Change.Store)
                         this.storeProperties(
                             t.blob,
@@ -203,10 +203,10 @@ module.exports = function (e, t, i) {
                     else if (e == a._Change.FinishGeometryUpdate) {
                         var i,
                             o = 0,
-                            l = !1;
+                            l = false;
                         (t && Array.isArray(t) && ((i = t[1]), (t = t[0])),
                             "number" == typeof t && (o = t),
-                            2 === o && ((o = 0), (l = !0)),
+                            2 === o && ((o = 0), (l = true)),
                             1 === o
                                 ? (this._paintBBox = null)
                                 : 0 === o && ((this._geometryBBox = null), (this._preTransformRect = null), (this._paintBBox = null)));
@@ -248,11 +248,11 @@ module.exports = function (e, t, i) {
                 }),
                 (c.prototype.resolve = function (e) {
                     this.beginUpdate();
-                    for (var t = this.getFirstChild(); t; t = t.getNext()) (e && e !== t.getProperty("uid")) || t.setProperty("rsv", !0);
+                    for (var t = this.getFirstChild(); t; t = t.getNext()) (e && e !== t.getProperty("uid")) || t.setProperty("rsv", true);
                     this.endUpdate();
                 }),
                 (c.prototype.validateInsertion = function (e, t) {
                     return "page" === n.getName(e);
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

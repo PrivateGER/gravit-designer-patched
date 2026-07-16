@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(58), i(71));
-            const { UNKNOWN: n, IN_REVIEW: r, AWAITING_APPROVAL: o, APPROVED: a, REOPENED: s } = i(586),
+            (require(58), require(71));
+            const { UNKNOWN: n, IN_REVIEW: r, AWAITING_APPROVAL: o, APPROVED: a, REOPENED: s } = require(586),
                 l = Object.freeze({
                     [n]: [r],
                     [r]: [o],
@@ -16,5 +16,5 @@ module.exports = function (e, t, i) {
             ((h.prototype.canMoveTo = function (e) {
                 return this._flow.includes(e);
             }),
-                (e.exports = h));
+                (module.exports = h));
         };

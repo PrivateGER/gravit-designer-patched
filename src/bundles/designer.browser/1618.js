@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         !(function () {
             "use strict";
             var t = "undefined" != typeof window && void 0 !== window.document ? window.document : {},
-                n = e.exports,
+                n = module.exports,
                 o = "undefined" != typeof Element && "ALLOW_KEYBOARD_INPUT" in Element,
                 i = (function () {
                     for (
@@ -59,7 +59,7 @@ module.exports = function (e, t, n) {
                             for (o = 0; o < e.length; o++) a[n[0][o]] = e[o];
                             return a;
                         }
-                    return !1;
+                    return false;
                 })(),
                 a = { change: i.fullscreenchange, error: i.fullscreenerror },
                 r = {
@@ -84,11 +84,11 @@ module.exports = function (e, t, n) {
                     },
                     on: function (e, n) {
                         var o = a[e];
-                        o && t.addEventListener(o, n, !1);
+                        o && t.addEventListener(o, n, false);
                     },
                     off: function (e, n) {
                         var o = a[e];
-                        o && t.removeEventListener(o, n, !1);
+                        o && t.removeEventListener(o, n, false);
                     },
                     raw: i,
                 };
@@ -100,21 +100,21 @@ module.exports = function (e, t, n) {
                           },
                       },
                       element: {
-                          enumerable: !0,
+                          enumerable: true,
                           get: function () {
                               return t[i.fullscreenElement];
                           },
                       },
                       enabled: {
-                          enumerable: !0,
+                          enumerable: true,
                           get: function () {
                               return Boolean(t[i.fullscreenEnabled]);
                           },
                       },
                   }),
-                  n ? (e.exports = r) : (window.screenfull = r))
+                  n ? (module.exports = r) : (window.screenfull = r))
                 : n
-                  ? (e.exports = !1)
-                  : (window.screenfull = !1);
+                  ? (module.exports = false)
+                  : (window.screenfull = false);
         })();
     };

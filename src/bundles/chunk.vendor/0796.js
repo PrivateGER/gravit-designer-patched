@@ -1,16 +1,16 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(7),
-                o = i(6),
-                a = i(12),
-                s = i(562),
-                l = i(601),
-                h = i(561);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(7),
+                o = require(6),
+                a = require(12),
+                s = require(562),
+                l = require(601),
+                h = require(561);
 
             function A(e, t, i) {
                 ((this._parent = i), s.call(this, e, t));
             }
-            (n.inherit(A, s),
+            (IsFiniteNonNegativeNumber.inherit(A, s),
                 (A.ResizingType = {
                     Stretch: 0,
                     PinToCorner: 1,
@@ -49,8 +49,8 @@ module.exports = function (e, t, i) {
                             if (t.getId() === e.getId()) return ((i = n), t);
                         })
                     )
-                        return (t ? this.getChildren().splice(i, 1, t) : this.getChildren().splice(i, 1), !0);
-                    for (var n = this.getChildren(), r = n.length, o = 0; o < r; o++) if (n[o].replaceChild(e, t)) return !0;
+                        return (t ? this.getChildren().splice(i, 1, t) : this.getChildren().splice(i, 1), true);
+                    for (var n = this.getChildren(), r = n.length, o = 0; o < r; o++) if (n[o].replaceChild(e, t)) return true;
                 }),
                 (A.prototype.hasResizeFlag = function (e) {
                     return 0 != ((this._data.resizingConstraint || 0) & e);
@@ -178,5 +178,5 @@ module.exports = function (e, t, i) {
                     t ? t.execute(this._shapes, i, this._postAppendTo.bind(this)) : this._shapes.forEach(i);
                 }),
                 (A.prototype._postAppendTo = function () {}),
-                (e.exports = A));
+                (module.exports = A));
         };

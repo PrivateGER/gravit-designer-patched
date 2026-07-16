@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o;
-        e.exports =
-            ((o = n(55)),
-            n(98),
+        module.exports =
+            ((o = require(55)),
+            require(98),
             (o.pad.AnsiX923 = {
                 pad: function (e, t) {
                     var n = e.sigBytes,

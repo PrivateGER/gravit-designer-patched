@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(290), n(38));
+        (require(290), require(38));
         const {
                 ShareRoles: o,
                 defaultUserSettings: { share: { defaults: { public: { role: i } = {}, private: { role: a } = {} } = {} } = {} } = {},
-            } = n(10),
-            r = n(1067),
-            s = n(1070),
-            l = n(1071);
+            } = require(10 /* designerConfig */),
+            r = require(1067),
+            s = require(1070),
+            l = require(1071);
         function c() {
             throw "No instantiate";
         }
@@ -58,5 +58,5 @@ module.exports = function (e, t, n) {
                     return c.makeFromShareRole(o.Viewer);
                 },
             }),
-            (e.exports = c));
+            (module.exports = c));
     };

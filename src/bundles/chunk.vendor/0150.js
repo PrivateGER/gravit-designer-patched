@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(72),
-                o = i(514),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(72),
+                o = require(514),
                 a = function () {
                     this.changed = new o();
                 };
-            (n.inherit(a, r),
+            (IsFiniteNonNegativeNumber.inherit(a, r),
                 (a.prototype.changed = null),
                 (a.prototype.toString = function () {
                     return "[Object GModifiersChangedEvent]";
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

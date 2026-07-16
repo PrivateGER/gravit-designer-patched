@@ -1,24 +1,24 @@
-module.exports = function (e, t, i) {
-            var n = i(7),
-                r = i(14),
-                o = i(228),
-                a = i(133),
-                s = i(6),
-                l = i(5),
-                h = i(95),
-                A = i(113),
-                c = i(233),
-                p = i(293),
-                u = i(440),
-                d = i(249),
-                g = i(602),
-                f = i(855),
-                m = i(853),
-                y = i(359),
-                _ = i(564),
-                v = i(87),
-                b = i(1450),
-                C = i(68);
+module.exports = function (module, exports, require) {
+            var n = require(7),
+                r = require(14),
+                o = require(228),
+                GScenePaintConfiguration = require(133),
+                s = require(6),
+                l = require(5),
+                h = require(95),
+                A = require(113),
+                c = require(233),
+                p = require(293),
+                u = require(440),
+                d = require(249),
+                g = require(602),
+                f = require(855),
+                m = require(853),
+                y = require(359),
+                _ = require(564),
+                v = require(87),
+                b = require(1450),
+                C = require(68);
 
             function w() {}
             ((w.prototype.render = function (e, t, i) {
@@ -35,7 +35,7 @@ module.exports = function (e, t, i) {
                             return Math.ceil(e * h);
                         }),
                         c = t.getPaintBBox(),
-                        g = e.canvas.getPaintExtents(c, !0, A),
+                        g = e.canvas.getPaintExtents(c, true, A),
                         f = e.canvas.getFinalExtents(g),
                         m = e.canvas.getTransform().getTranslation(),
                         y = new l(-f.getX(), -f.getY()),
@@ -44,22 +44,22 @@ module.exports = function (e, t, i) {
                         C = _.getX() * v,
                         w = _.getY() * v,
                         E = c.translated(C, w).expanded(v, v, v, v);
-                    ((g = e.canvas.getPaintExtents(E, !0, A)), (f = e.canvas.getFinalExtents(g).toRoundedPrecision()));
+                    ((g = e.canvas.getPaintExtents(E, true, A)), (f = e.canvas.getFinalExtents(g).toRoundedPrecision()));
                     var B = new s(f.getX(), f.getY(), Math.ceil(f.getWidth()), Math.ceil(f.getHeight())),
                         x = B.getSide(s.Side.TOP_LEFT),
                         P = new r();
                     P.resize(B.getWidth(), B.getHeight());
                     var S = new o();
                     S.canvas = P;
-                    var T = new a();
-                    ((T.paintMode = a.PaintMode.Full),
-                        (T.paintSharp = !1),
-                        (T.annotations = !1),
+                    var T = new GScenePaintConfiguration();
+                    ((T.paintMode = GScenePaintConfiguration.PaintMode.Full),
+                        (T.paintSharp = false),
+                        (T.annotations = false),
                         (S.configuration = T),
-                        (T.clipDirty = !1),
-                        (T.enableFxCache = !1),
+                        (T.clipDirty = false),
+                        (T.enableFxCache = false),
                         (T.defaultEffectDetailLevel = 1),
-                        (T.ignoreEffects = !0),
+                        (T.ignoreEffects = true),
                         P.prepare(),
                         P.setOrigin(x),
                         P.setOffset(x),
@@ -69,13 +69,13 @@ module.exports = function (e, t, i) {
                     (F.resize(B.getWidth(), B.getHeight()), F.prepare(), F.setOrigin(x), F.setOffset(x), F.setScale(h));
                     try {
                         t.paint(S);
-                        var R = F.getTransform(!1)
+                        var R = F.getTransform(false)
                                 .inverted()
                                 .mapRect(new s(0, 0, F.getWidth(), F.getHeight())),
                             D = F.createPatternPaint(i.$pat, R);
                         if (D)
                             if (D.transform) {
-                                var k = F.setTransform(F.getTransform(!0).preMultiplied(D.transform));
+                                var k = F.setTransform(F.getTransform(true).preMultiplied(D.transform));
                                 (F.fillRect(0, 0, 1, 1, D.paint, i.$opc), F.setTransform(k));
                             } else F.fillRect(R.getX(), R.getY(), R.getWidth(), R.getHeight(), D.paint, i.$opc);
                         var G = F.getBitmap().getHTMLElement();
@@ -87,7 +87,7 @@ module.exports = function (e, t, i) {
                         (F.drawCanvas(P, Q, M, 1, r.CompositeOperator.DestinationOut), r.disableFilters());
                         try {
                             var N = new d();
-                            (N.setAffectedByGLBug(!0), (N.$r = i.$r), N.render(F, null, null, h, B, t));
+                            (N.setAffectedByGLBug(true), (N.$r = i.$r), N.render(F, null, null, h, B, t));
                         } finally {
                             r.enableFilters();
                         }
@@ -108,7 +108,7 @@ module.exports = function (e, t, i) {
                         r = e.canvas.createCanvas(n);
                     try {
                         r.putVertices(t);
-                        var o = !1;
+                        var o = false;
                         (t instanceof A || t instanceof c) && (o = t.getProperty("evenodd"));
                         var a = r.getGraphics(),
                             l = r.getContext(),
@@ -116,12 +116,12 @@ module.exports = function (e, t, i) {
                             p = new g();
                         (this._applyOpacityMask(l, p, h, o), this._applyGaps(l, p, h), this._applyTransparency(l, p, h, o, i));
                         var u = i.$opc,
-                            d = t.getPaintLayers().getFillLayers(!0)[0];
+                            d = t.getPaintLayers().getFillLayers(true)[0];
                         d && (u *= d.$_op);
                         var f = l.createSMaskGStateResource(p);
                         (a.setGStateResource(f), a.add(h));
                         var m = r
-                                .getTransform(!1)
+                                .getTransform(false)
                                 .inverted()
                                 .mapRect(new s(0, 0, r.getWidth(), r.getHeight())),
                             y = r.createPatternPaint(i.$pat, m);
@@ -173,5 +173,5 @@ module.exports = function (e, t, i) {
                 (w.prototype.toString = function () {
                     return "[Object GPDFInnerShadowEffect]";
                 }),
-                (e.exports = w));
+                (module.exports = w));
         };

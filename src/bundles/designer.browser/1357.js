@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(58), n(19), n(71), n(91), n(4), n(41), n(13), n(26));
-        var o = n(15),
-            i = n(882);
-        const a = n(44),
-            { GSystem: r, GLocale: s, GLocaleKey: l, GObject: c, GNode: d } = n(1),
-            u = n(1191),
-            { getAnnotationType: p } = n(40);
-        n(85);
+        (require(58), require(19), require(71), require(91), require(4), require(41), require(13), require(26));
+        var GPlatform = require(15),
+            i = require(882);
+        const GSystemDialog = require(44),
+            { GSystem: r, GLocale: s, GLocaleKey: l, GObject: c, GNode: d } = require(1 /* GObject */),
+            u = require(1191),
+            { getAnnotationType: p } = require(40 /* GSaveAction */);
+        require(85);
         function g(e) {
             let { container: t, annotation: n, onSubmit: o, onCancel: i, onAssignTo: a, mentionData: r } = e;
             ((this._containter = t),
@@ -15,7 +15,7 @@ module.exports = function (e, t, n) {
                 (this._onSubmit = o),
                 (this._onCancel = i),
                 (this._onAssignTo = a),
-                (this._shouldAssign = !1),
+                (this._shouldAssign = false),
                 (this._assignees = []),
                 (this._mentionsCollection = []),
                 (this._data = r.data),
@@ -27,15 +27,15 @@ module.exports = function (e, t, n) {
         function h(e) {
             if (13 === e.keyCode)
                 if (r.operatingSystem !== r.OperatingSystem.OSX_IOS) {
-                    if (!e.shiftKey) return !0;
+                    if (!e.shiftKey) return true;
                 } else {
-                    if (!e.altKey) return !0;
+                    if (!e.altKey) return true;
                     if ("keydown" === e.type) {
                         let t = $(e.target).val();
                         $(e.target).val(t + "\n");
                     }
                 }
-            return !1;
+            return false;
         }
         (c.inherit(g, u),
             (g.prototype._init = function () {
@@ -49,8 +49,8 @@ module.exports = function (e, t, n) {
                 );
                 const c = !this._annotation.isFillingCompleted();
                 e.on("focusout", (n) => {
-                    if (e.find(n.relatedTarget).length) return (n.stopPropagation(), n.preventDefault(), !1);
-                    $(n.target).val() || a.isDialogOpen(".g-system-dialog.g-confirm-dialog") || ($(n.target).attr("rows", 1), t.hide());
+                    if (e.find(n.relatedTarget).length) return (n.stopPropagation(), n.preventDefault(), false);
+                    $(n.target).val() || GSystemDialog.isDialogOpen(".g-system-dialog.g-confirm-dialog") || ($(n.target).attr("rows", 1), t.hide());
                 })
                     .on("keydown", function (e) {
                         h(e) && e.preventDefault();
@@ -122,8 +122,8 @@ module.exports = function (e, t, n) {
                                 })
                         )
                         .appendTo(u)),
-                    e.attr("draggable", !1));
-                const g = c && o.GPlatform.webBrowser !== o.GPlatform.constructor.WebBrowser.Safari;
+                    e.attr("draggable", false));
+                const g = c && GPlatform.GPlatform.webBrowser !== GPlatform.GPlatform.constructor.WebBrowser.Safari;
                 ((this._input = $("<textarea>")
                     .attr("placeholder", s.get(new l("GAnnotationPanel", c ? "text.write-annotation-here" : "text.write-reply-here")))
                     .attr("rows", 1)
@@ -192,5 +192,5 @@ module.exports = function (e, t, n) {
             (g.prototype.scrollIntoView = function () {
                 this._scrollToElement(this._input);
             }),
-            (e.exports = g));
+            (module.exports = g));
     };

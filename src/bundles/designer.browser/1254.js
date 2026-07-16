@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(3), n(26), n(125), n(126), n(114));
-        var o = n(1);
-        const i = n(18),
-            a = n(31),
-            r = n(44),
-            s = n(163),
-            l = n(85),
-            c = n(1255);
+        (require(19), require(3), require(26), require(125), require(126), require(114));
+        var GObject = require(1);
+        const GCategory = require(18),
+            a = require(31),
+            GSystemDialog = require(44),
+            GDocument = require(163),
+            l = require(85),
+            c = require(1255);
         function d() {}
-        (o.GObject.inherit(d, a),
+        (GObject.GObject.inherit(d, a),
             (d.ID = "file.share.opensharedfile"),
-            (d.TITLE = new o.GLocaleKey("GOpenSharedFileAction", "title")),
+            (d.TITLE = new GObject.GLocaleKey("GOpenSharedFileAction", "title")),
             (d.prototype.getId = function () {
                 return d.ID;
             }),
@@ -19,17 +19,17 @@ module.exports = function (e, t, n) {
                 return d.TITLE;
             }),
             (d.prototype.getCategory = function () {
-                return i.CATEGORY_FILE_SHARE;
+                return GCategory.CATEGORY_FILE_SHARE;
             }),
             (d.prototype.getGroup = function () {
                 return "file-share/opensharedfile";
             }),
             (d.prototype.isVisible = function () {
-                return !0;
+                return true;
             }),
             (d.prototype.execute = function () {
-                r.prompt(
-                    o.GLocale.get(new o.GLocaleKey("GOpenSharedFileAction", "text.prompt-text")),
+                GSystemDialog.prompt(
+                    GObject.GLocale.get(new GObject.GLocaleKey("GOpenSharedFileAction", "text.prompt-text")),
                     (e) => {
                         if (void 0 !== e)
                             try {
@@ -37,21 +37,21 @@ module.exports = function (e, t, n) {
                                 if (t) {
                                     let e = new l.OpenFileRequest(l.OpenFileRequest.Type.Token, t);
                                     gApi.setToken({ token: t });
-                                    let n = new s();
+                                    let n = new GDocument();
                                     (n.setTitle(e.getContent()), gDesigner.addDocument(n), c.handleOpenFileRequest(n, e));
-                                } else r.alert(o.GLocale.get(new o.GLocaleKey("GOpenSharedFileAction", "invalid-link")));
+                                } else GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GOpenSharedFileAction", "invalid-link")));
                             } catch (e) {
-                                (console.error(e), r.alert(o.GLocale.get(new o.GLocaleKey("GOpenSharedFileAction", "invalid-link"))));
+                                (console.error(e), GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GOpenSharedFileAction", "invalid-link"))));
                             }
                     },
                     null,
-                    o.GLocale.get(new o.GLocaleKey("GOpenSharedFileAction", "text.cancel")),
-                    o.GLocale.get(new o.GLocaleKey("GOpenSharedFileAction", "text.open")),
+                    GObject.GLocale.get(new GObject.GLocaleKey("GOpenSharedFileAction", "text.cancel")),
+                    GObject.GLocale.get(new GObject.GLocaleKey("GOpenSharedFileAction", "text.open")),
                     "open-shared-file-dialog"
                 );
             }),
             (d.prototype.toString = function () {
                 return "[Object GOpenSharedFileAction]";
             }),
-            (e.exports = d));
+            (module.exports = d));
     };

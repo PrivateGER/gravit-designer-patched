@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(130),
+        var o = require(130),
             i = RangeError;
-        e.exports = function (e) {
+        module.exports = function (e) {
             var t = o(e);
             if (t < 0) throw new i("The argument can't be less than 0");
             return t;

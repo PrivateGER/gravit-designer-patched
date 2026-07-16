@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(32), n(33));
-        var o = n(16),
-            i = o(n(1504));
-        (n(58), n(30), n(8), n(20), n(3), n(271), n(71), n(34), n(4), n(41), n(13), n(38));
-        var a = n(1),
-            r = n(15),
-            s = n(67),
-            l = o(n(1248)),
-            c = n(10);
+        (require(32), require(33));
+        var o = require(16),
+            i = o(require(1504));
+        (require(58), require(30), require(8 /* Symbol */), require(20), require(3), require(271), require(71), require(34), require(4), require(41), require(13), require(38));
+        var GObject = require(1),
+            GPlatform = require(15),
+            s = require(67),
+            l = o(require(1248)),
+            designerConfig = require(10);
         function d(e, t) {
             var n = Object.keys(e);
             if (Object.getOwnPropertySymbols) {
@@ -25,7 +25,7 @@ module.exports = function (e, t, n) {
             for (var t = 1; t < arguments.length; t++) {
                 var n = null != arguments[t] ? arguments[t] : {};
                 t % 2
-                    ? d(Object(n), !0).forEach(function (t) {
+                    ? d(Object(n), true).forEach(function (t) {
                           (0, i.default)(e, t, n[t]);
                       })
                     : Object.getOwnPropertyDescriptors
@@ -36,38 +36,38 @@ module.exports = function (e, t, n) {
             }
             return e;
         }
-        var p = n(163),
-            g = n(18),
-            h = n(31),
-            f = n(446),
-            m = n(86);
-        const y = n(44),
-            v = n(389);
-        var _ = c.FILE_FORMATS.map((e) => e.ext);
-        const b = c.FILE_FORMATS.find((e) => e.default).ext;
+        var GDocument = require(163),
+            GCategory = require(18),
+            h = require(31),
+            GLoginPanel = require(446),
+            m = require(86);
+        const GSystemDialog = require(44),
+            v = require(389 /* GDocument */);
+        var _ = designerConfig.FILE_FORMATS.map((e) => e.ext);
+        const b = designerConfig.FILE_FORMATS.find((e) => e.default).ext;
         function w(e) {
             let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
             ((this._fileExt = e), (this._isNativeExt = !!_.includes(this._fileExt)));
-            var n = p.FileTypes.filter((t) => t.ext === e)[0];
+            var n = GDocument.FileTypes.filter((t) => t.ext === e)[0];
             ((this._title = n.title || n.name),
                 (this._mime = n.mime),
                 (this._options = t),
                 (w.TOOLTIP_CONFIG = {
                     [s.TOOLTIP_AREA.MAIN_MENU.TRY_PRO_COMMON]: s.GRichTooltipConfig.from({
-                        title: a.GLocale.get(new a.GLocaleKey("GSaveAsAction", "text.try-this-feature-pro-tooltip-title")),
+                        title: GObject.GLocale.get(new GObject.GLocaleKey("GSaveAsAction", "text.try-this-feature-pro-tooltip-title")),
                         learnMore: "/docs/import-export/export/#quick-exporting",
                         upgradeToProStatsValue: "file.save-as.pdf.300",
-                        middle: !1,
-                        side: !0,
+                        middle: false,
+                        side: true,
                     }),
                 }));
         }
-        (a.GObject.inherit(w, h),
+        (GObject.GObject.inherit(w, h),
             (w.ID = "file.save-as"),
             (w.TOOLTIP_CONFIG = null),
             (w.DEFAULT_SAVE_OPTIONS = {}),
             (w.prototype._fileExt = null),
-            (w.prototype._isNativeExt = !1),
+            (w.prototype._isNativeExt = false),
             (w.prototype._title = null),
             (w.prototype._mime = null),
             (w.prototype._options = null),
@@ -81,25 +81,25 @@ module.exports = function (e, t, n) {
             (w.prototype.getTitle = function () {
                 if (this._isNativeExt)
                     return gDesigner.getDefaultStorage().canSave()
-                        ? a.GLocale.get(this._title)
-                        : a.GLocale.get(new a.GLocaleKey("GDocument", "title.download-" + this._fileExt));
+                        ? GObject.GLocale.get(this._title)
+                        : GObject.GLocale.get(new GObject.GLocaleKey("GDocument", "title.download-" + this._fileExt));
                 if ("pdf" === this._fileExt) {
                     var e = this._options.dpi ? this._options.dpi : 72;
-                    return a.GLocale.get(new a.GLocaleKey("GSaveAsAction", "text.dpi-value"))
+                    return GObject.GLocale.get(new GObject.GLocaleKey("GSaveAsAction", "text.dpi-value"))
                         .replace("%dpiValue", e)
-                        .replace("%dpiString", a.GLocale.get(new a.GLocaleKey("GSaveAsAction", "text.dpi")));
+                        .replace("%dpiString", GObject.GLocale.get(new GObject.GLocaleKey("GSaveAsAction", "text.dpi")));
                 }
                 {
                     const { dpi: e = 72 } = this._options;
-                    return a.GLocale.get(new a.GLocaleKey("GSaveAsAction", "pdf" === this._fileExt ? "text.save-pdf" : "text.save-common"))
-                        .replace("%title", a.GLocale.get(this._title))
+                    return GObject.GLocale.get(new GObject.GLocaleKey("GSaveAsAction", "pdf" === this._fileExt ? "text.save-pdf" : "text.save-common"))
+                        .replace("%title", GObject.GLocale.get(this._title))
                         .replace("%fileExtension", this._fileExt)
                         .replace("%dpiValue", e)
-                        .replace("%dpiString", a.GLocale.get(new a.GLocaleKey("GSaveAsAction", "text.dpi")));
+                        .replace("%dpiString", GObject.GLocale.get(new GObject.GLocaleKey("GSaveAsAction", "text.dpi")));
                 }
             }),
             (w.prototype.getCategory = function () {
-                return this._isNativeExt ? g.CATEGORY_FILE : "pdf" === this._fileExt ? g.CATEGORY_FILE_EXPORT_PDF : g.CATEGORY_FILE_EXPORT;
+                return this._isNativeExt ? GCategory.CATEGORY_FILE : "pdf" === this._fileExt ? GCategory.CATEGORY_FILE_EXPORT_PDF : GCategory.CATEGORY_FILE_EXPORT;
             }),
             (w.prototype.getGroup = function () {
                 return this._isNativeExt ? "file" : "pdf" === this._fileExt ? "export/file-type/" + this._fileExt : "export/file-type";
@@ -114,7 +114,7 @@ module.exports = function (e, t, n) {
                 return ("file.save-as.pdf.300" === this.getId() && e && w.TOOLTIP_CONFIG[e]) || null;
             }),
             (w.prototype.getShortcut = function () {
-                return this._isNativeExt ? [r.GKey.Constant.SHIFT, r.GKey.Constant.META, r.GKey.Constant.OPTION, "S"] : null;
+                return this._isNativeExt ? [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.OPTION, "S"] : null;
             }),
             (w.prototype.isEnabled = function (e, t) {
                 return (
@@ -129,8 +129,8 @@ module.exports = function (e, t, n) {
                 let o = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : w.DEFAULT_SAVE_OPTIONS,
                     i = arguments.length > 4 ? arguments[4] : void 0;
                 const a = t || gDesigner.getActiveDocument();
-                if (a && a.isCommercialProductFile()) return (a.openPaywall(this.getId()), !1);
-                new f(
+                if (a && a.isCommercialProductFile()) return (a.openPaywall(this.getId()), false);
+                new GLoginPanel(
                     () => {
                         this._performSave(e, a, n, o, i);
                     },
@@ -180,7 +180,7 @@ module.exports = function (e, t, n) {
                         (r = r || t.getTitle() || "Design"),
                         !this._isNativeExt && t.hasPagesWithInfiniteEmptyCanvas())
                     )
-                        return void y.alert(a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.error-emtpy-infinite-canvas")));
+                        return void GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.error-emtpy-infinite-canvas")));
                     ((o = t.updateSaveOptionsLastModifiedDate(o)),
                         (o.singleton = !t.isCloudFile()),
                         (o = u(u({}, w.DEFAULT_SAVE_OPTIONS), o)),
@@ -196,10 +196,10 @@ module.exports = function (e, t, n) {
                         o = n.isAuthorized();
                     return (!o && n.getStatusText() && this._showError(n.getStatusText()), o);
                 }
-                return !0;
+                return true;
             }),
             (w.prototype._showError = function (e) {
-                e && y.error(e, { showTitle: !1 });
+                e && GSystemDialog.error(e, { showTitle: false });
             }),
             (w.prototype._getFileTypes = function () {
                 return [{ ext: this._fileExt, mime: this._mime }];
@@ -210,5 +210,5 @@ module.exports = function (e, t, n) {
             (w.prototype.toString = function () {
                 return "[Object GSaveAsAction]";
             }),
-            (e.exports = w));
+            (module.exports = w));
     };

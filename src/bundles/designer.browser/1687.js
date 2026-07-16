@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(20), n(34));
-        var i = n(1),
-            a = o(n(44));
-        const { DateAPI: r, DESIGNER: { TITLE: s } = {} } = n(10),
-            l = n(78),
+        var o = require(16);
+        (require(20), require(34));
+        var GObject = require(1),
+            a = o(require(44 /* GSystemDialog */));
+        const { DateAPI: r, DESIGNER: { TITLE: s } = {} } = require(10 /* designerConfig */),
+            l = require(78),
             c = r.minutesToMilliseconds(1),
             d = 0.8,
             u = r.minutesToMilliseconds(30);
-        e.exports = class {
+        module.exports = class {
             constructor() {
                 let {
                     memoryCheckInterval: e = c,
@@ -54,23 +54,23 @@ module.exports = function (e, t, n) {
                             delete this._dialog;
                         },
                         className: "g-memory-warn-dialog",
-                        closeable: !1,
+                        closeable: false,
                         icon: "info",
-                        title: i.GLocale.get(new i.GLocaleKey("GMemoryManager", "text.title")).replace("%app", s),
-                        subtitle: i.GLocale.get(new i.GLocaleKey("GMemoryManager", "text.subtitle")),
+                        title: GObject.GLocale.get(new GObject.GLocaleKey("GMemoryManager", "text.title")).replace("%app", s),
+                        subtitle: GObject.GLocale.get(new GObject.GLocaleKey("GMemoryManager", "text.subtitle")),
                         buttons: [
                             {
-                                label: i.GLocale.get(new i.GLocaleKey("GLocale", "ok")),
+                                label: GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")),
                                 onclick: (e) => {
                                     e.gDialog("close");
                                 },
-                                highlighted: !0,
+                                highlighted: true,
                             },
                         ],
                     })));
             }
             _documentEvent(e) {
-                e.type === l.Type.Removed && (gDesigner.hasDocuments() || i.GRendererCtx.freeMemory());
+                e.type === l.Type.Removed && (gDesigner.hasDocuments() || GObject.GRendererCtx.freeMemory());
             }
         };
     };

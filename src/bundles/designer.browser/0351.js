@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(157),
+        var o = require(157),
             i = Math.floor,
             a = function (e, t) {
                 var n = e.length;
@@ -18,5 +18,5 @@ module.exports = function (e, t, n) {
                         e[h + f] = h < p && f < g ? (t(d[h], u[f]) <= 0 ? d[h++] : u[f++]) : h < p ? d[h++] : u[f++];
                 return e;
             };
-        e.exports = a;
+        module.exports = a;
     };

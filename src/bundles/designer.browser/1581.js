@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        const o = n(878),
-            i = n(879),
-            a = n(1329);
-        e.exports = class extends o {
+        const o = require(878),
+            i = require(879),
+            a = require(1329);
+        module.exports = class extends o {
             constructor(e) {
                 (super(e),
                     this.addGesture(
@@ -13,7 +13,7 @@ module.exports = function (e, t, n) {
                         })
                     ),
                     this.addGesture(new a()),
-                    this.setClickSuppressionEnabled(!0));
+                    this.setClickSuppressionEnabled(true));
             }
             _touchEnd(e) {
                 const t = e.changedTouches[0];

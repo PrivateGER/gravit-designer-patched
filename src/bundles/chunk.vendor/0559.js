@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(390),
-                r = i(182),
-                o = i(0),
-                a = i(68),
-                s = i(437),
+module.exports = function (module, exports, require) {
+            var n = require(390),
+                r = require(182),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(68),
+                s = require(437),
                 l = function (e) {
                     var t = 0,
                         i = 0,
@@ -33,7 +33,7 @@ module.exports = function (e, t, i) {
                     }
                     ((this.r = t / 255), (this.g = i / 255), (this.b = n / 255), (this.a = r));
                 };
-            (o.inheritAndMix(l, s, [n]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(l, s, [n]),
                 (l.prototype.asRGBA = function () {
                     return ((255 * this.r) << 24) | ((255 * this.g) << 16) | ((255 * this.b) << 8) | (255 * this.a);
                 }),
@@ -44,5 +44,5 @@ module.exports = function (e, t, i) {
                     var e = new r();
                     return (e.push(this.r), e.push(this.g), e.push(this.b), e);
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

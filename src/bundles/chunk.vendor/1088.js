@@ -1,20 +1,20 @@
-module.exports = function (e, t, i) {
-            i(7);
-            var n = i(547),
-                r = i(370),
-                o = i(0),
-                a = i(212);
+module.exports = function (module, exports, require) {
+            require(7);
+            var GTextTool = require(547),
+                r = require(370),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(212);
 
             function s() {
-                n.call(this, !0, !0);
+                GTextTool.call(this, true, true);
             }
-            (i(783),
-                o.inherit(s, n, [a]),
+            (require(783),
+                IsFiniteNonNegativeNumber.inherit(s, GTextTool, [a]),
                 (s.prototype._getRelatedItemClass = function () {
                     return r;
                 }),
                 (s.prototype.toString = function () {
                     return "[Object GTextAnnotationTool]";
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

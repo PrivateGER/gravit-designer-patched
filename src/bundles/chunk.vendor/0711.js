@@ -1,19 +1,19 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(376),
-                r = i(529),
-                o = i(89),
-                a = i(326),
-                s = i(115);
+            var n = require(376),
+                r = require(529),
+                Parser = require(89),
+                a = require(326),
+                s = require(115);
 
             function l(e, t) {
-                if (e === t) return !0;
+                if (e === t) return true;
                 if (Array.isArray(e) && Array.isArray(t)) {
-                    if (e.length !== t.length) return !1;
-                    for (var i = 0; i < e.length; i += 1) if (!l(e[i], t[i])) return !1;
-                    return !0;
+                    if (e.length !== t.length) return false;
+                    for (var i = 0; i < e.length; i += 1) if (!l(e[i], t[i])) return false;
+                    return true;
                 }
-                return !1;
+                return false;
             }
 
             function h(e) {
@@ -26,16 +26,16 @@ module.exports = function (e, t, i) {
                     a,
                     s = [],
                     l = [],
-                    h = o.getCard16(e, t);
+                    h = Parser.getCard16(e, t);
                 if (0 !== h) {
-                    var A = o.getByte(e, t + 2);
+                    var A = Parser.getByte(e, t + 2);
                     r = t + (h + 1) * A + 2;
                     var c = t + 3;
-                    for (n = 0; n < h + 1; n += 1) (s.push(o.getOffset(e, c, A)), (c += A));
+                    for (n = 0; n < h + 1; n += 1) (s.push(Parser.getOffset(e, c, A)), (c += A));
                     a = r + s[h];
                 } else a = t + 2;
                 for (n = 0; n < s.length - 1; n += 1) {
-                    var p = o.getBytes(e, r + s[n], r + s[n + 1]);
+                    var p = Parser.getBytes(e, r + s[n], r + s[n + 1]);
                     (i && (p = i(p)), l.push(p));
                 }
                 return {
@@ -68,7 +68,7 @@ module.exports = function (e, t, i) {
 
             function p(e, t, i) {
                 t = void 0 !== t ? t : 0;
-                var n = new o.Parser(e, t),
+                var n = new Parser.Parser(e, t),
                     r = [],
                     a = [];
                 for (i = void 0 !== i ? i : e.length; n.relativeOffset < i; ) {
@@ -341,8 +341,8 @@ module.exports = function (e, t, i) {
                     p = new a.Path(),
                     u = [],
                     d = 0,
-                    g = !1,
-                    f = !1,
+                    g = false,
+                    f = false,
                     m = 0,
                     y = 0;
                 if (e.isCIDFont) {
@@ -357,11 +357,11 @@ module.exports = function (e, t, i) {
                 var b = A;
 
                 function C(e, t) {
-                    (f && p.closePath(), p.moveTo(e, t), (f = !0));
+                    (f && p.closePath(), p.moveTo(e, t), (f = true));
                 }
 
                 function w() {
-                    (u.length % 2 != 0 && !g && (b = u.shift() + c), (d += u.length >> 1), (u.length = 0), (g = !0));
+                    (u.length % 2 != 0 && !g && (b = u.shift() + c), (d += u.length >> 1), (u.length = 0), (g = true));
                 }
                 return (
                     (function i(a) {
@@ -373,7 +373,7 @@ module.exports = function (e, t, i) {
                                     w();
                                     break;
                                 case 4:
-                                    (u.length > 1 && !g && ((b = u.shift() + c), (g = !0)), (y += u.pop()), C(m, y));
+                                    (u.length > 1 && !g && ((b = u.shift() + c), (g = true)), (y += u.pop()), C(m, y));
                                     break;
                                 case 5:
                                     for (; u.length > 0; ) ((m += u.shift()), (y += u.shift()), p.lineTo(m, y));
@@ -470,7 +470,7 @@ module.exports = function (e, t, i) {
                                     }
                                     break;
                                 case 14:
-                                    (u.length > 0 && !g && ((b = u.shift() + c), (g = !0)), f && (p.closePath(), (f = !1)));
+                                    (u.length > 0 && !g && ((b = u.shift() + c), (g = true)), f && (p.closePath(), (f = false)));
                                     break;
                                 case 18:
                                     w();
@@ -480,10 +480,10 @@ module.exports = function (e, t, i) {
                                     (w(), (D += (d + 7) >> 3));
                                     break;
                                 case 21:
-                                    (u.length > 2 && !g && ((b = u.shift() + c), (g = !0)), (y += u.pop()), C((m += u.pop()), y));
+                                    (u.length > 2 && !g && ((b = u.shift() + c), (g = true)), (y += u.pop()), C((m += u.pop()), y));
                                     break;
                                 case 22:
-                                    (u.length > 1 && !g && ((b = u.shift() + c), (g = !0)), C((m += u.pop()), y));
+                                    (u.length > 1 && !g && ((b = u.shift() + c), (g = true)), C((m += u.pop()), y));
                                     break;
                                 case 23:
                                     w();
@@ -779,26 +779,26 @@ module.exports = function (e, t, i) {
                     t
                 );
             }
-            ((t.parse = function (e, t, i) {
+            ((exports.parse = function (e, t, i) {
                 i.tables.cff = {};
                 var a = A(
                         e,
                         (function (e, t) {
                             var i = {};
                             return (
-                                (i.formatMajor = o.getCard8(e, t)),
-                                (i.formatMinor = o.getCard8(e, t + 1)),
-                                (i.size = o.getCard8(e, t + 2)),
-                                (i.offsetSize = o.getCard8(e, t + 3)),
+                                (i.formatMajor = Parser.getCard8(e, t)),
+                                (i.formatMinor = Parser.getCard8(e, t + 1)),
+                                (i.size = Parser.getCard8(e, t + 2)),
+                                (i.offsetSize = Parser.getCard8(e, t + 3)),
                                 (i.startOffset = t),
                                 (i.endOffset = t + 4),
                                 i
                             );
                         })(e, t).endOffset,
-                        o.bytesToString
+                        Parser.bytesToString
                     ),
                     s = A(e, a.endOffset),
-                    l = A(e, s.endOffset, o.bytesToString),
+                    l = A(e, s.endOffset, Parser.bytesToString),
                     c = A(e, l.endOffset);
                 ((i.gsubrs = c.objects), (i.gsubrsBias = h(i.gsubrs)));
                 var p = _(e, t, s.objects, l.objects);
@@ -808,7 +808,7 @@ module.exports = function (e, t, i) {
                 if (
                     ((i.tables.cff.topDict = d),
                     d._privateDict && ((i.defaultWidthX = d._privateDict.defaultWidthX), (i.nominalWidthX = d._privateDict.nominalWidthX)),
-                    void 0 !== d.ros[0] && void 0 !== d.ros[1] && (i.isCIDFont = !0),
+                    void 0 !== d.ros[0] && void 0 !== d.ros[1] && (i.isCIDFont = true),
                     i.isCIDFont)
                 ) {
                     var g = d.fdArray,
@@ -821,7 +821,7 @@ module.exports = function (e, t, i) {
                         (d._fdSelect = (function (e, t, i, n) {
                             var r,
                                 a = [],
-                                s = new o.Parser(e, t),
+                                s = new Parser.Parser(e, t),
                                 l = s.parseCard8();
                             if (0 === l)
                                 for (var h = 0; h < i; h++) {
@@ -863,7 +863,7 @@ module.exports = function (e, t, i) {
                     var r,
                         a,
                         s,
-                        l = new o.Parser(e, t);
+                        l = new Parser.Parser(e, t);
                     i -= 1;
                     var h = [".notdef"],
                         A = l.parseCard8();
@@ -886,7 +886,7 @@ module.exports = function (e, t, i) {
                             var r,
                                 a,
                                 s = {},
-                                l = new o.Parser(e, t),
+                                l = new Parser.Parser(e, t),
                                 h = l.parseCard8();
                             if (0 === h) {
                                 var A = l.parseCard8();
@@ -906,7 +906,7 @@ module.exports = function (e, t, i) {
                     i.glyphs.push(x, r.cffGlyphLoader(i, x, v, P));
                 }
             }),
-                (t.make = function (e, t) {
+                (exports.make = function (e, t) {
                     for (
                         var i,
                             n = new s.Table("CFF ", [

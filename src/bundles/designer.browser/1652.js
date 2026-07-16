@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(19), n(4), n(13), n(32), n(38), n(33), n(26));
-        var i = n(1),
-            a = n(15),
-            r = o(n(31)),
-            s = o(n(18));
+        var o = require(16);
+        (require(19), require(4), require(13), require(32), require(38), require(33), require(26));
+        var GObject = require(1),
+            GPlatform = require(15),
+            r = o(require(31)),
+            s = o(require(18 /* GCategory */));
         class l extends r.default {
             getId() {
                 return l.ID;
@@ -17,16 +17,16 @@ module.exports = function (e, t, n) {
                 return s.default.CATEGORY_MODIFY;
             }
             isVisible() {
-                return !1;
+                return false;
             }
             getShortcut() {
-                return [a.GKey.Constant.X];
+                return [GPlatform.GKey.Constant.X];
             }
             isEnabled() {
                 const e = gDesigner.getActiveDocument(),
                     t = e && e.getEditor(),
                     n = t && t.getSelection();
-                return !!(n && n.find((e) => e.hasMixin(i.GStylable)));
+                return !!(n && n.find((e) => e.hasMixin(GObject.GStylable)));
             }
             execute() {
                 const e = gDesigner.getActiveDocument(),
@@ -36,7 +36,7 @@ module.exports = function (e, t, n) {
                     t.beginTransaction();
                     try {
                         n.forEach((e) => {
-                            if (e.hasMixin(i.GStylable)) {
+                            if (e.hasMixin(GObject.GStylable)) {
                                 const t = e.getPaintLayers();
                                 if (t) {
                                     const n = this._createPaintLayers(l.Type.Border, t),
@@ -52,7 +52,7 @@ module.exports = function (e, t, n) {
                             }
                         });
                     } finally {
-                        t.commitTransaction(i.GLocale.get(this.getTitle()));
+                        t.commitTransaction(GObject.GLocale.get(this.getTitle()));
                     }
                 }
             }
@@ -62,32 +62,32 @@ module.exports = function (e, t, n) {
                     case l.Type.Fill:
                         return t.getBorderLayers().map((e) => {
                             const t = e.getProperties(n);
-                            return new i.GStylable.FillPaintLayer(...t);
+                            return new GObject.GStylable.FillPaintLayer(...t);
                         });
                     case l.Type.Border:
                         return t.getFillLayers().map((e) => {
                             const t = e.getProperties(n);
-                            return new i.GStylable.BorderPaintLayer(...t);
+                            return new GObject.GStylable.BorderPaintLayer(...t);
                         });
                     default:
                         throw Error("Not specified type given");
                 }
             }
             _setBorderAlignment(e, t) {
-                e instanceof i.GText
-                    ? t.setProperty("_ba", i.GStylable.BorderAlignment.Outside)
-                    : e instanceof i.GShape
-                      ? e instanceof i.GEllipse && e.$etp === i.GEllipse.Type.Arc
-                          ? t.setProperty("_ba", i.GStylable.BorderAlignment.Center)
-                          : t.setProperty("_ba", i.GStylable.BorderAlignment.Inside)
-                      : e instanceof i.GPath && !e.$closed && t.setProperty("_ba", i.GStylable.BorderAlignment.Center);
+                e instanceof GObject.GText
+                    ? t.setProperty("_ba", GObject.GStylable.BorderAlignment.Outside)
+                    : e instanceof GObject.GShape
+                      ? e instanceof GObject.GEllipse && e.$etp === GObject.GEllipse.Type.Arc
+                          ? t.setProperty("_ba", GObject.GStylable.BorderAlignment.Center)
+                          : t.setProperty("_ba", GObject.GStylable.BorderAlignment.Inside)
+                      : e instanceof GObject.GPath && !e.$closed && t.setProperty("_ba", GObject.GStylable.BorderAlignment.Center);
             }
             toString() {
                 return "[Object GSwapPaintLayersAction]";
             }
         }
         ((l.ID = "modify.swap-paint-layers"),
-            (l.TITLE = new i.GLocaleKey("GSwapPaintLayersAction", "title")),
+            (l.TITLE = new GObject.GLocaleKey("GSwapPaintLayersAction", "title")),
             (l.Type = { Fill: "fill", Border: "border" }),
-            (e.exports = l));
+            (module.exports = l));
     };

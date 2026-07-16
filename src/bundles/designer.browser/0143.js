@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        e.exports = function (e) {
-            return { iterator: e, next: e.next, done: !1 };
+        module.exports = function (e) {
+            return { iterator: e, next: e.next, done: false };
         };
     };

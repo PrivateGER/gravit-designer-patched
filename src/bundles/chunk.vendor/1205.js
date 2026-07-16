@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(95),
-                o = i(439),
-                a = i(601);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(95),
+                o = require(439),
+                a = require(601);
 
             function s() {
                 o.apply(this, arguments);
             }
-            (n.inherit(s, o),
+            (IsFiniteNonNegativeNumber.inherit(s, o),
                 (s.prototype._clones = null),
                 (s.prototype._deferredTransform = null),
                 (s.prototype.parse = function () {
@@ -45,7 +45,7 @@ module.exports = function (e, t, i) {
                 (s.prototype._imageStatusEvent = function (e) {
                     if (e.image === this._node) {
                         if (e.status === r.ImageStatus.Loaded) {
-                            o.prototype.parse.call(this, !0);
+                            o.prototype.parse.call(this, true);
                             var t = this._node.getGeometryBBox();
                             t ? this.transform(a.getTransformation(t, this._getGeometryBBox())) : this.transform(this._deferredTransform);
                         }
@@ -56,5 +56,5 @@ module.exports = function (e, t, i) {
                 (s.prototype._getRelatedNodeClass = function () {
                     return r;
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(1231),
-                o = i(1234),
-                a = i(197),
-                s = i(182),
-                l = i(338),
-                h = i(800),
-                A = i(391),
-                c = i(856),
-                p = i(1433),
-                u = i(708);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(1231),
+                o = require(1234),
+                a = require(197),
+                s = require(182),
+                l = require(338),
+                h = require(800),
+                A = require(391),
+                c = require(856),
+                p = require(1433),
+                u = require(708);
 
             function d(e, t, i) {
                 r.call(this, e);
@@ -58,7 +58,7 @@ module.exports = function (e, t, i) {
                     }
                 }
             }
-            (n.inherit(d, r),
+            (IsFiniteNonNegativeNumber.inherit(d, r),
                 (d.prototype._fontDescriptor = null),
                 (d.prototype._cidFontType2 = null),
                 (d.prototype._toUnicode = null),
@@ -112,5 +112,5 @@ module.exports = function (e, t, i) {
                 (d.prototype.toString = function () {
                     return "[GPDFCIDFontType]";
                 }),
-                (e.exports = d));
+                (module.exports = d));
         };

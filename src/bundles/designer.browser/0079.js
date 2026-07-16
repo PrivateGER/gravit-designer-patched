@@ -1,23 +1,23 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(35),
-            i = n(88),
-            a = n(401),
-            r = n(298);
-        e.exports = function (e, t, n, s) {
+        var o = require(35),
+            i = require(88),
+            a = require(401),
+            r = require(298);
+        module.exports = function (e, t, n, s) {
             s || (s = {});
             var l = s.enumerable,
                 c = void 0 !== s.name ? s.name : t;
             if ((o(n) && a(n, c, s), s.global)) l ? (e[t] = n) : r(t, n);
             else {
                 try {
-                    s.unsafe ? e[t] && (l = !0) : delete e[t];
+                    s.unsafe ? e[t] && (l = true) : delete e[t];
                 } catch (e) {}
                 l
                     ? (e[t] = n)
                     : i.f(e, t, {
                           value: n,
-                          enumerable: !1,
+                          enumerable: false,
                           configurable: !s.nonConfigurable,
                           writable: !s.nonWritable,
                       });

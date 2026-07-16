@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
-            var n = i(210),
-                r = i(0),
-                o = i(64),
-                a = i(6);
+module.exports = function (module, exports, require) {
+            var n = require(210),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(64),
+                a = require(6);
 
             function s(e) {
                 ((this._guides = e),
                     (this._scene = e._scene),
                     (this._allowedZones = [a.Side.TOP_LEFT, a.Side.CENTER, a.Side.BOTTOM_RIGHT]));
             }
-            (r.inherit(s, r),
+            (IsFiniteNonNegativeNumber.inherit(s, IsFiniteNonNegativeNumber),
                 (s.Visual = function () {}),
                 (s.Visual.prototype.paint = function (e, t) {}),
                 (s.Visual.prototype.toString = function () {
@@ -27,14 +27,14 @@ module.exports = function (e, t, i) {
                 (s.Map = function () {}),
                 (s.Map.prototype.map = function (e, t, i, n, r, o) {}),
                 (s.Map.prototype.isMappingAllowed = function (e) {
-                    var t = !0;
+                    var t = true;
                     return (
                         e === s.DetailMap.Mode.DetailOnFilterOn
                             ? (t = this.hasMixin(s.DetailMap))
-                            : e === s.DetailMap.Mode.DetailOffFilterOn && (t = !1),
+                            : e === s.DetailMap.Mode.DetailOffFilterOn && (t = false),
                         t &&
-                            (!n.options.disabled && o.modifiers.metaKey && (t = !1),
-                            n.options.disabled && !o.modifiers.metaKey && (t = !1)),
+                            (!n.options.disabled && o.modifiers.metaKey && (t = false),
+                            n.options.disabled && !o.modifiers.metaKey && (t = false)),
                         t
                     );
                 }),
@@ -55,7 +55,7 @@ module.exports = function (e, t, i) {
                     return this.hasMixin(s.Visual);
                 }),
                 (s.prototype.isRelativeToPage = function () {
-                    return !1;
+                    return false;
                 }),
                 (s.prototype.useExclusions = function (e) {
                     this._exclusions = e;
@@ -64,7 +64,7 @@ module.exports = function (e, t, i) {
                     this._exclusions = null;
                 }),
                 (s.prototype.isScopeSupported = function () {
-                    return !1;
+                    return false;
                 }),
                 (s.prototype.setScope = function (e) {}),
                 (s.prototype.getAllowedSnapZones = function () {
@@ -81,13 +81,13 @@ module.exports = function (e, t, i) {
                     return this._allowedZones.indexOf(e) > -1;
                 }),
                 (s.prototype.isFullPixelsGuide = function () {
-                    return !1;
+                    return false;
                 }),
                 (s.prototype.canMapWithFullPixelsGuide = function () {
-                    return !0;
+                    return true;
                 }),
                 (s.prototype.toString = function () {
                     return "[Object GGuide]";
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

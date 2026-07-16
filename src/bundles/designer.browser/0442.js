@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o() {}
         ((o.PAGE_CLIP_CONTENT_ENABLED = 2),
@@ -7,5 +7,5 @@ module.exports = function (e, t, n) {
             (o.EXPORT_PROPERTY_NAME = "__export"),
             (o.MULTIPAGE_VIEW_ENABLED = "mve"),
             (o.PropertiesToExcludeFromCopying = null),
-            (e.exports = o));
+            (module.exports = o));
     };

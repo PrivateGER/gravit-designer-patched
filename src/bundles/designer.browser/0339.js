@@ -1,20 +1,20 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(30), n(3), n(4), n(13));
-        var o = n(1),
-            i = n(15),
-            a = n(67),
-            r = n(1499),
-            s = n(1156),
-            l = n(444),
-            c = n(1157),
-            d = n(804);
+        (require(30), require(3), require(4), require(13));
+        var GObject = require(1),
+            GPlatform = require(15),
+            a = require(67),
+            r = require(1499),
+            s = require(1156),
+            l = require(444),
+            c = require(1157),
+            d = require(804);
         function u(e, t, n, o) {
             ((this._htmlElement = $("<li></li>").addClass("g-menu-item")),
                 (this._category = e || u.Type.Item),
                 (this._componentId = n || null),
-                (this._pro = !1),
-                (this._visible = !0),
+                (this._pro = false),
+                (this._visible = true),
                 (this._feature = null),
                 (this._detachBound = this._detach.bind(this)),
                 this._category === u.Type.Divider
@@ -32,40 +32,40 @@ module.exports = function (e, t, n) {
                 this._htmlElement.on("mousedown", this._mouseDown.bind(this)),
                 this._htmlElement.on("mouseup", this._mouseUp.bind(this)));
         }
-        (o.GObject.inherit(u, o.GEventTarget),
+        (GObject.GObject.inherit(u, GObject.GEventTarget),
             (u.Type = { Item: 0, Menu: 1, Divider: 2 }),
             (u.EnterEvent = function () {}),
-            o.GObject.inherit(u.EnterEvent, o.GEvent),
+            GObject.GObject.inherit(u.EnterEvent, GObject.GEvent),
             (u.EnterEvent.prototype.toString = function () {
                 return "[Object GMenuItem.EnterEvent]";
             }),
             (u.ENTER_EVENT = new u.EnterEvent()),
             (u.LeaveEvent = function () {}),
-            o.GObject.inherit(u.LeaveEvent, o.GEvent),
+            GObject.GObject.inherit(u.LeaveEvent, GObject.GEvent),
             (u.LeaveEvent.prototype.toString = function () {
                 return "[Object GMenuItem.LeaveEvent]";
             }),
             (u.LEAVE_EVENT = new u.LeaveEvent()),
             (u.ActivateEvent = function () {}),
-            o.GObject.inherit(u.ActivateEvent, o.GEvent),
+            GObject.GObject.inherit(u.ActivateEvent, GObject.GEvent),
             (u.ActivateEvent.prototype.toString = function () {
                 return "[Object GMenuItem.ActivateEvent]";
             }),
             (u.ACTIVATE_EVENT = new u.ActivateEvent()),
             (u.BeforeActivateEvent = function () {}),
-            o.GObject.inherit(u.BeforeActivateEvent, o.GEvent),
+            GObject.GObject.inherit(u.BeforeActivateEvent, GObject.GEvent),
             (u.BeforeActivateEvent.prototype.toString = function () {
                 return "[Object GMenuItem.BeforeActivateEvent]";
             }),
             (u.BEFORE_ACTIVATE_EVENT = new u.BeforeActivateEvent()),
             (u.UpdateEvent = function () {}),
-            o.GObject.inherit(u.UpdateEvent, o.GEvent),
+            GObject.GObject.inherit(u.UpdateEvent, GObject.GEvent),
             (u.UpdateEvent.prototype.toString = function () {
                 return "[Object GMenuItem.UpdateEvent]";
             }),
             (u.UPDATE_EVENT = new u.UpdateEvent()),
             (u.DetachEvent = function () {}),
-            o.GObject.inherit(u.DetachEvent, o.GEvent),
+            GObject.GObject.inherit(u.DetachEvent, GObject.GEvent),
             (u.DetachEvent.prototype.toString = function () {
                 return "[Object GMenuItem.DetachEvent]";
             }),
@@ -73,23 +73,23 @@ module.exports = function (e, t, n) {
             (u.prototype._category = null),
             (u.prototype._menu = null),
             (u.prototype._icon = null),
-            (u.prototype._forcedAsOpened = !1),
+            (u.prototype._forcedAsOpened = false),
             (u.prototype._caption = null),
             (u.prototype._shortcutHint = null),
             (u.prototype._action = null),
             (u.prototype._data = null),
-            (u.prototype._noHover = !1),
-            (u.prototype._pro = !1),
-            (u.prototype._visible = !0),
+            (u.prototype._noHover = false),
+            (u.prototype._pro = false),
+            (u.prototype._visible = true),
             (u.prototype._feature = null),
             (u.prototype._info = null),
             (u.prototype._uuid = null),
-            (u.prototype._detached = !1),
+            (u.prototype._detached = false),
             (u.prototype._detachBound = null),
             (u.prototype._isVisible = null),
-            (u.prototype._proFeatureInterruption = !0),
+            (u.prototype._proFeatureInterruption = true),
             (u.prototype.getUUID = function () {
-                return (this._uuid || (this._uuid = o.GUtil.uuid()), this._uuid);
+                return (this._uuid || (this._uuid = GObject.GUtil.uuid()), this._uuid);
             }),
             (u.prototype.getParent = function () {
                 return this._parent;
@@ -105,7 +105,7 @@ module.exports = function (e, t, n) {
             }),
             (u.prototype.setPro = function (e, t) {
                 ((this._pro = !!e), (this._feature = t), this._htmlElement.gPro({ pro: this._pro, feature: t }));
-                let n = !1;
+                let n = false;
                 const o = gDesigner.getLicense(),
                     i = o.isLegacy() && gDesigner.isLegacyFeature(t),
                     r = !i && (o.isFree() || gDesigner.isAnonymous() || o.isExpired());
@@ -146,8 +146,8 @@ module.exports = function (e, t, n) {
                     this._caption = e;
                     var t = this._htmlElement.find(".g-menu-item-caption");
                     (t.empty(),
-                        !this._caption || this._caption instanceof o.GLocaleKey || "string" == typeof this._caption
-                            ? t.html(this._caption ? o.GLocale.get(this._caption) : "")
+                        !this._caption || this._caption instanceof GObject.GLocaleKey || "string" == typeof this._caption
+                            ? t.html(this._caption ? GObject.GLocale.get(this._caption) : "")
                             : t.append(this._caption));
                 }
             }),
@@ -160,8 +160,8 @@ module.exports = function (e, t, n) {
                     const t = this._htmlElement.find(".g-menu-item-info").empty();
                     (this._htmlElement.css("display", this._info ? "" : "none"),
                         this._info &&
-                            (this._info instanceof o.GLocaleKey || "string" == typeof this._info
-                                ? t.text(this._info ? o.GLocale.get(this._info) : "")
+                            (this._info instanceof GObject.GLocaleKey || "string" == typeof this._info
+                                ? t.text(this._info ? GObject.GLocale.get(this._info) : "")
                                 : t.append(this._info)));
                 }
             }),
@@ -172,7 +172,7 @@ module.exports = function (e, t, n) {
                 this._shortcutHint = e;
                 var t = this._htmlElement.find(".g-menu-item-shortcut");
                 this._shortcutHint && this._shortcutHint.length > 0
-                    ? (t.text(i.GKey.shortcutToString(e)), t.css("display", ""), this._htmlElement.addClass("has-shortcut"))
+                    ? (t.text(GPlatform.GKey.shortcutToString(e)), t.css("display", ""), this._htmlElement.addClass("has-shortcut"))
                     : (t.empty(), t.css("display", "none"), this._htmlElement.removeClass("has-shortcut"));
             }),
             (u.prototype.getAction = function () {
@@ -194,12 +194,12 @@ module.exports = function (e, t, n) {
                             this.setCaption(this._action.getTitle()),
                             this.setInfo(this._action.getInfo()),
                             this.setIcon(this._action.getIcon()),
-                            this.setEnabled(!0 === this._action.isEnabled()),
+                            this.setEnabled(true === this._action.isEnabled()),
                             this.setVisible(this._action.isVisible()),
                             t)
                         ) {
                             let e = this._action.getTooltipConfig(t);
-                            e && this.setTooltipConfig(a.GRichTooltipConfig.from(Object.assign({}, e.getConfig(), { side: !0 })));
+                            e && this.setTooltipConfig(a.GRichTooltipConfig.from(Object.assign({}, e.getConfig(), { side: true })));
                         }
                     }
                 }
@@ -225,18 +225,18 @@ module.exports = function (e, t, n) {
                 const t = this._htmlElement.find(".g-menu-item-detach").css("display", e ? "" : "none");
                 e
                     ? (t.on("click", this._detachBound),
-                      t[0].addEventListener("mousedown", this._stopPropagationEventListener, !0),
-                      t[0].addEventListener("mouseup", this._stopPropagationEventListener, !0))
+                      t[0].addEventListener("mousedown", this._stopPropagationEventListener, true),
+                      t[0].addEventListener("mouseup", this._stopPropagationEventListener, true))
                     : (t.off("click", this._detachBound),
-                      t[0].removeEventListener("mousedown", this._stopPropagationEventListener, !0),
-                      t[0].removeEventListener("mouseup", this._stopPropagationEventListener, !0));
+                      t[0].removeEventListener("mousedown", this._stopPropagationEventListener, true),
+                      t[0].removeEventListener("mouseup", this._stopPropagationEventListener, true));
             }),
             (u.prototype._stopPropagationEventListener = function (e) {
                 e.stopPropagation();
             }),
             (u.prototype._detach = function (e) {
-                if (e.button == i.GMouseEvent.BUTTON_LEFT) {
-                    (e.stopPropagation(), e.preventDefault(), (this._detached = !0));
+                if (e.button == GPlatform.GMouseEvent.BUTTON_LEFT) {
+                    (e.stopPropagation(), e.preventDefault(), (this._detached = true));
                     const t = this._parent;
                     (t && (t.removeItem(t.indexOf(this)), t.close()),
                         this.hasEventListeners(u.DetachEvent) && this.trigger(new u.DetachEvent()));
@@ -305,7 +305,7 @@ module.exports = function (e, t, n) {
                     this.hasEventListeners(u.UpdateEvent) && this.trigger(u.UPDATE_EVENT));
             }),
             (u.prototype.activate = function () {
-                let e = !1;
+                let e = false;
                 const t = () => {
                     let e,
                         t = this.getParent();
@@ -320,7 +320,7 @@ module.exports = function (e, t, n) {
                     var n = "execute";
                     (this._action.isPro() && !gDesigner.isEnabledProFeatures(this._action.getId()) && (n = "nonprotriespro"),
                         this._action.execute(),
-                        (e = !0));
+                        (e = true));
                     var o = this._action.statsValue() || this._action.getId();
                     i && "context" === i.__which
                         ? gDesigner.stats("action_" + n + "_context", o)
@@ -347,7 +347,7 @@ module.exports = function (e, t, n) {
                                       : gDesigner.stats("action_nonprotriespro_toolbar", this._feature),
                                 gDesigner.handlePROFeatureInterruption());
                         }
-                        return !1;
+                        return false;
                     }
                     (this.hasEventListeners(u.ActivateEvent) && this.trigger(u.ACTIVATE_EVENT),
                         this._parent && this._parent.hasEventListeners(r) && this._parent.trigger(new r(this)));
@@ -364,7 +364,7 @@ module.exports = function (e, t, n) {
                     this._category === u.Type.Menu &&
                     this._parent.getActiveItem() !== this &&
                     !this.isRootItem() &&
-                    this._parent.closeMenus(!0),
+                    this._parent.closeMenus(true),
                     this._parent &&
                         "function" == typeof this._parent.toString &&
                         "[Object GMenu]" === this._parent.toString() &&
@@ -372,7 +372,7 @@ module.exports = function (e, t, n) {
                         this._parent.closeMenus(),
                     this.isEnabled() &&
                         (this._category == u.Type.Menu &&
-                            o.GSystem.hardware === o.GSystem.Hardware.Desktop &&
+                            GObject.GSystem.hardware === GObject.GSystem.Hardware.Desktop &&
                             (!this.isRootItem() || (this.isRootMenuBarItem() && this.getMenuBar().isActive())) &&
                             this._openMenu(),
                         this._category != u.Type.Divider &&
@@ -386,7 +386,7 @@ module.exports = function (e, t, n) {
                 e ? this._htmlElement.addClass("g-active") : this._htmlElement.removeClass("g-active");
             }),
             (u.prototype._mouseOut = function (e) {
-                if (this._category === u.Type.Menu && (this.isRootItem() || o.GSystem.hardware !== o.GSystem.Hardware.Desktop))
+                if (this._category === u.Type.Menu && (this.isRootItem() || GObject.GSystem.hardware !== GObject.GSystem.Hardware.Desktop))
                     return (e.stopPropagation(), void e.preventDefault());
                 this.isEnabled() &&
                     this._category != u.Type.Divider &&
@@ -396,31 +396,31 @@ module.exports = function (e, t, n) {
             (u.prototype._mouseDown = function (e) {
                 e.cancelable &&
                     (this.isEnabled()
-                        ? e.button == i.GMouseEvent.BUTTON_LEFT
+                        ? e.button == GPlatform.GMouseEvent.BUTTON_LEFT
                             ? (e.stopPropagation(),
                               e.preventDefault(),
                               this._category === u.Type.Menu &&
                                   (this._forcedAsOpened
-                                      ? (this.getMenu().close(), (this._forcedAsOpened = !1))
-                                      : (this._parent && (this._parent.closeMenus(!0), this._parent.setActiveItem(this)),
+                                      ? (this.getMenu().close(), (this._forcedAsOpened = false))
+                                      : (this._parent && (this._parent.closeMenus(true), this._parent.setActiveItem(this)),
                                         this._openMenu(),
-                                        (this._forcedAsOpened = !0))))
-                            : (e.button, i.GMouseEvent.BUTTON_MIDDLE, e.stopPropagation(), e.preventDefault())
-                        : gDesigner.isTouchEnabled() && e.button === i.GMouseEvent.BUTTON_LEFT && e.stopPropagation());
+                                        (this._forcedAsOpened = true))))
+                            : (e.button, GPlatform.GMouseEvent.BUTTON_MIDDLE, e.stopPropagation(), e.preventDefault())
+                        : gDesigner.isTouchEnabled() && e.button === GPlatform.GMouseEvent.BUTTON_LEFT && e.stopPropagation());
             }),
             (u.prototype._mouseUp = function (e) {
                 if (
                     e.cancelable &&
                     (e.stopPropagation(),
                     e.preventDefault(),
-                    e.button != i.GMouseEvent.BUTTON_MIDDLE &&
-                        e.button != i.GMouseEvent.BUTTON_RIGHT &&
+                    e.button != GPlatform.GMouseEvent.BUTTON_MIDDLE &&
+                        e.button != GPlatform.GMouseEvent.BUTTON_RIGHT &&
                         !this._detached &&
                         this._category !== u.Type.Menu)
                 ) {
                     if ((this.isRootMenuBarItem() || this._mouseOut(e), this._category == u.Type.Item)) {
                         let e = this.activate();
-                        this.isEnabled() && !1 !== e && c.triggerGlobalActivation(this);
+                        this.isEnabled() && false !== e && c.triggerGlobalActivation(this);
                     }
                     this.isRootMenuBarItem() || c.setActiveMenu(null);
                 }
@@ -436,12 +436,12 @@ module.exports = function (e, t, n) {
                 (this._htmlElement.addClass("g-active"), this.isRootItem() && this._parent._parent._htmlElement.addClass("g-active"));
             }),
             (u.prototype._menuClose = function () {
-                ((this._forcedAsOpened = !1),
+                ((this._forcedAsOpened = false),
                     this._htmlElement.removeClass("g-active"),
                     this.isRootItem() && this._parent._parent._htmlElement.removeClass("g-active"));
             }),
             (u.prototype.toString = function () {
                 return "[Object GMenuItem]";
             }),
-            (e.exports = u));
+            (module.exports = u));
     };

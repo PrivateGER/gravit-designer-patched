@@ -1,23 +1,23 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(19), n(57), n(91), n(4), n(13), n(97), n(26));
-        var i = n(53),
-            a = n(1),
-            r = n(15),
-            s = n(40),
-            l = n(67),
-            c = n(1351),
-            d = o(n(565)),
-            u = o(n(135)),
-            p = n(451).GVirtualTree,
-            g = n(451).GVirtualTreeNodeNamed,
-            { VTREE_FREE_HEIGHT: h, VTREE_FREE_HEIGHT_TOUCH: f } = n(10),
-            m = n(450),
+        var o = require(16);
+        (require(19), require(57), require(91), require(4), require(13), require(97), require(26));
+        var i = require(53),
+            GObject = require(1),
+            GPlatform = require(15),
+            GSaveAction = require(40),
+            l = require(67),
+            c = require(1351),
+            d = o(require(565)),
+            u = o(require(135)),
+            p = require(451 /* GVirtualTree */).GVirtualTree,
+            g = require(451 /* GVirtualTree */).GVirtualTreeNodeNamed,
+            { VTREE_FREE_HEIGHT: h, VTREE_FREE_HEIGHT_TOUCH: f } = require(10 /* designerConfig */),
+            m = require(450),
             y = ["name"];
         function v() {}
         function _(e, t, n, o, i) {
-            var a = !0,
+            var a = true,
                 r = $(this).data("glayerpanel");
             if (r.options.canDropCallback) {
                 for (
@@ -39,12 +39,12 @@ module.exports = function (e, t, n) {
             return a;
         }
         function b(e, t, n, o) {
-            if (!n || !n.length || !e) return !1;
+            if (!n || !n.length || !e) return false;
             if (!gDesigner.isEnabledProFeatures()) {
-                if ((0, s.isSymbolInstance)(e)) return !1;
-                if (n.some((e) => e instanceof a.GSymbol) && (0, s.isSymbol)(e)) return !1;
+                if ((0, GSaveAction.isSymbolInstance)(e)) return false;
+                if (n.some((e) => e instanceof GObject.GSymbol) && (0, GSaveAction.isSymbol)(e)) return false;
             }
-            for (var r = !0, l = 0; l < n.length && r; ++l)
+            for (var r = true, l = 0; l < n.length && r; ++l)
                 (r = !e.isLocked() && n[l].validateInsertion(e, t) && i.GEditor.validateBlockInsertion(e, n[l], t)) && o.push[l];
             return r;
         }
@@ -87,7 +87,7 @@ module.exports = function (e, t, n) {
         }
         function S(e) {
             var t = T.call(this, e.id);
-            t && (e.expanded ? t.setFlag(a.GNode.Flag.Expanded) : t.removeFlag(a.GNode.Flag.Expanded));
+            t && (e.expanded ? t.setFlag(GObject.GNode.Flag.Expanded) : t.removeFlag(GObject.GNode.Flag.Expanded));
         }
         function E(e, t) {
             var n = $(this).data("glayerpanel");
@@ -119,7 +119,7 @@ module.exports = function (e, t, n) {
                 n = $(this).data("glayerpanel").layersTreeNodeMapByNodes;
             e.accept(
                 function (e) {
-                    if (e instanceof a.GLayer || e instanceof a.GItem) {
+                    if (e instanceof GObject.GLayer || e instanceof GObject.GItem) {
                         var o = n.get(e);
                         o && (n.delete(e), (t[o.treeId] = null));
                     }
@@ -136,8 +136,8 @@ module.exports = function (e, t, n) {
                 r.element = _;
                 var b = this;
                 if (
-                    (s.hasFlag(a.GElement.Flag.PartialLocked) ||
-                        _.attr("draggable", !0)
+                    (s.hasFlag(GObject.GElement.Flag.PartialLocked) ||
+                        _.attr("draggable", true)
                             .attr("data-drag-mode", d.default.PRESS_AND_HOLD)
                             .on("dragstart", function (e) {
                                 if (o.options.startDraggingCallback) {
@@ -162,21 +162,21 @@ module.exports = function (e, t, n) {
                                                 }.bind(this),
                                                 0
                                             ));
-                                    } else $(this).attr("draggable", !1);
+                                    } else $(this).attr("draggable", false);
                                 }
                             }),
                     !o.blockHighlight)
                 ) {
-                    var w = s.hasFlag(a.GNode.Flag.Highlighted);
+                    var w = s.hasFlag(GObject.GNode.Flag.Highlighted);
                     (w ||
                         t ||
-                        !s.hasMixin(a.GNode.Container) ||
+                        !s.hasMixin(GObject.GNode.Container) ||
                         (w = s.acceptChildren(
                             function (e) {
-                                return e.hasFlag(a.GNode.Flag.Highlighted);
+                                return e.hasFlag(GObject.GNode.Flag.Highlighted);
                             },
-                            !1,
-                            !0
+                            false,
+                            true
                         )),
                         y.toggleClass("g-highlighted-row", w));
                 }
@@ -196,16 +196,16 @@ module.exports = function (e, t, n) {
                                     function () {
                                         s.setProperty("name", e);
                                     },
-                                    a.GLocale.get(new a.GLocaleKey("GLayerPanel", "action.rename-layer"))
+                                    GObject.GLocale.get(new GObject.GLocaleKey("GLayerPanel", "action.rename-layer"))
                                 );
                         },
                     });
                 var C = R(s);
                 C &&
-                    !C.inSync(s, !0) &&
+                    !C.inSync(s, true) &&
                     $("<span></span>")
                         .addClass("layer-action layer-synchronize gravit-icon-refresh")
-                        .attr("data-title", a.GLocale.get(new a.GLocaleKey("GLayerPanel", "action.reset-instance")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GLayerPanel", "action.reset-instance")))
                         .on("click", function (e) {
                             (gDesigner.stats("layers_click_symbol-reset"),
                                 e.stopPropagation(),
@@ -214,7 +214,7 @@ module.exports = function (e, t, n) {
                                     function () {
                                         C.synchronize(s);
                                     },
-                                    a.GLocale.get(new a.GLocaleKey("GLayerPanel", "action.reset-instance"))
+                                    GObject.GLocale.get(new GObject.GLocaleKey("GLayerPanel", "action.reset-instance"))
                                 ));
                         })
                         .appendTo(y);
@@ -223,15 +223,15 @@ module.exports = function (e, t, n) {
                     $("<span></span>")
                         .addClass("layer-action layer-lock " + x)
                         .toggleClass("g-active", !!g)
-                        .attr("data-title", a.GLocale.get(new a.GLocaleKey("GCommonNames", "action.toggle-lock")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-lock")))
                         .on("click", function (e) {
                             (e.stopPropagation(), J.toggleLockStatusOfLayerOrItem(s));
                         })
                         .appendTo(y)
                         .gRichTooltip(
                             l.GRichTooltipConfig.from({
-                                title: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.layer-toggle-lock-tooltip-title")),
-                                description: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.layer-toggle-lock-tooltip-description")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.layer-toggle-lock-tooltip-title")),
+                                description: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.layer-toggle-lock-tooltip-description")),
                                 learnMore: "/docs/organizing-your-designs/objects/#locking-objects",
                             })
                         ),
@@ -242,26 +242,26 @@ module.exports = function (e, t, n) {
                     $("<span></span>")
                         .addClass("layer-action layer-visibility " + S)
                         .toggleClass("g-active", p)
-                        .attr("data-title", a.GLocale.get(new a.GLocaleKey("GCommonNames", "action.toggle-visibility")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-visibility")))
                         .on("click", function (e) {
                             (e.stopPropagation(), J.toggleHideStatusOfLayerOrItem(s));
                         })
                         .appendTo(y)
                         .gRichTooltip(
                             l.GRichTooltipConfig.from({
-                                title: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.layer-toggle-visibility-tooltip-title")),
-                                description: a.GLocale.get(
-                                    new a.GLocaleKey("GCommonNames", "text.layer-toggle-visibility-tooltip-description")
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.layer-toggle-visibility-tooltip-title")),
+                                description: GObject.GLocale.get(
+                                    new GObject.GLocaleKey("GCommonNames", "text.layer-toggle-visibility-tooltip-description")
                                 ),
                                 learnMore: "/docs/organizing-your-designs/objects/#hiding-objects",
                             })
                         ),
-                    s instanceof a.GLayer)
+                    s instanceof GObject.GLayer)
                 ) {
                     $("<span></span>")
                         .addClass("layer-action layer-outline gravit-icon-" + (h ? "ellipse" : "circle"))
                         .toggleClass("g-active", h)
-                        .attr("data-title", a.GLocale.get(new a.GLocaleKey("GLayerPanel", "action.toggle-outline")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GLayerPanel", "action.toggle-outline")))
                         .on("click", function (e) {
                             (gDesigner.stats("layers_toggle_outline"), e.stopPropagation());
                             var t = $(this);
@@ -273,12 +273,12 @@ module.exports = function (e, t, n) {
                                             t.toggleClass("gravit-icon-ellipse", s.getProperty("otl")),
                                             t.toggleClass("gravit-icon-circle", !s.getProperty("otl")));
                                     },
-                                    a.GLocale.get(new a.GLocaleKey("GLayerPanel", "action.toggle-outline"))
+                                    GObject.GLocale.get(new GObject.GLocaleKey("GLayerPanel", "action.toggle-outline"))
                                 );
                         })
                         .gRichTooltip(
                             l.GRichTooltipConfig.from({
-                                title: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.layer-toggle-outline-tooltip-title")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.layer-toggle-outline-tooltip-title")),
                                 learnMore:
                                     "/docs/organizing-your-designs/layer-groups/#extra-properties-of-the-layer-groups",
                             })
@@ -287,10 +287,10 @@ module.exports = function (e, t, n) {
                     $("<span></span>")
                         .addClass("layer-color")
                         .gPatternChooser({
-                            types: [a.GColor],
-                            hasOpacity: !1,
-                            asButton: !1,
-                            simplified: !0,
+                            types: [GObject.GColor],
+                            hasOpacity: false,
+                            asButton: false,
+                            simplified: true,
                         })
                         .gPatternChooser("value", s.getProperty("cls"))
                         .on("patternchange", function (e, t, n, o) {
@@ -301,20 +301,20 @@ module.exports = function (e, t, n) {
                                         var e = s.getProperty("cls");
                                         (s.setProperty("cls", t),
                                             s.acceptChildren(function (n) {
-                                                if (n instanceof a.GLayer) {
+                                                if (n instanceof GObject.GLayer) {
                                                     var o = n.getProperty("cls");
-                                                    a.GUtil.equals(o, e) && n.setProperty("cls", t);
+                                                    GObject.GUtil.equals(o, e) && n.setProperty("cls", t);
                                                 }
                                             }));
                                     },
-                                    a.GLocale.get(new a.GLocaleKey("GLayerPanel", "action.change-layer-color"))
+                                    GObject.GLocale.get(new GObject.GLocaleKey("GLayerPanel", "action.change-layer-color"))
                                 );
                         })
                         .on("chooseropen", function () {
-                            o.options.patternChooserStatusChangeCallBack(!0);
+                            o.options.patternChooserStatusChangeCallBack(true);
                         })
                         .on("chooserclose", function (e, t, n) {
-                            o.options.patternChooserStatusChangeCallBack(!1);
+                            o.options.patternChooserStatusChangeCallBack(false);
                         })
                         .appendTo(y);
                 }
@@ -332,48 +332,48 @@ module.exports = function (e, t, n) {
         }
         function k(e, t, n) {
             var o = new g(e);
-            return (n && (o.expanded = !0), $(this).data("glayerpanel").vtree.insertNodeBefore(t, o), o);
+            return (n && (o.expanded = true), $(this).data("glayerpanel").vtree.insertNodeBefore(t, o), o);
         }
         function O(e, t, n) {
             var o = new g(e);
-            return (n && (o.expanded = !0), $(this).data("glayerpanel").vtree.appendNode(t, o), o);
+            return (n && (o.expanded = true), $(this).data("glayerpanel").vtree.appendNode(t, o), o);
         }
         function F(e) {
             $(this).data("glayerpanel").vtree.removeNode(e);
         }
         function R(e) {
             do {
-                if (e instanceof a.GSymbol) return e.isMaster() ? null : e;
+                if (e instanceof GObject.GSymbol) return e.isMaster() ? null : e;
                 e = e.getParent();
             } while (e);
             return null;
         }
         function M(e, t) {
-            var n = a.GUtil.uuid(),
+            var n = GObject.GUtil.uuid(),
                 o = $(this).data("glayerpanel"),
                 i = o.vtree;
             if (
                 !t &&
                 e.getParent() &&
-                e.getParent().hasMixin(a.GNode.Container) &&
-                !(e.getParent() instanceof a.GScene) &&
-                !(e.getParent() instanceof a.GPage) &&
+                e.getParent().hasMixin(GObject.GNode.Container) &&
+                !(e.getParent() instanceof GObject.GScene) &&
+                !(e.getParent() instanceof GObject.GPage) &&
                 !P.call(this, e.getParent())
             )
                 return;
             i.beginUpdate();
             const r = (function (e) {
                 let t = e.getPrevious();
-                for (; t && !(t instanceof a.GElement); ) t = t.getPrevious();
+                for (; t && !(t instanceof GObject.GElement); ) t = t.getPrevious();
                 return t;
             })(e);
             var s,
                 l = r ? D.call(this, r) : null;
-            if (l) s = k.call(this, n, l, e.hasFlag(a.GNode.Flag.Expanded));
+            if (l) s = k.call(this, n, l, e.hasFlag(GObject.GNode.Flag.Expanded));
             else {
                 var c = e.getParent(),
-                    d = !c || c instanceof a.GScene || c instanceof a.GPage ? null : D.call(this, c);
-                s = O.call(this, n, d, e.hasFlag(a.GNode.Flag.Expanded));
+                    d = !c || c instanceof GObject.GScene || c instanceof GObject.GPage ? null : D.call(this, c);
+                s = O.call(this, n, d, e.hasFlag(GObject.GNode.Flag.Expanded));
             }
             if (
                 ((o.layersTreeNodeMap[n] = { element: null, node: e, treeNode: s }),
@@ -382,10 +382,10 @@ module.exports = function (e, t, n) {
                     treeNode: s,
                     treeId: n,
                 }),
-                e.hasMixin(a.GNode.Container))
+                e.hasMixin(GObject.GNode.Container))
             )
                 for (var u = e.getFirstChild(); null !== u; u = u.getNext())
-                    (u instanceof a.GLayer || u instanceof a.GItem) && M.call(this, u, t);
+                    (u instanceof GObject.GLayer || u instanceof GObject.GItem) && M.call(this, u, t);
             i.endUpdate();
         }
         function N(e) {
@@ -399,50 +399,50 @@ module.exports = function (e, t, n) {
             $(this).data("glayerpanel");
             var t = e.targetNode;
             if (
-                t instanceof a.GLayer ||
-                (t instanceof a.GItem &&
+                t instanceof GObject.GLayer ||
+                (t instanceof GObject.GItem &&
                     !(
-                        t instanceof a.GPathBase &&
+                        t instanceof GObject.GPathBase &&
                         t.getParent() &&
-                        (t.getParent() instanceof a.GPGEdge || t.getParent() instanceof a.GCompoundPath.Paths)
+                        (t.getParent() instanceof GObject.GPGEdge || t.getParent() instanceof GObject.GCompoundPath.Paths)
                     ))
             )
                 switch (e.type) {
-                    case a.GSymbol.AfterSiblingUpdate.INSERT:
+                    case GObject.GSymbol.AfterSiblingUpdate.INSERT:
                         M.call(this, t);
                         break;
-                    case a.GSymbol.AfterSiblingUpdate.REMOVE:
+                    case GObject.GSymbol.AfterSiblingUpdate.REMOVE:
                         N.call(this, t);
                 }
         }
         function j(e) {
             B($(this).data("glayerpanel"), e.node) &&
-                (e.node instanceof a.GLayer ||
-                    (e.node instanceof a.GItem &&
+                (e.node instanceof GObject.GLayer ||
+                    (e.node instanceof GObject.GItem &&
                         !(
-                            e.node instanceof a.GPathBase &&
+                            e.node instanceof GObject.GPathBase &&
                             e.node.getParent() &&
-                            (e.node.getParent() instanceof a.GPGEdge || e.node.getParent() instanceof a.GCompoundPath.Paths)
+                            (e.node.getParent() instanceof GObject.GPGEdge || e.node.getParent() instanceof GObject.GCompoundPath.Paths)
                         ) &&
                         !(function (e) {
                             var t = e.getScene();
                             if (t) {
                                 var n = e.getPage(),
                                     o = t.getActivePage();
-                                if (o && n && n !== o) return !0;
+                                if (o && n && n !== o) return true;
                             }
-                            return !1;
+                            return false;
                         })(e.node))) &&
                 M.call(this, e.node);
         }
         function K(e) {
-            B($(this).data("glayerpanel"), e.node) && (e.node instanceof a.GLayer || e.node instanceof a.GItem) && N.call(this, e.node);
+            B($(this).data("glayerpanel"), e.node) && (e.node instanceof GObject.GLayer || e.node instanceof GObject.GItem) && N.call(this, e.node);
         }
         function V(e) {
             e.temporary ||
                 (!$(this).data("glayerpanel").blockHandlers &&
                     (e.properties.some((e) => y.indexOf(e) >= 0) || R(e.node)) &&
-                    (e.node instanceof a.GLayer || e.node instanceof a.GItem) &&
+                    (e.node instanceof GObject.GLayer || e.node instanceof GObject.GItem) &&
                     $(this).data("glayerpanel").vtree.requestInvalidation());
         }
         function H() {
@@ -456,37 +456,37 @@ module.exports = function (e, t, n) {
                 n = $(this).data("glayerpanel").vtree;
             let { onlyUpdateStyle: o } = t;
             if (B(t, e.node)) {
-                var i = !1;
-                if (e.node instanceof a.GLayer || e.node instanceof a.GItem)
+                var i = false;
+                if (e.node instanceof GObject.GLayer || e.node instanceof GObject.GItem)
                     if (
-                        e.flag === a.GElement.Flag.Hidden ||
-                        e.flag === a.GElement.Flag.PartialLocked ||
-                        e.flag === a.GElement.Flag.FullLocked ||
-                        e.flag === a.GNode.Flag.Selected ||
-                        e.flag === a.GNode.Flag.Active
+                        e.flag === GObject.GElement.Flag.Hidden ||
+                        e.flag === GObject.GElement.Flag.PartialLocked ||
+                        e.flag === GObject.GElement.Flag.FullLocked ||
+                        e.flag === GObject.GNode.Flag.Selected ||
+                        e.flag === GObject.GNode.Flag.Active
                     ) {
                         var r = e.node.getPage(),
                             s = e.node.getScene(),
                             l = s && s.getActivePage();
-                        (l && r && l !== r) || ((i = !0), o || (o = e.flag === a.GNode.Flag.Active));
-                    } else if (!t.blockHighlight && e.flag === a.GNode.Flag.Highlighted) {
+                        (l && r && l !== r) || ((i = true), o || (o = e.flag === GObject.GNode.Flag.Active));
+                    } else if (!t.blockHighlight && e.flag === GObject.GNode.Flag.Highlighted) {
                         var c = e.node,
                             d = function (e) {
                                 var t = D.call(this, e);
                                 return t && t.isVisible();
                             }.bind(this);
-                        (d(c) || c.findParent(d)) && (i = !0);
+                        (d(c) || c.findParent(d)) && (i = true);
                     }
                 if (
                     gDesigner.getSetting("auto_expand_layers") &&
-                    e.flag === a.GNode.Flag.Selected &&
+                    e.flag === GObject.GNode.Flag.Selected &&
                     e.node &&
-                    e.node.hasFlag(a.GNode.Flag.Selected)
+                    e.node.hasFlag(GObject.GNode.Flag.Selected)
                 ) {
                     var u = D.call(this, e.node);
-                    u && (n.expandAndFocus(u, i) ? (t.currentFocus = u) : (i = !0));
+                    u && (n.expandAndFocus(u, i) ? (t.currentFocus = u) : (i = true));
                 }
-                (e.node instanceof a.GPage && e.flag === a.GNode.Flag.Active && (X.call(this), q.call(this), (i = !1)),
+                (e.node instanceof GObject.GPage && e.flag === GObject.GNode.Flag.Active && (X.call(this), q.call(this), (i = false)),
                     i &&
                         (o
                             ? setTimeout((t) => {
@@ -499,7 +499,7 @@ module.exports = function (e, t, n) {
             var e = $(this).data("glayerpanel");
             if ((e.vtree.beginUpdate(), e.scene && e.scene.getActivePage()))
                 for (var t = e.scene.getActivePage().getFirstChild(); null !== t; t = t.getNext())
-                    (t instanceof a.GLayer || t instanceof a.GItem) && M.call(this, t, !0);
+                    (t instanceof GObject.GLayer || t instanceof GObject.GItem) && M.call(this, t, true);
             (e.vtree.endUpdate(), Y.call(this));
         }
         function Y() {
@@ -520,18 +520,18 @@ module.exports = function (e, t, n) {
             if (!n) return null;
             var o = n.element,
                 i = o.parent(),
-                r = !1;
-            if (e.hasMixin(a.GNode.Container))
+                r = false;
+            if (e.hasMixin(GObject.GNode.Container))
                 for (var s = e.getFirstChild(); null !== s && !r; s = s.getNext())
-                    s instanceof a.GItem && s.hasFlag(a.GNode.Flag.Selected) && (r = !0);
-            (e.getParent() && e instanceof a.GItem && Q.call(this, e.getParent()),
+                    s instanceof GObject.GItem && s.hasFlag(GObject.GNode.Flag.Selected) && (r = true);
+            (e.getParent() && e instanceof GObject.GItem && Q.call(this, e.getParent()),
                 i
-                    .toggleClass("g-active", e.hasFlag(a.GNode.Flag.Active))
-                    .toggleClass("g-selected", e.hasFlag(a.GNode.Flag.Selected))
+                    .toggleClass("g-active", e.hasFlag(GObject.GNode.Flag.Active))
+                    .toggleClass("g-selected", e.hasFlag(GObject.GNode.Flag.Selected))
                     .toggleClass("g-has-selection", r),
-                o.toggleClass("g-selected", e.hasFlag(a.GNode.Flag.Selected)));
+                o.toggleClass("g-selected", e.hasFlag(GObject.GNode.Flag.Selected)));
         }
-        a.GObject.inheritAndMix(v, a.GObject);
+        GObject.GObject.inheritAndMix(v, GObject.GObject);
         var J = {
             init: function (e) {
                 return (
@@ -582,7 +582,7 @@ module.exports = function (e, t, n) {
                                     e.upSeparatorSpan2Style,
                                     e.downSeparatorSpan1Style,
                                     e.downSeparatorSpan2Style,
-                                    !1,
+                                    false,
                                     15,
                                     21
                                 ),
@@ -609,18 +609,18 @@ module.exports = function (e, t, n) {
                     n = t.data("glayerpanel");
                 if (!arguments.length) return n.scene;
                 if (e !== n.scene) {
-                    if (n.scene && n.scene.hasMixin(a.GEventTarget))
-                        (n.scene.removeEventListener(a.GNode.AfterInsertEvent, n.afterNodeInsertHandler, this),
-                            n.scene.removeEventListener(a.GNode.BeforeRemoveEvent, n.beforeNodeRemoveHandler, this),
-                            n.scene.removeEventListener(a.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
-                            n.scene.removeEventListener(a.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this),
-                            n.scene.removeEventListener(a.GSymbol.AfterSiblingUpdate, n.afterSiblingUpdate, this),
+                    if (n.scene && n.scene.hasMixin(GObject.GEventTarget))
+                        (n.scene.removeEventListener(GObject.GNode.AfterInsertEvent, n.afterNodeInsertHandler, this),
+                            n.scene.removeEventListener(GObject.GNode.BeforeRemoveEvent, n.beforeNodeRemoveHandler, this),
+                            n.scene.removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
+                            n.scene.removeEventListener(GObject.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this),
+                            n.scene.removeEventListener(GObject.GSymbol.AfterSiblingUpdate, n.afterSiblingUpdate, this),
                             gDesigner.removeEventListener(u.default, n.settingChangedEvent, this),
                             (o = n.scene.getWorkspace()) &&
-                                o.getFontManager().removeEventListener(a.GFontManager.FontAvailableEvent, n.fontAvailableEvent, this));
+                                o.getFontManager().removeEventListener(GObject.GFontManager.FontAvailableEvent, n.fontAvailableEvent, this));
                     if ((X.call(this), (n.scene = e), n.scene)) {
                         var o;
-                        if (n.scene.hasMixin(a.GEventTarget))
+                        if (n.scene.hasMixin(GObject.GEventTarget))
                             ((n.afterNodeInsertHandler = j.bind(this)),
                                 (n.beforeNodeRemoveHandler = K.bind(this)),
                                 (n.afterPropertiesChangeHandler = V.bind(this)),
@@ -628,14 +628,14 @@ module.exports = function (e, t, n) {
                                 (n.afterSiblingUpdate = U.bind(this)),
                                 (n.fontAvailableEvent = H.bind(this)),
                                 (n.settingChangedEvent = W.bind(this)),
-                                n.scene.addEventListener(a.GSymbol.AfterSiblingUpdate, n.afterSiblingUpdate, this),
-                                n.scene.addEventListener(a.GNode.AfterInsertEvent, n.afterNodeInsertHandler, this),
-                                n.scene.addEventListener(a.GNode.BeforeRemoveEvent, n.beforeNodeRemoveHandler, this),
-                                n.scene.addEventListener(a.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
-                                n.scene.addEventListener(a.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this),
+                                n.scene.addEventListener(GObject.GSymbol.AfterSiblingUpdate, n.afterSiblingUpdate, this),
+                                n.scene.addEventListener(GObject.GNode.AfterInsertEvent, n.afterNodeInsertHandler, this),
+                                n.scene.addEventListener(GObject.GNode.BeforeRemoveEvent, n.beforeNodeRemoveHandler, this),
+                                n.scene.addEventListener(GObject.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
+                                n.scene.addEventListener(GObject.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this),
                                 gDesigner.addEventListener(u.default, n.settingChangedEvent, this),
                                 (o = n.scene.getWorkspace()) &&
-                                    o.getFontManager().addEventListener(a.GFontManager.FontAvailableEvent, n.fontAvailableEvent, this));
+                                    o.getFontManager().addEventListener(GObject.GFontManager.FontAvailableEvent, n.fontAvailableEvent, this));
                         (q.call(this), J._updateLayout.call(this));
                     }
                 }
@@ -672,24 +672,24 @@ module.exports = function (e, t, n) {
             toggleLockStatusOfLayerOrItem: function (e) {
                 gDesigner.stats("layers_change_locktype");
                 const { parentLockType: t } = (0, c.getLayerOrItemStatus)(e);
-                if (!t || t === a.GBlock.LockType.Partial) {
+                if (!t || t === GObject.GBlock.LockType.Partial) {
                     let n = e.getProperty("lkt");
                     const o = e.getProperty("plkt");
                     if (
                         (n
                             ? o &
-                                  (a.GBlock.ProgramLck.NoEdit |
-                                      a.GBlock.ProgramLck.NoMove |
-                                      a.GBlock.ProgramLck.NoNewChildren |
-                                      a.GBlock.ProgramLck.NoDelete) || (n = null)
-                            : (n = a.GBlock.LockType.Full),
-                        t !== a.GBlock.LockType.Partial || null !== n)
+                                  (GObject.GBlock.ProgramLck.NoEdit |
+                                      GObject.GBlock.ProgramLck.NoMove |
+                                      GObject.GBlock.ProgramLck.NoNewChildren |
+                                      GObject.GBlock.ProgramLck.NoDelete) || (n = null)
+                            : (n = GObject.GBlock.LockType.Full),
+                        t !== GObject.GBlock.LockType.Partial || null !== n)
                     ) {
                         const t = [];
-                        if (r.GPlatform.modifiers.optionKey) {
+                        if (GPlatform.GPlatform.modifiers.optionKey) {
                             for (let o = e.getParent().getFirstChild(); null != o; o = o.getNext()) {
                                 const e = o.getProperty("lkt");
-                                n === e || (e === a.GBlock.LockType.Full && n === a.GBlock.LockType.Partial) || t.push(o);
+                                n === e || (e === GObject.GBlock.LockType.Full && n === GObject.GBlock.LockType.Partial) || t.push(o);
                             }
                         } else t.push(e);
                         t.length &&
@@ -697,13 +697,13 @@ module.exports = function (e, t, n) {
                                 e,
                                 function () {
                                     for (let e = 0; e < t.length; ++e)
-                                        (n === a.GBlock.LockType.Full &&
+                                        (n === GObject.GBlock.LockType.Full &&
                                             t[e].accept((e) => {
-                                                e.removeFlag(a.GNode.Flag.Selected);
+                                                e.removeFlag(GObject.GNode.Flag.Selected);
                                             }),
                                             t[e].setProperty("lkt", n));
                                 },
-                                a.GLocale.get(new a.GLocaleKey("GCommonNames", "action.toggle-lock"))
+                                GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-lock"))
                             );
                     }
                 }
@@ -714,7 +714,7 @@ module.exports = function (e, t, n) {
                 if (!t) {
                     const t = !e.getProperty("vis"),
                         n = [];
-                    if (r.GPlatform.modifiers.optionKey) {
+                    if (GPlatform.GPlatform.modifiers.optionKey) {
                         for (let o = e.getParent().getFirstChild(); null != o; o = o.getNext()) {
                             const e = o.getProperty("vis");
                             null !== e && e !== t && n.push(o);
@@ -723,9 +723,9 @@ module.exports = function (e, t, n) {
                     i.GEditor.tryRunTransaction(
                         e,
                         function () {
-                            for (let e = 0; e < n.length; ++e) (n[e].removeFlag(a.GNode.Flag.Highlighted), n[e].setProperty("vis", t));
+                            for (let e = 0; e < n.length; ++e) (n[e].removeFlag(GObject.GNode.Flag.Highlighted), n[e].setProperty("vis", t));
                         },
-                        a.GLocale.get(new a.GLocaleKey("GCommonNames", "action.toggle-visibility"))
+                        GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-visibility"))
                     );
                 }
             },
@@ -747,7 +747,7 @@ module.exports = function (e, t, n) {
                 }
             },
         };
-        ((e.exports = v),
+        ((module.exports = v),
             ($.fn.gLayerPanel = function (e) {
                 return J[e]
                     ? J[e].apply(this, Array.prototype.slice.call(arguments, 1))

@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(7);
-            e.exports = function (e) {
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(7);
+            module.exports = function (e) {
                 ((e.Layout = function () {}),
-                    (e.Layout.prototype._relayout = !1),
+                    (e.Layout.prototype._relayout = false),
                     (e.Layout.prototype._layoutTransform = null),
-                    (e.Layout.prototype._relayoutNow = !1),
+                    (e.Layout.prototype._relayoutNow = false),
                     (e.Layout.prototype._handleLayoutChange = function (t, i) {
                         if (!this.isRecordedTransaction())
                             if (t === e._Change.GeometrySizeChanged && this.getFirstChild() && !this._relayout)
@@ -45,8 +45,8 @@ module.exports = function (e, t, i) {
                             A.hasMixin(e.Transform) &&
                                 A.hasMixin(e.Anchor) &&
                                 (A.getProperty("hacr") || A.getProperty("vacr")) &&
-                                ((A.dependentUpdate = !0), A.relayoutAnchored(o), (A.dependentUpdate = !1));
-                        this._relayout = !1;
+                                ((A.dependentUpdate = true), A.relayoutAnchored(o), (A.dependentUpdate = false));
+                        this._relayout = false;
                     }),
                     (e.Layout.prototype.toString = function () {
                         return "[Mixin GElement.Layout]";

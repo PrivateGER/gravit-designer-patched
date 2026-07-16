@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        e.exports = {
+        module.exports = {
             FillPropertiesPanel: "fill-properties-panel",
             BorderPropertiesPanel: "border-properties-panel",
             EffectPropertiesPanel: "effect-properties-panel",

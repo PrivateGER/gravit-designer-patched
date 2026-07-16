@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(293),
-                r = i(90),
-                o = i(0),
+module.exports = function (module, exports, require) {
+            var n = require(293),
+                r = require(90),
+                IsFiniteNonNegativeNumber = require(0),
                 a = function (e, t) {
                     ((this._operation = t), (this.resource = e));
                 };
-            (o.inherit(a, r),
+            (IsFiniteNonNegativeNumber.inherit(a, r),
                 (a.prototype.getShading = function () {
                     return this.resource.getPDFObject().getShading();
                 }),
@@ -20,5 +20,5 @@ module.exports = function (e, t, i) {
                         e.write("/"),
                         e.write(this.resource.getName()));
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

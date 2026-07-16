@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(51),
-                o = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(51),
+                String = require(9);
 
             function a() {
                 (r.call(this), this._setDefaultProperties(a.GeometryProperties));
@@ -18,7 +18,7 @@ module.exports = function (e, t, i) {
                     return [o * (n + 1), o * (r + 1), o * (t - n + 1), o * (i - r + 1)];
                 }),
                 (a.prototype.getNodeNameTranslated = function () {
-                    return o.getValue("GGLZoomBlurEffect", "name", this.getNodeName());
+                    return String.getValue("GGLZoomBlurEffect", "name", this.getNodeName());
                 }),
                 (a.GeometryProperties = {
                     shp: {
@@ -33,5 +33,5 @@ module.exports = function (e, t, i) {
                     centerY: [0, 100],
                     strength: [0, 0.5],
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

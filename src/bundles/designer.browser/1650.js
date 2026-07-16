@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16),
-            i = n(1),
-            a = n(15),
-            r = o(n(31)),
-            s = o(n(18)),
-            l = n(198);
+        var o = require(16),
+            GObject = require(1),
+            GPlatform = require(15),
+            r = o(require(31)),
+            s = o(require(18 /* GCategory */)),
+            SidebarsIds = require(198);
         class c extends r.default {
             getId() {
                 return c.ID;
@@ -17,19 +17,19 @@ module.exports = function (e, t, n) {
                 return s.default.CATEGORY_VIEW;
             }
             getShortcut() {
-                return [a.GKey.Constant.F6];
+                return [GPlatform.GKey.Constant.F6];
             }
             isVisible() {
-                return !1;
+                return false;
             }
             execute() {
                 const e = gDesigner.getLeftSidebars(),
-                    t = e && e.getSidebar(l.SidebarsIds.GOutlineSidebar);
+                    t = e && e.getSidebar(SidebarsIds.SidebarsIds.GOutlineSidebar);
                 t && t.toggleMultiPageMode();
             }
             toString() {
                 return "[Object GToggleMultiPageModeAction]";
             }
         }
-        ((c.ID = "view.toggle-multi-page-mode"), (c.TITLE = new i.GLocaleKey("GToggleMultiPageModeAction", "title")), (e.exports = c));
+        ((c.ID = "view.toggle-multi-page-mode"), (c.TITLE = new GObject.GLocaleKey("GToggleMultiPageModeAction", "title")), (module.exports = c));
     };

@@ -1,19 +1,19 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(19), n(30), n(8), n(20), n(3), n(34), n(4), n(13), n(32), n(38), n(97), n(33), n(26), n(125), n(126), n(114));
-        var i = n(1),
-            a = o(n(256)),
-            r = o(n(355)),
-            s = n(40);
-        const l = n(44),
-            c = n(292),
-            d = n(78),
-            u = n(217),
-            p = n(220),
-            g = n(393),
-            h = n(1323),
-            f = n(86),
+        var o = require(16);
+        (require(19), require(30), require(8 /* Symbol */), require(20), require(3), require(34), require(4), require(13), require(32), require(38), require(97), require(33), require(26), require(125), require(126), require(114));
+        var GObject = require(1),
+            a = o(require(256 /* GOfflineDialog */)),
+            r = o(require(355)),
+            GSaveAction = require(40);
+        const GSystemDialog = require(44),
+            c = require(292),
+            d = require(78),
+            u = require(217),
+            GCommonNames = require(220),
+            g = require(393),
+            h = require(1323),
+            f = require(86),
             {
                 DESIGNER: m,
                 SHARE_ENGINE: y,
@@ -24,15 +24,15 @@ module.exports = function (e, t, n) {
                 Share: C,
                 LEGACY_SHARE_DIALOG: x,
                 ENABLE_REQUEST_ACCESS: S,
-            } = n(10),
-            E = n(433),
-            A = n(1324),
-            T = n(177),
-            G = n(1565),
-            P = n(868),
-            D = n(536),
-            L = n(237),
-            I = n(x ? 1566 : 1567);
+            } = require(10 /* designerConfig */),
+            E = require(433),
+            A = require(1324),
+            T = require(177),
+            G = require(1565),
+            P = require(868),
+            D = require(536),
+            GDocument = require(237),
+            I = require(x ? 1566 : 1567);
         function k() {
             (y && (gDesigner.addEventListener(c, this._userEvent, this), gDesigner.addEventListener(d, this._documentEvent, this)),
                 (this._states = new Map()),
@@ -41,11 +41,11 @@ module.exports = function (e, t, n) {
         ((k.prototype._states = null),
             (k.prototype._requestAccessDialog = null),
             (k.prototype._requestPermissionDialog = null),
-            (k.prototype._requestEmailHasBeenSent = !1),
+            (k.prototype._requestEmailHasBeenSent = false),
             (k.prototype._collaboratorsCached = {}),
             (k.prototype.share = function (e, t) {
                 const n = this,
-                    o = e instanceof L.Item,
+                    o = e instanceof GDocument.Item,
                     i = async function () {
                         let i = null;
                         if (o) i = e;
@@ -130,20 +130,20 @@ module.exports = function (e, t, n) {
                 if (!e) return;
                 const t = this.getRole(e);
                 if (!t) return;
-                const n = i.GLocale.get(new i.GLocaleKey("GShareManager", "text.new-role-is-".concat(t.getId())));
+                const n = GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.new-role-is-".concat(t.getId())));
                 n &&
                     gDesigner.addNotification({
                         document: e,
                         message: n,
                         anonymous: gDesigner.isAnonymous(),
-                        popup: !0,
+                        popup: true,
                     });
             }),
             (k.prototype._showDefaultNotification = async function (e) {
                 if (!e) return;
                 if (
                     (void 0 === this._isDefaulNotificationAlreadyShown.get(e.sessionId) &&
-                        this._isDefaulNotificationAlreadyShown.set(e.sessionId, !1),
+                        this._isDefaulNotificationAlreadyShown.set(e.sessionId, false),
                     this._isDefaulNotificationAlreadyShown.get(e.sessionId))
                 )
                     return;
@@ -155,7 +155,7 @@ module.exports = function (e, t, n) {
                         o = await this._getFileExtended(e);
                     if (t && o) {
                         o.getPrivateShareList().some((e) => {
-                            if (e.owner && e.id !== t.getUID()) return ((n = { name: e.name || e.email, id: e.id }), !0);
+                            if (e.owner && e.id !== t.getUID()) return ((n = { name: e.name || e.email, id: e.id }), true);
                         });
                         const e = new URL(location.href).searchParams.get("token");
                         if (e) {
@@ -170,36 +170,36 @@ module.exports = function (e, t, n) {
                 if (n) {
                     e.setOwner(n);
                     const o = [];
-                    if (t) o.push(i.GLocale.get(new i.GLocaleKey("GShareManager", "text.template-shared-by")).replace("%name", n.name));
-                    else if ((o.push(i.GLocale.get(new i.GLocaleKey("GShareManager", "text.shared-by")).replace("%name", n.name)), !x)) {
+                    if (t) o.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.template-shared-by")).replace("%name", n.name));
+                    else if ((o.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.shared-by")).replace("%name", n.name)), !x)) {
                         const t = this.getRole(e);
                         t && t.getStatus() && o.push(t.getStatus());
                     }
                     if (x) {
                         const t = this._getState(e);
                         t.copy || t.inspect
-                            ? (t.copy || o.push(i.GLocale.get(new i.GLocaleKey("GShareManager", "text.save-warning"))),
-                              t.inspect || o.push(i.GLocale.get(new i.GLocaleKey("GShareManager", "text.inspect-warning"))))
-                            : o.push(i.GLocale.get(new i.GLocaleKey("GShareManager", "text.combined-warnings")));
+                            ? (t.copy || o.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.save-warning"))),
+                              t.inspect || o.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.inspect-warning"))))
+                            : o.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.combined-warnings")));
                     }
                     o.length &&
                         gDesigner.addNotification({
                             document: e,
                             message: o.join(" "),
                             anonymous: gDesigner.isAnonymous(),
-                            popup: !0,
+                            popup: true,
                             closeCallback: () => {
-                                this._isDefaulNotificationAlreadyShown.set(e.sessionId, !0);
+                                this._isDefaulNotificationAlreadyShown.set(e.sessionId, true);
                             },
                         });
                 }
             }),
             (k.prototype._canAccess = async function (e) {
-                return !!(await this._getFileExtended(e).catch(() => !1));
+                return !!(await this._getFileExtended(e).catch(() => false));
             }),
             (k.prototype.getRealtimeCollaborators = async function (e) {
                 return _.realtime
-                    .getCollaborators(e.id, { anonymous: !1 })
+                    .getCollaborators(e.id, { anonymous: false })
                     .then((t) =>
                         t.map((t) => {
                             const n = ((t) => {
@@ -294,41 +294,41 @@ module.exports = function (e, t, n) {
                     o = await gDesigner.getUser();
                 if (!o) return this._setState(e, t);
                 if (e && e.isDocumentFromTemplate() && e.isShared()) this._applyStateFromTemplate(t);
-                else if (n instanceof p.Item) {
+                else if (n instanceof GCommonNames.Item) {
                     const n = await this._getFileExtended(e);
                     n && (await this._applyStateFromFile(o, n, t));
                 } else if (n && n.getId() && n.supportsSharing() && n.supportsShadowFile()) {
                     const n = await this._getFileExtended(e);
-                    n && ((t.share = !0), await this._applyStateFromFile(o, n, t));
+                    n && ((t.share = true), await this._applyStateFromFile(o, n, t));
                 } else await this._getFileExtended(e);
                 (this._setState(e, t), gDesigner.hasEventListeners(P) && gDesigner.trigger(new P(P.Type.Updated)));
             }),
             (k.prototype._createDefaultShareStateForDoc = function (e) {
                 return new G(
                     Object.assign({}, this._getState(e), {
-                        owner: !0,
-                        share: !1,
-                        sharing: !1,
+                        owner: true,
+                        share: false,
+                        sharing: false,
                         role: E.ROLES.OWNER_ROLE,
-                        isPrivate: !0,
+                        isPrivate: true,
                     })
                 );
             }),
             (k.prototype._applyStateFromTemplate = function (e) {
                 return Object.assign(e, {
-                    edit: !0,
-                    inspect: !0,
-                    copy: !0,
-                    comment: !1,
-                    share: !1,
-                    owner: !1,
-                    sharing: !1,
+                    edit: true,
+                    inspect: true,
+                    copy: true,
+                    comment: false,
+                    share: false,
+                    owner: false,
+                    sharing: false,
                     realtimeCollaborators: [],
                 });
             }),
             (k.prototype._applyStateFromFile = async function (e, t, n) {
                 if (!t) throw new r.default("File object is required");
-                const o = (0, s.getFileStateAndRole)(e, t, n);
+                const o = (0, GSaveAction.getFileStateAndRole)(e, t, n);
                 let i = o.role;
                 const { state: a } = o;
                 if (!i) {
@@ -337,7 +337,7 @@ module.exports = function (e, t, n) {
                         const { copy: t, inspect: n, comment: o, edit: r } = e;
                         ((i = E.makeFromShare(e)),
                             Object.assign(a, {
-                                owner: !1,
+                                owner: false,
                                 edit: r,
                                 copy: t,
                                 inspect: n,
@@ -363,7 +363,7 @@ module.exports = function (e, t, n) {
                 return this._states.get(e) || new G();
             }),
             (k.prototype._checkAccessAndUpdateState = async function (e) {
-                if (!(await this._requestAccessIfAbsent(e))) return !1;
+                if (!(await this._requestAccessIfAbsent(e))) return false;
                 this._closeRequestAccessDialog();
                 const t = this.getRole(e);
                 await this._updateState(e);
@@ -371,11 +371,11 @@ module.exports = function (e, t, n) {
                 return (
                     (t && t.equals(n)) || this._requestPermissionToCommentIfAbsent(e),
                     (await this._isUserUnableToOperateSystem(e)) && this._openRequestAccessDialog(e),
-                    !0
+                    true
                 );
             }),
             (k.prototype._isUserUnableToOperateSystem = async function (e) {
-                if (!e.getId()) return !1;
+                if (!e.getId()) return false;
                 var t = await this._getShareLevelForCurrentUser(e);
                 return !!(gDesigner.getLicense().isGuest() && t < 1);
             }),
@@ -384,7 +384,7 @@ module.exports = function (e, t, n) {
                     n = await this._getFileExtended(e);
                 if (t && n) {
                     var o = n.getPrivateShareList().find((e) => {
-                        if (e.id === t.getUID()) return !0;
+                        if (e.id === t.getUID()) return true;
                     });
                     if (o) return o.getRole().level;
                     const e = n.getPublicShare();
@@ -393,7 +393,7 @@ module.exports = function (e, t, n) {
                 return new E.makeFromShareRole(b.NoAccess).level;
             }),
             (k.prototype._requestAccessIfAbsent = async function (e) {
-                return !e.isShareable() || !!(await this._canAccess(e)) || (this._openRequestAccessDialog(e), !1);
+                return !e.isShareable() || !!(await this._canAccess(e)) || (this._openRequestAccessDialog(e), false);
             }),
             (k.prototype._requestPermissionToCommentIfAbsent = function (e) {
                 if (!e.isShareable()) return;
@@ -414,14 +414,14 @@ module.exports = function (e, t, n) {
                         closeCallback: () => {
                             this._requestPermissionDialog = null;
                         },
-                        title: i.GLocale.get(new i.GLocaleKey("GShareManager", "text.file-can-not-be-commented-title")).replace(
+                        title: GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.file-can-not-be-commented-title")).replace(
                             "%role",
                             t.getName()
                         ),
-                        subtitle: i.GLocale.get(new i.GLocaleKey("GShareManager", "text.file-can-not-be-commented-info")),
+                        subtitle: GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.file-can-not-be-commented-info")),
                         requestButton: {
-                            label: i.GLocale.get(new i.GLocaleKey("GShareManager", "text.file-request-permission-to-comment")),
-                            permissions: { comment: !0 },
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.file-request-permission-to-comment")),
+                            permissions: { comment: true },
                         },
                         statType: "comment-access",
                     }));
@@ -436,16 +436,16 @@ module.exports = function (e, t, n) {
                         closeCallback: async () => {
                             ((this._requestAccessDialog = null),
                                 (await this._canAccess(e)) ||
-                                    (gDesigner.removeDocument(e, null, !0),
+                                    (gDesigner.removeDocument(e, null, true),
                                     this._requestEmailHasBeenSent &&
-                                        (l.alert(i.GLocale.get(new i.GLocaleKey("GShareManager", "text.sent-request-email"))),
-                                        (this._requestEmailHasBeenSent = !1))));
+                                        (GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.sent-request-email"))),
+                                        (this._requestEmailHasBeenSent = false))));
                         },
-                        title: i.GLocale.get(new i.GLocaleKey("GShareManager", "text.file-can-not-be-accessed-title")),
-                        subtitle: i.GLocale.get(new i.GLocaleKey("GShareManager", "text.file-can-not-be-accessed-info")),
+                        title: GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.file-can-not-be-accessed-title")),
+                        subtitle: GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.file-can-not-be-accessed-info")),
                         requestButton: {
-                            label: i.GLocale.get(new i.GLocaleKey("GShareManager", "text.file-request-access")),
-                            permissions: { access: !0 },
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.file-request-access")),
+                            permissions: { access: true },
                         },
                         statType: "no-access",
                     }));
@@ -472,25 +472,25 @@ module.exports = function (e, t, n) {
                                 const n = Object.assign(s, { isToken: !e.getId() });
                                 _.requestPermission(e.getId() || e.getFailedDocumentIdOrToken(), n)
                                     .then(() => {
-                                        (t.gDialog("close"), (this._requestEmailHasBeenSent = !0));
+                                        (t.gDialog("close"), (this._requestEmailHasBeenSent = true));
                                     })
                                     .catch(() => {
-                                        l.error(i.GLocale.get(new i.GLocaleKey("GShareManager", "text.cannot-request-access")));
+                                        GSystemDialog.error(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.cannot-request-access")));
                                     });
                             },
                         }),
                     d.push({
-                        label: i.GLocale.get(new i.GLocaleKey("GLocale", "ok")),
+                        label: GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")),
                         onclick: async (t) => {
                             (gDesigner.stats("permission-dialog_".concat(c, "_click-ok")),
                                 t.gDialog("close"),
-                                (await this._isUserUnableToOperateSystem(e)) && gDesigner.signout(!0));
+                                (await this._isUserUnableToOperateSystem(e)) && gDesigner.signout(true));
                         },
-                        highlighted: !0,
+                        highlighted: true,
                     }),
-                    l.custom({
+                    GSystemDialog.custom({
                         icon: "error",
-                        closeable: !1,
+                        closeable: false,
                         className: t,
                         closeCallback: a,
                         title: n,
@@ -519,19 +519,19 @@ module.exports = function (e, t, n) {
                     (t.forEach((t) => {
                         let { email: i, role: a, externalRole: r } = t;
                         if (i) {
-                            let t = !1;
+                            let t = false;
                             (o.some((n) => {
                                 let { email: o, role: a } = n;
-                                if (i && i === o && e.rolesMatch(r, a)) return ((t = !0), t);
+                                if (i && i === o && e.rolesMatch(r, a)) return ((t = true), t);
                             }),
                                 t || n.push({ email: i, role: a }));
                         }
                     }),
                         o.forEach((e) => {
-                            let n = !1;
+                            let n = false;
                             (t.some((t) => {
                                 let { email: o } = t;
-                                if (e.email === o) return ((n = !0), n);
+                                if (e.email === o) return ((n = true), n);
                             }),
                                 n || E.makeFromShare(e).is(b.NoAccess) || a.push({ email: e.email }));
                         }),
@@ -566,7 +566,7 @@ module.exports = function (e, t, n) {
             (k.prototype.getPermalink = async function (e, t) {
                 const n = await this._getFileExtended(e);
                 if (n) {
-                    const e = gDesigner.getAppBaseUrl(!0),
+                    const e = gDesigner.getAppBaseUrl(true),
                         o = new URL(n.getShareLink(e));
                     return (o.searchParams.set("annot", t.getId()), o.toString());
                 }
@@ -575,5 +575,5 @@ module.exports = function (e, t, n) {
             (k.prototype.isShareProRestricted = function () {
                 return C.isPro() && !gDesigner.isEnabledProFeatures();
             }),
-            (e.exports = k));
+            (module.exports = k));
     };

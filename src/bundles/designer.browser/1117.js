@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o,
             i =
                 i ||
@@ -94,13 +94,13 @@ module.exports = function (e, t, n) {
                               });
                     }
                 })(("undefined" != typeof self && self) || ("undefined" != typeof window && window) || this);
-        e.exports
-            ? (e.exports.saveAs = i)
-            : null !== n(1377) &&
-              null !== n(414) &&
+        module.exports
+            ? (module.exports.saveAs = i)
+            : null !== require(1377) &&
+              null !== require(414) &&
               (void 0 ===
                   (o = function () {
                       return i;
-                  }.call(t, n, t, e)) ||
-                  (e.exports = o));
+                  }.call(exports, require, exports, module)) ||
+                  (module.exports = o));
     };

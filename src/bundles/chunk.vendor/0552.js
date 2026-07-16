@@ -1,27 +1,27 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(11),
-                o = i(56),
-                a = (i(22), i(45)),
-                s = i(214),
-                l = i(28),
-                h = i(128),
-                A = i(36),
-                c = i(5),
-                p = i(24),
-                u = i(155),
-                d = i(7),
-                g = i(6),
-                f = i(12),
-                m = i(39),
-                y = i(81),
-                _ = i(17),
-                v = i(14);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(11),
+                o = require(56),
+                a = (require(22), require(45)),
+                s = require(214),
+                GStylable = require(28),
+                h = require(128),
+                A = require(36),
+                c = require(5),
+                p = require(24),
+                u = require(155),
+                d = require(7),
+                g = require(6),
+                f = require(12),
+                m = require(39),
+                y = require(81),
+                _ = require(17),
+                v = require(14);
 
             function b(e) {
                 u.call(this, e);
             }
-            (n.inherit(b, u),
+            (IsFiniteNonNegativeNumber.inherit(b, u),
                 A.exports(b, s),
                 (b.START_ANGLE_PART_ID = r.uuid()),
                 (b.END_ANGLE_PART_ID = r.uuid()),
@@ -32,7 +32,7 @@ module.exports = function (e, t, i) {
                 (b.prototype.getCustomBBox = function (e, t) {
                     var i = u.prototype.getCustomBBox.call(this, e, t);
                     if (this.hasFlag(m.Flag.Selected) && this.hasFlag(m.Flag.Detail) && p.centerCrossSize > 0) {
-                        var n = this.getPaintElement().getCenter(!0);
+                        var n = this.getPaintElement().getCenter(true);
                         if (n) {
                             var r = 2 * p.centerCrossSize,
                                 o = new g(n.getX() - r - 1, n.getY() - r - 1, r + 1, r + 1);
@@ -89,23 +89,23 @@ module.exports = function (e, t, i) {
                 }),
                 (b.prototype.initialSetup = function (e) {
                     u.prototype.initialSetup.call(this, e);
-                    var t = !1;
-                    if (!e || e instanceof s || !e.getPaintLayers()) (e && (e instanceof s || e.getPaintLayers())) || (t = !0);
+                    var t = false;
+                    if (!e || e instanceof s || !e.getPaintLayers()) (e && (e instanceof s || e.getPaintLayers())) || (t = true);
                     else
                         for (var i = e.getPaintLayers().getFirstChild(); null !== i && !t; i = i.getNext())
-                            i instanceof l.BorderPaintLayer && (t = !0);
+                            i instanceof GStylable.BorderPaintLayer && (t = true);
                     if (t && this.getElement().getPaintLayers())
                         for (i = this.getElement().getPaintLayers().getFirstChild(); null !== i; i = i.getNext())
-                            i instanceof l.BorderPaintLayer && i.setProperty("_blc", v.LineCap.Butt);
+                            i instanceof GStylable.BorderPaintLayer && i.setProperty("_blc", v.LineCap.Butt);
                 }),
                 (b.prototype._hasCenterCross = function () {
-                    return !0;
+                    return true;
                 }),
                 (b.prototype._postPaint = function (e, t) {
                     (u.prototype._postPaint.call(this, e, t),
                         this._showSegmentDetails() &&
                             this._iterateArcEnds(
-                                !0,
+                                true,
                                 function (i) {
                                     var n = this._partSelection && this._partSelection.indexOf(i.id) >= 0,
                                         r = p.annotationHandles.ellipse,
@@ -124,7 +124,7 @@ module.exports = function (e, t, i) {
                                             r.shadowColor,
                                             r.outsideStroke
                                         ),
-                                        !1
+                                        false
                                     );
                                 }.bind(this)
                             ));
@@ -134,13 +134,13 @@ module.exports = function (e, t, i) {
                         var n = null;
                         if (
                             (this._iterateArcEnds(
-                                !1,
+                                false,
                                 function (i) {
                                     return (
                                         !!y
-                                            .getAnnotationBBox(t, i.position, p.annotationHandles.ellipse.size, !1)
+                                            .getAnnotationBBox(t, i.position, p.annotationHandles.ellipse.size, false)
                                             .expanded(p.annotPickDistance, p.annotPickDistance, p.annotPickDistance, p.annotPickDistance)
-                                            .containsPoint(e) && ((n = new m.PartInfo(this, i.id, null, !0, !0)), !0)
+                                            .containsPoint(e) && ((n = new m.PartInfo(this, i.id, null, true, true)), true)
                                     );
                                 }.bind(this)
                             ),
@@ -171,12 +171,12 @@ module.exports = function (e, t, i) {
                                 },
                             ],
                             s = 0;
-                        s < a.length && !0 !== t(a[s]);
+                        s < a.length && true !== t(a[s]);
                         ++s
                     );
                 }),
                 (b.prototype.toString = function () {
                     return "[Object GEllipseEditor]";
                 }),
-                (e.exports = b));
+                (module.exports = b));
         };

@@ -1,26 +1,26 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(58), n(8), n(71), n(4), n(13));
-        var i = o(n(1155));
-        const { GLocale: a, GLocaleKey: r, GObject: s } = n(1),
-            l = n(392),
-            c = n(1165),
-            d = n(123),
-            u = n(78),
-            p = n(447),
+        var o = require(16);
+        (require(58), require(8 /* Symbol */), require(71), require(4), require(13));
+        var i = o(require(1155));
+        const { GLocale: a, GLocaleKey: r, GObject: s } = require(1 /* GObject */),
+            l = require(392),
+            c = require(1165),
+            d = require(123),
+            u = require(78),
+            GSaveAction = require(447),
             {
                 FileStatus: { IN_REVIEW: g, AWAITING_APPROVAL: h, APPROVED: f, REOPENED: m },
                 GFileReviewActions: { ACTION_REQUEST_REVIEW: y, ACTION_REQUEST_APPROVAL: v, ACTION_REOPEN: _, ACTION_APPROVE: b },
                 FileReviewStatusAvailable: w,
                 ShareRoles: C,
                 FILE_REVIEW_ENABLED: x,
-            } = n(10),
-            S = n(1538);
+            } = require(10 /* designerConfig */),
+            GFileStatusHistoryDialog = require(1538);
         function E() {}
         (s.inherit(E, d),
             (E.prototype.init = function (e, t) {
-                ((this._container = e), (this._fileStatusHistoryDialog = new S()), this._init());
+                ((this._container = e), (this._fileStatusHistoryDialog = new GFileStatusHistoryDialog()), this._init());
             }),
             (E.prototype.update = function (e, t, n) {
                 return (
@@ -45,7 +45,7 @@ module.exports = function (e, t, n) {
             }),
             (E.prototype._init = function () {
                 x &&
-                    ((this._updatingStatus = !1),
+                    ((this._updatingStatus = false),
                     this._container.addClass("g-annotation-review-docker"),
                     this._buildMainPanel($("<div/>").addClass("panel").addClass("main-panel").hide()),
                     this._document && this._requestUIUpdate());
@@ -56,7 +56,7 @@ module.exports = function (e, t, n) {
                 switch (e) {
                     case g:
                         return (
-                            (n = await t.hasAccess(y, !0)),
+                            (n = await t.hasAccess(y, true)),
                             {
                                 status: e,
                                 getLabel: () => a.get(new r("GReviewDockerProperties", "text.review-title")),
@@ -68,7 +68,7 @@ module.exports = function (e, t, n) {
                         );
                     case m:
                         return (
-                            (n = await t.hasAccess(_, !0)),
+                            (n = await t.hasAccess(_, true)),
                             {
                                 status: e,
                                 getLabel: () => a.get(new r("GReviewDockerProperties", n ? "text.reopen-title" : "text.reopened-title")),
@@ -82,7 +82,7 @@ module.exports = function (e, t, n) {
                         const i = t.hasRole(C.Owner),
                             s = await this._reviewManager.hasApprovers();
                         return (
-                            (n = await t.hasAccess(v, !0)),
+                            (n = await t.hasAccess(v, true)),
                             {
                                 status: e,
                                 getLabel: () =>
@@ -103,7 +103,7 @@ module.exports = function (e, t, n) {
                             }
                         );
                     case f:
-                        n = await t.hasAccess(b, !0);
+                        n = await t.hasAccess(b, true);
                         var o = this._getStatus();
                         return {
                             status: e,
@@ -129,7 +129,7 @@ module.exports = function (e, t, n) {
                     .text(a.get(new r("GReviewDockerProperties", "text.current-status")))
                     .addClass("status")
                     .click(() => {
-                        ((this._opened = !1), this._container.gDialog("close"));
+                        ((this._opened = false), this._container.gDialog("close"));
                     })
                     .appendTo(t),
                     $("<div/>")
@@ -175,16 +175,16 @@ module.exports = function (e, t, n) {
                                           (this._document.getStorageItem() && this._document.getId() === e.document.getId()))
                               )
                               .do(() => e.share()),
-                          gDesigner.executeAction(p.ID)));
+                          gDesigner.executeAction(GSaveAction.ID)));
             }),
             (E.prototype._requestUIUpdate = async function () {
                 this.isAvailable() &&
                     (this._updatingUI
-                        ? (this._requestedDuringUIUpdate = !0)
-                        : ((this._updatingUI = !0),
+                        ? (this._requestedDuringUIUpdate = true)
+                        : ((this._updatingUI = true),
                           await this._updateUI(),
-                          (this._updatingUI = !1),
-                          this._requestedDuringUIUpdate && ((this._requestedDuringUIUpdate = !1), await this._updateUI())));
+                          (this._updatingUI = false),
+                          this._requestedDuringUIUpdate && ((this._requestedDuringUIUpdate = false), await this._updateUI())));
             }),
             (E.prototype._getAppManager = function () {
                 return (this._appManager || (this._appManager = gDesigner.getApplicationManager()), this._appManager);
@@ -226,22 +226,22 @@ module.exports = function (e, t, n) {
                         .toggleClass("disabled", !this._isDocumentSane() || !n)
                         .appendTo(e)),
                     (this._currentSelectedStatusElement = await this._makeItemForDAO(await this._getDAOStatus(t), {
-                        selected: !0,
-                        canHover: !1,
+                        selected: true,
+                        canHover: false,
                         disabled: !this._isDocumentSane(),
                     })),
                     this._currentSelectedStatusElement.appendTo(this._selectedItemContainer),
                     (this._statusListOverlay = $("<div/>").gOverlay({
-                        padding: !1,
+                        padding: false,
                         clazz: "g-file-status-selector-overlay",
                         offsetY: -66,
-                        releaseOnClose: !1,
+                        releaseOnClose: false,
                     })),
                     (this._statusSelector = $("<div/>").addClass("g-file-status-selector").appendTo(this._statusListOverlay)));
                 const o = async (e) => {
                     var n = await this._makeItemForDAO(e, {
                         selected: e.status === t,
-                        canHover: !0,
+                        canHover: true,
                     });
                     n.appendTo(this._statusSelector);
                     (await e.isAvailable())
@@ -265,18 +265,18 @@ module.exports = function (e, t, n) {
                                   this._statusListOverlay.gOverlay("close"),
                                   this._getStatus() !== e.status)
                               ) {
-                                  this._updatingStatus = !0;
+                                  this._updatingStatus = true;
                                   const t = await this._makeItemForDAO(e, {
-                                      selected: !1,
-                                      canHover: !1,
-                                      loading: !0,
+                                      selected: false,
+                                      canHover: false,
+                                      loading: true,
                                   });
                                   (this._currentSelectedStatusElement.replaceWith(t),
                                       (this._currentSelectedStatusElement = t),
                                       this._reviewManager
                                           .updateReviewStatus(e.status)
-                                          .then(() => (this._updatingStatus = !1))
-                                          .catch(() => (this._updatingStatus = !1)));
+                                          .then(() => (this._updatingStatus = false))
+                                          .catch(() => (this._updatingStatus = false)));
                               }
                           })
                         : n.on("click", () => this._statusListOverlay.gOverlay("close"));
@@ -294,7 +294,7 @@ module.exports = function (e, t, n) {
                 }
             }),
             (E.prototype._makeItemForDAO = async function (e, t) {
-                let { selected: n = !1, canHover: o = !0, loading: i = !1, disabled: a = !1 } = t;
+                let { selected: n = false, canHover: o = true, loading: i = false, disabled: a = false } = t;
                 var r = $("<div/>")
                         .addClass("g-annotation-review-docker-status-item")
                         .data("status", e)
@@ -319,7 +319,7 @@ module.exports = function (e, t, n) {
                 );
             }),
             (E.prototype._isStatusChangeAllowed = function () {
-                return !0;
+                return true;
             }),
-            (e.exports = E));
+            (module.exports = E));
     };

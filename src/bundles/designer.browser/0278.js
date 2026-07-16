@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(20);
-        var o = n(29),
-            i = n(79),
-            a = n(306),
-            r = n(21),
-            s = n(43),
-            l = n(100),
+        require(20);
+        var o = require(29),
+            i = require(79),
+            a = require(306),
+            r = require(21),
+            s = require(43),
+            l = require(100),
             c = s("species"),
             d = RegExp.prototype;
-        e.exports = function (e, t, n, u) {
+        module.exports = function (e, t, n, u) {
             var p = s(e),
                 g = !r(function () {
                     var t = {};
@@ -23,7 +23,7 @@ module.exports = function (e, t, n) {
                 h =
                     g &&
                     !r(function () {
-                        var t = !1,
+                        var t = false,
                             n = /a/;
                         return (
                             "split" === e &&
@@ -34,7 +34,7 @@ module.exports = function (e, t, n) {
                                 (n.flags = ""),
                                 (n[p] = /./[p])),
                             (n.exec = function () {
-                                return ((t = !0), null);
+                                return ((t = true), null);
                             }),
                             n[p](""),
                             !t
@@ -46,12 +46,12 @@ module.exports = function (e, t, n) {
                         var s = t.exec;
                         return s === a || s === d.exec
                             ? g && !r
-                                ? { done: !0, value: o(f, t, n, i) }
-                                : { done: !0, value: o(e, n, t, i) }
-                            : { done: !1 };
+                                ? { done: true, value: o(f, t, n, i) }
+                                : { done: true, value: o(e, n, t, i) }
+                            : { done: false };
                     });
                 (i(String.prototype, e, m[0]), i(d, p, m[1]));
             }
-            u && l(d[p], "sham", !0);
+            u && l(d[p], "sham", true);
         };
     };

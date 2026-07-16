@@ -1,5 +1,5 @@
-module.exports = function (e, t) {
-        ((t.read = function (e, t, n, o, i) {
+module.exports = function (module, exports) {
+        ((exports.read = function (e, t, n, o, i) {
             var a,
                 r,
                 s = 8 * i - o - 1,
@@ -18,7 +18,7 @@ module.exports = function (e, t) {
             }
             return (g ? -1 : 1) * r * Math.pow(2, a - o);
         }),
-            (t.write = function (e, t, n, o, i, a) {
+            (exports.write = function (e, t, n, o, i, a) {
                 var r,
                     s,
                     l,

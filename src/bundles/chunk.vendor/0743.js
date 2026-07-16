@@ -1,21 +1,21 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(744),
-                o = i(5),
-                a = i(14),
-                s = (i(12), i(17), i(6)),
-                l = i(2),
-                h = (i(83), i(69), i(9)),
-                A = i(47),
-                c = i(140);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(744),
+                o = require(5),
+                a = require(14),
+                s = (require(12), require(17), require(6)),
+                l = require(2),
+                h = (require(83), require(69), require(9 /* String */)),
+                A = require(47),
+                c = require(140);
 
             function p(e) {
                 r.call(this, e);
             }
-            (n.inherit(p, r),
+            (IsFiniteNonNegativeNumber.inherit(p, r),
                 (p.ID = "guide.pagelabel"),
                 (p.prototype._pageFilter = function (e, t, i) {
-                    if (!t.configuration.multiPageView && !e.hasFlag(l.Flag.Active)) return !1;
+                    if (!t.configuration.multiPageView && !e.hasFlag(l.Flag.Active)) return false;
                     if (this._scene.getActivePage() !== e) {
                         var n = (e.getProperty("off") || e.getTransform()).getTranslation(),
                             r = n.getX(),
@@ -35,11 +35,11 @@ module.exports = function (e, t, i) {
                             _++
                         )
                             if (y[_] !== e) {
-                                if (y[_].getElementIndex() > m) return !1;
-                                if (y[_].hasFlag(l.Flag.Active)) return !1;
+                                if (y[_].getElementIndex() > m) return false;
+                                if (y[_].hasFlag(l.Flag.Active)) return false;
                             }
                     }
-                    return !0;
+                    return true;
                 }),
                 (p.prototype.getId = function () {
                     return p.ID;
@@ -88,5 +88,5 @@ module.exports = function (e, t, i) {
                 (p.prototype.toString = function () {
                     return "[Object GPageLabelGuide]";
                 }),
-                (e.exports = p));
+                (module.exports = p));
         };

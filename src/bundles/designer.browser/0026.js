@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(23),
-            i = n(421),
-            a = n(422),
-            r = n(19),
-            s = n(100),
-            l = n(137),
-            c = n(43)("iterator"),
+        var RegExp = require(23),
+            i = require(421),
+            a = require(422),
+            r = require(19),
+            s = require(100),
+            l = require(137),
+            c = require(43)("iterator"),
             d = r.values,
             u = function (e, t) {
                 if (e) {
@@ -16,7 +16,7 @@ module.exports = function (e, t, n) {
                         } catch (t) {
                             e[c] = d;
                         }
-                    if ((l(e, t, !0), i[t]))
+                    if ((l(e, t, true), i[t]))
                         for (var n in r)
                             if (e[n] !== r[n])
                                 try {
@@ -26,6 +26,6 @@ module.exports = function (e, t, n) {
                                 }
                 }
             };
-        for (var p in i) u(o[p] && o[p].prototype, p);
+        for (var p in i) u(RegExp[p] && RegExp[p].prototype, p);
         u(a, "DOMTokenList");
     };

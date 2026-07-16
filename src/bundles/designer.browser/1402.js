@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
         !(function (e) {
             "use strict";
             var t,
@@ -142,7 +142,7 @@ module.exports = function (e, t) {
                     g = 0,
                     h = t.sn;
                 function f() {
-                    (e.removeEventListener("message", m, !1), s(u, p));
+                    (e.removeEventListener("message", m, false), s(u, p));
                 }
                 function m(t) {
                     var n = t.data,
@@ -217,7 +217,7 @@ module.exports = function (e, t) {
                           )
                         : e.postMessage({ sn: h, type: "flush" });
                 }
-                ((u = 0), e.addEventListener("message", m, !1), y());
+                ((u = 0), e.addEventListener("message", m, false), y());
             }
             function m(e, t, n, o, a, r, s, l, c, d) {
                 var u,
@@ -429,10 +429,10 @@ module.exports = function (e, t) {
                 return n;
             }
             function w(e, t, n, o, i) {
-                ((e.version = t.view.getUint16(n, !0)),
-                    (e.bitFlag = t.view.getUint16(n + 2, !0)),
-                    (e.compressionMethod = t.view.getUint16(n + 4, !0)),
-                    (e.lastModDateRaw = t.view.getUint32(n + 6, !0)),
+                ((e.version = t.view.getUint16(n, true)),
+                    (e.bitFlag = t.view.getUint16(n + 2, true)),
+                    (e.compressionMethod = t.view.getUint16(n + 4, true)),
+                    (e.lastModDateRaw = t.view.getUint32(n + 6, true)),
                     (e.lastModDate = (function (e) {
                         var t = (4294901760 & e) >> 16,
                             n = 65535 & e;
@@ -450,11 +450,11 @@ module.exports = function (e, t) {
                     })(e.lastModDateRaw)),
                     1 != (1 & e.bitFlag)
                         ? ((o || 8 != (8 & e.bitFlag)) &&
-                              ((e.crc32 = t.view.getUint32(n + 10, !0)),
-                              (e.compressedSize = t.view.getUint32(n + 14, !0)),
-                              (e.uncompressedSize = t.view.getUint32(n + 18, !0))),
+                              ((e.crc32 = t.view.getUint32(n + 10, true)),
+                              (e.compressedSize = t.view.getUint32(n + 14, true)),
+                              (e.uncompressedSize = t.view.getUint32(n + 18, true))),
                           4294967295 !== e.compressedSize && 4294967295 !== e.uncompressedSize
-                              ? ((e.filenameLength = t.view.getUint16(n + 22, !0)), (e.extraFieldLength = t.view.getUint16(n + 24, !0)))
+                              ? ((e.filenameLength = t.view.getUint16(n + 22, true)), (e.extraFieldLength = t.view.getUint16(n + 24, true)))
                               : i("File is using Zip64 (4gb+ file size)."))
                         : i("File contains encrypted entry."));
             }
@@ -487,7 +487,7 @@ module.exports = function (e, t) {
                             var h,
                                 v = r(i.length, i);
                             1347093252 == v.view.getUint32(0)
-                                ? (w(d, v, 4, !1, a),
+                                ? (w(d, v, 4, false, a),
                                   (h = d.offset + 30 + d.filenameLength + d.extraFieldLength),
                                   o.init(function () {
                                       0 === d.compressionMethod
@@ -533,8 +533,8 @@ module.exports = function (e, t) {
                             }
                         })(function (s) {
                             var c, d;
-                            ((c = s.getUint32(16, !0)),
-                                (d = s.getUint16(8, !0)),
+                            ((c = s.getUint32(16, true)),
+                                (d = s.getUint16(8, true)),
                                 c < 0 || c >= t.size
                                     ? a(n)
                                     : t.readUint8Array(
@@ -550,13 +550,13 @@ module.exports = function (e, t) {
                                                   h = r(t.length, t);
                                               for (o = 0; o < d; o++) {
                                                   if ((((s = new l())._worker = i), 1347092738 != h.view.getUint32(p))) return void a(n);
-                                                  (w(s, h, p + 6, !0, a),
-                                                      (s.commentLength = h.view.getUint16(p + 32, !0)),
+                                                  (w(s, h, p + 6, true, a),
+                                                      (s.commentLength = h.view.getUint16(p + 32, true)),
                                                       (s.directory = 16 == (16 & h.view.getUint8(p + 38))),
-                                                      (s.offset = h.view.getUint32(p + 42, !0)),
+                                                      (s.offset = h.view.getUint32(p + 42, true)),
                                                       (c = b(h.array.subarray(p + 46, p + 46 + s.filenameLength))),
                                                       (s.filename = 2048 == (2048 & s.bitFlag) ? _(c) : v(c)),
-                                                      s.directory || "/" != s.filename.charAt(s.filename.length - 1) || (s.directory = !0),
+                                                      s.directory || "/" != s.filename.charAt(s.filename.length - 1) || (s.directory = true),
                                                       (u = b(
                                                           h.array.subarray(
                                                               p + 46 + s.filenameLength + s.extraFieldLength,
@@ -622,12 +622,12 @@ module.exports = function (e, t) {
                             var o = r(16);
                             ((l += e || 0),
                                 o.view.setUint32(0, 1347094280),
-                                void 0 !== n && (_.view.setUint32(10, n, !0), o.view.setUint32(4, n, !0)),
+                                void 0 !== n && (_.view.setUint32(10, n, true), o.view.setUint32(4, n, true)),
                                 p &&
-                                    (o.view.setUint32(8, e, !0),
-                                    _.view.setUint32(14, e, !0),
-                                    o.view.setUint32(12, p.size, !0),
-                                    _.view.setUint32(18, p.size, !0)),
+                                    (o.view.setUint32(8, e, true),
+                                    _.view.setUint32(14, e, true),
+                                    o.view.setUint32(12, p.size, true),
+                                    _.view.setUint32(18, p.size, true)),
                                 t.writeUint8Array(
                                     o.array,
                                     function () {
@@ -658,13 +658,13 @@ module.exports = function (e, t) {
                                               _.view.setUint32(0, 335546376),
                                               v.version && _.view.setUint8(0, v.version),
                                               i || 0 === v.level || v.directory || _.view.setUint16(4, 2048),
-                                              _.view.setUint16(6, (((w.getHours() << 6) | w.getMinutes()) << 5) | (w.getSeconds() / 2), !0),
+                                              _.view.setUint16(6, (((w.getHours() << 6) | w.getMinutes()) << 5) | (w.getSeconds() / 2), true),
                                               _.view.setUint16(
                                                   8,
                                                   ((((w.getFullYear() - 1980) << 4) | (w.getMonth() + 1)) << 5) | w.getDate(),
-                                                  !0
+                                                  true
                                               ),
-                                              _.view.setUint16(22, b.length, !0),
+                                              _.view.setUint16(22, b.length, true),
                                               (o = r(30 + b.length)).view.setUint32(0, 1347093252),
                                               o.array.set(_.array, 4),
                                               o.array.set(b, 30),
@@ -673,7 +673,7 @@ module.exports = function (e, t) {
                                       })(function () {
                                           p
                                               ? i || 0 === v.level
-                                                  ? y(C, c++, p, t, 0, p.size, !0, E, h, u, d)
+                                                  ? y(C, c++, p, t, 0, p.size, true, E, h, u, d)
                                                   : (function (t, n, o, i, a, r, s, l, c) {
                                                         e.zip.useWebWorkers
                                                             ? f(
@@ -713,17 +713,17 @@ module.exports = function (e, t) {
                                 n.view.setUint32(u, 1347092738),
                                 n.view.setUint16(u + 4, 5120),
                                 n.array.set(i.headerArray, u + 6),
-                                n.view.setUint16(u + 32, i.comment.length, !0),
+                                n.view.setUint16(u + 32, i.comment.length, true),
                                 i.directory && n.view.setUint8(u + 38, 16),
-                                n.view.setUint32(u + 42, i.offset, !0),
+                                n.view.setUint32(u + 42, i.offset, true),
                                 n.array.set(i.filename, u + 46),
                                 n.array.set(i.comment, u + 46 + i.filename.length),
                                 (u += 46 + i.filename.length + i.comment.length));
                         (n.view.setUint32(u, 1347093766),
-                            n.view.setUint16(u + 8, s.length, !0),
-                            n.view.setUint16(u + 10, s.length, !0),
-                            n.view.setUint32(u + 12, c, !0),
-                            n.view.setUint32(u + 16, l, !0),
+                            n.view.setUint16(u + 8, s.length, true),
+                            n.view.setUint16(u + 10, s.length, true),
+                            n.view.setUint32(u + 12, c, true),
+                            n.view.setUint32(u + 16, l, true),
                             t.writeUint8Array(
                                 n.array,
                                 function () {
@@ -838,7 +838,7 @@ module.exports = function (e, t) {
                             E(e, t, n, o);
                         }, n));
                 },
-                useWebWorkers: !0,
+                useWebWorkers: true,
                 workerScriptsPath: null,
                 workerScripts: null,
             };

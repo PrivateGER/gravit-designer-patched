@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         (function (t, n, o) {
             (!(function (t) {
-                e.exports = t();
+                module.exports = t();
             })(function () {
                 var e, i, a;
                 return (function e(t, n, o) {
@@ -9,8 +9,8 @@ module.exports = function (e, t, n) {
                         if (!n[r]) {
                             if (!t[r]) {
                                 var l = "function" == typeof _dereq_ && _dereq_;
-                                if (!s && l) return l(r, !0);
-                                if (a) return a(r, !0);
+                                if (!s && l) return l(r, true);
+                                if (a) return a(r, true);
                                 var c = new Error("Cannot find module '" + r + "'");
                                 throw ((c.code = "MODULE_NOT_FOUND"), c);
                             }
@@ -68,10 +68,10 @@ module.exports = function (e, t, n) {
                                     a = e("./queue.js"),
                                     r = e("./util.js");
                                 function s() {
-                                    ((this._isTickUsed = !1),
+                                    ((this._isTickUsed = false),
                                         (this._lateQueue = new a(16)),
                                         (this._normalQueue = new a(16)),
-                                        (this._trampolineEnabled = !0));
+                                        (this._trampolineEnabled = true));
                                     var e = this;
                                     ((this.drainQueues = function () {
                                         e._drainQueues();
@@ -88,11 +88,11 @@ module.exports = function (e, t, n) {
                                     (this._normalQueue._pushOne(e), this._queueTick());
                                 }
                                 ((s.prototype.disableTrampolineIfNecessary = function () {
-                                    r.hasDevTools && (this._trampolineEnabled = !1);
+                                    r.hasDevTools && (this._trampolineEnabled = false);
                                 }),
                                     (s.prototype.enableTrampoline = function () {
                                         this._trampolineEnabled ||
-                                            ((this._trampolineEnabled = !0),
+                                            ((this._trampolineEnabled = true),
                                             (this._schedule = function (e) {
                                                 setTimeout(e, 0);
                                             }));
@@ -167,10 +167,10 @@ module.exports = function (e, t, n) {
                                         (this._drainQueue(this._normalQueue), this._reset(), this._drainQueue(this._lateQueue));
                                     }),
                                     (s.prototype._queueTick = function () {
-                                        this._isTickUsed || ((this._isTickUsed = !0), this._schedule(this.drainQueues));
+                                        this._isTickUsed || ((this._isTickUsed = true), this._schedule(this.drainQueues));
                                     }),
                                     (s.prototype._reset = function () {
-                                        this._isTickUsed = !1;
+                                        this._isTickUsed = false;
                                     }),
                                     (t.exports = new s()),
                                     (t.exports.firstLineError = o));
@@ -185,7 +185,7 @@ module.exports = function (e, t, n) {
                                             this._reject(t);
                                         },
                                         i = function (e, t) {
-                                            ((t.promiseRejectionQueued = !0), t.bindingPromise._then(o, o, null, this, e));
+                                            ((t.promiseRejectionQueued = true), t.bindingPromise._then(o, o, null, this, e));
                                         },
                                         a = function (e, t) {
                                             this._isPending() && this._resolveCallback(t.target);
@@ -200,7 +200,7 @@ module.exports = function (e, t, n) {
                                         var c = this._target();
                                         if ((l._setBoundTo(s), s instanceof e)) {
                                             var d = {
-                                                promiseRejectionQueued: !1,
+                                                promiseRejectionQueued: false,
                                                 promise: l,
                                                 target: c,
                                                 bindingPromise: s,
@@ -313,7 +313,7 @@ module.exports = function (e, t, n) {
                                     ((t.prototype._cancel = function (e) {
                                         if (!this.isCancellable()) return this;
                                         for (var t, n = this; void 0 !== (t = n._cancellationParent) && t.isCancellable(); ) n = t;
-                                        (this._unsetCancellable(), n._target()._rejectCallback(e, !1, !0));
+                                        (this._unsetCancellable(), n._target()._rejectCallback(e, false, true));
                                     }),
                                         (t.prototype.cancel = function (e) {
                                             return this.isCancellable()
@@ -349,7 +349,7 @@ module.exports = function (e, t, n) {
                                         a = /[\\\/]bluebird[\\\/]js[\\\/](main|debug|zalgo|instrumented)/,
                                         r = null,
                                         s = null,
-                                        l = !1;
+                                        l = false;
                                     function c(e) {
                                         this._parent = e;
                                         var t = (this._length = 1 + (void 0 === e ? 0 : e._length));
@@ -460,7 +460,7 @@ module.exports = function (e, t, n) {
                                                             return e + "\n" + t.join("\n");
                                                         })(n, o)
                                                     ),
-                                                    i.notEnumerableProp(e, "__stackCleaned__", !0));
+                                                    i.notEnumerableProp(e, "__stackCleaned__", true));
                                             }
                                         }),
                                         (c.parseStackAndMessage = function (e) {
@@ -505,29 +505,29 @@ module.exports = function (e, t, n) {
                                             return "function" == typeof m;
                                         }),
                                         (c.fireRejectionEvent = function (e, t, n, i) {
-                                            var a = !1;
+                                            var a = false;
                                             try {
-                                                "function" == typeof t && ((a = !0), "rejectionHandled" === e ? t(i) : t(n, i));
+                                                "function" == typeof t && ((a = true), "rejectionHandled" === e ? t(i) : t(n, i));
                                             } catch (e) {
                                                 o.throwLater(e);
                                             }
-                                            var r = !1;
+                                            var r = false;
                                             try {
                                                 r = y(e, n, i);
                                             } catch (e) {
-                                                ((r = !0), o.throwLater(e));
+                                                ((r = true), o.throwLater(e));
                                             }
-                                            var s = !1;
+                                            var s = false;
                                             if (f)
                                                 try {
                                                     s = f(e.toLowerCase(), { reason: n, promise: i });
                                                 } catch (e) {
-                                                    ((s = !0), o.throwLater(e));
+                                                    ((s = true), o.throwLater(e));
                                                 }
                                             r || a || s || "unhandledRejection" !== e || c.formatAndLogError(n, "Unhandled rejection ");
                                         }));
                                     var p = function () {
-                                            return !1;
+                                            return false;
                                         },
                                         g = /[\/<\(]([^:\/]+):(\d+):(?:\d+)\)?\s*$/;
                                     function h(e) {
@@ -560,7 +560,7 @@ module.exports = function (e, t, n) {
                                                 n !== o ||
                                                 s >= l ||
                                                 (p = function (e) {
-                                                    if (a.test(e)) return !0;
+                                                    if (a.test(e)) return true;
                                                     var t = h(e);
                                                     return !!(t && t.fileName === n && s <= t.line && t.line <= l);
                                                 });
@@ -596,7 +596,7 @@ module.exports = function (e, t, n) {
                                                 return (
                                                     (r = /@/),
                                                     (s = t),
-                                                    (l = !0),
+                                                    (l = true),
                                                     function (e) {
                                                         e.stack = new Error().stack;
                                                     }
@@ -634,8 +634,8 @@ module.exports = function (e, t, n) {
                                                 return function (e, n, o) {
                                                     return "rejectionHandled" === e ? t.emit(e, o) : t.emit(e, n, o);
                                                 };
-                                            var e = !1,
-                                                n = !0;
+                                            var e = false,
+                                                n = true;
                                             try {
                                                 var o = new self.CustomEvent("test");
                                                 e = o instanceof CustomEvent;
@@ -643,9 +643,9 @@ module.exports = function (e, t, n) {
                                             if (!e)
                                                 try {
                                                     var a = document.createEvent("CustomEvent");
-                                                    (a.initCustomEvent("testingtheevent", !1, !0, {}), self.dispatchEvent(a));
+                                                    (a.initCustomEvent("testingtheevent", false, true, {}), self.dispatchEvent(a));
                                                 } catch (e) {
-                                                    n = !1;
+                                                    n = false;
                                                 }
                                             n &&
                                                 (f = function (t, n) {
@@ -654,11 +654,11 @@ module.exports = function (e, t, n) {
                                                         e
                                                             ? (o = new self.CustomEvent(t, {
                                                                   detail: n,
-                                                                  bubbles: !1,
-                                                                  cancelable: !0,
+                                                                  bubbles: false,
+                                                                  cancelable: true,
                                                               }))
                                                             : self.dispatchEvent &&
-                                                              (o = document.createEvent("CustomEvent")).initCustomEvent(t, !1, !0, n),
+                                                              (o = document.createEvent("CustomEvent")).initCustomEvent(t, false, true, n),
                                                         !!o && !self.dispatchEvent(o)
                                                     );
                                                 });
@@ -669,7 +669,7 @@ module.exports = function (e, t, n) {
                                                 function (e, t, n) {
                                                     var o = r[e],
                                                         i = self[o];
-                                                    return !!i && ("rejectionHandled" === e ? i.call(self, n) : i.call(self, t, n), !0);
+                                                    return !!i && ("rejectionHandled" === e ? i.call(self, n) : i.call(self, t, n), true);
                                                 }
                                             );
                                         })();
@@ -794,15 +794,15 @@ module.exports = function (e, t, n) {
                                                 NODE_ENV: "production",
                                                 APP_VERSION: "3.15.0",
                                                 APP_VERSION_FRIENDLY: "PlasmaTrap-patched",
-                                                IS_BETA: !1,
+                                                IS_BETA: false,
                                                 BUILD_NUM: "8795",
                                                 COMMIT_SHA: "566771f4dff3952a55c0d9d3c130f7e787dfdfa7",
                                                 STORE_VENDOR: "",
-                                                IS_COREL: !1,
-                                                IS_TRUNK: !1,
-                                                IS_PROD: !0,
+                                                IS_COREL: false,
+                                                IS_TRUNK: false,
+                                                IS_PROD: true,
                                             }).BLUEBIRD_DEBUG ||
-                                                !1);
+                                                false);
                                     return (
                                         l.isNode &&
                                             0 ==
@@ -810,15 +810,15 @@ module.exports = function (e, t, n) {
                                                     NODE_ENV: "production",
                                                     APP_VERSION: "3.15.0",
                                                     APP_VERSION_FRIENDLY: "PlasmaTrap-patched",
-                                                    IS_BETA: !1,
+                                                    IS_BETA: false,
                                                     BUILD_NUM: "8795",
                                                     COMMIT_SHA: "566771f4dff3952a55c0d9d3c130f7e787dfdfa7",
                                                     STORE_VENDOR: "",
-                                                    IS_COREL: !1,
-                                                    IS_TRUNK: !1,
-                                                    IS_PROD: !0,
+                                                    IS_COREL: false,
+                                                    IS_TRUNK: false,
+                                                    IS_PROD: true,
                                                 }).BLUEBIRD_DEBUG &&
-                                            (d = !1),
+                                            (d = false),
                                         d && r.disableTrampolineIfNecessary(),
                                         (t.prototype._ignoreRejections = function () {
                                             (this._unsetRejectionIsUnhandled(), (this._bitField = 16777216 | this._bitField));
@@ -877,7 +877,7 @@ module.exports = function (e, t, n) {
                                                 else if (!e.__stackCleaned__) {
                                                     var i = n.parseStackAndMessage(e);
                                                     (l.notEnumerableProp(e, "stack", i.message + "\n" + i.stack.join("\n")),
-                                                        l.notEnumerableProp(e, "__stackCleaned__", !0));
+                                                        l.notEnumerableProp(e, "__stackCleaned__", true));
                                                 }
                                             }
                                         }),
@@ -900,7 +900,7 @@ module.exports = function (e, t, n) {
                                             o = "function" == typeof e ? (null === t ? e : t.bind(e)) : void 0;
                                         }),
                                         (t.longStackTraces = function () {
-                                            if (r.haveItemsQueued() && !1 === d)
+                                            if (r.haveItemsQueued() && false === d)
                                                 throw new Error(
                                                     "cannot enable long stack traces after promises have been created\n\n    See http://goo.gl/DT1qyG\n"
                                                 );
@@ -909,7 +909,7 @@ module.exports = function (e, t, n) {
                                         (t.hasLongStackTraces = function () {
                                             return d && n.isSupported();
                                         }),
-                                        n.isSupported() || ((t.longStackTraces = function () {}), (d = !1)),
+                                        n.isSupported() || ((t.longStackTraces = function () {}), (d = false)),
                                         function () {
                                             return d;
                                         }
@@ -1019,18 +1019,18 @@ module.exports = function (e, t, n) {
                                     "function" == typeof Array.prototype[f[m]] && (h.prototype[f[m]] = Array.prototype[f[m]]);
                                 (a.defineProperty(h.prototype, "length", {
                                     value: 0,
-                                    configurable: !1,
-                                    writable: !0,
-                                    enumerable: !0,
+                                    configurable: false,
+                                    writable: true,
+                                    enumerable: true,
                                 }),
-                                    (h.prototype.isOperational = !0));
+                                    (h.prototype.isOperational = true));
                                 var y = 0;
                                 function v(e) {
                                     if (!(this instanceof v)) return new v(e);
                                     (c(this, "name", "OperationalError"),
                                         c(this, "message", e),
                                         (this.cause = e),
-                                        (this.isOperational = !0),
+                                        (this.isOperational = true),
                                         e instanceof Error
                                             ? (c(this, "message", e.message), c(this, "stack", e.stack))
                                             : Error.captureStackTrace && Error.captureStackTrace(this, this.constructor));
@@ -1109,7 +1109,7 @@ module.exports = function (e, t, n) {
                                             try {
                                                 return "[object Array]" === a.call(e);
                                             } catch (e) {
-                                                return !1;
+                                                return false;
                                             }
                                         },
                                         keys: s,
@@ -1132,7 +1132,7 @@ module.exports = function (e, t, n) {
                                         },
                                         isES5: o,
                                         propertyIsWritable: function () {
-                                            return !0;
+                                            return true;
                                         },
                                     };
                                 }
@@ -1203,7 +1203,7 @@ module.exports = function (e, t, n) {
                                             a = n._isBound() ? i.call(n._boundValue(), e) : i(e);
                                         if (void 0 !== a) {
                                             var r = o(a, n);
-                                            if (r instanceof t) return c((r = r._target()), e, !0);
+                                            if (r instanceof t) return c((r = r._target()), e, true);
                                         }
                                         return e;
                                     }
@@ -1214,10 +1214,10 @@ module.exports = function (e, t, n) {
                                     }),
                                         (t.prototype.lastly = t.prototype.finally =
                                             function (e) {
-                                                return this._passThroughHandler(e, !0);
+                                                return this._passThroughHandler(e, true);
                                             }),
                                         (t.prototype.tap = function (e) {
-                                            return this._passThroughHandler(e, !1);
+                                            return this._passThroughHandler(e, false);
                                         }));
                                 };
                             },
@@ -1249,9 +1249,9 @@ module.exports = function (e, t, n) {
                                                 this._next(void 0));
                                         }),
                                         (d.prototype._continue = function (e) {
-                                            if (e === s) return this._promise._rejectCallback(e.e, !1, !0);
+                                            if (e === s) return this._promise._rejectCallback(e.e, false, true);
                                             var n = e.value;
-                                            if (!0 === e.done) this._promise._resolveCallback(n);
+                                            if (true === e.done) this._promise._resolveCallback(n);
                                             else {
                                                 var o = i(n, this._promise);
                                                 if (
@@ -1457,7 +1457,7 @@ module.exports = function (e, t, n) {
                                                 return (l._popContext(), l._resolveFromSyncValue(c), l);
                                             }),
                                         (t.prototype._resolveFromSyncValue = function (e) {
-                                            e === a.errorObj ? this._rejectCallback(e.e, !1, !0) : this._resolveCallback(e, !0);
+                                            e === a.errorObj ? this._rejectCallback(e.e, false, true) : this._resolveCallback(e, true);
                                         }));
                                 };
                             },
@@ -1677,15 +1677,15 @@ module.exports = function (e, t, n) {
                                         }),
                                         (E.prototype.toJSON = function () {
                                             var e = {
-                                                isFulfilled: !1,
-                                                isRejected: !1,
+                                                isFulfilled: false,
+                                                isRejected: false,
                                                 fulfillmentValue: void 0,
                                                 rejectionReason: void 0,
                                             };
                                             return (
                                                 this.isFulfilled()
-                                                    ? ((e.fulfillmentValue = this.value()), (e.isFulfilled = !0))
-                                                    : this.isRejected() && ((e.rejectionReason = this.reason()), (e.isRejected = !0)),
+                                                    ? ((e.fulfillmentValue = this.value()), (e.isFulfilled = true))
+                                                    : this.isRejected() && ((e.rejectionReason = this.reason()), (e.isRejected = true)),
                                                 e
                                             );
                                         }),
@@ -1702,7 +1702,7 @@ module.exports = function (e, t, n) {
                                         (E.fromNode = function (e) {
                                             var t = new E(p),
                                                 n = S(e)(C(t));
-                                            return (n === x && t._rejectCallback(n.e, !0, !0), t);
+                                            return (n === x && t._rejectCallback(n.e, true, true), t);
                                         }),
                                         (E.all = function (e) {
                                             return new m(e).promise();
@@ -1724,7 +1724,7 @@ module.exports = function (e, t, n) {
                                         (E.reject = E.rejected =
                                             function (e) {
                                                 var t = new E(p);
-                                                return (t._captureStackTrace(), t._rejectCallback(e, !0), t);
+                                                return (t._captureStackTrace(), t._rejectCallback(e, true), t);
                                             }),
                                         (E.setScheduler = function (e) {
                                             if ("function" != typeof e)
@@ -1856,7 +1856,7 @@ module.exports = function (e, t, n) {
                                         }),
                                         (E.prototype._resolveCallback = function (e, t) {
                                             if (!this._isFollowingOrFulfilledOrRejected()) {
-                                                if (e === this) return this._rejectCallback(i(), !1, !0);
+                                                if (e === this) return this._rejectCallback(i(), false, true);
                                                 var n = f(e, this);
                                                 if (!(n instanceof E)) return this._fulfill(e);
                                                 var o = 1 | (t ? 4 : 0);
@@ -1880,7 +1880,7 @@ module.exports = function (e, t, n) {
                                         (E.prototype._resolveFromResolver = function (e) {
                                             var t = this;
                                             (this._captureStackTrace(), this._pushContext());
-                                            var n = !0,
+                                            var n = true,
                                                 o = S(e)(
                                                     function (e) {
                                                         null !== t && (t._resolveCallback(e), (t = null));
@@ -1889,9 +1889,9 @@ module.exports = function (e, t, n) {
                                                         null !== t && (t._rejectCallback(e, n), (t = null));
                                                     }
                                                 );
-                                            ((n = !1),
+                                            ((n = false),
                                                 this._popContext(),
-                                                void 0 !== o && o === x && null !== t && (t._rejectCallback(o.e, !0, !0), (t = null)));
+                                                void 0 !== o && o === x && null !== t && (t._rejectCallback(o.e, true, true), (t = null)));
                                         }),
                                         (E.prototype._settlePromiseFromHandler = function (e, t, n, o) {
                                             var a;
@@ -1906,7 +1906,7 @@ module.exports = function (e, t, n) {
                                                     a === x || a === o || a === h)
                                                 ) {
                                                     var r = a === o ? i() : a.e;
-                                                    o._rejectCallback(r, !1, !0);
+                                                    o._rejectCallback(r, false, true);
                                                 } else o._resolveCallback(a);
                                         }),
                                         (E.prototype._target = function () {
@@ -2049,7 +2049,7 @@ module.exports = function (e, t, n) {
                                         A(1),
                                         A(function () {}),
                                         A(void 0),
-                                        A(!1),
+                                        A(false),
                                         A(new E(p)),
                                         y.setBounds(c.firstLineError, s.lastLineError),
                                         E
@@ -2172,7 +2172,7 @@ module.exports = function (e, t, n) {
                                         }),
                                         (r.prototype.__hardReject__ = r.prototype._reject =
                                             function (e) {
-                                                ((this._values = null), this._promise._rejectCallback(e, !1, !0));
+                                                ((this._values = null), this._promise._rejectCallback(e, false, true));
                                             }),
                                         (r.prototype._promiseProgressed = function (e, t) {
                                             this._promise._progress({ index: t, value: e });
@@ -2184,7 +2184,7 @@ module.exports = function (e, t, n) {
                                             (this._totalResolved++, this._reject(e));
                                         }),
                                         (r.prototype.shouldCopyValues = function () {
-                                            return !0;
+                                            return true;
                                         }),
                                         (r.prototype.getActualLength = function (e) {
                                             return e;
@@ -2308,7 +2308,7 @@ module.exports = function (e, t, n) {
                                         s = i.maybeWrapAsError,
                                         l = i.canEvaluate,
                                         c = e("./errors").TypeError,
-                                        d = { __isPromisified__: !0 },
+                                        d = { __isPromisified__: true },
                                         u = new RegExp(
                                             "^(?:" +
                                                 [
@@ -2331,9 +2331,9 @@ module.exports = function (e, t, n) {
                                     }
                                     function h(e) {
                                         try {
-                                            return !0 === e.__isPromisified__;
+                                            return true === e.__isPromisified__;
                                         } catch (e) {
-                                            return !1;
+                                            return false;
                                         }
                                     }
                                     function f(e, t, n) {
@@ -2382,11 +2382,11 @@ module.exports = function (e, t, n) {
                                                   try {
                                                       d.apply(i, r(arguments, g));
                                                   } catch (e) {
-                                                      c._rejectCallback(s(e), !0, !0);
+                                                      c._rejectCallback(s(e), true, true);
                                                   }
                                                   return c;
                                               }
-                                              return ("string" == typeof p && (e = d), i.notEnumerableProp(g, "__isPromisified__", !0), g);
+                                              return ("string" == typeof p && (e = d), i.notEnumerableProp(g, "__isPromisified__", true), g);
                                           };
                                     function v(e, t, n, a) {
                                         for (
@@ -2402,7 +2402,7 @@ module.exports = function (e, t, n) {
                                                 var g = a(u, function () {
                                                     return y(d, o, d, u, t);
                                                 });
-                                                (i.notEnumerableProp(g, "__isPromisified__", !0), (e[p] = g));
+                                                (i.notEnumerableProp(g, "__isPromisified__", true), (e[p] = g));
                                             }
                                         }
                                         return (i.toFastProperties(e), e);
@@ -2479,7 +2479,7 @@ module.exports = function (e, t, n) {
                                             });
                                         }),
                                         (l.prototype.shouldCopyValues = function () {
-                                            return !1;
+                                            return false;
                                         }),
                                         (l.prototype.getActualLength = function (e) {
                                             return e >> 1;
@@ -2594,19 +2594,19 @@ module.exports = function (e, t, n) {
                                             this._promise._captureStackTrace(),
                                             (this._preservedValues = l === a ? [] : null),
                                             (this._zerothIsAccum = void 0 === o),
-                                            (this._gotAccum = !1),
+                                            (this._gotAccum = false),
                                             (this._reducingIndex = this._zerothIsAccum ? 1 : 0),
                                             (this._valuesPhase = void 0));
                                         var c = i(o, this._promise),
-                                            d = !1,
+                                            d = false,
                                             u = c instanceof t;
                                         (u &&
                                             ((c = c._target())._isPending()
                                                 ? c._proxyPromiseArray(this, -1)
                                                 : c._isFulfilled()
-                                                  ? ((o = c._value()), (this._gotAccum = !0))
-                                                  : (this._reject(c._reason()), (d = !0))),
-                                            u || this._zerothIsAccum || (this._gotAccum = !0));
+                                                  ? ((o = c._value()), (this._gotAccum = true))
+                                                  : (this._reject(c._reason()), (d = true))),
+                                            u || this._zerothIsAccum || (this._gotAccum = true));
                                         var g = r();
                                         ((this._callback = null === g ? n : g.bind(n)), (this._accum = o), d || s.invoke(p, this, void 0));
                                     }
@@ -2637,9 +2637,9 @@ module.exports = function (e, t, n) {
                                             if (
                                                 ((a = p[n]),
                                                 0 === n && this._zerothIsAccum
-                                                    ? ((this._accum = e), (this._gotAccum = u = !0), (p[n] = 0 === a ? 1 : 2))
+                                                    ? ((this._accum = e), (this._gotAccum = u = true), (p[n] = 0 === a ? 1 : 2))
                                                     : -1 === n
-                                                      ? ((this._accum = e), (this._gotAccum = u = !0))
+                                                      ? ((this._accum = e), (this._gotAccum = u = true))
                                                       : 0 === a
                                                         ? (p[n] = 1)
                                                         : ((p[n] = 2), (this._accum = e)),
@@ -2718,13 +2718,13 @@ module.exports = function (e, t, n) {
                                               var t = document.createElement("div");
                                               return (
                                                   new MutationObserver(e).observe(t, {
-                                                      attributes: !0,
+                                                      attributes: true,
                                                   }),
                                                   function () {
                                                       t.classList.toggle("foo");
                                                   }
                                               );
-                                          }).isStatic = !0);
+                                          }).isStatic = true);
                                 i.exports = r;
                             },
                             { "./util": 38 },
@@ -2768,7 +2768,7 @@ module.exports = function (e, t, n) {
                                         r = e("./errors.js").AggregateError,
                                         s = i.isArray;
                                     function l(e) {
-                                        (this.constructor$(e), (this._howMany = 0), (this._unwrap = !1), (this._initialized = !1));
+                                        (this.constructor$(e), (this._howMany = 0), (this._unwrap = false), (this._initialized = false));
                                     }
                                     function c(e, t) {
                                         if ((0 | t) !== t || t < 0)
@@ -2790,10 +2790,10 @@ module.exports = function (e, t, n) {
                                                 } else this._resolve([]);
                                         }),
                                         (l.prototype.init = function () {
-                                            ((this._initialized = !0), this._init());
+                                            ((this._initialized = true), this._init());
                                         }),
                                         (l.prototype.setUnwrap = function () {
-                                            this._unwrap = !0;
+                                            this._unwrap = true;
                                         }),
                                         (l.prototype.howMany = function () {
                                             return this._howMany;
@@ -2984,14 +2984,14 @@ module.exports = function (e, t, n) {
                                                         },
                                                         function (e) {
                                                             if (!s) return;
-                                                            (s._rejectCallback(e, !1, !0), (s = null));
+                                                            (s._rejectCallback(e, false, true), (s = null));
                                                         },
                                                         function (e) {
                                                             if (!s) return;
                                                             "function" == typeof s._progress && s._progress(e);
                                                         }
                                                     );
-                                                    (!1, s && c === i && (s._rejectCallback(c.e, !0, !0), (s = null)));
+                                                    (false, s && c === i && (s._rejectCallback(c.e, true, true), (s = null)));
                                                     return l;
                                                 })(e, d, l);
                                         }
@@ -3158,9 +3158,9 @@ module.exports = function (e, t, n) {
                                             var i,
                                                 a = arguments[e - 1];
                                             if ("function" != typeof a) return n("fn must be a function\n\n    See http://goo.gl/916lJJ\n");
-                                            var r = !0;
+                                            var r = true;
                                             2 === e && Array.isArray(arguments[0])
-                                                ? ((e = (i = arguments[0]).length), (r = !1))
+                                                ? ((e = (i = arguments[0]).length), (r = false))
                                                 : ((i = arguments), e--);
                                             for (var s = new Array(e), c = 0; c < e; ++c) {
                                                 var d = i[c];
@@ -3226,7 +3226,7 @@ module.exports = function (e, t, n) {
                                                 3 === e.f
                                             );
                                         } catch (e) {
-                                            return !1;
+                                            return false;
                                         }
                                     })(),
                                     s = { e: {} },
@@ -3251,7 +3251,7 @@ module.exports = function (e, t, n) {
                                     return ((o.prototype = t.prototype), (e.prototype = new o()), e.prototype);
                                 };
                                 function p(e) {
-                                    return null == e || !0 === e || !1 === e || "string" == typeof e || "number" == typeof e;
+                                    return null == e || true === e || false === e || "string" == typeof e || "number" == typeof e;
                                 }
                                 function g(e) {
                                     return !p(e);
@@ -3275,9 +3275,9 @@ module.exports = function (e, t, n) {
                                     if (p(e)) return e;
                                     var o = {
                                         value: n,
-                                        configurable: !0,
-                                        enumerable: !1,
-                                        writable: !0,
+                                        configurable: true,
+                                        enumerable: false,
+                                        writable: true,
                                     };
                                     return (i.defineProperty(e, t, o), e);
                                 }
@@ -3287,8 +3287,8 @@ module.exports = function (e, t, n) {
                                 var _ = (function () {
                                         var e = [Array.prototype, Object.prototype, Function.prototype],
                                             t = function (t) {
-                                                for (var n = 0; n < e.length; ++n) if (e[n] === t) return !0;
-                                                return !1;
+                                                for (var n = 0; n < e.length; ++n) if (e[n] === t) return true;
+                                                return false;
                                             };
                                         if (i.isES5) {
                                             var n = Object.getOwnPropertyNames;
@@ -3303,7 +3303,7 @@ module.exports = function (e, t, n) {
                                                     for (var s = 0; s < r.length; ++s) {
                                                         var l = r[s];
                                                         if (!a[l]) {
-                                                            a[l] = !0;
+                                                            a[l] = true;
                                                             var c = Object.getOwnPropertyDescriptor(e, l);
                                                             null != c && null == c.get && null == c.set && o.push(l);
                                                         }
@@ -3334,11 +3334,11 @@ module.exports = function (e, t, n) {
                                                 n = i.isES5 && t.length > 1,
                                                 o = t.length > 0 && !(1 === t.length && "constructor" === t[0]),
                                                 a = b.test(e + "") && i.names(e).length > 0;
-                                            if (n || o || a) return !0;
+                                            if (n || o || a) return true;
                                         }
-                                        return !1;
+                                        return false;
                                     } catch (e) {
-                                        return !1;
+                                        return false;
                                     }
                                 }
                                 function C(e) {
@@ -3364,12 +3364,12 @@ module.exports = function (e, t, n) {
                                 }
                                 function T(e) {
                                     try {
-                                        y(e, "isOperational", !0);
+                                        y(e, "isOperational", true);
                                     } catch (e) {}
                                 }
                                 function G(e) {
                                     return (
-                                        null != e && (e instanceof Error.__BluebirdErrorTypes__.OperationalError || !0 === e.isOperational)
+                                        null != e && (e instanceof Error.__BluebirdErrorTypes__.OperationalError || true === e.isOperational)
                                     );
                                 }
                                 function P(e) {
@@ -3450,5 +3450,5 @@ module.exports = function (e, t, n) {
                 "undefined" != typeof window && null !== window
                     ? (window.P = window.Promise)
                     : "undefined" != typeof self && null !== self && (self.P = self.Promise));
-        }).call(this, n(183), n(109), n(1115).setImmediate);
+        }).call(this, require(183), require(109), require(1115).setImmediate);
     };

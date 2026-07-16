@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.default = void 0), n(4), n(32), n(33));
-        t.default = class {
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0), require(4), require(32), require(33));
+        exports.default = class {
             constructor() {
                 this._executions = [];
             }

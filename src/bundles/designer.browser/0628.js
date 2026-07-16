@@ -1,16 +1,16 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(74),
-            a = n(201).CONSTRUCTOR,
-            r = n(186),
-            s = n(110),
-            l = n(35),
-            c = n(79),
+        var o = require(25),
+            i = require(74),
+            a = require(201 /* CONSTRUCTOR */).CONSTRUCTOR,
+            r = require(186),
+            s = require(110),
+            l = require(35),
+            c = require(79),
             d = r && r.prototype;
         if (
             (o(
-                { target: "Promise", proto: !0, forced: a, real: !0 },
+                { target: "Promise", proto: true, forced: a, real: true },
                 {
                     catch: function (e) {
                         return this.then(void 0, e);
@@ -20,6 +20,6 @@ module.exports = function (e, t, n) {
             !i && l(r))
         ) {
             var u = s("Promise").prototype.catch;
-            d.catch !== u && c(d, "catch", u, { unsafe: !0 });
+            d.catch !== u && c(d, "catch", u, { unsafe: true });
         }
     };

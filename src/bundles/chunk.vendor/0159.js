@@ -1,28 +1,28 @@
-module.exports = function (e, t, i) {
-            var n = i(50),
-                r = i(2),
-                o = i(17),
-                a = i(112),
-                s = i(69),
-                l = i(133),
-                h = i(22),
-                A = i(6),
-                c = i(73),
-                p = i(7),
-                u = i(14),
-                d = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(50),
+                r = require(2),
+                o = require(17),
+                a = require(112),
+                s = require(69),
+                GScenePaintConfiguration = require(133),
+                h = require(22),
+                A = require(6),
+                c = require(73),
+                p = require(7),
+                u = require(14),
+                String = require(9);
 
             function g() {
                 (s.call(this), this._setDefaultProperties(g.VisualProperties), this._setDefaultProperties(g.GeometryProperties));
             }
             (r.inheritAndMix("layer", g, s, [r.Container, h.Transform, h.Layout, h.Anchor, h.Stylable, h.Accelerated]),
                 (g.VisualProperties = {
-                    otl: !1,
-                    prt: !0,
+                    otl: false,
+                    prt: true,
                     cls: new o([0, 168, 255]),
                 }),
                 (g.GeometryProperties = {
-                    frm: !1,
+                    frm: false,
                 }),
                 (g.prototype.validateInsertion = function (e, t) {
                     return e instanceof g || "page" === r.getName(e);
@@ -30,7 +30,7 @@ module.exports = function (e, t, i) {
                 (g.prototype.transform = function (e, t, i) {
                     if (e && !e.isIdentity()) {
                         var n = this.getProperty("frm");
-                        ((this._relayoutNow = !1), n && ((this._relayoutNow = !this._relayout), (this._relayout = !0)), this.beginUpdate());
+                        ((this._relayoutNow = false), n && ((this._relayoutNow = !this._relayout), (this._relayout = true)), this.beginUpdate());
                         try {
                             if (n) {
                                 var r = p.correctForFrame(e, n);
@@ -42,12 +42,12 @@ module.exports = function (e, t, i) {
                         }
                         if (n && this._relayoutNow) {
                             var o = this.getProperty("frm");
-                            (this._layoutAnchorContents(o, n, null), (this._relayoutNow = !1));
+                            (this._layoutAnchorContents(o, n, null), (this._relayoutNow = false));
                         }
                     }
                 }),
                 (g.prototype.getNodeNameTranslated = function () {
-                    return d.getValue("GLayer", "name", this.getNodeName());
+                    return String.getValue("GLayer", "name", this.getNodeName());
                 }),
                 (g.prototype._calculateGeometryBBox = function (e) {
                     var t = this.getProperty("frm");
@@ -78,11 +78,11 @@ module.exports = function (e, t, i) {
                     return (
                         !!s.prototype._preparePaint.call(this, e) &&
                         !(!this.$prt && !e.configuration.isAnnotationsVisible(e)) &&
-                        (e.configuration.paintMode !== l.PaintMode.Outline && this.$otl && e.outlineColors.push(this.$cls), !0)
+                        (e.configuration.paintMode !== GScenePaintConfiguration.PaintMode.Outline && this.$otl && e.outlineColors.push(this.$cls), true)
                     );
                 }),
                 (g.prototype._finishPaint = function (e) {
-                    (e.configuration.paintMode !== l.PaintMode.Outline && this.$otl && e.outlineColors.pop(),
+                    (e.configuration.paintMode !== GScenePaintConfiguration.PaintMode.Outline && this.$otl && e.outlineColors.pop(),
                         s.prototype._finishPaint.call(this, e));
                 }),
                 (g.prototype._paintStyleContent = function (e, t, i, n, r) {
@@ -134,7 +134,7 @@ module.exports = function (e, t, i) {
                               this.storeProperties(t.blob, g.GeometryProperties, function (e, t) {
                                   return "frm" === e && t ? A.serialize(t) : t;
                               }),
-                              this.hasFlag(r.Flag.Active) && (t.blob.__active = !0))
+                              this.hasFlag(r.Flag.Active) && (t.blob.__active = true))
                             : e === r._Change.Restore &&
                               (this.restoreProperties(t.blob, g.VisualProperties, function (e, t) {
                                   return "cls" === e && t ? n.deserialize(t) : t;
@@ -144,13 +144,13 @@ module.exports = function (e, t, i) {
                               }),
                               t.blob.__active && this.setFlag(r.Flag.Active)),
                         this._handleVisualChangeForProperties(e, t, g.VisualProperties));
-                    var i = !1;
+                    var i = false;
                     if (
                         (e == h._Change.ChildGeometryUpdate &&
                             t &&
                             t[0] &&
                             t[0].getParent() === this &&
-                            (this._notifyChange(h._Change.PrepareGeometryUpdate), (i = !0)),
+                            (this._notifyChange(h._Change.PrepareGeometryUpdate), (i = true)),
                         s.prototype._handleChange.call(this, e, t),
                         this._handleAnchorChange.call(this, e, t),
                         e == h._Change.ChildGeometryUpdate && i)
@@ -158,7 +158,7 @@ module.exports = function (e, t, i) {
                         var o = t[2];
                         (!o && t[0] && t[0] instanceof h && (o = t[0].getPaintBBox()),
                             this._notifyChange(h._Change.FinishGeometryUpdate, [2, o]));
-                    } else e != h._Change.PrepareChildAnchoring || this.getProperty("frm") || this.setFrame(!0);
+                    } else e != h._Change.PrepareChildAnchoring || this.getProperty("frm") || this.setFrame(true);
                 }),
                 (g.prototype.setFrame = function (e) {
                     if (e && !this.getProperty("frm")) {
@@ -213,5 +213,5 @@ module.exports = function (e, t, i) {
                             (this.resetAnchorProperties(), this.setProperties(["hacr", "vacr"], [g, f]));
                         }
                 }),
-                (e.exports = g));
+                (module.exports = g));
         };

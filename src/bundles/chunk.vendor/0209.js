@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            e.exports = {
-                GLocale: i(170),
-                GLocaleKey: i(325),
-                GLocaleLanguage: i(949),
-                DateAPI: i(373),
+            module.exports = {
+                GLocale: require(170),
+                GLocaleKey: require(325),
+                GLocaleLanguage: require(949),
+                DateAPI: require(373),
             };
         };

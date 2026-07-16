@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(20), i(107));
+            (require(20), require(107));
             const n = /^prod/.test("production"),
                 r = /^rc/.test("production"),
                 o = /^trunk/.test("production"),
@@ -37,7 +37,7 @@ module.exports = function (e, t, i) {
                     return n || s;
                 }
             }
-            e.exports = class {
+            module.exports = class {
                 static get Behaviour() {
                     return h;
                 }

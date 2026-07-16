@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(105),
-                r = i(89);
-            t.parse = function (e, t) {
-                var i = new r.Parser(e, t),
+            var n = require(105),
+                Parser = require(89);
+            exports.parse = function (e, t) {
+                var i = new Parser.Parser(e, t),
                     o = i.parseUShort();
                 if (0 === o)
                     return (function (e) {

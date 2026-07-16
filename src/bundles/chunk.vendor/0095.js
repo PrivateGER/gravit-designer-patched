@@ -1,40 +1,40 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(76),
-                o = i(0),
-                a = i(17),
-                s = i(68),
-                l = i(56),
-                h = i(72),
-                A = i(6),
-                c = i(12),
-                p = i(73),
-                u = i(14),
-                d = i(22),
-                g = i(7),
-                f = i(45),
-                m = i(112),
-                y = i(11),
-                _ = i(932),
-                v = i(659),
-                b = i(227),
-                C = i(9),
-                w = i(64),
-                E = i(103),
-                B = i(118);
-            i(111);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(76),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(17),
+                s = require(68),
+                l = require(56),
+                h = require(72),
+                A = require(6),
+                c = require(12),
+                p = require(73),
+                u = require(14),
+                d = require(22),
+                g = require(7),
+                f = require(45),
+                m = require(112),
+                y = require(11),
+                _ = require(932),
+                v = require(659),
+                b = require(227),
+                String = require(9),
+                w = require(64),
+                DUMP_IMAGES = require(103),
+                B = require(118);
+            require(111);
 
             function x() {
                 (p.call(this),
                     (this._convertStatus = x.ConvertStatus.None),
-                    (this._paintSharp = !1),
+                    (this._paintSharp = false),
                     this._setDefaultProperties(x.MetaProperties, x.VisualProperties, x.GeometryProperties),
-                    this.setProperty("csc", !0),
+                    this.setProperty("csc", true),
                     this._updateImage());
             }
             (n.inheritAndMix("image", x, p, [B]),
                 (x.options = {
-                    renderBox: !0,
+                    renderBox: true,
                 }),
                 (x.MetaProperties = {
                     iw: null,
@@ -51,8 +51,8 @@ module.exports = function (e, t, i) {
                 }),
                 (x.VisualProperties = {
                     url: null,
-                    dblMode: !1,
-                    ipfc: !0,
+                    dblMode: false,
+                    ipfc: true,
                 }),
                 (x.Type = {
                     PNG: "png",
@@ -87,7 +87,7 @@ module.exports = function (e, t, i) {
                 (x.StatusEvent = function (e, t) {
                     ((this.image = e), (this.status = t));
                 }),
-                o.inherit(x.StatusEvent, h),
+                IsFiniteNonNegativeNumber.inherit(x.StatusEvent, h),
                 (x.StatusEvent.prototype.image = null),
                 (x.StatusEvent.prototype.status = null),
                 (x.StatusEvent.prototype.toString = function () {
@@ -96,7 +96,7 @@ module.exports = function (e, t, i) {
                 (x.ConvertStatusEvent = function (e, t) {
                     ((this.image = e), (this.status = t));
                 }),
-                o.inherit(x.ConvertStatusEvent, h),
+                IsFiniteNonNegativeNumber.inherit(x.ConvertStatusEvent, h),
                 (x.ConvertStatusEvent.prototype.image = null),
                 (x.ConvertStatusEvent.prototype.status = null),
                 (x.ConvertStatusEvent.prototype.toString = function () {
@@ -104,7 +104,7 @@ module.exports = function (e, t, i) {
                 }),
                 (x.prototype._status = null),
                 (x.prototype.getNodeNameTranslated = function () {
-                    return C.getValue("GImage", "name", this.getNodeName());
+                    return String.getValue("GImage", "name", this.getNodeName());
                 }),
                 (x.prototype._convertStatus = x.ConvertStatus.None),
                 (x.prototype._type = null),
@@ -112,7 +112,7 @@ module.exports = function (e, t, i) {
                 (x.prototype._imageCanvas = null),
                 (x.prototype._imageCanvasOffscreen = null),
                 (x.prototype._vertexIterator = 0),
-                (x.prototype._updatingUrl = !1),
+                (x.prototype._updatingUrl = false),
                 (x.prototype.getStatus = function () {
                     return this._status;
                 }),
@@ -160,7 +160,7 @@ module.exports = function (e, t, i) {
                     return this.$itrf;
                 }),
                 (x.prototype.setImageTransform = function (e, t, i) {
-                    this.setProperties(["itrf"], [e], !1, t, i);
+                    this.setProperties(["itrf"], [e], false, t, i);
                 }),
                 (x.prototype.transformImage = function (e) {
                     this.$dblMode && e && !e.isIdentity() && this.setProperties(["itrf"], [this.$itrf ? this.$itrf.multiplied(e) : e]);
@@ -175,7 +175,7 @@ module.exports = function (e, t, i) {
                           !e.isIdentity() &&
                           ((this._layoutTransform = e),
                           (this._relayoutNow = !this._relayout),
-                          (this._relayout = !0),
+                          (this._relayout = true),
                           this.transformStyledCorners(this, e),
                           this.setProperties(
                               ["trf", "itrf"],
@@ -193,13 +193,13 @@ module.exports = function (e, t, i) {
                     } else d.Transform.prototype.assignPreTransformFrom.call(this, e, t);
                 }),
                 (x.prototype.preTransform = function (e, t, i) {
-                    if (this.$dblMode) p.prototype.preTransform.call(this, e, !1);
+                    if (this.$dblMode) p.prototype.preTransform.call(this, e, false);
                     else if (e && !e.isIdentity()) {
                         var n = this.$trf && this.$trf.invertible() ? this.$trf.inverted().multiplied(e.multiplied(this.$trf)) : e;
                         (this.transformStyledCorners(this, n),
                             (this._layoutTransform = n),
                             (this._relayoutNow = !this._relayout),
-                            (this._relayout = !0),
+                            (this._relayout = true),
                             this.setProperties(
                                 ["trf", "itrf"],
                                 [this.$trf ? e.multiplied(this.$trf) : e, this.$itrf ? this.$itrf.multiplied(n) : n]
@@ -208,7 +208,7 @@ module.exports = function (e, t, i) {
                             this._relayoutNow &&
                                 (this._layoutAnchorContents(null, null, this._layoutTransform),
                                 (this._layoutTransform = null),
-                                (this._relayoutNow = !1)));
+                                (this._relayoutNow = false)));
                     }
                 }),
                 (x.prototype.setBounds = function (e, t, i, n) {
@@ -277,18 +277,18 @@ module.exports = function (e, t, i) {
                           this.storeProperties(t.blob, x.GeometryProperties, function (e, t) {
                               return "itrf" === e && t ? g.serialize(t) : t;
                           }),
-                          this.$ipfc && (t.blob.ipfc = !0))
+                          this.$ipfc && (t.blob.ipfc = true))
                         : e == n._Change.BeforePropertiesChange
                           ? t.properties.indexOf("url") >= 0 && this._scene && this._scene.getDictionary().removeEntry(this.$url)
                           : e == n._Change.AfterPropertiesChange
                             ? (t.properties.indexOf("tmpUrl") >= 0 && this._updateTemporaryImage(),
                               t.properties.indexOf("url") >= 0 &&
                                   !this._updatingUrl &&
-                                  ((this._updatingUrl = !0),
+                                  ((this._updatingUrl = true),
                                   (this.$storedUrl = null),
                                   this._updateUrl(),
                                   this._updateImage(),
-                                  (this._updatingUrl = !1)),
+                                  (this._updatingUrl = false)),
                               (t.properties.indexOf("px") >= 0 ||
                                   t.properties.indexOf("py") >= 0 ||
                                   t.properties.indexOf("pw") >= 0 ||
@@ -300,11 +300,11 @@ module.exports = function (e, t, i) {
                                       this.$ph ? this.$ph : this.getHeight()
                                   ))
                             : (e !== r._Change.SceneAttached && e !== n._Change.WorkspaceAttached) ||
-                              ((this._updatingUrl = !0),
+                              ((this._updatingUrl = true),
                               this._updateUrl(),
                               this._scene && this._scene.addDestroyable(this),
                               this._workspace && this._scene && this._status === x.ImageStatus.Delayed && this._updateImage(),
-                              (this._updatingUrl = !1)),
+                              (this._updatingUrl = false)),
                         p.prototype._handleChange.call(this, e, t),
                         this._handleGeometryChangeForProperties(e, t, x.GeometryProperties),
                         this._handleGeometryChangeForProperties(e, t, x.VisualProperties),
@@ -314,13 +314,13 @@ module.exports = function (e, t, i) {
                                 return "itrf" === e && t ? g.deserialize(t) : t;
                             }),
                             this.restoreProperties(t.blob, x.MetaProperties),
-                            this.setProperty("csc", !0),
-                            t.blob.hasOwnProperty("ipfc") || this.setProperty("ipfc", !1),
+                            this.setProperty("csc", true),
+                            t.blob.hasOwnProperty("ipfc") || this.setProperty("ipfc", false),
                             !this.$trf || this.$itrf || this.$pw || this.$ph || this.setProperties(["itrf"], [this.$trf]),
-                            (this._updatingUrl = !0),
+                            (this._updatingUrl = true),
                             this._updateUrl(),
                             this._updateImage(),
-                            (this._updatingUrl = !1)));
+                            (this._updatingUrl = false)));
                 }),
                 (x.prototype._updateUrl = function () {
                     if (this._scene) {
@@ -373,9 +373,9 @@ module.exports = function (e, t, i) {
                         : this._paintCompositedWithBackground(e.canvas, this._paintImageCanvas.bind(this, e));
                 }),
                 (x.prototype._getProperImageCanvas = function (e) {
-                    if (E.isMultiThreaded(e.canvas.parent)) {
+                    if (DUMP_IMAGES.isMultiThreaded(e.canvas.parent)) {
                         if (this._imageCanvasOffscreen) return this._imageCanvasOffscreen;
-                        if (this._imageCanvas && E.isMultiThreaded(this._imageCanvas))
+                        if (this._imageCanvas && DUMP_IMAGES.isMultiThreaded(this._imageCanvas))
                             return ((this._imageCanvasOffscreen = this._imageCanvas), this._imageCanvas);
                         var t,
                             i,
@@ -386,7 +386,7 @@ module.exports = function (e, t, i) {
                         var r = new OffscreenCanvas(t, i),
                             o = r.getContext("2d");
                         ((o.globalCompositeOperation = "copy"), o.drawImage(n, 0, 0));
-                        var a = E.getRenderer(!0, "2d", void 0, !0, !0);
+                        var a = DUMP_IMAGES.getRenderer(true, "2d", void 0, true, true);
                         return (
                             (this._imageCanvasOffscreen = a.canvas),
                             (a.canvas.$renderedBitmapSource = r),
@@ -399,14 +399,14 @@ module.exports = function (e, t, i) {
                 }),
                 (x.prototype._paintImageCanvas = function (e, t, i, n) {
                     if (this._imageCanvas || (this._status === x.ImageStatus.Loaded && this._image)) {
-                        var r = !1,
+                        var r = false,
                             o = null;
                         t.hasClip() && (this.$dblMode || (this.$uf && (this.$tl_ct !== f.CornerType.Rounded || 0 === this.$tl_sx)))
-                            ? (t.putVertices(this), t.clipVertices(), (r = !0))
+                            ? (t.putVertices(this), t.clipVertices(), (r = true))
                             : (o = e.pushCanvas(e.canvas.createCanvas(this.getGeometryBBox(e.isIncludingInvisible()))));
-                        var s = e.canvas.getTransform(!0);
+                        var s = e.canvas.getTransform(true);
                         (this.$itrf && e.canvas.setTransform(s.preMultiplied(this.$itrf)),
-                            e.canvas.drawImage(this._getProperImageCanvas(e), 0, 0, !1, i, n),
+                            e.canvas.drawImage(this._getProperImageCanvas(e), 0, 0, false, i, n),
                             e.canvas.setTransform(s),
                             r
                                 ? t.resetClip()
@@ -415,12 +415,12 @@ module.exports = function (e, t, i) {
                                   e.canvas.finish(),
                                   e.popCanvas()),
                             this.$dblMode &&
-                                ((s = t.getTransform(!0)),
+                                ((s = t.getTransform(true)),
                                 this.$itrf && t.setTransform(s.preMultiplied(this.$itrf)),
-                                t.drawImage(this._imageCanvas || this._image, 0, 0, !1, i ? i / 2 : 0.5, n),
+                                t.drawImage(this._imageCanvas || this._image, 0, 0, false, i ? i / 2 : 0.5, n),
                                 t.setTransform(s)));
                     } else if (x.options.renderBox) {
-                        s = t.getTransform(!0);
+                        s = t.getTransform(true);
                         this.$trf && t.setTransform(s.preMultiplied(this.$trf));
                         (this.getWidth(), this.getHeight());
                         (t.fillRect(
@@ -559,7 +559,7 @@ module.exports = function (e, t, i) {
                                 if (
                                     ((p =
                                         "undefined" == typeof navigator
-                                            ? i(819).XMLHttpRequest
+                                            ? require(819 /* XMLHttpRequest */).XMLHttpRequest
                                             : window.XMLHttpRequest
                                               ? XMLHttpRequest
                                               : ActiveXObject("Microsoft.XMLHTTP")),
@@ -570,7 +570,7 @@ module.exports = function (e, t, i) {
                                 }
                                 var g = new p();
                                 ((g.responseType = "arraybuffer"),
-                                    g.open("GET", e, !0),
+                                    g.open("GET", e, true),
                                     (g.onreadystatechange = function (t) {
                                         if (this.readyState == this.DONE) {
                                             var i = t.target.response;
@@ -643,8 +643,8 @@ module.exports = function (e, t, i) {
                             this._setConvertStatus(x.ConvertStatus.Converting);
                             var o = "assets/data/icc/";
                             if ("undefined" == typeof navigator) {
-                                var a = i(286);
-                                o = "file://" + a.resolve(a.dirname(i.c[i.s].filename), o);
+                                var a = require(286);
+                                o = "file://" + a.resolve(a.dirname(require.c[require.s].filename), o);
                             }
                             s.setCMYKProfile(
                                 "USWebCoatedSWOPv2",
@@ -681,7 +681,7 @@ module.exports = function (e, t, i) {
                     (this.destroyImage(),
                         (this.$storedUrl = null),
                         (this.$tmpUrl = null),
-                        this._imageCanvasOffscreen && (E.destroy(this._imageCanvasOffscreen), (this._imageCanvasOffscreen = null)),
+                        this._imageCanvasOffscreen && (DUMP_IMAGES.destroy(this._imageCanvasOffscreen), (this._imageCanvasOffscreen = null)),
                         (this._imageCanvas = null));
                 }),
                 (x.prototype._initImage = function () {
@@ -711,7 +711,7 @@ module.exports = function (e, t, i) {
                             if (
                                 "undefined" != typeof HTMLImageElement &&
                                 t.cachedCanvas instanceof HTMLImageElement &&
-                                !E.usingOffscreenCanvas()
+                                !DUMP_IMAGES.usingOffscreenCanvas()
                             )
                                 return (
                                     (this._imageCanvas = null),
@@ -755,5 +755,5 @@ module.exports = function (e, t, i) {
                 (x.prototype.toString = function () {
                     return "[GImage]";
                 }),
-                (e.exports = x));
+                (module.exports = x));
         };

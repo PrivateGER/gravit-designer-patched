@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            ((t.fail = function (e) {
+            ((exports.fail = function (e) {
                 throw new Error(e);
             }),
-                (t.argument = function (e, i) {
-                    e || t.fail(i);
+                (exports.argument = function (e, i) {
+                    e || exports.fail(i);
                 }),
-                (t.assert = t.argument));
+                (exports.assert = exports.argument));
         };

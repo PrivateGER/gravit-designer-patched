@@ -1,23 +1,23 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(227),
-                o = i(2),
-                a = i(216),
-                s = i(345),
-                l = (i(472), i(14));
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(227),
+                o = require(2),
+                a = require(216),
+                s = require(345),
+                l = (require(472), require(14));
 
             function h(e) {
                 (r.call(this),
                     (this.EntryClass = h.Entry),
                     (this._scene = e),
-                    this._scene.addEventListener(o.AfterInsertEvent, this._afterInsert, this, void 0, void 0, !0),
-                    this._scene.addEventListener(o.BeforeRemoveEvent, this._beforeRemove, this, void 0, void 0, !0));
+                    this._scene.addEventListener(o.AfterInsertEvent, this._afterInsert, this, void 0, void 0, true),
+                    this._scene.addEventListener(o.BeforeRemoveEvent, this._beforeRemove, this, void 0, void 0, true));
             }
 
             function A(e) {
                 return e && (e instanceof String || "string" == typeof e);
             }
-            (n.inherit(h, r),
+            (IsFiniteNonNegativeNumber.inherit(h, r),
                 (h.prototype._scene = null),
                 (h.prototype._updateThumbnail = function (e) {
                     var t = this.getEntry(e.symbol.getMultireferenceId());
@@ -38,17 +38,17 @@ module.exports = function (e, t, i) {
                         if (e instanceof a && e.isMaster()) {
                             var i = e.getMultireferenceId(),
                                 n = t.getEntry(i),
-                                r = !1;
+                                r = false;
                             if (
                                 (n
                                     ? n.value
                                         ? ((r = n.value.symbol !== e), (n.value.symbol = e))
-                                        : ((r = !0),
+                                        : ((r = true),
                                           (n.value = {
                                               image: null,
                                               symbol: e,
                                           }))
-                                    : ((r = !0),
+                                    : ((r = true),
                                       (n = new t.EntryClass(
                                           {
                                               image: null,
@@ -60,7 +60,7 @@ module.exports = function (e, t, i) {
                                 r)
                             ) {
                                 var s = {
-                                        created: !0,
+                                        created: true,
                                         scene: t._scene,
                                     },
                                     l = t._scene.getWorkspace() ? t._scene.getWorkspace().getTransactionRecorder() : null;
@@ -88,7 +88,7 @@ module.exports = function (e, t, i) {
                             var n = i.value.symbol;
                             if ((r.prototype.removeEntry.call(this, i, t), n)) {
                                 var a = {
-                                        created: !1,
+                                        created: false,
                                         scene: this._scene,
                                     },
                                     s = this._scene.getWorkspace() ? this._scene.getWorkspace().getTransactionRecorder() : null;
@@ -110,7 +110,7 @@ module.exports = function (e, t, i) {
                 (h.Entry = function (e, t) {
                     r.Entry.call(this, e, t);
                 }),
-                n.inherit(h.Entry, r.Entry),
+                IsFiniteNonNegativeNumber.inherit(h.Entry, r.Entry),
                 (h.Entry.prototype.serialize = function () {
                     return this.references
                         ? {
@@ -145,8 +145,8 @@ module.exports = function (e, t, i) {
                                     }
                                 }));
                         }
-                        A(this.value.symbol) && ((this.value.symbol = o.deserialize(this.value.symbol)), (this.value.symbol._master = !0));
+                        A(this.value.symbol) && ((this.value.symbol = o.deserialize(this.value.symbol)), (this.value.symbol._master = true));
                     }
                 }),
-                (e.exports = h));
+                (module.exports = h));
         };

@@ -1,19 +1,19 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(1);
+        var GObject = require(1);
         function i(e) {
             let t = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1],
                 n = arguments.length > 2 ? arguments[2] : void 0;
-            ((this.label = o.GLocale.get(e)), (this.visible = t), (this.icon = n), (this.parent = null));
+            ((this.label = GObject.GLocale.get(e)), (this.visible = t), (this.icon = n), (this.parent = null));
         }
         function a(e) {
             let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null,
-                n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : () => !0,
+                n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : () => true,
                 a = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : () => null;
             var r = new i();
             return (
                 Object.defineProperties(r, {
-                    label: { get: () => o.GLocale.get(new o.GLocaleKey(e[0], e[1])) },
+                    label: { get: () => GObject.GLocale.get(new GObject.GLocaleKey(e[0], e[1])) },
                     visible: { get: n },
                     icon: { get: a },
                     parent: { get: () => t },
@@ -21,9 +21,9 @@ module.exports = function (e, t, n) {
                 r
             );
         }
-        (o.GObject.inherit(i, o.GObject),
+        (GObject.GObject.inherit(i, GObject.GObject),
             (i.prototype.label = null),
-            (i.prototype.visible = !0),
+            (i.prototype.visible = true),
             (i.prototype.icon = null),
             (i.CATEGORY_FILE = a(["GCategory", "category.file"])),
             (i.CATEGORY_FILE_SHARE = a(["GCategory", "category.file.share"], i.CATEGORY_FILE)),
@@ -35,7 +35,7 @@ module.exports = function (e, t, n) {
             (i.CATEGORY_FILE_EXPORT = a(
                 ["GCategory", "category.file.export"],
                 i.CATEGORY_FILE,
-                () => !0,
+                () => true,
                 () => (gDesigner.isTouchEnabled() ? "gravit-icon-export" : null)
             )),
             (i.CATEGORY_FILE_EXPORT_PDF = a(["GCategory", "category.file.export.pdf"], i.CATEGORY_FILE_EXPORT)),
@@ -43,7 +43,7 @@ module.exports = function (e, t, n) {
             (i.CATEGORY_EDIT_PASTE = a(
                 ["GCategory", "category.edit.paste"],
                 i.CATEGORY_EDIT,
-                () => !0,
+                () => true,
                 () => (gDesigner.isTouchEnabled() ? "gravit-icon-paste" : null)
             )),
             (i.CATEGORY_EDIT_SELECT_SAME = a(["GCategory", "category.edit.select-same"], i.CATEGORY_EDIT)),
@@ -52,45 +52,45 @@ module.exports = function (e, t, n) {
             (i.CATEGORY_MODIFY_ARRANGE = a(
                 ["GCategory", "category.modify.arrange"],
                 i.CATEGORY_MODIFY,
-                () => !0,
+                () => true,
                 () => (gDesigner.isTouchEnabled() ? "gravit-icon-arrange" : null)
             )),
             (i.CATEGORY_MODIFY_ALIGN = a(
                 ["GCategory", "category.modify.align"],
                 i.CATEGORY_MODIFY,
-                () => !0,
+                () => true,
                 () => (gDesigner.isTouchEnabled() ? "gravit-icon-align" : null)
             )),
             (i.CATEGORY_MODIFY_TRANSFORM = a(
                 ["GCategory", "category.modify.transform"],
                 i.CATEGORY_MODIFY,
-                () => !0,
+                () => true,
                 () => (gDesigner.isTouchEnabled() ? "gravit-icon-transform" : null)
             )),
             (i.CATEGORY_MODIFY_PATH = a(["GCategory", "category.modify.path"], i.CATEGORY_MODIFY)),
             (i.CATEGORY_MODIFY_SYMBOL = a(
                 ["GCategory", "category.modify.symbol"],
                 i.CATEGORY_MODIFY,
-                () => !0,
+                () => true,
                 () => (gDesigner.isTouchEnabled() ? "gravit-icon-symbol" : null)
             )),
             (i.CATEGORY_VIEW = a(
                 ["GCategory", "category.view"],
                 null,
-                () => !0,
+                () => true,
                 () => (gDesigner.isTouchEnabled() ? "gravit-icon-no-icon" : null)
             )),
             (i.CATEGORY_VIEW_CANVAS = a(["GCategory", "category.view.canvas"], i.CATEGORY_VIEW)),
             (i.CATEGORY_VIEW_SNAP = a(
                 ["GCategory", "category.view.snap"],
                 i.CATEGORY_VIEW,
-                () => !0,
+                () => true,
                 () => (gDesigner.isTouchEnabled() ? "gravit-icon-snap" : null)
             )),
             (i.CATEGORY_VIEW_MAGNIFICATION = a(
                 ["GCategory", "category.view.magnification"],
                 i.CATEGORY_VIEW,
-                () => !0,
+                () => true,
                 () => (gDesigner.isTouchEnabled() ? "gravit-icon-zoom-in" : null)
             )),
             (i.CATEGORY_HELP = a(["GCategory", "category.help"])),
@@ -118,5 +118,5 @@ module.exports = function (e, t, n) {
                     return null;
                 }
             )),
-            (e.exports = i));
+            (module.exports = i));
     };

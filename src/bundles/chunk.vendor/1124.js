@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(588),
-                o = i(12),
-                a = i(597);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(588),
+                o = require(12),
+                a = require(597);
 
             function s() {
                 a.apply(this, arguments);
             }
-            (n.inherit(s, a),
+            (IsFiniteNonNegativeNumber.inherit(s, a),
                 (s.prototype._getEffect = function () {
-                    var e = new r(!0);
+                    var e = new r(true);
                     return (
                         e.setProperty("shp", {
                             brightness: this._data.brightness,
@@ -20,5 +20,5 @@ module.exports = function (e, t, i) {
                         e
                     );
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

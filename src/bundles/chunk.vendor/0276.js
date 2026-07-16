@@ -1,33 +1,33 @@
-module.exports = function (e, t, i) {
-            var n = i(82),
-                r = i(138),
-                o = i(2),
-                a = i(83),
-                s = i(0),
-                l = i(28),
-                h = i(11),
-                A = i(56),
-                c = i(122),
-                p = i(24),
-                u = i(6),
-                d = i(160),
-                g = i(7),
-                f = i(385),
-                m = i(12),
-                y = i(64),
-                _ = i(81),
-                v = i(5),
-                b = i(52),
-                C = i(39),
-                w = i(17),
-                E = i(14),
-                B = i(9),
-                x = i(47);
+module.exports = function (module, exports, require) {
+            var GEditor = require(82),
+                r = require(138),
+                o = require(2),
+                a = require(83),
+                IsFiniteNonNegativeNumber = require(0),
+                GStylable = require(28),
+                h = require(11),
+                A = require(56),
+                c = require(122),
+                p = require(24),
+                u = require(6),
+                d = require(160),
+                g = require(7),
+                f = require(385),
+                m = require(12),
+                y = require(64),
+                _ = require(81),
+                v = require(5),
+                b = require(52),
+                C = require(39),
+                w = require(17),
+                E = require(14),
+                String = require(9),
+                x = require(47);
 
             function P() {
                 f.call(this);
             }
-            (s.inherit(P, f),
+            (IsFiniteNonNegativeNumber.inherit(P, f),
                 (P.DEFAULT_EPS = 1e-6),
                 (P.STOP_HANDLE_PART_ID = h.uuid()),
                 (P.PLUS_STOP_PART_ID = h.uuid()),
@@ -38,31 +38,31 @@ module.exports = function (e, t, i) {
                     return (i && ((n += 0.5), (r += 0.5)), new v(n, r));
                 }),
                 (P.prototype._gradient = null),
-                (P.prototype._componentOfEffect = !1),
+                (P.prototype._componentOfEffect = false),
                 (P.prototype._propName = null),
                 (P.prototype._propHolder = null),
                 (P.prototype._snapPoints = null),
                 (P.prototype.activate = function (e) {
                     if (e.propName && e.propHolder instanceof o) {
-                        var t = e.propHolder.getProperty(e.propName, !1, null, e.propTemporary);
+                        var t = e.propHolder.getProperty(e.propName, false, null, e.propTemporary);
                         if (t instanceof r)
                             return (
                                 (this._propName = e.propName),
                                 (this._propHolder = e.propHolder),
                                 (this._gradient = t.clone()),
-                                (this._componentOfEffect = e.propHolder instanceof l.Effect),
+                                (this._componentOfEffect = e.propHolder instanceof GStylable.Effect),
                                 (this._snapPoints = null),
                                 f.prototype.activate.call(this, e)
                             );
                     }
-                    return !1;
+                    return false;
                 }),
                 (P.prototype.deactivate = function () {
                     (f.prototype.deactivate.call(this),
                         (this._gradient = null),
                         (this._propName = null),
                         (this._propHolder = null),
-                        (this._componentOfEffect = !1),
+                        (this._componentOfEffect = false),
                         (this._snapPoints = null));
                 }),
                 (P.prototype.validateAlreadyActive = function (e) {
@@ -79,11 +79,11 @@ module.exports = function (e, t, i) {
                 }),
                 (P.prototype._partIdAreEqual = function (e, t) {
                     if (e && t) {
-                        if (e.type === t.type && e.type === P.STOP_HANDLE_PART_ID && e.idx == t.idx) return !0;
-                        if (e.type === t.type && e.type === P.PLUS_STOP_PART_ID && e.pos == t.pos) return !0;
-                        if (!e.type && !t.type && e == t) return !0;
+                        if (e.type === t.type && e.type === P.STOP_HANDLE_PART_ID && e.idx == t.idx) return true;
+                        if (e.type === t.type && e.type === P.PLUS_STOP_PART_ID && e.pos == t.pos) return true;
+                        if (!e.type && !t.type && e == t) return true;
                     }
-                    return !1;
+                    return false;
                 }),
                 (P.prototype.getCursor = function (e, t) {
                     return e && e.type === P.STOP_HANDLE_PART_ID ? b.SelectDot : e && e.type === P.PLUS_STOP_PART_ID ? b.SelectPlus : null;
@@ -94,7 +94,7 @@ module.exports = function (e, t, i) {
                         this._gradient.getStops().length &&
                             this._iterateAnnotations(
                                 function (t, n) {
-                                    var r = _.getAnnotationBBox(e, t, p.annotationHandles.gradient.size, !0);
+                                    var r = _.getAnnotationBBox(e, t, p.annotationHandles.gradient.size, true);
                                     i = i ? i.united(r) : r;
                                 }.bind(this)
                             ),
@@ -102,12 +102,12 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (P.prototype.getObjectNameModified = function () {
-                    return B.get(new x("GGradientStyleEditor", "text.gradient"));
+                    return String.get(new x("GGradientStyleEditor", "text.gradient"));
                 }),
                 (P.prototype._applyPartMove = function (e, t, i, n) {
                     (this._manager.preparePermanentChange(),
                         (this._snapPoints = null),
-                        this._propHolder.setProperty(this._propName, this._gradient.clone(), !1, !1, !1),
+                        this._propHolder.setProperty(this._propName, this._gradient.clone(), false, false, false),
                         f.prototype._applyPartMove.call(this, e, t, i, n));
                 }),
                 (P.prototype.movePart = function (e, t, i, n, r, o, a) {
@@ -125,10 +125,10 @@ module.exports = function (e, t, i) {
                         var l = s.length - 1;
                         (this._gradient.sortStops(), this._manager.blockEditorUpdate(), this._manager.beginTransaction());
                         try {
-                            this._propHolder.setProperty(this._propName, this._gradient.clone(), !1, !1);
+                            this._propHolder.setProperty(this._propName, this._gradient.clone(), false, false);
                         } finally {
                             (this._manager.commitTransaction(
-                                B.get(new x("GGradientStyleEditor", "action.add-gradient-stop")),
+                                String.get(new x("GGradientStyleEditor", "action.add-gradient-stop")),
                                 this.getEditorData()
                             ),
                                 this._manager.releaseEditorUpdate());
@@ -141,24 +141,24 @@ module.exports = function (e, t, i) {
                                 idx: l,
                             },
                             {
-                                noEditorSelectionChangedEvent: !0,
+                                noEditorSelectionChangedEvent: true,
                             },
-                            !0,
-                            !0
+                            true,
+                            true
                         )).id),
-                            P.prototype.updatePartSelection.call(this, !1, [r.id], i));
-                    } else f.prototype.updatePartSelection.call(this, !1, n ? [n] : null);
+                            P.prototype.updatePartSelection.call(this, false, [r.id], i));
+                    } else f.prototype.updatePartSelection.call(this, false, n ? [n] : null);
                     if ((i || this._manager.handleEditorPartUpdate(n), r)) return r;
                 }),
                 (P.prototype.getEditorData = function () {
                     var e = {
-                        chooserOn: !0,
+                        chooserOn: true,
                     };
-                    if (this._propHolder instanceof l.FillPaintLayer)
+                    if (this._propHolder instanceof GStylable.FillPaintLayer)
                         (t = this._propHolder.getParent()) && (e.fillLayerIndex = t.getIndexOfChild(this._propHolder));
-                    else if (this._propHolder instanceof l.BorderPaintLayer) {
+                    else if (this._propHolder instanceof GStylable.BorderPaintLayer) {
                         (t = this._propHolder.getParent()) && (e.borderLayerIndex = t.getIndexOfChild(this._propHolder));
-                    } else if (this._propHolder instanceof a) e.pagePattern = !0;
+                    } else if (this._propHolder instanceof a) e.pagePattern = true;
                     else if (this._componentOfEffect) {
                         var t;
                         (t = this._propHolder.getParent()) && (e.effectIndex = t.getIndexOfChild(this._propHolder));
@@ -184,7 +184,7 @@ module.exports = function (e, t, i) {
                         r + o,
                         i.outlineWidth + 2 * E.getScreenDPI(),
                         new w(w.parseCSSColor(i.lineShadowColor)),
-                        !1,
+                        false,
                         0.6
                     ),
                         t.canvas.strokeLine(
@@ -194,7 +194,7 @@ module.exports = function (e, t, i) {
                             r + o,
                             i.outlineWidth + 2 * E.getScreenDPI(),
                             new w(w.parseCSSColor(i.lineShadowColor)),
-                            !1,
+                            false,
                             0.6
                         ),
                         t.canvas.strokeLine(n - o, r - o, n + o, r + o, i.outlineWidth, w.WHITE),
@@ -302,7 +302,7 @@ module.exports = function (e, t, i) {
                             l && (a = l.getSide(i)),
                             t && (o = o.multiplied(t)));
                     } else o = t || new g();
-                    return ((a = o.mapPoint(a)), n.convertToConstrain(a.getX(), a.getY(), e.getX(), e.getY(), p.cursorConstraint));
+                    return ((a = o.mapPoint(a)), GEditor.convertToConstrain(a.getX(), a.getY(), e.getX(), e.getY(), p.cursorConstraint));
                 }),
                 (P.prototype._getBBoxElem = function () {
                     var e = this._propHolder instanceof A || this._propHolder instanceof d ? this._propHolder : null;
@@ -332,5 +332,5 @@ module.exports = function (e, t, i) {
                 (P.prototype.toString = function () {
                     return "[Object GGradientStyleEditor]";
                 }),
-                (e.exports = P));
+                (module.exports = P));
         };

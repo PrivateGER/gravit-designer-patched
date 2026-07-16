@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(403).includes,
-            a = n(21),
-            r = n(360);
+        var o = require(25),
+            i = require(403).includes,
+            a = require(21),
+            r = require(360);
         (o(
             {
                 target: "Array",
-                proto: !0,
+                proto: true,
                 forced: a(function () {
                     return !Array(1).includes();
                 }),

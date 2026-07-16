@@ -1,20 +1,20 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(539),
-                o = i(268),
-                a = i(60),
-                s = i(113),
-                l = i(95),
-                h = i(56),
-                A = i(162),
-                c = i(2),
-                p = (i(5), i(24));
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(539),
+                o = require(268),
+                a = require(60),
+                s = require(113),
+                l = require(95),
+                h = require(56),
+                A = require(162),
+                c = require(2),
+                p = (require(5), require(24));
 
             function u() {
                 r.call(this);
             }
-            (i(1078),
-                n.inherit(u, r),
+            (require(1078),
+                IsFiniteNonNegativeNumber.inherit(u, r),
                 (u.prototype._sourcePath = null),
                 (u.prototype._targetPath = null),
                 (u.prototype._pathUnderMouse = null),
@@ -34,13 +34,13 @@ module.exports = function (e, t, i) {
                         e.client,
                         this._view.getWorldTransform(this._scene),
                         null,
-                        !1,
+                        false,
                         -1,
                         0,
-                        !1,
+                        false,
                         null,
-                        !1,
-                        !0,
+                        false,
+                        true,
                         this._view.getViewConfiguration().multiPageView
                     );
                     ((t && t.length && t[0].element instanceof a) ||
@@ -48,13 +48,13 @@ module.exports = function (e, t, i) {
                             e.client,
                             this._view.getWorldTransform(this._scene),
                             null,
-                            !1,
+                            false,
                             -1,
                             p.pickDistance,
-                            !1,
+                            false,
                             null,
-                            !1,
-                            !0,
+                            false,
+                            true,
                             this._view.getViewConfiguration().multiPageView
                         )),
                         t &&
@@ -81,5 +81,5 @@ module.exports = function (e, t, i) {
                         this._targetPath &&
                         (e.connect(this._sourcePath, this._targetPath), this._editor.clearSelection(), this._manager.notifyJobDone(this));
                 }),
-                (e.exports = u));
+                (module.exports = u));
         };

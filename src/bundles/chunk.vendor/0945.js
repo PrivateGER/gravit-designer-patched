@@ -1,17 +1,17 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(19), i(193), i(3), i(91), i(4), i(13), i(26));
-            var n = i(686),
-                r = i(269),
-                o = i(701),
-                a = i(703),
-                s = i(699),
-                l = i(524),
-                h = i(700),
-                A = i(946),
-                c = i(704),
-                p = i(705),
-                u = i(685);
+            (require(19), require(193), require(3), require(91), require(4), require(13), require(26));
+            var n = require(686),
+                r = require(269),
+                o = require(701),
+                a = require(703),
+                s = require(699),
+                l = require(524),
+                h = require(700),
+                A = require(946),
+                c = require(704),
+                p = require(705),
+                u = require(685);
 
             function d() {
                 ((this._projects = {}), (this._clazzMap = {}), (this._functions = {}), (this._translationInstance = new s()));
@@ -21,8 +21,8 @@ module.exports = function (e, t, i) {
             (r.inheritAndMix(d, r),
                 (d.prototype._language = 0),
                 (d.prototype._project = null),
-                (d.prototype._extensionEnabled = !1),
-                (d.prototype._checkStrict = !1),
+                (d.prototype._extensionEnabled = false),
+                (d.prototype._checkStrict = false),
                 (d.prototype._supportedISO6391Locales = ["en", "de", "zh", "pt", "es", "fr", "pl", "ru", "tr", "cs", "it", "ja", "nl"]),
                 (d.prototype.setStrict = function (e) {
                     this._checkStrict = e;
@@ -35,7 +35,7 @@ module.exports = function (e, t, i) {
                     this._project = e;
                 }),
                 (d.prototype.enableExtension = function () {
-                    this._extensionEnabled = !0;
+                    this._extensionEnabled = true;
                 }),
                 (d.prototype._language = 0),
                 (d.prototype._projects = null),
@@ -256,5 +256,5 @@ module.exports = function (e, t, i) {
                 (d.prototype.toString = function () {
                     return "[Object GLocale]";
                 }),
-                (e.exports = d));
+                (module.exports = d));
         };

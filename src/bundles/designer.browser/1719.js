@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(4), n(13));
-        var o = n(1);
+        (require(4), require(13));
+        var GObject = require(1);
         const i = {
             init: function (e) {
                 e = $.extend(
                     {
                         clazz: null,
-                        defaultText: o.GLocale.get(new o.GLocaleKey("GToolbar", "text.share")),
+                        defaultText: GObject.GLocale.get(new GObject.GLocaleKey("GToolbar", "text.share")),
                         stats: "toolbar_click_share",
                         restrictedStats: "toolbar_nonprotriespro_share",
                         closeCallback: null,
@@ -44,12 +44,12 @@ module.exports = function (e, t, n) {
                     .toggleClass("gravit-icon-private-share", t)
                     .toggleClass("gravit-icon-public-share", !t);
                 const s = n
-                    ? new o.GLocaleKey("GToolbar", "text.shared")
+                    ? new GObject.GLocaleKey("GToolbar", "text.shared")
                     : r.options.defaultText
                       ? r.options.defaultText
-                      : new o.GLocaleKey("GToolbar", "text.share");
+                      : new GObject.GLocaleKey("GToolbar", "text.share");
                 return (
-                    a.find(".label").text(o.GLocale.get(s)),
+                    a.find(".label").text(GObject.GLocale.get(s)),
                     (r.storeItem = e.storeItem),
                     e.closeCallback && (r.options.closeCallback = e.closeCallback),
                     this

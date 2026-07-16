@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(17),
-                r = i(68);
+module.exports = function (module, exports, require) {
+            var n = require(17),
+                r = require(68);
 
             function o(e) {
                 (n.call(this), (this._value = e && e instanceof Array ? e.slice() : [0, 0, 0]));
             }
-            (i(50).inherit("H", o, n),
+            (require(50).inherit("H", o, n),
                 (o.prototype.clone = function () {
                     return new o(this._value);
                 }),
@@ -18,5 +18,5 @@ module.exports = function (e, t, i) {
                 (o.prototype.toString = function () {
                     return "[Object GHSVColor]";
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

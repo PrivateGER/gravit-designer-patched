@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.default = t.GGoogleDrive = t.GCloudDrive = void 0));
-        var i = o(n(862));
-        const a = (t.GCloudDrive = i.default);
-        var r = n(1553);
-        t.GGoogleDrive = r;
-        t.default = { GCloudDrive: a, GGoogleDrive: r };
+        var o = require(16);
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = exports.GGoogleDrive = exports.GCloudDrive = void 0));
+        var i = o(require(862 /* GCommonNames */));
+        const a = (exports.GCloudDrive = i.default);
+        var GGoogleDrive = require(1553);
+        exports.GGoogleDrive = GGoogleDrive;
+        exports.default = { GCloudDrive: a, GGoogleDrive: GGoogleDrive };
     };

@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(58), n(8), n(71), n(4), n(13), n(38), n(97));
-        var o = n(1);
-        const i = n(78),
-            a = n(393),
-            r = n(433),
-            s = n(336),
-            l = n(868),
+        (require(58), require(8 /* Symbol */), require(71), require(4), require(13), require(38), require(97));
+        var GObject = require(1);
+        const i = require(78),
+            a = require(393),
+            r = require(433),
+            s = require(336),
+            l = require(868),
             {
                 GFileReviewFlow: c,
                 gApi: d,
@@ -14,7 +14,7 @@ module.exports = function (e, t, n) {
                 FILE_REVIEW_ENABLED: p,
                 Notification: g,
                 NotificationConstants: { FILE_REVIEW_FLOW: h = [] },
-            } = n(10);
+            } = require(10 /* designerConfig */);
         function f() {
             if (!p) return this;
             (gDesigner.addEventListener(i, this._documentEvent, this),
@@ -23,9 +23,9 @@ module.exports = function (e, t, n) {
                 gDesigner.getActiveDocument() &&
                     (this._addDocumentEvents(gDesigner.getActiveDocument()), this._updateFromDocument(gDesigner.getActiveDocument())));
         }
-        (o.GObject.inherit(f, o.GEventTarget),
+        (GObject.GObject.inherit(f, GObject.GEventTarget),
             (f.UpdateEvent = function () {}),
-            o.GObject.inherit(f.UpdateEvent, o.GEvent),
+            GObject.GObject.inherit(f.UpdateEvent, GObject.GEvent),
             (f.prototype._addDocumentEvents = function (e) {
                 e.addEventListener(a, this._collaborationEvent, this);
             }),
@@ -88,13 +88,13 @@ module.exports = function (e, t, n) {
                     ((this._status = e),
                     (void 0 !== this._status && null !== this._status) || (this._status = u.IN_REVIEW),
                     void 0 !== c && c.constructor && (this._flow = new c(this._status)),
-                    !0)
+                    true)
                 );
             }),
             (f.prototype._isCurrentUserApprover = function () {
                 const e = gDesigner.getSyncUser();
-                if (!e) return !1;
-                if (!this._collaboratorList) return !1;
+                if (!e) return false;
+                if (!this._collaboratorList) return false;
                 const t = this._collaboratorList.find((t) => t.getUID() === e.getUID());
                 return t && t.getRole().is(r.ROLES.APPROVER_ROLE);
             }),
@@ -103,13 +103,13 @@ module.exports = function (e, t, n) {
                     switch (this._status) {
                         case u.IN_REVIEW:
                         case u.REOPENED:
-                            return !0;
+                            return true;
                         case u.APPROVED:
                             return e === u.IN_REVIEW || e === u.AWAITING_APPROVAL;
                         case u.AWAITING_APPROVAL:
                             return e === u.IN_REVIEW;
                     }
-                return !1;
+                return false;
             }),
             (f.prototype.getStatus = function () {
                 return this._status;
@@ -117,7 +117,7 @@ module.exports = function (e, t, n) {
             (f.prototype.updateReviewStatus = function (e) {
                 return this.canUpdateToStatus(e) && this._fileId
                     ? d.updateStatus(this._fileId, e)
-                    : Promise.reject(o.GLocale.get(new o.GLocaleKey("GFileReviewManager", "text.cant-update-file-to-status")));
+                    : Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GFileReviewManager", "text.cant-update-file-to-status")));
             }),
             (f.prototype.canUpdateToStatus = function (e) {
                 return (
@@ -153,5 +153,5 @@ module.exports = function (e, t, n) {
                 }
                 return n;
             }),
-            (e.exports = f));
+            (module.exports = f));
     };

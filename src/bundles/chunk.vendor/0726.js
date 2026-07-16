@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(108);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                GFont = require(108);
 
             function o() {}
 
@@ -22,8 +22,8 @@ module.exports = function (e, t, i) {
                 (a.prototype._parse = function (e, t, i, n, r) {
                     ((this._position = t), (r[0] = this._size));
                 }),
-                n.inherit(s, a),
-                n.inherit(l, a),
+                IsFiniteNonNegativeNumber.inherit(s, a),
+                IsFiniteNonNegativeNumber.inherit(l, a),
                 (l.prototype.__size = 0),
                 (l.prototype._parse = function (e, t, i, n, r) {
                     switch (((r[0] = this._size), this.__size)) {
@@ -59,7 +59,7 @@ module.exports = function (e, t, i) {
             }
 
             function f(e) {
-                e instanceof a ? ((this._size = e), (this._pascalString = !0)) : (this._size = e);
+                e instanceof a ? ((this._size = e), (this._pascalString = true)) : (this._size = e);
             }
 
             function m(e) {
@@ -69,7 +69,7 @@ module.exports = function (e, t, i) {
             function y(e, t, i) {
                 ((this._type = i || "relative"), (this._snode = t), (this._primitive = e), (this._size = e.getSize()));
             }
-            (n.inherit(d, a),
+            (IsFiniteNonNegativeNumber.inherit(d, a),
                 (d.prototype._data = null),
                 (d.prototype._parse = function (e, t, i, n, r) {
                     var o = Object.keys(this._data),
@@ -92,7 +92,7 @@ module.exports = function (e, t, i) {
                     }
                     return ((this._size = l), (r[0] = l), a);
                 }),
-                n.inherit(g, a),
+                IsFiniteNonNegativeNumber.inherit(g, a),
                 (g.prototype._numField = null),
                 (g.prototype._snode = null),
                 (g.prototype._sizeTrf = null),
@@ -115,8 +115,8 @@ module.exports = function (e, t, i) {
                         (a.push(this._snode._parse(e, t, h, n, s)), (t += s[0]), (l += s[0]));
                     return ((r[0] = l), a);
                 }),
-                n.inherit(f, a),
-                (f.prototype._pascalString = !1),
+                IsFiniteNonNegativeNumber.inherit(f, a),
+                (f.prototype._pascalString = false),
                 (f.prototype._parse = function (e, t, i, n, r) {
                     this._position = t;
                     var o,
@@ -132,7 +132,7 @@ module.exports = function (e, t, i) {
                     }
                     return ((r[0] = s ? o + s[0] : o), a);
                 }),
-                n.inherit(m, a),
+                IsFiniteNonNegativeNumber.inherit(m, a),
                 (m.prototype._parse = function (e, t, i, n, r) {
                     ((this._position = t), (r[0] = n[this._sizeField] || 0));
                     var o = r[0];
@@ -140,9 +140,9 @@ module.exports = function (e, t, i) {
                         return e.slice(t, o);
                     };
                 }),
-                n.inherit(m, a),
+                IsFiniteNonNegativeNumber.inherit(m, a),
                 (m.prototype._sizeField = null),
-                n.inherit(y, a),
+                IsFiniteNonNegativeNumber.inherit(y, a),
                 (y.prototype._type = null),
                 (y.prototype._primitive = null),
                 (y.prototype._snode = null),
@@ -174,7 +174,7 @@ module.exports = function (e, t, i) {
                 (o.Parser.prototype._parsedStruct = null),
                 (o.Parser.prototype.getFont = function (e, t, i, n, a) {
                     var s = [];
-                    switch (((i = parseInt(i) || 400), (t = t || r.Style.Normal), this._type)) {
+                    switch (((i = parseInt(i) || 400), (t = t || GFont.Style.Normal), this._type)) {
                         case _:
                             var l = this._parsedStruct.offsets.slice();
                             l.sort(function (e, t) {
@@ -312,7 +312,7 @@ module.exports = function (e, t, i) {
                     offsets: new g(p, "numFonts"),
                 });
             ((o.Parser.prototype._checkType = function () {
-                if (o._getOpenTypeInfo(this._buffer, 0, !0)) this._type = b;
+                if (o._getOpenTypeInfo(this._buffer, 0, true)) this._type = b;
                 else {
                     var e;
                     try {
@@ -353,7 +353,7 @@ module.exports = function (e, t, i) {
                                 ((h = h.toLowerCase()),
                                 l ||
                                     ((h.indexOf("italic") >= 0 || h.indexOf("oblique") >= 0 || h.indexOf("italique") >= 0) &&
-                                        (l = r.Style.Italic)),
+                                        (l = GFont.Style.Italic)),
                                 s ||
                                     (h.indexOf("bold") >= 0 || h.indexOf("gras") >= 0
                                         ? (s =
@@ -374,7 +374,7 @@ module.exports = function (e, t, i) {
                             {
                                 name: i,
                                 weight: (s = s || 400),
-                                style: (l = l || r.Style.Normal),
+                                style: (l = l || GFont.Style.Normal),
                                 displayname: a[o.nameId.TYPO_FAMILY],
                                 subfamily: a[o.nameId.TYPO_SUBFAMILY],
                             }
@@ -570,19 +570,19 @@ module.exports = function (e, t, i) {
                                     var _ = r.getUint16(y + 4),
                                         v = r.getUint16(y + 6);
                                     if (0 === _) {
-                                        if (v <= 6) return !0;
+                                        if (v <= 6) return true;
                                     } else if (1 === _) {
-                                        if (v <= 10) return !0;
-                                    } else if (3 === _ && (v <= 5 || 10 === v)) return !0;
+                                        if (v <= 10) return true;
+                                    } else if (3 === _ && (v <= 5 || 10 === v)) return true;
                                 }
-                                return !1;
+                                return false;
                             }
                             "ltag" === m && (d = r.getUint32(h) - t);
                         }
                         if (p > 0 && u > 0) break;
                         h += 8;
                     }
-                    if (i) return !1;
+                    if (i) return false;
                     var b = null;
                     if (d > 0) {
                         h = d;
@@ -686,5 +686,5 @@ module.exports = function (e, t, i) {
                 }
                 return (null == s && (s = ""), null == l && (l = ""), [a, s + "_" + l]);
             }),
-                (e.exports = o));
+                (module.exports = o));
         };

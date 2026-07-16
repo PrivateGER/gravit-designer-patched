@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(90),
-                r = i(0),
+module.exports = function (module, exports, require) {
+            var n = require(90),
+                IsFiniteNonNegativeNumber = require(0),
                 o = function (e, t) {
                     ((this.fontResource = e), (this.size = t));
                 };
-            (r.inherit(o, n),
+            (IsFiniteNonNegativeNumber.inherit(o, n),
                 (o.prototype.equals = function (e) {
                     return e instanceof o && e.fontResource.getFont().equals(this.fontResource.getFont()) && e.size === this.size;
                 }),
@@ -22,5 +22,5 @@ module.exports = function (e, t, i) {
                         e.writeSpace(),
                         e.writeln("Tf"));
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

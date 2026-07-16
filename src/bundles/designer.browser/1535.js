@@ -1,19 +1,19 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(58), n(3), n(71), n(4), n(41), n(13), n(32), n(97), n(33));
-        var o = n(53),
-            i = n(1),
-            a = n(15),
-            r = n(449),
-            s = n(566),
-            l = n(123);
-        const c = n(358),
-            d = n(86),
-            { SHOW_SIDEBAR_BADGE: u } = n(10);
+        (require(58), require(3), require(71), require(4), require(41), require(13), require(32), require(97), require(33));
+        var o = require(53),
+            GObject = require(1),
+            GPlatform = require(15),
+            GFitAllAction = require(449),
+            s = require(566),
+            l = require(123);
+        const c = require(358),
+            d = require(86),
+            { SHOW_SIDEBAR_BADGE: u } = require(10 /* designerConfig */);
         function p() {
             this._elements = [];
         }
-        (i.GObject.inherit(p, l),
+        (GObject.GObject.inherit(p, l),
             (p.prototype._panel = null),
             (p.prototype._toolbar = null),
             (p.prototype._document = null),
@@ -25,7 +25,7 @@ module.exports = function (e, t, n) {
                     t.append(
                         $("<label>")
                             .addClass("annotation-panel-label")
-                            .text(i.GLocale.get(new i.GLocaleKey("GAnnotations", "text.page")))
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GAnnotations", "text.page")))
                     ));
             }),
             (p.prototype._addListPanel = function (e, t, n, o, s) {
@@ -39,15 +39,15 @@ module.exports = function (e, t, n) {
                                 var e = this._document.getScene();
                                 (e &&
                                     e.acceptChildren(function (e) {
-                                        return (e.hasFlag(i.GNode.Flag.Highlighted) && e.removeFlag(i.GNode.Flag.Highlighted), !0);
+                                        return (e.hasFlag(GObject.GNode.Flag.Highlighted) && e.removeFlag(GObject.GNode.Flag.Highlighted), true);
                                     }),
-                                    this._annotationPanel.gAnnotationPanel("setBlockHighlight", !0));
+                                    this._annotationPanel.gAnnotationPanel("setBlockHighlight", true));
                             }.bind(this)
                         )
                         .on(
                             "mouseleave",
                             function () {
-                                this._annotationPanel.gAnnotationPanel("setBlockHighlight", !1);
+                                this._annotationPanel.gAnnotationPanel("setBlockHighlight", false);
                             }.bind(this)
                         )
                         .on(
@@ -56,7 +56,7 @@ module.exports = function (e, t, n) {
                                 this._document.getEditor().clearSelection();
                                 var e = this._document.getScene();
                                 (e && e.setActiveLayer(null),
-                                    a.GPlatform.modifiers.optionKey && gDesigner.executeAction(r.ID, void 0, "outlinesidebar"));
+                                    GPlatform.GPlatform.modifiers.optionKey && gDesigner.executeAction(GFitAllAction.ID, void 0, "outlinesidebar"));
                             }.bind(this)
                         )
                         .on("dragover", function (e) {
@@ -116,43 +116,43 @@ module.exports = function (e, t, n) {
                 this._annotationPanel.gAnnotationPanel("setDelayedSyncCallback", e);
             }),
             (p.prototype._clickTreeNodeCallback = function (e) {
-                if ((e instanceof i.GComment && (e = e.getParent()), e && !e.hasFlag(i.GNode.Flag.Selected))) {
+                if ((e instanceof GObject.GComment && (e = e.getParent()), e && !e.hasFlag(GObject.GNode.Flag.Selected))) {
                     (this._document.getScene().updateActivePageForElem(e), this._document.getScene().updateActiveLayerForElem(e));
                     var t = this._document.getEditor(),
-                        n = !1;
+                        n = false;
                     if (
                         (jQuery(gDesigner.getWindows().getActiveWindow().getView().getHtmlElement()).find("> div[tabindex=0]").focus(),
-                        a.GPlatform.modifiers.metaKey ||
-                            (!e.hasFlag(i.GNode.Flag.Selected) &&
-                                !e.hasFlag(i.GElement.Flag.FullLocked) &&
-                                !a.GPlatform.modifiers.shiftKey))
+                        GPlatform.GPlatform.modifiers.metaKey ||
+                            (!e.hasFlag(GObject.GNode.Flag.Selected) &&
+                                !e.hasFlag(GObject.GElement.Flag.FullLocked) &&
+                                !GPlatform.GPlatform.modifiers.shiftKey))
                     ) {
                         let o = [e];
-                        if (e.hasMixin(i.GAnnotation.Linkable)) {
+                        if (e.hasMixin(GObject.GAnnotation.Linkable)) {
                             let t = e.getAnnotableReferences();
                             t &&
-                                ((t = t.filter((e) => !e.hasFlag(i.GNode.Flag.Selected))),
+                                ((t = t.filter((e) => !e.hasFlag(GObject.GNode.Flag.Selected))),
                                 t.length && ((o = o.concat(t)), this._document.getScene().updateActivePageForElem(t[0])));
                         }
-                        (t.updateSelection(a.GPlatform.modifiers.metaKey, o), (n = !0));
+                        (t.updateSelection(GPlatform.GPlatform.modifiers.metaKey, o), (n = true));
                     }
-                    if (n && a.GPlatform.modifiers.optionKey)
+                    if (n && GPlatform.GPlatform.modifiers.optionKey)
                         t.hasSelection()
                             ? gDesigner.executeAction(s.ID, void 0, "outlinesidebar")
-                            : gDesigner.executeAction(r.ID, void 0, "outlinesidebar");
+                            : gDesigner.executeAction(GFitAllAction.ID, void 0, "outlinesidebar");
                     else if (n) {
                         let t;
-                        if (e.hasMixin(i.GAnnotation.Linkable)) {
+                        if (e.hasMixin(GObject.GAnnotation.Linkable)) {
                             const n = e.getAnnotableReferences();
                             n &&
                                 n.length &&
                                 n.forEach((e) => {
-                                    if (e instanceof i.GElement) {
+                                    if (e instanceof GObject.GElement) {
                                         const n = e.getPaintBBox();
                                         n && !n.isEmpty() && (t = t ? t.united(n) : n);
                                     }
                                 });
-                        } else e instanceof i.GElement && (t = e.getPaintBBox());
+                        } else e instanceof GObject.GElement && (t = e.getPaintBBox());
                         const n = this._document && this._document.getActiveWindow();
                         n && n.scrollIntoView(t);
                     }
@@ -162,11 +162,11 @@ module.exports = function (e, t, n) {
                 const e = this._document && this._document.getEditor(),
                     t = e && e.getSelection();
                 if (t && t.length) {
-                    t.filter((e) => e.hasMixin(i.GAnnotable)).forEach((e) => {
+                    t.filter((e) => e.hasMixin(GObject.GAnnotable)).forEach((e) => {
                         const t = e.getLinkedAnnotations();
                         t &&
                             t.forEach((e) => {
-                                e.hasFlag(i.GNode.Flag.Selected) || e.setFlag(i.GNode.Flag.Selected);
+                                e.hasFlag(GObject.GNode.Flag.Selected) || e.setFlag(GObject.GNode.Flag.Selected);
                             });
                     });
                 }
@@ -197,7 +197,7 @@ module.exports = function (e, t, n) {
                     else if (s && d) {
                         var t = e.data.parent.getChildren();
                         ((u = c.filterAnnotationElements(e.data.nodes).filter((e) => t.some((t) => t.getId() === e.getId()))),
-                            u.length && c.removeAnnotations(u, e.data.parent, void 0, !1));
+                            u.length && c.removeAnnotations(u, e.data.parent, void 0, false));
                     }
                 }
             }),
@@ -205,10 +205,10 @@ module.exports = function (e, t, n) {
                 if (
                     (n && this._annotationPanel.gAnnotationPanel("cleanEmptyAnnotations"),
                     this._document &&
-                        (this._document.getScene().removeEventListener(i.GElement.GeometryChangeEvent, this._geometryChange, this),
+                        (this._document.getScene().removeEventListener(GObject.GElement.GeometryChangeEvent, this._geometryChange, this),
                         this._document
                             .getScene()
-                            .removeEventListener(i.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                            .removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                         this._document.getEditor().removeEventListener(o.GEditor.EdGeometryChangeEvent, this._edGeometryChange, this),
                         this._document.getEditor().removeEventListener(o.GEditor.ModifiedEvent, this._handleModifiedEvent, this),
                         this._document.getEditor().removeEventListener(o.GEditor.SelectionChangedEvent, this._selectionChangedEvent, this),
@@ -222,8 +222,8 @@ module.exports = function (e, t, n) {
                             return (
                                 this._document
                                     .getScene()
-                                    .addEventListener(i.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
-                                this._document.getScene().addEventListener(i.GElement.GeometryChangeEvent, this._geometryChange, this),
+                                    .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                                this._document.getScene().addEventListener(GObject.GElement.GeometryChangeEvent, this._geometryChange, this),
                                 this._document.getEditor().addEventListener(o.GEditor.EdGeometryChangeEvent, this._edGeometryChange, this),
                                 this._document
                                     .getEditor()
@@ -233,23 +233,23 @@ module.exports = function (e, t, n) {
                                 this._updateToolbar(),
                                 (this._document.getStatus() !== d.Ready && this._document.getStatus() !== d.Loaded) ||
                                     !this._document.getActiveWindow() ||
-                                    this._document.getActiveWindow().getView().invalidate(null, !0),
-                                !0
+                                    this._document.getActiveWindow().getView().invalidate(null, true),
+                                true
                             );
                         this._document.getEditor().addEventListener(o.GEditor.ModifiedEvent, this._handleModifiedEvent, this);
                     }
                 } else this.setPage(null);
-                return !1;
+                return false;
             }),
             (p.prototype._afterPropertiesChange = function (e) {
                 e.node === this.getPage() && e.properties.includes("name") && this._setAnnotationLabel(e.node.getProperty("name"));
             }),
             (p.prototype._geometryChange = function (e) {
-                (e.type !== i.GElement.GeometryChangeEvent.Type.After && e.type !== i.GElement.GeometryChangeEvent.Type.Child) ||
+                (e.type !== GObject.GElement.GeometryChangeEvent.Type.After && e.type !== GObject.GElement.GeometryChangeEvent.Type.Child) ||
                     (this._elements.indexOf(e.element) >= 0 && this._updateDimensions());
             }),
             (p.prototype._edGeometryChange = function () {
-                this._updateDimensions(!1, !0);
+                this._updateDimensions(false, true);
             }),
             (p.prototype._updateDimensions = function () {}),
             (p.prototype._updateToolbar = function () {
@@ -263,5 +263,5 @@ module.exports = function (e, t, n) {
             (p.prototype.toString = function () {
                 return "[Object GAnnotations]";
             }),
-            (e.exports = p));
+            (module.exports = p));
     };

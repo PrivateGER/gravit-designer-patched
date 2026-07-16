@@ -1,25 +1,25 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(17),
-                o = i(11),
-                a = i(52),
-                s = i(5),
-                l = i(24),
-                h = i(14),
-                A = i(6),
-                c = i(7),
-                p = i(12),
-                u = i(81),
-                d = i(542),
-                g = i(543),
-                f = i(39);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(17),
+                o = require(11),
+                a = require(52),
+                s = require(5),
+                l = require(24),
+                h = require(14),
+                A = require(6),
+                c = require(7),
+                p = require(12),
+                u = require(81),
+                d = require(542),
+                g = require(543),
+                f = require(39);
 
             function m() {
                 (f.call(this),
                     (this._flags = m.Flag.ResizeAll | m.Flag.RotateCorners | m.Flag.RotateHandle),
                     (this._rotCornerDist = l.annotationHandles.resize.rotateDistance));
             }
-            (n.inherit(m, f),
+            (IsFiniteNonNegativeNumber.inherit(m, f),
                 (m.Flag = {
                     ResizeEdges: 1024,
                     ResizeCenters: 2048,
@@ -36,9 +36,9 @@ module.exports = function (e, t, i) {
                 (m.RESIZE_HANDLE_PART_ID = o.uuid()),
                 (m.ROTATION_HANDLE_PART_ID = o.uuid()),
                 (m.EdTransformOptions = function () {}),
-                n.inherit(m.EdTransformOptions, n),
-                (m.EdTransformOptions.prototype.isMultiPage = !1),
-                (m.EdTransformOptions.prototype.fullContentsTransform = !1),
+                IsFiniteNonNegativeNumber.inherit(m.EdTransformOptions, IsFiniteNonNegativeNumber),
+                (m.EdTransformOptions.prototype.isMultiPage = false),
+                (m.EdTransformOptions.prototype.fullContentsTransform = false),
                 (m.EdTransformOptions.prototype.storedMoveData = null),
                 (m.EdTransformOptions.prototype.doCollisionlessTransform = null),
                 (m.prototype._rotCornerDist = 0),
@@ -78,9 +78,9 @@ module.exports = function (e, t, i) {
                                 };
                             (h = new m.EdTransformOptions()).storedMoveData = _;
                             var v = o;
-                            l.isPreserveAspectRatioEnabledForSide(t.side) && (v = !0);
+                            l.isPreserveAspectRatioEnabledForSide(t.side) && (v = true);
                             var b = c.getResizeTransform(C, t.side, g, y, v, a);
-                            return (s && (h.isMultiPage = !0), this.transformBox(b, h), b);
+                            return (s && (h.isMultiPage = true), this.transformBox(b, h), b);
                         }
                     } else if (e === m.ROTATION_HANDLE_PART_ID) {
                         var C;
@@ -91,7 +91,7 @@ module.exports = function (e, t, i) {
                             (w = this.getBoxTransform()) && (E = w.mapPoint(E));
                             d = n.mapPoint(t.point);
                             if (t.corrPoint) {
-                                var B = c.getRotationTransform(d.getX(), d.getY(), p.getX(), p.getY(), E.getX(), E.getY(), !1);
+                                var B = c.getRotationTransform(d.getX(), d.getY(), p.getX(), p.getY(), E.getX(), E.getY(), false);
                                 ((d = n.mapPoint(t.corrPoint)), (p = B.mapPoint(d)));
                             }
                             var x = c.getRotationTransform(
@@ -107,7 +107,7 @@ module.exports = function (e, t, i) {
                             );
                             return (
                                 ((h = new m.EdTransformOptions()).isMultiPage = !!s),
-                                (h.fullContentsTransform = !0),
+                                (h.fullContentsTransform = true),
                                 this.edTransform(x, e, t, h),
                                 x
                             );
@@ -160,10 +160,10 @@ module.exports = function (e, t, i) {
                         var i = e;
                         if ((this._transform && (i = this._transform.multiplied(e)), this._showOutline())) {
                             var n = this.getColor() || (this.hasFlag(f.Flag.Highlighted) ? null : this._getOutlineColor(t, e));
-                            this._paintOutline(i, t, !1, n, e);
+                            this._paintOutline(i, t, false, n, e);
                         }
                         (this._showRotationHandle() && this._paintRotationHandle(e, t),
-                            this._showResizeBox() && this._paintResizeBoxOutline(i, t, !1, this.getColor() || null),
+                            this._showResizeBox() && this._paintResizeBoxOutline(i, t, false, this.getColor() || null),
                             this._showResizeHandles() && this._paintResizeHandles(e, t),
                             this._postPaint(i, t));
                     }
@@ -178,18 +178,18 @@ module.exports = function (e, t, i) {
                         (t && this._transform && (n = n ? this._transform.multiplied(n) : this._transform),
                             this._showResizeHandles() &&
                                 this._iterateResizeHandles(function (e, t, r) {
-                                    var o = u.getAnnotationBBox(n, e, l.annotationHandles.resize.size, !0);
+                                    var o = u.getAnnotationBBox(n, e, l.annotationHandles.resize.size, true);
                                     o && !o.isEmpty() && (i = i ? i.united(o) : o);
                                 }, n),
                             this._showRotationHandle() &&
                                 this._processRotationHandle(function (e) {
-                                    var t = d.getAnnotationBBox(null, e, !0);
+                                    var t = d.getAnnotationBBox(null, e, true);
                                     t && !t.isEmpty() && (i = i ? i.united(t) : t);
                                 }, n),
                             this._showRotationCorners() &&
                                 this._processRotationCorners(
                                     function (e) {
-                                        var t = u.getAnnotationBBox(null, e, l.annotationHandles.resize.size, !0);
+                                        var t = u.getAnnotationBBox(null, e, l.annotationHandles.resize.size, true);
                                         (t = t.expanded(
                                             this._rotCornerDist,
                                             this._rotCornerDist,
@@ -205,7 +205,7 @@ module.exports = function (e, t, i) {
                     return i;
                 }),
                 (m.prototype.getBBox = function (e) {
-                    var t = this._getBBox(e, !0);
+                    var t = this._getBBox(e, true);
                     if (t) {
                         var i = this.getBBoxMargin();
                         t = t.expanded(i, i, i, i);
@@ -220,7 +220,7 @@ module.exports = function (e, t, i) {
                         if (n) {
                             var r = this.getBoxTransform();
                             n = r ? r.multiplied(i).mapRect(n) : i.mapRect(n);
-                            var o = this.getCustomBBox(i, !1);
+                            var o = this.getCustomBBox(i, false);
                             o && (n = n.united(o));
                         }
                         return n;
@@ -274,7 +274,7 @@ module.exports = function (e, t, i) {
                             function (i, r, o) {
                                 if (
                                     u
-                                        .getAnnotationBBox(t, i, l.annotationHandles.resize.size, !1)
+                                        .getAnnotationBBox(t, i, l.annotationHandles.resize.size, false)
                                         .expanded(l.annotPickDistance, l.annotPickDistance, l.annotPickDistance, l.annotPickDistance)
                                         .containsPoint(e)
                                 ) {
@@ -289,10 +289,10 @@ module.exports = function (e, t, i) {
                                                 resizeSegment: o,
                                                 offset: a,
                                             },
-                                            !0,
-                                            !1
+                                            true,
+                                            false
                                         )),
-                                        !0
+                                        true
                                     );
                                 }
                             }.bind(this),
@@ -317,7 +317,7 @@ module.exports = function (e, t, i) {
                             function (t, i) {
                                 if (
                                     u
-                                        .getAnnotationBBox(null, t, l.annotationHandles.resize.size, !1)
+                                        .getAnnotationBBox(null, t, l.annotationHandles.resize.size, false)
                                         .expanded(this._rotCornerDist, this._rotCornerDist, this._rotCornerDist, this._rotCornerDist)
                                         .containsPoint(e)
                                 ) {
@@ -330,12 +330,12 @@ module.exports = function (e, t, i) {
                                                 point: e,
                                                 rotSegment: r,
                                                 corrPoint: i,
-                                                noRelayout: !0,
+                                                noRelayout: true,
                                             },
-                                            !0,
-                                            !1
+                                            true,
+                                            false
                                         )),
-                                        !0
+                                        true
                                     );
                                 }
                             }.bind(this),
@@ -350,7 +350,7 @@ module.exports = function (e, t, i) {
                     return (
                         this._processRotationHandle(
                             function (t, i, r) {
-                                var o = d.getAnnotationBBox(null, t, !1);
+                                var o = d.getAnnotationBBox(null, t, false);
                                 if (o && o.containsPoint(e))
                                     return (
                                         (n = new f.PartInfo(
@@ -358,14 +358,14 @@ module.exports = function (e, t, i) {
                                             m.ROTATION_HANDLE_PART_ID,
                                             {
                                                 point: t,
-                                                handle: !0,
+                                                handle: true,
                                                 corrPoint: r,
-                                                noRelayout: !0,
+                                                noRelayout: true,
                                             },
-                                            !0,
-                                            !1
+                                            true,
+                                            false
                                         )),
-                                        !0
+                                        true
                                     );
                             }.bind(this),
                             t
@@ -427,7 +427,7 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (m.prototype._showOutline = function () {
-                    return !1;
+                    return false;
                 }),
                 (m.prototype._getGuideExclusions = function () {
                     return null;
@@ -491,7 +491,7 @@ module.exports = function (e, t, i) {
                             ++v
                         ) {
                             var b = s[v];
-                            if (!0 === e(n.mapPoint(i.getSide(b)), b, this._getResizeSegment(b, f, y, _))) break;
+                            if (true === e(n.mapPoint(i.getSide(b)), b, this._getResizeSegment(b, f, y, _))) break;
                         }
                     }
                 }),
@@ -602,7 +602,7 @@ module.exports = function (e, t, i) {
                             s = r.mapPoint(s);
                             for (var l = 0; l < a.length; ++l) {
                                 var h = a[l];
-                                if (!0 === e(r.mapPoint(n.getSide(h)), s)) break;
+                                if (true === e(r.mapPoint(n.getSide(h)), s)) break;
                             }
                         }
                     }
@@ -635,7 +635,7 @@ module.exports = function (e, t, i) {
                         })),
                     u) &&
                         (this._alignment && (a = i.pushCanvas(i.canvas.createCanvas(e.mapRect(t).expanded(2, 2, 2, 2)))),
-                        i.canvas.putVertices(u, !0),
+                        i.canvas.putVertices(u, true),
                         (A = n || (this.hasFlag(f.Flag.Highlighted) ? i.highlightOutlineColor : this._getOutlineColor(i, e))),
                         (p = this._alignment ? (g ? 2 * d + 1 : 2 * d) : d),
                         i.canvas.strokeVertices(A, p),
@@ -651,5 +651,5 @@ module.exports = function (e, t, i) {
                 (m.prototype.toString = function () {
                     return "[Object GBoxEditor]";
                 }),
-                (e.exports = m));
+                (module.exports = m));
         };

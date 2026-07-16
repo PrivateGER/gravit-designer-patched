@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(51),
-                o = i(315),
-                a = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(51),
+                o = require(315),
+                String = require(9);
 
             function s() {
                 (r.call(this), this._setDefaultProperties(s.GeometryProperties));
             }
             (n.inherit("GGLBendBlurEffect", s, r),
                 (s.prototype.getNodeNameTranslated = function () {
-                    return a.getValue("GGLBendBlurEffect", "name", this.getNodeName());
+                    return String.getValue("GGLBendBlurEffect", "name", this.getNodeName());
                 }),
                 (s.prototype.getEffectPadding = function () {
                     var e = this.$shp.bend,
@@ -46,7 +46,7 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (s.prototype.isAffectedByChildren = function () {
-                    return !0;
+                    return true;
                 }),
                 (s.GeometryProperties = {
                     shp: {
@@ -63,5 +63,5 @@ module.exports = function (e, t, i) {
                     bend: [0, 50],
                     cov: [0, 1],
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

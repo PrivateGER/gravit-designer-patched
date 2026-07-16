@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(1).GUtil.prepareForSaving = function (e, t) {};
+        require(1 /* GObject */).GUtil.prepareForSaving = function (e, t) {};
     };

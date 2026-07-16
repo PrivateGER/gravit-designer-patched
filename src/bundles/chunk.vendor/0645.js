@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            i(72);
-            var n = i(77),
-                r = i(167);
+module.exports = function (module, exports, require) {
+            require(72);
+            var n = require(77),
+                r = require(167);
 
             function o(e) {
                 ((this._events = []),
@@ -96,15 +96,15 @@ module.exports = function (e, t, i) {
                     TOOL: 1,
                 }),
                 (o.prototype._events = null),
-                (o.prototype._isRecording = !1),
-                (o.prototype._isPlaying = !1),
+                (o.prototype._isRecording = false),
+                (o.prototype._isPlaying = false),
                 (o.prototype._head = 0),
                 (o.prototype._toolMgr = null),
                 (o.prototype.start = function () {
-                    this._isPlaying || (this._isRecording = !0);
+                    this._isPlaying || (this._isRecording = true);
                 }),
                 (o.prototype.stop = function () {
-                    this._isRecording = !1;
+                    this._isRecording = false;
                 }),
                 (o.prototype.isBusy = function () {
                     return this._isRecording || this._isPlaying;
@@ -113,23 +113,23 @@ module.exports = function (e, t, i) {
                     return this._isRecording;
                 }),
                 (o.prototype.reset = function () {
-                    if (this._isRecording) this._isRecording = !1;
+                    if (this._isRecording) this._isRecording = false;
                     else if (this._isPlaying) return;
-                    ((this._events = []), (this._head = 0), (this._isRecording = !1), (this._isPlaying = !1));
+                    ((this._events = []), (this._head = 0), (this._isRecording = false), (this._isPlaying = false));
                 }),
                 (o.prototype.record = function (e, t, i) {
                     this._isPlaying || (this._isRecording && this._events.push(new o.RecordItem(o.RecordItemType.DOM, e, t, i)));
                 }),
                 (o.prototype.play = function (e, t, i) {
                     var n = this;
-                    for (this._isPlaying = !0; n._head < n._events.length; ) {
+                    for (this._isPlaying = true; n._head < n._events.length; ) {
                         var r = n._events[n._head];
                         switch (r.type) {
                             case o.RecordItemType.DOM:
-                                e._updateAndTriggerInputEvent(r.event, r.eventClass, !0);
+                                e._updateAndTriggerInputEvent(r.event, r.eventClass, true);
                                 break;
                             case o.RecordItemType.TOOL:
-                                n._toolMgr && n._toolMgr.activateTool(r.event.newTool, null, !0);
+                                n._toolMgr && n._toolMgr.activateTool(r.event.newTool, null, true);
                         }
                         if ((i && i(n._head, n._events.length), "number" == typeof t)) {
                             if (n._head + 1 === n._events.length) break;
@@ -139,7 +139,7 @@ module.exports = function (e, t, i) {
                         }
                         n._head++;
                     }
-                    ((n._isPlaying = !1), (n._head = 0));
+                    ((n._isPlaying = false), (n._head = 0));
                 }),
                 (o.prototype._toolChanged = function (e) {
                     this._isRecording && (this._isPlaying || this._events.push(new o.RecordItem(o.RecordItemType.TOOL, e)));
@@ -159,5 +159,5 @@ module.exports = function (e, t, i) {
                         n
                     );
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

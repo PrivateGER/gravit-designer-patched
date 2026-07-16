@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(t, "__esModule", { value: !0 }),
-            (t.REARRANGE_TAB_SELECTOR = t.REARRANGE_TAB_CLASS = void 0),
-            (t.allowRearrangeTabs = function (e) {
+        (Object.defineProperty(exports, "__esModule", { value: true }),
+            (exports.REARRANGE_TAB_SELECTOR = exports.REARRANGE_TAB_CLASS = void 0),
+            (exports.allowRearrangeTabs = function (e) {
                 ($(".tabs").sortable({
                     axis: "x",
                     containment: $("#header"),
@@ -38,23 +38,23 @@ module.exports = function (e, t, n) {
                         })
                         .appendTo(e));
             }),
-            (t.toggleRearrangeTabsVisibility = function (e, t) {
+            (exports.toggleRearrangeTabsVisibility = function (e, t) {
                 $(e)
                     .find(i)
                     .css("display", t ? "" : "none");
             }),
-            (t.updateTabsInterface = a),
-            n(4),
-            n(13),
-            n(38),
-            n(1518));
-        const o = (t.REARRANGE_TAB_CLASS = "more-button"),
-            i = (t.REARRANGE_TAB_SELECTOR = ".".concat(o));
+            (exports.updateTabsInterface = a),
+            require(4),
+            require(13),
+            require(38),
+            require(1518));
+        const o = (exports.REARRANGE_TAB_CLASS = "more-button"),
+            i = (exports.REARRANGE_TAB_SELECTOR = ".".concat(o));
         function a() {
             var e = 0,
                 t = 0;
             ($(".moreTab").empty(),
-                $(".moreTab").append($(".tabs").children().clone(!0)),
+                $(".moreTab").append($(".tabs").children().clone(true)),
                 $(".moreTab").children().children().prepend($("<span/>").addClass("select")),
                 $(".moreTab").css({
                     left: -$(".moreTab").width(),

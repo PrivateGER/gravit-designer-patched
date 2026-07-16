@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(47);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(47);
 
             function o() {}
-            (n.inherit(o, n),
-                (o.prototype._failed = !1),
+            (IsFiniteNonNegativeNumber.inherit(o, IsFiniteNonNegativeNumber),
+                (o.prototype._failed = false),
                 (o.Features = {
                     SmallCaps: "smcp",
                     Fractions: "frac",
@@ -89,7 +89,7 @@ module.exports = function (e, t, i) {
                     throw new Error("Unsupported operation.");
                 }),
                 (o.prototype.isEmbedded = function () {
-                    return !1;
+                    return false;
                 }),
                 (o.prototype.setFailed = function (e) {
                     this._failed = e;
@@ -148,7 +148,7 @@ module.exports = function (e, t, i) {
                     throw new Error("Unsupported operation.");
                 }),
                 (o.prototype.hasFeature = function (e) {
-                    return !1;
+                    return false;
                 }),
                 (o.prototype.getAvailableStylisticSets = function (e) {
                     return [];
@@ -156,5 +156,5 @@ module.exports = function (e, t, i) {
                 (o.prototype.getAvailableLanguageSystemTags = function (e) {
                     return [];
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

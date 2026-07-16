@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o = TypeError;
-        e.exports = function (e) {
+        module.exports = function (e) {
             if (e > 9007199254740991) throw o("Maximum allowed index exceeded");
             return e;
         };

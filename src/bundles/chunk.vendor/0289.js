@@ -1,19 +1,19 @@
-module.exports = function (e, t, i) {
-            var n = i(50),
-                r = i(2),
-                o = i(112),
-                a = i(104),
-                s = i(6),
-                l = i(83),
-                h = i(159),
-                A = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(50),
+                r = require(2),
+                o = require(112),
+                a = require(104),
+                s = require(6),
+                l = require(83),
+                h = require(159),
+                String = require(9);
 
             function c() {
                 (a.call(this), this._setDefaultProperties(c.VisualProperties, c.GeometryProperties, c.MetaProperties));
             }
             (r.inheritAndMix("slice", c, a),
                 (c.MetaProperties = {
-                    trm: !0,
+                    trm: true,
                     cls: null,
                 }),
                 (c.GeometryProperties = {
@@ -23,7 +23,7 @@ module.exports = function (e, t, i) {
                     h: 100,
                 }),
                 (c.prototype.getNodeNameTranslated = function () {
-                    return A.getValue("GSlice", "name", this.getNodeName());
+                    return String.getValue("GSlice", "name", this.getNodeName());
                 }),
                 (c.prototype.validateInsertion = function (e, t) {
                     return e instanceof h || e instanceof l;
@@ -32,7 +32,7 @@ module.exports = function (e, t, i) {
                     if (!this._scene) throw new Error("Not part of a scene.");
                     var t = e.configuration,
                         i = t.sceneBackground;
-                    t.sceneBackground = !1;
+                    t.sceneBackground = false;
                     try {
                         (this.$cls && e.canvas.fillCanvas(this.$cls), this._scene.paint(e));
                         var n = e.canvas.getBitmap();
@@ -75,5 +75,5 @@ module.exports = function (e, t, i) {
                 (c.prototype._detailHitTest = function (e, t, i, n) {
                     return new o(this);
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

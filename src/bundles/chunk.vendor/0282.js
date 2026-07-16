@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(51),
-                o = i(206),
-                a = i(365),
-                s = i(226),
-                l = i(14),
-                h = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(51),
+                o = require(206),
+                a = require(365),
+                s = require(226),
+                l = require(14),
+                String = require(9);
 
             function A() {
                 (r.call(this), this._setDefaultProperties(A.GeometryProperties));
@@ -23,7 +23,7 @@ module.exports = function (e, t, i) {
                     return this.$shp.radius;
                 }),
                 (A.prototype.getNodeNameTranslated = function () {
-                    return h.getValue("GGLBlurEffect", "name", this.getNodeName());
+                    return String.getValue("GGLBlurEffect", "name", this.getNodeName());
                 }),
                 (A.prototype.canApplyNativeEffect = function () {
                     return this.$shp.radius && !this.$shp.clip && l.hasFilters();
@@ -57,12 +57,12 @@ module.exports = function (e, t, i) {
                 (A.GeometryProperties = {
                     shp: {
                         radius: 5,
-                        clip: !1,
+                        clip: false,
                     },
                     sh: "GGLBlurShader",
                 }),
                 (A.RANGES = {
                     radius: [0, 50],
                 }),
-                (e.exports = A));
+                (module.exports = A));
         };

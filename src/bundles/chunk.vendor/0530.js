@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(5),
-                r = i(6),
-                o = i(7),
-                a = i(2),
-                s = i(22),
-                l = i(528),
-                h = i(56),
-                A = i(179),
-                c = i(59);
+module.exports = function (module, exports, require) {
+            var n = require(5),
+                r = require(6),
+                o = require(7),
+                a = require(2),
+                s = require(22),
+                l = require(528),
+                h = require(56),
+                A = require(179),
+                c = require(59);
 
             function p(e, t, i, a, s, l) {
                 if (e) {
@@ -18,11 +18,11 @@ module.exports = function (e, t, i) {
                             this._annotationsParamVals.push(new n(u.getX(), u.getY()));
                         }
                     }
-                    ((this._sShapeName = s), (this._icon = l || null), h.call(this), (this._paintSharp = !0));
+                    ((this._sShapeName = s), (this._icon = l || null), h.call(this), (this._paintSharp = true));
                     var d = this._parameterizedVertexProcessor.getVertices(this._annotationsParamVals);
                     if (d && d.getCount()) {
-                        this._paths = A.createPathFromVertexSource(d, !0);
-                        var g = c.calculateBounds(d, !0);
+                        this._paths = A.createPathFromVertexSource(d, true);
+                        var g = c.calculateBounds(d, true);
                         if (g && !g.isEmpty() && ((this._srcBBox = g), i && a)) {
                             var f = o.getNativeRectTransformation(g),
                                 m = new r(0, 0, i, a),
@@ -67,20 +67,20 @@ module.exports = function (e, t, i) {
                     if (this._annotationsParamVals && this._annotationsParamVals.length)
                         for (var i = t ? this.$trf : null, n = 0; n < this._annotationsParamVals.length; ++n) {
                             var r = this._parameterizedVertexProcessor.getAnnotationPosition(n, this._annotationsParamVals[n]);
-                            if ((i && (r = i.mapPoint(r)), !0 === e(r, n))) break;
+                            if ((i && (r = i.mapPoint(r)), true === e(r, n))) break;
                         }
                 }),
                 (p.prototype.rewindVertices = function (e) {
                     if (((this._currentPathIdx = this._paths && this._paths.length ? 0 : null), 0 === e && 0 === this._currentPathIdx)) {
                         this._currentPath = this._paths[0];
                         for (var t = 0; t < this._paths.length; ++t) this._paths[t].rewindVertices(0);
-                        return !0;
+                        return true;
                     }
-                    return !1;
+                    return false;
                 }),
                 (p.prototype.readVertex = function (e) {
                     if (null !== this._currentPathIdx) {
-                        if (this._currentPath.readVertex(e)) return !0;
+                        if (this._currentPath.readVertex(e)) return true;
                         if (this._currentPathIdx + 1 < this._paths.length)
                             return (
                                 ++this._currentPathIdx,
@@ -88,20 +88,20 @@ module.exports = function (e, t, i) {
                                 this._currentPath.readVertex(e)
                             );
                     }
-                    return !1;
+                    return false;
                 }),
                 (p.prototype.hasVertexForRead = function () {
                     if (this._currentPath) {
-                        if (this._currentPath.hasVertexForRead()) return !0;
+                        if (this._currentPath.hasVertexForRead()) return true;
                         if (this._currentPathIdx + 1 < this._paths.length) return this._paths[this._currentPathIdx + 1].hasVertexForRead();
                     }
-                    return !1;
+                    return false;
                 }),
                 (p.prototype.getIcon = function () {
                     return this._icon;
                 }),
                 (p.prototype._isEvenOddFill = function () {
-                    return !0;
+                    return true;
                 }),
                 (p.prototype._handleChange = function (e, t) {
                     if (e === a._Change.AfterPropertiesChange && t.properties.indexOf("trf") >= 0)
@@ -133,8 +133,8 @@ module.exports = function (e, t, i) {
                         var e = this._parameterizedVertexProcessor.getVertices(this._annotationsParamVals);
                         e &&
                             e.getCount() &&
-                            ((this._srcBBox = c.calculateBounds(e, !0)),
-                            (this._paths = A.createPathFromVertexSource(e, !0)),
+                            ((this._srcBBox = c.calculateBounds(e, true)),
+                            (this._paths = A.createPathFromVertexSource(e, true)),
                             this._setTransform(this.getProperty("trf")));
                     }
                 }),
@@ -144,5 +144,5 @@ module.exports = function (e, t, i) {
                 (p.prototype.toString = function () {
                     return this._sShapeName;
                 }),
-                (e.exports = p));
+                (module.exports = p));
         };

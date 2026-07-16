@@ -1,6 +1,6 @@
-module.exports = function (t, n, o) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (o(96), o(57), o(20), o(151), o(38));
+        (require(96), require(57), require(20), require(151), require(38));
         var i = function () {
             ((this.interval = 1e3), (this.maxInterval = 6e4));
         };
@@ -43,7 +43,7 @@ module.exports = function (t, n, o) {
         };
         ((a.prototype.upload = function () {
             var e = new XMLHttpRequest();
-            (e.open(this.httpMethod, this.url, !0),
+            (e.open(this.httpMethod, this.url, true),
                 e.setRequestHeader("Authorization", "Bearer " + this.token),
                 e.setRequestHeader("Content-Type", "application/json"),
                 e.setRequestHeader("X-Upload-Content-Length", this.file.size),
@@ -63,7 +63,7 @@ module.exports = function (t, n, o) {
                 (this.offset || this.chunkSize) &&
                     (this.chunkSize && (t = Math.min(this.offset + this.chunkSize, this.file.size)), (e = e.slice(this.offset, t)));
                 var n = new XMLHttpRequest();
-                (n.open("PUT", this.url, !0),
+                (n.open("PUT", this.url, true),
                     n.setRequestHeader("Content-Type", this.contentType),
                     n.setRequestHeader("Content-Range", "bytes " + this.offset + "-" + (t - 1) + "/" + this.file.size),
                     n.setRequestHeader("X-Upload-Content-Type", this.file.type),
@@ -74,7 +74,7 @@ module.exports = function (t, n, o) {
             }),
             (a.prototype.resume_ = function () {
                 var e = new XMLHttpRequest();
-                (e.open("PUT", this.url, !0),
+                (e.open("PUT", this.url, true),
                     e.setRequestHeader("Content-Range", "bytes */" + this.file.size),
                     e.setRequestHeader("X-Upload-Content-Type", this.file.type),
                     e.upload && e.upload.addEventListener("progress", this.onProgress),
@@ -115,5 +115,5 @@ module.exports = function (t, n, o) {
                 var i = this.buildQuery_(t);
                 return (i && (o += "?" + i), o);
             }),
-            (t.exports = a));
+            (module.exports = a));
     };

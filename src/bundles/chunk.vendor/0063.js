@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(87),
-                r = i(48);
+module.exports = function (module, exports, require) {
+            var n = require(87),
+                r = require(48);
 
             function o(e, t) {
                 ((this._source = e), (this._transform = t));
             }
-            (i(0).inherit(o, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(o, n),
                 (o.transformVertex = function (e, t) {
                     if (t)
                         switch (e.command) {
@@ -33,7 +33,7 @@ module.exports = function (e, t, i) {
                     return this._source.rewindVertices(e);
                 }),
                 (o.prototype.readVertex = function (e) {
-                    return !!this._source.readVertex(e) && (o.transformVertex(e, this._transform), !0);
+                    return !!this._source.readVertex(e) && (o.transformVertex(e, this._transform), true);
                 }),
                 (o.prototype.hasVertexForRead = function () {
                     return this._source.hasVertexForRead();
@@ -41,5 +41,5 @@ module.exports = function (e, t, i) {
                 (o.prototype.toString = function () {
                     return "[Object GVertexTransformer]";
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

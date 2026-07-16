@@ -1,37 +1,37 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(187),
-                o = i(5),
-                a = i(39),
-                s = i(24),
-                l = i(154),
-                h = i(0),
-                A = i(128),
-                c = i(141),
-                p = i(22),
-                u = i(28),
-                d = i(162),
-                g = i(7),
-                f = i(45),
-                m = i(82),
-                y = i(347),
-                _ = i(63),
-                v = i(36),
-                b = i(66),
-                C = i(155),
-                w = i(12),
-                E = i(14),
-                B = i(81),
-                x = i(59),
-                P = i(17),
-                S = i(52),
-                T = i(64),
-                I = i(6);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(187),
+                o = require(5),
+                a = require(39),
+                s = require(24),
+                l = require(154),
+                IsFiniteNonNegativeNumber = require(0),
+                A = require(128),
+                c = require(141),
+                p = require(22),
+                GStylable = require(28),
+                d = require(162),
+                g = require(7),
+                f = require(45),
+                GEditor = require(82),
+                y = require(347),
+                _ = require(63),
+                v = require(36),
+                b = require(66),
+                C = require(155),
+                w = require(12),
+                E = require(14),
+                B = require(81),
+                x = require(59),
+                P = require(17),
+                S = require(52),
+                T = require(64),
+                I = require(6);
 
             function F(e) {
                 (A.call(this, e), this._ensureConsistentSelection());
             }
-            (h.inherit(F, A),
+            (IsFiniteNonNegativeNumber.inherit(F, A),
                 v.exports(F, d),
                 (F.PartType = {
                     Segment: 1,
@@ -54,15 +54,15 @@ module.exports = function (e, t, i) {
                 (F.prototype._pathBaseInEdit = null),
                 (F.prototype._startAnchor = null),
                 (F.prototype._selectionMode = null),
-                (F.prototype._editMode = !1),
+                (F.prototype._editMode = false),
                 (F.prototype._highlightPart = null),
                 (F.prototype._moveEdgesLinks = null),
                 (F.prototype._updateFirstPtELinks = null),
                 (F.prototype._updateLastPtELinks = null),
                 (F.prototype._transformSubType = null),
                 (F.prototype._constrainPair = null),
-                (F.prototype._constrainPainted = !1),
-                (F.prototype._activeExtendingMode = !1),
+                (F.prototype._constrainPainted = false),
+                (F.prototype._activeExtendingMode = false),
                 (F.prototype.getActiveExtendingMode = function () {
                     return this._activeExtendingMode;
                 }),
@@ -78,14 +78,14 @@ module.exports = function (e, t, i) {
                 (F.prototype.insertOutgoingPathBase = function (e) {
                     if (this._startAnchor) {
                         var t = this._pathBaseInEdit;
-                        (this._closePBEditor(!0),
-                            this.updatePartSelection(!1, null),
+                        (this._closePBEditor(true),
+                            this.updatePartSelection(false, null),
                             this._element.addGraphLine(
                                 t,
                                 new d.GraphPosition(d.GraphPosition.PosType.Anchor, new d.GraphPosition.AnchorSpec(this._startAnchor)),
                                 e ? new d.GraphPosition(d.GraphPosition.PosType.Anchor, new d.GraphPosition.AnchorSpec(e)) : null,
                                 null,
-                                !0
+                                true
                             ),
                             (this._startAnchor = null));
                     }
@@ -125,7 +125,7 @@ module.exports = function (e, t, i) {
                     if (this._showAnnotations() && !this.hasFlag(b.Flag.ResizeAll))
                         for (var h = r.getAnchors().getFirstChild(); h; h = h.getNext()) {
                             var c = o ? o.mapPoint(h.getPoint()) : h.getPoint();
-                            l(B.getAnnotationBBox(e, c, s.annotationHandles.path.graph.size, !0));
+                            l(B.getAnnotationBBox(e, c, s.annotationHandles.path.graph.size, true));
                         }
                     else if (
                         !(
@@ -137,7 +137,7 @@ module.exports = function (e, t, i) {
                         for (h = r.getAnchors().getFirstChild(); h; h = h.getNext())
                             if (h.hasFlag(n.Flag.Highlighted)) {
                                 c = o ? o.mapPoint(h.getPoint()) : h.getPoint();
-                                l(B.getAnnotationBBox(e, c, s.annotationHandles.path.graph.size, !0));
+                                l(B.getAnnotationBBox(e, c, s.annotationHandles.path.graph.size, true));
                             }
                     return i;
                 }),
@@ -152,7 +152,7 @@ module.exports = function (e, t, i) {
                                 });
                         if (
                             (this._constrainPair &&
-                                n(B.getAnnotationBBox(null, this._constrainPair[0], s.annotationHandles.path.constrain.size, !0)),
+                                n(B.getAnnotationBBox(null, this._constrainPair[0], s.annotationHandles.path.constrain.size, true)),
                             this._pbEditor)
                         ) {
                             n(this._pbEditor.getBBox(e));
@@ -164,10 +164,10 @@ module.exports = function (e, t, i) {
                                     r,
                                     function (e) {
                                         (e.leftHandlePosition &&
-                                            n(B.getAnnotationBBox(i, e.leftHandlePosition, s.annotationHandles.path.control.size, !0)),
+                                            n(B.getAnnotationBBox(i, e.leftHandlePosition, s.annotationHandles.path.control.size, true)),
                                             e.rightHandlePosition &&
-                                                n(B.getAnnotationBBox(i, e.rightHandlePosition, s.annotationHandles.path.control.size, !0)),
-                                            n(B.getAnnotationBBox(i, e.position, s.annotationHandles.path.node.size, !0)));
+                                                n(B.getAnnotationBBox(i, e.rightHandlePosition, s.annotationHandles.path.control.size, true)),
+                                            n(B.getAnnotationBBox(i, e.position, s.annotationHandles.path.node.size, true)));
                                     }.bind(this)
                                 );
                             var o = this._element.getGeometryBBox();
@@ -230,7 +230,7 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (F.prototype.hasSelectionEditing = function () {
-                    return !0;
+                    return true;
                 }),
                 (F.prototype.resetPartMove = function (e, t) {
                     (this.releasePreview(), this.requestInvalidation());
@@ -352,19 +352,19 @@ module.exports = function (e, t, i) {
                 }),
                 (F.prototype._applyTransform = function (e, t, i, n) {
                     if (e instanceof f && this._partSelection && this._partSelection.length > 0 && !this.hasFlag(b.Flag.ResizeAll)) {
-                        (e._beginBlockEvents([p.GeometryChangeEvent]), e.getAnchorPoints()._beginBlockCompositeEvents(!1, !0, !1));
+                        (e._beginBlockEvents([p.GeometryChangeEvent]), e.getAnchorPoints()._beginBlockCompositeEvents(false, true, false));
                         for (var r = [], o = 0; o < this._partSelection.length; ++o) {
                             (s = this._partSelection[o]).type === F.PartType.Point
                                 ? (o == this._partSelection.length - 1 &&
                                       (e._endBlockEvents([p.GeometryChangeEvent]),
-                                      e.getAnchorPoints()._endBlockCompositeEvents(!1, !0, !1)),
+                                      e.getAnchorPoints()._endBlockCompositeEvents(false, true, false)),
                                   this._transferPreviewProperties(s.point, e),
                                   r.push(s))
                                 : s.type === F.PartType.Segment &&
                                   (this._transferPreviewProperties(s.apLeft, e),
                                   o == this._partSelection.length - 1 &&
                                       (e._endBlockEvents([p.GeometryChangeEvent]),
-                                      e.getAnchorPoints()._endBlockCompositeEvents(!1, !0, !1)),
+                                      e.getAnchorPoints()._endBlockCompositeEvents(false, true, false)),
                                   this._transferPreviewProperties(s.apRight, e),
                                   (s.apLeft.getParent().getPreviousPoint(s.apLeft) || s.apRight.getParent().getNextPoint(s.apRight)) &&
                                       (r.push({
@@ -376,7 +376,7 @@ module.exports = function (e, t, i) {
                                           point: s.apRight,
                                       })));
                         }
-                        (this.requestInvalidation(), this.resetTransform(), this.updatePartSelection(!1, r));
+                        (this.requestInvalidation(), this.resetTransform(), this.updatePartSelection(false, r));
                     } else if (e instanceof f)
                         (this._transform && !this._transform.isIdentity() && C.prototype._applyTransform.call(this, e),
                             this.resetTransform());
@@ -417,7 +417,7 @@ module.exports = function (e, t, i) {
                                         point: h.getDestination(),
                                     },
                                 ];
-                                (this.updatePartSelection(!1, A),
+                                (this.updatePartSelection(false, A),
                                     (i.isolated = e.data.rightButton.isolated),
                                     (i.selectable = e.data.rightButton.selectable));
                             }
@@ -440,10 +440,10 @@ module.exports = function (e, t, i) {
                                                 point: p,
                                             },
                                             {
-                                                apSelected: !1,
+                                                apSelected: false,
                                             },
-                                            !1,
-                                            !0
+                                            false,
+                                            true
                                         );
                                     else if (w.isEqualEps(c.slope, 1, 0.001))
                                         i = new a.PartInfo(
@@ -454,10 +454,10 @@ module.exports = function (e, t, i) {
                                                 point: u,
                                             },
                                             {
-                                                apSelected: !1,
+                                                apSelected: false,
                                             },
-                                            !1,
-                                            !0
+                                            false,
+                                            true
                                         );
                                     else {
                                         var y,
@@ -478,10 +478,10 @@ module.exports = function (e, t, i) {
                                                     (W = b + (2 / 3) * (P - b)),
                                                     (y = C + (2 / 3) * (x - C)),
                                                     (_ = E + (2 / 3) * (P - E)),
-                                                    g.setProperties(["ah", "hrx", "hry"], [!1, H, W]),
-                                                    m.setProperties(["ah", "hlx", "hly"], [!1, y, _]),
+                                                    g.setProperties(["ah", "hrx", "hry"], [false, H, W]),
+                                                    m.setProperties(["ah", "hlx", "hly"], [false, y, _]),
                                                     this.requestInvalidation(),
-                                                    (R = d.pathHitTest(new o(c.x, c.y), null, !1, s.pickDistance)) &&
+                                                    (R = d.pathHitTest(new o(c.x, c.y), null, false, s.pickDistance)) &&
                                                         R.data &&
                                                         (B = R.data));
                                             } else if (null === u.getProperty("hlx") || null === u.getProperty("hly")) {
@@ -491,16 +491,16 @@ module.exports = function (e, t, i) {
                                                     (_ = E + (2 / 3) * (I - E)),
                                                     (H = v + (2 / 3) * (S - v)),
                                                     (W = b + (2 / 3) * (I - b)),
-                                                    g.setProperties(["ah", "hrx", "hry"], [!1, H, W]),
-                                                    m.setProperties(["ah", "hlx", "hly"], [!1, y, _]),
+                                                    g.setProperties(["ah", "hrx", "hry"], [false, H, W]),
+                                                    m.setProperties(["ah", "hlx", "hly"], [false, y, _]),
                                                     this.requestInvalidation(),
-                                                    (R = d.pathHitTest(new o(c.x, c.y), null, !1, s.pickDistance)) &&
+                                                    (R = d.pathHitTest(new o(c.x, c.y), null, false, s.pickDistance)) &&
                                                         R.data &&
                                                         (B = R.data));
                                             } else
                                                 c &&
-                                                    (g.setProperty("ah", !1),
-                                                    m.setProperty("ah", !1),
+                                                    (g.setProperty("ah", false),
+                                                    m.setProperty("ah", false),
                                                     this.requestInvalidation(),
                                                     (H = g.getProperty("hrx")),
                                                     (W = g.getProperty("hry")),
@@ -516,12 +516,12 @@ module.exports = function (e, t, i) {
                                                 N = k - M;
                                             ((H = c.x - G),
                                                 (W = c.y - M),
-                                                g.setProperties(["ah", "hrx", "hry"], [!1, c.x - G, c.y - M]),
+                                                g.setProperties(["ah", "hrx", "hry"], [false, c.x - G, c.y - M]),
                                                 (y = c.x + Q),
                                                 (_ = c.y + N),
-                                                m.setProperties(["ah", "hlx", "hly"], [!1, c.x + Q, c.y + N]),
+                                                m.setProperties(["ah", "hlx", "hly"], [false, c.x + Q, c.y + N]),
                                                 this.requestInvalidation(),
-                                                (R = d.pathHitTest(new o(c.x, c.y), null, !1, s.pickDistance)) && R.data && (B = R.data));
+                                                (R = d.pathHitTest(new o(c.x, c.y), null, false, s.pickDistance)) && R.data && (B = R.data));
                                         }
                                         var U = 3 * (1 - B.slope) * (1 - B.slope) * B.slope,
                                             V = 3 * B.slope * B.slope * (1 - B.slope);
@@ -557,14 +557,14 @@ module.exports = function (e, t, i) {
                             var Y = this.getPathPointPreview(O);
                             if (Y) {
                                 var X = null;
-                                if (((r = !0), (l = !1), T.modifiers.optionKey)) {
+                                if (((r = true), (l = false), T.modifiers.optionKey)) {
                                     var H = O.getProperty("hrx"),
                                         W = O.getProperty("hry");
                                     (null === H || null === W
                                         ? ((X = F.PartType.RightHandle),
-                                          Y.setProperties(["ah", "hrx", "hry"], [!1, O.getProperty("x"), O.getProperty("y")]))
+                                          Y.setProperties(["ah", "hrx", "hry"], [false, O.getProperty("x"), O.getProperty("y")]))
                                         : ((X = F.PartType.LeftHandle),
-                                          Y.setProperties(["ah", "hlx", "hly"], [!1, O.getProperty("x"), O.getProperty("y")])),
+                                          Y.setProperties(["ah", "hlx", "hly"], [false, O.getProperty("x"), O.getProperty("y")])),
                                         (i = new a.PartInfo(
                                             this,
                                             {
@@ -573,12 +573,12 @@ module.exports = function (e, t, i) {
                                                 point: O,
                                             },
                                             {
-                                                apSelected: !0,
+                                                apSelected: true,
                                             },
                                             r,
                                             l
                                         )),
-                                        this.updatePartSelection(!0, [i.id]));
+                                        this.updatePartSelection(true, [i.id]));
                                 } else {
                                     var Z = O.getProperty("x"),
                                         z = O.getProperty("y");
@@ -586,13 +586,13 @@ module.exports = function (e, t, i) {
                                         ((X = F.PartType.RightHandle),
                                             Y.setProperties(
                                                 ["tp", "ah", "hrx", "hry", "hlx", "hly"],
-                                                [f.AnchorPoint.Type.Mirror, !1, Z, z, Z, z]
+                                                [f.AnchorPoint.Type.Mirror, false, Z, z, Z, z]
                                             ));
                                     else {
                                         var j = O.getPrevious();
                                         j && !f.isCornerType(j.getProperty("tp"))
-                                            ? ((X = F.PartType.LeftHandle), Y.setProperties(["ah", "hlx", "hly"], [!1, Z, z]))
-                                            : ((X = F.PartType.RightHandle), Y.setProperties(["ah", "hrx", "hry"], [!1, Z, z]));
+                                            ? ((X = F.PartType.LeftHandle), Y.setProperties(["ah", "hlx", "hly"], [false, Z, z]))
+                                            : ((X = F.PartType.RightHandle), Y.setProperties(["ah", "hrx", "hry"], [false, Z, z]));
                                     }
                                     i = new a.PartInfo(
                                         this,
@@ -602,7 +602,7 @@ module.exports = function (e, t, i) {
                                             point: O,
                                         },
                                         {
-                                            apSelected: !0,
+                                            apSelected: true,
                                         },
                                         r,
                                         l
@@ -617,7 +617,7 @@ module.exports = function (e, t, i) {
                     return e.type == F.PartType.Segment ? S.SelectCurve : null;
                 }),
                 (F.prototype.canHandleDblClick = function () {
-                    return !0;
+                    return true;
                 }),
                 (F.prototype.handleDblClick = function (e, t) {
                     if (e && e.type == F.PartType.Point && this.hasFlag(a.Flag.Detail) && !this._editMode) {
@@ -626,14 +626,14 @@ module.exports = function (e, t, i) {
                         if (i)
                             return (
                                 e.point.getProperty("tp") === f.AnchorPoint.Type.Asymmetric
-                                    ? (i.setProperties(["tp", "ah"], [f.AnchorPoint.Type.Symmetric, !0]), i.setProperties(["ah"], [!1]))
-                                    : i.setProperties(["tp", "ah"], [f.AnchorPoint.Type.Asymmetric, !1]),
+                                    ? (i.setProperties(["tp", "ah"], [f.AnchorPoint.Type.Symmetric, true]), i.setProperties(["ah"], [false]))
+                                    : i.setProperties(["tp", "ah"], [f.AnchorPoint.Type.Asymmetric, false]),
                                 this._partsGeometryChanged([e]),
                                 this.requestInvalidation(),
-                                !0
+                                true
                             );
                     }
-                    return !1;
+                    return false;
                 }),
                 (F.prototype.getStylableParts = function () {
                     if (
@@ -667,7 +667,7 @@ module.exports = function (e, t, i) {
                 (F.prototype._detach = function () {
                     this.requestInvalidation();
                     for (var e = this._element.getAnchors().getFirstChild(); null != e; e = e.getNext()) e.removeFlag(n.Flag.Highlighted);
-                    (this._closePBEditor(!0), this._updatePartSelection(null));
+                    (this._closePBEditor(true), this._updatePartSelection(null));
                     var t = this._element.getScene();
                     (null != t &&
                         (t.removeEventListener(p.GeometryChangeEvent, this._geometryChange, this),
@@ -686,7 +686,7 @@ module.exports = function (e, t, i) {
                                 .containsPoint(t)
                         );
                     }
-                    return !1;
+                    return false;
                 }),
                 (F.prototype._getPartInfoAt = function (e, t, i) {
                     if (this._showAnnotations() && !this.hasFlag(b.Flag.ResizeAll)) {
@@ -702,15 +702,15 @@ module.exports = function (e, t, i) {
                             }.bind(this),
                             A = function (e) {
                                 var t = null,
-                                    i = !0,
-                                    r = !1;
+                                    i = true,
+                                    r = false;
                                 if (
                                     (h(e.rightHandlePosition, s.annotationHandles.path.control.size)
                                         ? (t = F.PartType.RightHandle)
                                         : h(e.leftHandlePosition, s.annotationHandles.path.control.size)
                                           ? (t = F.PartType.LeftHandle)
                                           : h(e.position, s.annotationHandles.path.graph.size) &&
-                                            ((t = F.PartType.Point), (i = !1), (r = !0)),
+                                            ((t = F.PartType.Point), (i = false), (r = true)),
                                     t)
                                 )
                                     return (
@@ -727,7 +727,7 @@ module.exports = function (e, t, i) {
                                             i,
                                             r
                                         )),
-                                        !0
+                                        true
                                     );
                             }.bind(this);
                         if (!this._editMode && this._pathBaseInEdit && this._selectionMode == F.SelectionMode.Edge) {
@@ -745,15 +745,15 @@ module.exports = function (e, t, i) {
                                     {
                                         apSelected: p.hasFlag(n.Flag.Selected),
                                     },
-                                    !1,
-                                    !0
+                                    false,
+                                    true
                                 );
                         for (c = r.getEdges().getFirstChild(); c; c = c.getNext()) {
                             var u = c.getPathBase(),
                                 d = null;
                             if ((this._iteratePoints(u, null, A), d)) return d;
                             if (
-                                (_ = u.pathHitTest(e, o ? o.multiplied(t) : t, !1, s.pickDistance)) &&
+                                (_ = u.pathHitTest(e, o ? o.multiplied(t) : t, false, s.pickDistance)) &&
                                 !w.isEqualEps(_.data.slope, 0) &&
                                 !w.isEqualEps(_.data.slope, 1)
                             ) {
@@ -772,18 +772,18 @@ module.exports = function (e, t, i) {
                                         type: F.SegmentData.HitRes,
                                         hitRes: g,
                                         rightButton: {
-                                            isolated: !1,
-                                            selectable: !0,
+                                            isolated: false,
+                                            selectable: true,
                                         },
                                     },
-                                    !0,
-                                    !1
+                                    true,
+                                    false
                                 );
                             }
                         }
                         for (var y = r.getFacets().getFirstChild(); y; y = y.getNext()) {
                             var _;
-                            if ((_ = y.getPath().hitTest(e, o ? o.multiplied(t) : t, null, !1, 0, 0, !0, null)))
+                            if ((_ = y.getPath().hitTest(e, o ? o.multiplied(t) : t, null, false, 0, 0, true, null)))
                                 return new a.PartInfo(
                                     this,
                                     {
@@ -791,8 +791,8 @@ module.exports = function (e, t, i) {
                                         facet: y,
                                     },
                                     {},
-                                    !1,
-                                    !0
+                                    false,
+                                    true
                                 );
                         }
                     }
@@ -843,7 +843,7 @@ module.exports = function (e, t, i) {
                                 r.push(new y.SplitPoint(a, 0, new o(e.id.point.getProperty("x"), e.id.point.getProperty("y"))));
                             }
                             (t && this._element._beginBlockEvents([p.GeometryChangeEvent]),
-                                this._element.splitEdge(e.id.edge, r, !0, [], n),
+                                this._element.splitEdge(e.id.edge, r, true, [], n),
                                 t && this._element._endBlockEvents([p.GeometryChangeEvent]),
                                 n.length && (i = n[0]));
                         } else e.id.type == F.PartType.Anchor && (i = e.id.point);
@@ -859,11 +859,11 @@ module.exports = function (e, t, i) {
                             this._constrainPair[1].getY(),
                             2 * s.outlineWidth,
                             t.highlightOutlineColor,
-                            !1
+                            false
                         ),
-                            B.paintAnnotation(t, null, this._constrainPair[0], i.type, !1, i.size, P.WHITE, t.highlightOutlineColor),
+                            B.paintAnnotation(t, null, this._constrainPair[0], i.type, false, i.size, P.WHITE, t.highlightOutlineColor),
                             (this._constrainPair = null),
-                            (this._constrainPainted = !0));
+                            (this._constrainPainted = true));
                     }
                     if (this._showAnnotations() && !this.hasFlag(b.Flag.ResizeAll))
                         for (
@@ -875,7 +875,7 @@ module.exports = function (e, t, i) {
                             var l = r ? r.mapPoint(o.getPoint()) : o.getPoint();
                             (B.paintAnnotation(t, e, l, i.type, o.hasFlag(n.Flag.Selected), i.size, t.selectionOutlineColor, P.WHITE),
                                 o.hasFlag(n.Flag.Highlighted) &&
-                                    B.paintAnnotation(t, e, l, i.type, !0, i.size, t.highlightOutlineColor, P.WHITE));
+                                    B.paintAnnotation(t, e, l, i.type, true, i.size, t.highlightOutlineColor, P.WHITE));
                         }
                     else if (
                         !this.hasFlag(a.Flag.HideEditor) &&
@@ -893,7 +893,7 @@ module.exports = function (e, t, i) {
                         )
                             if (o.hasFlag(n.Flag.Highlighted)) {
                                 l = r ? r.mapPoint(o.getPoint()) : o.getPoint();
-                                B.paintAnnotation(t, e, l, i.type, !0, i.size, t.highlightOutlineColor, P.WHITE);
+                                B.paintAnnotation(t, e, l, i.type, true, i.size, t.highlightOutlineColor, P.WHITE);
                             }
                     }
                     if (this._pathBaseInEdit && this._pbEditor) {
@@ -952,7 +952,7 @@ module.exports = function (e, t, i) {
                             if (((this._partSelection = e), (this._selectionMode = i), r && r.length))
                                 for (var a = 0; a < r.length; ++a) {
                                     var s = r[a],
-                                        l = !1;
+                                        l = false;
                                     if (i == t && e)
                                         for (var h = 0; h < e.length; ++h)
                                             if (
@@ -960,17 +960,17 @@ module.exports = function (e, t, i) {
                                                 (s.type == F.PartType.Segment && s.edge == e[h].edge) ||
                                                 (s.type == F.PartType.Facet && s.facet == e[h].facet)
                                             ) {
-                                                l = !0;
+                                                l = true;
                                                 break;
                                             }
                                     l ||
                                         (s.point
-                                            ? (s.point.removeFlag(n.Flag.Selected), s.type == F.PartType.Point && this._closePBEditor(!1))
+                                            ? (s.point.removeFlag(n.Flag.Selected), s.type == F.PartType.Point && this._closePBEditor(false))
                                             : s.type == F.PartType.Segment
                                               ? (s.edge.removeFlag(n.Flag.Selected),
                                                 s.apLeft && s.apLeft.removeFlag(n.Flag.Selected),
                                                 s.apRight && s.apRight.removeFlag(n.Flag.Selected),
-                                                this._closePBEditor(!1))
+                                                this._closePBEditor(false))
                                               : s.type == F.PartType.Facet && s.facet.removeFlag(n.Flag.Selected));
                                 }
                             if (e && e.length)
@@ -1002,7 +1002,7 @@ module.exports = function (e, t, i) {
                             r = this._partSelection;
                             if (((this._partSelection = c), r))
                                 for (a = 0; a < r.length; ++a) {
-                                    ((s = r[a]), (l = !1));
+                                    ((s = r[a]), (l = false));
                                     if (c)
                                         for (h = 0; h < c.length; ++h)
                                             if (
@@ -1012,7 +1012,7 @@ module.exports = function (e, t, i) {
                                                     s.apLeft == c[h].apLeft &&
                                                     s.apRight == c[h].apRight)
                                             ) {
-                                                l = !0;
+                                                l = true;
                                                 break;
                                             }
                                     l ||
@@ -1036,10 +1036,10 @@ module.exports = function (e, t, i) {
                     var t = F.SelectionMode.None,
                         i = null;
                     if (e && e.length) {
-                        for (var n = !1, r = 0; r < e.length && !n; ++r)
+                        for (var n = false, r = 0; r < e.length && !n; ++r)
                             switch (e[r].type) {
                                 case F.PartType.Anchor:
-                                    ((t = F.SelectionMode.Anchors), (i = F.PartType.Anchor), (n = !0));
+                                    ((t = F.SelectionMode.Anchors), (i = F.PartType.Anchor), (n = true));
                                     break;
                                 case F.PartType.Point:
                                     if (this._startAnchor || !e[r].edge) break;
@@ -1068,7 +1068,7 @@ module.exports = function (e, t, i) {
                             this.getColor() || t.selectionOutlineColor
                         ));
                     var a = s.annotationHandles.path.control;
-                    B.paintAnnotation(t, e, n, a.type, !1, a.size, t.selectionOutlineColor, t.selectionOutlineColor);
+                    B.paintAnnotation(t, e, n, a.type, false, a.size, t.selectionOutlineColor, t.selectionOutlineColor);
                 }),
                 (F.prototype.getPaintElement = function () {
                     return this._pbEditor ? this._pbEditor.getPaintElement() : this._elementPreview ? this._elementPreview : this._element;
@@ -1083,7 +1083,7 @@ module.exports = function (e, t, i) {
                     else {
                         var p = new _(this._element, e);
                         (m = new c(p)) &&
-                            (t.canvas.putVertices(m, !1),
+                            (t.canvas.putVertices(m, false),
                             t.canvas.strokeVertices(
                                 r || (this.hasFlag(a.Flag.Highlighted) ? t.highlightOutlineColor : t.selectionOutlineColor),
                                 s.outlineWidth
@@ -1104,7 +1104,7 @@ module.exports = function (e, t, i) {
                         ) {
                             p = new _(u, h ? h.multiplied(e) : e);
                             ((m = new c(p)) &&
-                                (t.canvas.putVertices(m, !1), t.canvas.strokeVertices(t.highlightOutlineColor, s.outlineWidth)),
+                                (t.canvas.putVertices(m, false), t.canvas.strokeVertices(t.highlightOutlineColor, s.outlineWidth)),
                                 (this._highlightPart = null));
                         }
                     }
@@ -1117,7 +1117,7 @@ module.exports = function (e, t, i) {
                                         var m;
                                         p = new _(u, h ? h.multiplied(e) : e);
                                         (m = new c(p)) &&
-                                            (t.canvas.putVertices(m, !1),
+                                            (t.canvas.putVertices(m, false),
                                             t.canvas.strokeVertices(r || t.selectionSecondOutlineColor, s.outlineWidth));
                                     }
                             }
@@ -1151,7 +1151,7 @@ module.exports = function (e, t, i) {
                                 p !== f.AnchorPoint.Type.Mirror &&
                                 p !== f.AnchorPoint.Type.Connector) ||
                                 ((d.annotation = s.annotationHandles.path.node.smoothType),
-                                !0 === l.getProperty("ah") && (d.annotation = s.annotationHandles.path.node.autoType)),
+                                true === l.getProperty("ah") && (d.annotation = s.annotationHandles.path.node.autoType)),
                             l.hasFlag(n.Flag.Selected) || (A && A.hasFlag(n.Flag.Selected)))
                         )
                             null !== (h = new o(l.getProperty("hlx"), l.getProperty("hly"))).getX() &&
@@ -1166,7 +1166,7 @@ module.exports = function (e, t, i) {
                                 ((d.position = t.mapPoint(d.position)),
                                 d.leftHandlePosition && (d.leftHandlePosition = t.mapPoint(d.leftHandlePosition)),
                                 d.rightHandlePosition && (d.rightHandlePosition = t.mapPoint(d.rightHandlePosition))),
-                            !0 === i(d))
+                            true === i(d))
                         )
                             break;
                     }
@@ -1197,7 +1197,7 @@ module.exports = function (e, t, i) {
                     return e;
                 }),
                 (F.prototype.selectOnePoint = function (e) {
-                    this.updatePartSelection(!1, [
+                    this.updatePartSelection(false, [
                         {
                             type: F.PartType.Point,
                             point: e,
@@ -1205,7 +1205,7 @@ module.exports = function (e, t, i) {
                     ]);
                 }),
                 (F.prototype.isPartSelectionUnderCollisionAllowed = function () {
-                    return !0;
+                    return true;
                 }),
                 (F.prototype.updatePartSelectionUnderCollision = function (e, t, i) {
                     var r = this._element.getAnchors(),
@@ -1217,7 +1217,7 @@ module.exports = function (e, t, i) {
                         !i && l.hasFlag(n.Flag.Highlighted) && l.removeFlag(n.Flag.Highlighted);
                         var h = l.getPoint();
                         ((h = o ? o.mapPoint(h) : h),
-                            !x.hitTest(h.getX(), h.getY(), t, 0, !0) || (!i && e && l.hasFlag(n.Flag.Selected))
+                            !x.hitTest(h.getX(), h.getY(), t, 0, true) || (!i && e && l.hasFlag(n.Flag.Selected))
                                 ? !i ||
                                   !l.hasFlag(n.Flag.Highlighted) ||
                                   (e && l.hasFlag(n.Flag.Selected)) ||
@@ -1264,15 +1264,15 @@ module.exports = function (e, t, i) {
                     return this._partSelection && this._partSelection.length;
                 }),
                 (F.prototype.isDeletePartsAllowed = function () {
-                    var e = !1;
+                    var e = false;
                     if (this._partSelection && this._partSelection.length && !this.hasFlag(b.Flag.ResizeAll))
-                        if (this._selectionMode == F.SelectionMode.Edge) e = !0;
+                        if (this._selectionMode == F.SelectionMode.Edge) e = true;
                         else if (this._selectionMode == F.SelectionMode.Anchors) {
                             for (var t = 0, i = 0; i < this._partSelection.length; ++i)
                                 this._partSelection[i].type == F.PartType.Anchor && ++t;
                             if (t) {
                                 for (var n = 0, r = this._element.getAnchors().getFirstChild(); null != r; r = r.getNext(), ++n);
-                                n > t && (e = !0);
+                                n > t && (e = true);
                             }
                         }
                     return e;
@@ -1285,7 +1285,7 @@ module.exports = function (e, t, i) {
                                 for (var e = 0; e < this._partSelection.length; ++e) {
                                     var t = this._partSelection[e];
                                     if (t.type == F.PartType.Segment || t.type == F.PartType.Point) {
-                                        (this._closePBEditor(!1), this._element.removeEdge(t.edge));
+                                        (this._closePBEditor(false), this._element.removeEdge(t.edge));
                                         break;
                                     }
                                 }
@@ -1305,7 +1305,7 @@ module.exports = function (e, t, i) {
                             }
                 }),
                 (F.prototype.isAlignPartsAllowed = function () {
-                    var e = !1;
+                    var e = false;
                     if (
                         this._partSelection &&
                         this._partSelection.length &&
@@ -1313,7 +1313,7 @@ module.exports = function (e, t, i) {
                         this._selectionMode == F.SelectionMode.Anchors
                     )
                         for (var t = 0; t < this._partSelection.length && !e; ++t)
-                            this._partSelection[t].type == F.PartType.Anchor && (e = !0);
+                            this._partSelection[t].type == F.PartType.Anchor && (e = true);
                     return e;
                 }),
                 (F.prototype.alignParts = function (e, t, i) {
@@ -1356,13 +1356,13 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (F.prototype.validateSelectionChange = function () {
-                    return !0;
+                    return true;
                 }),
                 (F.prototype.constrainPosition = function (e, t, i) {
                     var n = new o(i.getProperty("x"), i.getProperty("y")),
                         r = this._element.getTransform();
                     n = (r = r ? r.multiplied(t) : t).mapPoint(n);
-                    var a = m.convertToConstrain(n.getX(), n.getY(), e.getX(), e.getY(), s.cursorConstraint);
+                    var a = GEditor.convertToConstrain(n.getX(), n.getY(), e.getX(), e.getY(), s.cursorConstraint);
                     return ((this._constrainPair = [n, a]), a);
                 }),
                 (F.prototype._createPathPreviewIfNecessary = function (e) {
@@ -1444,7 +1444,7 @@ module.exports = function (e, t, i) {
                         var A = h.mapPoint(l),
                             c = [t, i],
                             p = [A.getX(), A.getY()];
-                        (("hlx" !== t && "hrx" !== t && "hly" !== i && "hry" !== i) || (c.push("ah"), p.push(!1)), s.setProperties(c, p));
+                        (("hlx" !== t && "hrx" !== t && "hly" !== i && "hry" !== i) || (c.push("ah"), p.push(false)), s.setProperties(c, p));
                     }
                 }),
                 (F.prototype._assignPreviewPointPropertiesToSourcePoint = function (e, t) {
@@ -1464,10 +1464,10 @@ module.exports = function (e, t, i) {
                     for (var t, i = [], n = 0; n < e.length; ++n)
                         if (e[n].type != F.PartType.Point) i.push(e[n]);
                         else {
-                            t = !0;
+                            t = true;
                             for (var r = 0; r < e.length; ++r)
                                 if (e[r].type == F.PartType.Segment && (e[n].point == e[r].apLeft || e[n].point == e[r].apRight)) {
-                                    t = !1;
+                                    t = false;
                                     break;
                                 }
                             t && i.push(e[n]);
@@ -1481,11 +1481,11 @@ module.exports = function (e, t, i) {
                           e.element == this._element &&
                           ((this._elementPreview || this._pbEditor) &&
                               (this.releasePreview(),
-                              this._pbEditor && (this._closePBEditor(!0), this.setActiveExtendingMode(C.ExtendingMode.Off))),
+                              this._pbEditor && (this._closePBEditor(true), this.setActiveExtendingMode(C.ExtendingMode.Off))),
                           this.requestInvalidation());
                 }),
                 (F.prototype._checkCustomStyle = function (e) {
-                    if (!e.temporary && e.node instanceof u.PaintLayer) {
+                    if (!e.temporary && e.node instanceof GStylable.PaintLayer) {
                         var t = this.getStylableParts();
                         if (t)
                             for (var i = 0; i < t.length; i++)
@@ -1501,22 +1501,22 @@ module.exports = function (e, t, i) {
                         this._element.prepareFacetsUpdate();
                         var t = new r(),
                             i = function (e, i, n) {
-                                var r = !1,
+                                var r = false,
                                     o = [];
                                 if ((e._splitPathLineAtSelfIntersections(n, o), 1 == o.length)) {
                                     for (var s = 0, l = n.getAnchorPoints().getFirstChild().getNext(); null != l; l = l.getNext(), ++s);
                                     for (var h = e.getEdges().getFirstChild(); null != h && !a; h = h.getNext())
                                         if (i != h.getId()) {
-                                            var A = t.intersect(n, h.getPathBase(), !1);
+                                            var A = t.intersect(n, h.getPathBase(), false);
                                             if (A && A.length)
                                                 for (var c = 0; c < A.length && !r; ++c) {
                                                     var p = A[c];
                                                     (1 == p.polySeg0.seg && w.isEqualEps(p.slope0, 0)) ||
                                                         (p.polySeg0.seg == s && w.isEqualEps(p.slope0, 1)) ||
-                                                        (r = !0);
+                                                        (r = true);
                                                 }
                                         }
-                                } else r = !0;
+                                } else r = true;
                                 return r;
                             }.bind(this);
                         if (
@@ -1532,22 +1532,22 @@ module.exports = function (e, t, i) {
                                         o.type == F.PartType.Segment) &&
                                     this._pbEditor
                                 ) {
-                                    var a = !1,
+                                    var a = false,
                                         s = o.edge,
-                                        l = !0,
-                                        h = !0;
+                                        l = true,
+                                        h = true;
                                     if (o.type == F.PartType.Segment && this._transformSubType != F.SegmentData.Handles) {
                                         var A = s.getPathBase().getAnchorPoints();
-                                        (A.getFirstChild() == o.apLeft && ((l = !1), (a = !0)),
-                                            A.getLastChild() == o.apRight && ((h = !1), (a = !0)));
+                                        (A.getFirstChild() == o.apLeft && ((l = false), (a = true)),
+                                            A.getLastChild() == o.apRight && ((h = false), (a = true)));
                                     } else
                                         o.type == F.PartType.Point &&
                                             (s.getPathBase().getAnchorPoints().getFirstChild() == o.point
-                                                ? ((l = !1), (a = !0))
-                                                : s.getPathBase().getAnchorPoints().getLastChild() == o.point && ((h = !1), (a = !0)));
+                                                ? ((l = false), (a = true))
+                                                : s.getPathBase().getAnchorPoints().getLastChild() == o.point && ((h = false), (a = true)));
                                     var c = this._pbEditor.getPaintElement();
                                     a || (a = i(this._element, s.getId(), c));
-                                    var u = new f(!1, c.cloneAnchorPoints());
+                                    var u = new f(false, c.cloneAnchorPoints());
                                     if (a) {
                                         var g = null,
                                             m = null;
@@ -1562,12 +1562,12 @@ module.exports = function (e, t, i) {
                                         (this._element.removeEdge(s),
                                             this._element.addGraphLine(u, g, m, s),
                                             this.requestInvalidation(),
-                                            this._closePBEditor(!0),
-                                            this.updatePartSelection(!1, null));
+                                            this._closePBEditor(true),
+                                            this.updatePartSelection(false, null));
                                     } else
                                         (s.setPathBase(u),
                                             this.requestInvalidation(),
-                                            this._closePBEditor(!1),
+                                            this._closePBEditor(false),
                                             this._initPBEditor(s.getPathBase()),
                                             this.requestInvalidation());
                                 }
@@ -1584,7 +1584,7 @@ module.exports = function (e, t, i) {
                                 if ((T = v.getEdges().getById(E.getId())))
                                     if (i(v, C, T.getPathBase())) ((b[C] = E), this._element.removeEdge(E));
                                     else {
-                                        c = new f(!1, T.getPathBase().cloneAnchorPoints());
+                                        c = new f(false, T.getPathBase().cloneAnchorPoints());
                                         E.setPathBase(c);
                                     }
                             }
@@ -1615,12 +1615,12 @@ module.exports = function (e, t, i) {
                             for (var C in this._updateFirstPtELinks) {
                                 E = this._updateFirstPtELinks[C];
                                 (T = v.getEdges().getById(E.getId())) &&
-                                    (i(v, C, T.getPathBase()) ? ((b[C] = E), this._element.removeEdge(E)) : B(E, !0));
+                                    (i(v, C, T.getPathBase()) ? ((b[C] = E), this._element.removeEdge(E)) : B(E, true));
                             }
                             for (var C in this._updateLastPtELinks) {
                                 E = this._updateLastPtELinks[C];
                                 (T = v.getEdges().getById(E.getId())) &&
-                                    (i(v, C, T.getPathBase()) ? ((b[C] = E), this._element.removeEdge(E)) : B(E, !1));
+                                    (i(v, C, T.getPathBase()) ? ((b[C] = E), this._element.removeEdge(E)) : B(E, false));
                             }
                             var x = Object.keys(b);
                             for (n = 0; n < e.length; ++n) {
@@ -1633,7 +1633,7 @@ module.exports = function (e, t, i) {
                                 var T;
                                 E = b[x[n]];
                                 if ((T = v.getEdges().getById(E.getId()))) {
-                                    ((c = new f(!1, T.getPathBase().cloneAnchorPoints())),
+                                    ((c = new f(false, T.getPathBase().cloneAnchorPoints())),
                                         (y = this._element.getAnchors().getById(E.getSourceId())),
                                         (_ = this._element.getAnchors().getById(E.getDestinationId())));
                                     (n == x.length - 1 && this._element._endBlockEvents([p.GeometryChangeEvent]),
@@ -1662,8 +1662,8 @@ module.exports = function (e, t, i) {
                                         point: t,
                                     },
                                     null,
-                                    !1,
-                                    !0
+                                    false,
+                                    true
                                 )
                             );
                     for (var i = this._element.getEdges().getFirstChild(); null != i; i = i.getNext())
@@ -1678,8 +1678,8 @@ module.exports = function (e, t, i) {
                                         apRight: null,
                                     },
                                     {},
-                                    !1,
-                                    !0
+                                    false,
+                                    true
                                 )
                             );
                     for (var r = this._element.getFacets().getFirstChild(); null != r; r = r.getNext())
@@ -1692,18 +1692,18 @@ module.exports = function (e, t, i) {
                                         facet: r,
                                     },
                                     {},
-                                    !1,
-                                    !1
+                                    false,
+                                    false
                                 )
                             );
-                    this.updatePartSelection(!1, e);
+                    this.updatePartSelection(false, e);
                 }),
                 (F.prototype._initPBEditor = function (e) {
                     ((this._pathBaseInEdit = e),
-                        (this._pbEditor = v.openEditor(this._pathBaseInEdit, !0)),
+                        (this._pbEditor = v.openEditor(this._pathBaseInEdit, true)),
                         this._pbEditor.setFlag(a.Flag.Selected),
                         this._pbEditor.removeFlag(b.Flag.ResizeAll),
-                        this._pbEditor.setCatchHandle(!1),
+                        this._pbEditor.setCatchHandle(false),
                         this._pbEditor.setFlag(a.Flag.HideEditor));
                 }),
                 (F.prototype._closePBEditor = function (e) {
@@ -1711,7 +1711,7 @@ module.exports = function (e, t, i) {
                         this._pathBaseInEdit &&
                         (this.requestInvalidation(),
                         this._pbEditor.requestInvalidation(),
-                        e && this._pbEditor.updatePartSelection(!1, null),
+                        e && this._pbEditor.updatePartSelection(false, null),
                         (this._pbEditor = null),
                         v.closeElementEditor(this._pathBaseInEdit),
                         (this._pathBaseInEdit = null),
@@ -1720,5 +1720,5 @@ module.exports = function (e, t, i) {
                 (F.prototype.toString = function () {
                     return "[Object GPathsGraphEditor]";
                 }),
-                (e.exports = F));
+                (module.exports = F));
         };

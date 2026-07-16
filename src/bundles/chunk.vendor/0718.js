@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(377),
+            var n = require(377),
                 r = n.decode,
                 o = n.encode,
-                a = i(89),
-                s = i(115),
+                Parser = require(89),
+                s = require(115),
                 l = [
                     "copyright",
                     "fontFamily",
@@ -610,9 +610,9 @@ module.exports = function (e, t, i) {
                 }
                 return i;
             }
-            ((t.parse = function (e, t, i) {
+            ((exports.parse = function (e, t, i) {
                 for (
-                    var n = {}, o = new a.Parser(e, t), s = o.parseUShort(), h = o.parseUShort(), A = o.offset + o.parseUShort(), c = 0;
+                    var n = {}, o = new Parser.Parser(e, t), s = o.parseUShort(), h = o.parseUShort(), A = o.offset + o.parseUShort(), c = 0;
                     c < h;
                     c++
                 ) {
@@ -634,7 +634,7 @@ module.exports = function (e, t, i) {
                 }
                 return (1 === s && o.parseUShort(), n);
             }),
-                (t.make = function (e, t) {
+                (exports.make = function (e, t) {
                     var i,
                         n = [],
                         r = {},

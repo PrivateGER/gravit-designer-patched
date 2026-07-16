@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(27),
-            i = n(21),
-            a = n(35),
-            r = n(61),
-            s = n(49),
-            l = n(199).CONFIGURABLE,
-            c = n(299),
-            d = n(80),
+        var o = require(27),
+            i = require(21),
+            a = require(35),
+            r = require(61),
+            s = require(49),
+            l = require(199 /* PROPER */).CONFIGURABLE,
+            c = require(299),
+            d = require(80),
             u = d.enforce,
             p = d.get,
             g = String,
@@ -21,15 +21,15 @@ module.exports = function (e, t, n) {
                     return 8 !== h(function () {}, "length", { value: 8 }).length;
                 }),
             _ = String(String).split("String"),
-            b = (e.exports = function (e, t, n) {
+            b = (module.exports = function (e, t, n) {
                 ("Symbol(" === f(g(t), 0, 7) && (t = "[" + m(g(t), /^Symbol\(([^)]*)\).*$/, "$1") + "]"),
                     n && n.getter && (t = "get " + t),
                     n && n.setter && (t = "set " + t),
-                    (!r(e, "name") || (l && e.name !== t)) && (s ? h(e, "name", { value: t, configurable: !0 }) : (e.name = t)),
+                    (!r(e, "name") || (l && e.name !== t)) && (s ? h(e, "name", { value: t, configurable: true }) : (e.name = t)),
                     v && n && r(n, "arity") && e.length !== n.arity && h(e, "length", { value: n.arity }));
                 try {
                     n && r(n, "constructor") && n.constructor
-                        ? s && h(e, "prototype", { writable: !1 })
+                        ? s && h(e, "prototype", { writable: false })
                         : e.prototype && (e.prototype = void 0);
                 } catch (e) {}
                 var o = u(e);

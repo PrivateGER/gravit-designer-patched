@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        var o = n(1),
-            i = n(10);
+        require(8 /* Symbol */);
+        var GObject = require(1),
+            designerConfig = require(10);
         const a = {
             init: function (e) {
                 e = $.extend(
                     {
                         clazz: null,
-                        defaultText: o.GLocale.get(new o.GLocaleKey("GUnshareButton", "text.unshare-with-me")),
+                        defaultText: GObject.GLocale.get(new GObject.GLocaleKey("GUnshareButton", "text.unshare-with-me")),
                         stats: "filespanel-view_infoPanel_unshare",
                         restrictedStats: "filespanel-view_infoPanel_nonprotriespro-unshare",
                         unshareCallback: null,
@@ -34,7 +34,7 @@ module.exports = function (e, t, n) {
                                       const o = t.data("gunsharebutton").storeItem.getId(),
                                           a = n.getUID();
                                       (console.log("About to call unshare with item id: %s and user id: %s", o, a),
-                                          await i.gApi.unshareWithUser(o, a),
+                                          await designerConfig.gApi.unshareWithUser(o, a),
                                           "function" == typeof e.unshareCallback && e.unshareCallback());
                                   }));
                         }),

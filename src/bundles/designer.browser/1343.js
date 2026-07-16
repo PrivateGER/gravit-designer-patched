@@ -1,20 +1,20 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(96), n(8), n(20), n(34), n(247), n(91), n(4), n(41), n(13), n(32), n(38), n(33), n(26));
-        var o = n(1);
-        const { TRANSLATION_MANAGER: i } = n(10);
+        (require(19), require(96), require(8 /* Symbol */), require(20), require(34), require(247), require(91), require(4), require(41), require(13), require(32), require(38), require(33), require(26));
+        var GObject = require(1);
+        const { TRANSLATION_MANAGER: i } = require(10 /* designerConfig */);
         function a() {}
-        (o.GObject.inherit(a, o.GObject),
+        (GObject.GObject.inherit(a, GObject.GObject),
             (a.prototype._translationBase = null),
             (a.prototype.getProjectsDescription = function () {
                 return this._translationBase.getMapped().map((e) => e.project);
             }),
             (a.prototype.loadProjectTranslations = function (e) {
-                if (!o.GTranslation.Projects.hasOwnProperty(e)) throw Error("Can't load translations, invalid project!");
+                if (!GObject.GTranslation.Projects.hasOwnProperty(e)) throw Error("Can't load translations, invalid project!");
                 ((this._project = e),
                     (this._translations = this._translationBase.getByProject(e)),
                     (this._classesMap = Object.keys(
-                        this._translations.find((e) => e.keyValue === o.GLocaleLanguage.English).translations
+                        this._translations.find((e) => e.keyValue === GObject.GLocaleLanguage.English).translations
                     )));
             }),
             (a.prototype.getActiveProject = function () {
@@ -25,10 +25,10 @@ module.exports = function (e, t, n) {
             (a._CSV_SEPARATOR = "|||"),
             (a.prototype.init = function () {
                 return (
-                    (this._translationBase = new o.GTranslation()),
-                    this.loadProjectTranslations(o.GTranslation.Projects.Designer),
-                    (this._localeLanguage = o.GLocaleLanguage),
-                    this.isConsideringExtension() && o.GLocale.enableExtension(),
+                    (this._translationBase = new GObject.GTranslation()),
+                    this.loadProjectTranslations(GObject.GTranslation.Projects.Designer),
+                    (this._localeLanguage = GObject.GLocaleLanguage),
+                    this.isConsideringExtension() && GObject.GLocale.enableExtension(),
                     Promise.resolve()
                 );
             }),
@@ -76,7 +76,7 @@ module.exports = function (e, t, n) {
                             }),
                             t.translationsExtended && 0 === Object.keys(t.translationsExtended).length && delete t.translationsExtended);
                         var r = this._clone(e);
-                        (delete r.translations, delete r.translationsExtended, (t = o.GUtil.extend(t, r)));
+                        (delete r.translations, delete r.translationsExtended, (t = GObject.GUtil.extend(t, r)));
                     }),
                     Promise.resolve(n)
                 );
@@ -94,7 +94,7 @@ module.exports = function (e, t, n) {
                 return Promise.resolve(JSON.stringify(this._translations, null, 4));
             }),
             (a.prototype._exportAsCSV = function (e) {
-                let { language: t = null, onlyEmpty: n = !1 } = e;
+                let { language: t = null, onlyEmpty: n = false } = e;
                 const o = function (e) {
                     return (e && e.replace(/\r?\n|\r/g, "")) || "";
                 };
@@ -137,7 +137,7 @@ module.exports = function (e, t, n) {
                                         (l.trim().length ? ", content '" + l.substr(0, 30) + "...'" : ", is empty")
                                 );
                             var [d, u, p, g, h] = c;
-                            if (!o.GLocaleLanguage.hasOwnProperty(d))
+                            if (!GObject.GLocaleLanguage.hasOwnProperty(d))
                                 return r("Language not available ('".concat(d, "'), row ").concat(e + 1, "!"));
                             if (!this._classesMap.find((e) => e === u))
                                 return r("Reference to UI not available ('".concat(u, "')!, row ").concat(e + 1));
@@ -185,8 +185,8 @@ module.exports = function (e, t, n) {
                 return (
                     (e.keyValue = null),
                     (e.language = null),
-                    (e.isDefault = !1),
-                    (e.isAvailable = !0),
+                    (e.isDefault = false),
+                    (e.isAvailable = true),
                     (e.abbreviation = null),
                     Object.keys(e.translations).forEach((t) => {
                         Object.keys(e.translations[t]).forEach((n) => {
@@ -205,5 +205,5 @@ module.exports = function (e, t, n) {
             (a.prototype.isConsideringExtension = function () {
                 return !!i.CONSIDER_EXTENSION;
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

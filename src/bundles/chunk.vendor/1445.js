@@ -1,22 +1,22 @@
-module.exports = function (e, t, i) {
-            var n = i(1216),
-                r = i(1147),
-                o = i(0),
-                a = i(188),
-                s = i(854),
-                l = i(5),
-                h = i(14),
-                A = i(6),
-                c = i(293),
-                p = i(359),
-                u = i(7);
+module.exports = function (module, exports, require) {
+            var n = require(1216),
+                r = require(1147),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(188),
+                s = require(854),
+                l = require(5),
+                h = require(14),
+                A = require(6),
+                c = require(293),
+                p = require(359),
+                u = require(7);
 
             function d(e) {
                 ((this._canvasContext = e), (e.canvas = this), (this._width = 300), (this._height = 150), this.prepare(null));
-                var t = i(643);
+                var t = require(643);
                 this._blender = new t(this);
             }
-            (o.inherit(d, h),
+            (IsFiniteNonNegativeNumber.inherit(d, h),
                 (d.prototype._paintContext = null),
                 (d.prototype.fillVertices = function (e, t, i, n) {
                     if (
@@ -84,5 +84,5 @@ module.exports = function (e, t, i) {
                 }),
                 (d.prototype._transform = new u()),
                 (d.prototype._origin = new l(0, 0)),
-                (e.exports = d));
+                (module.exports = d));
         };

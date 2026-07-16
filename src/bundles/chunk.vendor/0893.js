@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(0),
-                o = i(132),
-                a = i(12),
-                s = i(14),
-                l = i(644);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(132),
+                a = require(12),
+                s = require(14),
+                l = require(644);
 
             function h(e, t, i, r, o) {
                 (l.call(this, i),
@@ -41,7 +41,7 @@ module.exports = function (e, t, i) {
                                 (this._mouseMarker.style.top = "-1px")),
                           this._htmlElement.appendChild(this._mouseMarker)));
             }
-            (r.inherit(h, l),
+            (IsFiniteNonNegativeNumber.inherit(h, l),
                 (h.Orientation = {
                     Horizontal: 0,
                     Vertical: 1,
@@ -111,9 +111,9 @@ module.exports = function (e, t, i) {
                             g = new o(1, this._scene.getProperty("ut")).toPoint(),
                             f = 1,
                             m = 0,
-                            y = !1,
+                            y = false,
                             _ = (50 * d) / g;
-                        if (g > 1) for (; 0 == Math.round(_) && f < 10 * g; ) ((f *= 10), (m += 1), (_ *= 10), (y = !0));
+                        if (g > 1) for (; 0 == Math.round(_) && f < 10 * g; ) ((f *= 10), (m += 1), (_ *= 10), (y = true));
                         var v = 1;
                         ((_ = Math.round(_)) <= 1
                             ? ((_ = 1), (v = 0.1))
@@ -140,7 +140,7 @@ module.exports = function (e, t, i) {
                         ) {
                             var S = Math.round((x / d) * g) + this._offset;
                             (a.isEqualEps(x, w, 0.01 / f) && (P = Math.floor(10 * e)),
-                                P % Math.floor(10 * e) == 0 ? ((B = a.round(x, !1, y ? m : 0)), (A = c)) : ((B = ""), (A = p)),
+                                P % Math.floor(10 * e) == 0 ? ((B = a.round(x, false, y ? m : 0)), (A = c)) : ((B = ""), (A = p)),
                                 n.moveTo(S + 0.5, 19.5 * e),
                                 n.lineTo(S + 0.5, A + 0.5));
                             var T = n.measureText(B).width;
@@ -175,5 +175,5 @@ module.exports = function (e, t, i) {
                 (h.prototype.toString = function () {
                     return "[Object GRulerWidget]";
                 }),
-                (e.exports = h));
+                (module.exports = h));
         };

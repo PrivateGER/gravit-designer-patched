@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(17),
-                r = i(0),
-                o = i(118);
+module.exports = function (module, exports, require) {
+            var n = require(17),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(118);
 
             function a() {
                 ((this.outlineColors = []), (this.canvasStack = []));
             }
-            (r.inheritAndMix(a, r, [o]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(a, IsFiniteNonNegativeNumber, [o]),
                 (a.prototype.configuration = null),
                 (a.prototype.canvas = null),
                 (a.prototype.canvasStack = null),
@@ -43,7 +43,7 @@ module.exports = function (e, t, i) {
                     this.canvas = this.canvasStack.pop();
                 }),
                 (a.prototype.isIncludingInvisible = function () {
-                    return !1;
+                    return false;
                 }),
                 (a.prototype.toString = function () {
                     return "[Object GPaintContext]";
@@ -54,5 +54,5 @@ module.exports = function (e, t, i) {
                     }
                     ((this.canvas = null), (this.canvasStack = null), (this.configuration = null));
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

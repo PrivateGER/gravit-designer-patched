@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(11),
-                r = i(438),
+module.exports = function (module, exports, require) {
+            var n = require(11),
+                r = require(438),
                 o = function () {};
             ((o.createMask = function (e, t, i, o, a) {
                 var s = "_mask_" + n.uuid(),
@@ -46,10 +46,10 @@ module.exports = function (e, t, i) {
                         }),
                         s.appendChild(a),
                         a.appendChild(i),
-                        (r.isMask = !0),
+                        (r.isMask = true),
                         "destination-out" === t)
                     ) {
-                        r.isInverse = !0;
+                        r.isInverse = true;
                         var l = e.createElementNS("http://www.w3.org/2000/svg", "rect");
                         (l.setAttribute("x", "0"),
                             l.setAttribute("y", "0"),
@@ -57,7 +57,7 @@ module.exports = function (e, t, i) {
                             l.setAttribute("height", "100%"),
                             l.setAttribute("style", "fill:white;"),
                             a.insertBefore(l, i));
-                    } else r.isInverse = !1;
+                    } else r.isInverse = false;
                 }),
                 (o.filterElementsUsedForMasking = function (e) {
                     return r.filterClipPathElements(e);
@@ -66,7 +66,7 @@ module.exports = function (e, t, i) {
                     var a = "_clipPath_" + n.uuid(),
                         s = e.createElementNS("http://www.w3.org/2000/svg", "clipPath");
                     s.setAttribute("id", a);
-                    var l = t.cloneNode(!0);
+                    var l = t.cloneNode(true);
                     r.removeDefs(l);
                     var h = o.filterElementsUsedForMasking(l);
                     return (
@@ -84,7 +84,7 @@ module.exports = function (e, t, i) {
                     (o.setAttribute("id", r),
                         n.each(t.childNodes, function (e, t) {
                             if ("path" === t.tagName) {
-                                var i = t.cloneNode(!0),
+                                var i = t.cloneNode(true),
                                     n = i.getAttribute("style");
                                 (n &&
                                     ((n = (n = n.replace(/fill:[^;]+/, "fill:white")).replace(/stroke:[^;]+/, "stroke:white")),
@@ -95,5 +95,5 @@ module.exports = function (e, t, i) {
                         t.parentNode.insertBefore(o, t),
                         t.setAttribute("mask", "url(#" + r + ")"));
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

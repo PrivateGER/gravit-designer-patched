@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(562);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(562);
 
             function o() {
                 r.apply(this, arguments);
             }
-            (n.inherit(o, r),
+            (IsFiniteNonNegativeNumber.inherit(o, r),
                 (o.prototype.version = null),
                 (o.prototype.parse = function () {
                     this.version = parseFloat(this._data.appVersion);
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

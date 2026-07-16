@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(3), n(4), n(13));
-        var o = n(53),
-            i = n(1),
-            a = n(15);
-        const r = n(1699);
+        (require(3), require(4), require(13));
+        var o = require(53),
+            GObject = require(1),
+            GPlatform = require(15);
+        const r = require(1699);
         function s() {}
-        i.GObject.inheritAndMix(s, i.GObject);
+        GObject.GObject.inheritAndMix(s, GObject.GObject);
         var l = {
             init: function (e) {
                 return (
@@ -22,7 +22,7 @@ module.exports = function (e, t, n) {
                                 documentKeyDown: null,
                                 rgba: null,
                             })
-                            .attr("data-title", i.GLocale.get(new i.GLocaleKey("GEyeDropper", "text.tooltip")))
+                            .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GEyeDropper", "text.tooltip")))
                             .append($("<span></span>").addClass("gravit-icon-picker"))
                             .on("click", function (o) {
                                 n.closest(".g-disabled").length ||
@@ -40,7 +40,7 @@ module.exports = function (e, t, n) {
             },
             setValue: function (e) {
                 const t = $(this),
-                    n = "string" == typeof e ? e : i.GPattern.asCSSBackground(e);
+                    n = "string" == typeof e ? e : GObject.GPattern.asCSSBackground(e);
                 t.find(".g-eye-dropper-preview-color-difference").find(".current").css({ background: n });
                 const o = t.data("g-eye-dropper") || {};
                 ((o.currentColor = n), t.data("g-eye-dropper", o));
@@ -58,8 +58,8 @@ module.exports = function (e, t, n) {
                         if (!u) return;
                         s.addClass("g-active");
                         for (
-                            var p = u.getView().getSceneCanvas().getBitmap().getHTMLElement(!0),
-                                g = i.GPaintCanvas.getScreenDPI(),
+                            var p = u.getView().getSceneCanvas().getBitmap().getHTMLElement(true),
+                                g = GObject.GPaintCanvas.getScreenDPI(),
                                 h = $("<canvas></canvas>")
                                     .attr({ width: 135, height: 135 })
                                     .addClass("g-cursor-pixel g-eye-dropper-preview"),
@@ -77,7 +77,7 @@ module.exports = function (e, t, n) {
                         ) {
                             var w = _[b];
                             if (CanvasRenderingContext2D.prototype.hasOwnProperty(w)) {
-                                v[w] = !1;
+                                v[w] = false;
                                 break;
                             }
                         }
@@ -129,7 +129,7 @@ module.exports = function (e, t, n) {
                                     v.clearRect(0, 0, 135, 135),
                                     (v.fillStyle = "rgba(0,0,0,0.75)"),
                                     v.scale(0.9, 0.9),
-                                    v.fillText(i.GLocale.get(new i.GLocaleKey("GEyeDropper", "text.preview")), 10, 72, 135));
+                                    v.fillText(GObject.GLocale.get(new GObject.GLocaleKey("GEyeDropper", "text.preview")), 10, 72, 135));
                         }
                         (gDesigner.isTouchEnabled() &&
                             (c.draggablePoint = new r(
@@ -149,7 +149,7 @@ module.exports = function (e, t, n) {
                                     x.call(this, a, r);
                                 },
                                 () => {
-                                    (l.setActive.call(this, !1), c.rgba && s.trigger("colorchange", [c.rgba]));
+                                    (l.setActive.call(this, false), c.rgba && s.trigger("colorchange", [c.rgba]));
                                 }
                             )),
                             (c.documentMove = function (e) {
@@ -164,16 +164,16 @@ module.exports = function (e, t, n) {
                             (c.documentMouseDown = function (e) {
                                 gDesigner.isTouchEnabled()
                                     ? l.isActive.call(this)
-                                        ? l.setActive.call(this, !1)
-                                        : l.setActive.call(this, !0)
-                                    : (l.setActive.call(this, !1), c.rgba && s.trigger("colorchange", [c.rgba]));
+                                        ? l.setActive.call(this, false)
+                                        : l.setActive.call(this, true)
+                                    : (l.setActive.call(this, false), c.rgba && s.trigger("colorchange", [c.rgba]));
                             }.bind(this)),
                             (c.documentKeyDown = function (e) {
-                                a.GKey.translateKey(e.keyCode) === a.GKey.Constant.ESC && l.setActive.call(this, !1);
+                                GPlatform.GKey.translateKey(e.keyCode) === GPlatform.GKey.Constant.ESC && l.setActive.call(this, false);
                             }.bind(this)),
                             "number" == typeof t &&
                                 "number" == typeof n &&
-                                (gDesigner.isTouchEnabled() ? c.draggablePoint.moveTo(t, n, !0) : c.documentMove({ pageX: t, pageY: n })),
+                                (gDesigner.isTouchEnabled() ? c.draggablePoint.moveTo(t, n, true) : c.documentMove({ pageX: t, pageY: n })),
                             document.addEventListener("keydown", c.documentKeyDown),
                             document.addEventListener("mousedown", c.documentMouseDown),
                             document.addEventListener("mousemove", c.documentMove),
@@ -193,7 +193,7 @@ module.exports = function (e, t, n) {
                 }
             },
         };
-        ((e.exports = s),
+        ((module.exports = s),
             ($.fn.gEyeDropper = function (e) {
                 return l[e]
                     ? l[e].apply(this, Array.prototype.slice.call(arguments, 1))

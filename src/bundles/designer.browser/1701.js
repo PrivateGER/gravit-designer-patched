@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(8), n(20), n(851), n(4), n(41), n(13), n(26));
-        var o = n(1),
-            i = n(40),
-            a = n(1200),
-            r = n(255);
+        (require(19), require(8 /* Symbol */), require(20), require(851), require(4), require(41), require(13), require(26));
+        var GObject = require(1),
+            GSaveAction = require(40),
+            a = require(1200),
+            r = require(255);
         function s(e, t) {
             var n = $(this);
             (n.empty(), (n.data("g-fonts-panel").lastPreviewPosition = 0), l.call(this, e, t));
@@ -60,7 +60,7 @@ module.exports = function (e, t, n) {
                             break;
                         }
                     }
-                ((0, i.iterateAroundIndex)(g, f, (e) => {
+                ((0, GSaveAction.iterateAroundIndex)(g, f, (e) => {
                     e.addPreviewCallback.call(
                         e,
                         function (e) {
@@ -201,7 +201,7 @@ module.exports = function (e, t, n) {
             search: function (e, t) {
                 var n = $(this),
                     o = n.data("g-fonts-panel");
-                return arguments.length ? (e !== o.search && ((o.search = e), p.refresh.call(this, !1, t)), this) : o.search;
+                return arguments.length ? (e !== o.search && ((o.search = e), p.refresh.call(this, false, t)), this) : o.search;
             },
             focusCurrent: function () {
                 var e,
@@ -213,18 +213,18 @@ module.exports = function (e, t, n) {
                     (n.position().top > t.height() - n.outerHeight()
                         ? ((e = n.index()),
                           t.find(".fonts-row:lt(" + e + ")").each(function () {
-                              o += $(this).outerHeight(!0);
+                              o += $(this).outerHeight(true);
                           }),
-                          t.scrollTop(o - t.height() + n.outerHeight(!0)))
+                          t.scrollTop(o - t.height() + n.outerHeight(true)))
                         : n.position().top < 0 &&
                           ((e = n.index()),
                           t.find(".fonts-row:lt(" + e + ")").each(function () {
-                              o += $(this).outerHeight(!0);
+                              o += $(this).outerHeight(true);
                           }),
                           t.scrollTop(o)));
             },
             reload: function (e) {
-                (($(this).data("g-fonts-panel").previousQuery = null), p.refresh.call(this, !1, e));
+                (($(this).data("g-fonts-panel").previousQuery = null), p.refresh.call(this, false, e));
             },
             refresh: function (e, t) {
                 var n = $(this),
@@ -233,14 +233,14 @@ module.exports = function (e, t, n) {
                 a !== i.previousQuery &&
                     (n.empty(),
                     (i.lastPreviewPosition = 0),
-                    n.text(o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.loading")) + "..."),
+                    n.text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading")) + "..."),
                     e && (i.search = null),
                     u.call(this, a, t));
             },
             stylesForFont: function (e, t) {
                 var n = null,
                     o = $(this).data("g-fonts-panel").manager;
-                if (o.isCacheEmpty()) return void (t && o.query(t, "%", !0));
+                if (o.isCacheEmpty()) return void (t && o.query(t, "%", true));
                 let i = (0, a.getFontFamily)(e, o.searchFamilyInCache.bind(o));
                 if (i && i.fonts && i.fonts.length) {
                     n = [];
@@ -251,7 +251,7 @@ module.exports = function (e, t, n) {
             stylesForWeight: function (e, t, n, o) {
                 var i = null,
                     r = $(this).data("g-fonts-panel").manager;
-                if (r.isCacheEmpty()) return void (n && r.query(n, "%", !0));
+                if (r.isCacheEmpty()) return void (n && r.query(n, "%", true));
                 let s = (0, a.getFontFamily)(t, r.searchFamilyInCache.bind(r));
                 if (s && s.fonts && s.fonts.length) {
                     i = [];
@@ -266,7 +266,7 @@ module.exports = function (e, t, n) {
             subfamiliesForWeight: function (e, t, n) {
                 var o = null,
                     i = $(this).data("g-fonts-panel").manager;
-                if (i.isCacheEmpty()) return void (n && i.query(n, "%", !0));
+                if (i.isCacheEmpty()) return void (n && i.query(n, "%", true));
                 let r = (0, a.getFontFamily)(t, i.searchFamilyInCache.bind(i));
                 if (r && r.fonts && r.fonts.length) {
                     o = [];
@@ -282,7 +282,7 @@ module.exports = function (e, t, n) {
             weightsForFont: async function (e, t, n) {
                 var o = null,
                     i = $(this).data("g-fonts-panel").manager;
-                if (i.isCacheEmpty()) return void (t && i.query(t, "%", !0));
+                if (i.isCacheEmpty()) return void (t && i.query(t, "%", true));
                 let r = (0, a.getFontFamily)(e, i.searchFamilyInCache.bind(i));
                 if (
                     (r.isLocalFont && ((r.fonts = await (0, a.parseNativeFonts)(r.fonts)), delete r.isLocalFont),
@@ -297,7 +297,7 @@ module.exports = function (e, t, n) {
             },
             fontDisplayName: function (e, t) {
                 var n = $(this).data("g-fonts-panel").manager;
-                if (n.isCacheEmpty()) return void (t && n.query(t, "%", !0));
+                if (n.isCacheEmpty()) return void (t && n.query(t, "%", true));
                 let o = (0, a.getFontFamily)(e, n.searchFamilyInCache.bind(n));
                 return (o && (o.displayname || o.family)) || e;
             },

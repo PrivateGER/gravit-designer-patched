@@ -1,6 +1,6 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
         var n = {}.toString;
-        e.exports =
+        module.exports =
             Array.isArray ||
             function (e) {
                 return "[object Array]" == n.call(e);

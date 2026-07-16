@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(199).PROPER,
-            i = n(79),
-            a = n(37),
-            r = n(62),
-            s = n(21),
-            l = n(460),
+        var o = require(199 /* PROPER */).PROPER,
+            i = require(79),
+            a = require(37),
+            r = require(62),
+            s = require(21),
+            l = require(460),
             c = RegExp.prototype,
             d = c.toString,
             u = s(function () {
@@ -20,6 +20,6 @@ module.exports = function (e, t, n) {
                     var e = a(this);
                     return "/" + r(e.source) + "/" + r(l(e));
                 },
-                { unsafe: !0 }
+                { unsafe: true }
             );
     };

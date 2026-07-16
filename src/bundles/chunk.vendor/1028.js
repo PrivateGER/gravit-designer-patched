@@ -1,21 +1,21 @@
-module.exports = function (e, t, i) {
-            var n = i(50),
-                r = i(68),
-                o = i(2),
-                a = i(28),
-                s = i(7),
-                l = i(17),
-                h = i(158),
-                A = i(14),
-                c = i(6),
-                p = i(12),
-                u = i(249),
-                d = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(50),
+                r = require(68),
+                o = require(2),
+                GStylable = require(28),
+                s = require(7),
+                l = require(17),
+                h = require(158),
+                A = require(14),
+                c = require(6),
+                p = require(12),
+                u = require(249),
+                String = require(9);
 
             function g() {
-                (a.Effect.call(this), this._setDefaultProperties(g.GeometryProperties, g.VisualProperties), (this._blur = new u()));
+                (GStylable.Effect.call(this), this._setDefaultProperties(g.GeometryProperties, g.VisualProperties), (this._blur = new u()));
             }
-            (o.inherit("contactShadowEffect", g, a.Effect),
+            (o.inherit("contactShadowEffect", g, GStylable.Effect),
                 (g.prototype._savedBBox = null),
                 (g.prototype._padding = null),
                 (g.prototype._blur = null),
@@ -36,13 +36,13 @@ module.exports = function (e, t, i) {
                     opc: 0.75,
                 }),
                 (g.prototype.isOverlayEffect = function () {
-                    return !0;
+                    return true;
                 }),
                 (g.prototype.getNodeNameTranslated = function () {
-                    return d.getValue("GContactShadowEffect", "name", this.getNodeName());
+                    return String.getValue("GContactShadowEffect", "name", this.getNodeName());
                 }),
                 (g.prototype.getEffectType = function () {
-                    return a.Effect.Type.PostEffect;
+                    return GStylable.Effect.Type.PostEffect;
                 }),
                 (g.prototype.getEffectPadding = function (e) {
                     var t = this.getParent().getEffectsPadding(
@@ -65,7 +65,7 @@ module.exports = function (e, t, i) {
                         var p = t.getScale();
                         1 != t.getScale() && t.setScale(1);
                         var u = t.getOffset(),
-                            d = i.getTransform(!1).mapRect(this._savedBBox),
+                            d = i.getTransform(false).mapRect(this._savedBBox),
                             g = (this._padding || 0) * n,
                             f = this._getIsometricTransform().mapRect(this._savedBBox).getHeight() * n,
                             m = this.$r * n,
@@ -73,7 +73,7 @@ module.exports = function (e, t, i) {
                             _ = u.getX(),
                             v = u.getY() + d.getHeight() + y - g,
                             b = new s().translated(_, v).preMultiplied(this._getIsometricTransform()),
-                            C = t.setTransform(t.getTransform(!0).preMultiplied(b));
+                            C = t.setTransform(t.getTransform(true).preMultiplied(b));
                         (t.drawImage(e, 0, 0, 1, this.$opc), t.setScale(p), t.setTransform(C));
                         var w = this.$pat;
                         if (!(w instanceof r))
@@ -94,13 +94,13 @@ module.exports = function (e, t, i) {
                                 },
                             ]),
                             x = t
-                                .getTransform(!1)
+                                .getTransform(false)
                                 .inverted()
                                 .mapRect(new c(0, v - u.getY(), t.getWidth(), f)),
                             P = t.createPatternPaint(B, x);
                         if (P)
                             if (P.transform) {
-                                C = t.setTransform(t.getTransform(!0).preMultiplied(P.transform));
+                                C = t.setTransform(t.getTransform(true).preMultiplied(P.transform));
                                 (t.fillRect(0, 0, 1, 1, P.paint, 1, A.CompositeOperator.SourceIn), t.setTransform(C));
                             } else t.fillRect(x.getX(), x.getY(), x.getWidth(), x.getHeight(), P.paint, 1, A.CompositeOperator.SourceIn);
                         m > 0 && ((this._blur.$r = this.$r), this._blur.render(t, null, null, n, o, a));
@@ -123,7 +123,7 @@ module.exports = function (e, t, i) {
                           })),
                         this._handleVisualChangeForProperties(e, t, g.VisualProperties),
                         this._handleGeometryChangeForProperties(e, t, g.GeometryProperties),
-                        a.Effect.prototype._handleChange.call(this, e, t));
+                        GStylable.Effect.prototype._handleChange.call(this, e, t));
                 }),
                 (g.prototype.toString = function () {
                     return "[Object GContactShadow]";
@@ -134,5 +134,5 @@ module.exports = function (e, t, i) {
                 (g.prototype.destroy = function () {
                     (this._blur && this._blur.destroy(), (this._savedBBox = null), (this._padding = null));
                 }),
-                (e.exports = g));
+                (module.exports = g));
         };

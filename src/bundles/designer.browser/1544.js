@@ -1,26 +1,26 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(58), n(57), n(8), n(71), n(4), n(13), n(32), n(33));
-        var i = n(1),
-            a = n(10),
-            r = n(357),
-            s = n(40),
-            l = o(n(256)),
-            c = o(n(44)),
-            d = o(n(734)),
-            u = n(163),
-            p = n(813),
-            g = n(1299),
-            h = n(119),
-            f = n(1545),
-            m = n(1558),
-            y = n(1153),
-            { youtubePlaylist: v } = n(1302),
-            _ = n(446);
-        n(220);
-        const b = n(859),
-            w = n(441);
+        var o = require(16);
+        (require(58), require(57), require(8 /* Symbol */), require(71), require(4), require(13), require(32), require(33));
+        var GObject = require(1),
+            designerConfig = require(10),
+            r = require(357),
+            GSaveAction = require(40),
+            l = o(require(256 /* GOfflineDialog */)),
+            c = o(require(44 /* GSystemDialog */)),
+            d = o(require(734)),
+            GDocument = require(163),
+            p = require(813),
+            g = require(1299),
+            GCommonNames = require(119),
+            GFilesPanel = require(1545),
+            m = require(1558 /* GCommonNames */),
+            GPresets = require(1153),
+            { youtubePlaylist: v } = require(1302),
+            GLoginPanel = require(446);
+        require(220 /* GCommonNames */);
+        const b = require(859),
+            w = require(441);
         function C() {
             let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : null;
             var t = this._createFooter(),
@@ -32,7 +32,7 @@ module.exports = function (e, t, n) {
                 this.close.bind(this),
                 this._newDocumentCustomSize.bind(this),
                 this.getDialogElement.bind(this),
-                (this._openFromCloud = !1),
+                (this._openFromCloud = false),
                 (this._parentDialogInstance = e),
                 (this._spectatorModeClazz = "on-spectator-mode"),
                 (this._cb = null),
@@ -42,10 +42,10 @@ module.exports = function (e, t, n) {
                 .append(
                     $("<div></div>")
                         .addClass("loader")
-                        .text(i.GLocale.get(new i.GLocaleKey("GLocale", "loading")) + "...")
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "loading")) + "...")
                 );
             var o = $("<div></div>").addClass("sidebar").appendTo(this._dialog);
-            a.LICENSE.UPGRADEABLE && (gDesigner.getApplicationManager().isLicenseUpgradeable() || o.addClass("on-pro"));
+            designerConfig.LICENSE.UPGRADEABLE && (gDesigner.getApplicationManager().isLicenseUpgradeable() || o.addClass("on-pro"));
             var s = $("<div/>").addClass("sidebar-options").appendTo(o),
                 u = $("<div></div>").addClass("frame").appendTo(this._dialog),
                 p = this._createPresetsFrame().appendTo(u),
@@ -64,8 +64,8 @@ module.exports = function (e, t, n) {
                 }.bind(this);
             (this._createOption(
                 s,
-                i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.start-option")),
-                i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.start-option-description")),
+                GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.start-option")),
+                GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.start-option-description")),
                 "start-option",
                 function (e) {
                     (u.children().detach(), u.append(p));
@@ -76,7 +76,7 @@ module.exports = function (e, t, n) {
                             .addClass("footer-section")
                             .append(
                                 $("<label></label>")
-                                    .text(i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.start-option-check")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.start-option-check")))
                                     .append(
                                         $("<input>")
                                             .attr("type", "checkbox")
@@ -94,26 +94,26 @@ module.exports = function (e, t, n) {
                 this._createSeparator(s, "local-option"),
                 this._createOption(
                     s,
-                    i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.local-option")),
-                    i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.local-option-description")),
+                    GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.local-option")),
+                    GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.local-option-description")),
                     "local-option",
                     function (e) {
                         (e || gDesigner.stats("newdocumentdialog_click_opendocument"), this._openDocument());
                     }.bind(this),
-                    !0
+                    true
                 ),
                 this._createSeparator(s, "recent-option"));
             var v = this._createOption(
                 s,
-                i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.recent-option")),
-                i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.recent-option-description")),
+                GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.recent-option")),
+                GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.recent-option-description")),
                 "recent-option",
                 function (e) {
                     e || gDesigner.stats("newdocumentdialog_click_recent");
                     var t = $("<div></div>").gOverlay({
-                            releaseOnClose: !0,
+                            releaseOnClose: true,
                             clazz: "g-recent-documents",
-                            padding: !1,
+                            padding: false,
                         }),
                         n = $("<div></div>").addClass("menu").appendTo(t),
                         o = gContainer.getRecentDocuments();
@@ -129,7 +129,7 @@ module.exports = function (e, t, n) {
                                           gDesigner.openDocument($(e.target).closest(".file").data("file"));
                                       } catch (e) {
                                           if (!(e instanceof d.default)) throw (this.close(), e);
-                                          c.default.externalFileError(!0);
+                                          c.default.externalFileError(true);
                                       }
                                       this.close();
                                   })
@@ -147,28 +147,28 @@ module.exports = function (e, t, n) {
                           })
                         : $("<div></div>")
                               .addClass("item")
-                              .append(i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.recent-option-empty")))
+                              .append(GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.recent-option-empty")))
                               .appendTo(n);
                     var a = v.offset().left + v.width() - 10,
                         r = v.offset().top - t.height();
                     t.gOverlay("open", { x: a, y: r });
                 }.bind(this),
-                !0
+                true
             );
             (this._createSeparator(s),
-                a.LICENSE.UPGRADEABLE &&
+                designerConfig.LICENSE.UPGRADEABLE &&
                     $("<div></div>")
                         .addClass("activate-trial")
                         .css("display", gDesigner.getApplicationManager().isLicenseUpgradeable() ? "" : "none")
                         .append(
                             $("<div></div>")
                                 .addClass("title")
-                                .html(i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.try-out-pro")))
+                                .html(GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.try-out-pro")))
                         )
                         .append(
                             $("<div></div>")
                                 .addClass("subtitle")
-                                .html(i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.start-free-trial")))
+                                .html(GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.start-free-trial")))
                         )
                         .on("click", () => gDesigner.activateTrialLicense().then(() => this._updateUI()))
                         .appendTo(o));
@@ -188,11 +188,11 @@ module.exports = function (e, t, n) {
                                     ? gDesigner.stats(e.statType)
                                     : gDesigner.stats(
                                           "newdocumentdialog_open_externallink",
-                                          i.GLocale.get(e.labelLocale, null, i.GLocaleLanguage.English)
+                                          GObject.GLocale.get(e.labelLocale, null, GObject.GLocaleLanguage.English)
                                       ),
                                     e.click ? e.click.call(this) : gContainer.openExternalLink(t, e.href));
                             })
-                            .text(i.GLocale.get(e.labelLocale || e.text))
+                            .text(GObject.GLocale.get(e.labelLocale || e.text))
                             .appendTo(t),
                         A % 3 == 0 ? t.appendTo(x) : A % 3 == 1 ? t.appendTo(S) : t.appendTo(E),
                         ++A);
@@ -203,14 +203,14 @@ module.exports = function (e, t, n) {
                 (this._closeCallbackListeners = []),
                 this._dialog.gDialog({
                     closeTimeout: 0,
-                    releaseOnClose: !1,
+                    releaseOnClose: false,
                     className: "g-new-document-dialog",
                     closeCallback: (e) => {
                         (this._closeCallback && this._closeCallback(e),
                             this._closeCallbackListeners.length &&
                                 (this._closeCallbackListeners.forEach((t) => t.call(null, e)), (this._closeCallbackListeners = [])));
                     },
-                    alwaysCloseable: !0,
+                    alwaysCloseable: true,
                 }),
                 document.addEventListener(
                     "keydown",
@@ -219,7 +219,7 @@ module.exports = function (e, t, n) {
                     }.bind(this)
                 ));
         }
-        (i.GObject.inherit(C, i.GObject),
+        (GObject.GObject.inherit(C, GObject.GObject),
             (C.prototype._getVersionInfoWidget = function () {
                 let e = "";
                 "lts" === gDesigner.getEnv() ? (e = " LTS") : "rc" === gDesigner.getEnv() && (e = " Staging");
@@ -229,7 +229,7 @@ module.exports = function (e, t, n) {
                     $("<div/>")
                         .addClass("version")
                         .html(
-                            i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.version")) + " " + gDesigner.getVersionFriendlyName() + e
+                            GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.version")) + " " + gDesigner.getVersionFriendlyName() + e
                         )
                         .on("click", function () {
                             if (
@@ -243,7 +243,7 @@ module.exports = function (e, t, n) {
                                         switch (((n.current = (n.current + 1) % 4), n.current)) {
                                             case 0:
                                                 t.html(
-                                                    i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.version")) +
+                                                    GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.version")) +
                                                         " " +
                                                         gDesigner.getVersionFriendlyName() +
                                                         e
@@ -251,21 +251,21 @@ module.exports = function (e, t, n) {
                                                 break;
                                             case 1:
                                                 t.html(
-                                                    i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.internal-version")) +
+                                                    GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.internal-version")) +
                                                         ": " +
                                                         gDesigner.getVersion()
                                                 );
                                                 break;
                                             case 2:
                                                 t.html(
-                                                    i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.build")) +
+                                                    GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.build")) +
                                                         ": " +
                                                         (gDesigner.getBuildNum() || "")
                                                 );
                                                 break;
                                             case 3:
                                                 t.html(
-                                                    i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.commit")) +
+                                                    GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.commit")) +
                                                         ": " +
                                                         (gDesigner.getCommitSHA() || "").substr(0, 8)
                                                 );
@@ -279,7 +279,7 @@ module.exports = function (e, t, n) {
                 this._updateUI();
             }),
             (C.prototype._updateUI = function () {
-                if (a.LICENSE.UPGRADEABLE) {
+                if (designerConfig.LICENSE.UPGRADEABLE) {
                     const e = gDesigner.getApplicationManager().isLicenseUpgradeable();
                     (this._dialog.find(".activate-trial").css("display", e ? "" : "none"),
                         this._dialog.find(".sidebar").toggleClass("on-pro", !e));
@@ -314,13 +314,13 @@ module.exports = function (e, t, n) {
                         o.find(".icon").removeAttr("data-title"),
                         void o.find(".select-container").removeAttr("data-title")
                     );
-                const a = i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.option-not-available-in-view-mode"));
+                const a = GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.option-not-available-in-view-mode"));
                 (this._dialog.find(".start-option").addClass(this._spectatorModeClazz).attr("data-title", a),
                     this._dialog.find(".templates-option").addClass(this._spectatorModeClazz).attr("data-title", a),
                     t.addClass(this._spectatorModeClazz),
                     e.addClass(this._spectatorModeClazz),
-                    n.find("input").attr("readonly", !0).attr("disabled", !0).attr("data-title", a),
-                    n.find("select").attr("disabled", !0).attr("data-title", a).addClass("g-disabled").insertAfter(),
+                    n.find("input").attr("readonly", true).attr("disabled", true).attr("data-title", a),
+                    n.find("select").attr("disabled", true).attr("data-title", a).addClass("g-disabled").insertAfter(),
                     n.find(".cloud-button").attr("data-title", a).addClass("g-disabled").removeClass("active"),
                     o.find(".icon").attr("data-title", a),
                     o.find(".select-container").attr("data-title", a),
@@ -339,7 +339,7 @@ module.exports = function (e, t, n) {
                                     (this._dialog.find(".sidebar-options").find(".option-separator").removeClass("active"),
                                     $(r).prevAll(".option-separator:visible").first().addClass("active"),
                                     $(r).nextAll(".option-separator:visible").first().addClass("active")),
-                                i(!0 & e.isTrigger, t, n, o, s, l));
+                                i(true & e.isTrigger, t, n, o, s, l));
                         }.bind(this)
                     )
                     .appendTo(e);
@@ -354,7 +354,7 @@ module.exports = function (e, t, n) {
             (C.prototype._createFooter = function () {
                 return [
                     {
-                        section: i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.connect")),
+                        section: GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.connect")),
                         links: [],
                     },
                 ];
@@ -366,7 +366,7 @@ module.exports = function (e, t, n) {
                 var e = $("<div></div>").addClass("presets-container"),
                     t = $("<div/>").addClass("header").appendTo(e),
                     n = $("<div></div>").addClass("presets").appendTo($("<div/>").addClass("presets-frame").appendTo(e));
-                (y.getPresets(!0).forEach((e, t) => {
+                (GPresets.getPresets(true).forEach((e, t) => {
                     $("<div/>")
                         .addClass("preset")
                         .data("preset", e)
@@ -403,7 +403,7 @@ module.exports = function (e, t, n) {
                         .append(
                             $("<p/>")
                                 .addClass("title")
-                                .text(i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.templates-option")))
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.templates-option")))
                         )
                         .append(
                             $("<div/>")
@@ -434,12 +434,12 @@ module.exports = function (e, t, n) {
                                                     $("<input/>")
                                                         .on("keydown", o)
                                                         .attr("name", "width")
-                                                        .attr("placeholder", i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.width")))
+                                                        .attr("placeholder", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.width")))
                                                         .val("")
                                                         .gInputBox({
                                                             minValue: 0,
                                                             incrementValue: 1,
-                                                            allowEmptyValue: !0,
+                                                            allowEmptyValue: true,
                                                         })
                                                 )
                                                 .append($("<img/>").addClass("versus").attr("src", "assets/icon/versus.svg"))
@@ -447,17 +447,17 @@ module.exports = function (e, t, n) {
                                                     $("<input/>")
                                                         .on("keydown", o)
                                                         .attr("name", "height")
-                                                        .attr("placeholder", i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.height")))
+                                                        .attr("placeholder", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.height")))
                                                         .val("")
                                                         .gInputBox({
                                                             minValue: 0,
                                                             incrementValue: 1,
-                                                            allowEmptyValue: !0,
+                                                            allowEmptyValue: true,
                                                         })
                                                 )
                                         )
                                 )
-                                .append($("<select/>").attr("name", "unit").val("px").gUnit({ short: !0 }))
+                                .append($("<select/>").attr("name", "unit").val("px").gUnit({ short: true }))
                                 .on("change", function (e) {
                                     var t = $(this).find(":selected").val() || "px";
                                     "undefined" != typeof gDesigner && gDesigner.stats("newdocumentdialog_change_unit", t);
@@ -467,7 +467,7 @@ module.exports = function (e, t, n) {
                                     $("<button/>")
                                         .addClass("cloud-button")
                                         .append(
-                                            $("<span/>").text(i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "action.create-canvas")))
+                                            $("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "action.create-canvas")))
                                         )
                                         .addClass("active")
                                         .on("click", () => {
@@ -478,7 +478,7 @@ module.exports = function (e, t, n) {
                         .append(
                             $("<p/>")
                                 .addClass("infinite-canvas")
-                                .text(i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "action.leave-empty-infinite")))
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "action.leave-empty-infinite")))
                         )
                         .appendTo(t),
                     r.NEWDOCUMENTDIALOG.HR_UNDER_PRESETS && $("<hr/>").appendTo(t),
@@ -492,14 +492,14 @@ module.exports = function (e, t, n) {
                         a = "template" === e;
                     $("<div/>").addClass("cloud-logo").addClass(e).appendTo(o);
                     var r = a
-                            ? i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.templates-login-title"))
-                            : i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.cloud-login-title")),
+                            ? GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.templates-login-title"))
+                            : GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.cloud-login-title")),
                         s = a
-                            ? i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.templates-login-phrase1"))
-                            : i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.cloud-login-phrase1")),
+                            ? GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.templates-login-phrase1"))
+                            : GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.cloud-login-phrase1")),
                         l = a
-                            ? i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.templates-login-phrase2"))
-                            : i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.cloud-login-phrase2"));
+                            ? GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.templates-login-phrase2"))
+                            : GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.cloud-login-phrase2"));
                     ($("<div/>").html(r).addClass("title").addClass(e).appendTo(o),
                         $("<div/>").html(s).addClass("subtitle").addClass("first").addClass(e).appendTo(o),
                         $("<div/>").html(l).addClass("subtitle").addClass("second").addClass(e).appendTo(o),
@@ -509,9 +509,9 @@ module.exports = function (e, t, n) {
                                 $("<div/>")
                                     .addClass("g-button cloud-login-button")
                                     .addClass("login")
-                                    .html(i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.cloud-login")))
+                                    .html(GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.cloud-login")))
                                     .on("click", function () {
-                                        h.performLogin().then(function (e) {
+                                        GCommonNames.performLogin().then(function (e) {
                                             t && t(e);
                                         });
                                     })
@@ -519,9 +519,9 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<div/>")
                                     .addClass("g-button cloud-login-button")
-                                    .html(i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.cloud-signup")))
+                                    .html(GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.cloud-signup")))
                                     .on("click", function () {
-                                        h.performSignup().then(function (e) {
+                                        GCommonNames.performSignup().then(function (e) {
                                             t && t(e);
                                         });
                                     })
@@ -531,18 +531,18 @@ module.exports = function (e, t, n) {
                 }
             }),
             (C.prototype._loadCloudFiles = function (e, t, n, o, i, a) {
-                this.handled = !1;
-                var r = new f({
+                this.handled = false;
+                var r = new GFilesPanel({
                         parentComponent: e,
                         closeCallback: async function (e) {
-                            ((this.handled = !0),
+                            ((this.handled = true),
                                 await this.close(),
                                 this._parentDialogInstance && (await this._parentDialogInstance.close()),
                                 e || (n && n()));
                         }.bind(this),
                         documentToSave: t,
                         cancelSave: async function () {
-                            ((this.handled = !0), await this.close(), n && n());
+                            ((this.handled = true), await this.close(), n && n());
                         }.bind(this),
                         defaultFilename: o,
                         readyStateChange: this.readyStateChange,
@@ -578,7 +578,7 @@ module.exports = function (e, t, n) {
                     showExampleFiles: p,
                 } = e;
                 ((this._cb = n || null), (this._closeCallback = d), (this._openFromCloud = i));
-                h.isOnline();
+                GCommonNames.isOnline();
                 var g = function () {
                         (this._dialog.find(".sidebar").css("display", ""),
                             this._dialog.find(".sidebar-options").find(".option").css("display", ""),
@@ -612,9 +612,9 @@ module.exports = function (e, t, n) {
             }),
             (C.prototype.saveCloudFile = function (e, t, n, o, i) {
                 let a = {
-                    closable: !0,
-                    showCloudOptions: !0,
-                    openFromCloud: !0,
+                    closable: true,
+                    showCloudOptions: true,
+                    openFromCloud: true,
                     cancelSaveCallback: t,
                     documentToSave: e,
                     defaultFilename: n,
@@ -626,7 +626,7 @@ module.exports = function (e, t, n) {
                 return this._dialog.gDialog("isOpen");
             }),
             (C.prototype.close = function () {
-                return (this._dialog.parent().removeClass("cloud-files-dialog"), this._dialog.gDialog("close", !1, 0), (0, s.sleep)(0));
+                return (this._dialog.parent().removeClass("cloud-files-dialog"), this._dialog.gDialog("close", false, 0), (0, GSaveAction.sleep)(0));
             }),
             (C.prototype._newDocumentFromPreset = async function (e, t, n) {
                 var o = this._dialog.find(".frame"),
@@ -634,11 +634,11 @@ module.exports = function (e, t, n) {
                 if (
                     (gDesigner.stats(
                         "newdocumentdialog_new_document-from-preset",
-                        n || (r.localeClass ? i.GLocale.get(r.localeClass, null, i.GLocaleLanguage.English) : r.name),
-                        !1,
-                        !0
+                        n || (r.localeClass ? GObject.GLocale.get(r.localeClass, null, GObject.GLocaleLanguage.English) : r.name),
+                        false,
+                        true
                     ),
-                    gDesigner.getAmplitudeHelper().logEvent(a.AmplitudeData.Events.DOCUMENT_CREATED, {
+                    gDesigner.getAmplitudeHelper().logEvent(designerConfig.AmplitudeData.Events.DOCUMENT_CREATED, {
                         DOCUMENT_CATEGORY: e.nameEn,
                         DOCUMENT_TYPE: this._getLayoutDisplayName(r),
                         DOCUMENT_TEMPLATE_ID: e.id,
@@ -647,11 +647,11 @@ module.exports = function (e, t, n) {
                 )
                     try {
                         o.addClass("loading");
-                        var s = new u(),
-                            l = await a.gApi.getPresetTemplate({ type: r.template });
+                        var s = new GDocument(),
+                            l = await designerConfig.gApi.getPresetTemplate({ type: r.template });
                         (o.removeClass("loading"),
                             gDesigner.addDocument(s),
-                            s.setDocumentFromTemplate(!0),
+                            s.setDocumentFromTemplate(true),
                             s.loadFromData(l.data),
                             this.close(),
                             this._cb && this._cb());
@@ -662,7 +662,7 @@ module.exports = function (e, t, n) {
             }),
             (C.prototype._newDocumentCustomSize = function () {
                 (gDesigner.stats("newdocumentdialog_new_custom-sized"),
-                    gDesigner.getAmplitudeHelper().logEvent(a.AmplitudeData.Events.DOCUMENT_CREATED, {
+                    gDesigner.getAmplitudeHelper().logEvent(designerConfig.AmplitudeData.Events.DOCUMENT_CREATED, {
                         DOCUMENT_CATEGORY: "Blank",
                         DOCUMENT_TYPE: "Blank",
                     }));
@@ -678,19 +678,19 @@ module.exports = function (e, t, n) {
             }),
             (C.prototype._newDocument = function (e, t, n, o) {
                 var a = gDesigner.createScene();
-                (a.setProperties(["ut", "dpi"], [n, o || i.GLength.DPI]),
+                (a.setProperties(["ut", "dpi"], [n, o || GObject.GLength.DPI]),
                     a
                         .getActivePage()
                         .setProperties(
                             ["bck", "w", "h"],
-                            [i.GRGBColor.WHITE, new i.GLength(e, n).toPoint(), new i.GLength(t, n).toPoint()]
+                            [GObject.GRGBColor.WHITE, new GObject.GLength(e, n).toPoint(), new GObject.GLength(t, n).toPoint()]
                         ),
-                    gDesigner.addDocument(new u(a)),
+                    gDesigner.addDocument(new GDocument(a)),
                     this.close(),
                     this._cb && this._cb());
             }),
             (C.prototype._openDocument = function () {
-                gDesigner.executeAction(gDesigner.getAction(g.ID).isAvailable() ? g.ID : p.ID, [null, this.close.bind(this)], void 0, !0);
+                gDesigner.executeAction(gDesigner.getAction(g.ID).isAvailable() ? g.ID : p.ID, [null, this.close.bind(this)], void 0, true);
             }),
             (C.prototype._getLayoutFormattedSize = function (e) {
                 var t = e.includes,
@@ -719,20 +719,20 @@ module.exports = function (e, t, n) {
                             o.gOverlay("close");
                             var n = parseInt($(e.target).attr("data-value")),
                                 a = "";
-                            ((a = t.localeClass ? i.GLocale.get(t.localeClass, null, i.GLocaleLanguage.English) : t.name || ""),
+                            ((a = t.localeClass ? GObject.GLocale.get(t.localeClass, null, GObject.GLocaleLanguage.English) : t.name || ""),
                                 (a = t.layouts[n].localeClass
-                                    ? a + "/" + i.GLocale.get(t.layouts[n].localeClass, null, i.GLocaleLanguage.English)
+                                    ? a + "/" + GObject.GLocale.get(t.layouts[n].localeClass, null, GObject.GLocaleLanguage.English)
                                     : a + "/" + t.layouts[n].name),
                                 "undefined" != typeof gDesigner && gDesigner.stats("newdocumentdialog_change_preset", a),
                                 this._newDocumentFromPreset(t, n, a));
                         });
                     o.append(a);
                 }),
-                    o.gOverlay({ clazz: "preset-select", padding: !1, offsetY: 10 }),
+                    o.gOverlay({ clazz: "preset-select", padding: false, offsetY: 10 }),
                     o.gOverlay("open", n));
             }),
             (C.prototype._isSpectatorMode = function () {
-                return !1;
+                return false;
             }),
-            (e.exports = C));
+            (module.exports = C));
     };

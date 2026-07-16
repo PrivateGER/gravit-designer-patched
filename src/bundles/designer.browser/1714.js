@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(4),
-            n(41),
-            n(13),
+        (require(4),
+            require(41),
+            require(13),
             (function (e) {
                 ((e.event.special.input = {
                     setup: function (t, n) {
@@ -13,17 +13,17 @@ module.exports = function (e, t, n) {
                             s =
                                 "oninput" in r ||
                                 (function (e) {
-                                    if ((e.setAttribute("oninput", "return"), "function" == typeof e.oninput)) return !0;
+                                    if ((e.setAttribute("oninput", "return"), "function" == typeof e.oninput)) return true;
                                     try {
                                         document.createEvent("KeyboardEvent");
-                                        var t = !1,
+                                        var t = false,
                                             n = function (e) {
-                                                ((t = !0), e.preventDefault(), e.stopPropagation());
+                                                ((t = true), e.preventDefault(), e.stopPropagation());
                                             };
                                         return (
                                             document.body.appendChild(e),
-                                            e.addEventListener("input", n, !1),
-                                            e.removeEventListener("input", n, !1),
+                                            e.addEventListener("input", n, false),
+                                            e.removeEventListener("input", n, false),
                                             document.body.removeChild(e),
                                             t
                                         );
@@ -36,12 +36,12 @@ module.exports = function (e, t, n) {
                             i.value == a ||
                                 t.data("triggering.inputEvent") ||
                                 ((a = i.value),
-                                t.data("triggering.inputEvent", !0).trigger("input"),
+                                t.data("triggering.inputEvent", true).trigger("input"),
                                 window.setTimeout(function () {
-                                    t.data("triggering.inputEvent", !1);
+                                    t.data("triggering.inputEvent", false);
                                 }, 0));
                         }
-                        if (s) return !1;
+                        if (s) return false;
                         (e(this)
                             .find("input, textarea")
                             .andSelf()

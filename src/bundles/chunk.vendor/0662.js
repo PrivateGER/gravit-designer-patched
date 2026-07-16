@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            i(75);
-            var n = i(2),
-                r = i(76);
+module.exports = function (module, exports, require) {
+            require(75);
+            var n = require(2),
+                r = require(76);
 
             function o() {
                 r.call(this);
@@ -13,5 +13,5 @@ module.exports = function (e, t, i) {
                 (o.prototype.validateInsertion = function (e, t) {
                     return "scene" === n.getName(e);
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

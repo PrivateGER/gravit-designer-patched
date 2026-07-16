@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o(e) {
             this._providerManager = e;
         }
-        (n(20),
-            n(34),
-            n(134),
+        (require(20),
+            require(34),
+            require(134),
             (o.Errors = { UnknownError: 0, ConnectionError: 1 }),
             (o.prototype._providerManager = null),
-            (o.prototype._enabled = !0),
+            (o.prototype._enabled = true),
             (o.prototype.addPreviews = function (e) {
                 throw new Error("GFontsProvider.addPreviews: virtual");
             }),
@@ -25,11 +25,11 @@ module.exports = function (e, t, n) {
                 throw new Error("GFontsProvider.resolveFont: virtual");
             }),
             (o.prototype.isInitialized = function () {
-                return !0;
+                return true;
             }),
             (o.prototype.resetProvider = function () {}),
             (o.prototype.hasEnabler = function () {
-                return !1;
+                return false;
             }),
             (o.prototype.getEnabler = function () {
                 return null;
@@ -57,5 +57,5 @@ module.exports = function (e, t, n) {
                 }
                 return r;
             }),
-            (e.exports = o));
+            (module.exports = o));
     };

@@ -1,4 +1,4 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
             const n = {
                 ACTION: 60,
@@ -14,7 +14,7 @@ module.exports = function (e, t, i) {
                 ACTION_CDR_SAVED: 44,
                 ACTION_UPDATE_TEXT: 48,
             };
-            e.exports = Object.freeze({
+            module.exports = Object.freeze({
                 TYPES: {
                     TYPE: 3,
                     TYPE_ANNOTATION: 0,

@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o, i, a, r, s, l, c, d, u;
-        e.exports =
-            ((u = n(55)),
-            n(537),
-            n(538),
+        module.exports =
+            ((u = require(55)),
+            require(537),
+            require(538),
             (i = (o = u).lib),
             (a = i.Base),
             (r = i.WordArray),

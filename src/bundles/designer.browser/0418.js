@@ -1,28 +1,28 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(29),
-            a = n(74),
-            r = n(199),
-            s = n(35),
-            l = n(419),
-            c = n(208),
-            d = n(175),
-            u = n(137),
-            p = n(100),
-            g = n(79),
-            h = n(43),
-            f = n(203),
-            m = n(251),
-            y = r.PROPER,
-            v = r.CONFIGURABLE,
-            _ = m.IteratorPrototype,
-            b = m.BUGGY_SAFARI_ITERATORS,
+        var o = require(25),
+            i = require(29),
+            a = require(74),
+            PROPER = require(199),
+            s = require(35),
+            l = require(419),
+            c = require(208),
+            d = require(175),
+            u = require(137),
+            p = require(100),
+            g = require(79),
+            h = require(43),
+            f = require(203),
+            IteratorPrototype = require(251),
+            y = PROPER.PROPER,
+            v = PROPER.CONFIGURABLE,
+            _ = IteratorPrototype.IteratorPrototype,
+            b = IteratorPrototype.BUGGY_SAFARI_ITERATORS,
             w = h("iterator"),
             C = function () {
                 return this;
             };
-        e.exports = function (e, t, n, r, h, m, x) {
+        module.exports = function (e, t, n, r, h, m, x) {
             l(n, t, r);
             var S,
                 E,
@@ -43,7 +43,7 @@ module.exports = function (e, t, n) {
                     };
                 },
                 G = t + " Iterator",
-                P = !1,
+                P = false,
                 D = e.prototype,
                 L = D[w] || D["@@iterator"] || (h && D[h]),
                 I = (!b && L) || T(h),
@@ -52,14 +52,14 @@ module.exports = function (e, t, n) {
                 (k &&
                     (S = c(k.call(new e()))) !== Object.prototype &&
                     S.next &&
-                    (a || c(S) === _ || (d ? d(S, _) : s(S[w]) || g(S, w, C)), u(S, G, !0, !0), a && (f[G] = C)),
+                    (a || c(S) === _ || (d ? d(S, _) : s(S[w]) || g(S, w, C)), u(S, G, true, true), a && (f[G] = C)),
                 y &&
                     "values" === h &&
                     L &&
                     "values" !== L.name &&
                     (!a && v
                         ? p(D, "name", "values")
-                        : ((P = !0),
+                        : ((P = true),
                           (I = function () {
                               return i(L, this);
                           }))),
@@ -74,7 +74,7 @@ module.exports = function (e, t, n) {
                     x)
                 )
                     for (A in E) (b || P || !(A in D)) && g(D, A, E[A]);
-                else o({ target: t, proto: !0, forced: b || P }, E);
+                else o({ target: t, proto: true, forced: b || P }, E);
             return ((a && !x) || D[w] === I || g(D, w, I, { name: h }), (f[t] = I), E);
         };
     };

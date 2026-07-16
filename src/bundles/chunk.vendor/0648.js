@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
-            var n = i(68),
-                r = i(188),
-                o = i(17),
-                a = i(649);
+module.exports = function (module, exports, require) {
+            var n = require(68),
+                r = require(188),
+                o = require(17),
+                a = require(649);
 
             function s() {}
             ((s.convertColor = function (e, t) {
@@ -15,5 +15,5 @@ module.exports = function (e, t, i) {
                         return e instanceof r || e instanceof a ? new o(e.toScreen()) : e;
                 }
             }),
-                (e.exports = s));
+                (module.exports = s));
         };

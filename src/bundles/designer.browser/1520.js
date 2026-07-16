@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o, i, a;
-        ((i = [n(171), n(605)]),
+        ((i = [require(171), require(605)]),
             void 0 ===
                 (a =
                     "function" ==
@@ -17,6 +17,6 @@ module.exports = function (e, t, n) {
                                   },
                         });
                     })
-                        ? o.apply(t, i)
-                        : o) || (e.exports = a));
+                        ? o.apply(exports, i)
+                        : o) || (module.exports = a));
     };

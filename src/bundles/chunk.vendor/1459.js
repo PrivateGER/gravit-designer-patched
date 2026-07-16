@@ -1,18 +1,18 @@
-module.exports = function (e, t, i) {
-            var n = i(68),
-                r = i(11),
-                o = i(1460),
-                a = i(321),
-                s = i(51),
-                l = i(1461),
-                h = i(432),
-                A = i(729),
-                c = i(249),
-                p = i(1462),
-                u = i(1463),
-                d = i(1464),
-                g = i(282),
-                f = (i(852), function () {});
+module.exports = function (module, exports, require) {
+            var n = require(68),
+                r = require(11),
+                o = require(1460),
+                a = require(321),
+                s = require(51),
+                l = require(1461),
+                h = require(432),
+                A = require(729),
+                c = require(249),
+                p = require(1462),
+                u = require(1463),
+                d = require(1464),
+                g = require(282),
+                f = (require(852), function () {});
             ((f.getEffectMarkup = function (e, t, i) {
                 var f = new p();
                 r.each(e.getEffects().getChildren(), function (t, i) {
@@ -40,5 +40,5 @@ module.exports = function (e, t, i) {
                 var y = r.uuid();
                 ((t.filter = "url(#" + y + ")"), f.setId(y), f.toXml(i));
             }),
-                (e.exports = f));
+                (module.exports = f));
         };

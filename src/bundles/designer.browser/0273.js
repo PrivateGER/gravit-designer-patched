@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o;
-        e.exports =
-            ((o = n(55)),
+        module.exports =
+            ((o = require(55)),
             (function (e) {
                 var t = o,
                     n = t.lib,

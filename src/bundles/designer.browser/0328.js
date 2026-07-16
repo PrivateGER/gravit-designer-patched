@@ -1,19 +1,19 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(27),
-            a = n(65),
-            r = n(93),
-            s = n(101),
-            l = n(1038),
-            c = n(62),
-            d = n(21),
-            u = n(351),
-            p = n(350),
-            g = n(521),
-            h = n(522),
-            f = n(213),
-            m = n(523),
+        var o = require(25),
+            i = require(27),
+            a = require(65),
+            r = require(93),
+            s = require(101),
+            l = require(1038),
+            c = require(62),
+            d = require(21),
+            u = require(351),
+            p = require(350),
+            g = require(521),
+            h = require(522),
+            f = require(213),
+            m = require(523),
             y = [],
             v = i(y.sort),
             _ = i(y.push),
@@ -27,7 +27,7 @@ module.exports = function (e, t, n) {
             x = !d(function () {
                 if (f) return f < 70;
                 if (!(g && g > 3)) {
-                    if (h) return !0;
+                    if (h) return true;
                     if (m) return m < 603;
                     var e,
                         t,
@@ -64,7 +64,7 @@ module.exports = function (e, t, n) {
                 }
             });
         o(
-            { target: "Array", proto: !0, forced: b || !w || !C || !x },
+            { target: "Array", proto: true, forced: b || !w || !C || !x },
             {
                 sort: function (e) {
                     void 0 !== e && a(e);

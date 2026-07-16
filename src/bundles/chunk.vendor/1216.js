@@ -1,48 +1,48 @@
-module.exports = function (e, t, i) {
-            var n = i(147),
-                r = i(188),
-                o = i(1407),
-                a = i(11),
-                s = i(602),
-                l = i(265),
-                h = i(5),
-                A = i(564),
-                c = i(799),
-                p = i(14),
-                u = i(1408),
-                d = i(1219),
-                g = i(1409),
-                f = i(1413),
-                m = i(28),
-                y = (i(60), i(1414)),
-                _ = i(158),
-                v = i(293),
-                b = i(853),
-                C = i(1147),
-                w = i(854),
-                E = i(73),
-                B = (i(70), i(1221)),
-                x = i(1222),
-                P = i(6),
-                S = i(162),
-                T = i(7),
-                I = i(359),
-                F = i(1220),
-                R = i(391),
-                D = i(1225),
-                k = i(855),
-                G = i(1224),
-                Q = i(440),
-                M = i(182),
-                N = i(1229),
-                U = i(856),
-                V = i(1421),
-                O = i(849),
-                L = i(1112),
-                Y = i(95),
-                X = i(1113),
-                H = i(1230),
-                W = i(798);
+module.exports = function (module, exports, require) {
+            var n = require(147),
+                r = require(188),
+                o = require(1407),
+                a = require(11),
+                s = require(602),
+                l = require(265),
+                h = require(5),
+                A = require(564),
+                c = require(799),
+                p = require(14),
+                u = require(1408),
+                d = require(1219),
+                g = require(1409),
+                f = require(1413),
+                GStylable = require(28),
+                y = (require(60), require(1414)),
+                _ = require(158),
+                v = require(293),
+                b = require(853),
+                C = require(1147),
+                w = require(854),
+                E = require(73),
+                B = (require(70), require(1221)),
+                x = require(1222),
+                P = require(6),
+                S = require(162),
+                T = require(7),
+                I = require(359),
+                F = require(1220),
+                R = require(391),
+                D = require(1225),
+                k = require(855),
+                G = require(1224),
+                Q = require(440),
+                M = require(182),
+                N = require(1229),
+                U = require(856),
+                V = require(1421),
+                O = require(849),
+                L = require(1112),
+                Y = require(95),
+                X = require(1113),
+                H = require(1230),
+                W = require(798);
 
             function Z(e, t) {
                 ((this._doc = e),
@@ -166,11 +166,11 @@ module.exports = function (e, t, i) {
                     if (
                         (this._bitmapCache &&
                             this._bitmapCache.some(function (t) {
-                                return t.bitmap === e && ((o = t.resource), !0);
+                                return t.bitmap === e && ((o = t.resource), true);
                             }),
                         !o)
                     ) {
-                        var a = !0;
+                        var a = true;
                         (t instanceof Y && (a = t.isJPEG()),
                             (o = this._createImageResource(e, a)),
                             (this._bitmapCache = this._bitmapCache || []),
@@ -200,7 +200,7 @@ module.exports = function (e, t, i) {
                                         var l = e._graphics.get(a + 1);
                                         if (l && l.getValue() instanceof v)
                                             (d = l.getValue().getGSStateResource()) && s.setGStateResource(d);
-                                        if (r && !s.getGSStateResource() && t.hasMixin(m)) {
+                                        if (r && !s.getGSStateResource() && t.hasMixin(GStylable)) {
                                             var h = t.getProperty("_sbl"),
                                                 A = t.getProperty("_stop");
                                             if (this._hasBlendMode(h) || 1 != A) {
@@ -212,7 +212,7 @@ module.exports = function (e, t, i) {
                                             var g = e._graphics.get(a);
                                             if (g && (e._graphics.remove(a), g.equals(u))) break;
                                         } while (g);
-                                        return !1;
+                                        return false;
                                     }
                                 }.bind(this)
                             );
@@ -220,7 +220,7 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (Z.prototype.createPNGImageResource = function (e, t) {
-                    return this._createImageResource(e, !1, t);
+                    return this._createImageResource(e, false, t);
                 }),
                 (Z.prototype._createImageResource = function (e, t, i) {
                     var n = this._doc.getColorSpace();
@@ -228,9 +228,9 @@ module.exports = function (e, t, i) {
                     t && n === I.RGB && (n = I.RGBA);
                     var r = e.getContext("2d").getImageData(0, 0, e.width, e.height).data,
                         o = new u(e.width, e.height, I.GRAY);
-                    o.putDictionary("/Interpolate", !0);
+                    o.putDictionary("/Interpolate", true);
                     var a = this._doc.getIndirectObject(new u(e.width, e.height, n));
-                    a.getPDFObject().putDictionary("/Interpolate", !0);
+                    a.getPDFObject().putDictionary("/Interpolate", true);
                     var s = function () {
                             return this._doc.hasConcurrencyFeature() && e.width > 100 && e.height > 100;
                         }.bind(this),
@@ -314,7 +314,7 @@ module.exports = function (e, t, i) {
                             var p = this._doc.beginJob("Raster mask");
                             g = i.getContext("2d").getImageData(0, 0, i.width, i.height).data;
                             new X()
-                                .concurrencyRaster(this._doc, this._doc.getWorkers(), g.buffer, i.width, i.height, I.GRAY, !1)
+                                .concurrencyRaster(this._doc, this._doc.getWorkers(), g.buffer, i.width, i.height, I.GRAY, false)
                                 .then(
                                     function (e) {
                                         (A(e[0]), p.done());
@@ -388,7 +388,7 @@ module.exports = function (e, t, i) {
                         n = new M([0, 0]);
                     (n.push(this._pageSize.width), n.push(this._pageSize.height));
                     var r = new G({
-                            individual: !0,
+                            individual: true,
                             colorSpace: I.GRAY,
                         }),
                         a = this._doc.getIndirectObject(new D(this._doc, e, r, n, i)),
@@ -520,14 +520,14 @@ module.exports = function (e, t, i) {
                 }),
                 (Z.prototype._isBackgroundFill = function () {
                     var e = this.canvas.getCurrentNode();
-                    if (e && e.hasMixin(m)) {
+                    if (e && e.hasMixin(GStylable)) {
                         var t = e.getPaintLayers();
                         if (t)
-                            return !!t.getFillLayers(!0).filter(function (e) {
+                            return !!t.getFillLayers(true).filter(function (e) {
                                 return e.$_pt instanceof l;
                             }).length;
                     }
-                    return !1;
+                    return false;
                 }),
                 (Z.prototype.clearRect = function (e, t, i, n) {}),
                 (Z.prototype.quadraticCurveTo = function (e, t, i, n) {
@@ -547,7 +547,7 @@ module.exports = function (e, t, i) {
                         this._graphics.peek().getValue() instanceof v.Fill && this._makeFillStyle();
                     else if (this.globalCompositeOperation == p.CompositeOperator.SourceOver) {
                         var r = new E(e, t, i, n);
-                        (r.transform(this.canvas.getTransform(!0)), this.canvas.putVertices(r), this.fill());
+                        (r.transform(this.canvas.getTransform(true)), this.canvas.putVertices(r), this.fill());
                     }
                 }),
                 (Z.prototype.setLineDash = function (e) {
@@ -590,5 +590,5 @@ module.exports = function (e, t, i) {
                         color: t,
                     }));
             };
-            e.exports = Z;
+            module.exports = Z;
         };

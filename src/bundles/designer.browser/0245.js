@@ -1,5 +1,5 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(407);
-        e.exports = "NODE" === o;
+        var o = require(407);
+        module.exports = "NODE" === o;
     };

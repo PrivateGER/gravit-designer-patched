@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16),
-            i = n(1),
-            a = n(15),
-            r = o(n(31)),
-            s = o(n(18));
+        var o = require(16),
+            GObject = require(1),
+            GPlatform = require(15),
+            r = o(require(31)),
+            s = o(require(18 /* GCategory */));
         class l extends r.default {
             getId() {
                 return l.ID;
@@ -16,10 +16,10 @@ module.exports = function (e, t, n) {
                 return s.default.CATEGORY_FILE;
             }
             isVisible() {
-                return !1;
+                return false;
             }
             getShortcut() {
-                return [a.GKey.Constant.OPTION, a.GKey.Constant.Q];
+                return [GPlatform.GKey.Constant.OPTION, GPlatform.GKey.Constant.Q];
             }
             isEnabled() {
                 const e = gDesigner.getActiveDocument(),
@@ -36,5 +36,5 @@ module.exports = function (e, t, n) {
                 return "[Object GCloseActiveWindowAction]";
             }
         }
-        ((l.ID = "file.close-active-window"), (l.TITLE = new i.GLocaleKey("GCloseActiveWindowAction", "title")), (e.exports = l));
+        ((l.ID = "file.close-active-window"), (l.TITLE = new GObject.GLocaleKey("GCloseActiveWindowAction", "title")), (module.exports = l));
     };

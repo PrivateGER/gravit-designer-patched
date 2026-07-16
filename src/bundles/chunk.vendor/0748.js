@@ -1,25 +1,25 @@
-module.exports = function (e, t, i) {
-            var n = i(334),
-                r = i(386),
-                o = i(0),
-                a = i(52),
-                s = i(54),
-                l = i(380),
-                h = i(141),
-                A = i(48),
-                c = i(5),
-                p = i(12),
-                u = i(17),
-                d = i(24);
+module.exports = function (module, exports, require) {
+            var GSelectTool = require(334),
+                r = require(386),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(52),
+                s = require(54),
+                l = require(380),
+                h = require(141),
+                A = require(48),
+                c = require(5),
+                p = require(12),
+                u = require(17),
+                d = require(24);
 
             function g() {
                 r.call(this, new g._AreaSelector());
             }
-            (o.inherit(g, r),
+            (IsFiniteNonNegativeNumber.inherit(g, r),
                 (g._AreaSelector = function () {
-                    n._AreaSelector.call(this);
+                    GSelectTool._AreaSelector.call(this);
                 }),
-                o.inherit(g._AreaSelector, n._AreaSelector),
+                IsFiniteNonNegativeNumber.inherit(g._AreaSelector, GSelectTool._AreaSelector),
                 (g._AreaSelector.prototype._current = null),
                 (g._AreaSelector.prototype._currentPoints = null),
                 (g._AreaSelector.prototype._fitter = null),
@@ -28,7 +28,7 @@ module.exports = function (e, t, i) {
                 (g._AreaSelector.prototype._cdist = 0),
                 (g._AreaSelector.prototype._processedVertices = null));
             ((g._AreaSelector.prototype.clearArea = function () {
-                (n._AreaSelector.prototype.clearArea.call(this),
+                (GSelectTool._AreaSelector.prototype.clearArea.call(this),
                     (this._current = null),
                     (this._currentPoints = null),
                     (this._fitter = null),
@@ -38,7 +38,7 @@ module.exports = function (e, t, i) {
                     (this._processedVertices = null));
             }),
                 (g._AreaSelector.prototype.startArea = function (e) {
-                    (n._AreaSelector.prototype.startArea.call(this, e),
+                    (GSelectTool._AreaSelector.prototype.startArea.call(this, e),
                         (this._currentPoints = [e]),
                         (this._current = e),
                         (this._processedVertices = new s()),
@@ -73,7 +73,7 @@ module.exports = function (e, t, i) {
                         }
                         if (null == this._current || n >= 1) {
                             if (20 === this._currentPoints.length || (this._currentPoints.length > 4 && this._cdist > 400)) {
-                                var o = !1,
+                                var o = false,
                                     a = this._processedVertices.getCount();
                                 if (a > 0) {
                                     this._processedVertices.rewindVertices(a - 1);
@@ -86,7 +86,7 @@ module.exports = function (e, t, i) {
                                             1 / Math.sqrt(this._lastTangent.dot(this._lastTangent))
                                         )));
                                 } else {
-                                    o = !0;
+                                    o = true;
                                     var u = this._currentPoints.shift();
                                     this._firstTangent = this._currentPoints[0].subtract(u);
                                 }
@@ -134,5 +134,5 @@ module.exports = function (e, t, i) {
                 (g.prototype.toString = function () {
                     return "[Object GLassoTool]";
                 }),
-                (e.exports = g));
+                (module.exports = g));
         };

@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        e.exports = class {
+        module.exports = class {
             constructor() {
                 ((this._dialog = $("<div></div>").gDialog({
-                    relaseOnClose: !0,
+                    relaseOnClose: true,
                     className: "g-maintenance-dialog",
                 })),
                     $("<iframe></iframe>").attr("src", "assets/static/maintenance/index.html").appendTo(this._dialog));
             }
             open() {
-                this._dialog.gDialog("open", !0);
+                this._dialog.gDialog("open", true);
             }
             close() {
                 this._dialog.gDialog("close");

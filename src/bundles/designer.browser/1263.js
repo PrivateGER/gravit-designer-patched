@@ -1,21 +1,21 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(1);
+        var GObject = require(1);
         function i() {}
         ((i.DefaultStops = {
             Hue: function (e) {
-                return o.GColor.hsvToRGB([e, 1, 1]);
+                return GObject.GColor.hsvToRGB([e, 1, 1]);
             },
             Saturation: function (e) {
                 return function (t) {
-                    return o.GColor.hsvToRGB([e, t / 100, 1]);
+                    return GObject.GColor.hsvToRGB([e, t / 100, 1]);
                 };
             },
             Luminosity: function (e) {
-                return o.GColor.hsvToRGB([0, 0, e / 100]);
+                return GObject.GColor.hsvToRGB([0, 0, e / 100]);
             },
         }),
-            (e.exports = i));
+            (module.exports = i));
         var a = {
             init: function (e) {
                 return (
@@ -23,7 +23,7 @@ module.exports = function (e, t, n) {
                     this.each(function () {
                         for (var t = "", n = 0, i = Math.abs(e.min) + Math.abs(e.max), a = e.min; a <= e.max; a += 20) {
                             var r = e.stops.call(null, n);
-                            ((n += 20), t && (t += ","), (t += o.GColor.rgbToHtmlHex(r) + " " + (n / i) * 100 + "%"));
+                            ((n += 20), t && (t += ","), (t += GObject.GColor.rgbToHtmlHex(r) + " " + (n / i) * 100 + "%"));
                         }
                         ((e.background = "linear-gradient(90deg," + t + ")"), $(this).gInputSlider(e));
                     })

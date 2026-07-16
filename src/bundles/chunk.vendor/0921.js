@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(11),
-                o = i(267);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(11),
+                o = require(267);
 
             function a(e, t, i, n, o) {
                 ((this.uuid = r.uuid()),
@@ -12,7 +12,7 @@ module.exports = function (e, t, i) {
                     (this._top = "number" == typeof n ? n : Number.MAX_VALUE),
                     (this._depth = "number" == typeof o ? o : 0));
             }
-            (n.inherit(a, o),
+            (IsFiniteNonNegativeNumber.inherit(a, o),
                 (a.prototype.type = null),
                 (a.prototype.uuid = null),
                 (a.prototype._depth = 0),
@@ -68,5 +68,5 @@ module.exports = function (e, t, i) {
                             value: l,
                         }));
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

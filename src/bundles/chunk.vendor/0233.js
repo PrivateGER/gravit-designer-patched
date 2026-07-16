@@ -1,36 +1,36 @@
-module.exports = function (e, t, i) {
-            var n = i(264),
-                r = i(2),
-                o = i(56),
-                a = i(28),
-                s = i(11),
-                l = i(63),
-                h = i(6),
-                A = i(54),
-                c = i(87),
-                p = i(22),
-                u = (i(7), i(0)),
-                d = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(264),
+                r = require(2),
+                o = require(56),
+                GStylable = require(28),
+                s = require(11),
+                l = require(63),
+                h = require(6),
+                A = require(54),
+                c = require(87),
+                p = require(22),
+                u = (require(7), require(0 /* IsFiniteNonNegativeNumber */)),
+                String = require(9);
 
             function g() {
-                (o.call(this), this._setDefaultProperties(g.VisualProperties), (this._paintSharp = !0), (this.$evenodd = !0));
+                (o.call(this), this._setDefaultProperties(g.VisualProperties), (this._paintSharp = true), (this.$evenodd = true));
             }
             (r.inherit("Compound Shape", g, o),
                 (g.VisualProperties = {
-                    evenodd: !1,
+                    evenodd: false,
                 }),
                 (g.GeometryProperties = {}),
                 (g.BLOCK_INTERSECTOR_CHILD_NUM = 100),
-                (g.prototype._resetVertexSource = !1),
-                (g.prototype._blockIntersector = !1),
-                (g.prototype._blockVertexComputation = !1),
+                (g.prototype._resetVertexSource = false),
+                (g.prototype._blockIntersector = false),
+                (g.prototype._blockVertexComputation = false),
                 (g.prototype._vertexSource = null),
                 (g.prototype._mainShape = function () {
                     for (var e = this.getFirstChild(); null !== e; e = e.getNext()) if (e.hasMixin(c)) return e;
                     return null;
                 }),
                 (g.prototype.getNodeNameTranslated = function () {
-                    return d.getValue("GCompoundShape", "name", this.getNodeName());
+                    return String.getValue("GCompoundShape", "name", this.getNodeName());
                 }),
                 (g.prototype._prepareVertices = function () {
                     var e = this._mainShape();
@@ -52,7 +52,7 @@ module.exports = function (e, t, i) {
                                         var h = new n(
                                             this._isEvenOddFill() ? n.PIP_CHECK_ODDEVEN : n.PIP_CHECK_WINDING,
                                             n.AUTO_MAX_PASSTHROUGH,
-                                            !1,
+                                            false,
                                             this._blockIntersector
                                         );
                                         h.initializeSources(i[0], s[0]) ? (i = h.clipOp(a.$bool) || i) : (r = r.concat(s));
@@ -61,7 +61,7 @@ module.exports = function (e, t, i) {
                                 !this._blockIntersector &&
                                     new Date().getTime() - o > 1e4 &&
                                     (console.warn("Compound shape computed too long. Falling back to less accurate algorithm."),
-                                    (this._blockIntersector = !0));
+                                    (this._blockIntersector = true));
                             } else i = s;
                         }
                     i = (i && i.concat(r)) || r;
@@ -76,12 +76,12 @@ module.exports = function (e, t, i) {
                 (g.prototype.rewindVertices = function () {
                     return (
                         !this._blockVertexComputation &&
-                        (this._vertexSource || ((this._vertexSource = this._prepareVertices()), (this._resetVertexSource = !1)),
-                        !!this._vertexSource && (this._vertexSource.rewindVertices(0), !0))
+                        (this._vertexSource || ((this._vertexSource = this._prepareVertices()), (this._resetVertexSource = false)),
+                        !!this._vertexSource && (this._vertexSource.rewindVertices(0), true))
                     );
                 }),
                 (g.prototype.isFakeContainer = function () {
-                    return !0;
+                    return true;
                 }),
                 (g.prototype.readVertex = function (e) {
                     return this._vertexSource.readVertex(e);
@@ -91,7 +91,7 @@ module.exports = function (e, t, i) {
                 }),
                 (g.prototype._handleChange = function (e, t) {
                     if ((this._handleVisualChangeForProperties(e, t, g.VisualProperties), e == r._Change.BeforePropertiesChange))
-                        (t.properties.indexOf("bool") >= 0 && (this._resetVertexSource = !0),
+                        (t.properties.indexOf("bool") >= 0 && (this._resetVertexSource = true),
                             t.properties.indexOf("trf") >= 0 &&
                                 ((this._geometryBBox = null),
                                 (this._preTransformRect = null),
@@ -114,12 +114,12 @@ module.exports = function (e, t, i) {
                             : e === p._Change.FinishGeometryUpdate
                               ? this._resetVertexSource && (this._vertexSource = null)
                               : e === r._Change.AfterChildInsert || e === r._Change.AfterChildRemove
-                                ? ((this._resetVertexSource = !0),
+                                ? ((this._resetVertexSource = true),
                                   (this._geometryBBox = null),
                                   (this._preTransformRect = null),
                                   (this._blockIntersector = this.getChildren().length > g.BLOCK_INTERSECTOR_CHILD_NUM))
                                 : e === p._Change.ChildGeometryUpdate
-                                  ? ((this._resetVertexSource = !0),
+                                  ? ((this._resetVertexSource = true),
                                     this._notifyChange(p._Change.PrepareGeometryUpdate),
                                     this._notifyChange(p._Change.FinishGeometryUpdate, 0),
                                     this._resetFxCacheAndState(),
@@ -128,9 +128,9 @@ module.exports = function (e, t, i) {
                                     ? this.storeProperties(t.blob, g.VisualProperties)
                                     : e === r._Change.Restore
                                       ? this.restoreProperties(t.blob, g.VisualProperties)
-                                      : e === r._Change.PrepareRestore && (this._blockVertexComputation = !0);
+                                      : e === r._Change.PrepareRestore && (this._blockVertexComputation = true);
                     if ((e && o.prototype._handleChange.call(this, e, t), e === r._Change.Restore))
-                        ((this._blockVertexComputation = !1), t.blob && !t.blob.hasOwnProperty("evenodd") && this.rewindVertices());
+                        ((this._blockVertexComputation = false), t.blob && !t.blob.hasOwnProperty("evenodd") && this.rewindVertices());
                     else if (e == r._Change.AfterPropertiesChange) {
                         t.properties.indexOf("vis") >= 0 && this._endBlockChanges([p._Change.ChildGeometryUpdate]);
                     }
@@ -143,7 +143,7 @@ module.exports = function (e, t, i) {
                 }),
                 (g.prototype._styleFinishGeometryChange = function (e) {
                     if ((this._notifyChange(p._Change.FinishGeometryUpdate, 1), e))
-                        e instanceof a.Effect ? this._resetFxCacheAndState(e) : this._resetFxCacheAndState();
+                        e instanceof GStylable.Effect ? this._resetFxCacheAndState(e) : this._resetFxCacheAndState();
                     else if (!e) return void this._resetFxCacheAndState();
                     var t = this._mainShape();
                     if (t) {
@@ -161,12 +161,12 @@ module.exports = function (e, t, i) {
                             for (var s = 0, l = n.getFirstChild(); null !== l; l = l.getNext()) {
                                 if ((A = o.getChildByIndex(s)))
                                     if (l.constructor.equals(A, l)) {
-                                        var h = [a.Effect.GeometryProperties];
+                                        var h = [GStylable.Effect.GeometryProperties];
                                         (l.constructor.GeometryProperties && h.push(l.constructor.GeometryProperties),
                                             l.constructor.VisualProperties && h.push(l.constructor.VisualProperties),
                                             h &&
                                                 (A._beginBlockChanges([r._Change.BeforePropertiesChange, r._Change.AfterPropertiesChange]),
-                                                A.transferProperties(l, h, !0),
+                                                A.transferProperties(l, h, true),
                                                 A._endBlockChanges([r._Change.BeforePropertiesChange, r._Change.AfterPropertiesChange])));
                                     } else (o.insertChild(l.clone(), A), o.removeChild(A));
                                 else o.insertChild(l.clone());
@@ -254,20 +254,20 @@ module.exports = function (e, t, i) {
                             !e.isIdentity() &&
                             ((this._layoutTransform = e),
                             (this._relayoutNow = !this._relayout),
-                            (this._relayout = !0),
+                            (this._relayout = true),
                             this.setProperty("trf", this.$trf ? this.$trf.multiplied(e) : e),
                             this._transformChildren(e, t, i),
                             this._relayoutNow &&
                                 (this._layoutAnchorContents(null, null, this._layoutTransform),
                                 (this._layoutTransform = null),
-                                (this._relayoutNow = !1)));
+                                (this._relayoutNow = false)));
                     } finally {
                         this.endUpdate();
                     }
                 }),
                 (g.prototype.findPivots = function (e, t) {
                     for (var i = null, n = this.getFirstChild(); null != n; n = n.getNext()) {
-                        var r = n.findPivots(!1, t);
+                        var r = n.findPivots(false, t);
                         r && (i = i ? i.concat(r) : r);
                     }
                     return i;
@@ -275,5 +275,5 @@ module.exports = function (e, t, i) {
                 (g.prototype.toString = function () {
                     return "[GCompoundShape]";
                 }),
-                (e.exports = g));
+                (module.exports = g));
         };

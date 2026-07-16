@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(30), n(8));
-        var o = n(10);
+        (require(30), require(8 /* Symbol */));
+        var designerConfig = require(10);
         function i(e) {
             const { accessToken: t, expires: n, corporate: o, accountId: a } = new i.Settings(e);
             ((this.accessToken = t), (this.expires = n), (this.corporate = o), (this.accountId = a));
         }
         ((i.Settings = function (e) {
             e || (e = {});
-            const { accessToken: t, expires: n, corporate: o = !0, accountId: i } = e;
+            const { accessToken: t, expires: n, corporate: o = true, accountId: i } = e;
             return Object.assign(this, {
                 accessToken: t,
                 expires: n,
@@ -30,7 +30,7 @@ module.exports = function (e, t, n) {
             (i.prototype.get = async function () {
                 return this.isExpired()
                     ? this.corporate
-                        ? o.gApi.cloudServices.googleDrive.getAccessToken().then((e) => {
+                        ? designerConfig.gApi.cloudServices.googleDrive.getAccessToken().then((e) => {
                               let { accessToken: t, expires: n } = e;
                               return ((this.expires = n), (this.accessToken = t), this.accessToken);
                           })
@@ -43,5 +43,5 @@ module.exports = function (e, t, n) {
                               })
                     : this.accessToken;
             }),
-            (e.exports = i));
+            (module.exports = i));
     };

@@ -1,27 +1,27 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        n(3);
-        var i = n(1),
-            a = o(n(18)),
-            r = o(n(31));
+        var o = require(16);
+        require(3);
+        var GObject = require(1),
+            a = o(require(18 /* GCategory */)),
+            r = o(require(31));
         const s = "designer.settings.enhanced-tooltips.enabled";
-        let l = !0;
+        let l = true;
         function c() {
             gContainer.getProperty(s).then((e) => {
                 "boolean" == typeof e && (l = e);
             });
         }
-        (i.GObject.inherit(c, r.default),
+        (GObject.GObject.inherit(c, r.default),
             (c.ID = "help.tooltip-visibility"),
-            (c.TITLE = new i.GLocaleKey("GEnhancedTooltipsAction", "title")),
+            (c.TITLE = new GObject.GLocaleKey("GEnhancedTooltipsAction", "title")),
             (c.GroupID = "help/learn"),
             (c.StoragePropertyName = s),
             (c.prototype.getId = function () {
                 return c.ID;
             }),
             (c.prototype.getTitle = function () {
-                return i.GLocale.get(c.TITLE);
+                return GObject.GLocale.get(c.TITLE);
             }),
             (c.prototype.getCategory = function () {
                 return a.default.CATEGORY_HELP_LEARN;
@@ -30,13 +30,13 @@ module.exports = function (e, t, n) {
                 return c.GroupID;
             }),
             (c.prototype.isCheckable = function () {
-                return !0;
+                return true;
             }),
             (c.prototype.isChecked = function () {
                 return l;
             }),
             (c.prototype.isEnabled = function () {
-                return !0;
+                return true;
             }),
             (c.prototype.execute = function () {
                 ((l = !l), gContainer.setProperty(s, l));
@@ -47,5 +47,5 @@ module.exports = function (e, t, n) {
             (c.prototype.toString = function () {
                 return "[Object GEnhancedTooltipsAction]";
             }),
-            (e.exports = c));
+            (module.exports = c));
     };

@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(3), n(26));
-        var o = n(1),
-            i = n(15),
-            a = n(40),
-            r = n(18),
-            s = n(106);
+        (require(19), require(3), require(26));
+        var GObject = require(1),
+            GPlatform = require(15),
+            GSaveAction = require(40),
+            GCategory = require(18),
+            s = require(106);
         function l() {}
-        (o.GObject.inherit(l, s),
+        (GObject.GObject.inherit(l, s),
             (l.ID = "modify.converttorawpath"),
-            (l.TITLE = new o.GLocaleKey("GConvertToRawPathAction", "title")),
+            (l.TITLE = new GObject.GLocaleKey("GConvertToRawPathAction", "title")),
             (l.prototype.getId = function () {
                 return l.ID;
             }),
@@ -17,7 +17,7 @@ module.exports = function (e, t, n) {
                 return l.TITLE;
             }),
             (l.prototype.getCategory = function () {
-                return r.CATEGORY_MODIFY_PATH;
+                return GCategory.CATEGORY_MODIFY_PATH;
             }),
             (l.prototype.getGroup = function () {
                 return "structure/modify";
@@ -26,30 +26,30 @@ module.exports = function (e, t, n) {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-convert-to-raw-path" : null;
             }),
             (l.prototype.getShortcut = function () {
-                return [i.GKey.Constant.META, i.GKey.Constant.SHIFT, "R"];
+                return [GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.SHIFT, "R"];
             }),
             (l.prototype._isValidElement = function (e) {
-                if (e instanceof o.GPath || e instanceof o.GCompoundPath) {
+                if (e instanceof GObject.GPath || e instanceof GObject.GCompoundPath) {
                     var t = [];
-                    if (e instanceof o.GCompoundPath) for (var n = e.getPaths().getFirstChild(); null !== n; n = n.getNext()) t.push(n);
+                    if (e instanceof GObject.GCompoundPath) for (var n = e.getPaths().getFirstChild(); null !== n; n = n.getNext()) t.push(n);
                     else t = [e];
                     for (var i = 0; i < t.length; i++)
                         for (var a = t[i].getAnchorPoints().getFirstChild(); a; ) {
-                            if (o.GPathBase.isCornerType(a.getProperty("tp"))) return !0;
+                            if (GObject.GPathBase.isCornerType(a.getProperty("tp"))) return true;
                             a = a.getNext();
                         }
-                    return !1;
+                    return false;
                 }
-                return !(!e.hasMixin(o.GVertexSource) || e instanceof o.GImage || e instanceof o.GPathsGraph);
+                return !(!e.hasMixin(GObject.GVertexSource) || e instanceof GObject.GImage || e instanceof GObject.GPathsGraph);
             }),
             (l.prototype.isEnabled = function () {
-                if (!s.prototype.isEnabled.call(this)) return !1;
+                if (!s.prototype.isEnabled.call(this)) return false;
                 var e = gDesigner.getActiveDocument();
                 if (e) {
                     var t = e.getEditor().getSelection();
-                    if (t) for (var n = 0; n < t.length; ++n) if (this._isValidElement(t[n])) return !0;
+                    if (t) for (var n = 0; n < t.length; ++n) if (this._isValidElement(t[n])) return true;
                 }
-                return !1;
+                return false;
             }),
             (l.prototype.execute = function () {
                 var e,
@@ -66,23 +66,23 @@ module.exports = function (e, t, n) {
                 n.beginTransaction();
                 try {
                     try {
-                        ((0, a.blockChanges)(n, s), (e = []));
+                        ((0, GSaveAction.blockChanges)(n, s), (e = []));
                         for (l = 0; l < r.length; ++l) {
                             var d = r[l],
                                 u = d.getParent(),
                                 p = d.getNext(),
-                                g = o.GPathUtil.createPathFromVertexSource(d);
-                            (g && (o.GElement.prototype.assignFrom.call(g, d), u.insertChild(g, p), e.push(g)), u.removeChild(d));
+                                g = GObject.GPathUtil.createPathFromVertexSource(d);
+                            (g && (GObject.GElement.prototype.assignFrom.call(g, d), u.insertChild(g, p), e.push(g)), u.removeChild(d));
                         }
                     } finally {
-                        ((0, a.releaseChanges)(n, s), e.length && n.updateSelection(!1, e));
+                        ((0, GSaveAction.releaseChanges)(n, s), e.length && n.updateSelection(false, e));
                     }
                 } finally {
-                    n.commitTransaction(o.GLocale.get(this.getTitle()));
+                    n.commitTransaction(GObject.GLocale.get(this.getTitle()));
                 }
             }),
             (l.prototype.toString = function () {
                 return "[Object GConvertToRawPathAction]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

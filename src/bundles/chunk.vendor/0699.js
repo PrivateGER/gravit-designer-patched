@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(96), i(30), i(4), i(41), i(13), i(32), i(38), i(33));
-            var n = i(524),
-                r = i(940),
-                o = i(943),
-                a = i(944);
+            (require(96), require(30), require(4), require(41), require(13), require(32), require(38), require(33));
+            var n = require(524),
+                r = require(940),
+                o = require(943),
+                a = require(944);
 
             function s() {}
             ((r = r.map(function (e) {
@@ -79,5 +79,5 @@ module.exports = function (e, t, i) {
                         });
                 }),
                 (s.Projects = n),
-                (e.exports = s));
+                (module.exports = s));
         };

@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(48);
+module.exports = function (module, exports, require) {
+            var n = require(48);
 
             function r() {}
             ((r.prototype.addVertex = function (e, t, i) {
@@ -14,5 +14,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.toString = function () {
                     return "[Object GVertexTarget]";
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

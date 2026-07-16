@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(4), n(13));
-        var o = n(1),
-            i = n(40);
-        n(10);
-        (n(1474), n(220), n(44), n(119));
+        (require(8 /* Symbol */), require(4), require(13));
+        var GObject = require(1),
+            GSaveAction = require(40);
+        require(10 /* designerConfig */);
+        (require(1474 /* GConfirmationDialog */), require(220 /* GCommonNames */), require(44 /* GSystemDialog */), require(119 /* GCommonNames */));
         function a(e, t, n) {
             ((this._document = e), (this._storageItem = t), (this._file = t.getFile()), (this._action = n), this._init());
         }
-        (o.GObject.inherit(a, o.GObject),
+        (GObject.GObject.inherit(a, GObject.GObject),
             (a.prototype._init = function () {
                 ((this._dialog = $("<div></div>").gDialog({
-                    releaseOnClose: !0,
+                    releaseOnClose: true,
                     className: "g-paywall-dialog",
                     closeTimeout: 1100,
                 })),
@@ -20,7 +20,7 @@ module.exports = function (e, t, n) {
                         .addClass("content")
                         .append(
                             $("<span></span>")
-                                .text(o.GLocale.get(new o.GLocaleKey("GPaywallDialog", "text.paywall-info")))
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GPaywallDialog", "text.paywall-info")))
                                 .append($("<span></span>").addClass("price g-loading"))
                                 .append($("<span></span>").text("."))
                         )
@@ -31,13 +31,13 @@ module.exports = function (e, t, n) {
                         .append(
                             $("<button></button>")
                                 .addClass("highlight")
-                                .append($("<span></span>").text(o.GLocale.get(new o.GLocaleKey("GPaywallDialog", "text.paywall-buy"))))
+                                .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GPaywallDialog", "text.paywall-buy"))))
                                 .append($("<span></span>").addClass("price g-loading"))
                                 .on("click", this._buy.bind(this))
                         )
                         .append(
                             $("<button></button>")
-                                .text(o.GLocale.get(new o.GLocaleKey("GPaywallDialog", "text.paywall-edit")))
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GPaywallDialog", "text.paywall-edit")))
                                 .on("click", this.close.bind(this))
                         )
                         .appendTo(this._dialog),
@@ -49,10 +49,10 @@ module.exports = function (e, t, n) {
             }),
             (a.prototype._buy = async function () {}),
             (a.prototype.open = async function () {
-                (this._dialog.gDialog("open", !0), await (0, i.sleep)(100), this._dialog.closest(".g-dialog").addClass("slide-up"));
+                (this._dialog.gDialog("open", true), await (0, GSaveAction.sleep)(100), this._dialog.closest(".g-dialog").addClass("slide-up"));
             }),
             (a.prototype.close = function () {
                 (this._dialog.gDialog("close"), this._dialog.closest(".g-dialog").removeClass("slide-up"));
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

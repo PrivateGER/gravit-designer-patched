@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        e.exports = {
+        module.exports = {
             DELETE_COMMENT_ANNOTATION: "DELETE_COMMENT_ANNOTATION",
             RESOLVE_COMMENT_ANNOTATION: "RESOLVE_COMMENT_ANNOTATION",
             RESOLVE_ALL_COMMENT_ANNOTATION: "RESOLVE_ALL_COMMENT_ANNOTATION",

@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(23),
-            i = n(222).f,
-            a = n(100),
-            r = n(79),
-            s = n(298),
-            l = n(341),
-            c = n(277);
-        e.exports = function (e, t) {
+        var RegExp = require(23),
+            i = require(222).f,
+            a = require(100),
+            r = require(79),
+            s = require(298),
+            l = require(341),
+            c = require(277);
+        module.exports = function (e, t) {
             var n,
                 d,
                 u,
@@ -16,7 +16,7 @@ module.exports = function (e, t, n) {
                 h = e.target,
                 f = e.global,
                 m = e.stat;
-            if ((n = f ? o : m ? o[h] || s(h, {}) : o[h] && o[h].prototype))
+            if ((n = f ? RegExp : m ? RegExp[h] || s(h, {}) : RegExp[h] && RegExp[h].prototype))
                 for (d in t) {
                     if (
                         ((p = t[d]),
@@ -26,7 +26,7 @@ module.exports = function (e, t, n) {
                         if (typeof p == typeof u) continue;
                         l(p, u);
                     }
-                    ((e.sham || (u && u.sham)) && a(p, "sham", !0), r(n, d, p, e));
+                    ((e.sham || (u && u.sham)) && a(p, "sham", true), r(n, d, p, e));
                 }
         };
     };

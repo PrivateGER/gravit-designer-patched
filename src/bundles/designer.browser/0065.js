@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(35),
-            i = n(185),
+        var o = require(35),
+            i = require(185),
             a = TypeError;
-        e.exports = function (e) {
+        module.exports = function (e) {
             if (o(e)) return e;
             throw new a(i(e) + " is not a function");
         };

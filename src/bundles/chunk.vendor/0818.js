@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(512);
+module.exports = function (module, exports, require) {
+            var n = require(512);
 
             function r() {
                 ((this._edges = Object.create(null)), (this._anchors = Object.create(null)));
@@ -145,7 +145,7 @@ module.exports = function (e, t, i) {
                     (n.setColor(i, r.ColorMap.Colors.Gray), t && t(i));
                     for (
                         var a = function (i, a) {
-                                var s = !1;
+                                var s = false;
                                 (o.getColor(i) === r.ColorMap.Colors.White &&
                                     (o.setColor(i, r.ColorMap.Colors.Black), e && (s = !!(s = e(i)))),
                                     s || n.getColor(a) !== r.ColorMap.Colors.White || this.depthFirstSearch(e, t, a, n, o));
@@ -173,5 +173,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.toString = function () {
                     return "[Object GGraph]";
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

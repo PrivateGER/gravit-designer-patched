@@ -1,16 +1,16 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(27),
-            i = n(232),
-            a = n(558).getWeakData,
-            r = n(146),
-            s = n(37),
-            l = n(194),
-            c = n(46),
-            d = n(121),
-            u = n(349),
-            p = n(61),
-            g = n(80),
+        var o = require(27),
+            i = require(232),
+            a = require(558).getWeakData,
+            r = require(146),
+            s = require(37),
+            l = require(194),
+            c = require(46),
+            d = require(121),
+            u = require(349),
+            p = require(61),
+            g = require(80),
             h = g.set,
             f = g.getterFor,
             m = u.find,
@@ -47,7 +47,7 @@ module.exports = function (e, t, n) {
                 return (~t && v(this.entries, t, 1), !!~t);
             },
         }),
-            (e.exports = {
+            (module.exports = {
                 getConstructor: function (e, t, n, o) {
                     var u = e(function (e, i) {
                             (r(e, g), h(e, { type: t, id: _++, frozen: null }), l(i) || d(i, e[o], { that: e, AS_ENTRIES: n }));
@@ -56,22 +56,22 @@ module.exports = function (e, t, n) {
                         m = f(t),
                         y = function (e, t, n) {
                             var o = m(e),
-                                i = a(s(t), !0);
-                            return (!0 === i ? b(o).set(t, n) : (i[o.id] = n), e);
+                                i = a(s(t), true);
+                            return (true === i ? b(o).set(t, n) : (i[o.id] = n), e);
                         };
                     return (
                         i(g, {
                             delete: function (e) {
                                 var t = m(this);
-                                if (!c(e)) return !1;
+                                if (!c(e)) return false;
                                 var n = a(e);
-                                return !0 === n ? b(t).delete(e) : n && p(n, t.id) && delete n[t.id];
+                                return true === n ? b(t).delete(e) : n && p(n, t.id) && delete n[t.id];
                             },
                             has: function (e) {
                                 var t = m(this);
-                                if (!c(e)) return !1;
+                                if (!c(e)) return false;
                                 var n = a(e);
-                                return !0 === n ? b(t).has(e) : n && p(n, t.id);
+                                return true === n ? b(t).has(e) : n && p(n, t.id);
                             },
                         }),
                         i(
@@ -82,7 +82,7 @@ module.exports = function (e, t, n) {
                                           var t = m(this);
                                           if (c(e)) {
                                               var n = a(e);
-                                              if (!0 === n) return b(t).get(e);
+                                              if (true === n) return b(t).get(e);
                                               if (n) return n[t.id];
                                           }
                                       },
@@ -92,7 +92,7 @@ module.exports = function (e, t, n) {
                                   }
                                 : {
                                       add: function (e) {
-                                          return y(this, e, !0);
+                                          return y(this, e, true);
                                       },
                                   }
                         ),

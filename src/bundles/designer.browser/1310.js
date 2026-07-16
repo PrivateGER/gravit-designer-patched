@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(53),
-            a = n(18),
-            r = n(106);
+        require(3);
+        var GObject = require(1),
+            i = require(53),
+            GCategory = require(18),
+            r = require(106);
         function s() {}
-        (o.GObject.inherit(s, r),
+        (GObject.GObject.inherit(s, r),
             (s.ID = "modify.crop"),
-            (s.TITLE = new o.GLocaleKey("GCropAction", "title")),
+            (s.TITLE = new GObject.GLocaleKey("GCropAction", "title")),
             (s.prototype.getId = function () {
                 return s.ID;
             }),
@@ -19,29 +19,29 @@ module.exports = function (e, t, n) {
                 return "gravit-icon-crop";
             }),
             (s.prototype.getCategory = function () {
-                return a.CATEGORY_MODIFY;
+                return GCategory.CATEGORY_MODIFY;
             }),
             (s.prototype.getGroup = function () {
                 return "structure-group";
             }),
             (s.prototype.isEnabled = function () {
-                if (!r.prototype.isEnabled.call(this)) return !1;
+                if (!r.prototype.isEnabled.call(this)) return false;
                 var e = gDesigner.getActiveDocument();
                 if (e) {
                     var t = e.getEditor(),
                         n = t.getIndividualSelection();
-                    if (n && n.length && n[0] instanceof o.GImage && t.hasSelectionDetail()) return n[0].isReady();
+                    if (n && n.length && n[0] instanceof GObject.GImage && t.hasSelectionDetail()) return n[0].isReady();
                 }
-                return !1;
+                return false;
             }),
             (s.prototype.execute = function (e, t) {
                 var n = gDesigner.getToolManager();
                 n.getActiveTool() instanceof i.GSubSelectTool
-                    ? (n.activateTool(i.GPointerTool, null, !0), n.getActiveTool().setEditMode(i.GSelectTool.EditMode.Select))
+                    ? (n.activateTool(i.GPointerTool, null, true), n.getActiveTool().setEditMode(i.GSelectTool.EditMode.Select))
                     : n.getActiveTool() instanceof i.GPointerTool && n.getActiveTool().setEditMode(i.GSelectTool.EditMode.Select);
             }),
             (s.prototype.toString = function () {
                 return "[Object GCropAction]";
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

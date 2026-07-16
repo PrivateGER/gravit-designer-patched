@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(91);
+        require(91);
         const o = {
             init: function () {
                 return (
@@ -28,7 +28,7 @@ module.exports = function (e, t, n) {
                                                 )
                                                 .insertBefore(t),
                                             t.val("").focus()),
-                                        !1
+                                        false
                                     );
                                 }
                             })

@@ -1,22 +1,22 @@
-module.exports = function (e, t, i) {
-            var n = i(334),
-                r = i(0),
-                o = i(60),
-                a = i(52),
-                s = i(104),
-                l = i(113),
-                h = i(122),
-                A = i(164),
-                c = i(83),
-                p = i(24),
-                u = i(22);
+module.exports = function (module, exports, require) {
+            var GSelectTool = require(334),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(60),
+                a = require(52),
+                s = require(104),
+                l = require(113),
+                h = require(122),
+                A = require(164),
+                c = require(83),
+                p = require(24),
+                u = require(22);
 
             function d(e) {
-                (n.call(this, e), (this._clickGoDown = !1));
+                (GSelectTool.call(this, e), (this._clickGoDown = false));
             }
-            (r.inherit(d, n),
+            (IsFiniteNonNegativeNumber.inherit(d, GSelectTool),
                 (d.prototype.getCursor = function () {
-                    var e = n.prototype.getCursor.call(this);
+                    var e = GSelectTool.prototype.getCursor.call(this);
                     return e === a.Select
                         ? a.SelectInverse
                         : e === a.SelectDot
@@ -26,30 +26,30 @@ module.exports = function (e, t, i) {
                             : e;
                 }),
                 (d.prototype._hasPathResize = function () {
-                    return !1;
+                    return false;
                 }),
                 (d.prototype.activate = function (e, t) {
-                    (n.prototype.activate.call(this, e, t),
-                        this._editor.setSelectionDetail(!0, !0, e),
-                        this._editor.setPathResize(!1, !0),
-                        this._view.setRightDrag(!0),
-                        (this._releaseOnlySelection = !0),
+                    (GSelectTool.prototype.activate.call(this, e, t),
+                        this._editor.setSelectionDetail(true, true, e),
+                        this._editor.setPathResize(false, true),
+                        this._view.setRightDrag(true),
+                        (this._releaseOnlySelection = true),
                         p.styleEditors &&
                             ((this._styleEdManager = e.getScene().getWorkspace().getStyleEdManager()), this._styleEdManager.activate(e)));
                 }),
                 (d.prototype.deactivate = function (e, t) {
                     (t ||
                         (this._styleEdManager && this._styleEdManager.deactivate(),
-                        this.setEditMode(n.EditMode.Select),
-                        this._editor.setSelectionDetail(!1, !0),
-                        this._editor.setPathResize(!0)),
-                        this._view && this._view.setRightDrag(!1),
-                        n.prototype.deactivate.call(this, e, t));
+                        this.setEditMode(GSelectTool.EditMode.Select),
+                        this._editor.setSelectionDetail(false, true),
+                        this._editor.setPathResize(true)),
+                        this._view && this._view.setRightDrag(false),
+                        GSelectTool.prototype.deactivate.call(this, e, t));
                 }),
                 (d.prototype._mouseDblClick = function (e) {
-                    var t = n.prototype._mouseDblClick.call(this, e);
+                    var t = GSelectTool.prototype._mouseDblClick.call(this, e);
                     return (
-                        t || ((t = !0), p.selectDoubleClickBehavior == n._DblClick.SubSelectSwitch && this._manager.notifyJobDone(this)),
+                        t || ((t = true), p.selectDoubleClickBehavior == GSelectTool._DblClick.SubSelectSwitch && this._manager.notifyJobDone(this)),
                         t
                     );
                 }),
@@ -69,7 +69,7 @@ module.exports = function (e, t, i) {
                 }),
                 (d.prototype._keyDown = function (e) {
                     if (
-                        (n.prototype._keyDown.call(this, e),
+                        (GSelectTool.prototype._keyDown.call(this, e),
                         !this._editor.getCurrentInlineEditorNode() && e.key === A.Constant.TAB && !this._mode)
                     ) {
                         var t = this._editor.getSelection();
@@ -79,5 +79,5 @@ module.exports = function (e, t, i) {
                 (d.prototype.toString = function () {
                     return "[Object GSubSelectTool]";
                 }),
-                (e.exports = d));
+                (module.exports = d));
         };

@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        const o = n(395);
-        e.exports = function (e) {
+        const o = require(395);
+        module.exports = function (e) {
             ((e.prototype._versionHistoryPanelOverlay = null),
                 (e.prototype._updateVersionsPanelTouch = function () {
                     if (this._versionHistoryMode) {

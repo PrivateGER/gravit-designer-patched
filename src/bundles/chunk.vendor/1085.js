@@ -1,19 +1,19 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(11),
-                o = i(56),
-                a = (i(22), i(530)),
-                s = i(128),
-                l = i(36),
-                h = i(24),
-                A = i(39),
-                c = i(81),
-                p = i(17);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(11),
+                o = require(56),
+                a = (require(22), require(530)),
+                s = require(128),
+                l = require(36),
+                h = require(24),
+                A = require(39),
+                c = require(81),
+                p = require(17);
 
             function u(e) {
                 s.call(this, e);
             }
-            (n.inherit(u, s),
+            (IsFiniteNonNegativeNumber.inherit(u, s),
                 l.exports(u, a),
                 (u.ANNOTATION_PART_ID = r.uuid()),
                 (u.prototype.getCustomBBox = function (e, t) {
@@ -24,11 +24,11 @@ module.exports = function (e, t, i) {
                         this.getPaintElement().iterateAnnotations(
                             function (e, t) {
                                 var r;
-                                (r = c.getAnnotationBBox(n, e, h.annotationHandles.simpleShape.size, !0)) &&
+                                (r = c.getAnnotationBBox(n, e, h.annotationHandles.simpleShape.size, true)) &&
                                     !r.isEmpty() &&
                                     (i = i ? i.united(r) : r);
                             }.bind(this),
-                            !0
+                            true
                         );
                     }
                     return i;
@@ -69,7 +69,7 @@ module.exports = function (e, t, i) {
                         : s.prototype._applyPartMove.call(this, e, t, i, n);
                 }),
                 (u.prototype.isDeletePartsAllowed = function () {
-                    return !1;
+                    return false;
                 }),
                 (u.prototype.canApplyTransform = function () {
                     return (
@@ -85,7 +85,7 @@ module.exports = function (e, t, i) {
                                     o = h.annotationHandles.simpleShape;
                                 c.paintAnnotation(t, e, i, o.type, r, o.size, p.WHITE, t.annotationColor);
                             }.bind(this),
-                            !0
+                            true
                         );
                 }),
                 (u.prototype._getPartInfoAt = function (e, t, i) {
@@ -96,7 +96,7 @@ module.exports = function (e, t, i) {
                                 function (i, r) {
                                     if (
                                         c
-                                            .getAnnotationBBox(t, i, h.annotationHandles.simpleShape.size, !1)
+                                            .getAnnotationBBox(t, i, h.annotationHandles.simpleShape.size, false)
                                             .expanded(h.annotPickDistance, h.annotPickDistance, h.annotPickDistance, h.annotPickDistance)
                                             .containsPoint(e)
                                     )
@@ -107,13 +107,13 @@ module.exports = function (e, t, i) {
                                                 {
                                                     annotationIdx: r,
                                                 },
-                                                !0,
-                                                !1
+                                                true,
+                                                false
                                             )),
-                                            !0
+                                            true
                                         );
                                 }.bind(this),
-                                !0
+                                true
                             ),
                             n)
                         )
@@ -127,5 +127,5 @@ module.exports = function (e, t, i) {
                 (u.prototype.toString = function () {
                     return "[Object GSimpleShapeEditor]";
                 }),
-                (e.exports = u));
+                (module.exports = u));
         };

@@ -1,1 +1,1 @@
-module.exports = function (e, t, i) {};
+module.exports = function (module, exports, require) {};

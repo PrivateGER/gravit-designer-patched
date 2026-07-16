@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(138),
-                r = i(50),
-                o = i(12);
+module.exports = function (module, exports, require) {
+            var n = require(138),
+                r = require(50),
+                o = require(12);
 
             function a(e, t, i, r, o, a, s) {
                 (n.call(this, e, t, i, r, s),
@@ -41,5 +41,5 @@ module.exports = function (e, t, i) {
                 (a.prototype.toString = function () {
                     return "[Object GRadialGradient]";
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

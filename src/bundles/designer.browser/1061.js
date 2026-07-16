@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o, i, a, r;
-        e.exports =
-            ((r = n(55)),
-            n(98),
+        module.exports =
+            ((r = require(55)),
+            require(98),
             (i = (o = r).lib.CipherParams),
             (a = o.enc.Hex),
             (o.format.Hex = {

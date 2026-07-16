@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(792),
-                r = n.CanvasGraphics,
-                o = n.getShadingPatternFromIR,
-                a = i(1398),
-                s = i(176),
-                l = i(0),
+module.exports = function (module, exports, require) {
+            var GlobalWorkerOptions = require(792),
+                r = GlobalWorkerOptions.CanvasGraphics,
+                o = GlobalWorkerOptions.getShadingPatternFromIR,
+                a = require(1398),
+                s = require(176),
+                IsFiniteNonNegativeNumber = require(0),
                 h = 1,
                 A = 2,
                 c = 3;
@@ -12,7 +12,7 @@ module.exports = function (e, t, i) {
             function p(e, t, i, n, o, a) {
                 (r.call(this, e, t, i, n, o, a), (e.gfx = this), (n.gfx = this));
             }
-            (l.inherit(p, r),
+            (IsFiniteNonNegativeNumber.inherit(p, r),
                 (p.prototype.beginDrawing = function (e) {
                     var t,
                         i = e.transform,
@@ -49,23 +49,23 @@ module.exports = function (e, t, i) {
                     } else t = o(e);
                     return t;
                 }),
-                (p.prototype[n.OPS.beginText] = function () {
+                (p.prototype[GlobalWorkerOptions.OPS.beginText] = function () {
                     (r.prototype.beginText.call(this), this.ctx.beginText());
                 }),
-                (p.prototype[n.OPS.endText] = function () {
+                (p.prototype[GlobalWorkerOptions.OPS.endText] = function () {
                     (r.prototype.endText.call(this), this.ctx.endText());
                 }),
-                (p.prototype[n.OPS.paintFormXObjectBegin] = function (e, t) {
+                (p.prototype[GlobalWorkerOptions.OPS.paintFormXObjectBegin] = function (e, t) {
                     (this.save(),
                         this.baseTransformStack.push(this.baseTransform),
                         Array.isArray(e) && 6 === e.length && this.transform.apply(this, e),
                         (this.baseTransform = this.ctx.mozCurrentTransform));
                 }),
-                (p.prototype[n.OPS.shadingFill] = function (e) {
+                (p.prototype[GlobalWorkerOptions.OPS.shadingFill] = function (e) {
                     var t = this.ctx;
                     this.save();
                     var i = o(e);
-                    ((t.fillStyle = i.getPattern(t, this, !0)), t.fill(null, t._clipping), this.restore());
+                    ((t.fillStyle = i.getPattern(t, this, true)), t.fill(null, t._clipping), this.restore());
                 }),
                 (p.prototype.paintInlineImageXObject = function (e) {
                     var t = e.width,
@@ -168,5 +168,5 @@ module.exports = function (e, t, i) {
                     }
                     this.restore();
                 }),
-                (e.exports = p));
+                (module.exports = p));
         };

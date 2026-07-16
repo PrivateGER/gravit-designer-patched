@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(105),
-                r = i(89),
-                o = i(115);
-            ((t.parse = function (e, t) {
+            var n = require(105),
+                Parser = require(89),
+                o = require(115);
+            ((exports.parse = function (e, t) {
                 var i = {},
-                    o = new r.Parser(e, t);
+                    o = new Parser.Parser(e, t);
                 return (
                     (i.version = o.parseVersion()),
                     (i.fontRevision = Math.round(1e3 * o.parseFixed()) / 1e3),
@@ -28,7 +28,7 @@ module.exports = function (e, t, i) {
                     i
                 );
             }),
-                (t.make = function (e) {
+                (exports.make = function (e) {
                     var t = Math.round(new Date().getTime() / 1e3) + 2082844800,
                         i = t;
                     return (

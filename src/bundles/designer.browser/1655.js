@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(3), n(4), n(13));
-        var o = n(1),
-            i = n(123);
+        (require(3), require(4), require(13));
+        var GObject = require(1),
+            i = require(123);
         function a() {
             this._items = [];
         }
-        (o.GObject.inherit(a, i),
+        (GObject.GObject.inherit(a, i),
             (a.prototype._panel = null),
             (a.prototype._document = null),
             (a.prototype._items = null),
@@ -15,7 +15,7 @@ module.exports = function (e, t, n) {
                     this._panel.addClass("group-frame-property-panel"),
                     $("<div></div>")
                         .addClass("group-frame-row")
-                        .attr("major-item-only", !0)
+                        .attr("major-item-only", true)
                         .gPropertyRow({
                             columns: [
                                 {
@@ -31,20 +31,20 @@ module.exports = function (e, t, n) {
                                                         "frm",
                                                         t,
                                                         t
-                                                            ? o.GLocale.get(new o.GLocaleKey("GGroupFrameProperties", "text.switch-frame"))
-                                                            : o.GLocale.get(new o.GLocaleKey("GGroupFrameProperties", "text.switch-group"))
+                                                            ? GObject.GLocale.get(new GObject.GLocaleKey("GGroupFrameProperties", "text.switch-frame"))
+                                                            : GObject.GLocale.get(new GObject.GLocaleKey("GGroupFrameProperties", "text.switch-group"))
                                                     ));
                                             }.bind(this)
                                         )
                                         .append(
                                             $("<option></option>")
                                                 .attr("value", "0")
-                                                .text(o.GLocale.get(new o.GLocaleKey("GGroupFrameProperties", "text.group")))
+                                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GGroupFrameProperties", "text.group")))
                                         )
                                         .append(
                                             $("<option></option>")
                                                 .attr("value", "1")
-                                                .text(o.GLocale.get(new o.GLocaleKey("GGroupFrameProperties", "text.frame")))
+                                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GGroupFrameProperties", "text.frame")))
                                         ),
                                 },
                             ],
@@ -54,25 +54,25 @@ module.exports = function (e, t, n) {
             (a.prototype.update = function (e, t) {
                 if (
                     (this._document &&
-                        (this._document.getScene().removeEventListener(o.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
+                        (this._document.getScene().removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
                         (this._document = null)),
                     (this._items = []),
                     e)
                 ) {
                     for (var n = 0; n < t.length; ++n) {
-                        t[n] instanceof o.GGroup && this._items.push(t[n]);
+                        t[n] instanceof GObject.GGroup && this._items.push(t[n]);
                     }
                     if (this._items.length && this._items.length === t.length)
                         return (
                             (this._document = e),
                             this._document
                                 .getScene()
-                                .addEventListener(o.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                                .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                             this._updateProperties(),
-                            !0
+                            true
                         );
                 }
-                return !1;
+                return false;
             }),
             (a.prototype._afterPropertiesChange = function (e) {
                 !e.temporary && this._items.length > 0 && this._items[0] === e.node && this._updateProperties();
@@ -82,7 +82,7 @@ module.exports = function (e, t, n) {
                 (this._panel.find("[major-item-only]").css("display", ""),
                     this._panel
                         .find('[data-item-property="frm"]')
-                        .prop("disabled", !1)
+                        .prop("disabled", false)
                         .prop("value", e.getProperty("frm") ? "1" : "0"));
             }),
             (a.prototype._assignProperty = function (e, t, n) {
@@ -102,5 +102,5 @@ module.exports = function (e, t, n) {
             (a.prototype.toString = function () {
                 return "[Object GGroupFrameProperties]";
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

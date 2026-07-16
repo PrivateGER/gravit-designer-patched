@@ -1,40 +1,40 @@
-module.exports = function (e, t, i) {
-            var n = i(147),
-                r = i(2),
-                o = i(11),
-                a = i(5),
-                s = i(87),
-                l = i(14),
-                h = i(179),
-                A = i(1395),
-                c = i(195),
-                p = i(158),
-                u = i(108),
-                d = i(138),
-                g = i(0),
-                f = i(17),
-                m = i(367),
-                y = i(1203),
-                _ = i(73),
-                v = i(70),
-                b = i(1396),
-                C = i(6),
-                w = i(54),
-                E = (i(63), i(7)),
-                B = i(122),
-                x = i(161),
-                P = i(416),
-                S = i(48),
-                T = i(95),
-                I = i(1204),
-                F = i(188),
-                R = i(12),
-                D = i(1120),
-                k = i(28),
-                G = i(139),
-                Q = i(50),
-                M = i(345),
-                N = i(22),
+module.exports = function (module, exports, require) {
+            var n = require(147),
+                r = require(2),
+                o = require(11),
+                a = require(5),
+                s = require(87),
+                l = require(14),
+                h = require(179),
+                A = require(1395),
+                c = require(195),
+                p = require(158),
+                GFont = require(108),
+                d = require(138),
+                IsFiniteNonNegativeNumber = require(0),
+                f = require(17),
+                m = require(367),
+                y = require(1203),
+                _ = require(73),
+                v = require(70),
+                b = require(1396),
+                C = require(6),
+                w = require(54),
+                E = (require(63), require(7)),
+                B = require(122),
+                x = require(161),
+                P = require(416),
+                S = require(48),
+                T = require(95),
+                I = require(1204),
+                F = require(188),
+                R = require(12),
+                D = require(1120),
+                GStylable = require(28),
+                G = require(139),
+                Q = require(50),
+                M = require(345),
+                N = require(22),
                 U = 0,
                 V = 1,
                 O = 2,
@@ -217,7 +217,7 @@ module.exports = function (e, t, i) {
                 (H.prototype.createPattern = function (e, t) {
                     if (e instanceof D) {
                         if (e.context._bitmap) {
-                            var i = e.context.toImage(!0);
+                            var i = e.context.toImage(true);
                             if (i) {
                                 var n = new G(i, t);
                                 return (t === G.RepeatMode.None && G.ScaleSettings.fit(n), n);
@@ -238,8 +238,8 @@ module.exports = function (e, t, i) {
                             var n = t.getPaintLayers(),
                                 r = i.getPaintLayers();
                             if (n && r) {
-                                var a = n.getFillLayers(!0)[0],
-                                    s = r.getFillLayers(!0)[0];
+                                var a = n.getFillLayers(true)[0],
+                                    s = r.getFillLayers(true)[0];
                                 if (a && s && a.constructor === s.constructor && a instanceof d) {
                                     var l = s.getStops(),
                                         h = a.getStops();
@@ -249,13 +249,13 @@ module.exports = function (e, t, i) {
                                                 var i = h[e].color.getValue()[0] / 255;
                                                 ((t.opacity = i), (h[e] = t));
                                             }),
-                                            !0
+                                            true
                                         );
                                 }
                             }
                         }
                     }
-                    return !1;
+                    return false;
                 }),
                 (H.prototype.getMissingFonts = function () {
                     return this._missingFonts;
@@ -309,7 +309,7 @@ module.exports = function (e, t, i) {
                     var e = this._getCurrentFont().otf,
                         t = [];
                     return (
-                        t.push(e.getStyle() === u.Style.Normal ? "normal" : "italic"),
+                        t.push(e.getStyle() === GFont.Style.Normal ? "normal" : "italic"),
                         t.push(e.getWeight()),
                         t.push(this.gfx.current.fontSize / this.gfx.current.fontSizeScale + "px"),
                         t.push(e.getFamily()),
@@ -372,7 +372,7 @@ module.exports = function (e, t, i) {
                             (f.endPoint = this._transform.preMultiplied(new E().translated(t + f.width, i)).getTranslation()));
                         var m = this._getCurrentFont();
                         ((f.fontFamily = m.otf.getFamily()),
-                            (f.fontStyle = m.otf.getStyle() === u.Style.Normal ? "normal" : "italic"),
+                            (f.fontStyle = m.otf.getStyle() === GFont.Style.Normal ? "normal" : "italic"),
                             (f.fontWeight = m.otf.getWeight()),
                             r === U
                                 ? (f.fontColor = this._getPattern(this.fillStyle || "rgb(0,0,0)"))
@@ -384,8 +384,8 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (H.prototype._isDisplayedCharacter = function (e) {
-                    if (this._getCurrentFont().supported && 1 === e.length && (255 & e.charCodeAt(0)) <= 31) return !1;
-                    return !0;
+                    if (this._getCurrentFont().supported && 1 === e.length && (255 & e.charCodeAt(0)) <= 31) return false;
+                    return true;
                 }),
                 (H.prototype.beginText = function () {
                     this._consumePath();
@@ -445,8 +445,8 @@ module.exports = function (e, t, i) {
                                     : new E();
                             A = this._transform.multiplied(m);
                             ((f = new T()).transform(A),
-                                f.setProperty("_bvs", !1),
-                                f.setProperty("_fvs", !1),
+                                f.setProperty("_bvs", false),
+                                f.setProperty("_fvs", false),
                                 f.setProperty("url", e.context.toImage()),
                                 this._clipping.appendChild(f));
                         } else
@@ -493,7 +493,7 @@ module.exports = function (e, t, i) {
                     if (this._consumePath() || e) {
                         var t = e || this._clipping.getLastChild();
                         t.setProperty("_stop", this.globalAlpha || 1);
-                        var i = new k.BorderPaintLayer(),
+                        var i = new GStylable.BorderPaintLayer(),
                             n = this._transform.getScaleFactor();
                         (i.setProperty("_bw", this.lineWidth * n),
                             i.setProperty(
@@ -519,10 +519,10 @@ module.exports = function (e, t, i) {
                         var n = this._getPattern(this.fillStyle);
                         if (
                             (n instanceof Z && (n = n.createGPattern(this._transform, i.getGeometryBBox())),
-                            n instanceof Q && i.hasMixin(k))
+                            n instanceof Q && i.hasMixin(GStylable))
                         ) {
                             var r = i.getPaintLayers();
-                            r && r.appendChild(new k.FillPaintLayer(n));
+                            r && r.appendChild(new GStylable.FillPaintLayer(n));
                         }
                     }
                 }),
@@ -558,8 +558,8 @@ module.exports = function (e, t, i) {
                 (H.prototype._consumePath = function () {
                     var e,
                         t = this._path;
-                    if (((this._path = null), t) && (e = t instanceof r ? t : t.toGPath())) return (this._clipping.appendChild(e), !0);
-                    return !1;
+                    if (((this._path = null), t) && (e = t instanceof r ? t : t.toGPath())) return (this._clipping.appendChild(e), true);
+                    return false;
                 }),
                 (H.prototype._getPattern = function (e) {
                     if ("string" == typeof e) {
@@ -597,7 +597,7 @@ module.exports = function (e, t, i) {
                                             (s = s.trim()),
                                             (a = y.contains(s)) && ((t = a), (i = I.Font.getWeight(r._openTypeFont.names.fullName.en))));
                                     }
-                                    if (a) ((e.otf = this._fontManager.getFont(t, n, i)), (e.supported = !0));
+                                    if (a) ((e.otf = this._fontManager.getFont(t, n, i)), (e.supported = true));
                                     else {
                                         var l = r._openTypeFont.names.postScriptName
                                             ? r._openTypeFont.names.postScriptName.en
@@ -643,7 +643,7 @@ module.exports = function (e, t, i) {
                         else this._missingFonts.push(this.gfx.current.font.name);
                         this._fontCache.put(this.gfx.current.font.loadedName, e);
                     }
-                    return (e.otf || ((e.otf = this._fontManager.getFont("Open Sans", n, i)), (e.substituteFont = !0)), e);
+                    return (e.otf || ((e.otf = this._fontManager.getFont("Open Sans", n, i)), (e.substituteFont = true)), e);
                 }),
                 (H.VertexSource = {
                     equals: function (e, t) {
@@ -658,7 +658,7 @@ module.exports = function (e, t, i) {
                 (W.prototype._transform = null),
                 (W.prototype._vertices = null),
                 (W.prototype.equals = function (e) {
-                    return e instanceof W && o.equals(this._vertices, e._vertices, !0);
+                    return e instanceof W && o.equals(this._vertices, e._vertices, true);
                 }),
                 (W.prototype.updateTransform = function (e) {
                     this._transform = e;
@@ -723,7 +723,7 @@ module.exports = function (e, t, i) {
                     return o;
                 }),
                 (H.Gradient = Z),
-                g.inherit(z, Z),
-                g.inherit(j, Z),
-                (e.exports = H));
+                IsFiniteNonNegativeNumber.inherit(z, Z),
+                IsFiniteNonNegativeNumber.inherit(j, Z),
+                (module.exports = H));
         };

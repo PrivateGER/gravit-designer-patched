@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n.r(t);
-        n(355);
+        require.r(exports);
+        require(355);
         class o extends Error {
             constructor(...e) {
                 (super(...e), (this.constructor = o), (this.__proto__ = o.prototype), (this.name = "ExternalFileSettingsError"));
@@ -10,5 +10,5 @@ module.exports = function (e, t, n) {
                 return this.message;
             }
         }
-        t.default = o;
+        exports.default = o;
     };

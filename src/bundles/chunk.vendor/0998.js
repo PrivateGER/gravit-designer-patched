@@ -1,4 +1,4 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             (function (t, n, r, o) {
                 var a,
                     s =
@@ -23,27 +23,27 @@ module.exports = function (e, t, i) {
                                 _ = "object" == typeof n && "object" == typeof n.versions && "string" == typeof n.versions.node,
                                 v = "";
                             (_
-                                ? ((v = y ? i(286).dirname(v) + "/" : r + "/"),
+                                ? ((v = y ? require(286).dirname(v) + "/" : r + "/"),
                                   (A = function (e, t) {
                                       var n = se(e);
                                       return n
                                           ? t
                                               ? n
                                               : n.toString()
-                                          : (u || (u = i(178)),
-                                            d || (d = i(286)),
+                                          : (u || (u = require(178)),
+                                            d || (d = require(286)),
                                             (e = d.normalize(e)),
                                             u.readFileSync(e, t ? null : "utf8"));
                                   }),
                                   (p = function (e) {
-                                      var t = A(e, !0);
+                                      var t = A(e, true);
                                       return (t.buffer || (t = new Uint8Array(t)), x(t.buffer), t);
                                   }),
                                   (c = function (e, t, n) {
                                       var r = se(e);
                                       (r && t(r),
-                                          u || (u = i(178)),
-                                          d || (d = i(286)),
+                                          u || (u = require(178)),
+                                          d || (d = require(286)),
                                           (e = d.normalize(e)),
                                           u.readFile(e, function (e, i) {
                                               e ? n(e) : t(i.buffer);
@@ -67,7 +67,7 @@ module.exports = function (e, t, i) {
                                   (A = function (e) {
                                       try {
                                           var t = new XMLHttpRequest();
-                                          return (t.open("GET", e, !1), t.send(null), t.responseText);
+                                          return (t.open("GET", e, false), t.send(null), t.responseText);
                                       } catch (t) {
                                           var i = se(e);
                                           if (i)
@@ -86,7 +86,7 @@ module.exports = function (e, t, i) {
                                           try {
                                               var t = new XMLHttpRequest();
                                               return (
-                                                  t.open("GET", e, !1),
+                                                  t.open("GET", e, false),
                                                   (t.responseType = "arraybuffer"),
                                                   t.send(null),
                                                   new Uint8Array(t.response)
@@ -99,7 +99,7 @@ module.exports = function (e, t, i) {
                                       }),
                                   (c = function (e, t, i) {
                                       var n = new XMLHttpRequest();
-                                      (n.open("GET", e, !0),
+                                      (n.open("GET", e, true),
                                           (n.responseType = "arraybuffer"),
                                           (n.onload = function () {
                                               if (200 == n.status || (0 == n.status && n.response)) t(n.response);
@@ -86293,7 +86293,7 @@ module.exports = function (e, t, i) {
                                     RuntimeError: Error,
                                 };
                             ((b = []), "object" != typeof E && K("no native wasm support detected"));
-                            var B = !1;
+                            var B = false;
 
                             function x(e, t) {
                                 e || K("Assertion failed: " + t);
@@ -86443,7 +86443,7 @@ module.exports = function (e, t, i) {
                             function K(t) {
                                 (e.onAbort && e.onAbort(t),
                                     C((t += "")),
-                                    (B = !0),
+                                    (B = true),
                                     (t = "abort(" + t + "). Build with -s ASSERTIONS=1 for more info."));
                                 var i = new E.RuntimeError(t);
                                 throw (s(i), i);
@@ -86582,16 +86582,16 @@ module.exports = function (e, t, i) {
                                         var t,
                                             i,
                                             n = F.length;
-                                        if ((e >>>= 0) > 2147483648) return !1;
+                                        if ((e >>>= 0) > 2147483648) return false;
                                         for (var r = 1; r <= 4; r *= 2) {
                                             var o = n * (1 + 0.2 / r);
                                             if (
                                                 ((o = Math.min(o, e + 100663296)),
                                                 ne(Math.min(2147483648, ((t = Math.max(e, o)) % (i = 65536) > 0 && (t += i - (t % i)), t))))
                                             )
-                                                return !0;
+                                                return true;
                                         }
-                                        return !1;
+                                        return false;
                                     },
                                     e: function (e, t) {
                                         var i = 0;
@@ -86691,7 +86691,7 @@ module.exports = function (e, t, i) {
                                             try {
                                                 return e.instantiateWasm(t, i);
                                             } catch (e) {
-                                                return (C("Module.instantiateWasm callback failed with error: " + e), !1);
+                                                return (C("Module.instantiateWasm callback failed with error: " + e), false);
                                             }
                                         (b || "function" != typeof E.instantiateStreaming || $(Y) || ee(Y) || "function" != typeof fetch
                                             ? r(n)
@@ -86815,8 +86815,8 @@ module.exports = function (e, t, i) {
                             function ge(i) {
                                 function n() {
                                     le ||
-                                        ((le = !0),
-                                        (e.calledRun = !0),
+                                        ((le = true),
+                                        (e.calledRun = true),
                                         B ||
                                             (ie(Z),
                                             t(e),
@@ -86953,6 +86953,6 @@ module.exports = function (e, t, i) {
                                 for ("function" == typeof e.preInit && (e.preInit = [e.preInit]); e.preInit.length > 0; ) e.preInit.pop()();
                             return (ge(), e);
                         });
-                e.exports = s;
-            }).call(this, "/index.js", i(183), "/", i(221).Buffer);
+                module.exports = s;
+            }).call(this, "/index.js", require(183), "/", require(221 /* Buffer */).Buffer);
         };

@@ -1,18 +1,18 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        n(3);
-        var i = n(1),
-            a = o(n(31)),
-            r = o(n(567)),
-            s = o(n(10));
+        var o = require(16);
+        require(3);
+        var GObject = require(1),
+            a = o(require(31)),
+            r = o(require(567 /* GAnnotationsSidebar */)),
+            s = o(require(10 /* designerConfig */));
         function l() {}
-        (i.GObject.inherit(l, a.default),
+        (GObject.GObject.inherit(l, a.default),
             (l.prototype.isEnabled = function () {
                 return !s.default || gDesigner.getRightSidebars().getActiveSidebar() !== r.default.ID;
             }),
             (l.prototype.toString = function () {
                 return "[Object GElementAction]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

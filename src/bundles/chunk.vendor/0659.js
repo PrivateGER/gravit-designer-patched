@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(68),
+module.exports = function (module, exports, require) {
+            var n = require(68),
                 r = (function () {
                     "use strict";
                     var e = new Int32Array([
@@ -369,7 +369,7 @@ module.exports = function (e, t, i) {
                         (t.prototype = {
                             load: function (e) {
                                 var t = new XMLHttpRequest();
-                                (t.open("GET", e, !0),
+                                (t.open("GET", e, true),
                                     (t.responseType = "arraybuffer"),
                                     (t.onload = function () {
                                         var e = new Uint8Array(t.response || t.mozResponseArrayBuffer);
@@ -635,9 +635,9 @@ module.exports = function (e, t, i) {
                                         break;
                                     case 3:
                                         for (
-                                            w = !0,
+                                            w = true,
                                                 this.adobe && this.adobe.transformCode
-                                                    ? (w = !0)
+                                                    ? (w = true)
                                                     : void 0 !== this.colorTransform && (w = !!this.colorTransform),
                                                 i = this.components[0],
                                                 n = this.components[1],
@@ -670,9 +670,9 @@ module.exports = function (e, t, i) {
                                     case 4:
                                         if (!this.adobe) throw "Unsupported color mode (4 components)";
                                         for (
-                                            w = !1,
+                                            w = false,
                                                 this.adobe && this.adobe.transformCode
-                                                    ? (w = !0)
+                                                    ? (w = true)
                                                     : void 0 !== this.colorTransform && (w = !!this.colorTransform),
                                                 i = this.components[0],
                                                 n = this.components[1],
@@ -793,5 +793,5 @@ module.exports = function (e, t, i) {
                     }
                     return this._data;
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

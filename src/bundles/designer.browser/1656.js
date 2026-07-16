@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(3), n(4), n(13));
-        var o = n(1),
-            i = n(123);
-        const a = n(135);
+        (require(3), require(4), require(13));
+        var GObject = require(1),
+            i = require(123);
+        const a = require(135);
         function r() {
             this._items = [];
         }
-        (o.GObject.inherit(r, i),
+        (GObject.GObject.inherit(r, i),
             (r.prototype._panel = null),
             (r.prototype._document = null),
             (r.prototype._items = null),
@@ -15,7 +15,7 @@ module.exports = function (e, t, n) {
                 ((this._panel = e),
                     this._panel.addClass("item-property-panel"),
                     $("<div></div>")
-                        .attr("major-item-only", !0)
+                        .attr("major-item-only", true)
                         .gPropertyRow({
                             columns: [
                                 {
@@ -37,7 +37,7 @@ module.exports = function (e, t, n) {
                                         )
                                         .append(
                                             $("<span></span>")
-                                                .text(o.GLocale.get(new o.GLocaleKey("GItemProperties", "text.click-through")))
+                                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GItemProperties", "text.click-through")))
                                                 .addClass("clickElement")
                                         ),
                                 },
@@ -45,7 +45,7 @@ module.exports = function (e, t, n) {
                         })
                         .appendTo(this._panel),
                     $("<div></div>")
-                        .attr("major-shape-only", !0)
+                        .attr("major-shape-only", true)
                         .gPropertyRow({
                             columns: [
                                 {
@@ -70,7 +70,7 @@ module.exports = function (e, t, n) {
                                         )
                                         .append(
                                             $("<span></span>").text(
-                                                o.GLocale.get(new o.GLocaleKey("GItemProperties", "text.scale-with-content"))
+                                                GObject.GLocale.get(new GObject.GLocaleKey("GItemProperties", "text.scale-with-content"))
                                             )
                                         ),
                                 },
@@ -83,24 +83,24 @@ module.exports = function (e, t, n) {
                     (this._updateUI(),
                     this._document &&
                         (gDesigner.removeEventListener(a, this._settingChanged, this),
-                        this._document.getScene().removeEventListener(o.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
+                        this._document.getScene().removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
                         (this._document = null)),
                     (this._items = []),
                     e)
                 ) {
                     gDesigner.addEventListener(a, this._settingChanged, this);
-                    for (var n = 0; n < t.length; ++n) t[n] instanceof o.GItem && this._items.push(t[n]);
+                    for (var n = 0; n < t.length; ++n) t[n] instanceof GObject.GItem && this._items.push(t[n]);
                     if (this._items.length && this._items.length === t.length && this._hasChildItem(this._items[0]))
                         return (
                             (this._document = e),
                             this._document
                                 .getScene()
-                                .addEventListener(o.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                                .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                             this._updateProperties(),
-                            !0
+                            true
                         );
                 }
-                return !1;
+                return false;
             }),
             (r.prototype._updateUI = function () {
                 gDesigner.isTouchEnabled()
@@ -118,8 +118,8 @@ module.exports = function (e, t, n) {
                 var e = this._items[0];
                 this._hasChildItem(e)
                     ? (this._panel.find("[major-item-only]").css("display", ""),
-                      this._panel.find('input[data-item-property="clk"]').prop("disabled", !1).prop("checked", e.getProperty("clk")),
-                      e instanceof o.GShape && !(e instanceof o.GImage && e.getProperty("dblMode"))
+                      this._panel.find('input[data-item-property="clk"]').prop("disabled", false).prop("checked", e.getProperty("clk")),
+                      e instanceof GObject.GShape && !(e instanceof GObject.GImage && e.getProperty("dblMode"))
                           ? (this._panel.find("[major-shape-only]").css("display", ""),
                             this._panel.find("[major-item-only]").addClass("item-click-through"),
                             this._panel.find("[major-shape-only]").addClass("shape-scale-with-content"),
@@ -139,7 +139,7 @@ module.exports = function (e, t, n) {
                     try {
                         for (var a = 0; a < this._items.length; ++a) {
                             var r = this._items[a];
-                            this._hasChildItem(r) && ("clk" == e || r instanceof o.GShape) && this._items[a].setProperties([e], [t]);
+                            this._hasChildItem(r) && ("clk" == e || r instanceof GObject.GShape) && this._items[a].setProperties([e], [t]);
                         }
                     } finally {
                         i.commitTransaction(n);
@@ -148,18 +148,18 @@ module.exports = function (e, t, n) {
             }),
             (r.prototype._hasChildItem = function (e) {
                 return (
-                    !!e.hasMixin(o.GNode.Container) &&
+                    !!e.hasMixin(GObject.GNode.Container) &&
                     !e.acceptChildren(
                         function (e) {
-                            return !(e instanceof o.GItem);
+                            return !(e instanceof GObject.GItem);
                         },
-                        !1,
-                        !1
+                        false,
+                        false
                     )
                 );
             }),
             (r.prototype.toString = function () {
                 return "[Object GItemProperties]";
             }),
-            (e.exports = r));
+            (module.exports = r));
     };

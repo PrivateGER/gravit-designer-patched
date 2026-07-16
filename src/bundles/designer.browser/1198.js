@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o() {
             try {
                 this._createDB();
             } catch (e) {
-                ((this._failedStarting = !0), console.log("Cannot createIndexedDB"), o._removeCallbacks());
+                ((this._failedStarting = true), console.log("Cannot createIndexedDB"), o._removeCallbacks());
             }
         }
         ((o.getInstance = function (e) {
@@ -32,8 +32,8 @@ module.exports = function (e, t, n) {
         ((o.prototype._cb = null),
             (o.prototype._dataBase = null),
             (o.prototype._cachingService = null),
-            (o.prototype._cachingBroken = !1),
-            (o.prototype._failedStarting = !1),
+            (o.prototype._cachingBroken = false),
+            (o.prototype._failedStarting = false),
             (o.prototype._createDB = function () {
                 try {
                     ((window.indexedDB =
@@ -45,11 +45,11 @@ module.exports = function (e, t, n) {
                     var e = indexedDB.open("gravitFontsDB", 1);
                     if (
                         (e.addEventListener("error", () => {
-                            ((this._failedStarting = !0), o._removeCallbacks());
+                            ((this._failedStarting = true), o._removeCallbacks());
                         }),
                         "done" === e.readyState)
                     ) {
-                        if (e.error) throw ((this._failedStarting = !0), new Error("Failed starting GFontDBClient"));
+                        if (e.error) throw ((this._failedStarting = true), new Error("Failed starting GFontDBClient"));
                         this._requestSuccess({ target: e });
                     } else
                         ((e.onsuccess = this._requestSuccess.bind(this)),
@@ -84,22 +84,22 @@ module.exports = function (e, t, n) {
             (o.prototype.clear = function () {
                 return $.Deferred(
                     function (e) {
-                        this._dataBase || e.resolveWith(this, [!0]);
+                        this._dataBase || e.resolveWith(this, [true]);
                         try {
                             var t = this._dataBase.transaction([i], "readwrite");
                             try {
                                 var n = t.objectStore(i).clear();
                                 ((n.onsuccess = function (t) {
-                                    e.resolveWith(this, [!0]);
+                                    e.resolveWith(this, [true]);
                                 }.bind(this)),
                                     (n.onerror = function (t) {
-                                        e.resolveWith(this, [!1]);
+                                        e.resolveWith(this, [false]);
                                     }.bind(this)));
                             } catch (t) {
-                                return void e.resolveWith(this, [!1]);
+                                return void e.resolveWith(this, [false]);
                             }
                         } catch (t) {
-                            (0, e.resolveWith(this, [!1]));
+                            (0, e.resolveWith(this, [false]));
                         }
                     }.bind(this)
                 );
@@ -107,22 +107,22 @@ module.exports = function (e, t, n) {
             (o.prototype.deleteItem = function (e) {
                 return $.Deferred(
                     function (t) {
-                        this._dataBase || t.resolveWith(this, [!0]);
+                        this._dataBase || t.resolveWith(this, [true]);
                         try {
                             var n = this._dataBase.transaction([i], "readwrite");
                             try {
                                 var o = n.objectStore(i).delete(e);
                                 ((o.onsuccess = function (e) {
-                                    t.resolveWith(this, [!0]);
+                                    t.resolveWith(this, [true]);
                                 }.bind(this)),
                                     (o.onerror = function (e) {
-                                        t.resolveWith(this, [!1]);
+                                        t.resolveWith(this, [false]);
                                     }.bind(this)));
                             } catch (e) {
-                                return void t.resolveWith(this, [!1]);
+                                return void t.resolveWith(this, [false]);
                             }
                         } catch (e) {
-                            (0, t.resolveWith(this, [!1]));
+                            (0, t.resolveWith(this, [false]));
                         }
                     }.bind(this)
                 );
@@ -130,22 +130,22 @@ module.exports = function (e, t, n) {
             (o.prototype.setItem = function (e, t) {
                 return $.Deferred(
                     function (n) {
-                        this._dataBase || n.resolveWith(this, [!1]);
+                        this._dataBase || n.resolveWith(this, [false]);
                         try {
                             var o = this._dataBase.transaction([i], "readwrite");
                             try {
                                 var a = o.objectStore(i).put(t, e);
                                 ((a.onsuccess = function (e) {
-                                    n.resolveWith(this, [!0]);
+                                    n.resolveWith(this, [true]);
                                 }.bind(this)),
                                     (a.onerror = function (e) {
-                                        n.resolveWith(this, [!1]);
+                                        n.resolveWith(this, [false]);
                                     }.bind(this)));
                             } catch (e) {
-                                return void n.resolveWith(this, [!1]);
+                                return void n.resolveWith(this, [false]);
                             }
                         } catch (e) {
-                            (0, n.resolveWith(this, [!1]));
+                            (0, n.resolveWith(this, [false]));
                         }
                     }.bind(this)
                 );
@@ -153,18 +153,18 @@ module.exports = function (e, t, n) {
             (o.prototype.updateItem = function (e, t) {
                 return $.Deferred(
                     function (n) {
-                        (this._dataBase || n.resolveWith(this, [!1]),
+                        (this._dataBase || n.resolveWith(this, [false]),
                             this.getItem(e).done((o, i) => {
                                 try {
                                     var a = i.put(t, e);
                                     ((a.onsuccess = function (e) {
-                                        n.resolveWith(this, [!0]);
+                                        n.resolveWith(this, [true]);
                                     }.bind(this)),
                                         (a.onerror = function (e) {
-                                            n.resolveWith(this, [!1]);
+                                            n.resolveWith(this, [false]);
                                         }.bind(this)));
                                 } catch (e) {
-                                    return void n.resolveWith(this, [!1]);
+                                    return void n.resolveWith(this, [false]);
                                 }
                             }));
                     }.bind(this)
@@ -173,7 +173,7 @@ module.exports = function (e, t, n) {
             (o.prototype.pushArray = function (e, t) {
                 return $.Deferred(
                     function (n) {
-                        this._dataBase || n.resolveWith(this, [!1]);
+                        this._dataBase || n.resolveWith(this, [false]);
                         try {
                             var o = this._dataBase.transaction([i], "readwrite");
                             o.objectStore(i).count(e).onsuccess = function (a) {
@@ -181,9 +181,9 @@ module.exports = function (e, t, n) {
                                     try {
                                         o.objectStore(i).put(t, e);
                                     } catch (e) {
-                                        return void n.resolveWith(this, [!1]);
+                                        return void n.resolveWith(this, [false]);
                                     }
-                                    n.resolveWith(this, [!0]);
+                                    n.resolveWith(this, [true]);
                                 } else
                                     1 === a.target.result &&
                                         this.getItem(e).done(
@@ -194,20 +194,20 @@ module.exports = function (e, t, n) {
                                                     try {
                                                         i = o.put(e);
                                                     } catch (e) {
-                                                        return void n.resolveWith(this, [!1]);
+                                                        return void n.resolveWith(this, [false]);
                                                     }
                                                     ((i.onsuccess = function (e) {
-                                                        n.resolveWith(this, [!0]);
+                                                        n.resolveWith(this, [true]);
                                                     }),
                                                         (i.error = function (e) {
-                                                            n.resolveWith(this, [!1]);
+                                                            n.resolveWith(this, [false]);
                                                         }));
                                                 }
                                             }.bind(this)
                                         );
                             };
                         } catch (e) {
-                            (0, n.resolveWith(this, [!1]));
+                            (0, n.resolveWith(this, [false]));
                         }
                     }.bind(this)
                 );
@@ -233,5 +233,5 @@ module.exports = function (e, t, n) {
                     }
                 });
             }),
-            (e.exports = o));
+            (module.exports = o));
     };

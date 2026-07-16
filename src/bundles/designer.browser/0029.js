@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(239),
+        var o = require(239),
             i = Function.prototype.call;
-        e.exports = o
+        module.exports = o
             ? i.bind(i)
             : function () {
                   return i.apply(i, arguments);

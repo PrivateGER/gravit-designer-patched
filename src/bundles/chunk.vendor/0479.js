@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(42);
+module.exports = function (module, exports, require) {
+            var n = require(42);
 
             function r(e) {
                 n.call(
@@ -9,7 +9,7 @@ module.exports = function (e, t, i) {
                     "        uniform highp sampler2D texture;        uniform vec2 center;        uniform float angle;        uniform float scale;        uniform vec2 texSize;        varying highp vec2 texCoord;        varying vec2 localTexCoord;                float pattern(float angle) {            float s = sin(angle), c = cos(angle);            vec2 tex = texCoord * texSize - center;            vec2 point = vec2(                c * tex.x - s * tex.y,                s * tex.x + c * tex.y            ) * scale;            return (sin(point.x) * sin(point.y)) * 4.0;        }                void main() {            vec4 color = texture2D(texture, localTexCoord);            vec3 cmy = 1.0 - color.rgb;            float k = min(cmy.x, min(cmy.y, cmy.z));            cmy = (cmy - k) / (1.0 - k);            cmy = clamp(cmy * 10.0 - 3.0 + vec3(pattern(angle + 0.26179), pattern(angle + 1.30899), pattern(angle)), 0.0, 1.0);            k = clamp(k * 10.0 - 5.0 + pattern(angle + 0.78539), 0.0, 1.0);            gl_FragColor = vec4(1.0 - cmy - k, color.a);        }    "
                 );
             }
-            (i(0).inherit(r, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(r, n),
                 (r.prototype.render = function (e, t, i, n, r, o) {
                     var a = r,
                         s = o,
@@ -26,5 +26,5 @@ module.exports = function (e, t, i) {
                         offset: [i, n],
                     });
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

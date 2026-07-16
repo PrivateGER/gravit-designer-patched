@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(4), n(32), n(33));
-        var i = n(1),
-            a = n(53),
-            r = n(15),
-            s = o(n(31)),
-            l = o(n(18));
+        var o = require(16);
+        (require(4), require(32), require(33));
+        var GObject = require(1),
+            a = require(53),
+            GPlatform = require(15),
+            s = o(require(31)),
+            l = o(require(18 /* GCategory */));
         class c extends s.default {
             constructor(e) {
                 (super(),
                     (this._type = e),
-                    (this._title = new i.GLocaleKey("GTogglePaintLayersVisibilityAction", "title.".concat(this._type))));
+                    (this._title = new GObject.GLocaleKey("GTogglePaintLayersVisibilityAction", "title.".concat(this._type))));
             }
             getId() {
                 return "".concat(c.ID, ".").concat(this._type);
@@ -27,11 +27,11 @@ module.exports = function (e, t, n) {
                     case c.Type.Fill:
                         return ["F"];
                     case c.Type.Border:
-                        return [r.GKey.Constant.SHIFT, "B"];
+                        return [GPlatform.GKey.Constant.SHIFT, "B"];
                 }
             }
             isVisible() {
-                return !1;
+                return false;
             }
             isEnabled() {
                 return !document.activeElement || !$(document.activeElement).is(":input");
@@ -42,7 +42,7 @@ module.exports = function (e, t, n) {
                     e.forEach((e) => {
                         if (e) {
                             const n = e.getChildren();
-                            (e instanceof i.GLayer || t.push(e),
+                            (e instanceof GObject.GLayer || t.push(e),
                                 Array.isArray(n) && n.length > 0 && (t = t.concat(this._getSingleLevelSelection(n))));
                         }
                     }),
@@ -50,7 +50,7 @@ module.exports = function (e, t, n) {
                 );
             }
             _getPaintLayers(e) {
-                const t = e && e.hasMixin(i.GStylable) && e.getPaintLayers();
+                const t = e && e.hasMixin(GObject.GStylable) && e.getPaintLayers();
                 if (!t) return null;
                 switch (this._type) {
                     case c.Type.Fill:
@@ -62,14 +62,14 @@ module.exports = function (e, t, n) {
                 }
             }
             _checkPaintLayersVisibility(e) {
-                let t = !1,
-                    n = !1;
+                let t = false,
+                    n = false;
                 for (let o = 0; e.length > o && (!t || !n); o++) {
                     const i = e[o],
                         a = this._getPaintLayers(i);
                     if (Array.isArray(a))
                         for (let e = 0; a.length > e && (!t || !n); e++) {
-                            a[e].getProperty("_vs") ? (n = !0) : (t = !0);
+                            a[e].getProperty("_vs") ? (n = true) : (t = true);
                         }
                 }
                 return { hasHiddenPaintLayers: t, hasVisiblePaintLayers: n };
@@ -91,7 +91,7 @@ module.exports = function (e, t, n) {
                                     e.endUpdate());
                             });
                         },
-                        i.GLocale.get(c.TITLE)
+                        GObject.GLocale.get(c.TITLE)
                     );
             }
             execute() {
@@ -106,7 +106,7 @@ module.exports = function (e, t, n) {
                             const e = this._getSingleLevelSelection(o),
                                 { hasHiddenPaintLayers: t, hasVisiblePaintLayers: n } = this._checkPaintLayersVisibility(e);
                             if (!t && !n) return;
-                            t && n ? this._setVisibilityPaintLayersState(e, !1) : this._setVisibilityPaintLayersState(e, t);
+                            t && n ? this._setVisibilityPaintLayersState(e, false) : this._setVisibilityPaintLayersState(e, t);
                         }
                     } finally {
                         t.endUpdate();
@@ -117,5 +117,5 @@ module.exports = function (e, t, n) {
                 return "[Object GTogglePaintLayersVisibilityAction]";
             }
         }
-        ((c.ID = "view.toggle-paint-layers-visibility"), (c.Type = { Fill: "fill", Border: "border" }), (e.exports = c));
+        ((c.ID = "view.toggle-paint-layers-visibility"), (c.Type = { Fill: "fill", Border: "border" }), (module.exports = c));
     };

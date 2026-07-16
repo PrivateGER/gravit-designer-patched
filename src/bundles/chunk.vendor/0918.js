@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(654);
+module.exports = function (module, exports, require) {
+            var n = require(654);
 
             function r(e, t, i, n, r, o, a, s, l, h) {
                 ((this._lineBuffer = []),
@@ -20,7 +20,7 @@ module.exports = function (e, t, i) {
                 (r.prototype._lineWidth = 0),
                 (r.prototype._maxAscent = 0),
                 (r.prototype._maxDescent = 0),
-                (r.prototype._quit = !1),
+                (r.prototype._quit = false),
                 (r.prototype._lastNewLineHeight = 0),
                 (r.prototype._tempLastAscent = 0),
                 (r.prototype._tempLastDescent = 0),
@@ -30,7 +30,7 @@ module.exports = function (e, t, i) {
                 (r.prototype._parent = null),
                 (r.prototype._ordinal = 0),
                 (r.prototype._width = 0),
-                (r.prototype._noWrap = !1),
+                (r.prototype._noWrap = false),
                 (r.prototype._left = 0),
                 (r.prototype._includeTerminator = void 0),
                 (r.prototype._lastInputWord = null),
@@ -108,7 +108,7 @@ module.exports = function (e, t, i) {
                                 "number" == typeof r ? (this._tempLastAscent + this._tempLastDescent) * r : Math.max(parseFloat(r), 0)),
                                 (this._y += this._lastParagraphSpacing),
                                 Object.defineProperty(n, "block", {
-                                    value: !0,
+                                    value: true,
                                 }),
                                 e(n));
                         }
@@ -136,7 +136,7 @@ module.exports = function (e, t, i) {
                                 this._lineBuffer.length
                                     ? (this._send(e, i, !!o && !!o.eof), e(this._y - this._top))
                                     : e(this._y + this._lastNewLineHeight - this._top),
-                                (this._quit = !0));
+                                (this._quit = true));
                         else if (((this._lastNewLineHeight = 0), this._lineBuffer.length)) {
                             var a = t.paragraphIndent() || 0;
                             (!this._noWrap && this._lineWidth + t.text.width + a > this._width + (i || 0) && this._send(e, i),
@@ -145,5 +145,5 @@ module.exports = function (e, t, i) {
                     }
                     return ((this._lastInputWord = t), this._quit);
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

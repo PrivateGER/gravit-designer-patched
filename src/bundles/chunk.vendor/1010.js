@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
-            var n = i(28),
-                r = i(2),
-                o = i(51),
-                a = i(9);
+module.exports = function (module, exports, require) {
+            var GStylable = require(28),
+                r = require(2),
+                o = require(51),
+                String = require(9);
 
             function s() {
                 (o.call(this), this._setDefaultProperties(s.GeometryProperties));
             }
             (r.inherit("GGLInnerGlowEffect", s, o),
                 (s.prototype.getEffectType = function () {
-                    return n.Effect.Type.Filter;
+                    return GStylable.Effect.Type.Filter;
                 }),
                 (s.prototype.getEffectPadding = function () {
                     return 1;
@@ -29,7 +29,7 @@ module.exports = function (e, t, i) {
                     return t;
                 }),
                 (s.prototype.getNodeNameTranslated = function () {
-                    return a.getValue("GGLInnerGlowEffect", "name", this.getNodeName());
+                    return String.getValue("GGLInnerGlowEffect", "name", this.getNodeName());
                 }),
                 (s.GeometryProperties = {
                     shp: {
@@ -47,5 +47,5 @@ module.exports = function (e, t, i) {
                     radius: [0, 50],
                     intensity: [0, 2],
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

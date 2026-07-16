@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(19),
-                i(26),
-                (e.exports = function (e) {
+            (require(19),
+                require(26),
+                (module.exports = function (e) {
                     e.microsoftStoreServices = {
                         getAccessToken: () => e.GET("/microsoft/store/services/token").then((e) => e.token),
                         updateB2BKeys: (t) => {

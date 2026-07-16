@@ -1,17 +1,17 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(17),
-                o = i(5),
-                a = i(14),
-                s = i(6),
-                l = i(7);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(17),
+                o = require(5),
+                a = require(14),
+                s = require(6),
+                l = require(7);
 
             function h(e) {
                 ((this._canvasContext = e), (e.canvas = this), (this._width = 300), (this._height = 150), this.prepare(null));
-                var t = i(643);
+                var t = require(643);
                 this._blender = new t(this);
             }
-            (n.inherit(h, a),
+            (IsFiniteNonNegativeNumber.inherit(h, a),
                 Object.defineProperty(h.prototype, "width", {
                     set: function (e) {
                         this._width = e;
@@ -98,5 +98,5 @@ module.exports = function (e, t, i) {
                         return this.y;
                     },
                 }),
-                (e.exports = h));
+                (module.exports = h));
         };

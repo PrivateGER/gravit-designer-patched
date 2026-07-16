@@ -1,16 +1,16 @@
-module.exports = function (e, t, i) {
-            var n = i(7),
-                r = i(236),
-                o = i(285),
-                a = i(0),
-                s = i(212),
-                l = (i(60), i(17), i(28), i(52));
+module.exports = function (module, exports, require) {
+            var n = require(7),
+                r = require(236),
+                o = require(285),
+                IsFiniteNonNegativeNumber = require(0),
+                s = require(212),
+                l = (require(60), require(17), require(28 /* GStylable */), require(52));
 
             function h() {
-                r.call(this, !0, !0);
+                r.call(this, true, true);
             }
-            (i(772),
-                a.inheritAndMix(h, r, [s]),
+            (require(772),
+                IsFiniteNonNegativeNumber.inheritAndMix(h, r, [s]),
                 (h.prototype._getRelatedItemClass = function () {
                     return o;
                 }),
@@ -18,9 +18,9 @@ module.exports = function (e, t, i) {
                     if (t) {
                         var r = new n(t.getWidth() / 2, 0, 0, t.getHeight() / 2, t.getX() + t.getWidth() / 2, t.getY() + t.getHeight() / 2),
                             o = (e.getProperty("trf") || new n()).inverted() || new n();
-                        return (e.transform(o.multiplied(r)), !0);
+                        return (e.transform(o.multiplied(r)), true);
                     }
-                    return !1;
+                    return false;
                 }),
                 (h.prototype._createShape = function () {
                     return null;
@@ -36,10 +36,10 @@ module.exports = function (e, t, i) {
                         this._insertShape(t));
                 }),
                 (h.prototype._showMousePositionInlineHint = function () {
-                    return !1;
+                    return false;
                 }),
                 (h.prototype._showAreaInlineHint = function () {
-                    return !0;
+                    return true;
                 }),
                 (h.prototype.getCursor = function () {
                     return l.Comment;
@@ -47,5 +47,5 @@ module.exports = function (e, t, i) {
                 (h.prototype.toString = function () {
                     return "[Object GCommentAnnotationTool]";
                 }),
-                (e.exports = h));
+                (module.exports = h));
         };

@@ -1,34 +1,34 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(168), n(57), n(8), n(196), n(4), n(41), n(13), n(32), n(38), n(169), n(1175), n(33));
-        var o = n(1),
-            i = n(10),
-            a = n(119),
-            r = n(163);
-        const { debounce: s } = n(40),
-            l = i.FILE_FORMATS.find((e) => e.default);
+        (require(168 /* PDFFetchStream */), require(57), require(8 /* Symbol */), require(196), require(4), require(41), require(13), require(32), require(38), require(169 /* PDFNetworkStream */), require(1175), require(33));
+        var GObject = require(1),
+            designerConfig = require(10),
+            GCommonNames = require(119),
+            GDocument = require(163);
+        const { debounce: s } = require(40 /* GSaveAction */),
+            l = designerConfig.FILE_FORMATS.find((e) => e.default);
         var c = {},
             d = null;
-        const u = i.CATEGORIES.filter((e) => e.active);
+        const u = designerConfig.CATEGORIES.filter((e) => e.active);
         class p {
             constructor(e) {
                 ((this._templatesPanel = $("<div/>").addClass("g-templates-panel").appendTo($("body"))),
                     this._templatesPanel.gDialog({
                         closeTimeout: 0,
-                        releaseOnClose: !0,
+                        releaseOnClose: true,
                         className: "g-templates-panel-container",
-                        alwaysCloseable: !0,
+                        alwaysCloseable: true,
                     }),
-                    this._templatesPanel.gDialog("open", !0),
+                    this._templatesPanel.gDialog("open", true),
                     (d = e),
                     (this._breadcrumbs = [
                         {
                             key: p.DefaultBreadcrumbs.Welcome,
-                            name: o.GLocale.getValue("GCloudTemplates", "text.welcome"),
+                            name: GObject.GLocale.getValue("GCloudTemplates", "text.welcome"),
                             click: (e) => {
                                 (e.stopPropagation(), this._templatesPanel.gDialog("close"));
                             },
-                            tooltip: o.GLocale.getValue("GFilesPanel", "action.close-window"),
+                            tooltip: GObject.GLocale.getValue("GFilesPanel", "action.close-window"),
                         },
                     ]),
                     this._initTopBar(this._templatesPanel),
@@ -40,7 +40,7 @@ module.exports = function (e, t, n) {
             _initResizeHandler() {
                 ((this._debouncedResizeHandler = s(
                     function () {
-                        this._initMasonryLayoutColumns(null, null, null, !0);
+                        this._initMasonryLayoutColumns(null, null, null, true);
                     }.bind(this),
                     200
                 )),
@@ -51,14 +51,14 @@ module.exports = function (e, t, n) {
                     ));
             }
             _openPreset(e) {
-                return a
+                return GCommonNames
                     .loadDesignData(e.id)
                     .then((t) => {
-                        var n = new r();
+                        var n = new GDocument();
                         return (
                             gDesigner.addDocument(n),
                             n.loadFromData(t.data),
-                            i.gApi.usage(e.id).catch((e) => {
+                            designerConfig.gApi.usage(e.id).catch((e) => {
                                 console.error("gApi.usage error", e);
                             })
                         );
@@ -80,7 +80,7 @@ module.exports = function (e, t, n) {
                         ? ((this._currentCategory = e),
                           this._breadcrumbs.push({
                               key: p.DefaultBreadcrumbs.Templates,
-                              name: o.GLocale.getValue("GCloudTemplates", "text.templates"),
+                              name: GObject.GLocale.getValue("GCloudTemplates", "text.templates"),
                               click: (t) => {
                                   (t.stopPropagation(),
                                       gDesigner.stats("cloudtemplates_click_backbutton", e ? e.name : ""),
@@ -91,7 +91,7 @@ module.exports = function (e, t, n) {
                           ((this._currentSubcategory = e),
                           this._breadcrumbs.push({
                               key: this._currentCategory.key,
-                              name: o.GLocale.getValue("GCommonNames", this._currentCategory.key),
+                              name: GObject.GLocale.getValue("GCommonNames", this._currentCategory.key),
                               click: (t) => {
                                   (t.stopPropagation(),
                                       gDesigner.stats("cloudtemplates_click_backbutton", e ? e.name : ""),
@@ -103,43 +103,43 @@ module.exports = function (e, t, n) {
                     this._loadHeader(),
                     t === p.AssetType.Category && this._currentCategory.subcategories
                         ? this._initSubcategories()
-                        : ((this._presetsCount = 0), (this._presetsCurrentSkip = 0), (this._presetsLoadMore = !0), this._loadPresets(!1)));
+                        : ((this._presetsCount = 0), (this._presetsCurrentSkip = 0), (this._presetsLoadMore = true), this._loadPresets(false)));
             }
             _loadPresets(e) {
-                (this._toggleLoadMoreButton(!1), this._toggleLoading(!0), this._doLoadPresets(e));
+                (this._toggleLoadMoreButton(false), this._toggleLoading(true), this._doLoadPresets(e));
             }
             async _doLoadPresets(e) {
                 var t = this;
                 this._presetsLoadMore &&
                     (async function (n) {
                         try {
-                            var o = await i.gApi.listMarketV2({
+                            var o = await designerConfig.gApi.listMarketV2({
                                 path: t._getActivePresetCategory().path,
                                 type: l.type,
                                 sort: "-usages",
-                                limit: i.PRESET_LIMIT,
+                                limit: designerConfig.PRESET_LIMIT,
                                 skip: t._presetsCurrentSkip,
                             });
                             (c[t._getActivePresetCategory().key] || (c[t._getActivePresetCategory().key] = []),
                                 (c[t._getActivePresetCategory().key] = c[t._getActivePresetCategory().key].concat(o.data)),
                                 o.count && (t._presetsCount = o.count),
                                 c[t._getActivePresetCategory().key].length == t._presetsCount
-                                    ? (t._presetsLoadMore = !1)
-                                    : (t._presetsCurrentSkip += i.PRESET_LIMIT),
+                                    ? (t._presetsLoadMore = false)
+                                    : (t._presetsCurrentSkip += designerConfig.PRESET_LIMIT),
                                 n(o.data, e));
                         } catch (e) {
-                            (n(c[t._getActivePresetCategory().key], !1), console.error(e));
+                            (n(c[t._getActivePresetCategory().key], false), console.error(e));
                         }
                     })(function (e, n) {
                         (n || t._contentPanel.empty(),
                             t._initMasonryLayoutColumns(e, p.AssetType.Preset, n),
                             t._loadMoreButton(),
-                            t._toggleLoading(!1));
+                            t._toggleLoading(false));
                     });
             }
             _loadMoreButton() {
                 (this._contentPanel.find(".button-wrapper").remove(),
-                    this._presetsLoadMore && (this._doLoadMoreButton(), this._toggleLoadMoreButton(!0)));
+                    this._presetsLoadMore && (this._doLoadMoreButton(), this._toggleLoadMoreButton(true)));
             }
             _doLoadMoreButton() {
                 this._contentPanel.append(
@@ -152,12 +152,12 @@ module.exports = function (e, t, n) {
                                 .addClass("cloud-button")
                                 .addClass("load-more")
                                 .on("click", () => {
-                                    this._loadPresets(!0);
+                                    this._loadPresets(true);
                                 })
                                 .append(
                                     $("<span/>")
                                         .addClass("label")
-                                        .text(o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.library-load-more")))
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.library-load-more")))
                                 )
                         )
                 );
@@ -174,7 +174,7 @@ module.exports = function (e, t, n) {
                     (this._currentCategory = null),
                     (this._currentSubcategory = null),
                     this._loadHeader(),
-                    this._loadBreadcrumbs(!0),
+                    this._loadBreadcrumbs(true),
                     this._initMasonryLayoutColumns(u, p.AssetType.Category));
             }
             _initMasonryLayoutColumns(e, t, n, a) {
@@ -222,12 +222,12 @@ module.exports = function (e, t, n) {
                                                 (this._getActivePresetCategory() ? this._getActivePresetCategory().name : "default"),
                                             t.name
                                         ),
-                                        gDesigner.getAmplitudeHelper().logEvent(i.AmplitudeData.Events.DOCUMENT_CREATED, {
+                                        gDesigner.getAmplitudeHelper().logEvent(designerConfig.AmplitudeData.Events.DOCUMENT_CREATED, {
                                             DOCUMENT_CATEGORY: this._getActivePresetCategory().name,
                                             DOCUMENT_TYPE: t.name,
                                             DOCUMENT_TEMPLATE_ID: t.id,
                                         }),
-                                        i.IS_TRUNK && console.log("Template ID: ", t.id),
+                                        designerConfig.IS_TRUNK && console.log("Template ID: ", t.id),
                                         this._openPreset(t));
                                 }.bind(this)
                             );
@@ -252,7 +252,7 @@ module.exports = function (e, t, n) {
                                     .append(
                                         $("<div/>")
                                             .addClass("template-name")
-                                            .html(o.GLocale.get(new o.GLocaleKey("GCommonNames", n.key)))
+                                            .html(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", n.key)))
                                     )
                             );
                         (v = $("<div/>")
@@ -282,7 +282,7 @@ module.exports = function (e, t, n) {
             _getThumbnailSize(e) {
                 const t = 235 / e.width,
                     n = parseInt(e.height * t) + 32;
-                return new o.GRect(0, 0, 235, n);
+                return new GObject.GRect(0, 0, 235, n);
             }
             _getChildrenHeight(e) {
                 return $(e)
@@ -302,8 +302,8 @@ module.exports = function (e, t, n) {
                             .addClass("title")
                             .html(
                                 this._getActivePresetCategory()
-                                    ? o.GLocale.getValue("GCommonNames", this._getActivePresetCategory().key)
-                                    : o.GLocale.getValue("GCloudTemplates", "text.templates")
+                                    ? GObject.GLocale.getValue("GCommonNames", this._getActivePresetCategory().key)
+                                    : GObject.GLocale.getValue("GCloudTemplates", "text.templates")
                             )
                     ));
             }
@@ -319,7 +319,7 @@ module.exports = function (e, t, n) {
                                     .addClass("g-button")
                                     .addClass("cloud-button")
                                     .addClass("close-button")
-                                    .attr("data-title", o.GLocale.get(new o.GLocaleKey("GFilesPanel", "action.close-window")))
+                                    .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "action.close-window")))
                                     .on("click", (e) => {
                                         (e.stopPropagation(), this._templatesPanel.gDialog("close"));
                                     })
@@ -347,7 +347,7 @@ module.exports = function (e, t, n) {
                                             "data-title",
                                             null !== (n = e.tooltip) && void 0 !== n
                                                 ? n
-                                                : o.GLocale.getValue("GFilesPanel", "action.back-tooltip")
+                                                : GObject.GLocale.getValue("GFilesPanel", "action.back-tooltip")
                                         )
                                 )
                                 .append($("<span/>").addClass("breadcrumb-divider").html("›"))
@@ -368,5 +368,5 @@ module.exports = function (e, t, n) {
             Preset: "PRESET",
         }),
             (p.DefaultBreadcrumbs = { Welcome: "welcome", Templates: "templates" }),
-            (e.exports = p));
+            (module.exports = p));
     };

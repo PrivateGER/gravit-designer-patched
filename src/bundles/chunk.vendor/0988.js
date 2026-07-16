@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(378).Tokenizer,
-                r = i(989),
-                o = i(990),
-                a = i(991),
-                s = i(992);
+module.exports = function (module, exports, require) {
+            var n = require(378 /* ContextParams */).Tokenizer,
+                r = require(989),
+                o = require(990),
+                a = require(991),
+                s = require(992);
 
             function l(e) {
                 ((this.baseDir = e || "ltr"), (this.tokenizer = new n()), (this.features = []));
@@ -95,5 +95,5 @@ module.exports = function (e, t, i) {
                         }
                     return i;
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

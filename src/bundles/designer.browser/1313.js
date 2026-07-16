@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(58), n(19), n(8), n(71), n(4), n(41), n(32), n(38), n(33), n(26));
-        var o = n(53),
-            i = n(1),
-            a = n(15),
-            r = n(255),
-            s = n(590),
-            l = n(567);
+        (require(58), require(19), require(8 /* Symbol */), require(71), require(4), require(41), require(32), require(38), require(33), require(26));
+        var o = require(53),
+            GObject = require(1),
+            GPlatform = require(15),
+            r = require(255),
+            s = require(590),
+            GAnnotationsSidebar = require(567);
         const c = ["text/xml", "text/plain"],
             d = ["image/svg+xml", "image/png", "image/jpg", "image/jpeg", "image/gif", "application/pdf"],
             u = c.concat(d).concat(["text/uri-list"]);
@@ -21,7 +21,7 @@ module.exports = function (e, t, n) {
                               top: "-9999px",
                               position: "absolute",
                           })
-                          .prop("contenteditable", !0)
+                          .prop("contenteditable", true)
                           .prop("tabindex", -1)
                           .appendTo($("body"))),
                   document.addEventListener("paste", this._documentPasteEvent.bind(this)))
@@ -32,7 +32,7 @@ module.exports = function (e, t, n) {
                           top: "-9999px",
                           position: "absolute",
                       })
-                      .prop("contenteditable", !0)
+                      .prop("contenteditable", true)
                       .prop("tabindex", -1)
                       .appendTo($("body"))),
                   this._pasteArea[0].addEventListener("paste", this._documentPasteEvent.bind(this))),
@@ -44,7 +44,7 @@ module.exports = function (e, t, n) {
                                 gDesigner.getWindows().getActiveWindow() && gDesigner.getWindows().getActiveWindow().getView().focus()));
                     }));
         }
-        (i.GObject.inherit(p, i.GObject),
+        (GObject.GObject.inherit(p, GObject.GObject),
             (p.URIListHandler = function () {}),
             (p.URIListHandler.prototype.handle = async function (e, t) {
                 const n = (await e.text())
@@ -66,14 +66,14 @@ module.exports = function (e, t, n) {
             "text/uri-list": new p.URIListHandler(),
         };
         ((p.prototype._pasteArea = null),
-            (p.prototype._allowFocus = !1),
+            (p.prototype._allowFocus = false),
             (p.prototype._callback = null),
             (p.prototype.pasteFromClipboard = async function () {
                 if (!navigator.clipboard) return Promise.reject();
                 if (navigator.permissions) {
                     const e = await navigator.permissions.query({
                         name: "clipboard-read",
-                        allowWithoutGesture: !0,
+                        allowWithoutGesture: true,
                     });
                     if (!e || "denied" === e.state) return Promise.reject();
                 }
@@ -91,7 +91,7 @@ module.exports = function (e, t, n) {
                 }
             }),
             (p.prototype._documentPasteEvent = function (e) {
-                if (!this._canTrigger()) return !1;
+                if (!this._canTrigger()) return false;
                 if (
                     !document.activeElement ||
                     !$(document.activeElement).is(":editable") ||
@@ -115,7 +115,7 @@ module.exports = function (e, t, n) {
                             s && (o[d] = s);
                         }
                         (this._handlePasteData(o),
-                            a.GPlatform.webBrowser === a.GPlatform.constructor.WebBrowser.Firefox &&
+                            GPlatform.GPlatform.webBrowser === GPlatform.GPlatform.constructor.WebBrowser.Firefox &&
                                 (e.stopPropagation(), e.preventDefault()));
                     } else if (this._pasteArea) {
                         o = {};
@@ -136,7 +136,7 @@ module.exports = function (e, t, n) {
                             function () {
                                 var e = this._pasteArea.children();
                                 if (1 === e.length && e.is("img")) {
-                                    var t = i.GUtil.dataUrlToBlob(e[0].src);
+                                    var t = GObject.GUtil.dataUrlToBlob(e[0].src);
                                     t && (o[t.type] = t);
                                 }
                                 (this._handlePasteData(o), this._pasteArea.empty());
@@ -145,7 +145,7 @@ module.exports = function (e, t, n) {
                         );
                     }
                     this._pasteArea &&
-                        ((this._allowFocus = !1),
+                        ((this._allowFocus = false),
                         this._pasteArea.blur(),
                         gDesigner.getWindows().getActiveWindow() && gDesigner.getWindows().getActiveWindow().getView().focus());
                 }
@@ -155,15 +155,15 @@ module.exports = function (e, t, n) {
                 const t = e && e.getEditor();
                 if (t && t.isInlineEditing()) {
                     const e = this._filterForInlineEditing(t.getSelection());
-                    if (e && 1 === e.length && e[0] instanceof i.GText) return !0;
+                    if (e && 1 === e.length && e[0] instanceof GObject.GText) return true;
                 }
-                return !(!e || gDesigner.getRightSidebars().getActiveSidebar() == l.ID);
+                return !(!e || gDesigner.getRightSidebars().getActiveSidebar() == GAnnotationsSidebar.ID);
             }),
             (p.prototype.handlePasteData = function (e) {
                 return this._handlePasteData(e);
             }),
             (p.prototype._handlePasteData = function (e) {
-                if (!this._canTrigger()) return !1;
+                if (!this._canTrigger()) return false;
                 for (var t = !this._callback, n = gDesigner.getActiveDocument(), a = n.getEditor(), l = 0; l < c.length; ++l) {
                     var u = e[c[l]];
                     if (u)
@@ -183,22 +183,22 @@ module.exports = function (e, t, n) {
                                 }
                             }
                         } catch (e) {}
-                    if (e[i.GNode.MIME_TYPE]) {
-                        var g = i.GNode.deserialize(e[i.GNode.MIME_TYPE]),
-                            h = g instanceof i.GPage,
+                    if (e[GObject.GNode.MIME_TYPE]) {
+                        var g = GObject.GNode.deserialize(e[GObject.GNode.MIME_TYPE]),
+                            h = g instanceof GObject.GPage,
                             f = n.filterUnrestrictedCommercialFileElements(h ? g.getChildren() : g);
                         if ((f && f.length > 0) || h) {
                             var m = f.filter(function (e) {
-                                    return e instanceof i.GElement;
+                                    return e instanceof GObject.GElement;
                                 }),
                                 y = f.filter(function (e) {
-                                    return e instanceof i.GStyle;
+                                    return e instanceof GObject.GStyle;
                                 }),
                                 v =
                                     1 === f.length &&
-                                    f[0] instanceof i.GText &&
+                                    f[0] instanceof GObject.GText &&
                                     a.hasSelection() &&
-                                    a.getSelection()[0] instanceof i.GText &&
+                                    a.getSelection()[0] instanceof GObject.GText &&
                                     a.isInlineEditing();
                             if (v || (0 == m.length && 1 == f.length && !h)) {
                                 var _ = f[0];
@@ -209,30 +209,30 @@ module.exports = function (e, t, n) {
                                             var b = a.getSelection()[0];
                                             o.GElementEditor.getEditor(b).processPaste(_);
                                         }
-                                    } else if (_ instanceof i.GStylable.FillPaintLayer || _ instanceof i.GStylable.BorderPaintLayer) {
+                                    } else if (_ instanceof GObject.GStylable.FillPaintLayer || _ instanceof GObject.GStylable.BorderPaintLayer) {
                                         m = a.getSelection();
                                         0 != (m = this._filterForStyleExceptions(m)).length &&
                                             (m.length > 1
                                                 ? m.forEach(function (e) {
                                                       var t =
-                                                          _ instanceof i.GStylable.FillPaintLayer
-                                                              ? new i.GStylable.FillPaintLayer()
-                                                              : new i.GStylable.BorderPaintLayer();
+                                                          _ instanceof GObject.GStylable.FillPaintLayer
+                                                              ? new GObject.GStylable.FillPaintLayer()
+                                                              : new GObject.GStylable.BorderPaintLayer();
                                                       (t.assignFrom(_), e.getPaintLayers().appendChild(t));
                                                   })
                                                 : m[0].getPaintLayers().appendChild(_));
-                                    } else if (_ instanceof i.GStylable.Effect) {
+                                    } else if (_ instanceof GObject.GStylable.Effect) {
                                         m = a.getSelection();
                                         0 != (m = this._filterForStyleExceptions(m)).length &&
                                             (m.length > 1
                                                 ? m.forEach(function (e) {
-                                                      var t = new i.GStylable.Effect();
+                                                      var t = new GObject.GStylable.Effect();
                                                       (t.assignFrom(_), e.getEffects().appendChild(t));
                                                   })
                                                 : m[0].getEffects().appendChild(_));
                                     }
                                 } finally {
-                                    a.commitTransaction(i.GLocale.get(new i.GLocaleKey("GPaste", "action.paste")));
+                                    a.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPaste", "action.paste")));
                                 }
                             } else {
                                 var w = n.getScene().getStyles();
@@ -249,10 +249,10 @@ module.exports = function (e, t, n) {
                                                     break;
                                                 }
                                             o ||
-                                                ((o = new i.GStyle()),
+                                                ((o = new GObject.GStyle()),
                                                 o.setProperties(
                                                     ["name", "defaultStyle", "ps"],
-                                                    [e.getProperty("name"), !1, e.getProperty("ps")]
+                                                    [e.getProperty("name"), false, e.getProperty("ps")]
                                                 ),
                                                 o.assignStyleFrom(e),
                                                 n.getScene().getStyles().insertChild(o));
@@ -269,13 +269,13 @@ module.exports = function (e, t, n) {
                                                 ? (g.clearChildren(),
                                                   g.setProperty("off", null),
                                                   E.appendChild(g),
-                                                  m.length > 0 && a.insertElements(m, !0, !0, !1, !0, g),
+                                                  m.length > 0 && a.insertElements(m, true, true, false, true, g),
                                                   E.setActivePage(g))
-                                                : a.insertElements(m, !0, !0, !0, !0),
-                                                E.isFixedSized() || this._centerToView(!0));
+                                                : a.insertElements(m, true, true, true, true),
+                                                E.isFixedSized() || this._centerToView(true));
                                         }
                                     } finally {
-                                        t && a.commitTransaction(i.GLocale.get(new i.GLocaleKey("GPaste", "action.paste")));
+                                        t && a.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPaste", "action.paste")));
                                     }
                                 }
                             }
@@ -291,25 +291,25 @@ module.exports = function (e, t, n) {
                                 gDesigner.getWorkspace().getFontManager().getDefaultFont() &&
                                 gDesigner.getWorkspace().getFontManager().getDefaultFont().getFamily();
                         const e = this._filterForInlineEditing(a.getSelection());
-                        if (e && e.length > 0 && e[0] instanceof i.GText && a.isInlineEditing()) {
+                        if (e && e.length > 0 && e[0] instanceof GObject.GText && a.isInlineEditing()) {
                             if (!o.GInlineTextEditor.HANDLECOPYPASTE) {
                                 var P = e[0];
                                 return void o.GElementEditor.getEditor(P).processPaste(u);
                             }
                         } else {
-                            ((P = new i.GText()).setText(u, !0, !0), t && a.beginTransaction());
+                            ((P = new GObject.GText()).setText(u, true, true), t && a.beginTransaction());
                             try {
-                                if (!this.executeCallback([P], !0)) {
-                                    if ((a.insertElements([P], !1, !0, !0), (A = T && T.getDefaultFamilyForString(u)) && A !== G)) {
-                                        var D = i.GOpenTypeFont.getDirectionForString(u);
-                                        D !== i.GTLDirectionTextTransformer.LTR
-                                            ? P.setProperties(["_tff", "dir", "_we"], [A, D, !0])
-                                            : P.setProperties(["_tff", "_we"], [A, !0]);
-                                    } else P.setProperty("_we", !0);
+                                if (!this.executeCallback([P], true)) {
+                                    if ((a.insertElements([P], false, true, true), (A = T && T.getDefaultFamilyForString(u)) && A !== G)) {
+                                        var D = GObject.GOpenTypeFont.getDirectionForString(u);
+                                        D !== GObject.GTLDirectionTextTransformer.LTR
+                                            ? P.setProperties(["_tff", "dir", "_we"], [A, D, true])
+                                            : P.setProperties(["_tff", "_we"], [A, true]);
+                                    } else P.setProperty("_we", true);
                                     (o.GElementEditor.getEditor(P).invalidateTextWidth(), this._centerToView());
                                 }
                             } finally {
-                                return void (t && a.commitTransaction(i.GLocale.get(new i.GLocaleKey("GPaste", "action.paste"))));
+                                return void (t && a.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPaste", "action.paste"))));
                             }
                         }
                     }
@@ -319,22 +319,22 @@ module.exports = function (e, t, n) {
                     if (e[I]) {
                         t && a.beginTransaction();
                         try {
-                            n.placeOrImport(e[I], null, !1, !0, this.executeCallback.bind(this));
+                            n.placeOrImport(e[I], null, false, true, this.executeCallback.bind(this));
                         } finally {
-                            t && a.commitTransaction(i.GLocale.get(new i.GLocaleKey("GPaste", "action.paste-image")));
+                            t && a.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPaste", "action.paste-image")));
                         }
                         return;
                     }
                 }
             }),
             (p.prototype._filterForInlineEditing = function (e) {
-                return e ? e.filter((e) => !(e instanceof i.GCollaborativeTextAnnotation)) : null;
+                return e ? e.filter((e) => !(e instanceof GObject.GCollaborativeTextAnnotation)) : null;
             }),
             (p.prototype._filterForStyleExceptions = function (e) {
-                for (var t = [i.GPage, i.GGroup, i.GSymbol], n = [], o = 0; o < e.length; o++) {
-                    for (var a = e[o], r = !0, s = 0; s < t.length; s++) {
+                for (var t = [GObject.GPage, GObject.GGroup, GObject.GSymbol], n = [], o = 0; o < e.length; o++) {
+                    for (var a = e[o], r = true, s = 0; s < t.length; s++) {
                         if (a instanceof t[s]) {
-                            r = !1;
+                            r = false;
                             break;
                         }
                     }
@@ -352,12 +352,12 @@ module.exports = function (e, t, n) {
                 if (((n = r.isFixedSized() ? l.getGeometryBBox() : r.getPaintBBox()), s)) {
                     var c = s.getView(),
                         d = c.getViewTransform(l),
-                        u = i.GPaintCanvas.getScreenDPI(),
+                        u = GObject.GPaintCanvas.getScreenDPI(),
                         p = c.getViewBox().scaled(u, u);
                     ((t = d.mapRect(p)), r.isFixedSized() && (t = t.intersected(n)), t.isEmpty() && (t = n));
                 } else t = n;
-                (a.arrangeAlign(o.GEditor.ArrangeAlignType.AlignCenter, null, !0, t, !0, e),
-                    a.arrangeAlign(o.GEditor.ArrangeAlignType.AlignMiddle, null, !0, t, !0, e));
+                (a.arrangeAlign(o.GEditor.ArrangeAlignType.AlignCenter, null, true, t, true, e),
+                    a.arrangeAlign(o.GEditor.ArrangeAlignType.AlignMiddle, null, true, t, true, e));
             }),
             (p.prototype.getArea = function () {
                 return this._pasteArea;
@@ -372,7 +372,7 @@ module.exports = function (e, t, n) {
                 this._callback = e;
             }),
             (p.prototype.executeCallback = function (e, t) {
-                return !!this._callback && (this._callback(e, t), (this._callback = null), !0);
+                return !!this._callback && (this._callback(e, t), (this._callback = null), true);
             }),
-            (e.exports = p));
+            (module.exports = p));
     };

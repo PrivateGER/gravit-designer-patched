@@ -1,21 +1,21 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        n(3);
-        var i = n(1),
-            a = o(n(340)),
-            r = n(806),
-            s = n(395),
-            l = n(1663),
-            c = n(119);
-        const d = n(291);
+        var o = require(16);
+        require(3);
+        var GObject = require(1),
+            a = o(require(340)),
+            r = require(806),
+            s = require(395),
+            GCommonNames = require(1663),
+            c = require(119 /* GCommonNames */);
+        const d = require(291);
         function u() {
             r.call(this);
         }
-        (i.GObject.inherit(u, r),
+        (GObject.GObject.inherit(u, r),
             (u.ID = "library"),
-            (u.TITLE = new i.GLocaleKey("GLibrarySidebar", "title")),
-            (u.prototype._initialized = !1),
+            (u.TITLE = new GObject.GLocaleKey("GLibrarySidebar", "title")),
+            (u.prototype._initialized = false),
             (u.prototype._libraryPanel = null),
             (u.prototype._libraryPanelInstance = null),
             (u.prototype._htmlElement = null),
@@ -41,7 +41,7 @@ module.exports = function (e, t, n) {
                 return 250;
             }),
             (u.prototype.isResizeable = function () {
-                return !0;
+                return true;
             }),
             (u.prototype.resize = function () {
                 this._libraryPanelInstance.resize();
@@ -73,7 +73,7 @@ module.exports = function (e, t, n) {
                 (this._libraryPanel ||
                     ($("<div></div>")
                         .addClass("toolbar library-toolbar g-touch-only")
-                        .append($("<label/>").text(i.GLocale.get(new i.GLocaleKey("GLibrarySidebar", "title"))))
+                        .append($("<label/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GLibrarySidebar", "title"))))
                         .appendTo(e),
                     (this._libraryPanel = $("<div/>")
                         .append(
@@ -84,7 +84,7 @@ module.exports = function (e, t, n) {
                                         .addClass("box")
                                         .append(
                                             $("<span/>").text(
-                                                i.GLocale.get(new i.GLocaleKey("GOfflineDialog", "title.unavailable-feature"))
+                                                GObject.GLocale.get(new GObject.GLocaleKey("GOfflineDialog", "title.unavailable-feature"))
                                             )
                                         )
                                 )
@@ -96,11 +96,11 @@ module.exports = function (e, t, n) {
                     c.isOnline()
                         ? (this._libraryPanel.hasClass("unavailable") &&
                               (this._libraryPanel.removeClass("unavailable"), this._libraryPanel.empty()),
-                          gDesigner.isOffline() || ((this._libraryPanelInstance = new l(this._libraryPanel)), (this._initialized = !0)))
+                          gDesigner.isOffline() || ((this._libraryPanelInstance = new GCommonNames(this._libraryPanel)), (this._initialized = true)))
                         : (this._libraryPanel.addClass("unavailable"),
                           $("<span/>")
                               .addClass("span-unavailable")
-                              .text(i.GLocale.get(new i.GLocaleKey("GLibrarySidebar", "text.connect")))
+                              .text(GObject.GLocale.get(new GObject.GLocaleKey("GLibrarySidebar", "text.connect")))
                               .appendTo(this._libraryPanel)));
             }),
             (u.prototype.getTouchTools = function () {
@@ -116,5 +116,5 @@ module.exports = function (e, t, n) {
             (u.prototype.toString = function () {
                 return "[Object GLibrarySidebar]";
             }),
-            (e.exports = u));
+            (module.exports = u));
     };

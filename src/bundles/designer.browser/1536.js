@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(58), n(19), n(8), n(3), n(71), n(4), n(13), n(32), n(97), n(33), n(26));
-        var i = n(53),
-            a = n(1),
-            r = o(n(358)),
-            s = n(123);
-        const l = n(393),
-            c = n(392),
-            d = n(1165),
-            u = n(135);
+        var o = require(16);
+        (require(58), require(19), require(8 /* Symbol */), require(3), require(71), require(4), require(13), require(32), require(97), require(33), require(26));
+        var i = require(53),
+            GObject = require(1),
+            r = o(require(358)),
+            s = require(123);
+        const l = require(393),
+            c = require(392),
+            d = require(1165),
+            u = require(135);
         function p(e, t, n, o, i, a, r, s) {
             ((this._elements = []),
                 (this._availableProperties = e || []),
@@ -22,7 +22,7 @@ module.exports = function (e, t, n) {
                 (this._statType = r),
                 (this._panelClass = s));
         }
-        (a.GObject.inherit(p, s),
+        (GObject.GObject.inherit(p, s),
             (p.PropertySet = {
                 BorderHeadMarker: "_bhm",
                 BorderTailMarker: "_btm",
@@ -45,7 +45,7 @@ module.exports = function (e, t, n) {
             (p.prototype._toolbarIcon = null),
             (p.prototype._toolbarTooltip = null),
             (p.prototype._tooltips = null),
-            (p.prototype._isEditing = !1),
+            (p.prototype._isEditing = false),
             (p.prototype.init = function (e, t) {
                 ((this._panel = e), this._panel.addClass(this._panelClass));
                 var n = function (e) {
@@ -62,8 +62,8 @@ module.exports = function (e, t, n) {
                                     .attr("data-property", e)
                                     .toggleClass("g-disabled", !this._getAppManager().isCommentingEditingEnabled())
                                     .gPatternChooser({
-                                        types: [a.GColor],
-                                        singleOption: !0,
+                                        types: [GObject.GColor],
+                                        singleOption: true,
                                         onOpen: function () {
                                             gDesigner.stats("annotations_open_patternchooser", o());
                                         },
@@ -75,34 +75,34 @@ module.exports = function (e, t, n) {
                                         try {
                                             (t._document.getEditor().hideSelection(), (t._chooserElem = $(this)));
                                         } finally {
-                                            t.setIsEditing(!0);
+                                            t.setIsEditing(true);
                                         }
                                     })
                                     .on("chooserclose", function (e, n, o) {
                                         try {
                                             (gDesigner.getWorkspace().getStyleEdManager().getOverlayLock(o)
                                                 ? n()
-                                                : ((t._styleEdOn = !1),
+                                                : ((t._styleEdOn = false),
                                                   gDesigner.getWorkspace().getStyleEdManager().deactivateEditor(),
                                                   t._document && t._document.getEditor().resetHideSelection()),
                                                 (t._chooserElem = null));
                                         } finally {
-                                            t.setIsEditing(!1);
+                                            t.setIsEditing(false);
                                         }
                                     })
                                     .on("patternchange", function (n, o, i, r, s, l) {
                                         if (t._getAppManager().isCommentingEditingEnabled()) {
                                             var c = ["_vs"],
-                                                d = [!0];
+                                                d = [true];
                                             (void 0 !== o && (c.push("_pt"), d.push(o)),
                                                 "number" == typeof i && (c.push("_op"), d.push(i)));
                                             var u = null;
-                                            (s && ((u = { chooserOn: !0 }), null != l && (u.activeStopIdx = l)),
+                                            (s && ((u = { chooserOn: true }), null != l && (u.activeStopIdx = l)),
                                                 t._assignProperties(
                                                     c,
                                                     d,
-                                                    a.GLocale.get(
-                                                        new a.GLocaleKey("GAnnotationProperties", "text.change-annotation-style")
+                                                    GObject.GLocale.get(
+                                                        new GObject.GLocaleKey("GAnnotationProperties", "text.change-annotation-style")
                                                     ),
                                                     r,
                                                     e,
@@ -124,18 +124,18 @@ module.exports = function (e, t, n) {
                             return (
                                 i
                                     .find("span.preview.g-button")
-                                    .attr("data-title", a.GLocale.get(new a.GLocaleKey("GAnnotationProperties", this._tooltips[e]))),
+                                    .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationProperties", this._tooltips[e]))),
                                 i
                                     .find("div.eyedropper")
                                     .attr(
                                         "data-title",
-                                        a.GLocale.get(new a.GLocaleKey("GAnnotationProperties", this._tooltips[e + "dropper"]))
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationProperties", this._tooltips[e + "dropper"]))
                                     ),
                                 (n =
                                     e === p.PropertySet.BorderLayer
-                                        ? new a.GLocaleKey("GStylable", "layer.border")
-                                        : new a.GLocaleKey("GStylable", "layer.fill")),
-                                i.append($("<span/>").addClass("layer-title").text(a.GLocale.get(n))),
+                                        ? new GObject.GLocaleKey("GStylable", "layer.border")
+                                        : new GObject.GLocaleKey("GStylable", "layer.fill")),
+                                i.append($("<span/>").addClass("layer-title").text(GObject.GLocale.get(n))),
                                 i
                             );
                         }
@@ -144,10 +144,10 @@ module.exports = function (e, t, n) {
                                 if (this._getAppManager().isCommentingEditingEnabled()) {
                                     gDesigner.stats("annotations_line-width", this._statType);
                                     var i = $(n).gUnitBox("value"),
-                                        r = i ? i.toUnit(a.GLength.Unit.PX) : null;
+                                        r = i ? i.toUnit(GObject.GLength.Unit.PX) : null;
                                     if (null !== r && r >= 0) {
                                         const n = ["_vs", e],
-                                            i = [!0, r],
+                                            i = [true, r],
                                             a = void 0,
                                             s = p.PropertyTarget.BorderLayer;
                                         (o ? this._recordPendingUpdateForSelection(e, n, i, a, s) : this._cleanPendingUpdateForSelection(e),
@@ -157,11 +157,11 @@ module.exports = function (e, t, n) {
                             };
                             return $("<input>")
                                 .attr("data-property", e)
-                                .attr("data-title", a.GLocale.get(new a.GLocaleKey("GAnnotationProperties", this._tooltips[e])))
+                                .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationProperties", this._tooltips[e])))
                                 .toggleClass("g-disabled", !this._getAppManager().isCommentingEditingEnabled())
                                 .prop("disabled", !this._getAppManager().isCommentingEditingEnabled())
                                 .on("change", function () {
-                                    n(this, !0);
+                                    n(this, true);
                                 })
                                 .blur(function () {
                                     n(this);
@@ -176,7 +176,7 @@ module.exports = function (e, t, n) {
                                     (gDesigner.stats("annotations_border-marker_".concat(i), o ? "on" : "off"),
                                         t._assignProperty(
                                             e,
-                                            o ? a.GStylable.BorderMarker.Arrow : null,
+                                            o ? GObject.GStylable.BorderMarker.Arrow : null,
                                             void 0,
                                             void 0,
                                             p.PropertyTarget.BorderLayer
@@ -196,8 +196,8 @@ module.exports = function (e, t, n) {
                                     .append(
                                         $("<span>").text(
                                             e === p.PropertySet.BorderTailMarker
-                                                ? a.GLocale.get(new a.GLocaleKey("GAnnotationProperties", "text.end-arrow"))
-                                                : a.GLocale.get(new a.GLocaleKey("GAnnotationProperties", "text.start-arrow"))
+                                                ? GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationProperties", "text.end-arrow"))
+                                                : GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationProperties", "text.start-arrow"))
                                         )
                                     )
                             );
@@ -244,7 +244,7 @@ module.exports = function (e, t, n) {
                     (this._toolbarButton = $("<button>")
                         .attr("class", "toolbar-button icon " + this._toolbarIcon)
                         .toggleClass("g-disabled", !this._getAppManager().isCommentingEditingEnabled())
-                        .attr("data-title", a.GLocale.get(new a.GLocaleKey("GAnnotationProperties", this._toolbarTooltip)))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationProperties", this._toolbarTooltip)))
                         .on("click", () => {
                             if (
                                 (gDesigner.stats("annotations_click_toolbar-btn", this._statType),
@@ -252,8 +252,8 @@ module.exports = function (e, t, n) {
                             ) {
                                 var e = gDesigner.getToolManager().getTool(this._propertyTool);
                                 e === gDesigner.getToolManager().getActiveTool()
-                                    ? gDesigner.getToolManager().activateTool(i.GPointerTool, null, !0)
-                                    : gDesigner.getToolManager().activateTool(e, null, !0);
+                                    ? gDesigner.getToolManager().activateTool(i.GPointerTool, null, true)
+                                    : gDesigner.getToolManager().activateTool(e, null, true);
                             }
                         })
                         .data("toolClass", this._propertyTool)
@@ -274,7 +274,7 @@ module.exports = function (e, t, n) {
                         gDesigner.getFileReviewManager().removeEventListener(d.UpdateEvent, this._handleReviewUpdate, this),
                         gDesigner.removeEventListener(u, this._settingChanged, this),
                         this._document.getScene() &&
-                            this._document.getScene().removeEventListener(a.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
+                            this._document.getScene().removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
                         this._document.removeEventListener(l, this._collaborationEvent, this),
                         (this._document = null)),
                     (this._elements = []),
@@ -288,8 +288,8 @@ module.exports = function (e, t, n) {
                     )
                         for (var o = 0; o < t.length; ++o) {
                             var i = t[o];
-                            ((i instanceof a.GStyle && n && n instanceof this._propertyTool) ||
-                                (i instanceof this._propertyClass && i.hasMixin(a.GAnnotation))) &&
+                            ((i instanceof GObject.GStyle && n && n instanceof this._propertyTool) ||
+                                (i instanceof this._propertyClass && i.hasMixin(GObject.GAnnotation))) &&
                                 this._elements.push(i);
                         }
                     if (this._elements.length)
@@ -297,14 +297,14 @@ module.exports = function (e, t, n) {
                             (this._document = e),
                             this._document
                                 .getScene()
-                                .addEventListener(a.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                                .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                             this._document.addEventListener(l, this._collaborationEvent, this),
                             this._updateProperties(),
                             this._updateTouchComponents(),
-                            !0
+                            true
                         );
                 }
-                return !1;
+                return false;
             }),
             (p.prototype._collaborationEvent = async function (e) {
                 switch (e.type) {
@@ -345,7 +345,7 @@ module.exports = function (e, t, n) {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : null;
                 function t(e) {
                     const t = this._pendingUpdates.get(e);
-                    t && this._assignProperties(t.props, t.values, t.title, !1, t.target);
+                    t && this._assignProperties(t.props, t.values, t.title, false, t.target);
                 }
                 e
                     ? t.call(this, e)
@@ -358,15 +358,15 @@ module.exports = function (e, t, n) {
                 if (!this._document.getScene()) return void console.warn("Scene is null");
                 var e = this._elements[0];
                 i.GElementEditor.getEditor(e);
-                const t = !e.hasMixin(a.GAnnotation) || r.default.isOwner(gDesigner.getSyncUser(), e),
+                const t = !e.hasMixin(GObject.GAnnotation) || r.default.isOwner(gDesigner.getSyncUser(), e),
                     n = this._getAppManager().isCommentingEditingEnabled();
                 if (this._availableProperties.indexOf(p.PropertySet.FillLayer) >= 0) {
                     var o = e.getPaintLayers().getFillLayers()[0];
                     (this._panel
                         .find('[data-property="'.concat(p.PropertySet.FillLayer, '"]'))
-                        .gPatternChooser("setPattern", o ? o.getProperty("_pt", !1, !1, !0) : null)
-                        .gPatternChooser("value", o ? o.getProperty("_pt", !1, !1, !0) : null)
-                        .gPatternChooser("opacity", o ? o.getProperty("_op", !1, !1, !0) : null),
+                        .gPatternChooser("setPattern", o ? o.getProperty("_pt", false, false, true) : null)
+                        .gPatternChooser("value", o ? o.getProperty("_pt", false, false, true) : null)
+                        .gPatternChooser("opacity", o ? o.getProperty("_op", false, false, true) : null),
                         t && n
                             ? this._panel.find('[data-property="'.concat(p.PropertySet.FillLayer, '"]')).removeClass("g-disabled")
                             : this._panel.find('[data-property="'.concat(p.PropertySet.FillLayer, '"]')).addClass("g-disabled"));
@@ -375,9 +375,9 @@ module.exports = function (e, t, n) {
                     o = e.getPaintLayers().getBorderLayers()[0];
                     (this._panel
                         .find('[data-property="'.concat(p.PropertySet.BorderLayer, '"]'))
-                        .gPatternChooser("setPattern", o ? o.getProperty("_pt", !1, !1, !0) : null)
-                        .gPatternChooser("value", o ? o.getProperty("_pt", !1, !1, !0) : null)
-                        .gPatternChooser("opacity", o ? o.getProperty("_op", !1, !1, !0) : null),
+                        .gPatternChooser("setPattern", o ? o.getProperty("_pt", false, false, true) : null)
+                        .gPatternChooser("value", o ? o.getProperty("_pt", false, false, true) : null)
+                        .gPatternChooser("opacity", o ? o.getProperty("_op", false, false, true) : null),
                         t && n
                             ? this._panel.find('[data-property="'.concat(p.PropertySet.BorderLayer, '"]')).removeClass("g-disabled")
                             : this._panel.find('[data-property="'.concat(p.PropertySet.BorderLayer, '"]')).addClass("g-disabled"));
@@ -387,11 +387,11 @@ module.exports = function (e, t, n) {
                         l = this._panel.find('[data-property="'.concat(p.PropertySet.BorderWidth, '"]'));
                     (l
                         .gUnitBox({
-                            unit: this._document.getScene().$ut === a.GLength.Unit.PX ? a.GLength.Unit.PX : a.GLength.Unit.PT,
+                            unit: this._document.getScene().$ut === GObject.GLength.Unit.PX ? GObject.GLength.Unit.PX : GObject.GLength.Unit.PT,
                             minValue: 0,
                         })
-                        .gUnitBox("value", null !== s ? new a.GLength.parseLength(s, a.GLength.Unit.PT) : null),
-                        t && n ? l.removeClass("g-disabled").attr("disabled", !1) : l.addClass("g-disabled").attr("disabled", !0));
+                        .gUnitBox("value", null !== s ? new GObject.GLength.parseLength(s, GObject.GLength.Unit.PT) : null),
+                        t && n ? l.removeClass("g-disabled").attr("disabled", false) : l.addClass("g-disabled").attr("disabled", true));
                 }
                 [p.PropertySet.BorderHeadMarker, p.PropertySet.BorderTailMarker]
                     .filter((e) => this._availableProperties.indexOf(e) >= 0 || this._availableProperties.includes("arrows"))
@@ -400,8 +400,8 @@ module.exports = function (e, t, n) {
                             a = this._panel.find('[data-property="' + o + '"]');
                         (a.prop("checked", !!i),
                             t && n
-                                ? (a.removeClass("g-disabled"), a.attr("disabled", !1))
-                                : (a.addClass("g-disabled"), a.attr("disabled", !0)));
+                                ? (a.removeClass("g-disabled"), a.attr("disabled", false))
+                                : (a.addClass("g-disabled"), a.attr("disabled", true)));
                     });
             }),
             (p.prototype._assignProperty = function (e, t, n, o, i, a) {
@@ -416,14 +416,14 @@ module.exports = function (e, t, n) {
                             var d;
                             (i === p.PropertyTarget.FillLayer
                                 ? ((d = this._elements[c].getPaintLayers().getFillLayers()[0]) ||
-                                      ((d = new a.GStylable.FillPaintLayer()), this._elements[c].getPaintLayers().appendChild(d)),
+                                      ((d = new GObject.GStylable.FillPaintLayer()), this._elements[c].getPaintLayers().appendChild(d)),
                                   (l = $.extend({ fillLayerIndex: d.getParent().getIndexOfChild(d) }, l || r)))
                                 : i === p.PropertyTarget.BorderLayer
                                   ? ((d = this._elements[c].getPaintLayers().getBorderLayers()[0]) ||
-                                        ((d = new a.GStylable.BorderPaintLayer()), this._elements[c].getPaintLayers().appendChild(d)),
+                                        ((d = new GObject.GStylable.BorderPaintLayer()), this._elements[c].getPaintLayers().appendChild(d)),
                                     (l = $.extend({ borderLayerIndex: d.getParent().getIndexOfChild(d) }, l || r)))
                                   : (d = this._elements[c]),
-                                d && d.setProperties(e, t, !1, !1, o));
+                                d && d.setProperties(e, t, false, false, o));
                         }
                     } finally {
                         o || s.commitTransaction(n, l);
@@ -439,5 +439,5 @@ module.exports = function (e, t, n) {
             (p.prototype.toString = function () {
                 return "[Object GAnnotationProperties]";
             }),
-            (e.exports = p));
+            (module.exports = p));
     };

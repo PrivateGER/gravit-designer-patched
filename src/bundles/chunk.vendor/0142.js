@@ -1,7 +1,7 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i() {}
             ((i.prototype.now = function () {
                 return new Date().getTime();
             }),
-                (e.exports = new i()));
+                (module.exports = new i()));
         };

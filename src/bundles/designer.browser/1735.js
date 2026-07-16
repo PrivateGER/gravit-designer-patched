@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(168), n(4), n(41), n(13), n(169));
-        var o = n(1);
-        const i = n(238),
+        (require(168 /* PDFFetchStream */), require(4), require(41), require(13), require(169 /* PDFNetworkStream */));
+        var GObject = require(1);
+        const i = require(238),
             a = (e) => {
                 e.empty().append(
                     $("<div/>")
@@ -37,11 +37,11 @@ module.exports = function (e, t, n) {
                                         (n.clearItems(),
                                         t
                                             .getChildren()
-                                            .filter((e) => e instanceof o.GPage && e.isVisible())
+                                            .filter((e) => e instanceof GObject.GPage && e.isVisible())
                                             .reduce(
                                                 (e, t) => (
                                                     e.createAddItem(t.getLabel(), () => {
-                                                        t.setFlag(o.GNode.Flag.Active);
+                                                        t.setFlag(GObject.GNode.Flag.Active);
                                                     }),
                                                     e
                                                 ),
@@ -68,11 +68,11 @@ module.exports = function (e, t, n) {
                         n = t.data("options") || {};
                     return (
                         n.scene !== e &&
-                            (n.scene && n.scene.removeEventListener(o.GNode.AfterFlagChangeEvent, s._afterFlagChangeEvent, this),
+                            (n.scene && n.scene.removeEventListener(GObject.GNode.AfterFlagChangeEvent, s._afterFlagChangeEvent, this),
                             (n.scene = e),
                             e &&
                                 (s._activatePage.call(this, e.getActivePage()),
-                                e.addEventListener(o.GNode.AfterFlagChangeEvent, s._afterFlagChangeEvent, this))),
+                                e.addEventListener(GObject.GNode.AfterFlagChangeEvent, s._afterFlagChangeEvent, this))),
                         t.data("options", n),
                         this
                     );
@@ -83,20 +83,20 @@ module.exports = function (e, t, n) {
                     const t = (e.data("options") || {}).scene;
                     t &&
                         (s._activatePage.call(this, t.getActivePage()),
-                        t.hasEventListeners(o.GNode.AfterFlagChangeEvent, s._afterFlagChangeEvent, this) ||
-                            t.addEventListener(o.GNode.AfterFlagChangeEvent, s._afterFlagChangeEvent, this));
+                        t.hasEventListeners(GObject.GNode.AfterFlagChangeEvent, s._afterFlagChangeEvent, this) ||
+                            t.addEventListener(GObject.GNode.AfterFlagChangeEvent, s._afterFlagChangeEvent, this));
                 },
                 release: function () {
                     const e = $(this),
                         t = e.data("options");
                     return (
-                        t && t.scene && t.scene.removeEventListener(o.GNode.AfterFlagChangeEvent, s._afterFlagChangeEvent, this),
+                        t && t.scene && t.scene.removeEventListener(GObject.GNode.AfterFlagChangeEvent, s._afterFlagChangeEvent, this),
                         e.remove(),
                         this
                     );
                 },
                 _afterFlagChangeEvent: function (e) {
-                    e.node instanceof o.GPage && e.flag === o.GNode.Flag.Active && s._activatePage.call(this, e.node);
+                    e.node instanceof GObject.GPage && e.flag === GObject.GNode.Flag.Active && s._activatePage.call(this, e.node);
                 },
                 _activatePage: function (e) {
                     $(this)

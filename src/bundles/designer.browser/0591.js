@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o() {}
-        (n(30),
+        (require(30),
             Object.assign(o, {
                 SETUP: { ENDPOINT: "SETUP_URL_ENDPOINT" },
                 COMMAND_SAVE: {
@@ -22,5 +22,5 @@ module.exports = function (e, t, n) {
                     AUTOSAVE_FILE_CONFLICT: "AUTOSAVE_FILE_CONFLICT",
                 },
             }),
-            (e.exports = o));
+            (module.exports = o));
     };

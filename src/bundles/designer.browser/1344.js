@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16),
-            i = n(15),
-            a = n(1),
-            r = o(n(18)),
-            s = o(n(31)),
-            l = n(198);
+        var o = require(16),
+            GPlatform = require(15),
+            GObject = require(1),
+            r = o(require(18 /* GCategory */)),
+            s = o(require(31)),
+            SidebarsIds = require(198);
         class c extends s.default {
             constructor(e) {
-                (super(), (this._type = e), (this._title = new a.GLocaleKey("GCycleThroughLayersAction", "title.".concat(this._type))));
+                (super(), (this._type = e), (this._title = new GObject.GLocaleKey("GCycleThroughLayersAction", "title.".concat(this._type))));
             }
             getId() {
                 return "".concat(c.ID, ".").concat(this._type);
@@ -22,20 +22,20 @@ module.exports = function (e, t, n) {
             getShortcut() {
                 switch (this._type) {
                     case c.Type.Next:
-                        return [i.GKey.Constant.TAB];
+                        return [GPlatform.GKey.Constant.TAB];
                     case c.Type.Previous:
-                        return [i.GKey.Constant.SHIFT, i.GKey.Constant.TAB];
+                        return [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.TAB];
                     default:
                         return null;
                 }
             }
             isVisible() {
-                return !1;
+                return false;
             }
             execute() {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : c.Mode.Level;
                 const t = gDesigner.getLeftSidebars().getActiveSidebar(),
-                    n = gDesigner.getLeftSidebars().getSidebar(l.SidebarsIds.GOutlineSidebar),
+                    n = gDesigner.getLeftSidebars().getSidebar(SidebarsIds.SidebarsIds.GOutlineSidebar),
                     o = n.getLayerPanel(),
                     i = o.gLayerPanel("getCurrentFocusedNode");
                 if (!i || t !== n.getId()) return;
@@ -43,8 +43,8 @@ module.exports = function (e, t, n) {
                 if (r) {
                     const e = o.gLayerPanel("getItem", i),
                         t = o.gLayerPanel("getItem", r);
-                    (e.removeFlag(a.GNode.Flag.Selected),
-                        t.setFlag(a.GNode.Flag.Selected),
+                    (e.removeFlag(GObject.GNode.Flag.Selected),
+                        t.setFlag(GObject.GNode.Flag.Selected),
                         o.gLayerPanel("setCurrentFocusedNode", r),
                         o.gLayerPanel("relayout"));
                 }
@@ -86,5 +86,5 @@ module.exports = function (e, t, n) {
         ((c.ID = "view.cycle-through-layers"),
             (c.Type = { Next: "next", Previous: "previous" }),
             (c.Mode = { Focus: "focus", Level: "level" }),
-            (e.exports = c));
+            (module.exports = c));
     };

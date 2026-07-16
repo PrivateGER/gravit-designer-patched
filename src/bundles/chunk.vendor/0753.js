@@ -1,31 +1,31 @@
-module.exports = function (e, t, i) {
-            var n = i(64),
-                r = i(150),
-                o = i(657),
-                a = i(99),
-                s = i(2),
-                l = i(0),
-                h = i(24),
-                A = i(52),
-                c = i(275),
-                p = i(36),
-                u = i(77),
-                d = i(5),
-                g = i(164),
-                f = i(66),
-                m = i(332),
-                y = i(167),
-                _ = i(162),
-                v = i(45),
-                b = i(39),
-                C = i(9),
-                w = i(47),
-                E = i(155);
+module.exports = function (module, exports, require) {
+            var n = require(64),
+                r = require(150),
+                o = require(657),
+                a = require(99),
+                s = require(2),
+                IsFiniteNonNegativeNumber = require(0),
+                h = require(24),
+                A = require(52),
+                c = require(275),
+                p = require(36),
+                u = require(77),
+                d = require(5),
+                g = require(164),
+                f = require(66),
+                m = require(332),
+                y = require(167),
+                _ = require(162),
+                v = require(45),
+                b = require(39),
+                String = require(9),
+                w = require(47),
+                E = require(155);
 
             function B() {
                 m.call(this);
             }
-            (l.inherit(B, m),
+            (IsFiniteNonNegativeNumber.inherit(B, m),
                 (B.prototype._pathsGraphRef = null),
                 (B.prototype._dpathRef = null),
                 (B.prototype._pathBaseRef = null),
@@ -34,10 +34,10 @@ module.exports = function (e, t, i) {
                 (B.prototype._refPt = null),
                 (B.prototype._mouseDownPartInfo = null),
                 (B.prototype._graphEditor = null),
-                (B.prototype._released = !0),
-                (B.prototype._dragStarted = !1),
+                (B.prototype._released = true),
+                (B.prototype._dragStarted = false),
                 (B.prototype._dragStartPt = null),
-                (B.prototype._firstAlt = !1),
+                (B.prototype._firstAlt = false),
                 (B.Transaction = {
                     NoTransaction: 0,
                     InsertPoint: 1,
@@ -62,7 +62,7 @@ module.exports = function (e, t, i) {
                 }),
                 (B.prototype._cursor = null),
                 (B.prototype._lastMouseEvent = null),
-                (B.prototype._deactivationAllowed = !0),
+                (B.prototype._deactivationAllowed = true),
                 (B.prototype._cached = null),
                 (B.prototype._getRelatedItemClass = function () {
                     return _;
@@ -84,7 +84,7 @@ module.exports = function (e, t, i) {
                             n.addEventListener(r, this._modifiersChanged, this)),
                         (this._cursor = A.PenStart),
                         (this._transactionType = B.Transaction.NoTransaction),
-                        this._editor.setPathResize(!1, !0));
+                        this._editor.setPathResize(false, true));
                 }),
                 (B.prototype.deactivate = function (e, t) {
                     (this._checkMode(),
@@ -96,7 +96,7 @@ module.exports = function (e, t, i) {
                         this._finishTransaction(),
                         this._allowDeactivation(),
                         this._reset(),
-                        this._editor && (this._editor.getGuides().invalidate(), t || this._editor.setPathResize(!0)),
+                        this._editor && (this._editor.getGuides().invalidate(), t || this._editor.setPathResize(true)),
                         m.prototype.deactivate.call(this, e, t),
                         e.removeEventListener(u.Down, this._mouseDown),
                         e.removeEventListener(u.Release, this._mouseRelease),
@@ -109,10 +109,10 @@ module.exports = function (e, t, i) {
                     return this._deactivationAllowed;
                 }),
                 (B.prototype._allowDeactivation = function () {
-                    this._deactivationAllowed = !0;
+                    this._deactivationAllowed = true;
                 }),
                 (B.prototype._blockDeactivation = function () {
-                    this._deactivationAllowed = !1;
+                    this._deactivationAllowed = false;
                 }),
                 (B.prototype._checkPathsGraphEditor = function () {
                     var e = this._editor.getSelection(),
@@ -139,10 +139,10 @@ module.exports = function (e, t, i) {
                         if (this._editPt) {
                             var t = null;
                             (this._mode == B.Mode.Append && e && (t = e.getAnchorPoints().getLastChild()),
-                                this._editPt != t && ((this._newPoint = !1), (this._editPt = null)));
+                                this._editPt != t && ((this._newPoint = false), (this._editPt = null)));
                         }
                         this._dpathRef = e;
-                    } else ((this._editPt = null), (this._newPoint = !1), (this._dpathRef = null));
+                    } else ((this._editPt = null), (this._newPoint = false), (this._dpathRef = null));
                 }),
                 (B.prototype._addPoint = function (e, t, i, n) {
                     if (this._graphEditor && !i) {
@@ -159,7 +159,7 @@ module.exports = function (e, t, i) {
                                     (n || this._dpathRef.getAnchorPoints().getLastChild().removeFlag(s.Flag.Selected),
                                         this._dpathRef.getAnchorPoints().appendChild(e),
                                         n || e.setFlag(s.Flag.Selected),
-                                        (this._newPoint = !0));
+                                        (this._newPoint = true));
                                 else {
                                     var l = new v();
                                     (l.setProperty("fpt", null),
@@ -226,10 +226,10 @@ module.exports = function (e, t, i) {
                         this._editor.updateByMousePosition(
                             new d(e.getProperty("x"), e.getProperty("y")),
                             null,
-                            !1,
+                            false,
                             this._view.getViewConfiguration()
                         ),
-                        this._editor.insertElements([i], !1, !0, !0),
+                        this._editor.insertElements([i], false, true, true),
                         i.setFlag(s.Flag.Selected),
                         e.setFlag(s.Flag.Selected),
                         this._finishTransaction(),
@@ -244,12 +244,12 @@ module.exports = function (e, t, i) {
                         var i = null;
                         if (
                             ((this._lastMouseEvent = e),
-                            (this._dragStarted = !1),
+                            (this._dragStarted = false),
                             (this._dragStartPt = null),
                             this._mouseMove(e),
                             (this._mDownTime = t),
-                            (this._released = !1),
-                            n.modifiers.optionKey && (this._firstAlt = !0),
+                            (this._released = false),
+                            n.modifiers.optionKey && (this._firstAlt = true),
                             this._blockDeactivation(),
                             this._checkMode(),
                             this._graphEditor && this._graphEditor.blockRemoval(),
@@ -257,7 +257,7 @@ module.exports = function (e, t, i) {
                             this._mode == B.Mode.Append)
                         )
                             if ((this._renewPreviewLink(), this._newPoint && this._graphEditor)) {
-                                this._firstAlt && this._editPt.setProperties(["ah", "tp"], [!0, v.AnchorPoint.Type.Symmetric]);
+                                this._firstAlt && this._editPt.setProperties(["ah", "tp"], [true, v.AnchorPoint.Type.Symmetric]);
                                 var r = this._getPartInfo(e.client);
                                 if (r)
                                     if (((this._mouseDownPartInfo = r), this._mouseDownPartInfo.id.type == c.PartType.Anchor)) {
@@ -285,15 +285,15 @@ module.exports = function (e, t, i) {
                                     (o = this._editor.getGuides().mapPoint(o, a.DetailMap.Mode.DetailOnFilterOn)),
                                     this._editor.getGuides().finishMap(),
                                     (i = this._constructNewPoint(e, o)),
-                                    this._addPoint(i, !0, !1));
+                                    this._addPoint(i, true, false));
                             }
                     }
                 }),
                 (B.prototype._constructNewPoint = function (e, t) {
                     var i = new v.AnchorPoint();
                     return (
-                        i.setProperties(["x", "y", "ah"], [t.getX(), t.getY(), !0]),
-                        n.modifiers.optionKey && i.setProperties(["ah", "tp"], [!0, v.AnchorPoint.Type.Symmetric]),
+                        i.setProperties(["x", "y", "ah"], [t.getX(), t.getY(), true]),
+                        n.modifiers.optionKey && i.setProperties(["ah", "tp"], [true, v.AnchorPoint.Type.Symmetric]),
                         i
                     );
                 }),
@@ -316,7 +316,7 @@ module.exports = function (e, t, i) {
                                     this._editor.getGuides().finishMap(),
                                     (i = this._view.getWorldTransform(this._view.getScene().getActivePage()).mapPoint(n)),
                                     (t = this._constructNewPoint(e, n)),
-                                    this._addPoint(t, !0, !1, !0),
+                                    this._addPoint(t, true, false, true),
                                     this._setCursorForPosition(null, i));
                             } else if (this._editPt)
                                 (this._graphEditor.requestInvalidation(),
@@ -412,7 +412,7 @@ module.exports = function (e, t, i) {
                             r == v.AnchorPoint.Type.Connector ||
                             (null == this._editPt.getPrevious() && null == this._editPt.getNext())
                         ) {
-                            this._editPt.setProperty("ah", !1);
+                            this._editPt.setProperty("ah", false);
                             var l = s.getX(),
                                 h = s.getY();
                             if (n.modifiers.optionKey)
@@ -433,12 +433,12 @@ module.exports = function (e, t, i) {
                         } else {
                             var d = s.getX() - o,
                                 g = s.getY() - a;
-                            this._editPt.setProperty("ah", !1);
+                            this._editPt.setProperty("ah", false);
                             var f = this._dragStartPt.getProperty("hrx");
                             t = null != f ? f + d : s.getX();
                             var m = this._dragStartPt.getProperty("hry");
                             ((i = null != m ? m + g : s.getY()),
-                                this._editPt.setProperty("ah", !1),
+                                this._editPt.setProperty("ah", false),
                                 this._editPt.setProperties(["tp", "hrx", "hry"], [v.AnchorPoint.Type.Asymmetric, t, i]));
                         }
                     }
@@ -465,15 +465,15 @@ module.exports = function (e, t, i) {
                         this._setCursorForPosition(A.PenDrag),
                         this._dragStartPt ||
                             ((this._dragStartPt = this._refPt ? this._refPt : this._editPt),
-                            this._editPt.setProperties(["ah", "tp"], [!1, v.AnchorPoint.Type.Symmetric]),
-                            this._editPt.getPrevious() && this._editPt.getPrevious().setProperty("ah", !1)),
-                        (this._dragStarted = !0),
+                            this._editPt.setProperties(["ah", "tp"], [false, v.AnchorPoint.Type.Symmetric]),
+                            this._editPt.getPrevious() && this._editPt.getPrevious().setProperty("ah", false)),
+                        (this._dragStarted = true),
                         this._updatePointProperties(e.client));
                 }),
                 (B.prototype._mouseDblClick = function (e) {
                     ((this._lastMouseEvent = null),
                         this._checkMode(),
-                        this._graphEditor && (this._graphEditor.updatePartSelection(!1), this._commitChanges()),
+                        this._graphEditor && (this._graphEditor.updatePartSelection(false), this._commitChanges()),
                         (this._mode = B.Mode.Edit),
                         this._setCursorForPosition(null, e.client));
                 }),
@@ -484,10 +484,10 @@ module.exports = function (e, t, i) {
                                 (this._editor.updateByMousePosition(
                                     e.client,
                                     this._view.getWorldTransform(this._scene),
-                                    !1,
+                                    false,
                                     this._view.getViewConfiguration()
                                 ),
-                                (this._released = !0),
+                                (this._released = true),
                                 this._graphEditor && this._mode == B.Mode.Edit)
                             )
                                 this._dragStarted || !this._refPt || this._editPt
@@ -507,8 +507,8 @@ module.exports = function (e, t, i) {
                                         this._dragStarted && this._pathBaseRef && this._pathBaseRef.getAnchorPoints().getLastChild()
                                             ? this._pathBaseRef.getAnchorPoints().getLastChild()
                                             : null;
-                                    (this._addPoint(this._editPt, !1, !0),
-                                        t && t.setProperty("ah", !1),
+                                    (this._addPoint(this._editPt, false, true),
+                                        t && t.setProperty("ah", false),
                                         this._graphEditor.requestInvalidation());
                                 }
                                 var i = null;
@@ -518,11 +518,11 @@ module.exports = function (e, t, i) {
                                     this._mouseDownPartInfo.id.type == c.PartType.Anchor
                                         ? (i = this._mouseDownPartInfo.id.point)
                                         : (this._startTransaction(B.Transaction.InsertPoint),
-                                          (i = this._graphEditor.splitEdge(this._mouseDownPartInfo, !0)),
+                                          (i = this._graphEditor.splitEdge(this._mouseDownPartInfo, true)),
                                           this._finishTransaction())),
                                     (this._mouseDownPartInfo = null),
                                     i
-                                        ? (this._graphEditor.updatePartSelection(!1),
+                                        ? (this._graphEditor.updatePartSelection(false),
                                           this._graphEditor.setActiveExtendingMode(E.ExtendingMode.Off),
                                           this._startTransaction(B.Transaction.InsertElement),
                                           this._graphEditor.insertOutgoingPathBase(i),
@@ -535,11 +535,11 @@ module.exports = function (e, t, i) {
                         } finally {
                             this._finishTransaction();
                         }
-                    ((this._released = !0),
-                        (this._dragStarted = !1),
+                    ((this._released = true),
+                        (this._dragStarted = false),
                         (this._dragStartPt = null),
                         (this._lastMouseEvent = null),
-                        (this._firstAlt = !1),
+                        (this._firstAlt = false),
                         this._allowDeactivation());
                 }),
                 (B.prototype._reset = function () {
@@ -547,7 +547,7 @@ module.exports = function (e, t, i) {
                         (this._dpathRef = null),
                         (this._graphRef = null),
                         (this._graphEditor = null),
-                        (this._newPoint = !1),
+                        (this._newPoint = false),
                         (this._editPt = null),
                         (this._dragStartPt = null),
                         (this._refPt = null),
@@ -565,7 +565,7 @@ module.exports = function (e, t, i) {
                             ? this._mouseMove(this._lastMouseEvent)
                             : this._mouseDrag(this._lastMouseEvent)
                         : e.changed.optionKey &&
-                          ((this._firstAlt = !1),
+                          ((this._firstAlt = false),
                           this._released
                               ? this._newPoint &&
                                 (this._editPt.setProperties(
@@ -579,7 +579,7 @@ module.exports = function (e, t, i) {
                     this._released &&
                         (this._checkMode(),
                         this._graphEditor &&
-                            (this._graphEditor.updatePartSelection(!1),
+                            (this._graphEditor.updatePartSelection(false),
                             this._graphEditor.setActiveExtendingMode(E.ExtendingMode.Off),
                             this._startTransaction(B.Transaction.InsertElement),
                             this._graphEditor.insertOutgoingPathBase(),
@@ -619,25 +619,25 @@ module.exports = function (e, t, i) {
                     try {
                         switch (this._transactionType) {
                             case B.Transaction.AppendPoint:
-                                this._editor.commitTransaction(C.get(new w("GPathsGraphTool", "action.append-point")));
+                                this._editor.commitTransaction(String.get(new w("GPathsGraphTool", "action.append-point")));
                                 break;
                             case B.Transaction.InsertElement:
-                                this._editor.commitTransaction(C.get(new w("GPathsGraphTool", "action.insert-elements")));
+                                this._editor.commitTransaction(String.get(new w("GPathsGraphTool", "action.insert-elements")));
                                 break;
                             case B.Transaction.InsertPoint:
-                                this._editor.commitTransaction(C.get(new w("GPathsGraphTool", "action.insert-point")));
+                                this._editor.commitTransaction(String.get(new w("GPathsGraphTool", "action.insert-point")));
                                 break;
                             case B.Transaction.MovePoint:
-                                this._editor.commitTransaction(C.get(new w("GPathsGraphTool", "action.move-point")));
+                                this._editor.commitTransaction(String.get(new w("GPathsGraphTool", "action.move-point")));
                                 break;
                             case B.Transaction.DeletePoint:
-                                this._editor.commitTransaction(C.get(new w("GPathsGraphTool", "action.delete-point")));
+                                this._editor.commitTransaction(String.get(new w("GPathsGraphTool", "action.delete-point")));
                                 break;
                             case B.Transaction.ModifyPointProperties:
-                                this._editor.commitTransaction(C.get(new w("GPathsGraphTool", "action.modify-point-properties")));
+                                this._editor.commitTransaction(String.get(new w("GPathsGraphTool", "action.modify-point-properties")));
                                 break;
                             case B.Transaction.ModifyPathProperties:
-                                this._editor.commitTransaction(C.get(new w("GPathsGraphTool", "action.modify-path-properties")));
+                                this._editor.commitTransaction(String.get(new w("GPathsGraphTool", "action.modify-path-properties")));
                         }
                     } finally {
                         this._transactionType = B.Transaction.NoTransaction;
@@ -681,7 +681,7 @@ module.exports = function (e, t, i) {
                                 (this._mouseDownPartInfo = r));
                         } else
                             (this._setCursorForPosition(A.PenStart),
-                                this._graphEditor.updatePartSelection(!1),
+                                this._graphEditor.updatePartSelection(false),
                                 (this._pathBaseRef = null),
                                 this._renewPreviewLink(),
                                 (this._mode = B.Mode.Append));
@@ -695,7 +695,7 @@ module.exports = function (e, t, i) {
                             null == this._refPt.getProperty("hry")) ||
                             (this._transactionType == B.Transaction.NoTransaction &&
                                 this._startTransaction(B.Transaction.ModifyPointProperties),
-                            this._refPt.setProperties(["ah", "hlx", "hly", "hrx", "hry"], [!1, null, null, null, null]),
+                            this._refPt.setProperties(["ah", "hlx", "hly", "hrx", "hry"], [false, null, null, null, null]),
                             this._finishTransaction(),
                             this._makePointMajor(this._refPt),
                             this._setCursorForPosition(A.PenMinus)),
@@ -749,5 +749,5 @@ module.exports = function (e, t, i) {
                 (B.prototype.toString = function () {
                     return "[Object GPathsGraphTool]";
                 }),
-                (e.exports = B));
+                (module.exports = B));
         };

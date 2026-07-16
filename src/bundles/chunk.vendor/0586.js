@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            e.exports = {
+            module.exports = {
                 UNKNOWN: -1,
                 IN_REVIEW: 0,
                 AWAITING_APPROVAL: 1,

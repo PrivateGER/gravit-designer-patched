@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(223),
-            a = n(21),
-            r = n(324),
-            s = n(37),
-            l = n(244),
-            c = n(117),
+        var o = require(25),
+            i = require(223),
+            a = require(21),
+            r = require(324),
+            s = require(37),
+            l = require(244),
+            c = require(117),
             d = r.ArrayBuffer,
             u = r.DataView,
             p = u.prototype,
@@ -16,8 +16,8 @@ module.exports = function (e, t, n) {
         o(
             {
                 target: "ArrayBuffer",
-                proto: !0,
-                unsafe: !0,
+                proto: true,
+                unsafe: true,
                 forced: a(function () {
                     return !new d(2).slice(1, void 0).byteLength;
                 }),

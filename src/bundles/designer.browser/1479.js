@@ -1,20 +1,20 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(271);
-        const o = n(10),
-            { IS_LOCALHOST: i, IS_RC: a } = n(231);
-        o.IS_TEAMS = "teams.coreldraw.app" === window.location.hostname;
+        require(271);
+        const designerConfig = require(10),
+            { IS_LOCALHOST: i, IS_RC: a } = require(231 /* IS_TRUNK */);
+        designerConfig.IS_TEAMS = "teams.coreldraw.app" === window.location.hostname;
         const r = window.location.hostname.endsWith(".ngrok.io");
-        (o.IS_TEAMS
-            ? (o.gApi.url = o.cloudTeamsURL)
+        (designerConfig.IS_TEAMS
+            ? (designerConfig.gApi.url = designerConfig.cloudTeamsURL)
             : i || r
-              ? (o.trunkwebcdr && (o.gApi.webcdr = o.cloudTrunkURL + "/api/webcdr"), (o.gApi.url = o.cloudTrunkURL))
-              : o.IS_BETA
-                ? (o.cloudBetaURL && (o.gApi.url = o.cloudBetaURL), o.betaWebcdr && (o.gApi.webcdr = o.betaWebcdr))
+              ? (designerConfig.trunkwebcdr && (designerConfig.gApi.webcdr = designerConfig.cloudTrunkURL + "/api/webcdr"), (designerConfig.gApi.url = designerConfig.cloudTrunkURL))
+              : designerConfig.IS_BETA
+                ? (designerConfig.cloudBetaURL && (designerConfig.gApi.url = designerConfig.cloudBetaURL), designerConfig.betaWebcdr && (designerConfig.gApi.webcdr = designerConfig.betaWebcdr))
                 : a
-                  ? (o.cloudRCURL && (o.gApi.url = o.cloudRCURL), o.stagingWebcdr && (o.gApi.webcdr = o.stagingWebcdr))
-                  : o.IS_TRUNK && ((o.gApi.url = o.cloudTrunkURL), o.trunkwebcdr && (o.gApi.webcdr = o.trunkwebcdr)),
-            !o.gApi.webcdr && o.webcdr && (o.gApi.webcdr = o.webcdr),
-            (window.gApi = o.gApi),
-            (e.exports = o));
+                  ? (designerConfig.cloudRCURL && (designerConfig.gApi.url = designerConfig.cloudRCURL), designerConfig.stagingWebcdr && (designerConfig.gApi.webcdr = designerConfig.stagingWebcdr))
+                  : designerConfig.IS_TRUNK && ((designerConfig.gApi.url = designerConfig.cloudTrunkURL), designerConfig.trunkwebcdr && (designerConfig.gApi.webcdr = designerConfig.trunkwebcdr)),
+            !designerConfig.gApi.webcdr && designerConfig.webcdr && (designerConfig.gApi.webcdr = designerConfig.webcdr),
+            (window.gApi = designerConfig.gApi),
+            (module.exports = designerConfig));
     };

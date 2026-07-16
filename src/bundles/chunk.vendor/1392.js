@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(12);
-            i(6);
+module.exports = function (module, exports, require) {
+            var n = require(12);
+            require(6);
 
             function r() {}
             ((r._slicedToArray = function (e, t) {
@@ -8,17 +8,17 @@ module.exports = function (e, t, i) {
                 if (Symbol.iterator in Object(e))
                     return (function (e, t) {
                         var i = [],
-                            n = !0,
-                            r = !1,
+                            n = true,
+                            r = false,
                             o = void 0;
                         try {
                             for (
                                 var a, s = e[Symbol.iterator]();
                                 !(n = (a = s.next()).done) && (i.push(a.value), !t || i.length !== t);
-                                n = !0
+                                n = true
                             );
                         } catch (e) {
-                            ((r = !0), (o = e));
+                            ((r = true), (o = e));
                         } finally {
                             try {
                                 !n && s.return && s.return();
@@ -133,5 +133,5 @@ module.exports = function (e, t, i) {
                         };
                     });
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

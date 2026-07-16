@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(290);
-        const { GObject: o, GLocale: i } = n(1),
-            a = n(1068);
+        require(290);
+        const { GObject: o, GLocale: i } = require(1 /* GObject */),
+            a = require(1068);
         function r(e) {
-            let { id: t, level: n = 0, name: o, description: i, status: r, pro: s = !1, assignable: l = !0, permissions: c } = e;
+            let { id: t, level: n = 0, name: o, description: i, status: r, pro: s = false, assignable: l = true, permissions: c } = e;
             (a.call(this),
                 (this.id = t),
                 (this.name = o),
@@ -58,5 +58,5 @@ module.exports = function (e, t, n) {
             (r.prototype.is = function (e) {
                 return this.getId() === e.id;
             }),
-            (e.exports = r));
+            (module.exports = r));
     };

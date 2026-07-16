@@ -1,22 +1,22 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        n(3);
-        var i = n(1),
-            a = o(n(443)),
-            r = n(10),
-            s = n(18),
-            l = n(31),
-            c = n(219),
-            d = n(85),
-            u = n(119);
-        const p = n(44),
+        var o = require(16);
+        require(3);
+        var GObject = require(1),
+            a = o(require(443)),
+            designerConfig = require(10),
+            GCategory = require(18),
+            l = require(31),
+            c = require(219),
+            d = require(85),
+            GCommonNames = require(119);
+        const GSystemDialog = require(44),
             { isExecutingOnMSTeamsSync: g } = a.default;
         function h(e, t) {
             ((this._locale = e), (this._title = h.Translations[e] || t));
         }
         ((h.Translations = ["English", "Deutsch", "中文", "Português", "Español", "Français"]),
-            i.GObject.inherit(h, l),
+            GObject.GObject.inherit(h, l),
             (h.ID = "language"),
             (h.prototype._locale = null),
             (h.prototype._title = null),
@@ -24,41 +24,41 @@ module.exports = function (e, t, n) {
                 return h.ID + "." + this._locale;
             }),
             (h.prototype.isCheckable = function () {
-                return !0;
+                return true;
             }),
             (h.prototype.isChecked = function () {
-                return i.GLocale.getLanguage() === this._locale;
+                return GObject.GLocale.getLanguage() === this._locale;
             }),
             (h.prototype.getTitle = function () {
                 return this._title;
             }),
             (h.prototype.getCategory = function () {
-                return s.CATEGORY_HELP_LANGUAGE;
+                return GCategory.CATEGORY_HELP_LANGUAGE;
             }),
             (h.prototype.getGroup = function () {
                 return "help/language";
             }),
             (h.prototype.isEnabled = function () {
-                return !0;
+                return true;
             }),
             (h.prototype.isVisible = function () {
                 return !g();
             }),
             (h.prototype.execute = function () {
-                if (i.GLocale.getLanguage() !== this._locale) {
+                if (GObject.GLocale.getLanguage() !== this._locale) {
                     let e = () => gDesigner.setSetting("language", this._locale),
                         t = () =>
-                            r.gApi
-                                .updateUser({ locale: i.GLocale.lookupLocale(this._locale) })
+                            designerConfig.gApi
+                                .updateUser({ locale: GObject.GLocale.lookupLocale(this._locale) })
                                 .then(() => e())
                                 .then(() => this._reloadApp())
-                                .catch((e) => p.alert(r.gApi.formatError(e)));
+                                .catch((e) => GSystemDialog.alert(designerConfig.gApi.formatError(e)));
                     gDesigner.getUser().then((n) => {
                         n
                             ? gDesigner.isAnonymous()
                                 ? (e(), this._reloadApp())
                                 : t()
-                            : u.performLogin().then((e) => {
+                            : GCommonNames.performLogin().then((e) => {
                                   e && t();
                               });
                     });
@@ -67,10 +67,10 @@ module.exports = function (e, t, n) {
             (h.prototype._reloadApp = function () {
                 gContainer.getRuntime() === d.Runtime.Browser || gContainer.getRuntime() === d.Runtime.PWA
                     ? location.reload()
-                    : new c(i.GLocale.get(new i.GLocaleKey("GNewDocumentDialog", "text.restart-app"))).open();
+                    : new c(GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.restart-app"))).open();
             }),
             (h.prototype.toString = function () {
                 return "[Object GSwitchLanguageAction]";
             }),
-            (e.exports = h));
+            (module.exports = h));
     };

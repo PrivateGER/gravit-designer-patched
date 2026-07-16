@@ -1,5 +1,5 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
         (function (t) {
-            e.exports = t;
+            module.exports = t;
         }).call(this, {});
     };

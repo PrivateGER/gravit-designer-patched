@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(30), n(8), n(3), n(4), n(32), n(33), n(26), n(125), n(126), n(114));
-        const o = n(604);
-        e.exports = class {
+        (require(19), require(30), require(8 /* Symbol */), require(3), require(4), require(32), require(33), require(26), require(125), require(126), require(114));
+        const GProfileDialog = require(604);
+        module.exports = class {
             constructor() {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 this._settings = e;
@@ -36,14 +36,14 @@ module.exports = function (e, t, n) {
                                     break;
                                 case "settings":
                                     let e = await gDesigner.getUser();
-                                    new o(e, "purchase").open();
+                                    new GProfileDialog(e, "purchase").open();
                                     break;
                                 case "purchase_flow":
                                     const { options: i = {} } = t,
-                                        { immediatePurchase: a = !1, closeable: r = !0 } = i;
+                                        { immediatePurchase: a = false, closeable: r = true } = i;
                                     (a &&
                                         Object.assign(i, {
-                                            autoClose: !0,
+                                            autoClose: true,
                                             paymentCallback: () => {
                                                 n();
                                             },
@@ -51,7 +51,7 @@ module.exports = function (e, t, n) {
                                         r ||
                                             Object.assign(i, {
                                                 paymentCallback: (e) => {
-                                                    let { licenseHasBeenUpgraded: t = !1 } = e;
+                                                    let { licenseHasBeenUpgraded: t = false } = e;
                                                     n({ licenseHasBeenUpgraded: t, closeable: r });
                                                 },
                                             }));
@@ -77,7 +77,7 @@ module.exports = function (e, t, n) {
                 );
             }
             close() {
-                let { licenseHasBeenUpgraded: e = !1, closeable: t = !0 } =
+                let { licenseHasBeenUpgraded: e = false, closeable: t = true } =
                     arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 (this._messageHandler && (t || e) && ($(window).unbind("message", this._messageHandler), this._iframe.remove()),
                     e && gDesigner.requestLicenseUpdate());

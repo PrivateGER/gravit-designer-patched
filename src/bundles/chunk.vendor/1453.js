@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(854),
-                r = i(293),
-                o = i(853),
-                a = i(855),
-                s = i(359),
-                l = i(602),
-                h = i(60),
-                A = i(28),
-                c = i(14);
+module.exports = function (module, exports, require) {
+            var n = require(854),
+                r = require(293),
+                o = require(853),
+                a = require(855),
+                s = require(359),
+                l = require(602),
+                h = require(60),
+                GStylable = require(28),
+                c = require(14);
 
             function p(e) {
                 this._shape = e;
@@ -19,9 +19,9 @@ module.exports = function (e, t, i) {
                             a = this;
                         t && (a = this._shape.makeSharp(e, o, this._shape));
                         var s = this._shape.getPatternBBox(e.isIncludingInvisible());
-                        if (s && r.$_ba !== A.BorderAlignment.Inside) {
+                        if (s && r.$_ba !== GStylable.BorderAlignment.Inside) {
                             var l = r.$_bw;
-                            if ((r.$_ba === A.BorderAlignment.Center && (l *= 0.5), this._shape.$trf))
+                            if ((r.$_ba === GStylable.BorderAlignment.Center && (l *= 0.5), this._shape.$trf))
                                 l /= this._shape.$trf.getScaleFactor();
                             s = s.expanded(l, l, l, l);
                         }
@@ -30,9 +30,9 @@ module.exports = function (e, t, i) {
                             h.paint &&
                             void 0 !== o.putVertices(a) &&
                             (this._stroke(e, r, h),
-                            r.$_ba === A.BorderAlignment.Inside
+                            r.$_ba === GStylable.BorderAlignment.Inside
                                 ? this._makeInsideBorder(e)
-                                : r.$_ba === A.BorderAlignment.Outside && this._makeOutsideBorder(e),
+                                : r.$_ba === GStylable.BorderAlignment.Outside && this._makeOutsideBorder(e),
                             i && this._paintBorderMarkers(e, h, r));
                     }
                 }),
@@ -46,8 +46,8 @@ module.exports = function (e, t, i) {
                         a = o.putVertices(t),
                         s = this._getBorderTransform(n, i),
                         l = null;
-                    (s && s.invertible() && (l = o.setTransform(o.getTransform(!0).multiplied(s))),
-                        r || !1 === a ? o.strokeVertices(i.paint, n.$_bw) : o.fillVertices(i.paint),
+                    (s && s.invertible() && (l = o.setTransform(o.getTransform(true).multiplied(s))),
+                        r || false === a ? o.strokeVertices(i.paint, n.$_bw) : o.fillVertices(i.paint),
                         l && o.setTransform(l));
                 }),
                 (p.prototype._makeInsideBorder = function (e) {
@@ -93,12 +93,12 @@ module.exports = function (e, t, i) {
                 }),
                 (p.prototype._stroke = function (e, t, i) {
                     var n = t.$_bw;
-                    t.$_ba !== A.BorderAlignment.Center && (n *= 2);
+                    t.$_ba !== GStylable.BorderAlignment.Center && (n *= 2);
                     var r = this._shape.calculateMitterLimit(t),
                         o = e.canvas,
                         a = null,
                         s = this._getBorderTransform(t, i);
-                    (s && s.invertible() && (a = o.setTransform(o.getTransform(!0).multiplied(s))),
+                    (s && s.invertible() && (a = o.setTransform(o.getTransform(true).multiplied(s))),
                         o.strokeVertices(i.paint, n, t.$_bds, t.$_blc, t.$_blj, r, t.$_op, t.$_bl !== c.BlendMode ? t.$_bl : null),
                         a && o.setTransform(a));
                 }),
@@ -113,5 +113,5 @@ module.exports = function (e, t, i) {
                         i
                     );
                 }),
-                (e.exports = p));
+                (module.exports = p));
         };

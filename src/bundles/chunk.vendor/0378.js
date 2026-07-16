@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i(e) {
                 ((this.char = e), (this.state = {}), (this.activeState = null));
             }
@@ -84,7 +84,7 @@ module.exports = function (e, t) {
                 (l.prototype.composeRUD = function (e) {
                     var t = this,
                         i = e.map(function (e) {
-                            return t[e[0]].apply(t, e.slice(1).concat(!0));
+                            return t[e[0]].apply(t, e.slice(1).concat(true));
                         }),
                         n = function (e) {
                             return "object" == typeof e && e.hasOwnProperty("FAIL");
@@ -150,7 +150,7 @@ module.exports = function (e, t) {
                     (this.events.newToken.subscribe(function (r, o) {
                         var a = [r, o],
                             s = [r, o];
-                        if (null === t || !0 === t.apply(n, a)) {
+                        if (null === t || true === t.apply(n, a)) {
                             var l = i.apply(n, s);
                             r.setState(e, l);
                         }
@@ -174,7 +174,7 @@ module.exports = function (e, t) {
                         (this.lookahead = this.context.slice(e + 1)));
                 }),
                 (o.prototype.get = function (e) {
-                    switch (!0) {
+                    switch (true) {
                         case 0 === e:
                             return this.current;
                         case e < 0 && Math.abs(e) <= this.backtrack.length:
@@ -302,9 +302,9 @@ module.exports = function (e, t) {
                     }
                     return (this.dispatch("end", [this.tokens]), this.tokens);
                 }),
-                (e.exports.Tokenizer = l),
-                (e.exports.Token = i),
-                (e.exports.Event = a),
-                (e.exports.ContextRange = n),
-                (e.exports.ContextParams = o));
+                (module.exports.Tokenizer = l),
+                (module.exports.Token = i),
+                (module.exports.Event = a),
+                (module.exports.ContextRange = n),
+                (module.exports.ContextParams = o));
         };

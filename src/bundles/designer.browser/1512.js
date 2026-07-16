@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(1196), n(19), n(1197), n(180), n(181), n(8), n(134), n(218), n(189), n(190), n(191), n(192), n(4), n(32), n(38), n(33));
-        var o = n(176),
-            i = n(0);
-        n(10);
-        var a = n(237),
-            r = n(1117).saveAs,
+        (require(1196), require(19), require(1197), require(180), require(181), require(8 /* Symbol */), require(134), require(218), require(189), require(190), require(191), require(192), require(4), require(32), require(38), require(33));
+        var o = require(176),
+            IsFiniteNonNegativeNumber = require(0);
+        require(10 /* designerConfig */);
+        var GDocument = require(237),
+            r = require(1117).saveAs,
             s = null,
             l = null;
         function c() {
@@ -13,17 +13,17 @@ module.exports = function (e, t, n) {
         }
         function d(e) {
             return e
-                .queryPermission({ writable: !0 })
-                .then((t) => ("granted" !== t ? e.requestPermission({ writable: !0 }) : t))
+                .queryPermission({ writable: true })
+                .then((t) => ("granted" !== t ? e.requestPermission({ writable: true }) : t))
                 .then((e) => {
                     if ("granted" !== e) throw new Error("Cannot get write access");
                 });
         }
-        (i.inherit(c, a),
+        (IsFiniteNonNegativeNumber.inherit(c, GDocument),
             (c.Directory = function (e, t) {
-                (a.Directory.call(this, e), (this._dirHandle = t), (this._id = null));
+                (GDocument.Directory.call(this, e), (this._dirHandle = t), (this._id = null));
             }),
-            i.inherit(c.Directory, a.Directory),
+            IsFiniteNonNegativeNumber.inherit(c.Directory, GDocument.Directory),
             (c.Directory.prototype._dirHandle = null),
             (c.Directory.prototype._id = null),
             (c.Directory.prototype.getUniqueId = function () {
@@ -32,7 +32,7 @@ module.exports = function (e, t, n) {
             (c.Directory.prototype.addDirectory = async function (e) {
                 let t = null;
                 try {
-                    return ((t = await this._dirHandle.getDirectory(e, { create: !0 })), await d(t), new c.Directory(this._storage, t));
+                    return ((t = await this._dirHandle.getDirectory(e, { create: true })), await d(t), new c.Directory(this._storage, t));
                 } catch (t) {
                     throw new Error("Cannot create a directory: " + e);
                 }
@@ -40,15 +40,15 @@ module.exports = function (e, t, n) {
             (c.Directory.prototype.addFile = async function (e) {
                 let t = null;
                 try {
-                    return ((t = await this._dirHandle.getFile(e, { create: !0 })), await d(t), new c.Item(this._storage, null, t.name, t));
+                    return ((t = await this._dirHandle.getFile(e, { create: true })), await d(t), new c.Item(this._storage, null, t.name, t));
                 } catch (e) {
                     throw new Error("Cannot create a file");
                 }
             }),
             (c.Item = function (e, t, n, o) {
-                (a.Item.call(this, e), (this._data = t), (this._filename = n), (this._fileHandle = o));
+                (GDocument.Item.call(this, e), (this._data = t), (this._filename = n), (this._fileHandle = o));
             }),
-            i.inherit(c.Item, a.Item),
+            IsFiniteNonNegativeNumber.inherit(c.Item, GDocument.Item),
             (c.Item.prototype._data = null),
             (c.Item.prototype._filename = null),
             (c.Item.prototype._fileHandle = null),
@@ -86,16 +86,16 @@ module.exports = function (e, t, n) {
                 } else (r(new Blob([e]), this._filename), t && t());
             }),
             (c.prototype._isFileAPIAvailable = function () {
-                return !1;
+                return false;
             }),
             (c.prototype._hasDirectoryWriteAPI = function () {
                 return "function" == typeof window.chooseFileSystemEntries;
             }),
             (c.prototype.canChooseDirectory = function () {
-                return this._hasDirectoryWriteAPI() && !0;
+                return this._hasDirectoryWriteAPI() && true;
             }),
             (c.prototype.canPromptOpen = function () {
-                return !0;
+                return true;
             }),
             (c.prototype.canPromptSave = function () {
                 return this._isFileAPIAvailable();
@@ -110,13 +110,13 @@ module.exports = function (e, t, n) {
                 if (!this._isFileAPIAvailable() || !this.canChooseDirectory()) return;
                 var o = { type: l || "open-directory" };
                 let i = null;
-                var a = !1;
+                var a = false;
                 window
                     .chooseFileSystemEntries(o)
                     .then((e) => ((i = e), d(e)))
                     .then(() => {
                         let t = e(new c.Directory(this, i));
-                        return ((a = !0), t);
+                        return ((a = true), t);
                     })
                     .catch((e) => {
                         if (e instanceof DOMException && "SecurityError" === e.name) {
@@ -126,13 +126,13 @@ module.exports = function (e, t, n) {
                     });
             }),
             (c.prototype.openPrompt = function (e, t, n) {
-                let { disableFileSystemAccessAPI: i = !1, silent: a = !1 } =
+                let { disableFileSystemAccessAPI: i = false, silent: a = false } =
                     arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : {};
                 if (!i && this._isFileAPIAvailable()) {
                     var r = { multiple: !!n };
                     if (e.length > 0) {
                         const t = {};
-                        r.excludeAcceptAllOptions = !0;
+                        r.excludeAcceptAllOptions = true;
                         for (let n = 0, o = e.length; n < o; n++) {
                             const { mime: o, ext: i } = e[n];
                             o && i
@@ -210,7 +210,7 @@ module.exports = function (e, t, n) {
                     var i = { suggestedName: e };
                     if (t.length > 0) {
                         const e = {};
-                        i.excludeAcceptAllOptions = !0;
+                        i.excludeAcceptAllOptions = true;
                         for (let n = 0, o = t.length; n < o; n++) {
                             let { mime: o, ext: i } = t[n];
                             o && i
@@ -231,10 +231,10 @@ module.exports = function (e, t, n) {
                             })),
                             (i.types = n));
                     }
-                    var a = !1;
+                    var a = false;
                     window
                         .showSaveFilePicker(i)
-                        .then((e) => ((a = !0), n(new c.Item(this, null, e.name, e))))
+                        .then((e) => ((a = true), n(new c.Item(this, null, e.name, e))))
                         .catch((t) => {
                             if ((!a && !s && t instanceof TypeError && (s = "saveFile"), !a && t.code !== DOMException.ABORT_ERR))
                                 return this.download(e, n);
@@ -245,5 +245,5 @@ module.exports = function (e, t, n) {
             (c.prototype.download = function (e, t) {
                 return t(new c.Item(this, null, e));
             }),
-            (e.exports = c));
+            (module.exports = c));
     };

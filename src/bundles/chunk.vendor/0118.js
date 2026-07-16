@@ -1,7 +1,7 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i() {}
             ((i.prototype.destroy = function () {
                 throw new Error("not implemented");
             }),
-                (e.exports = i));
+                (module.exports = i));
         };

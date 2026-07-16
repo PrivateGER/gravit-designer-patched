@@ -1,32 +1,32 @@
-module.exports = function (e, t, i) {
-            var n = i(104),
-                r = i(112),
-                o = i(2),
-                a = i(76),
-                s = i(22),
-                l = i(28),
-                h = (i(75), i(7)),
-                A = i(72),
-                c = i(0),
-                p = i(45),
-                u = i(70),
-                d = i(95),
-                g = i(56),
-                f = i(69),
-                m = i(12),
-                y = i(6),
-                _ = i(5),
-                v = i(11),
-                b = i(14),
-                C = i(228),
-                w = i(652),
-                E = i(148),
-                B = i(510),
-                x = i(133),
-                P = i(122),
-                S = i(159),
-                T = i(103),
-                I = i(9),
+module.exports = function (module, exports, require) {
+            var n = require(104),
+                r = require(112),
+                o = require(2),
+                a = require(76),
+                s = require(22),
+                GStylable = require(28),
+                h = (require(75), require(7)),
+                A = require(72),
+                IsFiniteNonNegativeNumber = require(0),
+                p = require(45),
+                u = require(70),
+                d = require(95),
+                g = require(56),
+                f = require(69),
+                m = require(12),
+                y = require(6),
+                _ = require(5),
+                v = require(11),
+                b = require(14),
+                C = require(228),
+                w = require(652),
+                E = require(148),
+                B = require(510),
+                GScenePaintConfiguration = require(133),
+                P = require(122),
+                S = require(159),
+                DUMP_IMAGES = require(103),
+                String = require(9),
                 F = {},
                 R = function (e) {
                     return e
@@ -43,7 +43,7 @@ module.exports = function (e, t, i) {
 
             function D() {
                 (n.call(this),
-                    (this.temporaryReceiver = !0),
+                    (this.temporaryReceiver = true),
                     (this._siblingMap = {}),
                     (this._disabledSiblingMap = {}),
                     this.addEventListener(o.AfterInsertEvent, this._afterNodeInsert, this),
@@ -57,11 +57,11 @@ module.exports = function (e, t, i) {
             function k(e) {
                 "function" == typeof gdb_loaddesign && console.warn(e);
             }
-            ((D.BLOCK_EDITED = !1),
+            ((D.BLOCK_EDITED = false),
                 (D.STOP_PROPAGATION = v.uuid(16)),
                 (D.create = function (e, t, i) {
                     var n = new D();
-                    ((n._master = !0),
+                    ((n._master = true),
                         (n.$masterRef = n.getReferenceId()),
                         (n.$masterMultiRef = n.getMultireferenceId()),
                         i && (n.$name = v.xss(i)));
@@ -105,19 +105,19 @@ module.exports = function (e, t, i) {
                 (D.containsUnsupportedNodes = function (e) {
                     if (e && e instanceof o) {
                         e.toString();
-                        if (D.UNSUPPORTED_NODES.indexOf(e.toString()) >= 0) return !0;
+                        if (D.UNSUPPORTED_NODES.indexOf(e.toString()) >= 0) return true;
                         if (e.hasMixin(o.Container)) {
-                            var t = !1;
+                            var t = false;
                             return (
                                 e.acceptChildren(function (e) {
-                                    if (D.UNSUPPORTED_NODES.indexOf(e.toString()) >= 0) return ((t = !0), !1);
+                                    if (D.UNSUPPORTED_NODES.indexOf(e.toString()) >= 0) return ((t = true), false);
                                 }),
                                 t
                             );
                         }
-                        return !1;
+                        return false;
                     }
-                    return !0;
+                    return true;
                 }),
                 (D._swapBaseTransforms = function (e, t, i) {
                     var n = null,
@@ -131,12 +131,12 @@ module.exports = function (e, t, i) {
                     return (s < 0 ? (s = n - i) : 0 === s && n > r && (s = 1), [i, s]);
                 }),
                 (D._assignChangedTextContentProperties = function (e, t, i, n) {
-                    if (e.length !== t.length || t.length !== i.length) return !1;
-                    for (var r = !1, o = 0; o < e.length; o++)
+                    if (e.length !== t.length || t.length !== i.length) return false;
+                    for (var r = false, o = 0; o < e.length; o++)
                         for (var a in e[o])
                             if (e[o][a] !== t[o][a]) {
                                 if (n && !n(a)) continue;
-                                ((i[o][a] = t[o][a]), (r = !0));
+                                ((i[o][a] = t[o][a]), (r = true));
                             }
                     return r;
                 }),
@@ -207,7 +207,7 @@ module.exports = function (e, t, i) {
                 (D.MetaProperties = {
                     masterRef: null,
                     masterMultiRef: null,
-                    blockEv: !1,
+                    blockEv: false,
                     dsb: null,
                     sbl: null,
                     swp: null,
@@ -216,7 +216,7 @@ module.exports = function (e, t, i) {
                 (D.AfterThumbnailUpdate = function (e, t) {
                     ((this.symbol = e), (this.image = t));
                 }),
-                c.inherit(D.AfterThumbnailUpdate, A),
+                IsFiniteNonNegativeNumber.inherit(D.AfterThumbnailUpdate, A),
                 (D.AfterThumbnailUpdate.prototype.symbol = null),
                 (D.AfterThumbnailUpdate.prototype.image = null),
                 (D.AfterThumbnailUpdate.prototype.toString = function () {
@@ -225,7 +225,7 @@ module.exports = function (e, t, i) {
                 (D.AfterSiblingUpdate = function (e, t, i) {
                     ((this.updated = t), (this.targetNode = e), (this.type = i));
                 }),
-                c.inherit(D.AfterSiblingUpdate, A),
+                IsFiniteNonNegativeNumber.inherit(D.AfterSiblingUpdate, A),
                 (D.AfterSiblingUpdate.INSERT = "insert"),
                 (D.AfterSiblingUpdate.REMOVE = "remove"),
                 (D.AfterSiblingUpdate.UPDATE = "update"),
@@ -237,15 +237,15 @@ module.exports = function (e, t, i) {
                 }),
                 (D.prototype._siblingMap = null),
                 (D.prototype._disabledSiblingMap = null),
-                (D.prototype._master = !1),
+                (D.prototype._master = false),
                 (D.prototype._blockEvents = 0),
-                (D.prototype._killEvents = !1),
+                (D.prototype._killEvents = false),
                 (D.prototype._cachedImage = null),
                 (D.prototype._cachedSymbolSiblings = null),
-                (D.prototype._shouldRepaintThumbnail = !0),
-                (D.enableSweepInstances = !1),
+                (D.prototype._shouldRepaintThumbnail = true),
+                (D.enableSweepInstances = false),
                 (D.prototype.getNodeNameTranslated = function () {
-                    return I.getValue("GSymbol", "name", this.getNodeName());
+                    return String.getValue("GSymbol", "name", this.getNodeName());
                 }),
                 (D.prototype.synchronize = function (e, t, i) {
                     if (!this.isMaster()) {
@@ -257,7 +257,7 @@ module.exports = function (e, t, i) {
                                 if ((r = this._symbolParent(r)) && r._siblingMap[e.getMultireferenceId()]) return r.synchronize(e, t, i);
                             } while (r);
                         }
-                        var a = !1,
+                        var a = false,
                             s = {},
                             l = [];
                         for (var A in this._disabledSiblingMap) {
@@ -274,7 +274,7 @@ module.exports = function (e, t, i) {
                                     if (
                                         ((this._siblingMap[A] = c),
                                         delete this._disabledSiblingMap[A],
-                                        (a = !0),
+                                        (a = true),
                                         (e || !t) && c instanceof p.AnchorPoint)
                                     ) {
                                         var u = c.getParent().getParent();
@@ -324,7 +324,7 @@ module.exports = function (e, t, i) {
                                 S = this._symbolParent(e);
                             if ((S && S.$swp && S.$swp.indexOf(P) % 2 == 1 && S.synchronize(this || e), !a)) return;
                         }
-                        if (((this.$blockEv = !0), e || !t))
+                        if (((this.$blockEv = true), e || !t))
                             (l = this._sortByDepth(l)).forEach(
                                 function (e) {
                                     var t,
@@ -363,7 +363,7 @@ module.exports = function (e, t, i) {
                                                     : e.hasProperty("trf") && e.setProperty("trf", a);
                                             } else {
                                                 var m = this._translationSwapped(e);
-                                                m && (e.setProperty("trf", (e.$trf || new h()).translated(-m.getX(), -m.getY())), (i = !0));
+                                                m && (e.setProperty("trf", (e.$trf || new h()).translated(-m.getX(), -m.getY())), (i = true));
                                             }
                                     } while (!i && r);
                                 }.bind(this)
@@ -378,7 +378,7 @@ module.exports = function (e, t, i) {
                                 n.acceptChildren(
                                     function (e) {
                                         var t = e.clone({
-                                            symbolMasterReplicate: !1,
+                                            symbolMasterReplicate: false,
                                         });
                                         (this.appendChild(t),
                                             e.hasMixin(o.Properties) &&
@@ -390,7 +390,7 @@ module.exports = function (e, t, i) {
                                     }.bind(this)
                                 ));
                         }
-                        this.$blockEv = !1;
+                        this.$blockEv = false;
                     }
                 }),
                 (D.prototype._sortByDepth = function (e) {
@@ -523,42 +523,42 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (D.prototype.inSync = function (e, t) {
-                    if (this.isMaster()) return !0;
-                    if (!this.getMasterSymbol()) return !0;
+                    if (this.isMaster()) return true;
+                    if (!this.getMasterSymbol()) return true;
                     var i,
-                        n = !1;
+                        n = false;
                     if (!e || (t && e === this.getMasterSymbol()) || e === this) {
                         var r = this.getMasterSymbol().getProperty("frame"),
                             a = this.getProperty("frame");
-                        if (r && !y.equals(a, r)) return !1;
+                        if (r && !y.equals(a, r)) return false;
                         var l = (this.getMasterSymbol().getProperty("trf") || new h()).decomposed(),
                             A = (this.getProperty("trf") || new h()).decomposed();
-                        if (!h.equals(A.scale, l.scale, 1e-4)) return !1;
+                        if (!h.equals(A.scale, l.scale, 1e-4)) return false;
                         for (var c in this._disabledSiblingMap) {
-                            n = !0;
+                            n = true;
                             break;
                         }
                         return !n;
                     }
-                    if (this._disabledSiblingMap[e.getMultireferenceId()]) return !1;
+                    if (this._disabledSiblingMap[e.getMultireferenceId()]) return false;
                     if (t && e && e.hasMixin(o.Container))
-                        for (var p in ((i = {}), e.getSubnodeIds(i), i)) if (this._disabledSiblingMap.hasOwnProperty(p)) return !1;
+                        for (var p in ((i = {}), e.getSubnodeIds(i), i)) if (this._disabledSiblingMap.hasOwnProperty(p)) return false;
                     return (
                         !t ||
                         !e ||
                         e instanceof D ||
                         !e.findParent(function (t) {
                             if (t instanceof D && !t.isMaster()) {
-                                if (t._disabledSiblingMap.hasOwnProperty(e.getMultireferenceId())) return !0;
+                                if (t._disabledSiblingMap.hasOwnProperty(e.getMultireferenceId())) return true;
                                 for (var n in i) {
                                     var r = t._disabledSiblingMap[n];
                                     if (r && !(r instanceof s))
                                         if (
                                             r.findParent(function (e) {
-                                                if (e instanceof s) return !0;
+                                                if (e instanceof s) return true;
                                             }) === e
                                         )
-                                            return !0;
+                                            return true;
                                 }
                             }
                         })
@@ -576,7 +576,7 @@ module.exports = function (e, t, i) {
                     if (!this._cachedImage || this._shouldRepaintThumbnail) {
                         console.log("GET SYMBOL IMAGE");
                         this.toBitmap(null, null, null, null, {
-                            paintMode: x.PaintMode.Fast,
+                            paintMode: GScenePaintConfiguration.PaintMode.Fast,
                             defaultEffectDetailLevel: 0.5 / b.getScreenDPI(),
                         });
                         return this._cachedImage;
@@ -605,7 +605,7 @@ module.exports = function (e, t, i) {
                 (D.prototype.convertToMaster = function (e, t) {
                     var i = this.getScene();
                     if (!this.getMasterSymbol() && (t || i)) {
-                        ((this._master = !0), this.resetMultireference());
+                        ((this._master = true), this.resetMultireference());
                         var n,
                             r,
                             a = v.xss(e || this.getProperty("name"));
@@ -617,11 +617,11 @@ module.exports = function (e, t, i) {
                             i)
                         ) {
                             ((n = this.getParent()), (r = this.getNext()));
-                            var s = !1,
-                                l = !1;
+                            var s = false,
+                                l = false;
                             (i.startBlockReferenceChanges(),
-                                this.hasFlag(o.Flag.Selected) && ((s = !0), this.removeFlag(o.Flag.Selected)),
-                                this.hasFlag(o.Flag.Highlighted) && ((l = !0), this.removeFlag(o.Flag.Highlighted)),
+                                this.hasFlag(o.Flag.Selected) && ((s = true), this.removeFlag(o.Flag.Selected)),
+                                this.hasFlag(o.Flag.Highlighted) && ((l = true), this.removeFlag(o.Flag.Highlighted)),
                                 n.removeChild(this),
                                 n.insertChild(this, r),
                                 s && this.setFlag(o.Flag.Selected),
@@ -633,9 +633,9 @@ module.exports = function (e, t, i) {
                                 t._symbolDictionary._afterInsert({
                                     node: this,
                                 });
-                        return !0;
+                        return true;
                     }
-                    return !1;
+                    return false;
                 }),
                 (D.prototype.detach = function () {
                     return (
@@ -643,7 +643,7 @@ module.exports = function (e, t, i) {
                         (this.getScene().unlink(this.$masterRef, this),
                         this.resetMultireference(),
                         this.setProperties(["masterMultiRef", "masterRef"], [null, null]),
-                        !0)
+                        true)
                     );
                 }),
                 (D.prototype.swapWith = function (e) {
@@ -719,7 +719,7 @@ module.exports = function (e, t, i) {
                         : e;
                 }),
                 (D.prototype.getStylePropertySets = function () {
-                    return [l.PropertySet.Style, l.PropertySet.Effects];
+                    return [GStylable.PropertySet.Style, GStylable.PropertySet.Effects];
                 }),
                 (D.prototype.getTransform = function () {
                     return this.$trf;
@@ -741,25 +741,25 @@ module.exports = function (e, t, i) {
                 (D.prototype.transform = function (e, t, i) {
                     if (e && !e.isIdentity()) {
                         ((this._layoutTransform = e), (this._relayoutNow = !this._relayout));
-                        var n = !1;
-                        this._relayout = !0;
+                        var n = false;
+                        this._relayout = true;
                         var r,
                             o = this._hasMasterParent();
                         ((!o || (o && this.isMaster() && this.dependentUpdate)) &&
-                            ((r = this.getProperty("blockEv")), (n = !0), this.setProperty("blockEv", !0)),
+                            ((r = this.getProperty("blockEv")), (n = true), this.setProperty("blockEv", true)),
                             this.setProperty("trf", this.$trf ? this.$trf.multiplied(e) : e));
                         var a = this.hasAnchors();
                         this.beginUpdate();
                         try {
                             if (a && this.dependentUpdate && !t) {
                                 if (a)
-                                    for (var l = this.getFirstChild(!0); null != l; l = l.getNext(!0))
+                                    for (var l = this.getFirstChild(true); null != l; l = l.getNext(true))
                                         l instanceof s &&
                                             l.hasMixin(s.Transform) &&
                                             !l.getProperty("hacr") &&
                                             !l.getProperty("vacr") &&
                                             (!i || i.indexOf(l) < 0) &&
-                                            ((l.dependentUpdate = !0), l.transform(e, t, i), (l.dependentUpdate = !1));
+                                            ((l.dependentUpdate = true), l.transform(e, t, i), (l.dependentUpdate = false));
                             } else this._transformChildren(e, t);
                         } finally {
                             this.endUpdate();
@@ -767,7 +767,7 @@ module.exports = function (e, t, i) {
                         (this._relayoutNow &&
                             (this._layoutAnchorContents(null, null, this._layoutTransform),
                             (this._layoutTransform = null),
-                            (this._relayoutNow = !1)),
+                            (this._relayoutNow = false)),
                             n && this.setProperty("blockEv", r));
                     }
                 }),
@@ -775,7 +775,7 @@ module.exports = function (e, t, i) {
                     if (e && !e.isIdentity()) {
                         ((this._layoutTransform = this.$trf ? this.$trf.inverted().multiplied(e).multiplied(this.$trf) : e),
                             (this._relayoutNow = !this._relayout),
-                            (this._relayout = !0),
+                            (this._relayout = true),
                             this.setProperty("trf", this.$trf ? e.multiplied(this.$trf) : e));
                         var n = this._hasMasterParent();
                         (n || this._blockEvents++,
@@ -783,13 +783,13 @@ module.exports = function (e, t, i) {
                             this._relayoutNow &&
                                 (this._layoutAnchorContents(null, null, this._layoutTransform),
                                 (this._layoutTransform = null),
-                                (this._relayoutNow = !1)),
+                                (this._relayoutNow = false)),
                             n || this._blockEvents--);
                     }
                 }),
                 (D.prototype._hasMasterParent = function () {
                     var e = this.findParent(function (e) {
-                        if (e instanceof D) return !0;
+                        if (e instanceof D) return true;
                     });
                     return e && e.isMaster();
                 }),
@@ -827,9 +827,9 @@ module.exports = function (e, t, i) {
                         : (t && (l = t.mapRect(l)),
                           l.expanded(i, i, i, i).containsPoint(e)
                               ? new r(this, {
-                                    label: !1,
+                                    label: false,
                                 })
-                              : this._hitTestLabel(e, i, t, !0));
+                              : this._hitTestLabel(e, i, t, true));
                 }),
                 (D.prototype._getLabelGeometryBBox = function () {
                     return this.getFrame();
@@ -860,12 +860,12 @@ module.exports = function (e, t, i) {
                 }),
                 (D.prototype.insertChild = function (e, t) {
                     if (!(e instanceof D) && e.hasMixin(o.Container)) {
-                        var i = !0,
+                        var i = true,
                             n = this.getMasterSymbol();
                         if (
                             n &&
                             (e.acceptChildren(function (e) {
-                                if (e instanceof D && e.getMasterSymbol() === n) return ((i = !1), !1);
+                                if (e instanceof D && e.getMasterSymbol() === n) return ((i = false), false);
                             }),
                             !i)
                         )
@@ -876,20 +876,20 @@ module.exports = function (e, t, i) {
                 (D.prototype.validateInsertion = function (e) {
                     if (n.prototype.validateInsertion.call(this, e)) {
                         var t = this.getMasterSymbol();
-                        if (null === t) return !0;
+                        if (null === t) return true;
                         for (; e; ) {
                             if (e instanceof D) return e.getMasterSymbol() !== t;
                             e = e.getParent();
                         }
-                        return !0;
+                        return true;
                     }
-                    return !1;
+                    return false;
                 }),
                 (D.prototype._afterNodeInsert = function (e) {
                     if (!(this._blockEvents > 0)) {
                         if (this.isMaster() && e.node !== this) {
                             if (e.customObj.hasOwnProperty(D.STOP_PROPAGATION)) return;
-                            e.customObj[D.STOP_PROPAGATION] = !0;
+                            e.customObj[D.STOP_PROPAGATION] = true;
                         }
                         if (this.isMaster() || this._isRestoring) {
                             var t = e.node.getMultireferenceId();
@@ -975,7 +975,7 @@ module.exports = function (e, t, i) {
                     e.accept(function (e) {
                         if (e instanceof D && !e.isMaster()) {
                             var i = e.findParent(function (e) {
-                                if (e instanceof D && e.isMaster()) return !0;
+                                if (e instanceof D && e.isMaster()) return true;
                             });
                             if (!i || i === t)
                                 for (var n = e.getFirstChild(); n; n = n.getNext())
@@ -988,7 +988,7 @@ module.exports = function (e, t, i) {
                     if (!(this._blockEvents > 0)) {
                         if (this.isMaster() && e.node !== this) {
                             if (e.customObj.hasOwnProperty(D.STOP_PROPAGATION)) return;
-                            e.customObj[D.STOP_PROPAGATION] = !0;
+                            e.customObj[D.STOP_PROPAGATION] = true;
                         }
                         var t = e.node;
                         if (this.isMaster() && !this._isRestoring && t !== this) {
@@ -1031,7 +1031,7 @@ module.exports = function (e, t, i) {
                                                 t._sendEvent(new D.AfterSiblingUpdate(e, a, D.AfterSiblingUpdate.REMOVE)));
                                     } else k("symbol remove: couldn't find right symbol with map");
                                 },
-                                !0
+                                true
                             );
                         }
                         this.isMaster() &&
@@ -1056,23 +1056,23 @@ module.exports = function (e, t, i) {
                         return !!(a && a.getX() * a.getX() + a.getY() * a.getY() < 1e-4);
                     }
                     for (
-                        var h = [], A = e, p = o.getClassFromId(c.getTypeId(A)), d = !1, m = !1;
+                        var h = [], A = e, p = o.getClassFromId(IsFiniteNonNegativeNumber.getTypeId(A)), d = false, m = false;
                         p && A instanceof o && A.hasMixin(o.Properties);
 
                     ) {
                         if (p.GeometryProperties)
-                            for (var y in p.GeometryProperties) "trf" === y ? (d = !0) : "content" === y && p === u ? (m = !0) : h.push(y);
+                            for (var y in p.GeometryProperties) "trf" === y ? (d = true) : "content" === y && p === u ? (m = true) : h.push(y);
                         if (p.VisualProperties) for (var y in p.VisualProperties) h.push(y);
                         if (p.MetaProperties && !(A instanceof u)) for (var y in p.MetaProperties) p === D && "refs" === y && h.push(y);
                         ((A = Object.getPrototypeOf(A)),
-                            (p = o.getClassFromId(c.getTypeId(Object.getPrototypeOf(A)))) ||
+                            (p = o.getClassFromId(IsFiniteNonNegativeNumber.getTypeId(Object.getPrototypeOf(A)))) ||
                                 (A instanceof g
                                     ? (p = g)
                                     : A instanceof n
                                       ? (p = n)
                                       : A instanceof f
                                         ? (p = f)
-                                        : A instanceof l.Effect && (p = l.Effect)));
+                                        : A instanceof GStylable.Effect && (p = GStylable.Effect)));
                     }
                     if (((h = h.concat(this._getStylableProperties(e))), e.hasMixin(s.Anchor)))
                         for (var y in s.Anchor.MetaProperties) "vatrf" !== y && "hatrf" !== y && h.push(y);
@@ -1083,21 +1083,21 @@ module.exports = function (e, t, i) {
                             }),
                         r && r.arePropertiesEqual(e, h))
                     ) {
-                        if (d && !this._siblingTrfEqual(r, e)) return !1;
+                        if (d && !this._siblingTrfEqual(r, e)) return false;
                         if (m) {
                             var _ = r.getContent(),
                                 b = e.getContent();
-                            return v.equals(_, b, !0);
+                            return v.equals(_, b, true);
                         }
-                        return !0;
+                        return true;
                     }
-                    return !1;
+                    return false;
                 }),
                 (D.prototype._getStylableProperties = function (e) {
                     var t = [];
-                    e.hasMixin(l) &&
+                    e.hasMixin(GStylable) &&
                         e.getStylePropertySets().forEach(function (e) {
-                            var i = l.PropertySetInfo[e];
+                            var i = GStylable.PropertySetInfo[e];
                             if (i.visualProperties) for (var n in i.visualProperties) t.push(n);
                             if (i.geometryProperties) for (var n in i.geometryProperties) t.push(n);
                         });
@@ -1105,7 +1105,7 @@ module.exports = function (e, t, i) {
                 }),
                 (D.prototype._siblingTrfEqual = function (e, t) {
                     var i = this.getMasterSymbol();
-                    if (!i) return !1;
+                    if (!i) return false;
                     var n = D._swapBaseTransforms(e.getTransform(), i.getTransform(), this.getTransform());
                     return !!h.equals(n, t.$trf, 1e-4);
                 }),
@@ -1118,17 +1118,17 @@ module.exports = function (e, t, i) {
                             Object.values(this._siblingMap).some(this._hasAnchors) ||
                             Object.values(this._disabledSiblingMap).some(this._hasAnchors)
                         );
-                    for (var e in this._siblingMap) if (this._hasAnchors(this._siblingMap[e])) return !0;
-                    for (var e in this._disabledSiblingMap) if (this._hasAnchors(this._disabledSiblingMap[e])) return !0;
-                    return !1;
+                    for (var e in this._siblingMap) if (this._hasAnchors(this._siblingMap[e])) return true;
+                    for (var e in this._disabledSiblingMap) if (this._hasAnchors(this._disabledSiblingMap[e])) return true;
+                    return false;
                 }),
                 (D.prototype.getSubnodeIds = function (e) {}),
                 (D.prototype._afterPropertiesChange = function (e) {
-                    if (this._killEvents) e.isImmediatePropagationStopped = !0;
+                    if (this._killEvents) e.isImmediatePropagationStopped = true;
                     else if (!(this._blockEvents > 0 || this.getProperty("blockEv"))) {
                         if (e.node !== this && this.isMaster()) {
                             if (e.customObj.hasOwnProperty(D.STOP_PROPAGATION)) return;
-                            e.customObj[D.STOP_PROPAGATION] = !0;
+                            e.customObj[D.STOP_PROPAGATION] = true;
                         }
                         var t = e.node;
                         if (this.isMaster() && t !== this && (!(t instanceof s) || (t instanceof s && !t.isRecordedTransaction()))) {
@@ -1140,14 +1140,14 @@ module.exports = function (e, t, i) {
                                     d = e.values.slice(),
                                     g = [],
                                     f = [],
-                                    m = !1;
+                                    m = false;
                                 if (!D.BLOCK_EDITED) {
                                     var y = a._symbolParent();
-                                    y && y._disabledSiblingMap.hasOwnProperty(a.getMultireferenceId()) && (m = !0);
+                                    y && y._disabledSiblingMap.hasOwnProperty(a.getMultireferenceId()) && (m = true);
                                 }
                                 if (!m && t.hasMixin(o.Properties) && t.hasProperty("trf") && p >= 0) {
                                     var _ = (l.$trf || new h()).inverted(),
-                                        b = !0;
+                                        b = true;
                                     if (_) {
                                         var C = c[p],
                                             x = d[p],
@@ -1160,13 +1160,13 @@ module.exports = function (e, t, i) {
                                                 ? ((d[p] = x), (c[p] = C))
                                                 : h.equals(x, r.getProperty("trf"), 1e-4)
                                                   ? m || ((d[p] = x), (c[p] = C))
-                                                  : (A.splice(p, 1), c.splice(p, 1), d.splice(p, 1), (b = !1)),
+                                                  : (A.splice(p, 1), c.splice(p, 1), d.splice(p, 1), (b = false)),
                                             b)
                                         ) {
                                             var I,
-                                                F = !1;
-                                            if (((r instanceof P || r instanceof S) && !r.getProperty("frm") && (F = !0), !F))
-                                                ((r._relayout = !0),
+                                                F = false;
+                                            if (((r instanceof P || r instanceof S) && !r.getProperty("frm") && (F = true), !F))
+                                                ((r._relayout = true),
                                                     (I = x && x.invertible() ? x.inverted().multiplied(C) : C),
                                                     (r._layoutTransform = I));
                                         }
@@ -1182,7 +1182,7 @@ module.exports = function (e, t, i) {
                                     if ((A.splice(Q, 1), c.splice(Q, 1), d.splice(Q, 1), !t.isRecordedTransaction())) {
                                         var N = t.getTLCore(),
                                             U = r.getTLCore();
-                                        if (((B.DoMeasure = !1), N)) {
+                                        if (((B.DoMeasure = false), N)) {
                                             var V = N.getSelection();
                                             if (V.start !== V.end && t._isEdited) {
                                                 var O,
@@ -1214,7 +1214,7 @@ module.exports = function (e, t, i) {
                                                                 }
                                                             var oe = (pe = ae.range(V.start + K, V.start + $)).getFormatting();
                                                             (ee.oldValue !== oe[ee.property] && oe[ee.property] !== E.multipleValues) ||
-                                                                (pe.setFormatting([ee.property], [ee.value]), (Ae = !0));
+                                                                (pe.setFormatting([ee.property], [ee.value]), (Ae = true));
                                                         }
                                                         Ae && (g.push("content"), f.push(JSON.stringify(ae.save())));
                                                     }
@@ -1240,7 +1240,7 @@ module.exports = function (e, t, i) {
                                                 if (X && X.length > 0) {
                                                     ((z = R(U.getDocumentRange().save())), (j = R(N.getDocumentRange().save())));
                                                     var he,
-                                                        Ae = !1;
+                                                        Ae = false;
                                                     if ((he = R(M)) === j)
                                                         (Ae = D._assignChangedTextContentProperties(M, X, le, function (e) {
                                                             return (
@@ -1265,7 +1265,7 @@ module.exports = function (e, t, i) {
                                                 } else k("no content inside?");
                                             }
                                         }
-                                        B.DoMeasure = !0;
+                                        B.DoMeasure = true;
                                     }
                                 }
                                 if (!D.BLOCK_EDITED) {
@@ -1273,7 +1273,7 @@ module.exports = function (e, t, i) {
                                     for (re = c.length - 1; re >= 0; re--)
                                         c[re] instanceof h
                                             ? "trf" !== A[re] && (h.equals(d[re], fe[re], 1e-4) || (A.splice(re, 1), c.splice(re, 1)))
-                                            : v.equals(d[re], fe[re], !0, 1e-4) || (A.splice(re, 1), c.splice(re, 1));
+                                            : v.equals(d[re], fe[re], true, 1e-4) || (A.splice(re, 1), c.splice(re, 1));
                                 }
                                 for (var me in s.Anchor.MetaProperties) {
                                     if ("hacr" !== me && "vacr" !== me) (q = A.indexOf(me)) >= 0 && (A.splice(q, 1), c.splice(q, 1));
@@ -1282,19 +1282,19 @@ module.exports = function (e, t, i) {
                                 ye >= 0 && (A.splice(ye, 1), c.splice(ye, 1));
                                 var _e,
                                     ve = A.indexOf("subtrf");
-                                if ((ve >= 0 && (A.splice(ve, 1), c.splice(ve, 1)), !A.length && !g.length)) return !1;
+                                if ((ve >= 0 && (A.splice(ve, 1), c.splice(ve, 1)), !A.length && !g.length)) return false;
                                 (a._blockEvents++,
                                     (r.dependentUpdate = t.dependentUpdate),
-                                    r instanceof n && ((_e = r.skipBorderUpdate), (r.skipBorderUpdate = !0)),
+                                    r instanceof n && ((_e = r.skipBorderUpdate), (r.skipBorderUpdate = true)),
                                     a._beginBlockChanges([o._Change.BeforePropertiesChange, o._Change.AfterPropertiesChange]),
                                     A.length &&
                                         (r._beginBlockEvents([o.BeforePropertiesChangeEvent, o.AfterPropertiesChangeEvent]),
-                                        r.setProperties(A, c, e.custom, !1, e.temporary),
+                                        r.setProperties(A, c, e.custom, false, e.temporary),
                                         r._endBlockEvents([o.BeforePropertiesChangeEvent, o.AfterPropertiesChangeEvent]),
-                                        t._relayoutNow && (r._relayout = !1)),
-                                    g.length && r.setProperties(g, f, e.custom, !1, e.temporary),
+                                        t._relayoutNow && (r._relayout = false)),
+                                    g.length && r.setProperties(g, f, e.custom, false, e.temporary),
                                     a._endBlockChanges([o._Change.BeforePropertiesChange, o._Change.AfterPropertiesChange]),
-                                    (r.dependentUpdate = !1),
+                                    (r.dependentUpdate = false),
                                     a._blockEvents--,
                                     r instanceof n && (r.skipBorderUpdate = _e),
                                     e.temporary ||
@@ -1334,8 +1334,8 @@ module.exports = function (e, t, i) {
                                 }
                                 return void k("no original and swapped sibling available");
                             }
-                            var A = !0,
-                                c = !0,
+                            var A = true,
+                                c = true,
                                 p = t.slice();
                             if (((r = p.indexOf("trf")) >= 0 && ((A = this._siblingTrfEqual(n, e)), p.splice(r, 1)), e instanceof D)) {
                                 var d = p.indexOf("swpori");
@@ -1360,7 +1360,7 @@ module.exports = function (e, t, i) {
                                 if (b >= 0) {
                                     var C = n.getContent(),
                                         w = e.getContent();
-                                    ((c = v.equals(C, w, !0)), p.splice(b, 1));
+                                    ((c = v.equals(C, w, true)), p.splice(b, 1));
                                 }
                             }
                             (n && A && c && e.arePropertiesEqual(n, p)) ||
@@ -1490,17 +1490,17 @@ module.exports = function (e, t, i) {
                                         }
                                     } else A = this;
                                     var u = function (t, i) {
-                                            if (!t) return !1;
-                                            if (!(t instanceof s)) return !0;
-                                            if (!e) return !0;
-                                            if (!(e instanceof o)) return !0;
+                                            if (!t) return false;
+                                            if (!(t instanceof s)) return true;
+                                            if (!e) return true;
+                                            if (!(e instanceof o)) return true;
                                             if (!e.dependentUpdate) {
-                                                if (!e.isRecordedTransaction() || !e.getProperty("subtrf", !0, !1)) return !0;
+                                                if (!e.isRecordedTransaction() || !e.getProperty("subtrf", true, false)) return true;
                                                 k("ding!");
                                             }
                                             var n = t,
                                                 r = e,
-                                                a = !0;
+                                                a = true;
                                             do {
                                                 if (
                                                     (n !== i && (n = n.getParent()),
@@ -1509,8 +1509,8 @@ module.exports = function (e, t, i) {
                                                     r || (k("some propagation errors might have occurred"), (r = h)),
                                                     !r.hasMixin(o.Multireference) || !n.hasMixin(o.Multireference))
                                                 )
-                                                    return !1;
-                                                r.getMultireferenceId() !== n.getMultireferenceId() && (a = !1);
+                                                    return false;
+                                                r.getMultireferenceId() !== n.getMultireferenceId() && (a = false);
                                             } while (a && r.dependentUpdate && (n !== i || r !== h));
                                             return a;
                                         },
@@ -1570,9 +1570,9 @@ module.exports = function (e, t, i) {
                                 l = t.values[a];
                             (l && (r = l.inverted()), s && (r = r ? r.multiplied(s) : s), (this._layoutTransform = r));
                         }
-                        return !0;
+                        return true;
                     }
-                    return !1;
+                    return false;
                 }),
                 (D.prototype._handleChange = function (e, t) {
                     (e != o._Change.BeforePropertiesChange && e !== o._Change.BeforeChildRemove) ||
@@ -1580,11 +1580,11 @@ module.exports = function (e, t, i) {
                         ((m = this.getMasterSymbol()) &&
                             !this.hasFlag(o.Flag.Selected) &&
                             m.isRecordedTransaction() &&
-                            (this.recordedTransaction = !0));
+                            (this.recordedTransaction = true));
                     this._handleGeometryChangeForProperties(e, t, D.GeometryProperties);
-                    var i = !1;
+                    var i = false;
                     if (e == s._Change.ChildGeometryUpdate)
-                        t && t[0] && t[0].getParent() === this && (this._notifyChange(s._Change.PrepareGeometryUpdate), (i = !0));
+                        t && t[0] && t[0].getParent() === this && (this._notifyChange(s._Change.PrepareGeometryUpdate), (i = true));
                     else if (e === o._Change.Store) {
                         this.storeProperties(t.blob, D.GeometryProperties, function (e, t) {
                             return "trf" === e && t ? h.serialize(t) : "frame" === e && t ? y.serialize(t) : t;
@@ -1599,7 +1599,7 @@ module.exports = function (e, t, i) {
                                 return i;
                             }
                             if ("swp" === e) return null;
-                            if ("blockEv" === e) return !1;
+                            if ("blockEv" === e) return false;
                             if ("sbl" === e) {
                                 var o = [];
                                 for (var n in l) {
@@ -1634,7 +1634,7 @@ module.exports = function (e, t, i) {
                                         }
                                         return null;
                                     }
-                                    if ("blockEv" === e) return !1;
+                                    if ("blockEv" === e) return false;
                                     if ("sbl" === e && t) {
                                         var s = function (e, t) {
                                             if (e._siblingMap[t]) return e;
@@ -1684,29 +1684,29 @@ module.exports = function (e, t, i) {
                         if (this._scene._isRestoring) {
                             var d = this.getOldReferenceId();
                             ((this.$masterRef && d === this.$masterRef) || this.getReferenceId() === this.$masterRef
-                                ? (this._master = !0)
-                                : (this._master = !1),
+                                ? (this._master = true)
+                                : (this._master = false),
                                 this._master && (this.$masterRef = this.getReferenceId()));
                         } else if (!this._master && this.$masterRef)
                             if (this.getMasterSymbol()) {
-                                var g = !1;
-                                (this._scene.getProperty("rb") && (this._scene.endBlockReferenceChanges(!0), (g = !0)),
+                                var g = false;
+                                (this._scene.getProperty("rb") && (this._scene.endBlockReferenceChanges(true), (g = true)),
                                     this._scene.link(this.$masterRef, this),
                                     g && this._scene.startBlockReferenceChanges());
                             } else k("Couldn't link slave to master");
                         if (this._master) {
-                            var f = o.getClassFromId(c.getTypeId(this._scene));
+                            var f = o.getClassFromId(IsFiniteNonNegativeNumber.getTypeId(this._scene));
                             this._scene.addEventListener(f.InvalidationFinishedEvent, this._invalidationFinishedHandler, this);
                         }
                     } else if (e === a._Change.SceneDetached && this._scene) {
                         if (!this._scene._isRestoring && this.getMasterSymbol() && !this._master && this.$masterRef) {
-                            g = !1;
-                            (this._scene.getProperty("rb") && (this._scene.endBlockReferenceChanges(!0), (g = !0)),
+                            g = false;
+                            (this._scene.getProperty("rb") && (this._scene.endBlockReferenceChanges(true), (g = true)),
                                 this._scene.unlink(this.$masterRef, this),
                                 g && this._scene.startBlockReferenceChanges());
                         }
                         if (this._master) {
-                            f = o.getClassFromId(c.getTypeId(this._scene));
+                            f = o.getClassFromId(IsFiniteNonNegativeNumber.getTypeId(this._scene));
                             this._scene.removeEventListener(f.InvalidationFinishedEvent, this._invalidationFinishedHandler, this);
                         }
                     } else if (e == o._Change.AfterPropertiesChange || e === o._Change.AfterChildInsert) {
@@ -1715,7 +1715,7 @@ module.exports = function (e, t, i) {
                             (m = this.getMasterSymbol()) &&
                                 !this.hasFlag(o.Flag.Selected) &&
                                 m.isRecordedTransaction() &&
-                                (this.recordedTransaction = !1);
+                                (this.recordedTransaction = false);
                     } else if (e === o._Change.Restore) {
                         var _ = this._siblingMap;
                         (this._effects && ((_[this._effects.getMultireferenceId()] = this._effects), this._effects.getSubnodeIds(_)),
@@ -1723,8 +1723,8 @@ module.exports = function (e, t, i) {
                                 ((_[this._paintLayers.getMultireferenceId()] = this._paintLayers), this._paintLayers.getSubnodeIds(_)));
                     } else
                         e === s._Change.FinishGeometryUpdate
-                            ? this.isPaintable() && (this._shouldRepaintThumbnail = !0)
-                            : e === s._Change.InvalidationRequested && this.isPaintable() && (this._shouldRepaintThumbnail = !0);
+                            ? this.isPaintable() && (this._shouldRepaintThumbnail = true)
+                            : e === s._Change.InvalidationRequested && this.isPaintable() && (this._shouldRepaintThumbnail = true);
                     if (
                         (e === a._Change.SceneDetached || e === a._Change.SceneAttached) &&
                         this._scene &&
@@ -1733,7 +1733,7 @@ module.exports = function (e, t, i) {
                         D.enableSweepInstances
                     ) {
                         var v = this._scene;
-                        ((D.enableSweepInstances = !1),
+                        ((D.enableSweepInstances = false),
                             this._iterateSiblings(this, function (e, t) {
                                 var i = e.getParent();
                                 if (i) {
@@ -1749,7 +1749,7 @@ module.exports = function (e, t, i) {
                                         i.removeChild(e));
                                 }
                             }),
-                            (D.enableSweepInstances = !0));
+                            (D.enableSweepInstances = true));
                     }
                 }),
                 (D.prototype._referenceEvent = function (e) {
@@ -1759,7 +1759,7 @@ module.exports = function (e, t, i) {
                 }),
                 (D.prototype._invalidationFinishedHandler = function (e) {
                     if (this._shouldRepaintThumbnail && e.configuration.thumbnails) {
-                        this._shouldRepaintThumbnail = !1;
+                        this._shouldRepaintThumbnail = false;
                         var t = this;
                         this._getSymbolThumbnail(e.configuration.thumbnailSize, e.configuration.thumbnailSize, function (e) {
                             e &&
@@ -1777,7 +1777,7 @@ module.exports = function (e, t, i) {
                         this._finishPaint(e),
                         this.isMaster() && this._shouldRepaintThumbnail && e.configuration.thumbnails)
                     ) {
-                        this._shouldRepaintThumbnail = !1;
+                        this._shouldRepaintThumbnail = false;
                         var t = this;
                         t._getSymbolThumbnail(e.configuration.thumbnailSize, e.configuration.thumbnailSize, function (e) {
                             e &&
@@ -1807,23 +1807,23 @@ module.exports = function (e, t, i) {
                     d.resize(p, u);
                     var g = new C();
                     g.canvas = d;
-                    var f = new x();
+                    var f = new GScenePaintConfiguration();
                     if (
-                        ((f.paintMode = x.PaintMode.Full),
-                        (f.paintSharp = !1),
-                        (f.annotations = !1),
+                        ((f.paintMode = GScenePaintConfiguration.PaintMode.Full),
+                        (f.paintSharp = false),
+                        (f.annotations = false),
                         (g.configuration = f),
                         (f.clipArea = n.intersected(r).scaled(1, 1)),
-                        (f.clipDirty = !1),
-                        (f.enableFxCache = !1),
+                        (f.clipDirty = false),
+                        (f.enableFxCache = false),
                         (f.defaultEffectDetailLevel = 1),
                         d.prepare(),
                         d.setOrigin(new _(n.getX() * c, n.getY() * c)),
                         d.setScale(c),
-                        T.isRenderPhase())
+                        DUMP_IMAGES.isRenderPhase())
                     ) {
                         var m = this;
-                        T.tryRunRendering(
+                        DUMP_IMAGES.tryRunRendering(
                             d,
                             function () {
                                 try {
@@ -1833,7 +1833,7 @@ module.exports = function (e, t, i) {
                                 }
                             },
                             i,
-                            !1
+                            false
                         );
                     } else {
                         try {
@@ -1847,5 +1847,5 @@ module.exports = function (e, t, i) {
                 (D.prototype.toString = function () {
                     return "[GSymbol]";
                 }),
-                (e.exports = D));
+                (module.exports = D));
         };

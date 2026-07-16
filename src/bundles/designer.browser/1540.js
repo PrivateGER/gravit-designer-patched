@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(4), n(13), n(32), n(33));
-        var o = n(395);
+        (require(4), require(13), require(32), require(33));
+        var o = require(395);
         ((o.prototype._rightSidebarDefaultWidthForTouch = 300),
             (o.prototype._updateTouchToolbar = function (e) {
                 const t = ["fill", "border", "effect"];

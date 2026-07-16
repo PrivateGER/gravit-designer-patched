@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            e.exports = (e) => {
+            module.exports = (e) => {
                 e.signupGuestUser = (t) =>
                     e.fetchJSON("/signupguestuser", {
                         method: "POST",

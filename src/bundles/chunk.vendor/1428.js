@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(1429),
-                r = i(391),
-                o = i(1430),
-                a = i(1431),
-                s = i(1435);
+module.exports = function (module, exports, require) {
+            var n = require(1429),
+                r = require(391),
+                o = require(1430),
+                a = require(1431),
+                s = require(1435);
 
             function l() {
                 throw new Error("This class cannot be instantiated");
@@ -24,5 +24,5 @@ module.exports = function (e, t, i) {
                 var u = e.getIndirectObject(l);
                 return (e.addIndirectObject(u), u);
             }),
-                (e.exports = l));
+                (module.exports = l));
         };

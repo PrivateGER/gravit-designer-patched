@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(1382)("asyncIterator");
+        require(1382)("asyncIterator");
     };

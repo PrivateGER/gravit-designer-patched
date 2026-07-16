@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(306);
-        o({ target: "RegExp", proto: !0, forced: /./.exec !== i }, { exec: i });
+        var o = require(25),
+            i = require(306);
+        o({ target: "RegExp", proto: true, forced: /./.exec !== i }, { exec: i });
     };

@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(58), n(8), n(71), n(4), n(13), n(38));
-        var o = n(1);
-        const i = n(1507),
-            a = n(1508),
-            r = n(1509),
-            s = (n(1158), n(805)),
-            { gApi: l } = (n(177), n(10));
+        (require(58), require(8 /* Symbol */), require(71), require(4), require(13), require(38));
+        var GObject = require(1);
+        const GPurchasePanel = require(1507),
+            GAccountPanel = require(1508),
+            GChangePasswordPanel = require(1509),
+            s = (require(1158), require(805)),
+            { gApi: l } = (require(177), require(10 /* designerConfig */));
         function c(e, t) {
             let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
             ((this._user = e), (this._options = n), this._init(t, n));
         }
-        (o.GObject.inherit(c, o.GObject),
+        (GObject.GObject.inherit(c, GObject.GObject),
             (c.prototype._options = null),
             (c.prototype._avatar = null),
             (c.Tabs = {
@@ -22,11 +22,11 @@ module.exports = function (e, t, n) {
             (c.prototype._init = async function (e) {
                 var t = this;
                 let n = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                const { closeable: s = !0, tabs: d } = n;
+                const { closeable: s = true, tabs: d } = n;
                 gDesigner.getLicense();
                 ((this._dialog = $("<div></div>").gDialog({
                     closeCallback: () => this._close(),
-                    releaseOnClose: !0,
+                    releaseOnClose: true,
                     className: "g-profile-dialog",
                 })),
                     s &&
@@ -42,13 +42,13 @@ module.exports = function (e, t, n) {
                     .append(
                         $("<span></span>")
                             .addClass("btn gravit-icon-avatar")
-                            .attr("data-title", o.GLocale.get(new o.GLocaleKey("GProfileDialog", "text.avatar-tooltip")))
+                            .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GProfileDialog", "text.avatar-tooltip")))
                             .on("click", this._updateAvatar.bind(this))
                     )),
                     $("<div></div>").addClass("picture").append(this._avatar).appendTo(u));
                 let g = $("<div></div>")
                     .addClass("header")
-                    .append($("<span></span>").text(o.GLocale.get(new o.GLocaleKey("GProfileDialog", "text.details"))))
+                    .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GProfileDialog", "text.details"))))
                     .appendTo(p);
                 ((this._messageHandler = function (e) {
                     let n = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "error";
@@ -89,30 +89,30 @@ module.exports = function (e, t, n) {
                 if (
                     (f(c.Tabs.Account) &&
                         h(
-                            o.GLocale.get(new o.GLocaleKey("GProfileDialog", "text.details")),
+                            GObject.GLocale.get(new GObject.GLocaleKey("GProfileDialog", "text.details")),
                             "gravit-icon-account",
-                            new a(this._user, this._messageHandler.bind(this), this, n).getHTMLElement(),
+                            new GAccountPanel(this._user, this._messageHandler.bind(this), this, n).getHTMLElement(),
                             c.Tabs.Account
                         ),
-                    f(c.Tabs.ChangePassword, !1) &&
+                    f(c.Tabs.ChangePassword, false) &&
                         h(
-                            o.GLocale.get(new o.GLocaleKey("GProfileDialog", "text.change-password")),
+                            GObject.GLocale.get(new GObject.GLocaleKey("GProfileDialog", "text.change-password")),
                             "gravit-icon-change-password",
-                            new r(this._user, this._messageHandler.bind(this), this, n).getHTMLElement(),
+                            new GChangePasswordPanel(this._user, this._messageHandler.bind(this), this, n).getHTMLElement(),
                             c.Tabs.ChangePassword
                         ),
                     f(c.Tabs.Purchase))
                 ) {
-                    (await l.hasPurchases({ issued: "true" }).catch(() => !1)) &&
+                    (await l.hasPurchases({ issued: "true" }).catch(() => false)) &&
                         h(
-                            o.GLocale.get(new o.GLocaleKey("GProfileDialog", "text.purchases")),
+                            GObject.GLocale.get(new GObject.GLocaleKey("GProfileDialog", "text.purchases")),
                             "gravit-icon-purchase",
-                            new i(this._user, this._messageHandler.bind(this), n).getHTMLElement(),
+                            new GPurchasePanel(this._user, this._messageHandler.bind(this), n).getHTMLElement(),
                             c.Tabs.Purchase
                         );
                 }
-                (this._tabs.find(".tab:first-child").trigger("click", [!0]),
-                    e && (gDesigner.stats("profile-dialog_tab_".concat(e)), this._tabs.find("#".concat(e)).trigger("click", [!0])),
+                (this._tabs.find(".tab:first-child").trigger("click", [true]),
+                    e && (gDesigner.stats("profile-dialog_tab_".concat(e)), this._tabs.find("#".concat(e)).trigger("click", [true])),
                     this._updateUI(this._user));
             }),
             (c.prototype._updateAvatar = function () {
@@ -120,7 +120,7 @@ module.exports = function (e, t, n) {
                 let e = this._dialog.find(".avatar");
                 function t(t) {
                     e.removeClass("g-loading");
-                    let n = o.GLocale.get(new o.GLocaleKey("GAccountPanel", "text.error"));
+                    let n = GObject.GLocale.get(new GObject.GLocaleKey("GAccountPanel", "text.error"));
                     (t && t.message ? (n = t.message) : t && t.errors && (n = t.errors.map((e) => e[1]).join("<br>")),
                         this._messageHandler(n));
                 }
@@ -135,7 +135,7 @@ module.exports = function (e, t, n) {
                             n.read((i) => {
                                 if (i.byteLength > 102400)
                                     return void t.call(this, {
-                                        message: o.GLocale.get(new o.GLocaleKey("GProfileDialog", "text.avatar-size-too-big")),
+                                        message: GObject.GLocale.get(new GObject.GLocaleKey("GProfileDialog", "text.avatar-size-too-big")),
                                     });
                                 let a = n.getExtension().toLowerCase();
                                 "jpg" === a && (a = "jpeg");
@@ -155,7 +155,7 @@ module.exports = function (e, t, n) {
                                         .catch(t));
                             }));
                     },
-                    !1
+                    false
                 );
             }),
             (c.prototype._userPropertiesChangedEvent = function (e) {
@@ -184,5 +184,5 @@ module.exports = function (e, t, n) {
             (c.prototype._close = function () {
                 gDesigner.removeEventListener(s, this._userPropertiesChangedEvent, this);
             }),
-            (e.exports = c));
+            (module.exports = c));
     };

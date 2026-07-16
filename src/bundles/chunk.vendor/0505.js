@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(72);
+module.exports = function (module, exports, require) {
+            var n = require(72);
 
             function r() {}
-            (i(0).inherit(r, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(r, n),
                 (r.prototype.toString = function () {
                     return "[Object GInputEvent(" + this._paramsToString() + ")]";
                 }),
                 (r.prototype._paramsToString = function () {
                     return "";
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

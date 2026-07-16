@@ -1,45 +1,45 @@
-module.exports = function (e, t, i) {
-            var n = i(264),
-                r = i(2),
-                o = i(187),
-                a = i(11),
-                s = i(265),
-                l = i(139),
-                h = i(141),
-                A = i(69),
-                c = i(5),
-                p = i(87),
-                u = i(14),
-                d = i(104),
-                g = i(28),
-                f = i(132),
-                m = i(68),
-                y = i(59),
-                _ = i(0),
-                v = i(17),
-                b = i(6),
-                C = i(54),
-                w = i(22),
-                E = i(7),
-                B = i(63),
-                x = i(112),
-                P = i(48),
-                S = i(12),
-                T = i(229),
-                I = i(283),
-                F = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(264),
+                r = require(2),
+                o = require(187),
+                a = require(11),
+                s = require(265),
+                l = require(139),
+                h = require(141),
+                A = require(69),
+                c = require(5),
+                p = require(87),
+                u = require(14),
+                d = require(104),
+                GStylable = require(28),
+                f = require(132),
+                m = require(68),
+                y = require(59),
+                IsFiniteNonNegativeNumber = require(0),
+                v = require(17),
+                b = require(6),
+                C = require(54),
+                w = require(22),
+                E = require(7),
+                B = require(63),
+                x = require(112),
+                P = require(48),
+                S = require(12),
+                T = require(229),
+                I = require(283),
+                String = require(9);
 
             function R() {
                 (d.call(this), this._setDefaultProperties(R.GeometryProperties), this._setDefaultProperties(R.MetaProperties));
             }
-            (_.inheritAndMix(R, d, [r.Container, w.Transform, w.Layout, w.Stylable, w.Accelerated, p]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(R, d, [r.Container, w.Transform, w.Layout, w.Stylable, w.Accelerated, p]),
                 (R.GeometryProperties = {
                     trf: null,
                     bool: n.OR,
                 }),
                 (R.VisualProperties = {}),
                 (R.MetaProperties = {
-                    scc: !0,
+                    scc: true,
                 }),
                 (R.MARKER_CACHE = {}),
                 (R.MARKER_SIZE = 10),
@@ -55,9 +55,9 @@ module.exports = function (e, t, i) {
                 (R.HitResult.prototype.type = null),
                 (R.HitResult.prototype.vertexHit = null),
                 (R.prototype.getNodeNameTranslated = function () {
-                    return F.getValue("GShape", "name", this.getNodeName());
+                    return String.getValue("GShape", "name", this.getNodeName());
                 }),
-                (R.prototype._paintSharp = !1),
+                (R.prototype._paintSharp = false),
                 (R.prototype.assignFrom = function (e) {
                     (e instanceof R && this.transferProperties(e, [R.GeometryProperties, R.MetaProperties]),
                         (this._paintSharp = e._paintSharp),
@@ -85,7 +85,7 @@ module.exports = function (e, t, i) {
                         !e.isIdentity() &&
                         ((this._layoutTransform = e),
                         (this._relayoutNow = !this._relayout),
-                        (this._relayout = !0),
+                        (this._relayout = true),
                         this.setProperty("trf", this.$trf ? this.$trf.multiplied(e) : e),
                         w.Transform.prototype.transform.call(this, e, t, i),
                         this._relayoutNow &&
@@ -97,7 +97,7 @@ module.exports = function (e, t, i) {
                         ((this._layoutTransform =
                             this.$trf && this.$trf.invertible() ? this.$trf.inverted().multiplied(e).multiplied(this.$trf) : e),
                         (this._relayoutNow = !this._relayout),
-                        (this._relayout = !0),
+                        (this._relayout = true),
                         this.setProperty("trf", this.$trf ? e.multiplied(this.$trf) : e),
                         w.Transform.prototype.preTransform.call(this, e, t, i),
                         this._relayoutNow &&
@@ -139,7 +139,7 @@ module.exports = function (e, t, i) {
                     return 1;
                 }),
                 (R.prototype.isFakeContainer = function () {
-                    return !1;
+                    return false;
                 }),
                 (R.prototype.getSubnodeIds = function (e) {
                     r.Container.prototype.getSubnodeIds.call(this, e);
@@ -149,7 +149,7 @@ module.exports = function (e, t, i) {
                     i && (e[i.getMultireferenceId()] && i.resetMultireference(), (e[i.getMultireferenceId()] = i), i.getSubnodeIds(e));
                 }),
                 (R.prototype.getStyleBorderPadding = function (e) {
-                    var t = g.prototype.getStyleBorderPadding.call(this, e);
+                    var t = GStylable.prototype.getStyleBorderPadding.call(this, e);
                     return (
                         t &&
                             this._requireMiterLimitApproximation() &&
@@ -191,9 +191,9 @@ module.exports = function (e, t, i) {
                         for (
                             var v = function (e, t) {
                                     if (this._isEvenOddFill()) {
-                                        if (e.getOddEven(t)) return !0;
-                                    } else if (e.getWinding(t)) return !0;
-                                    return !1;
+                                        if (e.getOddEven(t)) return true;
+                                    } else if (e.getWinding(t)) return true;
+                                    return false;
                                 }.bind(this),
                                 E = r & w.CollisionFlag.CollisionInfo,
                                 B = C.splitVertexSource(this),
@@ -203,16 +203,16 @@ module.exports = function (e, t, i) {
                             T < B.length;
                             T++
                         ) {
-                            if (S.intersect(i, B[T], !1, !0, x))
+                            if (S.intersect(i, B[T], false, true, x))
                                 return void (
                                     r & w.CollisionFlag.FullyContained ||
                                     a(
                                         E
                                             ? {
                                                   element: this,
-                                                  intersects: !0,
-                                                  containsArea: !1,
-                                                  separate: !1,
+                                                  intersects: true,
+                                                  containsArea: false,
+                                                  separate: false,
                                               }
                                             : this
                                     )
@@ -228,9 +228,9 @@ module.exports = function (e, t, i) {
                                           E
                                               ? {
                                                     element: this,
-                                                    separate: !1,
-                                                    containsArea: !0,
-                                                    intersects: !1,
+                                                    separate: false,
+                                                    containsArea: true,
+                                                    intersects: false,
                                                 }
                                               : this
                                       )
@@ -238,20 +238,20 @@ module.exports = function (e, t, i) {
                                       (v(S.getFirstPoly(), I.point) ||
                                           a({
                                               element: this,
-                                              separate: !0,
-                                              containsArea: !1,
-                                              intersects: !1,
+                                              separate: true,
+                                              containsArea: false,
+                                              intersects: false,
                                           }));
                             else {
                                 var R = v((I = S._makePolygon(this)), S.getFirstPoly().point);
                                 if (R || F) {
-                                    var D = !1;
+                                    var D = false;
                                     if (this._isEvenOddFill())
                                         for (l = new P(), T = 0; T < B.length; T++) {
                                             (B[T].rewindVertices(0), B[T].readVertex(l));
                                             var k = new c(l.x, l.y);
                                             if (v(S.getFirstPoly(), k)) {
-                                                D = !0;
+                                                D = true;
                                                 break;
                                             }
                                         }
@@ -261,18 +261,18 @@ module.exports = function (e, t, i) {
                                                   E
                                                       ? {
                                                             element: this,
-                                                            separate: !1,
-                                                            containsArea: !0,
-                                                            intersects: !1,
+                                                            separate: false,
+                                                            containsArea: true,
+                                                            intersects: false,
                                                         }
                                                       : this
                                               )
                                             : F &&
                                               a({
                                                   element: this,
-                                                  separate: !0,
-                                                  containsArea: !1,
-                                                  intersects: !1,
+                                                  separate: true,
+                                                  containsArea: false,
+                                                  intersects: false,
                                               }));
                                 }
                             }
@@ -283,9 +283,9 @@ module.exports = function (e, t, i) {
                                       E
                                           ? {
                                                 element: this,
-                                                separate: !1,
-                                                containsArea: !1,
-                                                intersects: !1,
+                                                separate: false,
+                                                containsArea: false,
+                                                intersects: false,
                                             }
                                           : this
                                   )
@@ -295,9 +295,9 @@ module.exports = function (e, t, i) {
                                       E
                                           ? {
                                                 element: this,
-                                                separate: !1,
-                                                containsArea: !0,
-                                                intersects: !1,
+                                                separate: false,
+                                                containsArea: true,
+                                                intersects: false,
                                             }
                                           : this
                                   );
@@ -305,19 +305,19 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (R.prototype._paintStyleLayer = function (e, t, i) {
-                    if (t === g.StyleLayer.Fill) {
-                        var n = this.getPaintLayers().getFillLayers(!0);
-                        (n.length || n.push(new g.FillPaintLayer()),
+                    if (t === GStylable.StyleLayer.Fill) {
+                        var n = this.getPaintLayers().getFillLayers(true);
+                        (n.length || n.push(new GStylable.FillPaintLayer()),
                             this.getPaintLayers().hasFillMaskLayers() ? this._paintFillMaskLayers(e, i, n) : this._paintFillLayers(e, i, n),
                             e._ignoreContents
                                 ? "function" == typeof e._ignoreContents && e._ignoreContents(e, t)
                                 : this._paintContents(e, i));
                     } else
-                        t === g.StyleLayer.Border &&
+                        t === GStylable.StyleLayer.Border &&
                             (e.configuration.isOutline(e)
                                 ? this._paintBorder(e, i, null)
                                 : a.each(
-                                      this.getPaintLayers().getBorderLayers(!0),
+                                      this.getPaintLayers().getBorderLayers(true),
                                       function (t, n) {
                                           this._paintBorder(e, i, n);
                                       }.bind(this)
@@ -369,44 +369,44 @@ module.exports = function (e, t, i) {
                     return this.getPaintLayers().hasSeparateFillLayer();
                 }),
                 (R.prototype._isSeparateStylePaintLayer = function (e, t) {
-                    if (w.Stylable.prototype._isSeparateStylePaintLayer.call(this, e, t)) return !0;
-                    var i = this.getPaintLayers().getBorderLayers(!0),
+                    if (w.Stylable.prototype._isSeparateStylePaintLayer.call(this, e, t)) return true;
+                    var i = this.getPaintLayers().getBorderLayers(true),
                         n = function (e, t) {
-                            for (var n = 0; n < i.length; n++) if (t.apply(null, i[n].getProperties(e, null, null, !0))) return !0;
-                            return !1;
+                            for (var n = 0; n < i.length; n++) if (t.apply(null, i[n].getProperties(e, null, null, true))) return true;
+                            return false;
                         };
-                    if (t === g.StyleLayer.Border) {
-                        if (!this.hasStyleBorder()) return !1;
+                    if (t === GStylable.StyleLayer.Border) {
+                        if (!this.hasStyleBorder()) return false;
                         if (
                             n(["_ba"], function (e) {
-                                return e !== g.BorderAlignment.Center;
+                                return e !== GStylable.BorderAlignment.Center;
                             })
                         )
-                            return !0;
+                            return true;
                         if (
                             n(["_pt"], function (e) {
                                 return !(e instanceof m);
                             })
                         )
-                            return !0;
+                            return true;
                         if (
                             n(["_bhm", "_btm", "_op"], function (e, t, i) {
                                 return (e || t) && i < 1;
                             })
                         )
-                            return !0;
+                            return true;
                     }
                     return !!(
-                        t === g.StyleLayer.Fill &&
+                        t === GStylable.StyleLayer.Fill &&
                         this.hasStyleFill() &&
                         this.hasStyleBorder() &&
                         n(["_ba"], function (e) {
-                            return e === g.BorderAlignment.Outside;
+                            return e === GStylable.BorderAlignment.Outside;
                         })
                     );
                 }),
                 (R.prototype._calculateGeometryBBox = function (e) {
-                    return y.calculateBounds(this, !0);
+                    return y.calculateBounds(this, true);
                 }),
                 (R.prototype._calculatePaintBBox = function (e, t) {
                     var i = this.getGeometryBBox(t);
@@ -415,19 +415,19 @@ module.exports = function (e, t, i) {
                         r = i,
                         o = new b(i.getX(), i.getY(), i.getWidth(), i.getHeight());
                     if (this.hasStyleFill()) {
-                        var s = n.getEffectsBBox(i, g.StyleLayer.Fill, o);
+                        var s = n.getEffectsBBox(i, GStylable.StyleLayer.Fill, o);
                         r = r.united(s);
                     }
                     var l = null;
                     return (
                         this.hasStyleBorder() &&
                             a.each(
-                                this.getPaintLayers().getBorderLayers(!0),
+                                this.getPaintLayers().getBorderLayers(true),
                                 function (e, t) {
                                     var o = i,
                                         a = this.getStyleBorderPadding(t);
                                     (a && (o = o.expanded(a, a, a, a)), (o = this._calculateMarkersBorderBBox(o, t)));
-                                    var s = n.getEffectsBBox(o, g.StyleLayer.Border, o);
+                                    var s = n.getEffectsBBox(o, GStylable.StyleLayer.Border, o);
                                     ((r = r.united(s)), (l = l ? l.united(o) : o));
                                 }.bind(this)
                             ),
@@ -439,16 +439,16 @@ module.exports = function (e, t, i) {
                         n = this.getTailMarkerVertices(t),
                         r = t.$_bw;
                     return (
-                        i && (e = e.united(y.calculateBounds(i, !0).expanded(r, r, r, r))),
-                        n && (e = e.united(y.calculateBounds(n, !0).expanded(r, r, r, r))),
+                        i && (e = e.united(y.calculateBounds(i, true).expanded(r, r, r, r))),
+                        n && (e = e.united(y.calculateBounds(n, true).expanded(r, r, r, r))),
                         e
                     );
                 }),
                 (R.prototype._requireMiterLimitApproximation = function () {
-                    return !1;
+                    return false;
                 }),
                 (R.prototype._isEvenOddFill = function () {
-                    return !1;
+                    return false;
                 }),
                 (R.prototype.createShapePaint = function (e, t, i) {
                     var n = e.isIncludingInvisible();
@@ -514,9 +514,9 @@ module.exports = function (e, t, i) {
                             ? (r = 1)
                             : this.hasStyleBorder() &&
                               ((r = 0),
-                              a.each(this.getPaintLayers().getBorderLayers(!0), function (e, t) {
+                              a.each(this.getPaintLayers().getBorderLayers(true), function (e, t) {
                                   var i = t.$_bw;
-                                  (t.$_ba !== g.BorderAlignment.Center && (i *= 2), (r = Math.max(r, i)));
+                                  (t.$_ba !== GStylable.BorderAlignment.Center && (i *= 2), (r = Math.max(r, i)));
                               }),
                               (r *= t.getScale())),
                             (i = new h(i, t.getTransform(), Math.ceil(r) % 2 == 0, this.getGeometryBBox(e.isIncludingInvisible()))));
@@ -527,16 +527,16 @@ module.exports = function (e, t, i) {
                     var t,
                         i = this.getGeometryBBox(context.isIncludingInvisible()),
                         n = new E();
-                    (a.each(this.getPaintLayers().getBorderLayers(!0), function (e, i) {
-                        i.$_ba !== g.BorderAlignment.Inside &&
-                            (t = i.$_ba === g.BorderAlignment.Center ? Math.max(t || 0, i.$_bw / 2) : Math.max(t || 0, i.$_bw));
+                    (a.each(this.getPaintLayers().getBorderLayers(true), function (e, i) {
+                        i.$_ba !== GStylable.BorderAlignment.Inside &&
+                            (t = i.$_ba === GStylable.BorderAlignment.Center ? Math.max(t || 0, i.$_bw / 2) : Math.max(t || 0, i.$_bw));
                     }),
-                        t && (n = E.getResizeTransform(i, b.Side.BOTTOM_RIGHT, t, t, !1, !0)));
+                        t && (n = E.getResizeTransform(i, b.Side.BOTTOM_RIGHT, t, t, false, true)));
                     var r = e.getTransform(),
                         o = (n = n.multiplied(r)).mapRect(i).toAlignedRect(),
                         s = n.inverted(),
                         l = s ? s.mapRect(o) : i,
-                        h = E.getResizeTransform(i, b.Side.TOP_LEFT, l.getX() - i.getX(), l.getY() - i.getY(), !1, !1),
+                        h = E.getResizeTransform(i, b.Side.TOP_LEFT, l.getX() - i.getX(), l.getY() - i.getY(), false, false),
                         A = h.mapRect(i);
                     return (h = h.multiplied(
                         E.getResizeTransform(
@@ -544,8 +544,8 @@ module.exports = function (e, t, i) {
                             b.Side.BOTTOM_RIGHT,
                             l.getX() + l.getWidth() - i.getX() - i.getWidth(),
                             l.getY() + l.getHeight() - i.getY() - i.getHeight(),
-                            !1,
-                            !1
+                            false,
+                            false
                         )
                     ));
                 }),
@@ -562,17 +562,17 @@ module.exports = function (e, t, i) {
                                     i.$_px && !i.$_px.isIdentity() && (r.transform = r.transform.preMultiplied(i.$_px))),
                                 s.hasClip() &&
                                     ((i.isSeparateLayer() && s.isClipped()) ||
-                                        (t && this.hasStyleFill() && this.hasStyleBorder() && this.$_ba === g.BorderAlignment.Outside)))
+                                        (t && this.hasStyleFill() && this.hasStyleBorder() && this.$_ba === GStylable.BorderAlignment.Outside)))
                             ) {
                                 if (void 0 !== s.putVertices(o)) {
                                     s.clipVertices();
-                                    var l = this.getPaintBBox(!1, null, n),
+                                    var l = this.getPaintBBox(false, null, n),
                                         h = this._createStyleCanvas(e, l);
                                     e.pushCanvas(h);
                                     try {
-                                        if (t && this.hasStyleFill() && this.hasStyleBorder() && this.$_ba === g.BorderAlignment.Outside)
+                                        if (t && this.hasStyleFill() && this.hasStyleBorder() && this.$_ba === GStylable.BorderAlignment.Outside)
                                             a.each(
-                                                this.getPaintLayers().getBorderLayers(!0),
+                                                this.getPaintLayers().getBorderLayers(true),
                                                 function (e, t) {
                                                     (h.putVertices(o),
                                                         h.strokeVertices(v.BLACK, t.$_bw, t.$_bds, t.$_blc, t.$_blj, t.$_bml, 1));
@@ -582,7 +582,7 @@ module.exports = function (e, t, i) {
                                                         r.transform && r.transform.invertible())
                                                     ) {
                                                         a = r.transform.inverted().mapRect(a);
-                                                        var s = h.setTransform(h.getTransform(!0).multiplied(r.transform));
+                                                        var s = h.setTransform(h.getTransform(true).multiplied(r.transform));
                                                         (h.fillVertices(v.BLACK, 1, null, this._isEvenOddFill()),
                                                             h.fillRect(
                                                                 a.getX(),
@@ -609,7 +609,7 @@ module.exports = function (e, t, i) {
                                             );
                                         else if (void 0 !== h.putVertices(o))
                                             if (r.transform) {
-                                                var A = h.setTransform(h.getTransform(!0).preMultiplied(r.transform));
+                                                var A = h.setTransform(h.getTransform(true).preMultiplied(r.transform));
                                                 (h.fillVertices(r.paint, i.$_op, null, this._isEvenOddFill()), s.setTransform(A));
                                             } else h.fillVertices(r.paint, i.$_op, null, this._isEvenOddFill());
                                         (s.drawCanvas(h, 0, 0, i.$_op, i.getBlendingForContext(e)), h.finish());
@@ -620,7 +620,7 @@ module.exports = function (e, t, i) {
                                 }
                             } else if (((o = this.makeSharp(e, s, this)), void 0 !== s.putVertices(o)))
                                 if (r.transform) {
-                                    A = s.setTransform(s.getTransform(!0).preMultiplied(r.transform));
+                                    A = s.setTransform(s.getTransform(true).preMultiplied(r.transform));
                                     (s.fillVertices(r.paint, i.$_op, i.getBlendingForContext(e), this._isEvenOddFill()), s.setTransform(A));
                                 } else s.fillVertices(r.paint, i.$_op, i.getBlendingForContext(e), this._isEvenOddFill());
                         }
@@ -648,11 +648,11 @@ module.exports = function (e, t, i) {
                                         w.CollisionFlag.FullyContained |
                                         w.CollisionFlag.CollisionInfo,
                                     function (e) {
-                                        return (e.separate ? o.push(e) : a.push(e), !0);
+                                        return (e.separate ? o.push(e) : a.push(e), true);
                                     },
                                     null,
                                     function (e) {
-                                        return !1;
+                                        return false;
                                     }
                                 ),
                                     (this._collidesWithChildren = a.length > 0),
@@ -709,19 +709,19 @@ module.exports = function (e, t, i) {
                     if (this.hasStyleBorder()) {
                         var s = e.isIncludingInvisible(),
                             l = this.getPatternBBox(s);
-                        if (l && i.$_ba !== g.BorderAlignment.Inside) {
+                        if (l && i.$_ba !== GStylable.BorderAlignment.Inside) {
                             var h = i.$_bw;
-                            if ((i.$_ba === g.BorderAlignment.Center && (h *= 0.5), this.$trf))
+                            if ((i.$_ba === GStylable.BorderAlignment.Center && (h *= 0.5), this.$trf))
                                 ((h /= this.$trf.getScaleFactor()), (l = l.expanded(h, h, h, h)));
                             else l = l.expanded(h, h, h, h);
                         }
                         var A = i.$_bw;
                         if (
-                            (i.$_ba !== g.BorderAlignment.Center && (A *= 2),
-                            t && this.hasStyleFill() && i.$_ba === g.BorderAlignment.Outside && e.canvas.hasClip())
+                            (i.$_ba !== GStylable.BorderAlignment.Center && (A *= 2),
+                            t && this.hasStyleFill() && i.$_ba === GStylable.BorderAlignment.Outside && e.canvas.hasClip())
                         ) {
                             var c = e.canvas,
-                                p = this._createStyleCanvas(e, this.getPaintBBox(!1, null, s));
+                                p = this._createStyleCanvas(e, this.getPaintBBox(false, null, s));
                             e.pushCanvas(p);
                             try {
                                 var d = this.getGeometryBBox(s),
@@ -730,7 +730,7 @@ module.exports = function (e, t, i) {
                                 var m = (d = this._calculateMarkersBorderBBox(d, i)),
                                     y = this,
                                     _ = e.canvas,
-                                    b = this.getPaintLayers().getFillLayers(!0);
+                                    b = this.getPaintLayers().getFillLayers(true);
                                 a.each(
                                     b,
                                     function (t, n) {
@@ -752,15 +752,15 @@ module.exports = function (e, t, i) {
                                         }
                                     }.bind(this)
                                 );
-                                var C = this._createStyleCanvas(e, this.getPaintBBox(!1, null, s));
+                                var C = this._createStyleCanvas(e, this.getPaintBBox(false, null, s));
                                 e.pushCanvas(C);
                                 try {
-                                    (this._paintBorderSeparate(e, !1, !0, !1, i), _.drawCanvas(C));
+                                    (this._paintBorderSeparate(e, false, true, false, i), _.drawCanvas(C));
                                 } finally {
                                     e.popCanvas();
                                 }
                                 (p.putVertices(y),
-                                    p.clipVertices(!0),
+                                    p.clipVertices(true),
                                     p.clear(),
                                     p.resetClip(),
                                     c.drawCanvas(p, null, null, i.$_op, i.getBlendingForContext(e)),
@@ -769,9 +769,9 @@ module.exports = function (e, t, i) {
                                 e.popCanvas();
                             }
                         } else if (t) {
-                            ((C = this._createStyleCanvas(e, this.getPaintBBox(!1, null, s))), (c = e.pushCanvas(C)));
+                            ((C = this._createStyleCanvas(e, this.getPaintBBox(false, null, s))), (c = e.pushCanvas(C)));
                             try {
-                                (this._paintBorderSeparate(e, !0, !0, !0, i),
+                                (this._paintBorderSeparate(e, true, true, true, i),
                                     c.drawCanvas(C, null, null, 1, i.getBlendingForContext(e)),
                                     C.finish());
                             } finally {
@@ -799,16 +799,16 @@ module.exports = function (e, t, i) {
                         t && (a = this.makeSharp(e, o, this));
                         var s = e.isIncludingInvisible(),
                             l = this.getPatternBBox(s);
-                        if (l && r.$_ba !== g.BorderAlignment.Inside) {
+                        if (l && r.$_ba !== GStylable.BorderAlignment.Inside) {
                             var h = r.$_bw;
-                            if ((r.$_ba === g.BorderAlignment.Center && (h *= 0.5), this.$trf))
+                            if ((r.$_ba === GStylable.BorderAlignment.Center && (h *= 0.5), this.$trf))
                                 ((h /= this.$trf.getScaleFactor()), (l = l.expanded(h, h, h, h)));
                             else l = l.expanded(h, h, h, h);
                         }
                         var A = this.createShapePaint(e, r.$_pt, l);
                         if (A && A.paint && void 0 !== o.putVertices(a)) {
                             var c = r.$_bw;
-                            r.$_ba !== g.BorderAlignment.Center && (c *= 2);
+                            r.$_ba !== GStylable.BorderAlignment.Center && (c *= 2);
                             var p = this.getGeometryBBox(s),
                                 d = this.getStyleBorderPadding(r);
                             (d && (p = p.expanded(d, d, d, d)), i && (p = this._calculateMarkersBorderBBox(p, r)));
@@ -822,15 +822,15 @@ module.exports = function (e, t, i) {
                             var y = this.calculateMitterLimit(r);
                             if (
                                 (o.strokeVertices(v.BLACK, c, r.$_bds, r.$_blc, r.$_blj, y, 1),
-                                r.$_ba === g.BorderAlignment.Inside
-                                    ? o.fillVertices(v.BLACK, 1, u.CompositeOperator.DestinationIn, !0)
-                                    : r.$_ba === g.BorderAlignment.Outside &&
-                                      o.fillVertices(v.BLACK, 1, u.CompositeOperator.DestinationOut, !0),
+                                r.$_ba === GStylable.BorderAlignment.Inside
+                                    ? o.fillVertices(v.BLACK, 1, u.CompositeOperator.DestinationIn, true)
+                                    : r.$_ba === GStylable.BorderAlignment.Outside &&
+                                      o.fillVertices(v.BLACK, 1, u.CompositeOperator.DestinationOut, true),
                                 i && this._paintBorderMarkers(e, v.BLACK, r),
                                 m && m.invertible())
                             ) {
                                 f = m.inverted().mapRect(f);
-                                var _ = o.setTransform(o.getTransform(!0).multiplied(m));
+                                var _ = o.setTransform(o.getTransform(true).multiplied(m));
                                 (o.fillRect(
                                     f.getX(),
                                     f.getY(),
@@ -863,9 +863,9 @@ module.exports = function (e, t, i) {
                         c = A;
                     if (i instanceof C) {
                         if (((l = i), !s)) {
-                            var p = !1;
+                            var p = false;
                             l.rewindVertices(0);
-                            for (var d = new P(); l.readVertex(d); ) d.command !== P.Command.Close || l.hasVertexForRead() || (p = !0);
+                            for (var d = new P(); l.readVertex(d); ) d.command !== P.Command.Close || l.hasVertexForRead() || (p = true);
                             (l.rewindVertices(0), p || (c = A = Math.sqrt(2) / 2));
                         }
                         l = new B(l, new E((v = h * n), 0, 0, v, 0, 0));
@@ -875,30 +875,30 @@ module.exports = function (e, t, i) {
                         if (R.MARKER_CACHE.hasOwnProperty(i)) {
                             var _ = R.MARKER_CACHE[i];
                             switch (((f = _.vertices), (m = _.scaleFactor), i)) {
-                                case g.BorderMarker.Circle:
+                                case GStylable.BorderMarker.Circle:
                                 default:
-                                case g.BorderMarker.Bullet:
-                                case g.BorderMarker.Diamond:
+                                case GStylable.BorderMarker.Bullet:
+                                case GStylable.BorderMarker.Diamond:
                                     s && ((A = 0.5), (c = 0.5));
                                     break;
-                                case g.BorderMarker.Line:
-                                case g.BorderMarker.LineDouble:
+                                case GStylable.BorderMarker.Line:
+                                case GStylable.BorderMarker.LineDouble:
                                     ((A = 0.5), (c = 0.5));
                                     break;
-                                case g.BorderMarker.Arrow:
-                                case g.BorderMarker.ArrowPointer:
+                                case GStylable.BorderMarker.Arrow:
+                                case GStylable.BorderMarker.ArrowPointer:
                                     s && ((A = 1), (c = 0.5));
                                     break;
-                                case g.BorderMarker.ArrowFat:
+                                case GStylable.BorderMarker.ArrowFat:
                                     break;
-                                case g.BorderMarker.ArrowLine:
-                                case g.BorderMarker.ArrowLineBar:
-                                case g.BorderMarker.ArrowDoubleLine:
+                                case GStylable.BorderMarker.ArrowLine:
+                                case GStylable.BorderMarker.ArrowLineBar:
+                                case GStylable.BorderMarker.ArrowDoubleLine:
                                     ((A = 1), (c = 0.25));
                             }
                         } else {
                             switch (((f = new C()), i)) {
-                                case g.BorderMarker.Circle:
+                                case GStylable.BorderMarker.Circle:
                                 default:
                                     (f.addVertex(P.Command.Move, -1, -1),
                                         f.addVertex(P.Command.Curve2, 0, -2),
@@ -916,7 +916,7 @@ module.exports = function (e, t, i) {
                                         f.addVertex(P.Command.Close),
                                         s && ((A = 0.5), (c = 0.5)));
                                     break;
-                                case g.BorderMarker.Bullet:
+                                case GStylable.BorderMarker.Bullet:
                                     (f.addVertex(P.Command.Move, -1, -2),
                                         f.addVertex(P.Command.Line, 1, -2),
                                         f.addVertex(P.Command.Line, 1, 0),
@@ -924,7 +924,7 @@ module.exports = function (e, t, i) {
                                         f.addVertex(P.Command.Close),
                                         s && ((A = 0.5), (c = 0.5)));
                                     break;
-                                case g.BorderMarker.Diamond:
+                                case GStylable.BorderMarker.Diamond:
                                     (f.addVertex(P.Command.Move, -1, -1),
                                         f.addVertex(P.Command.Line, 0, -2),
                                         f.addVertex(P.Command.Line, 1, -1),
@@ -933,10 +933,10 @@ module.exports = function (e, t, i) {
                                         (m = Math.cos(Math.PI / 4)),
                                         s && ((A = 0.5), (c = 0.5)));
                                     break;
-                                case g.BorderMarker.Line:
+                                case GStylable.BorderMarker.Line:
                                     (f.addVertex(P.Command.Move, -1, 0), f.addVertex(P.Command.Line, 1, 0), (A = 0.5), (c = 0.5));
                                     break;
-                                case g.BorderMarker.LineDouble:
+                                case GStylable.BorderMarker.LineDouble:
                                     (f.addVertex(P.Command.Move, -2, 0),
                                         f.addVertex(P.Command.Line, 2, 0),
                                         f.addVertex(P.Command.Move, -2, -1),
@@ -944,14 +944,14 @@ module.exports = function (e, t, i) {
                                         (A = 0.5),
                                         (c = 0.5));
                                     break;
-                                case g.BorderMarker.Arrow:
+                                case GStylable.BorderMarker.Arrow:
                                     (f.addVertex(P.Command.Move, -1, -2),
                                         f.addVertex(P.Command.Line, 0, 0),
                                         f.addVertex(P.Command.Line, 1, -2),
                                         f.addVertex(P.Command.Close),
                                         s && ((A = 1), (c = 0.5)));
                                     break;
-                                case g.BorderMarker.ArrowPointer:
+                                case GStylable.BorderMarker.ArrowPointer:
                                     (f.addVertex(P.Command.Move, -1, -2),
                                         f.addVertex(P.Command.Line, 0, 0),
                                         f.addVertex(P.Command.Line, 1, -2),
@@ -960,20 +960,20 @@ module.exports = function (e, t, i) {
                                         f.addVertex(P.Command.Close),
                                         s && ((A = 1), (c = 0.5)));
                                     break;
-                                case g.BorderMarker.ArrowFat:
+                                case GStylable.BorderMarker.ArrowFat:
                                     (f.addVertex(P.Command.Move, -2, -2),
                                         f.addVertex(P.Command.Line, 0, 0),
                                         f.addVertex(P.Command.Line, 2, -2),
                                         f.addVertex(P.Command.Close));
                                     break;
-                                case g.BorderMarker.ArrowLine:
+                                case GStylable.BorderMarker.ArrowLine:
                                     (f.addVertex(P.Command.Move, -1, -2),
                                         f.addVertex(P.Command.Line, 0, 0),
                                         f.addVertex(P.Command.Line, 1, -2),
                                         (A = 1),
                                         (c = 0.25));
                                     break;
-                                case g.BorderMarker.ArrowLineBar:
+                                case GStylable.BorderMarker.ArrowLineBar:
                                     (f.addVertex(P.Command.Move, -1, -2),
                                         f.addVertex(P.Command.Line, 0, 0),
                                         f.addVertex(P.Command.Line, 1, -2),
@@ -982,7 +982,7 @@ module.exports = function (e, t, i) {
                                         (A = 1),
                                         (c = 0.25));
                                     break;
-                                case g.BorderMarker.ArrowDoubleLine:
+                                case GStylable.BorderMarker.ArrowDoubleLine:
                                     (f.addVertex(P.Command.Move, -1, -2),
                                         f.addVertex(P.Command.Line, 0, 0),
                                         f.addVertex(P.Command.Line, 1, -2),
@@ -1000,7 +1000,7 @@ module.exports = function (e, t, i) {
                         var v = (R.MARKER_SIZE / 2 / m) * h * n;
                         l = new B(f, new E(v, 0, 0, v, 0, 0));
                     }
-                    var b = y.calculateBounds(l, !0);
+                    var b = y.calculateBounds(l, true);
                     (a != u.LineCap.Square && a != u.LineCap.Round) || (c += 0.5);
                     var w = -(b = b.expanded(0, r * c, 0, r * A)).getY() - b.getHeight() * o,
                         x = -Math.atan2(t.getX() - e.getX(), t.getY() - e.getY()),
@@ -1020,7 +1020,7 @@ module.exports = function (e, t, i) {
                 }),
                 (R.prototype._paintBorderMarker = function (e, t, i, n, r) {
                     var o = e.canvas.putVertices(t);
-                    r || !1 === o ? e.canvas.strokeVertices(i, n.$_bw) : e.canvas.fillVertices(i);
+                    r || false === o ? e.canvas.strokeVertices(i, n.$_bw) : e.canvas.fillVertices(i);
                 }),
                 (R.prototype._handleChange = function (e, t) {
                     if ((this._handleGeometryChangeForProperties(e, t, R.GeometryProperties), e === r._Change.Store))
@@ -1065,7 +1065,7 @@ module.exports = function (e, t, i) {
                                 n = this.getEffects(),
                                 o = i.getEffects(),
                                 s = [],
-                                l = !1;
+                                l = false;
                             (this._beginBlockChanges([r._Change.BeforePropertiesChange, r._Change.AfterPropertiesChange]),
                                 o._beginBlockChanges([
                                     r._Change.BeforeChildRemove,
@@ -1077,7 +1077,7 @@ module.exports = function (e, t, i) {
                                 for (var h = 0, A = n.getFirstChild(); null !== A; A = A.getNext()) {
                                     if ((m = o.getChildByIndex(h)))
                                         if (A.constructor.equals(m, A)) {
-                                            var c = [g.Effect.GeometryProperties];
+                                            var c = [GStylable.Effect.GeometryProperties];
                                             if (
                                                 (A.constructor.GeometryProperties && c.push(A.constructor.GeometryProperties),
                                                 A.constructor.VisualProperties && c.push(A.constructor.VisualProperties),
@@ -1087,13 +1087,13 @@ module.exports = function (e, t, i) {
                                                     for (var u in c[p]) {
                                                         var d = A.getProperty(c[p][u]),
                                                             f = i.getProperty(c[p][u]);
-                                                        if (a.equals(d, f, !0)) {
+                                                        if (a.equals(d, f, true)) {
                                                             (s.push(m),
                                                                 m._beginBlockChanges([
                                                                     r._Change.BeforePropertiesChange,
                                                                     r._Change.AfterPropertiesChange,
                                                                 ]),
-                                                                m.transferProperties(A, c, !0),
+                                                                m.transferProperties(A, c, true),
                                                                 m._endBlockChanges([
                                                                     r._Change.BeforePropertiesChange,
                                                                     r._Change.AfterPropertiesChange,
@@ -1102,14 +1102,14 @@ module.exports = function (e, t, i) {
                                                         }
                                                     }
                                         } else
-                                            (l || (i._notifyChange(w._Change.PrepareGeometryUpdate), (l = !0)),
+                                            (l || (i._notifyChange(w._Change.PrepareGeometryUpdate), (l = true)),
                                                 o.insertChild(A.clone(), m),
                                                 o.removeChild(m));
                                     else (o.insertChild(A.clone()), s.push(o.getLastChild()));
                                     h++;
                                 }
                                 for (var m = o.getChildByIndex(h); null !== m; m = o.getNext())
-                                    (l || (i._notifyChange(w._Change.PrepareGeometryUpdate), (l = !0)), o.removeChild(m));
+                                    (l || (i._notifyChange(w._Change.PrepareGeometryUpdate), (l = true)), o.removeChild(m));
                             } finally {
                                 if (
                                     (o._endBlockChanges([
@@ -1122,7 +1122,7 @@ module.exports = function (e, t, i) {
                                 )
                                     (i._resetFxCacheAndState(), i._notifyChange(w._Change.FinishGeometryUpdate, 1));
                                 else if (s.length) {
-                                    for (var y = 0; y < s.length; y++) i._resetFxCacheAndState(s[y], !0);
+                                    for (var y = 0; y < s.length; y++) i._resetFxCacheAndState(s[y], true);
                                     i._notifyChange(w._Change.FinishGeometryUpdate, 1);
                                 }
                             }
@@ -1147,7 +1147,7 @@ module.exports = function (e, t, i) {
                 (R.prototype._detailHitTest = function (e, t, i, n, r) {
                     if (this.hasStyleBorder()) {
                         var o = 0;
-                        a.each(this.getPaintLayers().getBorderLayers(!0), function (e, t) {
+                        a.each(this.getPaintLayers().getBorderLayers(true), function (e, t) {
                             o = Math.max(o, t.$_bw);
                         });
                         for (
@@ -1155,7 +1155,7 @@ module.exports = function (e, t, i) {
                             c < h.length;
                             c++
                         )
-                            if (y.hitTest(e.getX(), e.getY(), new B(h[c], t), s, !1, l))
+                            if (y.hitTest(e.getX(), e.getY(), new B(h[c], t), s, false, l))
                                 return new x(h[c], new R.HitResult(R.HitResult.Type.Stroke, l));
                     }
                     if (this.hasStyleFill() || n) {
@@ -1172,7 +1172,7 @@ module.exports = function (e, t, i) {
                     if (i) {
                         h = h || this._getVertexHitCandidates(e, t, i);
                         for (l = new T(), c = 0; c < h.length; c++)
-                            if (y.hitTest(e.getX(), e.getY(), new B(h[c], t), t.getScaleFactor() + 2 * i, !1, l))
+                            if (y.hitTest(e.getX(), e.getY(), new B(h[c], t), t.getScaleFactor() + 2 * i, false, l))
                                 return new x(this, new R.HitResult(R.HitResult.Type.Outline, l));
                     }
                     return this.hasMixin(A.LabelHolder) ? this._hitTestLabel(t, i) : null;
@@ -1181,15 +1181,15 @@ module.exports = function (e, t, i) {
                     n = n || [this];
                     for (var r = 0; r < n.length; r++) {
                         var o = t ? new B(n[r], t) : n[r];
-                        if (y.hitTest(e.getX(), e.getY(), o, 0, !0, i)) {
-                            if (!i.outline) return !0;
+                        if (y.hitTest(e.getX(), e.getY(), o, 0, true, i)) {
+                            if (!i.outline) return true;
                             ((i.x = null), (i.y = null), (i.slope = null), (i.outline = null), (i.segment = null));
                         }
                     }
-                    return !1;
+                    return false;
                 }),
                 (R.prototype.toString = function () {
                     return "[GShape]";
                 }),
-                (e.exports = R));
+                (module.exports = R));
         };

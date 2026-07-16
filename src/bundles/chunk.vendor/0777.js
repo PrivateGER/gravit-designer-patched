@@ -1,23 +1,23 @@
-module.exports = function (e, t, i) {
-            var n = i(133);
+module.exports = function (module, exports, require) {
+            var GScenePaintConfiguration = require(133);
 
             function r() {}
-            (i(0).inherit(r, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(r, GScenePaintConfiguration),
                 (r.prototype.pageDecoration = {
-                    chessboard: !0,
-                    margin: !0,
+                    chessboard: true,
+                    margin: true,
                     shadow: 0,
                     shadowOffsetX: 0,
                     shadowOffsetY: 0,
                     shadowBackground: "rgba(0,0,0,0.5)",
                     background: "white",
                 }),
-                (r.prototype.gridVisible = !0),
-                (r.prototype.pageLabelsVisible = !1),
-                (r.prototype.symbolLabelsVisible = !0),
-                (r.prototype.guideLinesVisible = !0),
+                (r.prototype.gridVisible = true),
+                (r.prototype.pageLabelsVisible = false),
+                (r.prototype.symbolLabelsVisible = true),
+                (r.prototype.guideLinesVisible = true),
                 (r.prototype.toString = function () {
                     return "[Object GEditorPaintConfiguration]";
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

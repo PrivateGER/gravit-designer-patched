@@ -1,19 +1,19 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(23),
-            i = n(49),
-            a = n(120),
-            r = n(307),
-            s = n(21),
-            l = o.RegExp,
+        var RegExp = require(23),
+            i = require(49),
+            a = require(120),
+            r = require(307),
+            s = require(21),
+            l = RegExp.RegExp,
             c = l.prototype;
         i &&
             s(function () {
-                var e = !0;
+                var e = true;
                 try {
                     l(".", "d");
                 } catch (t) {
-                    e = !1;
+                    e = false;
                 }
                 var t = {},
                     n = "",
@@ -21,7 +21,7 @@ module.exports = function (e, t, n) {
                     i = function (e, o) {
                         Object.defineProperty(t, e, {
                             get: function () {
-                                return ((n += o), !0);
+                                return ((n += o), true);
                             },
                         });
                     },
@@ -35,5 +35,5 @@ module.exports = function (e, t, n) {
                 for (var r in (e && (a.hasIndices = "d"), a)) i(r, a[r]);
                 return Object.getOwnPropertyDescriptor(c, "flags").get.call(t) !== o || n !== o;
             }) &&
-            a(c, "flags", { configurable: !0, get: r });
+            a(c, "flags", { configurable: true, get: r });
     };

@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i() {}
             ((i.Command = {
                 Move: 1,
@@ -10,5 +10,5 @@ module.exports = function (e, t) {
                 (i.prototype.command = null),
                 (i.prototype.x = null),
                 (i.prototype.y = null),
-                (e.exports = i));
+                (module.exports = i));
         };

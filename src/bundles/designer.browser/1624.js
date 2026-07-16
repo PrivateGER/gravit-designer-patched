@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(31),
-            a = n(18);
+        require(3);
+        var GObject = require(1),
+            i = require(31),
+            GCategory = require(18);
         function r() {}
-        (o.GObject.inherit(r, i),
+        (GObject.GObject.inherit(r, i),
             (r.ID = "open-welcome-screen"),
-            (r.TITLE = new o.GLocaleKey("GOpenWelcomeScreenAction", "title")),
+            (r.TITLE = new GObject.GLocaleKey("GOpenWelcomeScreenAction", "title")),
             (r.prototype.getId = function () {
                 return r.ID;
             }),
@@ -15,7 +15,7 @@ module.exports = function (e, t, n) {
                 return r.TITLE;
             }),
             (r.prototype.getCategory = function () {
-                return a.CATEGORY_HELP;
+                return GCategory.CATEGORY_HELP;
             }),
             (r.prototype.getGroup = function () {
                 return "help";
@@ -28,10 +28,10 @@ module.exports = function (e, t, n) {
                 );
             }),
             (r.prototype.execute = function () {
-                gDesigner.openNewDocumentDialog({ closable: !0, showCloudOptions: !0 });
+                gDesigner.openNewDocumentDialog({ closable: true, showCloudOptions: true });
             }),
             (r.prototype.toString = function () {
                 return "[Object GOpenWelcomeScreenAction]";
             }),
-            (e.exports = r));
+            (module.exports = r));
     };

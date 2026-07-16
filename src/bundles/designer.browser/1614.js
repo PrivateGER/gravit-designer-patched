@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(15),
-            a = n(18),
-            r = n(31),
-            s = n(1169);
+        require(3);
+        var GObject = require(1),
+            GPlatform = require(15),
+            GCategory = require(18),
+            r = require(31),
+            s = require(1169);
         function l() {}
-        (o.GObject.inherit(l, r),
+        (GObject.GObject.inherit(l, r),
             (l.ID = "view.canvas.show-rulers"),
-            (l.TITLE = new o.GLocaleKey("GShowRulersAction", "title")),
+            (l.TITLE = new GObject.GLocaleKey("GShowRulersAction", "title")),
             (l.prototype.getId = function () {
                 return l.ID;
             }),
@@ -17,19 +17,19 @@ module.exports = function (e, t, n) {
                 return l.TITLE;
             }),
             (l.prototype.getCategory = function () {
-                return a.CATEGORY_VIEW_CANVAS;
+                return GCategory.CATEGORY_VIEW_CANVAS;
             }),
             (l.prototype.getGroup = function () {
                 return "show/canvas";
             }),
             (l.prototype.getShortcut = function () {
-                return [i.GKey.Constant.META, i.GKey.Constant.OPTION, "R"];
+                return [GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.OPTION, "R"];
             }),
             (l.prototype.isEnabled = function () {
                 return !(!gDesigner.getWindows().getActiveWindow() || !gDesigner.getWindows().getActiveWindow().getView());
             }),
             (l.prototype.isCheckable = function () {
-                return !0;
+                return true;
             }),
             (l.prototype.isChecked = function () {
                 return (
@@ -42,7 +42,7 @@ module.exports = function (e, t, n) {
                 var e = gDesigner.getWindows().getActiveWindow().getView(),
                     t = !e.hasRulers(),
                     n = gDesigner.getAction(s.ID);
-                (t && !n.isChecked() && gDesigner.executeAction(s.ID, void 0, void 0, !0),
+                (t && !n.isChecked() && gDesigner.executeAction(s.ID, void 0, void 0, true),
                     e.setRulers(t),
                     $("#mainframe").toggleClass("rulers", t),
                     gDesigner.setSetting("rulers_visible", t));
@@ -50,5 +50,5 @@ module.exports = function (e, t, n) {
             (l.prototype.toString = function () {
                 return "[Object GShowRulersAction]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

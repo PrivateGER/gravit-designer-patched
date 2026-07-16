@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(1110),
-                r = i(90),
-                o = i(0),
+module.exports = function (module, exports, require) {
+            var n = require(1110),
+                r = require(90),
+                IsFiniteNonNegativeNumber = require(0),
                 a = function (e) {
                     this.value = e;
                 };
-            (o.inherit(a, r),
+            (IsFiniteNonNegativeNumber.inherit(a, r),
                 (a.prototype.equals = function (e) {
                     return this._wrap().equals(e);
                 }),
@@ -25,6 +25,6 @@ module.exports = function (e, t, i) {
                 (a.Null = function () {
                     a.call(this, new r());
                 }),
-                o.inherit(a.Null, a),
-                (e.exports = a));
+                IsFiniteNonNegativeNumber.inherit(a.Null, a),
+                (module.exports = a));
         };

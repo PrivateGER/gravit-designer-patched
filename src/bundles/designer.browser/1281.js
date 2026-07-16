@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(58), n(71), n(4), n(41), n(13), n(38));
-        var i = n(15),
-            a = o(n(31)),
-            r = o(n(1168));
+        var o = require(16);
+        (require(58), require(71), require(4), require(41), require(13), require(38));
+        var GPlatform = require(15),
+            a = o(require(31)),
+            r = o(require(1168));
         class s extends a.default {
             constructor(e) {
                 (super(), (this.Type = e.Type));
@@ -29,7 +29,7 @@ module.exports = function (e, t, n) {
             }
             _setShortcutSubKeyListener() {
                 (this._resetShortcutSubKeyListener(),
-                    document.addEventListener("keydown", this._shortcutSubKeyHandlerBind, !0),
+                    document.addEventListener("keydown", this._shortcutSubKeyHandlerBind, true),
                     (this._timeoutId = setTimeout(() => {
                         (this._resetShortcutSubKeyListener(), this.execute());
                     }, a.default.SHORTCUT_DELAY)));
@@ -41,14 +41,14 @@ module.exports = function (e, t, n) {
                 n && n.execute();
             }
             _shortcutSubKeyHandler(e) {
-                const t = i.GKey.translateCode(e.code),
+                const t = GPlatform.GKey.translateCode(e.code),
                     n = this.getShortcutSubKeys();
                 (this._resetShortcutSubKeyListener(),
                     t && n && n.includes(t) && (e.preventDefault(), e.stopPropagation(), this._executeFromShortcutSubKey(t)));
             }
             _resetShortcutSubKeyListener() {
                 this._timeoutId &&
-                    (document.removeEventListener("keydown", this._shortcutSubKeyHandlerBind, !0),
+                    (document.removeEventListener("keydown", this._shortcutSubKeyHandlerBind, true),
                     clearTimeout(this._timeoutId),
                     (this._timeoutId = null));
             }
@@ -56,5 +56,5 @@ module.exports = function (e, t, n) {
                 return "[Object GMainAction]";
             }
         }
-        e.exports = s;
+        module.exports = s;
     };

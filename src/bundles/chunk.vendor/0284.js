@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(5),
-                r = i(2),
-                o = i(12),
-                a = i(45),
-                s = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(5),
+                r = require(2),
+                o = require(12),
+                a = require(45),
+                String = require(9);
 
             function l() {
-                (a.call(this), (this.$closed = !0), this._setDefaultProperties(l.GeometryProperties), (this._paintSharp = !0));
+                (a.call(this), (this.$closed = true), this._setDefaultProperties(l.GeometryProperties), (this._paintSharp = true));
             }
             (r.inherit("polygon", l, a),
                 (l.GeometryProperties = {
@@ -33,7 +33,7 @@ module.exports = function (e, t, i) {
                     e instanceof l && e.setProperties(["ocr", "icr"], [this.getProperty("ocr"), this.getProperty("icr")]);
                 }),
                 (l.prototype.getNodeNameTranslated = function () {
-                    return s.getValue("GPolygon", "name", this.getNodeName());
+                    return String.getValue("GPolygon", "name", this.getNodeName());
                 }),
                 (l.prototype.calculateMitterLimit = function (e) {
                     var t = function (e, t, i) {
@@ -49,7 +49,7 @@ module.exports = function (e, t, i) {
                         n = [];
                     this.iterateSegments(function (e, t, i) {
                         n.push(e);
-                    }, !0);
+                    }, true);
                     for (var r = n.length - 1; r > 0; r -= 2) {
                         var o = n[r],
                             a = n[r - 1],
@@ -65,11 +65,11 @@ module.exports = function (e, t, i) {
                         l += r
                     ) {
                         var h = new n(this.$or * Math.cos(l) + this.$cx, this.$or * Math.sin(l) + this.$cy);
-                        if ((s && (h = s.mapPoint(h)), !0 === e(h, !1, l))) break;
+                        if ((s && (h = s.mapPoint(h)), true === e(h, false, l))) break;
                         if (
                             ((h = new n(this.$ir * Math.cos(l + a) + this.$cx, this.$ir * Math.sin(l + a) + this.$cy)),
                             s && (h = s.mapPoint(h)),
-                            !0 === e(h, !0, l + a))
+                            true === e(h, true, l + a))
                         )
                             break;
                     }
@@ -84,11 +84,11 @@ module.exports = function (e, t, i) {
                             if (0 !== n || o)
                                 if (1 === n && o) t = r;
                                 else {
-                                    if (2 !== n || o) return !0;
+                                    if (2 !== n || o) return true;
                                     i = r;
                                 }
                             else e = r;
-                            return (++n, !1);
+                            return (++n, false);
                         }),
                         !!(e && t && i && o.sqrSegmentDist(e.getX(), e.getY(), i.getX(), i.getY(), t.getX(), t.getY()) <= 1e-6)
                     );
@@ -104,12 +104,12 @@ module.exports = function (e, t, i) {
                             if (0 !== n || o)
                                 if (1 === n && o) t = r;
                                 else {
-                                    if (2 !== n || o) return !0;
+                                    if (2 !== n || o) return true;
                                     i = r;
                                 }
                             else e = r;
-                            return (++n, !1);
-                        }, !0),
+                            return (++n, false);
+                        }, true),
                         e &&
                             t &&
                             i &&
@@ -136,7 +136,7 @@ module.exports = function (e, t, i) {
                 }),
                 (l.prototype._invalidatePath = function () {
                     var e = this.getAnchorPoints();
-                    (this.beginUpdate(), e._beginBlockCompositeEvents(!0, !0, !0));
+                    (this.beginUpdate(), e._beginBlockCompositeEvents(true, true, true));
                     try {
                         (e.clearChildren(),
                             this.iterateSegments(
@@ -156,7 +156,7 @@ module.exports = function (e, t, i) {
                                 }.bind(this)
                             ));
                     } finally {
-                        (this.endUpdate(), e._endBlockCompositeEvents(!0, !0, !0));
+                        (this.endUpdate(), e._endBlockCompositeEvents(true, true, true));
                     }
                 }),
                 (l.prototype.getCenter = function (e) {
@@ -170,10 +170,10 @@ module.exports = function (e, t, i) {
                     return this.$or >= this.$ir ? this.$or : this.$ir;
                 }),
                 (l.prototype._requireMiterLimitApproximation = function () {
-                    return !0;
+                    return true;
                 }),
                 (l.prototype.toString = function () {
                     return "[GPolygon]";
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

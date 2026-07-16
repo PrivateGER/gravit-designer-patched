@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(12),
-                r = i(165);
+module.exports = function (module, exports, require) {
+            var n = require(12),
+                PDFNodeStream = require(165);
 
             function o() {}
             ((o.SortOperators = {
@@ -9,10 +9,10 @@ module.exports = function (e, t, i) {
                 GreaterThan: 1,
             }),
                 (o.extend = function (e, t) {
-                    var i = !1,
+                    var i = false,
                         n = null,
                         r = 1;
-                    ("boolean" == typeof e ? ((i = e), (n = t || {}), (r = 2)) : ((i = !1), (n = e || {})),
+                    ("boolean" == typeof e ? ((i = e), (n = t || {}), (r = 2)) : ((i = false), (n = e || {})),
                         "object" != typeof n && "function" != typeof n && (n = {}));
                     for (var a = r; a < arguments.length; a++)
                         if (arguments[a])
@@ -60,14 +60,14 @@ module.exports = function (e, t, i) {
                             if (e instanceof Date || t instanceof Date) return e instanceof Date && t instanceof Date && +e == +t;
                             if (e instanceof Array || t instanceof Array) {
                                 if (e instanceof Array && t instanceof Array) {
-                                    if (e.length !== t.length) return !1;
-                                    for (var a = 0; a < e.length; ++a) if (!o.equals(e[a], t[a], i, r)) return !1;
-                                    return !0;
+                                    if (e.length !== t.length) return false;
+                                    for (var a = 0; a < e.length; ++a) if (!o.equals(e[a], t[a], i, r)) return false;
+                                    return true;
                                 }
-                                return !1;
+                                return false;
                             }
                             var s = typeof e;
-                            if (s !== typeof t) return !1;
+                            if (s !== typeof t) return false;
                             if ("number" === s) return isNaN(e) || isNaN(t) ? isNaN(e) && isNaN(t) : n.isEqualEps(e, t, r);
                             if ("string" === s) return 0 === e.localeCompare(t);
                             if ("boolean" === s) return +e == +t;
@@ -75,29 +75,29 @@ module.exports = function (e, t, i) {
                                 if (i) {
                                     var l = Object.keys(e),
                                         h = Object.keys(t);
-                                    if (!o.equals(l, h, i, r)) return !1;
-                                    for (a = 0; a < l.length; ++a) if (!o.equals(e[l[a]], t[l[a]], i, r)) return !1;
-                                    return !0;
+                                    if (!o.equals(l, h, i, r)) return false;
+                                    for (a = 0; a < l.length; ++a) if (!o.equals(e[l[a]], t[l[a]], i, r)) return false;
+                                    return true;
                                 }
                                 return e === t;
                             }
-                            return !1;
+                            return false;
                         }
-                        return !1;
+                        return false;
                     }
-                    return !0;
+                    return true;
                 }),
                 (o.containsOneOf = function (e, t) {
-                    for (var i = 0; i < t.length; ++i) if (e.indexOf(t[i]) >= 0) return !0;
-                    return !1;
+                    for (var i = 0; i < t.length; ++i) if (e.indexOf(t[i]) >= 0) return true;
+                    return false;
                 }),
                 (o.containsObjectKey = function (e, t) {
-                    for (var i in t) if (e.indexOf(i) >= 0) return !0;
-                    return !1;
+                    for (var i in t) if (e.indexOf(i) >= 0) return true;
+                    return false;
                 }),
                 (o.dictionaryContainsValue = function (e, t) {
-                    for (var i in e) if (e[i] === t) return !0;
-                    return !1;
+                    for (var i in e) if (e[i] === t) return true;
+                    return false;
                 }));
             var a = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split("");
             ((o.uuid = function (e) {
@@ -157,13 +157,13 @@ module.exports = function (e, t, i) {
                     return e - parseFloat(e) >= 0;
                 }),
                 (o.formatNumber = function (e, t, i) {
-                    return ((i = i || "."), (t = "number" == typeof t ? t : 3), n.round(e, !1, t).toString().replace(".", i));
+                    return ((i = i || "."), (t = "number" == typeof t ? t : 3), n.round(e, false, t).toString().replace(".", i));
                 }),
                 (o.parseNumber = function (e) {
                     if (!e) return Number.NaN;
-                    for (var t = "", i = !1, n = e.length; n >= 0; --n) {
+                    for (var t = "", i = false, n = e.length; n >= 0; --n) {
                         var r = e.charAt(n);
-                        ("," !== r && "." !== r) || i ? (t = r + t) : ((t = "." + t), (i = !0));
+                        ("," !== r && "." !== r) || i ? (t = r + t) : ((t = "." + t), (i = true));
                     }
                     return parseFloat(t);
                 }),
@@ -246,7 +246,7 @@ module.exports = function (e, t, i) {
                 }),
                 (o.compressString = function (e) {
                     if ("string" != typeof e && !(e instanceof String)) throw "Invalid format to compress, it must at least be a string!";
-                    var t = r.deflate(e, {
+                    var t = PDFNodeStream.deflate(e, {
                         to: "string",
                     });
                     return o.base64EncodeUnicode(t);
@@ -254,7 +254,7 @@ module.exports = function (e, t, i) {
                 (o.decompressString = function (e) {
                     if ("string" != typeof e && !(e instanceof String)) throw "Invalid format to decompress, it must at least be a string!";
                     var t = o.base64DecodeUnicode(e);
-                    return r.inflate(t, {
+                    return PDFNodeStream.inflate(t, {
                         to: "string",
                     });
                 }),
@@ -273,5 +273,5 @@ module.exports = function (e, t, i) {
                 (o.replaceMicrosoftLineFeed = function (e) {
                     return (("string" == typeof e || e instanceof String) && (e = e.replace(/\r\n/g, "\n")), e);
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

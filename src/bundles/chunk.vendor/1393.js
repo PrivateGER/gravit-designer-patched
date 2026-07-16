@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
-            var n = i(11),
-                r = i(83),
-                o = (i(70), i(17)),
-                a = i(281),
-                s = i(108),
-                l = i(1394),
-                h = i(1120),
-                A = i(792),
-                c = i(1397),
-                p = i(1399),
-                u = i(1203);
+module.exports = function (module, exports, require) {
+            var n = require(11),
+                r = require(83),
+                o = (require(70), require(17)),
+                a = require(281),
+                GFont = require(108),
+                l = require(1394),
+                h = require(1120),
+                GlobalWorkerOptions = require(792),
+                c = require(1397),
+                p = require(1399),
+                u = require(1203);
 
             function d() {}
             ((d.FontManagerProxy = function (e) {
@@ -52,7 +52,7 @@ module.exports = function (e, t, i) {
                 (d.FontManagerProxy.prototype._fontEvent = function (e) {
                     var t;
                     (this._unresolvedFonts.some(function (i, n) {
-                        return !!s.equals(e.font, i) && ((t = n), !0);
+                        return !!GFont.equals(e.font, i) && ((t = n), true);
                     }) && this._resolvedFonts.push(this._unresolvedFonts.slice(t, 1)),
                         this._checkUnresolvedFonts());
                 }),
@@ -66,7 +66,7 @@ module.exports = function (e, t, i) {
                     u.updateList(e);
                 }),
                 (d.isAIFormat = function (e) {
-                    return A.getDocument({
+                    return GlobalWorkerOptions.getDocument({
                         data: e,
                     }).then(function (e) {
                         return e.getMetadata().then(function (e) {
@@ -105,11 +105,11 @@ module.exports = function (e, t, i) {
                             _ = n.extend(
                                 {
                                     data: e,
-                                    disableCMYKToRGB: !0,
+                                    disableCMYKToRGB: true,
                                 },
                                 t.pdfjsOptions || {}
                             );
-                        A.getDocument(_).then(function (e) {
+                        GlobalWorkerOptions.getDocument(_).then(function (e) {
                             var i = [],
                                 a = [],
                                 A = [],
@@ -144,7 +144,7 @@ module.exports = function (e, t, i) {
                                                     var o = [];
                                                     (b.getEmbeddedFonts().forEach(function (e) {
                                                         a.some(function (t) {
-                                                            return s.equals(t, e);
+                                                            return GFont.equals(t, e);
                                                         }) || o.push(e);
                                                     }),
                                                         (a = a.concat(o)),
@@ -163,5 +163,5 @@ module.exports = function (e, t, i) {
                         });
                     }
                 }),
-                (e.exports = d));
+                (module.exports = d));
         };

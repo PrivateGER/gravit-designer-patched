@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(193), n(3), n(4), n(13));
-        var o = n(1);
+        (require(193), require(3), require(4), require(13));
+        var GObject = require(1);
         function i() {}
         i.prototype.OPACITY_DEFAULT = {
             min: 0,
             max: 100,
-            custom: !0,
+            custom: true,
             cssClass: "opacity",
         };
         var a = function (e, t) {
@@ -72,40 +72,40 @@ module.exports = function (e, t, n) {
                             .addClass("g-input-slider-thumb")
                             .addClass(e.generic ? "generic" : "custom");
                     (e.richTooltipConfig && u.gRichTooltip(e.richTooltipConfig), d.append(u));
-                    var p = !1,
+                    var p = false,
                         g = function (e) {
                             if ("disabled" !== $(t).attr("disabled")) {
                                 var n = e.clientX,
                                     o = $(t).offset().left;
-                                s(t, (n = n - o - c / 2), !0);
+                                s(t, (n = n - o - c / 2), true);
                             }
                         };
                     ($(d).on("mousedown", function (e) {
-                        1 == e.which && ((p = !0), $(u).addClass("active"), e.isTrusted && g(e));
+                        1 == e.which && ((p = true), $(u).addClass("active"), e.isTrusted && g(e));
                     }),
                         $(t).on("mousedown", function (e) {
-                            1 == e.which && ((p = !0), $(u).addClass("active"), e.isTrusted && g(e));
+                            1 == e.which && ((p = true), $(u).addClass("active"), e.isTrusted && g(e));
                         }));
-                    let h = !1;
+                    let h = false;
                     $(u).on("mousedown", () => {
-                        h = !0;
+                        h = true;
                     });
-                    let f = !1;
+                    let f = false;
                     ($(t).on("touchstart", () => {
-                        f = !1;
+                        f = false;
                     }),
                         $(t).on("touchmove", () => {
-                            f = !0;
+                            f = true;
                         }),
                         $(window)
                             .on("mousemove", function (e) {
                                 p && (e.isTrusted || h) && (g(e), e.preventDefault());
                             })
                             .mouseup(function (e) {
-                                ((h = !1),
+                                ((h = false),
                                     p &&
                                         (f || ((e) => !e.originalEvent.cancelable)(e) || g(e),
-                                        (p = !1),
+                                        (p = false),
                                         "disabled" !== $(t).attr("disabled") &&
                                             (function (e) {
                                                 ($(e)
@@ -125,8 +125,8 @@ module.exports = function (e, t, n) {
                         i = t.data("options").max,
                         r = t.data("options").maxDecimal ? t.data("options").maxDecimal : 0;
                     if (void 0 === e)
-                        return isNaN(t.attr("value")) ? parseFloat(t.attr("value")) : o.GUtil.formatNumber(t.attr("value"), r);
-                    (isNaN(e) || (e = o.GUtil.formatNumber(e, r)), e > i ? (e = i) : e < n && (e = n));
+                        return isNaN(t.attr("value")) ? parseFloat(t.attr("value")) : GObject.GUtil.formatNumber(t.attr("value"), r);
+                    (isNaN(e) || (e = GObject.GUtil.formatNumber(e, r)), e > i ? (e = i) : e < n && (e = n));
                     var s = a(this, e);
                     (t.find(".g-input-slider-thumb").css("left", s + "%"), l(this, s), t.attr("value", e));
                 }
@@ -142,7 +142,7 @@ module.exports = function (e, t, n) {
                 return arguments.length ? $(this).attr("disabled", arguments[0]) : $(this).attr("disabled");
             },
         };
-        ((e.exports = i),
+        ((module.exports = i),
             ($.fn.gInputSlider = function (e) {
                 return c[e]
                     ? c[e].apply(this, Array.prototype.slice.call(arguments, 1))

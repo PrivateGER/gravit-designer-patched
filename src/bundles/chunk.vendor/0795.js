@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(22),
-                o = (i(70), i(73), i(284), i(45)),
-                a = i(2),
-                s = i(796);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(22),
+                o = (require(70), require(73), require(284), require(45)),
+                a = require(2),
+                s = require(796);
 
             function l(e, t, i, n) {
                 ((this._node = n || new (this._getRelatedNodeClass())()), s.apply(this, arguments));
             }
-            (n.inherit(l, s),
+            (IsFiniteNonNegativeNumber.inherit(l, s),
                 (l.transformStyledCorners = function (e, t) {
                     if (t && !t.isIdentity() && (e instanceof o && e.transformStyledCorners(e, t), e.hasMixin(a.Container)))
                         for (var i = e.getFirstChild(); null != i; i = i.getNext()) l.transformStyledCorners(i, t);
@@ -30,7 +30,7 @@ module.exports = function (e, t, i) {
                     if (this._node.hasMixin(r.Transform)) {
                         var t = this._node.$vis;
                         try {
-                            (t || this._node.setProperty("vis", !0),
+                            (t || this._node.setProperty("vis", true),
                                 this._node.getGeometryBBox() && this._node.setBounds(e.getX(), e.getY(), e.getWidth(), e.getHeight()));
                         } finally {
                             this._node.setProperty("vis", t);
@@ -44,5 +44,5 @@ module.exports = function (e, t, i) {
                     var e = s.prototype.clone.call(this);
                     return ((e._node = this._node.clone()), e);
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

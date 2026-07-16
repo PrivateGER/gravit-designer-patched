@@ -1,20 +1,20 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(3), n(4), n(13));
-        var i = n(1),
-            a = n(53),
-            r = o(n(340)),
-            s = n(123),
-            l = (n(173), n(135));
+        var o = require(16);
+        (require(3), require(4), require(13));
+        var GObject = require(1),
+            a = require(53),
+            r = o(require(340)),
+            s = require(123),
+            l = (require(173), require(135));
         function c() {
             this._slices = [];
         }
-        (i.GObject.inherit(c, s),
+        (GObject.GObject.inherit(c, s),
             (c.prototype._panel = null),
             (c.prototype._document = null),
             (c.prototype._slices = null),
-            (c.prototype._ownChange = !1),
+            (c.prototype._ownChange = false),
             (c.prototype._chooserElem = null),
             (c.prototype.init = function (e, t) {
                 ((this._panel = e), this._panel.addClass("slice-property-panel"), this.setTouchTools([r.default.APPEARANCE_TOUCH_TOOL]));
@@ -36,7 +36,7 @@ module.exports = function (e, t, n) {
                     if ("cls" === e)
                         return $("<button></button>")
                             .attr("data-property", e)
-                            .gPatternChooser({ types: [i.GColor], hasOpacity: !1 })
+                            .gPatternChooser({ types: [GObject.GColor], hasOpacity: false })
                             .on("chooseropen", function () {
                                 (t._document.getEditor().hideSelection(), (t._chooserElem = $(this)));
                             })
@@ -47,7 +47,7 @@ module.exports = function (e, t, n) {
                                 "patternchange",
                                 function (n, o, i, a, r) {
                                     var s = null;
-                                    (r && (s = { chooserOn: !0, slicePattern: !0 }), t._assignProperty(e, o, a, s));
+                                    (r && (s = { chooserOn: true, slicePattern: true }), t._assignProperty(e, o, a, s));
                                 }.bind(t)
                             );
                     if ("cls-check" === e)
@@ -62,11 +62,11 @@ module.exports = function (e, t, n) {
                                         "change",
                                         function (e) {
                                             (gDesigner.stats("sliceproperties_change_background"),
-                                                t._assignProperty("cls", $(e.target).is(":checked") ? i.GRGBColor.WHITE : null));
+                                                t._assignProperty("cls", $(e.target).is(":checked") ? GObject.GRGBColor.WHITE : null));
                                         }.bind(t)
                                     )
                             )
-                            .append($("<span>" + i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.background-color")) + "</span>"));
+                            .append($("<span>" + GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.background-color")) + "</span>"));
                     if ("trm" === e)
                         return $("<label></label>")
                             .addClass("g-checkbox-label")
@@ -86,7 +86,7 @@ module.exports = function (e, t, n) {
                             .append(
                                 $(
                                     "<span>" +
-                                        i.GLocale.get(new i.GLocaleKey("GSliceProperties", "text.trim-transparent-pixels")) +
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GSliceProperties", "text.trim-transparent-pixels")) +
                                         "</span>"
                                 )
                             );
@@ -95,28 +95,28 @@ module.exports = function (e, t, n) {
                 ($("<div></div>")
                     .addClass("slice-position-left-row")
                     .gPropertyRow({
-                        label: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.left")),
+                        label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.left")),
                         columns: [{ width: "44%", content: n("x") }],
                     })
                     .appendTo(e),
                     $("<div></div>")
                         .addClass("slice-position-top-row")
                         .gPropertyRow({
-                            label: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.top")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.top")),
                             columns: [{ width: "44%", content: n("y") }],
                         })
                         .appendTo(e),
                     $("<div></div>")
                         .addClass("slice-size-width-row")
                         .gPropertyRow({
-                            label: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.width")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.width")),
                             columns: [{ width: "44%", content: n("w") }],
                         })
                         .appendTo(e),
                     $("<div></div>")
                         .addClass("slice-size-height-row")
                         .gPropertyRow({
-                            label: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.height")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.height")),
                             columns: [{ width: "44%", content: n("h") }],
                         })
                         .appendTo(e),
@@ -135,31 +135,31 @@ module.exports = function (e, t, n) {
                         .appendTo(e));
             }),
             (c.prototype.update = function (e, t, n) {
-                if ((this._updateUI(), this._ownChange)) return !0;
+                if ((this._updateUI(), this._ownChange)) return true;
                 if (
                     (this._chooserElem && this._chooserElem.gPatternChooser("close"),
                     this._document &&
                         (this._document
                             .getScene()
-                            .removeEventListener(i.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                            .removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                         gDesigner.removeEventListener(l, this._settingChanged),
                         (this._document = null)),
                     (this._slices = []),
                     e)
                 ) {
-                    for (var o = 0; o < t.length; ++o) t[o] instanceof i.GSlice && this._slices.push(t[o]);
+                    for (var o = 0; o < t.length; ++o) t[o] instanceof GObject.GSlice && this._slices.push(t[o]);
                     if (this._slices.length && this._slices.length === t.length)
                         return (
                             (this._document = e),
                             this._document
                                 .getScene()
-                                .addEventListener(i.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                                .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                             gDesigner.addEventListener(l, this._settingChanged, this),
                             this._updateProperties(n),
-                            !0
+                            true
                         );
                 }
-                return !1;
+                return false;
             }),
             (c.prototype._updateUI = function () {
                 let e = (e) => {
@@ -177,16 +177,16 @@ module.exports = function (e, t, n) {
                 gDesigner.isTouchEnabled()
                     ? (this._panel.find(".trm-checkbox").gCheckboxSlider(),
                       this._panel.find(".cls-check-checkbox").gCheckboxSlider(),
-                      n.text(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.position"))),
-                      o.text(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.size"))),
+                      n.text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.position"))),
+                      o.text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.size"))),
                       t(a, "x"),
                       t(r, "y"),
                       t(s, "w"),
                       t(l, "h"))
                     : (this._panel.find(".trm-checkbox").gCheckboxSlider("unmount"),
                       this._panel.find(".cls-check-checkbox").gCheckboxSlider("unmount"),
-                      n.text(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.left"))),
-                      o.text(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.width"))),
+                      n.text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.left"))),
+                      o.text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.width"))),
                       e(a),
                       e(r),
                       e(s),
@@ -204,8 +204,8 @@ module.exports = function (e, t, n) {
                     o = function (e) {
                         var o = this._panel.find('input[data-property="' + e + '"]');
                         this._slices.length > 1
-                            ? o.gInputBox("value", null).prop("disabled", !0)
-                            : o.gInputBox("value", t.pointToString(n.getProperty(e), t.getOptimalDecimalsCount())).prop("disabled", !1);
+                            ? o.gInputBox("value", null).prop("disabled", true)
+                            : o.gInputBox("value", t.pointToString(n.getProperty(e), t.getOptimalDecimalsCount())).prop("disabled", false);
                     }.bind(this);
                 (o("x"), o("y"), o("w"), o("h"));
                 var i = n.getProperty("cls");
@@ -222,24 +222,24 @@ module.exports = function (e, t, n) {
                 this._assignProperties([e], [t], n, o);
             }),
             (c.prototype._assignProperties = function (e, t, n, o) {
-                if (n) for (var a = 0; a < this._slices.length; ++a) this._slices[a].setProperties(e, t, !0);
+                if (n) for (var a = 0; a < this._slices.length; ++a) this._slices[a].setProperties(e, t, true);
                 else {
-                    this._ownChange = !0;
+                    this._ownChange = true;
                     var r = this._document.getEditor();
                     r.beginTransaction();
                     try {
                         for (a = 0; a < this._slices.length; ++a) this._slices[a].setProperties(e, t);
                     } finally {
                         (r.commitTransaction(
-                            i.GLocale.get(new i.GLocaleKey("GSliceProperties", "action.modify-slice-properties")),
+                            GObject.GLocale.get(new GObject.GLocaleKey("GSliceProperties", "action.modify-slice-properties")),
                             o || null
                         ),
-                            (this._ownChange = !1));
+                            (this._ownChange = false));
                     }
                 }
             }),
             (c.prototype.toString = function () {
                 return "[Object GSliceProperties]";
             }),
-            (e.exports = c));
+            (module.exports = c));
     };

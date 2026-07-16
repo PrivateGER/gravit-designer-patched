@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1);
+        require(3);
+        var GObject = require(1);
         function i(e, t) {
             ((this.type = e), (this.sidebar = t));
         }
-        (o.GObject.inherit(i, o.GEvent),
+        (GObject.GObject.inherit(i, GObject.GEvent),
             (i.Type = {
                 Deactivated: 10,
                 Activated: 11,
@@ -17,5 +17,5 @@ module.exports = function (e, t, n) {
             (i.prototype.toString = function () {
                 return "[Object GSidebars.SidebarEvent]";
             }),
-            (e.exports = i));
+            (module.exports = i));
     };

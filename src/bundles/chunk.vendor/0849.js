@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(850),
-                r = i(11);
+module.exports = function (module, exports, require) {
+            var n = require(850),
+                r = require(11);
 
             function o() {}
             ((o.ColorSpace = {
@@ -26,7 +26,7 @@ module.exports = function (e, t, i) {
                     },
                 },
                 CMYK: {
-                    APP14: !0,
+                    APP14: true,
                     length: 4,
                     init: function (e) {
                         ((e._componentsId = [67, 77, 89, 75]),
@@ -562,19 +562,19 @@ module.exports = function (e, t, i) {
                             ((this._imageWidth % 8 != 0 ? 8 * Math.ceil(this._imageWidth / 8) : this._imageWidth) / this._maxHsampFactor) *
                             this._hsampFactor[e]),
                             this._compWidth[e] != (this._imageWidth / this._maxHsampFactor) * this._hsampFactor[e] &&
-                                (this._lastColumnIsDummy[e] = !0),
+                                (this._lastColumnIsDummy[e] = true),
                             (this._blockWidth[e] = Math.ceil(this._compWidth[e] / 8)),
                             (this._compHeight[e] =
                                 ((this._imageHeight % 8 != 0 ? 8 * Math.ceil(this._imageHeight / 8) : this._imageHeight) /
                                     this._maxVsampFactor) *
                                 this._vsampFactor[e]),
                             this._compHeight[e] != (this._imageHeight / this._maxVsampFactor) * this._vsampFactor[e] &&
-                                (this._lastRowIsDummy[e] = !0),
+                                (this._lastRowIsDummy[e] = true),
                             (this._blockHeight[e] = Math.ceil(this._compHeight[e] / 8)));
                 }),
                 (c.prototype.getPixel = function (e, t) {
                     var i = e + this._imageWidth * t;
                     return this._imageBuffer[i];
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

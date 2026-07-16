@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            e.exports = {
+            module.exports = {
                 Designer: "Designer",
                 Cloud: "Cloud",
                 Analytics: "Analytics",

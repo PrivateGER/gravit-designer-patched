@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o;
         !(function (i, a) {
             "use strict";
@@ -618,13 +618,13 @@ module.exports = function (e, t, n) {
                 (C.CPU = h(["architecture"])),
                 (C.DEVICE = h([r, c, l, "console", u, g, p, "wearable", "embedded"])),
                 (C.ENGINE = C.OS = h([s, d])),
-                void 0 !== t
-                    ? (void 0 !== e && e.exports && (t = e.exports = C), (t.UAParser = C))
-                    : n(414)
+                void 0 !== exports
+                    ? (void 0 !== module && module.exports && (exports = module.exports = C), (exports.UAParser = C))
+                    : require(414)
                       ? void 0 ===
                             (o = function () {
                                 return C;
-                            }.call(t, n, t, e)) || (e.exports = o)
+                            }.call(exports, require, exports, module)) || (module.exports = o)
                       : void 0 !== i && (i.UAParser = C));
             var x = void 0 !== i && (i.jQuery || i.Zepto);
             if (x && !x.ua) {

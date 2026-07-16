@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(194),
+        var o = require(194),
             i = TypeError;
-        e.exports = function (e) {
+        module.exports = function (e) {
             if (o(e)) throw new i("Can't call method on " + e);
             return e;
         };

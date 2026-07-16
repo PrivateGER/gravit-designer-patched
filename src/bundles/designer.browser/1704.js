@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(1),
+        var GObject = require(1),
             i = {
                 value: function (e) {
                     const t = $(this);
@@ -17,7 +17,7 @@ module.exports = function (e, t, n) {
                     return (
                         this.each(function () {
                             const t = $(this);
-                            e = o.GUtil.extend({ onChange: function () {} }, e);
+                            e = GObject.GUtil.extend({ onChange: function () {} }, e);
                             const n = i.isChecked.call(this);
                             t.addClass("g-checkbox-slider")
                                 .prop("type", "checkbox")

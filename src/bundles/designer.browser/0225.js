@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        e.exports = {
+        module.exports = {
             2: "need dictionary",
             1: "stream end",
             0: "",

@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1);
+        require(3);
+        var GObject = require(1);
         function i(e) {
             this.scope = e;
         }
-        (o.GObject.inherit(i, o.GEvent),
+        (GObject.GObject.inherit(i, GObject.GEvent),
             (i.prototype.scope = null),
             (i.prototype.toString = function () {
                 return "[Object GSwatchesChangedEvent]";
             }),
-            (e.exports = i));
+            (module.exports = i));
     };

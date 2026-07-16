@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         (function (t) {
             var o;
             ("function" != typeof t.Promise
-                ? ((o = n(1114)),
+                ? ((o = require(1114)),
                   Object.defineProperty(o, "polyfilled", {
-                      value: !0,
-                      writable: !1,
-                      enumerable: !1,
+                      value: true,
+                      writable: false,
+                      enumerable: false,
                   }))
                 : (o = t.Promise),
-                (e.exports = o));
-        }).call(this, n(109));
+                (module.exports = o));
+        }).call(this, require(109));
     };

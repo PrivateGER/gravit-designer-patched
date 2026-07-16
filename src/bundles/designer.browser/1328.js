@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(1);
+        var GObject = require(1);
         function i(e) {
             this.paintMode = e;
         }
-        (o.GObject.inherit(i, o.GEvent), (i.prototype.paintMode = null), (e.exports = i));
+        (GObject.GObject.inherit(i, GObject.GEvent), (i.prototype.paintMode = null), (module.exports = i));
     };

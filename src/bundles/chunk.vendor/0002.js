@@ -1,27 +1,27 @@
-module.exports = function (e, t, i) {
-            var n = i(11),
-                r = i(75),
-                o = i(72),
-                a = i(0),
-                s = i(9),
-                l = i(50);
+module.exports = function (module, exports, require) {
+            var n = require(11),
+                r = require(75),
+                o = require(72),
+                IsFiniteNonNegativeNumber = require(0),
+                String = require(9),
+                l = require(50);
 
             function h() {}
-            (a.inherit(h, a),
+            (IsFiniteNonNegativeNumber.inherit(h, IsFiniteNonNegativeNumber),
                 (h.MIME_TYPE = "application/gravit+node"),
                 (h.inherit = function (e, t, i) {
-                    (a.inherit(t, i), h._registerNodeClass(e, t));
+                    (IsFiniteNonNegativeNumber.inherit(t, i), h._registerNodeClass(e, t));
                 }),
                 (h.inheritAndMix = function (e, t, i, n, r) {
-                    (a.inheritAndMix(t, i, n, r), h._registerNodeClass(e, t));
+                    (IsFiniteNonNegativeNumber.inheritAndMix(t, i, n, r), h._registerNodeClass(e, t));
                 }),
                 (h.getName = function (e) {
-                    return h._nodeClassToNameMap[a.getTypeId(e)];
+                    return h._nodeClassToNameMap[IsFiniteNonNegativeNumber.getTypeId(e)];
                 }),
                 (h.store = function (e, t) {
                     if (((t = t || {}), e.hasMixin(h.Store) && !(t.exceptions && t.exceptions.indexOf(e) >= 0))) {
                         var i = {
-                            "@": h._nodeClassToNameMap[a.getTypeId(e)],
+                            "@": h._nodeClassToNameMap[IsFiniteNonNegativeNumber.getTypeId(e)],
                         };
                         e.hasMixin(h.Identity) && !t.copy && (i["@id"] = e.getId());
                         var n = {
@@ -131,13 +131,13 @@ module.exports = function (e, t, i) {
                     } else l();
                 }),
                 (h.serialize = function (e, t) {
-                    var i = (t && t.beautify) || !1,
+                    var i = (t && t.beautify) || false,
                         n = {
-                            save: (t && t.save) || !1,
-                            copy: (t && t.copy) || !1,
+                            save: (t && t.save) || false,
+                            copy: (t && t.copy) || false,
                             copyIgnoreProperties: (t && t.copyIgnoreProperties) || null,
-                            singleton: (t && t.singleton) || !1,
-                            exceptions: (t && t.exceptions) || !1,
+                            singleton: (t && t.singleton) || false,
+                            exceptions: (t && t.exceptions) || false,
                             lastModifiedDate: t ? t.lastModifiedDate : null,
                         };
                     if (e instanceof Array) {
@@ -223,9 +223,9 @@ module.exports = function (e, t, i) {
                             var o = [];
                             return (
                                 n.accept(function (e) {
-                                    if (!i.length) return !1;
-                                    for (var t = 0, n = !1, r = 0; r < i.length && !n; ++r) i[r] === e && (o.push(e), (t = r), (n = !0));
-                                    return (n && i.splice(t, 1), !0);
+                                    if (!i.length) return false;
+                                    for (var t = 0, n = false, r = 0; r < i.length && !n; ++r) i[r] === e && (o.push(e), (t = r), (n = true));
+                                    return (n && i.splice(t, 1), true);
                                 }, t),
                                 o
                             );
@@ -240,7 +240,7 @@ module.exports = function (e, t, i) {
                 (h._nodeClassToNameMap = {}),
                 (h._nameToNodeClassMap = {}),
                 (h._registerNodeClass = function (e, t) {
-                    ((h._nodeClassToNameMap[a.getTypeId(t)] = e), (h._nameToNodeClassMap[e] = t));
+                    ((h._nodeClassToNameMap[IsFiniteNonNegativeNumber.getTypeId(t)] = e), (h._nameToNodeClassMap[e] = t));
                 }),
                 (h.Flag = {
                     Selected: 2,
@@ -270,7 +270,7 @@ module.exports = function (e, t, i) {
                 (h.BeforeInsertEvent = function (e) {
                     this.node = e;
                 }),
-                a.inherit(h.BeforeInsertEvent, o),
+                IsFiniteNonNegativeNumber.inherit(h.BeforeInsertEvent, o),
                 (h.BeforeInsertEvent.prototype.node = null),
                 (h.BeforeInsertEvent.prototype.toString = function () {
                     return "[Event GNode.BeforeInsertEvent]";
@@ -278,7 +278,7 @@ module.exports = function (e, t, i) {
                 (h.AfterInsertEvent = function (e) {
                     ((this.customObj = {}), (this.node = e));
                 }),
-                a.inherit(h.AfterInsertEvent, o),
+                IsFiniteNonNegativeNumber.inherit(h.AfterInsertEvent, o),
                 (h.AfterInsertEvent.prototype.node = null),
                 (h.AfterInsertEvent.prototype.customObj = null),
                 (h.AfterInsertEvent.prototype.toString = function () {
@@ -287,7 +287,7 @@ module.exports = function (e, t, i) {
                 (h.BeforeRemoveEvent = function (e) {
                     ((this.node = e), (this.customObj = {}));
                 }),
-                a.inherit(h.BeforeRemoveEvent, o),
+                IsFiniteNonNegativeNumber.inherit(h.BeforeRemoveEvent, o),
                 (h.BeforeRemoveEvent.prototype.node = null),
                 (h.BeforeRemoveEvent.prototype.customObj = null),
                 (h.BeforeRemoveEvent.prototype.toString = function () {
@@ -296,7 +296,7 @@ module.exports = function (e, t, i) {
                 (h.AfterRemoveEvent = function (e) {
                     this.node = e;
                 }),
-                a.inherit(h.AfterRemoveEvent, o),
+                IsFiniteNonNegativeNumber.inherit(h.AfterRemoveEvent, o),
                 (h.AfterRemoveEvent.prototype.node = null),
                 (h.AfterRemoveEvent.prototype.toString = function () {
                     return "[Event GNode.AfterRemoveEvent]";
@@ -304,12 +304,12 @@ module.exports = function (e, t, i) {
                 (h.BeforePropertiesChangeEvent = function (e, t, i, n, r) {
                     ((this.node = e), (this.properties = t), (this.values = i), (this.custom = n), (this.temporary = !!r));
                 }),
-                a.inherit(h.BeforePropertiesChangeEvent, o),
+                IsFiniteNonNegativeNumber.inherit(h.BeforePropertiesChangeEvent, o),
                 (h.BeforePropertiesChangeEvent.prototype.node = null),
                 (h.BeforePropertiesChangeEvent.prototype.properties = null),
                 (h.BeforePropertiesChangeEvent.prototype.values = null),
                 (h.BeforePropertiesChangeEvent.prototype.custom = null),
-                (h.BeforePropertiesChangeEvent.prototype.temporary = !1),
+                (h.BeforePropertiesChangeEvent.prototype.temporary = false),
                 (h.BeforePropertiesChangeEvent.prototype.toString = function () {
                     return "[Event GNode.BeforePropertiesChangeEvent]";
                 }),
@@ -321,12 +321,12 @@ module.exports = function (e, t, i) {
                         (this.customObj = {}),
                         (this.temporary = r));
                 }),
-                a.inherit(h.AfterPropertiesChangeEvent, o),
+                IsFiniteNonNegativeNumber.inherit(h.AfterPropertiesChangeEvent, o),
                 (h.AfterPropertiesChangeEvent.prototype.node = null),
                 (h.AfterPropertiesChangeEvent.prototype.properties = null),
                 (h.AfterPropertiesChangeEvent.prototype.values = null),
                 (h.AfterPropertiesChangeEvent.prototype.custom = null),
-                (h.AfterPropertiesChangeEvent.prototype.temporary = !1),
+                (h.AfterPropertiesChangeEvent.prototype.temporary = false),
                 (h.AfterPropertiesChangeEvent.prototype.customObj = null),
                 (h.AfterPropertiesChangeEvent.prototype.toString = function () {
                     return "[Event GNode.AfterPropertiesChangeEvent]";
@@ -334,7 +334,7 @@ module.exports = function (e, t, i) {
                 (h.BeforeFlagChangeEvent = function (e, t, i) {
                     ((this.node = e), (this.flag = t), (this.set = i));
                 }),
-                a.inherit(h.BeforeFlagChangeEvent, o),
+                IsFiniteNonNegativeNumber.inherit(h.BeforeFlagChangeEvent, o),
                 (h.BeforeFlagChangeEvent.prototype.node = null),
                 (h.BeforeFlagChangeEvent.prototype.flag = null),
                 (h.BeforeFlagChangeEvent.prototype.set = null),
@@ -344,7 +344,7 @@ module.exports = function (e, t, i) {
                 (h.AfterFlagChangeEvent = function (e, t, i) {
                     ((this.node = e), (this.flag = t), (this.set = i));
                 }),
-                a.inherit(h.AfterFlagChangeEvent, o),
+                IsFiniteNonNegativeNumber.inherit(h.AfterFlagChangeEvent, o),
                 (h.AfterFlagChangeEvent.prototype.node = null),
                 (h.AfterFlagChangeEvent.prototype.flag = null),
                 (h.AfterFlagChangeEvent.prototype.set = null),
@@ -354,7 +354,7 @@ module.exports = function (e, t, i) {
                 (h.BeforeSpecialChangeEvent = function (e, t) {
                     ((this.node = e), (this.data = t || null));
                 }),
-                a.inherit(h.BeforeSpecialChangeEvent, o),
+                IsFiniteNonNegativeNumber.inherit(h.BeforeSpecialChangeEvent, o),
                 (h.BeforeSpecialChangeEvent.prototype.node = null),
                 (h.BeforeSpecialChangeEvent.prototype.data = null),
                 (h.BeforeSpecialChangeEvent.prototype.toString = function () {
@@ -363,7 +363,7 @@ module.exports = function (e, t, i) {
                 (h.AfterSpecialChangeEvent = function (e, t) {
                     ((this.node = e), (this.data = t || null));
                 }),
-                a.inherit(h.AfterSpecialChangeEvent, o),
+                IsFiniteNonNegativeNumber.inherit(h.AfterSpecialChangeEvent, o),
                 (h.AfterSpecialChangeEvent.prototype.node = null),
                 (h.AfterSpecialChangeEvent.prototype.data = null),
                 (h.AfterSpecialChangeEvent.prototype.toString = function () {
@@ -372,7 +372,7 @@ module.exports = function (e, t, i) {
                 (h.AfterRestoreEvent = function (e) {
                     this.node = e;
                 }),
-                a.inherit(h.AfterRestoreEvent, o),
+                IsFiniteNonNegativeNumber.inherit(h.AfterRestoreEvent, o),
                 (h.AfterRestoreEvent.prototype.node = null),
                 (h.AfterRestoreEvent.prototype.toString = function () {
                     return "[Event GNode.AfterRestoreEvent]";
@@ -384,11 +384,11 @@ module.exports = function (e, t, i) {
                             a = this.hasProperty(o, i),
                             s = e.hasProperty(o, i);
                         if (a) {
-                            if (!s) return !1;
-                            if (!n.equals(this.getProperty(o, i), e.getProperty(o, i), !0)) return !1;
-                        } else if (s) return !1;
+                            if (!s) return false;
+                            if (!n.equals(this.getProperty(o, i), e.getProperty(o, i), true)) return false;
+                        } else if (s) return false;
                     }
-                    return !0;
+                    return true;
                 }),
                 (h.Properties.prototype.hasProperty = function (e, t) {
                     var i = (t ? "@" : "$") + e;
@@ -415,15 +415,15 @@ module.exports = function (e, t, i) {
                         if (this.hasOwnProperty(a)) {
                             var s = this[c],
                                 l = this[a];
-                            n.equals(s, l, !1) || (i.push(e[o]), r.push(l));
+                            n.equals(s, l, false) || (i.push(e[o]), r.push(l));
                         }
                     }
-                    if (0 === i.length) return !1;
+                    if (0 === i.length) return false;
                     this._notifyChange(h._Change.BeforePropertiesChange, {
                         properties: i,
                         values: r,
                         custom: t,
-                        temporary: !0,
+                        temporary: true,
                     });
                     var A = [];
                     for (o = 0; o < i.length; ++o) {
@@ -436,9 +436,9 @@ module.exports = function (e, t, i) {
                             properties: i,
                             values: A,
                             custom: t,
-                            temporary: !0,
+                            temporary: true,
                         }),
-                        !0
+                        true
                     );
                 }),
                 (h.Properties.prototype.setProperty = function (e, t, i, n, r) {
@@ -447,18 +447,18 @@ module.exports = function (e, t, i) {
                 (h.Properties.prototype.setProperties = function (e, t, i, r, o) {
                     if (e.length !== t.length) throw new Error("Properties length does not match values length");
                     for (
-                        var a = [], s = [], l = this.getTrackTempPropNames(), A = !1, c = [], p = i ? "@" : "$", u = 0;
+                        var a = [], s = [], l = this.getTrackTempPropNames(), A = false, c = [], p = i ? "@" : "$", u = 0;
                         u < e.length;
                         ++u
                     ) {
                         var d = t[u],
                             g = e[u],
                             f = "#" + (y = p + g);
-                        (!A && l && -1 !== l.indexOf(g) && (A = !0), !o && this.hasOwnProperty(f) && ((this[y] = this[f]), delete this[f]));
+                        (!A && l && -1 !== l.indexOf(g) && (A = true), !o && this.hasOwnProperty(f) && ((this[y] = this[f]), delete this[f]));
                         var m = this[y];
-                        (!r && n.equals(d, m, !1)) || (a.push(g), s.push(d), c.push(m), o && !this.hasOwnProperty(f) && (this[f] = m));
+                        (!r && n.equals(d, m, false)) || (a.push(g), s.push(d), c.push(m), o && !this.hasOwnProperty(f) && (this[f] = m));
                     }
-                    if (0 === a.length) return !1;
+                    if (0 === a.length) return false;
                     if (
                         (this._notifyChange(h._Change.BeforePropertiesChange, {
                             properties: a,
@@ -487,7 +487,7 @@ module.exports = function (e, t, i) {
                             temporary: o,
                             forceEvent: A,
                         }),
-                        !0
+                        true
                     );
                 }),
                 (h.Properties.prototype.getTrackTempPropNames = function () {
@@ -502,7 +502,7 @@ module.exports = function (e, t, i) {
                     t)) {
                         var o = t[r],
                             a = i(r, this["$" + r]);
-                        n.equals(a, o, !0) || (e[r] = a);
+                        n.equals(a, o, true) || (e[r] = a);
                     }
                 }),
                 (h.Properties.prototype.restoreProperties = function (e, t, i) {
@@ -514,22 +514,22 @@ module.exports = function (e, t, i) {
                     var n = [],
                         r = [];
                     for (var o in t) (n.push(o), e.hasOwnProperty(o) ? r.push(i(o, e[o])) : r.push(t[o]));
-                    this.setProperties(n, r, !1);
+                    this.setProperties(n, r, false);
                 }),
                 (h.Properties.prototype.transferProperties = function (e, t, i) {
                     for (var n = [], r = [], o = 0; o < t.length; ++o)
-                        for (var a in t[o]) (n.push(a), e.hasProperty(a) ? r.push(e.getProperty(a, !1, null, i)) : r.push(t[o][a]));
-                    this.setProperties(n, r, !1);
+                        for (var a in t[o]) (n.push(a), e.hasProperty(a) ? r.push(e.getProperty(a, false, null, i)) : r.push(t[o][a]));
+                    this.setProperties(n, r, false);
                 }),
                 (h.Properties.prototype._setDefaultProperties = function () {
                     var e, t, i, r;
                     for (e = 0; e < arguments.length; ++e)
                         for (r in (t = arguments[e]))
                             (!((i = t[r]) && i instanceof Object) ||
-                                i instanceof a ||
+                                i instanceof IsFiniteNonNegativeNumber ||
                                 i instanceof l ||
                                 i instanceof Array ||
-                                (i = n.extend(!0, {}, i)),
+                                (i = n.extend(true, {}, i)),
                                 (this["$" + r] = i));
                 }),
                 (h.Identity = function () {}),
@@ -634,13 +634,13 @@ module.exports = function (e, t, i) {
                         o = !i;
                     if (t)
                         for (var a = this.getLastChild(); null != a; a = a.getPrevious()) {
-                            if (!1 === (r = a.accept(e, t, i, n)) && !i) return !1;
-                            !0 === r && i && (o = !0);
+                            if (false === (r = a.accept(e, t, i, n)) && !i) return false;
+                            true === r && i && (o = true);
                         }
                     else
                         for (a = this.getFirstChild(); null != a; a = a.getNext()) {
-                            if (!1 === (r = a.accept(e, t, i, n)) && !i) return !1;
-                            !0 === r && i && (o = !0);
+                            if (false === (r = a.accept(e, t, i, n)) && !i) return false;
+                            true === r && i && (o = true);
                         }
                     return o;
                 }),
@@ -655,10 +655,10 @@ module.exports = function (e, t, i) {
                     return (
                         this.acceptChildren(
                             function (t) {
-                                return (t.hasFlag(h.Flag.Selected) && e.push(t), !0);
+                                return (t.hasFlag(h.Flag.Selected) && e.push(t), true);
                             },
-                            !1,
-                            !0
+                            false,
+                            true
                         ),
                         e.length ? e : null
                     );
@@ -729,13 +729,13 @@ module.exports = function (e, t, i) {
                 (h.prototype._next = null),
                 (h.prototype._flags = 0),
                 (h.prototype.restoreCount = 0),
-                (h.prototype._isRestoring = !1),
-                (h.prototype.recordedTransaction = !1),
+                (h.prototype._isRestoring = false),
+                (h.prototype.recordedTransaction = false),
                 (h.prototype.getNodeName = function () {
                     return h.getName(this);
                 }),
                 (h.prototype.getNodeNameTranslated = function () {
-                    return s.getValue(this, "name", this.getNodeName());
+                    return String.getValue(this, "name", this.getNodeName());
                 }),
                 (h.prototype.getWorkspace = function () {
                     return this._workspace;
@@ -761,53 +761,53 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (h.prototype.accept = function (e, t, i, n) {
-                    var r = !1;
-                    if (!n && ((r = e.call(null, this)), !i && !1 === r)) return r;
+                    var r = false;
+                    if (!n && ((r = e.call(null, this)), !i && false === r)) return r;
                     if (this.hasMixin(h.Container)) {
                         var o = this.acceptChildren(e, t, i, n);
-                        if (!i && !1 === o) return !1;
+                        if (!i && false === o) return false;
                         r = r || o;
                     }
                     if (n) {
                         var a = e.call(null, this);
-                        if (!i && !1 === a) return !1;
+                        if (!i && false === a) return false;
                         r = r || a;
                     }
                     return r;
                 }),
                 (h.prototype.findParent = function (e) {
-                    return this._parent ? (!0 === e.call(null, this._parent) ? this._parent : this._parent.findParent(e)) : null;
+                    return this._parent ? (true === e.call(null, this._parent) ? this._parent : this._parent.findParent(e)) : null;
                 }),
                 (h.prototype.hasFlag = function (e) {
                     return 0 != (this._flags & e);
                 }),
                 (h.prototype.setFlag = function (e) {
-                    if (this._canModifyFlag(e, !0) && 0 == (this._flags & e)) {
+                    if (this._canModifyFlag(e, true) && 0 == (this._flags & e)) {
                         (this._notifyChange(h._Change.BeforeFlagChange, {
                             flag: e,
-                            set: !0,
+                            set: true,
                         }),
                             (this._flags = this._flags | e));
                         var t = this._workspace ? this._workspace.getTransactionRecorder() : null;
                         (t && t.afterFlagSet(this, e),
                             this._notifyChange(h._Change.AfterFlagChange, {
                                 flag: e,
-                                set: !0,
+                                set: true,
                             }));
                     }
                 }),
                 (h.prototype.removeFlag = function (e) {
-                    if (this._canModifyFlag(e, !1) && 0 != (this._flags & e)) {
+                    if (this._canModifyFlag(e, false) && 0 != (this._flags & e)) {
                         (this._notifyChange(h._Change.BeforeFlagChange, {
                             flag: e,
-                            set: !1,
+                            set: false,
                         }),
                             (this._flags = this._flags & ~e));
                         var t = this._workspace ? this._workspace.getTransactionRecorder() : null;
                         (t && t.afterFlagRemove(this, e),
                             this._notifyChange(h._Change.AfterFlagChange, {
                                 flag: e,
-                                set: !1,
+                                set: false,
                             }));
                     }
                 }),
@@ -815,10 +815,10 @@ module.exports = function (e, t, i) {
                     this.hasMixin(h.Multireference) && e.hasMixin(h.Multireference) && (this._multiReferenceId = e._multiReferenceId);
                 }),
                 (h.prototype.validateInsertion = function (e, t) {
-                    return !1;
+                    return false;
                 }),
                 (h.prototype.validateRemoval = function () {
-                    return !0;
+                    return true;
                 }),
                 (h.prototype.isLocked = function () {
                     return !!this._parent && this._parent.isLocked();
@@ -837,7 +837,7 @@ module.exports = function (e, t, i) {
                 (h.prototype._blockUpdateChanges = function () {}),
                 (h.prototype._releaseUpdateChanges = function () {}),
                 (h.prototype._canModifyFlag = function (e, t) {
-                    return !0;
+                    return true;
                 }),
                 (h.prototype._beginBlockChanges = function (e, t) {
                     this._blockedChanges || ((this._blockedChanges = {}), (this._blockedChanges._counter = 0));
@@ -865,7 +865,7 @@ module.exports = function (e, t, i) {
                 (h.prototype._beginBlockEvents = function (e) {
                     this._blockedEvents || ((this._blockedEvents = {}), (this._blockedEvents._counter = 0));
                     for (var t = 0; t < e.length; ++t) {
-                        var i = a.getTypeId(e[t]);
+                        var i = IsFiniteNonNegativeNumber.getTypeId(e[t]);
                         (i in this._blockedEvents ? this._blockedEvents[i]++ : (this._blockedEvents[i] = 1),
                             this._blockedEvents._counter++);
                     }
@@ -873,7 +873,7 @@ module.exports = function (e, t, i) {
                 (h.prototype._endBlockEvents = function (e) {
                     if (this._blockedEvents)
                         for (var t = 0; t < e.length; ++t) {
-                            var i = a.getTypeId(e[t]);
+                            var i = IsFiniteNonNegativeNumber.getTypeId(e[t]);
                             i in this._blockedEvents &&
                                 this._blockedEvents[i] > 0 &&
                                 0 == --this._blockedEvents[i] &&
@@ -897,10 +897,10 @@ module.exports = function (e, t, i) {
                     this._endBlockEvents(this._getCompositeEvents(e, t, i));
                 }),
                 (h.prototype._notifyChange = function (e, t) {
-                    return (!this._blockedChanges || !this._blockedChanges[e]) && (this._handleChange(e, t), !0);
+                    return (!this._blockedChanges || !this._blockedChanges[e]) && (this._handleChange(e, t), true);
                 }),
                 (h.prototype._canEventBeSent = function (e) {
-                    var t = a.getTypeId(e);
+                    var t = IsFiniteNonNegativeNumber.getTypeId(e);
                     return !this._blockedEvents || !this._blockedEvents[t];
                 }),
                 (h.prototype._sendEvent = function (e) {
@@ -965,9 +965,9 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (h.prototype._handleChange = function (e, t) {
-                    if (e === h._Change.PrepareRestore) this._isRestoring = !0;
+                    if (e === h._Change.PrepareRestore) this._isRestoring = true;
                     else if (e === h._Change.Restore)
-                        ((this._isRestoring = !1),
+                        ((this._isRestoring = false),
                             this._canEventBeSent(h.AfterRestoreEvent) && this._sendEvent(new h.AfterRestoreEvent(this)));
                     else if (e == h._Change.BeforeChildInsert) {
                         var i = t;
@@ -1000,6 +1000,6 @@ module.exports = function (e, t, i) {
                         this._canEventBeSent(h.AfterFlagChangeEvent) && this._sendEvent(new h.AfterFlagChangeEvent(this, r.flag, r.set));
                     }
                 }),
-                i(894)(h),
-                (e.exports = h));
+                require(894)(h),
+                (module.exports = h));
         };

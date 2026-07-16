@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(30), n(4), n(38), n(97));
-        const o = n(156),
-            i = n(1301);
+        (require(30), require(4), require(38), require(97));
+        const o = require(156),
+            i = require(1301);
         function a(e) {
             var t, n, o;
             if ((e && ((t = e.nextPageToken), (n = e.items), (o = e.query)), n && !this._isItemValid(n)))
@@ -38,5 +38,5 @@ module.exports = function (e, t, n) {
                     t
                 );
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

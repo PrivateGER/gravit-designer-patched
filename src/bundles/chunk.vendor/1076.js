@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(6),
-                r = i(7),
-                o = i(2),
-                a = i(22),
-                s = (i(83), i(0)),
-                l = i(99),
-                h = i(327),
-                A = i(140);
+module.exports = function (module, exports, require) {
+            var n = require(6),
+                r = require(7),
+                o = require(2),
+                a = require(22),
+                s = (require(83), require(0 /* IsFiniteNonNegativeNumber */)),
+                l = require(99),
+                h = require(327),
+                A = require(140);
 
             function c(e) {
                 l.call(this, e);
@@ -79,5 +79,5 @@ module.exports = function (e, t, i) {
                 (c.prototype.toString = function () {
                     return "[Object GActionGuide]";
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

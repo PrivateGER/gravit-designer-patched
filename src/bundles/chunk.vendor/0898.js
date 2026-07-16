@@ -1,18 +1,18 @@
-module.exports = function (e, t, i) {
-            var n = i(111),
+module.exports = function (module, exports, require) {
+            var n = require(111),
                 r = Number.Infinity;
 
             function o(e, t, i) {
                 ((this._jobId = e.__contextId),
                     (this._renderables = []),
                     (this._jobStart = Date.now()),
-                    (this._expired = !1),
+                    (this._expired = false),
                     (this._locked = 0),
                     (this._renderables = []),
-                    (this.resuming = !1),
-                    (this.exiting = !1),
+                    (this.resuming = false),
+                    (this.exiting = false),
                     (this.timeout = null),
-                    (this.skipped = !1),
+                    (this.skipped = false),
                     (this.data = []),
                     (this.parameters = i
                         ? Object.keys(i).reduce(function (e, t) {
@@ -36,7 +36,7 @@ module.exports = function (e, t, i) {
                 o.prototype.initialRenderables,
                 (o.prototype.isExpired = function () {
                     return (
-                        !this._locked && (!!this._expired || (Date.now() - this._jobStart > this._timeLimit && ((this._expired = !0), !0)))
+                        !this._locked && (!!this._expired || (Date.now() - this._jobStart > this._timeLimit && ((this._expired = true), true)))
                     );
                 }),
                 (o.prototype.lock = function () {
@@ -47,10 +47,10 @@ module.exports = function (e, t, i) {
                 }),
                 (o.prototype.reset = function () {
                     ((this._jobStart = Date.now()),
-                        (this._expired = !1),
+                        (this._expired = false),
                         (this._locked = 0),
-                        (this.resuming = !1),
-                        (this.exiting = !1),
+                        (this.resuming = false),
+                        (this.exiting = false),
                         null !== this.timeout && (clearTimeout(this.timeout), (this.timeout = null)),
                         (this.data = []));
                 }),
@@ -85,15 +85,15 @@ module.exports = function (e, t, i) {
                     (this._renderables.forEach(function (e) {
                         (e.canvas &&
                             (e.__len > 0 && !n.finished(e)
-                                ? (e.canvas.renderingSkipped = !0)
-                                : (e.__len > 0 || e.canvas.rendered) && (e.canvas.renderingSkipped = !1),
-                            e.__persistent || (e.canvas.rendered = !1),
-                            (e.canvas.rendering = !1),
-                            (e.canvas.rendered = !1),
+                                ? (e.canvas.renderingSkipped = true)
+                                : (e.__len > 0 || e.canvas.rendered) && (e.canvas.renderingSkipped = false),
+                            e.__persistent || (e.canvas.rendered = false),
+                            (e.canvas.rendering = false),
+                            (e.canvas.rendered = false),
                             (e.canvas.renderingName = null)),
                             n.dispose(e));
                     }),
                         (this._renderables = []));
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

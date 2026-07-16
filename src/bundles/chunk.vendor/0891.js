@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(261);
+module.exports = function (module, exports, require) {
+            var n = require(261);
 
             function r() {}
             (n.inherit(r, n),
@@ -7,5 +7,5 @@ module.exports = function (e, t, i) {
                 (r.prototype._paramsToString = function () {
                     return "";
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

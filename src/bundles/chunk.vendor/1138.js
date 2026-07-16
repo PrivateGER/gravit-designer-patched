@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(1210);
+module.exports = function (module, exports, require) {
+            var n = require(1210);
 
             function r(e, t) {
                 for (var i = 0, n = (t = t || 0); n < e.byteLength; n++) ((i <<= 8), (i |= 255 & e.getUint8(n)));
@@ -14,9 +14,9 @@ module.exports = function (e, t, i) {
                 var i = t.slice(t.byteLength - 32, t.byteLength),
                     o = i.getUint8(6);
                 var a = i.getUint8(7);
-                var s = i.getUint64(8, !1);
-                var l = i.getUint64(16, !1);
-                var h = i.getUint64(24, !1);
+                var s = i.getUint64(8, false);
+                var l = i.getUint64(16, false);
+                var h = i.getUint64(24, false);
                 for (var A = [], c = 0; c < s; c++) {
                     var p = t.slice(h + c * o, h + (c + 1) * o);
                     A[c] = r(p, 0);
@@ -34,9 +34,9 @@ module.exports = function (e, t, i) {
                                     case 0:
                                         return null;
                                     case 8:
-                                        return !1;
+                                        return false;
                                     case 9:
-                                        return !0;
+                                        return true;
                                     case 15:
                                         return null;
                                     default:
@@ -54,14 +54,14 @@ module.exports = function (e, t, i) {
                             return (function () {
                                 var e = Math.pow(2, h),
                                     i = t.slice(o + 1, o + 1 + e);
-                                if (4 === e) return i.getFloat32(0, !1);
-                                if (8 === e) return i.getFloat64(0, !1);
+                                if (4 === e) return i.getFloat32(0, false);
+                                if (8 === e) return i.getFloat64(0, false);
                             })();
                         case 3:
                             return (function () {
                                 3 != h && console.error("Unknown date type :" + h + ". Parsing anyway...");
                                 var e = t.slice(o + 1, o + 9);
-                                return new Date(9783072e5 + 1e3 * e.getFloat64(0, !1));
+                                return new Date(9783072e5 + 1e3 * e.getFloat64(0, false));
                             })();
                         case 4:
                             return (function () {
@@ -80,7 +80,7 @@ module.exports = function (e, t, i) {
                         case 5:
                             return c();
                         case 6:
-                            return c(!0);
+                            return c(true);
                         case 10:
                             return (function () {
                                 var i = h,
@@ -156,5 +156,5 @@ module.exports = function (e, t, i) {
                     }
                 })(l);
             }),
-                (e.exports = o));
+                (module.exports = o));
         };

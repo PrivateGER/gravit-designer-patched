@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(99),
-                r = i(5),
-                o = i(6),
-                a = i(0),
-                s = i(210);
+module.exports = function (module, exports, require) {
+            var n = require(99),
+                r = require(5),
+                o = require(6),
+                IsFiniteNonNegativeNumber = require(0),
+                s = require(210);
 
             function l(e) {
                 n.call(this, e);
             }
-            (a.inheritAndMix(l, n, [n.Map]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(l, n, [n.Map]),
                 (l.ID = "guide.scene"),
                 (l.prototype.getId = function () {
                     return l.ID;
@@ -30,18 +30,18 @@ module.exports = function (e, t, i) {
                             v = this._scene.getActivePage(),
                             b = new r(e, t);
                         if (this._guides.isMultiPageEnabled())
-                            (v && ((y = v.getPosition(!0)), l || (b = b.add(y))),
+                            (v && ((y = v.getPosition(true)), l || (b = b.add(y))),
                                 this._scene.iteratePages(
                                     function (e) {
-                                        var t = !0,
+                                        var t = true,
                                             i = e.getGeometryBBox(),
-                                            r = e.getPosition(!0),
+                                            r = e.getPosition(true),
                                             o = i ? i.translated(r.getX(), r.getY()) : null;
-                                        (o = o && o.expanded(n, n, n, n)) && o.containsPoint(b) && (_.push(i), (t = !1));
+                                        (o = o && o.expanded(n, n, n, n)) && o.containsPoint(b) && (_.push(i), (t = false));
                                         var a = e.getMarginBBox(),
                                             s = a ? a.translated(r.getX(), r.getY()) : null;
                                         return (
-                                            (s = s && s.expanded(n, n, n, n)) && s.containsPoint(b) && (_.push(a), (t = !1)),
+                                            (s = s && s.expanded(n, n, n, n)) && s.containsPoint(b) && (_.push(a), (t = false)),
                                             t || ((m = e), (b = b.subtract(r))),
                                             t
                                         );
@@ -52,7 +52,7 @@ module.exports = function (e, t, i) {
                             var C = v.getGeometryBBox();
                             C && _.push(C);
                             var w = v.getMarginBBox();
-                            (w && _.push(w), l && ((y = m.getPosition(!1)), (b = b.subtract(y))));
+                            (w && _.push(w), l && ((y = m.getPosition(false)), (b = b.subtract(y))));
                         }
                         for (var E = 0; E < _.length; ++E) {
                             var B = _[E];
@@ -114,10 +114,10 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (l.prototype.isRelativeToPage = function () {
-                    return !0;
+                    return true;
                 }),
                 (l.prototype.toString = function () {
                     return "[Object GPageGuide]";
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

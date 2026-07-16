@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        var o = n(1);
-        const i = n(1327),
-            a = n(1577);
+        require(8 /* Symbol */);
+        var GObject = require(1);
+        const i = require(1327),
+            a = require(1577);
         class r {
             static openOfferReminder(e) {
                 return r._openPaywall("reminder", e);
@@ -21,7 +21,7 @@ module.exports = function (e, t, n) {
                     .setId("paywall-cross-frame")
                     .setEndpoint("/pro/paywall/".concat(e))
                     .setTime(gDesigner.now())
-                    .setLanguage(o.GLocale.getLanguage())
+                    .setLanguage(GObject.GLocale.getLanguage())
                     .setCampaign(t.campaign)
                     .setShareFile(t.shareFile)
                     .setDashboard(t.dashboard)
@@ -38,5 +38,5 @@ module.exports = function (e, t, n) {
                 return a.DEFAULT_LAYOUT;
             }
         }
-        e.exports = r;
+        module.exports = r;
     };

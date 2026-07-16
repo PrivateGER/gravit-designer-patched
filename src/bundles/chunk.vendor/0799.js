@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(197),
-                o = i(391),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(197),
+                o = require(391),
                 a = function (e, t) {
                     ((this._name = e), (this._indirectReference = t));
                 };
@@ -17,7 +17,7 @@ module.exports = function (e, t, i) {
                 (a.Group = function (e) {
                     (r.call(this), (this._type = e));
                 }),
-                n.inherit(a.Group, r),
+                IsFiniteNonNegativeNumber.inherit(a.Group, r),
                 (a.Group.prototype.getName = function () {
                     return this._type.name;
                 }),
@@ -44,5 +44,5 @@ module.exports = function (e, t, i) {
                         prefix: "xobj",
                     },
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        const o = n(1252),
-            i = n(1187),
-            { gApi: a } = n(10);
-        e.exports = class extends i {
+        const o = require(1252),
+            i = require(1187),
+            { gApi: a } = require(10 /* designerConfig */);
+        module.exports = class extends i {
             constructor(e, t) {
                 (super(), (this._id = e), (this._url = t));
             }

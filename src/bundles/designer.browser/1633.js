@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1);
-        const i = n(31),
-            a = n(18),
-            r = n(256);
+        require(3);
+        var GObject = require(1);
+        const i = require(31),
+            GCategory = require(18),
+            GOfflineDialog = require(256);
         function s() {}
-        (o.GObject.inherit(s, i),
+        (GObject.GObject.inherit(s, i),
             (s.ID = "example-files"),
-            (s.TITLE = new o.GLocaleKey("GExampleFilesAction", "title")),
+            (s.TITLE = new GObject.GLocaleKey("GExampleFilesAction", "title")),
             (s.prototype.getId = function () {
                 return s.ID;
             }),
@@ -16,24 +16,24 @@ module.exports = function (e, t, n) {
                 return s.TITLE;
             }),
             (s.prototype.getCategory = function () {
-                return a.CATEGORY_HELP_LEARN;
+                return GCategory.CATEGORY_HELP_LEARN;
             }),
             (s.prototype.getGroup = function () {
                 return "help/learn";
             }),
             (s.prototype.execute = function () {
                 const e = {
-                        closable: !0,
-                        showCloudOptions: !0,
-                        openFromCloud: !0,
-                        nativeCloud: !0,
-                        showExampleFiles: !0,
+                        closable: true,
+                        showCloudOptions: true,
+                        openFromCloud: true,
+                        nativeCloud: true,
+                        showExampleFiles: true,
                     },
                     t = () => gDesigner.openNewDocumentDialog(e);
-                gDesigner.isOffline() ? r.openUnavailableFeature(t) : t();
+                gDesigner.isOffline() ? GOfflineDialog.openUnavailableFeature(t) : t();
             }),
             (s.prototype.toString = function () {
                 return "[GObject GExampleFilesAction]";
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

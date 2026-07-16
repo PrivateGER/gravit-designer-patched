@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(51),
-                o = i(17),
-                a = i(47),
-                s = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(51),
+                o = require(17),
+                a = require(47),
+                String = require(9);
 
             function l() {
                 (r.call(this), this._setDefaultProperties(l.GeometryProperties));
@@ -26,7 +26,7 @@ module.exports = function (e, t, i) {
                     return t;
                 }),
                 (l.prototype.getNodeNameTranslated = function () {
-                    return s.getValue("GGLStrokeLayerEffect", "name", this.getNodeName());
+                    return String.getValue("GGLStrokeLayerEffect", "name", this.getNodeName());
                 }),
                 (l.prototype.propertyInverseTransform = function (e, t) {
                     switch (e) {
@@ -47,7 +47,7 @@ module.exports = function (e, t, i) {
                             type: "opacity",
                             value: 1,
                         },
-                        ellyptical: !1,
+                        ellyptical: false,
                         placement: {
                             type: "dropdown",
                             value: 0,
@@ -65,5 +65,5 @@ module.exports = function (e, t, i) {
                         new a("GGLStrokeLayerEffect", "text.center"),
                     ],
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

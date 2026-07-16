@@ -1,22 +1,22 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(3), n(4), n(41));
-        var i = n(1),
-            a = n(53),
-            r = n(67),
-            s = o(n(340)),
-            l = n(78),
-            c = n(608),
-            d = n(566),
-            u = n(806),
-            p = n(395);
+        var o = require(16);
+        (require(3), require(4), require(41));
+        var GObject = require(1),
+            a = require(53),
+            r = require(67),
+            s = o(require(340)),
+            l = require(78),
+            GCreateSymbolAction = require(608),
+            d = require(566),
+            u = require(806),
+            p = require(395);
         function g() {
             u.call(this);
         }
-        (i.GObject.inherit(g, u),
+        (GObject.GObject.inherit(g, u),
             (g.ID = "symbols"),
-            (g.TITLE = new i.GLocaleKey("GSymbolsSidebar", "title")),
+            (g.TITLE = new GObject.GLocaleKey("GSymbolsSidebar", "title")),
             (g.prototype._htmlElement = null),
             (g.prototype._newSymbolButton = null),
             (g.prototype._symbolsToolbar = null),
@@ -28,7 +28,7 @@ module.exports = function (e, t, n) {
                 return g.TITLE;
             }),
             (g.prototype.isEnabled = function () {
-                return !0;
+                return true;
             }),
             (g.prototype.isVisible = function () {
                 return !!gDesigner.getApplicationManager().isEditingEnabled();
@@ -43,7 +43,7 @@ module.exports = function (e, t, n) {
                 return 250;
             }),
             (g.prototype.isResizeable = function () {
-                return !0;
+                return true;
             }),
             (g.prototype.relayout = function () {
                 this._symbolsPanel.gSymbolsPanel("relayout");
@@ -56,7 +56,7 @@ module.exports = function (e, t, n) {
                         .append(
                             $("<label></label>")
                                 .css("flex-grow", "1")
-                                .text(i.GLocale.get(new i.GLocaleKey("GSymbolsSidebar", "text.symbols")))
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GSymbolsSidebar", "text.symbols")))
                         )
                         .on("dragover", function (e) {
                             (e.preventDefault(), e.stopPropagation());
@@ -72,26 +72,26 @@ module.exports = function (e, t, n) {
                         )
                         .appendTo(e)),
                     $("<button></button>")
-                        .attr("data-title", i.GLocale.get(new i.GLocaleKey("GSymbolsSidebar", "action.delete-symbol")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GSymbolsSidebar", "action.delete-symbol")))
                         .on("click", () => this._deleteSymbol())
                         .append($("<span></span>").addClass("gravit-icon-trash"))
                         .append($("<span></span>").addClass("gravit-icon-touch-trash"))
                         .appendTo(this._symbolsToolbar)
                         .gRichTooltip(
                             r.GRichTooltipConfig.from({
-                                title: i.GLocale.get(new i.GLocaleKey("GSymbolsSidebar", "text.delete-symbol-tooltip-title")),
-                                description: i.GLocale.get(new i.GLocaleKey("GSymbolsSidebar", "text.delete-symbol-tooltip-description")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GSymbolsSidebar", "text.delete-symbol-tooltip-title")),
+                                description: GObject.GLocale.get(new GObject.GLocaleKey("GSymbolsSidebar", "text.delete-symbol-tooltip-description")),
                                 learnMore: "/docs/organizing-your-designs/symbols/#symbols-panel",
                             })
                         ),
                     (this._newSymbolButton = $("<button></button>")
-                        .attr("data-title", i.GLocale.get(new i.GLocaleKey("GSymbolsSidebar", "action.create-symbol")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GSymbolsSidebar", "action.create-symbol")))
                         .on(
                             "click",
                             function () {
                                 (gDesigner.stats("symbols_new_symbol"),
                                     this._symbolsPanel.gSymbolsPanel("newSymbolClick") &&
-                                        ($(this._symbolsToolbar).gAccordion("toggleOpen", !0),
+                                        ($(this._symbolsToolbar).gAccordion("toggleOpen", true),
                                         $(this._symbolsToolbar).gAccordion("init", $(this._symbolsPanel))));
                             }.bind(this)
                         )
@@ -101,8 +101,8 @@ module.exports = function (e, t, n) {
                         .addClass("g-disabled")
                         .gRichTooltip(
                             r.GRichTooltipConfig.from({
-                                title: i.GLocale.get(new i.GLocaleKey("GSymbolsSidebar", "text.create-symbol-tooltip-title")),
-                                description: i.GLocale.get(new i.GLocaleKey("GSymbolsSidebar", "text.create-symbol-tooltip-description")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GSymbolsSidebar", "text.create-symbol-tooltip-title")),
+                                description: GObject.GLocale.get(new GObject.GLocaleKey("GSymbolsSidebar", "text.create-symbol-tooltip-description")),
                                 learnMore: "/docs/organizing-your-designs/symbols/#symbols-panel",
                             })
                         )));
@@ -115,13 +115,13 @@ module.exports = function (e, t, n) {
                                 (e.target === this || $(e.target).hasClass("g-symbols-panel")) &&
                                     t._symbolsPanel.gSymbolsPanel("isSelected") &&
                                     t._document.getEditor().updateSelection(
-                                        !1,
+                                        false,
                                         t._document
                                             .getEditor()
                                             .getSelection()
                                             .slice()
                                             .filter(function (e) {
-                                                return !(e instanceof i.GSymbol && e.isMaster());
+                                                return !(e instanceof GObject.GSymbol && e.isMaster());
                                             })
                                     ));
                         })
@@ -182,7 +182,7 @@ module.exports = function (e, t, n) {
                         function () {
                             t.gSymbolsPanel("removeSelected");
                         },
-                        i.GLocale.get(new i.GLocaleKey("GSymbolsSidebar", "action.delete-symbol"))
+                        GObject.GLocale.get(new GObject.GLocaleKey("GSymbolsSidebar", "action.delete-symbol"))
                     );
             }),
             (g.prototype._moveSymbolCallback = function (e, t, n) {
@@ -198,8 +198,8 @@ module.exports = function (e, t, n) {
                         var n = a.GEditor.getElementPage(e);
                         (n && this._document.getScene().setActivePage(n),
                             t.clearSelection(),
-                            t.updateSelection(!1, [e]),
-                            t.hasSelection() && gDesigner.executeAction(d.ID, void 0, void 0, !0));
+                            t.updateSelection(false, [e]),
+                            t.hasSelection() && gDesigner.executeAction(d.ID, void 0, void 0, true));
                     }
                 }
             }),
@@ -209,13 +209,13 @@ module.exports = function (e, t, n) {
                         n = this._document.getScene(),
                         o = (n.getActivePage(), [e]);
                     (n.visitLinks(e, function (e) {
-                        e instanceof i.GSymbol && o.push(e);
+                        e instanceof GObject.GSymbol && o.push(e);
                     }),
-                        t && (t.clearSelection(), t.updateSelection(!1, o)));
+                        t && (t.clearSelection(), t.updateSelection(false, o)));
                 }
             }),
             (g.prototype._selectionUpdate = function () {
-                var e = gDesigner.canExecuteAction(c.ID),
+                var e = gDesigner.canExecuteAction(GCreateSymbolAction.ID),
                     t = this._newSymbolButton.hasClass("g-disabled");
                 e && t ? this._newSymbolButton.removeClass("g-disabled") : e || t || this._newSymbolButton.addClass("g-disabled");
             }),
@@ -233,5 +233,5 @@ module.exports = function (e, t, n) {
             (g.prototype.toString = function () {
                 return "[Object GSymbolsSidebar]";
             }),
-            (e.exports = g));
+            (module.exports = g));
     };

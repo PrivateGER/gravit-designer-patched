@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(110),
-            a = n(74),
-            r = n(186),
-            s = n(201).CONSTRUCTOR,
-            l = n(453),
+        var o = require(25),
+            i = require(110),
+            a = require(74),
+            r = require(186),
+            s = require(201 /* CONSTRUCTOR */).CONSTRUCTOR,
+            l = require(453),
             c = i("Promise"),
             d = a && !s;
         o(
-            { target: "Promise", stat: !0, forced: a || s },
+            { target: "Promise", stat: true, forced: a || s },
             {
                 resolve: function (e) {
                     return l(d && this === c ? r : this, e);

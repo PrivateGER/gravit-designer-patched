@@ -1,46 +1,46 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(36),
-                o = i(66),
-                a = i(22),
-                s = i(39),
-                l = i(5),
-                h = i(7),
-                A = i(11),
-                c = i(82),
-                p = i(70),
-                u = (i(56), i(6)),
-                d = i(69);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(36),
+                o = require(66),
+                a = require(22),
+                s = require(39),
+                l = require(5),
+                h = require(7),
+                A = require(11),
+                GEditor = require(82),
+                p = require(70),
+                u = (require(56), require(6)),
+                d = require(69);
 
             function g() {
                 o.call(this);
             }
-            (n.inherit(g, o),
+            (IsFiniteNonNegativeNumber.inherit(g, o),
                 (g.prototype._selection = null),
                 (g.prototype._scene = null),
                 (g.prototype._graphicEditor = null),
-                (g.prototype._activated = !1),
+                (g.prototype._activated = false),
                 (g.prototype.activate = function (e, t) {
                     (this._activated && this.deactivate(),
                         (this._scene = e),
                         this._scene.addEventListener(a.GeometryChangeEvent, this._geometryChange, this),
                         (this._graphicEditor = t),
                         this.updateFromSelection(),
-                        (this._activated = !0));
+                        (this._activated = true));
                 }),
                 (g.prototype.deactivate = function () {
                     ((this._graphicEditor = null),
                         this._scene.removeEventListener(a.GeometryChangeEvent, this._geometryChange, this),
                         (this._scene = null),
                         (this._selection = null),
-                        (this._activated = !1));
+                        (this._activated = false));
                 }),
                 (g.prototype.getBox = function (e) {
                     if (this._selection) {
-                        var t = c.getGroupGeometryBBox(this._selection, !0, e);
+                        var t = GEditor.getGroupGeometryBBox(this._selection, true, e);
                         if (t) {
                             var i = this._scene.getActivePage(),
-                                n = i ? i.getPosition(!0) : null;
+                                n = i ? i.getPosition(true) : null;
                             n && (t = t.translated(-n.getX(), -n.getY()));
                         }
                         return t;
@@ -50,7 +50,7 @@ module.exports = function (e, t, i) {
                 (g.prototype._getSelectionPages = function () {
                     var e = null;
                     if (this._selection) {
-                        for (var t = this._selection, i = 0; i < t.length; i++) e = (e || []).concat([c.getElementPage(t[i])]);
+                        for (var t = this._selection, i = 0; i < t.length; i++) e = (e || []).concat([GEditor.getElementPage(t[i])]);
                         e = A.uniqueObj(e);
                     }
                     return e;
@@ -85,16 +85,16 @@ module.exports = function (e, t, i) {
                         n = this._selection;
                     if (t.configuration.multiPageView && n) {
                         var r = this._scene.getActivePage(),
-                            a = r ? r.getPosition(!0) : null;
+                            a = r ? r.getPosition(true) : null;
                         a && (i = e.preMultiplied(new h(1, 0, 0, 1, a.getX(), a.getY())));
                     }
                     o.prototype.paint.call(this, i || e, t);
                 }),
                 (g.prototype.updateFromSelection = function () {
                     if (
-                        (this.setFlag(o.Flag.ResizeAll, !0),
-                        this.setFlag(o.Flag.RotateCorners, !0),
-                        this.setFlag(o.Flag.RotateHandle, !0),
+                        (this.setFlag(o.Flag.ResizeAll, true),
+                        this.setFlag(o.Flag.RotateCorners, true),
+                        this.setFlag(o.Flag.RotateHandle, true),
                         this.requestInvalidation(),
                         (this._selection = this._graphicEditor.getIndividualSelection()),
                         this._selection)
@@ -102,9 +102,9 @@ module.exports = function (e, t, i) {
                         for (var e = 0; e < this._selection.length; ++e) {
                             var t = this._selection[e];
                             t.getProperty("plkt") & d.ProgramLck.NoSizeChanges &&
-                                (this.removeFlag(o.Flag.ResizeAll, !0),
-                                this.removeFlag(o.Flag.RotateCorners, !0),
-                                this.removeFlag(o.Flag.RotateHandle, !0));
+                                (this.removeFlag(o.Flag.ResizeAll, true),
+                                this.removeFlag(o.Flag.RotateCorners, true),
+                                this.removeFlag(o.Flag.RotateHandle, true));
                             var i = r.openEditor(t);
                             i.hasFlag(s.Flag.Outline) || i.setFlag(s.Flag.Outline);
                         }
@@ -114,15 +114,15 @@ module.exports = function (e, t, i) {
                 (g.prototype.edTransform = function (e, t, i, n) {
                     if (this._selection)
                         for (
-                            var a = this._scene.getActivePage(), s = a ? a.getPosition(!0) : null, l = 0;
+                            var a = this._scene.getActivePage(), s = a ? a.getPosition(true) : null, l = 0;
                             l < this._selection.length;
                             ++l
                         ) {
                             var A,
                                 p = this._selection[l],
                                 u = r.openEditor(p);
-                            if (n && n.isMultiPage && (A = c.getElementPage(p))) {
-                                var d = A.getPosition(!0);
+                            if (n && n.isMultiPage && (A = GEditor.getElementPage(p))) {
+                                var d = A.getPosition(true);
                                 s && (d = d.subtract(s));
                                 var g = new h(1, 0, 0, 1, d.getX(), d.getY());
                                 u.edTransform(g.multiplied(e).multiplied(g.inverted()), null, null, n);
@@ -153,7 +153,7 @@ module.exports = function (e, t, i) {
                             if (s instanceof p) {
                                 var l = r.getEditor(s);
                                 if (l) {
-                                    var A = l._getBBox(e, !1);
+                                    var A = l._getBBox(e, false);
                                     A && (o = o ? o.united(A) : A);
                                 }
                             }
@@ -185,7 +185,7 @@ module.exports = function (e, t, i) {
                         i = this._selection;
                     if (i && i.length) {
                         var n = this._scene.getActivePage(),
-                            r = n ? n.getPosition(!0) : null;
+                            r = n ? n.getPosition(true) : null;
                         r && (t = new h(1, 0, 0, 1, r.getX(), r.getY()));
                     }
                     (t &&
@@ -200,7 +200,7 @@ module.exports = function (e, t, i) {
                     return o.prototype.invalidate.call(this, e, null);
                 }),
                 (g.prototype.getPartInfoAt = function (e, t, i, n, r) {
-                    if (((n = n || 0), i && !0 !== i.call(null, this))) return null;
+                    if (((n = n || 0), i && true !== i.call(null, this))) return null;
                     var o = t || new h(),
                         a = this.getBBox(o, r);
                     if (a && a.expanded(n, n, n, n).containsPoint(e)) {
@@ -210,10 +210,10 @@ module.exports = function (e, t, i) {
                     return null;
                 }),
                 (g.prototype.isRelativeToPage = function () {
-                    return !1;
+                    return false;
                 }),
                 (g.prototype._showOutline = function () {
-                    return !0;
+                    return true;
                 }),
                 (g.prototype._geometryChange = function (e) {
                     this.requestInvalidation();
@@ -221,5 +221,5 @@ module.exports = function (e, t, i) {
                 (g.prototype.toString = function () {
                     return "[Object GSelectionPositionEditor]";
                 }),
-                (e.exports = g));
+                (module.exports = g));
         };

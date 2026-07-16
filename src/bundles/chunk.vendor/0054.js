@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(63),
-                o = i(87),
-                a = i(48),
-                s = i(903);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(63),
+                o = require(87),
+                a = require(48),
+                s = require(903);
 
             function l(e) {
                 if (((this._vertices = []), e && e.rewindVertices(0)))
                     for (var t = new a(); e.readVertex(t); ) this.addVertex(t.command, t.x, t.y);
             }
-            (n.mix(l, [o, s]),
+            (IsFiniteNonNegativeNumber.mix(l, [o, s]),
                 (l.serialize = function (e) {
                     var t = [];
                     if (e.rewindVertices(0)) for (var i = new a(); e.readVertex(i); ) t.push(i.command, i.x, i.y);
@@ -52,7 +52,7 @@ module.exports = function (e, t, i) {
                 (l.makeClockWise = function (e, t) {
                     for (var i = l.splitVertexSource(e), n = [], r = 0; r < i.length; r++) {
                         var o = i[r];
-                        t || !o.isClockWise() ? ((o = l.clone(o, !0)), n.push(o)) : n.push(o);
+                        t || !o.isClockWise() ? ((o = l.clone(o, true)), n.push(o)) : n.push(o);
                     }
                     return l.mergeVertexSources(n);
                 }),
@@ -132,14 +132,14 @@ module.exports = function (e, t, i) {
                     return this._vertices.length;
                 }),
                 (l.prototype.rewindVertices = function (e) {
-                    return (e = e || 0) >= 0 && e <= this._vertices.length && ((this._index = e), !0);
+                    return (e = e || 0) >= 0 && e <= this._vertices.length && ((this._index = e), true);
                 }),
                 (l.prototype.readVertex = function (e) {
                     if (this._index >= 0 && this._index < this._vertices.length) {
                         var t = this._vertices[this._index];
-                        return ((e.command = t.command), (e.x = t.x), (e.y = t.y), this._index++, !0);
+                        return ((e.command = t.command), (e.x = t.x), (e.y = t.y), this._index++, true);
                     }
-                    return !1;
+                    return false;
                 }),
                 (l.prototype.hasVertexForRead = function () {
                     return this._index >= 0 && this._index < this._vertices.length;
@@ -147,5 +147,5 @@ module.exports = function (e, t, i) {
                 (l.prototype.toString = function () {
                     return "[Object GVertexContainer]";
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

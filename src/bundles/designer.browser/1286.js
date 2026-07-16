@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = (n(15), n(18)),
-            a = n(31);
+        require(3);
+        var GObject = require(1),
+            i = (require(15 /* GPlatform */), require(18 /* GCategory */)),
+            a = require(31);
         function r() {}
-        (o.GObject.inherit(r, a),
+        (GObject.GObject.inherit(r, a),
             (r.ID = "view.canvas.show-symbol-labels"),
-            (r.TITLE = new o.GLocaleKey("GShowSymbolLabelsAction", "title")),
+            (r.TITLE = new GObject.GLocaleKey("GShowSymbolLabelsAction", "title")),
             (r.prototype.getId = function () {
                 return r.ID;
             }),
@@ -24,7 +24,7 @@ module.exports = function (e, t, n) {
                 return !!gDesigner.getWindows().getActiveWindow();
             }),
             (r.prototype.isCheckable = function () {
-                return !0;
+                return true;
             }),
             (r.prototype.isChecked = function () {
                 var e = gDesigner.getWindows().getActiveWindow();
@@ -32,7 +32,7 @@ module.exports = function (e, t, n) {
                     var t = e.getView().getViewConfiguration();
                     return !!t && !!t.symbolLabelsVisible;
                 }
-                return !1;
+                return false;
             }),
             (r.prototype.execute = function () {
                 var e = gDesigner.getWindows().getActiveWindow().getView();
@@ -43,5 +43,5 @@ module.exports = function (e, t, n) {
             (r.prototype.toString = function () {
                 return "[Object GShowSymbolLabelsAction]";
             }),
-            (e.exports = r));
+            (module.exports = r));
     };

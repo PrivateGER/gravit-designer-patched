@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(57), n(8));
-        var o = n(1),
-            i = n(1198),
-            a = n(255),
-            r = n(1118);
+        (require(57), require(8 /* Symbol */));
+        var GObject = require(1),
+            i = require(1198),
+            a = require(255),
+            r = require(1118);
         function s() {
             try {
                 this._fontDB = i.getInstance();
@@ -29,7 +29,7 @@ module.exports = function (e, t, n) {
                               100
                           ),
                           void this._importTrialCount++)
-                    : ((this._importTrialCount = 0), this._prompt(e, t), !0);
+                    : ((this._importTrialCount = 0), this._prompt(e, t), true);
             }),
             (s.prototype._prompt = function (e, t) {
                 var n = this,
@@ -52,7 +52,7 @@ module.exports = function (e, t, n) {
                         ((n._numFiles = i),
                             r.then(() => {
                                 t.read((t) => {
-                                    var i = o.GOpenTypeUtil.getFont(null, null, null, t, !0);
+                                    var i = GObject.GOpenTypeUtil.getFont(null, null, null, t, true);
                                     n._numFiles += i.length - 1;
                                     var a = function (t, n) {
                                             return n < t.length
@@ -66,7 +66,7 @@ module.exports = function (e, t, n) {
                                 });
                             }));
                     },
-                    !0,
+                    true,
                     t
                 );
             }),
@@ -112,7 +112,7 @@ module.exports = function (e, t, n) {
                 else this._tmpFontList = [];
                 (this._tmpFontList.push(r),
                     this._fontDB.updateItem(n + "_" + o + "_" + i, a).done(() => {
-                        this._postAddAction(t, !0);
+                        this._postAddAction(t, true);
                     }));
             }),
             (s.prototype._postAddAction = function (e, t) {
@@ -121,7 +121,7 @@ module.exports = function (e, t, n) {
                         ? ((this._numLoaded = 0),
                           (this._numFiles = 0),
                           this._fontDB.updateItem(i.FONT_LIST, this._tmpFontList).done((n) => {
-                              if ((t ? a.getInstance().reset(r, !0) : a.getInstance().reset(), gDesigner.getWorkspace()))
+                              if ((t ? a.getInstance().reset(r, true) : a.getInstance().reset(), gDesigner.getWorkspace()))
                                   for (var o = 0; o < this._tmpFontList.length; o++) {
                                       var i = this._tmpFontList[o];
                                       gDesigner.getWorkspace().getFontManager().getFont(i.family, i.style, parseInt(i.weight));
@@ -130,5 +130,5 @@ module.exports = function (e, t, n) {
                           }))
                         : e && e());
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

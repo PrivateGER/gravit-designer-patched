@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(269);
+            var n = require(269);
 
             function r() {}
             (n.inherit(r, n),
@@ -8,5 +8,5 @@ module.exports = function (e, t, i) {
                 (r.prototype._paramsToString = function () {
                     return "";
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

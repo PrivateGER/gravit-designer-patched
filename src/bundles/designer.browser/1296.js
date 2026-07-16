@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(15),
-            a = n(18),
-            r = n(31);
+        require(3);
+        var GObject = require(1),
+            GPlatform = require(15),
+            GCategory = require(18),
+            r = require(31);
         function s() {}
-        (o.GObject.inherit(s, r),
+        (GObject.GObject.inherit(s, r),
             (s.ID = "view.clone"),
-            (s.TITLE = new o.GLocaleKey("GNewWindowAction", "title")),
+            (s.TITLE = new GObject.GLocaleKey("GNewWindowAction", "title")),
             (s.prototype.getId = function () {
                 return s.ID;
             }),
@@ -16,13 +16,13 @@ module.exports = function (e, t, n) {
                 return s.TITLE;
             }),
             (s.prototype.getCategory = function () {
-                return a.CATEGORY_VIEW;
+                return GCategory.CATEGORY_VIEW;
             }),
             (s.prototype.getGroup = function () {
                 return "view";
             }),
             (s.prototype.getShortcut = function () {
-                return [i.GKey.Constant.META, i.GKey.Constant.OPTION, "N"];
+                return [GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.OPTION, "N"];
             }),
             (s.prototype.isEnabled = function () {
                 return !!gDesigner.getWindows().getActiveWindow();
@@ -33,5 +33,5 @@ module.exports = function (e, t, n) {
             (s.prototype.toString = function () {
                 return "[Object GNewWindowAction]";
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

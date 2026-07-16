@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(6),
-                r = i(7);
+module.exports = function (module, exports, require) {
+            var n = require(6),
+                r = require(7);
 
             function o() {
                 throw new Error("No instance");
@@ -15,5 +15,5 @@ module.exports = function (e, t, i) {
                         a = n > 0 ? t.getHeight() / n : 0;
                     return new r().translated(-e.getX(), -e.getY()).scaled(o, a).translated(t.getX(), t.getY());
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

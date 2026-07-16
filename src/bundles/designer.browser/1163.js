@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.default = t.dateToVersionFormat = t.dateToFilePreviewFormat = void 0));
-        const { GLocale: o } = n(1),
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = exports.dateToVersionFormat = exports.dateToFilePreviewFormat = void 0));
+        const { GLocale: o } = require(1 /* GObject */),
             i = (e) =>
                 o.toLocaleDate(e, {
                     month: "short",
@@ -9,7 +9,7 @@ module.exports = function (e, t, n) {
                     hour: "numeric",
                     minute: "numeric",
                 });
-        t.dateToVersionFormat = i;
+        exports.dateToVersionFormat = i;
         const a = (e) =>
             o.toLocaleDate(new Date(e), {
                 month: "numeric",
@@ -18,6 +18,6 @@ module.exports = function (e, t, n) {
                 hour: "numeric",
                 minute: "numeric",
             });
-        t.dateToFilePreviewFormat = a;
-        t.default = { dateToVersionFormat: i, dateToFilePreviewFormat: a };
+        exports.dateToFilePreviewFormat = a;
+        exports.default = { dateToVersionFormat: i, dateToFilePreviewFormat: a };
     };

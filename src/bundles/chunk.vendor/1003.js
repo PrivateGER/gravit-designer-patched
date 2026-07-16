@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(380),
-                r = i(5),
-                o = i(0);
+module.exports = function (module, exports, require) {
+            var n = require(380),
+                r = require(5),
+                IsFiniteNonNegativeNumber = require(0);
 
             function a() {
                 ((this._m_w = 123456789), (this._m_z = 987654321));
             }
-            (o.inherit(a, o),
+            (IsFiniteNonNegativeNumber.inherit(a, IsFiniteNonNegativeNumber),
                 (a.prototype._m_w = 123456789),
                 (a.prototype._m_z = 987654321),
                 (a.prototype.imagedataToTracedata = function (e, t) {
@@ -27,7 +27,7 @@ module.exports = function (e, t, i) {
                         (e = e || {}).hasOwnProperty("ltres") || (e.ltres = 1),
                         e.hasOwnProperty("qtres") || (e.qtres = 1),
                         e.hasOwnProperty("pathomit") || (e.pathomit = 8),
-                        e.hasOwnProperty("colorsampling") || (e.colorsampling = !0),
+                        e.hasOwnProperty("colorsampling") || (e.colorsampling = true),
                         e.hasOwnProperty("numberofcolors") || (e.numberofcolors = 16),
                         e.hasOwnProperty("mincolorratio") || (e.mincolorratio = 0.02),
                         e.hasOwnProperty("colorquantcycles") || (e.colorquantcycles = 3),
@@ -36,8 +36,8 @@ module.exports = function (e, t, i) {
                         e.hasOwnProperty("roundcoords") || (e.roundcoords = 1),
                         e.hasOwnProperty("lcpr") || (e.lcpr = 0),
                         e.hasOwnProperty("qcpr") || (e.qcpr = 0),
-                        e.hasOwnProperty("desc") || (e.desc = !0),
-                        e.hasOwnProperty("viewbox") || (e.viewbox = !1),
+                        e.hasOwnProperty("desc") || (e.desc = true),
+                        e.hasOwnProperty("viewbox") || (e.viewbox = false),
                         e.hasOwnProperty("blurradius") || (e.blurradius = 0),
                         e.hasOwnProperty("blurdelta") || (e.blurdelta = 20),
                         e
@@ -195,29 +195,29 @@ module.exports = function (e, t, i) {
                 }),
                 (a.prototype.pathscan = function (e, t) {
                     t = t || 8;
-                    for (var i = [], n = 0, r = 0, o = 0, a = 0, s = e[0].length, l = e.length, h = 0, A = !0, c = !1, p = 0; p < l; p++)
+                    for (var i = [], n = 0, r = 0, o = 0, a = 0, s = e[0].length, l = e.length, h = 0, A = true, c = false, p = 0; p < l; p++)
                         for (var u = 0; u < s; u++)
                             if (0 !== e[p][u] && 15 !== e[p][u])
                                 for (
                                     o = u,
                                         a = p,
                                         i[n] = [],
-                                        A = !1,
+                                        A = false,
                                         r = 0,
                                         1 === e[a][o] && (h = 0),
                                         2 === e[a][o] && (h = 3),
                                         3 === e[a][o] && (h = 0),
-                                        4 === e[a][o] && ((h = 1), (c = !1)),
+                                        4 === e[a][o] && ((h = 1), (c = false)),
                                         5 === e[a][o] && (h = 0),
                                         6 === e[a][o] && (h = 3),
-                                        7 === e[a][o] && ((h = 0), (c = !0)),
+                                        7 === e[a][o] && ((h = 0), (c = true)),
                                         8 === e[a][o] && (h = 0),
                                         9 === e[a][o] && (h = 3),
                                         10 === e[a][o] && (h = 3),
-                                        11 === e[a][o] && ((h = 1), (c = !0)),
+                                        11 === e[a][o] && ((h = 1), (c = true)),
                                         12 === e[a][o] && (h = 0),
-                                        13 === e[a][o] && ((h = 3), (c = !0)),
-                                        14 === e[a][o] && ((h = 0), (c = !0));
+                                        13 === e[a][o] && ((h = 3), (c = true)),
+                                        14 === e[a][o] && ((h = 0), (c = true));
                                     !A;
 
                                 )
@@ -226,14 +226,14 @@ module.exports = function (e, t, i) {
                                         (i[n][r].y = a - 1),
                                         (i[n][r].t = e[a][o]),
                                         1 === e[a][o]
-                                            ? ((e[a][o] = 0), 0 === h ? (a--, (h = 1)) : 3 === h ? (o--, (h = 2)) : ((A = !0), i.pop()))
+                                            ? ((e[a][o] = 0), 0 === h ? (a--, (h = 1)) : 3 === h ? (o--, (h = 2)) : ((A = true), i.pop()))
                                             : 2 === e[a][o]
-                                              ? ((e[a][o] = 0), 3 === h ? (o++, (h = 0)) : 2 === h ? (a--, (h = 1)) : ((A = !0), i.pop()))
+                                              ? ((e[a][o] = 0), 3 === h ? (o++, (h = 0)) : 2 === h ? (a--, (h = 1)) : ((A = true), i.pop()))
                                               : 3 === e[a][o]
-                                                ? ((e[a][o] = 0), 0 === h ? o++ : 2 === h ? o-- : ((A = !0), i.pop()))
+                                                ? ((e[a][o] = 0), 0 === h ? o++ : 2 === h ? o-- : ((A = true), i.pop()))
                                                 : 4 === e[a][o]
                                                   ? ((e[a][o] = 0),
-                                                    1 === h ? (o++, (h = 0)) : 2 === h ? (a++, (h = 3)) : ((A = !0), i.pop()))
+                                                    1 === h ? (o++, (h = 0)) : 2 === h ? (a++, (h = 3)) : ((A = true), i.pop()))
                                                   : 5 === e[a][o]
                                                     ? 0 === h
                                                         ? ((e[a][o] = 13), a++, (h = 3))
@@ -243,12 +243,12 @@ module.exports = function (e, t, i) {
                                                             ? ((e[a][o] = 7), a--, (h = 1))
                                                             : 3 === h && ((e[a][o] = 7), o++, (h = 0))
                                                     : 6 === e[a][o]
-                                                      ? ((e[a][o] = 0), 1 === h ? a-- : 3 === h ? a++ : ((A = !0), i.pop()))
+                                                      ? ((e[a][o] = 0), 1 === h ? a-- : 3 === h ? a++ : ((A = true), i.pop()))
                                                       : 7 === e[a][o] || 8 === e[a][o]
                                                         ? ((e[a][o] = 0),
-                                                          0 === h ? (a++, (h = 3)) : 1 === h ? (o--, (h = 2)) : ((A = !0), i.pop()))
+                                                          0 === h ? (a++, (h = 3)) : 1 === h ? (o--, (h = 2)) : ((A = true), i.pop()))
                                                         : 9 === e[a][o]
-                                                          ? ((e[a][o] = 0), 1 === h ? a-- : 3 === h ? a++ : ((A = !0), i.pop()))
+                                                          ? ((e[a][o] = 0), 1 === h ? a-- : 3 === h ? a++ : ((A = true), i.pop()))
                                                           : 10 === e[a][o]
                                                             ? 0 === h
                                                                 ? ((e[a][o] = 11), a--, (h = 1))
@@ -259,24 +259,24 @@ module.exports = function (e, t, i) {
                                                                     : 3 === h && ((e[a][o] = 11), o--, (h = 2))
                                                             : 11 === e[a][o]
                                                               ? ((e[a][o] = 0),
-                                                                1 === h ? (o++, (h = 0)) : 2 === h ? (a++, (h = 3)) : ((A = !0), i.pop()))
+                                                                1 === h ? (o++, (h = 0)) : 2 === h ? (a++, (h = 3)) : ((A = true), i.pop()))
                                                               : 12 === e[a][o]
-                                                                ? ((e[a][o] = 0), 0 === h ? o++ : 2 === h ? o-- : ((A = !0), i.pop()))
+                                                                ? ((e[a][o] = 0), 0 === h ? o++ : 2 === h ? o-- : ((A = true), i.pop()))
                                                                 : 13 === e[a][o]
                                                                   ? ((e[a][o] = 0),
                                                                     2 === h
                                                                         ? (a--, (h = 1))
                                                                         : 3 === h
                                                                           ? (o++, (h = 0))
-                                                                          : ((A = !0), i.pop()))
+                                                                          : ((A = true), i.pop()))
                                                                   : 14 === e[a][o] &&
                                                                     ((e[a][o] = 0),
                                                                     0 === h
                                                                         ? (a--, (h = 1))
                                                                         : 3 === h
                                                                           ? (o--, (h = 2))
-                                                                          : ((A = !0), i.pop())),
-                                        o - 1 === i[n][0].x && a - 1 === i[n][0].y && ((A = !0), c || i[n].length < t ? i.pop() : n++),
+                                                                          : ((A = true), i.pop())),
+                                        o - 1 === i[n][0].x && a - 1 === i[n][0].y && ((A = true), c || i[n].length < t ? i.pop() : n++),
                                         r++);
                     return i;
                 }),
@@ -380,14 +380,14 @@ module.exports = function (e, t, i) {
                         s,
                         l = n,
                         h = 0,
-                        A = !0,
+                        A = true,
                         c = r - n;
                     c < 0 && (c += e.length);
                     for (var p, u = (e[r].x - e[n].x) / c, d = (e[r].y - e[n].y) / c, g = (n + 1) % e.length; g != r; )
                         ((p = g - n) < 0 && (p += e.length),
                             (o = e[n].x + u * p),
                             (a = e[n].y + d * p),
-                            (s = (e[g].x - o) * (e[g].x - o) + (e[g].y - a) * (e[g].y - a)) > t && (A = !1),
+                            (s = (e[g].x - o) * (e[g].x - o) + (e[g].y - a) * (e[g].y - a)) > t && (A = false),
                             s > h && ((l = g), (h = s)),
                             (g = (g + 1) % e.length));
                     if (A)
@@ -401,7 +401,7 @@ module.exports = function (e, t, i) {
                             },
                         ];
                     var f = l;
-                    ((A = !0), (h = 0));
+                    ((A = true), (h = 0));
                     var m = (f - n) / c,
                         y = (1 - m) * (1 - m),
                         _ = 2 * (1 - m) * m,
@@ -413,7 +413,7 @@ module.exports = function (e, t, i) {
                             (v = m * m),
                             (o = (y = (1 - m) * (1 - m)) * e[n].x + _ * b + v * e[r].x),
                             (a = y * e[n].y + _ * C + v * e[r].y),
-                            (s = (e[g].x - o) * (e[g].x - o) + (e[g].y - a) * (e[g].y - a)) > i && (A = !1),
+                            (s = (e[g].x - o) * (e[g].x - o) + (e[g].y - a) * (e[g].y - a)) > i && (A = false),
                             s > h && ((l = g), (h = s)),
                             (g = (g + 1) % e.length));
                     if (A)
@@ -524,5 +524,5 @@ module.exports = function (e, t, i) {
                 (a.prototype.getImgdata = function (e) {
                     return e.getContext("2d").getImageData(0, 0, e.width, e.height);
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

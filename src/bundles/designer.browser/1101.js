@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o(e, t) {
             null != e
@@ -18,5 +18,5 @@ module.exports = function (e, t, n) {
         }),
             (o.MaxFileSize = 471859200),
             (o.prototype.errCode = null),
-            (e.exports = o));
+            (module.exports = o));
     };

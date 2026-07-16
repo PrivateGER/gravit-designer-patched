@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(0),
-                o = i(28),
-                a = i(11),
-                s = i(14),
-                l = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                IsFiniteNonNegativeNumber = require(0),
+                GStylable = require(28),
+                a = require(11),
+                s = require(14),
+                String = require(9);
 
             function h() {
-                o.Effect.call(this);
-                var e = n.getClassFromId(r.getTypeId(this)),
+                GStylable.Effect.call(this);
+                var e = n.getClassFromId(IsFiniteNonNegativeNumber.getTypeId(this)),
                     t = e.__FX;
                 if (!t || !t.length) throw new Error("Current multieffect has no subeffects defined");
                 ((this._fx = []),
@@ -23,13 +23,13 @@ module.exports = function (e, t, i) {
                           ? this._setDefaultProperties(e.VisualProperties)
                           : e.GeometryProperties && this._setDefaultProperties(e.GeometryProperties));
             }
-            (n.inherit("multiEffect", h, o.Effect),
+            (n.inherit("multiEffect", h, GStylable.Effect),
                 (h.prototype._fx = null),
                 (h.__FX = null),
                 (h.register = function (e, t) {
-                    var i = n.getClassFromId(r.getTypeId(e));
+                    var i = n.getClassFromId(IsFiniteNonNegativeNumber.getTypeId(e));
                     if (
-                        ((i.GeometryProperties = a.extend(!0, {}, h.GeometryProperties)),
+                        ((i.GeometryProperties = a.extend(true, {}, h.GeometryProperties)),
                         (i.__FX = t.slice()),
                         "multiEffect" === n.getName(i))
                     )
@@ -47,11 +47,11 @@ module.exports = function (e, t, i) {
                 }),
                 (h.equals = function (e, t) {
                     if (e instanceof h && t instanceof h) {
-                        if (e._fx.length !== t._fx.length) return !1;
-                        for (var i = 0; i < e._fx.length; i++) if (!a.equals(e._fx[i], t._fx[i])) return !1;
-                        return !0;
+                        if (e._fx.length !== t._fx.length) return false;
+                        for (var i = 0; i < e._fx.length; i++) if (!a.equals(e._fx[i], t._fx[i])) return false;
+                        return true;
                     }
-                    return !1;
+                    return false;
                 }),
                 (h.GeometryProperties = {
                     fxP: null,
@@ -69,11 +69,11 @@ module.exports = function (e, t, i) {
                 }),
                 (h.prototype.getEffectType = function () {
                     for (var e = 1; e < this._fx.length; e++)
-                        if (this._fx[e - 1].getEffectType() !== this._fx[e].getEffectType()) return o.Effect.Type.Multi;
-                    return this._fx.length ? this._fx[0].getEffectType() : o.Effect.Type.Filter;
+                        if (this._fx[e - 1].getEffectType() !== this._fx[e].getEffectType()) return GStylable.Effect.Type.Multi;
+                    return this._fx.length ? this._fx[0].getEffectType() : GStylable.Effect.Type.Filter;
                 }),
                 (h.prototype.getNodeNameTranslated = function () {
-                    return l.getValue("GMultiEffect", "name", this.getNodeName());
+                    return String.getValue("GMultiEffect", "name", this.getNodeName());
                 }),
                 (h.prototype.getEffectPadding = function () {
                     for (var e = 0, t = 0, i = 0, n = 0, r = 0; r < this._fx.length; r++) {
@@ -85,9 +85,9 @@ module.exports = function (e, t, i) {
                     return [e, n, t, i];
                 }),
                 (h.prototype.render = function (e, t, i, n, r, o) {
-                    for (var a = !1, l = 0; l < this._fx.length; l++)
+                    for (var a = false, l = 0; l < this._fx.length; l++)
                         if (!this._fx[l].canApplyNativeEffect()) {
-                            a = !0;
+                            a = true;
                             break;
                         }
                     a
@@ -122,10 +122,10 @@ module.exports = function (e, t, i) {
                             g && g.setProperties(s[d], l[d], t.custom, t.force, t.temporary);
                         }
                     } else n._Change.AfterPropertiesChange;
-                    var f = n.getClassFromId(r.getTypeId(this));
+                    var f = n.getClassFromId(IsFiniteNonNegativeNumber.getTypeId(this));
                     (f.GeometryProperties && this._handleGeometryChangeForProperties(e, t, f.GeometryProperties),
                         f.VisualProperties && this._handleVisualChangeForProperties(e, t, f.VisualProperties),
-                        o.Effect.prototype._handleChange.call(this, e, t));
+                        GStylable.Effect.prototype._handleChange.call(this, e, t));
                 }),
                 (h.prototype.getFXArray = function () {
                     return this._fx;
@@ -139,5 +139,5 @@ module.exports = function (e, t, i) {
                             e.destroy();
                         });
                 }),
-                (e.exports = h));
+                (module.exports = h));
         };

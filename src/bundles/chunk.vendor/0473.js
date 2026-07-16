@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(226),
-                r = i(42),
-                o = i(14),
-                a = i(5),
-                s = i(17);
-            i(103);
+module.exports = function (module, exports, require) {
+            var n = require(226),
+                r = require(42),
+                o = require(14),
+                a = require(5),
+                s = require(17);
+            require(103 /* DUMP_IMAGES */);
 
             function l() {}
             ((l.RENDERMETHOD = {
@@ -67,7 +67,7 @@ module.exports = function (e, t, i) {
                 (l.prototype.isAffectedByGLBug = function () {
                     return this._isAffectedByGLBug;
                 }),
-                (l.prototype._isAffectedByGLBug = !1),
+                (l.prototype._isAffectedByGLBug = false),
                 (l.prototype.update = function () {
                     return (
                         this.texture.use(),
@@ -88,7 +88,7 @@ module.exports = function (e, t, i) {
                 }),
                 (l.prototype.prepareShader = function () {
                     var e = n.getGLContext();
-                    if (!e) return !1;
+                    if (!e) return false;
                     if (
                         (this.shaderInstance && this.shaderInstance instanceof this.getShaderClass()
                             ? this.currentGL || (this.currentGL = e)
@@ -125,7 +125,7 @@ module.exports = function (e, t, i) {
                                 (this.shaderInstance = new (this.getShaderClass())(this)));
                         this.currentGL = e;
                     }
-                    return !0;
+                    return true;
                 }),
                 (l.prototype.drawShader = function (e, t, n, A, c, p, u, d) {
                     var g = {
@@ -149,21 +149,21 @@ module.exports = function (e, t, i) {
                                     0 == navigator.platform.indexOf("Linux") &&
                                     navigator.userAgent.indexOf("Chrome") < 0 &&
                                     navigator.userAgent.indexOf("Safari") < 0 &&
-                                    ((h = !0),
+                                    ((h = true),
                                     console.warn(
                                         "Firefox on Linux has problems using fast webgl render method. Slower method will be used"
                                     )),
                                 !h)
                             ) {
-                                ((_ = new o(!1, !0)).resize(16, 16),
+                                ((_ = new o(false, true)).resize(16, 16),
                                     _.prepare(),
                                     _.setOffset(new a(0, 0)),
                                     _.setOrigin(new a(0, 0)),
                                     _.strokeRect(0, 0, 16, 16, 4, s.RED));
-                                var f = new o(!1, !0);
+                                var f = new o(false, true);
                                 (f.resize(16, 16), f.prepare(), f.setOffset(new a(0, 0)), f.setOrigin(new a(0, 0)));
-                                var m = new (i(282))();
-                                if (!m.prepareShader()) return ((h = !1), null);
+                                var m = new (require(282))();
+                                if (!m.prepareShader()) return ((h = false), null);
                                 var y = {
                                     properties: {
                                         radius: 1,
@@ -171,18 +171,18 @@ module.exports = function (e, t, i) {
                                     scale: 1,
                                     shader: m.shaderInstance,
                                 };
-                                (r.apply(f, 16, 16, y, null, !1, u, d),
+                                (r.apply(f, 16, 16, y, null, false, u, d),
                                     _.drawCanvas(f),
                                     255 === (v = _.getBitmap().getPixelValue(0, 0))[1] || 255 === v[2]
-                                        ? ((h = !0),
+                                        ? ((h = true),
                                           console.warn(
                                               "This browser has a WebGL drawing bug. Some effects will be rendered with slower method."
                                           ))
-                                        : (h = !1));
+                                        : (h = false));
                             }
                             if (!h && "undefined" != typeof document) {
                                 var _;
-                                ((_ = new o(!1, !0)).resize(128, 128),
+                                ((_ = new o(false, true)).resize(128, 128),
                                     _.prepare(),
                                     _.setOffset(new a(0, 0)),
                                     _.setOrigin(new a(0, 0)),
@@ -190,8 +190,8 @@ module.exports = function (e, t, i) {
                                 var v,
                                     b = document.createElement("canvas"),
                                     C = b.getContext("webgl", {
-                                        premultipliedAlpha: !1,
-                                        alpha: !0,
+                                        premultipliedAlpha: false,
+                                        alpha: true,
                                     });
                                 if (
                                     ((b.width = 16),
@@ -200,32 +200,32 @@ module.exports = function (e, t, i) {
                                     C.clear(C.COLOR_BUFFER_BIT),
                                     _.drawImage(b, 0, 0),
                                     0 !== (v = _.getBitmap().getPixelValue(0, 0))[0] || 255 !== v[3]
-                                        ? ((h = !0),
+                                        ? ((h = true),
                                           console.warn(
                                               "This browser has a WebGL bug with transparency. Most effects will be rendered with slower method."
                                           ))
-                                        : (h = !1),
-                                    !1 === h)
+                                        : (h = false),
+                                    false === h)
                                 )
                                     (C.clearColor(1, 0, 0, 0.1),
                                         C.clear(C.COLOR_BUFFER_BIT),
                                         _.drawImage(b, 0, 0),
                                         255 === (v = _.getBitmap().getPixelValue(0, 0))[0] && 255 === v[3]
-                                            ? ((h = !0),
+                                            ? ((h = true),
                                               console.warn(
                                                   "This browser has a WebGL bug with transparency. Most effects will be rendered with slower method."
                                               ))
-                                            : (h = !1));
+                                            : (h = false));
                             }
                         }
                         h && (this.renderMethod = l.RENDERMETHOD.BYTES);
                     }
                     return this.renderMethod === l.RENDERMETHOD.BYTES
-                        ? e.getBitmap().modifyPixels(r.apply, g, null, !1)
+                        ? e.getBitmap().modifyPixels(r.apply, g, null, false)
                         : r.apply(e, A || e.getWidth(), c || e.getHeight(), g, p, u, d);
                 }),
                 (l.prototype.toString = function () {
                     return "[Object GWebGLRenderer]";
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

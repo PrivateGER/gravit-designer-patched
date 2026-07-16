@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(96), n(30), n(8));
-        var i = n(1),
-            a = n(53),
-            r = o(n(1561)),
-            s = o(n(177));
-        const { gApi: l } = n(10);
-        e.exports = class {
+        var o = require(16);
+        (require(96), require(30), require(8 /* Symbol */));
+        var GObject = require(1),
+            a = require(53),
+            r = o(require(1561)),
+            s = o(require(177));
+        const { gApi: l } = require(10 /* designerConfig */);
+        module.exports = class {
             constructor(e, t) {
                 let n = arguments.length > 2 && void 0 !== arguments[2] && arguments[2];
                 ((this._firstName = e),
@@ -16,7 +16,7 @@ module.exports = function (e, t, n) {
                     (this._confirmBtn = $("<button/>")
                         .addClass("confirm-btn")
                         .attr("disabled", this._checkNameFieldsFilled())
-                        .text(i.GLocale.get(new i.GLocaleKey("GUserNameConfigDialog", "text.ok")))
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GUserNameConfigDialog", "text.ok")))
                         .on("click", () => {
                             (gDesigner.stats("user-name-config-dialog_update-user-name"), this._updateUserName());
                         })),
@@ -27,7 +27,7 @@ module.exports = function (e, t, n) {
                                 .append(
                                     $("<span/>")
                                         .addClass("title")
-                                        .text(i.GLocale.get(new i.GLocaleKey("GUserNameConfigDialog", "text.dialog-title")))
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GUserNameConfigDialog", "text.dialog-title")))
                                 )
                         )
                         .append(
@@ -36,13 +36,13 @@ module.exports = function (e, t, n) {
                                 .append(
                                     $("<span/>")
                                         .addClass("tips")
-                                        .text(i.GLocale.get(new i.GLocaleKey("GUserNameConfigDialog", "text.name-usage-tips")))
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GUserNameConfigDialog", "text.name-usage-tips")))
                                 )
                         )
                         .append(this._buildNameFields())
                         .append(this._confirmBtn)
                         .gDialog({
-                            releaseOnClose: !0,
+                            releaseOnClose: true,
                             className: "g-username-config-dialog",
                         })));
             }
@@ -53,26 +53,26 @@ module.exports = function (e, t, n) {
                         $("<div/>")
                             .addClass("label-and-input")
                             .addClass("first-name-field")
-                            .append($("<span/>").text(i.GLocale.get(new i.GLocaleKey("GUserNameConfigDialog", "text.first-name"))))
+                            .append($("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GUserNameConfigDialog", "text.first-name"))))
                             .append(
                                 $("<input/>")
                                     .addClass("field-input")
                                     .val(this._firstName)
-                                    .on("input", (e) => this._nameFieldValueChange(!0, e))
-                                    .on("change", (e) => this._nameFieldValueChange(!0, e))
+                                    .on("input", (e) => this._nameFieldValueChange(true, e))
+                                    .on("change", (e) => this._nameFieldValueChange(true, e))
                             )
                     )
                     .append(
                         $("<div/>")
                             .addClass("label-and-input")
                             .addClass("last-name-field")
-                            .append($("<span/>").text(i.GLocale.get(new i.GLocaleKey("GUserNameConfigDialog", "text.last-name"))))
+                            .append($("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GUserNameConfigDialog", "text.last-name"))))
                             .append(
                                 $("<input/>")
                                     .addClass("field-input")
                                     .val(this._lastName)
-                                    .on("input", (e) => this._nameFieldValueChange(!1, e))
-                                    .on("change", (e) => this._nameFieldValueChange(!1, e))
+                                    .on("input", (e) => this._nameFieldValueChange(false, e))
+                                    .on("change", (e) => this._nameFieldValueChange(false, e))
                             )
                     );
             }
@@ -101,7 +101,7 @@ module.exports = function (e, t, n) {
                     this._confirmBtn.attr("disabled", this._checkNameFieldsFilled()));
             }
             open() {
-                (gDesigner.stats("user-name-config-dialog_open"), this._dialog.gDialog("open", !1));
+                (gDesigner.stats("user-name-config-dialog_open"), this._dialog.gDialog("open", false));
             }
             close() {
                 this._dialog.gDialog("close");

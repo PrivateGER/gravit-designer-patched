@@ -1,23 +1,23 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(67),
-            a = n(18),
-            r = n(31);
+        require(3);
+        var GObject = require(1),
+            i = require(67),
+            GCategory = require(18),
+            r = require(31);
         function s() {
             s.TOOLTIP_CONFIG = {
                 [i.TOOLTIP_AREA.TOOLBAR]: i.GRichTooltipConfig.from({
-                    title: o.GLocale.get(new o.GLocaleKey("GToggleSnapZonesAction", "tooltip-title")),
-                    description: o.GLocale.get(new o.GLocaleKey("GToggleSnapZonesAction", "tooltip-description")),
-                    middle: !1,
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GToggleSnapZonesAction", "tooltip-title")),
+                    description: GObject.GLocale.get(new GObject.GLocaleKey("GToggleSnapZonesAction", "tooltip-description")),
+                    middle: false,
                     learnMore: "/docs/design-aids/snaping/#h.357kb75pbg9h",
                 }),
             };
         }
-        (o.GObject.inherit(s, r),
+        (GObject.GObject.inherit(s, r),
             (s.ID = "view.toggle-snapzones"),
-            (s.TITLE = new o.GLocaleKey("GToggleSnapZonesAction", "title")),
+            (s.TITLE = new GObject.GLocaleKey("GToggleSnapZonesAction", "title")),
             (s.TOOLTIP_CONFIG = null),
             (s.prototype.getId = function () {
                 return s.ID;
@@ -26,13 +26,13 @@ module.exports = function (e, t, n) {
                 return s.TITLE;
             }),
             (s.prototype.getCategory = function () {
-                return a.CATEGORY_VIEW_SNAP;
+                return GCategory.CATEGORY_VIEW_SNAP;
             }),
             (s.prototype.getGroup = function () {
                 return "snap/enable";
             }),
             (s.prototype.isCheckable = function () {
-                return !0;
+                return true;
             }),
             (s.prototype.isChecked = function () {
                 return gDesigner.getSetting("snap_zones");
@@ -46,5 +46,5 @@ module.exports = function (e, t, n) {
             (s.prototype.toString = function () {
                 return "[Object GToggleSnapZonesAction]";
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

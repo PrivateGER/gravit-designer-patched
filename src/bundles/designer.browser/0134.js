@@ -1,22 +1,22 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o,
-            i = n(25),
-            a = n(223),
-            r = n(222).f,
-            s = n(117),
-            l = n(62),
-            c = n(361),
-            d = n(92),
-            u = n(362),
-            p = n(74),
+            i = require(25),
+            a = require(223),
+            r = require(222).f,
+            s = require(117),
+            l = require(62),
+            c = require(361),
+            d = require(92),
+            u = require(362),
+            p = require(74),
             g = a("".slice),
             h = Math.min,
             f = u("startsWith");
         i(
             {
                 target: "String",
-                proto: !0,
+                proto: true,
                 forced: !!(p || f || ((o = r(String.prototype, "startsWith")), !o || o.writable)) && !f,
             },
             {

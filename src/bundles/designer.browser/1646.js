@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(4), n(13));
-        var i = n(1),
-            a = n(15),
-            r = n(53),
-            s = o(n(18)),
-            l = o(n(31));
+        var o = require(16);
+        (require(4), require(13));
+        var GObject = require(1),
+            GPlatform = require(15),
+            r = require(53),
+            s = o(require(18 /* GCategory */)),
+            l = o(require(31));
         class c extends l.default {
             constructor() {
-                (super(), (this._lastIsCheckedValue = !0));
+                (super(), (this._lastIsCheckedValue = true));
             }
             getId() {
                 return c.ID;
@@ -21,7 +21,7 @@ module.exports = function (e, t, n) {
                 return s.default.CATEGORY_VIEW_CANVAS;
             }
             isCheckable() {
-                return !0;
+                return true;
             }
             isEnabled() {
                 return !!this._getSelection();
@@ -33,7 +33,7 @@ module.exports = function (e, t, n) {
                 return ((this._lastIsCheckedValue = t), t);
             }
             getShortcut() {
-                return [a.GKey.Constant.SHIFT, a.GKey.Constant.META, "X"];
+                return [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "X"];
             }
             execute() {
                 const e = this._getEditor();
@@ -55,6 +55,6 @@ module.exports = function (e, t, n) {
             }
         }
         ((c.ID = "view.canvas.show-selection-handles"),
-            (c.TITLE = new i.GLocaleKey("GShowSelectionHandlesAction", "title")),
-            (e.exports = c));
+            (c.TITLE = new GObject.GLocaleKey("GShowSelectionHandlesAction", "title")),
+            (module.exports = c));
     };

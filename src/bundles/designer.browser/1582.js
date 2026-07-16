@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        const o = n(1583),
-            i = n(1189);
-        e.exports = class {
+        const o = require(1583),
+            i = require(1189);
+        module.exports = class {
             constructor() {
                 ((this._gestures = []),
                     (this._state = new i()),
-                    (this._delayedTouchEventsEnabled = !0),
-                    (this._suppressClickEnabled = !1),
-                    (this._swiping = !1));
+                    (this._delayedTouchEventsEnabled = true),
+                    (this._suppressClickEnabled = false),
+                    (this._swiping = false));
             }
             addGesture(e) {
                 this._gestures.push(e);
@@ -20,7 +20,7 @@ module.exports = function (e, t, n) {
                 this._suppressClickEnabled = e;
             }
             touchStart(e) {
-                ((this._swiping = !1), this._state.update(e), this._handleDelayedTouchStartEvent(e));
+                ((this._swiping = false), this._state.update(e), this._handleDelayedTouchStartEvent(e));
                 const t = new o(e);
                 this._delayedTouchEventsEnabled && !t.areThereMultipleTouchPoints()
                     ? ((this._delayedTouchEvent = e),
@@ -28,7 +28,7 @@ module.exports = function (e, t, n) {
                     : this._execute("start", e);
             }
             touchMove(e) {
-                ((this._swiping = !0), this._state.update(e), this._handleDelayedTouchStartEvent(e), this._execute("move", e));
+                ((this._swiping = true), this._state.update(e), this._handleDelayedTouchStartEvent(e), this._execute("move", e));
             }
             touchEnd(e) {
                 (this._state.update(e), this._handleDelayedTouchStartEvent(e), this._execute("end", e));
@@ -40,13 +40,13 @@ module.exports = function (e, t, n) {
                 (this._dropDelayedTouchEvent(), this._execute("gesture", e));
             }
             scroll(e) {
-                this._swiping = !0;
+                this._swiping = true;
             }
             _execute(e, t) {
                 this._state.setSwiping(this._isSwiping());
                 const n = new o(t),
                     i = this._gestures.length;
-                let a = !1;
+                let a = false;
                 for (let t = 0; t < i; t++) {
                     const o = this._gestures[t];
                     try {

@@ -1,22 +1,22 @@
-module.exports = function (e, t, i) {
-            var n = i(50),
-                r = i(2),
-                o = i(28),
-                a = i(7),
-                s = i(17),
-                l = i(147),
-                h = i(14),
-                A = i(6),
-                c = i(12),
-                p = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(50),
+                r = require(2),
+                GStylable = require(28),
+                a = require(7),
+                s = require(17),
+                l = require(147),
+                h = require(14),
+                A = require(6),
+                c = require(12),
+                String = require(9);
 
             function u() {
-                (o.Effect.call(this),
+                (GStylable.Effect.call(this),
                     this._setDefaultProperties(u.GeometryProperties, u.VisualProperties),
                     (this._theirsPadding = null),
                     (this._oursPadding = null));
             }
-            (r.inherit("mirrorEffect", u, o.Effect),
+            (r.inherit("mirrorEffect", u, GStylable.Effect),
                 (u.prototype._theirsPadding = null),
                 (u.prototype._oursPadding = null),
                 (u.equals = function (e, t) {
@@ -52,22 +52,22 @@ module.exports = function (e, t, i) {
                     opc: 0.6,
                 }),
                 (u.prototype.getNodeNameTranslated = function () {
-                    return p.getValue("GMirrorEffect", "name", this.getNodeName());
+                    return String.getValue("GMirrorEffect", "name", this.getNodeName());
                 }),
                 (u.prototype.isAffectedByChildren = function () {
-                    return !0;
+                    return true;
                 }),
                 (u.prototype.isSingleton = function () {
-                    return !0;
+                    return true;
                 }),
                 (u.prototype.isAffectedByContents = function () {
-                    return !0;
+                    return true;
                 }),
                 (u.prototype.isOverlayEffect = function () {
-                    return !0;
+                    return true;
                 }),
                 (u.prototype.getEffectType = function () {
-                    return o.Effect.Type.PostEffect;
+                    return GStylable.Effect.Type.PostEffect;
                 }),
                 (u.prototype.getEffectPadding = function (e) {
                     if (e) {
@@ -95,7 +95,7 @@ module.exports = function (e, t, i) {
                             u = p / this.$rfh,
                             d = this._theirsPadding ? this._theirsPadding[3] * n : 0,
                             g = new a().translated(l.getX(), l.getY() + u + c).preMultiplied(new a().scaled(1, -1)),
-                            f = t.setTransform(t.getTransform(!0).preMultiplied(g)),
+                            f = t.setTransform(t.getTransform(true).preMultiplied(g)),
                             m = t._canvasContext.globalAlpha,
                             y = t._blender.globalCompositeOperation,
                             _ = t._convertImage(e);
@@ -108,13 +108,13 @@ module.exports = function (e, t, i) {
                             (t._canvasContext.globalAlpha = m),
                             (t._blender.globalCompositeOperation = y));
                         var v = t
-                                .getTransform(!1)
+                                .getTransform(false)
                                 .inverted()
                                 .mapRect(new A(0, u + c, t.getWidth(), p + d)),
                             b = t.createPatternPaint(this.$pat, v);
                         if (b)
                             if (b.transform) {
-                                f = t.setTransform(t.getTransform(!0).preMultiplied(b.transform));
+                                f = t.setTransform(t.getTransform(true).preMultiplied(b.transform));
                                 (t.fillRect(0, 0, 1, 1, b.paint, this.$opc, h.CompositeOperator.DestinationIn), t.setTransform(f));
                             } else
                                 t.fillRect(
@@ -141,10 +141,10 @@ module.exports = function (e, t, i) {
                           })),
                         this._handleVisualChangeForProperties(e, t, u.VisualProperties),
                         this._handleGeometryChangeForProperties(e, t, u.GeometryProperties),
-                        o.Effect.prototype._handleChange.call(this, e, t));
+                        GStylable.Effect.prototype._handleChange.call(this, e, t));
                 }),
                 (u.prototype.toString = function () {
                     return "[Object GMirrorEffect]";
                 }),
-                (e.exports = u));
+                (module.exports = u));
         };

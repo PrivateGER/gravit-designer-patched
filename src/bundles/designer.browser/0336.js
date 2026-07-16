@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(1);
+        var GObject = require(1);
         function i(e, t) {
             ((this.type = e), (this.storageItem = t));
         }
-        (o.GObject.inherit(i, o.GEvent),
+        (GObject.GObject.inherit(i, GObject.GEvent),
             (i.Type = {
                 VersionUpdate: 2,
                 ShareCreated: 3,
@@ -16,6 +16,6 @@ module.exports = function (e, t, n) {
             (i.FileStatusUpdate = function (e, t, n) {
                 ((this.storageItem = e), (this.oldStatus = t), (this.newStatus = n));
             }),
-            o.GObject.inherit(i.FileStatusUpdate, o.GEvent),
-            (e.exports = i));
+            GObject.GObject.inherit(i.FileStatusUpdate, GObject.GEvent),
+            (module.exports = i));
     };

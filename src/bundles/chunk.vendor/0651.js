@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(5),
-                o = i(87),
-                a = i(48),
-                s = i(14),
-                l = i(54),
-                h = i(12);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(5),
+                o = require(87),
+                a = require(48),
+                s = require(14),
+                l = require(54),
+                h = require(12);
 
             function A(e, t, i, n, r, o) {
                 ((this._tolerance = r ? r / 3 : 0.01),
@@ -18,7 +18,7 @@ module.exports = function (e, t, i) {
                 for (var a = 1, s = ((r = this._tolerance), 0); r < 1; ++s) ((r *= 10), (a *= 10));
                 this._tolRange = a;
             }
-            (n.inherit(A, o),
+            (IsFiniteNonNegativeNumber.inherit(A, o),
                 (A.MAX_RECURS = 100),
                 (A.PolySegment = function (e, t, i, n, r) {
                     ((this.point = e),
@@ -29,19 +29,19 @@ module.exports = function (e, t, i) {
                 (A.PolySegment.prototype.bulge = null),
                 (A.PolySegment.prototype.center = null),
                 (A.PolySegment.prototype.radius = null),
-                (A.PolySegment.prototype.isCap = !1),
+                (A.PolySegment.prototype.isCap = false),
                 (A.PolySegment.prototype.next = null),
                 (A.PolySegment.prototype.previous = null),
                 (A.PolyOffsetSegment = function (e, t, i, n, r, o, a) {
                     (A.PolySegment.call(this, t, n, r, o, a), (this.basepoint = e), i && (this.point2 = i));
                 }),
-                n.inherit(A.PolyOffsetSegment, A.PolySegment),
+                IsFiniteNonNegativeNumber.inherit(A.PolyOffsetSegment, A.PolySegment),
                 (A.PolyOffsetSegment.prototype.basepoint = null),
                 (A.PolyOffsetSegment.prototype.point2 = null),
                 (A.IntersectionType = function () {}),
-                (A.IntersectionType.prototype.TIP = !1),
-                (A.IntersectionType.prototype.FIP = !1),
-                (A.IntersectionType.prototype.PFIP = !1),
+                (A.IntersectionType.prototype.TIP = false),
+                (A.IntersectionType.prototype.FIP = false),
+                (A.IntersectionType.prototype.PFIP = false),
                 (A.IntersectionResult = function () {
                     this.intTypes = [new A.IntersectionType(), new A.IntersectionType()];
                 }),
@@ -49,12 +49,12 @@ module.exports = function (e, t, i) {
                 (A.IntersectionResult.prototype.intTypes = null),
                 (A.IntersectionResult.prototype.clear = function () {
                     ((this.point = null),
-                        (this.intTypes[0].TIP = !1),
-                        (this.intTypes[0].FIP = !1),
-                        (this.intTypes[0].PFIP = !1),
-                        (this.intTypes[1].TIP = !1),
-                        (this.intTypes[1].FIP = !1),
-                        (this.intTypes[1].PFIP = !1));
+                        (this.intTypes[0].TIP = false),
+                        (this.intTypes[0].FIP = false),
+                        (this.intTypes[0].PFIP = false),
+                        (this.intTypes[1].TIP = false),
+                        (this.intTypes[1].FIP = false),
+                        (this.intTypes[1].PFIP = false));
                 }),
                 (A.PolySegmentContainer = function () {
                     this.count = 0;
@@ -110,8 +110,8 @@ module.exports = function (e, t, i) {
                 (A.IntersectionPt.prototype.segmIdx = null),
                 (A.prototype._source = null),
                 (A.prototype._offset = null),
-                (A.prototype._makeInset = !1),
-                (A.prototype._makeOutset = !1),
+                (A.prototype._makeInset = false),
+                (A.prototype._makeOutset = false),
                 (A.prototype._tolerance = null),
                 (A.prototype._tolRange = 1),
                 (A.prototype._polyline = null),
@@ -145,7 +145,7 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (A.prototype.hasVertexForRead = function () {
-                    return !0;
+                    return true;
                 }),
                 (A.prototype.addCurveToPolyline = function (e, t, i, n, o) {
                     ++o;
@@ -463,10 +463,10 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (A.prototype.generatePolyLine = function (e, t) {
-                    for (var i, n = null, o = t, s = o, l = new a(), c = !0; c && this._source.readVertex(l); )
+                    for (var i, n = null, o = t, s = o, l = new a(), c = true; c && this._source.readVertex(l); )
                         switch (l.command) {
                             case a.Command.Move:
-                                o && this._polyline.count ? ((n = l), (c = !1)) : ((o = s = l), (l = new a()));
+                                o && this._polyline.count ? ((n = l), (c = false)) : ((o = s = l), (l = new a()));
                                 break;
                             case a.Command.Line:
                                 s
@@ -495,13 +495,13 @@ module.exports = function (e, t, i) {
                             case a.Command.Close:
                                 this._polyline &&
                                     (s && ((i = new A.PolySegment(new r(s.x, s.y), 0)), this._polyline.insertSegment(i), (s = null)),
-                                    (this._polyline.closed = !0),
+                                    (this._polyline.closed = true),
                                     (i = new A.PolySegment(this._polyline.head.point, 0)),
                                     this._polyline.insertSegment(i),
                                     ((n = new a()).command = a.Command.Move),
                                     (n.x = this._polyline.head.point.getX()),
                                     (n.y = this._polyline.head.point.getY()),
-                                    (c = !1));
+                                    (c = false));
                                 break;
                             default:
                                 throw new Error("Unknown vertex command: " + vertex.command.toString());
@@ -513,7 +513,7 @@ module.exports = function (e, t, i) {
                             this._polyline.insertSegment(i),
                             h.isEqualEps(s.x, this._polyline.head.point.getX()) &&
                                 h.isEqualEps(s.y, this._polyline.head.point.getY()) &&
-                                (this._polyline.closed = !0)),
+                                (this._polyline.closed = true)),
                         n
                     );
                 }),
@@ -522,7 +522,7 @@ module.exports = function (e, t, i) {
                         o = null,
                         a = null;
                     (i && (o = new A.PolySegmentContainer()), t && (a = new A.PolySegmentContainer()));
-                    for (var l = !1, h = 0, c = this._polyline.head; h < this._polyline.count; ++h)
+                    for (var l = false, h = 0, c = this._polyline.head; h < this._polyline.count; ++h)
                         (i && (r = this._offsetPolySegment(c, -e, n)) && o.insertSegment(r),
                             t && (r = this._offsetPolySegment(c, e, n)) && a.insertSegment(r),
                             (c = c.next));
@@ -532,7 +532,7 @@ module.exports = function (e, t, i) {
                             o.head.point,
                             this._polyline.head.point,
                             this._polyline.head.next ? this._polyline.head.next.point : null,
-                            !0,
+                            true,
                             e,
                             o,
                             this._cap,
@@ -543,15 +543,15 @@ module.exports = function (e, t, i) {
                                 o.end.point2,
                                 this._polyline.end.point,
                                 this._polyline.end.previous ? this._polyline.end.previous.point : null,
-                                !1,
+                                false,
                                 e,
                                 a,
                                 this._cap,
                                 n
                             ),
-                            (this.makeInset = !1),
-                            (t = !1),
-                            (l = !0));
+                            (this.makeInset = false),
+                            (t = false),
+                            (l = true));
                         var p = new A.PolySegmentContainer();
                         for (h = 0, c = a.end; h < a.count; ++h) {
                             var u = new A.PolyOffsetSegment(
@@ -589,13 +589,13 @@ module.exports = function (e, t, i) {
                                     w = [];
                                 if ((this._calcIntersectionPoints(v[h], this._polyline, C, w), 0 == C.length)) y.push(v[h]);
                                 else if (!this._polyline.closed) {
-                                    for (var E = !1, B = 0; B < C.length; ++B)
+                                    for (var E = false, B = 0; B < C.length; ++B)
                                         if (C[B].segm.isCap) {
-                                            E = !0;
+                                            E = true;
                                             break;
                                         }
                                     for (B = 0; B < w.length && !E; ++B)
-                                        (0 != w[B].segmIdx && w[B].segmIdx != this._polyline.count - 1) || (E = !0);
+                                        (0 != w[B].segmIdx && w[B].segmIdx != this._polyline.count - 1) || (E = true);
                                     E && this._excludeCircleInside(v[h], C, w, e, y);
                                 }
                             }
@@ -607,9 +607,9 @@ module.exports = function (e, t, i) {
                                 ((C = []), (w = []));
                                 if ((this._calcIntersectionPoints(b[h], this._polyline, C, w), 0 == C.length)) _.push(b[h]);
                                 else if (!this._polyline.closed) {
-                                    for (E = !1, B = 0; B < w.count; ++B)
+                                    for (E = false, B = 0; B < w.count; ++B)
                                         if (0 == w[B].segmIdx || w[B].segmIdx == this._polyline.count - 1) {
-                                            E = !0;
+                                            E = true;
                                             break;
                                         }
                                     E && this._excludeCircleInside(b[h], C, w, e, _);
@@ -634,13 +634,13 @@ module.exports = function (e, t, i) {
                         var i = e[0];
                         e.splice(0, 1);
                         for (var n = i.stPt.getX() != i.endPt.getX() || i.stPt.getY() != i.endPt.getY(); n; ) {
-                            n = !1;
+                            n = false;
                             for (var r = null, o = e.length - 1; o >= 0; --o)
                                 (r = e[o]).stPt.getX() == i.endPt.getX() && r.stPt.getY() == i.endPt.getY()
-                                    ? ((i.endPt = r.endPt), i.vrt.push.apply(i.vrt, r.vrt), (n = !0), e.splice(o, 1))
+                                    ? ((i.endPt = r.endPt), i.vrt.push.apply(i.vrt, r.vrt), (n = true), e.splice(o, 1))
                                     : i.stPt.getX() == r.endPt.getX() &&
                                       i.stPt.getY() == r.endPt.getY() &&
-                                      ((r.endPt = i.endPt), r.vrt.push.apply(r.vrt, i.vrt), (i = r), (n = !0), e.splice(o, 1));
+                                      ((r.endPt = i.endPt), r.vrt.push.apply(r.vrt, i.vrt), (i = r), (n = true), e.splice(o, 1));
                         }
                         var s = new l();
                         s.addVertex(a.Command.Move, i.stPt.getX(), i.stPt.getY());
@@ -784,11 +784,11 @@ module.exports = function (e, t, i) {
                             u = e.radius / h.ptDist(c, p, l, A),
                             d = l + (l - c) * u,
                             g = A + (A - p) * u;
-                        h.segmentSide(r, o, d, g, t, i) == h.segmentSide(r, o, d, g, l, A) ? ((n.FIP = !0), (n.PFIP = !0)) : (n.FIP = !0);
-                    } else n.TIP = !0;
+                        h.segmentSide(r, o, d, g, t, i) == h.segmentSide(r, o, d, g, l, A) ? ((n.FIP = true), (n.PFIP = true)) : (n.FIP = true);
+                    } else n.TIP = true;
                 }),
                 (A.prototype._fillLineIntType = function (e, t) {
-                    e < 0 ? (t.FIP = !0) : e > 1 ? ((t.FIP = !0), (t.PFIP = !0)) : (t.TIP = !0);
+                    e < 0 ? (t.FIP = true) : e > 1 ? ((t.FIP = true), (t.PFIP = true)) : (t.TIP = true);
                 }),
                 (A.prototype._trimOffsetPoly = function (e, t, i) {
                     var n = 1e-6,
@@ -838,14 +838,14 @@ module.exports = function (e, t, i) {
                                         );
                                         i.insertSegment(new A.PolySegment(a.point, l, o.center, o.radius, o.isCap));
                                     } else if (a.intTypes[0].PFIP && a.intTypes[1].FIP) {
-                                        var c = this._constructJoinArc(r, o, !0);
+                                        var c = this._constructJoinArc(r, o, true);
                                         (i.insertSegment(c),
                                             i.insertSegment(new A.PolySegment(o.point, o.bulge, o.center, o.radius, o.isCap)));
                                     } else
                                         ((i.insertSegment(new A.PolySegment(r.point2, 0)).isCap = r.isCap),
                                             i.insertSegment(new A.PolySegment(o.point, o.bulge, o.center, o.radius, o.isCap)));
                                 else {
-                                    c = this._constructJoinArc(r, o, !0);
+                                    c = this._constructJoinArc(r, o, true);
                                     (i.insertSegment(c), i.insertSegment(new A.PolySegment(o.point, o.bulge, o.center, o.radius, o.isCap)));
                                 }
                             else if (0 != r.bulge && 0 == o.bulge)
@@ -862,18 +862,18 @@ module.exports = function (e, t, i) {
                                         );
                                         ((i.end.bulge = p), i.insertSegment(new A.PolySegment(a.point, 0)));
                                     } else if (a.intTypes[0].FIP && a.intTypes[1].FIP && !a.intTypes[1].PFIP) {
-                                        c = this._constructJoinArc(r, o, !0);
+                                        c = this._constructJoinArc(r, o, true);
                                         (i.insertSegment(c), (i.insertSegment(new A.PolySegment(o.point, 0)).isCap = o.isCap));
                                     } else
                                         ((i.insertSegment(new A.PolySegment(r.point2, 0)).isCap = r.isCap),
                                             (i.insertSegment(new A.PolySegment(o.point, 0)).isCap = o.isCap));
                                 else {
-                                    c = this._constructJoinArc(r, o, !0);
+                                    c = this._constructJoinArc(r, o, true);
                                     (i.insertSegment(c), (i.insertSegment(new A.PolySegment(o.point, 0)).isCap = o.isCap));
                                 }
                             else if (a.point)
                                 if ((a.intTypes[0].FIP && !a.intTypes[0].PFIP) || a.intTypes[1].PFIP) {
-                                    c = this._constructJoinArc(r, o, !1);
+                                    c = this._constructJoinArc(r, o, false);
                                     (i.insertSegment(c), i.insertSegment(new A.PolySegment(o.point, o.bulge, o.center, o.radius, o.isCap)));
                                 } else {
                                     p = this._calculateBulge(
@@ -898,7 +898,7 @@ module.exports = function (e, t, i) {
                                         i.insertSegment(new A.PolySegment(a.point, p, o.center, o.radius, o.isCap)));
                                 }
                             else {
-                                c = this._constructJoinArc(r, o, !0);
+                                c = this._constructJoinArc(r, o, true);
                                 (i.insertSegment(c), i.insertSegment(new A.PolySegment(o.point, o.bulge, o.center, o.radius, o.isCap)));
                             }
                         if (this._polyline.closed)
@@ -933,12 +933,12 @@ module.exports = function (e, t, i) {
                                         );
                                         (i.insertSegment(new A.PolySegment(a.point, 0)), (i.head.point = a.point), (i.head.bulge = l));
                                     } else if (a.intTypes[0].PFIP && a.intTypes[1].FIP) {
-                                        c = this._constructJoinArc(r, o, !0);
+                                        c = this._constructJoinArc(r, o, true);
                                         (i.insertSegment(c), i.insertSegment(new A.PolySegment(o.point, 0)));
                                     } else
                                         (i.insertSegment(new A.PolySegment(r.point2, 0)), i.insertSegment(new A.PolySegment(o.point, 0)));
                                 else {
-                                    c = this._constructJoinArc(r, o, !0);
+                                    c = this._constructJoinArc(r, o, true);
                                     (i.insertSegment(c), i.insertSegment(new A.PolySegment(o.point, 0)));
                                 }
                             else if (0 != r.bulge && 0 == o.bulge)
@@ -955,17 +955,17 @@ module.exports = function (e, t, i) {
                                         );
                                         ((i.end.bulge = p), i.insertSegment(new A.PolySegment(a.point, 0)), (i.head.point = a.point));
                                     } else if (a.intTypes[0].FIP && a.intTypes[1].FIP && !a.intTypes[1].PFIP) {
-                                        c = this._constructJoinArc(r, o, !0);
+                                        c = this._constructJoinArc(r, o, true);
                                         (i.insertSegment(c), i.insertSegment(new A.PolySegment(o.point, 0)));
                                     } else
                                         (i.insertSegment(new A.PolySegment(r.point2, 0)), i.insertSegment(new A.PolySegment(o.point, 0)));
                                 else {
-                                    c = this._constructJoinArc(r, o, !0);
+                                    c = this._constructJoinArc(r, o, true);
                                     (i.insertSegment(c), i.insertSegment(new A.PolySegment(o.point, 0)));
                                 }
                             else if (a.point)
                                 if ((a.intTypes[0].FIP && !a.intTypes[0].PFIP) || a.intTypes[1].PFIP) {
-                                    c = this._constructJoinArc(r, o, !1);
+                                    c = this._constructJoinArc(r, o, false);
                                     (i.insertSegment(c), i.insertSegment(new A.PolySegment(o.point, 0)));
                                 } else {
                                     p = this._calculateBulge(
@@ -992,7 +992,7 @@ module.exports = function (e, t, i) {
                                         (i.head.bulge = p));
                                 }
                             else {
-                                c = this._constructJoinArc(r, o, !0);
+                                c = this._constructJoinArc(r, o, true);
                                 (i.insertSegment(c), i.insertSegment(new A.PolySegment(o.point, 0)));
                             }
                         else i.insertSegment(new A.PolySegment(o.point2, 0)).isCap = o.isCap;
@@ -1074,7 +1074,7 @@ module.exports = function (e, t, i) {
                         for (var a = o + 1; a < e.count - 1; ++a)
                             (0 != o || a != e.count - 2 || (!i && !this._polyline.closed)
                                 ? this._calcSegmIntersectionPoints(r, n, o, a, t, t, a == o + 1)
-                                : this._calcSegmIntersectionPoints(n, r, a, o, t, t, !0),
+                                : this._calcSegmIntersectionPoints(n, r, a, o, t, t, true),
                                 (n = n.next));
                         r = r.next;
                     }
@@ -1308,7 +1308,7 @@ module.exports = function (e, t, i) {
                             for (p = 0; p < c[0].count; ++p)
                                 (f.insertSegment(new A.PolySegment(s.point, s.bulge, s.center, s.radius, s.isCap)), (s = s.next));
                             c = c.slice(1);
-                        } else c[0].closed = !0;
+                        } else c[0].closed = true;
                     }
                     var _ = [];
                     for (p = 0; p < c.length; ++p) 1 != c[p].count && 0 != c[p].count && _.push(c[p]);
@@ -1607,7 +1607,7 @@ module.exports = function (e, t, i) {
                             u.insertSegment(new A.PolyOffsetSegment(i, b, t, 0)));
                     } else
                         c === s.LineCap.Butt
-                            ? (u.insertSegment(new A.PolyOffsetSegment(i, e, t, 0)).isCap = !0)
+                            ? (u.insertSegment(new A.PolyOffsetSegment(i, e, t, 0)).isCap = true)
                             : u.insertSegment(new A.PolyOffsetSegment(i, e, t, -1, i, a));
                     return (o ? l.prependContainer(u) : l.appendContainer(u), u);
                 }),
@@ -1714,5 +1714,5 @@ module.exports = function (e, t, i) {
                 (A.prototype.toString = function () {
                     return "[Object GVertexOffsetter]";
                 }),
-                (e.exports = A));
+                (module.exports = A));
         };

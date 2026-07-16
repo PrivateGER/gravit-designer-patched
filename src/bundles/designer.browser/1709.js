@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o(e, t, n, o) {
             ((n = n || 0),
@@ -17,8 +17,8 @@ module.exports = function (e, t, n) {
                 n && this.rowCount(n),
                 this.endUpdate());
         }
-        (n(57),
-            n(3),
+        (require(57),
+            require(3),
             (o.prototype._renderer = null),
             (o.prototype._rowHeight = 0),
             (o.prototype._rowCount = 0),
@@ -102,5 +102,5 @@ module.exports = function (e, t, n) {
                     jQuery.hasOwnProperty("merge") &&
                     jQuery.cleanData(jQuery.merge(Array.prototype.slice.call(e.querySelectorAll("*")), e));
             }),
-            (e.exports = o));
+            (module.exports = o));
     };

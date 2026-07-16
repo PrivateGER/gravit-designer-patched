@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(15),
-            a = n(18),
-            r = n(106);
+        require(3);
+        var GObject = require(1),
+            GPlatform = require(15),
+            GCategory = require(18),
+            r = require(106);
         function s() {}
-        (o.GObject.inherit(s, r),
+        (GObject.GObject.inherit(s, r),
             (s.ID = "edit.paste.style"),
-            (s.TITLE = new o.GLocaleKey("GPasteStyleAction", "title")),
+            (s.TITLE = new GObject.GLocaleKey("GPasteStyleAction", "title")),
             (s.prototype.getId = function () {
                 return s.ID;
             }),
@@ -16,7 +16,7 @@ module.exports = function (e, t, n) {
                 return s.TITLE;
             }),
             (s.prototype.getCategory = function () {
-                return a.CATEGORY_EDIT_PASTE;
+                return GCategory.CATEGORY_EDIT_PASTE;
             }),
             (s.prototype.getGroup = function () {
                 return "ccp/paste";
@@ -25,45 +25,45 @@ module.exports = function (e, t, n) {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-paste-style" : null;
             }),
             (s.prototype.getShortcut = function () {
-                return [i.GKey.Constant.F4];
+                return [GPlatform.GKey.Constant.F4];
             }),
             (s.prototype.isEnabled = function () {
-                if (!r.prototype.isEnabled.call(this)) return !1;
+                if (!r.prototype.isEnabled.call(this)) return false;
                 var e = gDesigner.getClipboardMimeTypes();
-                if (e && e.indexOf(o.GNode.MIME_TYPE) >= 0) {
+                if (e && e.indexOf(GObject.GNode.MIME_TYPE) >= 0) {
                     var t = gDesigner.getActiveDocument();
                     if (t) {
                         var n = t.getEditor().getIndividualSelection();
-                        if (n) for (var i = 0; i < n.length; ++i) if (n[i].hasMixin(o.GStylable)) return !0;
+                        if (n) for (var i = 0; i < n.length; ++i) if (n[i].hasMixin(GObject.GStylable)) return true;
                     }
                 }
-                return !1;
+                return false;
             }),
             (s.prototype.execute = function () {
-                var e = o.GNode.deserialize(gDesigner.getClipboardContent(o.GNode.MIME_TYPE));
+                var e = GObject.GNode.deserialize(gDesigner.getClipboardContent(GObject.GNode.MIME_TYPE));
                 if ((e = gDesigner.getActiveDocument().filterUnrestrictedCommercialFileElements(e)) && e.length > 0) {
                     for (var t = null, n = 0; n < e.length; ++n)
-                        if (e[n].hasMixin(o.GStylable)) {
+                        if (e[n].hasMixin(GObject.GStylable)) {
                             t = e[n];
                             break;
                         }
                     if (!t) return;
                     var i = gDesigner.getActiveDocument().getEditor(),
                         a = i.getIndividualSelection();
-                    (t instanceof o.GText && gDesigner.getActiveDocument().getScene().getActivePage().appendChild(t), i.beginTransaction());
+                    (t instanceof GObject.GText && gDesigner.getActiveDocument().getScene().getActivePage().appendChild(t), i.beginTransaction());
                     try {
                         for (n = 0; n < a.length; ++n) {
                             var r = a[n];
-                            r.hasMixin(o.GStylable) && r.assignStyleFrom(t);
+                            r.hasMixin(GObject.GStylable) && r.assignStyleFrom(t);
                         }
                     } finally {
-                        (i.commitTransaction(o.GLocale.get(this.getTitle())),
-                            t instanceof o.GText && gDesigner.getActiveDocument().getScene().getActivePage().removeChild(t));
+                        (i.commitTransaction(GObject.GLocale.get(this.getTitle())),
+                            t instanceof GObject.GText && gDesigner.getActiveDocument().getScene().getActivePage().removeChild(t));
                     }
                 }
             }),
             (s.prototype.toString = function () {
                 return "[Object GPasteStyleAction]";
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

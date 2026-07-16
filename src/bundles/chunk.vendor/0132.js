@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(11),
-                r = i(0);
+module.exports = function (module, exports, require) {
+            var n = require(11),
+                IsFiniteNonNegativeNumber = require(0);
 
             function o(e, t) {
                 ((this._value = e), (this._unit = t || o.DEFAULT_UNIT));
             }
-            (r.inheritAndMix(o, r),
+            (IsFiniteNonNegativeNumber.inheritAndMix(o, IsFiniteNonNegativeNumber),
                 (o.Unit = {
                     PT: "pt",
                     PX: "px",
@@ -434,5 +434,5 @@ module.exports = function (e, t, i) {
                         evaluate: r,
                     };
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(15),
-            a = n(18),
-            r = n(106),
-            s = n(809);
+        require(3);
+        var GObject = require(1),
+            GPlatform = require(15),
+            GCategory = require(18),
+            r = require(106),
+            GClipAction = require(809);
         function l() {}
-        (o.GObject.inherit(l, r),
+        (GObject.GObject.inherit(l, r),
             (l.ID = "modify.mask-with-shape"),
-            (l.TITLE = new o.GLocaleKey("GMaskWithShapeAction", "title")),
+            (l.TITLE = new GObject.GLocaleKey("GMaskWithShapeAction", "title")),
             (l.prototype.getId = function () {
                 return l.ID;
             }),
@@ -17,35 +17,35 @@ module.exports = function (e, t, n) {
                 return l.TITLE;
             }),
             (l.prototype.getCategory = function () {
-                return a.CATEGORY_MODIFY;
+                return GCategory.CATEGORY_MODIFY;
             }),
             (l.prototype.getGroup = function () {
                 return "structure-group";
             }),
             (l.prototype.getShortcut = function () {
-                return [i.GKey.Constant.META, i.GKey.Constant.SHIFT, "M"];
+                return [GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.SHIFT, "M"];
             }),
             (l.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-mask-with-shape" : "";
             }),
             (l.prototype.isEnabled = function () {
-                return s.prototype.isEnabled.call(this);
+                return GClipAction.prototype.isEnabled.call(this);
             }),
             (l.prototype.execute = function () {
                 var e = gDesigner.getActiveDocument().getEditor();
                 e.beginTransaction();
                 try {
-                    if ((s.prototype.execute.call(this, !0, !0), e.getSelection().length > 0)) {
+                    if ((GClipAction.prototype.execute.call(this, true, true), e.getSelection().length > 0)) {
                         var t = e.getSelection()[0];
-                        t.setProperty("name", o.GLocale.get(new o.GLocaleKey("GMaskWithShapeAction", "text.mask")));
+                        t.setProperty("name", GObject.GLocale.get(new GObject.GLocaleKey("GMaskWithShapeAction", "text.mask")));
                         var n = t.getPaintLayers();
                         if (n) {
                             for (
                                 var i = (function (e) {
                                         e: for (var t = e.getFirstChild(); null !== t; t = t.getNext())
                                             if (
-                                                t instanceof o.GStylable.FillPaintLayer &&
-                                                t.getProperty("_pt") instanceof o.GLinearGradient
+                                                t instanceof GObject.GStylable.FillPaintLayer &&
+                                                t.getProperty("_pt") instanceof GObject.GLinearGradient
                                             ) {
                                                 var n = t.getProperty("_pt");
                                                 n;
@@ -65,25 +65,25 @@ module.exports = function (e, t, n) {
                                 null !== r;
                                 r = r.getNext()
                             )
-                                r instanceof o.GStylable.FillPaintLayer && a.push(r);
+                                r instanceof GObject.GStylable.FillPaintLayer && a.push(r);
                             for (var l = 0; l < a.length; ++l) n.removeChild(a[l]);
-                            if ((n.insertChild(new o.GStylable.FillPaintLayer(o.GRGBColor.WHITE)), i)) {
+                            if ((n.insertChild(new GObject.GStylable.FillPaintLayer(GObject.GRGBColor.WHITE)), i)) {
                                 i = i.clone();
                                 for (l = 0; l < i.getStops().length; ++l) {
                                     var c = i.getStops()[l];
                                     "#FFFFFF" === c.color.toScreenCSS() && (c.opacity = 0);
                                 }
-                                var d = new o.GOverlayEffect();
-                                (t.getEffects().appendChild(d), d.setProperties(["alm", "opc", "pat"], [!0, 1, i]));
+                                var d = new GObject.GOverlayEffect();
+                                (t.getEffects().appendChild(d), d.setProperties(["alm", "opc", "pat"], [true, 1, i]));
                             }
                         }
                     }
                 } finally {
-                    e.commitTransaction(o.GLocale.get(this.getTitle()));
+                    e.commitTransaction(GObject.GLocale.get(this.getTitle()));
                 }
             }),
             (l.prototype.toString = function () {
                 return "[Object GMaskWithShapeAction]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

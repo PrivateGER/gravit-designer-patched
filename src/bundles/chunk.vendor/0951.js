@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            i(30);
+            require(30);
             class n {
                 constructor() {
                     let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                     if (e.autosave_updated) {
                         const t = e.file_updated ? e.file_updated : e.updated ? e.updated : e.created;
-                        new Date(e.autosave_updated) > new Date(t) && (e.autosave = !0);
+                        new Date(e.autosave_updated) > new Date(t) && (e.autosave = true);
                     }
                     Object.assign(this, e);
                 }
@@ -26,5 +26,5 @@ module.exports = function (e, t, i) {
                     return this.isAutoSave() ? this.autosave_url : this.url;
                 }
             }
-            e.exports = n;
+            module.exports = n;
         };

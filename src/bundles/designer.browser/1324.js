@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(20), n(34));
-        const o = n(177),
+        (require(20), require(34));
+        const o = require(177),
             {
                 SharePermissions: { COMMENT: i, EDIT: a },
                 ShareRoles: r,
-            } = n(10),
-            { GLocale: s, GLocaleKey: l } = n(1);
-        e.exports = class extends o {
+            } = require(10 /* designerConfig */),
+            { GLocale: s, GLocaleKey: l } = require(1 /* GObject */);
+        module.exports = class extends o {
             constructor() {
                 let {
                     access_id: e,
@@ -16,7 +16,7 @@ module.exports = function (e, t, n) {
                     name: o,
                     last_name: i,
                     avatar: a,
-                    anonymous: r = !1,
+                    anonymous: r = false,
                     role: s,
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 (super({

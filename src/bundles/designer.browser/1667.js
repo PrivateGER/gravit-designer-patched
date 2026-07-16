@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(1);
+        var GObject = require(1);
         function i(e, t) {
             ((this._builder = e), (this._onClose = t));
         }
-        (o.GObject.inherit(i, o.GEventTarget),
+        (GObject.GObject.inherit(i, GObject.GEventTarget),
             (i.prototype.build = function () {
                 return this._builder();
             }),
@@ -14,7 +14,7 @@ module.exports = function (e, t, n) {
             (i.Event = function (e) {
                 this.type = e;
             }),
-            o.GObject.inherit(i.Event, o.GEvent),
+            GObject.GObject.inherit(i.Event, GObject.GEvent),
             (i.Event.Type = { Close: 0 }),
-            (e.exports = i));
+            (module.exports = i));
     };

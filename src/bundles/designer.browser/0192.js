@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(23),
-            i = n(200),
-            a = n(152),
-            r = n(21),
-            s = n(157),
-            l = o.Int8Array,
-            c = a.aTypedArray,
-            d = a.exportTypedArrayMethod,
+        var RegExp = require(23),
+            i = require(200),
+            NATIVE_ARRAY_BUFFER_VIEWS = require(152),
+            r = require(21),
+            s = require(157),
+            l = RegExp.Int8Array,
+            c = NATIVE_ARRAY_BUFFER_VIEWS.aTypedArray,
+            d = NATIVE_ARRAY_BUFFER_VIEWS.exportTypedArrayMethod,
             u = [].toLocaleString,
             p =
                 !!l &&

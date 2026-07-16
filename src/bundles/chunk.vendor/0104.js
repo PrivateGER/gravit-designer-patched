@@ -1,21 +1,21 @@
-module.exports = function (e, t, i) {
-            var n = i(6),
-                r = i(2),
-                o = i(0),
-                a = i(69),
-                s = i(22),
-                l = i(28),
-                h = i(11),
-                A = i(12);
+module.exports = function (module, exports, require) {
+            var n = require(6),
+                r = require(2),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(69),
+                s = require(22),
+                GStylable = require(28),
+                h = require(11),
+                A = require(12);
 
             function c() {
                 (a.call(this), this._setDefaultProperties(c.MetaProperties), this._setDefaultProperties(s.Anchor.MetaProperties));
             }
-            (o.inheritAndMix(c, a, [s.Anchor]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(c, a, [s.Anchor]),
                 (c.MetaProperties = {
-                    clk: !1,
+                    clk: false,
                 }),
-                (c.prototype.skipBorderUpdate = !1),
+                (c.prototype.skipBorderUpdate = false),
                 (c.prototype.validateInsertion = function (e, t) {
                     return "layer" === r.getName(e) || e instanceof c || "page" === r.getName(e);
                 }),
@@ -43,7 +43,7 @@ module.exports = function (e, t, i) {
                 }),
                 (c.prototype._handleBorderScale = function (e) {
                     var t = this._scene ? this._scene.getTransformSettings() : null;
-                    if (this.hasMixin(l) && (!t || !1 !== t.borderScale)) {
+                    if (this.hasMixin(GStylable) && (!t || false !== t.borderScale)) {
                         var i = this._layoutTransform;
                         if (!i) {
                             var n = e.properties.indexOf("trf"),
@@ -58,11 +58,11 @@ module.exports = function (e, t, i) {
                                 var c = this.getPaintLayers();
                                 c &&
                                     h.each(c.getBorderLayers(), function (e, i) {
-                                        (i.$_bs || (t && !0 === t.borderScale)) && i.setProperty("_bw", i.$_bw * a);
+                                        (i.$_bs || (t && true === t.borderScale)) && i.setProperty("_bw", i.$_bw * a);
                                     });
                             }
                         }
                     }
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

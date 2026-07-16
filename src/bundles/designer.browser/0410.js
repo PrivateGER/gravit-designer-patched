@@ -1,5 +1,5 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(129);
-        e.exports = /(?:ipad|iphone|ipod).*applewebkit/i.test(o);
+        var o = require(129);
+        module.exports = /(?:ipad|iphone|ipod).*applewebkit/i.test(o);
     };

@@ -1,22 +1,22 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(23),
-            a = n(146),
-            r = n(37),
-            s = n(35),
-            l = n(208),
-            c = n(120),
-            d = n(420),
-            u = n(21),
-            p = n(61),
-            g = n(43),
-            h = n(251).IteratorPrototype,
-            f = n(49),
-            m = n(74),
+        var o = require(25),
+            RegExp = require(23),
+            a = require(146),
+            r = require(37),
+            s = require(35),
+            l = require(208),
+            c = require(120),
+            d = require(420),
+            u = require(21),
+            p = require(61),
+            g = require(43),
+            h = require(251 /* IteratorPrototype */).IteratorPrototype,
+            f = require(49),
+            m = require(74),
             y = g("toStringTag"),
             v = TypeError,
-            _ = i.Iterator,
+            _ = RegExp.Iterator,
             b =
                 m ||
                 !s(_) ||
@@ -30,7 +30,7 @@ module.exports = function (e, t, n) {
             C = function (e, t) {
                 f
                     ? c(h, e, {
-                          configurable: !0,
+                          configurable: true,
                           get: function () {
                               return t;
                           },
@@ -44,5 +44,5 @@ module.exports = function (e, t, n) {
         (p(h, y) || C(y, "Iterator"),
             (!b && p(h, "constructor") && h.constructor !== Object) || C("constructor", w),
             (w.prototype = h),
-            o({ global: !0, constructor: !0, forced: b }, { Iterator: w }));
+            o({ global: true, constructor: true, forced: b }, { Iterator: w }));
     };

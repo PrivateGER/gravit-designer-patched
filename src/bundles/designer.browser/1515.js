@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
         (function () {
             !(function () {
                 "use strict";
@@ -131,10 +131,10 @@ module.exports = function (e, t) {
                                                     ));
                                             }
                                             n.directory
-                                                ? t.getDirectory(n.name, { create: !0 }, o, a)
+                                                ? t.getDirectory(n.name, { create: true }, o, a)
                                                 : t.getFile(
                                                       n.name,
-                                                      { create: !0 },
+                                                      { create: true },
                                                       function (e) {
                                                           n.getData(
                                                               new zip.FileWriter(e, zip.getMimeType(n.name)),
@@ -170,14 +170,14 @@ module.exports = function (e, t) {
                         n.getData && (this.getData = n.getData));
                 }
                 function w(e, t, n, o) {
-                    (_.prototype.init.call(this, e, t, n, o), (this.directory = !0));
+                    (_.prototype.init.call(this, e, t, n, o), (this.directory = true));
                 }
                 function C() {
                     y(this);
                 }
                 ((u.prototype = new a()),
                     (u.prototype.constructor = u),
-                    (u.prototype.checkCrc32 = !1),
+                    (u.prototype.checkCrc32 = false),
                     (_.prototype = {
                         init: function (e, t, n, o) {
                             if (e.root && o && o.getChildByName(t)) throw "Entry filename already exists.";
@@ -263,7 +263,7 @@ module.exports = function (e, t) {
                     (w.prototype = t = new _()),
                     (t.constructor = w),
                     (t.addDirectory = function (e) {
-                        return v(this, e, null, !0);
+                        return v(this, e, null, true);
                     }),
                     (t.addText = function (e, t) {
                         return v(this, e, { data: t, Reader: r, Writer: n });

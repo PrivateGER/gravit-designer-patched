@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(466),
-            i = n(94),
-            a = n(312),
-            r = n(314),
-            s = n(225),
-            l = n(313),
-            c = n(469),
+        var o = require(466),
+            i = require(94),
+            a = require(312),
+            r = require(314),
+            s = require(225),
+            l = require(313),
+            c = require(469),
             d = Object.prototype.toString;
         function u(e) {
             if (!(this instanceof u)) return new u(e);
@@ -20,7 +20,7 @@ module.exports = function (e, t, n) {
                 t.windowBits > 15 && t.windowBits < 48 && 0 == (15 & t.windowBits) && (t.windowBits |= 15),
                 (this.err = 0),
                 (this.msg = ""),
-                (this.ended = !1),
+                (this.ended = false),
                 (this.chunks = []),
                 (this.strm = new l()),
                 (this.strm.avail_out = 0));
@@ -39,7 +39,7 @@ module.exports = function (e, t, n) {
         }
         function p(e, t) {
             var n = new u(t);
-            if ((n.push(e, !0), n.err)) throw n.msg || s[n.err];
+            if ((n.push(e, true), n.err)) throw n.msg || s[n.err];
             return n.result;
         }
         ((u.prototype.push = function (e, t) {
@@ -51,9 +51,9 @@ module.exports = function (e, t, n) {
                 p = this.strm,
                 g = this.options.chunkSize,
                 h = this.options.dictionary,
-                f = !1;
-            if (this.ended) return !1;
-            ((s = t === ~~t ? t : !0 === t ? r.Z_FINISH : r.Z_NO_FLUSH),
+                f = false;
+            if (this.ended) return false;
+            ((s = t === ~~t ? t : true === t ? r.Z_FINISH : r.Z_NO_FLUSH),
                 "string" == typeof e
                     ? (p.input = a.binstring2buf(e))
                     : "[object ArrayBuffer]" === d.call(e)
@@ -65,10 +65,10 @@ module.exports = function (e, t, n) {
                 if (
                     (0 === p.avail_out && ((p.output = new i.Buf8(g)), (p.next_out = 0), (p.avail_out = g)),
                     (n = o.inflate(p, r.Z_NO_FLUSH)) === r.Z_NEED_DICT && h && (n = o.inflateSetDictionary(this.strm, h)),
-                    n === r.Z_BUF_ERROR && !0 === f && ((n = r.Z_OK), (f = !1)),
+                    n === r.Z_BUF_ERROR && true === f && ((n = r.Z_OK), (f = false)),
                     n !== r.Z_STREAM_END && n !== r.Z_OK)
                 )
-                    return (this.onEnd(n), (this.ended = !0), !1);
+                    return (this.onEnd(n), (this.ended = true), false);
                 (p.next_out &&
                     ((0 !== p.avail_out && n !== r.Z_STREAM_END && (0 !== p.avail_in || (s !== r.Z_FINISH && s !== r.Z_SYNC_FLUSH))) ||
                         ("string" === this.options.to
@@ -80,13 +80,13 @@ module.exports = function (e, t, n) {
                               c && i.arraySet(p.output, p.output, l, c, 0),
                               this.onData(u))
                             : this.onData(i.shrinkBuf(p.output, p.next_out)))),
-                    0 === p.avail_in && 0 === p.avail_out && (f = !0));
+                    0 === p.avail_in && 0 === p.avail_out && (f = true));
             } while ((p.avail_in > 0 || 0 === p.avail_out) && n !== r.Z_STREAM_END);
             return (
                 n === r.Z_STREAM_END && (s = r.Z_FINISH),
                 s === r.Z_FINISH
-                    ? ((n = o.inflateEnd(this.strm)), this.onEnd(n), (this.ended = !0), n === r.Z_OK)
-                    : s !== r.Z_SYNC_FLUSH || (this.onEnd(r.Z_OK), (p.avail_out = 0), !0)
+                    ? ((n = o.inflateEnd(this.strm)), this.onEnd(n), (this.ended = true), n === r.Z_OK)
+                    : s !== r.Z_SYNC_FLUSH || (this.onEnd(r.Z_OK), (p.avail_out = 0), true)
             );
         }),
             (u.prototype.onData = function (e) {
@@ -99,10 +99,10 @@ module.exports = function (e, t, n) {
                     (this.err = e),
                     (this.msg = this.strm.msg));
             }),
-            (t.Inflate = u),
-            (t.inflate = p),
-            (t.inflateRaw = function (e, t) {
-                return (((t = t || {}).raw = !0), p(e, t));
+            (exports.Inflate = u),
+            (exports.inflate = p),
+            (exports.inflateRaw = function (e, t) {
+                return (((t = t || {}).raw = true), p(e, t));
             }),
-            (t.ungzip = p));
+            (exports.ungzip = p));
     };

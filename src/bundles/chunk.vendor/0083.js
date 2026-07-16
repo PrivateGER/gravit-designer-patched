@@ -1,26 +1,26 @@
-module.exports = function (e, t, i) {
-            i(75);
-            var n = i(50),
-                r = i(2),
-                o = i(0),
-                a = i(72),
-                s = i(5),
-                l = i(69),
-                h = i(104),
-                A = i(6),
-                c = i(7),
-                p = i(22),
-                u = i(159),
-                d = i(112),
-                g = i(139),
-                f = i(68),
-                m = i(207),
-                y = i(14),
-                _ = i(9),
-                v = i(133),
-                b = i(228),
-                C = i(103),
-                w = i(506);
+module.exports = function (module, exports, require) {
+            require(75);
+            var n = require(50),
+                r = require(2),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(72),
+                s = require(5),
+                l = require(69),
+                h = require(104),
+                A = require(6),
+                c = require(7),
+                p = require(22),
+                u = require(159),
+                d = require(112),
+                g = require(139),
+                f = require(68),
+                m = require(207),
+                y = require(14),
+                String = require(9),
+                GScenePaintConfiguration = require(133),
+                b = require(228),
+                DUMP_IMAGES = require(103),
+                w = require(506);
 
             function E() {
                 (l.call(this), this._setDefaultProperties(E.GeometryProperties, E.VisualProperties));
@@ -46,7 +46,7 @@ module.exports = function (e, t, i) {
                 (E.InvalidationRequestEvent = function (e) {
                     this.area = e || null;
                 }),
-                o.inherit(E.InvalidationRequestEvent, a),
+                IsFiniteNonNegativeNumber.inherit(E.InvalidationRequestEvent, a),
                 (E.InvalidationRequestEvent.prototype.area = null),
                 (E.InvalidationRequestEvent.prototype.toString = function () {
                     return "[Event GPage.InvalidationRequestEvent]";
@@ -54,19 +54,19 @@ module.exports = function (e, t, i) {
                 (E.AfterThumbnailUpdate = function (e, t) {
                     ((this.page = e), (this.image = t));
                 }),
-                o.inherit(E.AfterThumbnailUpdate, a),
+                IsFiniteNonNegativeNumber.inherit(E.AfterThumbnailUpdate, a),
                 (E.AfterThumbnailUpdate.prototype.page = null),
                 (E.AfterThumbnailUpdate.prototype.image = null),
                 (E.AfterThumbnailUpdate.prototype.toString = function () {
                     return "[Event GPage.AfterThumbnailUpdate]";
                 }),
                 (E.prototype._cachedPosition = null),
-                (E.prototype._isInvalidating = !1),
+                (E.prototype._isInvalidating = false),
                 (E.prototype._cachedImage = null),
-                (E.prototype._shouldRepaintThumbnail = !0),
+                (E.prototype._shouldRepaintThumbnail = true),
                 (E.prototype._annotations = null),
                 (E.prototype.getNodeNameTranslated = function () {
-                    return _.getValue("GPage", "name", this.getNodeName());
+                    return String.getValue("GPage", "name", this.getNodeName());
                 }),
                 (E.prototype.transform = function (e, t, i) {}),
                 (E.prototype.getTransform = function () {
@@ -159,7 +159,7 @@ module.exports = function (e, t, i) {
                         (i || !this.$off || m.pagesPerRow) &&
                             this._scene.iteratePages(
                                 function (e) {
-                                    if (e === this) return !1;
+                                    if (e === this) return false;
                                     var t = e.$off;
                                     if (t && !m.pagesPerRow) {
                                         if (((v = t.getTranslation()), m.pagesCanOverlap)) {
@@ -179,8 +179,8 @@ module.exports = function (e, t, i) {
                         C = function (i) {
                             this._scene.iteratePages(
                                 function (n) {
-                                    if (n === this) return !1;
-                                    var a = n.getPosition(e, !0, t),
+                                    if (n === this) return false;
+                                    var a = n.getPosition(e, true, t),
                                         s = new A(a.getX(), a.getY(), n.$w, n.$h).expanded(o, r, o, r);
                                     s.intersectsRect(b) && (b = i(n, s) || b);
                                 }.bind(this)
@@ -241,14 +241,14 @@ module.exports = function (e, t, i) {
                             this._scene &&
                             this._scene.visitReferences(this, function (i) {
                                 if (i instanceof E) {
-                                    var r = i.getPaintBBox(null, e, t, !0);
-                                    r && (n = n ? n.united(r, !0) : n);
+                                    var r = i.getPaintBBox(null, e, t, true);
+                                    r && (n = n ? n.united(r, true) : n);
                                 }
                             }),
                         this.isFixedSized())
                     ) {
                         var o = this._calculatePageBBox(t);
-                        return n ? n.united(o, !0) : o;
+                        return n ? n.united(o, true) : o;
                     }
                     return (
                         e && e instanceof A
@@ -270,7 +270,7 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (E.prototype.getActiveLayer = function () {
-                    return (this.querySingle || i(507), this.querySingle("layer:active"));
+                    return (this.querySingle || require(507), this.querySingle("layer:active"));
                 }),
                 (E.prototype.setActiveLayer = function (e) {
                     (this.acceptChildren(function (t) {
@@ -344,7 +344,7 @@ module.exports = function (e, t, i) {
                         t && (s = t.mapRect(s)),
                         s.expanded(i, i, i, i).containsPoint(e)
                             ? new d(this, {
-                                  label: !1,
+                                  label: false,
                               })
                             : this._hitTestLabel(e, i, t, !this.isScaleLabel(), l)
                     );
@@ -356,10 +356,10 @@ module.exports = function (e, t, i) {
                     this.hasEventListeners(E.InvalidationRequestEvent) && this.trigger(new E.InvalidationRequestEvent(e));
                 }),
                 (E.prototype._paintChildren = function (e) {
-                    var t = !1;
+                    var t = false;
                     if (e.configuration.clipArea && e.canvas.hasClip()) {
                         var i = e.configuration.clipArea;
-                        (e.canvas.clipRect(i.getX(), i.getY(), i.getWidth(), i.getHeight()), (t = !0));
+                        (e.canvas.clipRect(i.getX(), i.getY(), i.getWidth(), i.getHeight()), (t = true));
                     }
                     for (var n = this.getFirstChild(); null != n; n = n.getNext()) n instanceof p && n.paint(e);
                     if ((this.hasAnnotations() && this._getAnnotations().paint(e), p.Accelerated.PAINT_QTREES)) {
@@ -380,7 +380,7 @@ module.exports = function (e, t, i) {
                     return e || l.prototype._getBitmapPaintArea.call(this);
                 }),
                 (E.prototype._paintToBitmap = function (e) {
-                    return ((e.configuration.clipToPage = !0), l.prototype._paintToBitmap.call(this, e));
+                    return ((e.configuration.clipToPage = true), l.prototype._paintToBitmap.call(this, e));
                 }),
                 (E.prototype.getMasterPages = function () {
                     var e = [];
@@ -390,7 +390,7 @@ module.exports = function (e, t, i) {
                                   function (t) {
                                       t !== this && this.$refs.indexOf(t.getReferenceId()) >= 0 && e.push(t);
                                   }.bind(this),
-                                  !0
+                                  true
                               ),
                               e)
                             : null
@@ -403,14 +403,14 @@ module.exports = function (e, t, i) {
                               function (t) {
                                   t !== this && t.$refs && t.$refs.indexOf(this.getReferenceId()) >= 0 && e.push(t);
                               }.bind(this),
-                              !0
+                              true
                           ),
                           e)
                         : e;
                 }),
                 (E.prototype.isSingleMasterBackgroundContent = function () {
-                    if (!this._scene) return !1;
-                    var e = !1,
+                    if (!this._scene) return false;
+                    var e = false,
                         t = null,
                         i = this._scene.getProperty("mpg");
                     if (
@@ -424,7 +424,7 @@ module.exports = function (e, t, i) {
                     ) {
                         var n = t.getProperty("bck"),
                             r = t.getProperty("bop");
-                        if (n && r > 0 && !(n instanceof f)) e = !0;
+                        if (n && r > 0 && !(n instanceof f)) e = true;
                         else e = !!t.getChildrenGeometryBBox();
                     }
                     return e;
@@ -436,7 +436,7 @@ module.exports = function (e, t, i) {
                 }),
                 (E.prototype.isPaintable = function (e, t) {
                     if (!e) return l.prototype.isPaintable.call(this, e, t);
-                    if (!this.isVisible()) return !1;
+                    if (!this.isVisible()) return false;
                     var i;
                     if (
                         null ==
@@ -446,13 +446,13 @@ module.exports = function (e, t, i) {
                                     : this.getPaintBBox(e.configuration.multiPageView, t)) ||
                         i.isEmpty()
                     )
-                        return !1;
-                    if ("m" === this.$_sbl) return !0;
+                        return false;
+                    if ("m" === this.$_sbl) return true;
                     if (e) {
-                        if (e.dirtyMatcher && !e.dirtyMatcher.isDirty(i)) return !1;
-                        if (e.configuration && e.configuration.clipArea && !e.configuration.clipArea.intersectsRect(i)) return !1;
+                        if (e.dirtyMatcher && !e.dirtyMatcher.isDirty(i)) return false;
+                        if (e.configuration && e.configuration.clipArea && !e.configuration.clipArea.intersectsRect(i)) return false;
                     }
-                    return !0;
+                    return true;
                 }),
                 (E.prototype._getMasterPageClipRectForPage = function (e, t) {
                     var i = null;
@@ -461,24 +461,24 @@ module.exports = function (e, t, i) {
                         this._scene &&
                             this._scene.visitReferences(this, function (n) {
                                 if (n instanceof E) {
-                                    var r = n.getPaintBBox(null, e, t, !0);
-                                    r && (i = i ? i.united(r, !0) : i);
+                                    var r = n.getPaintBBox(null, e, t, true);
+                                    r && (i = i ? i.united(r, true) : i);
                                 }
                             }),
                         i
                     );
                 }),
                 (E.prototype._paint = function (e, t) {
-                    for (var i = e.canvas, n = !1, r = this.getFirstChild(); null !== r; r = r.getNext())
+                    for (var i = e.canvas, n = false, r = this.getFirstChild(); null !== r; r = r.getNext())
                         if (r instanceof p) {
-                            n = !0;
+                            n = true;
                             break;
                         }
-                    !n && this._getAnnotations() && this._getAnnotations().isPaintable() && (n = !0);
+                    !n && this._getAnnotations() && this._getAnnotations().isPaintable() && (n = true);
                     var o = i.resetTransform(),
                         a = e.isIncludingInvisible();
                     if (this.isFixedSized()) {
-                        var l = !1,
+                        var l = false,
                             h = new A(this.$x, this.$y, this.$w, this.$h),
                             u = (F = o.mapRect(h).toAlignedRect()).getX(),
                             d = F.getY(),
@@ -493,9 +493,9 @@ module.exports = function (e, t, i) {
                             }
                             if ((R = e.canvas.createPatternPaint(this.$bck, this.$bck instanceof g ? null : F, v)))
                                 if (R.transform) {
-                                    i.putVertices([new s(u, d), new s(u + y, d), new s(u + y, d + _), new s(u, d + _)], !0);
-                                    var w = i.setTransform(i.getTransform(!0).preMultiplied(R.transform));
-                                    (i.fillVertices(R.paint, this.$bop, null, !1), i.setTransform(w));
+                                    i.putVertices([new s(u, d), new s(u + y, d), new s(u + y, d + _), new s(u, d + _)], true);
+                                    var w = i.setTransform(i.getTransform(true).preMultiplied(R.transform));
+                                    (i.fillVertices(R.paint, this.$bop, null, false), i.setTransform(w));
                                 } else {
                                     if (e.configuration.multiPageView && m.pagesCanOverlap)
                                         if (
@@ -523,8 +523,8 @@ module.exports = function (e, t, i) {
                                             (i._canvasContext.shadowColor = "rgba(0,0,0,0)"));
                                 }
                         }
-                        if (this._scene && !this.getProperty("cdr", !0)) {
-                            var S = this._getMasterPageClipRectForPage(t, !0);
+                        if (this._scene && !this.getProperty("cdr", true)) {
+                            var S = this._getMasterPageClipRectForPage(t, true);
                             if (S && !S.isEmpty()) {
                                 var T = o.mapRect(S).toAlignedRect();
                                 this._scene.visitReferences(
@@ -532,7 +532,7 @@ module.exports = function (e, t, i) {
                                     function (t) {
                                         if (t instanceof E) {
                                             if (i.hasClip() && !l)
-                                                if (((l = !0), e.configuration.isClipToPage())) {
+                                                if (((l = true), e.configuration.isClipToPage())) {
                                                     var n = this.$bl || 0;
                                                     i.clipRect(u - n, d - n, y + 2 * n, _ + 2 * n);
                                                 } else i.clipRect(T.getX(), T.getY(), T.getWidth(), T.getHeight());
@@ -544,8 +544,8 @@ module.exports = function (e, t, i) {
                         }
                         if (n && !l && e.configuration.isClipToPage() && i.hasClip() && !e.configuration.multiPageView) {
                             var I = this.$bl || 0;
-                            (i.clipRect(u - I, d - I, y + 2 * I, _ + 2 * I), (l = !0));
-                        } else l && (i.resetClip(), (l = !1));
+                            (i.clipRect(u - I, d - I, y + 2 * I, _ + 2 * I), (l = true));
+                        } else l && (i.resetClip(), (l = false));
                         (n && this._paintChildren(e), l && i.resetClip());
                     } else {
                         if ((h = this.getPaintBBox(null, t, a)) && !h.isEmpty()) {
@@ -560,9 +560,9 @@ module.exports = function (e, t, i) {
                             )
                                 if ((R = e.canvas.createPatternPaint(this.$bck, F, null)))
                                     if (R.transform) {
-                                        i.putVertices([new s(u, d), new s(u + y, d), new s(u + y, d + _), new s(u, d + _)], !0);
-                                        w = i.setTransform(i.getTransform(!0).preMultiplied(R.transform));
-                                        (i.fillVertices(R.paint, this.$bop, null, !1), i.setTransform(w));
+                                        i.putVertices([new s(u, d), new s(u + y, d), new s(u + y, d + _), new s(u, d + _)], true);
+                                        w = i.setTransform(i.getTransform(true).preMultiplied(R.transform));
+                                        (i.fillVertices(R.paint, this.$bop, null, false), i.setTransform(w));
                                     } else i.fillRect(u, d, y, _, R.paint, this.$bop);
                         }
                         n && this._paintChildren(e);
@@ -585,18 +585,18 @@ module.exports = function (e, t, i) {
                                 return "bck" === e && t ? n.deserialize(t) : t;
                             }));
                     else if (e === r._Change.BeforePropertiesChange) {
-                        var i = !1,
+                        var i = false,
                             o = t.properties.indexOf("w"),
                             a = t.properties.indexOf("h");
                         if (
-                            (o >= 0 ? (t.values[o] > 0 ? 0 == t.values[a] && (i = !0) : (i = !0)) : 0 == t.values[a] && (i = !0),
+                            (o >= 0 ? (t.values[o] > 0 ? 0 == t.values[a] && (i = true) : (i = true)) : 0 == t.values[a] && (i = true),
                             this._scene)
                         )
                             t.properties.indexOf("off") >= 0 && this._requestInvalidation();
                         if (i && this._scene) {
                             var s = 0;
                             (this._scene.iteratePages(function (e) {
-                                if (s++) return !1;
+                                if (s++) return false;
                             }),
                                 s > 1 &&
                                     !(o >= 0 && a >= 0) &&
@@ -608,7 +608,7 @@ module.exports = function (e, t, i) {
                             t.properties.indexOf("name") >= 0 && this._requestInvalidation();
                             ((o = t.properties.indexOf("w")), (a = t.properties.indexOf("h")));
                             if (!m.pagesCanOverlap && (o >= 0 || a >= 0)) {
-                                var h = this.doCollisionlessTransform(new c(), null, !0).getTranslation(),
+                                var h = this.doCollisionlessTransform(new c(), null, true).getTranslation(),
                                     A = this.getProperty("off") || new c();
                                 this.setProperty("off", A.translated(h.getX(), h.getY()));
                             }
@@ -631,7 +631,7 @@ module.exports = function (e, t, i) {
                         l.prototype._handleChange.call(this, e, t),
                         e !== p._Change.InvalidationRequested || this._isInvalidating)
                     ) {
-                        if (e === p._Change.FinishGeometryUpdate) this.isPaintable() && (this._shouldRepaintThumbnail = !0);
+                        if (e === p._Change.FinishGeometryUpdate) this.isPaintable() && (this._shouldRepaintThumbnail = true);
                         else if (
                             e === p._Change.ChildGeometryUpdate &&
                             (t[0] instanceof p || t[0] instanceof w) &&
@@ -643,16 +643,16 @@ module.exports = function (e, t, i) {
                             this._scene._notifyChange(p._Change.ChildGeometryUpdate, [this, 1, d]);
                         }
                     } else
-                        ((this._isInvalidating = !0),
+                        ((this._isInvalidating = true),
                             this._scene &&
-                                (this.isPaintable() && (this._shouldRepaintThumbnail = !0),
+                                (this.isPaintable() && (this._shouldRepaintThumbnail = true),
                                 this._scene.visitLinks(
                                     this,
                                     function (e) {
                                         e instanceof E && e._requestInvalidation();
                                     }.bind(this)
                                 )),
-                            (this._isInvalidating = !1));
+                            (this._isInvalidating = false));
                 }),
                 (E.prototype.doCollisionlessTransform = function (e, t, i) {
                     var n = this.getScene();
@@ -673,7 +673,7 @@ module.exports = function (e, t, i) {
                     n.iteratePages(function (e) {
                         l++;
                     });
-                    var d = this.getPosition(!0),
+                    var d = this.getPosition(true),
                         g = new c(1, 0, 0, 1, d.getX(), d.getY()),
                         f = e.multiplied(g).mapRect(h),
                         m = f.getX(),
@@ -682,13 +682,13 @@ module.exports = function (e, t, i) {
                         b = f.getY() + f.getHeight(),
                         C = f.getSide(A.Side.CENTER);
                     do {
-                        ((o = !1),
+                        ((o = false),
                             n.iteratePages(
                                 function (i) {
                                     if (t || i !== this) {
                                         var n = i.getGeometryBBox();
                                         if (n) {
-                                            var l = i.getPosition(!0),
+                                            var l = i.getPosition(true),
                                                 p = (n = n.translated(l.getX(), l.getY()).expanded(s, a, a, a)).getX(),
                                                 u = n.getX() + n.getWidth(),
                                                 d = n.getY(),
@@ -711,8 +711,8 @@ module.exports = function (e, t, i) {
                                                     (v = f.getY()),
                                                     (b = f.getY() + f.getHeight()),
                                                     (C = f.getSide(A.Side.CENTER)),
-                                                    (o = !0),
-                                                    !1
+                                                    (o = true),
+                                                    false
                                                 );
                                             }
                                         }
@@ -726,7 +726,7 @@ module.exports = function (e, t, i) {
                 (E.prototype.getPageImage = function () {
                     if (!this._cachedImage || this._shouldRepaintThumbnail) {
                         this.toBitmap(null, null, null, null, {
-                            paintMode: v.PaintMode.Fast,
+                            paintMode: GScenePaintConfiguration.PaintMode.Fast,
                             defaultEffectDetailLevel: 0.5 / y.getScreenDPI(),
                         });
                         return this._cachedImage;
@@ -740,7 +740,7 @@ module.exports = function (e, t, i) {
                 }),
                 (E.prototype._invalidationFinishedHandler = function (e) {
                     if (this._shouldRepaintThumbnail && e.configuration.pageThumbnails) {
-                        this._shouldRepaintThumbnail = !1;
+                        this._shouldRepaintThumbnail = false;
                         var t = this;
                         this._getPageThumbnail(e.configuration.pageThumbnailSize, e.configuration.pageThumbnailSize, function (e) {
                             e &&
@@ -756,7 +756,7 @@ module.exports = function (e, t, i) {
                         this._preparePaint(e, t) &&
                         (this._paint(e, t), this._finishPaint(e), this._shouldRepaintThumbnail && e.configuration.pageThumbnails)
                     ) {
-                        this._shouldRepaintThumbnail = !1;
+                        this._shouldRepaintThumbnail = false;
                         var i = this;
                         i._getPageThumbnail(e.configuration.pageThumbnailSize, e.configuration.pageThumbnailSize, function (e) {
                             e &&
@@ -784,23 +784,23 @@ module.exports = function (e, t, i) {
                     d.resize(p, u);
                     var g = new b();
                     g.canvas = d;
-                    var f = new v();
+                    var f = new GScenePaintConfiguration();
                     if (
-                        ((f.paintMode = v.PaintMode.Full),
-                        (f.paintSharp = !1),
-                        (f.annotations = !1),
+                        ((f.paintMode = GScenePaintConfiguration.PaintMode.Full),
+                        (f.paintSharp = false),
+                        (f.annotations = false),
                         (g.configuration = f),
                         (f.clipArea = n.scaled(1, 1)),
-                        (f.clipDirty = !1),
-                        (f.enableFxCache = !1),
+                        (f.clipDirty = false),
+                        (f.enableFxCache = false),
                         (f.defaultEffectDetailLevel = 1),
                         d.prepare(),
                         d.setOrigin(new s(n.getX() * c, n.getY() * c)),
                         d.setScale(c),
-                        C.isRenderPhase())
+                        DUMP_IMAGES.isRenderPhase())
                     ) {
                         var m = this;
-                        C.tryRunRendering(
+                        DUMP_IMAGES.tryRunRendering(
                             d,
                             function () {
                                 try {
@@ -810,7 +810,7 @@ module.exports = function (e, t, i) {
                                 }
                             },
                             i,
-                            !1
+                            false
                         );
                     } else {
                         try {
@@ -821,5 +821,5 @@ module.exports = function (e, t, i) {
                         i(d);
                     }
                 }),
-                (e.exports = E));
+                (module.exports = E));
         };

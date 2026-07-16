@@ -1,42 +1,42 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        var o = n(1),
-            i = n(10),
-            a = n(237),
-            r = n(220),
-            s = n(40).decrypt;
-        n(173);
+        require(8 /* Symbol */);
+        var GObject = require(1),
+            designerConfig = require(10),
+            GDocument = require(237),
+            GCommonNames = require(220),
+            s = require(40 /* GSaveAction */).decrypt;
+        require(173);
         function l() {}
-        (o.GObject.inherit(l, a),
+        (GObject.GObject.inherit(l, GDocument),
             (l.prototype.canPromptOpen = function () {
-                return !1;
+                return false;
             }),
             (l.prototype.canPromptSave = function (e) {
-                return !1;
+                return false;
             }),
             (l.prototype.canSave = function () {
-                return !1;
+                return false;
             }),
             (l.prototype.canDownload = function () {
-                return !1;
+                return false;
             }),
             (l.Item = function (e, t, n, o) {
-                r.CommercialProduct.call(this, e, t, n, o);
+                GCommonNames.CommercialProduct.call(this, e, t, n, o);
             }),
-            o.GObject.inherit(l.Item, r.CommercialProduct),
+            GObject.GObject.inherit(l.Item, GCommonNames.CommercialProduct),
             (l.Item.prototype.getPrice = async function () {
                 return Promise.resolve(this._file.price);
             }),
             (l.Item.prototype.getName = function () {
-                return this._filename ? this._filename : o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.image"));
+                return this._filename ? this._filename : GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.image"));
             }),
             (l.Item.prototype.getFullName = function () {
-                return this._filename ? this._filename : o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.image"));
+                return this._filename ? this._filename : GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.image"));
             }),
             (l.Item.prototype.getFormattedPrice = async function () {
                 const e = await this.getPrice(),
-                    t = o.GLocale.toLocaleCurrency(e, "USD");
+                    t = GObject.GLocale.toLocaleCurrency(e, "USD");
                 return new Promise((e) => e(t));
             }),
             (l.Item.prototype.setFile = function (e) {
@@ -47,11 +47,11 @@ module.exports = function (e, t, n) {
                 return this._file;
             }),
             (l.Item.prototype.read = async function (e, t, n) {
-                var o = await i.gApi.getProviderContentFile(this._file.hash);
+                var o = await designerConfig.gApi.getProviderContentFile(this._file.hash);
                 return e(new TextEncoder().encode(s(o)));
             }),
             (l.Item.prototype.getExtension = function () {
                 return this._file.extension && this._file.extension.toUpperCase();
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

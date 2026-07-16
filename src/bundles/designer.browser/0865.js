@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(27),
-            a = n(130),
-            r = n(1524),
-            s = n(1525),
-            l = n(21),
+        var o = require(25),
+            i = require(27),
+            a = require(130),
+            r = require(1524),
+            s = require(1525),
+            l = require(21),
             c = RangeError,
             d = String,
             u = Math.floor,
@@ -32,7 +32,7 @@ module.exports = function (e, t, n) {
         o(
             {
                 target: "Number",
-                proto: !0,
+                proto: true,
                 forced:
                     l(function () {
                         return (

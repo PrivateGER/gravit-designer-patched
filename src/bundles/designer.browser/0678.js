@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(23),
-            i = n(21),
-            a = n(27),
-            r = n(62),
-            s = n(262).trim,
-            l = n(248),
-            c = o.parseInt,
-            d = o.Symbol,
+        var RegExp = require(23),
+            i = require(21),
+            a = require(27),
+            r = require(62),
+            s = require(262).trim,
+            l = require(248),
+            c = RegExp.parseInt,
+            d = RegExp.Symbol,
             u = d && d.iterator,
             p = /^[+-]?0x/i,
             g = a(p.exec),
@@ -18,7 +18,7 @@ module.exports = function (e, t, n) {
                     !i(function () {
                         c(Object(u));
                     }));
-        e.exports = h
+        module.exports = h
             ? function (e, t) {
                   var n = s(r(e));
                   return c(n, t >>> 0 || (g(p, n) ? 16 : 10));

@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(642),
-                r = i(12);
+module.exports = function (module, exports, require) {
+            var n = require(642),
+                r = require(12);
 
             function o() {}
             ((o.HEADER_LENGTH = 128),
@@ -225,5 +225,5 @@ module.exports = function (e, t, i) {
                     for (var i = new Uint16Array(t), n = 0; n < t; ++n) i[n] = e.getUint16(2 * n);
                     return i;
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

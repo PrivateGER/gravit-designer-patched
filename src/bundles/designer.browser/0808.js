@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1);
+        require(3);
+        var GObject = require(1);
         function i(e) {
             this.status = e;
         }
-        (o.GObject.inherit(i, o.GEvent),
+        (GObject.GObject.inherit(i, GObject.GEvent),
             (i.Status = { Init: 0, Ready: 1 }),
             (i.prototype.status = null),
             (i.prototype.toString = function () {
                 return "[Object GApplicationStatusEvent]";
             }),
-            (e.exports = i));
+            (module.exports = i));
     };

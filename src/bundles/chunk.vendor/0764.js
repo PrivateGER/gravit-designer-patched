@@ -1,37 +1,37 @@
-module.exports = function (e, t, i) {
-            var n = i(264),
-                r = i(2),
-                o = i(187),
-                a = i(87),
-                s = i(60),
-                l = i(179),
-                h = i(0),
-                A = i(54),
-                c = i(48),
-                p = i(59),
-                u = i(335),
-                d = i(99);
+module.exports = function (module, exports, require) {
+            var n = require(264),
+                r = require(2),
+                o = require(187),
+                a = require(87),
+                s = require(60),
+                l = require(179),
+                IsFiniteNonNegativeNumber = require(0),
+                A = require(54),
+                c = require(48),
+                p = require(59),
+                u = require(335),
+                d = require(99);
 
             function g() {
                 u.call(this);
             }
-            (h.inherit(g, u),
-                (g.prototype._willMerge = !0),
+            (IsFiniteNonNegativeNumber.inherit(g, u),
+                (g.prototype._willMerge = true),
                 (g.prototype._mouseDown = function (e) {
                     u.prototype._mouseDown.call(this, e);
                     var t = this._view.getViewTransform(this._view.getScene().getActivePage()).mapPoint(e.client);
                     (this._editor.getGuides().beginMap(this._editor.getMappingScopes()),
                         (t = this._editor.getGuides().mapPoint(t, d.DetailMap.Mode.DetailOnFilterOn)),
                         this._editor.getGuides().finishMap(),
-                        (this._willMerge = !1));
+                        (this._willMerge = false));
                     var i = this._startingSelection;
                     if (i)
                         for (var n = 0; n < i.length; n++)
                             if (i[n].hasMixin(a)) {
                                 var r = i[n],
                                     o = r.getGeometryBBox();
-                                if (o && o.containsPoint(t) && p.hitTest(t.getX(), t.getY(), r, 0, !0)) {
-                                    this._willMerge = !0;
+                                if (o && o.containsPoint(t) && p.hitTest(t.getX(), t.getY(), r, 0, true)) {
+                                    this._willMerge = true;
                                     break;
                                 }
                             }
@@ -50,25 +50,25 @@ module.exports = function (e, t, i) {
                     }
                     var h = this._startingSelection;
                     if (h) {
-                        for (var p = [], u = [], d = new o(), g = !1, f = 0; f < h.length; f++)
+                        for (var p = [], u = [], d = new o(), g = false, f = 0; f < h.length; f++)
                             if (h[f].hasMixin(a)) {
                                 for (var m = o.redistributeVertexSource(h[f]), y = m.containers.length, _ = [], v = 0; v < y; v++)
                                     for (var b = m.containers[v], C = 0; C < b.length; C++) {
                                         var w = b[C],
                                             E = new c(),
                                             B = new c(),
-                                            x = !1;
+                                            x = false;
                                         if (w.rewindVertices(0) && w.readVertex(E) && w.readVertex(B)) {
                                             for (; w.readVertex(B); );
                                             (B.command === c.Command.Close || (B.x === E.x && B.y === E.y)) &&
-                                                (_.push(w), (x = !0), d.intersect(e, w, !1, !0, null, m.polys[v][C]) && (g = !0));
+                                                (_.push(w), (x = true), d.intersect(e, w, false, true, null, m.polys[v][C]) && (g = true));
                                         }
                                         x || u.push(w);
                                     }
                                 _.length &&
                                     p.push({
                                         item: h[f],
-                                        sub: !1,
+                                        sub: false,
                                         splitted: _,
                                     });
                             }
@@ -77,8 +77,8 @@ module.exports = function (e, t, i) {
                                 S = [];
                             for (f = 0; f < p.length; f++) S = S.concat(p[f].splitted);
                             (!g && this._willMerge
-                                ? e.isClockWise() || (this._willMerge = !1)
-                                : g || (e.isClockWise() && (this._willMerge = !0)),
+                                ? e.isClockWise() || (this._willMerge = false)
+                                : g || (e.isClockWise() && (this._willMerge = true)),
                                 (P = (P = this._willMerge ? this._doTheMerge(S, [e]) : this._doTheSub(S, [e])).concat(u)));
                             var T = A.mergeVertexSources(P),
                                 I = l.createPathFromVertexSource(T);
@@ -95,7 +95,7 @@ module.exports = function (e, t, i) {
                             }
                             (I && this._newPath.getParent().insertChild(I, this._newPath),
                                 this._newPath.getParent().removeChild(this._newPath),
-                                I && ((this._newPath = I), this._editor.updateSelection(!1, [I])));
+                                I && ((this._newPath = I), this._editor.updateSelection(false, [I])));
                         } else this._newPath.setFlag(r.Flag.Selected);
                     } else this._newPath.setFlag(r.Flag.Selected);
                 }),
@@ -114,5 +114,5 @@ module.exports = function (e, t, i) {
                 (g.prototype.toString = function () {
                     return "[Object GMagicTool]";
                 }),
-                (e.exports = g));
+                (module.exports = g));
         };

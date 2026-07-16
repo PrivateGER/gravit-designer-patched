@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(30);
-        const { GObject: o } = n(1);
+        require(30);
+        const { GObject: o } = require(1 /* GObject */);
         class i {
             constructor(e) {
                 Object.assign(this, e);
@@ -11,5 +11,5 @@ module.exports = function (e, t, n) {
             (i.prototype.applyFrom = function (e) {
                 Object.assign(this, e);
             }),
-            (e.exports = i));
+            (module.exports = i));
     };

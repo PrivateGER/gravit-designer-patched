@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
-            var n = i(11),
-                r = i(7),
-                o = i(0),
-                a = i(17),
-                s = i(28);
+module.exports = function (module, exports, require) {
+            var n = require(11),
+                r = require(7),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(17),
+                GStylable = require(28);
 
             function l() {}
-            (o.inherit(l, o),
+            (IsFiniteNonNegativeNumber.inherit(l, IsFiniteNonNegativeNumber),
                 (l._Editors = {}),
                 (l.exports = function (e, t) {
-                    l._Editors[o.getTypeId(t)] = e;
+                    l._Editors[IsFiniteNonNegativeNumber.getTypeId(t)] = e;
                 }),
                 (l.getEditor = function (e) {
                     return e.__graphic_editor__ ? e.__graphic_editor__ : null;
@@ -23,7 +23,7 @@ module.exports = function (e, t, i) {
                         (e.computedBackgroundColor = o));
                     var h = a.closeEnough(o, n.toScreen(), 100),
                         A = null;
-                    if (r && r.hasMixin(s) && r.isVisible()) {
+                    if (r && r.hasMixin(GStylable) && r.isVisible()) {
                         var c = 0,
                             p = 0,
                             u = 0,
@@ -31,7 +31,7 @@ module.exports = function (e, t, i) {
                         r.hasProperty("_stop") && (d = r.getProperty("_stop"));
                         for (var g = r.getPaintLayers(), f = g ? g.getLayers() : [], m = [], y = f.length - 1; y >= 0; y--) {
                             var _ = f[y];
-                            if (_ instanceof s.FillPaintLayer) {
+                            if (_ instanceof GStylable.FillPaintLayer) {
                                 var v = _.getProperty("_pt"),
                                     b = _.getProperty("_vs"),
                                     C = _.getProperty("_op");
@@ -73,12 +73,12 @@ module.exports = function (e, t, i) {
                 (l.PartInfo.prototype.isolated = null),
                 (l.PartInfo.prototype.selectable = null),
                 (l.prototype._flags = 0),
-                (l.prototype._temporalOutlineFlag = !1),
+                (l.prototype._temporalOutlineFlag = false),
                 (l.prototype._transform = null),
                 (l.prototype._parentEditor = null),
                 (l.prototype._editors = null),
                 (l.prototype._partSelection = null),
-                (l.prototype._blockDeletion = !1),
+                (l.prototype._blockDeletion = false),
                 (l.prototype._color = null),
                 (l.prototype.hasFlag = function (e) {
                     return 0 != (this._flags & e);
@@ -120,9 +120,9 @@ module.exports = function (e, t, i) {
                     (this._editors.splice(i, 1), (e._parentEditor = null), t && this.requestInvalidation());
                 }),
                 (l.prototype.accept = function (e) {
-                    if (!1 === e.call(null, this)) return !1;
-                    if (this._editors) for (var t = 0; t < this._editors.length; ++t) if (!1 === this._editors[t].accept(e)) return !1;
-                    return !0;
+                    if (false === e.call(null, this)) return false;
+                    if (this._editors) for (var t = 0; t < this._editors.length; ++t) if (false === this._editors[t].accept(e)) return false;
+                    return true;
                 }),
                 (l.prototype.isPartSelected = function (e) {
                     return this._indexOfPartId(this._partSelection, e) >= 0;
@@ -145,7 +145,7 @@ module.exports = function (e, t, i) {
                                 0 === i.length && (i = null);
                             }
                         } else i = t && t.length > 0 ? t.slice() : null;
-                        n.equals(i, this._partSelection, !1) || this._updatePartSelection(i);
+                        n.equals(i, this._partSelection, false) || this._updatePartSelection(i);
                     }
                 }),
                 (l.prototype.updateOwnedPartsSelection = function (e, t) {
@@ -164,20 +164,20 @@ module.exports = function (e, t, i) {
                     return e;
                 }),
                 (l.prototype.isPartSelectionUnderCollisionAllowed = function () {
-                    return !1;
+                    return false;
                 }),
                 (l.prototype.updatePartSelectionUnderCollision = function (e, t, i) {
-                    return !1;
+                    return false;
                 }),
                 (l.prototype.isDeletePartsAllowed = function () {
-                    return !1;
+                    return false;
                 }),
                 (l.prototype.deletePartsSelected = function () {}),
                 (l.prototype.isAlignPartsAllowed = function () {
-                    return !1;
+                    return false;
                 }),
                 (l.prototype.hasSelectionEditing = function () {
-                    return !1;
+                    return false;
                 }),
                 (l.prototype.alignParts = function (e, t, i) {}),
                 (l.prototype.getPartInfoAt = function (e, t, i, n, r) {
@@ -188,7 +188,7 @@ module.exports = function (e, t, i) {
                             if (this._editors[a].hasFlag(l.Flag.BackEditor)) (o || (o = []), o.push(this._editors[a]));
                             else if ((h = this._editors[a].getPartInfoAt(e, t, i, n, r))) return h;
                         }
-                    if (i && !0 !== i.call(null, this)) return null;
+                    if (i && true !== i.call(null, this)) return null;
                     var s = this.getBBox(t);
                     if (s && s.expanded(n, n, n, n).containsPoint(e) && (h = this._getPartInfoAt(e, t, n, r))) return h;
                     if (o)
@@ -215,10 +215,10 @@ module.exports = function (e, t, i) {
                     return t ? null : this.getBBox(e);
                 }),
                 (l.prototype.setOutlineTmpFlag = function () {
-                    this.hasFlag(l.Flag.Outline) || (this.setFlag(l.Flag.Outline), (this._temporalOutlineFlag = !0));
+                    this.hasFlag(l.Flag.Outline) || (this.setFlag(l.Flag.Outline), (this._temporalOutlineFlag = true));
                 }),
                 (l.prototype.removeOutlineTmpFlag = function () {
-                    this._temporalOutlineFlag && (this.removeFlag(l.Flag.Outline), (this._temporalOutlineFlag = !1));
+                    this._temporalOutlineFlag && (this.removeFlag(l.Flag.Outline), (this._temporalOutlineFlag = false));
                 }),
                 (l.prototype.movePart = function (e, t, i, n, r, o, a) {
                     return (this.hasFlag(l.Flag.Outline) ? this.requestInvalidation() : this.setOutlineTmpFlag(), null);
@@ -252,19 +252,19 @@ module.exports = function (e, t, i) {
                 (l.prototype._prepareApplyTransform = function (e) {}),
                 (l.prototype._finishApplyTransform = function (e) {}),
                 (l.prototype.canInlineEdit = function () {
-                    return !1;
+                    return false;
                 }),
                 (l.prototype.isContentModified = function () {
-                    return !1;
+                    return false;
                 }),
                 (l.prototype.allowPartSelection = function () {
                     return this.hasFlag(l.Flag.Selected);
                 }),
                 (l.prototype.isRelativeToPage = function () {
-                    return !0;
+                    return true;
                 }),
                 (l.prototype.isInlineEdit = function () {
-                    return !1;
+                    return false;
                 }),
                 (l.prototype.beginInlineEdit = function (e) {
                     throw new Error("Not Supported.");
@@ -282,19 +282,19 @@ module.exports = function (e, t, i) {
                     return (e.editor !== this || t || (i = e), i);
                 }),
                 (l.prototype.validateSelectionChange = function () {
-                    return !0;
+                    return true;
                 }),
                 (l.prototype.canHandleDblClick = function () {
-                    return !1;
+                    return false;
                 }),
                 (l.prototype.handleDblClick = function (e, t) {
-                    return !1;
+                    return false;
                 }),
                 (l.prototype.blockRemoval = function () {
-                    this._blockRemoval = !0;
+                    this._blockRemoval = true;
                 }),
                 (l.prototype.allowRemoval = function () {
-                    this._blockRemoval = !1;
+                    this._blockRemoval = false;
                 }),
                 (l.prototype.isRemovalBlocked = function () {
                     return this._blockRemoval;
@@ -323,7 +323,7 @@ module.exports = function (e, t, i) {
                     (this.requestInvalidation(), (this._partSelection = e), this.requestInvalidation());
                 }),
                 (l.prototype._showAnnotations = function () {
-                    return !0;
+                    return true;
                 }),
                 (l.prototype._setTransform = function (e) {
                     r.equals(this._transform, e) ||
@@ -332,11 +332,11 @@ module.exports = function (e, t, i) {
                         this.requestInvalidation());
                 }),
                 (l.prototype.canHandleKeyEvents = function () {
-                    return !1;
+                    return false;
                 }),
                 (l.prototype.handleKeyEvent = function (e) {}),
                 (l.prototype.toString = function () {
                     return "[Object GBaseEditor]";
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

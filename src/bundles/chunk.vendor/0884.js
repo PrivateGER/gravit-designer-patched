@@ -1,19 +1,19 @@
-module.exports = function (e, t, i) {
-            const n = i(814),
-                r = i(815),
-                o = i(816),
-                a = i(885),
-                s = i(886),
-                l = i(456),
-                h = i(456),
-                A = i(456),
-                c = i(455);
-            e.exports = [
+module.exports = function (module, exports, require) {
+            const n = require(814),
+                r = require(815),
+                o = require(816),
+                a = require(885),
+                GShareDialog = require(886),
+                l = require(456),
+                h = require(456),
+                A = require(456),
+                c = require(455);
+            module.exports = [
                 {
                     project: c.Designer,
                     translations: n,
-                    temporary: s,
-                    importStack: [s, n],
+                    temporary: GShareDialog,
+                    importStack: [GShareDialog, n],
                 },
                 {
                     project: c.Cloud,

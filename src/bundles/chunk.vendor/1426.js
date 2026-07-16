@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(197),
-                o = i(9),
-                a = i(47),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(197),
+                String = require(9),
+                a = require(47),
                 s = function (e, t) {
                     (r.call(this),
-                        this.putText("/Author", e || o.get(new a("GDocument", "text.default-export-author"))),
-                        this.putText("/Producer", o.get(new a("GDocument", "text.default-export-producer"))),
-                        this.putText("/Creator", o.get(new a("GDocument", "text.default-export-author"))),
+                        this.putText("/Author", e || String.get(new a("GDocument", "text.default-export-author"))),
+                        this.putText("/Producer", String.get(new a("GDocument", "text.default-export-producer"))),
+                        this.putText("/Creator", String.get(new a("GDocument", "text.default-export-author"))),
                         this.putText("/Title", t || "Untitled"));
                     var i = function (e) {
                             return ("0" + parseInt(e)).slice(-2);
@@ -29,10 +29,10 @@ module.exports = function (e, t, i) {
                         ].join("");
                     (this.putText("/CreationDate", "D:" + p), this.putText("/ModDate", "D:" + p));
                 };
-            (n.inherit(s, r),
+            (IsFiniteNonNegativeNumber.inherit(s, r),
                 (s.prototype.getMetadata = function () {
                     var e = this.get("/Metadata");
                     return e ? e.getPDFObject() : null;
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

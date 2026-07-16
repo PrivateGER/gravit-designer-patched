@@ -1,19 +1,19 @@
-module.exports = function (e, t, i) {
-            var n = i(59),
-                r = i(2),
-                o = i(75),
-                a = i(0),
-                s = i(11),
-                l = i(56),
-                h = i(112),
-                A = i(229),
-                c = i(5),
-                p = i(48),
-                u = i(104),
-                d = i(54),
-                g = i(22),
-                f = i(12),
-                m = i(76);
+module.exports = function (module, exports, require) {
+            var n = require(59),
+                r = require(2),
+                o = require(75),
+                IsFiniteNonNegativeNumber = require(0),
+                s = require(11),
+                l = require(56),
+                h = require(112),
+                A = require(229),
+                c = require(5),
+                p = require(48),
+                u = require(104),
+                d = require(54),
+                g = require(22),
+                f = require(12),
+                m = require(76);
 
             function y(e, t) {
                 (l.call(this),
@@ -21,13 +21,13 @@ module.exports = function (e, t, i) {
                     e && (this.$evenodd = e),
                     this.setAnchorPoints(t || new y.AnchorPoints()),
                     (this._vertices = new d()),
-                    (this._verticesDirty = !0));
+                    (this._verticesDirty = true));
             }
-            (a.inherit(y, l),
+            (IsFiniteNonNegativeNumber.inherit(y, l),
                 (y.defaultEps = 1e-9),
                 (y.GeometryProperties = {}),
                 (y.MetaProperties = {
-                    csc: !0,
+                    csc: true,
                 }),
                 (y.CornerType = {
                     Rounded: "R",
@@ -37,11 +37,11 @@ module.exports = function (e, t, i) {
                     Fancy: "F",
                 }),
                 (y.isCornerType = function (e) {
-                    for (var t in y.CornerType) if (y.CornerType[t] === e) return !0;
-                    return !1;
+                    for (var t in y.CornerType) if (y.CornerType[t] === e) return true;
+                    return false;
                 }),
                 (y.VisualProperties = {
-                    evenodd: !1,
+                    evenodd: false,
                 }),
                 (y.AnchorPoint = function () {
                     ((this.$tp = "R"),
@@ -51,8 +51,8 @@ module.exports = function (e, t, i) {
                         (this.$hly = null),
                         (this.$hrx = null),
                         (this.$hry = null),
-                        (this.$ah = !1),
-                        (this.$cu = !0),
+                        (this.$ah = false),
+                        (this.$cu = true),
                         (this.$cl = 0),
                         (this.$cr = 0));
                 }),
@@ -71,15 +71,15 @@ module.exports = function (e, t, i) {
                     hly: null,
                     hrx: null,
                     hry: null,
-                    ah: !1,
-                    cu: !0,
+                    ah: false,
+                    cu: true,
                     cl: 0,
                     cr: 0,
                 }),
                 (y.AnchorPoint.BEST_CIRCLE_COEFF = 0.55191502),
                 (y.AnchorPoint.HANDLE_COEFF = 0.39026286),
-                (y.AnchorPoint._invalidating = !1),
-                (y.AnchorPoint.prototype._leadHr = !1),
+                (y.AnchorPoint._invalidating = false),
+                (y.AnchorPoint.prototype._leadHr = false),
                 (y.AnchorPoint.prototype.validateInsertion = function (e, t) {
                     return e instanceof y.AnchorPoints;
                 }),
@@ -107,14 +107,14 @@ module.exports = function (e, t, i) {
                 }),
                 (y.AnchorPoint.prototype.deserialize = function (e) {
                     var t = 0,
-                        i = !1;
+                        i = false;
                     if (
                         (e.length > 0 && "string" == typeof e[0] && (1 === e[0].length || 2 === e[0].length) && ((this.$tp = e[0]), t++),
                         e.length > t && "boolean" == typeof e[t] && ((this.$ah = e[t]), t++),
                         t < e.length && "string" == typeof e[t])
                     ) {
                         var n = s.unpackPoint(e[t]);
-                        ((this.$x = n[0]), (this.$y = n[1]), (i = !0), t++);
+                        ((this.$x = n[0]), (this.$y = n[1]), (i = true), t++);
                     } else t + 1 < e.length && ((this.$x = e[t]), (this.$y = e[t + 1]), (t += 2));
                     if (
                         (t < e.length && "&" === e[t] && ((this._multiReferenceId = e[t + 1]), (t += 2)),
@@ -203,7 +203,7 @@ module.exports = function (e, t, i) {
                         if (n) {
                             var r = this;
                             (e && ((r = r._getTransformedCopy(e)), (n = n._getTransformedCopy(e))),
-                                (i = this._parent._getLeftShoulderPoint(r, n, !0, t)));
+                                (i = this._parent._getLeftShoulderPoint(r, n, true, t)));
                         }
                     }
                     return i;
@@ -215,7 +215,7 @@ module.exports = function (e, t, i) {
                         if (n) {
                             var r = this;
                             (e && ((r = r._getTransformedCopy(e)), (n = n._getTransformedCopy(e))),
-                                (i = this._parent._getRightShoulderPoint(r, n, !0, t)));
+                                (i = this._parent._getRightShoulderPoint(r, n, true, t)));
                         }
                     }
                     return i;
@@ -267,8 +267,8 @@ module.exports = function (e, t, i) {
                                     t.properties.indexOf("hlx") < 0 &&
                                     t.properties.indexOf("hly") < 0 &&
                                     null != this.$hrx)
-                                    ? (this._leadHr = !0)
-                                    : (this._leadHr = !1)),
+                                    ? (this._leadHr = true)
+                                    : (this._leadHr = false)),
                             ((!i || (i instanceof g && i.isRecordedTransaction())) &&
                                 (i ||
                                     ((this.$tp != y.AnchorPoint.Type.Symmetric || this.$ah || null == this.$hlx || null == this.$hrx) &&
@@ -288,7 +288,7 @@ module.exports = function (e, t, i) {
                                     var d = this._parent.getNextPoint(this);
                                     d && (d.$ah || d.$tp == y.AnchorPoint.Type.Connector) && d._invalidateCalculations();
                                 }
-                            ((i._verticesDirty = !0), i._resetFxCacheAndState(), i._notifyChange(g._Change.FinishGeometryUpdate));
+                            ((i._verticesDirty = true), i._resetFxCacheAndState(), i._notifyChange(g._Change.FinishGeometryUpdate));
                         }
                     r.prototype._handleChange.call(this, e, t);
                 }),
@@ -297,7 +297,7 @@ module.exports = function (e, t, i) {
                 }),
                 (y.AnchorPoint.prototype._invalidateCalculations = function () {
                     if (!this._invalidating) {
-                        this._invalidating = !0;
+                        this._invalidating = true;
                         var e = this._parent;
                         (e && this.$tp == y.AnchorPoint.Type.Connector
                             ? this._calculateConnectorPoint()
@@ -306,7 +306,7 @@ module.exports = function (e, t, i) {
                                   ? e && this.$ah && this._calculateAutoHandles()
                                   : this._calculateMirrorPoint()
                               : this._calculateSmoothPoint(),
-                            (this._invalidating = !1));
+                            (this._invalidating = false));
                     }
                 }),
                 (y.AnchorPoint.prototype._calculateConnectorPoint = function () {
@@ -522,15 +522,15 @@ module.exports = function (e, t, i) {
                     return "[Object GPathBase.AnchorPoint]";
                 }),
                 (y.AnchorPoints = function () {}),
-                a.inheritAndMix(y.AnchorPoints, r, [r.Container, r.Multireference]),
+                IsFiniteNonNegativeNumber.inheritAndMix(y.AnchorPoints, r, [r.Container, r.Multireference]),
                 (y.AnchorPoints.prototype._dirtyPrev = null),
                 (y.AnchorPoints.prototype._dirtyNext = null),
-                (y.AnchorPoints.prototype._sketchPath = !1),
+                (y.AnchorPoints.prototype._sketchPath = false),
                 (y.AnchorPoints.prototype.validateInsertion = function (e, t) {
                     return e instanceof y;
                 }),
                 (y.AnchorPoints.prototype.validateRemoval = function () {
-                    return !1;
+                    return false;
                 }),
                 (y.AnchorPoints.prototype.serialize = function (e) {
                     var t,
@@ -544,15 +544,15 @@ module.exports = function (e, t, i) {
                     var t;
                     for (
                         "&" === e[0] ? ((t = 2), (this._multiReferenceId = e[1])) : (t = 0),
-                            3735932941 === e[t] && ((this._sketchPath = !0), t++),
-                            this.getParent() && (this.getParent().beginUpdate(), this._beginBlockCompositeEvents(!0, !0, !0));
+                            3735932941 === e[t] && ((this._sketchPath = true), t++),
+                            this.getParent() && (this.getParent().beginUpdate(), this._beginBlockCompositeEvents(true, true, true));
                         t < e.length;
 
                     ) {
                         var i = new y.AnchorPoint();
                         (i.deserialize(e[t++]), this.appendChild(i));
                     }
-                    this.getParent() && (this._endBlockCompositeEvents(!0, !0, !0), this.getParent().endUpdate());
+                    this.getParent() && (this._endBlockCompositeEvents(true, true, true), this.getParent().endUpdate());
                 }),
                 (y.AnchorPoints.prototype.clone = function () {
                     var e = new y.AnchorPoints();
@@ -601,10 +601,10 @@ module.exports = function (e, t, i) {
                                 A,
                                 c = a,
                                 u = (a = a.getNext()),
-                                d = !1,
+                                d = false,
                                 g = this.getNextPoint(a);
                             for (t && ((s = a._getTransformedCopy(t)), (h = c._getTransformedCopy(t))); g && (a != u || !d); )
-                                ((d = !0),
+                                ((d = true),
                                     t
                                         ? ((A = g._getTransformedCopy(t)), this._addMiddleVertices(e, s, h, A, i), (h = s), (s = A))
                                         : this._addMiddleVertices(e, a, c, g, i),
@@ -813,7 +813,7 @@ module.exports = function (e, t, i) {
                     (!i ||
                         (e != r._Change.AfterChildInsert && e != r._Change.AfterChildRemove) ||
                         (i._notifyChange(g._Change.PrepareGeometryUpdate),
-                        (i._verticesDirty = !0),
+                        (i._verticesDirty = true),
                         i._notifyChange(g._Change.FinishGeometryUpdate)),
                         r.prototype._handleChange.call(this, e, t));
                 }),
@@ -847,20 +847,20 @@ module.exports = function (e, t, i) {
                     return "[Object GPathBase.AnchorPoints]";
                 }),
                 (y.prototype._vertices = null),
-                (y.prototype._verticesDirty = !1),
+                (y.prototype._verticesDirty = false),
                 (y.prototype._anchorPoints = null),
                 (y.prototype._referencedNodes = null),
-                (y.prototype._delayedRefresh = !1),
+                (y.prototype._delayedRefresh = false),
                 (y.prototype.transform = function (e, t, i) {
                     (this.transformStyledCorners(this, e),
-                        this._scene && t && (this._textsTransformed = !0),
+                        this._scene && t && (this._textsTransformed = true),
                         l.prototype.transform.call(this, e, t, i),
                         this._scene &&
                             (t &&
                                 this._scene.visitReferences(
                                     this,
                                     function (t) {
-                                        "text" === r.getName(t) && (t.transform(e, !0), t.attachPath(this));
+                                        "text" === r.getName(t) && (t.transform(e, true), t.attachPath(this));
                                     }.bind(this)
                                 ),
                             this._scene.visitReferences(
@@ -869,7 +869,7 @@ module.exports = function (e, t, i) {
                                     e instanceof y.AnchorPoint && "connector" === r.getName(e.getPath()) && e.getPath().relayout();
                                 }.bind(this)
                             )),
-                        (this._textsTransformed = !1));
+                        (this._textsTransformed = false));
                 }),
                 (y.prototype.setSketchPath = function (e) {
                     this._anchorPoints._sketchPath = e;
@@ -884,8 +884,8 @@ module.exports = function (e, t, i) {
                     return (
                         (this._verticesDirty || null == this._vertices || 0 == this._vertices.getCount()) &&
                             (this._vertices.clearVertices(),
-                            this.getAnchorPoints()._generateVertices(this._vertices, this.$trf, !0),
-                            (this._verticesDirty = !1)),
+                            this.getAnchorPoints()._generateVertices(this._vertices, this.$trf, true),
+                            (this._verticesDirty = false)),
                         this._vertices.rewindVertices(e)
                     );
                 }),
@@ -920,7 +920,7 @@ module.exports = function (e, t, i) {
                 }),
                 (y.prototype._calculateSourceBBox = function (e) {
                     var t = new d();
-                    return (this.getAnchorPoints()._generateVertices(t, null, !1), n.calculateBounds(t, !0));
+                    return (this.getAnchorPoints()._generateVertices(t, null, false), n.calculateBounds(t, true));
                 }),
                 (y.prototype._handleVisualChangeForProperties = function (e, t, i) {
                     (e == r._Change.AfterPropertiesChange &&
@@ -963,11 +963,11 @@ module.exports = function (e, t, i) {
                     } else if (e === r._Change.AfterPropertiesChange)
                         if (t.properties.indexOf("closed") >= 0) {
                             var a = this.getAnchorPoints();
-                            (a && (a._invalidateRight(a.getFirstChild()), a._invalidateLeft(a.getLastChild())), (this._verticesDirty = !0));
+                            (a && (a._invalidateRight(a.getFirstChild()), a._invalidateLeft(a.getLastChild())), (this._verticesDirty = true));
                         } else
                             t.properties.indexOf("trf") >= 0
-                                ? (this._verticesDirty = !0)
-                                : t.properties.indexOf("refs") >= 0 && (this._scene || (this._delayedRefresh = !0));
+                                ? (this._verticesDirty = true)
+                                : t.properties.indexOf("refs") >= 0 && (this._scene || (this._delayedRefresh = true));
                     else
                         e === r._Change.ParentAttached || e === r._Change.ParentDetach
                             ? this._anchorPoints &&
@@ -996,7 +996,7 @@ module.exports = function (e, t, i) {
                                       e instanceof y.AnchorPoint && "connector" === r.getName(e.getPath()) && e.getPath().relayout();
                                   }.bind(this)
                               ),
-                              (this._delayedRefresh = !1))
+                              (this._delayedRefresh = false))
                             : this._scene
                               ? (this._textsTransformed ||
                                     this._scene.visitReferences(
@@ -1011,7 +1011,7 @@ module.exports = function (e, t, i) {
                                         e instanceof y.AnchorPoint && "connector" === r.getName(e.getPath()) && e.getPath().relayout();
                                     }.bind(this)
                                 ))
-                              : (this._delayedRefresh = !0));
+                              : (this._delayedRefresh = true));
                 }),
                 (y.prototype._handleReferencesOnSceneAttach = function () {
                     (l.prototype._handleReferencesOnSceneAttach.call(this, this._referencedNodes), (this._referencedNodes = null));
@@ -1023,7 +1023,7 @@ module.exports = function (e, t, i) {
                             return "text" === r.getName(e) && e.getReferenceId() === t;
                         });
                     }
-                    return !1;
+                    return false;
                 }),
                 (y.prototype._referenceEvent = function (e) {
                     if (e.target === this) {
@@ -1061,7 +1061,7 @@ module.exports = function (e, t, i) {
                         this.$trf.invertible() &&
                         ((l = this.$trf), (this.$trf = null), (o = (s = l.inverted()).mapPoint(o)), (a *= s.getScaleFactor()));
                     var c = new d();
-                    this.getAnchorPoints()._generateVertices(c, this.$trf, !1);
+                    this.getAnchorPoints()._generateVertices(c, this.$trf, false);
                     var p = new A(),
                         u = null,
                         g = a * r * 2;
@@ -1088,17 +1088,17 @@ module.exports = function (e, t, i) {
                             a = e ? o._getTransformedCopy(e) : o,
                             s = new c(a.getProperty("x"), a.getProperty("y")),
                             l = "a",
-                            h = !1,
-                            A = !1,
+                            h = false,
+                            A = false,
                             p = function () {
                                 if (A) return ((s = null), (l = null), null);
                                 if ("l" == l) return ((s = new c(a.getProperty("x"), a.getProperty("y"))), (l = "a"), s);
                                 if ("a" == l && (this.getAnchorPoints().getLastChild() != o || this.getProperty("closed"))) {
                                     var t = a.getProperty("hrx"),
                                         i = a.getProperty("hry");
-                                    if (null !== t && null !== i) return ((s = new c(t, i)), (l = "r"), h && (A = !0), s);
+                                    if (null !== t && null !== i) return ((s = new c(t, i)), (l = "r"), h && (A = true), s);
                                 }
-                                ((o = o.getNext()), h && (A = !0), o || ((h = !0), (o = this.getAnchorPoints().getFirstChild())));
+                                ((o = o.getNext()), h && (A = true), o || ((h = true), (o = this.getAnchorPoints().getFirstChild())));
                                 var n = (a = e ? o._getTransformedCopy(e) : o).getProperty("hlx"),
                                     r = a.getProperty("hly");
                                 return null !== n && null !== r
@@ -1140,7 +1140,7 @@ module.exports = function (e, t, i) {
                     if (!f.isEqualEps(i, 1) && !f.isEqualEps(n, 1)) {
                         var a = this.getAnchorPoints(),
                             s = e.getAnchorPoints();
-                        (e._beginBlockEvents([g.GeometryChangeEvent]), s._beginBlockCompositeEvents(!1, !0, !1));
+                        (e._beginBlockEvents([g.GeometryChangeEvent]), s._beginBlockCompositeEvents(false, true, false));
                         for (
                             var l = s.getFirstChild(), h = a.getFirstChild();
                             l && h && l.getNext() && h.getNext();
@@ -1148,7 +1148,7 @@ module.exports = function (e, t, i) {
                         )
                             l.setProperties(["cl", "cr"], [h.getProperty("cl") * i, h.getProperty("cr") * n]);
                         (e._endBlockEvents([g.GeometryChangeEvent]),
-                            s._endBlockCompositeEvents(!1, !0, !1),
+                            s._endBlockCompositeEvents(false, true, false),
                             l && h && l.setProperties(["cl", "cr"], [h.getProperty("cl") * i, h.getProperty("cr") * n]));
                     }
                 }),
@@ -1163,5 +1163,5 @@ module.exports = function (e, t, i) {
                 (y.prototype.toString = function () {
                     return "[GPathBase]";
                 }),
-                (e.exports = y));
+                (module.exports = y));
         };

@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o;
-        e.exports =
-            ((o = n(55)),
-            n(98),
+        module.exports =
+            ((o = require(55)),
+            require(98),
             (o.mode.CTRGladman = (function () {
                 var e = o.lib.BlockCipherMode.extend();
                 function t(e) {

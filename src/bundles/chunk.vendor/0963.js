@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            e.exports = function (e) {
+            module.exports = function (e) {
                 e.tokenIssuer = {
                     getWebCDR: (t, i) =>
                         e.fetchJSON("/tokenissuer/webcdr", {

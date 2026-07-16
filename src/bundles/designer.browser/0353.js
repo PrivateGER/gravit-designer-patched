@@ -1,55 +1,55 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(23),
-            a = n(29),
-            r = n(49),
-            s = n(693),
-            l = n(152),
-            c = n(324),
-            d = n(146),
-            u = n(174),
-            p = n(100),
-            g = n(694),
-            h = n(117),
-            f = n(426),
-            m = n(428),
-            y = n(695),
-            v = n(294),
-            _ = n(61),
-            b = n(131),
-            w = n(46),
-            C = n(241),
-            x = n(136),
-            S = n(144),
-            E = n(175),
-            A = n(243).f,
-            T = n(696),
-            G = n(349).forEach,
-            P = n(260),
-            D = n(120),
-            L = n(88),
-            I = n(222),
-            k = n(698),
-            O = n(80),
-            F = n(288),
+        var o = require(25),
+            RegExp = require(23),
+            a = require(29),
+            r = require(49),
+            s = require(693),
+            NATIVE_ARRAY_BUFFER_VIEWS = require(152),
+            c = require(324),
+            d = require(146),
+            u = require(174),
+            p = require(100),
+            g = require(694),
+            h = require(117),
+            f = require(426),
+            m = require(428),
+            y = require(695),
+            v = require(294),
+            _ = require(61),
+            b = require(131),
+            w = require(46),
+            C = require(241),
+            x = require(136),
+            S = require(144),
+            E = require(175),
+            A = require(243).f,
+            T = require(696),
+            G = require(349).forEach,
+            P = require(260),
+            D = require(120),
+            L = require(88),
+            I = require(222),
+            k = require(698),
+            O = require(80),
+            F = require(288),
             R = O.get,
             M = O.set,
             N = O.enforce,
             B = L.f,
             U = I.f,
-            $ = i.RangeError,
+            $ = RegExp.RangeError,
             j = c.ArrayBuffer,
             K = j.prototype,
             V = c.DataView,
-            H = l.NATIVE_ARRAY_BUFFER_VIEWS,
-            W = l.TYPED_ARRAY_TAG,
-            z = l.TypedArray,
-            q = l.TypedArrayPrototype,
-            Y = l.isTypedArray,
+            H = NATIVE_ARRAY_BUFFER_VIEWS.NATIVE_ARRAY_BUFFER_VIEWS,
+            W = NATIVE_ARRAY_BUFFER_VIEWS.TYPED_ARRAY_TAG,
+            z = NATIVE_ARRAY_BUFFER_VIEWS.TypedArray,
+            q = NATIVE_ARRAY_BUFFER_VIEWS.TypedArrayPrototype,
+            Y = NATIVE_ARRAY_BUFFER_VIEWS.isTypedArray,
             X = function (e, t) {
                 D(e, t, {
-                    configurable: !0,
+                    configurable: true,
                     get: function () {
                         return R(this)[t];
                     },
@@ -80,13 +80,13 @@ module.exports = function (e, t, n) {
             };
         r
             ? (H || ((I.f = Z), (L.f = ee), X(q, "buffer"), X(q, "byteOffset"), X(q, "byteLength"), X(q, "length")),
-              o({ target: "Object", stat: !0, forced: !H }, { getOwnPropertyDescriptor: Z, defineProperty: ee }),
-              (e.exports = function (e, t, n) {
+              o({ target: "Object", stat: true, forced: !H }, { getOwnPropertyDescriptor: Z, defineProperty: ee }),
+              (module.exports = function (e, t, n) {
                   var r = e.match(/\d+/)[0] / 8,
                       l = e + (n ? "Clamped" : "") + "Array",
                       c = "get" + e,
                       u = "set" + e,
-                      g = i[l],
+                      g = RegExp[l],
                       v = g,
                       _ = v && v.prototype,
                       b = {},
@@ -95,16 +95,16 @@ module.exports = function (e, t, n) {
                               get: function () {
                                   return (function (e, t) {
                                       var n = R(e);
-                                      return n.view[c](t * r + n.byteOffset, !0);
+                                      return n.view[c](t * r + n.byteOffset, true);
                                   })(this, t);
                               },
                               set: function (e) {
                                   return (function (e, t, o) {
                                       var i = R(e);
-                                      i.view[u](t * r + i.byteOffset, n ? y(o) : o, !0);
+                                      i.view[u](t * r + i.byteOffset, n ? y(o) : o, true);
                                   })(this, t, e);
                               },
-                              enumerable: !0,
+                              enumerable: true,
                           });
                       };
                   (H
@@ -171,10 +171,10 @@ module.exports = function (e, t, n) {
                       W && p(_, W, l));
                   var S = v !== g;
                   ((b[l] = v),
-                      o({ global: !0, constructor: !0, forced: S, sham: !H }, b),
+                      o({ global: true, constructor: true, forced: S, sham: !H }, b),
                       "BYTES_PER_ELEMENT" in v || p(v, "BYTES_PER_ELEMENT", r),
                       "BYTES_PER_ELEMENT" in _ || p(_, "BYTES_PER_ELEMENT", r),
                       P(l));
               }))
-            : (e.exports = function () {});
+            : (module.exports = function () {});
     };

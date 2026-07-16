@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             var i,
                 n,
                 r,
@@ -78,5 +78,5 @@ module.exports = function (e, t) {
                         type: "image/png",
                     });
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

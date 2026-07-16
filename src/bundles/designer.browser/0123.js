@@ -1,16 +1,16 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o() {}
-        (n(3),
+        (require(3),
             (o.prototype._touchTools = null),
             (o.prototype.init = function (e, t) {
                 throw new Error("Not Supported.");
             }),
             (o.prototype.isGroup = function (e) {
-                return !0;
+                return true;
             }),
             (o.prototype.isSticky = function () {
-                return !1;
+                return false;
             }),
             (o.prototype.isAvailable = function (e) {
                 return !e;
@@ -33,5 +33,5 @@ module.exports = function (e, t, n) {
             (o.prototype.toString = function () {
                 return "[Object GProperties]";
             }),
-            (e.exports = o));
+            (module.exports = o));
     };

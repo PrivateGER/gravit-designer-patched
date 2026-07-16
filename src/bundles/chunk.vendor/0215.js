@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(140),
-                o = i(650),
-                a = i(5),
-                s = i(6),
-                l = i(48),
-                h = i(651),
-                A = i(187),
-                c = i(7),
-                p = i(12);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(140),
+                o = require(650),
+                a = require(5),
+                s = require(6),
+                l = require(48),
+                h = require(651),
+                A = require(187),
+                c = require(7),
+                p = require(12);
 
             function u(e, t, i) {
                 ((this._tlCore = e),
@@ -19,7 +19,7 @@ module.exports = function (e, t, i) {
                     (this._params = i || u.TransformerParams),
                     this._params.direction === u.DIRECTION_INWARDS && t.reverseOrder());
             }
-            (n.inherit(u, o),
+            (IsFiniteNonNegativeNumber.inherit(u, o),
                 (u.TYPE = "path"),
                 (u.OUTSIDE = 1),
                 (u.INSIDE = -1),
@@ -64,7 +64,7 @@ module.exports = function (e, t, i) {
                         s = e.getX(),
                         l = e.getY(),
                         h = {},
-                        c = !1,
+                        c = false,
                         u = -1,
                         d = this._basePath._calculateGeometryBBox();
                     for (s += d.getX(), l += d.getY(); n < 1 << 20 && !c; ) {
@@ -76,7 +76,7 @@ module.exports = function (e, t, i) {
                             var f = this._qtrees[g];
                             u < 0 && (u = this._totalDist[g]);
                             var m = f.retrieve(i, r.RETRIEVE_MODE_INTERSECT);
-                            if ((m && m.length && ((c = !0), h[g] ? Array.prototype.push.apply(h[g], m) : (h[g] = m)), t)) break;
+                            if ((m && m.length && ((c = true), h[g] ? Array.prototype.push.apply(h[g], m) : (h[g] = m)), t)) break;
                         }
                         n <<= 1;
                     }
@@ -175,7 +175,7 @@ module.exports = function (e, t, i) {
                         if (!r.rewindVertices(0) || !r.readVertex(s)) return null;
                     } else r = this._basePath;
                     return (
-                        (this._polys[e] = A.polyFromVertexSource(r, !1, !1)),
+                        (this._polys[e] = A.polyFromVertexSource(r, false, false)),
                         (o = this._generateDistancesFilterSubpaths(e)),
                         (this._qtrees[e] = A.quadTreeFromPolygon(o)),
                         o
@@ -211,5 +211,5 @@ module.exports = function (e, t, i) {
                     } while (r.point);
                     return n;
                 }),
-                (e.exports = u));
+                (module.exports = u));
         };

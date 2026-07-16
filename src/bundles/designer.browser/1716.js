@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(58), n(57), n(356), n(20), n(3), n(71), n(34), n(91), n(4), n(41), n(13), n(32), n(38), n(33));
-        var i = o(n(883)),
-            a = n(263),
+        var o = require(16);
+        (require(58), require(57), require(356), require(20), require(3), require(71), require(34), require(91), require(4), require(41), require(13), require(32), require(38), require(33));
+        var i = o(require(883)),
+            GRegex = require(263),
             r = 8,
             s = 9,
             l = 13,
@@ -17,11 +17,11 @@ module.exports = function (e, t, n) {
                 triggerChar: "@",
                 onDataRequest: $.noop,
                 minChars: 1,
-                allowRepeat: !1,
-                showAvatars: !0,
-                elastic: !0,
+                allowRepeat: false,
+                showAvatars: true,
+                elastic: true,
                 defaultValue: "",
-                onCaret: !0,
+                onCaret: true,
                 classes: { autoCompleteItemActive: "active" },
                 templates: {
                     wrapper: '<div class="mentions-input-box"></div>',
@@ -41,12 +41,12 @@ module.exports = function (e, t, n) {
                 return $("<div>").text(e).html();
             },
             v = function (e) {
-                return e.replace(a.GRegex.String.MentionInputRegexpEncode, "\\$1");
+                return e.replace(GRegex.GRegex.String.MentionInputRegexpEncode, "\\$1");
             },
             _ = function (e, t, n) {
                 return !t || (t instanceof Array && !t.length) || !n
                     ? e
-                    : e.replace(new RegExp(a.GRegex.String.MentionInputHighlightRegString.replace("<%=term%>", t), "gi"), "<b>$1</b>");
+                    : e.replace(new RegExp(GRegex.GRegex.String.MentionInputHighlightRegString.replace("<%=term%>", t), "gi"), "<b>$1</b>");
             },
             b = function (e, t) {
                 if (e.createTextRange) {
@@ -55,7 +55,7 @@ module.exports = function (e, t, n) {
                 } else e.selectionStart ? (e.focus(), e.setSelectionRange(t, t)) : e.focus();
             },
             w = function (e) {
-                return e.replace(a.GRegex.String.MentionInputRtrim, "");
+                return e.replace(GRegex.GRegex.String.MentionInputRtrim, "");
             },
             C = function (e) {
                 let t = ++m + "";
@@ -117,8 +117,8 @@ module.exports = function (e, t, n) {
                     T = [];
                 }
                 function L(n) {
-                    for (var o = I(), i = t[0].selectionStart, a = !1, r = !1, s = new RegExp("\\" + e.triggerChar + G, "gi"); s.exec(o); )
-                        (!1 === a || Math.abs(s.lastIndex - i) < a) && ((a = Math.abs(s.lastIndex - i)), (r = s.lastIndex));
+                    for (var o = I(), i = t[0].selectionStart, a = false, r = false, s = new RegExp("\\" + e.triggerChar + G, "gi"); s.exec(o); )
+                        (false === a || Math.abs(s.lastIndex - i) < a) && ((a = Math.abs(s.lastIndex - i)), (r = s.lastIndex));
                     var l = r - G.length - 1,
                         c = r,
                         d = o.substr(0, l),
@@ -140,7 +140,7 @@ module.exports = function (e, t, n) {
                         (e = $(t).offset().top),
                         (n = $("body").offset().top),
                         $(window).scrollTop() > e && $(window).scrollTop(e - n),
-                        !1
+                        false
                     );
                 }
                 function O() {
@@ -170,20 +170,20 @@ module.exports = function (e, t, n) {
                     if ((o.data("assign", o.find("li").length), e.keyCode === c || e.keyCode === u || e.keyCode === g || e.keyCode === h))
                         return (setTimeout(D, 1), void (navigator.userAgent.indexOf("MSIE 9") > -1 && setTimeout(P, 1)));
                     if (e.keyCode !== r) {
-                        if (!o.is(":visible")) return !0;
+                        if (!o.is(":visible")) return true;
                         switch (e.keyCode) {
                             case d:
                             case p:
                                 var t = null;
                                 return (
                                     (t = e.keyCode === p ? (S && S.length ? S.next() : o.find("li").first()) : $(S).prev()).length && U(t),
-                                    !1
+                                    false
                                 );
                             case l:
                             case s:
-                                if ((e.stopPropagation(), S && S.length)) return (S.trigger("mousedown"), !1);
+                                if ((e.stopPropagation(), S && S.length)) return (S.trigger("mousedown"), false);
                         }
-                        return !0;
+                        return true;
                     }
                     T = T.slice(0, -1 + T.length);
                 }
@@ -218,7 +218,7 @@ module.exports = function (e, t, n) {
                                                     : "".concat(t.getFullUserName()).concat(t.getEmail() ? "\n ".concat(t.getEmail()) : "")
                                             ),
                                             n,
-                                            !1
+                                            false
                                         ),
                                     },
                                     { key: "<%=fontWeight%>", value: y(t.fontWeight) },
@@ -409,7 +409,7 @@ module.exports = function (e, t, n) {
                     (t.val(s), P());
                 }
                 return (
-                    (e = $.extend(!0, {}, f, e)),
+                    (e = $.extend(true, {}, f, e)),
                     {
                         init: function (i) {
                             ("true" !== (t = $(i)).attr("data-mentions-input") &&
@@ -437,7 +437,7 @@ module.exports = function (e, t, n) {
                             V();
                         },
                         reinit: function () {
-                            V(!1);
+                            V(false);
                         },
                         getMentions: function (e) {
                             $.isFunction(e) && e.call(this, E);

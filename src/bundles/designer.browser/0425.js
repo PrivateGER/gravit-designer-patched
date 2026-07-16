@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        e.exports = "undefined" != typeof ArrayBuffer && "undefined" != typeof DataView;
+        module.exports = "undefined" != typeof ArrayBuffer && "undefined" != typeof DataView;
     };

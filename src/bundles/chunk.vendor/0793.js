@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(599),
-                o = i(600);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(599),
+                o = require(600);
 
             function a() {
                 o.apply(this, arguments);
             }
-            (n.inherit(a, o),
+            (IsFiniteNonNegativeNumber.inherit(a, o),
                 (a.prototype._gradient = null),
                 (a.prototype.applyTo = function (e) {
                     e.setProperty("_pt", this._gradient);
@@ -27,5 +27,5 @@ module.exports = function (e, t, i) {
                         };
                     });
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o,
-            i = n(786),
-            a = n(23),
-            r = n(27),
-            s = n(232),
-            l = n(558),
-            c = n(1106),
-            d = n(1107),
-            u = n(46),
-            p = n(80).enforce,
-            g = n(21),
-            h = n(452),
+            i = require(786),
+            RegExp = require(23),
+            r = require(27),
+            s = require(232),
+            l = require(558),
+            c = require(1106),
+            d = require(1107),
+            u = require(46),
+            p = require(80).enforce,
+            g = require(21),
+            h = require(452),
             f = Object,
             m = Array.isArray,
             y = f.isExtensible,
@@ -19,7 +19,7 @@ module.exports = function (e, t, n) {
             _ = f.isSealed,
             b = f.freeze,
             w = f.seal,
-            C = !a.ActiveXObject && "ActiveXObject" in a,
+            C = !RegExp.ActiveXObject && "ActiveXObject" in RegExp,
             x = function (e) {
                 return function () {
                     return e(this, arguments.length ? arguments[0] : void 0);
@@ -30,7 +30,7 @@ module.exports = function (e, t, n) {
             A = r(E.set);
         if (h)
             if (C) {
-                ((o = d.getConstructor(x, "WeakMap", !0)), l.enable());
+                ((o = d.getConstructor(x, "WeakMap", true)), l.enable());
                 var T = r(E.delete),
                     G = r(E.has),
                     P = r(E.get);

@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(4), n(13), n(26));
-        var o = n(1),
+        (require(19), require(4), require(13), require(26));
+        var GObject = require(1),
             i = null;
         function a(e) {
             for (var t = 0; t < i.length; ++t) if (i[t].type === e) return i[t].icon;
@@ -17,28 +17,28 @@ module.exports = function (e, t, n) {
                     i ||
                         (i = [
                             {
-                                type: o.GPathBase.CornerType.Rounded,
-                                title: o.GLocale.get(new o.GLocaleKey("GPathBase", "corner.rounded")),
+                                type: GObject.GPathBase.CornerType.Rounded,
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GPathBase", "corner.rounded")),
                                 icon: "gravit-icon-corner-rounded",
                             },
                             {
-                                type: o.GPathBase.CornerType.InverseRounded,
-                                title: o.GLocale.get(new o.GLocaleKey("GPathBase", "corner.inverse-rounded")),
+                                type: GObject.GPathBase.CornerType.InverseRounded,
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GPathBase", "corner.inverse-rounded")),
                                 icon: "gravit-icon-corner-inverse-rounded",
                             },
                             {
-                                type: o.GPathBase.CornerType.Bevel,
-                                title: o.GLocale.get(new o.GLocaleKey("GPathBase", "corner.bevel")),
+                                type: GObject.GPathBase.CornerType.Bevel,
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GPathBase", "corner.bevel")),
                                 icon: "gravit-icon-corner-bevel",
                             },
                             {
-                                type: o.GPathBase.CornerType.Inset,
-                                title: o.GLocale.get(new o.GLocaleKey("GPathBase", "corner.inset")),
+                                type: GObject.GPathBase.CornerType.Inset,
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GPathBase", "corner.inset")),
                                 icon: "gravit-icon-corner-inset",
                             },
                             {
-                                type: o.GPathBase.CornerType.Fancy,
-                                title: o.GLocale.get(new o.GLocaleKey("GPathBase", "corner.fancy")),
+                                type: GObject.GPathBase.CornerType.Fancy,
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GPathBase", "corner.fancy")),
                                 icon: "gravit-icon-corner-fancy",
                             },
                         ]),
@@ -67,9 +67,9 @@ module.exports = function (e, t, n) {
                                                 var i = $(this).attr("data-corner-type");
                                                 (s.value.call(t, i), n.trigger("cornertypechange", i));
                                                 var a = "unkn",
-                                                    r = Object.keys(o.GPathBase.CornerType);
+                                                    r = Object.keys(GObject.GPathBase.CornerType);
                                                 for (var l of r)
-                                                    if (i === o.GPathBase.CornerType[l]) {
+                                                    if (i === GObject.GPathBase.CornerType[l]) {
                                                         a = l;
                                                         break;
                                                     }
@@ -89,7 +89,7 @@ module.exports = function (e, t, n) {
                                               n.trigger("close");
                                           })
                                           .gOverlay({
-                                              releaseOnClose: !0,
+                                              releaseOnClose: true,
                                               clazz: "corner-picker-overlay",
                                           })
                                           .gOverlay("open", t);

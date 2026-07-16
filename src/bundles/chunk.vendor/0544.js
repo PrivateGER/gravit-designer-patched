@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(99),
-                r = i(0),
-                o = i(132),
-                a = i(6),
-                s = i(210),
-                l = i(12);
+module.exports = function (module, exports, require) {
+            var n = require(99),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(132),
+                a = require(6),
+                s = require(210),
+                l = require(12);
 
             function h(e) {
                 (n.call(this, e),
@@ -14,15 +14,15 @@ module.exports = function (e, t, i) {
                         }.bind(this)
                     ));
             }
-            (r.inheritAndMix(h, n, [n.Map, n.DetailMap]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(h, n, [n.Map, n.DetailMap]),
                 (h.ID = "guide.full-pixels"),
                 (h.prototype.getId = function () {
                     return h.ID;
                 }),
                 (h.prototype.map = function (e, t) {
                     if (this._scene.getProperty("ut") === o.Unit.PX) {
-                        var i = l.round(e, !0),
-                            n = l.round(t, !0);
+                        var i = l.round(e, true),
+                            n = l.round(t, true);
                         return {
                             x: {
                                 value: i,
@@ -42,10 +42,10 @@ module.exports = function (e, t, i) {
                     return !s.options.disabled && e !== n.DetailMap.Mode.DetailOffFilterOn;
                 }),
                 (h.prototype.isFullPixelsGuide = function () {
-                    return !0;
+                    return true;
                 }),
                 (h.prototype.toString = function () {
                     return "[Object GFullPixelsGuide]";
                 }),
-                (e.exports = h));
+                (module.exports = h));
         };

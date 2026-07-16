@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16)(n(879));
-        const i = n(878);
-        e.exports = class extends i {
+        var o = require(16)(require(879));
+        const i = require(878);
+        module.exports = class extends i {
             constructor(e) {
-                (super(e), this.addGesture(new o.default()), this.setDelayedTouchEventsEnabled(!1));
+                (super(e), this.addGesture(new o.default()), this.setDelayedTouchEventsEnabled(false));
             }
             _handleEvent(e) {
                 (e.cancelable && e.preventDefault(), super._handleEvent(e));

@@ -1,16 +1,16 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(58), n(96), n(865), n(193), n(8), n(3), n(4), n(97));
-        var o = n(1),
-            i = n(10),
-            a = n(40);
-        const r = n(85),
-            s = n(1188),
-            l = n(1349);
+        (require(58), require(96), require(865), require(193), require(8 /* Symbol */), require(3), require(4), require(97));
+        var GObject = require(1),
+            designerConfig = require(10),
+            GSaveAction = require(40);
+        const r = require(85),
+            s = require(1188),
+            l = require(1349);
         var c;
-        e.exports = class {
+        module.exports = class {
             constructor() {
-                ((this._intervalPID = null), (this._releaseStatus = { version: void 0, forceUpdate: !1 }), (this._downloadCompleted = !1));
+                ((this._intervalPID = null), (this._releaseStatus = { version: void 0, forceUpdate: false }), (this._downloadCompleted = false));
             }
             _trigger(e) {
                 gDesigner.trigger(e);
@@ -42,7 +42,7 @@ module.exports = function (e, t, n) {
             }
             async initializeReleaseStatus() {
                 try {
-                    this._releaseStatus = await i.gApi.software.getRelease({
+                    this._releaseStatus = await designerConfig.gApi.software.getRelease({
                         current: this.getCurrentVersion(),
                         env: gDesigner.getEnv(),
                         runtime: gContainer.getRuntime(),
@@ -51,11 +51,11 @@ module.exports = function (e, t, n) {
                         internalVersion: gDesigner.getVersion(),
                     });
                 } catch (e) {
-                    this._releaseStatus = { silent: !0, forceUpdate: !1 };
+                    this._releaseStatus = { silent: true, forceUpdate: false };
                 }
             }
             async initializeReleaseStatusWithNotifications() {
-                (await this.initializeReleaseStatus(), (this._releaseStatus.silent = !1));
+                (await this.initializeReleaseStatus(), (this._releaseStatus.silent = false));
             }
             async checkForUpdates(e) {
                 if (gDesigner.isOffline()) return console.warn(this.toString() + " Unable to check for updates - system is offline!");
@@ -87,8 +87,8 @@ module.exports = function (e, t, n) {
                 (console.info(this.toString(), " - Downloading update"), this._isElectron() && c.downloadUpdate());
             }
             async installElectronUpdate() {
-                (o.GSystem.operatingSystem === o.GSystem.OperatingSystem.OSX_IOS &&
-                    (console.info(this.toString(), " - Waiting install - OSX"), await (0, a.sleep)(5e3)),
+                (GObject.GSystem.operatingSystem === GObject.GSystem.OperatingSystem.OSX_IOS &&
+                    (console.info(this.toString(), " - Waiting install - OSX"), await (0, GSaveAction.sleep)(5e3)),
                     console.info(this.toString(), " - Installing update - Call"),
                     c.installUpdate());
             }
@@ -106,7 +106,7 @@ module.exports = function (e, t, n) {
                         (console.info(this.toString(), " - Checking download"),
                             this._downloadCompleted
                                 ? this._releaseStatus.silent
-                                    ? gContainer.setProperty("install_update_on_start", !0)
+                                    ? gContainer.setProperty("install_update_on_start", true)
                                     : this.installElectronUpdate()
                                 : console.warn(this.toString() + " The download has not been finished yet!"));
                 }
@@ -117,7 +117,7 @@ module.exports = function (e, t, n) {
             async start() {
                 [r.Runtime.Electron, r.Runtime.Browser, r.Runtime.PWA].includes(gContainer.getRuntime())
                     ? (this._isElectron() &&
-                          ((c = n(1677)).on(l.UpdateDownloaded, this._handleDownloadComplete.bind(this)),
+                          ((c = require(1677)).on(l.UpdateDownloaded, this._handleDownloadComplete.bind(this)),
                           c.on(l.DownloadProgress, this._handleDownloadInProgress.bind(this)),
                           c.on(l.UpdateAvailable, this._handleUpdateAvailable.bind(this)),
                           c.on(l.Error, this._handleUpdateError.bind(this)),
@@ -130,16 +130,16 @@ module.exports = function (e, t, n) {
                       (this._intervalPID = setTimeout(
                           function () {
                               let e = new Date().getTime();
-                              (gContainer.setProperty("last_update_check", e), this.checkForUpdates(!0));
+                              (gContainer.setProperty("last_update_check", e), this.checkForUpdates(true));
                           }.bind(this),
-                          i.DateAPI.daysToMilliseconds(1)
+                          designerConfig.DateAPI.daysToMilliseconds(1)
                       )),
                       gContainer.getProperty("last_update_check").then((e) => {
                           let t = new Date().getTime();
                           if (e) {
-                              let n = i.DateAPI.diff(i.DateAPI.toDate(e), i.DateAPI.toDate(t), !1),
-                                  o = i.DateAPI.daysToMilliseconds(1);
-                              (n < 0 || n >= o) && (gContainer.setProperty("last_update_check", t), this.checkForUpdates(!0));
+                              let n = designerConfig.DateAPI.diff(designerConfig.DateAPI.toDate(e), designerConfig.DateAPI.toDate(t), false),
+                                  o = designerConfig.DateAPI.daysToMilliseconds(1);
+                              (n < 0 || n >= o) && (gContainer.setProperty("last_update_check", t), this.checkForUpdates(true));
                           } else gContainer.setProperty("last_update_check", t);
                       }),
                       gContainer.getProperty("old_version").then((e) => {
@@ -147,7 +147,7 @@ module.exports = function (e, t, n) {
                           e
                               ? e !== t &&
                                 (gContainer.setProperty("old_version", t),
-                                i.gApi.software.getRelease().then((e) => {
+                                designerConfig.gApi.software.getRelease().then((e) => {
                                     e &&
                                         !e.silent &&
                                         this._trigger(
@@ -162,7 +162,7 @@ module.exports = function (e, t, n) {
             }
             _handleDownloadComplete() {
                 (console.info(this.toString() + " Download complete"),
-                    (this._downloadCompleted = !0),
+                    (this._downloadCompleted = true),
                     this._trigger(
                         new s.DownloadComplete({
                             newVersion: this._releaseStatus.version,
@@ -220,7 +220,7 @@ module.exports = function (e, t, n) {
                 this._intervalPID && clearInterval(this._intervalPID);
             }
             getReleaseNotesLink() {
-                return i.SOFTWARE_UPDATE.CHANGE_LOG_LINK;
+                return designerConfig.SOFTWARE_UPDATE.CHANGE_LOG_LINK;
             }
             toString() {
                 return "[Object GSoftwareUpdateManager]";

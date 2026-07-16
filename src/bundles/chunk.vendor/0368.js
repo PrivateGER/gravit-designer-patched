@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i() {
                 throw new Error("GTLCode class cannot be instantiated");
             }
@@ -7,5 +7,5 @@ module.exports = function (e, t) {
                 Item: "ListNext",
                 Close: "ListEnd",
             }),
-                (e.exports = i));
+                (module.exports = i));
         };

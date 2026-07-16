@@ -1,33 +1,33 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (Object.defineProperty(t, "__esModule", { value: !0 }),
-            (t.updateFileFn =
-                t.syncImagesToCloud =
-                t.listFilesFn =
-                t.fetchRequest =
-                t.default =
-                t.createFileAndGetSignedPutUrlsFn =
+        var o = require(16);
+        (Object.defineProperty(exports, "__esModule", { value: true }),
+            (exports.updateFileFn =
+                exports.syncImagesToCloud =
+                exports.listFilesFn =
+                exports.fetchRequest =
+                exports.default =
+                exports.createFileAndGetSignedPutUrlsFn =
                     void 0),
-            n(19),
-            n(180),
-            n(181),
-            n(96),
-            n(30),
-            n(8),
-            n(20),
-            n(3),
-            n(134),
-            n(218),
-            n(189),
-            n(190),
-            n(191),
-            n(192),
-            n(26),
-            n(114));
-        var i = o(n(227));
-        const a = n(435),
-            r = (t.syncImagesToCloud = async function (e, t, n, o, r, s, l, c, d) {
+            require(19),
+            require(180),
+            require(181),
+            require(96),
+            require(30),
+            require(8 /* Symbol */),
+            require(20),
+            require(3),
+            require(134),
+            require(218),
+            require(189),
+            require(190),
+            require(191),
+            require(192),
+            require(26),
+            require(114));
+        var i = o(require(227));
+        const a = require(435),
+            r = (exports.syncImagesToCloud = async function (e, t, n, o, r, s, l, c, d) {
                 try {
                     var u = new i.default();
                     const S = o.length;
@@ -105,9 +105,9 @@ module.exports = function (e, t, n) {
                 var c = { credentials: "include", headers: a, method: o };
                 return (i && "GET" !== o && (c.body = i), fetch(e, c).then((e) => e.json()));
             };
-        t.fetchRequest = s;
-        t.listFilesFn = (e, t, n) => s("".concat(n, "/file"), t, { query: e });
-        ((t.createFileAndGetSignedPutUrlsFn = async function (e, t, n, o) {
+        exports.fetchRequest = s;
+        exports.listFilesFn = (e, t, n) => s("".concat(n, "/file"), t, { query: e });
+        ((exports.createFileAndGetSignedPutUrlsFn = async function (e, t, n, o) {
             var i = { method: "POST", body: { name: e, type: t, trashed: null } };
             const a = await s("".concat(n, "/file"), o, i);
             var r = { method: "PUT", body: { id: a.id, type: t } };
@@ -116,12 +116,12 @@ module.exports = function (e, t, n) {
                 file: a,
             };
         }),
-            (t.updateFileFn = async function (e, t, n, o, i, a, r) {
+            (exports.updateFileFn = async function (e, t, n, o, i, a, r) {
                 const l = a && r ? await r(e) : null;
                 return await s("".concat(o, "/file/").concat(t), i, {
                     method: "PUT",
-                    body: { md5: n, trashed: !1, sha256: l },
+                    body: { md5: n, trashed: false, sha256: l },
                 });
             }));
-        t.default = { syncImagesToCloud: r };
+        exports.default = { syncImagesToCloud: r };
     };

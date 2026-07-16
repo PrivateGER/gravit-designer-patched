@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o = function () {
             ((this.head = null), (this.tail = null));
@@ -14,5 +14,5 @@ module.exports = function (e, t, n) {
                 if (e) return (null === (this.head = e.next) && (this.tail = null), e.item);
             },
         }),
-            (e.exports = o));
+            (module.exports = o));
     };

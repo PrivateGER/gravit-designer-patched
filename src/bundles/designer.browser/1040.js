@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(88).f;
-        e.exports = function (e, t, n) {
+        var o = require(88).f;
+        module.exports = function (e, t, n) {
             n in e ||
                 o(e, n, {
-                    configurable: !0,
+                    configurable: true,
                     get: function () {
                         return t[n];
                     },

@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(42);
+module.exports = function (module, exports, require) {
+            var n = require(42);
 
             function r(e) {
                 (n.call(this, e, null, this._genBlur(a)), (this.higherBlurs = []));
@@ -7,7 +7,7 @@ module.exports = function (e, t, i) {
                 var i = 0;
                 for (t = 2 * a; t <= o; t += a) this.higherBlurs[i++] = new n(e, null, this._genBlur(t));
             }
-            i(0).inherit(r, n);
+            require(0 /* IsFiniteNonNegativeNumber */).inherit(r, n);
             var o = 128,
                 a = 32;
             ((r.prototype.higherBlurs = null),
@@ -44,5 +44,5 @@ module.exports = function (e, t, i) {
                             l > t && this.fxaa(i, r, o, s));
                     }
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

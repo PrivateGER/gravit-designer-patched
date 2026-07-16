@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16)(n(1573));
-        e.exports = class {
+        var o = require(16)(require(1573));
+        module.exports = class {
             constructor(e, t) {
                 this._promiseManager = new o.default();
             }

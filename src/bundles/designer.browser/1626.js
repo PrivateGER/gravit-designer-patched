@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1);
-        const i = n(31);
+        require(3);
+        var GObject = require(1);
+        const i = require(31);
         function a(e) {
             this._action = e;
         }
-        (o.GObject.inherit(a, i),
+        (GObject.GObject.inherit(a, i),
             (a.prototype._action = null),
             (a.prototype.getId = function () {
                 return this._action.getId();
@@ -58,7 +58,7 @@ module.exports = function (e, t, n) {
                 return this.execute.apply(this, arguments);
             }),
             (a.prototype.isPro = function () {
-                return !0;
+                return true;
             }),
             (a.prototype.getTooltipArea = function () {
                 return this._action.getTooltipArea();
@@ -72,5 +72,5 @@ module.exports = function (e, t, n) {
             (a.prototype.toString = function () {
                 return this._action.toString();
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

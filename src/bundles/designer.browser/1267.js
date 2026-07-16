@@ -1,5 +1,5 @@
-module.exports = function (e, t) {
-        e.exports = (function () {
+module.exports = function (module, exports) {
+        module.exports = (function () {
             var e = function () {},
                 t = function (e) {
                     ((this.canvas = document.createElement("canvas")),
@@ -59,13 +59,13 @@ module.exports = function (e, t) {
                     }
                     function t(e) {
                         function t() {
-                            (n.sort(e), (o = !0));
+                            (n.sort(e), (o = true));
                         }
                         var n = [],
-                            o = !1;
+                            o = false;
                         return {
                             push: function (e) {
-                                (n.push(e), (o = !1));
+                                (n.push(e), (o = false));
                             },
                             peek: function (e) {
                                 return (o || t(), void 0 === e && (e = n.length - 1), n[e]);
@@ -213,7 +213,7 @@ module.exports = function (e, t) {
                                         s = 0;
                                     for (i = n.r1; i <= n.r2; i++)
                                         for (a = n.g1; a <= n.g2; a++) for (r = n.b1; r <= n.b2; r++) s += o[e(i, a, r)] || 0;
-                                    ((n._count = s), (n._count_set = !0));
+                                    ((n._count = s), (n._count_set = true));
                                 }
                                 return n._count;
                             },
@@ -311,7 +311,7 @@ module.exports = function (e, t) {
                                             if (i++ > d) return;
                                         } else (e.push(n), i++);
                                 }
-                                if (!e.length || o < 2 || o > 256) return !1;
+                                if (!e.length || o < 2 || o > 256) return false;
                                 var c = a(e);
                                 c.forEach(function () {
                                     0;
@@ -361,7 +361,7 @@ module.exports = function (e, t) {
                 }),
                 (e.prototype.getImageData = function (e, t) {
                     ((xhr = new XMLHttpRequest()),
-                        xhr.open("GET", e, !0),
+                        xhr.open("GET", e, true),
                         (xhr.responseType = "arraybuffer"),
                         (xhr.onload = function (e) {
                             if (200 == this.status) {

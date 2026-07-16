@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(9),
-                o = i(47),
-                a = i(1122);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                String = require(9),
+                o = require(47),
+                a = require(1122);
 
             function s() {}
-            (n.inherit(s, n),
+            (IsFiniteNonNegativeNumber.inherit(s, IsFiniteNonNegativeNumber),
                 (s.import = function (e, t, i) {
                     if (e instanceof ArrayBuffer || e instanceof Uint8Array) {
                         var n = e instanceof ArrayBuffer ? new Uint8Array(e) : e;
@@ -19,10 +19,10 @@ module.exports = function (e, t, i) {
                     }
                     if (!e || (!e) instanceof Blob) return i("Invalid sketch file.");
                     var l = function (e) {
-                            ("File format is not recognized." === e && (e = r.get(new o("GSketchImport", "text.unsupported-version"))),
+                            ("File format is not recognized." === e && (e = String.get(new o("GSketchImport", "text.unsupported-version"))),
                                 "Sketch file v50+ is not supproted yet." === e &&
                                     (e = {
-                                        v50error: !0,
+                                        v50error: true,
                                     }),
                                 i(e));
                         }.bind(this),
@@ -33,5 +33,5 @@ module.exports = function (e, t, i) {
                         })
                         .catch(l);
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            e.exports = function (e) {
+            module.exports = function (e) {
                 e.realtime = {
                     getCollaborators: function (t) {
                         let i = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};

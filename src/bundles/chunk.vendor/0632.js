@@ -1,10 +1,10 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i() {}
             ((i.extend = function (e, t) {
-                var n = !1,
+                var n = false,
                     r = null,
                     o = 1;
-                "boolean" == typeof e ? ((n = e), (r = t || {}), (o = 2)) : ((n = !1), (r = e || {}));
+                "boolean" == typeof e ? ((n = e), (r = t || {}), (o = 2)) : ((n = false), (r = e || {}));
                 for (var a = o; a < arguments.length; a++)
                     if (arguments[a])
                         for (var s in arguments[a])
@@ -26,5 +26,5 @@ module.exports = function (e, t) {
                         setTimeout(t, e);
                     });
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

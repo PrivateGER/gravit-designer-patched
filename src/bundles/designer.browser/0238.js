@@ -1,33 +1,33 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(3), n(4), n(13));
-        var o = n(1),
-            i = n(40),
-            a = n(1156),
-            r = n(444),
-            s = n(339),
-            l = n(1157),
-            c = n(804),
-            d = n(31);
+        (require(3), require(4), require(13));
+        var GObject = require(1),
+            GSaveAction = require(40),
+            a = require(1156),
+            r = require(444),
+            s = require(339),
+            l = require(1157),
+            c = require(804),
+            d = require(31);
         function u(e, t) {
             ((this._parent = e),
                 (this._htmlElement = $("<ul></ul>").addClass("g-menu")),
                 this._htmlElement.on("mouseover", this._mouseOver.bind(this)),
                 this._htmlElement.on("mouseout", this._mouseOut.bind(this)));
             const n = (e) => {
-                    e.cancelable || (e.stopImmediatePropagation(), "touchmove" === e.type && this.closeMenus(!0));
+                    e.cancelable || (e.stopImmediatePropagation(), "touchmove" === e.type && this.closeMenus(true));
                 },
-                o = !!(0, i.isPassiveSupported)() && { capture: !1, passive: !0 };
+                o = !!(0, GSaveAction.isPassiveSupported)() && { capture: false, passive: true };
             (this._htmlElement[0].addEventListener("touchstart", n, o),
                 this._htmlElement[0].addEventListener("touchmove", n, o),
                 this._htmlElement[0].addEventListener("touchend", n, o),
                 t && this._htmlElement.addClass(t));
         }
-        (o.GObject.inherit(u, o.GEventTarget),
+        (GObject.GObject.inherit(u, GObject.GEventTarget),
             (u.prototype._parent = null),
             (u.prototype._htmlElement = null),
             (u.prototype._items = null),
-            (u.prototype._hovered = !1),
+            (u.prototype._hovered = false),
             (u.prototype._tooltipType = null),
             (u.prototype._rangeLeftX = null),
             (u.prototype._rangeLeftY = null),
@@ -40,15 +40,15 @@ module.exports = function (e, t, n) {
                 if (e && "string" == typeof e) return ((this._tooltipType = e), this);
             }),
             (u.prototype.isHovered = function (e) {
-                if (this._hovered) return !0;
+                if (this._hovered) return true;
                 if (e) {
                     for (var t = 0; t < this.getItemCount(); ++t) {
                         var n = this.getItem(t);
-                        if (n instanceof s && n.getType() === s.Type.Menu && n.getMenu().isHovered(!0)) return !0;
+                        if (n instanceof s && n.getType() === s.Type.Menu && n.getMenu().isHovered(true)) return true;
                     }
-                    return !1;
+                    return false;
                 }
-                return !1;
+                return false;
             }),
             (u.prototype.createMenuItem = function (e) {
                 return e ? new s(s.Type.Menu, u) : new s();
@@ -58,7 +58,7 @@ module.exports = function (e, t, n) {
             }),
             (u.prototype.setActiveItem = function (e) {
                 let t = this.getActiveItem();
-                (t && t.changeActiveState(!1), e.changeActiveState(!0));
+                (t && t.changeActiveState(false), e.changeActiveState(true));
             }),
             (u.prototype.getActiveItem = function () {
                 let e = null;
@@ -155,7 +155,7 @@ module.exports = function (e, t, n) {
                     this.isOpen() ||
                         (this.update(),
                         this._htmlElement.appendTo($("body")),
-                        this.isSubMenu() || l.setActiveMenu(this, !1, o),
+                        this.isSubMenu() || l.setActiveMenu(this, false, o),
                         this.trigger(c.EVENT)),
                     this._htmlElement.parent().is("body"))
                 ) {
@@ -223,10 +223,10 @@ module.exports = function (e, t, n) {
             (u.prototype.close = function () {
                 this.isOpen() &&
                     this._htmlElement.parent().is("body") &&
-                    (this.closeMenus(!0),
+                    (this.closeMenus(true),
                     this._htmlElement.removeClass("g-menu-left g-menu-right g-menu-top g-menu-bottom"),
                     this._htmlElement.detach(),
-                    this === l._activeMenu && l.setActiveMenu(null, !0),
+                    this === l._activeMenu && l.setActiveMenu(null, true),
                     this.trigger(a.EVENT));
             }),
             (u.prototype.setTouchMode = function (e) {
@@ -240,14 +240,14 @@ module.exports = function (e, t, n) {
                 }
             }),
             (u.prototype._mouseOver = function (e) {
-                this._hovered = !0;
+                this._hovered = true;
             }),
             (u.prototype._mouseOut = function (e) {
-                ((this._hovered = !1),
+                ((this._hovered = false),
                     this.isSubMenu() &&
                         setTimeout(
                             function () {
-                                this.isHovered(!0) || this.closeMenus();
+                                this.isHovered(true) || this.closeMenus();
                             }.bind(this),
                             150
                         ));
@@ -256,7 +256,7 @@ module.exports = function (e, t, n) {
                 return this._htmlElement;
             }),
             (u.prototype.detach = function () {
-                (this.closeMenus(!0),
+                (this.closeMenus(true),
                     this._htmlElement.find(".g-hover").removeClass("g-hover"),
                     this._htmlElement.removeClass("g-menu-root"),
                     this._htmlElement.detach(),
@@ -276,10 +276,10 @@ module.exports = function (e, t, n) {
             }),
             (u.prototype.setEnabled = function (e) {
                 ["file", "edit", "modify", "view"].forEach((t) => {
-                    $('.g-menu-item-menu:contains("'.concat(o.GLocale.get(new o.GLocaleKey("GCategory", "category.".concat(t))), '")'))
+                    $('.g-menu-item-menu:contains("'.concat(GObject.GLocale.get(new GObject.GLocaleKey("GCategory", "category.".concat(t))), '")'))
                         [e ? "removeClass" : "addClass"]("g-disabled")
                         [e ? "on" : "off"]("click");
                 });
             }),
-            (e.exports = u));
+            (module.exports = u));
     };

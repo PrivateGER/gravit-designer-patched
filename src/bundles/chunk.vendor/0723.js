@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(105);
+            var n = require(105);
 
             function r(e, t) {
                 for (var i = 0, n = e.length - 1; i <= n; ) {
@@ -57,10 +57,10 @@ module.exports = function (e, t, i) {
                 getDefaultScriptName: function () {
                     var e = this.getTable();
                     if (e) {
-                        for (var t = !1, i = 0; i < e.scripts.length; i++) {
+                        for (var t = false, i = 0; i < e.scripts.length; i++) {
                             var n = e.scripts[i].tag;
                             if ("DFLT" === n) return n;
-                            "latn" === n && (t = !0);
+                            "latn" === n && (t = true);
                         }
                         return t ? "latn" : void 0;
                     }
@@ -89,7 +89,7 @@ module.exports = function (e, t, i) {
                     }
                 },
                 getLangSysTags: function (e) {
-                    var t = this.getScriptTable(e, !1);
+                    var t = this.getScriptTable(e, false);
                     return t && t.langSysRecords
                         ? t.langSysRecords.map(function (e) {
                               return e.tag;
@@ -183,5 +183,5 @@ module.exports = function (e, t, i) {
                     return t;
                 },
             }),
-                (e.exports = s));
+                (module.exports = s));
         };

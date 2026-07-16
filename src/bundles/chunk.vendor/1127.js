@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(598);
+module.exports = function (module, exports, require) {
+            var n = require(598);
 
             function r(e) {
                 ((this.cornerRadius = e.cornerRadius),
@@ -15,13 +15,13 @@ module.exports = function (e, t, i) {
                 (r.prototype.curveTo = null),
                 (r.prototype.curveMode = 0),
                 (r.prototype.point = null),
-                (r.prototype.hasCurveFrom = !1),
-                (r.prototype.hasCurveTo = !1),
+                (r.prototype.hasCurveFrom = false),
+                (r.prototype.hasCurveTo = false),
                 (r.prototype.transform = function (e) {
                     e &&
                         ((this.curveFrom = e.mapPoint(this.curveFrom)),
                         (this.curveTo = e.mapPoint(this.curveTo)),
                         (this.point = e.mapPoint(this.point)));
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

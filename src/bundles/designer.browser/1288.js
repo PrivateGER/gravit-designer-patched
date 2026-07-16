@@ -1,26 +1,26 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(15),
-            a = n(67),
-            r = n(18),
-            s = n(31);
+        require(3);
+        var GObject = require(1),
+            GPlatform = require(15),
+            a = require(67),
+            GCategory = require(18),
+            s = require(31);
         function l() {
             l.TOOLTIP_CONFIG = {
                 [a.TOOLTIP_AREA.TOOLBAR]: a.GRichTooltipConfig.from({
-                    title: o.GLocale.get(new o.GLocaleKey("GToggleSnapAction", "tooltip-title")),
-                    description: o.GLocale.get(new o.GLocaleKey("GToggleSnapAction", "tooltip-description")),
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GToggleSnapAction", "tooltip-title")),
+                    description: GObject.GLocale.get(new GObject.GLocaleKey("GToggleSnapAction", "tooltip-description")),
                     shortcut: l.SHORTCUT,
-                    middle: !1,
+                    middle: false,
                     learnMore: "/docs/design-aids/snaping/",
                 }),
             };
         }
-        (o.GObject.inherit(l, s),
+        (GObject.GObject.inherit(l, s),
             (l.ID = "view.toggle-snap"),
-            (l.TITLE = new o.GLocaleKey("GToggleSnapAction", "title")),
-            (l.SHORTCUT = [i.GKey.Constant.SHIFT, i.GKey.Constant.F10]),
+            (l.TITLE = new GObject.GLocaleKey("GToggleSnapAction", "title")),
+            (l.SHORTCUT = [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.F10]),
             (l.TOOLTIP_CONFIG = null),
             (l.prototype.getId = function () {
                 return l.ID;
@@ -29,7 +29,7 @@ module.exports = function (e, t, n) {
                 return l.TITLE;
             }),
             (l.prototype.getCategory = function () {
-                return r.CATEGORY_VIEW_SNAP;
+                return GCategory.CATEGORY_VIEW_SNAP;
             }),
             (l.prototype.getGroup = function () {
                 return "snap/enable";
@@ -38,7 +38,7 @@ module.exports = function (e, t, n) {
                 return l.SHORTCUT;
             }),
             (l.prototype.isCheckable = function () {
-                return !0;
+                return true;
             }),
             (l.prototype.isChecked = function () {
                 return !gDesigner.getSetting("snap_disabled");
@@ -51,7 +51,7 @@ module.exports = function (e, t, n) {
                 const t = l.TOOLTIP_CONFIG[e];
                 return (
                     t.setConfig({
-                        title: o.GLocale.get(new o.GLocaleKey("GToggleSnapAction", "tootlip-title-action")),
+                        title: GObject.GLocale.get(new GObject.GLocaleKey("GToggleSnapAction", "tootlip-title-action")),
                     }),
                     t
                 );
@@ -59,5 +59,5 @@ module.exports = function (e, t, n) {
             (l.prototype.toString = function () {
                 return "[Object GToggleSnapAction]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

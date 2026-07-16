@@ -1,48 +1,48 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(3), n(4), n(41));
-        var o = n(53),
-            i = n(1),
-            a = n(67),
-            r = n(18),
-            s = n(31);
+        (require(3), require(4), require(41));
+        var o = require(53),
+            GObject = require(1),
+            a = require(67),
+            GCategory = require(18),
+            s = require(31);
         function l(e) {
             ((this._type = e),
-                (this._title = new i.GLocaleKey("GTransformAction", "title." + e)),
+                (this._title = new GObject.GLocaleKey("GTransformAction", "title." + e)),
                 (l.TOOLTIP_CONFIG = {
                     [a.TOOLTIP_AREA.TOOLBAR]: {
                         [l.Type.Rotate45Left]: null,
                         [l.Type.Rotate90Left]: a.GRichTooltipConfig.from({
-                            title: i.GLocale.get(new i.GLocaleKey("GTransformAction", "rotate-90-left-tooltip-title")),
-                            description: i.GLocale.get(new i.GLocaleKey("GTransformAction", "rotate-90-left-tooltip-description")),
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GTransformAction", "rotate-90-left-tooltip-title")),
+                            description: GObject.GLocale.get(new GObject.GLocaleKey("GTransformAction", "rotate-90-left-tooltip-description")),
                             learnMore:
                                 "/docs/basics/moving-transforming-and-arranging-objects/#rotating-objects",
                         }),
                         [l.Type.Rotate180Left]: null,
                         [l.Type.Rotate45Right]: null,
                         [l.Type.Rotate90Right]: a.GRichTooltipConfig.from({
-                            title: i.GLocale.get(new i.GLocaleKey("GTransformAction", "rotate-90-right-tooltip-title")),
-                            description: i.GLocale.get(new i.GLocaleKey("GTransformAction", "rotate-90-right-tooltip-description")),
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GTransformAction", "rotate-90-right-tooltip-title")),
+                            description: GObject.GLocale.get(new GObject.GLocaleKey("GTransformAction", "rotate-90-right-tooltip-description")),
                             learnMore:
                                 "/docs/basics/moving-transforming-and-arranging-objects/#rotating-objects",
                         }),
                         [l.Type.Rotate180Right]: null,
                         [l.Type.FlipVertical]: a.GRichTooltipConfig.from({
-                            title: i.GLocale.get(new i.GLocaleKey("GTransformAction", "flip-vertical-tooltip-title")),
-                            description: i.GLocale.get(new i.GLocaleKey("GTransformAction", "flip-vertical-tooltip-description")),
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GTransformAction", "flip-vertical-tooltip-title")),
+                            description: GObject.GLocale.get(new GObject.GLocaleKey("GTransformAction", "flip-vertical-tooltip-description")),
                             learnMore:
                                 "/docs/basics/moving-transforming-and-arranging-objects/#flipping-objects",
                         }),
                         [l.Type.FlipHorizontal]: a.GRichTooltipConfig.from({
-                            title: i.GLocale.get(new i.GLocaleKey("GTransformAction", "flip-horizontal-tooltip-title")),
-                            description: i.GLocale.get(new i.GLocaleKey("GTransformAction", "flip-horizontal-tooltip-description")),
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GTransformAction", "flip-horizontal-tooltip-title")),
+                            description: GObject.GLocale.get(new GObject.GLocaleKey("GTransformAction", "flip-horizontal-tooltip-description")),
                             learnMore:
                                 "/docs/basics/moving-transforming-and-arranging-objects/#flipping-objects",
                         }),
                     },
                 }));
         }
-        (i.GObject.inherit(l, s),
+        (GObject.GObject.inherit(l, s),
             (l.Type = {
                 Rotate45Left: "rotate-45-left",
                 Rotate90Left: "rotate-90-left",
@@ -77,7 +77,7 @@ module.exports = function (e, t, n) {
                 }
             }),
             (l.prototype.getCategory = function () {
-                return r.CATEGORY_MODIFY_TRANSFORM;
+                return GCategory.CATEGORY_MODIFY_TRANSFORM;
             }),
             (l.prototype.getGroup = function () {
                 var e = "";
@@ -126,8 +126,8 @@ module.exports = function (e, t, n) {
                         function () {
                             for (var t = 0; t < e.length; ++t) {
                                 var n = e[t];
-                                if (n.hasMixin(i.GElement.Transform) && a) {
-                                    var o = a.getSide(i.GRect.Side.CENTER),
+                                if (n.hasMixin(GObject.GElement.Transform) && a) {
+                                    var o = a.getSide(GObject.GRect.Side.CENTER),
                                         r = 0,
                                         s = 1,
                                         c = 1;
@@ -156,16 +156,16 @@ module.exports = function (e, t, n) {
                                         case l.Type.FlipHorizontal:
                                             s = -1;
                                     }
-                                    var d = new i.GTransform()
+                                    var d = new GObject.GTransform()
                                         .translated(-o.getX(), -o.getY())
                                         .scaled(s, c)
-                                        .rotated(i.GMath.toRadians(r))
+                                        .rotated(GObject.GMath.toRadians(r))
                                         .translated(o.getX(), o.getY());
-                                    n.transform(d, !0);
+                                    n.transform(d, true);
                                 }
                             }
                         }.bind(this),
-                        i.GLocale.get(this.getTitle())
+                        GObject.GLocale.get(this.getTitle())
                     );
             }),
             (l.prototype.getTooltipConfig = function (e) {
@@ -174,5 +174,5 @@ module.exports = function (e, t, n) {
             (l.prototype.toString = function () {
                 return "[Object GTransformAction]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

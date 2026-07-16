@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(197),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(197),
                 o = function (e) {
                     (r.call(this),
                         (e = e || {}),
@@ -9,9 +9,9 @@ module.exports = function (e, t, i) {
                         e.individual && this.put("/I", e.individual),
                         e.colorSpace && this.put("/CS", e.colorSpace.name));
                 };
-            (n.inherit(o, r),
+            (IsFiniteNonNegativeNumber.inherit(o, r),
                 (o.SubType = {
                     DEFAULT: "Transparency",
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

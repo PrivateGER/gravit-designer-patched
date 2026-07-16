@@ -1,18 +1,18 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(23),
-            i = n(223),
-            a = n(21),
-            r = n(65),
-            s = n(351),
-            l = n(152),
-            c = n(521),
-            d = n(522),
-            u = n(213),
-            p = n(523),
-            g = l.aTypedArray,
-            h = l.exportTypedArrayMethod,
-            f = o.Uint16Array,
+        var RegExp = require(23),
+            i = require(223),
+            a = require(21),
+            r = require(65),
+            s = require(351),
+            NATIVE_ARRAY_BUFFER_VIEWS = require(152),
+            c = require(521),
+            d = require(522),
+            u = require(213),
+            p = require(523),
+            g = NATIVE_ARRAY_BUFFER_VIEWS.aTypedArray,
+            h = NATIVE_ARRAY_BUFFER_VIEWS.exportTypedArrayMethod,
+            f = RegExp.Uint16Array,
             m = f && i(f.prototype.sort),
             y = !(
                 !m ||
@@ -28,7 +28,7 @@ module.exports = function (e, t, n) {
                 !a(function () {
                     if (u) return u < 74;
                     if (c) return c < 67;
-                    if (d) return !0;
+                    if (d) return true;
                     if (p) return p < 602;
                     var e,
                         t,
@@ -43,7 +43,7 @@ module.exports = function (e, t, n) {
                         e < 516;
                         e++
                     )
-                        if (n[e] !== o[e]) return !0;
+                        if (n[e] !== o[e]) return true;
                 });
         h(
             "sort",

@@ -1,24 +1,24 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(11),
-                o = (i(22), i(56)),
-                a = (i(128), i(36)),
-                s = i(39),
-                l = i(5),
-                h = i(24),
-                A = i(6),
-                c = i(45),
-                p = i(155),
-                u = i(7),
-                d = i(73),
-                g = i(12),
-                f = i(81),
-                m = i(17);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(11),
+                o = (require(22), require(56)),
+                a = (require(128), require(36)),
+                s = require(39),
+                l = require(5),
+                h = require(24),
+                A = require(6),
+                c = require(45),
+                p = require(155),
+                u = require(7),
+                d = require(73),
+                g = require(12),
+                f = require(81),
+                m = require(17);
 
             function y(e) {
                 p.call(this, e);
             }
-            (n.inherit(y, p),
+            (IsFiniteNonNegativeNumber.inherit(y, p),
                 a.exports(y, d),
                 (y.SHOULDER_PART_ID = r.uuid()),
                 (y.prototype.getBBoxMargin = function () {
@@ -56,11 +56,11 @@ module.exports = function (e, t, i) {
                             var E = _.inverted().mapPoint(i),
                                 B = this._element.getAnchorPoints().getPreviousPoint(e.ap),
                                 x = new l(B.getProperty("x"), B.getProperty("y")),
-                                P = g.getVectorProjection(m.getX(), m.getY(), x.getX(), x.getY(), E.getX(), E.getY(), !0),
+                                P = g.getVectorProjection(m.getX(), m.getY(), x.getX(), x.getY(), E.getX(), E.getY(), true),
                                 S =
                                     ((B = this._element.getAnchorPoints().getNextPoint(e.ap)),
                                     new l(B.getProperty("x"), B.getProperty("y"))),
-                                T = g.getVectorProjection(m.getX(), m.getY(), S.getX(), S.getY(), E.getX(), E.getY(), !0),
+                                T = g.getVectorProjection(m.getX(), m.getY(), S.getX(), S.getY(), E.getX(), E.getY(), true),
                                 I = _.mapPoint(P),
                                 F = _.mapPoint(T),
                                 R = g.ptDist(I.getX(), I.getY(), b.getX(), b.getY()),
@@ -96,7 +96,7 @@ module.exports = function (e, t, i) {
                         (this._element.transferProperties(this._elementPreview, [d.GeometryProperties]), this.resetPartMove(e, t));
                         for (var r = [], o = 0; o < this._partSelection.length; ++o)
                             this._partSelection[o].id === y.SHOULDER_PART_ID && r.push(this._partSelection[o]);
-                        this.updatePartSelection(!0, r);
+                        this.updatePartSelection(true, r);
                     }
                     p.prototype._applyPartMove.call(this, e, t, i, n);
                 }),
@@ -107,7 +107,7 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (y.prototype._hasCenterCross = function () {
-                    return !0;
+                    return true;
                 }),
                 (y.prototype._postPaint = function (e, t) {
                     (p.prototype._postPaint.call(this, e, t),
@@ -133,7 +133,7 @@ module.exports = function (e, t, i) {
                                                     s.getY(),
                                                     h.outlineWidth,
                                                     t.selectionOutlineColor,
-                                                    !0
+                                                    true
                                                 ),
                                                 t.canvas.strokeLine(
                                                     a.getX(),
@@ -142,7 +142,7 @@ module.exports = function (e, t, i) {
                                                     s.getY(),
                                                     h.outlineWidth,
                                                     t.selectionOutlineColor,
-                                                    !0
+                                                    true
                                                 ));
                                             var A = h.annotationHandles.rectangle,
                                                 c = this.isPartSelected(l);
@@ -164,9 +164,9 @@ module.exports = function (e, t, i) {
                                     ),
                                     this._element.getProperty("uf") && h.annotationHandles.suppressRedundantCorners)
                                 )
-                                    return !0;
+                                    return true;
                             }.bind(this),
-                            !0
+                            true
                         ));
                 }),
                 (y.prototype._partIdAreEqual = function (e, t) {
@@ -192,7 +192,7 @@ module.exports = function (e, t, i) {
                                         r,
                                         function (t, i, r, o, a, l) {
                                             f
-                                                .getAnnotationBBox(o, r, h.annotationHandles.rectangle.size, !1)
+                                                .getAnnotationBBox(o, r, h.annotationHandles.rectangle.size, false)
                                                 .expanded(
                                                     h.annotPickDistance,
                                                     h.annotPickDistance,
@@ -209,16 +209,16 @@ module.exports = function (e, t, i) {
                                                         point: r,
                                                     },
                                                     null,
-                                                    !0,
-                                                    !0
+                                                    true,
+                                                    true
                                                 ));
                                         }.bind(this)
                                     ),
                                     n)
                                 )
-                                    return !0;
+                                    return true;
                             }.bind(this),
-                            !0
+                            true
                         ),
                         n
                     );
@@ -252,9 +252,9 @@ module.exports = function (e, t, i) {
                         d = r.getProperty("uf"),
                         f = this._getShoulderLimits(o, d, a, e, p);
                     if (f) {
-                        var m = a ? o.getLeftShoulderPointTransformed(a, !0) : o.getLeftShoulderPoint(!0);
+                        var m = a ? o.getLeftShoulderPointTransformed(a, true) : o.getLeftShoulderPoint(true);
                         m || ((m = new l(o.getProperty("x"), o.getProperty("y"))), (m = a ? a.mapPoint(m) : m));
-                        var y = a ? o.getRightShoulderPointTransformed(a, !0) : o.getRightShoulderPoint(!0);
+                        var y = a ? o.getRightShoulderPointTransformed(a, true) : o.getRightShoulderPoint(true);
                         (y || ((y = new l(o.getProperty("x"), o.getProperty("y"))), (y = a ? a.mapPoint(y) : y)),
                             (m = e ? e.mapPoint(m) : m),
                             (y = e ? e.mapPoint(y) : y));
@@ -290,5 +290,5 @@ module.exports = function (e, t, i) {
                 (y.prototype.toString = function () {
                     return "[Object GRectangleEditor]";
                 }),
-                (e.exports = y));
+                (module.exports = y));
         };

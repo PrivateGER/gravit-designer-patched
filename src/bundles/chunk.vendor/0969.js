@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            const n = i(580);
-            e.exports = (e) => {
+            const n = require(580);
+            module.exports = (e) => {
                 e.passwordlessAuthentication = {
                     authenticateWithResetPasswordToken: (t) => e.GET("/passwordless/".concat(n.ResetPassword, "/").concat(t)),
                     authenticateWithSetPasswordToken: (t) => e.GET("/passwordless/".concat(n.SetPassword, "/").concat(t)),

@@ -1,16 +1,16 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(3), n(4), n(41));
-        var o = n(1),
-            i = n(15),
-            a = n(18),
-            r = n(31),
-            s = n(163);
-        const l = n(446);
+        (require(3), require(4), require(41));
+        var GObject = require(1),
+            GPlatform = require(15),
+            GCategory = require(18),
+            r = require(31),
+            GDocument = require(163);
+        const GLoginPanel = require(446);
         function c() {}
-        (o.GObject.inherit(c, r),
+        (GObject.GObject.inherit(c, r),
             (c.ID = "file.open"),
-            (c.TITLE = new o.GLocaleKey("GOpenAction", "title")),
+            (c.TITLE = new GObject.GLocaleKey("GOpenAction", "title")),
             (c.prototype.getId = function () {
                 return c.ID;
             }),
@@ -18,13 +18,13 @@ module.exports = function (e, t, n) {
                 return c.TITLE;
             }),
             (c.prototype.getCategory = function () {
-                return a.CATEGORY_FILE;
+                return GCategory.CATEGORY_FILE;
             }),
             (c.prototype.getGroup = function () {
                 return "file-open";
             }),
             (c.prototype.getShortcut = function () {
-                return [i.GKey.Constant.META, "O"];
+                return [GPlatform.GKey.Constant.META, "O"];
             }),
             (c.prototype.isEnabled = function (e) {
                 return (
@@ -33,17 +33,17 @@ module.exports = function (e, t, n) {
                 );
             }),
             (c.prototype.isAvailable = function () {
-                return i.GPlatform.webBrowser !== i.GPlatform.constructor.WebBrowser.Safari;
+                return GPlatform.GPlatform.webBrowser !== GPlatform.GPlatform.constructor.WebBrowser.Safari;
             }),
             (c.prototype.execute = function (e, t) {
-                new l(
+                new GLoginPanel(
                     () => {
                         (e = e || gDesigner.getDefaultStorage()).openPrompt(
-                            s.FileTypes.filter((e) => e.load),
+                            GDocument.FileTypes.filter((e) => e.load),
                             (e) => {
                                 (gDesigner.openDocument(e), t && t());
                             },
-                            !1
+                            false
                         );
                     },
                     () => {
@@ -57,5 +57,5 @@ module.exports = function (e, t, n) {
             (c.prototype.toString = function () {
                 return "[Object GOpenAction]";
             }),
-            (e.exports = c));
+            (module.exports = c));
     };

@@ -1,39 +1,39 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o,
             i,
             a,
-            r = n(425),
-            s = n(49),
-            l = n(23),
-            c = n(35),
-            d = n(46),
-            u = n(61),
-            p = n(131),
-            g = n(185),
-            h = n(100),
-            f = n(79),
-            m = n(120),
-            y = n(144),
-            v = n(208),
-            _ = n(175),
-            b = n(43),
-            w = n(258),
-            C = n(80),
+            r = require(425),
+            s = require(49),
+            RegExp = require(23),
+            c = require(35),
+            d = require(46),
+            u = require(61),
+            p = require(131),
+            g = require(185),
+            h = require(100),
+            f = require(79),
+            m = require(120),
+            y = require(144),
+            v = require(208),
+            _ = require(175),
+            b = require(43),
+            w = require(258),
+            C = require(80),
             x = C.enforce,
             S = C.get,
-            E = l.Int8Array,
+            E = RegExp.Int8Array,
             A = E && E.prototype,
-            T = l.Uint8ClampedArray,
+            T = RegExp.Uint8ClampedArray,
             G = T && T.prototype,
             P = E && v(E),
             D = A && v(A),
             L = Object.prototype,
-            I = l.TypeError,
+            I = RegExp.TypeError,
             k = b("toStringTag"),
             O = w("TYPED_ARRAY_TAG"),
-            F = r && !!_ && "Opera" !== p(l.opera),
-            R = !1,
+            F = r && !!_ && "Opera" !== p(RegExp.opera),
+            R = false,
             M = {
                 Int8Array: 1,
                 Uint8Array: 1,
@@ -54,12 +54,12 @@ module.exports = function (e, t, n) {
                 }
             },
             U = function (e) {
-                if (!d(e)) return !1;
+                if (!d(e)) return false;
                 var t = p(e);
                 return u(M, t) || u(N, t);
             };
-        for (o in M) (a = (i = l[o]) && i.prototype) ? (x(a).TypedArrayConstructor = i) : (F = !1);
-        for (o in N) (a = (i = l[o]) && i.prototype) && (x(a).TypedArrayConstructor = i);
+        for (o in M) (a = (i = RegExp[o]) && i.prototype) ? (x(a).TypedArrayConstructor = i) : (F = false);
+        for (o in N) (a = (i = RegExp[o]) && i.prototype) && (x(a).TypedArrayConstructor = i);
         if (
             (!F || !c(P) || P === Function.prototype) &&
             ((P = function () {
@@ -67,19 +67,19 @@ module.exports = function (e, t, n) {
             }),
             F)
         )
-            for (o in M) l[o] && _(l[o], P);
-        if ((!F || !D || D === L) && ((D = P.prototype), F)) for (o in M) l[o] && _(l[o].prototype, D);
+            for (o in M) RegExp[o] && _(RegExp[o], P);
+        if ((!F || !D || D === L) && ((D = P.prototype), F)) for (o in M) RegExp[o] && _(RegExp[o].prototype, D);
         if ((F && v(G) !== D && _(G, D), s && !u(D, k)))
-            for (o in ((R = !0),
+            for (o in ((R = true),
             m(D, k, {
-                configurable: !0,
+                configurable: true,
                 get: function () {
                     return d(this) ? this[O] : void 0;
                 },
             }),
             M))
-                l[o] && h(l[o], O, o);
-        e.exports = {
+                RegExp[o] && h(RegExp[o], O, o);
+        module.exports = {
             NATIVE_ARRAY_BUFFER_VIEWS: F,
             TYPED_ARRAY_TAG: R && O,
             aTypedArray: function (e) {
@@ -94,7 +94,7 @@ module.exports = function (e, t, n) {
                 if (s) {
                     if (n)
                         for (var i in M) {
-                            var a = l[i];
+                            var a = RegExp[i];
                             if (a && u(a.prototype, e))
                                 try {
                                     delete a.prototype[e];
@@ -113,7 +113,7 @@ module.exports = function (e, t, n) {
                     if (_) {
                         if (n)
                             for (o in M)
-                                if ((i = l[o]) && u(i, e))
+                                if ((i = RegExp[o]) && u(i, e))
                                     try {
                                         delete i[e];
                                     } catch (e) {}
@@ -122,12 +122,12 @@ module.exports = function (e, t, n) {
                             return f(P, e, n ? t : (F && P[e]) || t);
                         } catch (e) {}
                     }
-                    for (o in M) !(i = l[o]) || (i[e] && !n) || f(i, e, t);
+                    for (o in M) !(i = RegExp[o]) || (i[e] && !n) || f(i, e, t);
                 }
             },
             getTypedArrayConstructor: B,
             isView: function (e) {
-                if (!d(e)) return !1;
+                if (!d(e)) return false;
                 var t = p(e);
                 return "DataView" === t || u(M, t) || u(N, t);
             },

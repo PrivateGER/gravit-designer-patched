@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        n(1);
-        (n(1327), n(1579));
+        require(8 /* Symbol */);
+        require(1 /* GObject */);
+        (require(1327), require(1579));
         class o {
             static openTrialExpired() {
                 return o._openReminder("trialexpired");
@@ -26,5 +26,5 @@ module.exports = function (e, t, n) {
                 return gInAppPurchase.getProduct().catch(() => null);
             }
         }
-        e.exports = o;
+        module.exports = o;
     };

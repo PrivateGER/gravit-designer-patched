@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o() {
             for (var e = arguments.length, t = new Array(e), n = 0; n < e; n++) t[n] = arguments[n];
             t && this._updateFromArguments(t);
         }
-        (n(19),
-            n(26),
+        (require(19),
+            require(26),
             (o.prototype._updateFromArguments = function () {
                 for (var e = arguments.length, t = new Array(e), n = 0; n < e; n++) t[n] = arguments[n];
                 const o = new Map(...t);
-                var i = !1;
+                var i = false;
                 const a = 0,
                     r = 1,
                     s = o.entries();
@@ -38,5 +38,5 @@ module.exports = function (e, t, n) {
                 return Object.isFrozen(this);
             }),
             Object.freeze(o.prototype),
-            (e.exports = o));
+            (module.exports = o));
     };

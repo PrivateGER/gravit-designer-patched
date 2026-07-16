@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(43),
-            i = n(203),
+        var o = require(43),
+            i = require(203),
             a = o("iterator"),
             r = Array.prototype;
-        e.exports = function (e) {
+        module.exports = function (e) {
             return void 0 !== e && (i.Array === e || r[a] === e);
         };
     };

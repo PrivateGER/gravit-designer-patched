@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(89),
-                r = i(115);
-            ((t.parse = function (e, t, i, r, o) {
-                for (var a, s, l = new n.Parser(e, t), h = 0; h < r; h += 1) {
+            var Parser = require(89),
+                r = require(115);
+            ((exports.parse = function (e, t, i, r, o) {
+                for (var a, s, l = new Parser.Parser(e, t), h = 0; h < r; h += 1) {
                     h < i && ((a = l.parseUShort()), (s = l.parseShort()));
                     var A = o.get(h);
                     ((A.advanceWidth = a), (A.leftSideBearing = s));
                 }
             }),
-                (t.make = function (e) {
+                (exports.make = function (e) {
                     for (var t = new r.Table("hmtx", []), i = 0; i < e.length; i += 1) {
                         var n = e.get(i),
                             o = n.advanceWidth || 0,

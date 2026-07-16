@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(1138),
-                r = i(250);
+module.exports = function (module, exports, require) {
+            var n = require(1138),
+                r = require(250);
 
             function o(e) {
                 this._bplist = e;
@@ -47,5 +47,5 @@ module.exports = function (e, t, i) {
                             return 255 * parseFloat(e);
                         });
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

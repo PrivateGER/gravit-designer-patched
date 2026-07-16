@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(49),
-            i = n(21),
-            a = n(242);
-        e.exports =
+        var o = require(49),
+            i = require(21),
+            a = require(242);
+        module.exports =
             !o &&
             !i(function () {
                 return (

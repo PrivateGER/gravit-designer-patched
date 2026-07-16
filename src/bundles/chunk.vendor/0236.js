@@ -1,40 +1,40 @@
-module.exports = function (e, t, i) {
-            var n = i(64),
-                r = i(150),
-                o = i(0),
-                a = i(60),
-                s = i(52),
-                l = i(141),
-                h = i(77),
-                A = i(5),
-                c = i(24),
-                p = i(332),
-                u = i(6),
-                d = i(56),
-                g = i(36),
-                f = i(22),
-                m = i(9),
-                y = i(47),
-                _ = i(153),
-                v = i(84),
-                b = i(333);
+module.exports = function (module, exports, require) {
+            var n = require(64),
+                r = require(150),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(60),
+                s = require(52),
+                l = require(141),
+                h = require(77),
+                A = require(5),
+                c = require(24),
+                p = require(332),
+                u = require(6),
+                d = require(56),
+                g = require(36),
+                f = require(22),
+                String = require(9),
+                y = require(47),
+                _ = require(153),
+                v = require(84),
+                b = require(333);
 
             function C(e, t) {
                 (p.call(this), b.call(this), (this._keepRatio = e), (this._fromCenter = t));
             }
-            (o.inheritAndMix(C, p, [b]),
-                (C.prototype._isDragging = !1),
+            (IsFiniteNonNegativeNumber.inheritAndMix(C, p, [b]),
+                (C.prototype._isDragging = false),
                 (C.prototype._dragStart = null),
                 (C.prototype._dragStartOrig = null),
                 (C.prototype._dragCurrent = null),
                 (C.prototype._dragCurrentOrig = null),
-                (C.prototype._keepRatio = !1),
-                (C.prototype._fromCenter = !1),
+                (C.prototype._keepRatio = false),
+                (C.prototype._fromCenter = false),
                 (C.prototype._shape = null),
                 (C.prototype._dragArea = null),
                 (C.prototype._dragLine = null),
                 (C.prototype._movePosition = null),
-                (C.prototype._hasCreatedShape = !1),
+                (C.prototype._hasCreatedShape = false),
                 (C.prototype.getCursor = function () {
                     return s.Cross;
                 }),
@@ -78,7 +78,7 @@ module.exports = function (e, t, i) {
                         this._editor.updateByMousePosition(
                             e.client,
                             this._view.getWorldTransform(this._scene),
-                            !1,
+                            false,
                             this._view.getViewConfiguration()
                         );
                 }),
@@ -90,11 +90,11 @@ module.exports = function (e, t, i) {
                             this._editor.getGuides().finishMap(),
                             this._createShapeManually(t));
                     }
-                    ((this._hasCreatedShape = !1), this._manager.notifyJobDone(this));
+                    ((this._hasCreatedShape = false), this._manager.notifyJobDone(this));
                 }),
                 (C.prototype._mouseDragStart = function (e) {
-                    ((this._hasCreatedShape = !1),
-                        (this._isDragging = !0),
+                    ((this._hasCreatedShape = false),
+                        (this._isDragging = true),
                         this.beginPan(),
                         (this._dragStart = this._view.getViewTransform(this._view.getScene().getActivePage()).mapPoint(e.client)),
                         this._editor.getGuides().beginMap(this._editor.getMappingScopes()),
@@ -102,7 +102,7 @@ module.exports = function (e, t, i) {
                         this._editor.getGuides().finishMap(),
                         (this._shape = this._createShape()),
                         this._invalidateShape(),
-                        (this._hasCreatedShape = this._insertShape(this._shape, !0)));
+                        (this._hasCreatedShape = this._insertShape(this._shape, true)));
                     var t = g.getEditor(this._shape);
                     (t && (this._shape.setFlag(f.Flag.NoPaint), t.setOutlineTmpFlag()), this.updateInlineHint(null), this.updateCursor());
                 }),
@@ -126,12 +126,12 @@ module.exports = function (e, t, i) {
                         (this._dragLine = null),
                         (this._dragStartOrig = null),
                         (this._dragCurrentOrig = null),
-                        (this._isDragging = !1),
+                        (this._isDragging = false),
                         this.updateCursor(),
                         this.updateInlineHint(null),
                         !this._hasCreatedShape && t)
                     )
-                        (this._prepareShapeForAppend(t), this._insertShape(t), (this._hasCreatedShape = !0));
+                        (this._prepareShapeForAppend(t), this._insertShape(t), (this._hasCreatedShape = true));
                     else if (this._hasCreatedShape) {
                         t.removeFlag(f.Flag.NoPaint);
                         var i = g.getEditor(t);
@@ -200,7 +200,7 @@ module.exports = function (e, t, i) {
                                     : ((d = u.fromPoints(new A(t, i), new A(r, o))), (g = [new A(t, i), new A(s, l)])),
                                 (this._dragArea = d),
                                 (this._dragLine = g),
-                                this._updateShape(this._shape, d, g, !0),
+                                this._updateShape(this._shape, d, g, true),
                                 c.showTooltips && c.sizeTooltip && this._showAreaInlineHint())
                             ) {
                                 var f = null;
@@ -220,19 +220,19 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (C.prototype._prepareShapeForAppend = function (e) {
-                    return this._updateShape(e, this._dragArea, this._dragLine, !0);
+                    return this._updateShape(e, this._dragArea, this._dragLine, true);
                 }),
                 (C.prototype._insertShape = function (e, t, i, n) {
-                    if (e && e.getParent()) return !1;
-                    if (i) this._editor.insertElements([e], !1, !!i, !0);
+                    if (e && e.getParent()) return false;
+                    if (i) this._editor.insertElements([e], false, !!i, true);
                     else
                         try {
-                            (this._editor.beginTransaction(), this._editor.insertElements([e], !1, !0, !0));
+                            (this._editor.beginTransaction(), this._editor.insertElements([e], false, true, true));
                         } finally {
                             var r = this.getAdditionalTransactionData(e, e.getParent());
-                            this._editor.commitTransaction(n || m.get(new y("GShapeTool", "action.insert-elements")), r);
+                            this._editor.commitTransaction(n || String.get(new y("GShapeTool", "action.insert-elements")), r);
                         }
-                    return !0;
+                    return true;
                 }),
                 (C.prototype._createShapeManually = function (e) {}),
                 (C.prototype._createShape = function () {
@@ -242,13 +242,13 @@ module.exports = function (e, t, i) {
                     throw new Error("Not Supported.");
                 }),
                 (C.prototype._hasCenterCross = function () {
-                    return !1;
+                    return false;
                 }),
                 (C.prototype._showMousePositionInlineHint = function () {
-                    return !1;
+                    return false;
                 }),
                 (C.prototype._showAreaInlineHint = function () {
-                    return !1;
+                    return false;
                 }),
                 (C.prototype._getRelatedItemClass = function () {
                     return d;
@@ -256,5 +256,5 @@ module.exports = function (e, t, i) {
                 (C.prototype.toString = function () {
                     return "[Object GShapeTool]";
                 }),
-                (e.exports = C));
+                (module.exports = C));
         };

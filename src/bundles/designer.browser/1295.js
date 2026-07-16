@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(53),
-            i = n(15),
-            a = n(1),
-            r = n(18),
-            s = n(31);
+        require(3);
+        var o = require(53),
+            GPlatform = require(15),
+            GObject = require(1),
+            GCategory = require(18),
+            s = require(31);
         function l(e) {
-            ((this._category = e), (this._title = new a.GLocaleKey("GSnapUnitAction", "title." + e)));
+            ((this._category = e), (this._title = new GObject.GLocaleKey("GSnapUnitAction", "title." + e)));
         }
-        (a.GObject.inherit(l, s),
+        (GObject.GObject.inherit(l, s),
             (l.Type = { FullUnit: "full", HalfUnit: "half" }),
             (l.ID = "arrange.snap-unit"),
             (l.prototype._category = null),
@@ -21,7 +21,7 @@ module.exports = function (e, t, n) {
                 return this._title;
             }),
             (l.prototype.getCategory = function () {
-                return r.CATEGORY_MODIFY_ALIGN;
+                return GCategory.CATEGORY_MODIFY_ALIGN;
             }),
             (l.prototype.getGroup = function () {
                 return "arrange/snap-unit";
@@ -29,7 +29,7 @@ module.exports = function (e, t, n) {
             (l.prototype.getShortcut = function () {
                 switch (this._category) {
                     case l.Type.FullUnit:
-                        return [i.GKey.Constant.SHIFT, i.GKey.Constant.META, "U"];
+                        return [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "U"];
                     default:
                         return null;
                 }
@@ -50,15 +50,15 @@ module.exports = function (e, t, n) {
                         function () {
                             for (var t = 0; t < e.length; ++t) {
                                 var n = e[t];
-                                if (n.hasMixin(a.GElement.Transform)) {
+                                if (n.hasMixin(GObject.GElement.Transform)) {
                                     var o = n.getGeometryBBox();
                                     if (o && o.getWidth() + o.getHeight() !== 0) {
-                                        var i = a.GMath.round(o.getX(), !0),
-                                            r = a.GMath.round(o.getY(), !0),
-                                            s = a.GMath.round(o.getWidth(), !0),
-                                            c = a.GMath.round(o.getHeight(), !0);
+                                        var i = GObject.GMath.round(o.getX(), true),
+                                            r = GObject.GMath.round(o.getY(), true),
+                                            s = GObject.GMath.round(o.getWidth(), true),
+                                            c = GObject.GMath.round(o.getHeight(), true);
                                         this._category === l.Type.HalfUnit && ((i += 0.5), (r += 0.5), (s += 0.5), (c += 0.5));
-                                        var d = new a.GTransform()
+                                        var d = new GObject.GTransform()
                                             .translated(-o.getX(), -o.getY())
                                             .scaled(s / (o.getWidth() || 1), c / (o.getHeight() || 1))
                                             .translated(o.getX(), o.getY())
@@ -68,11 +68,11 @@ module.exports = function (e, t, n) {
                                 }
                             }
                         }.bind(this),
-                        a.GLocale.get(this.getTitle())
+                        GObject.GLocale.get(this.getTitle())
                     ));
             }),
             (l.prototype.toString = function () {
                 return "[Object GSnapUnitAction]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

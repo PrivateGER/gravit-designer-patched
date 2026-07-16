@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(29),
-            i = n(37),
-            a = n(35),
-            r = n(116),
-            s = n(306),
+        var o = require(29),
+            i = require(37),
+            a = require(35),
+            r = require(116),
+            s = require(306),
             l = TypeError;
-        e.exports = function (e, t) {
+        module.exports = function (e, t) {
             var n = e.exec;
             if (a(n)) {
                 var c = o(n, e, t);

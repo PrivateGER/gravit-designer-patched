@@ -1,4 +1,4 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             var n = {
                     name: "i32",
                     length: 4,
@@ -21,7 +21,7 @@ module.exports = function (e, t, i) {
                         type: n,
                     },
                 ],
-                o = i(998)();
+                o = require(998)();
 
             function a(e, t, i, n) {
                 return (
@@ -383,5 +383,5 @@ module.exports = function (e, t, i) {
                     }
                     return a;
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(58), n(19), n(8), n(20), n(107), n(71), n(134), n(4), n(41), n(26));
-        var o = n(10);
-        const i = n(292),
-            a = n(220),
-            r = n(78),
-            s = n(536),
-            l = n(177),
-            c = n(393);
+        (require(58), require(19), require(8 /* Symbol */), require(20), require(107), require(71), require(134), require(4), require(41), require(26));
+        var designerConfig = require(10);
+        const i = require(292),
+            GCommonNames = require(220),
+            r = require(78),
+            s = require(536),
+            l = require(177),
+            c = require(393);
         var d = null;
         function u(e) {
             if (d) throw new Error("GCloudCommunicationManager is a singleton");
@@ -27,16 +27,16 @@ module.exports = function (e, t, n) {
                 return (e || this._userCache.reset(), e);
             }),
             (u.prototype.confirmEmail = function (e) {
-                return o.gApi.confirmEmail(e).then((e) => (this._removeUserCache(), e));
+                return designerConfig.gApi.confirmEmail(e).then((e) => (this._removeUserCache(), e));
             }),
             (u.prototype.updateUser = function (e) {
-                return o.gApi.updateUser(e).then((e) => (this._removeUserCache(), new l(e)));
+                return designerConfig.gApi.updateUser(e).then((e) => (this._removeUserCache(), new l(e)));
             }),
             (u.prototype.updateAvatar = function (e) {
-                return o.gApi.updateAvatar(e).then((e) => (this._removeUserCache(), e));
+                return designerConfig.gApi.updateAvatar(e).then((e) => (this._removeUserCache(), e));
             }),
             (u.prototype.useAuthorizationToken = function (e) {
-                (this._removeUserCache(), o.gApi.useAuthorizationToken(e));
+                (this._removeUserCache(), designerConfig.gApi.useAuthorizationToken(e));
             }),
             (u.prototype.userPropertiesChanged = function () {
                 this._removeUserCache();
@@ -59,11 +59,11 @@ module.exports = function (e, t, n) {
                 this._userCache ||
                     (this._userCache = new s(
                         () =>
-                            o.gApi
+                            designerConfig.gApi
                                 .getUser()
                                 .then((e) => new l(e))
                                 .catch(() => null),
-                        o.USER_CHECK_MIN_WAIT
+                        designerConfig.USER_CHECK_MIN_WAIT
                     ));
             }),
             (u.prototype._updateDocState = function (e) {
@@ -101,7 +101,7 @@ module.exports = function (e, t, n) {
                 if (!t) return null;
                 const n = t.getId();
                 return n
-                    ? t instanceof a.Item
+                    ? t instanceof GCommonNames.Item
                         ? this.getFileExtended(n).catch(() => null)
                         : t && t.supportsSharing() && t.supportsShadowFile()
                           ? t.getOrCreateCollaborativeFile()
@@ -112,7 +112,7 @@ module.exports = function (e, t, n) {
         async function g(e, t, n) {
             let i, a;
             try {
-                if (((i = o.gApi[t](n)), !(i instanceof Promise))) return i;
+                if (((i = designerConfig.gApi[t](n)), !(i instanceof Promise))) return i;
                 a = await i;
             } catch (e) {
                 throw e;
@@ -123,7 +123,7 @@ module.exports = function (e, t, n) {
         }
         ((u.prototype.initialize = function () {
             const e = Object.keys(d).filter((e) => e.startsWith("get")),
-                t = o.CACHED_GAPI_FUNCTIONS.filter((t) => /^is|^get/.test(t) && !e.includes(t));
+                t = designerConfig.CACHED_GAPI_FUNCTIONS.filter((t) => /^is|^get/.test(t) && !e.includes(t));
             for (let e of t)
                 ((p[e] = {}),
                     (d[e] = async function (e) {
@@ -133,5 +133,5 @@ module.exports = function (e, t, n) {
                         return (n instanceof Promise && (t[e] = n), n);
                     }.bind(e)));
         }),
-            (e.exports = u));
+            (module.exports = u));
     };

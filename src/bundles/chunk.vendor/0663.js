@@ -1,26 +1,26 @@
-module.exports = function (e, t, i) {
-            var n = i(14),
-                r = i(0),
-                o = i(5),
-                a = i(6),
-                s = i(7),
-                l = i(103),
-                h = i(118),
-                A = i(166),
-                c = i(934),
-                p = i(937);
+module.exports = function (module, exports, require) {
+            var n = require(14),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(5),
+                a = require(6),
+                s = require(7),
+                DUMP_IMAGES = require(103),
+                h = require(118),
+                A = require(166),
+                c = require(934),
+                p = require(937);
 
             function u(e, t) {
                 ((this._paintCanvases = []), (this._numHorizontal = e), (this._numVertical = t));
                 for (var i = this.isThreaded(), r = 0; r < e; r++)
-                    for (var o = 0; o < t; o++) this._paintCanvases.push(new n(!0, !1, !0, i));
-                ((this._panHelper = new n(!1, !0)),
+                    for (var o = 0; o < t; o++) this._paintCanvases.push(new n(true, false, true, i));
+                ((this._panHelper = new n(false, true)),
                     this._panHelper.setRenderAlgorithm(n.RenderAlgorithm.Crisp),
                     this._panHelper.setImageSmoothingQuality(n.SmoothingQuality.High),
                     this._panHelper.prepare(),
                     (this._paintCanvasCache = new c()));
             }
-            (r.inheritAndMix(u, r, [h]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(u, IsFiniteNonNegativeNumber, [h]),
                 (u.prototype._paintCanvases = null),
                 (u.prototype._paintCanvasCache = null),
                 (u.prototype._panHelper = null),
@@ -34,7 +34,7 @@ module.exports = function (e, t, i) {
                         for (var a = 0; a < this._numVertical; a++) {
                             if (((i = this._paintCanvases[o * this._numVertical + a]), !t || (t && !i.$renderedBitmap))) {
                                 var s = e(i, n, r);
-                                if (!1 === s) return s;
+                                if (false === s) return s;
                             }
                             r += i.getHeight();
                         }
@@ -100,15 +100,15 @@ module.exports = function (e, t, i) {
                 }),
                 (u.prototype._renderNext = function () {
                     return 1 === this._renderQueue.length
-                        ? ((this._renderQueue = []), !1)
-                        : ((this._renderQueue = [this._renderQueue[this._renderQueue.length - 1]]), this._scheduleRender(), !0);
+                        ? ((this._renderQueue = []), false)
+                        : ((this._renderQueue = [this._renderQueue[this._renderQueue.length - 1]]), this._scheduleRender(), true);
                 }),
                 (u.prototype._scheduleRender = function () {
                     if (!(0 === this._renderQueue.length || this._renderQueue.length > 1)) {
                         var e = this._renderQueue[0];
-                        l.isRenderPhase() ||
+                        DUMP_IMAGES.isRenderPhase() ||
                         this._paintCanvases.some(function (e) {
-                            return l.isRenderPhase(e.getRendererContext());
+                            return DUMP_IMAGES.isRenderPhase(e.getRendererContext());
                         })
                             ? console.log("SCHEDULERENDER: ERROR: render phase render, waiting")
                             : this._paintAndRenderInternal(
@@ -131,7 +131,7 @@ module.exports = function (e, t, i) {
                         m = this,
                         y = this.isThreaded(),
                         _ = t.dirtyMatcher,
-                        v = !1,
+                        v = false,
                         b = [],
                         C = [],
                         w = [],
@@ -140,7 +140,7 @@ module.exports = function (e, t, i) {
                             if ((i && f++, i && !n)) {
                                 var a = m._getGridIndexForNativeCanvas(e);
                                 if (
-                                    !(!A.ENABLE_CACHE || !1 === w[a]) &&
+                                    !(!A.ENABLE_CACHE || false === w[a]) &&
                                     b[a] &&
                                     (!o || (!o.quickRender && !o.noWebGL)) &&
                                     Date.now() - w[a] > A.CACHE_WHEN_DRAWING_LONGER_THAN
@@ -149,15 +149,15 @@ module.exports = function (e, t, i) {
                                     m._paintCanvasCache.setCache(s, b[a], r, C[a]);
                                 }
                             }
-                            if ((n && (v = !0), f === g)) ((t.dirtyMatcher = _), m._renderNext() || p(e, !0, v));
+                            if ((n && (v = true), f === g)) ((t.dirtyMatcher = _), m._renderNext() || p(e, true, v));
                             else if ((A.DRAW_DURING_RENDERING || A.SHOW_LOWRES_GIMMICK) && (i || 1 === g))
                                 if (A.SHOW_LOWRES_GIMMICK && 1 === g) {
                                     a = m._getGridIndexForNativeCanvas(e);
                                     if (!E[a]) {
                                         var l = m._paintCanvasCache.getGimmick(b[a], C[a], r);
-                                        (l && p(l._canvasContext.canvas, !1, v), (E[a] = !0));
+                                        (l && p(l._canvasContext.canvas, false, v), (E[a] = true));
                                     }
-                                } else p(e, !1, v);
+                                } else p(e, false, v);
                         },
                         x = 0,
                         P = [];
@@ -173,12 +173,12 @@ module.exports = function (e, t, i) {
                                 if (
                                     ((S = A.ENABLE_CACHE ? m._paintCanvasCache.cachedRender(c, v, n, r, u, d) : v),
                                     A.SHOW_LOWRES_GIMMICK_FOR_QUICKRENDER &&
-                                        ((l.getRenderParameters() || {}).quickRender || (l.getRenderParameters() || {}).noWebGL) &&
+                                        ((DUMP_IMAGES.getRenderParameters() || {}).quickRender || (DUMP_IMAGES.getRenderParameters() || {}).noWebGL) &&
                                         S &&
                                         1 === m._paintCanvases.length)
                                 ) {
                                     var I = S.getDirtyRectangles().slice();
-                                    ((E[x] = !0), (T = m._paintCanvasCache.getGimmick(I, n, r)) && (S = null));
+                                    ((E[x] = true), (T = m._paintCanvasCache.getGimmick(I, n, r)) && (S = null));
                                 }
                                 if (S) {
                                     ((v = S).getDirtyRectangles() || console.warn("EMPTY DIRTY RECTS"),
@@ -190,15 +190,15 @@ module.exports = function (e, t, i) {
                                         c.setOrigin(C[x]),
                                         c.setScale(r),
                                         c.setMasked(-1),
-                                        l.begin(y),
+                                        DUMP_IMAGES.begin(y),
                                         (t.canvas = c));
                                     var F = new s().multiplied(i);
-                                    (v.transform(F), (t.dirtyMatcher = v), e.paint(t, h), c.finish(), l.finish());
+                                    (v.transform(F), (t.dirtyMatcher = v), e.paint(t, h), c.finish(), DUMP_IMAGES.finish());
                                 }
                                 try {
                                     A.DEBUG_GRID_PAINT_DELAY > 0
                                         ? ((w[x] = !!S && Date.now() + x * A.DEBUG_GRID_PAINT_DELAY),
-                                          l.render(
+                                          DUMP_IMAGES.render(
                                               c.getRendererContext(),
                                               0,
                                               function (e, t, i, n) {
@@ -213,14 +213,14 @@ module.exports = function (e, t, i) {
                                               })
                                           ))
                                         : ((w[x] = !!S && Date.now()),
-                                          T ? B(T._canvasContext.canvas, !0, !1) : l.render(c.getRendererContext(), 0, B));
+                                          T ? B(T._canvasContext.canvas, true, false) : DUMP_IMAGES.render(c.getRendererContext(), 0, B));
                                 } catch (e) {
                                     return (
                                         console.error("Render error at canvas " + x + ":" + e),
                                         m.cleanup(),
-                                        p(null, !0, !1),
+                                        p(null, true, false),
                                         m._renderNext(),
-                                        !1
+                                        false
                                     );
                                 } finally {
                                     P.push(c.getRendererContext());
@@ -233,9 +233,9 @@ module.exports = function (e, t, i) {
                         d !== m._iterateGrid ||
                             u ||
                             (P.forEach(function (e) {
-                                l.disposeWorkerDataAfterRender(e);
+                                DUMP_IMAGES.disposeWorkerDataAfterRender(e);
                             }),
-                            0 === g && (p(null, !0, !1), m._renderNext())));
+                            0 === g && (p(null, true, false), m._renderNext())));
                 }),
                 (u.prototype._getGridIndexForNativeCanvas = function (e) {
                     for (var t = 0; t < this._paintCanvases.length; t++)
@@ -247,7 +247,7 @@ module.exports = function (e, t, i) {
                     return -1;
                 }),
                 (u.prototype.cleanup = function () {
-                    for (var e = 0; e < this._paintCanvases.length; e++) l.forceCleanup(this._paintCanvases[e].getRendererContext());
+                    for (var e = 0; e < this._paintCanvases.length; e++) DUMP_IMAGES.forceCleanup(this._paintCanvases[e].getRendererContext());
                 }),
                 (u.prototype.setDirtyCache = function (e, t, i, n) {
                     this._paintCanvasCache.setDirty(e, t, i, n);
@@ -315,7 +315,7 @@ module.exports = function (e, t, i) {
                                         cx: n,
                                         cy: r,
                                     }),
-                                    !1
+                                    false
                                 );
                         }),
                         t
@@ -336,9 +336,9 @@ module.exports = function (e, t, i) {
                                     (A = A.intersected(l)).isEmpty() ||
                                         e.drawImageFragment(t, A.getX() - n, A.getY() - o, A.getX(), A.getY(), A.getWidth(), A.getHeight());
                                 }
-                                if (i) return !1;
+                                if (i) return false;
                             })),
-                            i && !1 !== n && A.SHOW_LOWRES_GIMMICK)
+                            i && false !== n && A.SHOW_LOWRES_GIMMICK)
                         )
                             for (var o = new a(0, 0, i.width, i.height), s = 0; s < r.length; ++s) {
                                 var l = r[s].toAlignedRect();
@@ -349,14 +349,14 @@ module.exports = function (e, t, i) {
                         ((n = this._iterateGrid(function (t, n, r) {
                             if (i) {
                                 var o = t._canvasContext.canvas;
-                                if (o.$realCanvas === i || o.$renderedBitmap === i || o === i) return (e.drawImage(t, n, r), !1);
+                                if (o.$realCanvas === i || o.$renderedBitmap === i || o === i) return (e.drawImage(t, n, r), false);
                             } else e.drawImage(t, n, r);
                         })),
-                            i && !1 !== n && A.SHOW_LOWRES_GIMMICK && e.drawImage(i, 0, 0));
+                            i && false !== n && A.SHOW_LOWRES_GIMMICK && e.drawImage(i, 0, 0));
                 }),
                 (u.prototype.getConsolidatedCanvas = function () {
                     if (this._consolidatedCanvas) return this._consolidatedCanvas;
-                    var e = new n(!1, !0);
+                    var e = new n(false, true);
                     return (
                         e.resize(this.getWidth(), this.getHeight()),
                         e.prepare(),
@@ -392,5 +392,5 @@ module.exports = function (e, t, i) {
                 (u.prototype.setRenderAlgorithm = function (e) {
                     for (var t = 0; t < this._paintCanvases.length; t++) this._paintCanvases[t].setRenderAlgorithm(e);
                 }),
-                (e.exports = u));
+                (module.exports = u));
         };

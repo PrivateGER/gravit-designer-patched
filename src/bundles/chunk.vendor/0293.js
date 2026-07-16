@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
-            var n = i(1220),
-                r = i(0),
-                o = i(11),
-                a = i(602),
-                s = i(90),
-                l = i(560),
-                h = i(564),
-                A = i(1221),
-                c = i(1222),
-                p = i(1223),
-                u = i(1412),
+module.exports = function (module, exports, require) {
+            var n = require(1220),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(11),
+                a = require(602),
+                s = require(90),
+                l = require(560),
+                h = require(564),
+                A = require(1221),
+                c = require(1222),
+                p = require(1223),
+                u = require(1412),
                 d = function (e) {
                     ((this.doc = e),
                         (this._pageSize = e.getPageSize()),
@@ -19,12 +19,12 @@ module.exports = function (e, t, i) {
                 };
             ((d.OPERATIONFLAG_STROKE = 2),
                 (d.OPERATIONFLAG_FILL = 1),
-                r.inheritAndMix(d, s, [s.Container]),
+                IsFiniteNonNegativeNumber.inheritAndMix(d, s, [s.Container]),
                 (d.prototype._pageSize = null),
                 (d.Fill = function () {
-                    this._workaroundStroke = !1;
+                    this._workaroundStroke = false;
                 }),
-                r.inherit(d.Fill, s),
+                IsFiniteNonNegativeNumber.inherit(d.Fill, s),
                 (d.Fill.prototype._fillStyle = null),
                 (d.Fill.prototype._rule = null),
                 (d.Fill.prototype._workaroundStroke = null),
@@ -81,7 +81,7 @@ module.exports = function (e, t, i) {
                     (t.add(this._fillStyle), t.add("evenodd" === this._rule ? h.f$ : h.f), t.write(e));
                 }),
                 (d.Stroke = function () {}),
-                r.inherit(d.Stroke, s),
+                IsFiniteNonNegativeNumber.inherit(d.Stroke, s),
                 (d.Stroke.prototype._strokeStyle = null),
                 (d.Stroke.prototype._lineWidth = null),
                 (d.Stroke.prototype._lineDash = null),
@@ -156,7 +156,7 @@ module.exports = function (e, t, i) {
                     this._clip = e;
                 }),
                 (d.prototype.accept = function (e) {
-                    for (var t = this.pdfObjects.slice(), i = 0; i < t.length && !1 !== e(t[i], i); i++);
+                    for (var t = this.pdfObjects.slice(), i = 0; i < t.length && false !== e(t[i], i); i++);
                 }),
                 (d.prototype.clear = function () {
                     return this.pdfObjects.splice(0, this.pdfObjects.length);
@@ -227,5 +227,5 @@ module.exports = function (e, t, i) {
                         }),
                         e.write("Q"));
                 }),
-                (e.exports = d));
+                (module.exports = d));
         };

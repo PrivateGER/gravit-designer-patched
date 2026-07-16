@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
                 r = [
                     "DEPTH_BUFFER_BIT",
                     "STENCIL_BUFFER_BIT",
@@ -306,7 +306,7 @@ module.exports = function (e, t, i) {
             function l(e, t, i, n) {
                 ((this.__contextType = e || "2d"),
                     (this.__contextAttributes = t),
-                    (this.__persistent = n || !1),
+                    (this.__persistent = n || false),
                     (this.__contextId = s++),
                     (this.name = "context" + this.__contextId),
                     (this.$type = l.INSTANCE_RENDERERCTX),
@@ -336,8 +336,8 @@ module.exports = function (e, t, i) {
                         0 === e.__contextId && (h += "document.body.appendChild(" + this.name + ");\n"));
                 }),
                 (l.RendererCanvas.prototype.parent = null),
-                (l.RendererCanvas.prototype.rendered = !1),
-                (l.RendererCanvas.prototype.rendering = !1),
+                (l.RendererCanvas.prototype.rendered = false),
+                (l.RendererCanvas.prototype.rendering = false),
                 (l.RendererCanvas.prototype.name = null),
                 (l.RendererCanvas.prototype.$realCanvas = null),
                 (l.RendererCanvas.prototype.$renderedBitmap = null),
@@ -391,9 +391,9 @@ module.exports = function (e, t, i) {
                     (this.__renderableId = p++),
                     (this.name = "pattern" + this.__renderableId));
             }),
-                n.inherit(l.Renderable, n),
+                IsFiniteNonNegativeNumber.inherit(l.Renderable, IsFiniteNonNegativeNumber),
                 (l.Renderable.inherit = function (e, t) {
-                    (n.inherit(e, t), (e.prototype.RENDERABLE_TYPE = ++A), (c[A] = e.prototype));
+                    (IsFiniteNonNegativeNumber.inherit(e, t), (e.prototype.RENDERABLE_TYPE = ++A), (c[A] = e.prototype));
                 }),
                 (l.Renderable.prototype.ctx = null),
                 (l.Renderable.prototype.__renderableId = 0),
@@ -404,7 +404,7 @@ module.exports = function (e, t, i) {
                 (l.prototype.canvas = null),
                 (l.prototype.__contextType = 0),
                 (l.prototype.__renderer = null),
-                (l.prototype.__persistent = !1),
+                (l.prototype.__persistent = false),
                 (l.prototype.__contextId = 0),
                 (l.prototype.name = null),
                 (l.prototype.$type = l.INSTANCE_RENDERERCTX),
@@ -444,7 +444,7 @@ module.exports = function (e, t, i) {
                             return 0 === e
                                 ? null
                                 : (r.some(function (i) {
-                                      return o[i] === e && ((t = i), !0);
+                                      return o[i] === e && ((t = i), true);
                                   }),
                                   t);
                         })(e);
@@ -477,7 +477,7 @@ module.exports = function (e, t, i) {
                     o = d(r, e),
                     a = g(r);
                 ("shaderSource" === t && (o[1] = o[1].replace(/\n/g, "")),
-                    !0 === n && (console.time(t + f), (h += "console.time('" + t + f + "');\n")),
+                    true === n && (console.time(t + f), (h += "console.time('" + t + f + "');\n")),
                     (h += e.name + "." + t + "(" + (o ? o.join(",") : "") + ");\n"));
                 var s = e.$realCtx[t].apply(e.$realCtx, a);
                 return (n && (console.timeEnd(t + f), (h += "console.timeEnd('" + t + f + "');\n"), f++), s);
@@ -553,7 +553,7 @@ module.exports = function (e, t, i) {
                     var h = [e, t, i];
                     (void 0 !== n && h.push(n, r),
                         void 0 !== o && h.push(o, a, s, l),
-                        m(this, "drawImage", h, "function" == typeof console.time && !0));
+                        m(this, "drawImage", h, "function" == typeof console.time && true));
                 }),
                 (l.prototype.fill = function (e) {
                     e ? m(this, "fill", arguments) : m(this, "fill");
@@ -636,7 +636,7 @@ module.exports = function (e, t, i) {
                     set: function (e) {
                         y(this, "fillStyle", arguments);
                     },
-                    enumerable: !0,
+                    enumerable: true,
                 },
                 filter: {
                     get: function () {
@@ -645,7 +645,7 @@ module.exports = function (e, t, i) {
                     set: function (e) {
                         y(this, "filter", arguments);
                     },
-                    enumerable: !0,
+                    enumerable: true,
                 },
                 globalAlpha: {
                     get: function () {
@@ -654,7 +654,7 @@ module.exports = function (e, t, i) {
                     set: function (e) {
                         y(this, "globalAlpha", arguments);
                     },
-                    enumerable: !0,
+                    enumerable: true,
                 },
                 globalCompositeOperation: {
                     get: function () {
@@ -663,7 +663,7 @@ module.exports = function (e, t, i) {
                     set: function (e) {
                         y(this, "globalCompositeOperation", arguments);
                     },
-                    enumerable: !0,
+                    enumerable: true,
                 },
                 lineDashOffset: {
                     get: function () {
@@ -672,7 +672,7 @@ module.exports = function (e, t, i) {
                     set: function (e) {
                         y(this, "lineDashOffset", arguments);
                     },
-                    enumerable: !0,
+                    enumerable: true,
                 },
                 lineWidth: {
                     get: function () {
@@ -681,7 +681,7 @@ module.exports = function (e, t, i) {
                     set: function (e) {
                         y(this, "lineWidth", arguments);
                     },
-                    enumerable: !0,
+                    enumerable: true,
                 },
                 lineCap: {
                     get: function () {
@@ -690,7 +690,7 @@ module.exports = function (e, t, i) {
                     set: function (e) {
                         y(this, "lineCap", arguments);
                     },
-                    enumerable: !0,
+                    enumerable: true,
                 },
                 lineJoin: {
                     get: function () {
@@ -699,7 +699,7 @@ module.exports = function (e, t, i) {
                     set: function (e) {
                         y(this, "lineJoin", arguments);
                     },
-                    enumerable: !0,
+                    enumerable: true,
                 },
                 miterLimit: {
                     get: function () {
@@ -708,7 +708,7 @@ module.exports = function (e, t, i) {
                     set: function (e) {
                         y(this, "miterLimit", arguments);
                     },
-                    enumerable: !0,
+                    enumerable: true,
                 },
                 strokeStyle: {
                     get: function () {
@@ -717,7 +717,7 @@ module.exports = function (e, t, i) {
                     set: function (e) {
                         y(this, "strokeStyle", arguments);
                     },
-                    enumerable: !0,
+                    enumerable: true,
                 },
                 font: {
                     get: function () {
@@ -726,7 +726,7 @@ module.exports = function (e, t, i) {
                     set: function (e) {
                         y(this, "font", arguments);
                     },
-                    enumerable: !0,
+                    enumerable: true,
                 },
                 textBaseline: {
                     get: function () {
@@ -735,7 +735,7 @@ module.exports = function (e, t, i) {
                     set: function (e) {
                         y(this, "textBaseline", arguments);
                     },
-                    enumerable: !0,
+                    enumerable: true,
                 },
                 textAlign: {
                     get: function () {
@@ -744,14 +744,14 @@ module.exports = function (e, t, i) {
                     set: function (e) {
                         y(this, "textAlign", arguments);
                     },
-                    enumerable: !0,
+                    enumerable: true,
                 },
                 imageRendering: {
                     get: function () {
                         return 1;
                     },
                     set: function (e) {},
-                    enumerable: !0,
+                    enumerable: true,
                 },
                 imageSmoothingEnabled: {
                     get: function () {
@@ -760,7 +760,7 @@ module.exports = function (e, t, i) {
                     set: function (e) {
                         y(this, "imageSmoothingEnabled", arguments);
                     },
-                    enumerable: !0,
+                    enumerable: true,
                 },
                 imageSmoothingQuality: {
                     get: function () {
@@ -769,14 +769,14 @@ module.exports = function (e, t, i) {
                     set: function (e) {
                         y(this, "imageSmoothingQuality", arguments);
                     },
-                    enumerable: !0,
+                    enumerable: true,
                 },
             });
             for (var C = 0; C < r.length; C++) {
                 a[(E = r[C])] = {
                     get: b(E),
                     set: function () {},
-                    enumerable: !0,
+                    enumerable: true,
                 };
             }
             if (
@@ -979,7 +979,7 @@ module.exports = function (e, t, i) {
                     m(this, "texParameteri", arguments);
                 }),
                 (l.prototype.texImage2D = function () {
-                    m(this, "texImage2D", arguments, !0);
+                    m(this, "texImage2D", arguments, true);
                 }),
                 (l.prototype.uniform1f = function (e, t) {
                     m(this, "uniform1f", arguments);
@@ -1058,5 +1058,5 @@ module.exports = function (e, t, i) {
                 else "undefined" == typeof g_node_test_environment && console.warn("No WebGL support. Most filters won't work");
                 ((w = null), (v = null));
             }
-            e.exports = l;
+            module.exports = l;
         };

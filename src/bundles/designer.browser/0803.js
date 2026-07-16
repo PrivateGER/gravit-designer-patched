@@ -1,9 +1,9 @@
-module.exports = function (e, t) {
-        e.exports = {
+module.exports = function (module, exports) {
+        module.exports = {
             nodeEnv: "production",
-            isBeta: !1,
+            isBeta: false,
             storeVendor: "",
-            isCorel: !1,
+            isCorel: false,
             isTeams: "teams.coreldraw.app" === window.location.hostname,
         };
     };

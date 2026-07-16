@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(30), n(4), n(322));
-        var o = n(1),
-            i = n(15);
-        const a = n(880);
+        (require(30), require(4), require(322));
+        var GObject = require(1),
+            GPlatform = require(15);
+        const a = require(880);
         class r extends a {
             constructor() {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -20,7 +20,7 @@ module.exports = function (e, t, n) {
                     )));
             }
             canActivate() {
-                return !0;
+                return true;
             }
             start(e, t) {
                 ((this._doubleTapTouches = null),
@@ -31,7 +31,7 @@ module.exports = function (e, t, n) {
                     this._doubleTapTouches
                         ? (this._doubleTapTime = Date.now())
                         : e.iterateChangedTouches((e) => {
-                              this._dispatchEventFromTouch("mousedown", e, i.GMouseEvent.BUTTON_LEFT, !t.isSwiping());
+                              this._dispatchEventFromTouch("mousedown", e, GPlatform.GMouseEvent.BUTTON_LEFT, !t.isSwiping());
                           }));
             }
             end(e, t) {
@@ -47,7 +47,7 @@ module.exports = function (e, t, n) {
                 }
                 if (
                     (e.iterateChangedTouches((e) => {
-                        this._dispatchEventFromTouch("mouseup", e, i.GMouseEvent.BUTTON_LEFT, !t.isSwiping());
+                        this._dispatchEventFromTouch("mouseup", e, GPlatform.GMouseEvent.BUTTON_LEFT, !t.isSwiping());
                     }),
                     t.isSwiping())
                 )
@@ -60,7 +60,7 @@ module.exports = function (e, t, n) {
                 a &&
                     (this._doubleTapTouches || (this._isDblClick(a, n) && this._dispatchEventFromTouch("dblclick", a)),
                     (this._lastClickEventTime = n),
-                    (this._lastClickPoint = new o.GPoint(a.screenX, a.screenY)));
+                    (this._lastClickPoint = new GObject.GPoint(a.screenX, a.screenY)));
             }
             cancel(e) {
                 e.iterateChangedTouches((e) => {
@@ -69,11 +69,11 @@ module.exports = function (e, t, n) {
             }
             _isDblClick(e, t) {
                 if (this._lastClickPoint && this._lastClickEventTime) {
-                    if (o.GMath.ptDist(e.screenX, e.screenY, this._lastClickPoint.getX(), this._lastClickPoint.getY()) <= 25) {
-                        if (t - this._lastClickEventTime <= 300) return !0;
+                    if (GObject.GMath.ptDist(e.screenX, e.screenY, this._lastClickPoint.getX(), this._lastClickPoint.getY()) <= 25) {
+                        if (t - this._lastClickEventTime <= 300) return true;
                     }
                 }
-                return !1;
+                return false;
             }
             _getTwoTouchPointsNearby(e) {
                 const t = e.length;
@@ -82,11 +82,11 @@ module.exports = function (e, t, n) {
                         for (let i = n + 1; i < t; i++) {
                             const t = e[n],
                                 a = e[i];
-                            if (o.GMath.ptDist(t.screenX, t.screenY, a.screenX, a.screenY) <= this._config.doubleTapThreshold)
+                            if (GObject.GMath.ptDist(t.screenX, t.screenY, a.screenX, a.screenY) <= this._config.doubleTapThreshold)
                                 return [t, a];
                         }
                 return null;
             }
         }
-        ((r.DetectionMode = { Target: 0, Nearby: 1 }), (e.exports = r));
+        ((r.DetectionMode = { Target: 0, Nearby: 1 }), (module.exports = r));
     };

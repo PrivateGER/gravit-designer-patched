@@ -1,20 +1,20 @@
-module.exports = function (e, t, i) {
-            var n = i(14),
-                r = i(0),
-                o = i(664),
-                a = i(118),
-                s = (i(5), i(7)),
-                l = i(935),
-                h = i(936),
-                A = i(166),
-                c = i(6);
+module.exports = function (module, exports, require) {
+            var n = require(14),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(664),
+                a = require(118),
+                s = (require(5), require(7)),
+                l = require(935),
+                h = require(936),
+                A = require(166),
+                c = require(6);
 
             function p(e) {
                 ((this._currentCanvasGrid = new h(A.CACHE_CANVAS_GRID_ITEM_WIDTH, A.CACHE_CANVAS_GRID_ITEM_HEIGHT)),
                     (this._cachedCanvases = [new p.CacheEntry(this._currentCanvasGrid, this.scale)]),
                     (this._resolution = e || 1));
             }
-            (r.inheritAndMix(p, r, [a]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(p, IsFiniteNonNegativeNumber, [a]),
                 (p.CacheEntry = function (e, t) {
                     ((this.canvasGrid = e), (this.scale = t), (this.cacheMatcher = new l()));
                 }),
@@ -34,8 +34,8 @@ module.exports = function (e, t, i) {
                     }
                     if (o < 0) return null;
                     var l = o / i,
-                        h = new n(!1, !0, !1),
-                        A = new n(!1, !0, !1),
+                        h = new n(false, true, false),
+                        A = new n(false, true, false),
                         p = this._cachedCanvases[r],
                         u = new c(0, 0, 1, 1);
                     for (a = 0; a < e.length; a++) u = u.united(e[a]);
@@ -97,10 +97,10 @@ module.exports = function (e, t, i) {
                     for (d = 0; d < y.length; d++) _.merge(y[d]);
                     for (d = 0; d < u.length; d++) _.subtract(u[d].translated(-i.getX() - r, -i.getY() - a));
                     var v = _.getRects(),
-                        b = !0;
+                        b = true;
                     for (d = 0; d < v.length; d++)
                         if (!v[d].isEmpty()) {
-                            b = !1;
+                            b = false;
                             break;
                         }
                     return (
@@ -140,8 +140,8 @@ module.exports = function (e, t, i) {
                                     p.canvasGrid._paintCanvases[d].canvas,
                                     d * p.canvasGrid._paintCanvases[d].canvas.getWidth() * v,
                                     0,
-                                    !1,
-                                    !1,
+                                    false,
+                                    false,
                                     v
                                 );
                                 for (var b = 0; b < _.length; b++) {
@@ -160,8 +160,8 @@ module.exports = function (e, t, i) {
                                     p.canvasGrid._paintCanvases[d].canvas,
                                     d * p.canvasGrid._paintCanvases[d].canvas.getWidth() * v,
                                     0,
-                                    !1,
-                                    !1,
+                                    false,
+                                    false,
                                     v
                                 );
                             }
@@ -208,5 +208,5 @@ module.exports = function (e, t, i) {
                         (this._cachedCanvases[e].canvasGrid.destroy(), this._cachedCanvases[e].cacheMatcher.reset());
                     this._cachedCanvases = [];
                 }),
-                (e.exports = p));
+                (module.exports = p));
         };

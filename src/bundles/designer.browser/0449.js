@@ -1,24 +1,24 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(15),
-            a = n(67),
-            r = n(18),
-            s = n(31);
+        require(3);
+        var GObject = require(1),
+            GPlatform = require(15),
+            a = require(67),
+            GCategory = require(18),
+            s = require(31);
         function l() {
             l.TOOLTIP_CONFIG = {
                 [a.TOOLTIP_AREA.TOOLBAR]: a.GRichTooltipConfig.from({
-                    title: o.GLocale.get(new o.GLocaleKey("GFitAllAction", "tooltip-title")),
-                    description: o.GLocale.get(new o.GLocaleKey("GFitAllAction", "tooltip-description")),
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GFitAllAction", "tooltip-title")),
+                    description: GObject.GLocale.get(new GObject.GLocaleKey("GFitAllAction", "tooltip-description")),
                     shortcut: l.SHORTCUT,
                 }),
             };
         }
-        (o.GObject.inherit(l, s),
+        (GObject.GObject.inherit(l, s),
             (l.ID = "view.zoom.fit.all"),
-            (l.TITLE = new o.GLocaleKey("GFitAllAction", "title")),
-            (l.SHORTCUT = [i.GKey.Constant.OPTION, i.GKey.Constant.META, "0"]),
+            (l.TITLE = new GObject.GLocaleKey("GFitAllAction", "title")),
+            (l.SHORTCUT = [GPlatform.GKey.Constant.OPTION, GPlatform.GKey.Constant.META, "0"]),
             (l.TOOLTIP_CONFIG = null),
             (l.prototype.getId = function () {
                 return l.ID;
@@ -27,7 +27,7 @@ module.exports = function (e, t, n) {
                 return l.TITLE;
             }),
             (l.prototype.getCategory = function () {
-                return r.CATEGORY_VIEW;
+                return GCategory.CATEGORY_VIEW;
             }),
             (l.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-fit-all" : null;
@@ -50,9 +50,9 @@ module.exports = function (e, t, n) {
                     i = t.getActiveWindow().getView().getViewConfiguration().multiPageView;
                 if (n.isFixedSized() && !i) {
                     var a = n.getActivePage();
-                    e = new o.GRect(0, 0, a.getProperty("w"), a.getProperty("h"));
+                    e = new GObject.GRect(0, 0, a.getProperty("w"), a.getProperty("h"));
                 } else e = n.getPaintBBox(i);
-                e && !e.isEmpty() && t.getActiveWindow().getView().zoomAll(e, !1);
+                e && !e.isEmpty() && t.getActiveWindow().getView().zoomAll(e, false);
             }),
             (l.prototype.getTooltipConfig = function (e) {
                 return (e && l.TOOLTIP_CONFIG[e]) || null;
@@ -60,5 +60,5 @@ module.exports = function (e, t, n) {
             (l.prototype.toString = function () {
                 return "[Object GFitAllAction]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

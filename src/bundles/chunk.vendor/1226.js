@@ -1,25 +1,25 @@
-module.exports = function (e, t, i) {
-            var n = i(147),
-                r = i(138),
-                o = i(0),
-                a = i(68),
-                s = i(391),
-                l = i(90),
-                h = i(1415),
-                A = i(1418),
-                c = i(799),
-                p = i(1419),
-                u = i(1229),
-                d = i(293),
-                g = i(158),
+module.exports = function (module, exports, require) {
+            var n = require(147),
+                r = require(138),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(68),
+                s = require(391),
+                l = require(90),
+                h = require(1415),
+                A = require(1418),
+                c = require(799),
+                p = require(1419),
+                u = require(1229),
+                d = require(293),
+                g = require(158),
                 f = function (e, t) {
-                    ((this._valid = !0), (this._operation = t), this.load(e));
+                    ((this._valid = true), (this._operation = t), this.load(e));
                 };
-            (o.inherit(f, l),
+            (IsFiniteNonNegativeNumber.inherit(f, l),
                 (f.prototype._pattern = null),
                 (f.prototype._operator = null),
                 (f.prototype._operation = null),
-                (f.prototype._valid = !0),
+                (f.prototype._valid = true),
                 (f.prototype.isValid = function () {
                     return this._valid;
                 }),
@@ -32,7 +32,7 @@ module.exports = function (e, t, i) {
                             if (!(t instanceof g)) return void console.log("WARN: Unsupported gradient pattern: " + t);
                             i = new A(e);
                         }
-                        if (!i.isValid()) return void (this._valid = !1);
+                        if (!i.isValid()) return void (this._valid = false);
                         var o = e.doc,
                             l = o.getIndirectObject(i),
                             f = o.getIndirectObject(new p(l));
@@ -55,5 +55,5 @@ module.exports = function (e, t, i) {
                 (f.prototype.equals = function (e) {
                     return e instanceof f && this._pattern.equals(e._pattern);
                 }),
-                (e.exports = f));
+                (module.exports = f));
         };

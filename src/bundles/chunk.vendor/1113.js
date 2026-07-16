@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(359),
-                r = i(11),
-                o = i(791);
+module.exports = function (module, exports, require) {
+            var n = require(359),
+                r = require(11),
+                o = require(791);
 
             function a() {}
             ((a.prototype.concurrencyRaster = function (e, t, i, a, s, l, h) {
@@ -60,7 +60,7 @@ module.exports = function (e, t, i) {
                                 n = h ? null : new Uint8ClampedArray(a * s),
                                 o = 0,
                                 A = 0,
-                                c = !1;
+                                c = false;
                             (r
                                 .bubbleSort(t, function (e, t) {
                                     return e.index - t.index;
@@ -81,16 +81,16 @@ module.exports = function (e, t, i) {
                 });
             }),
                 (a.prototype.raster = function (e, t, i, n) {
-                    for (var r = 0, o = 0, a = !1, s = new Uint32Array(e), l = 0, h = s.length; l < h; l++) {
+                    for (var r = 0, o = 0, a = false, s = new Uint32Array(e), l = 0, h = s.length; l < h; l++) {
                         var A = s[l],
                             c = 255 & A,
                             p = (A >> 8) & 255,
                             u = (A >> 16) & 255,
                             d = (A >> 24) & 255;
                         if (r >= i.length) break;
-                        (i.set(t.fromRGBA(c, p, u, d), r), (r += t.length), n && ((n[o++] = d), d < 255 && (a = !0)));
+                        (i.set(t.fromRGBA(c, p, u, d), r), (r += t.length), n && ((n[o++] = d), d < 255 && (a = true)));
                     }
                     return a;
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

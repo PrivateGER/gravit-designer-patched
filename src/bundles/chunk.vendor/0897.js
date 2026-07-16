@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            i(0);
-            e.exports = function (e) {
+module.exports = function (module, exports, require) {
+            require(0 /* IsFiniteNonNegativeNumber */);
+            module.exports = function (e) {
                 var t = e.SMALL_SIZE,
-                    n = (e.MAX_SIZE, !1),
-                    r = !1;
+                    n = (e.MAX_SIZE, false),
+                    r = false;
                 ((e.prototype.arc = function (t, i, n, r, o, a) {
                     (this.__pushByte(e.arc),
                         this.__pushFlt(t),
@@ -56,8 +56,8 @@ module.exports = function (e, t, i) {
                             this.ctx.__pushFltT(r),
                             this.ctx.__pushFltT(o),
                             this.ctx.__pushFltT(a),
-                            this.ctx.__pushPtrT(i, !0),
-                            e.Renderable.call(this, this.ctx, !0));
+                            this.ctx.__pushPtrT(i, true),
+                            e.Renderable.call(this, this.ctx, true));
                     }),
                     e.Renderable.inherit(e.LinearGradient, e.Renderable),
                     (e.LinearGradient.prototype.addColorStop = function (e, t) {
@@ -101,8 +101,8 @@ module.exports = function (e, t, i) {
                             this.ctx.__pushFltT(a),
                             this.ctx.__pushFltT(s),
                             this.ctx.__pushFltT(l),
-                            this.ctx.__pushPtrT(i, !0),
-                            e.Renderable.call(this, this.ctx, !0));
+                            this.ctx.__pushPtrT(i, true),
+                            e.Renderable.call(this, this.ctx, true));
                     }),
                     e.Renderable.inherit(e.RadialGradient, e.Renderable),
                     (e.RadialGradient.prototype.addColorStop = function (e, t) {
@@ -151,7 +151,7 @@ module.exports = function (e, t, i) {
                         ((this.ctx = new e(t, o, o, o, o, o, o, i.__multiThreaded, i.__persistent)),
                             this.ctx.__pushPtrT(n),
                             this.ctx.__pushPtrT(r),
-                            this.ctx.__pushPtrT(i, !0),
+                            this.ctx.__pushPtrT(i, true),
                             e.Renderable.call(this, this.ctx));
                     }),
                     e.Renderable.inherit(e.Pattern, e.Renderable),
@@ -166,12 +166,12 @@ module.exports = function (e, t, i) {
                     }),
                     (e.Pattern.prototype._dumpCode = function (t, n, r, o, a) {
                         e.resetExec(this.ctx);
-                        var s = i(103).DUMP_IMAGES,
+                        var s = require(103 /* DUMP_IMAGES */).DUMP_IMAGES,
                             l = e.getPtr(this.ctx),
                             h = e.getPtr(this.ctx),
                             A = (e.getPtr(this.ctx), "");
                         if (l.$type === e.INSTANCE_RENDERERCANVAS)
-                            ((A += r.dumpCode(l.parent, !1, null)), (l = l.renderingName || l.renderedName));
+                            ((A += r.dumpCode(l.parent, false, null)), (l = l.renderingName || l.renderedName));
                         else if (s && (l instanceof HTMLCanvasElement || l instanceof HTMLImageElement || l instanceof Image)) {
                             var c = "tmp" + a[0];
                             if (l instanceof HTMLImageElement || l instanceof Image) {
@@ -305,12 +305,12 @@ module.exports = function (e, t, i) {
                     }),
                     (e.prototype.getImageData = function (t, i, r, o) {
                         return (
-                            n || ((n = !0), console.warn("Warning: using slow function getImageData")),
+                            n || ((n = true), console.warn("Warning: using slow function getImageData")),
                             r < 1 || o < 1 ? null : new e.ImageData(this, t, i, r, o)
                         );
                     }),
                     (e.prototype.flushCanvas = function () {
-                        (r || ((r = !0), console.warn("Warning: using slow flush function")),
+                        (r || ((r = true), console.warn("Warning: using slow flush function")),
                             this.__pushByte(e.getImageData),
                             this.__pushFlt(0),
                             this.__pushFlt(0),
@@ -418,7 +418,7 @@ module.exports = function (e, t, i) {
                     (e.prototype.$miterLimit = 10),
                     (e.prototype.$strokeStyle = "#000"),
                     (e.prototype.$textAlign = "start"),
-                    (e.prototype.$imageSmoothingEnabled = !0),
+                    (e.prototype.$imageSmoothingEnabled = true),
                     (e.prototype.$imageSmoothingQuality = "high"),
                     (e.prototype.$textBaseline = "alphabetic"),
                     (e.prototype.$font = "10px sans-serif"),
@@ -479,7 +479,7 @@ module.exports = function (e, t, i) {
                                 this.__pushPtr(t),
                                 this.__mov());
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     filter: {
                         get: function () {
@@ -488,7 +488,7 @@ module.exports = function (e, t, i) {
                         set: function (t) {
                             (a("setting filter:", t), (this.$filter = t), this.__pushByte(e.filter), this.__pushPtr(t), this.__mov());
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     globalAlpha: {
                         get: function () {
@@ -501,7 +501,7 @@ module.exports = function (e, t, i) {
                                 this.__pushFlt(t),
                                 this.__mov());
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     globalCompositeOperation: {
                         get: function () {
@@ -515,7 +515,7 @@ module.exports = function (e, t, i) {
                                     this.__pushPtr(t),
                                     this.__mov()));
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     lineDashOffset: {
                         get: function () {
@@ -524,7 +524,7 @@ module.exports = function (e, t, i) {
                         set: function (t) {
                             ((this.$lineDashOffset = t), this.__pushByte(e.lineDashOffset), this.__pushFlt(t), this.__mov());
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     lineWidth: {
                         get: function () {
@@ -537,7 +537,7 @@ module.exports = function (e, t, i) {
                                 this.__pushFlt(t),
                                 this.__mov());
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     lineCap: {
                         get: function () {
@@ -546,7 +546,7 @@ module.exports = function (e, t, i) {
                         set: function (t) {
                             ((this.$lineCap = t), this.__pushByte(e.lineCap), this.__pushPtr(t), this.__mov());
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     lineJoin: {
                         get: function () {
@@ -555,7 +555,7 @@ module.exports = function (e, t, i) {
                         set: function (t) {
                             ((this.$lineJoin = t), this.__pushByte(e.lineJoin), this.__pushPtr(t), this.__mov());
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     miterLimit: {
                         get: function () {
@@ -564,7 +564,7 @@ module.exports = function (e, t, i) {
                         set: function (t) {
                             ((this.$miterLimit = t), this.__pushByte(e.miterLimit), this.__pushFlt(t), this.__mov());
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     strokeStyle: {
                         get: function () {
@@ -573,7 +573,7 @@ module.exports = function (e, t, i) {
                         set: function (t) {
                             ((this.$strokeStyle = t), this.__pushByte(e.strokeStyle), this.__pushPtr(t), this.__mov());
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     font: {
                         get: function () {
@@ -582,7 +582,7 @@ module.exports = function (e, t, i) {
                         set: function (t) {
                             ((this.$font = t), this.__pushByte(e.font), this.__pushPtr(t), this.__mov());
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     textBaseline: {
                         get: function () {
@@ -591,7 +591,7 @@ module.exports = function (e, t, i) {
                         set: function (t) {
                             ((this.$textBaseline = t), this.__pushByte(e.textBaseline), this.__pushPtr(t), this.__mov());
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     textAlign: {
                         get: function () {
@@ -604,7 +604,7 @@ module.exports = function (e, t, i) {
                                 this.__pushPtr(t),
                                 this.__mov());
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     imageRendering: {
                         get: function () {
@@ -613,7 +613,7 @@ module.exports = function (e, t, i) {
                         set: function (e) {
                             a("setting imageRendering:", e);
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     imageSmoothingEnabled: {
                         get: function () {
@@ -626,7 +626,7 @@ module.exports = function (e, t, i) {
                                 this.__pushPtr(t),
                                 this.__mov());
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     imageSmoothingQuality: {
                         get: function () {
@@ -639,7 +639,7 @@ module.exports = function (e, t, i) {
                                 this.__pushPtr(t),
                                 this.__mov());
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     shadowBlur: {
                         get: function () {
@@ -652,7 +652,7 @@ module.exports = function (e, t, i) {
                                 this.__pushFlt(t),
                                 this.__mov());
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     shadowColor: {
                         get: function () {
@@ -665,7 +665,7 @@ module.exports = function (e, t, i) {
                                 this.__pushPtr(t),
                                 this.__mov());
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     shadowOffsetX: {
                         get: function () {
@@ -678,7 +678,7 @@ module.exports = function (e, t, i) {
                                 this.__pushFlt(t),
                                 this.__mov());
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                     shadowOffsetY: {
                         get: function () {
@@ -691,7 +691,7 @@ module.exports = function (e, t, i) {
                                 this.__pushFlt(t),
                                 this.__mov());
                         },
-                        enumerable: !0,
+                        enumerable: true,
                     },
                 }),
                     (e.propertiesToSync["2d"] = [

@@ -1,25 +1,25 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(36),
-                o = i(154),
-                a = i(83),
-                s = (i(2), i(82)),
-                l = i(6),
-                h = i(7),
-                A = i(39),
-                c = (i(11), i(66)),
-                p = i(24),
-                u = i(12),
-                d = (i(5), i(14), i(9), i(47), i(64));
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(36),
+                o = require(154),
+                a = require(83),
+                s = (require(2), require(82 /* GEditor */)),
+                l = require(6),
+                h = require(7),
+                A = require(39),
+                c = (require(11), require(66)),
+                p = require(24),
+                u = require(12),
+                d = (require(5), require(14), require(9 /* String */), require(47), require(64));
 
             function g(e) {
                 (o.call(this, e), (this._flags = c.Flag.ResizeAll));
             }
-            (n.inheritAndMix(g, o, [o.LabelHolder]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(g, o, [o.LabelHolder]),
                 r.exports(g, a),
                 (g.FIRST_PAGE = 57005),
-                (g.SWITCH_ORDER = !1),
-                (g.MOVE_MASTER = !0),
+                (g.SWITCH_ORDER = false),
+                (g.MOVE_MASTER = true),
                 (g.prototype._collisionlessTransform = p.pageCollisionTransform),
                 (g.prototype.setCollisionlessTransform = function (e) {
                     this._collisionlessTransform = e;
@@ -36,7 +36,7 @@ module.exports = function (e, t, i) {
                               ? this.getElement().doCollisionlessTransform(new h(1, 0, 0, 1, u.getX() - g.getX(), u.getY() - g.getY()), s)
                               : new h(1, 0, 0, 1, u.getX() - g.getX(), u.getY() - g.getY());
                         var f = new c.EdTransformOptions();
-                        ((f.isMultiPage = !0), (f.fullContentsTransform = !0), o.prototype.edTransform.call(this, p, null, null, f));
+                        ((f.isMultiPage = true), (f.fullContentsTransform = true), o.prototype.edTransform.call(this, p, null, null, f));
                     }
                     return A;
                 }),
@@ -55,8 +55,8 @@ module.exports = function (e, t, i) {
                                         point: e,
                                         origTrf: t,
                                     },
-                                    !0,
-                                    !0
+                                    true,
+                                    true
                                 );
                                 if (l) return l;
                             }
@@ -65,7 +65,7 @@ module.exports = function (e, t, i) {
                     return r;
                 }),
                 (g.prototype.allowPartSelection = function () {
-                    return !0;
+                    return true;
                 }),
                 (g.prototype.getCustomBBox = function (e, t) {
                     var i = o.prototype.getCustomBBox.call(this, e, t);
@@ -90,7 +90,7 @@ module.exports = function (e, t, i) {
                         var i = this._transform.getMatrix(),
                             n = i[0],
                             r = i[3];
-                        (u.isEqualEps(n, 1) && u.isEqualEps(r, 1)) || ((t._layoutTransform = new h().scaled(n, r)), (t._relayout = !0));
+                        (u.isEqualEps(n, 1) && u.isEqualEps(r, 1)) || ((t._layoutTransform = new h().scaled(n, r)), (t._relayout = true));
                     }
                 }),
                 (g.prototype.applyTransform = function (e, t, i, n) {
@@ -103,7 +103,7 @@ module.exports = function (e, t, i) {
                 }),
                 (g.prototype._applyTransform = function (e, t, i, n) {
                     if (e && this._element && this._element !== e) {
-                        var r = this._element.getPosition(!0).subtract(e.getPosition(!0)),
+                        var r = this._element.getPosition(true).subtract(e.getPosition(true)),
                             o = this._transform.getTranslation().translated(r.getX(), r.getY()),
                             a = this._element.getProperty("off") || new h();
                         e.setProperty("off", a.translated(o.getX(), o.getY()));
@@ -141,7 +141,7 @@ module.exports = function (e, t, i) {
                                         ? a.insertChild(this.getElement(), d.getNext())
                                         : a.appendChild(this.getElement())
                                     : a.insertChild(this.getElement(), d),
-                                p.updateSelection(!1, [this.getElement()]),
+                                p.updateSelection(false, [this.getElement()]),
                                 a.endBlockReferenceChanges(),
                                 a.endUpdate());
                         } else if (g.SWITCH_ORDER) this.resetTransform();
@@ -193,5 +193,5 @@ module.exports = function (e, t, i) {
                 (g.prototype._showEditor = function (e) {
                     return !!p.pageSelectable && o.prototype._showEditor.call(this, e);
                 }),
-                (e.exports = g));
+                (module.exports = g));
         };

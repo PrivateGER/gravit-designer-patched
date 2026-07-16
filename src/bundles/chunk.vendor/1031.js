@@ -1,17 +1,17 @@
-module.exports = function (e, t, i) {
-            var n = i(50),
-                r = i(2),
-                o = i(28),
-                a = i(17),
-                s = i(14),
-                l = i(6),
-                h = i(12),
-                A = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(50),
+                r = require(2),
+                GStylable = require(28),
+                a = require(17),
+                s = require(14),
+                l = require(6),
+                h = require(12),
+                String = require(9);
 
             function c() {
-                (o.Effect.call(this), this._setDefaultProperties(c.GeometryProperties, c.VisualProperties));
+                (GStylable.Effect.call(this), this._setDefaultProperties(c.GeometryProperties, c.VisualProperties));
             }
-            (r.inherit("longShadowEffect", c, o.Effect),
+            (r.inherit("longShadowEffect", c, GStylable.Effect),
                 (c.equals = function (e, t) {
                     return (
                         e instanceof c &&
@@ -27,16 +27,16 @@ module.exports = function (e, t, i) {
                     pat: a.BLACK,
                     opc: 0.2,
                     den: 1,
-                    fdm: !0,
+                    fdm: true,
                 }),
                 (c.prototype.getNodeNameTranslated = function () {
-                    return A.getValue("GLongShadowEffect", "name", this.getNodeName());
+                    return String.getValue("GLongShadowEffect", "name", this.getNodeName());
                 }),
                 (c.prototype.isOverlayEffect = function () {
-                    return !0;
+                    return true;
                 }),
                 (c.prototype.getEffectType = function () {
-                    return o.Effect.Type.PreEffect;
+                    return GStylable.Effect.Type.PreEffect;
                 }),
                 (c.prototype.getEffectPadding = function () {
                     var e = Math.cos(this.$a) * this.$l,
@@ -48,9 +48,9 @@ module.exports = function (e, t, i) {
                         for (
                             var r,
                                 o,
-                                a = t.clone(!1, {
-                                    renderPhaseDraw: !0,
-                                    dontCopyContents: !0,
+                                a = t.clone(false, {
+                                    renderPhaseDraw: true,
+                                    dontCopyContents: true,
                                 }),
                                 h = Math.cos(this.$a),
                                 A = -Math.sin(this.$a),
@@ -65,13 +65,13 @@ module.exports = function (e, t, i) {
                             a.drawCanvas(e, r, o, d);
                         }
                         var g = t
-                                .getTransform(!1)
+                                .getTransform(false)
                                 .inverted()
                                 .mapRect(new l(0, 0, t.getWidth(), t.getHeight())),
                             f = t.createPatternPaint(this.$pat, g);
                         if (f)
                             if (f.transform) {
-                                var m = t.setTransform(t.getTransform(!0).preMultiplied(f.transform));
+                                var m = t.setTransform(t.getTransform(true).preMultiplied(f.transform));
                                 (t.fillRect(0, 0, 1, 1, f.paint, this.$opc), t.setTransform(m));
                             } else t.fillRect(g.getX(), g.getY(), g.getWidth(), g.getHeight(), f.paint, this.$opc);
                         t.drawCanvas(a, 0, 0, 1, s.CompositeOperator.DestinationIn);
@@ -90,10 +90,10 @@ module.exports = function (e, t, i) {
                           })),
                         this._handleVisualChangeForProperties(e, t, c.VisualProperties),
                         this._handleGeometryChangeForProperties(e, t, c.GeometryProperties),
-                        o.Effect.prototype._handleChange.call(this, e, t));
+                        GStylable.Effect.prototype._handleChange.call(this, e, t));
                 }),
                 (c.prototype.toString = function () {
                     return "[Object GLongShadowEffect]";
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

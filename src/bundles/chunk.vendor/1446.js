@@ -1,39 +1,39 @@
-module.exports = function (e, t, i) {
-            var n = i(293),
-                r = i(853),
-                o = i(161),
-                a = i(0),
-                s = i(1230),
-                l = i(11),
-                h = i(367),
-                A = i(855),
-                c = i(1447),
-                p = i(5),
-                u = i(369),
-                d = i(655),
-                g = i(195),
-                f = i(440),
-                m = i(854),
-                y = i(7),
-                _ = i(1223),
-                v = i(215),
-                b = i(1147),
-                C = i(48),
-                w = i(63),
-                E = i(59),
+module.exports = function (module, exports, require) {
+            var n = require(293),
+                r = require(853),
+                o = require(161),
+                IsFiniteNonNegativeNumber = require(0),
+                s = require(1230),
+                l = require(11),
+                h = require(367),
+                A = require(855),
+                c = require(1447),
+                p = require(5),
+                u = require(369),
+                d = require(655),
+                g = require(195),
+                f = require(440),
+                m = require(854),
+                y = require(7),
+                _ = require(1223),
+                v = require(215),
+                b = require(1147),
+                C = require(48),
+                w = require(63),
+                E = require(59),
                 B = function (e, t, i) {
                     ((this._pdfDoc = t),
                         l.extend(this, i.getTLCore()),
                         (this._ctx = new B.GPDFTLRender(this, this._canvas, e, this._pdfDoc, i)));
                 };
-            (a.inherit(B, h),
+            (IsFiniteNonNegativeNumber.inherit(B, h),
                 (B.prototype.render = function (e, t, i, n) {
                     ((this._ctx._text = null), h.prototype.render.call(this, e, t, i, n));
                 }),
                 (B.GPDFTLRender = function (e, t, i, n, r) {
                     (d.call(this, e, t), (this._pdfDoc = n), (this._node = r), (this._context = i), (this._text = null));
                 }),
-                a.inherit(B.GPDFTLRender, d),
+                IsFiniteNonNegativeNumber.inherit(B.GPDFTLRender, d),
                 (B.GPDFTLRender.prototype._text = null),
                 (B.GPDFTLRender.prototype._graphics = null),
                 (B.GPDFTLRender.prototype._putVertices = function (e) {
@@ -79,7 +79,7 @@ module.exports = function (e, t, i) {
                             var a = this._node.$trf || new y(),
                                 s = a.mapPoint(new p(t, i));
                             if (((e = new w(e, new y(1, 0, 0, 1, s.getX(), s.getY()))), this._textTransformer)) {
-                                var l = E.calculateBounds(e, !0);
+                                var l = E.calculateBounds(e, true);
                                 e = this._textTransformer.transform(e, s.getX(), s.getY(), l);
                             }
                             var h = this._putVertices(e),
@@ -104,7 +104,7 @@ module.exports = function (e, t, i) {
                             if (o >= _.Mode.STROKE) {
                                 var v = this._node.createShapePaint(
                                     this._context,
-                                    this._node.getPaintLayers().getBorderLayers(!0)[0].$_pt,
+                                    this._node.getPaintLayers().getBorderLayers(true)[0].$_pt,
                                     this._node.getPatternBBox()
                                 );
                                 d = new r({
@@ -118,7 +118,7 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (B.GPDFTLRender.prototype.drawText = function (e, t, i, a, l) {
-                    var h = !1;
+                    var h = false;
                     if (!(this._renderMode & u.RENDERFLAG_STROKE) && e !== g.NBSP) {
                         var d = 0;
                         if (
@@ -153,7 +153,7 @@ module.exports = function (e, t, i) {
                                 if (!this._strokeColor) {
                                     var S = this._node.createShapePaint(
                                         this._context,
-                                        this._node.getPaintLayers().getBorderLayers(!0)[0].$_pt,
+                                        this._node.getPaintLayers().getBorderLayers(true)[0].$_pt,
                                         this._node.getPatternBBox()
                                     );
                                     this._strokeColor = new r({
@@ -164,7 +164,7 @@ module.exports = function (e, t, i) {
                                 }
                             } else this._strokeColor = null;
                             this._text ||
-                                ((h = !0),
+                                ((h = true),
                                 (this._text = new _(this._pdfDoc)),
                                 (this._graphics = new n(this._pdfDoc)),
                                 this._pdfDoc.getCurrentGraphics().add(this._graphics));
@@ -182,7 +182,7 @@ module.exports = function (e, t, i) {
                                 var G = this.getCurrentFont(),
                                     Q = {
                                         letterSpacing: this.charSpacing,
-                                        kerning: !0,
+                                        kerning: true,
                                         direction: "ltr",
                                         features: {
                                             liga: this.textLigatures,
@@ -192,7 +192,7 @@ module.exports = function (e, t, i) {
                                         },
                                         script: D,
                                         language: k,
-                                        generateText: !0,
+                                        generateText: true,
                                     },
                                     M = {};
                                 (this.langScript && "auto" !== this.langScript && (Q.script = this.langScript),
@@ -202,7 +202,7 @@ module.exports = function (e, t, i) {
                                         L = O.glyph.unicode === g.NBSP.charCodeAt(0) ? null : G.getGlyphOutline(I, O.x, O.y, O.glyph);
                                     if (L) {
                                         var Y,
-                                            X = G.getGlyphBoundingRect(I, O.glyph, !0);
+                                            X = G.getGlyphBoundingRect(I, O.glyph, true);
                                         if (
                                             ((M.next = N[V + 1].x - O.x),
                                             (M.prev = V > 0 ? O.x - N[V - 1].x : O.x - t),
@@ -258,7 +258,7 @@ module.exports = function (e, t, i) {
                 }),
                 (B.GPDFTLRender.prototype._putWord = function (e, t, i, n, r) {
                     var o,
-                        a = this._node.getPaintLayers().getBorderLayers(!0)[0];
+                        a = this._node.getPaintLayers().getBorderLayers(true)[0];
                     a && (o = a.$_bw);
                     var s = void 0,
                         l = void 0;
@@ -268,7 +268,7 @@ module.exports = function (e, t, i) {
                             text: t,
                             textEncoded: r.getFont().encode(t, {
                                 letterSpacing: "number" == typeof this.charSpacing ? this.charSpacing : 0,
-                                kerning: !0,
+                                kerning: true,
                                 features: {
                                     liga: this.textLigatures,
                                     rlig: this.textLigatures,
@@ -296,5 +296,5 @@ module.exports = function (e, t, i) {
                         A = this._text.getCurrentWord();
                     t.trim().length ? this._text.add(h) : A && A.append(h);
                 }),
-                (e.exports = B));
+                (module.exports = B));
         };

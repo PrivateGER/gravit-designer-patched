@@ -1,15 +1,15 @@
-module.exports = function (e, t) {
-            e.exports = (function (e) {
+module.exports = function (module, exports) {
+            module.exports = (function (e) {
                 var t = {};
 
                 function i(n) {
                     if (t[n]) return t[n].exports;
                     var r = (t[n] = {
                         i: n,
-                        l: !1,
+                        l: false,
                         exports: {},
                     });
-                    return (e[n].call(r.exports, r, r.exports, i), (r.l = !0), r.exports);
+                    return (e[n].call(r.exports, r, r.exports, i), (r.l = true), r.exports);
                 }
                 return (
                     (i.m = e),
@@ -17,8 +17,8 @@ module.exports = function (e, t) {
                     (i.d = function (e, t, n) {
                         i.o(e, t) ||
                             Object.defineProperty(e, t, {
-                                configurable: !1,
-                                enumerable: !0,
+                                configurable: false,
+                                enumerable: true,
                                 get: n,
                             });
                     }),
@@ -59,9 +59,9 @@ module.exports = function (e, t) {
                         ((e.prototype = Object.create(t && t.prototype, {
                             constructor: {
                                 value: e,
-                                enumerable: !1,
-                                writable: !0,
-                                configurable: !0,
+                                enumerable: false,
+                                writable: true,
+                                configurable: true,
                             },
                         })),
                             t && (Object.setPrototypeOf ? Object.setPrototypeOf(e, t) : (e.__proto__ = t)));
@@ -85,7 +85,7 @@ module.exports = function (e, t) {
                                 (this.time = 0),
                                 (this.mtime = 0),
                                 (this.sid = ""),
-                                (this.rmd = !1),
+                                (this.rmd = false),
                                 (this.read = []),
                                 (this.asgn = []),
                                 (this.Guid = ""));
@@ -115,7 +115,7 @@ module.exports = function (e, t) {
                                 return (
                                     (i.rsv = void 0),
                                     (i.$ = []),
-                                    (i.vis = !0),
+                                    (i.vis = true),
                                     (i.targetGuid = ""),
                                     (i["@"] = e || h.RECTANGLE_ANNOT),
                                     i
@@ -127,7 +127,7 @@ module.exports = function (e, t) {
                         CDAAnnotationsList: function e() {
                             (o(this, e),
                                 (this.aid = ""),
-                                (this.rmd = !1),
+                                (this.rmd = false),
                                 (this.sid = ""),
                                 (this.$ = []),
                                 (this.pgid = ""),

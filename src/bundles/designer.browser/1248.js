@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o() {
             let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : o.Unsupported.KeepEditable,
@@ -15,5 +15,5 @@ module.exports = function (e, t, n) {
             (o.prototype.unsupportedChoice = o.Unsupported.KeepEditable),
             (o.prototype.formatVersion = 0),
             (o.prototype.lastModifiedDate = void 0),
-            (e.exports = o));
+            (module.exports = o));
     };

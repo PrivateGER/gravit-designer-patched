@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(4), n(13));
-        var o = n(1),
+        (require(4), require(13));
+        var GObject = require(1),
             i = {
                 init: function (e) {
                     return this.each(function () {
@@ -16,9 +16,9 @@ module.exports = function (e, t, n) {
                                     })
                                     .appendTo(t);
                             };
-                        for (var a in ($("<div></div>").addClass("borderline").appendTo(t), o.GRect.Side))
-                            if (o.GRect.Side.hasOwnProperty(a)) {
-                                var r = o.GRect.Side[a];
+                        for (var a in ($("<div></div>").addClass("borderline").appendTo(t), GObject.GRect.Side))
+                            if (GObject.GRect.Side.hasOwnProperty(a)) {
+                                var r = GObject.GRect.Side[a];
                                 "string" == typeof r && n(r);
                             }
                     });

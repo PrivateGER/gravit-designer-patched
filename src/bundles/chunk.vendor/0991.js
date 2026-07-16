@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(378).ContextParams,
-                r = i(379),
+module.exports = function (module, exports, require) {
+            var n = require(378 /* ContextParams */).ContextParams,
+                r = require(379),
                 o = r.isIsolatedArabicChar,
                 a = r.isTashkeelArabicChar;
-            e.exports = function (e) {
+            module.exports = function (e) {
                 var t = this.features.arab,
                     i = this.tokenizer.getRangeTokens(e);
                 if (1 !== i.length) {
@@ -32,18 +32,18 @@ module.exports = function (e, t, i) {
                                         var n = t[i],
                                             r = o(n),
                                             s = a(n);
-                                        if (!r && !s) return !0;
-                                        if (r) return !1;
+                                        if (!r && !s) return true;
+                                        if (r) return false;
                                     }
-                                    return !1;
+                                    return false;
                                 })(l) && (i |= 1),
                                 (function (e) {
-                                    if (o(e.current)) return !1;
+                                    if (o(e.current)) return false;
                                     for (var t = 0; t < e.lookahead.length; t++) {
                                         var i = e.lookahead[t];
-                                        if (!a(i)) return !0;
+                                        if (!a(i)) return true;
                                     }
-                                    return !1;
+                                    return false;
                                 })(l) && (i |= 2),
                                 i)
                             ) {

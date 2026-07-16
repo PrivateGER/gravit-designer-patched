@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(4), n(41), n(13));
-        var i = n(15),
-            a = n(1),
-            r = o(n(18)),
-            s = n(198);
-        const l = n(31);
+        var o = require(16);
+        (require(4), require(41), require(13));
+        var GPlatform = require(15),
+            GObject = require(1),
+            r = o(require(18 /* GCategory */)),
+            SidebarsIds = require(198);
+        const l = require(31);
         class c extends l {
             constructor(e) {
                 (super(),
                     (this._type = e),
-                    (this._title = new a.GLocaleKey("GEyeDropperAction", "title.".concat(e))),
+                    (this._title = new GObject.GLocaleKey("GEyeDropperAction", "title.".concat(e))),
                     (this.pageX = 0),
                     (this.pageY = 0));
             }
@@ -27,9 +27,9 @@ module.exports = function (e, t, n) {
             getShortcut() {
                 switch (this._type) {
                     case c.Type.Fill:
-                        return [i.GKey.Constant.META, i.GKey.Constant.OPTION, "C"];
+                        return [GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.OPTION, "C"];
                     case c.Type.Border:
-                        return [i.GKey.Constant.SHIFT, i.GKey.Constant.META, i.GKey.Constant.OPTION, "C"];
+                        return [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.OPTION, "C"];
                     default:
                         return null;
                 }
@@ -43,21 +43,21 @@ module.exports = function (e, t, n) {
                 }
             }
             isVisible() {
-                return !1;
+                return false;
             }
             execute() {
                 const e = gDesigner.getActiveDocument(),
                     t = e && e.getEditor(),
                     n = t && t.getSelection(),
-                    o = gDesigner.getRightSidebars().getSidebar(s.SidebarsIds.GInspectorSidebar),
-                    i = n && n.filter((e) => e && e.hasMixin(a.GStylable));
+                    o = gDesigner.getRightSidebars().getSidebar(SidebarsIds.SidebarsIds.GInspectorSidebar),
+                    i = n && n.filter((e) => e && e.hasMixin(GObject.GStylable));
                 if (!(i && i.length > 0)) return;
                 const { pageX: r, pageY: l } = this._getLastCursorPoint();
                 switch (this._type) {
                     case c.Type.Fill:
-                        i.find((e) => e.hasStyleFill() && !(e instanceof a.GText))
+                        i.find((e) => e.hasStyleFill() && !(e instanceof GObject.GText))
                             ? o.openFillEyeDropper(r, l)
-                            : i.find((e) => e instanceof a.GText)
+                            : i.find((e) => e instanceof GObject.GText)
                               ? o.openTextColorEyeDropper(r, l)
                               : i.find((e) => !e.hasStyleBorder()) || o.openBorderEyeDropper(r, l);
                         break;
@@ -73,5 +73,5 @@ module.exports = function (e, t, n) {
                 return "[Object GEyeDropperAction]";
             }
         }
-        ((c.ID = "edit.eyedropper"), (c.Type = { Border: "border", Fill: "fill", Text: "text" }), (e.exports = c));
+        ((c.ID = "edit.eyedropper"), (c.Type = { Border: "border", Fill: "fill", Text: "text" }), (module.exports = c));
     };

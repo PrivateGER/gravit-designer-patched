@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(27),
-            i = n(21),
-            a = n(116),
+        var o = require(27),
+            i = require(21),
+            a = require(116),
             r = Object,
             s = o("".split);
-        e.exports = i(function () {
+        module.exports = i(function () {
             return !r("z").propertyIsEnumerable(0);
         })
             ? function (e) {

@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o;
-        e.exports =
-            ((o = n(55)),
+        module.exports =
+            ((o = require(55)),
             (function (e) {
                 var t = o,
                     n = t.lib,
@@ -12,8 +12,8 @@ module.exports = function (e, t, n) {
                     l = [];
                 !(function () {
                     function t(t) {
-                        for (var n = e.sqrt(t), o = 2; o <= n; o++) if (!(t % o)) return !1;
-                        return !0;
+                        for (var n = e.sqrt(t), o = 2; o <= n; o++) if (!(t % o)) return false;
+                        return true;
                     }
                     function n(e) {
                         return (4294967296 * (e - (0 | e))) | 0;

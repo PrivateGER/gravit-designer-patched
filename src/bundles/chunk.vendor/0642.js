@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i() {}
             ((i.prototype.profileFormatVersionMajor = null),
                 (i.prototype.profileFormatVersionMinor = null),
@@ -18,5 +18,5 @@ module.exports = function (e, t) {
                 (i.prototype.BtoA1CLUT = null),
                 (i.prototype.BtoA1OutputChange = null),
                 (i.prototype.BtoA1normalizationRange = null),
-                (e.exports = i));
+                (module.exports = i));
         };

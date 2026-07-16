@@ -1,18 +1,18 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(8), n(20), n(3), n(34), n(26), n(125), n(126), n(114));
-        var o = n(1),
-            i = n(10);
-        const a = n(256),
-            r = n(44),
-            s = n(1350);
-        e.exports = class {
+        (require(19), require(8 /* Symbol */), require(20), require(3), require(34), require(26), require(125), require(126), require(114));
+        var GObject = require(1),
+            designerConfig = require(10);
+        const GOfflineDialog = require(256),
+            GSystemDialog = require(44),
+            s = require(1350);
+        module.exports = class {
             async open(e) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
-                ((this._url = e), (this._autoClose = t), (this._isPending = !0));
+                ((this._url = e), (this._autoClose = t), (this._isPending = true));
                 return (await gDesigner.isOfflineAsync())
                     ? new Promise((e, t) => {
-                          a.openRetryConnection(() => {
+                          GOfflineDialog.openRetryConnection(() => {
                               this._open().then(e).catch(t);
                           });
                       })
@@ -24,7 +24,7 @@ module.exports = function (e, t, n) {
                 this._dialog = $("<div></div>")
                     .gDialog({
                         className: "g-payment-dialog",
-                        releaseOnClose: !0,
+                        releaseOnClose: true,
                         closeCallback: () => {
                             e.cancelPurchase();
                         },
@@ -38,7 +38,7 @@ module.exports = function (e, t, n) {
                             })
                     );
                 const t = $("<div></div>").addClass("content").appendTo(this._dialog);
-                (this._dialog.addClass("g-loading"), this._dialog.gDialog("open", !1));
+                (this._dialog.addClass("g-loading"), this._dialog.gDialog("open", false));
                 const n = this._getURL();
                 $("<iframe/>")
                     .attr("src", n)
@@ -52,11 +52,11 @@ module.exports = function (e, t, n) {
                 try {
                     await e.waitForPurchase();
                 } catch (e) {
-                    r.alert(
-                        o.GLocale.getValue("GPaymentDialog", "text.payment-not-confirmed").replace("%link", i.gApi.link.getSupportUrl())
+                    GSystemDialog.alert(
+                        GObject.GLocale.getValue("GPaymentDialog", "text.payment-not-confirmed").replace("%link", designerConfig.gApi.link.getSupportUrl())
                     );
                 } finally {
-                    this._isPending = !1;
+                    this._isPending = false;
                 }
             }
             _getURL() {
@@ -70,13 +70,13 @@ module.exports = function (e, t, n) {
             }
             _close() {
                 if (this._isPending) {
-                    const e = o.GLocale.get(new o.GLocaleKey("GPaymentDialog", "text.dialog-dont-leave")),
-                        t = o.GLocale.get(new o.GLocaleKey("GPaymentDialog", "text.cancel")),
-                        n = o.GLocale.get(new o.GLocaleKey("GPaymentDialog", "text.finish-my-order"));
-                    r.confirm(
+                    const e = GObject.GLocale.get(new GObject.GLocaleKey("GPaymentDialog", "text.dialog-dont-leave")),
+                        t = GObject.GLocale.get(new GObject.GLocaleKey("GPaymentDialog", "text.cancel")),
+                        n = GObject.GLocale.get(new GObject.GLocaleKey("GPaymentDialog", "text.finish-my-order"));
+                    GSystemDialog.confirm(
                         e,
                         (e) => {
-                            e ? ((this._autoClose = !0), this._isPending || this.close()) : this.close();
+                            e ? ((this._autoClose = true), this._isPending || this.close()) : this.close();
                         },
                         t,
                         n

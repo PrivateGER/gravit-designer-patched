@@ -1,47 +1,47 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             (function (t) {
-                var n = i(50),
-                    r = i(2),
-                    o = i(281),
-                    a = i(11),
-                    s = i(265),
-                    l = i(5),
-                    h = (i(14), i(139)),
-                    A = i(568),
-                    c = i(179),
-                    p = i(28),
-                    u = i(148),
-                    d = i(215),
-                    g = i(266),
-                    f = i(367),
-                    m = i(138),
-                    y = i(369),
-                    _ = i(17),
-                    v = i(108),
-                    b = i(56),
-                    C = i(6),
-                    w = i(54),
-                    E = i(22),
-                    B = i(7),
-                    x = i(63),
-                    P = i(112),
-                    S = i(48),
-                    T = i(188),
-                    I = i(45),
-                    F = i(60),
-                    R = i(12),
-                    D = i(76),
-                    k = i(111),
-                    G = i(9),
-                    Q = i(59),
-                    M = i(176);
+                var n = require(50),
+                    r = require(2),
+                    o = require(281),
+                    a = require(11),
+                    s = require(265),
+                    l = require(5),
+                    h = (require(14), require(139)),
+                    A = require(568),
+                    c = require(179),
+                    GStylable = require(28),
+                    u = require(148),
+                    d = require(215),
+                    g = require(266),
+                    f = require(367),
+                    m = require(138),
+                    y = require(369),
+                    _ = require(17),
+                    GFont = require(108),
+                    b = require(56),
+                    C = require(6),
+                    w = require(54),
+                    E = require(22),
+                    B = require(7),
+                    x = require(63),
+                    P = require(112),
+                    S = require(48),
+                    T = require(188),
+                    I = require(45),
+                    F = require(60),
+                    R = require(12),
+                    D = require(76),
+                    k = require(111),
+                    G = require(9 /* String */),
+                    Q = require(59),
+                    M = require(176);
 
                 function N() {
                     (b.call(this),
                         this._setDefaultProperties(N.GeometryProperties),
                         this._setDefaultProperties(N.MetaProperties),
                         (this._runs = []),
-                        (this._runsDirty = !1),
+                        (this._runsDirty = false),
                         (this.$w = 142),
                         (this.$h = 27.236),
                         (this._vertexContainer = new w()));
@@ -50,10 +50,10 @@ module.exports = function (e, t, i) {
                     (N.VMARGIN = 0),
                     (N.HMARGIN = 1),
                     (N.DEFAULTFONT = new A("gravit", "is", "thebest")),
-                    (N.dontStorePaths = !0),
+                    (N.dontStorePaths = true),
                     r.inheritAndMix("text", N, b, [r.Reference]),
-                    (N.HITTEST_TEXT = !1),
-                    (N.HITTEST_BOX = !0),
+                    (N.HITTEST_TEXT = false),
+                    (N.HITTEST_BOX = true),
                     (N.VerticalAlign = {
                         Top: "t",
                         Middle: "m",
@@ -68,9 +68,9 @@ module.exports = function (e, t, i) {
                         RomanDot: "RomanDot",
                     }),
                     (N.GeometryProperties = {
-                        aw: !0,
-                        ah: !0,
-                        afs: !1,
+                        aw: true,
+                        ah: true,
+                        afs: false,
                         va: N.VerticalAlign.Top,
                         ttrf: null,
                         head: 0,
@@ -109,10 +109,10 @@ module.exports = function (e, t, i) {
                     }),
                     (N.VisualProperties = {}),
                     (N.MetaProperties = {
-                        _we: !1,
+                        _we: false,
                         _bkpPath: null,
-                        sc: !1,
-                        _ed: !0,
+                        sc: false,
+                        _ed: true,
                     }),
                     (N._serializeContent = function (e, t) {
                         return "fontColor" === e && t instanceof n ? n.serialize(t) : t;
@@ -127,7 +127,7 @@ module.exports = function (e, t, i) {
                     }),
                     (N.prototype._tempText = null),
                     (N.prototype._startText = null),
-                    (N.prototype._setTextWhenAvailable = !1),
+                    (N.prototype._setTextWhenAvailable = false),
                     (N.prototype._lastResolutionFill = -1),
                     (N.prototype._lastResolutionBorder = -1),
                     (N.prototype._attachedPath = null),
@@ -135,31 +135,31 @@ module.exports = function (e, t, i) {
                     (N.prototype._oldTrf = null),
                     (N.prototype._lastFillPaintLayer = null),
                     (N.prototype._lastBorderPaintLayer = null),
-                    (N.prototype._legacyHeight = !1),
-                    (N.prototype._repairedHeight = !1),
-                    (N.prototype._addedDestroyable = !1),
+                    (N.prototype._legacyHeight = false),
+                    (N.prototype._repairedHeight = false),
+                    (N.prototype._addedDestroyable = false),
                     (N.prototype._lastActualBounds = null),
                     (N.prototype.getNodeNameTranslated = function () {
                         return G.getValue("GText", "name", this.getNodeName());
                     }),
-                    (N.prototype._hasStyleBorderPadding = !1),
+                    (N.prototype._hasStyleBorderPadding = false),
                     (N.prototype._fontsToResolve = null),
                     (N.prototype._deferredRangeSetters = null),
-                    (N.prototype._waitForWorkspace = !1),
+                    (N.prototype._waitForWorkspace = false),
                     (N.prototype._deferredRestore = null),
                     (N.prototype._pendingProperties = null),
-                    (N.prototype._hasFontManagerListener = !1),
+                    (N.prototype._hasFontManagerListener = false),
                     (N.prototype._verticalShift = 0),
                     (N.prototype._runs = null),
-                    (N.prototype._runsDirty = !1),
-                    (N.prototype._verticesDirty = !1),
+                    (N.prototype._runsDirty = false),
+                    (N.prototype._verticesDirty = false),
                     (N.prototype._tlCore = null),
                     (N.prototype._resolution = 1),
                     (N.prototype._vertexContainer = null),
-                    (N.prototype._isVirgin = !0),
+                    (N.prototype._isVirgin = true),
                     (N.prototype._vertexIterator = 0),
-                    (N.prototype._hasEmbeddedFonts = !1),
-                    (N.prototype._isEdited = !1),
+                    (N.prototype._hasEmbeddedFonts = false),
+                    (N.prototype._isEdited = false),
                     (N.prototype._contentChangedHandler = null),
                     (N.prototype.deferredLoadHandler = null),
                     (N.prototype._serializedBackupPaths = null),
@@ -222,10 +222,10 @@ module.exports = function (e, t, i) {
                         if (s && e) {
                             var l = s.getTransformer(d.TYPE),
                                 h = 0;
-                            if (e && e.hasMixin(p)) {
+                            if (e && e.hasMixin(GStylable)) {
                                 var A = e.getPaintLayers();
                                 A &&
-                                    a.each(A.getBorderLayers(!0), function (e, t) {
+                                    a.each(A.getBorderLayers(true), function (e, t) {
                                         h = Math.max(h, t.$_bw);
                                     });
                             }
@@ -236,8 +236,8 @@ module.exports = function (e, t, i) {
                                 e ? (n ? n - h / 2 + 0.5 : -h / 2 + 0.5) : n,
                                 e ? (r ? r - h / 2 + 0.5 : -h / 2 + 0.5) : r
                             ),
-                                (this._runsDirty = !0),
-                                (this._verticesDirty = !0));
+                                (this._runsDirty = true),
+                                (this._verticesDirty = true));
                             var c = this._getApplyPreTransform(d.TYPE);
                             return (
                                 l
@@ -250,8 +250,8 @@ module.exports = function (e, t, i) {
                                           null
                                       )
                                     : s.setPath(null, d.DIRECTION_OUTWARDS, this._correctSideOnPath(i), 0, 0),
-                                (this._runsDirty = !0),
-                                (this._verticesDirty = !0),
+                                (this._runsDirty = true),
+                                (this._verticesDirty = true),
                                 c
                             );
                         }
@@ -261,8 +261,8 @@ module.exports = function (e, t, i) {
                         var t = this.getTLCore();
                         return t && t.getDirection() !== e
                             ? (t.setDirection(e),
-                              (this._runsDirty = !0),
-                              (this._verticesDirty = !0),
+                              (this._runsDirty = true),
+                              (this._verticesDirty = true),
                               this._getApplyPreTransform(g.TYPE) || new B())
                             : null;
                     }),
@@ -293,12 +293,12 @@ module.exports = function (e, t, i) {
                     (N.prototype._attachPath = function (e, t) {
                         var i = this.getTLCore();
                         if (i) {
-                            ((this._verticesDirty = !0), (this._runsDirty = !0));
+                            ((this._verticesDirty = true), (this._runsDirty = true));
                             var n = 0;
-                            if (t && t.hasMixin(p)) {
+                            if (t && t.hasMixin(GStylable)) {
                                 var r = t.getPaintLayers();
                                 r &&
-                                    a.each(r.getBorderLayers(!0), function (e, t) {
+                                    a.each(r.getBorderLayers(true), function (e, t) {
                                         n = Math.max(n, t.$_bw);
                                     });
                             }
@@ -362,7 +362,7 @@ module.exports = function (e, t, i) {
                         if (!r) return n;
                         if (this.isFakeText()) return this.getGeometryBBox(e);
                         if (this._runsDirty || !r.getCanvas()) {
-                            if (!this._workspace) return ((this._waitForWorkspace = !0), n);
+                            if (!this._workspace) return ((this._waitForWorkspace = true), n);
                             (r.setWidth(this.$aw ? f.AUTO : this._getWidth() - 2 * N.HMARGIN),
                                 r.setHeight(this.$ah ? f.AUTO : this._getHeight() - 2 * N.VMARGIN),
                                 (-1 === this.$w || this.hasPathAttached()) && (this.$w = r.getWidth() + 2 * N.HMARGIN),
@@ -373,7 +373,7 @@ module.exports = function (e, t, i) {
                                 var o = this.getTextShapes();
                                 for (n = null, i = 0; i < o.length; ++i) {
                                     var a = o[i];
-                                    t = Q.calculateBounds(a, !0);
+                                    t = Q.calculateBounds(a, true);
                                     n = n ? n.united(t) : t;
                                 }
                                 if (n) return n;
@@ -403,7 +403,7 @@ module.exports = function (e, t, i) {
                                 ) {
                                     var a = 0;
                                     (this.getPaintLayers()
-                                        .getBorderLayers(!0)
+                                        .getBorderLayers(true)
                                         .forEach(
                                             function (e) {
                                                 var t = this.getStyleBorderPadding(e);
@@ -411,24 +411,24 @@ module.exports = function (e, t, i) {
                                             }.bind(this)
                                         ),
                                         a && n.setPadding(a),
-                                        this.hasStyleBorder() ? (this._hasStyleBorderPadding = !0) : (this._hasStyleBorderPadding = !1));
+                                        this.hasStyleBorder() ? (this._hasStyleBorderPadding = true) : (this._hasStyleBorderPadding = false));
                                 }
                             }
                         }
                         return i;
                     }),
                     (N.prototype._styleRepaint = function (e) {
-                        ((this._runsDirty = !0), b.prototype._styleRepaint.call(this, e));
+                        ((this._runsDirty = true), b.prototype._styleRepaint.call(this, e));
                     }),
                     (N.prototype._styleFinishGeometryChange = function (e) {
-                        ((this._runsDirty = !0), b.prototype._styleFinishGeometryChange.call(this, e));
+                        ((this._runsDirty = true), b.prototype._styleFinishGeometryChange.call(this, e));
                     }),
                     (N.prototype._checkHasEmbeddedAndResetFakeText = function () {
-                        if (((this._hasEmbeddedFonts = !1), this._workspace))
+                        if (((this._hasEmbeddedFonts = false), this._workspace))
                             try {
                                 var e = (this.$content && JSON.parse(this.$content, N._deserializeContent)) || this.getContent();
                                 if (e) {
-                                    var t = !0;
+                                    var t = true;
                                     return (
                                         (e = this._fixText(e)).forEach(
                                             function (e) {
@@ -439,7 +439,7 @@ module.exports = function (e, t, i) {
                                                         this._getGravitValue("fontStyle", e.fontStyle),
                                                         this._getGravitValue("fontWeight", e.fontWeight)
                                                     );
-                                                ((i && i.isResolved()) || (t = !1), i && i.isEmbedded() && (this._hasEmbeddedFonts = !0));
+                                                ((i && i.isResolved()) || (t = false), i && i.isEmbedded() && (this._hasEmbeddedFonts = true));
                                             }.bind(this)
                                         ),
                                         void (t && !this._hasEmbeddedFonts && (this._serializedBackupPaths = null))
@@ -456,15 +456,15 @@ module.exports = function (e, t, i) {
                             (t && (n = r.getDocumentRange().plainText()), i && r.lockChangeEvents(1));
                             if (this._workspace) {
                                 if (e instanceof Array) {
-                                    for (var o, s, l, h, A = !0, c = 0; c < e.length; c++)
+                                    for (var o, s, l, h, A = true, c = 0; c < e.length; c++)
                                         ((s = this._getGravitValue("fontFamily", e[c].fontFamily || u.defaultFormatting.fontFamily)),
                                             (l = this._getGravitValue("fontStyle", e[c].fontStyle || u.defaultFormatting.fontStyle)),
                                             (h = this._getGravitValue("fontWeight", e[c].fontWeight || u.defaultFormatting.fontWeight)),
                                             ((o = this._workspace.getFontManager().getFont(s, l, h)) && o.isResolved()) ||
-                                                (this._requireResolvedFont(o), (A = !1)));
-                                    if (!A) return void (this._setTextWhenAvailable = !0);
+                                                (this._requireResolvedFont(o), (A = false)));
+                                    if (!A) return void (this._setTextWhenAvailable = true);
                                 }
-                            } else this._waitForWorkspace = !0;
+                            } else this._waitForWorkspace = true;
                             var p = r.setText(e);
                             if (
                                 (i && r.lockChangeEvents(0),
@@ -472,7 +472,7 @@ module.exports = function (e, t, i) {
                                 !p)
                             )
                                 return;
-                            if (((this._setTextWhenAvailable = !1), (this._tempText = null), t)) {
+                            if (((this._setTextWhenAvailable = false), (this._tempText = null), t)) {
                                 var d, g, f;
                                 ((d = (f = r.getDocumentRange().plainText()).length), (g = n.length));
                                 var m,
@@ -494,11 +494,11 @@ module.exports = function (e, t, i) {
                         );
                     }),
                     (N.prototype.getStylePropertySets = function () {
-                        return b.prototype.getStylePropertySets.call(this).concat(p.PropertySet.Text, p.PropertySet.Paragraph);
+                        return b.prototype.getStylePropertySets.call(this).concat(GStylable.PropertySet.Text, GStylable.PropertySet.Paragraph);
                     }),
                     (N.prototype.rewindVertices = function (e) {
                         if (this.isFakeText()) {
-                            var t = !0;
+                            var t = true;
                             this._vertexIterator = 0;
                             for (var i = 0; i < this._deserializedBackupPaths.length; i++)
                                 t = t && this._deserializedBackupPaths[i].rewindVertices(0);
@@ -510,7 +510,7 @@ module.exports = function (e, t, i) {
                             (this._verticesDirty &&
                                 (this._vertexContainer.clearVertices(),
                                 n.renderVertices(this._vertexContainer),
-                                (this._verticesDirty = !1)),
+                                (this._verticesDirty = false)),
                             this._vertexContainer.rewindVertices(e))
                         );
                     }),
@@ -553,21 +553,21 @@ module.exports = function (e, t, i) {
                                             h.vertices,
                                             new B().translated(-g.getX() + y.getX(), -g.getY() + y.getY()).multiplied(m)
                                         )),
-                                        (s = c.createPathFromVertexSource(h.vertices, null, !0)))
+                                        (s = c.createPathFromVertexSource(h.vertices, null, true)))
                                     ) {
                                         if ((s.assignFrom(this), s.setProperty("evenodd", this._isEvenOddFill()), h.textFill))
-                                            this.getPaintLayers().getFillLayers(!1).length ||
+                                            this.getPaintLayers().getFillLayers(false).length ||
                                                 (s.getPaintLayers().clearFillLayers(),
-                                                s.getPaintLayers().appendChild(new p.FillPaintLayer(h.textFill)));
+                                                s.getPaintLayers().appendChild(new GStylable.FillPaintLayer(h.textFill)));
                                         else if ("string" == typeof h.fill || h.fill instanceof String) {
-                                            if (!this.getPaintLayers().getFillLayers(!1).length)
+                                            if (!this.getPaintLayers().getFillLayers(false).length)
                                                 (A = _.parseCSSColor(h.fill)) &&
                                                     (s.getPaintLayers().clearFillLayers(),
-                                                    s.getPaintLayers().appendChild(new p.FillPaintLayer(new _(A.slice(0, 3)), A[3])));
+                                                    s.getPaintLayers().appendChild(new GStylable.FillPaintLayer(new _(A.slice(0, 3)), A[3])));
                                         }
                                         if (
                                             (h.textStroke || "string" == typeof h.stroke || h.stroke instanceof String) &&
-                                            !this.getPaintLayers().getBorderLayers(!0).length
+                                            !this.getPaintLayers().getBorderLayers(true).length
                                         ) {
                                             var A,
                                                 u = null,
@@ -576,7 +576,7 @@ module.exports = function (e, t, i) {
                                             else (A = _.parseCSSColor(h.stroke)) && A[3] > 0 && ((u = new _(A.slice(0, 3))), (d = A[3]));
                                             u &&
                                                 (s.getPaintLayers().clearBorderLayers(),
-                                                s.getPaintLayers().appendChild(new p.BorderPaintLayer(u, d)));
+                                                s.getPaintLayers().appendChild(new GStylable.BorderPaintLayer(u, d)));
                                         }
                                         i.push(s);
                                     }
@@ -595,7 +595,7 @@ module.exports = function (e, t, i) {
                                     : "b" == this.$va && (y = new l(0, e.getHeight() - e.getActualHeight())));
                             var v = this._vertexContainer;
                             ((v = new x(v, new B().translated(-g.getX() + y.getX(), -g.getY() + y.getY()).multiplied(m))),
-                                (s = c.createPathFromVertexSource(v, null, !0)) &&
+                                (s = c.createPathFromVertexSource(v, null, true)) &&
                                     ((this.$trf = null), s.assignFrom(this), m.isIdentity() || (this.$trf = m), i.push(s)));
                         }
                         return i;
@@ -642,7 +642,7 @@ module.exports = function (e, t, i) {
                                 a && (o = o.multiplied(a));
                             }
                             (this.beginUpdate(),
-                                this.setProperties(["aw", "ah"], [!1, !1], !1, !1, !1),
+                                this.setProperties(["aw", "ah"], [false, false], false, false, false),
                                 this.transformSourceBBox(o),
                                 this.endUpdate());
                         }
@@ -662,8 +662,8 @@ module.exports = function (e, t, i) {
                                 g = this.getProperty("aw"),
                                 f = this.getProperty("ah");
                             g && n && !R.isEqualEps(this._getWidth(), u, 1e-9)
-                                ? ((g = !1), this.getProperty("vacr") == E.Anchor.AnchorType.Stretch && (f = !1))
-                                : f && r && !R.isEqualEps(this._getHeight(), d, 1e-9) && (f = !1);
+                                ? ((g = false), this.getProperty("vacr") == E.Anchor.AnchorType.Stretch && (f = false))
+                                : f && r && !R.isEqualEps(this._getHeight(), d, 1e-9) && (f = false);
                             var m = this.$trf || new B(),
                                 y = e.getTranslation();
                             m.getMatrix();
@@ -725,11 +725,11 @@ module.exports = function (e, t, i) {
                         return new P(this);
                     }),
                     (N.prototype.setTLCore = function (e) {
-                        ((this._tlCore = e), (this._runsDirty = !0));
+                        ((this._tlCore = e), (this._runsDirty = true));
                     }),
                     (N.prototype.getTLCore = function () {
                         if ((this._tlCore || (this._tlCore = new f()), !this._workspace && !this._tlCore.isInitialized()))
-                            return ((this._waitForWorkspace = !0), null);
+                            return ((this._waitForWorkspace = true), null);
                         if (!this._tlCore.isInitialized()) {
                             var e = this._workspace.getFontManager().getDefaultFont();
                             if (!e) return (this._requireResolvedFont(N.DEFAULTFONT), null);
@@ -748,7 +748,7 @@ module.exports = function (e, t, i) {
                                 o >= 0;
                                 o--
                             ) {
-                                var a = p.PropertySetInfo[r[o]];
+                                var a = GStylable.PropertySetInfo[r[o]];
                                 if (a.geometryProperties)
                                     for (var s in a.geometryProperties)
                                         ((t = N.PropertyMapping[s]),
@@ -776,16 +776,16 @@ module.exports = function (e, t, i) {
                                 var A = this._pendingAttachedPath;
                                 if (
                                     ((this._pendingAttachedPath = null),
-                                    this.setText(this._tempText, !0, !0),
+                                    this.setText(this._tempText, true, true),
                                     this._checkHasEmbeddedAndResetFakeText(),
                                     (this._pendingProperties = l),
                                     (this._pendingAttachedPath = A),
                                     l && h instanceof Array)
                                 ) {
-                                    var c = !1,
+                                    var c = false,
                                         u = 0;
                                     (l.every(function (e, t) {
-                                        return !(!e.toRange && ((c = !0), (u = t), e.props.hasOwnProperty("content"))) || ((c = !1), !1);
+                                        return !(!e.toRange && ((c = true), (u = t), e.props.hasOwnProperty("content"))) || ((c = false), false);
                                     }),
                                         c && (l[u].props.push("content"), l[u].values.push(JSON.stringify(h, N._serializeContent))));
                                 }
@@ -810,8 +810,8 @@ module.exports = function (e, t, i) {
                                     ? ((m.props = m.props.concat(e.props)), (m.values = m.values.concat(e.values)))
                                     : ((g.props = g.props.concat(e.props)), (g.values = g.values.concat(e.values)));
                             }),
-                                m.props.length && this.setProperties(m.props, m.values, !1, !1, !1, !0, !0),
-                                g.props.length && this.setProperties(g.props, g.values, !1, !1, !1, !1, !0),
+                                m.props.length && this.setProperties(m.props, m.values, false, false, false, true, true),
+                                g.props.length && this.setProperties(g.props, g.values, false, false, false, false, true),
                                 (this._pendingAttachedPath = A));
                         }
                         if (this._pendingAttachedPath) {
@@ -831,7 +831,7 @@ module.exports = function (e, t, i) {
                         if (!this.$ah) {
                             if (this._legacyHeight && !this._fontsToResolve) {
                                 var t = e.getActualHeight() + 2 * N.VMARGIN;
-                                ((this.$h = Math.max(t, this.$h)), (this._legacyHeight = !1), (this._repairedHeight = !0));
+                                ((this.$h = Math.max(t, this.$h)), (this._legacyHeight = false), (this._repairedHeight = true));
                             }
                             return this.$h;
                         }
@@ -846,10 +846,10 @@ module.exports = function (e, t, i) {
                                 case "fontStyle":
                                     r =
                                         "italic" === i
-                                            ? v.Style.Italic
+                                            ? GFont.Style.Italic
                                             : "normal" === i || void 0 === i
-                                              ? v.Style.Normal
-                                              : i === v.Style.Normal || i === v.Style.Italic
+                                              ? GFont.Style.Normal
+                                              : i === GFont.Style.Normal || i === GFont.Style.Italic
                                                 ? i
                                                 : null;
                                     break;
@@ -873,50 +873,50 @@ module.exports = function (e, t, i) {
                                     if (((l = void 0 !== i ? parseInt(i) : 0), isNaN(l)))
                                         switch (i) {
                                             case "normal":
-                                                r = v.Weight.Regular;
+                                                r = GFont.Weight.Regular;
                                                 break;
                                             case "lighter":
-                                                r = v.Weight.Thin;
+                                                r = GFont.Weight.Thin;
                                                 break;
                                             case "bold":
-                                                r = v.Weight.Bold;
+                                                r = GFont.Weight.Bold;
                                                 break;
                                             case "bolder":
-                                                r = v.Weight.Heavy;
+                                                r = GFont.Weight.Heavy;
                                                 break;
                                             default:
                                                 r = null;
                                         }
-                                    else r = l || v.Weight.Regular;
+                                    else r = l || GFont.Weight.Regular;
                                     break;
                                 case "align":
                                     switch (i) {
                                         case "left":
-                                            r = p.ParagraphAlignment.Left;
+                                            r = GStylable.ParagraphAlignment.Left;
                                             break;
                                         case "center":
-                                            r = p.ParagraphAlignment.Center;
+                                            r = GStylable.ParagraphAlignment.Center;
                                             break;
                                         case "right":
-                                            r = p.ParagraphAlignment.Right;
+                                            r = GStylable.ParagraphAlignment.Right;
                                             break;
                                         case "justify":
-                                            r = p.ParagraphAlignment.Justify;
+                                            r = GStylable.ParagraphAlignment.Justify;
                                     }
                                     break;
                                 case "transformation":
                                     switch (i) {
                                         case "lowercase":
-                                            r = p.TextTransformation.Lowercase;
+                                            r = GStylable.TextTransformation.Lowercase;
                                             break;
                                         case "uppercase":
-                                            r = p.TextTransformation.Uppercase;
+                                            r = GStylable.TextTransformation.Uppercase;
                                             break;
                                         case "capitalize":
-                                            r = p.TextTransformation.Capitalize;
+                                            r = GStylable.TextTransformation.Capitalize;
                                             break;
                                         case "smallcaps":
-                                            r = p.TextTransformation.SmallCaps;
+                                            r = GStylable.TextTransformation.SmallCaps;
                                     }
                                     break;
                                 case "paragraphSpacing":
@@ -950,7 +950,7 @@ module.exports = function (e, t, i) {
                                 o = i;
                                 break;
                             case "_tfs":
-                                o = i === v.Style.Italic ? "italic" : i === v.Style.Normal ? "normal" : i;
+                                o = i === GFont.Style.Italic ? "italic" : i === GFont.Style.Normal ? "normal" : i;
                                 break;
                             case "_fc":
                                 o =
@@ -964,31 +964,31 @@ module.exports = function (e, t, i) {
                                 break;
                             case "_pal":
                                 switch (i) {
-                                    case p.ParagraphAlignment.Left:
+                                    case GStylable.ParagraphAlignment.Left:
                                         o = "left";
                                         break;
-                                    case p.ParagraphAlignment.Center:
+                                    case GStylable.ParagraphAlignment.Center:
                                         o = "center";
                                         break;
-                                    case p.ParagraphAlignment.Right:
+                                    case GStylable.ParagraphAlignment.Right:
                                         o = "right";
                                         break;
-                                    case p.ParagraphAlignment.Justify:
+                                    case GStylable.ParagraphAlignment.Justify:
                                         o = "justify";
                                 }
                                 break;
                             case "_ttrf":
                                 switch (i) {
-                                    case p.TextTransformation.Lowercase:
+                                    case GStylable.TextTransformation.Lowercase:
                                         o = "lowercase";
                                         break;
-                                    case p.TextTransformation.Uppercase:
+                                    case GStylable.TextTransformation.Uppercase:
                                         o = "uppercase";
                                         break;
-                                    case p.TextTransformation.Capitalize:
+                                    case GStylable.TextTransformation.Capitalize:
                                         o = "capitalize";
                                         break;
-                                    case p.TextTransformation.SmallCaps:
+                                    case GStylable.TextTransformation.SmallCaps:
                                         o = "smallcaps";
                                 }
                                 break;
@@ -1019,7 +1019,7 @@ module.exports = function (e, t, i) {
                             s = (c = (A = o.getDocumentRange()).getFormatting())[l];
                             h = this._getGravitValue(l, s);
                         } else {
-                            var p = !1;
+                            var p = false;
                             if (this._tempText && this._tempText instanceof Array)
                                 for (var u = 0; u < this._tempText.length; u++)
                                     if (this._tempText[u].hasOwnProperty(l))
@@ -1028,7 +1028,7 @@ module.exports = function (e, t, i) {
                                                 h = null;
                                                 break;
                                             }
-                                        } else ((s = this._tempText[u][l]), (h = this._getGravitValue(l, s)), (p = !0));
+                                        } else ((s = this._tempText[u][l]), (h = this._getGravitValue(l, s)), (p = true));
                             p || (h = b.prototype.getProperty.call(this, e, t, i, n));
                         }
                         return h;
@@ -1051,34 +1051,34 @@ module.exports = function (e, t, i) {
                             u = null,
                             f = null,
                             m = null,
-                            y = !1,
+                            y = false,
                             _ = [],
                             C = [],
-                            w = !1,
+                            w = false,
                             x = this.$tptho,
                             P = this.$tpthd,
                             S = this.$tpths,
                             T = this.$tpthl,
-                            R = !1,
+                            R = false,
                             D = null,
                             k = null,
                             G = null,
                             Q = -1,
                             M = this.getProperty("trf"),
-                            U = !1;
+                            U = false;
                         for (J = 0; J < e.length; J++) {
                             var V = e[J];
-                            if ("content" == V) ((m = t[J] || this._startText), (y = !0));
+                            if ("content" == V) ((m = t[J] || this._startText), (y = true));
                             else if ("aw" == V) c.setWrap(!t[J]);
                             else if ("atPath" != V || this.isRecordedTransaction())
                                 "trf" != V || o
                                     ? "dir" === V
-                                        ? t[J] !== c.getDirection() && ((Q = t[J]), this.hasPathAttached() && (U = !0))
+                                        ? t[J] !== c.getDirection() && ((Q = t[J]), this.hasPathAttached() && (U = true))
                                         : this.hasPathAttached() &&
                                           0 === V.indexOf("tpth") &&
-                                          ((U = !0),
-                                          (this._runsDirty = !0),
-                                          (this._verticesDirty = !0),
+                                          ((U = true),
+                                          (this._runsDirty = true),
+                                          (this._verticesDirty = true),
                                           "tpthd" === V
                                               ? (P = t[J])
                                               : "tptho" === V
@@ -1087,7 +1087,7 @@ module.exports = function (e, t, i) {
                                                   ? (S = t[J])
                                                   : "tpthl" === V && (T = t[J]))
                                     : (M = t[J]);
-                            else if (((U = !0), (R = !0), (G = t[J]), (k = this._atPath ? this._atPath : null), G && !k))
+                            else if (((U = true), (R = true), (G = t[J]), (k = this._atPath ? this._atPath : null), G && !k))
                                 D = r.deserialize(G);
                             else if (k) {
                                 var O = k.cloneAnchorPoints();
@@ -1101,7 +1101,7 @@ module.exports = function (e, t, i) {
                             var L = N.PropertyMapping[e[J]],
                                 Y = t[J],
                                 X = null;
-                            (L && (y = !0),
+                            (L && (y = true),
                                 "fontWeight" == L
                                     ? (Y instanceof Array && (Y = 1 !== Y.length || Y[0] instanceof Array ? null : Y[0]), (u = ~~Y))
                                     : "fontStyle" == L
@@ -1110,7 +1110,7 @@ module.exports = function (e, t, i) {
                                         ? (Y instanceof Array && (Y = 1 !== Y.length || Y[0] instanceof Array ? null : Y[0]), (p = Y))
                                         : L
                                           ? (m ||
-                                                (w || (this._notifyChange(E._Change.PrepareGeometryUpdate), (w = !0)),
+                                                (w || (this._notifyChange(E._Change.PrepareGeometryUpdate), (w = true)),
                                                 A.setFormatting(L, this._getGTLValue(e[J], Y))),
                                             "fontColor" === L && (_.push(e[J]), C.push(Y)))
                                           : "content" !== e[J] && (_.push(e[J]), C.push(Y)));
@@ -1123,7 +1123,7 @@ module.exports = function (e, t, i) {
                                     var i,
                                         n = [];
                                     if (t) n.push(t);
-                                    else if ((i = this.getProperty(e, !1, null, !1, this._isEdited))) n.push(i);
+                                    else if ((i = this.getProperty(e, false, null, false, this._isEdited))) n.push(i);
                                     else if (null === i) {
                                         i = A.save();
                                         for (var r = N.PropertyMapping[e], o = 0; o < i.length; o++)
@@ -1166,7 +1166,7 @@ module.exports = function (e, t, i) {
                                 },
                                 ee = function (e, t) {
                                     for (
-                                        var i = !0,
+                                        var i = true,
                                             n = e.fontFamily ? e.fontFamily : null,
                                             r = e.fontStyle ? e.fontStyle : null,
                                             s = e.fontWeight ? e.fontWeight : null,
@@ -1181,9 +1181,9 @@ module.exports = function (e, t, i) {
                                             g = h.getWeight();
                                         if (
                                             (t &&
-                                                (t instanceof v
+                                                (t instanceof GFont
                                                     ? ((u = t.getFamily()), (g = t.getWeight()), (d = t.getStyle()))
-                                                    : p in t && ((u = t[p]), (g = v.Weight.Regular), (d = v.Style.Normal))),
+                                                    : p in t && ((u = t[p]), (g = GFont.Weight.Regular), (d = GFont.Style.Normal))),
                                             (!n || (n && n == p && p != u)) &&
                                                 ((n = u), (r = d), (s = g), (e.fontFamily = u), (e.fontWeight = g), (e.fontStyle = d)),
                                             e.content && p != u)
@@ -1201,14 +1201,14 @@ module.exports = function (e, t, i) {
                                         }
                                         var _ = this._workspace.getFontManager().getFont(u, d, g);
                                         (_ && _.isResolved()) ||
-                                            (_ && !_.isResolved() && p !== u && ((j[l] = _), this._requireResolvedFont(_)), (i = !1));
+                                            (_ && !_.isResolved() && p !== u && ((j[l] = _), this._requireResolvedFont(_)), (i = false));
                                     }
-                                    if (!i) return !1;
+                                    if (!i) return false;
                                     if (e.content) {
                                         if (i) {
                                             f = this._shorten(JSON.parse(e.content, N._deserializeContent));
-                                            a.equals(f, this.getContent(), !0) ||
-                                                (this._notifyChange(E._Change.PrepareGeometryUpdate), this.setText(f, !0, o));
+                                            a.equals(f, this.getContent(), true) ||
+                                                (this._notifyChange(E._Change.PrepareGeometryUpdate), this.setText(f, true, o));
                                         }
                                     } else {
                                         this._notifyChange(E._Change.PrepareGeometryUpdate);
@@ -1216,30 +1216,30 @@ module.exports = function (e, t, i) {
                                             C = [];
                                         (n && (b.push("fontFamily"), C.push(n)),
                                             s && (b.push("fontWeight"), C.push(s)),
-                                            r && (b.push("fontStyle"), C.push(r === v.Style.Normal ? "normal" : "italic")),
+                                            r && (b.push("fontStyle"), C.push(r === GFont.Style.Normal ? "normal" : "italic")),
                                             b.length && (o && c.lockChangeEvents(1), A.setFormatting(b, C), o && c.lockChangeEvents(0)));
                                     }
                                     return i;
                                 };
                             j.length
                                 ? (this._deferredRangeSetters || (this._deferredRangeSetters = []),
-                                  (y = !1),
+                                  (y = false),
                                   this._deferredRangeSetters.push({
                                       func: ee,
                                       vars: $,
                                   }))
-                                : m || (ee.call(this, $), (y = !0));
+                                : m || (ee.call(this, $), (y = true));
                         }
                         if (m && !h) {
                             var te = this._shorten(JSON.parse(m, N._deserializeContent));
-                            a.equals(te, this.getContent(), !0) ||
-                                (w || (this._notifyChange(E._Change.PrepareGeometryUpdate), (w = !0)), this.setText(te, !0));
+                            a.equals(te, this.getContent(), true) ||
+                                (w || (this._notifyChange(E._Change.PrepareGeometryUpdate), (w = true)), this.setText(te, true));
                         }
-                        var ie = !1;
+                        var ie = false;
                         if (Q >= 0) {
                             var ne = this._getApplyPreTransform(g.TYPE) || new B(),
                                 re = this._setDirection(Q);
-                            ((M = (M || new B()).preMultiplied((re || new B()).multiplied(ne.inverted()))), (ie = !0));
+                            ((M = (M || new B()).preMultiplied((re || new B()).multiplied(ne.inverted()))), (ie = true));
                         }
                         if ((c.lockChangeEvents(0), !l)) {
                             var oe = _,
@@ -1249,9 +1249,9 @@ module.exports = function (e, t, i) {
                                 (y &&
                                     (oe.push("content"),
                                     ae.push(m || JSON.stringify(this.getContent(), N._serializeContent)),
-                                    (ie = !0),
+                                    (ie = true),
                                     (U = U || this.hasPathAttached()),
-                                    (n = !0)),
+                                    (n = true)),
                                 this.isRecordedTransaction())
                             ) {
                                 if (M && this.isFakeText()) {
@@ -1273,22 +1273,22 @@ module.exports = function (e, t, i) {
                                                   )
                                                 : new I(this._attachedPath.getProperty("evenodd"), O)) && D.assignFrom(this._attachedPath);
                                     }
-                                    if ((w || ((w = !0), this._notifyChange(E._Change.PrepareGeometryUpdate)), M && D && M.invertible())) {
+                                    if ((w || ((w = true), this._notifyChange(E._Change.PrepareGeometryUpdate)), M && D && M.invertible())) {
                                         var he = D.getProperty("trf");
                                         (D.setProperty("trf", he ? he.multiplied(M.inverted()) : M.inverted()), (G = r.serialize(D)));
                                     } else D && !G && (G = r.serialize(D));
-                                    ((se = this._trySetPath(D, P, S, x, T, M)), (ie = !0));
+                                    ((se = this._trySetPath(D, P, S, x, T, M)), (ie = true));
                                     var Ae = oe.indexOf("atPath");
                                     Ae >= 0 ? (ae[Ae] = G) : (oe.push("atPath"), ae.push(G));
                                 } else if (ie && c.getTransformer(d.TYPE)) {
-                                    ((this._runsDirty = !0), (this._verticesDirty = !0));
+                                    ((this._runsDirty = true), (this._verticesDirty = true));
                                     var ce = this._getApplyPreTransform(d.TYPE);
                                     se = se ? se.multiplied(ce) : ce;
                                 }
                                 if (
                                     (ie && se
                                         ? (M = M ? se.multiplied(M) : se)
-                                        : R && !D && ((ie = !0), (M = this._oldTrf ? this._oldTrf : null), (this._oldTrf = null), (n = !0)),
+                                        : R && !D && ((ie = true), (M = this._oldTrf ? this._oldTrf : null), (this._oldTrf = null), (n = true)),
                                     ie)
                                 ) {
                                     var pe = oe.indexOf("trf");
@@ -1312,10 +1312,10 @@ module.exports = function (e, t, i) {
                                             if (((e.fontFamily = i.fontFamily), e.hasOwnProperty("fontStyle"))) {
                                                 var o = i.fontStyle;
                                                 switch (o) {
-                                                    case v.Style.Normal:
+                                                    case GFont.Style.Normal:
                                                         e.fontStyle = "normal";
                                                         break;
-                                                    case v.Style.Italic:
+                                                    case GFont.Style.Italic:
                                                         e.fontStyle = "italic";
                                                         break;
                                                     default:
@@ -1335,13 +1335,13 @@ module.exports = function (e, t, i) {
                     (N.prototype._preparePaint = function (e) {
                         if (b.prototype._preparePaint.call(this, e)) {
                             var t = this._getClipBox(e);
-                            return (t && e.canvas.hasClip() && e.canvas.clipRect(t.getX(), t.getY(), t.getWidth(), t.getHeight()), !0);
+                            return (t && e.canvas.hasClip() && e.canvas.clipRect(t.getX(), t.getY(), t.getWidth(), t.getHeight()), true);
                         }
-                        return !1;
+                        return false;
                     }),
                     (N.prototype._finishPaint = function (e) {
                         (null !== this._getClipBox(e) && e.canvas.hasClip() && e.canvas.resetClip(),
-                            (this._runsDirty = !1),
+                            (this._runsDirty = false),
                             b.prototype._finishPaint.call(this, e));
                     }),
                     (N.prototype._fixText = function (e) {
@@ -1387,22 +1387,22 @@ module.exports = function (e, t, i) {
                     }),
                     (N.prototype.replaceFonts = function (e, t) {
                         if (e) {
-                            var i = !1;
+                            var i = false;
                             if (this._deferredRangeSetters) {
                                 for (var n = this._deferredRangeSetters.length - 1; n >= 0; --n)
                                     this._deferredRangeSetters[n].func.call(this, this._deferredRangeSetters[n].vars, e) &&
-                                        (this._deferredRangeSetters.splice(n, 1), (i = !0));
+                                        (this._deferredRangeSetters.splice(n, 1), (i = true));
                                 0 == this._deferredRangeSetters.length && (this._deferredRangeSetters = null);
                             }
                             if (this._fontsToResolve)
                                 for (var r = this._fontsToResolve.length - 1; r >= 0; --r) {
                                     var o = this._fontsToResolve[r].getFamily();
-                                    if (e instanceof v || o in e) {
-                                        if (e instanceof v)
+                                    if (e instanceof GFont || o in e) {
+                                        if (e instanceof GFont)
                                             var a = e.getFamily(),
                                                 s = e.getWeight(),
                                                 l = e.getStyle();
-                                        else ((a = e[o]), (s = v.Weight.Regular), (l = v.Style.Normal));
+                                        else ((a = e[o]), (s = GFont.Weight.Regular), (l = GFont.Style.Normal));
                                         var h = this._workspace.getFontManager().getFont(a, l, s);
                                         (h && (this._fontsToResolve.splice(r, 1), h.isResolved() || this._requireResolvedFont(h)),
                                             0 === this._fontsToResolve.length &&
@@ -1411,8 +1411,8 @@ module.exports = function (e, t, i) {
                                 }
                             if (
                                 (i &&
-                                    ((this._runsDirty = !0),
-                                    (this._verticesDirty = !0),
+                                    ((this._runsDirty = true),
+                                    (this._verticesDirty = true),
                                     this._resetFxCacheAndState(),
                                     this.hasPathAttached() && this.attachPath(this._attachedPath),
                                     this._notifyChange(E._Change.PrepareGeometryUpdate),
@@ -1420,15 +1420,15 @@ module.exports = function (e, t, i) {
                                 t)
                             ) {
                                 var A = this.isFakeText() ? JSON.parse(this.$content, N._deserializeContent) : this.getContent(),
-                                    c = !0;
+                                    c = true;
                                 (A.forEach(
                                     function (t) {
-                                        if (e instanceof v || e[t.fontFamily]) {
+                                        if (e instanceof GFont || e[t.fontFamily]) {
                                             var i,
-                                                n = v.Weight.Regular,
-                                                r = v.Style.Normal;
+                                                n = GFont.Weight.Regular,
+                                                r = GFont.Style.Normal;
                                             if (
-                                                (e instanceof v
+                                                (e instanceof GFont
                                                     ? ((i = e.getFamily()), (n = e.getWeight()), (r = e.getStyle()))
                                                     : (i = e[t.fontFamily]),
                                                 i)
@@ -1438,34 +1438,34 @@ module.exports = function (e, t, i) {
                                                     ((t.fontFamily = o.getFamily()),
                                                         (t.fontStyle = this._getGTLValue("_tfs", o.getStyle())),
                                                         (t.fontWeight = o.getWeight()),
-                                                        o.isResolved() || (this._requireResolvedFont(o), (c = !1)));
+                                                        o.isResolved() || (this._requireResolvedFont(o), (c = false)));
                                                 else {
                                                     var a = this._workspace.getFontManager().getDefaultFont();
                                                     a
                                                         ? ((t.fontFamily = a.getFamily()),
                                                           (t.fontStyle = this._getGTLValue("_tfs", a.getStyle())),
                                                           (t.fontWeight = a.getWeight()))
-                                                        : (c = !1);
+                                                        : (c = false);
                                                 }
                                             }
                                         }
                                     }.bind(this)
                                 ),
-                                    e instanceof v
+                                    e instanceof GFont
                                         ? ((this.$_tff = e.getFamily()), (this.$_tfs = e.getWeight()), (this.$_tfs = e.getStyle()))
                                         : e[this.$_tff] && (this.$_tff = e[this.$_tff]),
                                     c
                                         ? (this.setProperty("content", JSON.stringify(A, N._serializeContent)), this.repaint())
                                         : this._workspace.getFontManager().getDefaultFont() &&
-                                          ((this.$content = JSON.stringify(A, N._serializeContent)), (this._setTextWhenAvailable = !0)));
+                                          ((this.$content = JSON.stringify(A, N._serializeContent)), (this._setTextWhenAvailable = true)));
                             }
                         }
                     }),
                     (N.prototype._fixFontAttributes = function (e) {
                         if (e.ct && (e._tff || e._tfs || e._tfw)) {
                             e._tff && !e._tff.length && (e._tff = null);
-                            var t = !1;
-                            ("function" == typeof gdb_loaddesign && (t = !0), (e._tfs = e._tfs || null), (e._tfw = e._tfw || null));
+                            var t = false;
+                            ("function" == typeof gdb_loaddesign && (t = true), (e._tfs = e._tfs || null), (e._tfw = e._tfw || null));
                             for (var i = 0; i < e.ct.length; i++) {
                                 var n = e.ct[i];
                                 if (
@@ -1490,7 +1490,7 @@ module.exports = function (e, t, i) {
                             var i,
                                 n = this.getTLCore();
                             (n && !this._tempText
-                                ? this._isEdited && t.options && !1 === t.options.save
+                                ? this._isEdited && t.options && false === t.options.save
                                     ? (t.blob.ct = n.selectedRange().save())
                                     : this.isFakeText()
                                       ? (t.blob.ct = JSON.parse(this.getProperty("content"), N._deserializeContent))
@@ -1571,17 +1571,17 @@ module.exports = function (e, t, i) {
                                                       fontColor: "transparent",
                                                   };
                                             var r = e["@"],
-                                                o = !1;
+                                                o = false;
                                             for (var a in N.PropertyMapping)
                                                 if (e.hasOwnProperty(a)) {
                                                     var s = this._getGTLValue(a, e[a]);
                                                     (n || s) &&
-                                                        ("_tff" === a && s && (s = v.getFontFamilyCorrected(s)),
+                                                        ("_tff" === a && s && (s = GFont.getFontFamilyCorrected(s)),
                                                         (i[N.PropertyMapping[a]] = s));
                                                 }
                                             if ("text" === r) d(e.ct, t, i);
                                             else if (
-                                                (e.hasOwnProperty("cnt") && ((i.text = e.cnt), (o = !0)),
+                                                (e.hasOwnProperty("cnt") && ((i.text = e.cnt), (o = true)),
                                                 o && t.push(i),
                                                 "txPara" === r && t.length
                                                     ? (t[t.length - 1].text += "\n")
@@ -1592,7 +1592,7 @@ module.exports = function (e, t, i) {
                                         }
                                     }.bind(this),
                                     g = [];
-                                (d(o, g, null, !0),
+                                (d(o, g, null, true),
                                     g.length && (s.push("content"), l.push(JSON.stringify(g, N._serializeContent))),
                                     this.setProperties(s, l));
                             } else {
@@ -1608,7 +1608,7 @@ module.exports = function (e, t, i) {
                                     (this._fixFontFamily(f), (t.blob.content = JSON.stringify(f, N._serializeContent)));
                                 }
                                 (this._fixFontFamily(t.blob.ct),
-                                    this.setText(t.blob.ct, !0, !0),
+                                    this.setText(t.blob.ct, true, true),
                                     this.restoreProperties(t.blob, N.GeometryProperties, function (e, t) {
                                         return "ttrf" === e && t ? B.deserialize(t) : t;
                                     }),
@@ -1617,7 +1617,7 @@ module.exports = function (e, t, i) {
                                         N.MetaProperties,
                                         function (e, t) {
                                             if ("_bkpPath" === e && t) {
-                                                return ((this._isVirgin = !0), (this._serializedBackupPaths = t), null);
+                                                return ((this._isVirgin = true), (this._serializedBackupPaths = t), null);
                                             }
                                             return t;
                                         }.bind(this)
@@ -1627,9 +1627,9 @@ module.exports = function (e, t, i) {
                             (e === r._Change.WorkspaceAttached &&
                                 this._workspace &&
                                 (this._waitForWorkspace || (this.hasPathAttached() && this._attachedPath.getScene())) &&
-                                ((this._waitForWorkspace = !1),
-                                (this._runsDirty = !0),
-                                (this._verticesDirty = !0),
+                                ((this._waitForWorkspace = false),
+                                (this._runsDirty = true),
+                                (this._verticesDirty = true),
                                 this._resetFxCacheAndState(),
                                 this.hasPathAttached() && this.attachPath(this._attachedPath),
                                 this._notifyChange(E._Change.PrepareGeometryUpdate),
@@ -1638,19 +1638,19 @@ module.exports = function (e, t, i) {
                                     this._workspace &&
                                     setTimeout(
                                         function () {
-                                            this._workspace || this._updateFontManagerListener(!0);
+                                            this._workspace || this._updateFontManagerListener(true);
                                         }.bind(this),
                                         100
                                     ));
                         else if (e === D._Change.SceneAttached) {
                             var m = this.getScene();
-                            (this._addedDestroyable || (m.addDestroyable(this._tlCore), (this._addedDestroyable = !0)),
+                            (this._addedDestroyable || (m.addDestroyable(this._tlCore), (this._addedDestroyable = true)),
                                 this.getParent()._notifyChange(E._Change.ChildVisualUpdate, [this]),
                                 !m._pre310 ||
                                     this._repairedHeight ||
                                     this.$ah ||
-                                    ((this._legacyHeight = !0),
-                                    null === this._fontsToResolve && this.setProperty("h", this._getHeight(), !1, !0)));
+                                    ((this._legacyHeight = true),
+                                    null === this._fontsToResolve && this.setProperty("h", this._getHeight(), false, true)));
                         } else if (e == r._Change.BeforePropertiesChange) {
                             var y = t.properties.indexOf("aw"),
                                 _ = t.properties.indexOf("ah"),
@@ -1658,8 +1658,8 @@ module.exports = function (e, t, i) {
                                 w = t.properties.indexOf("h"),
                                 x = t.properties.indexOf("trf"),
                                 P = t.properties.indexOf("content"),
-                                S = !1,
-                                T = !1,
+                                S = false,
+                                T = false,
                                 I = t.properties.indexOf("hacr"),
                                 F = t.properties.indexOf("vacr");
                             if (
@@ -1670,15 +1670,15 @@ module.exports = function (e, t, i) {
                                     this.isRecordedTransaction(),
                                 y >= 0 && C < 0)
                             )
-                                !1 === t.values[y]
+                                false === t.values[y]
                                     ? this.hasPathAttached()
-                                        ? (S = !0)
+                                        ? (S = true)
                                         : (t.properties.push("w"), t.values.push(this._getWidth()))
                                     : (t.properties.push("w"), t.values.push(-1));
                             if (_ >= 0 && w < 0)
-                                !1 === t.values[_]
+                                false === t.values[_]
                                     ? this.hasPathAttached()
-                                        ? (T = !0)
+                                        ? (T = true)
                                         : (t.properties.push("h"), t.values.push(this._getHeight()))
                                     : (t.properties.push("h"), t.values.push(-1));
                             if (x >= 0 && !(P >= 0)) {
@@ -1691,9 +1691,9 @@ module.exports = function (e, t, i) {
                                           R[3] !== k[3] ||
                                           (w >= 0 && !this.$ah) ||
                                           (C >= 0 && !this.$aw)) &&
-                                      ((this._runsDirty = !0), (this._verticesDirty = !0))
-                                    : ((this._runsDirty = !0), (this._verticesDirty = !0));
-                            } else ((this._runsDirty = !0), (this._verticesDirty = !0));
+                                      ((this._runsDirty = true), (this._verticesDirty = true))
+                                    : ((this._runsDirty = true), (this._verticesDirty = true));
+                            } else ((this._runsDirty = true), (this._verticesDirty = true));
                             S
                                 ? (t.properties.splice(y, 1),
                                   t.values.splice(y, 1),
@@ -1732,11 +1732,11 @@ module.exports = function (e, t, i) {
                                     (this._checkHasEmbeddedAndResetFakeText(), (this.$aw && this.$ah) || this._resetFxCacheAndState());
                         }
                         (this._handleGeometryChangeForProperties(e, t, N.GeometryProperties),
-                            this._handleGeometryChangeForProperties(e, t, a.extend({}, p.AllGeometryProperties)),
+                            this._handleGeometryChangeForProperties(e, t, a.extend({}, GStylable.AllGeometryProperties)),
                             b.prototype._handleChange.call(this, e, t));
                     }),
                     (N.prototype._fixFontFamilyName = function (e) {
-                        e.fontFamily && (e.fontFamily = v.getFontFamilyCorrected(e.fontFamily));
+                        e.fontFamily && (e.fontFamily = GFont.getFontFamilyCorrected(e.fontFamily));
                     }),
                     (N.prototype._fixFontFamily = function (e) {
                         if (e instanceof Array) for (var t = 0; t < e.length; ++t) this._fixFontFamilyName(e[t]);
@@ -1754,8 +1754,8 @@ module.exports = function (e, t, i) {
                     }),
                     (N.prototype.hasStyleFill = function () {
                         var e = this.getPaintLayers();
-                        if (!e) return !0;
-                        var t = e.getLayers(p.FillPaintLayer);
+                        if (!e) return true;
+                        var t = e.getLayers(GStylable.FillPaintLayer);
                         return (
                             !t.length ||
                             (t = t.filter(function (e) {
@@ -1796,7 +1796,7 @@ module.exports = function (e, t, i) {
                                             (R.isEqualEps(f.getX(), 0) && R.isEqualEps(f.getY(), 0)) ||
                                             (R.isEqualEps(g.getX(), 0) && R.isEqualEps(g.getY(), 0))
                                         )
-                                            n = !0;
+                                            n = true;
                                         else {
                                             var y,
                                                 _,
@@ -1814,7 +1814,7 @@ module.exports = function (e, t, i) {
                                                     : (v = (-(b = -f.getX() / m) * g.getX()) / f.getX()),
                                                 R.isEqualEps(y + _, 0) || R.isEqualEps(v + b, 0))
                                             )
-                                                n = !0;
+                                                n = true;
                                             else {
                                                 var S = y / (y + _),
                                                     T = _ / (y + _),
@@ -1839,12 +1839,12 @@ module.exports = function (e, t, i) {
                                                     k && (r = r.multiplied(k)));
                                             }
                                         }
-                                    } else n = !0;
+                                    } else n = true;
                                 }
                                 if (n) this.setProperties(["trf"], [this.$trf ? this.$trf.multiplied(e) : e]);
                                 else if (
-                                    (this.dependentUpdate && (this._noAnchoringPropsUpdate = !0),
-                                    (r = this.transformSourceBBox(r, !1, !1, !0, !0)),
+                                    (this.dependentUpdate && (this._noAnchoringPropsUpdate = true),
+                                    (r = this.transformSourceBBox(r, false, false, true, true)),
                                     this.dependentUpdate && r)
                                 ) {
                                     var G = k ? k.multiplied(r).multiplied(o) : r;
@@ -1856,14 +1856,14 @@ module.exports = function (e, t, i) {
                                         var M = this.getProperty("vstrf");
                                         ((M = M ? M.multiplied(G) : G), this.setProperty("vstrf", M));
                                     }
-                                    this._noAnchoringPropsUpdate = !1;
+                                    this._noAnchoringPropsUpdate = false;
                                 }
-                                ((this._relayout = !0),
+                                ((this._relayout = true),
                                     E.Transform.prototype.transform.call(this, e, t, i),
                                     this._relayoutNow &&
                                         (this._layoutAnchorContents(null, null, this._layoutTransform),
                                         (this._layoutTransform = null),
-                                        (this._relayoutNow = !1)));
+                                        (this._relayoutNow = false)));
                             }
                             e &&
                                 !e.isIdentity() &&
@@ -1884,8 +1884,8 @@ module.exports = function (e, t, i) {
                             var r = null,
                                 o = e.isIncludingInvisible(),
                                 a = this.getPatternBBox(o);
-                            p.prototype.hasStyleFill.call(this) && (r = this.createShapePaint(e, i.$_pt, a));
-                            var s = this._createStyleCanvas(e, this.getPaintBBox(!1, null, o)),
+                            GStylable.prototype.hasStyleFill.call(this) && (r = this.createShapePaint(e, i.$_pt, a));
+                            var s = this._createStyleCanvas(e, this.getPaintBBox(false, null, o)),
                                 h = e.pushCanvas(s),
                                 A = s.getScale() * (this.$trf ? this.$trf.getScaleFactor() : 1);
                             try {
@@ -1928,7 +1928,7 @@ module.exports = function (e, t, i) {
                                         (this._lastFillPaintLayer = i));
                                 }
                                 var E,
-                                    x = s.getTransform(!0),
+                                    x = s.getTransform(true),
                                     P = 1 / (1 * A),
                                     S = new B(P, 0, 0, P, 0, 0);
                                 ((E = (E = this.$trf
@@ -1942,7 +1942,7 @@ module.exports = function (e, t, i) {
                                             c,
                                             N.HMARGIN + T.getX() - n.getLeftPadding() * A,
                                             N.VMARGIN + T.getY() - n.getTopPadding() * A,
-                                            !1
+                                            false
                                         ),
                                             s.setTransform(x),
                                             c instanceof k.RendererCanvas ||
@@ -1965,12 +1965,12 @@ module.exports = function (e, t, i) {
                             if (!r && this.hasStyleBorder()) {
                                 var o = e.isIncludingInvisible(),
                                     a = this.getPatternBBox(o),
-                                    s = this._createStyleCanvas(e, this.getPaintBBox(!1, null, o)),
+                                    s = this._createStyleCanvas(e, this.getPaintBBox(false, null, o)),
                                     h = e.pushCanvas(s),
                                     A = s.getScale() * (this.$trf ? this.$trf.getScaleFactor() : 1);
-                                if (a && this.$_ba !== p.BorderAlignment.Inside) {
+                                if (a && this.$_ba !== GStylable.BorderAlignment.Inside) {
                                     var c = i.$_bw;
-                                    if ((i.$_ba === p.BorderAlignment.Center && (c *= 0.5), this.$trf))
+                                    if ((i.$_ba === GStylable.BorderAlignment.Center && (c *= 0.5), this.$trf))
                                         ((c /= this.$trf.getScaleFactor()), (a = a.expanded(c, c, c, c)));
                                     else a = a.expanded(c, c, c, c);
                                 }
@@ -1990,7 +1990,7 @@ module.exports = function (e, t, i) {
                                                 ((i && i.hasStyle()) ||
                                                     (this._lastBorderPaintLayer && this._lastBorderPaintLayer.hasStyle())))
                                         ) {
-                                            if ((i.$_ba !== p.BorderAlignment.Center && (d *= 2), u.transform && u.transform.isValid())) {
+                                            if ((i.$_ba !== GStylable.BorderAlignment.Center && (d *= 2), u.transform && u.transform.isValid())) {
                                                 if (i.$_pt && i.$_pt instanceof m && i.$_pt.getTransform()) {
                                                     var v = a ? B.getNativeRectTransformation(a) : new B(),
                                                         b = i.$_pt.getTransform(),
@@ -2033,7 +2033,7 @@ module.exports = function (e, t, i) {
                                                 (this._lastBorderPaintLayer = i));
                                         }
                                         var R,
-                                            D = s.getTransform(!0),
+                                            D = s.getTransform(true),
                                             G = 1 / (1 * A),
                                             Q = new B(G, 0, 0, G, 0, 0);
                                         ((R = (R = this.$trf
@@ -2047,7 +2047,7 @@ module.exports = function (e, t, i) {
                                                     f,
                                                     N.HMARGIN + M.getX() - n.getLeftPadding() * A,
                                                     N.VMARGIN + M.getY() - n.getTopPadding() * A,
-                                                    !1
+                                                    false
                                                 ),
                                                     s.setTransform(D),
                                                     h.drawCanvas(s, 0, 0, null, i.getBlendingForContext(e)));
@@ -2098,11 +2098,11 @@ module.exports = function (e, t, i) {
                         return null;
                     }),
                     (N.prototype._requireMiterLimitApproximation = function () {
-                        return !0;
+                        return true;
                     }),
                     (N.prototype._requireResolvedFont = function (e) {
                         if (this._fontsToResolve)
-                            for (var t = 0; t < this._fontsToResolve.length; ++t) if (v.equals(this._fontsToResolve[t], e)) return;
+                            for (var t = 0; t < this._fontsToResolve.length; ++t) if (GFont.equals(this._fontsToResolve[t], e)) return;
                         ((this._fontsToResolve = this._fontsToResolve || []),
                             this._fontsToResolve.push(e),
                             this._updateFontManagerListener());
@@ -2112,27 +2112,27 @@ module.exports = function (e, t, i) {
                             ((this._fontsToResolve && !e) || !this._hasFontManagerListener
                                 ? this._fontsToResolve &&
                                   !this._hasFontManagerListener &&
-                                  ((this._hasFontManagerListener = !0),
+                                  ((this._hasFontManagerListener = true),
                                   this._workspace.getFontManager().addEventListener(o.FontAvailableEvent, this._fontAvailableEvent, this))
                                 : (this._workspace
                                       .getFontManager()
                                       .removeEventListener(o.FontAvailableEvent, this._fontAvailableEvent, this),
-                                  (this._hasFontManagerListener = !1)));
+                                  (this._hasFontManagerListener = false)));
                     }),
                     (N.prototype._fontAvailableEvent = function (e) {
-                        var t = !1;
+                        var t = false;
                         if (this._workspace) {
                             var i = this._workspace.getFontManager().getDefaultFont();
                             if (i) {
                                 if (this._fontsToResolve)
                                     for (var n = this._fontsToResolve.length - 1; n >= 0; --n)
                                         if (
-                                            (v.equals(this._fontsToResolve[n], e.font) ||
-                                                (this._fontsToResolve[n] === N.DEFAULTFONT && v.equals(e.font, i))) &&
+                                            (GFont.equals(this._fontsToResolve[n], e.font) ||
+                                                (this._fontsToResolve[n] === N.DEFAULTFONT && GFont.equals(e.font, i))) &&
                                             (this._fontsToResolve.splice(n, 1),
                                             0 === this._fontsToResolve.length &&
                                                 ((this._fontsToResolve = null), this._updateFontManagerListener()),
-                                            (t = !0),
+                                            (t = true),
                                             this._deferredRangeSetters)
                                         )
                                             for (var r = this._deferredRangeSetters.length - 1; r >= 0; --r)
@@ -2141,16 +2141,16 @@ module.exports = function (e, t, i) {
                                 t &&
                                     (this._setTextWhenAvailable &&
                                         null === this._fontsToResolve &&
-                                        ((this._setTextWhenAvailable = !1),
-                                        this.$content && this.setText(JSON.parse(this.$content, N._deserializeContent), !0)),
-                                    (this._runsDirty = !0),
-                                    (this._verticesDirty = !0),
+                                        ((this._setTextWhenAvailable = false),
+                                        this.$content && this.setText(JSON.parse(this.$content, N._deserializeContent), true)),
+                                    (this._runsDirty = true),
+                                    (this._verticesDirty = true),
                                     this._resetFxCacheAndState(),
                                     this.hasPathAttached() && this.attachPath(this._attachedPath),
                                     this._notifyChange(E._Change.PrepareGeometryUpdate),
                                     this._notifyChange(E._Change.FinishGeometryUpdate));
                             }
-                        } else this._waitForWorkspace = !0;
+                        } else this._waitForWorkspace = true;
                     }),
                     (N.prototype.adaptFontSizeToFitBBox = function () {
                         if (!(this.isFakeText() || this.hasPathAttached() || this.getProperty("aw") || this.getProperty("ah"))) {
@@ -2186,6 +2186,6 @@ module.exports = function (e, t, i) {
                     (N.prototype.toString = function () {
                         return "[GText]";
                     }),
-                    (e.exports = N));
-            }).call(this, i(183));
+                    (module.exports = N));
+            }).call(this, require(183));
         };

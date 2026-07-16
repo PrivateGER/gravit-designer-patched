@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(90),
-                r = i(338),
+module.exports = function (module, exports, require) {
+            var n = require(90),
+                r = require(338),
                 o = function (e) {
                     this.primitve = e;
                 };
-            (i(0).inherit(o, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(o, n),
                 (o.prototype.write = function (e) {
                     var t = this.primitve;
                     ("number" == typeof t && (t = r.normalizeNumber(t)), e.write(t));
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o, i;
-        e.exports =
-            ((i = n(55)),
-            n(98),
+        module.exports =
+            ((i = require(55)),
+            require(98),
             (i.mode.ECB =
                 (((o = i.lib.BlockCipherMode.extend()).Encryptor = o.extend({
                     processBlock: function (e, t) {

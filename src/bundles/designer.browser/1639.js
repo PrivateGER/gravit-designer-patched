@@ -1,30 +1,30 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1);
-        const i = n(18),
-            a = n(31),
-            r = n(1640),
-            { IS_TRUNK: s, IS_LOCALHOST: l } = n(231);
+        require(3);
+        var GObject = require(1);
+        const GCategory = require(18),
+            a = require(31),
+            r = require(1640),
+            { IS_TRUNK: s, IS_LOCALHOST: l } = require(231 /* IS_TRUNK */);
         function c() {}
-        (o.GObject.inherit(c, a),
+        (GObject.GObject.inherit(c, a),
             (c.ID = "help.translationtool"),
-            (c.TITLE = new o.GLocaleKey("GTranslationToolAction", "title")),
+            (c.TITLE = new GObject.GLocaleKey("GTranslationToolAction", "title")),
             (c.prototype._translationTool = null),
             (c.prototype.getId = function () {
                 return c.ID;
             }),
             (c.prototype.getTitle = function () {
-                return o.GLocale.get(c.TITLE) + " [DEVELOPMENT]";
+                return GObject.GLocale.get(c.TITLE) + " [DEVELOPMENT]";
             }),
             (c.prototype.getCategory = function () {
-                return i.CATEGORY_HELP;
+                return GCategory.CATEGORY_HELP;
             }),
             (c.prototype.getGroup = function () {
                 return "help";
             }),
             (c.prototype.isEnabled = function () {
-                return !0;
+                return true;
             }),
             (c.prototype.isVisible = function () {
                 return !(!s && !l);
@@ -35,5 +35,5 @@ module.exports = function (e, t, n) {
             (c.prototype.toString = function () {
                 return "[Object GTranslationToolAction]";
             }),
-            (e.exports = c));
+            (module.exports = c));
     };

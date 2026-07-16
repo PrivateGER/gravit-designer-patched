@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        const { GObject: o, GEventTarget: i, GEvent: a } = n(1);
+        const { GObject: o, GEventTarget: i, GEvent: a } = require(1 /* GObject */);
         function r() {}
         (o.inheritAndMix(r, o, [i]),
             (r.prototype._role = null),
@@ -14,5 +14,5 @@ module.exports = function (e, t, n) {
                 ((this.role = e), (this.target = t));
             }),
             o.inherit(r.RoleChangedEvent, a),
-            (e.exports = r));
+            (module.exports = r));
     };

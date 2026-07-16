@@ -1,16 +1,16 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(30), i(4), i(41), i(13), i(32), i(97), i(33));
+            (require(30), require(4), require(41), require(13), require(32), require(97), require(33));
             for (
-                var n = i(685),
-                    r = i(686),
-                    o = i(699),
-                    a = i(700),
-                    s = i(701),
-                    l = i(945),
-                    h = i(703),
-                    A = i(704),
-                    c = i(705),
+                var n = require(685),
+                    r = require(686),
+                    o = require(699),
+                    a = require(700),
+                    s = require(701),
+                    l = require(945),
+                    h = require(703),
+                    A = require(704),
+                    c = require(705),
                     p = new o().getMapped(),
                     u = new l(),
                     d = 0;
@@ -44,14 +44,14 @@ module.exports = function (e, t, i) {
                                         (Object.keys(B).forEach(function (e) {
                                             B[e] || delete B[e];
                                         }),
-                                        u.setValues(new a(E), s[b.language], Object.keys(B), Object.values(B), !0),
+                                        u.setValues(new a(E), s[b.language], Object.keys(B), Object.values(B), true),
                                         b.translationsExtended && b.translationsExtended[E])
                                     ) {
                                         var x = n.extend({}, B, b.translationsExtended[E]);
                                         (Object.keys(x).forEach(function (e) {
                                             x[e] || delete x[e];
                                         }),
-                                            u.setValues(new a(E), s[b.language], Object.keys(x), Object.values(x), !0, !0));
+                                            u.setValues(new a(E), s[b.language], Object.keys(x), Object.values(x), true, true));
                                     }
                                 }
                             }
@@ -67,7 +67,7 @@ module.exports = function (e, t, i) {
                 });
                 P && u.setLanguage(P.keyValue);
             }
-            e.exports = {
+            module.exports = {
                 GLocale: u,
                 GLocaleLanguage: s,
                 ClassReference: a,

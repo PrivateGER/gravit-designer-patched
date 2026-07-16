@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.default = void 0));
-        var i = o(n(1493));
+        var o = require(16);
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0));
+        var i = o(require(1493));
         class a extends i.default {
             constructor() {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -12,5 +12,5 @@ module.exports = function (e, t, n) {
                 return this._options;
             }
         }
-        t.default = a;
+        exports.default = a;
     };

@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(1120);
+module.exports = function (module, exports, require) {
+            var n = require(1120);
 
             function r() {}
             ((r.prototype.gfx = null),
@@ -20,5 +20,5 @@ module.exports = function (e, t, i) {
                     if (!e.canvas) throw new Error("canvas is not specified");
                     ((e.canvas.width = 0), (e.canvas.height = 0), (e.canvas = null), (e.context = null));
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

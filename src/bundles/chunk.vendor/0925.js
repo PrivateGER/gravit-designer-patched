@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(54),
-                o = i(48);
-            e.exports = function (e) {
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(54),
+                o = require(48);
+            module.exports = function (e) {
                 var t,
                     i = {
                         SquareFilled:
@@ -211,7 +211,7 @@ module.exports = function (e, t, i) {
                         return r + n;
                     });
                 }
-                (n.inherit(a, e.VertexSource),
+                (IsFiniteNonNegativeNumber.inherit(a, e.VertexSource),
                     (e.Bullet = function (e, t) {
                         a.call(this, t, [
                             {
@@ -225,7 +225,7 @@ module.exports = function (e, t, i) {
                             },
                         ]);
                     }),
-                    n.inherit(e.Bullet, a),
+                    IsFiniteNonNegativeNumber.inherit(e.Bullet, a),
                     (e.Check = function (e, t) {
                         a.call(this, t, [
                             {
@@ -239,7 +239,7 @@ module.exports = function (e, t, i) {
                             },
                         ]);
                     }),
-                    n.inherit(e.Check, a),
+                    IsFiniteNonNegativeNumber.inherit(e.Check, a),
                     (e.Square = function (e, t) {
                         a.call(this, t, [
                             {
@@ -253,7 +253,7 @@ module.exports = function (e, t, i) {
                             },
                         ]);
                     }),
-                    n.inherit(e.Square, a),
+                    IsFiniteNonNegativeNumber.inherit(e.Square, a),
                     (e.Number = function (t, i) {
                         e.PathNumber.call(this, t, i, function (e) {
                             return e
@@ -263,15 +263,15 @@ module.exports = function (e, t, i) {
                                 .join(".");
                         });
                     }),
-                    n.inherit(e.Number, e.PathNumber),
-                    n.inherit(s, e.PathNumber),
+                    IsFiniteNonNegativeNumber.inherit(e.Number, e.PathNumber),
+                    IsFiniteNonNegativeNumber.inherit(s, e.PathNumber),
                     (e.RomanDot = function (e, t) {
                         s.call(this, e, t, ".");
                     }),
-                    n.inherit(e.RomanDot, s),
+                    IsFiniteNonNegativeNumber.inherit(e.RomanDot, s),
                     (e.RomanBracket = function (e, t) {
                         s.call(this, e, t, ")");
                     }),
-                    n.inherit(e.RomanBracket, s));
+                    IsFiniteNonNegativeNumber.inherit(e.RomanBracket, s));
             };
         };

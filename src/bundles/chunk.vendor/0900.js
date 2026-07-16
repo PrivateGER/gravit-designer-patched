@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(76),
-                o = i(14),
-                a = i(50),
-                s = i(139),
-                l = i(11),
-                h = i(7),
-                A = i(227);
-            e.exports = function (e) {
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(76),
+                o = require(14),
+                a = require(50),
+                s = require(139),
+                l = require(11),
+                h = require(7),
+                A = require(227);
+            module.exports = function (e) {
                 ((e.PaintLayer = function (t, i, n, r) {
                     (this._setDefaultProperties(e.PaintLayer.GeometryProperties, e.PaintLayer.VisualProperties),
                         this.setProperties(
@@ -19,7 +19,7 @@ module.exports = function (e, t, i) {
                     (e.PaintLayer.VisualProperties = {
                         _pt: null,
                         _op: 1,
-                        _vs: !0,
+                        _vs: true,
                         _bl: o.BlendMode.Normal,
                     }),
                     (e.PaintLayer.GeometryProperties = {
@@ -34,7 +34,7 @@ module.exports = function (e, t, i) {
                         return !!this.$_pt && this.$_op > 0 && this.$_vs;
                     }),
                     (e.PaintLayer.prototype.isSeparateLayer = function () {
-                        return !1;
+                        return false;
                     }),
                     (e.PaintLayer.prototype.getTrackTempPropNames = function () {
                         return this.getPatternPropNames();
@@ -89,9 +89,9 @@ module.exports = function (e, t, i) {
                             l.containsObjectKey(t.properties, i)
                         ) {
                             var r = this.getOwnerStylable();
-                            return (r && r._styleRepaint(this), !0);
+                            return (r && r._styleRepaint(this), true);
                         }
-                        return !1;
+                        return false;
                     }),
                     (e.PaintLayer.prototype._handleGeometryChangeForProperties = function (e, t, i) {
                         if (
@@ -107,9 +107,9 @@ module.exports = function (e, t, i) {
                                     case n._Change.AfterPropertiesChange:
                                         r._styleFinishGeometryChange(this);
                                 }
-                            return !0;
+                            return true;
                         }
-                        return !1;
+                        return false;
                     }),
                     (e.PaintLayer.prototype.getOwnerStylable = function () {
                         var e = this.getParent();

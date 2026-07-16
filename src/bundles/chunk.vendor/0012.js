@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(5);
+module.exports = function (module, exports, require) {
+            var n = require(5);
 
             function r() {}
             ((r.PI2 = 2 * Math.PI),
@@ -215,7 +215,7 @@ module.exports = function (e, t, i) {
                     return A;
                 }),
                 (r.isCoDirected = function (e, t, i, n, o, a, s, l) {
-                    if ((r.isEqualEps(e, i) && r.isEqualEps(t, n)) || (r.isEqualEps(o, s) && r.isEqualEps(a, l))) return !0;
+                    if ((r.isEqualEps(e, i) && r.isEqualEps(t, n)) || (r.isEqualEps(o, s) && r.isEqualEps(a, l))) return true;
                     var h = s + e - o,
                         A = l + t - a,
                         c = r.getVectorProjection(e, t, i, n, h, A);
@@ -223,7 +223,7 @@ module.exports = function (e, t, i) {
                 }),
                 (r.getSin = function (e, t, i, n, o, a) {
                     if (r.isEqualEps(e, i) && r.isEqualEps(t, n)) return 1;
-                    var s = r.getVectorProjection(i, n, o, a, e, t, !1);
+                    var s = r.getVectorProjection(i, n, o, a, e, t, false);
                     return Math.sqrt(r.ptSqrDist(e, t, s.getX(), s.getY()) / r.ptSqrDist(e, t, i, n));
                 }),
                 (r.solveLinear2Pseudo = function (e, t, i, o, a, s) {
@@ -400,10 +400,10 @@ module.exports = function (e, t, i) {
                 }),
                 (r.getCoeffPolyDeriv = function (e, t, i) {
                     var n = 0,
-                        r = !1;
+                        r = false;
                     if (t >= 1) {
                         for (n = 0; n < t; ++n) i[n] = e[n] * (t - n);
-                        r = !0;
+                        r = true;
                     }
                     return r;
                 }),
@@ -613,12 +613,12 @@ module.exports = function (e, t, i) {
                     else {
                         if (5 != a) throw new Error("Unsupported polynomial degree.");
                         if (
-                            ((b = !1),
-                            (C = !1),
-                            (i < 0 && n > 0) || (i > 0 && n < 0) ? (C = !0) : A && c && (b = !0),
-                            (_ = !0),
-                            !1,
-                            r.getCubicRoots(l, e, t, D, !1, h),
+                            ((b = false),
+                            (C = false),
+                            (i < 0 && n > 0) || (i > 0 && n < 0) ? (C = true) : A && c && (b = true),
+                            (_ = true),
+                            false,
+                            r.getCubicRoots(l, e, t, D, false, h),
                             (P = 0),
                             0 == D.length)
                         )
@@ -632,7 +632,7 @@ module.exports = function (e, t, i) {
                                 !(
                                     C &&
                                     (null == F[1] && (F[1] = r.evalPoly(o, a, f)),
-                                    r.isEqualEps(F[1], 0, h) && ((w = f), (S = F[1]), (_ = !1)),
+                                    r.isEqualEps(F[1], 0, h) && ((w = f), (S = F[1]), (_ = false)),
                                     (F[0] > 0 && F[1] < 0) || (F[0] < 0 && F[1] > 0))
                                 )) &&
                                 (!b || 0 == r.countRootsNSturm(o, a, s, g, f, A, I, F));
@@ -643,29 +643,29 @@ module.exports = function (e, t, i) {
                             (_ &&
                                 0 == P &&
                                 (((u = r.evalPoly(l, l.length - 1, e)) > 0 && i > 0) || (u < 0 && i < 0)) &&
-                                ((w = e), (S = i), (_ = !1)),
+                                ((w = e), (S = i), (_ = false)),
                             _ &&
                                 P == R.length &&
                                 (((u = r.evalPoly(l, l.length - 1, t)) > 0 && n > 0) || (u < 0 && n < 0)) &&
-                                ((w = t), (S = n), (_ = !1)),
+                                ((w = t), (S = n), (_ = false)),
                             _)
                         ) {
                             for (m = F[0], y = F[1], b && (T = I), w = (g + f) / 2, u = r.evalPoly(l, l.length - 1, w); f - g > h && _; )
                                 ((w = (g + f) / 2),
                                     (B <= (S = r.evalPoly(o, a, w)) && S <= h) || (u > 0 && S > 0) || (u < 0 && S < 0)
-                                        ? (_ = !1)
+                                        ? (_ = false)
                                         : (S > 0 && m < 0) || (S < 0 && m > 0)
                                           ? ((f = w), (y = S), b && (T[1] = null))
                                           : (S > 0 && y < 0) || (S < 0 && y > 0)
                                             ? ((g = w), (m = S), b && (T[0] = null))
                                             : C || !b
-                                              ? ((_ = !1), (w = null))
+                                              ? ((_ = false), (w = null))
                                               : ((F = [m, S]),
                                                 (I = [T[0], null]),
                                                 r.countRootsNSturm(o, a, s, g, w, A, I, F) > 0
                                                     ? ((f = w), (y = S), (T[0] = I[0]), (T[1] = I[1]))
                                                     : null != T[1] && I[1] == T[1]
-                                                      ? (_ = !1)
+                                                      ? (_ = false)
                                                       : ((g = w), (m = S), (T[0] = I[0]))));
                             _ && ((w = (g + f) / 2), (S = r.evalPoly(o, a, w)));
                         }
@@ -695,16 +695,16 @@ module.exports = function (e, t, i) {
                         s,
                         l = [],
                         h = [],
-                        A = !0,
+                        A = true,
                         c = t[0];
                     if (t.length > e.length) return ((i = e), 1);
                     for (a = 2; a <= e.length - t.length + 1; ++a) c *= t[0];
                     for (a = 0; a < e.length; ++a) l[a] = e[a] * c;
                     for (; A; ) {
-                        for (r = l[0] / t[0], o = !1, n = 1; n < t.length; ++n)
-                            (0 != (s = l[n] - r * t[n]) || o) && (h.push(s), 0 != s && (o = !0));
+                        for (r = l[0] / t[0], o = false, n = 1; n < t.length; ++n)
+                            (0 != (s = l[n] - r * t[n]) || o) && (h.push(s), 0 != s && (o = true));
                         for (n = t.length; n < l.length; ++n) h.push(l[n]);
-                        h.length >= t.length ? ((l = h), (h = [])) : (A = !1);
+                        h.length >= t.length ? ((l = h), (h = [])) : (A = false);
                     }
                     if (h.length > 0) for (a = 0; a < h.length; ++a) i[a] = h[a];
                     return c;
@@ -857,12 +857,12 @@ module.exports = function (e, t, i) {
                         value: function e(t) {
                             return "number" == typeof t && e(t);
                         },
-                        configurable: !0,
-                        enumerable: !1,
-                        writable: !0,
+                        configurable: true,
+                        enumerable: false,
+                        writable: true,
                     }),
                 (r.clamp = function (e, t, i) {
                     return Math.min(i, Math.max(e, t));
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

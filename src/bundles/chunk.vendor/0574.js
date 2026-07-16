@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(19), i(30), i(4), i(13), i(32), i(38), i(33), i(26));
-            const n = i(575),
-                r = i(951);
+            (require(19), require(30), require(4), require(13), require(32), require(38), require(33), require(26));
+            const n = require(575),
+                r = require(951);
             class o extends r {
                 constructor() {
                     super(arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {});
@@ -57,5 +57,5 @@ module.exports = function (e, t, i) {
                     return new o(this);
                 }
             }
-            e.exports = o;
+            module.exports = o;
         };

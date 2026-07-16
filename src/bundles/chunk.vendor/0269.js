@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
 
             function n() {}
-            (i(20),
-                i(3),
-                i(151),
+            (require(20),
+                require(3),
+                require(151),
                 (n.getTypeId = function (e) {
                     return "number" == typeof e
                         ? e
@@ -32,7 +32,7 @@ module.exports = function (e, t, i) {
                         delete e.prototype.__gmixins__,
                         t.prototype.__gmixins__)
                     )
-                        for (var i in ((e.prototype.__gmixins__ = {}), t.prototype.__gmixins__)) e.prototype.__gmixins__[i] = !0;
+                        for (var i in ((e.prototype.__gmixins__ = {}), t.prototype.__gmixins__)) e.prototype.__gmixins__[i] = true;
                     if (t != n)
                         for (var r in t)
                             r &&
@@ -66,13 +66,13 @@ module.exports = function (e, t, i) {
                                 }
                             if (
                                 (o.__gtype_id__ || (o.__gtype_id__ = n._internalTypeIdCounter++),
-                                (e.prototype.__gmixins__[o.__gtype_id__] = !0),
+                                (e.prototype.__gmixins__[o.__gtype_id__] = true),
                                 o.__gmixins__)
                             )
-                                for (var s in o.__gmixins__) e.prototype.__gmixins__[s] = !0;
+                                for (var s in o.__gmixins__) e.prototype.__gmixins__[s] = true;
                             for (var l = Object.getPrototypeOf(o); null != l && l !== Object.prototype; l = Object.getPrototypeOf(l))
                                 (l.__gtype_id__ || (l.__gtype_id__ = n._internalTypeIdCounter++),
-                                    (e.prototype.__gmixins__[l.__gtype_id__] = !0));
+                                    (e.prototype.__gmixins__[l.__gtype_id__] = true));
                         }
                     }
                 }),
@@ -86,5 +86,5 @@ module.exports = function (e, t, i) {
                     var e = this.constructor.toString().match(/^function ([^\(]*)/);
                     return "[Object " + (e ? e[1] : "object") + "]";
                 }),
-                (e.exports = n));
+                (module.exports = n));
         };

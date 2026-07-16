@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        var o = n(797),
-            i = n(1);
-        n(257);
+        require(8 /* Symbol */);
+        var o = require(797),
+            GObject = require(1);
+        require(257);
         function a(e, t, n, o, a, r) {
             ((this._currentDocument = e),
                 (this._newDocument = t),
@@ -21,11 +21,11 @@ module.exports = function (e, t, n) {
             var s = $("<div></div>").addClass("header").appendTo(this._dialog);
             ($("<div></div>")
                 .addClass("title")
-                .append($("<span></span>").text(i.GLocale.get(new i.GLocaleKey("GDocumentChooser", "text.sync.title"))))
+                .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GDocumentChooser", "text.sync.title"))))
                 .appendTo(s),
                 $("<div></div>")
                     .addClass("subtitle")
-                    .append($("<span></span>").text(i.GLocale.get(new i.GLocaleKey("GDocumentChooser", "text.sync.subtitle"))))
+                    .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GDocumentChooser", "text.sync.subtitle"))))
                     .appendTo(s),
                 (this._container = $("<div></div>").addClass("container").appendTo(this._dialog)),
                 (this._footer = $("<div></div>")
@@ -35,18 +35,18 @@ module.exports = function (e, t, n) {
             let l = $("<div></div>").addClass("buttons").appendTo(this._footer);
             $("<button></button>")
                 .addClass("g-button")
-                .text(i.GLocale.get(new i.GLocaleKey("GLocale", "cancel")))
+                .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "cancel")))
                 .on("click", this.close.bind(this))
                 .appendTo(l);
             (this._dialog.gDialog({
-                releaseOnClose: !0,
+                releaseOnClose: true,
                 className: "g-document-chooser",
             }),
                 this._updatePreview());
         }
-        (i.GObject.inherit(a, i.GObject),
+        (GObject.GObject.inherit(a, GObject.GObject),
             (a.prototype.open = function () {
-                this._dialog.gDialog("open", !1);
+                this._dialog.gDialog("open", false);
             }),
             (a.prototype.close = function () {
                 (this._dialog.gDialog("close"), this._onCancel && this._onCancel());
@@ -72,18 +72,18 @@ module.exports = function (e, t, n) {
                         var o = [],
                             a = function (e) {
                                 if (
-                                    e.image.getStatus() === i.GImage.ImageStatus.Loaded ||
-                                    e.image.getStatus() === i.GImage.ImageStatus.Error
+                                    e.image.getStatus() === GObject.GImage.ImageStatus.Loaded ||
+                                    e.image.getStatus() === GObject.GImage.ImageStatus.Error
                                 ) {
-                                    e.image.removeEventListener(i.GImage.StatusEvent, this);
+                                    e.image.removeEventListener(GObject.GImage.StatusEvent, this);
                                     var t = o.indexOf(e.image);
                                     (-1 !== t && o.splice(t, 1), o.length || n());
                                 }
                             };
                         (e.acceptChildren((e) => {
-                            e instanceof i.GImage &&
-                                ((e.getStatus() === i.GImage.ImageStatus.Error && e.getStatus() === i.GImage.ImageStatus.Loaded) ||
-                                    (o.push(e), e.addEventListener(i.GImage.StatusEvent, a)));
+                            e instanceof GObject.GImage &&
+                                ((e.getStatus() === GObject.GImage.ImageStatus.Error && e.getStatus() === GObject.GImage.ImageStatus.Loaded) ||
+                                    (o.push(e), e.addEventListener(GObject.GImage.StatusEvent, a)));
                         }),
                             o.length || n());
                     } else n();
@@ -100,18 +100,18 @@ module.exports = function (e, t, n) {
                         .appendTo(this._container),
                     l = $("<div></div>")
                         .addClass("preview-image loading")
-                        .css("background", i.GPattern.asCSSBackground(null))
+                        .css("background", GObject.GPattern.asCSSBackground(null))
                         .append(r)
                         .appendTo(s);
                 this._loadPreview(e, t).then(() => {
                     var t = o.GBitmapExport.export(e);
                     (l.removeClass("loading"),
-                        r.css("background-image", "url(".concat(t.toImageDataUrl(i.GBitmap.ImageType.JPEG, 1), ")")));
+                        r.css("background-image", "url(".concat(t.toImageDataUrl(GObject.GBitmap.ImageType.JPEG, 1), ")")));
                 });
                 var c = function (e) {
                     return 0 === e.getTime()
-                        ? i.GLocale.get(new i.GLocaleKey("GDocumentChooser", "text.unavailable"))
-                        : i.GLocale.toLocaleDate(e, {
+                        ? GObject.GLocale.get(new GObject.GLocaleKey("GDocumentChooser", "text.unavailable"))
+                        : GObject.GLocale.toLocaleDate(e, {
                               year: "numeric",
                               month: "numeric",
                               day: "numeric",
@@ -122,17 +122,17 @@ module.exports = function (e, t, n) {
                 s.append(
                     $("<div></div>")
                         .addClass("title")
-                        .append($("<span></span>").text(n + " " + i.GLocale.get(new i.GLocaleKey("GDocumentChooser", "text." + t))))
+                        .append($("<span></span>").text(n + " " + GObject.GLocale.get(new GObject.GLocaleKey("GDocumentChooser", "text." + t))))
                 ).append(
                     $("<div></div>")
                         .addClass("subtitle")
                         .append(
                             $("<span></span>").text(
                                 c(e.lastModifiedDate()) +
-                                    (a ? " " + i.GLocale.get(new i.GLocaleKey("GDocumentChooser", "text.newer-file")) : "")
+                                    (a ? " " + GObject.GLocale.get(new GObject.GLocaleKey("GDocumentChooser", "text.newer-file")) : "")
                             )
                         )
                 );
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

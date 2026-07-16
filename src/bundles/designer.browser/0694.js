@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(46),
+        var o = require(46),
             i = Math.floor;
-        e.exports =
+        module.exports =
             Number.isInteger ||
             function (e) {
                 return !o(e) && isFinite(e) && i(e) === e;

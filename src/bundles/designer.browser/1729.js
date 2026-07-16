@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(4), n(13));
+        (require(4), require(13));
         var o = function (e, t) {
                 var n = $(e);
                 (n.addClass(t ? "collapsed" : "expanded"), n.removeClass(t ? "expanded" : "collapsed"));

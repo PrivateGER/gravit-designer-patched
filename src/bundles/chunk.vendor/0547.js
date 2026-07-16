@@ -1,32 +1,32 @@
-module.exports = function (e, t, i) {
-            var n = i(179),
-                r = i(2),
-                o = i(236),
-                a = i(0),
-                s = i(60),
-                l = i(162),
-                h = i(56),
-                A = i(52),
-                c = (i(73), i(70)),
-                p = i(5),
-                u = i(24),
-                d = i(6),
-                g = i(215),
-                f = i(113),
-                m = i(7),
-                y = i(45),
-                _ = i(548),
-                v = i(95),
-                b = i(9),
-                C = i(47),
-                w = i(416),
-                E = i(108);
+module.exports = function (module, exports, require) {
+            var n = require(179),
+                r = require(2),
+                o = require(236),
+                IsFiniteNonNegativeNumber = require(0),
+                s = require(60),
+                l = require(162),
+                h = require(56),
+                A = require(52),
+                c = (require(73), require(70)),
+                p = require(5),
+                u = require(24),
+                d = require(6),
+                g = require(215),
+                f = require(113),
+                m = require(7),
+                y = require(45),
+                _ = require(548),
+                v = require(95),
+                String = require(9),
+                C = require(47),
+                w = require(416),
+                GFont = require(108);
 
             function B() {
-                o.call(this, !0, !0);
+                o.call(this, true, true);
             }
-            (i(387),
-                a.inherit(B, o),
+            (require(387 /* GTextEditor */),
+                IsFiniteNonNegativeNumber.inherit(B, o),
                 (B.prototype._textUnderMouse = null),
                 (B.prototype._pathUnderMouse = null),
                 (B.prototype._pathHit = null),
@@ -73,13 +73,13 @@ module.exports = function (e, t, i) {
                             e.client,
                             this._view.getWorldTransform(this._scene),
                             null,
-                            !1,
+                            false,
                             -1,
                             0,
-                            !1,
+                            false,
                             null,
-                            !1,
-                            !1,
+                            false,
+                            false,
                             this._view.getViewConfiguration().multiPageView
                         );
                         ((t && t.length && t[0].element instanceof c && t[0].element instanceof s) ||
@@ -87,13 +87,13 @@ module.exports = function (e, t, i) {
                                 e.client,
                                 this._view.getWorldTransform(this._scene),
                                 null,
-                                !1,
+                                false,
                                 -1,
                                 u.pickDistance,
-                                !1,
+                                false,
                                 null,
-                                !1,
-                                !1,
+                                false,
+                                false,
                                 this._view.getViewConfiguration().multiPageView
                             )),
                             t &&
@@ -112,7 +112,7 @@ module.exports = function (e, t, i) {
                 }),
                 (B.prototype._createShape = function () {
                     var e = new c();
-                    return (e.setProperties(["w", "h", "aw", "ah"], [1, 1, !1, !1]), e);
+                    return (e.setProperties(["w", "h", "aw", "ah"], [1, 1, false, false]), e);
                 }),
                 (B.prototype._updateShape = function (e, t, i, n) {
                     return (
@@ -130,12 +130,12 @@ module.exports = function (e, t, i) {
                                       t.getY() + t.getHeight() / 2
                                   )
                               ),
-                        !0)
+                        true)
                     );
                 }),
                 (B.prototype._insertShape = function (e, t) {
-                    var i = !1;
-                    if (t) e && ((this._fakeShape = e), o.prototype._insertShape.call(this, e, !1, !0));
+                    var i = false;
+                    if (t) e && ((this._fakeShape = e), o.prototype._insertShape.call(this, e, false, true));
                     else {
                         if (this._fakeShape) {
                             var n = this._fakeShape.getParent();
@@ -151,28 +151,28 @@ module.exports = function (e, t, i) {
                                 A = h[0] < 4,
                                 p = h[3] <= s;
                             (r.setProperties(["aw", "ah"], [A, p]), r.transformSourceBBox(a, !A, !p));
-                        } else r.setProperties(["aw", "ah"], [!1, !1]);
-                        (r.setText(b.get(new C("GTextTool", "your-text-here")), 1, 1),
+                        } else r.setProperties(["aw", "ah"], [false, false]);
+                        (r.setText(String.get(new C("GTextTool", "your-text-here")), 1, 1),
                             (i = this._insertText(r)),
                             (this._justCreatedText = r));
                     }
                     return i;
                 }),
                 (B.prototype._showMousePositionInlineHint = function () {
-                    return !0;
+                    return true;
                 }),
                 (B.prototype._showAreaInlineHint = function () {
-                    return !0;
+                    return true;
                 }),
                 (B.prototype._hasCenterCross = function () {
-                    return !0;
+                    return true;
                 }),
                 (B.prototype._createShapeManually = function (e) {
                     var t = new c(),
                         i = new m(1, 0, 0, 1, e.getX(), e.getY());
-                    (t.transformSourceBBox(i), t.setText(b.get(new C("GTextTool", "your-text-here")), 1, 1));
+                    (t.transformSourceBBox(i), t.setText(String.get(new C("GTextTool", "your-text-here")), 1, 1));
                     try {
-                        if ((this._editor.beginTransaction(), this._insertText(t, !0), this._pathUnderMouse)) {
+                        if ((this._editor.beginTransaction(), this._insertText(t, true), this._pathUnderMouse)) {
                             var r = null;
                             if (this._pathUnderMouse instanceof y) r = this._pathUnderMouse;
                             else if ((r = n.createPathFromVertexSource(this._pathUnderMouse)) instanceof s) {
@@ -183,7 +183,7 @@ module.exports = function (e, t, i) {
                                     o instanceof y && ((r.$evenodd = o.getProperty("evenodd")), (r.$closed = o.getProperty("closed"))),
                                     (o.$trf = a));
                                 var l = o.getParent(),
-                                    h = o.getNext(!0);
+                                    h = o.getNext(true);
                                 (l.removeChild(o), l.insertChild(r, h));
                             } else r = null;
                             if (r) {
@@ -201,12 +201,12 @@ module.exports = function (e, t, i) {
                             }
                         }
                     } finally {
-                        this._editor.commitTransaction(b.get(new C("GTextTool", "action.insert-text")));
+                        this._editor.commitTransaction(String.get(new C("GTextTool", "action.insert-text")));
                     }
                     this._justCreatedText = t;
                 }),
                 (B.prototype._insertText = function (e, t) {
-                    return o.prototype._insertShape.call(this, e, !1, t, b.get(new C("GTextTool", "action.insert-text")));
+                    return o.prototype._insertShape.call(this, e, false, t, String.get(new C("GTextTool", "action.insert-text")));
                 }),
                 (B.prototype._getDefaultMeasure = function (e) {
                     if (!this._defaultMeasure) {
@@ -214,12 +214,12 @@ module.exports = function (e, t, i) {
                             i = t && t.getFontManager();
                         if (i) {
                             var n = [];
-                            (n.push(e.getProperty("_tfs") === E.Style.Normal ? "normal" : "italic"),
+                            (n.push(e.getProperty("_tfs") === GFont.Style.Normal ? "normal" : "italic"),
                                 n.push(e.getProperty("_tfw")),
                                 n.push(e.getProperty("_tfi") + "px"),
                                 n.push(e.getProperty("_tff")));
                             var r = "font: " + n.join(" ");
-                            this._defaultMeasure = new w(b.get(new C("GTextTool", "your-text-here")), r, null, i);
+                            this._defaultMeasure = new w(String.get(new C("GTextTool", "your-text-here")), r, null, i);
                         }
                     }
                     return this._defaultMeasure;
@@ -227,5 +227,5 @@ module.exports = function (e, t, i) {
                 (B.prototype.toString = function () {
                     return "[Object GTextTool]";
                 }),
-                (e.exports = B));
+                (module.exports = B));
         };

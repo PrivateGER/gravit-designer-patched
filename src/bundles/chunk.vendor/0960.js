@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            const n = i(579);
-            e.exports = function (e) {
+            const n = require(579);
+            module.exports = function (e) {
                 e.lock = {
                     acquire: (t) =>
                         e

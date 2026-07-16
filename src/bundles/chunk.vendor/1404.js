@@ -1,29 +1,29 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(147),
-                o = i(68),
-                a = i(48),
-                s = i(179),
-                l = i(158),
-                h = (i(139), i(108)),
-                A = (i(281), i(568), i(587)),
-                c = i(17),
-                p = i(70),
-                u = i(54),
-                d = i(7),
-                g = i(122),
-                f = i(95),
-                m = i(73),
-                y = i(188),
-                _ = i(214),
-                v = i(28),
-                b = i(47),
-                C = i(9),
-                w = i(14);
-            i(22);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(147),
+                o = require(68),
+                a = require(48),
+                s = require(179),
+                l = require(158),
+                h = (require(139), require(108 /* GFont */)),
+                A = (require(281), require(568), require(587)),
+                c = require(17),
+                p = require(70),
+                u = require(54),
+                d = require(7),
+                g = require(122),
+                f = require(95),
+                m = require(73),
+                y = require(188),
+                _ = require(214),
+                GStylable = require(28),
+                b = require(47),
+                String = require(9),
+                w = require(14);
+            require(22);
 
             function E(e, t, i, n) {
-                ((this.done = !1),
+                ((this.done = false),
                     (this.inputArray = e),
                     (this.drawCallback = t),
                     (this.fontManager = i),
@@ -34,7 +34,7 @@ module.exports = function (e, t, i) {
                     (this.background = null),
                     (this.clipGPathes = []),
                     (this.fontsCache = {}),
-                    (this._finished = !1),
+                    (this._finished = false),
                     (this._errorDone = {}),
                     (this._errorQueue = null),
                     (this.appendItem = function (e, t) {
@@ -188,7 +188,7 @@ module.exports = function (e, t, i) {
                                         ["sa", "ea", "etp", "trf"],
                                         [(r.angle2 + 2 * Math.PI) % (2 * Math.PI), (r.angle1 + 2 * Math.PI) % (2 * Math.PI), _.Type.Arc, o]
                                     );
-                                    var h = u.clone(h, !0);
+                                    var h = u.clone(h, true);
                                     l = new a();
                                     if ((h.rewindVertices(0), h.hasVertexForRead(l)))
                                         for (; h.readVertex(l); ) t.addVertex(l.command, l.x, l.y);
@@ -202,7 +202,7 @@ module.exports = function (e, t, i) {
                         stroke: function (e, t, i, n, r, o, a, s, l) {
                             var h = this.path2GPath(e);
                             if (h) {
-                                var A = new v.BorderPaintLayer(),
+                                var A = new GStylable.BorderPaintLayer(),
                                     c = w.LineCap.Butt;
                                 1 == r ? (c = w.LineCap.Round) : 2 == r && (c = w.LineCap.Square);
                                 var p = w.LineJoin.Miter;
@@ -221,17 +221,17 @@ module.exports = function (e, t, i) {
                                     var g = this.getClipPath(n);
                                     this.appendItem(h, g);
                                 } else this.appendItem(h);
-                                return !0;
+                                return true;
                             }
                         },
                         fill: function (e, t, i, n) {
                             if (0 == e.length && (0 == i.length || (1 == i.length && 0 == i[0].length))) {
                                 var r = this.getGColor(t, o);
-                                if (r) return ((this.background = r), !0);
+                                if (r) return ((this.background = r), true);
                             }
                             var o = this.path2GPath(e);
-                            if (!o) return !1;
-                            var a = new v.FillPaintLayer();
+                            if (!o) return false;
+                            var a = new GStylable.FillPaintLayer();
                             if (
                                 (a.setProperties(["_pt"], [this.getGColor(t, o)]),
                                 o.getPaintLayers().appendChild(a),
@@ -241,14 +241,14 @@ module.exports = function (e, t, i) {
                                 var s = this.getClipPath(i);
                                 this.appendItem(o, s);
                             } else this.appendItem(o);
-                            return !0;
+                            return true;
                         },
                         shfill: function (e, t) {
                             if (t && t.length > 0) {
                                 var i = this.getClipPath(t);
                                 if ((e = this.getGColor(e, i)) instanceof f) this.appendItem(e, i);
                                 else if (i != this.ggroup) {
-                                    var n = new v.FillPaintLayer();
+                                    var n = new GStylable.FillPaintLayer();
                                     (n.setProperties(["_pt"], [e]), i.getPaintLayers().appendChild(n));
                                 } else e && (this.background = e);
                                 0;
@@ -257,8 +257,8 @@ module.exports = function (e, t, i) {
                         rectfill: function (e, t, i, n, r) {
                             var o = new m(e, t, i, n);
                             r = this.getGColor(r, o);
-                            var a = new v.FillPaintLayer();
-                            return (a.setProperties(["_pt"], [r]), o.getPaintLayers().appendChild(a), this.appendItem(o), !0);
+                            var a = new GStylable.FillPaintLayer();
+                            return (a.setProperties(["_pt"], [r]), o.getPaintLayers().appendChild(a), this.appendItem(o), true);
                         },
                         drawImage: function (e, t, i, n, r, a, s) {
                             var l = document.createElement("canvas");
@@ -289,12 +289,12 @@ module.exports = function (e, t, i) {
                                 var v = this.getClipPath(a);
                                 this.appendItem(y, v);
                             } else this.appendItem(y);
-                            return !0;
+                            return true;
                         },
                         jpeg: function (e, t, i) {
-                            if (!(i && i.length && t && t.length)) return !1;
+                            if (!(i && i.length && t && t.length)) return false;
                             var n = new Image(),
-                                r = !1;
+                                r = false;
                             ((n.onload = function () {
                                 if (n.width && n.height) {
                                     var e = document.createElement("canvas");
@@ -312,7 +312,7 @@ module.exports = function (e, t, i) {
                                             for (var s = 0; s < a.data.length && s < i.length; ++s) Atomics.store(i, s, a.data[s]);
                                             (Atomics.store(t, 0, 1), Atomics.wake(t, 0, 1));
                                         }
-                                        r = !0;
+                                        r = true;
                                     }
                                 }
                                 if (!r)
@@ -342,7 +342,7 @@ module.exports = function (e, t, i) {
                                 }
                                 this.fontsCache[e] = t;
                             }
-                            return !0;
+                            return true;
                         },
                         show: function (e, t, n, r, o, a, s, l, A, c, u, g, f, m, y, _) {
                             r = this.getGColor(r);
@@ -350,7 +350,7 @@ module.exports = function (e, t, i) {
                             if (b)
                                 for (var C = 0; C < b.length; ++C) {
                                     var E = b[C],
-                                        B = 2 == a ? new v.BorderPaintLayer() : new v.FillPaintLayer();
+                                        B = 2 == a ? new GStylable.BorderPaintLayer() : new GStylable.FillPaintLayer();
                                     if ((B.setProperties(["_pt"], [r]), 2 == a)) {
                                         var x = w.LineCap.Butt;
                                         1 == g ? (x = w.LineCap.Round) : 2 == g && (x = w.LineCap.Square);
@@ -365,11 +365,11 @@ module.exports = function (e, t, i) {
                                         var I = i.getDefaultFont();
                                         I && ((t = I.getFamily()), (n = I.getWeight()));
                                     }
-                                    var F = v.PropertySetInfo[v.PropertySet.Text].geometryProperties;
+                                    var F = GStylable.PropertySetInfo[GStylable.PropertySet.Text].geometryProperties;
                                     ((n = n || F._tfi),
                                         E.setProperties(
                                             ["_tfs", "_tff", "_tfw", "_fc", "_tfi", "_aw", "_ah"],
-                                            [h.Style.Normal, t, h.Weight.Regular, r, n, !0, !0]
+                                            [h.Style.Normal, t, h.Weight.Regular, r, n, true, true]
                                         ),
                                         E.setText(e));
                                     var R = this.fontManager.getDefaultFont(),
@@ -382,27 +382,27 @@ module.exports = function (e, t, i) {
                                         E.transformSourceBBox(new d(1, 0, 0, 1, o.x, o.y - D)),
                                         this.appendItem(E));
                                 }
-                            return !0;
+                            return true;
                         },
                         done: function () {
                             if (!this._finished) {
                                 if ((this.drawCallback(0, this.ggroup, null, this.background), this.errorCallback && this._errorQueue))
                                     for (var e = 0; e < this._errorQueue.length; ++e) this.errorCallback(this._errorQueue[e]);
-                                ((this._errorQueue = null), (this._finished = !0));
+                                ((this._errorQueue = null), (this._finished = true));
                             }
-                            return !0;
+                            return true;
                         },
                         error: function (e) {
                             this.errorCallback &&
                                 e &&
                                 !this._errorDone[e] &&
                                 ((this._errorQueue = this._errorQueue ? this._errorQueue : []),
-                                this._errorQueue.push(C.get(new b("GEPSParser", e))),
-                                (this._errorDone[e] = !0));
+                                this._errorQueue.push(String.get(new b("GEPSParser", e))),
+                                (this._errorDone[e] = true));
                         },
                     }));
             }
-            (n.inherit(E, n),
+            (IsFiniteNonNegativeNumber.inherit(E, IsFiniteNonNegativeNumber),
                 (E.ErrorCodes = {
                     FailedColorUseBlue: "01",
                     FailedElement: "02",
@@ -410,5 +410,5 @@ module.exports = function (e, t, i) {
                     General: "04",
                     Canceled: "05",
                 }),
-                (e.exports = E));
+                (module.exports = E));
         };

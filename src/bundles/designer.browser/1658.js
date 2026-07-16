@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(3), n(4), n(41), n(13), n(32), n(33));
-        var o = n(1),
-            i = n(123),
-            a = (n(173), n(874)),
-            r = n(566);
-        const s = n(135);
+        (require(3), require(4), require(41), require(13), require(32), require(33));
+        var GObject = require(1),
+            i = require(123),
+            a = (require(173), require(874)),
+            r = require(566);
+        const s = require(135);
         function l() {}
-        (o.GObject.inherit(l, i),
+        (GObject.GObject.inherit(l, i),
             (l.prototype._panel = null),
             (l.prototype._toolbar = null),
             (l.prototype._document = null),
@@ -30,7 +30,7 @@ module.exports = function (e, t, n) {
                                 n = this._document.getEditor(),
                                 i = function (e) {
                                     var n = e.findParent(function (e) {
-                                        return e instanceof o.GPage;
+                                        return e instanceof GObject.GPage;
                                     });
                                     n && t.getActivePage() !== n && t.setActivePage(n);
                                 };
@@ -51,7 +51,7 @@ module.exports = function (e, t, n) {
                                     }
                                     var h = this._disabledSiblingMaps[l.getMultireferenceId() + "_" + c.getMultireferenceId()];
                                     (h && p.desynchronize(h),
-                                        p && (i(p), n.updateSelection(!1, [p])),
+                                        p && (i(p), n.updateSelection(false, [p])),
                                         n.commitTransaction("Swap symbol instance"));
                                 }
                             } else if (e.target.value && "0" === e.target.value) {
@@ -59,17 +59,17 @@ module.exports = function (e, t, n) {
                                 (n.beginTransaction(),
                                     i(f),
                                     n.clearSelection(),
-                                    n.updateSelection(!1, [f]),
-                                    n.hasSelection() && gDesigner.executeAction(r.ID, void 0, void 0, !0),
+                                    n.updateSelection(false, [f]),
+                                    n.hasSelection() && gDesigner.executeAction(r.ID, void 0, void 0, true),
                                     n.commitTransaction("Select master symbol"));
                             } else
                                 e.target.value &&
                                     "-1" === e.target.value &&
-                                    (gDesigner.executeAction(a.ID, void 0, void 0, !0), n.updateSelection(!1, n.getSelection().slice()));
+                                    (gDesigner.executeAction(a.ID, void 0, void 0, true), n.updateSelection(false, n.getSelection().slice()));
                         }.bind(this)
                     );
                 ($("<label></label>")
-                    .text(o.GLocale.get(new o.GLocaleKey("GSymbolProperties", "title")))
+                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GSymbolProperties", "title")))
                     .appendTo(t),
                     $("<div></div>")
                         .addClass("chooseinstance-row")
@@ -78,7 +78,7 @@ module.exports = function (e, t, n) {
                                 {
                                     clazz: "chooseinstance-title-col",
                                     content: $(
-                                        "<span>" + o.GLocale.get(new o.GLocaleKey("GSymbolProperties", "text.chooseinstance")) + "</span>"
+                                        "<span>" + GObject.GLocale.get(new GObject.GLocaleKey("GSymbolProperties", "text.chooseinstance")) + "</span>"
                                     ),
                                 },
                                 { clazz: "chooseinstance-select-col", content: n },
@@ -94,8 +94,8 @@ module.exports = function (e, t, n) {
                     !(
                         !e ||
                         (gDesigner.addEventListener(s, this._settingChanged, this),
-                        !(t = t.filter((e) => e instanceof o.GSymbol && !e.isMaster() && !!e.getMasterSymbol())).length)
-                    ) && ((this._symbols = t.slice()), (this._document = e), this._updateProperties(), !0)
+                        !(t = t.filter((e) => e instanceof GObject.GSymbol && !e.isMaster() && !!e.getMasterSymbol())).length)
+                    ) && ((this._symbols = t.slice()), (this._document = e), this._updateProperties(), true)
                 );
             }),
             (l.prototype._updateUI = function () {
@@ -113,39 +113,39 @@ module.exports = function (e, t, n) {
                     i = n.getMasterSymbol(),
                     r = (t.isFixedSized(), t.getSymbols());
                 (this._symbols.length > 1
-                    ? (e = this._symbols.length + " " + o.GLocale.get(new o.GLocaleKey("GSymbolProperties", "text.instances")))
-                    : ((e = n.getProperty("name") || o.GLocale.get(new o.GLocaleKey("GSymbolProperties", "title"))),
+                    ? (e = this._symbols.length + " " + GObject.GLocale.get(new GObject.GLocaleKey("GSymbolProperties", "text.instances")))
+                    : ((e = n.getProperty("name") || GObject.GLocale.get(new GObject.GLocaleKey("GSymbolProperties", "title"))),
                       i.getProperty("name")
                           ? (e +=
                                 " (" +
-                                o.GLocale.get(new o.GLocaleKey("GSymbolProperties", "text.instanceof")) +
+                                GObject.GLocale.get(new GObject.GLocaleKey("GSymbolProperties", "text.instanceof")) +
                                 " " +
                                 i.getProperty("name"))
-                          : (e += " (" + o.GLocale.get(new o.GLocaleKey("GSymbolProperties", "text.instance"))),
+                          : (e += " (" + GObject.GLocale.get(new GObject.GLocaleKey("GSymbolProperties", "text.instance"))),
                       (e += ")")),
                     this._toolbar.find("label:first-child").text(e));
                 var s,
                     l = this._panel.find('select[data-property="symbol-instance"]').empty();
                 gDesigner.canExecuteAction(a.ID) &&
-                    (l.append($('<option value="-1">(' + o.GLocale.get(a.TITLE) + ")</option>")),
+                    (l.append($('<option value="-1">(' + GObject.GLocale.get(a.TITLE) + ")</option>")),
                     l.append((s = $('<option value="-2"></option>'))));
                 var c = 0;
                 (!r.length && i && (r = [i]),
                     r.length ? l.removeClass("g-disabled").attr("disabled", null) : l.addClass("g-disabled").attr("disabled", ""));
-                var d = !1;
+                var d = false;
                 (r.forEach(function (e) {
                     var t = $("<option></option>").data("symbol", e).attr("value", ++c).text(e.getProperty("name")).appendTo(l);
-                    i.getMultireferenceId() === e.getMultireferenceId() && (t.prop("selected", !0), (d = !0));
+                    i.getMultireferenceId() === e.getMultireferenceId() && (t.prop("selected", true), (d = true));
                 }),
-                    d || s.prop("selected", !0),
+                    d || s.prop("selected", true),
                     i &&
                         i.getScene() &&
                         l.append(
-                            $('<option value="0">(' + o.GLocale.get(new o.GLocaleKey("GSymbolProperties", "text.master")) + ")</option>")
+                            $('<option value="0">(' + GObject.GLocale.get(new GObject.GLocaleKey("GSymbolProperties", "text.master")) + ")</option>")
                         ));
             }),
             (l.prototype.toString = function () {
                 return "[Object GSymbolProperties]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

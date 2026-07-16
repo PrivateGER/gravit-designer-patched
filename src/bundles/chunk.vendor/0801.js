@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(1119);
+module.exports = function (module, exports, require) {
+            var n = require(1119);
 
             function r() {
                 this._decimalPlacesPrecision = 3;
@@ -14,5 +14,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.formatNumber = function (e) {
                     return n.round(e, this._decimalPlacesPrecision);
                 }),
-                (e.exports = new r()));
+                (module.exports = new r()));
         };

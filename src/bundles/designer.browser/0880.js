@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(15);
-        e.exports = class {
+        var GPlatform = require(15);
+        module.exports = class {
             canActivate() {
-                return !1;
+                return false;
             }
             activate(e, t) {
-                this._active = !0;
+                this._active = true;
             }
             deactivate(e, t) {
-                this._active = !1;
+                this._active = false;
             }
             isActive() {
                 return this._active;
@@ -20,10 +20,10 @@ module.exports = function (e, t, n) {
             cancel(e, t) {}
             gesture(e, t) {}
             _dispatchEventFromTouch(e, t) {
-                let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : o.GMouseEvent.BUTTON_LEFT,
+                let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : GPlatform.GMouseEvent.BUTTON_LEFT,
                     i = !(arguments.length > 3 && void 0 !== arguments[3]) || arguments[3];
                 const a = document.createEvent("MouseEvent");
-                (a.initMouseEvent(e, !0, i, window, 1, t.screenX, t.screenY, t.clientX, t.clientY, !1, !1, !1, !1, n, null),
+                (a.initMouseEvent(e, true, i, window, 1, t.screenX, t.screenY, t.clientX, t.clientY, false, false, false, false, n, null),
                     t.target.dispatchEvent(a));
             }
         };

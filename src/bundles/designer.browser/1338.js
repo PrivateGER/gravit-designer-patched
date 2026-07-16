@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         class o {
             static get Events() {
@@ -17,5 +17,5 @@ module.exports = function (e, t, n) {
                 o.isInitialized() && dataLayer.push({ event: e });
             }
         }
-        e.exports = o;
+        module.exports = o;
     };

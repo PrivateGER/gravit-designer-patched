@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(124),
-            i = n(29),
-            a = n(408),
-            r = n(93),
-            s = n(101),
-            l = n(246),
-            c = n(204),
-            d = n(305),
-            u = n(697),
-            p = n(152).aTypedArrayConstructor,
-            g = n(429);
-        e.exports = function (e) {
+        var o = require(124),
+            i = require(29),
+            a = require(408),
+            r = require(93),
+            s = require(101),
+            l = require(246),
+            c = require(204),
+            d = require(305),
+            u = require(697),
+            p = require(152 /* NATIVE_ARRAY_BUFFER_VIEWS */).aTypedArrayConstructor,
+            g = require(429);
+        module.exports = function (e) {
             var t,
                 n,
                 h,

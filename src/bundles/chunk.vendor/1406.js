@@ -1,50 +1,50 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(2),
-                o = i(280),
-                a = i(11),
-                s = i(5),
-                l = i(1143),
-                h = i(28),
-                A = i(798),
-                c = i(132),
-                p = i(1216),
-                u = i(1422),
-                d = i(70),
-                g = i(1444),
-                f = i(22),
-                m = i(7),
-                y = i(1446),
-                _ = i(289),
-                v = i(95),
-                b = i(160),
-                C = i(83),
-                w = i(359),
-                E = i(56),
-                B = i(162),
-                x = i(347),
-                P = i(569),
-                S = i(818),
-                T = i(321),
-                I = i(432),
-                F = i(1448),
-                R = i(1449),
-                D = i(1451),
-                k = i(64),
-                G = i(9),
-                Q = i(47),
-                M = i(1453),
-                N = i(1235),
-                U = i(1454);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(2),
+                o = require(280),
+                a = require(11),
+                s = require(5),
+                l = require(1143),
+                GStylable = require(28),
+                A = require(798),
+                c = require(132),
+                p = require(1216),
+                u = require(1422),
+                d = require(70),
+                g = require(1444),
+                f = require(22),
+                m = require(7),
+                y = require(1446),
+                _ = require(289),
+                v = require(95),
+                b = require(160),
+                C = require(83),
+                w = require(359),
+                E = require(56),
+                B = require(162),
+                x = require(347),
+                P = require(569),
+                S = require(818),
+                T = require(321),
+                I = require(432),
+                F = require(1448),
+                R = require(1449),
+                D = require(1451),
+                k = require(64),
+                String = require(9),
+                Q = require(47),
+                M = require(1453),
+                N = require(1235),
+                U = require(1454);
 
             function V() {}
 
             function O(e, t, i, n) {
                 ((this._context = e), (this._doc = t), (this._options = i), (this._compatibilityProcessor = n));
             }
-            (n.inherit(V, n),
+            (IsFiniteNonNegativeNumber.inherit(V, IsFiniteNonNegativeNumber),
                 (V.isSupported = function (e, t, i) {
-                    var n = !0,
+                    var n = true,
                         r = function (e) {
                             if (!N.isCompatible(e, t) || e instanceof v) {
                                 var r = A.getNodeSelfBitmapUsedArea(e, i),
@@ -57,7 +57,7 @@ module.exports = function (e, t, i) {
                                     s > k.absoluteMaxImgAreaDots ||
                                     4 * s > k.maxPngDataSize
                                 )
-                                    return ((n = !1), !0);
+                                    return ((n = false), true);
                             }
                         };
                     return (
@@ -73,7 +73,7 @@ module.exports = function (e, t, i) {
                     if (i) {
                         var o, a, h;
                         if (
-                            (r && r.message && r.message(G.get(new Q("GPDFExport", "text.wait"))),
+                            (r && r.message && r.message(String.get(new Q("GPDFExport", "text.wait"))),
                             "undefined" != typeof Worker && !t.disableWorker)
                         ) {
                             o = [];
@@ -82,9 +82,9 @@ module.exports = function (e, t, i) {
                             (function (e, t) {
                                 try {
                                     var i = new URL(e);
-                                    if (!i.origin || "null" === i.origin) return !1;
+                                    if (!i.origin || "null" === i.origin) return false;
                                 } catch (e) {
-                                    return !1;
+                                    return false;
                                 }
                                 var n = new URL(t, i);
                                 return i.origin === n.origin;
@@ -98,7 +98,7 @@ module.exports = function (e, t, i) {
                         t.colorSpace && (v = w[t.colorSpace.toUpperCase()]);
                         var E = new u({
                                 version: 1.7,
-                                compress: !0,
+                                compress: true,
                                 colorSpace: v,
                                 workers: o,
                                 user: t.user,
@@ -108,8 +108,8 @@ module.exports = function (e, t, i) {
                             }),
                             B = Math.max(c.DPI, t.dpi || c.DPI),
                             x = t.configuration || {
-                                ignoreEffects: !1,
-                                forceEffectsWhenZoomed: !0,
+                                ignoreEffects: false,
+                                forceEffectsWhenZoomed: true,
                             },
                             P = t.progress || null,
                             S = B / c.DPI,
@@ -173,7 +173,7 @@ module.exports = function (e, t, i) {
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                !0
+                                                                                true
                                                                             )),
                                                                         _ && _.getWidth() && _.getHeight())
                                                                     ) {
@@ -260,7 +260,7 @@ module.exports = function (e, t, i) {
                                     var t = [];
                                     (e.iteratePages(function (e) {
                                         t.push(e);
-                                    }, !0),
+                                    }, true),
                                         F(t, M, L));
                                 } else (Array.isArray(e) || (e = [e]), F(e, R, L));
                             }),
@@ -317,14 +317,14 @@ module.exports = function (e, t, i) {
                                     })),
                                 t._instanceof(i, f))
                             ) {
-                                i._paintSharp = !1;
+                                i._paintSharp = false;
                                 var s = t._options.configuration && t._options.configuration.ignoreEffects;
                                 ((i._paint = function (e) {
                                     (e.beginNode(this.__source__),
                                         this._needToRaster ||
                                             s ||
                                             (function (e, t) {
-                                                if (t.hasMixin(h)) {
+                                                if (t.hasMixin(GStylable)) {
                                                     var i = t.getEffects();
                                                     if (i)
                                                         for (var n = i.getFirstChild(); null != n; n = n.getNext())
@@ -335,7 +335,7 @@ module.exports = function (e, t, i) {
                                         this._needToRaster ||
                                             s ||
                                             (function (e, t) {
-                                                if (t.hasMixin(h)) {
+                                                if (t.hasMixin(GStylable)) {
                                                     var i = t.getEffects();
                                                     if (i)
                                                         for (var n = i.getFirstChild(); null != n; n = n.getNext())
@@ -346,7 +346,7 @@ module.exports = function (e, t, i) {
                                     (i._finishPaint = function (e) {
                                         (this.__proto__._finishPaint.call(this, e),
                                             e.endNode(this.__source__),
-                                            t._instanceof(this, d) && (this.__source__._runsDirty = !0));
+                                            t._instanceof(this, d) && (this.__source__._runsDirty = true));
                                     }));
                             }
                             if (
@@ -375,8 +375,8 @@ module.exports = function (e, t, i) {
                                 t._instanceof(i, d))
                             ) {
                                 var l = i.getPaintLayers(),
-                                    A = l.getFillLayers(!0),
-                                    c = l.getBorderLayers(!0);
+                                    A = l.getFillLayers(true),
+                                    c = l.getBorderLayers(true);
                                 A.length > 1 || c.length > 1 || i.getProperty("dir") || (t._options && t._options.convertTextToPath)
                                     ? (i._paint = function (e) {
                                           e.beginNode(this.__source__);
@@ -395,7 +395,7 @@ module.exports = function (e, t, i) {
                                             Object.getOwnPropertyNames(i.__source__),
                                             function (e, t) {
                                                 Object.defineProperty(this, t, {
-                                                    configurable: !0,
+                                                    configurable: true,
                                                     set: function (e) {
                                                         this.__source__[t] = e;
                                                     },
@@ -408,7 +408,7 @@ module.exports = function (e, t, i) {
                                         (i._paintBorder = function (e, t, i, n, r) {
                                             ((e._borderPaintLayer = r), (e._patternBBox = this._pathBase.getPatternBBox()));
                                             try {
-                                                this.__proto__._paintBorder.call(this, e, t, i, !1, r);
+                                                this.__proto__._paintBorder.call(this, e, t, i, false, r);
                                             } finally {
                                                 (delete e._borderPaintLayer, delete e._patternBBox);
                                             }
@@ -421,5 +421,5 @@ module.exports = function (e, t, i) {
                     }
                     return null;
                 }),
-                (e.exports = V));
+                (module.exports = V));
         };

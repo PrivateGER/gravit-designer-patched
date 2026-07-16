@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(42);
+module.exports = function (module, exports, require) {
+            var n = require(42);
 
             function r(e) {
                 n.call(
@@ -9,7 +9,7 @@ module.exports = function (e, t, i) {
                     "        uniform highp sampler2D texture;        uniform float amount;        uniform float colored;        uniform float transparency;        varying highp vec2 texCoord;        vec3 hsv2rgb_smooth(in vec3 c) {            vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0);            rgb = rgb*rgb*(3.0-2.0*rgb);            return c.z * mix( vec3(1.0), rgb, c.y);        }        float rand(vec2 co) {            return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);        }        void main() {            vec4 color = texture2D(texture, texCoord);            float _rand = rand(texCoord);            float alpha = 1.0;            if (colored == 1.0){                color.rgb = hsv2rgb_smooth(vec3(_rand, 1.0, 1.0)).xyz;            } else {                float diff = _rand - 0.5;                if (transparency != 1.0){                    diff *= amount;                }                color.r += diff;                color.g += diff;                color.b += diff;            }            if (transparency == 1.0){                alpha = amount;            }            gl_FragColor = vec4(color.rgb, color.a * alpha);        }    "
                 );
             }
-            (i(0).inherit(r, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(r, n),
                 (r.prototype.render = function (e, t) {
                     this.simpleShader.call(this, {
                         amount: n.clamp(0, e.amount, 1),
@@ -17,5 +17,5 @@ module.exports = function (e, t, i) {
                         transparency: e.transparency ? 1 : 0,
                     });
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

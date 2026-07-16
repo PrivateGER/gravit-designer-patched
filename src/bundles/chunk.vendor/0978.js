@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(20), i(107));
-            e.exports = class {
+            (require(20), require(107));
+            module.exports = class {
                 static isAvailable() {
                     return void 0 !== window.grecaptcha && /^(prod|trunk)/.test(window.env || "") && "localhost" !== location.hostname;
                 }

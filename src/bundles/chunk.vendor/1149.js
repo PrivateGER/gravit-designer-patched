@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(11);
+module.exports = function (module, exports, require) {
+            var n = require(11);
 
             function r(e) {
                 ((this.map = {}),
@@ -44,5 +44,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.setElementStyle = function (e) {
                     this.getLength() > 0 && e.setAttribute("style", this.toString());
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

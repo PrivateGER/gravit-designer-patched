@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            i(57);
-            e.exports = class {
+            require(57);
+            module.exports = class {
                 constructor() {
                     let {
                         public_stats: e,

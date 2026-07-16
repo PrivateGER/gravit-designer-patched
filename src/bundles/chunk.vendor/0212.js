@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(172);
+module.exports = function (module, exports, require) {
+            var n = require(172);
 
             function r() {}
             ((r.prototype.getAdditionalTransactionDataMixin = function (e, t) {
                 return n.createAddAnnotationTransactionData([e], t);
             }),
-                (e.exports = r));
+                (module.exports = r));
         };

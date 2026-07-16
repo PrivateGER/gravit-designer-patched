@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16),
-            i = n(10),
-            a = o(n(1582));
-        e.exports = class {
+        var o = require(16),
+            designerConfig = require(10),
+            a = o(require(1582));
+        module.exports = class {
             constructor(e) {
                 ((this._target = e),
                     (this._lastTouchStartEvent = 0),
-                    (this._touchmoved = !1),
+                    (this._touchmoved = false),
                     (this._touchStartX = 0),
                     (this._touchStartY = 0),
                     (this._handleEventBound = this._tryHandleEvent.bind(this)),
@@ -23,8 +23,8 @@ module.exports = function (e, t, n) {
             }
             setClickSuppressionEnabled(e) {
                 (this._gestureHelper.setClickSuppressionEnabled(e),
-                    document.removeEventListener("scroll", this._handleScrollEventBound, !0),
-                    e && document.addEventListener("scroll", this._handleScrollEventBound, !0));
+                    document.removeEventListener("scroll", this._handleScrollEventBound, true),
+                    e && document.addEventListener("scroll", this._handleScrollEventBound, true));
             }
             activate(e) {
                 (this.deactivate(this._target),
@@ -44,7 +44,7 @@ module.exports = function (e, t, n) {
                     t.removeEventListener("touchend", this._handleEventBound),
                     t.removeEventListener("touchcancel", this._handleEventBound),
                     t.removeEventListener("gesturestart", this._handleEventBound)),
-                    document.removeEventListener("scroll", this._handleScrollEventBound, !0),
+                    document.removeEventListener("scroll", this._handleScrollEventBound, true),
                     this._target && delete this._target);
             }
             _tryHandleEvent(e) {
@@ -73,14 +73,14 @@ module.exports = function (e, t, n) {
                 (t
                     ? ((this._touchStartX = t.clientX), (this._touchStartY = t.clientY))
                     : ((this._touchStartX = 0), (this._touchStartY = 0)),
-                    (this._touchmoved = !1),
+                    (this._touchmoved = false),
                     this._gestureHelper.touchStart(e));
             }
             _touchMove(e) {
                 ((this._touchmoved = this._wasMoved(e)), this._touchmoved && this._gestureHelper.touchMove(e));
             }
             _touchEnd(e) {
-                ((this._touchmoved = !1), this._gestureHelper.touchEnd(e));
+                ((this._touchmoved = false), this._gestureHelper.touchEnd(e));
             }
             _touchCancel(e) {
                 this._gestureHelper.touchCancel(e);
@@ -95,8 +95,8 @@ module.exports = function (e, t, n) {
                 const t = e.changedTouches[0],
                     { clientX: n, clientY: o } = t;
                 return !(
-                    Math.abs(n - this._touchStartX) < i.MIN_TOUCH_MOVE_DISTANCE &&
-                    Math.abs(o - this._touchStartY) < i.MIN_TOUCH_MOVE_DISTANCE
+                    Math.abs(n - this._touchStartX) < designerConfig.MIN_TOUCH_MOVE_DISTANCE &&
+                    Math.abs(o - this._touchStartY) < designerConfig.MIN_TOUCH_MOVE_DISTANCE
                 );
             }
             _shouldHandle(e) {

@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(60),
-                o = i(84),
-                a = i(28),
-                s = i(0),
-                l = i(17),
-                h = (i(142), i(7));
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(60),
+                o = require(84),
+                GStylable = require(28),
+                IsFiniteNonNegativeNumber = require(0),
+                l = require(17),
+                h = (require(142), require(7));
 
             function A() {
                 (r.call(this), this.initializeAnnotation());
@@ -13,13 +13,13 @@ module.exports = function (e, t, i) {
             (n.inheritAndMix("anc", A, r, [o]),
                 (A.prototype._insidePath = null),
                 (A.prototype.hitTest = function (e, t, i, n, r, o, a, s, l, h) {
-                    if (("number" != typeof r && (r = -1), (o = o || 0), s && !1 === s(this))) return null;
+                    if (("number" != typeof r && (r = -1), (o = o || 0), s && false === s(this))) return null;
                     var A = this.getPaintBBox();
                     if (!A || A.isEmpty()) return null;
                     if ((t && (A = t.mapRect(A)), !A.expanded(o, o, o, o).containsPoint(e))) return null;
                     var c = null;
                     if ((i && 1 == i(this)) || !i) {
-                        var p = this._detailHitTest(e, t, o, a, l, !1);
+                        var p = this._detailHitTest(e, t, o, a, l, false);
                         p && (n && c ? c.push(p) : (c = [p]));
                     }
                     return c;
@@ -28,7 +28,7 @@ module.exports = function (e, t, i) {
                     return "annlst" === n.getName(e);
                 }),
                 (A.prototype.isEmptyTextAllowed = function () {
-                    return !1;
+                    return false;
                 }),
                 (A.prototype.isPaintable = function (e) {
                     return !(e && !e.configuration.isElementAnnotationsVisible(this)) && r.prototype.isPaintable.call(this, e);
@@ -51,7 +51,7 @@ module.exports = function (e, t, i) {
                         var u = t.blob;
                         t.options.separateSaving &&
                             ((u.own = {
-                                "@": n._nodeClassToNameMap[s.getTypeId(this)],
+                                "@": n._nodeClassToNameMap[IsFiniteNonNegativeNumber.getTypeId(this)],
                             }),
                             (t.blob = u.own));
                     } else
@@ -65,10 +65,10 @@ module.exports = function (e, t, i) {
                     r.prototype._handleChange.call(this, e, t);
                 }),
                 (A.prototype.initDefaultForLimitedRestore = function () {
-                    this.setProperty("closed", !0);
+                    this.setProperty("closed", true);
                     var e = new r();
-                    e.setProperties(["closed", "trf"], [!0, this.getProperty("trf")]);
-                    var t = new a.FillPaintLayer(new l([255, 255, 255]));
+                    e.setProperties(["closed", "trf"], [true, this.getProperty("trf")]);
+                    var t = new GStylable.FillPaintLayer(new l([255, 255, 255]));
                     (e.getPaintLayers().appendChild(t),
                         this.appendChild(e),
                         this.getAnchorPoints().deserialize([
@@ -107,5 +107,5 @@ module.exports = function (e, t, i) {
                 (A.prototype.toString = function () {
                     return "[GCommentAnnotation]";
                 }),
-                (e.exports = A));
+                (module.exports = A));
         };

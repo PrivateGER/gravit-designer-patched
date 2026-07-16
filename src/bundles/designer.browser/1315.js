@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(15),
-            a = n(18),
-            r = n(106);
+        require(3);
+        var GObject = require(1),
+            GPlatform = require(15),
+            GCategory = require(18),
+            r = require(106);
         function s() {}
-        (o.GObject.inherit(s, r),
+        (GObject.GObject.inherit(s, r),
             (s.ID = "edit.duplicate"),
-            (s.TITLE = new o.GLocaleKey("GDuplicateAction", "title")),
+            (s.TITLE = new GObject.GLocaleKey("GDuplicateAction", "title")),
             (s.prototype.getId = function () {
                 return s.ID;
             }),
@@ -16,22 +16,22 @@ module.exports = function (e, t, n) {
                 return s.TITLE;
             }),
             (s.prototype.getCategory = function () {
-                return a.CATEGORY_EDIT;
+                return GCategory.CATEGORY_EDIT;
             }),
             (s.prototype.getGroup = function () {
                 return "ccp";
             }),
             (s.prototype.getShortcut = function () {
-                return [i.GKey.Constant.META, "D"];
+                return [GPlatform.GKey.Constant.META, "D"];
             }),
             (s.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-duplicate" : null;
             }),
             (s.prototype.getAdditionalShortcuts = function () {
-                return [[i.GKey.Constant.SHIFT, i.GKey.Constant.META, "D"]];
+                return [[GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "D"]];
             }),
             (s.prototype.isEnabled = function () {
-                if (!r.prototype.isEnabled.call(this)) return !1;
+                if (!r.prototype.isEnabled.call(this)) return false;
                 var e = gDesigner.getActiveDocument();
                 return e && null != e.getEditor().getSelection();
             }),
@@ -39,13 +39,13 @@ module.exports = function (e, t, n) {
                 var e = gDesigner.getActiveDocument().getEditor();
                 e.beginTransaction();
                 try {
-                    e.cloneSelection(!1, !0);
+                    e.cloneSelection(false, true);
                 } finally {
-                    e.commitTransaction(o.GLocale.get(this.getTitle()));
+                    e.commitTransaction(GObject.GLocale.get(this.getTitle()));
                 }
             }),
             (s.prototype.toString = function () {
                 return "[Object GDuplicateAction]";
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

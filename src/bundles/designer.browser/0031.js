@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        n(3);
-        var i = n(1),
-            a = n(15),
-            r = o(n(844));
+        var o = require(16);
+        require(3);
+        var GObject = require(1),
+            GPlatform = require(15),
+            r = o(require(844));
         function s() {}
-        (i.GObject.inherit(s, i.GObject),
+        (GObject.GObject.inherit(s, GObject.GObject),
             (s.SHORTCUT_DELAY = 500),
             (s.getActionShortcutHint = function (e, t) {
-                return e ? a.GKey.shortcutToString(e, t) : null;
+                return e ? GPlatform.GKey.shortcutToString(e, t) : null;
             }),
             (s.prototype.getId = function () {
                 throw new Error("Not Supported");
@@ -42,7 +42,7 @@ module.exports = function (e, t, n) {
                 return s.getActionShortcutHint(this.getShortcut(), e);
             }),
             (s.prototype.isShortcutGlobal = function () {
-                return !1;
+                return false;
             }),
             (s.prototype.isRegisterShortcut = function () {
                 return null;
@@ -51,19 +51,19 @@ module.exports = function (e, t, n) {
                 return null;
             }),
             (s.prototype.isEnabled = function () {
-                return !0;
+                return true;
             }),
             (s.prototype.isKeyBoardEventRequiredToExecute = function () {
-                return !1;
+                return false;
             }),
             (s.prototype.isCheckable = function () {
-                return !1;
+                return false;
             }),
             (s.prototype.isChecked = function () {
-                return !1;
+                return false;
             }),
             (s.prototype.isAvailable = function (e) {
-                return !0;
+                return true;
             }),
             (s.prototype.execute = function () {
                 throw new Error("Not Supported");
@@ -72,7 +72,7 @@ module.exports = function (e, t, n) {
                 return this.execute.apply(this, arguments);
             }),
             (s.prototype.isPro = function () {
-                return !1;
+                return false;
             }),
             (s.prototype.getTooltipArea = function () {
                 return null;
@@ -81,10 +81,10 @@ module.exports = function (e, t, n) {
                 return null;
             }),
             (s.prototype.isVisible = function () {
-                return !0;
+                return true;
             }),
             (s.prototype.noHover = function () {
-                return !1;
+                return false;
             }),
             (s.prototype.getStyleClass = function () {
                 return null;
@@ -95,5 +95,5 @@ module.exports = function (e, t, n) {
             (s.prototype.toString = function () {
                 return "[Object GAction]";
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

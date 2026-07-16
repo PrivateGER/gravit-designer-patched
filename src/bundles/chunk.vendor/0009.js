@@ -1,4 +1,4 @@
-module.exports = function (e, t, i) {
-            var n = (0, i(224).Factory)(i(224).GTranslation.Projects.Designer);
-            e.exports = n;
+module.exports = function (module, exports, require) {
+            var n = (0, require(224 /* GTranslation */).Factory)(require(224 /* GTranslation */).GTranslation.Projects.Designer);
+            module.exports = n;
         };

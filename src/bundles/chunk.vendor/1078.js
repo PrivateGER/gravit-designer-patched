@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(127),
-                o = i(36),
-                a = i(66),
-                s = i(268);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(127),
+                o = require(36),
+                a = require(66),
+                s = require(268);
 
             function l() {
                 r.apply(this, arguments);
             }
-            (n.inherit(l, r),
+            (IsFiniteNonNegativeNumber.inherit(l, r),
                 o.exports(l, s),
                 (l.prototype.filterFlags = function (e) {
                     return (
@@ -25,8 +25,8 @@ module.exports = function (e, t, i) {
                           e.getSrcPath() &&
                           e.getDstPath() &&
                           (e.transformAnchors(this._transform),
-                          e.getSrcPath().transform(this._transform, !0, i),
-                          e.getDstPath().transform(this._transform, !0, i),
+                          e.getSrcPath().transform(this._transform, true, i),
+                          e.getDstPath().transform(this._transform, true, i),
                           this.resetTransform());
                 }),
                 (l.prototype.isDeletePartsAllowed = function () {
@@ -42,8 +42,8 @@ module.exports = function (e, t, i) {
                                 this._partSelection[i].type == r.PartType.Point &&
                                 (this._partSelection[i].point === e || this._partSelection[i].point === t)
                             )
-                                return !1;
+                                return false;
                     return r.prototype.isDeletePartsAllowed.call(this);
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

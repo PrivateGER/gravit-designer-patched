@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(7),
-                r = i(236),
-                o = i(214),
-                a = i(0);
+module.exports = function (module, exports, require) {
+            var n = require(7),
+                r = require(236),
+                o = require(214),
+                IsFiniteNonNegativeNumber = require(0);
 
             function s() {
-                r.call(this, !0, !0);
+                r.call(this, true, true);
             }
-            (i(552),
-                a.inherit(s, r),
+            (require(552),
+                IsFiniteNonNegativeNumber.inherit(s, r),
                 (s.prototype._getRelatedItemClass = function () {
                     return o;
                 }),
@@ -26,20 +26,20 @@ module.exports = function (e, t, i) {
                                 t.getY() + t.getHeight() / 2
                             )
                         ),
-                        !0)
+                        true)
                     );
                 }),
                 (s.prototype._showMousePositionInlineHint = function () {
-                    return !0;
+                    return true;
                 }),
                 (s.prototype._showAreaInlineHint = function () {
-                    return !0;
+                    return true;
                 }),
                 (s.prototype._hasCenterCross = function () {
-                    return !0;
+                    return true;
                 }),
                 (s.prototype.toString = function () {
                     return "[Object GEllipseTool]";
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

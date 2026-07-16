@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(4), n(13));
-        var o = n(1),
+        (require(4), require(13));
+        var GObject = require(1),
             i = {
                 value: function (e) {
                     var t = i.options.call(this).unit;
@@ -9,12 +9,12 @@ module.exports = function (e, t, n) {
                         if (e) {
                             var n = gDesigner.getActiveDocument(),
                                 a = n ? n.getScene() : null;
-                            $(this).gInputBox("value", o.GUtil.formatNumber(e.toUnit(t), a ? a.getOptimalDecimalsCount(t) : 2));
+                            $(this).gInputBox("value", GObject.GUtil.formatNumber(e.toUnit(t), a ? a.getOptimalDecimalsCount(t) : 2));
                         } else $(this).val("");
                         return this;
                     }
-                    var r = o.GLength.parseEquation($(this).val(), t);
-                    return r ? r.convert(t) : new o.GLength(0, t);
+                    var r = GObject.GLength.parseEquation($(this).val(), t);
+                    return r ? r.convert(t) : new GObject.GLength(0, t);
                 },
                 list: function (e) {
                     i.options.call(this).list = e;
@@ -24,11 +24,11 @@ module.exports = function (e, t, n) {
                 },
                 init: function (e) {
                     return (
-                        ((e = $.extend({ unit: o.GLength.Unit.PX, created: !1 }, e)).postfix = e.unit),
+                        ((e = $.extend({ unit: GObject.GLength.Unit.PX, created: false }, e)).postfix = e.unit),
                         this.each(function () {
                             var t = $(this),
                                 n = this;
-                            ($(this).hasClass("g-unitbox") ? (e.created = !0) : t.addClass("g-unitbox").attr("type", "text"),
+                            ($(this).hasClass("g-unitbox") ? (e.created = true) : t.addClass("g-unitbox").attr("type", "text"),
                                 t.gInputBox("isInit") || t.gInputBox(e));
                             var a = function () {
                                 let e = t.gInputBox("value"),
@@ -58,18 +58,18 @@ module.exports = function (e, t, n) {
                                                 .text(e.list[c] + " " + e.postfix)
                                                 .data("value", e.list[c])
                                                 .on("mousedown", function () {
-                                                    (i.value.call(n, new o.GLength($(this).data("value"), e.unit)),
+                                                    (i.value.call(n, new GObject.GLength($(this).data("value"), e.unit)),
                                                         t.trigger("change"),
                                                         l.gOverlay("close"));
                                                 })
                                                 .appendTo(s);
                                         (l.append(s).gOverlay({
-                                            releaseOnClose: !0,
-                                            padding: !1,
+                                            releaseOnClose: true,
+                                            padding: false,
                                             enterCallback: function () {
                                                 var a = $(".g-unitbox.option-list").find(".option-item:hover");
                                                 (a.length > 0 &&
-                                                    (i.value.call(n, new o.GLength($(a).data("value"), e.unit)), t.trigger("change")),
+                                                    (i.value.call(n, new GObject.GLength($(a).data("value"), e.unit)), t.trigger("change")),
                                                     l.gOverlay("close"));
                                             },
                                         }),

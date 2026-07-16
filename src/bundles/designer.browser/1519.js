@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o, i, a;
-        ((i = [n(171), n(1257), n(605), n(1258)]),
+        ((i = [require(171), require(1257), require(605), require(1258)]),
             void 0 ===
                 (a =
                     "function" ==
                     typeof (o = function (e) {
-                        var t = !1;
+                        var t = false;
                         return (
                             e(document).on("mouseup", function () {
-                                t = !1;
+                                t = false;
                             }),
                             e.widget("ui.mouse", {
                                 version: "1.12.1",
@@ -24,14 +24,14 @@ module.exports = function (e, t, n) {
                                             return t._mouseDown(e);
                                         })
                                         .on("click." + this.widgetName, function (n) {
-                                            if (!0 === e.data(n.target, t.widgetName + ".preventClickEvent"))
+                                            if (true === e.data(n.target, t.widgetName + ".preventClickEvent"))
                                                 return (
                                                     e.removeData(n.target, t.widgetName + ".preventClickEvent"),
                                                     n.stopImmediatePropagation(),
-                                                    !1
+                                                    false
                                                 );
                                         }),
-                                        (this.started = !1));
+                                        (this.started = false));
                                 },
                                 _mouseDestroy: function () {
                                     (this.element.off("." + this.widgetName),
@@ -42,7 +42,7 @@ module.exports = function (e, t, n) {
                                 },
                                 _mouseDown: function (n) {
                                     if (!t) {
-                                        ((this._mouseMoved = !1), this._mouseStarted && this._mouseUp(n), (this._mouseDownEvent = n));
+                                        ((this._mouseMoved = false), this._mouseStarted && this._mouseUp(n), (this._mouseDownEvent = n));
                                         var o = this,
                                             i = 1 === n.which,
                                             a =
@@ -55,13 +55,13 @@ module.exports = function (e, t, n) {
                                             ((this.mouseDelayMet = !this.options.delay),
                                             this.mouseDelayMet ||
                                                 (this._mouseDelayTimer = setTimeout(function () {
-                                                    o.mouseDelayMet = !0;
+                                                    o.mouseDelayMet = true;
                                                 }, this.options.delay)),
                                             this._mouseDistanceMet(n) &&
                                             this._mouseDelayMet(n) &&
-                                            ((this._mouseStarted = !1 !== this._mouseStart(n)), !this._mouseStarted)
+                                            ((this._mouseStarted = false !== this._mouseStart(n)), !this._mouseStarted)
                                                 ? (n.preventDefault(), 0)
-                                                : (!0 === e.data(n.target, this.widgetName + ".preventClickEvent") &&
+                                                : (true === e.data(n.target, this.widgetName + ".preventClickEvent") &&
                                                       e.removeData(n.target, this.widgetName + ".preventClickEvent"),
                                                   (this._mouseMoveDelegate = function (e) {
                                                       return o._mouseMove(e);
@@ -73,7 +73,7 @@ module.exports = function (e, t, n) {
                                                       .on("mousemove." + this.widgetName, this._mouseMoveDelegate)
                                                       .on("mouseup." + this.widgetName, this._mouseUpDelegate),
                                                   n.preventDefault(),
-                                                  (t = !0),
+                                                  (t = true),
                                                   0))
                                         );
                                     }
@@ -89,16 +89,16 @@ module.exports = function (e, t, n) {
                                                 t.originalEvent.metaKey ||
                                                 t.originalEvent.shiftKey
                                             )
-                                                this.ignoreMissingWhich = !0;
+                                                this.ignoreMissingWhich = true;
                                             else if (!this.ignoreMissingWhich) return this._mouseUp(t);
                                     }
                                     return (
-                                        (t.which || t.button) && (this._mouseMoved = !0),
+                                        (t.which || t.button) && (this._mouseMoved = true),
                                         this._mouseStarted
                                             ? (this._mouseDrag(t), t.preventDefault())
                                             : (this._mouseDistanceMet(t) &&
                                                   this._mouseDelayMet(t) &&
-                                                  ((this._mouseStarted = !1 !== this._mouseStart(this._mouseDownEvent, t)),
+                                                  ((this._mouseStarted = false !== this._mouseStart(this._mouseDownEvent, t)),
                                                   this._mouseStarted ? this._mouseDrag(t) : this._mouseUp(t)),
                                               !this._mouseStarted)
                                     );
@@ -108,13 +108,13 @@ module.exports = function (e, t, n) {
                                         .off("mousemove." + this.widgetName, this._mouseMoveDelegate)
                                         .off("mouseup." + this.widgetName, this._mouseUpDelegate),
                                         this._mouseStarted &&
-                                            ((this._mouseStarted = !1),
+                                            ((this._mouseStarted = false),
                                             n.target === this._mouseDownEvent.target &&
-                                                e.data(n.target, this.widgetName + ".preventClickEvent", !0),
+                                                e.data(n.target, this.widgetName + ".preventClickEvent", true),
                                             this._mouseStop(n)),
                                         this._mouseDelayTimer && (clearTimeout(this._mouseDelayTimer), delete this._mouseDelayTimer),
-                                        (this.ignoreMissingWhich = !1),
-                                        (t = !1),
+                                        (this.ignoreMissingWhich = false),
+                                        (t = false),
                                         n.preventDefault());
                                 },
                                 _mouseDistanceMet: function (e) {
@@ -132,11 +132,11 @@ module.exports = function (e, t, n) {
                                 _mouseDrag: function () {},
                                 _mouseStop: function () {},
                                 _mouseCapture: function () {
-                                    return !0;
+                                    return true;
                                 },
                             })
                         );
                     })
-                        ? o.apply(t, i)
-                        : o) || (e.exports = a));
+                        ? o.apply(exports, i)
+                        : o) || (module.exports = a));
     };

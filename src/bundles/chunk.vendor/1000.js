@@ -1,17 +1,17 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             var n,
                 r,
                 o,
-                a = i(0),
-                s = i(54),
-                l = i(63),
-                h = i(59),
-                A = i(48),
-                c = i(727),
-                p = i(17);
+                IsFiniteNonNegativeNumber = require(0),
+                s = require(54),
+                l = require(63),
+                h = require(59),
+                A = require(48),
+                c = require(727),
+                p = require(17);
 
             function u() {}
-            (a.inherit(u, c),
+            (IsFiniteNonNegativeNumber.inherit(u, c),
                 (u.prototype.paint = function (e, t) {
                     (e.canvas.putVertices(new l(this._getOuterVertices(), t)),
                         e.canvas.fillVertices("#2CBE2D", 1),
@@ -19,10 +19,10 @@ module.exports = function (e, t, i) {
                         e.canvas.fillVertices(p.WHITE, 1));
                 }),
                 (u.prototype.getSourceBBox = function () {
-                    return (o || (o = h.calculateBounds(this._getOuterVertices(), !0)), o);
+                    return (o || (o = h.calculateBounds(this._getOuterVertices(), true)), o);
                 }),
                 (u.prototype.execute = function (e, t, i) {
-                    (t.isInlineEditing() && t.closeInlineEditor(), t.updateSelection(!1, [e]), t.openInlineEditor(e, i));
+                    (t.isInlineEditing() && t.closeInlineEditor(), t.updateSelection(false, [e]), t.openInlineEditor(e, i));
                 }),
                 (u.prototype._getOuterVertices = function () {
                     return (
@@ -127,5 +127,5 @@ module.exports = function (e, t, i) {
                         r
                     );
                 }),
-                (e.exports = u));
+                (module.exports = u));
         };

@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(94);
+        var o = require(94);
         function i(e) {
             for (var t = e.length; --t >= 0; ) e[t] = 0;
         }
@@ -227,14 +227,14 @@ module.exports = function (e, t, n) {
                 }
         }
         i(y);
-        var O = !1;
+        var O = false;
         function F(e, t, n, i) {
             (C(e, 0 + (i ? 1 : 0), 3),
                 (function (e, t, n, i) {
                     (T(e), i && (w(e, n), w(e, ~n)), o.arraySet(e.pending_buf, e.window, t, n, e.pending), (e.pending += n));
-                })(e, t, n, !0));
+                })(e, t, n, true));
         }
-        ((t._tr_init = function (e) {
+        ((exports._tr_init = function (e) {
             (O ||
                 (!(function () {
                     var e,
@@ -254,7 +254,7 @@ module.exports = function (e, t, n) {
                     for (E(c, 287, l), e = 0; e < 30; e++) ((d[2 * e + 1] = 5), (d[2 * e] = S(e, 5)));
                     ((h = new v(c, a, 257, 286, 15)), (f = new v(d, r, 0, 30, 15)), (m = new v(new Array(0), s, 0, 19, 7)));
                 })(),
-                (O = !0)),
+                (O = true)),
                 (e.l_desc = new _(e.dyn_ltree, h)),
                 (e.d_desc = new _(e.dyn_dtree, f)),
                 (e.bl_desc = new _(e.bl_tree, m)),
@@ -262,8 +262,8 @@ module.exports = function (e, t, n) {
                 (e.bi_valid = 0),
                 A(e));
         }),
-            (t._tr_stored_block = F),
-            (t._tr_flush_block = function (e, t, n, o) {
+            (exports._tr_stored_block = F),
+            (exports._tr_flush_block = function (e, t, n, o) {
                 var i,
                     a,
                     r = 0;
@@ -305,7 +305,7 @@ module.exports = function (e, t, n) {
                     A(e),
                     o && T(e));
             }),
-            (t._tr_tally = function (e, t, n) {
+            (exports._tr_tally = function (e, t, n) {
                 return (
                     (e.pending_buf[e.d_buf + 2 * e.last_lit] = (t >>> 8) & 255),
                     (e.pending_buf[e.d_buf + 2 * e.last_lit + 1] = 255 & t),
@@ -315,7 +315,7 @@ module.exports = function (e, t, n) {
                     e.last_lit === e.lit_bufsize - 1
                 );
             }),
-            (t._tr_align = function (e) {
+            (exports._tr_align = function (e) {
                 (C(e, 2, 3),
                     x(e, 256, c),
                     (function (e) {

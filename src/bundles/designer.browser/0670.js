@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(29),
-            a = n(121),
-            r = n(65),
-            s = n(37),
-            l = n(143),
-            c = n(102),
-            d = n(149)("forEach", TypeError);
+        var o = require(25),
+            i = require(29),
+            a = require(121),
+            r = require(65),
+            s = require(37),
+            ReadableStream = require(143),
+            c = require(102),
+            d = require(149)("forEach", TypeError);
         o(
-            { target: "Iterator", proto: !0, real: !0, forced: d },
+            { target: "Iterator", proto: true, real: true, forced: d },
             {
                 forEach: function (e) {
                     s(this);
@@ -19,14 +19,14 @@ module.exports = function (e, t, n) {
                         c(this, "throw", e);
                     }
                     if (d) return i(d, this, e);
-                    var t = l(this),
+                    var t = ReadableStream(this),
                         n = 0;
                     a(
                         t,
                         function (t) {
                             e(t, n++);
                         },
-                        { IS_RECORD: !0 }
+                        { IS_RECORD: true }
                     );
                 },
             }

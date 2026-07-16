@@ -1,21 +1,21 @@
-module.exports = function (e, t, i) {
-            var n = i(147),
-                r = i(138),
-                o = i(780),
-                a = i(781),
-                s = i(75),
-                l = i(0),
-                h = i(28),
-                A = i(782),
-                c = i(72),
-                p = i(36),
-                u = i(385),
-                d = i(160),
-                g = i(158),
-                f = i(283),
-                m = i(2),
-                y = i(83),
-                _ = i(24);
+module.exports = function (module, exports, require) {
+            var n = require(147),
+                r = require(138),
+                o = require(780),
+                a = require(781),
+                s = require(75),
+                IsFiniteNonNegativeNumber = require(0),
+                GStylable = require(28),
+                A = require(782),
+                c = require(72),
+                p = require(36),
+                u = require(385),
+                d = require(160),
+                g = require(158),
+                f = require(283),
+                m = require(2),
+                y = require(83),
+                _ = require(24);
 
             function v() {
                 ((this._editors = []),
@@ -24,7 +24,7 @@ module.exports = function (e, t, i) {
                     this.addEditor(new o()),
                     this.addEditor(new a()));
             }
-            (l.inheritAndMix(v, l, [s]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(v, IsFiniteNonNegativeNumber, [s]),
                 (v.EditorEventType = {
                     ActivePointChange: 1,
                     PrepareModifiedEvent: 2,
@@ -32,7 +32,7 @@ module.exports = function (e, t, i) {
                 (v.EditorChangedEvent = function (e, t) {
                     ((this.previousEditor = e), (this.newEditor = t));
                 }),
-                l.inherit(v.EditorChangedEvent, c),
+                IsFiniteNonNegativeNumber.inherit(v.EditorChangedEvent, c),
                 (v.EditorChangedEvent.prototype.previousEditor = null),
                 (v.EditorChangedEvent.prototype.newEditor = null),
                 (v.EditorChangedEvent.prototype.toString = function () {
@@ -41,7 +41,7 @@ module.exports = function (e, t, i) {
                 (v.EditorEvent = function (e, t) {
                     ((this.type = e), (this.data = t));
                 }),
-                l.inherit(v.EditorEvent, c),
+                IsFiniteNonNegativeNumber.inherit(v.EditorEvent, c),
                 (v.EditorEvent.prototype.type = null),
                 (v.EditorEvent.prototype.data = null),
                 (v.EditorEvent.prototype.toString = function () {
@@ -53,15 +53,15 @@ module.exports = function (e, t, i) {
                 (v.prototype._activeEditor = null),
                 (v.prototype._view = null),
                 (v.prototype._scene = null),
-                (v.prototype._activated = !1),
-                (v.prototype._overlayLock = !1),
-                (v.prototype._editorUpdateBlocker = !1),
+                (v.prototype._activated = false),
+                (v.prototype._overlayLock = false),
+                (v.prototype._editorUpdateBlocker = false),
                 (v.prototype.activate = function (e) {
                     (this._activated && this.deactivate(),
                         (this._view = e),
                         (this._scene = e ? e.getScene() : null),
                         (this._mainEditor = e ? e.getEditor() : null),
-                        (this._activated = !0),
+                        (this._activated = true),
                         this._scene.addEventListener(m.AfterPropertiesChangeEvent, this._afterPropertiesChange, this));
                 }),
                 (v.prototype.deactivate = function () {
@@ -70,7 +70,7 @@ module.exports = function (e, t, i) {
                         (this._view = null),
                         (this._scene = null),
                         (this._mainEditor = null),
-                        (this._activated = !1));
+                        (this._activated = false));
                 }),
                 (v.prototype.isActivated = function () {
                     return this._activated;
@@ -83,11 +83,11 @@ module.exports = function (e, t, i) {
                     (this._editors.push(e), (e._manager = this), (this._typeIdToIndexMap = {}));
                     for (var t = 0; t < this._editors.length; ++t) {
                         e = this._editors[t];
-                        this._typeIdToIndexMap[l.getTypeId(e)] = t;
+                        this._typeIdToIndexMap[IsFiniteNonNegativeNumber.getTypeId(e)] = t;
                     }
                 }),
                 (v.prototype.getEditor = function (e) {
-                    var t = this._typeIdToIndexMap.hasOwnProperty(l.getTypeId(e)) ? this._typeIdToIndexMap[l.getTypeId(e)] : -1;
+                    var t = this._typeIdToIndexMap.hasOwnProperty(IsFiniteNonNegativeNumber.getTypeId(e)) ? this._typeIdToIndexMap[IsFiniteNonNegativeNumber.getTypeId(e)] : -1;
                     return t >= 0 && t < this._editors.length ? this._editors[t] : null;
                 }),
                 (v.prototype.getActiveEditor = function () {
@@ -95,12 +95,12 @@ module.exports = function (e, t, i) {
                 }),
                 (v.prototype.updateEditor = function (e, t, i) {
                     this.deactivateEditor();
-                    var s = e.getProperty(t, !1, null, i);
+                    var s = e.getProperty(t, false, null, i);
                     if (s) {
                         var l = null,
                             c = null,
                             u = null;
-                        if ((e.hasMixin(h) && e._scene) || e instanceof y || e instanceof d) c = p.openEditor(e);
+                        if ((e.hasMixin(GStylable) && e._scene) || e instanceof y || e instanceof d) c = p.openEditor(e);
                         else if (e.getOwnerStylable) {
                             var m = e.getOwnerStylable();
                             m && m._scene && (c = p.openEditor(m));
@@ -117,10 +117,10 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (v.prototype.setOverlayLock = function () {
-                    this._overlayLock = !0;
+                    this._overlayLock = true;
                 }),
                 (v.prototype.resetOverlayLock = function () {
-                    this._overlayLock = !1;
+                    this._overlayLock = false;
                 }),
                 (v.prototype.getOverlayLock = function (e) {
                     if (this._activeEditor) {
@@ -150,7 +150,7 @@ module.exports = function (e, t, i) {
                 }),
                 (v.prototype._activateEditor = function (e, t) {
                     if (this._activated) {
-                        if (this._activeEditor && !this._activeEditor.isDeactivatable()) return !1;
+                        if (this._activeEditor && !this._activeEditor.isDeactivatable()) return false;
                         if ((e instanceof u || (e = this.getEditor(e)), e)) {
                             var i = this._activeEditor;
                             if (
@@ -162,17 +162,17 @@ module.exports = function (e, t, i) {
                                 return (
                                     (this._activeEditor = e),
                                     i && this.hasEventListeners(v.EditorChangedEvent) && this.trigger(new v.EditorChangedEvent(i, e)),
-                                    !0
+                                    true
                                 );
                         } else this.deactivateEditor();
                     }
-                    return !1;
+                    return false;
                 }),
                 (v.prototype.blockEditorUpdate = function () {
-                    this._editorUpdateBlocker = !0;
+                    this._editorUpdateBlocker = true;
                 }),
                 (v.prototype.releaseEditorUpdate = function () {
-                    this._editorUpdateBlocker = !1;
+                    this._editorUpdateBlocker = false;
                 }),
                 (v.prototype._afterPropertiesChange = function (e) {
                     if (!this._editorUpdateBlocker) {
@@ -211,5 +211,5 @@ module.exports = function (e, t, i) {
                 (v.prototype.toString = function () {
                     return "[Object GStyleEdManager]";
                 }),
-                (e.exports = v));
+                (module.exports = v));
         };

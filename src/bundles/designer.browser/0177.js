@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(30), n(20), n(107), n(3), n(247), n(91));
-        var o = n(263),
-            i = n(10);
-        const { GObject: a } = n(1),
-            r = n(733),
-            s = n(589),
+        (require(30), require(20), require(107), require(3), require(247), require(91));
+        var GRegex = require(263),
+            designerConfig = require(10);
+        const { GObject: a } = require(1 /* GObject */),
+            r = require(733),
+            s = require(589),
             l = {},
             c = [
                 "#B30000",
@@ -31,7 +31,7 @@ module.exports = function (e, t, n) {
             let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
             Object.assign(this, e);
         }
-        (a.inheritAndMix(d, s, [r, i.User], !0),
+        (a.inheritAndMix(d, s, [r, designerConfig.User], true),
             (d.equals = function (e, t) {
                 return new d(e).getUID() === new d(t).getUID();
             }),
@@ -39,7 +39,7 @@ module.exports = function (e, t, n) {
                 return this.avatar && this.avatar.split("?")[1] && "v=" === this.avatar.split("?")[1].substr(0, 2);
             }),
             (d.prototype.getUID = function () {
-                return !this.id && i.ANONYMOUS_SESSION_ENABLED ? this.user_id || this.session_id || "" : this.id || this.user_id || "";
+                return !this.id && designerConfig.ANONYMOUS_SESSION_ENABLED ? this.user_id || this.session_id || "" : this.id || this.user_id || "";
             }),
             (d.prototype.getUserColor = function () {
                 if (!this._color) {
@@ -60,7 +60,7 @@ module.exports = function (e, t, n) {
                 return this._color;
             }),
             (d.prototype.getEmail = function () {
-                return i.CloudUtils.getUserEmail(this);
+                return designerConfig.CloudUtils.getUserEmail(this);
             }),
             (d.prototype.isDeactivated = function () {
                 return !!this.deactivated;
@@ -78,7 +78,7 @@ module.exports = function (e, t, n) {
             (d.prototype.getFirstName = function () {
                 try {
                     if (this.name && this.name.trim()) {
-                        return this.name.trim().split(o.GRegex.String.SpacesLineBreak)[0];
+                        return this.name.trim().split(GRegex.GRegex.String.SpacesLineBreak)[0];
                     }
                     return this.name || "";
                 } catch (e) {
@@ -106,5 +106,5 @@ module.exports = function (e, t, n) {
             (d.prototype.getAccountName = function () {
                 return this.email || this.login || "";
             }),
-            (e.exports = d));
+            (module.exports = d));
     };

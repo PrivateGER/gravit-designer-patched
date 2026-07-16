@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o;
         !(function (i, a, r) {
             if (i) {
@@ -94,13 +94,13 @@ module.exports = function (e, t, n) {
                         return ((this._callbacks = {}), (this._directMap = {}), this);
                     }),
                     (v.prototype.stopCallback = function (e, t) {
-                        if ((" " + t.className + " ").indexOf(" mousetrap ") > -1) return !1;
+                        if ((" " + t.className + " ").indexOf(" mousetrap ") > -1) return false;
                         if (
                             (function e(t, n) {
                                 return null !== t && t !== a && (t === n || e(t.parentNode, n));
                             })(t, this.target)
                         )
-                            return !1;
+                            return false;
                         if ("composedPath" in e && "function" == typeof e.composedPath) {
                             var n = e.composedPath()[0];
                             n !== e.target && (t = n);
@@ -127,14 +127,14 @@ module.exports = function (e, t, n) {
                     }),
                     v.init(),
                     (i.Mousetrap = v),
-                    e.exports && (e.exports = v),
+                    module.exports && (module.exports = v),
                     void 0 ===
                         (o = function () {
                             return v;
-                        }.call(t, n, t, e)) || (e.exports = o));
+                        }.call(exports, require, exports, module)) || (module.exports = o));
             }
             function g(e, t, n) {
-                e.addEventListener ? e.addEventListener(t, n, !1) : e.attachEvent("on" + t, n);
+                e.addEventListener ? e.addEventListener(t, n, false) : e.attachEvent("on" + t, n);
             }
             function h(e) {
                 if ("keypress" == e.type) {
@@ -181,15 +181,15 @@ module.exports = function (e, t, n) {
                 ((t.target = e), (t._callbacks = {}), (t._directMap = {}));
                 var n,
                     o = {},
-                    i = !1,
-                    r = !1,
-                    s = !1;
+                    i = false,
+                    r = false,
+                    s = false;
                 function l(e) {
                     e = e || {};
                     var t,
-                        n = !1;
-                    for (t in o) e[t] ? (n = !0) : (o[t] = 0);
-                    n || (s = !1);
+                        n = false;
+                    for (t in o) e[t] ? (n = true) : (o[t] = 0);
+                    n || (s = false);
                 }
                 function c(e, n, i, a, r, s) {
                     var l,
@@ -215,12 +215,12 @@ module.exports = function (e, t, n) {
                 }
                 function d(e, n, o, i) {
                     t.stopCallback(n, n.target || n.srcElement, o, i) ||
-                        (!1 === e(n, o) &&
+                        (false === e(n, o) &&
                             ((function (e) {
-                                e.preventDefault ? e.preventDefault() : (e.returnValue = !1);
+                                e.preventDefault ? e.preventDefault() : (e.returnValue = false);
                             })(n),
                             (function (e) {
-                                e.stopPropagation ? e.stopPropagation() : (e.cancelBubble = !0);
+                                e.stopPropagation ? e.stopPropagation() : (e.cancelBubble = true);
                             })(n)));
                 }
                 function u(e) {
@@ -242,7 +242,7 @@ module.exports = function (e, t, n) {
                                   })(e),
                                   e
                               )
-                            : (i = !1));
+                            : (i = false));
                 }
                 function p(e, t, a, r) {
                     function c(t) {
@@ -282,12 +282,12 @@ module.exports = function (e, t, n) {
                         i = c(e, t, n),
                         a = {},
                         u = 0,
-                        p = !1;
+                        p = false;
                     for (o = 0; o < i.length; ++o) i[o].seq && (u = Math.max(u, i[o].level));
                     for (o = 0; o < i.length; ++o)
                         if (i[o].seq) {
                             if (i[o].level != u) continue;
-                            ((p = !0), (a[i[o].seq] = 1), d(i[o].callback, n, i[o].combo, i[o].seq));
+                            ((p = true), (a[i[o].seq] = 1), d(i[o].callback, n, i[o].combo, i[o].seq));
                         } else p || d(i[o].callback, n, i[o].combo);
                     var g = "keypress" == n.type && r;
                     (n.type != s || f(e) || g || l(a), (r = p && "keydown" == n.type));

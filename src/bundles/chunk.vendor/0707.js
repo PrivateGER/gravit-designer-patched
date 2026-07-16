@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(19), i(30), i(57), i(8), i(20), i(34), i(26));
-            const n = i(171),
-                r = i(373),
+            (require(19), require(30), require(57), require(8 /* Symbol */), require(20), require(34), require(26));
+            const n = require(171),
+                r = require(373),
                 o = (e) => new Promise((t) => setTimeout(t, e)),
-                a = i(526),
-                s = i(976),
-                l = i(354),
-                h = i(170);
-            e.exports = class {
+                GOfferDialogV1 = require(526),
+                s = require(976),
+                l = require(354),
+                h = require(170);
+            module.exports = class {
                 static get __i18n__() {
                     return "GPaywallDialog";
                 }
@@ -58,7 +58,7 @@ module.exports = function (e, t, i) {
                             h.getValue("GPaywallDialog", "text.offerdialog-v1-subscribe-title-1"),
                             h.getValue("GPaywallDialog", "text.offerdialog-v1-subscribe-title-2"),
                         ]),
-                        (f = a.DEFAULT_CONTENT),
+                        (f = GOfferDialogV1.DEFAULT_CONTENT),
                         (t = l.Campaign.UpgradeIntermintent));
                     let m = new s({
                         campaign: u(),
@@ -100,7 +100,7 @@ module.exports = function (e, t, i) {
                                                     A = h.getValue("GPaywallDialog", "text.trial-message2");
                                                 },
                                                 () => {
-                                                    A = Object.assign({}, a.DEFAULT_CONTENT, {
+                                                    A = Object.assign({}, GOfferDialogV1.DEFAULT_CONTENT, {
                                                         title: h.getValue("GPaywallDialog", "text.pretrial-subtitle"),
                                                     });
                                                 },
@@ -142,7 +142,7 @@ module.exports = function (e, t, i) {
                         this._htmlElement.addClass("slide-up"));
                 }
                 async close() {
-                    let { licenseHasBeenUpgraded: e = !1 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                    let { licenseHasBeenUpgraded: e = false } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                     (this._htmlElement.removeClass("slide-up"),
                         await o(1e3),
                         this._impl.close({

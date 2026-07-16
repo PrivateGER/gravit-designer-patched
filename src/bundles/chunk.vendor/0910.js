@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(12),
-                o = i(7),
-                a = i(5),
-                s = i(6);
-            e.exports = function (e) {
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(12),
+                o = require(7),
+                a = require(5),
+                s = require(6);
+            module.exports = function (e) {
                 ((e.Anchor = function () {}),
                     (e.Anchor.Eps = 1e-9),
                     (e.Anchor.AnchorType = {
@@ -31,7 +31,7 @@ module.exports = function (e, t, i) {
                         vdb: null,
                         vcf: null,
                     }),
-                    (e.Anchor.prototype._noAnchoringPropsUpdate = !1),
+                    (e.Anchor.prototype._noAnchoringPropsUpdate = false),
                     (e.Anchor.prototype.oldHacr = null),
                     (e.Anchor.prototype.oldVacr = null),
                     (e.Anchor.prototype._handleAnchorChange = function (t, i) {
@@ -219,9 +219,9 @@ module.exports = function (e, t, i) {
                         if (i && c && p) {
                             var u,
                                 d = this.getProperty("hstrf"),
-                                g = !1,
-                                f = !1,
-                                m = !1;
+                                g = false,
+                                f = false,
+                                m = false;
                             (ne = r.isEqualEps(p.getHeight(), 0) || r.isEqualEps(p.getWidth(), 0)) &&
                                 (u = d ? d.mapQuadrilateral(c) : new o().mapQuadrilateral(c));
                             var y = (h = h ? h.multiplied(t) : t).mapQuadrilateral(c),
@@ -444,7 +444,7 @@ module.exports = function (e, t, i) {
                             var te = this.getProperty("vstrf");
                             ((te = te || new o()), s && (te = te.multiplied(s)));
                             var ie, ne;
-                            ((g = !1), (f = !1), (m = !1));
+                            ((g = false), (f = false), (m = false));
                             (ne = r.isEqualEps(ee.getHeight(), 0) || r.isEqualEps(ee.getWidth(), 0)) &&
                                 (ie = te ? te.mapQuadrilateral($) : new o().mapQuadrilateral($));
                             var re = (A = A ? A.multiplied(t) : t).mapQuadrilateral($),
@@ -705,7 +705,7 @@ module.exports = function (e, t, i) {
                                 Me =
                                     (4 != i && 4 != n) ||
                                     (r.isEqualEps(Qe[0], 1) && r.isEqualEps(Qe[1], 0) && r.isEqualEps(Qe[2], 0) && r.isEqualEps(Qe[3], 1));
-                            this.transform(Ge, Me, !1);
+                            this.transform(Ge, Me, false);
                         }
                     }),
                     (e.Anchor.prototype._getLeftDist = function (e, t) {

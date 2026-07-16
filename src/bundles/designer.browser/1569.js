@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(30), n(8));
-        var i = o(n(11));
-        n(1322);
-        const a = n(808),
-            r = n(1570),
-            s = n(392),
-            l = n(1323),
-            c = n(441),
+        var o = require(16);
+        (require(30), require(8 /* Symbol */));
+        var i = o(require(11));
+        require(1322 /* GShareManager */);
+        const a = require(808),
+            r = require(1570),
+            s = require(392),
+            l = require(1323),
+            c = require(441),
             {
                 SHARE_ENGINE: d,
                 HAS_ANNOTATIONS: u,
@@ -16,7 +16,7 @@ module.exports = function (e, t, n) {
                 FileStatus: { APPROVED: g },
                 FILE_REVIEW_ENABLED: h,
                 LEGACY_SHARE_DIALOG: f,
-            } = n(10);
+            } = require(10 /* designerConfig */);
         function m(e) {
             ((this._state = new r()),
                 d && gDesigner.addEventListener(l, this._shareStateChangedEvent, this),
@@ -43,11 +43,11 @@ module.exports = function (e, t, n) {
                     } = e.state;
                 (n
                     ? Object.assign(t, {
-                          edit: !0,
-                          saveAs: !0,
-                          export: !0,
-                          inspect: !0,
-                          copyPaste: !0,
+                          edit: true,
+                          saveAs: true,
+                          export: true,
+                          inspect: true,
+                          copyPaste: true,
                           comment: !!u,
                       })
                     : Object.assign(t, {
@@ -68,13 +68,13 @@ module.exports = function (e, t, n) {
                     this._setState(t, e.document));
             }),
             (m.prototype._setState = function (e, t) {
-                i.default.equals(e, this._state, !0) || ((this._state = e), this._triggerAppStateEvent(t, e));
+                i.default.equals(e, this._state, true) || ((this._state = e), this._triggerAppStateEvent(t, e));
             }),
             (m.prototype._triggerAppStateEvent = function (e, t) {
                 gDesigner.hasEventListeners(s) && gDesigner.trigger(new s(e, t));
             }),
             (m.prototype._applicationStatusEvent = function (e) {
-                e.status === a.Status.Ready && gDesigner.isAnonymous() && gDesigner.addNotification({ anonymous: !0 });
+                e.status === a.Status.Ready && gDesigner.isAnonymous() && gDesigner.addNotification({ anonymous: true });
             }),
             (m.prototype._licenseChangedEvent = function (e) {}),
             (m.prototype.isShareEnabled = function () {
@@ -114,15 +114,15 @@ module.exports = function (e, t, n) {
                 return this._state.comment && u;
             }),
             (m.prototype.isCommentingEditingEnabled = function () {
-                if (!this.isCommentingEnabled()) return !1;
+                if (!this.isCommentingEnabled()) return false;
                 if (h) {
-                    var e = !0,
+                    var e = true,
                         t = gDesigner.getActiveDocument(),
                         n = t && t.getStorageItem(),
                         o = n && n.getFile();
-                    return (o && o.status === g && (e = !1), e);
+                    return (o && o.status === g && (e = false), e);
                 }
-                return !0;
+                return true;
             }),
             (m.prototype.isCopyPasteEnabled = function () {
                 return this._state.copyPaste;
@@ -150,10 +150,10 @@ module.exports = function (e, t, n) {
                 return !gDesigner.getLicense().isGuest();
             }),
             (m.prototype.isOnlyFileOpenFromCloudEnabled = function () {
-                return !1;
+                return false;
             }),
             (m.prototype.isOpenFromRecentFilesEnabled = function () {
-                return !0;
+                return true;
             }),
             (m.prototype.isDocumentTabManagementEnabled = function () {
                 return this._state.isDocumentTabManagementEnabled;
@@ -162,10 +162,10 @@ module.exports = function (e, t, n) {
                 return !gDesigner.getLicense().isGuest();
             }),
             (m.prototype.isReminderManagerEnabled = function (e) {
-                return !0;
+                return true;
             }),
             (m.prototype.isInAppPurchaseAvailable = function (e) {
-                return !0;
+                return true;
             }),
             (m.prototype.isLicenseUpgradeable = function (e) {
                 return (e = e || gDesigner.getLicense()).canUpgrade();
@@ -173,5 +173,5 @@ module.exports = function (e, t, n) {
             (m.prototype.isImportResourcesEnabled = function () {
                 return this.isOpenFilesFromLocalEnabled();
             }),
-            (e.exports = m));
+            (module.exports = m));
     };

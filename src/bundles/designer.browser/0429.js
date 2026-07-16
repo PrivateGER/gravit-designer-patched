@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(397),
+        var o = require(397),
             i = TypeError;
-        e.exports = function (e) {
+        module.exports = function (e) {
             var t = o(e, "number");
             if ("number" == typeof t) throw new i("Can't convert number to bigint");
             return BigInt(t);

@@ -1,17 +1,17 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(63),
-                o = i(36),
-                a = i(66),
-                s = i(141),
-                l = i(22),
-                h = i(6),
-                A = i(87),
-                c = i(39),
-                p = i(24),
-                u = i(11),
-                d = i(7),
-                g = i(69);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(63),
+                o = require(36),
+                a = require(66),
+                s = require(141),
+                l = require(22),
+                h = require(6),
+                A = require(87),
+                c = require(39),
+                p = require(24),
+                u = require(11),
+                d = require(7),
+                g = require(69);
 
             function f(e) {
                 (o.call(this, e),
@@ -19,7 +19,7 @@ module.exports = function (e, t, i) {
                     e.getProperty("plkt") & g.ProgramLck.NoMove &&
                         (this._flags = this._flags & ~(a.Flag.RotateCorners | a.Flag.RotateHandle)));
             }
-            (n.inherit(f, o),
+            (IsFiniteNonNegativeNumber.inherit(f, o),
                 (f.LabelHolder = function () {}),
                 (f.LabelHolder.LABEL_PART_ID = u.uuid()),
                 (f.LabelHolder.prototype._getLabelBBox = function (e) {
@@ -33,7 +33,7 @@ module.exports = function (e, t, i) {
                     }
                     return i;
                 }),
-                (f.prototype._usePaintElement = !1),
+                (f.prototype._usePaintElement = false),
                 (f.prototype.createElementPreview = function () {}),
                 (f.prototype.getBox = function () {
                     var e = this._usePaintElement ? this.getPaintElement() : this._element,
@@ -55,7 +55,7 @@ module.exports = function (e, t, i) {
                 }),
                 (f.prototype.paint = function (e, t) {
                     var i = this._usePaintElement;
-                    ((this._usePaintElement = !0), a.prototype.paint.call(this, e, t), (this._usePaintElement = i));
+                    ((this._usePaintElement = true), a.prototype.paint.call(this, e, t), (this._usePaintElement = i));
                 }),
                 (f.prototype._setPreTransform = function (e) {
                     d.equals(this._preTransform, e) ||
@@ -78,7 +78,7 @@ module.exports = function (e, t, i) {
                     return a.prototype._showEditor.call(this) || this.hasFlag(c.Flag.Highlighted);
                 }),
                 (f.prototype._showOutline = function () {
-                    return !0;
+                    return true;
                 }),
                 (f.prototype._paintOutline = function (e, t, i, n, h) {
                     var u = this.getPaintElement(),
@@ -86,11 +86,11 @@ module.exports = function (e, t, i) {
                         g = o.getEditor(this._element.getScene()),
                         f = !!g && g.isTransformBoxActive();
                     if (!u.hasMixin(A) || i || (!f && this._element.hasFlag(l.Flag.Hidden)))
-                        a.prototype._paintOutline.call(this, e, t, !0, n, h);
+                        a.prototype._paintOutline.call(this, e, t, true, n, h);
                     else {
                         var m = new r(u, e);
                         (d = new s(m)) &&
-                            (t.canvas.putVertices(d, !1),
+                            (t.canvas.putVertices(d, false),
                             t.canvas.strokeVertices(
                                 n || (this.hasFlag(c.Flag.Highlighted) ? t.highlightOutlineColor : t.selectionOutlineColor),
                                 p.outlineWidth
@@ -100,5 +100,5 @@ module.exports = function (e, t, i) {
                 (f.prototype.toString = function () {
                     return "[Object GBlockEditor]";
                 }),
-                (e.exports = f));
+                (module.exports = f));
         };

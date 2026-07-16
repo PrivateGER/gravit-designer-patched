@@ -1,4 +1,4 @@
-module.exports = function (e, t, i) {
-            var n = i(224).GLocaleKey;
-            e.exports = n;
+module.exports = function (module, exports, require) {
+            var n = require(224 /* GTranslation */).GLocaleKey;
+            module.exports = n;
         };

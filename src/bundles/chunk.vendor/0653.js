@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
-            var n = i(267),
-                r = i(230),
-                o = i(0),
-                a = i(918);
+module.exports = function (module, exports, require) {
+            var n = require(267),
+                r = require(230),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(918);
 
             function s(e, t, i, n, r, o, s, l, h, A) {
                 ((this.lines = []),
@@ -13,7 +13,7 @@ module.exports = function (e, t, i) {
                     (this._wrapper = new a(e, t, i, n, this, o, s, l, h)),
                     (this._bboxSpacing = A));
             }
-            (o.inherit(s, n),
+            (IsFiniteNonNegativeNumber.inherit(s, n),
                 (s.prototype.frame = function (e, t) {
                     if (
                         this._wrapper.wrap(
@@ -26,7 +26,7 @@ module.exports = function (e, t, i) {
                             this._bboxSpacing
                         )
                     )
-                        return ((this.length = this._currLength), (this.height = this._currHeight), e(this), !0);
+                        return ((this.length = this._currLength), (this.height = this._currHeight), e(this), true);
                 }),
                 (s.prototype._currLength = 0),
                 (s.prototype._currHeight = 0),
@@ -54,7 +54,7 @@ module.exports = function (e, t, i) {
                                     (n = Math.max(n, a.baseline + a.maxY)),
                                     (i = Math.max(i, a.maxX)));
                             else {
-                                var s = a.bounds(!0);
+                                var s = a.bounds(true);
                                 ((t = Math.min(t, s.t)), (e = Math.min(e, s.l)), (n = Math.max(n, s.b)), (i = Math.max(i, s.r)));
                             }
                         }
@@ -201,5 +201,5 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (s.prototype.type = "frame"),
-                (e.exports = s));
+                (module.exports = s));
         };

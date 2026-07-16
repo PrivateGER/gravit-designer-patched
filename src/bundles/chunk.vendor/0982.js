@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(326),
-                r = i(983),
-                o = i(376),
-                a = i(529),
-                s = i(985),
-                l = i(986),
-                h = i(724),
-                A = i(987),
-                c = i(988),
-                p = i(993).FeatureQuery,
+            var n = require(326),
+                r = require(983),
+                o = require(376),
+                a = require(529),
+                s = require(985),
+                l = require(986),
+                h = require(724),
+                A = require(987),
+                c = require(988),
+                p = require(993 /* FeatureQuery */).FeatureQuery,
                 u = String.fromCharCode(47),
                 d = String.fromCharCode(8725),
                 g = String.fromCharCode(8260);
@@ -77,7 +77,7 @@ module.exports = function (e, t, i) {
                             fsSelection: e.fsSelection || this.fsSelectionValues.REGULAR,
                         },
                     })),
-                    (this.supported = !0),
+                    (this.supported = true),
                     (this.glyphs = new a.GlyphSet(this, e.glyphs || [])),
                     (this.encoding = new o.DefaultEncoding(this)),
                     (this.position = new s(this)),
@@ -219,11 +219,11 @@ module.exports = function (e, t, i) {
                     return i ? this.position.getKerningValue(i, e, t) : this.kerningPairs[e + "," + t] || 0;
                 }),
                 (f.prototype.defaultRenderOptions = {
-                    kerning: !0,
+                    kerning: true,
                     features: {
-                        liga: !0,
-                        rlig: !0,
-                        frac: !1,
+                        liga: true,
+                        rlig: true,
+                        frac: false,
                         stylisticSet: null,
                     },
                 }),
@@ -338,10 +338,10 @@ module.exports = function (e, t, i) {
                                 s = document.createElement("a");
                             ((s.href = window.URL.createObjectURL(a)), (s.download = e));
                             var l = document.createEvent("MouseEvents");
-                            (l.initEvent("click", !0, !1), s.dispatchEvent(l));
+                            (l.initEvent("click", true, false), s.dispatchEvent(l));
                         } else console.warn("Font file could not be downloaded. Try using a different browser.");
                     else {
-                        var A = i(178),
+                        var A = require(178),
                             c = h.arrayBufferToNodeBuffer(r);
                         A.writeFileSync(e, c);
                     }
@@ -380,5 +380,5 @@ module.exports = function (e, t, i) {
                     EXTRA_BOLD: 800,
                     BLACK: 900,
                 }),
-                (t.Font = f));
+                (exports.Font = f));
         };

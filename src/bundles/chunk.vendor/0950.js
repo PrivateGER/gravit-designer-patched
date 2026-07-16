@@ -1,34 +1,34 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(19), i(168), i(30), i(4), i(322), i(13), i(169), i(26));
-            const n = i(287),
-                r = i(352);
+            (require(19), require(168 /* PDFFetchStream */), require(30), require(4), require(322), require(13), require(169 /* PDFNetworkStream */), require(26));
+            const GShareRoles = require(287),
+                r = require(352);
             class o {
                 static get ALL_PERMISSIONS_DENIED() {
                     return Object.values(r).reduce(
                         (e, t) =>
                             Object.assign(e, {
-                                [t]: !1,
+                                [t]: false,
                             }),
                         {}
                     );
                 }
                 static newFromPermissions() {
                     let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    if (e[r.OWNER]) return n.Owner;
-                    if (!e[r.ACCESS]) return n.NoAccess;
+                    if (e[r.OWNER]) return GShareRoles.Owner;
+                    if (!e[r.ACCESS]) return GShareRoles.NoAccess;
                     const t = Object.assign(
                             {},
                             o.ALL_PERMISSIONS_DENIED,
                             Object.entries(e).reduce((e, t) => {
                                 let [i, n] = t;
                                 return Object.assign(e, {
-                                    [i]: n || !1,
+                                    [i]: n || false,
                                 });
                             }, {})
                         ),
                         i = Object.keys(t).length,
-                        a = Object.values(n).find((e) => {
+                        a = Object.values(GShareRoles).find((e) => {
                             let { permissions: n } = e;
                             const r = Object.entries(Object.assign({}, o.ALL_PERMISSIONS_DENIED, n));
                             if (r.length === i)
@@ -37,8 +37,8 @@ module.exports = function (e, t, i) {
                                     return t[i] === n;
                                 });
                         });
-                    return a || (e[r.COPY] ? n.Developer : n.Viewer);
+                    return a || (e[r.COPY] ? GShareRoles.Developer : GShareRoles.Viewer);
                 }
             }
-            e.exports = o;
+            module.exports = o;
         };

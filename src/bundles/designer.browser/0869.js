@@ -1,41 +1,41 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(53),
-            i = n(1),
-            a = n(15),
-            r = n(10),
-            s = n(67),
-            l = n(18),
-            c = n(31);
+        require(3);
+        var o = require(53),
+            GObject = require(1),
+            GPlatform = require(15),
+            designerConfig = require(10),
+            s = require(67),
+            GCategory = require(18),
+            c = require(31);
         function d(e) {
             ((this._type = e),
-                (this._title = new i.GLocaleKey("GArrangeAction", "title." + e)),
+                (this._title = new GObject.GLocaleKey("GArrangeAction", "title." + e)),
                 (d.TOOLTIP_CONFIG = {
                     [s.TOOLTIP_AREA.TOOLBAR]: {
                         [o.GEditor.ArrangeOrderType.BringForward]: s.GRichTooltipConfig.from({
-                            title: i.GLocale.get(new i.GLocaleKey("GArrangeAction", "bring-forward-tooltip-title")),
-                            description: i.GLocale.get(new i.GLocaleKey("GArrangeAction", "bring-forward-tooltip-description")),
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GArrangeAction", "bring-forward-tooltip-title")),
+                            description: GObject.GLocale.get(new GObject.GLocaleKey("GArrangeAction", "bring-forward-tooltip-description")),
                             shortcut: d.SHORTCUT[o.GEditor.ArrangeOrderType.BringForward],
-                            video: r.gApi.getRichTooltipVideoURL("Bring_Forward.mp4"),
+                            video: designerConfig.gApi.getRichTooltipVideoURL("Bring_Forward.mp4"),
                             learnMore: "/docs/arrange-objects/stacking-order/",
                         }),
                         [o.GEditor.ArrangeOrderType.SendBackward]: s.GRichTooltipConfig.from({
-                            title: i.GLocale.get(new i.GLocaleKey("GArrangeAction", "send-backward-tooltip-title")),
-                            description: i.GLocale.get(new i.GLocaleKey("GArrangeAction", "send-backward-tooltip-description")),
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GArrangeAction", "send-backward-tooltip-title")),
+                            description: GObject.GLocale.get(new GObject.GLocaleKey("GArrangeAction", "send-backward-tooltip-description")),
                             shortcut: d.SHORTCUT[o.GEditor.ArrangeOrderType.SendBackward],
-                            video: r.gApi.getRichTooltipVideoURL("Send_Backward.mp4"),
+                            video: designerConfig.gApi.getRichTooltipVideoURL("Send_Backward.mp4"),
                             learnMore: "/docs/arrange-objects/stacking-order/",
                         }),
                     },
                 }));
         }
-        (i.GObject.inherit(d, c),
+        (GObject.GObject.inherit(d, c),
             (d.SHORTCUT = {
-                [o.GEditor.ArrangeOrderType.SendToFront]: [a.GKey.Constant.SHIFT, a.GKey.Constant.META, a.GKey.Constant.UP],
-                [o.GEditor.ArrangeOrderType.BringForward]: [a.GKey.Constant.META, a.GKey.Constant.UP],
-                [o.GEditor.ArrangeOrderType.SendBackward]: [a.GKey.Constant.META, a.GKey.Constant.DOWN],
-                [o.GEditor.ArrangeOrderType.SendToBack]: [a.GKey.Constant.SHIFT, a.GKey.Constant.META, a.GKey.Constant.DOWN],
+                [o.GEditor.ArrangeOrderType.SendToFront]: [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.UP],
+                [o.GEditor.ArrangeOrderType.BringForward]: [GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.UP],
+                [o.GEditor.ArrangeOrderType.SendBackward]: [GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.DOWN],
+                [o.GEditor.ArrangeOrderType.SendToBack]: [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.DOWN],
             }),
             (d.TOOLTIP_CONFIG = null),
             (d.ID = "arrange.order"),
@@ -48,7 +48,7 @@ module.exports = function (e, t, n) {
                 return this._title;
             }),
             (d.prototype.getCategory = function () {
-                return l.CATEGORY_MODIFY_ARRANGE;
+                return GCategory.CATEGORY_MODIFY_ARRANGE;
             }),
             (d.prototype.getGroup = function () {
                 return "arrange/arrange";
@@ -64,7 +64,7 @@ module.exports = function (e, t, n) {
                 );
             }),
             (d.prototype.execute = function (e) {
-                gDesigner.getActiveDocument().getEditor().arrangeOrder(this._type, e, !1);
+                gDesigner.getActiveDocument().getEditor().arrangeOrder(this._type, e, false);
             }),
             (d.prototype.getTooltipConfig = function (e) {
                 return (e && d.TOOLTIP_CONFIG[e] && d.TOOLTIP_CONFIG[e][this._type]) || null;
@@ -72,5 +72,5 @@ module.exports = function (e, t, n) {
             (d.prototype.toString = function () {
                 return "[Object GArrangeAction]";
             }),
-            (e.exports = d));
+            (module.exports = d));
     };

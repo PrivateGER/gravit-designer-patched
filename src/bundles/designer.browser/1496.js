@@ -1,22 +1,22 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.default = void 0));
-        var o = n(803),
-            i = n(10);
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0));
+        var o = require(803),
+            designerConfig = require(10);
         const a = window && window.location && "localhost" === window.location.hostname,
             r = {
                 getAppBaseUrl: function () {
                     let e = arguments.length > 0 && void 0 !== arguments[0] && arguments[0];
                     switch (o.nodeEnv) {
                         case "production":
-                            return i.prodURL;
+                            return designerConfig.prodURL;
                         case "lts":
-                            return i.ltsURL;
+                            return designerConfig.ltsURL;
                         case "rc":
-                            return i.rcURL;
+                            return designerConfig.rcURL;
                     }
-                    return o.isBeta ? i.betaURL : e && a ? "http://localhost:9000" : i.trunkURL;
+                    return o.isBeta ? designerConfig.betaURL : e && a ? "http://localhost:9000" : designerConfig.trunkURL;
                 },
             };
-        t.default = r;
+        exports.default = r;
     };

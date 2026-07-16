@@ -1,22 +1,22 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(20);
+        require(20);
         var o,
             i,
-            a = n(25),
-            r = n(29),
-            s = n(35),
-            l = n(37),
-            c = n(62),
+            a = require(25),
+            r = require(29),
+            s = require(35),
+            l = require(37),
+            c = require(62),
             d =
-                ((o = !1),
+                ((o = false),
                 ((i = /[ac]/).exec = function () {
-                    return ((o = !0), /./.exec.apply(this, arguments));
+                    return ((o = true), /./.exec.apply(this, arguments));
                 }),
-                !0 === i.test("abc") && o),
+                true === i.test("abc") && o),
             u = /./.test;
         a(
-            { target: "RegExp", proto: !0, forced: !d },
+            { target: "RegExp", proto: true, forced: !d },
             {
                 test: function (e) {
                     var t = l(this),
@@ -24,7 +24,7 @@ module.exports = function (e, t, n) {
                         o = t.exec;
                     if (!s(o)) return r(u, t, n);
                     var i = r(o, t, n);
-                    return null !== i && (l(i), !0);
+                    return null !== i && (l(i), true);
                 },
             }
         );

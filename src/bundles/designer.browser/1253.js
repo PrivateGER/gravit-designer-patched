@@ -1,29 +1,29 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(180), n(181), n(8), n(91), n(218), n(189), n(190), n(191), n(192), n(4), n(41), n(13), n(38));
-        var o = n(1),
-            i = n(797),
-            a = n(40),
-            r = n(10),
-            s = n(237),
-            l = n(163),
-            c = n(442);
-        const d = n(389);
+        (require(19), require(180), require(181), require(8 /* Symbol */), require(91), require(218), require(189), require(190), require(191), require(192), require(4), require(41), require(13), require(38));
+        var GObject = require(1),
+            i = require(797),
+            GSaveAction = require(40),
+            designerConfig = require(10),
+            GDocument = require(237),
+            l = require(163 /* GDocument */),
+            c = require(442);
+        const d = require(389 /* GDocument */);
         function u() {}
-        ((window.pako = n(165)),
-            n(1514),
-            n(1515),
-            n(1516),
-            (zip.useWebWorkers = !1),
+        ((window.pako = require(165 /* PDFNodeStream */)),
+            require(1514),
+            require(1515),
+            require(1516),
+            (zip.useWebWorkers = false),
             (u.generateExportables = function (e, t, n) {
                 var i = e instanceof Array ? e : [e];
-                e instanceof o.GScene && (i = e.getChildren().filter((e) => e instanceof o.GPage && e.isVisible()));
+                e instanceof GObject.GScene && (i = e.getChildren().filter((e) => e instanceof GObject.GPage && e.isVisible()));
                 var a = [],
                     r = {};
                 function s(e) {
                     var t = e.getProperty("name");
                     if (!t) {
-                        var n = o.GObject.getTypeId(e);
+                        var n = GObject.GObject.getTypeId(e);
                         (r.hasOwnProperty(n) || (r[n] = 0), (t = e.getNodeNameTranslated()));
                         var i = ++r[n];
                         i > 1 && (t += "_" + i);
@@ -33,19 +33,19 @@ module.exports = function (e, t, n) {
                 function l(e) {
                     if (t)
                         a.push(
-                            o.GUtil.extend({}, t, {
+                            GObject.GUtil.extend({}, t, {
                                 element: e,
                                 name: 1 === i.length && t.name ? t.name : s(e),
                             })
                         );
-                    else if (e.hasMixin(o.GNode.Properties)) {
-                        var r = e.getProperty(c.EXPORT_PROPERTY_NAME, !0);
+                    else if (e.hasMixin(GObject.GNode.Properties)) {
+                        var r = e.getProperty(c.EXPORT_PROPERTY_NAME, true);
                         if (r && r instanceof Array && r.length)
                             for (var d = s(e), u = 0; u < r.length; ++u) {
                                 var p = r[u];
                                 p.fm &&
                                     a.push(
-                                        o.GUtil.extend(
+                                        GObject.GUtil.extend(
                                             {},
                                             {
                                                 size: p.sz,
@@ -58,8 +58,8 @@ module.exports = function (e, t, n) {
                                     );
                             }
                     }
-                    if (n && e.hasMixin(o.GNode.Container))
-                        for (var g = e.getFirstChild(); null !== g; g = g.getNext()) g instanceof o.GElement && l(g);
+                    if (n && e.hasMixin(GObject.GNode.Container))
+                        for (var g = e.getFirstChild(); null !== g; g = g.getNext()) g instanceof GObject.GElement && l(g);
                 }
                 for (var d = 0; d < i.length; ++d) {
                     l(i[d]);
@@ -68,7 +68,7 @@ module.exports = function (e, t, n) {
             }),
             (u._validateCommercialDocument = function () {
                 const e = gDesigner.getActiveDocument();
-                return !e || !e.isCommercialProductFile() || (e.openPaywall(), !1);
+                return !e || !e.isCommercialProductFile() || (e.openPaywall(), false);
             }),
             (u.exportExportable = function (e, t, n, s) {
                 if (this._validateCommercialDocument()) {
@@ -79,25 +79,25 @@ module.exports = function (e, t, n) {
                             p = null;
                         switch (c) {
                             case "png":
-                                u = o.GBitmap.ImageType.PNG;
+                                u = GObject.GBitmap.ImageType.PNG;
                                 break;
                             case "jpg":
-                                ((u = o.GBitmap.ImageType.JPEG), (p = (e.jpegQuality || 100) / 100));
+                                ((u = GObject.GBitmap.ImageType.JPEG), (p = (e.jpegQuality || 100) / 100));
                         }
-                        var g = o.GLength.DPI,
-                            h = i.GBitmapExport.export(e.element, e.size, e.backgroundColor, e.configuration, g, e.backgroundOpacity, !0);
+                        var g = GObject.GLength.DPI,
+                            h = i.GBitmapExport.export(e.element, e.size, e.backgroundColor, e.configuration, g, e.backgroundOpacity, true);
                         h && h.toImageBlob(u, t, p);
                     } else if ("svg" === c)
                         i.GSVGExport.export(
                             l,
                             {
                                 convertTextToPath: e.convertTextToPath,
-                                decimalPlacesPrecision: a.watchDog.check(e.decimalPlacesPrecision, 3),
-                                preserveEditingCapabilities: a.watchDog.check(e.preserveEditingCapabilities, !1),
+                                decimalPlacesPrecision: GSaveAction.watchDog.check(e.decimalPlacesPrecision, 3),
+                                preserveEditingCapabilities: GSaveAction.watchDog.check(e.preserveEditingCapabilities, false),
                                 backgroundColor: e.backgroundColor,
                                 backgroundOpacity: e.backgroundOpacity,
                                 sceneBackground: !e.configuration || e.configuration.sceneBackground || !!e.backgroundColor,
-                                layerNamesAsId: a.watchDog.check(e.layerNamesAsId, !1),
+                                layerNamesAsId: GSaveAction.watchDog.check(e.layerNamesAsId, false),
                             },
                             function (e, n) {
                                 !e && n && t(new Blob([n], { type: "image/svg+xml" }));
@@ -110,11 +110,11 @@ module.exports = function (e, t, n) {
                             u =
                                 c && c.getFullUserName()
                                     ? c.getFullUserName()
-                                    : o.GLocale.get(new o.GLocaleKey("GDocument", "text.default-export-author"));
+                                    : GObject.GLocale.get(new GObject.GLocaleKey("GDocument", "text.default-export-author"));
                             var p = {
-                                    dpi: a.watchDog.check(o.GUtil.parseNumber(e.size), o.GUtil.parseNumber("72dpi")),
+                                    dpi: GSaveAction.watchDog.check(GObject.GUtil.parseNumber(e.size), GObject.GUtil.parseNumber("72dpi")),
                                     colorSpace: e.colorSpace,
-                                    jpegQuality: e.jpegQuality || r.JPEG_EXPORT_QUALITY_DEFAULT,
+                                    jpegQuality: e.jpegQuality || designerConfig.JPEG_EXPORT_QUALITY_DEFAULT,
                                     configuration: e.configuration,
                                     backgroundColor: e.backgroundColor,
                                     backgroundOpacity: e.backgroundOpacity,
@@ -140,7 +140,7 @@ module.exports = function (e, t, n) {
                 }
             }),
             (u.generateExportName = function (e, t, n) {
-                var i = o.GUtil.sanitizeFilename(t || e.name) + (e.suffix || "");
+                var i = GObject.GUtil.sanitizeFilename(t || e.name) + (e.suffix || "");
                 if (n) {
                     var a = n.filter(function (t) {
                         return t.name === i && t.format === e.format;
@@ -159,7 +159,7 @@ module.exports = function (e, t, n) {
                                 var p = c.split("/"),
                                     g = [];
                                 for (let e = 0; e < p.length; ++e) {
-                                    var h = o.GUtil.sanitizeFilename(p[e].trim());
+                                    var h = GObject.GUtil.sanitizeFilename(p[e].trim());
                                     h && g.push(h);
                                 }
                                 if (g.length > 1) {
@@ -176,7 +176,7 @@ module.exports = function (e, t, n) {
                                             } catch (e) {}
                                     }
                                 } else g.length && (c = g[0]);
-                            } else c = o.GUtil.sanitizeFilename(c.trim());
+                            } else c = GObject.GUtil.sanitizeFilename(c.trim());
                             c &&
                                 d &&
                                 u.exportExportable(
@@ -221,9 +221,9 @@ module.exports = function (e, t, n) {
                                 o.readAsArrayBuffer(e));
                         },
                         m = (e, n, o, i, r, l) => {
-                            t instanceof s.Item
+                            t instanceof GDocument.Item
                                 ? f(e, t, o)
-                                : t instanceof s &&
+                                : t instanceof GDocument &&
                                   (!r && t.canPromptSave()
                                       ? t.savePrompt(
                                             n,
@@ -250,10 +250,10 @@ module.exports = function (e, t, n) {
                         (v &&
                             (y.format !== d.PDF.ext ||
                                 r ||
-                                ((v = !1), ((y = o.GUtil.extend({}, y)).name = n), (y.element = e.map((e) => e.element)))),
+                                ((v = false), ((y = GObject.GUtil.extend({}, y)).name = n), (y.element = e.map((e) => e.element)))),
                         v)
                     )
-                        if (t instanceof s && t.canChooseDirectory())
+                        if (t instanceof GDocument && t.canChooseDirectory())
                             t.chooseDirectory(
                                 (t) => {
                                     u.exportToDirectory(e, t, i, c);
@@ -266,7 +266,7 @@ module.exports = function (e, t, n) {
                                         t,
                                         () => {
                                             t.exportBlob((e) => {
-                                                m(e, n + ".zip", i, _, !0, h);
+                                                m(e, n + ".zip", i, _, true, h);
                                             });
                                         },
                                         c
@@ -280,7 +280,7 @@ module.exports = function (e, t, n) {
                                 b,
                                 () => {
                                     b.exportBlob((e) => {
-                                        m(e, n + ".zip", i, { ext: "zip", mime: "application/zip" }, !1, h);
+                                        m(e, n + ".zip", i, { ext: "zip", mime: "application/zip" }, false, h);
                                     });
                                 },
                                 c
@@ -290,7 +290,7 @@ module.exports = function (e, t, n) {
                         u.exportExportable(
                             y,
                             function (e) {
-                                const n = t instanceof s && t.canDownload() && _ && _.ext === d.PDF.ext;
+                                const n = t instanceof GDocument && t.canDownload() && _ && _.ext === d.PDF.ext;
                                 m(e, u.generateExportName(y), i, _, n, h);
                             },
                             c,
@@ -299,9 +299,9 @@ module.exports = function (e, t, n) {
                 }
             }),
             (u.ZipDirectory = function (e, t) {
-                (s.Directory.call(this, e), (this._zipRoot = t ? null : new zip.fs.FS()), (this._zipDirectory = t || this._zipRoot.root));
+                (GDocument.Directory.call(this, e), (this._zipRoot = t ? null : new zip.fs.FS()), (this._zipDirectory = t || this._zipRoot.root));
             }),
-            o.GObject.inherit(u.ZipDirectory, s.Directory),
+            GObject.GObject.inherit(u.ZipDirectory, GDocument.Directory),
             (u.ZipDirectory.prototype.addDirectory = async function (e) {
                 return new u.ZipDirectory(this._storage, this._zipDirectory.addDirectory(e));
             }),
@@ -317,5 +317,5 @@ module.exports = function (e, t, n) {
             (u.ZipDirectory.prototype.exportBlob = function (e) {
                 this._zipDirectory.exportBlob(e);
             }),
-            (e.exports = u));
+            (module.exports = u));
     };

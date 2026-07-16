@@ -1,21 +1,21 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(57), n(20), n(107), n(3), n(4), n(13));
-        var i = n(53),
-            a = n(1),
-            r = n(67),
-            s = o(n(340)),
-            l = n(866),
-            c = n(867),
-            d = n(123),
-            u = (n(173), n(135)),
-            p = n(257),
-            g = n(1295);
+        var o = require(16);
+        (require(57), require(20), require(107), require(3), require(4), require(13));
+        var i = require(53),
+            GObject = require(1),
+            r = require(67),
+            s = o(require(340)),
+            GAlignAction = require(866),
+            GDistributeAction = require(867),
+            d = require(123),
+            u = (require(173), require(135)),
+            p = require(257),
+            g = require(1295);
         function h() {
             this._elements = [];
         }
-        (a.GObject.inherit(h, d),
+        (GObject.GObject.inherit(h, d),
             (h._keepRatioName = "designer.settings.dimension.preserveratio"),
             (h.prototype._panel = null),
             (h.prototype._toolbar = null),
@@ -55,17 +55,17 @@ module.exports = function (e, t, n) {
                                 var t = $(this);
                                 "yes" === t.attr("data-ratio")
                                     ? (t.attr("data-ratio", "no").attr("class", "gravit-icon-unlinked"),
-                                      n._setAspectRatioBehavior(!1),
+                                      n._setAspectRatioBehavior(false),
                                       gDesigner.stats("dimension_toggle_preserveratio", "disabled"))
                                     : (t.attr("data-ratio", "yes").attr("class", "gravit-icon-linked"),
-                                      n._setAspectRatioBehavior(!0),
+                                      n._setAspectRatioBehavior(true),
                                       gDesigner.stats("dimension_toggle_preserveratio", "enabled"));
                             })
-                            .attr("data-title", a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "action.keep-ratio")))
+                            .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "action.keep-ratio")))
                             .attr("data-ratio", i.GEditorOptions.preserveAspectRatio ? "yes" : "no")
                             .gRichTooltip(t);
                     if ("x" === e || "y" === e || "w" === e || "h" === e) {
-                        var o = a.GLocale.get(new a.GLocaleKey("GCommonNames", "property-".concat(e.toLowerCase())), e);
+                        var o = GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "property-".concat(e.toLowerCase())), e);
                         return $("<div/>")
                             .append(
                                 $("<input>")
@@ -103,7 +103,7 @@ module.exports = function (e, t, n) {
                         : void 0;
                 }.bind(this);
                 function o(e) {
-                    var t = l.ID + "." + e,
+                    var t = GAlignAction.ID + "." + e,
                         n = gDesigner.getAction(t);
                     const o = n.getTooltipConfig(r.TOOLTIP_AREA.SIDEBAR),
                         i = $("<span></span>");
@@ -112,7 +112,7 @@ module.exports = function (e, t, n) {
                         i.css("stroke", "transparent"),
                         o && i.gRichTooltip(o),
                         $("<button></button>")
-                            .attr("data-title", a.GLocale.get(n.getTitle()))
+                            .attr("data-title", GObject.GLocale.get(n.getTitle()))
                             .attr("data-action", t)
                             .addClass("svg-button")
                             .append(i.addClass("normal"))
@@ -123,14 +123,14 @@ module.exports = function (e, t, n) {
                     );
                 }
                 function d(e) {
-                    var t = c.ID + "." + e,
+                    var t = GDistributeAction.ID + "." + e,
                         n = gDesigner.getAction(t);
                     const o = n.getTooltipConfig(r.TOOLTIP_AREA.SIDEBAR),
                         i = $("<span></span>").append(n.getIcon());
                     return (
                         o && i.gRichTooltip(o),
                         $("<button></button>")
-                            .attr("data-title", a.GLocale.get(n.getTitle()))
+                            .attr("data-title", GObject.GLocale.get(n.getTitle()))
                             .attr("data-action", t)
                             .addClass("svg-button")
                             .append(i.addClass("normal"))
@@ -160,8 +160,8 @@ module.exports = function (e, t, n) {
                 }
                 (t
                     .addClass("main-toolbar")
-                    .append(d(c.Type.Horizontal).addClass("primary normalDistribute"))
-                    .append(d(c.Type.Vertical).addClass("primary normalDistribute"))
+                    .append(d(GDistributeAction.Type.Horizontal).addClass("primary normalDistribute"))
+                    .append(d(GDistributeAction.Type.Vertical).addClass("primary normalDistribute"))
                     .append($("<span></span>").addClass("divider"))
                     .append(o(i.GEditor.ArrangeAlignType.AlignLeft).addClass("secondary"))
                     .append(o(i.GEditor.ArrangeAlignType.AlignCenter).addClass("secondary"))
@@ -172,13 +172,13 @@ module.exports = function (e, t, n) {
                     .append(o(i.GEditor.ArrangeAlignType.AlignMiddle).addClass("secondary"))
                     .append(o(i.GEditor.ArrangeAlignType.AlignBottom).addClass("secondary"))
                     .append($("<p/>").addClass("lineBreak"))
-                    .append(d(c.Type.Horizontal).addClass("primary touchDistribute"))
-                    .append(u(c.Type.Horizontal).addClass("touchDistribute"))
+                    .append(d(GDistributeAction.Type.Horizontal).addClass("primary touchDistribute"))
+                    .append(u(GDistributeAction.Type.Horizontal).addClass("touchDistribute"))
                     .append($("<p/>").addClass("interval"))
-                    .append(d(c.Type.Vertical).addClass("primary touchDistribute"))
-                    .append(u(c.Type.Vertical).addClass("touchDistribute")),
+                    .append(d(GDistributeAction.Type.Vertical).addClass("primary touchDistribute"))
+                    .append(u(GDistributeAction.Type.Vertical).addClass("touchDistribute")),
                     (this._advancedFillPanel = $("<div></div>").gOverlay({
-                        releaseOnClose: !1,
+                        releaseOnClose: false,
                     })),
                     this._advancedFillPanel.parent().addClass("settingBox"),
                     $("<div></div>")
@@ -188,10 +188,10 @@ module.exports = function (e, t, n) {
                                 {
                                     width: "100%",
                                     content: $("<div></div>")
-                                        .text(a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.sameHeight")))
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.sameHeight")))
                                         .prepend($("<span></span>").addClass("gravit-icon-sameHeight"))
                                         .on("click", () => {
-                                            (new l(i.GEditor.ArrangeAlignType.AlignJustifyVertical).execute(),
+                                            (new GAlignAction(i.GEditor.ArrangeAlignType.AlignJustifyVertical).execute(),
                                                 this._advancedFillPanel.gOverlay("close"));
                                         }),
                                 },
@@ -202,10 +202,10 @@ module.exports = function (e, t, n) {
                                 {
                                     width: "100%",
                                     content: $("<div></div>")
-                                        .text(a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.sameWidth")))
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.sameWidth")))
                                         .prepend($("<span></span>").addClass("gravit-icon-sameWidth"))
                                         .on("click", () => {
-                                            (new l(i.GEditor.ArrangeAlignType.AlignJustifyHorizontal).execute(),
+                                            (new GAlignAction(i.GEditor.ArrangeAlignType.AlignJustifyHorizontal).execute(),
                                                 this._advancedFillPanel.gOverlay("close"));
                                         }),
                                 },
@@ -216,7 +216,7 @@ module.exports = function (e, t, n) {
                                 {
                                     width: "100%",
                                     content: $("<div></div>")
-                                        .text(a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.fullUnit")))
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.fullUnit")))
                                         .prepend($("<span></span>").addClass("gravit-icon-fullUnit"))
                                         .on("click", () => {
                                             (new g(g.Type.FullUnit).execute(), this._advancedFillPanel.gOverlay("close"));
@@ -229,7 +229,7 @@ module.exports = function (e, t, n) {
                                 {
                                     width: "100%",
                                     content: $("<div></div>")
-                                        .text(a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.halfUnit")))
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.halfUnit")))
                                         .prepend($("<span></span>").addClass("gravit-icon-HalfUnit"))
                                         .on("click", () => {
                                             (new g(g.Type.HalfUnit).execute(), this._advancedFillPanel.gOverlay("close"));
@@ -240,7 +240,7 @@ module.exports = function (e, t, n) {
                         .appendTo(this._advancedFillPanel),
                     $("<p/>").addClass("lineBreak").prependTo(t),
                     $("<button></button>")
-                        .attr("data-title", a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.setting")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.setting")))
                         .addClass("align-settings")
                         .append($("<span></span>").addClass("gravit-icon-touch-settings"))
                         .on(
@@ -251,49 +251,49 @@ module.exports = function (e, t, n) {
                         )
                         .prependTo(t),
                     $("<label></label>")
-                        .text(a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.alignTitle")))
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.alignTitle")))
                         .prependTo(t));
                 const h = r.GRichTooltipConfig.from({
-                        title: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.property-x-y-tooltip-title")),
-                        description: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.property-x-y-tooltip-description")),
-                        middle: !1,
+                        title: GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.property-x-y-tooltip-title")),
+                        description: GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.property-x-y-tooltip-description")),
+                        middle: false,
                         learnMore: "/docs/basics/property-panel/#objects-position",
                     }),
                     f = r.GRichTooltipConfig.from({
-                        title: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.property-w-h-tooltip-title")),
-                        description: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.property-w-h-tooltip-description")),
-                        middle: !1,
+                        title: GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.property-w-h-tooltip-title")),
+                        description: GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.property-w-h-tooltip-description")),
+                        middle: false,
                         learnMore: "/docs/basics/property-panel/#objects-size",
                     }),
                     m = r.GRichTooltipConfig.from({
-                        title: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.keep-ratio-tooltip-title")),
-                        description: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.keep-ratio-tooltip-description")),
+                        title: GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.keep-ratio-tooltip-title")),
+                        description: GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.keep-ratio-tooltip-description")),
                     }),
                     y = r.GRichTooltipConfig.from({
-                        title: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.transform-button-tooltip-title")),
-                        description: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.transform-button-tooltip-description")),
-                        middle: !1,
+                        title: GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.transform-button-tooltip-title")),
+                        description: GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.transform-button-tooltip-description")),
+                        middle: false,
                         learnMore: "/docs/basics/transform-panel/",
                     }),
                     v = r.GRichTooltipConfig.from({
-                        title: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.rotate-angle-tooltip-title")),
-                        description: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.rotate-angle-tooltip-description")),
-                        middle: !1,
+                        title: GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.rotate-angle-tooltip-title")),
+                        description: GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.rotate-angle-tooltip-description")),
+                        middle: false,
                         learnMore: "/docs/basics/property-panel/#objects-angle",
                     });
                 ($("<div/>")
                     .addClass("transform-titile")
-                    .text(a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.transform-title")))
+                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.transform-title")))
                     .appendTo(this._panel),
                     $("<div></div>")
                         .gPropertyRow({
-                            label: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.position")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.position")),
                             columns: [{ width: "44%", content: n("x", h) }, { width: "12%" }, { width: "44%", content: n("y", h) }],
                         })
                         .appendTo(e),
                     $("<div></div>")
                         .gPropertyRow({
-                            label: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.size")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.size")),
                             columns: [
                                 { width: "44%", content: n("w", f) },
                                 { width: "12%", content: n("keep-ratio", m) },
@@ -302,14 +302,14 @@ module.exports = function (e, t, n) {
                         })
                         .appendTo(e),
                     (this._transformButton = $(
-                        "<button>" + a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.transform")) + "</button>"
+                        "<button>" + GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.transform")) + "</button>"
                     )
                         .addClass("transform-button")
                         .on("click", this._toggleTransformMode.bind(this))
                         .gRichTooltip(y)),
                     $("<div></div>")
                         .gPropertyRow({
-                            label: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.angle")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.angle")),
                             columns: [
                                 { width: "44%", content: n("rotate", v) },
                                 { width: "12%" },
@@ -319,7 +319,7 @@ module.exports = function (e, t, n) {
                         .appendTo(e),
                     (this._anchorsPanel = $("<div></div>")
                         .gPropertyRow({
-                            label: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.anchors")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.anchors")),
                             columns: [
                                 {
                                     width: "44%",
@@ -333,24 +333,24 @@ module.exports = function (e, t, n) {
                                                 .addClass("hacr-start")
                                                 .attr(
                                                     "data-title",
-                                                    a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "action.anchor-left"))
+                                                    GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "action.anchor-left"))
                                                 )
                                                 .on(
                                                     "click",
                                                     function () {
                                                         gDesigner.stats("dimension_set_anchors-horizontalstart");
                                                         var e = this._getHorizontalAnchorValue(),
-                                                            t = this._defineAnchorProperty("hacr", a.GElement.Anchor.AnchorType.Start, e);
+                                                            t = this._defineAnchorProperty("hacr", GObject.GElement.Anchor.AnchorType.Start, e);
                                                         this._defineAnchorButtonState(null, t);
                                                     }.bind(this)
                                                 )
                                                 .gRichTooltip(
                                                     r.GRichTooltipConfig.from({
-                                                        title: a.GLocale.get(
-                                                            new a.GLocaleKey("GDimensionProperties", "text.anchor-left-tooltip-title")
+                                                        title: GObject.GLocale.get(
+                                                            new GObject.GLocaleKey("GDimensionProperties", "text.anchor-left-tooltip-title")
                                                         ),
-                                                        description: a.GLocale.get(
-                                                            new a.GLocaleKey("GDimensionProperties", "text.anchor-left-tooltip-description")
+                                                        description: GObject.GLocale.get(
+                                                            new GObject.GLocaleKey("GDimensionProperties", "text.anchor-left-tooltip-description")
                                                         ),
                                                         learnMore: "/docs/design-aids/anchoring/",
                                                     })
@@ -364,24 +364,24 @@ module.exports = function (e, t, n) {
                                                 .addClass("hacr-middle")
                                                 .attr(
                                                     "data-title",
-                                                    a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "action.anchor-center"))
+                                                    GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "action.anchor-center"))
                                                 )
                                                 .on(
                                                     "click",
                                                     function () {
                                                         gDesigner.stats("dimension_set_anchors-horizontalmiddle");
                                                         var e = this._getHorizontalAnchorValue(),
-                                                            t = this._defineAnchorProperty("hacr", a.GElement.Anchor.AnchorType.Middle, e);
+                                                            t = this._defineAnchorProperty("hacr", GObject.GElement.Anchor.AnchorType.Middle, e);
                                                         this._defineAnchorButtonState(null, t);
                                                     }.bind(this)
                                                 )
                                                 .gRichTooltip(
                                                     r.GRichTooltipConfig.from({
-                                                        title: a.GLocale.get(
-                                                            new a.GLocaleKey("GDimensionProperties", "text.anchor-center-tooltip-title")
+                                                        title: GObject.GLocale.get(
+                                                            new GObject.GLocaleKey("GDimensionProperties", "text.anchor-center-tooltip-title")
                                                         ),
-                                                        description: a.GLocale.get(
-                                                            new a.GLocaleKey(
+                                                        description: GObject.GLocale.get(
+                                                            new GObject.GLocaleKey(
                                                                 "GDimensionProperties",
                                                                 "text.anchor-center-tooltip-description"
                                                             )
@@ -398,24 +398,24 @@ module.exports = function (e, t, n) {
                                                 .addClass("hacr-end")
                                                 .attr(
                                                     "data-title",
-                                                    a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "action.anchor-right"))
+                                                    GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "action.anchor-right"))
                                                 )
                                                 .on(
                                                     "click",
                                                     function () {
                                                         gDesigner.stats("dimension_set_anchors-horizontalend");
                                                         var e = this._getHorizontalAnchorValue(),
-                                                            t = this._defineAnchorProperty("hacr", a.GElement.Anchor.AnchorType.End, e);
+                                                            t = this._defineAnchorProperty("hacr", GObject.GElement.Anchor.AnchorType.End, e);
                                                         this._defineAnchorButtonState(null, t);
                                                     }.bind(this)
                                                 )
                                                 .gRichTooltip(
                                                     r.GRichTooltipConfig.from({
-                                                        title: a.GLocale.get(
-                                                            new a.GLocaleKey("GDimensionProperties", "text.anchor-right-tooltip-title")
+                                                        title: GObject.GLocale.get(
+                                                            new GObject.GLocaleKey("GDimensionProperties", "text.anchor-right-tooltip-title")
                                                         ),
-                                                        description: a.GLocale.get(
-                                                            new a.GLocaleKey(
+                                                        description: GObject.GLocale.get(
+                                                            new GObject.GLocaleKey(
                                                                 "GDimensionProperties",
                                                                 "text.anchor-right-tooltip-description"
                                                             )
@@ -438,24 +438,24 @@ module.exports = function (e, t, n) {
                                                 .addClass("vacr-start")
                                                 .attr(
                                                     "data-title",
-                                                    a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "action.anchor-top"))
+                                                    GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "action.anchor-top"))
                                                 )
                                                 .on(
                                                     "click",
                                                     function () {
                                                         gDesigner.stats("dimension_set_anchors-verticalstart");
                                                         var e = this._getVerticalAnchorValue(),
-                                                            t = this._defineAnchorProperty("vacr", a.GElement.Anchor.AnchorType.Start, e);
+                                                            t = this._defineAnchorProperty("vacr", GObject.GElement.Anchor.AnchorType.Start, e);
                                                         this._defineAnchorButtonState(t, null);
                                                     }.bind(this)
                                                 )
                                                 .gRichTooltip(
                                                     r.GRichTooltipConfig.from({
-                                                        title: a.GLocale.get(
-                                                            new a.GLocaleKey("GDimensionProperties", "text.anchor-top-tooltip-title")
+                                                        title: GObject.GLocale.get(
+                                                            new GObject.GLocaleKey("GDimensionProperties", "text.anchor-top-tooltip-title")
                                                         ),
-                                                        description: a.GLocale.get(
-                                                            new a.GLocaleKey("GDimensionProperties", "text.anchor-top-tooltip-description")
+                                                        description: GObject.GLocale.get(
+                                                            new GObject.GLocaleKey("GDimensionProperties", "text.anchor-top-tooltip-description")
                                                         ),
                                                         learnMore: "/docs/design-aids/anchoring/",
                                                     })
@@ -469,24 +469,24 @@ module.exports = function (e, t, n) {
                                                 .addClass("vacr-middle")
                                                 .attr(
                                                     "data-title",
-                                                    a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "action.anchor-middle"))
+                                                    GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "action.anchor-middle"))
                                                 )
                                                 .on(
                                                     "click",
                                                     function () {
                                                         gDesigner.stats("dimension_set_anchors-verticalmiddle");
                                                         var e = this._getVerticalAnchorValue(),
-                                                            t = this._defineAnchorProperty("vacr", a.GElement.Anchor.AnchorType.Middle, e);
+                                                            t = this._defineAnchorProperty("vacr", GObject.GElement.Anchor.AnchorType.Middle, e);
                                                         this._defineAnchorButtonState(t, null);
                                                     }.bind(this)
                                                 )
                                                 .gRichTooltip(
                                                     r.GRichTooltipConfig.from({
-                                                        title: a.GLocale.get(
-                                                            new a.GLocaleKey("GDimensionProperties", "text.anchor-middle-tooltip-title")
+                                                        title: GObject.GLocale.get(
+                                                            new GObject.GLocaleKey("GDimensionProperties", "text.anchor-middle-tooltip-title")
                                                         ),
-                                                        description: a.GLocale.get(
-                                                            new a.GLocaleKey(
+                                                        description: GObject.GLocale.get(
+                                                            new GObject.GLocaleKey(
                                                                 "GDimensionProperties",
                                                                 "text.anchor-middle-tooltip-description"
                                                             )
@@ -503,24 +503,24 @@ module.exports = function (e, t, n) {
                                                 .addClass("vacr-end")
                                                 .attr(
                                                     "data-title",
-                                                    a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "action.anchor-bottom"))
+                                                    GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "action.anchor-bottom"))
                                                 )
                                                 .on(
                                                     "click",
                                                     function () {
                                                         gDesigner.stats("dimension_set_anchors-verticalend");
                                                         var e = this._getVerticalAnchorValue(),
-                                                            t = this._defineAnchorProperty("vacr", a.GElement.Anchor.AnchorType.End, e);
+                                                            t = this._defineAnchorProperty("vacr", GObject.GElement.Anchor.AnchorType.End, e);
                                                         this._defineAnchorButtonState(t, null);
                                                     }.bind(this)
                                                 )
                                                 .gRichTooltip(
                                                     r.GRichTooltipConfig.from({
-                                                        title: a.GLocale.get(
-                                                            new a.GLocaleKey("GDimensionProperties", "text.anchor-bottom-tooltip-title")
+                                                        title: GObject.GLocale.get(
+                                                            new GObject.GLocaleKey("GDimensionProperties", "text.anchor-bottom-tooltip-title")
                                                         ),
-                                                        description: a.GLocale.get(
-                                                            new a.GLocaleKey(
+                                                        description: GObject.GLocale.get(
+                                                            new GObject.GLocaleKey(
                                                                 "GDimensionProperties",
                                                                 "text.anchor-bottom-tooltip-description"
                                                             )
@@ -545,20 +545,20 @@ module.exports = function (e, t, n) {
                     this._transformButton.toggleClass("g-active", e),
                     gDesigner.isTouchEnabled() &&
                         (e
-                            ? (this._transformButton.text(a.GLocale.get(new a.GLocaleKey("GLocale", "close"))),
+                            ? (this._transformButton.text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "close"))),
                               $(".advanced-transform-toolbar > label").text(
-                                  a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.transform-advanced"))
+                                  GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.transform-advanced"))
                               ),
-                              this._anchorsPanel.toggleClass("down", !0),
-                              this._panel.toggleClass("have-anchor", !1),
-                              $(".advanced-transform-properties").toggleClass("have-anchor", !0))
-                            : (this._transformButton.text(a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.transform"))),
-                              this._anchorsPanel.toggleClass("down", !1),
-                              this._panel.toggleClass("have-anchor", !0),
-                              $(".advanced-transform-properties").toggleClass("have-anchor", !1),
+                              this._anchorsPanel.toggleClass("down", true),
+                              this._panel.toggleClass("have-anchor", false),
+                              $(".advanced-transform-properties").toggleClass("have-anchor", true))
+                            : (this._transformButton.text(GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "text.transform"))),
+                              this._anchorsPanel.toggleClass("down", false),
+                              this._panel.toggleClass("have-anchor", true),
+                              $(".advanced-transform-properties").toggleClass("have-anchor", false),
                               this._panel.addClass("have-anchor")),
                         this._changeSideBarContinerZIndex(e)),
-                    !0
+                    true
                 );
             }),
             (h.prototype._changeSideBarContinerZIndex = function (e) {
@@ -570,10 +570,10 @@ module.exports = function (e, t, n) {
             (h.prototype.update = function (e, t) {
                 if (
                     (this._document &&
-                        (this._document.getScene().removeEventListener(a.GElement.GeometryChangeEvent, this._geometryChange, this),
+                        (this._document.getScene().removeEventListener(GObject.GElement.GeometryChangeEvent, this._geometryChange, this),
                         this._document
                             .getScene()
-                            .removeEventListener(a.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                            .removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                         this._document.getEditor().removeEventListener(i.GEditor.EdGeometryChangeEvent, this._edGeometryChange, this),
                         gDesigner.removeEventListener(u, this._settingChanged),
                         (this._document = null)),
@@ -582,14 +582,14 @@ module.exports = function (e, t, n) {
                     e)
                 ) {
                     for (var n = 0; n < t.length; ++n)
-                        !t[n].hasMixin(a.GElement.Transform) || t[n] instanceof a.GPage || this._elements.push(t[n]);
+                        !t[n].hasMixin(GObject.GElement.Transform) || t[n] instanceof GObject.GPage || this._elements.push(t[n]);
                     if (this._elements.length && this._elements.length === t.length)
                         return (
                             (this._document = e),
                             this._document
                                 .getScene()
-                                .addEventListener(a.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
-                            this._document.getScene().addEventListener(a.GElement.GeometryChangeEvent, this._geometryChange, this),
+                                .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                            this._document.getScene().addEventListener(GObject.GElement.GeometryChangeEvent, this._geometryChange, this),
                             this._document.getEditor().addEventListener(i.GEditor.EdGeometryChangeEvent, this._edGeometryChange, this),
                             gDesigner.addEventListener(u, this._settingChanged, this),
                             this._updateDimensions(),
@@ -597,10 +597,10 @@ module.exports = function (e, t, n) {
                             this._showAnchor() &&
                                 ($(this._panel).find(".anchor-panel").css("display", ""),
                                 this._defineAnchorButtonState(this._getVerticalAnchorValue(), this._getHorizontalAnchorValue())),
-                            !0
+                            true
                         );
                 }
-                return !1;
+                return false;
             }),
             (h.prototype._toggleTransformMode = function () {
                 gDesigner.stats("dimension_change_transform-mode");
@@ -616,11 +616,11 @@ module.exports = function (e, t, n) {
                             ));
             }),
             (h.prototype._geometryChange = function (e) {
-                (e.type !== a.GElement.GeometryChangeEvent.Type.After && e.type !== a.GElement.GeometryChangeEvent.Type.Child) ||
+                (e.type !== GObject.GElement.GeometryChangeEvent.Type.After && e.type !== GObject.GElement.GeometryChangeEvent.Type.Child) ||
                     (this._elements.indexOf(e.element) >= 0 && this._updateDimensions());
             }),
             (h.prototype._edGeometryChange = function (e) {
-                this._updateDimensions(!1, !0);
+                this._updateDimensions(false, true);
             }),
             (h.prototype._afterPropertiesChange = function (e) {
                 !e.temporary &&
@@ -639,7 +639,7 @@ module.exports = function (e, t, n) {
                     ((this._elementsBBox = null), (this._firstElementsBBox = null));
                     for (var r = 0; r < this._elements.length; ++r) {
                         var s = this._elements[r];
-                        if (s.hasMixin(a.GElement.Transform)) {
+                        if (s.hasMixin(GObject.GElement.Transform)) {
                             var l = null;
                             if (t) {
                                 var c = i.GElementEditor.getEditor(s);
@@ -692,7 +692,7 @@ module.exports = function (e, t, n) {
                                     n = this._document.getScene().pointToString(t, this._document.getScene().getOptimalDecimalsCount());
                                     break;
                                 case "rotate":
-                                    n = a.GUtil.formatNumber(a.GMath.toDegrees(t), 1);
+                                    n = GObject.GUtil.formatNumber(GObject.GMath.toDegrees(t), 1);
                             }
                         this._panel
                             .find('input[data-dimension="' + e + '"]')
@@ -737,7 +737,7 @@ module.exports = function (e, t, n) {
                     var n = null,
                         o = null,
                         r = "",
-                        s = this._getCurrentDimensions(!1, !1);
+                        s = this._getCurrentDimensions(false, false);
                     switch (e) {
                         case "x":
                         case "y":
@@ -745,13 +745,13 @@ module.exports = function (e, t, n) {
                             break;
                         case "w":
                         case "h":
-                            ((r = a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "action.change-size"))),
+                            ((r = GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "action.change-size"))),
                                 (n = this._document.getScene().stringToPoint(t)),
                                 (o = s ? ("w" == e ? s.w : s.h) : null));
                             break;
                         case "rotate":
-                            ((r = a.GLocale.get(new a.GLocaleKey("GCommonNames", "action.rotate"))),
-                                (n = a.GLength.parseEquationValue(t)),
+                            ((r = GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.rotate"))),
+                                (n = GObject.GLength.parseEquationValue(t)),
                                 (o = s ? s.angle : null));
                     }
                     if (null === n || "number" != typeof n || (("w" == e || "h" == e) && n <= 0) || n === o) this._updateDimensions();
@@ -768,7 +768,7 @@ module.exports = function (e, t, n) {
                         }
                         var c = function (t, o, i) {
                                 if ("w" === e || "h" === e) {
-                                    if (("w" === e && t.getWidth() <= 0) || ("h" === e && t.getHeight() <= 0)) return new a.GTransform();
+                                    if (("w" === e && t.getWidth() <= 0) || ("h" === e && t.getHeight() <= 0)) return new GObject.GTransform();
                                     var r = 1,
                                         s = 1;
                                     switch (e) {
@@ -778,16 +778,16 @@ module.exports = function (e, t, n) {
                                         case "h":
                                             ((s = n / t.getHeight()), o && (r = s));
                                     }
-                                    return new a.GTransform().translated(-t.getX(), -t.getY()).scaled(r, s).translated(t.getX(), t.getY());
+                                    return new GObject.GTransform().translated(-t.getX(), -t.getY()).scaled(r, s).translated(t.getX(), t.getY());
                                 }
-                                if ("x" === e) return new a.GTransform().translated(n - t.getX(), 0);
-                                if ("y" === e) return new a.GTransform().translated(0, n - t.getY());
+                                if ("x" === e) return new GObject.GTransform().translated(n - t.getX(), 0);
+                                if ("y" === e) return new GObject.GTransform().translated(0, n - t.getY());
                                 if ("rotate" === e) {
-                                    var l = t.getSide(a.GRect.Side.CENTER);
+                                    var l = t.getSide(GObject.GRect.Side.CENTER);
                                     i = i || 0;
-                                    return new a.GTransform()
+                                    return new GObject.GTransform()
                                         .translated(-l.getX(), -l.getY())
-                                        .rotated(i - a.GMath.toRadians(n))
+                                        .rotated(i - GObject.GMath.toRadians(n))
                                         .translated(l.getX(), l.getY());
                                 }
                             },
@@ -800,7 +800,7 @@ module.exports = function (e, t, n) {
                                 var g = function (t, n, o, r) {
                                         if ((t = o.length && o.indexOf(t) >= 0 ? null : t)) {
                                             var s =
-                                                    (t instanceof a.GSymbol && ("x" === e || "y" === e)) ||
+                                                    (t instanceof GObject.GSymbol && ("x" === e || "y" === e)) ||
                                                     "rotate" === e ||
                                                     (r && r.fullContentTransform),
                                                 l = i.GElementEditor.openEditor(t);
@@ -835,9 +835,9 @@ module.exports = function (e, t, n) {
                 }
             }),
             (h.prototype._showAnchor = function () {
-                for (var e = this._elements, t = !0, n = 0; n < e.length; ++n)
-                    if (!e[n].getParent() || !e[n].getParent().hasMixin(a.GElement.Layout)) {
-                        t = !1;
+                for (var e = this._elements, t = true, n = 0; n < e.length; ++n)
+                    if (!e[n].getParent() || !e[n].getParent().hasMixin(GObject.GElement.Layout)) {
+                        t = false;
                         break;
                     }
                 return t;
@@ -862,52 +862,52 @@ module.exports = function (e, t, n) {
                 (null !== e &&
                     ($(this._panel)
                         .find(".vacr-middle")
-                        .addClass(e === a.GElement.Anchor.AnchorType.Middle ? "g-active" : ""),
+                        .addClass(e === GObject.GElement.Anchor.AnchorType.Middle ? "g-active" : ""),
                     $(this._panel)
                         .find(".vacr-start")
-                        .addClass(e === a.GElement.Anchor.AnchorType.Stretch || e === a.GElement.Anchor.AnchorType.Start ? "g-active" : ""),
+                        .addClass(e === GObject.GElement.Anchor.AnchorType.Stretch || e === GObject.GElement.Anchor.AnchorType.Start ? "g-active" : ""),
                     $(this._panel)
                         .find(".vacr-end")
-                        .addClass(e === a.GElement.Anchor.AnchorType.Stretch || e === a.GElement.Anchor.AnchorType.End ? "g-active" : ""),
+                        .addClass(e === GObject.GElement.Anchor.AnchorType.Stretch || e === GObject.GElement.Anchor.AnchorType.End ? "g-active" : ""),
                     $(this._panel)
                         .find(".vacr-middle")
-                        .removeClass(e !== a.GElement.Anchor.AnchorType.Middle ? "g-active" : ""),
+                        .removeClass(e !== GObject.GElement.Anchor.AnchorType.Middle ? "g-active" : ""),
                     $(this._panel)
                         .find(".vacr-start")
                         .removeClass(
-                            e !== a.GElement.Anchor.AnchorType.Start && e !== a.GElement.Anchor.AnchorType.Stretch ? "g-active" : ""
+                            e !== GObject.GElement.Anchor.AnchorType.Start && e !== GObject.GElement.Anchor.AnchorType.Stretch ? "g-active" : ""
                         ),
                     $(this._panel)
                         .find(".vacr-end")
                         .removeClass(
-                            e !== a.GElement.Anchor.AnchorType.End && e !== a.GElement.Anchor.AnchorType.Stretch ? "g-active" : ""
+                            e !== GObject.GElement.Anchor.AnchorType.End && e !== GObject.GElement.Anchor.AnchorType.Stretch ? "g-active" : ""
                         )),
                     null !== t &&
                         ($(this._panel)
                             .find(".hacr-middle")
-                            .addClass(t === a.GElement.Anchor.AnchorType.Middle ? "g-active" : ""),
+                            .addClass(t === GObject.GElement.Anchor.AnchorType.Middle ? "g-active" : ""),
                         $(this._panel)
                             .find(".hacr-start")
                             .addClass(
-                                t === a.GElement.Anchor.AnchorType.Stretch || t === a.GElement.Anchor.AnchorType.Start ? "g-active" : ""
+                                t === GObject.GElement.Anchor.AnchorType.Stretch || t === GObject.GElement.Anchor.AnchorType.Start ? "g-active" : ""
                             ),
                         $(this._panel)
                             .find(".hacr-end")
                             .addClass(
-                                t === a.GElement.Anchor.AnchorType.Stretch || t === a.GElement.Anchor.AnchorType.End ? "g-active" : ""
+                                t === GObject.GElement.Anchor.AnchorType.Stretch || t === GObject.GElement.Anchor.AnchorType.End ? "g-active" : ""
                             ),
                         $(this._panel)
                             .find(".hacr-middle")
-                            .removeClass(t !== a.GElement.Anchor.AnchorType.Middle ? "g-active" : ""),
+                            .removeClass(t !== GObject.GElement.Anchor.AnchorType.Middle ? "g-active" : ""),
                         $(this._panel)
                             .find(".hacr-start")
                             .removeClass(
-                                t !== a.GElement.Anchor.AnchorType.Start && t !== a.GElement.Anchor.AnchorType.Stretch ? "g-active" : ""
+                                t !== GObject.GElement.Anchor.AnchorType.Start && t !== GObject.GElement.Anchor.AnchorType.Stretch ? "g-active" : ""
                             ),
                         $(this._panel)
                             .find(".hacr-end")
                             .removeClass(
-                                t !== a.GElement.Anchor.AnchorType.End && t !== a.GElement.Anchor.AnchorType.Stretch ? "g-active" : ""
+                                t !== GObject.GElement.Anchor.AnchorType.End && t !== GObject.GElement.Anchor.AnchorType.Stretch ? "g-active" : ""
                             )));
             }),
             (h.prototype._defineAnchorProperty = function (e, t, n) {
@@ -915,16 +915,16 @@ module.exports = function (e, t, n) {
                 return (
                     t === n
                         ? (o = 0)
-                        : t !== a.GElement.Anchor.AnchorType.Middle &&
-                          (n === a.GElement.Anchor.AnchorType.Stretch
+                        : t !== GObject.GElement.Anchor.AnchorType.Middle &&
+                          (n === GObject.GElement.Anchor.AnchorType.Stretch
                               ? (o =
-                                    t === a.GElement.Anchor.AnchorType.End
-                                        ? a.GElement.Anchor.AnchorType.Start
-                                        : a.GElement.Anchor.AnchorType.End)
-                              : n === a.GElement.Anchor.AnchorType.Start
-                                ? (o = t === a.GElement.Anchor.AnchorType.End ? a.GElement.Anchor.AnchorType.Stretch : 0)
-                                : n === a.GElement.Anchor.AnchorType.End &&
-                                  (o = t === a.GElement.Anchor.AnchorType.Start ? a.GElement.Anchor.AnchorType.Stretch : 0)),
+                                    t === GObject.GElement.Anchor.AnchorType.End
+                                        ? GObject.GElement.Anchor.AnchorType.Start
+                                        : GObject.GElement.Anchor.AnchorType.End)
+                              : n === GObject.GElement.Anchor.AnchorType.Start
+                                ? (o = t === GObject.GElement.Anchor.AnchorType.End ? GObject.GElement.Anchor.AnchorType.Stretch : 0)
+                                : n === GObject.GElement.Anchor.AnchorType.End &&
+                                  (o = t === GObject.GElement.Anchor.AnchorType.Start ? GObject.GElement.Anchor.AnchorType.Stretch : 0)),
                     this._assignAnchorProperty([e], [o]),
                     o
                 );
@@ -936,21 +936,21 @@ module.exports = function (e, t, n) {
                     try {
                         for (var o = 0; o < this._elements.length; ++o) {
                             var r = this._elements[o];
-                            if (r.getParent().hasMixin(a.GElement.Layout)) {
+                            if (r.getParent().hasMixin(GObject.GElement.Layout)) {
                                 var s = i.GElementEditor.getEditor(this._elements[o]);
                                 (s && s.applyPropertiesToParts(e, t)) || this._elements[o].setProperties(e, t);
                             }
                         }
                     } finally {
-                        n.commitTransaction(a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "action.change-anchor")));
+                        n.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "action.change-anchor")));
                     }
                 } else console.warn("GDimensionProperties: empty _document property");
             }),
             (h.prototype._getDelta = function () {
-                return new a.GPoint(0, 0);
+                return new GObject.GPoint(0, 0);
             }),
             (h.prototype.toString = function () {
                 return "[Object GDimensionProperties]";
             }),
-            (e.exports = h));
+            (module.exports = h));
     };

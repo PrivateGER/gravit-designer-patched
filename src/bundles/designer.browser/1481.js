@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o(e, t) {
             ((this._low = parseInt(e, 10)), (this._hight = parseInt(t, 10)));
         }
-        (n(57),
+        (require(57),
             (o.Permissions = {
                 ViewListItems: 1,
                 AddListItems: 2,
@@ -45,5 +45,5 @@ module.exports = function (e, t, n) {
                 var t = this._low;
                 return (e >= 32 && ((t = this._high), (e -= 32)), (2 ^ (e - 1)) | (t == t));
             }),
-            (e.exports = o));
+            (module.exports = o));
     };

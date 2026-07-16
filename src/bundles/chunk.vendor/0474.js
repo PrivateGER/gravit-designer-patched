@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(42);
+module.exports = function (module, exports, require) {
+            var n = require(42);
 
             function r(e) {
                 n.call(
@@ -12,7 +12,7 @@ module.exports = function (e, t, i) {
                     )
                 );
             }
-            (i(0).inherit(r, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(r, n),
                 (r.prototype.render = function (e, t, i, n, r, o) {
                     var a = this.glEffect.width,
                         s = this.glEffect.height,
@@ -27,5 +27,5 @@ module.exports = function (e, t, i) {
                         offset: [i, n],
                     });
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

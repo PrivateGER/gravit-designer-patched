@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(290), n(4), n(41), n(13), n(38));
-        const { watchDog: o } = n(40),
-            i = n(433),
+        (require(290), require(4), require(41), require(13), require(38));
+        const { watchDog: o } = require(40 /* GSaveAction */),
+            i = require(433),
             a = {
                 init: function (e) {
                     return (
@@ -11,9 +11,9 @@ module.exports = function (e, t, n) {
                             const t = i.ROLES.ALL.filter((e) => e.isAssignable()),
                                 n = $("<div/>")
                                     .gOverlay({
-                                        padding: !1,
+                                        padding: false,
                                         clazz: "g-role-selector-overlay",
-                                        releaseOnClose: !1,
+                                        releaseOnClose: false,
                                     })
                                     .addClass("g-role-selector-container")
                                     .append(
@@ -31,7 +31,7 @@ module.exports = function (e, t, n) {
                                                                 .append(
                                                                     $("<span/>").addClass("name").text(e.name).gPro({
                                                                         pro: !!e.pro,
-                                                                        badgeAlwaysVisible: !0,
+                                                                        badgeAlwaysVisible: true,
                                                                     })
                                                                 )
                                                                 .append($("<span/>").addClass("text").text(e.description))
@@ -104,7 +104,7 @@ module.exports = function (e, t, n) {
                 },
                 restoreRole: function () {
                     const e = $(this);
-                    e.data("options").previousRole && a.role.call(this, e.data("options").previousRole, !1);
+                    e.data("options").previousRole && a.role.call(this, e.data("options").previousRole, false);
                 },
             };
         $.fn.gRoleSelector = function (e) {

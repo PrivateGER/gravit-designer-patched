@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(238),
-            i = n(339),
-            a = n(1157);
+        require(3);
+        var o = require(238),
+            i = require(339),
+            a = require(1157);
         function r(e) {
             ((this._htmlElement = $("<nav></nav>").addClass("g-menu-bar")), this.setMenu(e || new o(this)));
         }
@@ -29,5 +29,5 @@ module.exports = function (e, t, n) {
             (r.prototype.toString = function () {
                 return "[Object GMenuBar]";
             }),
-            (e.exports = r));
+            (module.exports = r));
     };

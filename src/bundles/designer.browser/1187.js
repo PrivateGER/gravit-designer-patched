@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        e.exports = class {
+        require(8 /* Symbol */);
+        module.exports = class {
             static get DEFAULT_LAYOUT() {
                 return 0;
             }

@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o() {}
         ((o.Provider = {
@@ -8,5 +8,5 @@ module.exports = function (e, t, n) {
             OneDriveBusinessNative: 4,
         }),
             (o.SecurityLevel = { Lowest: 0, Highest: 1 }),
-            (e.exports = o));
+            (module.exports = o));
     };

@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(35),
-            i = n(46),
-            a = n(175);
-        e.exports = function (e, t, n) {
+        var o = require(35),
+            i = require(46),
+            a = require(175);
+        module.exports = function (e, t, n) {
             var r, s;
             return (a && o((r = t.constructor)) && r !== n && i((s = r.prototype)) && s !== n.prototype && a(e, s), e);
         };

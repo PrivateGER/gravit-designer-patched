@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
-            var r = n(56),
-                o = (n(112), n(2)),
-                a = n(22),
-                s = n(63),
-                l = n(6),
-                h = n(54),
-                A = n(7),
-                c = n(11),
-                p = n(5),
-                u = n(95),
-                d = n(48),
-                g = n(76),
-                f = n(12);
+module.exports = function (module, exports, require) {
+            var r = require(56),
+                o = (require(112), require(2)),
+                a = require(22),
+                s = require(63),
+                l = require(6),
+                h = require(54),
+                A = require(7),
+                c = require(11),
+                p = require(5),
+                u = require(95),
+                d = require(48),
+                g = require(76),
+                f = require(12);
 
             function m(e) {
                 r.call(this);
@@ -60,7 +60,7 @@ module.exports = function (e, t, n) {
                     return e instanceof m;
                 }),
                 (m.Images.prototype.validateRemoval = function () {
-                    return !1;
+                    return false;
                 }),
                 (m.Images.prototype.serialize = function () {
                     for (var e = [], t = this.getFirstChild(); null !== t; t = t.getNext()) e.push(o.serialize(t));
@@ -136,9 +136,9 @@ module.exports = function (e, t, n) {
                         (t = i.preMultiplied(e)),
                         this._images._beginBlockChanges([a._Change.ChildGeometryUpdate]),
                         this._iterateGrid(function (e, i, n, a, s) {
-                            if (!(r.length > s && r[s])) return !1;
+                            if (!(r.length > s && r[s])) return false;
                             var l = r[s];
-                            l.setProperty("dblMode", !1);
+                            l.setProperty("dblMode", false);
                             var h = l.getSourceBBox();
                             if (h && !h.isEmpty()) {
                                 var c, p;
@@ -164,7 +164,7 @@ module.exports = function (e, t, n) {
                 (m.prototype.rewindVertices = function () {
                     return (
                         this._vertexSource || (this._vertexSource = this._prepareVertices()),
-                        !!this._vertexSource && (this._vertexSource.rewindVertices(0), !0)
+                        !!this._vertexSource && (this._vertexSource.rewindVertices(0), true)
                     );
                 }),
                 (m.prototype.readVertex = function (e) {
@@ -201,7 +201,7 @@ module.exports = function (e, t, n) {
                             c = 0;
                         for (o = 0; o < t.length; o++) {
                             for (i = l, s = 0, a = 0; a < t[o].length; a++) {
-                                if (((n = t[o][a][0]), (r = t[o][a][1]), (s = Math.max(r, s)), !1 === e(i, A, n, r, c))) return;
+                                if (((n = t[o][a][0]), (r = t[o][a][1]), (s = Math.max(r, s)), false === e(i, A, n, r, c))) return;
                                 ((i += n + l), c++);
                             }
                             ((h = Math.max(h, i)), (A += s + l));
@@ -335,5 +335,5 @@ module.exports = function (e, t, n) {
                 (m.prototype.toString = function () {
                     return "[GImageGrid]";
                 }),
-                (e.exports = m));
+                (module.exports = m));
         };

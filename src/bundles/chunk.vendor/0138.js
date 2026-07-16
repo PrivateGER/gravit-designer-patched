@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(50),
-                r = i(0),
-                o = i(17),
-                a = i(11),
-                s = i(7),
-                l = i(12);
+module.exports = function (module, exports, require) {
+            var n = require(50),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(17),
+                a = require(11),
+                s = require(7),
+                l = require(12);
 
             function h(e, t, i, n, r) {
                 if (e) {
@@ -39,20 +39,20 @@ module.exports = function (e, t, i) {
                     (this._fy = "number" == typeof n ? n : 0.5),
                     (this._transform = r || null));
             }
-            (r.inherit(h, n),
+            (IsFiniteNonNegativeNumber.inherit(h, n),
                 (h.equals = function (e, t, i) {
-                    if (!((e && t) || e !== t)) return !0;
+                    if (!((e && t) || e !== t)) return true;
                     if (!i) {
-                        if (!s.equals(e._transform, t._transform)) return !1;
-                        if (e._scale !== t._scale || e._fx !== t._fx || e._fy !== t._fy) return !1;
+                        if (!s.equals(e._transform, t._transform)) return false;
+                        if (e._scale !== t._scale || e._fx !== t._fx || e._fy !== t._fy) return false;
                     }
-                    if (e._stops.length !== t._stops.length) return !1;
+                    if (e._stops.length !== t._stops.length) return false;
                     for (var n = e._stops, r = t._stops, o = 0; o < n.length; ++o) {
-                        if (n[o].position !== r[o].position) return !1;
-                        if (n[o].opacity !== r[o].opacity) return !1;
-                        if (!a.equals(n[o].color, r[o].color)) return !1;
+                        if (n[o].position !== r[o].position) return false;
+                        if (n[o].opacity !== r[o].opacity) return false;
+                        if (!a.equals(n[o].color, r[o].color)) return false;
                     }
-                    return !0;
+                    return true;
                 }),
                 (h.prototype._transform = void 0),
                 (h.prototype._stops = null),
@@ -137,10 +137,10 @@ module.exports = function (e, t, i) {
                             o = {
                                 position: Math.min(1, Math.max(0, r.p)),
                             },
-                            a = !1;
+                            a = false;
                         (r.hasOwnProperty("c") &&
                             ((o.color = n.deserialize(r.c)),
-                            r.hasOwnProperty("o") ? ((o.opacity = r.o), (a = !0)) : (o.opacity = 1),
+                            r.hasOwnProperty("o") ? ((o.opacity = r.o), (a = true)) : (o.opacity = 1),
                             this._stops.push(o)),
                             !a && r.hasOwnProperty("o") && ((o.opacity = r.o), t || (t = []), t.push(o)));
                     }
@@ -152,5 +152,5 @@ module.exports = function (e, t, i) {
                 (h.prototype.toString = function () {
                     return "[Object GGradient]";
                 }),
-                (e.exports = h));
+                (module.exports = h));
         };

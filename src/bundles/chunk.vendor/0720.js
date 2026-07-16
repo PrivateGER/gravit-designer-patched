@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(376),
-                r = i(89),
-                o = i(115);
-            ((t.parse = function (e, t) {
+            var n = require(376),
+                Parser = require(89),
+                o = require(115);
+            ((exports.parse = function (e, t) {
                 var i,
                     o = {},
-                    a = new r.Parser(e, t);
+                    a = new Parser.Parser(e, t);
                 switch (
                     ((o.version = a.parseVersion()),
                     (o.italicAngle = a.parseFixed()),
@@ -41,7 +41,7 @@ module.exports = function (e, t, i) {
                 }
                 return o;
             }),
-                (t.make = function () {
+                (exports.make = function () {
                     return new o.Table("post", [
                         {
                             name: "version",

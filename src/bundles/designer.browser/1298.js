@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(3));
-        var o = n(1),
-            i = n(31),
-            a = n(18);
-        const r = n(44),
-            s = n(119);
+        (require(8 /* Symbol */), require(3));
+        var GObject = require(1),
+            i = require(31),
+            GCategory = require(18);
+        const GSystemDialog = require(44),
+            GCommonNames = require(119);
         function l() {}
-        (o.GObject.inherit(l, i),
+        (GObject.GObject.inherit(l, i),
             (l.ID = "use-coupon-action"),
-            (l.TITLE = new o.GLocaleKey("GUseCouponAction", "title")),
+            (l.TITLE = new GObject.GLocaleKey("GUseCouponAction", "title")),
             (l.prototype.getId = function () {
                 return l.ID;
             }),
@@ -17,13 +17,13 @@ module.exports = function (e, t, n) {
                 return l.TITLE;
             }),
             (l.prototype.getCategory = function () {
-                return a.CATEGORY_HELP;
+                return GCategory.CATEGORY_HELP;
             }),
             (l.prototype.getGroup = function () {
                 return "help";
             }),
             (l.prototype.isVisible = function () {
-                if (!gDesigner.isInAppPurchaseAllowed()) return !1;
+                if (!gDesigner.isInAppPurchaseAllowed()) return false;
                 const e = gDesigner.getLicense(),
                     t = !(e.isPro() && !e.isExpired()),
                     n = !gDesigner.isAnonymous(),
@@ -31,13 +31,13 @@ module.exports = function (e, t, n) {
                 return t && n && o;
             }),
             (l.prototype.execute = function () {
-                r.prompt(o.GLocale.get(new o.GLocaleKey("GUseCouponAction", "text.hava-coupon")), async (e) => {
-                    if (e) return s.activateCoupon(e);
-                    r.alert(o.GLocale.get(new o.GLocaleKey("GUseCouponAction", "text.invalid-coupon")));
+                GSystemDialog.prompt(GObject.GLocale.get(new GObject.GLocaleKey("GUseCouponAction", "text.hava-coupon")), async (e) => {
+                    if (e) return GCommonNames.activateCoupon(e);
+                    GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GUseCouponAction", "text.invalid-coupon")));
                 });
             }),
             (l.prototype.toString = function () {
                 return "[Object GUseCouponAction]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

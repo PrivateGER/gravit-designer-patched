@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(290), n(8), n(20), n(34), n(4), n(13), n(32), n(38), n(33));
-        var o = n(357),
-            i = n(1),
-            a = n(40);
-        const { gApi: r, LINKS: s, DESIGNER: { TITLE: l } = {}, SubscriptionStatus: c } = n(10),
-            d = (n(173), n(337)),
+        (require(290), require(8 /* Symbol */), require(20), require(34), require(4), require(13), require(32), require(38), require(33));
+        var o = require(357),
+            GObject = require(1),
+            GSaveAction = require(40);
+        const { gApi: r, LINKS: s, DESIGNER: { TITLE: l } = {}, SubscriptionStatus: c } = require(10 /* designerConfig */),
+            d = (require(173), require(337)),
             u = ["number", "name", "price", "date"];
         function p(e, t) {
             let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
@@ -13,12 +13,12 @@ module.exports = function (e, t, n) {
                 (this._options = n),
                 (this._query = { skip: 0, name: "", issued: "true" }),
                 (this._messageHandler = t),
-                (this._typing = !1),
+                (this._typing = false),
                 this._init(),
-                (this._allowReactivateSubscriptions = !1),
+                (this._allowReactivateSubscriptions = false),
                 this._load());
         }
-        (i.GObject.inherit(p, i.GObject),
+        (GObject.GObject.inherit(p, GObject.GObject),
             (p.prototype._init = function () {
                 this._container = $("<div></div>").addClass("g-purchase-panel");
                 let e = void 0;
@@ -32,15 +32,15 @@ module.exports = function (e, t, n) {
                         $("<input>")
                             .attr("type", "text")
                             .attr("data-property", "search")
-                            .attr("placeholder", i.GLocale.get(new i.GLocaleKey("GPurchasePanel", "text.search-label")))
-                            .on("input", (0, a.debounce)((0, a.throttle)(n, 500), 500))
+                            .attr("placeholder", GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.search-label")))
+                            .on("input", (0, GSaveAction.debounce)((0, GSaveAction.throttle)(n, 500), 500))
                             .on("keyup", (e) => {
                                 13 === e.which && (gDesigner.stats("profile-dialog_purchase-panel_search"), n(e));
                             })
                     )
                     .append(
                         $("<label></label>")
-                            .append($("<span></span>").text(i.GLocale.get(new i.GLocaleKey("GPurchasePanel", "text.orderby-label"))))
+                            .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.orderby-label"))))
                             .append(
                                 $("<select></select>")
                                     .attr("data-property", "orderby")
@@ -48,7 +48,7 @@ module.exports = function (e, t, n) {
                                         u.map((e) =>
                                             $("<option></option>")
                                                 .attr("value", e)
-                                                .text(i.GLocale.get(new i.GLocaleKey("GPurchasePanel", "text.orderby-" + e)))
+                                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.orderby-" + e)))
                                         )
                                     )
                                     .on("change", (e) => {
@@ -80,14 +80,14 @@ module.exports = function (e, t, n) {
                             $(
                                 "<span>"
                                     .concat(
-                                        i.GLocale.get(new i.GLocaleKey("GPurchasePanel", "text.contact-partner-billing-alternative")),
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.contact-partner-billing-alternative")),
                                         "</span>"
                                     )
                                     .replace(
                                         "%partner%",
                                         $("<a/>")
                                             .addClass("cb-link")
-                                            .text(i.GLocale.get(new i.GLocaleKey("GPurchasePanel", "text.contact-partner-cleverbridge")))
+                                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.contact-partner-cleverbridge")))
                                             .prop("outerHTML")
                                     )
                             )
@@ -110,18 +110,18 @@ module.exports = function (e, t, n) {
                     (this._query.name = e),
                     (this._query.by = this._container.find('select[data-property="orderby"] > option:selected').attr("value")),
                     (this._query.direction = this._container.find('span[data-property="direction"]').data("direction")),
-                    await this._load(!0));
+                    await this._load(true));
             }),
             (p.prototype._orderBy = function () {
                 (this._search(this._container.find('input[data-property="search"]').val()), this._showInfoIfAny());
             }),
             (p.prototype._showInfoIfAny = function () {
                 this._purchaseList[0].hasChildNodes() ||
-                    this._messageHandler(i.GLocale.get(new i.GLocaleKey("GPurchasePanel", "text.empty-search")), "info");
+                    this._messageHandler(GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.empty-search")), "info");
             }),
             (p.prototype._load = async function (e) {
                 if (-1 !== this._query.skip) {
-                    this._toggleLoading(!0);
+                    this._toggleLoading(true);
                     try {
                         let t = await r.listPurchasedProducts(this._query),
                             n = t.length;
@@ -131,7 +131,7 @@ module.exports = function (e, t, n) {
                     } catch (e) {
                         this._handleError(e);
                     } finally {
-                        this._toggleLoading(!1);
+                        this._toggleLoading(false);
                     }
                 }
             }),
@@ -147,18 +147,18 @@ module.exports = function (e, t, n) {
                                 $(e.target).closest(".purchase-item").addClass("g-active"));
                         })
                         .appendTo(this._purchaseList)).empty();
-                let a = !1,
-                    s = !1;
+                let a = false,
+                    s = false;
                 (this._options &&
                     this._options.subscription &&
                     e.purchase_id == this._options.subscription.purchase &&
-                    ((a = !0), (s = !!this._options.subscription.reinstate), (this._options = null)),
+                    ((a = true), (s = !!this._options.subscription.reinstate), (this._options = null)),
                     a && t.addClass("g-selected"));
                 const u =
                     e.name ||
                     (n
-                        ? i.GLocale.get(new i.GLocaleKey("GPurchasePanel", "text.pro-subscription-lifetime")).replace("%app", l)
-                        : i.GLocale.get(new i.GLocaleKey("GPurchasePanel", "text.pro-subscription")).replace("%app", l));
+                        ? GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.pro-subscription-lifetime")).replace("%app", l)
+                        : GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.pro-subscription")).replace("%app", l));
                 $("<div></div>").addClass("header").append($("<label></label>").addClass("title").text(u)).appendTo(t);
                 (e.invoice &&
                     $("<div></div>")
@@ -170,7 +170,7 @@ module.exports = function (e, t, n) {
                                 .append(
                                     $("<span></span>").text(
                                         ""
-                                            .concat(i.GLocale.get(new i.GLocaleKey("GPurchasePanel", "text.orderno")), " ")
+                                            .concat(GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.orderno")), " ")
                                             .concat(e.purchase_id)
                                     )
                                 )
@@ -179,15 +179,15 @@ module.exports = function (e, t, n) {
                     o.PURCHASEPANEL.HAS_PRODUCT_DESCRIPTION &&
                         $("<div></div>").addClass("description").append($("<label></label>").text(e.description)).appendTo(t));
                 let p = ""
-                    .concat(i.GLocale.get(new i.GLocaleKey("GPurchasePanel", "text.purchased")), " ")
-                    .concat(e.created ? i.GLocale.toLocaleDate(new Date(e.created)) : "");
+                    .concat(GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.purchased")), " ")
+                    .concat(e.created ? GObject.GLocale.toLocaleDate(new Date(e.created)) : "");
                 !n &&
                     e.issued_coupon &&
                     e.issued_coupon.expires &&
                     (p += ", ".concat(
-                        i.GLocale.get(new i.GLocaleKey("GPurchasePanel", "text.purchased-expires")).replace(
+                        GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.purchased-expires")).replace(
                             "%date",
-                            i.GLocale.toLocaleDate(new Date(e.issued_coupon.expires))
+                            GObject.GLocale.toLocaleDate(new Date(e.issued_coupon.expires))
                         )
                     ));
                 let g = $("<span></span>").text(p + ".");
@@ -207,12 +207,12 @@ module.exports = function (e, t, n) {
                                                     $("<div></div>")
                                                         .append(
                                                             $("<button></button>")
-                                                                .text(i.GLocale.get(new i.GLocaleKey("GLocale", "yes")))
+                                                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "yes")))
                                                                 .on("click", () => a(s))
                                                         )
                                                         .append(
                                                             $("<button></button>")
-                                                                .text(i.GLocale.get(new i.GLocaleKey("GLocale", "no")))
+                                                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "no")))
                                                                 .on("click", () => s.removeClass("show"))
                                                         )
                                                 )
@@ -243,17 +243,17 @@ module.exports = function (e, t, n) {
                                         : g.text(
                                               ""
                                                   .concat(a, ", ")
-                                                  .concat(i.GLocale.get(new i.GLocaleKey("GPurchasePanel", "text.purchased-renews")), " ")
-                                                  .concat(i.GLocale.toLocaleDate(new Date(u.endDate)), ".")
+                                                  .concat(GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.purchased-renews")), " ")
+                                                  .concat(GObject.GLocale.toLocaleDate(new Date(u.endDate)), ".")
                                           ),
                                         p(
-                                            i.GLocale.get(new i.GLocaleKey("GPurchasePanel", "text.prompt-cancel-title")),
-                                            i.GLocale.get(new i.GLocaleKey("GPurchasePanel", "text.prompt-cancel-info"))
+                                            GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.prompt-cancel-title")),
+                                            GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.prompt-cancel-info"))
                                                 .replace("%app", l)
-                                                .replace("%date", i.GLocale.toLocaleDate(new Date(u.endDate))),
-                                            i.GLocale.get(new i.GLocaleKey("GLocale", "cancel")),
+                                                .replace("%date", GObject.GLocale.toLocaleDate(new Date(u.endDate))),
+                                            GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "cancel")),
                                             async (n) => {
-                                                this._toggleLoading(!0);
+                                                this._toggleLoading(true);
                                                 try {
                                                     (await r
                                                         .deactivateSubscription(u.id, e.provider)
@@ -265,7 +265,7 @@ module.exports = function (e, t, n) {
                                                         .catch((e) => this._handleError(e)),
                                                         await d.checkLicense());
                                                 } finally {
-                                                    this._toggleLoading(!1);
+                                                    this._toggleLoading(false);
                                                 }
                                             }
                                         ));
@@ -275,9 +275,9 @@ module.exports = function (e, t, n) {
                                             ""
                                                 .concat(a, ", ")
                                                 .concat(
-                                                    i.GLocale.get(new i.GLocaleKey("GPurchasePanel", "text.subscription-ends")).replace(
+                                                    GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.subscription-ends")).replace(
                                                         "%date",
-                                                        i.GLocale.toLocaleDate(new Date(u.endDate))
+                                                        GObject.GLocale.toLocaleDate(new Date(u.endDate))
                                                     ),
                                                     "."
                                                 )
@@ -287,14 +287,14 @@ module.exports = function (e, t, n) {
                                         return;
                                     if (u.repurchase) return;
                                     let n = p(
-                                        i.GLocale.get(new i.GLocaleKey("GPurchasePanel", "text.prompt-activate-title")),
-                                        i.GLocale.get(new i.GLocaleKey("GPurchasePanel", "text.prompt-activate-info")).replace(
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.prompt-activate-title")),
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.prompt-activate-info")).replace(
                                             "%date",
-                                            i.GLocale.toLocaleDate(new Date(u.nextBillingDate))
+                                            GObject.GLocale.toLocaleDate(new Date(u.nextBillingDate))
                                         ),
-                                        i.GLocale.get(new i.GLocaleKey("GPurchasePanel", "text.prompt-activate-label")),
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.prompt-activate-label")),
                                         async (n) => {
-                                            this._toggleLoading(!0);
+                                            this._toggleLoading(true);
                                             try {
                                                 (await r
                                                     .activateSubscription(u.id, e.provider)
@@ -306,7 +306,7 @@ module.exports = function (e, t, n) {
                                                     .catch((e) => this._handleError(e)),
                                                     await d.checkLicense());
                                             } finally {
-                                                this._toggleLoading(!1);
+                                                this._toggleLoading(false);
                                             }
                                         },
                                         o.PURCHASEPANEL.HAS_HIGHLIGHT
@@ -319,7 +319,7 @@ module.exports = function (e, t, n) {
                 return ($("<div></div>").addClass("purchased").append($("<label></label>").append(g)).appendTo(t), t);
             }),
             (p.prototype._handleError = function (e) {
-                let t = i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.something-wrong"));
+                let t = GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.something-wrong"));
                 (e && e.message ? (t = e.message) : e && e.errors && (t = e.errors.map((e) => e[1]).join("<br>")), this._messageHandler(t));
             }),
             (p.prototype._toggleLoading = function (e) {
@@ -328,5 +328,5 @@ module.exports = function (e, t, n) {
             (p.prototype.getHTMLElement = function () {
                 return this._container;
             }),
-            (e.exports = p));
+            (module.exports = p));
     };

@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(20), n(34));
-        var i = n(1),
-            a = o(n(31));
+        var o = require(16);
+        (require(20), require(34));
+        var GObject = require(1),
+            a = o(require(31));
         class r extends a.default {
             static getSubActionId(e, t) {
                 return "".concat(e, ".").concat(t);
@@ -25,7 +25,7 @@ module.exports = function (e, t, n) {
                 return gDesigner.getAction(e);
             }
             isVisible() {
-                return !1;
+                return false;
             }
             isEnabled() {
                 return this.getMainAction().isEnabled();
@@ -38,7 +38,7 @@ module.exports = function (e, t, n) {
                     n = this.getShortcutSubKey(),
                     o = a.default.getActionShortcutHint(t, e);
                 return o && n
-                    ? i.GLocale.getValue("GSubAction", "shortcut-hint-template")
+                    ? GObject.GLocale.getValue("GSubAction", "shortcut-hint-template")
                           .replace("%mainShortcutHint", o)
                           .replace("%shortcutSubKeyHint", n)
                     : null;
@@ -47,5 +47,5 @@ module.exports = function (e, t, n) {
                 return "[Object GSubAction]";
             }
         }
-        ((r.Type = {}), (e.exports = r));
+        ((r.Type = {}), (module.exports = r));
     };

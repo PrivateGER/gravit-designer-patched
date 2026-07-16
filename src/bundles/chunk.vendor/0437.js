@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
                 r = function () {};
-            (n.inherit(r, n), (e.exports = r));
+            (IsFiniteNonNegativeNumber.inherit(r, IsFiniteNonNegativeNumber), (module.exports = r));
         };

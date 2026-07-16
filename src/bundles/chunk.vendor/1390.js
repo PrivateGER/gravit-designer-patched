@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(165),
-                r = i(11),
-                o = i(1391),
-                a = i(70),
-                s = i(122),
-                l = i(83),
-                h = i(132);
+module.exports = function (module, exports, require) {
+            var PDFNodeStream = require(165),
+                r = require(11),
+                o = require(1391),
+                a = require(70),
+                s = require(122),
+                l = require(83),
+                h = require(132);
 
             function A() {}
             ((A.import = function (e, t, i, c) {
@@ -14,7 +14,7 @@ module.exports = function (e, t, i) {
                     if (e instanceof ArrayBuffer || e instanceof Uint8Array) {
                         var p = e instanceof ArrayBuffer ? new Uint8Array(e) : e;
                         if (31 === p[0] && 139 === p[1] && 8 === p[2]) {
-                            e = n.ungzip(p, {
+                            e = PDFNodeStream.ungzip(p, {
                                 to: "string",
                             });
                             return A.import(e, t, i, c);
@@ -35,7 +35,7 @@ module.exports = function (e, t, i) {
                         {
                             baseWidth: 400,
                             baseHeight: 400,
-                            forceBaseSize: !1,
+                            forceBaseSize: false,
                         },
                         t
                     );
@@ -44,7 +44,7 @@ module.exports = function (e, t, i) {
                         f = o(t, i),
                         m = f.CreateElement(e.documentElement);
                     if (
-                        ((m.root = !0),
+                        ((m.root = true),
                         f.ViewPort.Clear(),
                         f.ViewPort.SetCurrent(t.baseWidth, t.baseHeight),
                         !t.forceBaseSize && m.attributes.viewBox)
@@ -61,7 +61,7 @@ module.exports = function (e, t, i) {
                             b = m.style("height").toPixels("y"),
                             C = m.style("width").getUnits();
                         (Object.keys(h.Unit).some(function (e) {
-                            if (h.Unit[e] === C) return ((_ = h.Unit[e]), !0);
+                            if (h.Unit[e] === C) return ((_ = h.Unit[e]), true);
                         }),
                             f.ViewPort.Clear(),
                             f.ViewPort.SetCurrent(v, b),
@@ -106,5 +106,5 @@ module.exports = function (e, t, i) {
                     (console.error(e), c(e));
                 }
             }),
-                (e.exports = A));
+                (module.exports = A));
         };

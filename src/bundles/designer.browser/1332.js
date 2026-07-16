@@ -1,23 +1,23 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(3), n(4), n(41));
-        var i = n(1),
-            a = n(53),
-            r = n(15),
-            s = n(10),
-            l = n(40),
-            c = o(n(44)),
-            d = n(567),
-            u = n(18),
-            p = n(31);
-        const g = n(358),
-            h = n(607);
+        var o = require(16);
+        (require(3), require(4), require(41));
+        var GObject = require(1),
+            a = require(53),
+            GPlatform = require(15),
+            designerConfig = require(10),
+            GSaveAction = require(40),
+            c = o(require(44 /* GSystemDialog */)),
+            GAnnotationsSidebar = require(567),
+            GCategory = require(18),
+            p = require(31);
+        const g = require(358),
+            h = require(607);
         function f() {}
-        (i.GObject.inherit(f, p),
+        (GObject.GObject.inherit(f, p),
             (f.ID = "edit.delete"),
-            (f.TITLE = new i.GLocaleKey("GDeleteAction", "title")),
-            (f.prototype._isConfirmWindowDisplaying = !1),
+            (f.TITLE = new GObject.GLocaleKey("GDeleteAction", "title")),
+            (f.prototype._isConfirmWindowDisplaying = false),
             (f.prototype.getId = function () {
                 return f.ID;
             }),
@@ -25,55 +25,55 @@ module.exports = function (e, t, n) {
                 return f.TITLE;
             }),
             (f.prototype.getCategory = function () {
-                return u.CATEGORY_EDIT;
+                return GCategory.CATEGORY_EDIT;
             }),
             (f.prototype.getGroup = function () {
                 return "ccp";
             }),
             (f.prototype.getShortcut = function () {
-                return [r.GKey.Constant.REMOVE];
+                return [GPlatform.GKey.Constant.REMOVE];
             }),
             (f.prototype.getAdditionalShortcuts = function () {
                 var e = [];
                 return (
-                    i.GSystem.operatingSystem === i.GSystem.OperatingSystem.OSX_IOS
-                        ? e.push([r.GKey.Constant.DELETE])
-                        : e.push([r.GKey.Constant.BACKSPACE]),
+                    GObject.GSystem.operatingSystem === GObject.GSystem.OperatingSystem.OSX_IOS
+                        ? e.push([GPlatform.GKey.Constant.DELETE])
+                        : e.push([GPlatform.GKey.Constant.BACKSPACE]),
                     e
                 );
             }),
             (f.prototype.isEnabled = function () {
                 var e = gDesigner.getActiveDocument();
-                if (this._isConfirmWindowDisplaying) return !1;
+                if (this._isConfirmWindowDisplaying) return false;
                 if (e) {
                     var t = e.getEditor().getSelection();
-                    if (t) for (var n = 0; n < t.length; ++n) if (t[n] instanceof i.GItem || t[n] instanceof i.GLayer) return !0;
+                    if (t) for (var n = 0; n < t.length; ++n) if (t[n] instanceof GObject.GItem || t[n] instanceof GObject.GLayer) return true;
                 }
-                return !1;
+                return false;
             }),
             (f.prototype.execute = function () {
                 var e = gDesigner.getActiveDocument(),
                     t = e.getEditor(),
                     n = e.getActiveStylesList(),
                     o = gDesigner.getMouseOverContext();
-                if (s.HAS_ANNOTATIONS && gDesigner.getRightSidebars().getActiveSidebar() === d.ID) {
+                if (designerConfig.HAS_ANNOTATIONS && gDesigner.getRightSidebars().getActiveSidebar() === GAnnotationsSidebar.ID) {
                     var r = t.getSelection().filter((e) => g.canDeleteAnnotation(e));
                     r.length &&
-                        (this._setIsConfirmWindowDisplaying(!0),
+                        (this._setIsConfirmWindowDisplaying(true),
                         c.default.confirm(
-                            i.GLocale.get(new i.GLocaleKey("GAnnotationPanel", "text.confirm-remove")),
+                            GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.confirm-remove")),
                             (e) => {
                                 (e &&
                                     gDesigner.getActiveDocument() &&
                                     gDesigner.getActiveDocument().getEditor() === t &&
-                                    g.removeAnnotations(r, r[0].getParent(), i.GLocale.get(this.getTitle())),
-                                    this._setIsConfirmWindowDisplaying(!1));
+                                    g.removeAnnotations(r, r[0].getParent(), GObject.GLocale.get(this.getTitle())),
+                                    this._setIsConfirmWindowDisplaying(false));
                             },
                             null,
                             null,
                             null,
-                            !0,
-                            !0
+                            true,
+                            true
                         ));
                 } else if (o.context && (n.Fill || n.Border || n.Effect)) {
                     var u = null,
@@ -88,11 +88,11 @@ module.exports = function (e, t, n) {
                     a.GEditor.tryRunTransaction(
                         e.getScene(),
                         function () {
-                            (0, l.iterateEqualStyleLayers)(p, u, m, function (e) {
+                            (0, GSaveAction.iterateEqualStyleLayers)(p, u, m, function (e) {
                                 e.getParent().removeChild(e);
                             });
                         },
-                        i.GLocale.get(f.TITLE)
+                        GObject.GLocale.get(f.TITLE)
                     );
                 } else t.deleteSelection();
             }),
@@ -105,5 +105,5 @@ module.exports = function (e, t, n) {
             (f.prototype.toString = function () {
                 return "[Object GDeleteAction]";
             }),
-            (e.exports = f));
+            (module.exports = f));
     };

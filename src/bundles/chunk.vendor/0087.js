@@ -1,16 +1,16 @@
-module.exports = function (e, t, i) {
-            var n = i(48),
-                r = i(12);
+module.exports = function (module, exports, require) {
+            var n = require(48),
+                r = require(12);
 
             function o() {}
             ((o.prototype.rewindVertices = function (e) {
-                return !1;
+                return false;
             }),
                 (o.prototype.readVertex = function (e) {
-                    return !1;
+                    return false;
                 }),
                 (o.prototype.hasVertexForRead = function () {
-                    return !1;
+                    return false;
                 }),
                 (o.prototype.isClockWise = function () {
                     this.rewindVertices(0);
@@ -52,7 +52,7 @@ module.exports = function (e, t, i) {
                 (o.prototype.toSVGPath = function (e) {
                     var t = "",
                         i = new n(),
-                        r = !1;
+                        r = false;
                     this.rewindVertices(0);
                     for (
                         var o = function (e) {
@@ -75,7 +75,7 @@ module.exports = function (e, t, i) {
                                 var s = new n();
                                 this.readVertex(s)
                                     ? o(i) && o(s) && (a(s), (t += " Q " + s.x + " " + s.y + " " + i.x + " " + i.y))
-                                    : (r = !0);
+                                    : (r = true);
                                 break;
                             case n.Command.Curve2:
                                 s = new n();
@@ -85,7 +85,7 @@ module.exports = function (e, t, i) {
                                       o(s) &&
                                       o(l) &&
                                       (a(s), a(l), (t += " C " + s.x + " " + s.y + " " + l.x + " " + l.y + " " + i.x + " " + i.y))
-                                    : (r = !0);
+                                    : (r = true);
                                 break;
                             case n.Command.Close:
                                 t += " Z ";
@@ -95,5 +95,5 @@ module.exports = function (e, t, i) {
                 (o.prototype.toString = function () {
                     return "[Object GVertexSource]";
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

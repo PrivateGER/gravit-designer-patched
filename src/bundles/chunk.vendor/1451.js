@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
-            var n = i(1452),
-                r = i(798),
-                o = i(132),
-                a = i(840),
-                s = i(729),
-                l = i(28),
-                h = i(14);
+module.exports = function (module, exports, require) {
+            var n = require(1452),
+                r = require(798),
+                o = require(132),
+                a = require(840),
+                s = require(729),
+                GStylable = require(28),
+                h = require(14);
 
             function A() {}
             ((A.prototype._prepareForRastering = function (e) {
-                return e.hasMixin(l)
+                return e.hasMixin(GStylable)
                     ? new Proxy(e, {
                           get: function (e, t) {
                               switch (t) {
@@ -35,13 +35,13 @@ module.exports = function (e, t, i) {
                                     f = (d.getY() * u[0]) / o.DPI,
                                     m = 1024;
                                 g > 1 && f > 1 && (m *= Math.min(1 / g, 1 / f));
-                                var y = !1;
-                                if (i.hasMixin(l)) {
+                                var y = false;
+                                if (i.hasMixin(GStylable)) {
                                     var _ = i.getEffects();
                                     if (_)
                                         for (var v = _.getFirstChild(); null != v; v = v.getNext())
                                             if (v instanceof a || v instanceof s) {
-                                                y = !0;
+                                                y = true;
                                                 break;
                                             }
                                 }
@@ -55,7 +55,7 @@ module.exports = function (e, t, i) {
                                         P = function (e) {
                                             var t = e.translated(p.getX(), p.getY()),
                                                 n = this._prepareForRastering(i),
-                                                o = r.export(n, h, null, null, null, null, !1, t);
+                                                o = r.export(n, h, null, null, null, null, false, t);
                                             o &&
                                                 o.getWidth() > 0 &&
                                                 o.getHeight() > 0 &&
@@ -72,7 +72,7 @@ module.exports = function (e, t, i) {
                                             (w.forEach(function (e) {
                                                 n.drawImage(e.bitmap.getHTMLElement(), e.area.getX() * r, e.area.getY() * r);
                                             }),
-                                                e.canvas.getContext().replaceWithBitmap(t, i, null, null, !0),
+                                                e.canvas.getContext().replaceWithBitmap(t, i, null, null, true),
                                                 A());
                                         }.bind(this);
                                     C.execute(b, P, S);
@@ -82,7 +82,7 @@ module.exports = function (e, t, i) {
                                     (I &&
                                         I.getWidth() > 0 &&
                                         I.getHeight() > 0 &&
-                                        e.canvas.getContext().replaceWithBitmap(I.getHTMLElement(), i, null, null, !0),
+                                        e.canvas.getContext().replaceWithBitmap(I.getHTMLElement(), i, null, null, true),
                                         A());
                                 }
                             } catch (e) {
@@ -91,5 +91,5 @@ module.exports = function (e, t, i) {
                         }.bind(this)
                     );
                 }),
-                (e.exports = A));
+                (module.exports = A));
         };

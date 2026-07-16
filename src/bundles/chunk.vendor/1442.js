@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             var i = function () {};
             ((i.prototype.version = 1.7),
                 (i.prototype.write = function (e) {
@@ -8,5 +8,5 @@ module.exports = function (e, t) {
                         e.writeBuffer(new Uint8Array([37, 226, 227, 207, 211])),
                         e.writeln());
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (Object.defineProperty(t, "__esModule", { value: !0 }),
-            (t.shouldShowExternalFileError = function (e) {
+        var o = require(16);
+        (Object.defineProperty(exports, "__esModule", { value: true }),
+            (exports.shouldShowExternalFileError = function (e) {
                 return e instanceof s.Item && !e.hasFileSettings();
             }),
-            (t.updateSaveOptions = function (e, t, n) {
+            (exports.updateSaveOptions = function (e, t, n) {
                 if (n.getFullName()) {
-                    const o = (0, i.getExtensionFromString)(
+                    const o = (0, GSaveAction.getExtensionFromString)(
                         n.getFullName(),
-                        a.FILE_FORMATS.map((e) => e.ext.toUpperCase())
+                        designerConfig.FILE_FORMATS.map((e) => e.ext.toUpperCase())
                     );
                     if (o && "CDR" === o.toUpperCase())
                         return (
@@ -23,9 +23,9 @@ module.exports = function (e, t, n) {
                 }
                 return e;
             }),
-            n(38));
-        var i = n(40),
-            a = n(10),
-            r = o(n(1248));
-        const s = n(388);
+            require(38));
+        var GSaveAction = require(40),
+            designerConfig = require(10),
+            r = o(require(1248));
+        const s = require(388);
     };

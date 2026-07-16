@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        n(3);
-        var i = n(1),
-            a = (n(15), o(n(31))),
-            r = (o(n(85)), o(n(18))),
-            s = o(n(1173));
+        var o = require(16);
+        require(3);
+        var GObject = require(1),
+            a = (require(15 /* GPlatform */), o(require(31))),
+            r = (o(require(85)), o(require(18 /* GCategory */))),
+            s = o(require(1173));
         function l() {}
-        (i.GObject.inherit(l, a.default),
+        (GObject.GObject.inherit(l, a.default),
             (l.ID = "file.install-to-desktop"),
-            (l.TITLE = new i.GLocaleKey("GInstallToDesktopAction", "title")),
+            (l.TITLE = new GObject.GLocaleKey("GInstallToDesktopAction", "title")),
             (l.closedInstallPWADialogDatePropName = "pwa.closed-install-pwa-dialog-date"),
             (l.installPWA3timesAWeekPropName = "pwa.show-install-dialog-3-times-a-week"),
             (l.install = function () {
@@ -52,5 +52,5 @@ module.exports = function (e, t, n) {
             (l.prototype.toString = function () {
                 return "[Object GInstallToDesktopAction]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

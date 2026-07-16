@@ -1,17 +1,17 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(133);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                GScenePaintConfiguration = require(133);
 
             function o() {
-                (r.call(this),
-                    (this.paintMode = r.PaintMode.Full),
-                    (this.multiPageView = !0),
-                    (this.ignoreEffects = !0),
-                    (this.thumbnails = !1));
+                (GScenePaintConfiguration.call(this),
+                    (this.paintMode = GScenePaintConfiguration.PaintMode.Full),
+                    (this.multiPageView = true),
+                    (this.ignoreEffects = true),
+                    (this.thumbnails = false));
             }
-            (n.inherit(o, r),
+            (IsFiniteNonNegativeNumber.inherit(o, GScenePaintConfiguration),
                 (o.prototype.isOutline = function (e) {
-                    return !1;
+                    return false;
                 }),
                 (o.prototype.isAnnotationsVisible = function (e) {
                     return !!this.annotations;
@@ -20,7 +20,7 @@ module.exports = function (e, t, i) {
                     return !!this.annotations;
                 }),
                 (o.prototype.isClipToPage = function (e) {
-                    return !1;
+                    return false;
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

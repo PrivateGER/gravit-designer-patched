@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        e.exports = function (e) {
+        module.exports = function (e) {
             try {
                 return !!e();
             } catch (e) {
-                return !0;
+                return true;
             }
         };
     };

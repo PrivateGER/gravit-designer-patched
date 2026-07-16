@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
-            var n = i(633),
-                r = i(261),
-                o = i(636),
-                a = i(637),
-                s = i(634),
-                l = i(455),
-                h = i(635),
-                A = i(890),
-                c = i(638),
-                p = i(639),
-                u = i(632);
+module.exports = function (module, exports, require) {
+            var n = require(633),
+                r = require(261),
+                o = require(636),
+                a = require(637),
+                s = require(634),
+                l = require(455),
+                h = require(635),
+                A = require(890),
+                c = require(638),
+                p = require(639),
+                u = require(632);
 
             function d() {
                 ((this._projects = {}), (this._clazzMap = {}), (this._functions = {}), (this._translationInstance = new s()));
@@ -19,8 +19,8 @@ module.exports = function (e, t, i) {
             (r.inheritAndMix(d, r),
                 (d.prototype._language = 0),
                 (d.prototype._project = null),
-                (d.prototype._extensionEnabled = !1),
-                (d.prototype._checkStrict = !1),
+                (d.prototype._extensionEnabled = false),
+                (d.prototype._checkStrict = false),
                 (d.prototype._supportedISO6391Locales = ["en", "de", "zh", "pt", "es", "fr", "pl", "ru", "tr", "cs", "it", "ja", "nl"]),
                 (d.prototype.setStrict = function (e) {
                     this._checkStrict = e;
@@ -33,7 +33,7 @@ module.exports = function (e, t, i) {
                     this._project = e;
                 }),
                 (d.prototype.enableExtension = function () {
-                    this._extensionEnabled = !0;
+                    this._extensionEnabled = true;
                 }),
                 (d.prototype._language = 0),
                 (d.prototype._projects = null),
@@ -254,5 +254,5 @@ module.exports = function (e, t, i) {
                 (d.prototype.toString = function () {
                     return "[Object GLocale]";
                 }),
-                (e.exports = d));
+                (module.exports = d));
         };

@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(557);
-        var o = n(16);
-        (n(19), n(96), n(30), n(8), n(20), n(3), n(34), n(4), n(41), n(38), n(97), n(26), n(125), n(126), n(114));
-        var i = n(1),
-            a = n(40),
-            r = n(593),
-            s = o(n(787)),
+        require(557);
+        var o = require(16);
+        (require(19), require(96), require(30), require(8 /* Symbol */), require(20), require(3), require(34), require(4), require(41), require(38), require(97), require(26), require(125), require(126), require(114));
+        var GObject = require(1),
+            GSaveAction = require(40),
+            r = require(593),
+            s = o(require(787)),
             l = (function (e, t) {
                 if ("function" == typeof WeakMap)
                     var n = new WeakMap(),
@@ -29,11 +29,11 @@ module.exports = function (e, t, n) {
                                 : (r[t] = e[t]));
                     return r;
                 })(e, t);
-            })(n(789)),
-            c = o(n(594));
-        const d = n(1108),
-            u = n(595),
-            { HTTP_STATUS_CODES: p } = n(10);
+            })(require(789)),
+            c = o(require(594));
+        const d = require(1108),
+            u = require(595),
+            { HTTP_STATUS_CODES: p } = require(10 /* designerConfig */);
         function g(e) {
             this.setTokenIssuer(e);
         }
@@ -83,11 +83,11 @@ module.exports = function (e, t, n) {
             (g.prototype.getFilePermissions = async function (e) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
                 if (!this.getTokenIssuerSettings() || !this.getTokenIssuerSettings().corporate)
-                    return Promise.reject(i.GLocale.get(new i.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
-                if (!e) return Promise.reject(i.GLocale.get(new i.GLocaleKey("GGoogleDrive", "error.no-file-found")));
+                    return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
+                if (!e) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.no-file-found")));
                 let n = [];
                 const o = await this.getAccessToken(),
-                    a = { fields: "*", supportsAllDrives: !0, pageSize: 50 };
+                    a = { fields: "*", supportsAllDrives: true, pageSize: 50 };
                 return new Promise((i, r) => {
                     !(function l(c) {
                         const d = new URL("https://www.googleapis.com/drive/v3/files/".concat(e, "/permissions")),
@@ -124,11 +124,11 @@ module.exports = function (e, t, n) {
                 });
             }),
             (g.prototype.createOrUpdateUserShare = async function (e, t) {
-                if (!e) return Promise.reject(i.GLocale.get(new i.GLocaleKey("GGoogleDrive", "error.no-file-found")));
+                if (!e) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.no-file-found")));
                 if (!this.getTokenIssuerSettings() || !this.getTokenIssuerSettings().corporate)
-                    return Promise.reject(i.GLocale.get(new i.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
+                    return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
                 const { role: n, emailAddress: o } = t;
-                if (!n || !o) return Promise.reject(i.GLocale.get(new i.GLocaleKey("GGoogleDrive", "error.not-enough-parameters")));
+                if (!n || !o) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.not-enough-parameters")));
                 const a = await this.getShareIdForEmail(e, o).catch(() => []),
                     r = { type: "user", emailAddress: o, role: l.default[n.id] };
                 if (a && a.length > 0) {
@@ -156,25 +156,25 @@ module.exports = function (e, t, n) {
                 });
             }),
             (g.prototype.createDomainShare = function (e, t) {
-                if (!e) return Promise.reject(i.GLocale.get(new i.GLocaleKey("GGoogleDrive", "error.no-file-found")));
+                if (!e) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.no-file-found")));
                 if (!this.getTokenIssuerSettings() || !this.getTokenIssuerSettings().corporate)
-                    return Promise.reject(i.GLocale.get(new i.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
+                    return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
                 const { role: n, domain: o } = t;
-                if (!n || !o) return Promise.reject(i.GLocale.get(new i.GLocaleKey("GGoogleDrive", "error.not-enough-parameters")));
+                if (!n || !o) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.not-enough-parameters")));
                 const a = {
                     type: "domain",
                     domain: o,
                     role: l.default[n.id],
-                    allowFileDiscovery: !0,
+                    allowFileDiscovery: true,
                 };
                 return this._createShare(e, a);
             }),
             (g.prototype._createShare = async function (e, t) {
                 if (!this.getTokenIssuerSettings() || !this.getTokenIssuerSettings().corporate)
-                    return Promise.reject(i.GLocale.get(new i.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
+                    return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
                 const n = new URL("https://www.googleapis.com/drive/v3/files/".concat(e, "/permissions")),
                     o = await this.getAccessToken(),
-                    a = { fields: "*", supportsAllDrives: !0, sendNotificationEmail: !1 };
+                    a = { fields: "*", supportsAllDrives: true, sendNotificationEmail: false };
                 for (var r in a) n.searchParams.append(r, a[r]);
                 return fetch(n.toString(), {
                     method: "POST",
@@ -187,19 +187,19 @@ module.exports = function (e, t, n) {
             }),
             (g.prototype.getShareIdForEmail = async function (e, t) {
                 return this.getTokenIssuerSettings() && this.getTokenIssuerSettings().corporate
-                    ? (await this.getFilePermissions(e, !0)).filter((e) => {
+                    ? (await this.getFilePermissions(e, true)).filter((e) => {
                           let { emailAddress: n } = e;
                           return n === t;
                       })
-                    : Promise.reject(i.GLocale.get(new i.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
+                    : Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
             }),
             (g.prototype.removeShare = async function (e, t) {
                 let { id: n } = t;
                 if (!this.getTokenIssuerSettings() || !this.getTokenIssuerSettings().corporate)
-                    return Promise.reject(i.GLocale.get(new i.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
+                    return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
                 const o = new URL("https://www.googleapis.com/drive/v3/files/".concat(e, "/permissions/").concat(n)),
                     a = await this.getAccessToken(),
-                    r = { fields: "*", supportsAllDrives: !0 };
+                    r = { fields: "*", supportsAllDrives: true };
                 for (var s in r) o.searchParams.append(s, r[s]);
                 return fetch(o.toString(), {
                     method: "DELETE",
@@ -213,7 +213,7 @@ module.exports = function (e, t, n) {
                     (r.append("metadata", new Blob([JSON.stringify(n)], { type: "application/json" })), r.append("file", t));
                     var s = new URL("https://www.googleapis.com/upload/drive/v3/files/".concat(e || "")),
                         l = { uploadType: "multipart", fields: "*" };
-                    for (var c in (n.hasOwnProperty("driveId") && (l.supportsAllDrives = !0), l)) s.searchParams.append(c, l[c]);
+                    for (var c in (n.hasOwnProperty("driveId") && (l.supportsAllDrives = true), l)) s.searchParams.append(c, l[c]);
                     fetch(s.toString(), {
                         method: e ? "PATCH" : "POST",
                         headers: new Headers({ Authorization: "Bearer ".concat(o) }),
@@ -233,7 +233,7 @@ module.exports = function (e, t, n) {
                 return new Promise((a, r) => {
                     var s = n.mimeType || "application/octet-stream";
                     const l = { fields: "*" };
-                    (n.hasOwnProperty("driveId") && (l.supportsAllDrives = !0),
+                    (n.hasOwnProperty("driveId") && (l.supportsAllDrives = true),
                         new d({
                             file: t,
                             fileId: e,
@@ -272,7 +272,7 @@ module.exports = function (e, t, n) {
                             return i.status === p.UNAUTHORIZED && (await gContainer.getGoogleAPI().signIn(), 0 === o)
                                 ? this._request(e, t, n, ++o)
                                 : i.status === p.FORBIDDEN && g.isUsageLimitError(r) && o < g.TRIAL_UNTIL_FAIL
-                                  ? (await (0, a.sleep)(1e3 * Math.pow(1 + o, 2)), this._request(e, t, n, ++o))
+                                  ? (await (0, GSaveAction.sleep)(1e3 * Math.pow(1 + o, 2)), this._request(e, t, n, ++o))
                                   : Promise.reject(r);
                         }
                         return i;
@@ -291,10 +291,10 @@ module.exports = function (e, t, n) {
                     return d.status === p.UNAUTHORIZED && (await gContainer.getGoogleAPI().signIn(), 0 === i)
                         ? this._requestWithProgress(e, t, n, o, ++i)
                         : d.status === p.FORBIDDEN && g.isUsageLimitError(u) && i < g.TRIAL_UNTIL_FAIL
-                          ? (await (0, a.sleep)(1e3 * Math.pow(1 + i, 2)), this._requestWithProgress(e, t, n, o, ++i))
+                          ? (await (0, GSaveAction.sleep)(1e3 * Math.pow(1 + i, 2)), this._requestWithProgress(e, t, n, o, ++i))
                           : Promise.reject(u);
                 }
-                return (0, r.readResponseWithProgress)(d, o, !0);
+                return (0, r.readResponseWithProgress)(d, o, true);
             }),
             (g.prototype.getFile = function (e, t, n, o) {
                 var i = new URL("https://www.googleapis.com/drive/v3/files/".concat(e, "?alt=media"));
@@ -312,10 +312,10 @@ module.exports = function (e, t, n) {
             (g.prototype.fileExists = function (e) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 return this.getFileDetails(e, t)
-                    .then(() => !0)
+                    .then(() => true)
                     .catch((e) => {
                         if (e.error) {
-                            if (e.error.code === p.NOT_FOUND) return !1;
+                            if (e.error.code === p.NOT_FOUND) return false;
                             const t = new Error(e.error.message);
                             throw ((t.code = e.error.code), t);
                         }
@@ -346,13 +346,13 @@ module.exports = function (e, t, n) {
             }),
             (g.prototype.getAccountByEmail = function (e) {
                 if (!e || e.indexOf("@") <= 0)
-                    return Promise.reject(i.GLocale.get(new i.GLocaleKey("GShareDialog", "text.invalid-email")).replace("%email", e));
+                    return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.invalid-email")).replace("%email", e));
                 var t = new URL("https://www.googleapis.com/admin/directory/v1/users/".concat(e, "?viewType=domain_public"));
                 return this._request(t.toString(), { method: "GET" }).then((e) => e.json());
             }),
             (g.prototype.supportsEmailDomainCheck = async function () {
                 const e = await this.getTokenInfo().catch(() => null);
-                if (!e) return !1;
+                if (!e) return false;
                 const { scope: t } = e;
                 return Array.isArray(t) ? t.some((e) => n(e)) : n(t);
                 function n(e) {
@@ -382,11 +382,11 @@ module.exports = function (e, t, n) {
                 if (!e) {
                     if (!gContainer.getGoogleAPI().isLoaded()) throw Error("Google Drive Client not loaded!");
                     e = gContainer.getGoogleAPI().getTokenConfiguration({
-                        corporate: !1,
+                        corporate: false,
                         accountId: this._accountId,
                     });
                 }
                 return new g(new u(e));
             }),
-            (e.exports = g));
+            (module.exports = g));
     };

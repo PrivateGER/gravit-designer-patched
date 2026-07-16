@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(54),
-                r = i(2),
-                o = i(11),
-                a = i(118);
-            e.exports = function (e) {
+module.exports = function (module, exports, require) {
+            var n = require(54),
+                r = require(2),
+                o = require(11),
+                a = require(118);
+            module.exports = function (e) {
                 ((e.BorderPaintLayer = function (t, i, n, r) {
                     (e.PaintLayer.call(this, t, i, n, r),
                         this._setDefaultProperties(
@@ -17,7 +17,7 @@ module.exports = function (e, t, i) {
                         _bds: null,
                     }),
                     (e.BorderPaintLayer.MetaProperties = {
-                        _bs: !1,
+                        _bs: false,
                     }),
                     (e.BorderPaintLayer.GeometryProperties = {
                         _bw: 1,
@@ -27,11 +27,11 @@ module.exports = function (e, t, i) {
                         _bml: 3,
                         _bhm: null,
                         _bhms: 1,
-                        _bhmo: !1,
+                        _bhmo: false,
                         _bhmi: 1,
                         _btm: null,
                         _btms: 1,
-                        _btmo: !1,
+                        _btmo: false,
                         _btmi: 1,
                     }),
                     (e.BorderPaintLayer.prototype.assignFrom = function (t) {
@@ -87,7 +87,7 @@ module.exports = function (e, t, i) {
                                 i,
                                 o.extend(
                                     {
-                                        _vs: !0,
+                                        _vs: true,
                                         _pt: null,
                                     },
                                     e.BorderPaintLayer.GeometryProperties
@@ -95,7 +95,7 @@ module.exports = function (e, t, i) {
                             ));
                     }),
                     (e.BorderPaintLayer.equals = function (e, t) {
-                        var i = !0;
+                        var i = true;
                         return (
                             [
                                 "_ba",

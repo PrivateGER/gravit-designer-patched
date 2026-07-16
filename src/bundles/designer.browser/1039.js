@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(735);
+        var o = require(25),
+            i = require(735);
         o(
             {
                 target: "String",
-                proto: !0,
+                proto: true,
                 name: "trimStart",
                 forced: "".trimLeft !== i,
             },

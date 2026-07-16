@@ -1,30 +1,30 @@
-module.exports = function (e, t, i) {
-            i(75);
-            var n = i(284),
-                r = i(2),
-                o = i(76),
-                a = i(0),
-                s = i(28),
-                l = i(60),
-                h = i(56),
-                A = i(214),
-                c = i(17),
-                p = (i(68), i(648)),
-                u = i(73),
-                d = i(70),
-                g = i(511),
-                f = i(162),
-                m = i(268),
-                y = i(14),
-                _ = i(370),
-                v = i(316),
-                b = i(317),
-                C = i(318),
-                w = i(285),
-                E = i(319),
-                B = i(320),
+module.exports = function (module, exports, require) {
+            require(75);
+            var n = require(284),
+                r = require(2),
+                o = require(76),
+                IsFiniteNonNegativeNumber = require(0),
+                GStylable = require(28),
+                l = require(60),
+                h = require(56),
+                A = require(214),
+                c = require(17),
+                p = (require(68), require(648)),
+                u = require(73),
+                d = require(70),
+                g = require(511),
+                f = require(162),
+                m = require(268),
+                y = require(14),
+                _ = require(370),
+                v = require(316),
+                b = require(317),
+                C = require(318),
+                w = require(285),
+                E = require(319),
+                B = require(320),
                 x =
-                    (i(321),
+                    (require(321),
                     {
                         GShape: "Shape Default",
                         GText: "Text Default",
@@ -72,13 +72,13 @@ module.exports = function (e, t, i) {
                                 ["name", "_sdf", "ps"],
                                 [
                                     x[e],
-                                    a.getTypeId(h),
-                                    [s.PropertySet.Style, s.PropertySet.BorderPaintLayers, s.PropertySet.FillPaintLayers],
+                                    IsFiniteNonNegativeNumber.getTypeId(h),
+                                    [GStylable.PropertySet.Style, GStylable.PropertySet.BorderPaintLayers, GStylable.PropertySet.FillPaintLayers],
                                 ]
                             ),
-                                t.getPaintLayers().appendChild(new s.FillPaintLayer(c.WHITE)),
-                                t.getPaintLayers().appendChild(new s.BorderPaintLayer(c.BLACK)),
-                                t.setProperty("defaultStyle", !0),
+                                t.getPaintLayers().appendChild(new GStylable.FillPaintLayer(c.WHITE)),
+                                t.getPaintLayers().appendChild(new GStylable.BorderPaintLayer(c.BLACK)),
+                                t.setProperty("defaultStyle", true),
                                 this.appendChild(t));
                             break;
                         case "GRectangle":
@@ -87,12 +87,12 @@ module.exports = function (e, t, i) {
                                 ["name", "defaultStyle", "_sdf", "ps"],
                                 [
                                     x[e],
-                                    !0,
-                                    a.getTypeId(u),
-                                    [s.PropertySet.Style, s.PropertySet.BorderPaintLayers, s.PropertySet.FillPaintLayers],
+                                    true,
+                                    IsFiniteNonNegativeNumber.getTypeId(u),
+                                    [GStylable.PropertySet.Style, GStylable.PropertySet.BorderPaintLayers, GStylable.PropertySet.FillPaintLayers],
                                 ]
                             ),
-                                i.getPaintLayers().appendChild(new s.FillPaintLayer(new c([235, 235, 235]))),
+                                i.getPaintLayers().appendChild(new GStylable.FillPaintLayer(new c([235, 235, 235]))),
                                 this.appendChild(i));
                             break;
                         case "GPath":
@@ -101,13 +101,13 @@ module.exports = function (e, t, i) {
                                 ["name", "defaultStyle", "_sdf", "ps"],
                                 [
                                     x[e],
-                                    !0,
-                                    a.getTypeId(l),
-                                    [s.PropertySet.Style, s.PropertySet.BorderPaintLayers, s.PropertySet.FillPaintLayers],
+                                    true,
+                                    IsFiniteNonNegativeNumber.getTypeId(l),
+                                    [GStylable.PropertySet.Style, GStylable.PropertySet.BorderPaintLayers, GStylable.PropertySet.FillPaintLayers],
                                 ]
                             ),
-                                r.getPaintLayers().appendChild(new s.FillPaintLayer(c.WHITE, 1, !1)),
-                                r.getPaintLayers().appendChild(new s.BorderPaintLayer(c.BLACK)),
+                                r.getPaintLayers().appendChild(new GStylable.FillPaintLayer(c.WHITE, 1, false)),
+                                r.getPaintLayers().appendChild(new GStylable.BorderPaintLayer(c.BLACK)),
                                 this.appendChild(r));
                             break;
                         case "GEllipse":
@@ -116,12 +116,12 @@ module.exports = function (e, t, i) {
                                 ["name", "defaultStyle", "_sdf", "ps"],
                                 [
                                     x[e],
-                                    !0,
-                                    a.getTypeId(A),
-                                    [s.PropertySet.Style, s.PropertySet.BorderPaintLayers, s.PropertySet.FillPaintLayers],
+                                    true,
+                                    IsFiniteNonNegativeNumber.getTypeId(A),
+                                    [GStylable.PropertySet.Style, GStylable.PropertySet.BorderPaintLayers, GStylable.PropertySet.FillPaintLayers],
                                 ]
                             ),
-                                o.getPaintLayers().appendChild(new s.FillPaintLayer(new c([235, 235, 235]))),
+                                o.getPaintLayers().appendChild(new GStylable.FillPaintLayer(new c([235, 235, 235]))),
                                 this.appendChild(o));
                             break;
                         case "GPolygon":
@@ -130,12 +130,12 @@ module.exports = function (e, t, i) {
                                 ["name", "defaultStyle", "_sdf", "ps"],
                                 [
                                     x[e],
-                                    !0,
-                                    a.getTypeId(n),
-                                    [s.PropertySet.Style, s.PropertySet.BorderPaintLayers, s.PropertySet.FillPaintLayers],
+                                    true,
+                                    IsFiniteNonNegativeNumber.getTypeId(n),
+                                    [GStylable.PropertySet.Style, GStylable.PropertySet.BorderPaintLayers, GStylable.PropertySet.FillPaintLayers],
                                 ]
                             ),
-                                p.getPaintLayers().appendChild(new s.FillPaintLayer(new c([235, 235, 235]))),
+                                p.getPaintLayers().appendChild(new GStylable.FillPaintLayer(new c([235, 235, 235]))),
                                 this.appendChild(p));
                             break;
                         case "GText":
@@ -144,14 +144,14 @@ module.exports = function (e, t, i) {
                                 ["name", "defaultStyle", "_sdf", "ps", "_fc"],
                                 [
                                     x[e],
-                                    !0,
-                                    a.getTypeId(d),
+                                    true,
+                                    IsFiniteNonNegativeNumber.getTypeId(d),
                                     [
-                                        s.PropertySet.Style,
-                                        s.PropertySet.BorderPaintLayers,
-                                        s.PropertySet.FillPaintLayers,
-                                        s.PropertySet.Text,
-                                        s.PropertySet.Paragraph,
+                                        GStylable.PropertySet.Style,
+                                        GStylable.PropertySet.BorderPaintLayers,
+                                        GStylable.PropertySet.FillPaintLayers,
+                                        GStylable.PropertySet.Text,
+                                        GStylable.PropertySet.Paragraph,
                                     ],
                                     c.BLACK,
                                 ]
@@ -164,14 +164,14 @@ module.exports = function (e, t, i) {
                                 ["name", "defaultStyle", "_sdf", "ps"],
                                 [
                                     x[e],
-                                    !0,
-                                    a.getTypeId(f),
-                                    [s.PropertySet.Style, s.PropertySet.BorderPaintLayers, s.PropertySet.FillPaintLayers],
+                                    true,
+                                    IsFiniteNonNegativeNumber.getTypeId(f),
+                                    [GStylable.PropertySet.Style, GStylable.PropertySet.BorderPaintLayers, GStylable.PropertySet.FillPaintLayers],
                                 ]
                             );
-                            var T = new s.BorderPaintLayer(c.BLACK);
+                            var T = new GStylable.BorderPaintLayer(c.BLACK);
                             (T.setProperty("_blc", y.LineCap.Round),
-                                S.getPaintLayers().appendChild(new s.FillPaintLayer(c.WHITE, 1, !1)),
+                                S.getPaintLayers().appendChild(new GStylable.FillPaintLayer(c.WHITE, 1, false)),
                                 S.getPaintLayers().appendChild(T),
                                 this.appendChild(S));
                             break;
@@ -179,11 +179,11 @@ module.exports = function (e, t, i) {
                             var I = new g();
                             (I.setProperties(
                                 ["name", "defaultStyle", "_sdf", "ps"],
-                                [x[e], !0, a.getTypeId(m), [s.PropertySet.Style, s.PropertySet.BorderPaintLayers]]
+                                [x[e], true, IsFiniteNonNegativeNumber.getTypeId(m), [GStylable.PropertySet.Style, GStylable.PropertySet.BorderPaintLayers]]
                             ),
-                                (D = new s.BorderPaintLayer(c.BLACK)).setProperties(
+                                (D = new GStylable.BorderPaintLayer(c.BLACK)).setProperties(
                                     ["_bhm", "_btm", "_blc"],
-                                    [s.BorderMarker.Arrow, s.BorderMarker.Arrow, y.LineCap.Butt]
+                                    [GStylable.BorderMarker.Arrow, GStylable.BorderMarker.Arrow, y.LineCap.Butt]
                                 ),
                                 I.getPaintLayers().appendChild(D),
                                 this.appendChild(I));
@@ -194,13 +194,13 @@ module.exports = function (e, t, i) {
                                 ["name", "defaultStyle", "_sdf", "ps"],
                                 [
                                     x[e],
-                                    !0,
-                                    a.getTypeId(v),
-                                    [s.PropertySet.Style, s.PropertySet.BorderPaintLayers, s.PropertySet.FillPaintLayers],
+                                    true,
+                                    IsFiniteNonNegativeNumber.getTypeId(v),
+                                    [GStylable.PropertySet.Style, GStylable.PropertySet.BorderPaintLayers, GStylable.PropertySet.FillPaintLayers],
                                 ]
                             );
-                            var R = new s.FillPaintLayer(new c([230, 2, 2]), 0, !0, y.BlendMode.Multiply),
-                                D = new s.BorderPaintLayer(new c([230, 2, 2])),
+                            var R = new GStylable.FillPaintLayer(new c([230, 2, 2]), 0, true, y.BlendMode.Multiply),
+                                D = new GStylable.BorderPaintLayer(new c([230, 2, 2])),
                                 k = F.getPaintLayers();
                             (D.setProperties(["_bw"], [2]), k.appendChild(R), k.appendChild(D), this.appendChild(F));
                             break;
@@ -210,13 +210,13 @@ module.exports = function (e, t, i) {
                                 ["name", "defaultStyle", "_sdf", "ps"],
                                 [
                                     x[e],
-                                    !0,
-                                    a.getTypeId(b),
-                                    [s.PropertySet.Style, s.PropertySet.BorderPaintLayers, s.PropertySet.FillPaintLayers],
+                                    true,
+                                    IsFiniteNonNegativeNumber.getTypeId(b),
+                                    [GStylable.PropertySet.Style, GStylable.PropertySet.BorderPaintLayers, GStylable.PropertySet.FillPaintLayers],
                                 ]
                             );
-                            ((R = new s.FillPaintLayer(new c([230, 2, 2]), 0, !0, y.BlendMode.Multiply)),
-                                (D = new s.BorderPaintLayer(new c([230, 2, 2]))),
+                            ((R = new GStylable.FillPaintLayer(new c([230, 2, 2]), 0, true, y.BlendMode.Multiply)),
+                                (D = new GStylable.BorderPaintLayer(new c([230, 2, 2]))),
                                 (k = G.getPaintLayers()));
                             (D.setProperties(["_bw"], [2]), k.appendChild(R), k.appendChild(D), this.appendChild(G));
                             break;
@@ -224,9 +224,9 @@ module.exports = function (e, t, i) {
                             var Q = new g();
                             (Q.setProperties(
                                 ["name", "defaultStyle", "_sdf", "ps", "_stop", "_sbl"],
-                                [x[e], !0, a.getTypeId(C), [s.PropertySet.Style, s.PropertySet.BorderPaintLayers], 0.5, y.BlendMode.Normal]
+                                [x[e], true, IsFiniteNonNegativeNumber.getTypeId(C), [GStylable.PropertySet.Style, GStylable.PropertySet.BorderPaintLayers], 0.5, y.BlendMode.Normal]
                             ),
-                                (D = new s.BorderPaintLayer(new c([248, 206, 28]))).setProperties(["_bw"], [12]),
+                                (D = new GStylable.BorderPaintLayer(new c([248, 206, 28]))).setProperties(["_bw"], [12]),
                                 Q.getPaintLayers().appendChild(D),
                                 this.appendChild(Q));
                             break;
@@ -234,9 +234,9 @@ module.exports = function (e, t, i) {
                             var M = new g();
                             (M.setProperties(
                                 ["name", "defaultStyle", "_sdf", "ps", "_stop", "_sbl"],
-                                [x[e], !0, a.getTypeId(B), [s.PropertySet.Style, s.PropertySet.BorderPaintLayers], 1, y.BlendMode.Normal]
+                                [x[e], true, IsFiniteNonNegativeNumber.getTypeId(B), [GStylable.PropertySet.Style, GStylable.PropertySet.BorderPaintLayers], 1, y.BlendMode.Normal]
                             ),
-                                (D = new s.BorderPaintLayer(new c([230, 2, 2]))).setProperties(["_bw"], [2]),
+                                (D = new GStylable.BorderPaintLayer(new c([230, 2, 2]))).setProperties(["_bw"], [2]),
                                 M.getPaintLayers().appendChild(D),
                                 this.appendChild(M));
                             break;
@@ -244,11 +244,11 @@ module.exports = function (e, t, i) {
                             var N = new g();
                             (N.setProperties(
                                 ["name", "defaultStyle", "_sdf", "ps", "_stop", "_sbl"],
-                                [x[e], !0, a.getTypeId(E), [s.PropertySet.Style, s.PropertySet.BorderPaintLayers], 1, y.BlendMode.Normal]
+                                [x[e], true, IsFiniteNonNegativeNumber.getTypeId(E), [GStylable.PropertySet.Style, GStylable.PropertySet.BorderPaintLayers], 1, y.BlendMode.Normal]
                             ),
-                                (D = new s.BorderPaintLayer(new c([230, 2, 2]))).setProperties(
+                                (D = new GStylable.BorderPaintLayer(new c([230, 2, 2]))).setProperties(
                                     ["_btm", "_blc", "_bw", "_btmi", "_bhmi"],
-                                    [s.BorderMarker.Arrow, y.LineCap.Butt, 2, 0, 0]
+                                    [GStylable.BorderMarker.Arrow, y.LineCap.Butt, 2, 0, 0]
                                 ),
                                 N.getPaintLayers().appendChild(D),
                                 this.appendChild(N));
@@ -259,26 +259,26 @@ module.exports = function (e, t, i) {
                                 ["name", "defaultStyle", "_sdf", "ps", "_stop", "_sbl"],
                                 [
                                     x[e],
-                                    !0,
-                                    a.getTypeId(w),
+                                    true,
+                                    IsFiniteNonNegativeNumber.getTypeId(w),
                                     [
-                                        s.PropertySet.Style,
-                                        s.PropertySet.BorderPaintLayers,
-                                        s.PropertySet.FillPaintLayers,
-                                        s.PropertySet.Effects,
+                                        GStylable.PropertySet.Style,
+                                        GStylable.PropertySet.BorderPaintLayers,
+                                        GStylable.PropertySet.FillPaintLayers,
+                                        GStylable.PropertySet.Effects,
                                     ],
                                     1,
                                     y.BlendMode.Normal,
                                 ]
                             );
-                            R = new s.FillPaintLayer(new c([0, 0, 0]));
+                            R = new GStylable.FillPaintLayer(new c([0, 0, 0]));
                             (U.getPaintLayers().appendChild(R), this.appendChild(U));
                             break;
                         case "GTextAnnotation":
                             var V = new g();
                             (V.setProperties(
                                 ["name", "defaultStyle", "_sdf", "ps", "_sbl", "_fc"],
-                                [x[e], !0, a.getTypeId(_), [s.PropertySet.Style, s.PropertySet.Text], y.BlendMode.Multiply, c.BLACK]
+                                [x[e], true, IsFiniteNonNegativeNumber.getTypeId(_), [GStylable.PropertySet.Style, GStylable.PropertySet.Text], y.BlendMode.Multiply, c.BLACK]
                             ),
                                 this.appendChild(V));
                     }
@@ -288,7 +288,7 @@ module.exports = function (e, t, i) {
                         if (t.$defaultStyle)
                             for (var i in x)
                                 if (t.$name === x[i]) {
-                                    (e.push(i), (t.$_sdf = a.getTypeId(P[i])));
+                                    (e.push(i), (t.$_sdf = IsFiniteNonNegativeNumber.getTypeId(P[i])));
                                     break;
                                 }
                     for (var i in P) e.indexOf(i) < 0 && this._initDefault(i);
@@ -310,5 +310,5 @@ module.exports = function (e, t, i) {
                 (S.prototype.validateInsertion = function (e, t) {
                     return "scene" === r.getName(e);
                 }),
-                (e.exports = S));
+                (module.exports = S));
         };

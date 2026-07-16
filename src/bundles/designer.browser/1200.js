@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(290), n(1381), n(19), n(57), n(8), n(20), n(34), n(26));
-        var o = n(1);
+        (require(290), require(1381), require(19), require(57), require(8 /* Symbol */), require(20), require(34), require(26));
+        var GObject = require(1);
         function i(e) {
             function t(e) {
                 if (Object(e) !== e) return Promise.reject(new TypeError(e + " is not an object."));
@@ -21,7 +21,7 @@ module.exports = function (e, t, n) {
                     },
                     return: function (e) {
                         var n = this.s.return;
-                        return void 0 === n ? Promise.resolve({ value: e, done: !0 }) : t(n.apply(this.s, arguments));
+                        return void 0 === n ? Promise.resolve({ value: e, done: true }) : t(n.apply(this.s, arguments));
                     },
                     throw: function (e) {
                         var n = this.s.return;
@@ -31,7 +31,7 @@ module.exports = function (e, t, n) {
                 new i(e)
             );
         }
-        e.exports = {
+        module.exports = {
             generateFormattedList: function (e) {
                 if (!e) return null;
                 const t = [];
@@ -83,7 +83,7 @@ module.exports = function (e, t, n) {
                         c = await l.blob(),
                         d = await c.arrayBuffer();
                     if (d) {
-                        var i = o.GOpenTypeUtil.getFont(null, null, null, d, !0, !0);
+                        var i = GObject.GOpenTypeUtil.getFont(null, null, null, d, true, true);
                         if (i && i.length)
                             for (var a = 0; a < i.length; a++) {
                                 for (
@@ -118,8 +118,8 @@ module.exports = function (e, t, n) {
                 const e = [];
                 try {
                     var t,
-                        n = !1,
-                        o = !1;
+                        n = false,
+                        o = false;
                     try {
                         for (
                             var a,
@@ -136,13 +136,13 @@ module.exports = function (e, t, n) {
                                     throw new TypeError("Object is not async iterable");
                                 })(await window.queryLocalFonts());
                             (n = !(a = await r.next()).done);
-                            n = !1
+                            n = false
                         ) {
                             const t = a.value;
                             e.push(t);
                         }
                     } catch (e) {
-                        ((o = !0), (t = e));
+                        ((o = true), (t = e));
                     } finally {
                         try {
                             n && null != r.return && (await r.return());

@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16),
-            i = o(n(880)),
-            a = o(n(1189));
+        var o = require(16),
+            i = o(require(880)),
+            a = o(require(1189));
         class r extends i.default {
             canActivate() {
-                return !0;
+                return true;
             }
             activate(e, t) {
                 (super.activate(e, t), (this._panState = new a.default()));
@@ -30,5 +30,5 @@ module.exports = function (e, t, n) {
                 (super.cancel(e, t), (this._panState = null));
             }
         }
-        e.exports = r;
+        module.exports = r;
     };

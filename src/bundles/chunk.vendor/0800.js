@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(90),
-                o = i(197),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(90),
+                o = require(197),
                 a = function (e) {
                     ((this.filter = e), (this.dictionary = new o()));
                 };
-            (n.inherit(a, r),
+            (IsFiniteNonNegativeNumber.inherit(a, r),
                 (a.prototype.getFilter = function () {
                     return this.filter;
                 }),
@@ -24,5 +24,5 @@ module.exports = function (e, t, i) {
                         e.writeln(),
                         e.write("endstream"));
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

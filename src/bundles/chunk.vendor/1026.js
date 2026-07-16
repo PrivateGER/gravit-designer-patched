@@ -1,18 +1,18 @@
-module.exports = function (e, t, i) {
-            var n = i(535),
-                r = i(730),
-                o = i(732),
-                a = i(588),
-                s = i(28),
-                l = i(2),
-                h = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(535),
+                r = require(730),
+                o = require(732),
+                a = require(588),
+                GStylable = require(28),
+                l = require(2),
+                String = require(9);
 
             function A() {
-                (n.call(this), (this._colorAdjust = new a(!0)));
+                (n.call(this), (this._colorAdjust = new a(true)));
             }
             (l.inherit("colorAdjustMultiEffect", A, n),
                 (A.prototype.getNodeNameTranslated = function () {
-                    return h.getValue("GColorAdjustMultiEffect", "name", this.getNodeName());
+                    return String.getValue("GColorAdjustMultiEffect", "name", this.getNodeName());
                 }),
                 (A.prototype.render = function (e, t, i, n, r, o) {
                     this._colorAdjust.render(e, t, i, n, r, o);
@@ -39,10 +39,10 @@ module.exports = function (e, t, i) {
                         this._colorAdjust.setProperty("shp", h, t.custom, t.force, t.temporary);
                     }
                     (this._handleGeometryChangeForProperties(e, t, A.GeometryProperties),
-                        s.Effect.prototype._handleChange.call(this, e, t));
+                        GStylable.Effect.prototype._handleChange.call(this, e, t));
                 }),
                 (A.prototype.getNodeNameTranslated = function () {
-                    return h.getValue("GColorAdjustMultiEffect", "name", this.getNodeName());
+                    return String.getValue("GColorAdjustMultiEffect", "name", this.getNodeName());
                 }),
                 (A.prototype.toString = function () {
                     return "[Object GColorAdjustMultiEffect]";
@@ -51,5 +51,5 @@ module.exports = function (e, t, i) {
                     (this._colorAdjust && this._colorAdjust.destroy(), n.prototype.destroy.call(this));
                 }),
                 n.register(A, [r, o]),
-                (e.exports = A));
+                (module.exports = A));
         };

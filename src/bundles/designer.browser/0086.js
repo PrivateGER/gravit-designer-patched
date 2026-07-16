@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        e.exports = {
+        module.exports = {
             Init: 0,
             Ready: 1,
             Loading: 10,

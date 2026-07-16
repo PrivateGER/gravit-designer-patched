@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(4), n(97));
-        e.exports = class {
+        (require(4), require(97));
+        module.exports = class {
             constructor() {
-                this._swiping = !1;
+                this._swiping = false;
             }
             update(e) {
                 this._touches = e.touches ? Array.from(e.touches) : [];

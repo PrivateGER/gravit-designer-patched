@@ -1,21 +1,21 @@
-module.exports = function (e, t, i) {
-            var n = i(50),
-                r = i(2),
-                o = i(28),
-                a = i(17),
-                s = i(14),
-                l = i(6),
-                h = i(1030),
-                A = i(315),
-                c = i(7),
-                p = i(12),
-                u = i(5),
-                d = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(50),
+                r = require(2),
+                GStylable = require(28),
+                a = require(17),
+                s = require(14),
+                l = require(6),
+                h = require(1030),
+                A = require(315),
+                c = require(7),
+                p = require(12),
+                u = require(5),
+                String = require(9);
 
             function g() {
-                (o.Effect.call(this), this._setDefaultProperties(g.GeometryProperties, g.VisualProperties), (this._bend = new h()));
+                (GStylable.Effect.call(this), this._setDefaultProperties(g.GeometryProperties, g.VisualProperties), (this._bend = new h()));
             }
-            (r.inherit("curvedShadowEffect", g, o.Effect),
+            (r.inherit("curvedShadowEffect", g, GStylable.Effect),
                 (g.prototype._bend = null),
                 (g.equals = function (e, t) {
                     return (
@@ -36,13 +36,13 @@ module.exports = function (e, t, i) {
                     opc: 0.65,
                 }),
                 (g.prototype.getEffectType = function () {
-                    return o.Effect.Type.PreEffect;
+                    return GStylable.Effect.Type.PreEffect;
                 }),
                 (g.prototype.getNodeNameTranslated = function () {
-                    return d.getValue("GCurvedShadowEffect", "name", this.getNodeName());
+                    return String.getValue("GCurvedShadowEffect", "name", this.getNodeName());
                 }),
                 (g.prototype.isOverlayEffect = function () {
-                    return !0;
+                    return true;
                 }),
                 (g.prototype._updateGLProperties = function () {
                     var e = this._bend.$shp;
@@ -55,13 +55,13 @@ module.exports = function (e, t, i) {
                     if (this.$pat && this.$opc > 0) {
                         var a,
                             h = t
-                                .getTransform(!1)
+                                .getTransform(false)
                                 .inverted()
                                 .mapRect(new l(0, 0, t.getWidth(), t.getHeight())),
                             d = t.createPatternPaint(this.$pat, h);
                         d &&
                             (d.transform
-                                ? ((a = t.setTransform(t.getTransform(!0).preMultiplied(d.transform))),
+                                ? ((a = t.setTransform(t.getTransform(true).preMultiplied(d.transform))),
                                   t.fillRect(0, 0, 1, 1, d.paint, this.$opc),
                                   t.setTransform(a))
                                 : t.fillRect(h.getX(), h.getY(), h.getWidth(), h.getHeight(), d.paint, this.$opc));
@@ -70,9 +70,9 @@ module.exports = function (e, t, i) {
                             m = p.toRadians(this.$a);
                         f = f.rotated(m);
                         var y = new c().translated(f.getX(), f.getY());
-                        (t.drawCanvas(e, 0, 0, 1, s.CompositeOperator.DestinationIn, !1),
+                        (t.drawCanvas(e, 0, 0, 1, s.CompositeOperator.DestinationIn, false),
                             this._updateGLProperties(),
-                            (a = t.setTransform(t.getTransform(!0).preMultiplied(y))),
+                            (a = t.setTransform(t.getTransform(true).preMultiplied(y))),
                             this._bend.render(t, null, null, n, r, o),
                             t.setTransform(a),
                             t.drawCanvas(e, 0, 0, 1, s.CompositeOperator.DestinationOut));
@@ -91,7 +91,7 @@ module.exports = function (e, t, i) {
                           })),
                         this._handleGeometryChangeForProperties(e, t, g.GeometryProperties),
                         this._handleVisualChangeForProperties(e, t, g.VisualProperties),
-                        o.Effect.prototype._handleChange.call(this, e, t));
+                        GStylable.Effect.prototype._handleChange.call(this, e, t));
                 }),
                 (g.prototype.toString = function () {
                     return "[Object GCurvedShadowEffect]";
@@ -99,5 +99,5 @@ module.exports = function (e, t, i) {
                 (g.prototype.destroy = function () {
                     this._bend && this._bend.destroy();
                 }),
-                (e.exports = g));
+                (module.exports = g));
         };

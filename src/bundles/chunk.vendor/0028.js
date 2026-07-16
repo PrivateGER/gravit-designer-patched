@@ -1,16 +1,16 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(76),
-                o = i(50),
-                a = i(47),
-                s = i(0),
-                l = i(108),
-                h = i(14),
-                A = i(11),
-                c = i(17);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(76),
+                o = require(50),
+                a = require(47),
+                IsFiniteNonNegativeNumber = require(0),
+                GFont = require(108),
+                h = require(14),
+                A = require(11),
+                c = require(17);
 
             function p() {}
-            for (var u in (s.inherit(p, s),
+            for (var u in (IsFiniteNonNegativeNumber.inherit(p, IsFiniteNonNegativeNumber),
             (p.prototype._effects = null),
             (p.prototype._paintLayers = null),
             (p.prototype._layId = null),
@@ -82,18 +82,18 @@ module.exports = function (e, t, i) {
                     geometryProperties: {
                         _tff: null,
                         _tfi: 20,
-                        _tfw: l.Weight.Regular,
-                        _tfs: l.Style.Normal,
+                        _tfw: GFont.Weight.Regular,
+                        _tfs: GFont.Style.Normal,
                         _tcs: null,
                         _tws: null,
                         _ttrf: null,
                         _ttsc: null,
                         _tlsc: null,
                         _tv: null,
-                        _tdu: !1,
-                        _tds: !1,
+                        _tdu: false,
+                        _tds: false,
                         _tlig: "auto",
-                        _tfrac: !1,
+                        _tfrac: false,
                         _tstyls: null,
                         _tlocl: null,
                     },
@@ -106,7 +106,7 @@ module.exports = function (e, t, i) {
                     restoreFilter: function (e, t) {
                         if (t) {
                             if ("_fc" === e) return o.deserialize(t);
-                            if ("_tff" === e) return l.getFontFamilyCorrected(t);
+                            if ("_tff" === e) return GFont.getFontFamilyCorrected(t);
                         }
                         return t;
                     },
@@ -127,12 +127,12 @@ module.exports = function (e, t, i) {
                 if (d.visualProperties) for (var g in d.visualProperties) p.AllVisualProperties[g] = d.visualProperties[g];
                 if (d.geometryProperties) for (var g in d.geometryProperties) p.AllGeometryProperties[g] = d.geometryProperties[g];
             }
-            (i(900)(p),
-                i(901)(p),
-                i(902)(p),
-                i(904)(p),
-                i(905)(p),
-                i(906)(p),
+            (require(900)(p),
+                require(901)(p),
+                require(902)(p),
+                require(904)(p),
+                require(905)(p),
+                require(906)(p),
                 (p.prototype.getStylePropertySets = function () {
                     return [p.PropertySet.Style, p.PropertySet.BorderPaintLayers, p.PropertySet.FillPaintLayers, p.PropertySet.Effects];
                 }),
@@ -168,7 +168,7 @@ module.exports = function (e, t, i) {
                         if (h || A) {
                             var c = this.getPaintLayers(),
                                 u = e.getPaintLayers(),
-                                d = !1;
+                                d = false;
                             t &&
                                 c._beginBlockChanges([
                                     n._Change.BeforeChildRemove,
@@ -179,12 +179,12 @@ module.exports = function (e, t, i) {
                             try {
                                 for (var g = [], f = c.getFirstChild(); null !== f; f = f.getNext())
                                     ((f instanceof p.FillPaintLayer && h) || (f instanceof p.BorderPaintLayer && A)) &&
-                                        (d || (this._stylePrepareGeometryChange(!0), (d = !0)), g.push(f));
+                                        (d || (this._stylePrepareGeometryChange(true), (d = true)), g.push(f));
                                 for (a = 0; a < g.length; a++) c.removeChild(g[a]);
                                 if (u)
                                     for (var m = u.getFirstChild(); null !== m; m = m.getNext())
                                         ((m instanceof p.FillPaintLayer && h) || (m instanceof p.BorderPaintLayer && A)) &&
-                                            (d || (this._stylePrepareGeometryChange(!0), (d = !0)), c.appendChild(m.clone()));
+                                            (d || (this._stylePrepareGeometryChange(true), (d = true)), c.appendChild(m.clone()));
                             } finally {
                                 (t &&
                                     c._endBlockChanges([
@@ -193,13 +193,13 @@ module.exports = function (e, t, i) {
                                         n._Change.BeforeChildInsert,
                                         n._Change.AfterChildInsert,
                                     ]),
-                                    d && this._styleFinishGeometryChange(!0));
+                                    d && this._styleFinishGeometryChange(true));
                             }
                         }
                         if (o.indexOf(p.PropertySet.Effects) >= 0) {
                             var y = this.getEffects(),
                                 _ = e.getEffects(),
-                                v = !1;
+                                v = false;
                             t &&
                                 y._beginBlockChanges([
                                     n._Change.BeforeChildRemove,
@@ -209,10 +209,10 @@ module.exports = function (e, t, i) {
                                 ]);
                             try {
                                 for (; y.getFirstChild(); )
-                                    (v || (this._stylePrepareGeometryChange(!0), (v = !0)), y.removeChild(y.getFirstChild()));
+                                    (v || (this._stylePrepareGeometryChange(true), (v = true)), y.removeChild(y.getFirstChild()));
                                 if (_)
                                     for (var b = _.getFirstChild(); null !== b; b = b.getNext())
-                                        (v || (this._stylePrepareGeometryChange(!0), (v = !0)), y.appendChild(b.clone()));
+                                        (v || (this._stylePrepareGeometryChange(true), (v = true)), y.appendChild(b.clone()));
                             } finally {
                                 (t &&
                                     y._endBlockChanges([
@@ -221,7 +221,7 @@ module.exports = function (e, t, i) {
                                         n._Change.BeforeChildInsert,
                                         n._Change.AfterChildInsert,
                                     ]),
-                                    v && this._styleFinishGeometryChange(!0));
+                                    v && this._styleFinishGeometryChange(true));
                             }
                         }
                         for (var C = [], w = 0; w < o.length; ++w) {
@@ -236,7 +236,7 @@ module.exports = function (e, t, i) {
                         }
                         if (C.length > 0) {
                             var P = e.getProperties(C);
-                            this.setProperties(C, P, !1, !0);
+                            this.setProperties(C, P, false, true);
                         }
                     }
                 }),
@@ -259,7 +259,7 @@ module.exports = function (e, t, i) {
                     return e.$_ba === p.BorderAlignment.Center ? e.$_bw / 2 : e.$_ba === p.BorderAlignment.Outside ? e.$_bw : 0;
                 }),
                 (p.prototype._setStyleDefaultProperties = function () {
-                    for (var e = this.getStylePropertySets(), t = !1, i = 0; i < e.length; ++i) {
+                    for (var e = this.getStylePropertySets(), t = false, i = 0; i < e.length; ++i) {
                         var n = p.PropertySetInfo[e[i]];
                         (n.visualProperties && this._setDefaultProperties(n.visualProperties),
                             n.geometryProperties && this._setDefaultProperties(n.geometryProperties),
@@ -267,34 +267,34 @@ module.exports = function (e, t, i) {
                                 ? (this._effId = A.uuid())
                                 : (e[i] !== p.PropertySet.FillPaintLayers && e[i] !== p.PropertySet.BorderPaintLayers) ||
                                   t ||
-                                  ((this._layId = A.uuid()), (t = !0)));
+                                  ((this._layId = A.uuid()), (t = true)));
                     }
                 }),
                 (p.prototype._handleStyleChange = function (e, t) {
                     if (e === n._Change.BeforePropertiesChange || e === n._Change.AfterPropertiesChange) {
-                        for (var i = !1, o = !1, a = [], s = [], l = 0; l < t.properties.length; ++l) {
+                        for (var i = false, o = false, a = [], s = [], l = 0; l < t.properties.length; ++l) {
                             var h = t.properties[l];
                             p.AllGeometryProperties.hasOwnProperty(h)
-                                ? ((o = !0),
+                                ? ((o = true),
                                   e === n._Change.BeforePropertiesChange
                                       ? this._stylePrepareGeometryChange()
                                       : (a.push(t.properties[l]), s.push(t.values[l])))
                                 : p.AllVisualProperties.hasOwnProperty(h) &&
                                   e === n._Change.AfterPropertiesChange &&
-                                  ((i = !0), a.push(t.properties[l]), s.push(t.values[l]));
+                                  ((i = true), a.push(t.properties[l]), s.push(t.values[l]));
                         }
                         !o && i
                             ? (this._styleRepaint(), this._stylePropertiesUpdated(a, s))
                             : o && (this._styleFinishGeometryChange(), this._stylePropertiesUpdated(a, s));
                     } else if (e === n._Change.Store)
-                        for (var A = this.getStylePropertySets(), c = !1, u = 0; u < A.length; ++u) {
+                        for (var A = this.getStylePropertySets(), c = false, u = 0; u < A.length; ++u) {
                             if ((g = A[u]) === p.PropertySet.Effects)
                                 this._effects && null !== this._effects.getFirstChild()
                                     ? (t.blob._eff = n.store(this._effects))
                                     : (t.blob._effId = this._effId);
                             else if (g === p.PropertySet.FillPaintLayers || g === p.PropertySet.BorderPaintLayers)
                                 !c && this._paintLayers && null !== this._paintLayers.getFirstChild()
-                                    ? ((t.blob._layers = n.store(this._paintLayers, t.options)), (c = !0))
+                                    ? ((t.blob._layers = n.store(this._paintLayers, t.options)), (c = true))
                                     : c || (t.blob._layId = this._layId);
                             else {
                                 ((f = p.PropertySetInfo[g]).visualProperties &&
@@ -304,7 +304,7 @@ module.exports = function (e, t, i) {
                         }
                     else if (e === n._Change.Restore) {
                         A = this.getStylePropertySets();
-                        var d = !1;
+                        var d = false;
                         for (u = 0; u < A.length; ++u) {
                             var g;
                             if ((g = A[u]) === p.PropertySet.Effects)
@@ -313,8 +313,8 @@ module.exports = function (e, t, i) {
                                     : t.blob._effId && (this._effId = t.blob._effId);
                             else if (g === p.PropertySet.FillPaintLayers || g === p.PropertySet.BorderPaintLayers)
                                 !d && t.blob._layers
-                                    ? ((this._paintLayers = n.restore(t.blob._layers)), this._paintLayers._setParent(this), (d = !0))
-                                    : !d && t.blob._layId && ((this._layId = t.blob._layId), (d = !0));
+                                    ? ((this._paintLayers = n.restore(t.blob._layers)), this._paintLayers._setParent(this), (d = true))
+                                    : !d && t.blob._layId && ((this._layId = t.blob._layId), (d = true));
                             else {
                                 var f;
                                 ((f = p.PropertySetInfo[g]).visualProperties &&
@@ -348,28 +348,28 @@ module.exports = function (e, t, i) {
                     if (e) {
                         var t = function (t) {
                             var i = e.getPaintLayers();
-                            if (!i) return !0;
+                            if (!i) return true;
                             var n = i.getFirstChild();
-                            if (!(i = this.getPaintLayers())) return !0;
+                            if (!(i = this.getPaintLayers())) return true;
                             var r = i.getFirstChild();
-                            if ((null === n && null !== r) || (null !== n && null === r)) return !1;
+                            if ((null === n && null !== r) || (null !== n && null === r)) return false;
                             for (; null !== n && null !== r; ) {
-                                if ((null === n && null !== r) || (null !== n && null === r)) return !1;
+                                if ((null === n && null !== r) || (null !== n && null === r)) return false;
                                 if (null !== n && null !== r) {
-                                    if (!A.equals(n, r)) return !1;
+                                    if (!A.equals(n, r)) return false;
                                     for (n = n.getNext(), r = r.getNext(); null !== n && !(n instanceof t); ) n = n.getNext();
                                     for (; null !== r && !(r instanceof t); ) r = r.getNext();
-                                    if ((null === n && null !== r) || (null !== n && null === r)) return !1;
+                                    if ((null === n && null !== r) || (null !== n && null === r)) return false;
                                 }
                             }
-                            return !0;
+                            return true;
                         }.bind(this);
                         if (e.getProperty("ps").indexOf(p.PropertySet.Style) >= 0) {
                             var i = [];
                             ((l = p.PropertySetInfo[p.PropertySet.Style]).visualProperties &&
                                 (i = i.concat(Object.keys(l.visualProperties))),
                                 l.geometryProperties && (i = i.concat(Object.keys(l.geometryProperties))));
-                            var n = !0;
+                            var n = true;
                             if (
                                 (i.forEach(
                                     function (t) {
@@ -378,22 +378,22 @@ module.exports = function (e, t, i) {
                                 ),
                                 !n)
                             )
-                                return !1;
+                                return false;
                         }
-                        if (e.getProperty("ps").indexOf(p.PropertySet.FillPaintLayers) >= 0 && !t(p.FillPaintLayer)) return !1;
-                        if (e.getProperty("ps").indexOf(p.PropertySet.BorderPaintLayers) >= 0 && !t(p.BorderPaintLayer)) return !1;
+                        if (e.getProperty("ps").indexOf(p.PropertySet.FillPaintLayers) >= 0 && !t(p.FillPaintLayer)) return false;
+                        if (e.getProperty("ps").indexOf(p.PropertySet.BorderPaintLayers) >= 0 && !t(p.BorderPaintLayer)) return false;
                         if (e.getProperty("ps").indexOf(p.PropertySet.Effects) >= 0) {
                             var r = e.getEffects().getFirstChild(),
                                 o = this.getEffects().getFirstChild();
-                            if ((null === r && null !== o) || (null !== r && null === o)) return !1;
+                            if ((null === r && null !== o) || (null !== r && null === o)) return false;
                             for (; null !== r && null !== o; ) {
-                                if (!A.equals(r, o)) return !1;
+                                if (!A.equals(r, o)) return false;
                                 if (((r = r.getNext()), (o = o.getNext()), (null === r && null !== o) || (null !== r && null === o)))
-                                    return !1;
+                                    return false;
                             }
                         }
                         if (e.getProperty("ps").indexOf(p.PropertySet.Text) >= 0) {
-                            n = !0;
+                            n = true;
                             for (var a = [p.PropertySet.Text, p.PropertySet.Paragraph], s = ((i = []), 0); s < a.length; ++s) {
                                 var l;
                                 ((l = p.PropertySetInfo[a[s]]).visualProperties && (i = i.concat(Object.keys(l.visualProperties))),
@@ -413,10 +413,10 @@ module.exports = function (e, t, i) {
                             );
                         }
                     }
-                    return !0;
+                    return true;
                 }),
                 (p.prototype.toString = function () {
                     return "[Mixin GStylable]";
                 }),
-                (e.exports = p));
+                (module.exports = p));
         };

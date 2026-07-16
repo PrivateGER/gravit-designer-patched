@@ -1,28 +1,28 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(67),
-            a = n(18),
-            r = n(31);
-        const { TOUCH_LAYOUT: s } = n(10),
-            l = n(85);
+        require(3);
+        var GObject = require(1),
+            i = require(67),
+            GCategory = require(18),
+            r = require(31);
+        const { TOUCH_LAYOUT: s } = require(10 /* designerConfig */),
+            l = require(85);
         function c() {
             c.TOOLTIP_CONFIG = {
                 [i.TOOLTIP_AREA.MAIN_MENU.TRY_PRO_COMMON]: i.GRichTooltipConfig.from({
-                    title: o.GLocale.get(new o.GLocaleKey("GToggleTouchAction", "text.try-this-feature-pro-tooltip-title")),
-                    description: o.GLocale.get(new o.GLocaleKey("GToggleTouchAction", "text.try-this-feature-pro-tooltip-description")),
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GToggleTouchAction", "text.try-this-feature-pro-tooltip-title")),
+                    description: GObject.GLocale.get(new GObject.GLocaleKey("GToggleTouchAction", "text.try-this-feature-pro-tooltip-description")),
                     learnMore: "/docs/touch-interface/",
                     upgradeToProStatsValue: "view.toggle-touch",
-                    middle: !1,
-                    side: !0,
+                    middle: false,
+                    side: true,
                 }),
             };
         }
-        (o.GObject.inherit(c, r),
+        (GObject.GObject.inherit(c, r),
             (c.ID = "view.toggle-touch"),
-            (c.TITLE = new o.GLocaleKey("GToggleTouchAction", "title")),
-            (c.TITLE_DISABLE = new o.GLocaleKey("GToggleTouchAction", "title-disable")),
+            (c.TITLE = new GObject.GLocaleKey("GToggleTouchAction", "title")),
+            (c.TITLE_DISABLE = new GObject.GLocaleKey("GToggleTouchAction", "title-disable")),
             (c.TOOLTIP_CONFIG = null),
             (c.prototype.getId = function () {
                 return c.ID;
@@ -34,10 +34,10 @@ module.exports = function (e, t, n) {
                 return "touch";
             }),
             (c.prototype.getCategory = function () {
-                return a.CATEGORY_VIEW;
+                return GCategory.CATEGORY_VIEW;
             }),
             (c.prototype.isCheckable = function () {
-                return !0;
+                return true;
             }),
             (c.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-touch-disable" : null;
@@ -60,5 +60,5 @@ module.exports = function (e, t, n) {
             (c.prototype.toString = function () {
                 return "[Object GToggleTouchAction]";
             }),
-            (e.exports = c));
+            (module.exports = c));
     };

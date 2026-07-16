@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(602),
-                r = i(90),
-                o = i(0),
-                a = i(1420),
+module.exports = function (module, exports, require) {
+            var n = require(602),
+                r = require(90),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(1420),
                 s = function (e) {
                     ((this._doc = e), (this._collection = new n()));
                 };
-            (o.inherit(s, r),
+            (IsFiniteNonNegativeNumber.inherit(s, r),
                 (s.prototype.peek = function () {
                     return this._collection.peek().getValue();
                 }),
@@ -47,5 +47,5 @@ module.exports = function (e, t, i) {
                 (s.prototype.write = function (e) {
                     this._collection.write(e);
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

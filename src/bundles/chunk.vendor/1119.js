@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(12),
-                r = i(6);
+module.exports = function (module, exports, require) {
+            var n = require(12),
+                r = require(6);
 
             function o() {
                 throw new Error("No instance");
@@ -16,8 +16,8 @@ module.exports = function (e, t, i) {
                             })
                           : isNaN(e)
                             ? e
-                            : n.round(e, !1, t)
+                            : n.round(e, false, t)
                 );
             }),
-                (e.exports = o));
+                (module.exports = o));
         };

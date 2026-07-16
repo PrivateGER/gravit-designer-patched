@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(4), n(13));
+        (require(4), require(13));
         var o = {
             init: function (e) {
                 return this.each(function () {

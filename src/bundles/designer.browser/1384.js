@@ -1,5 +1,5 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(43);
-        t.f = o;
+        var o = require(43);
+        exports.f = o;
     };

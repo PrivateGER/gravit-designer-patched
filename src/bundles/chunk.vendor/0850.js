@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i(e) {
                 ((this._bytePosition = 0), (this._buffer = new Uint8ClampedArray(e)));
             }
@@ -29,5 +29,5 @@ module.exports = function (e, t) {
                 (i.prototype.getBuffer = function () {
                     return this._buffer.slice(0, this._bytePosition);
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

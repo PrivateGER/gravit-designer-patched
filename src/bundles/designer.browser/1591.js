@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.default = void 0), n(19), n(26));
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0), require(19), require(26));
         class o extends Error {
             constructor() {
                 (super(...arguments),
@@ -12,5 +12,5 @@ module.exports = function (e, t, n) {
                 return this.message;
             }
         }
-        t.default = o;
+        exports.default = o;
     };

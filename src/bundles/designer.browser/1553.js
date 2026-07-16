@@ -1,31 +1,31 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(96), n(30), n(8), n(196), n(4), n(13), n(32), n(38), n(33));
-        var i = n(1),
-            a = o(n(163)),
-            r = o(n(78)),
-            s = o(n(86)),
-            l = o(n(802)),
-            c = o(n(355));
-        const d = n(1554),
-            u = n(1301),
-            p = n(556),
-            g = n(156),
-            h = n(1555),
-            f = n(848),
-            m = n(595),
-            y = n(520),
-            v = n(119),
-            { gApi: _, CloudIntegration: b } = n(10),
-            { decrypt: w } = n(40),
-            C = n(44);
+        var o = require(16);
+        (require(96), require(30), require(8 /* Symbol */), require(196), require(4), require(13), require(32), require(38), require(33));
+        var GObject = require(1),
+            a = o(require(163 /* GDocument */)),
+            r = o(require(78)),
+            s = o(require(86)),
+            l = o(require(802)),
+            c = o(require(355));
+        const d = require(1554),
+            u = require(1301),
+            GGoogleDrive = require(556),
+            g = require(156),
+            h = require(1555),
+            f = require(848 /* GGoogleDrive */),
+            m = require(595),
+            y = require(520),
+            GCommonNames = require(119),
+            { gApi: _, CloudIntegration: b } = require(10 /* designerConfig */),
+            { decrypt: w } = require(40 /* GSaveAction */),
+            GSystemDialog = require(44);
         let x;
         function S() {
             let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
                 t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
             (l.default.call(this, e), (this._accountId = t));
-            const { clientId: n = null, apiKey: o = null, appId: a = null, accessToken: r, expires: s, corporate: c = !1 } = this._settings;
+            const { clientId: n = null, apiKey: o = null, appId: a = null, accessToken: r, expires: s, corporate: c = false } = this._settings;
             if (
                 ((this._settings = Object.assign(this._settings, {
                     clientId: n,
@@ -52,29 +52,29 @@ module.exports = function (e, t, n) {
                 const e = async (e) =>
                     this._googlePickerLoaded
                         ? this._openFilePicker(e).catch(() =>
-                              C.alert(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.loading-failed")))
+                              GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed")))
                           )
                         : gContainer
                               .getGoogleAPI()
                               .loadFilePicker()
                               .then(() => {
-                                  this._googlePickerLoaded = !0;
+                                  this._googlePickerLoaded = true;
                               })
                               .then(() => this._openFilePicker(e))
                               .catch((e) => {
                                   (console.log("[GGoogleDrive error - Google Drive Picker]", e),
-                                      C.alert(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.loading-failed"))));
+                                      GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed"))));
                               });
                 (this.addAction({
-                    title: i.GLocale.get(new i.GLocaleKey("GGoogleDrive", "text.add-files")),
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "text.add-files")),
                     icon: "gravit-icon-add-files",
                     execute: e,
                 }),
                     this.setDefaultEmptyMessage({
-                        title: i.GLocale.get(new i.GLocaleKey("GGoogleDrive", "text.you-have-not-added")),
+                        title: GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "text.you-have-not-added")),
                         buttons: [
                             {
-                                title: i.GLocale.get(new i.GLocaleKey("GGoogleDrive", "text.add-additional-files")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "text.add-additional-files")),
                                 execute: e,
                             },
                         ],
@@ -84,7 +84,7 @@ module.exports = function (e, t, n) {
                             const n = $("<div/>")
                                 .gDialog({
                                     className: "g-googledrive-warning-dialog",
-                                    releaseOnClose: !0,
+                                    releaseOnClose: true,
                                 })
                                 .append(
                                     $("<div></div>")
@@ -92,35 +92,35 @@ module.exports = function (e, t, n) {
                                         .append($("<span></span>").addClass("gravit-icon-close"))
                                         .on("click", () => n.gDialog("close"))
                                 )
-                                .append($("<span/>").text(i.GLocale.get(new i.GLocaleKey("GGoogleDrive", "text.warning-message"))))
+                                .append($("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "text.warning-message"))))
                                 .append(
                                     $("<div/>")
                                         .addClass("buttons")
                                         .append(
                                             $("<button/>")
                                                 .addClass("g-highlight-button")
-                                                .text(i.GLocale.get(new i.GLocaleKey("GLocale", "ok")))
+                                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")))
                                                 .on("click", () => n.gDialog("close"))
                                         )
                                         .append(
                                             $("<button/>")
                                                 .addClass("g-highlight-button highlighted")
-                                                .text(i.GLocale.get(new i.GLocaleKey("GGoogleDrive", "text.add-additional-files")))
+                                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "text.add-additional-files")))
                                                 .on("click", () => {
                                                     (e(t.source), n.gDialog("close"));
                                                 })
                                         )
                                 )
-                                .gDialog("open", !1);
+                                .gDialog("open", false);
                         }
                     }));
             }
         }
-        (i.GObject.inherit(S, l.default),
+        (GObject.GObject.inherit(S, l.default),
             (S.LAST_TEAM_DRIVE_ID_PROP_NAME =
                 (b && b.cloudOptions && (b.cloudOptions.find((e) => "googledrive" === e.type) || {}).lastTeamDrivePropName) || null),
             (S.prototype._securityLevel = y.SecurityLevel.Lowest),
-            (S.prototype._googlePickerLoaded = !1),
+            (S.prototype._googlePickerLoaded = false),
             (S.prototype._googleDriveClient = null),
             (S.prototype.CURRENT_FOLDER_PROP = "designer.filespanel.google-drive.current-folder"),
             (S.getInstance = function () {
@@ -141,12 +141,12 @@ module.exports = function (e, t, n) {
                     const n = t.getRootFolder();
                     let o,
                         i,
-                        a = !1;
+                        a = false;
                     if ((({ parentId: o } = e[0]), o !== n.id))
                         try {
                             i = await t._googleDriveClient.getFileDetails(o);
                         } catch (e) {
-                            ((o = n.id), (a = !0));
+                            ((o = n.id), (a = true));
                         }
                     return (i || (i = n), { folder: i, showMessage: a });
                 }
@@ -161,9 +161,9 @@ module.exports = function (e, t, n) {
                     }
                     const { showMessage: a, folder: r } = await n(e);
                     (a &&
-                        C.messageWithInfo({
-                            mainMessage: i.GLocale.get(new i.GLocaleKey("GGoogleDrive", "text.selected-files-folder-not-added")),
-                            infoMessage: i.GLocale.get(new i.GLocaleKey("GGoogleDrive", "text.selected-files-folder-not-added-additional")),
+                        GSystemDialog.messageWithInfo({
+                            mainMessage: GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "text.selected-files-folder-not-added")),
+                            infoMessage: GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "text.selected-files-folder-not-added-additional")),
                         }),
                         t.trigger(new l.default.DriveEvent(null, l.default.DriveEvent.Type.FolderSwitchRequired, { folder: r })),
                         o());
@@ -171,19 +171,19 @@ module.exports = function (e, t, n) {
                 return new Promise((t, a) => {
                     if (!this.isSignedIn() || !this._googlePickerLoaded) return a();
                     gContainer.getGoogleAPI().openFilePicker((r) => {
-                        if ((e.toggleLoading(!0), 1 === r.length)) {
+                        if ((e.toggleLoading(true), 1 === r.length)) {
                             const s = r[0],
                                 { id: l, type: c } = s;
                             "folder" !== c
                                 ? (n(r).then((e) => {
                                       let { showMessage: t } = e;
                                       t &&
-                                          C.messageWithInfo({
-                                              mainMessage: i.GLocale.get(
-                                                  new i.GLocaleKey("GGoogleDrive", "text.selected-file-folder-not-added")
+                                          GSystemDialog.messageWithInfo({
+                                              mainMessage: GObject.GLocale.get(
+                                                  new GObject.GLocaleKey("GGoogleDrive", "text.selected-file-folder-not-added")
                                               ),
-                                              infoMessage: i.GLocale.get(
-                                                  new i.GLocaleKey("GGoogleDrive", "text.selected-files-folder-not-added-additional")
+                                              infoMessage: GObject.GLocale.get(
+                                                  new GObject.GLocaleKey("GGoogleDrive", "text.selected-files-folder-not-added-additional")
                                               ),
                                           });
                                   }),
@@ -193,8 +193,8 @@ module.exports = function (e, t, n) {
                                           (e) =>
                                               new Promise((t, n) => {
                                                   if (this.isFileSupported(e)) return t(e);
-                                                  C.alert(
-                                                      i.GLocale.get(new i.GLocaleKey("GDocument", "text.unsupported-file-extension")),
+                                                  GSystemDialog.alert(
+                                                      GObject.GLocale.get(new GObject.GLocaleKey("GDocument", "text.unsupported-file-extension")),
                                                       n
                                                   );
                                               })
@@ -203,14 +203,14 @@ module.exports = function (e, t, n) {
                                       .then(() => e.close())
                                       .then(t)
                                       .catch(a)
-                                      .finally(() => e.toggleLoading(!1)))
+                                      .finally(() => e.toggleLoading(false)))
                                 : o(r, t);
                         } else o(r, t);
                     }, a);
                 });
             }),
             (S.prototype.hasUserProfile = function () {
-                return !0;
+                return true;
             }),
             (S.prototype.isRootFolder = function (e) {
                 e = void 0 !== e ? e : this.getCurrentFolder();
@@ -222,7 +222,7 @@ module.exports = function (e, t, n) {
                     ? this.getCorporateStorage()
                     : g.from({
                           id: "root",
-                          name: i.GLocale.get(new i.GLocaleKey("GFilesPanel", "action.my-cloud")),
+                          name: GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "action.my-cloud")),
                       });
             }),
             (S.prototype.uninstall = async function () {
@@ -257,8 +257,8 @@ module.exports = function (e, t, n) {
                             .getGoogleAPI()
                             .install(e)
                             .then(() => this._loadClient())
-                            .then(() => (this._driveInstalled = !0))
-                      : ((this._driveInstalled = !0), Promise.resolve());
+                            .then(() => (this._driveInstalled = true))
+                      : ((this._driveInstalled = true), Promise.resolve());
             }),
             (S.prototype.isLowestSecurityLevel = function () {
                 return this._securityLevel === y.SecurityLevel.Lowest;
@@ -281,7 +281,7 @@ module.exports = function (e, t, n) {
                             ((a = e), (o = t), (r = n), (this._apiKey = o), (this._clientId = a), (this._appId = r));
                         }
                     } catch (e) {
-                        return t(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.loading-failed")));
+                        return t(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed")));
                     }
                     gContainer
                         .getGoogleAPI()
@@ -323,8 +323,8 @@ module.exports = function (e, t, n) {
                                       e && "popup_blocked_by_browser" === e.error
                                           ? t(
                                                 new c.default(
-                                                    i.GLocale.get(
-                                                        new i.GLocaleKey("GExternalStorage", "text.error-window-blocked-alternative")
+                                                    GObject.GLocale.get(
+                                                        new GObject.GLocaleKey("GExternalStorage", "text.error-window-blocked-alternative")
                                                     )
                                                 )
                                             )
@@ -377,7 +377,7 @@ module.exports = function (e, t, n) {
                     e.hasValue("name") && t.add("name", "contains", e.name),
                     e.hasValue("exactname") && t.add("name", "=", e.exactname),
                     e.hasValue("fileExtension") && t.add("fileExtension", "=", e.fileExtension.toLowerCase()),
-                    t.add("trashed", "=", new d.RawValue(!1)),
+                    t.add("trashed", "=", new d.RawValue(false)),
                     t.build()
                 );
             }),
@@ -403,9 +403,9 @@ module.exports = function (e, t, n) {
                             r = this.getCorporateStorage();
                         (r &&
                             (a = Object.assign(a, {
-                                includeItemsFromAllDrives: !0,
+                                includeItemsFromAllDrives: true,
                                 corpora: "drive",
-                                supportsAllDrives: !0,
+                                supportsAllDrives: true,
                                 driveId: r.id,
                             })),
                             e.hasValue("orderBy") && (a.orderBy = e.orderBy));
@@ -429,7 +429,7 @@ module.exports = function (e, t, n) {
                 });
             }),
             (S.prototype._convertToCloudItems = async function (e) {
-                return (e = e instanceof Array ? e : [e]).map((e) => p.convertToCloudItem(e));
+                return (e = e instanceof Array ? e : [e]).map((e) => GGoogleDrive.convertToCloudItem(e));
             }),
             (S.prototype.navigateToParentFolder = function () {
                 var e = this._currentFolder.parent ? this._currentFolder.parent : null;
@@ -439,17 +439,17 @@ module.exports = function (e, t, n) {
                 return e && "object" == typeof e ? e._id || e.id : e;
             }),
             (S.prototype.getFile = function (e) {
-                return this._googleDriveClient.getFileDetails(e, this.getCorporateStorage() ? { supportsAllDrives: !0 } : {});
+                return this._googleDriveClient.getFileDetails(e, this.getCorporateStorage() ? { supportsAllDrives: true } : {});
             }),
             (S.prototype.getFolder = async function (e) {
                 const t = await this._googleDriveClient.getFileDetails(
                     e.id || e,
-                    this.getCorporateStorage() ? { supportsAllDrives: !0 } : {}
+                    this.getCorporateStorage() ? { supportsAllDrives: true } : {}
                 );
                 return this._convertToCloudItems(t).then((e) => e[0]);
             }),
             (S.prototype.supportsSaveCollisionFlow = function () {
-                return !0;
+                return true;
             }),
             (S.prototype.fileExists = async function (e, t, n) {
                 var o = n ? this._getParentReference(n) : this._getParentContext();
@@ -469,14 +469,14 @@ module.exports = function (e, t, n) {
             (S.prototype.getRawFile = function (e, t, n) {
                 return this._googleDriveClient.getFile(
                     e.id,
-                    this.getCorporateStorage() ? { supportsAllDrives: !0 } : {},
+                    this.getCorporateStorage() ? { supportsAllDrives: true } : {},
                     t,
                     n && n.progress
                 );
             }),
             (S.prototype._createStorageItem = async function (e, t, n) {
-                const o = t && (await v.createUint8ArrayFromBlob(t));
-                return new p.Item(gDesigner.getDefaultStorage(), e, o, n);
+                const o = t && (await GCommonNames.createUint8ArrayFromBlob(t));
+                return new GGoogleDrive.Item(gDesigner.getDefaultStorage(), e, o, n);
             }),
             (S.prototype.openFile = async function (e, t) {
                 return new Promise(
@@ -491,7 +491,7 @@ module.exports = function (e, t, n) {
                                 await this._googleDriveClient.updateFileDetails(
                                     i.getUniqueId(),
                                     { viewedByMeTime: new Date().toISOString() },
-                                    { supportsAllDrives: !0 }
+                                    { supportsAllDrives: true }
                                 ),
                                 n());
                         } catch (e) {
@@ -518,14 +518,14 @@ module.exports = function (e, t, n) {
                             : a
                               ? t.updateStatus(s.default.SaveFailed)
                               : n.updateStatus(s.default.SaveFailed),
-                            d(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.error-saving-file"))));
+                            d(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.error-saving-file"))));
                     };
                     var p = new a.default();
                     try {
                         n = n || this.getDefaultFileFormat().ext.toUpperCase();
                         var g = e.getScene();
                         (g.getActivePage().getGeometryBBox() ||
-                            d(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.error-emtpy-infinite-canvas"))),
+                            d(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.error-emtpy-infinite-canvas"))),
                             (o = e.updateSaveOptionsLastModifiedDate(o)));
                         const a = (this.findFileFormatByExtension(n) || this.getDefaultFileFormat()).mime,
                             f = {
@@ -541,11 +541,11 @@ module.exports = function (e, t, n) {
                         var h = await this._createStorageItem(f);
                         (h.setCloudClient(this._googleDriveClient),
                             gDesigner.addDocument(p),
-                            p.setSynchronizing(!0),
+                            p.setSynchronizing(true),
                             p.setTitle(t),
                             p.updateStatus(s.default.Saving));
-                        const v = i.GNode.store(g, o);
-                        v.cfs = !1;
+                        const v = GObject.GNode.store(g, o);
+                        v.cfs = false;
                         const _ = JSON.stringify(v);
                         return p
                             .deserializeData(_)
@@ -556,10 +556,10 @@ module.exports = function (e, t, n) {
                                     h.write(
                                         p,
                                         async () => {
-                                            (e && e.getEditor() && gDesigner.removeDocument(e, null, !0),
+                                            (e && e.getEditor() && gDesigner.removeDocument(e, null, true),
                                                 p.setStorageItem(h),
-                                                await p.saveAnnotations(m, !0),
-                                                p.setSynchronizing(!1),
+                                                await p.saveAnnotations(m, true),
+                                                p.setSynchronizing(false),
                                                 l && l(s.default.Saved),
                                                 gDesigner.hasEventListeners(r.default) &&
                                                     (gDesigner.trigger(new r.default(r.default.Type.Modified, p)),
@@ -570,7 +570,7 @@ module.exports = function (e, t, n) {
                                         },
                                         () => {
                                             (console.error(">>>saveNewFile write error", arguments),
-                                                p.setSynchronizing(!1),
+                                                p.setSynchronizing(false),
                                                 l && l(s.default.SaveFailed),
                                                 d());
                                         },
@@ -633,7 +633,7 @@ module.exports = function (e, t, n) {
                 return e.hasPermission(g.Permission.Download);
             }),
             (S.prototype.supportsCorporateStorage = function () {
-                return !0;
+                return true;
             }),
             (S.prototype.getCorporateStorages = function () {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : new u(),
@@ -669,14 +669,14 @@ module.exports = function (e, t, n) {
                 if (!e) {
                     if (!gContainer.getGoogleAPI().isLoaded()) throw Error("Google Drive Client not loaded!");
                     e = await gContainer.getGoogleAPI().getTokenConfiguration({
-                        corporate: !1,
+                        corporate: false,
                         accountId: this._accountId,
                     });
                 }
                 return new f(new m(e));
             }),
             (S.prototype.getSupportedFileFormats = function () {
-                return p.getSupportedFileFormats();
+                return GGoogleDrive.getSupportedFileFormats();
             }),
             (S.prototype.generatePreviousSelectedFolderPath = async function () {
                 const e = this.getCurrentFolder();
@@ -704,5 +704,5 @@ module.exports = function (e, t, n) {
                     viewed: "".concat(f.SearchEngine.OrderBy.ViewedByMeTime, " ").concat(f.SearchEngine.Sorts.Ascending),
                 },
             }),
-            (e.exports = S));
+            (module.exports = S));
     };

@@ -1,22 +1,22 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(3), n(38));
-        var i = n(1),
-            a = o(n(609));
+        var o = require(16);
+        (require(3), require(38));
+        var GObject = require(1),
+            a = o(require(609));
         function r() {
             a.default.call(this, r.ID, r.TITLE);
         }
-        (i.GObject.inherit(r, a.default),
+        (GObject.GObject.inherit(r, a.default),
             (r.ID = "edit.select-by-border-width"),
-            (r.TITLE = new i.GLocaleKey("GSelectByBorderWidthAction", "title")),
+            (r.TITLE = new GObject.GLocaleKey("GSelectByBorderWidthAction", "title")),
             (r.prototype.getGroup = function () {
                 return "edit/select-by-style";
             }),
             (r.prototype._getValue = function (e) {
-                if (e.hasMixin(i.GStylable)) {
+                if (e.hasMixin(GObject.GStylable)) {
                     const t = e.getPaintLayers(),
-                        n = t && t.getBorderLayers(!0);
+                        n = t && t.getBorderLayers(true);
                     if (n && n.length > 0) return n.map((e) => e.getProperty("_bw"));
                 }
                 return a.default.EmptyValue;
@@ -24,5 +24,5 @@ module.exports = function (e, t, n) {
             (r.prototype.toString = function () {
                 return "[Object GSelectByBorderWidthAction]";
             }),
-            (e.exports = r));
+            (module.exports = r));
     };

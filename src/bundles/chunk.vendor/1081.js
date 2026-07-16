@@ -1,34 +1,34 @@
-module.exports = function (e, t, i) {
-            var n = i(50),
-                r = i(2),
-                o = i(77),
-                a = i(363),
-                s = i(64),
-                l = i(150),
-                h = i(777),
-                A = i(133),
-                c = i(24),
-                p = i(153),
-                u = i(0),
-                d = i(6),
-                g = i(22),
-                f = i(7),
-                m = i(82),
-                y = i(544),
-                _ = i(36),
-                v = i(5),
-                b = i(83),
-                C = i(553),
-                w = i(14),
-                E = i(210),
-                B = i(540),
-                x = i(11),
-                P = i(17),
-                S = i(138),
-                T = i(216),
-                I = i(9),
-                F = i(47),
-                R = i(207);
+module.exports = function (module, exports, require) {
+            var n = require(50),
+                r = require(2),
+                o = require(77),
+                a = require(363),
+                s = require(64),
+                l = require(150),
+                h = require(777),
+                GScenePaintConfiguration = require(133),
+                c = require(24),
+                p = require(153),
+                IsFiniteNonNegativeNumber = require(0),
+                d = require(6),
+                g = require(22),
+                f = require(7),
+                GEditor = require(82),
+                y = require(544),
+                _ = require(36),
+                v = require(5),
+                b = require(83),
+                C = require(553),
+                w = require(14),
+                E = require(210),
+                B = require(540),
+                x = require(11),
+                P = require(17),
+                S = require(138),
+                T = require(216),
+                String = require(9),
+                F = require(47),
+                R = require(207);
 
             function D(e) {
                 var t = Array.prototype.slice.call(arguments);
@@ -49,19 +49,19 @@ module.exports = function (e, t, i) {
                         (e.preventDefault(), e.stopPropagation(), (e.dataTransfer.dropEffect = "move"));
                     }.bind(this)),
                     (this._dropEvent = function (e) {
-                        return (e.preventDefault(), e.stopPropagation(), this.handleDropEvent(e), !1);
+                        return (e.preventDefault(), e.stopPropagation(), this.handleDropEvent(e), false);
                     }.bind(this)),
                     this._inputHtmlElement.addEventListener("dragenter", this._dragEventerEvent),
                     this._inputHtmlElement.addEventListener("dragover", this._dragOverEvent),
                     this._inputHtmlElement.addEventListener("drop", this._dropEvent),
-                    this._editor.addEventListener(m.InvalidationRequestEvent, this._editorInvalidationRequest, this, void 0, void 0, !0),
-                    this._scene.addEventListener(r.AfterPropertiesChangeEvent, this._afterPropertiesChanged, this, void 0, void 0, !0),
+                    this._editor.addEventListener(GEditor.InvalidationRequestEvent, this._editorInvalidationRequest, this, void 0, void 0, true),
+                    this._scene.addEventListener(r.AfterPropertiesChangeEvent, this._afterPropertiesChanged, this, void 0, void 0, true),
                     this._scene
                         .getWorkspace()
                         .getToolManager()
                         .addEventListener(C.InvalidationRequestEvent, this._toolInvalidationRequest, this));
             }
-            (u.inherit(D, a),
+            (IsFiniteNonNegativeNumber.inherit(D, a),
                 (D.prototype._editor = null),
                 (D.prototype._guideLineDiv = null),
                 (D.prototype._guideLineViewPoint = null),
@@ -170,7 +170,7 @@ module.exports = function (e, t, i) {
                                 try {
                                     this._editor.getScene().setProperties([i], [n]);
                                 } finally {
-                                    this._editor.commitTransaction(I.get(new F("GEditorWidget", "action.remove-guide-line")));
+                                    this._editor.commitTransaction(String.get(new F("GEditorWidget", "action.remove-guide-line")));
                                 }
                             }
                         } else {
@@ -182,8 +182,8 @@ module.exports = function (e, t, i) {
                                 } finally {
                                     this._editor.commitTransaction(
                                         t >= 0
-                                            ? I.get(new F("GEditorWidget", "action.change-guide-line"))
-                                            : I.get(new F("GEditorWidget", "action.add-guide-line"))
+                                            ? String.get(new F("GEditorWidget", "action.change-guide-line"))
+                                            : String.get(new F("GEditorWidget", "action.add-guide-line"))
                                     );
                                 }
                             }
@@ -203,7 +203,7 @@ module.exports = function (e, t, i) {
                     return !(!this._fakeTextBox || document.activeElement !== this._fakeTextBox) || a.prototype.hasFocus.call(this);
                 }),
                 (D.prototype.focus = function () {
-                    return "none" !== this._fakeTextDiv.style.display ? (this._fakeTextBox.focus(), !0) : a.prototype.focus.call(this);
+                    return "none" !== this._fakeTextDiv.style.display ? (this._fakeTextBox.focus(), true) : a.prototype.focus.call(this);
                 }),
                 (D.prototype.isCapturingInput = function () {
                     return !!this._inputListener;
@@ -271,7 +271,7 @@ module.exports = function (e, t, i) {
                     (this._inputHtmlElement.removeEventListener("dragenter", this._dragEventerEvent),
                         this._inputHtmlElement.removeEventListener("dragover", this._dragOverEvent),
                         this._inputHtmlElement.removeEventListener("drop", this._dropEvent),
-                        this._editor.removeEventListener(m.InvalidationRequestEvent, this._editorInvalidationRequest, this),
+                        this._editor.removeEventListener(GEditor.InvalidationRequestEvent, this._editorInvalidationRequest, this),
                         this._editor
                             .getGuides()
                             .removeEventListener(E.InvalidationRequestEvent, this._editorHelpersInvalidationRequest, this),
@@ -387,12 +387,12 @@ module.exports = function (e, t, i) {
                     this._editor.updateInlineEditorForView(this);
                 }));
             var k = null,
-                G = !1;
+                G = false;
             ((D.prototype._renderPageBackground = function (e, t) {
                 var i = this._viewConfiguration.pageDecoration,
                     n = e.getPosition(this._viewConfiguration.multiPageView),
                     r = t.preMultiplied(new f(1, 0, 0, 1, n.getX(), n.getY())),
-                    o = e.isFixedSized() ? e.getGeometryBBox() : e.getPaintBBox(null, !0);
+                    o = e.isFixedSized() ? e.getGeometryBBox() : e.getPaintBBox(null, true);
                 if (o) {
                     var a = r.mapRect(o),
                         s = a.getX(),
@@ -411,7 +411,7 @@ module.exports = function (e, t, i) {
                     u &&
                         i.shadow > 0 &&
                         !G &&
-                        ((G = !0), console.warn("Due to browser bug (Firefox), shadow under canvas isn't displayed."));
+                        ((G = true), console.warn("Due to browser bug (Firefox), shadow under canvas isn't displayed."));
                     var g = i.shadow > 0 && !u && !(R.pagesCanOverlap && this._viewConfiguration.multiPageView),
                         m = i.shadowOffsetX || 0,
                         y = i.shadowOffsetY || 0;
@@ -420,20 +420,20 @@ module.exports = function (e, t, i) {
                             v = a.expanded(_ + Math.max(0, -m), _ + Math.max(0, -y), _ + Math.max(0, m), _ + Math.max(0, y));
                         if (!p.isDirty(v)) return;
                         if (g) {
-                            g = !1;
-                            var b = v.subtracted(a, !0);
+                            g = false;
+                            var b = v.subtracted(a, true);
                             b instanceof d && (b = [b]);
                             for (var C = 0; C < b.length; C++) {
                                 var E = b[C];
                                 if (p.isDirty(E)) {
-                                    g = !0;
+                                    g = true;
                                     break;
                                 }
                             }
                         }
                         if (
                             !g &&
-                            this._viewConfiguration.paintMode !== A.PaintMode.Outline &&
+                            this._viewConfiguration.paintMode !== GScenePaintConfiguration.PaintMode.Outline &&
                             !this._sceneCanvas.isMasked() &&
                             1 == e.getProperty("bop")
                         ) {
@@ -501,14 +501,14 @@ module.exports = function (e, t, i) {
                 (D.prototype._handleSymbolDrop = function (e) {
                     var t = this._scene.getSymbols();
                     if (t) {
-                        for (var i = !1, n = 0; n < t.length && !i; n++)
-                            t[n].getMultireferenceId() !== e.getMultireferenceId() || t[n].getParent() || ((e = t[n]), (i = !0));
+                        for (var i = false, n = 0; n < t.length && !i; n++)
+                            t[n].getMultireferenceId() !== e.getMultireferenceId() || t[n].getParent() || ((e = t[n]), (i = true));
                         if (!i) {
                             var r = e.getProperty("masterMultiRef");
-                            for (n = 0; n < t.length && !i; n++) t[n].getProperty("masterMultiRef") === r && (i = !0);
+                            for (n = 0; n < t.length && !i; n++) t[n].getProperty("masterMultiRef") === r && (i = true);
                             i
                                 ? console.log("inserting:found")
-                                : ((e._master = !0),
+                                : ((e._master = true),
                                   (e.getProperty("masterRef") === e.getReferenceId() &&
                                       e.getProperty("masterMultiRef") === e.getMultireferenceId()) ||
                                       console.log("inserting: making non master a master"),
@@ -521,11 +521,11 @@ module.exports = function (e, t, i) {
                     var i = this.getViewTransform(this._scene).mapPoint(e),
                         o = this.getViewTransform(this._scene.getActivePage()).mapPoint(e);
                     if (t.files && t.files.length > 0) {
-                        if (this._editor.hasEventListeners(m.FileDropEvent))
-                            for (var a = 0; a < t.files.length; ++a) this._editor.trigger(new m.FileDropEvent(t.files[a], o));
+                        if (this._editor.hasEventListeners(GEditor.FileDropEvent))
+                            for (var a = 0; a < t.files.length; ++a) this._editor.trigger(new GEditor.FileDropEvent(t.files[a], o));
                     } else if (t.types && t.types.length > 0) {
                         var s = [],
-                            l = !1;
+                            l = false;
                         for (a = 0; a < t.types.length; ++a) {
                             var h = t.types[a],
                                 A = t.getData(h);
@@ -543,8 +543,8 @@ module.exports = function (e, t, i) {
                                         ((p = _.DropType.FontFamily), (u = A));
                                         break;
                                     case _.DROP_MIME_TYPE_CUSTOM:
-                                        this._editor.hasEventListeners(m.CustomDropEvent) &&
-                                            this._editor.trigger(new m.CustomDropEvent(A, o));
+                                        this._editor.hasEventListeners(GEditor.CustomDropEvent) &&
+                                            this._editor.trigger(new GEditor.CustomDropEvent(A, o));
                                         break;
                                     case "text/plain":
                                         ((p = _.DropType.Text), (u = A));
@@ -563,13 +563,13 @@ module.exports = function (e, t, i) {
                                         e,
                                         this.getWorldTransform(this._scene),
                                         null,
-                                        !0,
+                                        true,
                                         -1,
                                         c.pickDistance,
-                                        !0,
+                                        true,
                                         this._dropHitFilter,
-                                        !1,
-                                        !1,
+                                        false,
+                                        false,
                                         this._viewConfiguration.multiPageView
                                     );
                                     if (d && d.length > 0)
@@ -585,7 +585,7 @@ module.exports = function (e, t, i) {
                                                     E = E.getParent();
                                                 }
                                                 if (w && C.acceptDrop(w, p, u, v.data)) {
-                                                    l = !0;
+                                                    l = true;
                                                     break;
                                                 }
                                             }
@@ -602,23 +602,23 @@ module.exports = function (e, t, i) {
                                         if (B) {
                                             var x = B.getX(),
                                                 P = B.getY();
-                                            u.transform(new f(1, 0, 0, 1, -x + o.getX(), -P + o.getY()), !0);
+                                            u.transform(new f(1, 0, 0, 1, -x + o.getX(), -P + o.getY()), true);
                                         }
-                                    } else u.transform(new f(1, 0, 0, 1, o.getX(), o.getY()), !0);
-                                    this._editor.updateByMousePosition(i, null, !1, this._viewConfiguration);
+                                    } else u.transform(new f(1, 0, 0, 1, o.getX(), o.getY()), true);
+                                    this._editor.updateByMousePosition(i, null, false, this._viewConfiguration);
                                     var S = [],
                                         R = [],
                                         D = u.accept(
                                             function (e) {
                                                 return (
-                                                    !!(e instanceof T && e.isMaster()) && (S.push(e.getMultireferenceId()), R.push(e), !0)
+                                                    !!(e instanceof T && e.isMaster()) && (S.push(e.getMultireferenceId()), R.push(e), true)
                                                 );
                                             },
-                                            !1,
-                                            !0
+                                            false,
+                                            true
                                         );
                                     (D && this._editor.beginTransaction(),
-                                        this._editor.insertElements([u], !0, D, !0),
+                                        this._editor.insertElements([u], true, D, true),
                                         D &&
                                             (this._scene.acceptChildren(
                                                 function (e) {
@@ -631,8 +631,8 @@ module.exports = function (e, t, i) {
                                                     }
                                                 }.bind(this)
                                             ),
-                                            this._editor.commitTransaction(I.get(new F("GEditorWidget", "action.insert-master-symbol")))),
-                                        (l = !0));
+                                            this._editor.commitTransaction(String.get(new F("GEditorWidget", "action.insert-master-symbol")))),
+                                        (l = true));
                                 }
                             }
                     }
@@ -643,5 +643,5 @@ module.exports = function (e, t, i) {
                 (D.prototype.toString = function () {
                     return "[Object GEditorWidget]";
                 }),
-                (e.exports = D));
+                (module.exports = D));
         };

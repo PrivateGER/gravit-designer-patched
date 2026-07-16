@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(377).decode,
-                r = i(105),
-                o = i(89),
-                a = i(115);
-            ((t.parse = function (e, t) {
-                var i = new o.Parser(e, t),
+            var n = require(377).decode,
+                r = require(105),
+                Parser = require(89),
+                a = require(115);
+            ((exports.parse = function (e, t) {
+                var i = new Parser.Parser(e, t),
                     a = i.parseULong();
                 (r.argument(1 === a, "Unsupported META table version."), i.parseULong(), i.parseULong());
                 for (var s = i.parseULong(), l = {}, h = 0; h < s; h++) {
@@ -17,7 +17,7 @@ module.exports = function (e, t, i) {
                 }
                 return l;
             }),
-                (t.make = function (e) {
+                (exports.make = function (e) {
                     var t = Object.keys(e).length,
                         i = "",
                         n = 16 + 12 * t,

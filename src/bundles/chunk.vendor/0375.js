@@ -1,4 +1,4 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
             let n = 0;
             const r = (e, t, i) => {
@@ -18,7 +18,7 @@ module.exports = function (e, t, i) {
                 }
             };
             let o = 0;
-            e.exports = function (e, t) {
+            module.exports = function (e, t) {
                 let i = arguments.length > 2 && void 0 !== arguments[2] && arguments[2];
                 try {
                     if ((i && r(e, t), void 0 === window._GLOBAL_GA_EVENTS)) return;

@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(527), n(3));
-        var o = n(1),
-            i = n(31),
-            a = n(18);
-        const { gApi: r } = n(10);
-        var s = n(337);
+        (require(8 /* Symbol */), require(527), require(3));
+        var GObject = require(1),
+            i = require(31),
+            GCategory = require(18);
+        const { gApi: r } = require(10 /* designerConfig */);
+        var s = require(337);
         function l() {}
-        (o.GObject.inherit(l, i),
+        (GObject.GObject.inherit(l, i),
             (l.ID = "toggle-pro-beta-license"),
             (l.prototype.getId = function () {
                 return l.ID;
@@ -17,7 +17,7 @@ module.exports = function (e, t, n) {
                 return e.isPro() && !e.isExpired() ? "Switch to Basic License" : "Switch to PRO License";
             }),
             (l.prototype.getCategory = function () {
-                return a.CATEGORY_HELP;
+                return GCategory.CATEGORY_HELP;
             }),
             (l.prototype.getGroup = function () {
                 return "help";
@@ -30,7 +30,7 @@ module.exports = function (e, t, n) {
             }),
             (l.prototype.execute = async function () {
                 const e = await r.getUserSettings(),
-                    t = (e.flags && e.flags.betaProLicense) || !1;
+                    t = (e.flags && e.flags.betaProLicense) || false;
                 r.updateUserSettings({ flags: { betaProLicense: !t } }).then(() => {
                     s.checkLicense();
                 });
@@ -38,5 +38,5 @@ module.exports = function (e, t, n) {
             (l.prototype.toString = function () {
                 return "[Object GToggleProBETALicenseAction]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

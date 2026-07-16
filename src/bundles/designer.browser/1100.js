@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        var o = n(1),
-            i = n(119);
-        e.exports = function (e) {
+        require(8 /* Symbol */);
+        var GObject = require(1),
+            GCommonNames = require(119);
+        module.exports = function (e) {
             ((e.CommercialProduct = function (t, n, o, i) {
                 e.Item.call(this, t, n, o, i);
             }),
-                o.GObject.inherit(e.CommercialProduct, e.Item),
+                GObject.GObject.inherit(e.CommercialProduct, e.Item),
                 (e.CommercialProduct.prototype.read = function (e, t, n) {
-                    i.loadDesignData(this._id, !1)
+                    GCommonNames.loadDesignData(this._id, false)
                         .then((t) => {
                             e(t.data);
                         })

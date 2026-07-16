@@ -1,18 +1,18 @@
-module.exports = function (e, t, i) {
-            var n = i(28),
-                r = i(22),
-                o = i(2),
-                a = i(0),
-                s = i(6),
-                l = i(112),
-                h = i(207),
-                A = i(14),
-                c = i(11);
+module.exports = function (module, exports, require) {
+            var GStylable = require(28),
+                r = require(22),
+                o = require(2),
+                IsFiniteNonNegativeNumber = require(0),
+                s = require(6),
+                l = require(112),
+                h = require(207),
+                A = require(14),
+                c = require(11);
 
             function p() {
                 (r.call(this), this._setDefaultProperties(p.VisualProperties, p.MetaProperties));
             }
-            (a.inheritAndMix(p, r, [o.Properties, o.Store]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(p, r, [o.Properties, o.Store]),
                 (p.LockType = {
                     Partial: "P",
                     Full: "F",
@@ -31,7 +31,7 @@ module.exports = function (e, t, i) {
                     NoSelect: 512,
                 }),
                 (p.VisualProperties = {
-                    vis: !0,
+                    vis: true,
                 }),
                 (p.MetaProperties = {
                     name: null,
@@ -58,7 +58,7 @@ module.exports = function (e, t, i) {
                         c = this._scene.getLabelBBox(n ? 1 : A).getHeight();
                     return new s(o.getX() - t, o.getY() - c - t, o.getWidth() + 2 * t, c + 2 * t).containsPoint(e)
                         ? new l(this, {
-                              label: !0,
+                              label: true,
                           })
                         : null;
                 }),
@@ -120,7 +120,7 @@ module.exports = function (e, t, i) {
                                     }.bind(this)
                                 )));
                     } else if (e === o._Change.BeforeChildRemove)
-                        t instanceof r && (this._updateElementVisibility(t, !0), this._updateElementLock(t, null));
+                        t instanceof r && (this._updateElementVisibility(t, true), this._updateElementLock(t, null));
                     else if (e === o._Change.AfterChildInsert)
                         t instanceof r && (this._updateElementVisibility(t), this._updateElementLock(t));
                     else if (e === o._Change.BeforePropertiesChange) {
@@ -134,21 +134,21 @@ module.exports = function (e, t, i) {
                     i && e instanceof p && (i = e.getProperty("vis"));
                     var o =
                         e.getParent() &&
-                        e.getParent().hasMixin(n) &&
+                        e.getParent().hasMixin(GStylable) &&
                         !("[GCompoundShape]" === e.getParent().toString()) &&
                         null !== e.getParent().getEffects().getFirstChild();
                     i
                         ? (e.removeFlag(r.Flag.Hidden),
-                          e.getParent() && e.getParent()._notifyChange(r._Change.ChildGeometryUpdate, [e, !0]),
+                          e.getParent() && e.getParent()._notifyChange(r._Change.ChildGeometryUpdate, [e, true]),
                           o ? e.getParent()._requestInvalidation() : e._requestInvalidation())
                         : (o ? e.getParent()._requestInvalidation() : e._requestInvalidation(),
                           e.setFlag(r.Flag.Hidden),
-                          e.getParent() && e.getParent()._notifyChange(r._Change.ChildGeometryUpdate, [e, !1]));
+                          e.getParent() && e.getParent()._notifyChange(r._Change.ChildGeometryUpdate, [e, false]));
                 }),
                 (p.prototype._requestInvalidateNode = function (e) {
                     if (this.hasMixin(p.LabelHolder) && this._scene && e === this) {
                         if (this.isPaintable()) {
-                            var t = e.getPaintBBox(null, !0);
+                            var t = e.getPaintBBox(null, true);
                             if (t) {
                                 var i = this.getScene().getLabelBBox(this.getScaleLabelFactor()).getHeight();
                                 this._requestInvalidationArea(t.expanded(0, i, 0, 0));
@@ -175,5 +175,5 @@ module.exports = function (e, t, i) {
                         }
                     else (e.removeFlag(r.Flag.PartialLocked), e.removeFlag(r.Flag.FullLocked));
                 }),
-                (e.exports = p));
+                (module.exports = p));
         };

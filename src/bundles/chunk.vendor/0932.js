@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(250),
-                r = i(659);
+module.exports = function (module, exports, require) {
+            var n = require(250),
+                r = require(659);
 
             function o() {}
             ((o.getDecoder = function (e) {
@@ -23,5 +23,5 @@ module.exports = function (e, t, i) {
                         e && e.getColorSpace() === r.ColorSpace.CMYK ? e.getData() : null
                     );
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

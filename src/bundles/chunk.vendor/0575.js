@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(58), i(19), i(168), i(30), i(71), i(4), i(41), i(13), i(169), i(26));
-            const n = i(352),
-                r = i(287),
-                o = i(950),
-                { share: { pro: a = !1 } = {} } = i(253);
+            (require(58), require(19), require(168 /* PDFFetchStream */), require(30), require(71), require(4), require(41), require(13), require(169 /* PDFNetworkStream */), require(26));
+            const n = require(352),
+                GShareRoles = require(287),
+                o = require(950),
+                { share: { pro: a = false } = {} } = require(253);
             class s {
                 static isPro() {
                     return !!a;
@@ -15,7 +15,7 @@ module.exports = function (e, t, i) {
                 }
                 getRole() {
                     if (this.role) {
-                        const e = Object.values(r).find((e) => {
+                        const e = Object.values(GShareRoles).find((e) => {
                             let { id: t } = e;
                             return t === this.role;
                         });
@@ -36,7 +36,7 @@ module.exports = function (e, t, i) {
                             .reduce((e, t) => {
                                 let [i, n] = t;
                                 return Object.assign(e, {
-                                    [i]: n || !1,
+                                    [i]: n || false,
                                 });
                             }, {})
                     );
@@ -55,5 +55,5 @@ module.exports = function (e, t, i) {
                     );
                 }
             }
-            e.exports = s;
+            module.exports = s;
         };

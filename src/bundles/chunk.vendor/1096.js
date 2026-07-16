@@ -1,15 +1,15 @@
-module.exports = function (e, t) {
-            e.exports = (function (e) {
+module.exports = function (module, exports) {
+            module.exports = (function (e) {
                 var t = {};
 
                 function i(n) {
                     if (t[n]) return t[n].exports;
                     var r = (t[n] = {
                         i: n,
-                        l: !1,
+                        l: false,
                         exports: {},
                     });
-                    return (e[n].call(r.exports, r, r.exports, i), (r.l = !0), r.exports);
+                    return (e[n].call(r.exports, r, r.exports, i), (r.l = true), r.exports);
                 }
                 return (
                     (i.m = e),
@@ -17,8 +17,8 @@ module.exports = function (e, t) {
                     (i.d = function (e, t, n) {
                         i.o(e, t) ||
                             Object.defineProperty(e, t, {
-                                configurable: !1,
-                                enumerable: !0,
+                                configurable: false,
+                                enumerable: true,
                                 get: n,
                             });
                     }),
@@ -57,9 +57,9 @@ module.exports = function (e, t) {
                         ((e.prototype = Object.create(t && t.prototype, {
                             constructor: {
                                 value: e,
-                                enumerable: !1,
-                                writable: !0,
-                                configurable: !0,
+                                enumerable: false,
+                                writable: true,
+                                configurable: true,
                             },
                         })),
                             t && (Object.setPrototypeOf ? Object.setPrototypeOf(e, t) : (e.__proto__ = t)));
@@ -71,7 +71,7 @@ module.exports = function (e, t) {
                     var a = function e() {
                             (o(this, e),
                                 (this.CDA = {
-                                    vis: !0,
+                                    vis: true,
                                     StrokeOpacity: 1,
                                     FillOpacity: 1,
                                 }),
@@ -95,7 +95,7 @@ module.exports = function (e, t) {
                                 (this.ModificationTime = 0),
                                 (this.Guid = ""),
                                 (this.ServerId = ""),
-                                (this.IsResolved = !1),
+                                (this.IsResolved = false),
                                 (this.Removed = void 0),
                                 (this.ReadBy = null),
                                 (this.UsersAssigned = []),
@@ -126,8 +126,8 @@ module.exports = function (e, t) {
                         })(h),
                         u = function e() {
                             (o(this, e),
-                                (this.ArrowEnd = !1),
-                                (this.ArrowStart = !1),
+                                (this.ArrowEnd = false),
+                                (this.ArrowStart = false),
                                 (this.PtAccuracy = 0),
                                 (this.TopLeftX = 0),
                                 (this.TopLeftY = 0),
@@ -175,7 +175,7 @@ module.exports = function (e, t) {
                             (o(this, e),
                                 (this.Guid = ""),
                                 (this.CdaId = ""),
-                                (this.Removed = !1),
+                                (this.Removed = false),
                                 (this.ServerId = ""),
                                 (this.AnnotationsListId = ""));
                         },

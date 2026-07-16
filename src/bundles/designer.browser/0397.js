@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(29),
-            i = n(46),
-            a = n(241),
-            r = n(145),
-            s = n(614),
-            l = n(43),
+        var o = require(29),
+            i = require(46),
+            a = require(241),
+            r = require(145),
+            s = require(614),
+            l = require(43),
             c = TypeError,
             d = l("toPrimitive");
-        e.exports = function (e, t) {
+        module.exports = function (e, t) {
             if (!i(e) || a(e)) return e;
             var n,
                 l = r(e, d);

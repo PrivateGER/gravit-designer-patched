@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o(e) {
             Object.assign(this, e);
         }
-        (n(30),
-            n(3),
-            (o.prototype.def = !1),
+        (require(30),
+            require(3),
+            (o.prototype.def = false),
             (o.prototype.id = null),
             (o.prototype.sidebar = null),
             (o.prototype.icon = null),
@@ -23,5 +23,5 @@ module.exports = function (e, t, n) {
                 panelWidth: "380px",
                 toolbar: ".appearance-toolbar",
             })),
-            (e.exports = o));
+            (module.exports = o));
     };

@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(49),
-            i = n(29),
-            a = n(396),
-            r = n(174),
-            s = n(184),
-            l = n(294),
-            c = n(61),
-            d = n(399),
+        var o = require(49),
+            i = require(29),
+            a = require(396),
+            r = require(174),
+            s = require(184),
+            l = require(294),
+            c = require(61),
+            d = require(399),
             u = Object.getOwnPropertyDescriptor;
-        t.f = o
+        exports.f = o
             ? u
             : function (e, t) {
                   if (((e = s(e)), (t = l(t)), d))

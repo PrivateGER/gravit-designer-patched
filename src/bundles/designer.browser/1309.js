@@ -1,25 +1,25 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        n(3);
-        var i = n(1),
-            a = o(n(609));
+        var o = require(16);
+        require(3);
+        var GObject = require(1),
+            a = o(require(609));
         function r() {
             a.default.call(this, r.ID, r.TITLE);
         }
-        (i.GObject.inherit(r, a.default),
+        (GObject.GObject.inherit(r, a.default),
             (r.ID = "edit.select-by-effect"),
-            (r.TITLE = new i.GLocaleKey("GSelectByEffectAction", "title")),
+            (r.TITLE = new GObject.GLocaleKey("GSelectByEffectAction", "title")),
             (r.prototype.getGroup = function () {
                 return "edit/select-by-style";
             }),
             (r.prototype._getValue = function (e) {
-                if (!e.hasMixin(i.GStylable)) return a.default.EmptyValue;
+                if (!e.hasMixin(GObject.GStylable)) return a.default.EmptyValue;
                 const t = e.getEffects();
                 return t ? t.getChildren() : [];
             }),
             (r.prototype.toString = function () {
                 return "[Object GSelectByEffectAction]";
             }),
-            (e.exports = r));
+            (module.exports = r));
     };

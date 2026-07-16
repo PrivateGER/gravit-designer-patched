@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(166),
+module.exports = function (module, exports, require) {
+            var n = require(166),
                 r = n.MAX_TIME_PER_JOB,
-                o = i(111),
-                a = i(205),
-                s = i(898),
-                l = i(470),
+                o = require(111),
+                a = require(205),
+                s = require(898),
+                l = require(470),
                 h = 0;
             n.WORKER_RENDERING_ENABLED && (h = n.CANVAS_GRID_HORIZONTAL * n.CANVAS_GRID_VERTICAL);
             var A = new Array(h);
@@ -14,12 +14,12 @@ module.exports = function (e, t, i) {
                 u = ("undefined" != typeof window && window.cancelAnimationFrame) || clearTimeout;
 
             function d() {}
-            ((d._enabled = !0),
-                (d._debugEnabled = !1),
-                (d._debugPhase = !1),
-                (d._multiThreading = !1),
-                (d.DUMP_IMAGES = !0),
-                (d._renderPhase = !1),
+            ((d._enabled = true),
+                (d._debugEnabled = false),
+                (d._debugPhase = false),
+                (d._multiThreading = false),
+                (d.DUMP_IMAGES = true),
+                (d._renderPhase = false),
                 (d._toInitialize = []),
                 (d._toInitializeWorkers = new Array(h)),
                 (d._renderParameters = {}),
@@ -29,20 +29,20 @@ module.exports = function (e, t, i) {
                     (o.getPreservedContexts().forEach(function (e) {
                         o.syncContext(e);
                     }),
-                        (this._renderPhase = !0),
+                        (this._renderPhase = true),
                         this._debugEnabled
-                            ? (this._debugPhase = !0)
+                            ? (this._debugPhase = true)
                             : n.WORKER_RENDERING_ENABLED && e && "undefined" != typeof OffscreenCanvas
                               ? (this._multiThreading = !!e)
-                              : (this._multiThreading = !1));
+                              : (this._multiThreading = false));
                 }),
                 (d.finish = function () {
-                    ((this._renderPhase = !1), (this._debugPhase = !1), (this._multiThreading = !1));
+                    ((this._renderPhase = false), (this._debugPhase = false), (this._multiThreading = false));
                 }),
                 (d.tryRunRendering = function (e, t, i, n, r) {
                     this.isRenderPhase() ||
                     this._renderJobs.some(function () {
-                        return !0;
+                        return true;
                     })
                         ? (this._scheduledRenderings || (this._scheduledRenderings = []),
                           this._scheduledRenderings.push({
@@ -67,7 +67,7 @@ module.exports = function (e, t, i) {
                     });
                 }),
                 (d.init = function (e, t) {
-                    ((this._enabled = !1 !== e), (this._debugEnabled = !0 === t));
+                    ((this._enabled = false !== e), (this._debugEnabled = true === t));
                 }),
                 (d.isEnabled = function () {
                     return this._enabled;
@@ -130,14 +130,14 @@ module.exports = function (e, t, i) {
                         C = o.getLen(e),
                         w = 0,
                         E = ((t = t || 0), new Array(15)),
-                        B = !1,
-                        x = !0,
+                        B = false,
+                        x = true,
                         P = a && a.resuming;
                     if (!this._enabled) {
                         var S = e.$type === o.INSTANCE_RENDERERCTX ? e.canvas.__realCanvas : e.canvas;
-                        return (i(S, !0, !1), S);
+                        return (i(S, true, false), S);
                     }
-                    if (this._debugPhase) return (i(e.canvas.$realCanvas, !0, !1), e.canvas.$realCanvas);
+                    if (this._debugPhase) return (i(e.canvas.$realCanvas, true, false), e.canvas.$realCanvas);
                     if (
                         (0 !== t ||
                             P ||
@@ -168,7 +168,7 @@ module.exports = function (e, t, i) {
                         try {
                             R.postMessage(e, T);
                         } catch (e) {
-                            (console.log("RENDERER ERROR", e), i && i(null, !0, !1));
+                            (console.log("RENDERER ERROR", e), i && i(null, true, false));
                         } finally {
                             this._toInitializeWorkers[I].forEach(function (e) {
                                 e.canvas.$renderedBitmap &&
@@ -218,20 +218,20 @@ module.exports = function (e, t, i) {
                             (f = m.funcOp),
                             (c = m.realCtx),
                             (v = m.numParams),
-                            a.hasSave() || (a.reset(), (P = !1), (m = null)));
+                            a.hasSave() || (a.reset(), (P = false), (m = null)));
                     else {
                         if (!(c = o.initializeContext(e, 0 === t)))
                             return 0 === t
-                                ? ((a.exiting = !1),
+                                ? ((a.exiting = false),
                                   delete this._renderJobs[a.getId()],
-                                  i && i(e.canvas.$realCanvas, !0),
+                                  i && i(e.canvas.$realCanvas, true),
                                   e.canvas.$realCanvas)
                                 : null;
                         if ((e.canvas.rendering || o.resetExec(e), e.canvas.rendering || (t > 0 && e.canvas.rendered))) {
                             if ((_("Reusing subcanvas 2"), 0 !== t || !i)) return e.canvas.$realCanvas;
                             (_("Renderer: recovering from previous error", 1), o.resetExec(e), o.forceRestore(e));
                         }
-                        ((e.canvas.rendering = !0), (w = e.__execPtr), a.addRenderable(e));
+                        ((e.canvas.rendering = true), (w = e.__execPtr), a.addRenderable(e));
                     }
                     for (; w < C; ) {
                         if (!m) {
@@ -263,9 +263,9 @@ module.exports = function (e, t, i) {
                             else if ((M = o.getVal(e)) === o.ERROR_TYPE)
                                 return (
                                     _("Renderer: invalid value in stack", 2),
-                                    (a.exiting = !1),
+                                    (a.exiting = false),
                                     o.forceRestore(e),
-                                    0 === t && i && i(e.canvas.$realCanvas, !0, !0),
+                                    0 === t && i && i(e.canvas.$realCanvas, true, true),
                                     e.canvas.$realCanvas
                                 );
                             if ("number" == typeof M);
@@ -284,14 +284,14 @@ module.exports = function (e, t, i) {
                                         if (
                                             ((a.parameters.quickRender && t > 0) ||
                                             (a.parameters.noWebGL && "webgl" === M.parent.__contextType)
-                                                ? (B = !0)
+                                                ? (B = true)
                                                 : ((M = this.render(M.parent, t + 1, null, a)),
                                                   "_flush" !== g &&
                                                       (M
                                                           ? M instanceof HTMLCanvasElement &&
                                                             M.width * M.height == 0 &&
-                                                            ((B = !0), (x = !1), _("Error: canvas was empty, skipping draw", 2))
-                                                          : ((B = !0), (x = !1)))),
+                                                            ((B = true), (x = false), _("Error: canvas was empty, skipping draw", 2))
+                                                          : ((B = true), (x = false)))),
                                             a.exiting)
                                         )
                                             return (
@@ -312,7 +312,7 @@ module.exports = function (e, t, i) {
                                                     val: N,
                                                 }),
                                                 0 === t &&
-                                                    ((a.exiting = !1), i && i(e.canvas.$realCanvas, !1, B || a.skipped, a.parameters)),
+                                                    ((a.exiting = false), i && i(e.canvas.$realCanvas, false, B || a.skipped, a.parameters)),
                                                 null
                                             );
                                     } else
@@ -321,12 +321,12 @@ module.exports = function (e, t, i) {
                                                 (M
                                                     ? M instanceof HTMLCanvasElement &&
                                                       M.width * M.height == 0 &&
-                                                      ((B = !0), (x = !1), _("Error: canvas was empty, skipping draw", 2))
-                                                    : ((B = !0), (x = !1), _("Error: canvas is null", 2))));
+                                                      ((B = true), (x = false), _("Error: canvas was empty, skipping draw", 2))
+                                                    : ((B = true), (x = false), _("Error: canvas is null", 2))));
                                 } else
                                     M &&
                                         M.$type === o.INSTANCE_RENDERABLE &&
-                                        (a.lock(), (M = M.render(this, t + 1, a)), a.unlock(), void 0 === M && (B = !0));
+                                        (a.lock(), (M = M.render(this, t + 1, a)), a.unlock(), void 0 === M && (B = true));
                             }
                             E[v++] = M;
                         }
@@ -347,7 +347,7 @@ module.exports = function (e, t, i) {
                                 f === o._flush
                                     ? u !== o.EXEC && _("erroneous flush", 2)
                                     : B
-                                      ? ((B = !1), x ? (a.skipped = !0) : (x = !0))
+                                      ? ((B = false), x ? (a.skipped = true) : (x = true))
                                       : 2 === v
                                         ? c[g].call(c, E[0], E[1])
                                         : 4 === v
@@ -473,23 +473,23 @@ module.exports = function (e, t, i) {
                                     resumeLocation: 2,
                                 }),
                                 d._scheduleRender(a),
-                                0 === t && i && i(e.canvas.$realCanvas, !1, a.skipped, a.parameters),
-                                (a.exiting = !0),
+                                0 === t && i && i(e.canvas.$realCanvas, false, a.skipped, a.parameters),
+                                (a.exiting = true),
                                 null
                             );
                         }
                     }
-                    e.canvas.rendering = !1;
+                    e.canvas.rendering = false;
                     var U = e.canvas.$realCanvas;
                     if (
-                        (o.finished(e) ? ((e.canvas.rendered = !0), o.dispose(e)) : o.clearPrevious(e),
+                        (o.finished(e) ? ((e.canvas.rendered = true), o.dispose(e)) : o.clearPrevious(e),
                         0 === t &&
                             (a.disposeRenderables(),
-                            (a.exiting = !1),
+                            (a.exiting = false),
                             delete this._renderJobs[a.getId()],
                             n.AGGRESIVE_MEMORY_SWEEPER && l.destroyTextures(),
                             i &&
-                                (i(e.canvas.$realCanvas, !0, a.skipped, a.parameters),
+                                (i(e.canvas.$realCanvas, true, a.skipped, a.parameters),
                                 d._scheduledRenderings && d._scheduledRenderings.length)))
                     ) {
                         var V = d._scheduledRenderings.pop();
@@ -504,7 +504,7 @@ module.exports = function (e, t, i) {
                     (t && null !== t.timeout && (u(t.timeout), (t.timeout = null)),
                         o.forceRestore(e),
                         o.dispose(e),
-                        t && (t.disposeRenderables(), (t.exiting = !1), delete this._renderJobs[t.getId()]),
+                        t && (t.disposeRenderables(), (t.exiting = false), delete this._renderJobs[t.getId()]),
                         n.AGGRESIVE_MEMORY_SWEEPER && l.destroyTextures());
                 }),
                 (d._scheduleRender = function (e) {
@@ -512,12 +512,12 @@ module.exports = function (e, t, i) {
                     (t || (this._renderJobs[e.getId()] = t),
                         e.timeout && (u(e.timeout), (e.timeout = null)),
                         (e.timeout = p(function () {
-                            e.resuming = !0;
+                            e.resuming = true;
                             var t = e.getSave();
                             try {
                                 d.render(t.ctx, 0, t.callback, e);
                             } catch (e) {
-                                (console.error("Render error:" + e), d.forceCleanup(t.ctx), t.callback(null, !0, !1));
+                                (console.error("Render error:" + e), d.forceCleanup(t.ctx), t.callback(null, true, false));
                             }
                         }, 0)));
                 }));
@@ -548,7 +548,7 @@ module.exports = function (e, t, i) {
                               ? ++m
                               : i || 0) ||
                     e.canvas.rendering ||
-                    (f > 0 && (g = !0));
+                    (f > 0 && (g = true));
                 var s = "canvas" + i,
                     l = "context" + i,
                     h = "";
@@ -587,7 +587,7 @@ module.exports = function (e, t, i) {
                     }
                 a = e.__execPtr;
                 n = n || [0];
-                for (e.canvas.renderingName = s, e.canvas.rendering = !0; a < r; ) {
+                for (e.canvas.renderingName = s, e.canvas.rendering = true; a < r; ) {
                     var p = o.getOp(e),
                         u = o.__ops[p],
                         y = [];
@@ -617,15 +617,15 @@ module.exports = function (e, t, i) {
                                                     if (v.rendering) v = v.renderingName;
                                                     else {
                                                         var b = v.renderingName;
-                                                        ((h += this.dumpCode(v.parent, !1, null, n)), (v = b));
+                                                        ((h += this.dumpCode(v.parent, false, null, n)), (v = b));
                                                     }
                                                 else if (!v.rendered && v.renderedName) {
                                                     b = v.renderedName;
-                                                    (v.rendering || (h += this.dumpCode(v.parent, !1, null, n)), (v = b));
+                                                    (v.rendering || (h += this.dumpCode(v.parent, false, null, n)), (v = b));
                                                 } else v = v.renderedName;
                                             else {
                                                 var C = ++m;
-                                                ((h += v = this.dumpCode(v.parent, !1, C, n)), (v = "canvas" + C));
+                                                ((h += v = this.dumpCode(v.parent, false, C, n)), (v = "canvas" + C));
                                             }
                                         else if (v instanceof HTMLCanvasElement && d.DUMP_IMAGES) {
                                             var w = "tmp" + n[0];
@@ -689,7 +689,7 @@ module.exports = function (e, t, i) {
                         btoa("<!DOCTYPE html><html><body><script type='text/javascript'>" + h + "</script></body></html>");
                 }
                 return (
-                    (e.canvas.rendering = !1),
+                    (e.canvas.rendering = false),
                     o.finished(e) && ((e.canvas.renderedName = e.canvas.renderingName), (e.canvas.renderingName = null)),
                     h
                 );
@@ -705,5 +705,5 @@ module.exports = function (e, t, i) {
                     } else o.destroy(e);
                 }),
                 (o.DEBUG = d.isDebug()),
-                (e.exports = d));
+                (module.exports = d));
         };

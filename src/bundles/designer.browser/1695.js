@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(4), n(13));
-        var i = n(15),
-            a = o(n(1340)),
-            r = o(n(1344)),
+        var o = require(16);
+        (require(4), require(13));
+        var GPlatform = require(15),
+            a = o(require(1340)),
+            r = o(require(1344)),
             s = {
                 init: function (e) {
-                    e = $.extend({ selector: null, submitCallback: null, noDblClickEdit: !1 }, e);
+                    e = $.extend({ selector: null, submitCallback: null, noDblClickEdit: false }, e);
                     var t = this;
                     return this.each(function () {
                         if (($(t).data("gautoedit", { options: e, input: null }), !e.noDblClickEdit)) {
@@ -40,9 +40,9 @@ module.exports = function (e, t, n) {
                                 "click",
                                 function n(o) {
                                     $(o.target).hasClass("g-auto-edit") ||
-                                        (document.removeEventListener("click", n, !0), s.submit.call(t, e));
+                                        (document.removeEventListener("click", n, true), s.submit.call(t, e));
                                 },
-                                !0
+                                true
                             ),
                         (e.input = o
                             .css({
@@ -58,22 +58,22 @@ module.exports = function (e, t, n) {
                                 s.submit.call(t, e);
                             })
                             .on("keydown", (n) => {
-                                if (i.GKey.translateCode(n.code) === i.GKey.Constant.TAB) {
+                                if (GPlatform.GKey.translateCode(n.code) === GPlatform.GKey.Constant.TAB) {
                                     s.submit.call(t, e);
                                     const o = n.shiftKey ? r.default.Type.Previous : r.default.Type.Next;
                                     return (
                                         gDesigner.executeAction("".concat(r.default.ID, ".").concat(o), [r.default.Mode.Focus]),
                                         gDesigner.executeAction(a.default.ID),
-                                        !1
+                                        false
                                     );
                                 }
                             })
                             .on("keyup", function (n) {
-                                switch (i.GKey.translateKey(n.keyCode)) {
-                                    case i.GKey.Constant.ENTER:
+                                switch (GPlatform.GKey.translateKey(n.keyCode)) {
+                                    case GPlatform.GKey.Constant.ENTER:
                                         s.submit.call(t, e);
                                         break;
-                                    case i.GKey.Constant.ESC:
+                                    case GPlatform.GKey.Constant.ESC:
                                         s.close.call(t, e);
                                 }
                             })

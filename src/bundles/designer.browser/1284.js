@@ -1,24 +1,24 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(20), n(3), n(34));
-        var o = n(1),
-            i = n(15),
-            a = n(67),
-            r = n(18),
-            s = n(31);
+        (require(20), require(3), require(34));
+        var GObject = require(1),
+            GPlatform = require(15),
+            a = require(67),
+            GCategory = require(18),
+            s = require(31);
         function l() {
             l.TOOLTIP_CONFIG = {
                 [a.TOOLTIP_AREA.TOOLBAR]: a.GRichTooltipConfig.from({
-                    title: o.GLocale.get(new o.GLocaleKey("GRedoAction", "tooltip-title")),
-                    description: o.GLocale.get(new o.GLocaleKey("GRedoAction", "tooltip-description")),
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GRedoAction", "tooltip-title")),
+                    description: GObject.GLocale.get(new GObject.GLocaleKey("GRedoAction", "tooltip-description")),
                     shortcut: l.SHORTCUT,
                 }),
             };
         }
-        (o.GObject.inherit(l, s),
+        (GObject.GObject.inherit(l, s),
             (l.ID = "edit.redo"),
-            (l.TITLE = new o.GLocaleKey("GRedoAction", "title")),
-            (l.SHORTCUT = [i.GKey.Constant.SHIFT, i.GKey.Constant.META, "z"]),
+            (l.TITLE = new GObject.GLocaleKey("GRedoAction", "title")),
+            (l.SHORTCUT = [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "z"]),
             (l.TOOLTIP_CONFIG = null),
             (l.prototype.getId = function () {
                 return l.ID;
@@ -26,14 +26,14 @@ module.exports = function (e, t, n) {
             (l.prototype.getTitle = function () {
                 var e = gDesigner.getActiveDocument();
                 return e && e.getEditor().hasRedoState()
-                    ? o.GLocale.get(new o.GLocaleKey("GRedoAction", "redo-action")).replace("%action", e.getEditor().getRedoStateName())
-                    : o.GLocale.get(l.TITLE);
+                    ? GObject.GLocale.get(new GObject.GLocaleKey("GRedoAction", "redo-action")).replace("%action", e.getEditor().getRedoStateName())
+                    : GObject.GLocale.get(l.TITLE);
             }),
             (l.prototype.getIcon = function () {
                 return "gravit-icon-redo";
             }),
             (l.prototype.getCategory = function () {
-                return r.CATEGORY_EDIT;
+                return GCategory.CATEGORY_EDIT;
             }),
             (l.prototype.getGroup = function () {
                 return "undo_redo";
@@ -69,5 +69,5 @@ module.exports = function (e, t, n) {
             (l.prototype.toString = function () {
                 return "[Object GRedoAction]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

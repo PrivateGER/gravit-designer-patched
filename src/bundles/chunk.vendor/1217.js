@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(182),
-                r = i(90),
-                o = i(338),
+module.exports = function (module, exports, require) {
+            var n = require(182),
+                r = require(90),
+                o = require(338),
                 a = function (e, t) {
                     ((this.operator = e), (this.gtransform = t));
                 };
-            (i(0).inherit(a, r),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(a, r),
                 (a.prototype.write = function (e) {
                     (this.asArray().forEach(function (t) {
                         (t.write(e), e.writeSpace());
@@ -28,5 +28,5 @@ module.exports = function (e, t, i) {
                 (a.prototype._normalizeNumber = function (e) {
                     return o.normalizeNumber(e);
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

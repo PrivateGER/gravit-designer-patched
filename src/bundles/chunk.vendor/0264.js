@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
-            var r = n(187),
-                o = n(5),
-                a = n(48),
-                s = n(54),
-                l = n(12),
-                h = n(59),
-                A = n(647),
+module.exports = function (module, exports, require) {
+            var r = require(187),
+                o = require(5),
+                a = require(48),
+                s = require(54),
+                l = require(12),
+                h = require(59),
+                A = require(647),
                 c = Math.sqrt(1e-10),
                 p = Math.pow(10, 11);
 
@@ -16,14 +16,14 @@ module.exports = function (e, t, n) {
             function d(e, t, i, n) {
                 ((this.pip_check_policy = d.PIP_CHECK_ODDEVEN),
                     (this.common_segments_policy = t || d.AUTO),
-                    (this._intersector = new r(!0, !0, i, i ? 0.125 : 4, n)),
+                    (this._intersector = new r(true, true, i, i ? 0.125 : 4, n)),
                     (this._lastUnprocessed = null),
                     (this._firstIntersect = null),
-                    (this._initialized = !1),
+                    (this._initialized = false),
                     (this._sourceHead = null),
                     (this.clipHead = null),
                     (this.originalSource = null),
-                    (this.didNotClip = !1),
+                    (this.didNotClip = false),
                     (this._useIntersector = i),
                     (this._blockIntersector = n));
             }
@@ -32,14 +32,14 @@ module.exports = function (e, t, n) {
                     (this.y = 0),
                     (this.nextCurve = null),
                     (this.prevCurve = null),
-                    (this.isIsect = !1),
+                    (this.isIsect = false),
                     (this.next = null),
                     (this.prev = null),
                     (this.corresponding = null),
-                    (this.visited = !1),
+                    (this.visited = false),
                     (this.prevInside = 0),
                     (this.nextInside = 0),
-                    (this.isEntry = !1),
+                    (this.isEntry = false),
                     (this.isectPoly = null));
             }),
                 (d.PolyLineExtended.prototype.y = 0),
@@ -51,16 +51,16 @@ module.exports = function (e, t, n) {
                 (d.PolyLineExtended.prototype.nextCurve = null),
                 (d.PolyLineExtended.prototype.prevCurve = null),
                 (d.PolyLineExtended.prototype.currCurve = null),
-                (d.PolyLineExtended.prototype.isIsect = !1),
+                (d.PolyLineExtended.prototype.isIsect = false),
                 (d.PolyLineExtended.prototype.next = null),
                 (d.PolyLineExtended.prototype.prev = null),
-                (d.PolyLineExtended.prototype.visited = !1),
+                (d.PolyLineExtended.prototype.visited = false),
                 (d.PolyLineExtended.prototype.corresponding = null),
                 (d.PolyLineExtended.prototype.prevInside = 0),
                 (d.PolyLineExtended.prototype.nextInside = 0),
-                (d.PolyLineExtended.prototype.isEntry = !1),
+                (d.PolyLineExtended.prototype.isEntry = false),
                 (d.PolyLineExtended.prototype.isectPoly = null),
-                (d.PolyLineExtended.prototype.isLast = !1),
+                (d.PolyLineExtended.prototype.isLast = false),
                 (d.PolyLineExtended.prototype.index = 0),
                 (d.PolyLineExtended.prototype.tmpIdx = 0),
                 (d.PolyLineExtended.generateCorresponding = function (e) {
@@ -81,7 +81,7 @@ module.exports = function (e, t, n) {
                         n = i,
                         r = new a(),
                         s = (t = new d.PolyLineExtended()),
-                        l = !0;
+                        l = true;
                     for (e.rewindVertices(0); l && e.readVertex(r); )
                         switch (r.command) {
                             case a.Command.Move:
@@ -138,7 +138,7 @@ module.exports = function (e, t, n) {
                                     ? ((s.x = n.x), (s.y = n.y), (s.next = t), (t.prev = s))
                                     : (((s = s.prev).next = t), (t.prev = s)),
                                     (n = null),
-                                    (l = !1));
+                                    (l = false));
                                 break;
                             default:
                                 throw new Error("Unknown vertex command: " + vertex.command.toString());
@@ -167,11 +167,11 @@ module.exports = function (e, t, n) {
                             (r.isIsect = e.isIsect),
                             r.isIsect)
                         ) {
-                            var A = !1;
+                            var A = false;
                             if (0 === i)
                                 for (var c = 0; c < t.length; c++) {
                                     if ((p = t[c]).polySeg0 === e) {
-                                        ((p.polySeg0 = r), (r.isectPoly = p), (A = !0));
+                                        ((p.polySeg0 = r), (r.isectPoly = p), (A = true));
                                         break;
                                     }
                                 }
@@ -179,7 +179,7 @@ module.exports = function (e, t, n) {
                                 for (c = 0; c < t.length; c++) {
                                     var p;
                                     if ((p = t[c]).polySeg1 === e) {
-                                        ((p.polySeg1 = r), (r.isectPoly = p), (A = !0));
+                                        ((p.polySeg1 = r), (r.isectPoly = p), (A = true));
                                         break;
                                     }
                                 }
@@ -199,9 +199,9 @@ module.exports = function (e, t, n) {
                         if (l.isEqualEps(r, 0, 1e-10)) {
                             var o = (n.x - i.x) * (e - i.x),
                                 a = (n.y - i.y) * (t - i.y);
-                            if (o >= 0 && a >= 0) return !0;
+                            if (o >= 0 && a >= 0) return true;
                         }
-                        return !1;
+                        return false;
                     }
 
                     function u(e, t, i, n) {
@@ -221,13 +221,13 @@ module.exports = function (e, t, n) {
                                     h._hitTestCurve2(t.x, t.y, i.x, i.y, t.cx1, t.cy1, t.cx2, t.cy2, s, A, c, 0, {}) &&
                                     h._hitTestCurve2(t.x, t.y, i.x, i.y, t.cx1, t.cy1, t.cx2, t.cy2, e.x, e.y, c, 0, {})
                                 )
-                                    return !0;
+                                    return true;
                             } else if (
                                 h._hitTestCurve(t.x, t.y, i.x, i.y, t.cx1, t.cy1, o, a, c, 0, {}) &&
                                 h._hitTestCurve(t.x, t.y, i.x, i.y, t.cx1, t.cy1, s, A, c, 0, {}) &&
                                 h._hitTestCurve(t.x, t.y, i.x, i.y, t.cx1, t.cy1, e.x, e.y, c, 0, {})
                             )
-                                return !0;
+                                return true;
                         } else if (3 === n.length) {
                             ((o = l.getCurveAtT(n[0], n[2], n[1], 0.5)), (a = l.getCurveAtT(r[0], r[2], r[1], 0.5)));
                             if (void 0 !== t.cx2) {
@@ -235,17 +235,17 @@ module.exports = function (e, t, n) {
                                     h._hitTestCurve2(t.x, t.y, i.x, i.y, t.cx1, t.cy1, t.cx2, t.cy2, o, a, c, 0, {}) &&
                                     h._hitTestCurve2(t.x, t.y, i.x, i.y, t.cx1, t.cy1, t.cx2, t.cy2, e.x, e.y, c, 0, {})
                                 )
-                                    return !0;
+                                    return true;
                             } else if (
                                 h._hitTestCurve(t.x, t.y, i.x, i.y, t.cx1, t.cy1, o, a, c, 0, {}) &&
                                 h._hitTestCurve(t.x, t.y, i.x, i.y, t.cx1, t.cy1, e.x, e.y, c, 0, {})
                             )
-                                return !0;
+                                return true;
                         }
                     }
                     if (t) {
                         if (A.nextCurve) {
-                            if (d(A, s, t, i)) return !0;
+                            if (d(A, s, t, i)) return true;
                         } else if (i) {
                             if (
                                 u(
@@ -274,7 +274,7 @@ module.exports = function (e, t, n) {
                                 ) &&
                                 p(e.x, e.y, A, s)
                             )
-                                return !0;
+                                return true;
                         } else if (
                             u(
                                 t[1],
@@ -290,9 +290,9 @@ module.exports = function (e, t, n) {
                             ) &&
                             p(e.x, e.y, A, s)
                         )
-                            return !0;
+                            return true;
                         if (a.currCurve) {
-                            if (d(a, A, t, i)) return !0;
+                            if (d(a, A, t, i)) return true;
                         } else if (i) {
                             if (
                                 u(
@@ -321,7 +321,7 @@ module.exports = function (e, t, n) {
                                 ) &&
                                 p(e.x, e.y, A, a)
                             )
-                                return !0;
+                                return true;
                         } else if (
                             u(
                                 t[1],
@@ -337,20 +337,20 @@ module.exports = function (e, t, n) {
                             ) &&
                             p(e.x, e.y, A, a)
                         )
-                            return !0;
+                            return true;
                     } else {
                         if (A.nextCurve) {
                             if (void 0 !== A.cx1 && void 0 !== A.cx2) {
-                                if (u(A.cx1, A.cy1, A, s) && u(A.cx2, A.cy2, A, s) && p(e.x, e.y, A, s)) return !0;
-                            } else if (u(A.cx1, A.cy1, A, s) && p(e.x, e.y, A, s)) return !0;
-                        } else if (p(e.x, e.y, A, s)) return !0;
+                                if (u(A.cx1, A.cy1, A, s) && u(A.cx2, A.cy2, A, s) && p(e.x, e.y, A, s)) return true;
+                            } else if (u(A.cx1, A.cy1, A, s) && p(e.x, e.y, A, s)) return true;
+                        } else if (p(e.x, e.y, A, s)) return true;
                         if (a.currCurve) {
                             if (void 0 !== a.cx1 && void 0 !== a.cx2) {
-                                if (u(a.cx1, a.cy1, A, a) && u(a.cx2, a.cy2, A, a) && p(e.x, e.y, A, a)) return !0;
-                            } else if (u(a.cx1, a.cy1, A, a) && p(e.x, e.y, A, a)) return !0;
-                        } else if (p(e.x, e.y, A, a)) return !0;
+                                if (u(a.cx1, a.cy1, A, a) && u(a.cx2, a.cy2, A, a) && p(e.x, e.y, A, a)) return true;
+                            } else if (u(a.cx1, a.cy1, A, a) && p(e.x, e.y, A, a)) return true;
+                        } else if (p(e.x, e.y, A, a)) return true;
                     }
-                    return !1;
+                    return false;
                 }),
                 (d.PolyLineExtended.prototype._lastCurvePt = function () {
                     return this.currCurve ? this.currCurve.nextCurve.prev : null;
@@ -368,7 +368,7 @@ module.exports = function (e, t, n) {
                     var t = d.PIP_CHECK_ODDEVEN,
                         i = this._lastInLoop(),
                         n = i,
-                        r = !1;
+                        r = false;
                     if (i.isLast) {
                         var o = [],
                             a = [],
@@ -387,7 +387,7 @@ module.exports = function (e, t, n) {
                                     }
                                     u = u.prev.currCurve || u.prev;
                                 }
-                                (g ? o.push([l, i, g]) : ((r = !0), A++), p++);
+                                (g ? o.push([l, i, g]) : ((r = true), A++), p++);
                             }
                             ((i = (l = i.next)._lastInLoop()), h++);
                         } while (i !== n);
@@ -417,7 +417,7 @@ module.exports = function (e, t, n) {
                                     v = l.prev.currCurve || l.prev,
                                     b = i.prev.currCurve || i.prev,
                                     C = new d.PolyLineExtended();
-                                if (((C.isLast = !0), (C.x = _.x), (C.y = _.y), g === b)) 0;
+                                if (((C.isLast = true), (C.x = _.x), (C.y = _.y), g === b)) 0;
                                 else {
                                     0;
                                     var w = v._lastCurvePt(),
@@ -468,7 +468,7 @@ module.exports = function (e, t, n) {
                     for (h = 0; h < l; h++) {
                         var p = n[h][1],
                             u = n[(h + 1) % l][0];
-                        (p.x === u.x && p.y === u.y && (p.isLast = !1), p._connect(u, c[h]));
+                        (p.x === u.x && p.y === u.y && (p.isLast = false), p._connect(u, c[h]));
                     }
                     return this._firstInLoop();
                 }),
@@ -508,7 +508,7 @@ module.exports = function (e, t, n) {
                             )
                                 break;
                         } while (u !== p);
-                        ((A.next = c), (c.prev = A), (p.prev = h), (h.next = p), (h.isLast = !0), (c.isLast = !1));
+                        ((A.next = c), (c.prev = A), (p.prev = h), (h.next = p), (h.isLast = true), (c.isLast = false));
                     }
                 }),
                 (d.PolyLineExtended.prototype._firstInLoop = function () {
@@ -544,16 +544,16 @@ module.exports = function (e, t, n) {
                 (d.PolyLineExtended.prototype.cleanForwards = function () {
                     var e = this;
                     do {
-                        if ((e = e.nextCurve || e.next).isLast) return !0;
+                        if ((e = e.nextCurve || e.next).isLast) return true;
                     } while (!e.isIsect);
-                    return !1;
+                    return false;
                 }),
                 (d.PolyLineExtended.prototype.cleanBackwards = function () {
                     var e = this;
                     do {
-                        if ((e = e.prev.currCurve || e.prev).isLast) return !0;
+                        if ((e = e.prev.currCurve || e.prev).isLast) return true;
                     } while (!e.isIsect);
-                    return !1;
+                    return false;
                 }),
                 (d.PolyLineExtended.prototype.markIndices = function (e) {
                     var t = this.currCurve || this,
@@ -574,7 +574,7 @@ module.exports = function (e, t, n) {
                     return (e /= 2) < 0 ? -e : e;
                 }),
                 (d.PolyLineExtended.prototype._equalsEps = function (e, t, i) {
-                    if (!l.isEqualEps(this.x, e.x, i) || !l.isEqualEps(this.y, e.y, i)) return !1;
+                    if (!l.isEqualEps(this.x, e.x, i) || !l.isEqualEps(this.y, e.y, i)) return false;
                     var n = this;
                     if ((t || ((n = e), (e = this)), n.currCurve)) {
                         if (l.isEqualEps(n.x, n.next.x, i) && l.isEqualEps(n.y, n.next.y, i)) {
@@ -585,12 +585,12 @@ module.exports = function (e, t, n) {
                                     (r = r.nextCurve.prev),
                                 !r.currCurve)
                             )
-                                return !0;
-                            if (l.isEqualEps(e.x, r.x, i) && l.isEqualEps(e.y, r.y, i)) return !0;
+                                return true;
+                            if (l.isEqualEps(e.x, r.x, i) && l.isEqualEps(e.y, r.y, i)) return true;
                         }
-                        return !1;
+                        return false;
                     }
-                    return !0;
+                    return true;
                 }),
                 (d.PolyLineExtended._getPrevDifferentPoint = function (e) {
                     var t,
@@ -598,8 +598,8 @@ module.exports = function (e, t, n) {
                         n = 2 * A.LARGE_EPS;
                     do {
                         ((t = i), (i = i.prevInLoop()), (n /= 2));
-                    } while (e !== i && !i.isIsect && t._equalsEps(i, !1, n));
-                    return i.isIsect && t._equalsEps(i, !1, n) ? null : i;
+                    } while (e !== i && !i.isIsect && t._equalsEps(i, false, n));
+                    return i.isIsect && t._equalsEps(i, false, n) ? null : i;
                 }),
                 (d.PolyLineExtended._getNextDifferentPoint = function (e, t) {
                     var i,
@@ -607,8 +607,8 @@ module.exports = function (e, t, n) {
                         r = 2 * A.LARGE_EPS;
                     do {
                         ((i = n), (n = n.nextInLoop()), (r /= 2));
-                    } while (e !== n && !n.isIsect && i._equalsEps(n, !0, r));
-                    return ((t[0] = i), n.isIsect && i._equalsEps(n, !1, r) ? null : n);
+                    } while (e !== n && !n.isIsect && i._equalsEps(n, true, r));
+                    return ((t[0] = i), n.isIsect && i._equalsEps(n, false, r) ? null : n);
                 }),
                 (d.PolyLineExtended._getClosestTime = function (e, t, i, n) {
                     var r = Math.abs(e - i),
@@ -619,7 +619,7 @@ module.exports = function (e, t, n) {
                 (d.PolyLineExtended.disableBadIntersections = function (e, t, i, n, r) {
                     var o,
                         a = [[], []];
-                    if (!e.length) return !1;
+                    if (!e.length) return false;
                     for (o = 0; o < e.length; o++) {
                         var s = e[o];
                         (a[0].push(s.polySeg0), a[1].push(s.polySeg1));
@@ -692,14 +692,14 @@ module.exports = function (e, t, n) {
                                         ? S.colinear(p, f, m, T, I, F)
                                             ? (k.prevInside = t)
                                             : 0 === k.prevInside &&
-                                              (k.prevInside = S.isInsideBezier(p, d.PIP_CHECK_ODDEVEN, !0) > 0 ? 1 : 0)
+                                              (k.prevInside = S.isInsideBezier(p, d.PIP_CHECK_ODDEVEN, true) > 0 ? 1 : 0)
                                         : (k.prevInside = t)),
                                     k.nextInside >= 0 &&
                                         (I && C
                                             ? S.colinear(g, y, _, T, I, F)
                                                 ? (k.nextInside = t)
                                                 : 0 === k.nextInside &&
-                                                  (k.nextInside = S.isInsideBezier(g, d.PIP_CHECK_ODDEVEN, !0) > 0 ? 1 : 0)
+                                                  (k.nextInside = S.isInsideBezier(g, d.PIP_CHECK_ODDEVEN, true) > 0 ? 1 : 0)
                                             : (k.nextInside = t)));
                             }
                             -10 === t && ((t = E), -10 === k.prevInside && (k.prevInside = E), -10 === k.nextInside && (k.nextInside = E));
@@ -794,16 +794,16 @@ module.exports = function (e, t, n) {
                         for (R = 0, V = 0, o = 0; o < M.length; o++)
                             for (N = M[o], P = 0; P < N.length; P++) {
                                 var H;
-                                (V++, (H = N[P]).prevInside === H.nextInside && ((H.isIsect = !1), (H.corresponding.isIsect = !1), R++));
+                                (V++, (H = N[P]).prevInside === H.nextInside && ((H.isIsect = false), (H.corresponding.isIsect = false), R++));
                             }
-                        if (R === V) return !1;
+                        if (R === V) return false;
                     }
-                    return !0;
+                    return true;
                 }),
                 (d.PolyLineExtended.generatePrevCurveCurrCurve = function (e) {
                     for (var t = e, i = t.next, n = (i.next, t.nextCurve ? t : null), r = !!n; i !== t; ) {
                         if (i.nextCurve) {
-                            r = !0;
+                            r = true;
                             break;
                         }
                         i = i.next;
@@ -838,10 +838,10 @@ module.exports = function (e, t, n) {
                                 n.nextCurve &&
                                     n.nextCurve !== r &&
                                     !r.nextCurve &&
-                                    ((r.nextCurve = n.nextCurve), (r.cx1 = n.cx1), (r.cy1 = n.cy1), (r.cx2 = n.cx2), (r.cy2 = n.cy2), !0),
+                                    ((r.nextCurve = n.nextCurve), (r.cx1 = n.cx1), (r.cy1 = n.cy1), (r.cx2 = n.cx2), (r.cy2 = n.cy2), true),
                                 n.isIsect)
                             )
-                                if (((r.isIsect = !0), (r.corresponding = n.corresponding), (r.isectPoly = n.isectPoly), 0 == t)) {
+                                if (((r.isIsect = true), (r.corresponding = n.corresponding), (r.isectPoly = n.isectPoly), 0 == t)) {
                                     if (n.isectPoly.polySeg0 !== n) return null;
                                     r.isectPoly.polySeg0 = r;
                                 } else {
@@ -850,7 +850,7 @@ module.exports = function (e, t, n) {
                                 }
                             var a = n.prev;
                             ((a.next = r), (r.prev = a), (n = r));
-                        } else (n.nextCurve && ((o = n), !0), (n = n.next));
+                        } else (n.nextCurve && ((o = n), true), (n = n.next));
                         r = n.next;
                     }
                     if (l.isEqualEps(i.x, r.x, 1e-10) && l.isEqualEps(i.y, r.y, 1e-10)) {
@@ -861,7 +861,7 @@ module.exports = function (e, t, n) {
                                 ((i.nextCurve = r.nextCurve), (i.cx1 = r.cx1), (i.cy1 = r.cy1), (i.cx2 = r.cx2), (i.cy2 = r.cy2)),
                             r.isIsect)
                         )
-                            if (((i.isIsect = !0), (i.corresponding = r.corresponding), (i.isectPoly = r.isectPoly), 0 == t)) {
+                            if (((i.isIsect = true), (i.corresponding = r.corresponding), (i.isectPoly = r.isectPoly), 0 == t)) {
                                 if (r.isectPoly.polySeg0 !== r) return null;
                                 n.isectPoly.polySeg0 = i;
                             } else {
@@ -963,7 +963,7 @@ module.exports = function (e, t, n) {
                     );
                 }),
                 (d.PolyLineExtended.prototype.visit = function () {
-                    ((this.visited = !0), null === this.corresponding || this.corresponding.visited || this.corresponding.visit());
+                    ((this.visited = true), null === this.corresponding || this.corresponding.visited || this.corresponding.visit());
                 }),
                 (d.PolyLineExtended.prototype.isInside = function (e, t) {
                     return t === d.PIP_CHECK_ODDEVEN ? this.getOddEven(e) : this.getWinding(e);
@@ -975,10 +975,10 @@ module.exports = function (e, t, n) {
                         a = r.next,
                         s = (e.x, e.y);
                     t = void 0 === t ? d.PIP_CHECK_WINDING : d.PIP_CHECK_ODDEVEN;
-                    var l = !1;
+                    var l = false;
                     do {
                         if (void 0 !== r.cx1) {
-                            l = !0;
+                            l = true;
                             break;
                         }
                         a = (r = r.next).next || o;
@@ -1050,14 +1050,14 @@ module.exports = function (e, t, n) {
                         n = e.y;
                     this.isLast && this._firstInLoop();
                     do {
-                        if (l.sqrSegmentDist(t.x, t.y, t.next.x, t.next.y, i, n) < 1e-10 * 1e-10) return !0;
+                        if (l.sqrSegmentDist(t.x, t.y, t.next.x, t.next.y, i, n) < 1e-10 * 1e-10) return true;
                         (t = t.next).isLast ? t._firstInLoop() : t.next || this;
                     } while (t !== this);
-                    return !1;
+                    return false;
                 }),
                 (d.PolyLineExtended.prototype.getOddEven = function (e) {
                     var t = this,
-                        i = !1,
+                        i = false,
                         n = t,
                         r = t.next,
                         o = e.x,
@@ -1140,15 +1140,15 @@ module.exports = function (e, t, n) {
                 (d.prototype.pip_check_policy = null),
                 (d.prototype._lastUnprocessed = null),
                 (d.prototype._firstIntersect = null),
-                (d.prototype._initialized = !1),
-                (d.prototype._useIntersector = !1),
+                (d.prototype._initialized = false),
+                (d.prototype._useIntersector = false),
                 (d.prototype.sourceHead = null),
                 (d.prototype.clipHead = null),
                 (d.prototype.originalSource = null),
-                (d.prototype.didNotClip = !1),
-                (d.prototype._numIntersections = !1),
+                (d.prototype.didNotClip = false),
+                (d.prototype._numIntersections = false),
                 (d.prototype._intersectsArray = []),
-                (d.prototype.hassHoles = !1),
+                (d.prototype.hassHoles = false),
                 (d.prototype.initializeSources = function (e, t) {
                     var i = this._intersector.intersect(e, t);
                     this.originalSource = e;
@@ -1176,65 +1176,65 @@ module.exports = function (e, t, n) {
                         (this.clipHead = d.PolyLineExtended.fromPolyLine(r, i, 1)),
                         !this.sourceHead || !this.clipHead)
                     )
-                        return !1;
+                        return false;
                     if (
                         ((this.sourceHead = d.PolyLineExtended.generatePrevCurveCurrCurve(this.sourceHead)),
                         (this.clipHead = d.PolyLineExtended.generatePrevCurveCurrCurve(this.clipHead)),
                         !this.sourceHead || !this.clipHead)
                     )
-                        return !1;
+                        return false;
                     if (
                         (this.sourceHead._fixCycles(this.clipHead),
                         this.clipHead._fixCycles(this.sourceHead),
                         d.PolyLineExtended.generateCorresponding(i),
                         !this.checkSanity(this.sourceHead))
                     )
-                        return !1;
-                    if (!this.checkSanity(this.clipHead)) return !1;
-                    if (!this.checkSanity(null, i)) return !1;
+                        return false;
+                    if (!this.checkSanity(this.clipHead)) return false;
+                    if (!this.checkSanity(null, i)) return false;
                     if (d.PolyLineExtended.disableBadIntersections(i, this.common_segments_policy, this.pip_check_policy, 0, 1)) {
                         this._numIntersections = 0;
                         for (a = 0; a < i.length; a++) i[a].polySeg0.isIsect && this._numIntersections++;
                     }
                     return (
                         !(!this.clipHead || !this.sourceHead) &&
-                        ((this._intersectsArray = this.getIntersectionArray(this.sourceHead, this.clipHead)), (this._initialized = !0), !0)
+                        ((this._intersectsArray = this.getIntersectionArray(this.sourceHead, this.clipHead)), (this._initialized = true), true)
                     );
                 }),
                 (d.prototype.numIntersections = function () {
                     return this._numIntersections;
                 }),
                 (d.prototype.checkSanity = function (e, t, i) {
-                    var n = !0;
+                    var n = true;
                     if (t)
                         for (var r = 0; r < t.length; r++) {
                             var o = t[r];
                             if (!(o.polySeg0 && o.polySeg0 instanceof d.PolyLineExtended)) {
-                                (0, (n = !1));
+                                (0, (n = false));
                                 break;
                             }
                             if (!(o.polySeg1 && o.polySeg1 instanceof d.PolyLineExtended)) {
-                                (0, (n = !1));
+                                (0, (n = false));
                                 break;
                             }
                             if (o.polySeg1.next.prev !== o.polySeg1) {
-                                (0, (n = !1));
+                                (0, (n = false));
                                 break;
                             }
                             if (o.polySeg0.next.prev !== o.polySeg0) {
-                                (0, (n = !1));
+                                (0, (n = false));
                                 break;
                             }
                             if (o.isLast) {
-                                (0, (n = !1));
+                                (0, (n = false));
                                 break;
                             }
                             if (o.polySeg0.currCurve && !o.polySeg0.nextCurve) {
-                                (0, (n = !1));
+                                (0, (n = false));
                                 break;
                             }
                             if (o.polySeg1.currCurve && !o.polySeg1.nextCurve) {
-                                (0, (n = !1));
+                                (0, (n = false));
                                 break;
                             }
                         }
@@ -1242,59 +1242,59 @@ module.exports = function (e, t, n) {
                         var a = e,
                             s = 0,
                             l = e.nextCurve || e.next;
-                        if (a.currCurve && a.currCurve !== a) n = !1;
+                        if (a.currCurve && a.currCurve !== a) n = false;
                         else {
                             do {
                                 if (e.next.prev !== e) {
-                                    (0, (n = !1));
+                                    (0, (n = false));
                                     break;
                                 }
                                 if (e.prev.next !== e) {
-                                    (0, (n = !1));
+                                    (0, (n = false));
                                     break;
                                 }
                                 if (e.nextCurve && e.nextCurve.next.prev !== e.nextCurve) {
-                                    (0, (n = !1));
+                                    (0, (n = false));
                                     break;
                                 }
                                 if (
                                     e.nextCurve &&
                                     (Number.isNaN(e.cx1) || Number.isNaN(e.cx2) || Number.isNaN(e.cy1) || Number.isNaN(e.cy2))
                                 ) {
-                                    (0, (n = !1));
+                                    (0, (n = false));
                                     break;
                                 }
                                 if (Number.isNaN(e.x) || Number.isNaN(e.y)) {
-                                    (0, (n = !1));
+                                    (0, (n = false));
                                     break;
                                 }
                                 if ((void 0 !== e.cx1 || void 0 !== e.cy1) && !e.nextCurve) {
-                                    (0, (n = !1));
+                                    (0, (n = false));
                                     break;
                                 }
                                 if ((void 0 === e.cx1 || void 0 === e.cy1) && e.nextCurve) {
-                                    (0, (n = !1));
+                                    (0, (n = false));
                                     break;
                                 }
                                 if (e.currCurve && (!e.currCurve.nextCurve || !e.currCurve.prevCurve)) {
-                                    (0, (n = !1));
+                                    (0, (n = false));
                                     break;
                                 }
                                 if (e.nextCurve && e.nextCurve.prev.next !== e.nextCurve) {
-                                    (0, (n = !1));
+                                    (0, (n = false));
                                     break;
                                 }
                                 if (e.prevCurve && e.prevCurve.next.prev !== e.prevCurve) {
-                                    (0, (n = !1));
+                                    (0, (n = false));
                                     break;
                                 }
                                 if (e.prevCurve && e.prevCurve.prev.next !== e.prevCurve) {
-                                    (0, (n = !1));
+                                    (0, (n = false));
                                     break;
                                 }
                                 (i && e.isIsect && s++, (e = e.next), l !== a && (l = l.nextCurve || l.next));
                             } while (e !== a);
-                            (i && s !== t.length && (n = !1), l !== a && n && (n = !1));
+                            (i && s !== t.length && (n = false), l !== a && n && (n = false));
                         }
                     }
                     return n;
@@ -1330,26 +1330,26 @@ module.exports = function (e, t, n) {
                 (d.prototype.hasUnprocessed = function (e) {
                     var t = this._lastUnprocessed || e;
                     do {
-                        if (t.isIsect && !t.visited) return ((this._lastUnprocessed = t), !0);
+                        if (t.isIsect && !t.visited) return ((this._lastUnprocessed = t), true);
                         t = t.next;
                     } while (t !== e);
-                    return ((this._lastUnprocessed = null), !1);
+                    return ((this._lastUnprocessed = null), false);
                 }),
                 (d.prototype.unvisit = function (e) {
                     var t = e;
                     do {
-                        (t.isIsect && t.visited && ((t.visited = !1), t.corresponding && (t.corresponding.visited = !1)), (t = t.next));
+                        (t.isIsect && t.visited && ((t.visited = false), t.corresponding && (t.corresponding.visited = false)), (t = t.next));
                     } while (t !== e);
                     this._lastUnprocessed = null;
                 }),
                 (d.prototype.union = function () {
-                    return this.clip(!1, !1);
+                    return this.clip(false, false);
                 }),
                 (d.prototype.intersection = function () {
-                    return this.clip(!0, !0);
+                    return this.clip(true, true);
                 }),
                 (d.prototype.diff = function () {
-                    return this.clip(!1, !0);
+                    return this.clip(false, true);
                 }),
                 (d.prototype.xor = function () {
                     var e = this.union();
@@ -1402,12 +1402,12 @@ module.exports = function (e, t, n) {
                     h.children.forEach(function (e) {
                         e.visited ||
                             h.traverse(e, function (e) {
-                                return (A.push(e.item.index), !1);
+                                return (A.push(e.item.index), false);
                             });
                     });
                     for (var p = a.length + l.length, u = 0; u < p; u++) A.indexOf(u) < 0 && c.push(u);
-                    ((this._lastUnprocessed = null), (this._firstIntersect = null), (this.didNotClip = !1));
-                    for (var g, f, m, y, _, v, b, C = [], w = [], E = !0; this.hasUnprocessed(i); ) {
+                    ((this._lastUnprocessed = null), (this._firstIntersect = null), (this.didNotClip = false));
+                    for (var g, f, m, y, _, v, b, C = [], w = [], E = true; this.hasUnprocessed(i); ) {
                         var B = this.getFirstIntersect(i),
                             x = new d.PolyLineExtended();
                         do {
@@ -1427,7 +1427,7 @@ module.exports = function (e, t, n) {
                                             console.warn("loop had no intersections???");
                                             break;
                                         }
-                                        ((B.visited = !0), (B = B._firstInLoop()));
+                                        ((B.visited = true), (B = B._firstInLoop()));
                                     } else B = B.nextCurve || B.next;
                                 } while (!B.isIsect);
                             else
@@ -1439,7 +1439,7 @@ module.exports = function (e, t, n) {
                                             console.warn("Loop had no intersections???");
                                             break;
                                         }
-                                        B.visited = !0;
+                                        B.visited = true;
                                     } else B = B.prev;
                                     (c.indexOf(B.index) < 0 && x.appendPoint(_, v, m, y, g, f), w.indexOf(B.index) < 0 && w.push(B.index));
                                 } while (!B.isIsect);
@@ -1451,7 +1451,7 @@ module.exports = function (e, t, n) {
                         C.push(x);
                     }
                     return (
-                        0 === C.length && (this.didNotClip = !0),
+                        0 === C.length && (this.didNotClip = true),
                         (this.hassHoles = a.concat(l).some(function (e) {
                             return e.isHole;
                         })),
@@ -1466,7 +1466,7 @@ module.exports = function (e, t, n) {
                                 })
                             )
                             .map(function (e) {
-                                return e.getPoints(!1);
+                                return e.getPoints(false);
                             })).length > 1 && (C = [s.mergeVertexSources(C)]),
                         C
                     );
@@ -1475,7 +1475,7 @@ module.exports = function (e, t, n) {
                     var r = this._getContainment(e),
                         o = this._getContainment(t),
                         a = function (e, t, i) {
-                            for (var n = !1, r = 0; r < t.length; r++) t[r].indexOf(i) >= 0 && (n = !n);
+                            for (var n = false, r = 0; r < t.length; r++) t[r].indexOf(i) >= 0 && (n = !n);
                             return n;
                         },
                         s = this._intersectsArray;
@@ -1493,12 +1493,12 @@ module.exports = function (e, t, n) {
                         for (var c = 0; c < l.length; c++)
                             A < e.length && c < e.length
                                 ? r[e[c].tmpIdx].indexOf(e[A]) >= 0
-                                    ? (h[A][c] = !0)
-                                    : (h[A][c] = !1)
+                                    ? (h[A][c] = true)
+                                    : (h[A][c] = false)
                                 : A >= e.length && c >= e.length
                                   ? o[t[c - e.length].tmpIdx].indexOf(t[A - e.length]) >= 0
-                                      ? (h[A][c] = !0)
-                                      : (h[A][c] = !1)
+                                      ? (h[A][c] = true)
+                                      : (h[A][c] = false)
                                   : (h[A][c] = void 0);
                     }
                     var p = this._getContainment(l, h),
@@ -1508,7 +1508,7 @@ module.exports = function (e, t, n) {
                             item: null,
                             traverse: null,
                             unvisit: null,
-                            isRoot: !0,
+                            isRoot: true,
                         },
                         d = l.slice(),
                         g = [];
@@ -1519,7 +1519,7 @@ module.exports = function (e, t, n) {
                             isHole: e.isHole,
                             fromSource: e.fromSource,
                             children: [],
-                            visited: !1,
+                            visited: false,
                             isIntersecting: e.isIntersecting,
                         });
                     }),
@@ -1538,7 +1538,7 @@ module.exports = function (e, t, n) {
                                 var t;
                                 return (
                                     g.some(function (i) {
-                                        return i.item === e && ((t = i), !0);
+                                        return i.item === e && ((t = i), true);
                                     }),
                                     t
                                 );
@@ -1553,15 +1553,15 @@ module.exports = function (e, t, n) {
                         }));
                     var f = function (e, t, i) {
                             if (i) {
-                                if (i > 512) return !1;
+                                if (i > 512) return false;
                             } else i = 1;
                             e.children || (e.children = []);
                             for (var n = 0; n < e.children.length; n++) {
                                 var r = e.children[n];
-                                if (!r.visited && f(r, t, ++i)) return !0;
+                                if (!r.visited && f(r, t, ++i)) return true;
                             }
                             return (
-                                (e.visited = !0),
+                                (e.visited = true),
                                 !(!e.item || !t(e)) &&
                                     ((function (e) {
                                         var t = e.parents;
@@ -1578,23 +1578,23 @@ module.exports = function (e, t, n) {
                                             (e.children = null),
                                             (e.parent = null));
                                     })(e),
-                                    !0)
+                                    true)
                             );
                         },
                         m = function () {
                             g.forEach(function (e) {
-                                e.visited = !1;
+                                e.visited = false;
                             });
                         },
                         y = null;
                     for (
                         y = i
                             ? function (e) {
-                                  if (e.fromSource < 0) return !1;
-                                  if (null !== e.isIntersecting) return !1;
+                                  if (e.fromSource < 0) return false;
+                                  if (null !== e.isIntersecting) return false;
                                   if (e.isHole)
                                       for (var t = 0; t < e.children.length; t++)
-                                          if (e.children[t].isHole) return ((e.children[t].fromSource = -1), !0);
+                                          if (e.children[t].isHole) return ((e.children[t].fromSource = -1), true);
                                   return (
                                       !(
                                           e.isHole ||
@@ -1618,17 +1618,17 @@ module.exports = function (e, t, n) {
                               }
                             : n
                               ? function (e) {
-                                    if (e.fromSource < 0) return !1;
-                                    if (null !== e.isIntersecting) return !1;
+                                    if (e.fromSource < 0) return false;
+                                    if (null !== e.isIntersecting) return false;
                                     var t;
                                     if (
                                         e.parents.some(function (i) {
-                                            return !(!i.isHole || e.fromSource === i.fromSource) && ((t = i.fromSource), !0);
+                                            return !(!i.isHole || e.fromSource === i.fromSource) && ((t = i.fromSource), true);
                                         })
                                     ) {
                                         for (var i = 0; i < e.children.length; i++)
                                             e.children[i].fromSource === t && (e.children[i].fromSource = -1);
-                                        return !0;
+                                        return true;
                                     }
                                     return !(
                                         !e.isHole ||
@@ -1639,11 +1639,11 @@ module.exports = function (e, t, n) {
                                 }
                               : function (e) {
                                     if (!(e.fromSource < 0)) {
-                                        if (null !== e.isIntersecting) return !1;
+                                        if (null !== e.isIntersecting) return false;
                                         if (!e.isHole)
                                             for (var t = 0; t < e.children.length; t++)
                                                 if (!e.children[t].isHole && e.children[t].fromSource !== e.fromSource)
-                                                    return ((e.children[t].fromSource = -1), !0);
+                                                    return ((e.children[t].fromSource = -1), true);
                                         return (
                                             !!e.parents.some(function (t) {
                                                 return t.isRoot || (t.isHole && e.fromSource !== t.fromSource);
@@ -1733,5 +1733,5 @@ module.exports = function (e, t, n) {
                         n
                     );
                 }),
-                (e.exports = d));
+                (module.exports = d));
         };

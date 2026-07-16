@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(20), n(151));
-        var o = n(1);
-        ((o.GUtil.image2Canvas = function (e, t) {
+        (require(20), require(151));
+        var GObject = require(1);
+        ((GObject.GUtil.image2Canvas = function (e, t) {
             if ("string" == typeof e) {
                 var n = new Image();
                 return (
@@ -17,7 +17,7 @@ module.exports = function (e, t, n) {
             var o = document.createElement("canvas");
             return ((o.width = e.naturalWidth), (o.height = e.naturalHeight), o.getContext("2d").drawImage(e, 0, 0), t && t(o), o);
         }),
-            (o.GUtil.image2Base64 = function (e, t) {
+            (GObject.GUtil.image2Base64 = function (e, t) {
                 var n = this.image2Canvas(e, function (e) {
                     t && t(e.toDataURL("image/png"));
                 });

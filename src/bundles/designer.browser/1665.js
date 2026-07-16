@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(20), n(3), n(34), n(4), n(13));
-        var o = n(1);
-        const i = n(606),
-            a = n(394),
-            r = n(1188),
-            s = n(85),
-            l = n(44),
-            { SOFTWARE_UPDATE: c, DateAPI: d } = n(10);
+        (require(8 /* Symbol */), require(20), require(3), require(34), require(4), require(13));
+        var GObject = require(1);
+        const i = require(606),
+            a = require(394),
+            r = require(1188),
+            s = require(85),
+            GSystemDialog = require(44),
+            { SOFTWARE_UPDATE: c, DateAPI: d } = require(10 /* designerConfig */);
         function u() {}
-        (o.GObject.inherit(u, i),
+        (GObject.GObject.inherit(u, i),
             (u.ID = "software-update-panel"),
             (u.prototype._mustBeOpened = null),
             (u.prototype.init = function (e) {
@@ -20,10 +20,10 @@ module.exports = function (e, t, n) {
                         .append($("<span></span>").addClass("gravit-icon-close"))
                         .on("click", () => this._hide())
                         .appendTo(this._htmlElement),
-                    this._updatePanelState(!1));
+                    this._updatePanelState(false));
             }),
             (u.prototype._hide = function () {
-                this._updatePanelState(!1);
+                this._updatePanelState(false);
             }),
             (u.prototype._changePanelVisibility = function (e) {
                 e ? this._htmlElement.removeClass("g-hide") : this._htmlElement.addClass("g-hide");
@@ -51,7 +51,7 @@ module.exports = function (e, t, n) {
             (u.prototype._handleAfterUpdate = function (e) {
                 if (!this._shouldShowMessages(e)) return;
                 const t = e.currentVersion,
-                    n = o.GLocale.get(new o.GLocaleKey("GSoftwareUpdatePanel", "text.after-update")).replace("%currentVersion", t);
+                    n = GObject.GLocale.get(new GObject.GLocaleKey("GSoftwareUpdatePanel", "text.after-update")).replace("%currentVersion", t);
                 (this._updateContent(
                     $("<div></div>")
                         .addClass("message")
@@ -60,27 +60,27 @@ module.exports = function (e, t, n) {
                         .append(
                             c.SHOW_CHANGE_LOG
                                 ? $("<a></a>")
-                                      .text(o.GLocale.get(new o.GLocaleKey("GSoftwareUpdatePanel", "text.see-release-notes")))
+                                      .text(GObject.GLocale.get(new GObject.GLocaleKey("GSoftwareUpdatePanel", "text.see-release-notes")))
                                       .click((e) => {
                                           gContainer.openExternalLink(e, gDesigner.getSoftwareUpdateManager().getReleaseNotesLink());
                                       })
                                 : ""
                         )
                 ),
-                    this._updatePanelState(!0));
+                    this._updatePanelState(true));
             }),
             (u.prototype._handleUpdateNotAvailable = function (e) {
                 if (!this._shouldShowMessages(e)) return;
                 const t = e.currentVersion,
-                    n = o.GLocale.get(new o.GLocaleKey("GSoftwareUpdatePanel", "text.update-not-available")).replace("%currentVersion", t);
-                (this._updateContent($("<div></div>").addClass("message").append(n)), this._updatePanelState(!0));
+                    n = GObject.GLocale.get(new GObject.GLocaleKey("GSoftwareUpdatePanel", "text.update-not-available")).replace("%currentVersion", t);
+                (this._updateContent($("<div></div>").addClass("message").append(n)), this._updatePanelState(true));
             }),
             (u.prototype._handleDownloadComplete = function (e) {
                 if (!this._shouldShowMessages(e)) return;
                 const t = e.newVersion,
                     n = e.forceUpdate,
-                    i = o.GLocale.get(new o.GLocaleKey("GSoftwareUpdatePanel", "text.download-ready")).replace("%newVersion", t);
-                var a = !1;
+                    i = GObject.GLocale.get(new GObject.GLocaleKey("GSoftwareUpdatePanel", "text.download-ready")).replace("%newVersion", t);
+                var a = false;
                 (this._updateContent(
                     $("<div></div>")
                         .addClass("message")
@@ -89,7 +89,7 @@ module.exports = function (e, t, n) {
                         .click(async () => {
                             a ||
                                 ((await gContainer.canUnload(gDesigner.hasModifiedDocuments(), gDesigner.hasSynchronizingDocuments())) &&
-                                    ((a = !0),
+                                    ((a = true),
                                     gDesigner.getSoftwareUpdateManager().installUpdate(),
                                     this._updateContent(
                                         $("<div></div>")
@@ -98,11 +98,11 @@ module.exports = function (e, t, n) {
                                             .append(
                                                 $("<span/>").addClass("gravit-icon-rotate-right-flat").addClass("icon").addClass("spin")
                                             )
-                                            .append(o.GLocale.get(new o.GLocaleKey("GSoftwareUpdatePanel", "text.updating")))
+                                            .append(GObject.GLocale.get(new GObject.GLocaleKey("GSoftwareUpdatePanel", "text.updating")))
                                     )));
                         })
                 ),
-                    this._updatePanelState(!0),
+                    this._updatePanelState(true),
                     n && this._createForceUpdateMessageDialog());
             }),
             (u.prototype._handleDownloadInProgress = function (e) {
@@ -110,7 +110,7 @@ module.exports = function (e, t, n) {
                 const t = e.percent,
                     n = e.newVersion;
                 var i = this._htmlElement.find(".progress-content");
-                const a = o.GLocale.get(new o.GLocaleKey("GSoftwareUpdatePanel", "text.download-progress")).replace("%newVersion", n);
+                const a = GObject.GLocale.get(new GObject.GLocaleKey("GSoftwareUpdatePanel", "text.download-progress")).replace("%newVersion", n);
                 i.length ||
                     (this._updateContent(
                         $("<div></div>")
@@ -138,7 +138,7 @@ module.exports = function (e, t, n) {
                 !i ||
                     (gContainer.getRuntime() !== s.Runtime.Browser && gContainer.getRuntime() !== s.Runtime.PWA) ||
                     this._createForceUpdateMessageDialog();
-                const a = o.GLocale.get(new o.GLocaleKey("GSoftwareUpdatePanel", "text.update-available"))
+                const a = GObject.GLocale.get(new GObject.GLocaleKey("GSoftwareUpdatePanel", "text.update-available"))
                         .replace("%newVersion", n)
                         .replace("%currentVersion", t),
                     r = $("<span/>").addClass("gravit-icon-rotate-right-flat").addClass("icon");
@@ -150,13 +150,13 @@ module.exports = function (e, t, n) {
                         .append(a)
                         .append(
                             $("<a></a>")
-                                .append(o.GLocale.get(new o.GLocaleKey("GSoftwareUpdatePanel", "text.update-now")))
+                                .append(GObject.GLocale.get(new GObject.GLocaleKey("GSoftwareUpdatePanel", "text.update-now")))
                                 .click(() => {
                                     (r.addClass("spin"), this._installAfterDocumentUnload());
                                 })
                         )
                 ),
-                    this._updatePanelState(!0));
+                    this._updatePanelState(true));
             }),
             (u.prototype._installAfterDocumentUnload = async function () {
                 if (await gContainer.canUnload(gDesigner.hasModifiedDocuments(), gDesigner.hasSynchronizingDocuments()))
@@ -168,22 +168,22 @@ module.exports = function (e, t, n) {
                         case s.Runtime.Electron:
                             gDesigner.getSoftwareUpdateManager().downloadUpdate();
                     }
-                else l.alert(o.GLocale.get(new o.GLocaleKey("GSoftwareUpdatePanel", "text.dialog-unsaved-documents")));
+                else GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GSoftwareUpdatePanel", "text.dialog-unsaved-documents")));
             }),
             (u.prototype._createForceUpdateMessageDialog = function () {
                 let e,
-                    t = !1;
+                    t = false;
                 const n = d.minutesToMilliseconds(5),
                     i = () => {
                         t ||
-                            ((t = !0),
+                            ((t = true),
                             e.gDialog("close"),
                             gDesigner.createCountdown(() => {
                                 gDesigner.getSoftwareUpdateManager().installUpdate();
                             }, n));
                     };
                 ((e = $("<div></div>").gDialog({
-                    releaseOnClose: !0,
+                    releaseOnClose: true,
                     className: "g-force-update-app-dialog",
                     closeCallback: i,
                 })),
@@ -199,7 +199,7 @@ module.exports = function (e, t, n) {
                             $("<span></span>")
                                 .addClass("title")
                                 .html(
-                                    o.GLocale.get(new o.GLocaleKey("GSoftwareUpdatePanel", "text.force-new-version-available")).replace(
+                                    GObject.GLocale.get(new GObject.GLocaleKey("GSoftwareUpdatePanel", "text.force-new-version-available")).replace(
                                         "%newVersion",
                                         gDesigner.getSoftwareUpdateManager().getNewVersion()
                                     )
@@ -208,13 +208,13 @@ module.exports = function (e, t, n) {
                         .append(
                             $("<span></span>")
                                 .addClass("subtitle")
-                                .html(o.GLocale.get(new o.GLocaleKey("GSoftwareUpdatePanel", "text.force-message-avoid-losing-progress")))
+                                .html(GObject.GLocale.get(new GObject.GLocaleKey("GSoftwareUpdatePanel", "text.force-message-avoid-losing-progress")))
                         )
                         .append(
                             $("<span></span>")
                                 .addClass("update-information")
                                 .html(
-                                    o.GLocale.get(new o.GLocaleKey("GSoftwareUpdatePanel", "text.force-update-information-time")).replace(
+                                    GObject.GLocale.get(new GObject.GLocaleKey("GSoftwareUpdatePanel", "text.force-update-information-time")).replace(
                                         "%minutes",
                                         5
                                     )
@@ -225,17 +225,17 @@ module.exports = function (e, t, n) {
                                 .addClass("buttons")
                                 .append(
                                     $("<button></button>")
-                                        .append($("<span></span>").text(o.GLocale.get(new o.GLocaleKey("GSoftwareUpdatePanel", "text.ok"))))
+                                        .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GSoftwareUpdatePanel", "text.ok"))))
                                         .on("click", () => i())
                                 )
                         )
                         .appendTo(e),
-                    e.gDialog("open", !1));
+                    e.gDialog("open", false));
             }),
             (u.prototype._handleUpdateError = function (e) {
                 if (!this._shouldShowMessages(e)) return;
-                const t = o.GLocale.get(new o.GLocaleKey("GSoftwareUpdatePanel", "text.update-error"));
-                (this._updateContent($("<div></div>").addClass("message").append(t)), this._updatePanelState(!0));
+                const t = GObject.GLocale.get(new GObject.GLocaleKey("GSoftwareUpdatePanel", "text.update-error"));
+                (this._updateContent($("<div></div>").addClass("message").append(t)), this._updatePanelState(true));
             }),
             (u.prototype._removeEventListeners = function () {
                 (gDesigner.removeEventListener(r.AfterUpdate, this._handleAfterUpdate),
@@ -246,7 +246,7 @@ module.exports = function (e, t, n) {
                     gDesigner.removeEventListener(r.UpdateNotAvailable, this._handleUpdateNotAvailable));
             }),
             (u.prototype.getTitle = function () {
-                return o.GLocale.get(new o.GLocaleKey("GSoftwareUpdatePanel", "title"));
+                return GObject.GLocale.get(new GObject.GLocaleKey("GSoftwareUpdatePanel", "title"));
             }),
             (u.prototype.isEnabled = function () {
                 return !!this._mustBeOpened;
@@ -257,5 +257,5 @@ module.exports = function (e, t, n) {
             (u.prototype.getId = function () {
                 return u.ID;
             }),
-            (e.exports = u));
+            (module.exports = u));
     };

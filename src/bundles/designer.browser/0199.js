@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(49),
-            i = n(61),
+        var o = require(49),
+            i = require(61),
             a = Function.prototype,
             r = o && Object.getOwnPropertyDescriptor,
             s = i(a, "name"),
             l = s && "something" === function () {}.name,
             c = s && (!o || (o && r(a, "name").configurable));
-        e.exports = { EXISTS: s, PROPER: l, CONFIGURABLE: c };
+        module.exports = { EXISTS: s, PROPER: l, CONFIGURABLE: c };
     };

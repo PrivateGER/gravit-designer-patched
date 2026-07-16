@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(113),
-                r = i(60),
-                o = i(48),
-                a = i(45),
-                s = i(2),
-                l = i(87),
-                h = i(54);
+module.exports = function (module, exports, require) {
+            var n = require(113),
+                r = require(60),
+                o = require(48),
+                a = require(45),
+                s = require(2),
+                l = require(87),
+                h = require(54);
 
             function A() {
                 throw new Error("This class cannot be instantiated");
@@ -21,7 +21,7 @@ module.exports = function (e, t, i) {
             }),
                 (A.createPathFromVertexSource = function (e, t, i, l) {
                     var h = function (e) {
-                            (e._beginBlockCompositeEvents(!0, !0),
+                            (e._beginBlockCompositeEvents(true, true),
                                 e._beginBlockChanges([
                                     s._Change.BeforeChildRemove,
                                     s._Change.AfterChildRemove,
@@ -30,7 +30,7 @@ module.exports = function (e, t, i) {
                                 ]));
                         },
                         A = function (e) {
-                            (e._endBlockCompositeEvents(!0, !0),
+                            (e._endBlockCompositeEvents(true, true),
                                 e._endBlockChanges([
                                     s._Change.BeforeChildRemove,
                                     s._Change.AfterChildRemove,
@@ -43,7 +43,7 @@ module.exports = function (e, t, i) {
                         u = null,
                         d = null,
                         g = null,
-                        f = !1;
+                        f = false;
                     for (
                         e.rewindVertices(0),
                             e.readVertex(c),
@@ -57,7 +57,7 @@ module.exports = function (e, t, i) {
                                   ((g = new a.AnchorPoint()).$x = c.x),
                                   (g.$y = c.y),
                                   d.appendChild(g))
-                                : (f = !0);
+                                : (f = true);
                         !f && e.readVertex(c);
 
                     )
@@ -70,7 +70,7 @@ module.exports = function (e, t, i) {
                                 var m = new o();
                                 e.readVertex(m)
                                     ? ((g.$x = c.x), (g.$y = c.y), (g.$hlx = m.x), (g.$hly = m.y), d.appendChild(g))
-                                    : ((g.$x = c.x), (g.$y = c.y), d.appendChild(g), (f = !0), u.setProperty("closed", !0));
+                                    : ((g.$x = c.x), (g.$y = c.y), d.appendChild(g), (f = true), u.setProperty("closed", true));
                                 break;
                             case o.Command.Curve2:
                                 m = new o();
@@ -85,13 +85,13 @@ module.exports = function (e, t, i) {
                                           : (((g = new a.AnchorPoint()).$x = c.x),
                                             (g.$y = c.y),
                                             d.appendChild(g),
-                                            (f = !0),
-                                            u.setProperty("closed", !0)))
+                                            (f = true),
+                                            u.setProperty("closed", true)))
                                     : (((g = new a.AnchorPoint()).$x = c.x),
                                       (g.$y = c.y),
                                       d.appendChild(g),
-                                      (f = !0),
-                                      u.setProperty("closed", !0));
+                                      (f = true),
+                                      u.setProperty("closed", true));
                                 break;
                             case o.Command.Move:
                                 (u &&
@@ -105,7 +105,7 @@ module.exports = function (e, t, i) {
                                     d.appendChild(g));
                                 break;
                             case o.Command.Close:
-                                u.setProperty("closed", !0);
+                                u.setProperty("closed", true);
                         }
                     if (
                         (u && d && d.getFirstChild() != d.getLastChild() && (l || u.correctClosedAttribute(), p.push(u)),
@@ -123,5 +123,5 @@ module.exports = function (e, t, i) {
                     }
                     return null;
                 }),
-                (e.exports = A));
+                (module.exports = A));
         };

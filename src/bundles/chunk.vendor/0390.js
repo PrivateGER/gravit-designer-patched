@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(68),
-                r = i(90),
-                o = i(0),
+module.exports = function (module, exports, require) {
+            var n = require(68),
+                r = require(90),
+                IsFiniteNonNegativeNumber = require(0),
                 a = function () {};
-            (o.inheritAndMix(a, r, [o]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(a, r, [IsFiniteNonNegativeNumber]),
                 (a.prototype.hasTransparency = function () {
                     return (null != this.getAlpha() ? this.getAlpha() : 1) < 1;
                 }),
@@ -11,7 +11,7 @@ module.exports = function (e, t, i) {
                     return 1;
                 }),
                 (a.prototype.equals = function (e) {
-                    return !!(e instanceof o && e.hasMixin(a)) && this.asArray().equals(e.asArray());
+                    return !!(e instanceof IsFiniteNonNegativeNumber && e.hasMixin(a)) && this.asArray().equals(e.asArray());
                 }),
                 (a.prototype.write = function (e) {
                     this.asArray().forEach(function (t) {
@@ -22,5 +22,5 @@ module.exports = function (e, t, i) {
                 (a.rgbToCMYK = function (e) {
                     return n.rgbToCMYK([(e >> 24) & 255, (e >> 16) & 255, (e >> 8) & 255]);
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

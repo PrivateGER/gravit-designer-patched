@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(4), n(32), n(33));
-        const { GObject: o } = n(1),
-            { GPlatform: i } = n(15);
+        (require(4), require(32), require(33));
+        const { GObject: o } = require(1 /* GObject */),
+            { GPlatform: i } = require(15 /* GPlatform */);
         function a() {
             this._children = [];
         }
@@ -35,5 +35,5 @@ module.exports = function (e, t, n) {
                     o = t ? "auto" : "smooth";
                 "function" == typeof e[0].scrollIntoView && e[0].scrollIntoView({ behavior: o, block: n });
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

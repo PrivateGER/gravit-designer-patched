@@ -1,26 +1,26 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(3), n(26));
-        var o = n(1),
-            i = n(15),
-            a = n(40),
-            r = n(67),
-            s = n(18),
-            l = n(106);
+        (require(19), require(3), require(26));
+        var GObject = require(1),
+            GPlatform = require(15),
+            GSaveAction = require(40),
+            r = require(67),
+            GCategory = require(18),
+            l = require(106);
         function c() {
             c.TOOLTIP_CONFIG = {
                 [r.TOOLTIP_AREA.TOOLBAR]: r.GRichTooltipConfig.from({
-                    title: o.GLocale.get(new o.GLocaleKey("GSplitAction", "tooltip-title")),
-                    description: o.GLocale.get(new o.GLocaleKey("GSplitAction", "tooltip-description")),
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GSplitAction", "tooltip-title")),
+                    description: GObject.GLocale.get(new GObject.GLocaleKey("GSplitAction", "tooltip-description")),
                     shortcut: c.SHORTCUT,
                     learnMore: "/docs/organizing-your-designs/groups/",
                 }),
             };
         }
-        (o.GObject.inherit(c, l),
+        (GObject.GObject.inherit(c, l),
             (c.ID = "modify.split"),
-            (c.TITLE = new o.GLocaleKey("GSplitAction", "title")),
-            (c.SHORTCUT = [i.GKey.Constant.SHIFT, i.GKey.Constant.META, "G"]),
+            (c.TITLE = new GObject.GLocaleKey("GSplitAction", "title")),
+            (c.SHORTCUT = [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "G"]),
             (c.TOOLTIP_CONFIG = null),
             (c.prototype.getId = function () {
                 return c.ID;
@@ -32,7 +32,7 @@ module.exports = function (e, t, n) {
                 return "gravit-icon-ungroup";
             }),
             (c.prototype.getCategory = function () {
-                return s.CATEGORY_MODIFY;
+                return GCategory.CATEGORY_MODIFY;
             }),
             (c.prototype.getGroup = function () {
                 return "structure-group";
@@ -41,7 +41,7 @@ module.exports = function (e, t, n) {
                 return c.SHORTCUT;
             }),
             (c.prototype.isEnabled = function () {
-                if (!l.prototype.isEnabled.call(this)) return !1;
+                if (!l.prototype.isEnabled.call(this)) return false;
                 var e = gDesigner.getActiveDocument();
                 if (e) {
                     var t = e.getEditor().getIndividualSelection();
@@ -49,15 +49,15 @@ module.exports = function (e, t, n) {
                         for (var n = 0; n < t.length; ++n) {
                             var i = t[n];
                             if (
-                                i instanceof o.GGroup ||
-                                i instanceof o.GCompoundShape ||
-                                (i instanceof o.GSymbol && !i.getMasterSymbol()) ||
-                                (i instanceof o.GShape && null !== i.getFirstChild())
+                                i instanceof GObject.GGroup ||
+                                i instanceof GObject.GCompoundShape ||
+                                (i instanceof GObject.GSymbol && !i.getMasterSymbol()) ||
+                                (i instanceof GObject.GShape && null !== i.getFirstChild())
                             )
-                                return !0;
+                                return true;
                         }
                 }
-                return !1;
+                return false;
             }),
             (c.prototype.execute = function () {
                 var e = gDesigner.getActiveDocument().getEditor(),
@@ -72,17 +72,17 @@ module.exports = function (e, t, n) {
                     try {
                         i = new Set();
                         for (var l = 0; l < t.length; ++l)
-                            (((n = t[l]) instanceof o.GShape && null !== n.getFirstChild()) ||
-                                n instanceof o.GGroup ||
-                                n instanceof o.GCompoundShape ||
-                                (n instanceof o.GSymbol && !n.getMasterSymbol())) &&
+                            (((n = t[l]) instanceof GObject.GShape && null !== n.getFirstChild()) ||
+                                n instanceof GObject.GGroup ||
+                                n instanceof GObject.GCompoundShape ||
+                                (n instanceof GObject.GSymbol && !n.getMasterSymbol())) &&
                                 i.add(n.getParent());
-                        (0, a.blockChanges)(e, i, s);
+                        (0, GSaveAction.blockChanges)(e, i, s);
                         for (l = 0; l < t.length; ++l)
                             if (
-                                (n = t[l]) instanceof o.GGroup ||
-                                n instanceof o.GCompoundShape ||
-                                (n instanceof o.GSymbol && !n.getMasterSymbol())
+                                (n = t[l]) instanceof GObject.GGroup ||
+                                n instanceof GObject.GCompoundShape ||
+                                (n instanceof GObject.GSymbol && !n.getMasterSymbol())
                             ) {
                                 var d = n.getParent(),
                                     u = n.getChildren();
@@ -96,7 +96,7 @@ module.exports = function (e, t, n) {
                                     n.endUpdate();
                                 }
                                 d.removeChild(n);
-                            } else if (n instanceof o.GShape && null !== n.getFirstChild()) {
+                            } else if (n instanceof GObject.GShape && null !== n.getFirstChild()) {
                                 ((d = n.getParent()), (u = n.getChildren()));
                                 try {
                                     n.beginUpdate();
@@ -110,11 +110,11 @@ module.exports = function (e, t, n) {
                                 r.push(n);
                             } else r.push(n);
                     } finally {
-                        (0, a.releaseChanges)(e, i, s);
+                        (0, GSaveAction.releaseChanges)(e, i, s);
                     }
-                    r.length > 0 && e.updateSelection(!1, r);
+                    r.length > 0 && e.updateSelection(false, r);
                 } finally {
-                    e.commitTransaction(o.GLocale.get(c.TITLE));
+                    e.commitTransaction(GObject.GLocale.get(c.TITLE));
                 }
             }),
             (c.prototype.getTooltipConfig = function (e) {
@@ -123,5 +123,5 @@ module.exports = function (e, t, n) {
             (c.prototype.toString = function () {
                 return "[Object GSplitAction]";
             }),
-            (e.exports = c));
+            (module.exports = c));
     };

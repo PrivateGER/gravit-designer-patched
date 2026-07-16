@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
-            var n = i(5),
-                r = i(87),
-                o = i(48),
-                a = i(12);
+module.exports = function (module, exports, require) {
+            var n = require(5),
+                r = require(87),
+                o = require(48),
+                a = require(12);
 
             function s(e, t, i, r) {
                 if (
@@ -14,10 +14,10 @@ module.exports = function (e, t, i) {
                     r)
                 ) {
                     var o = this._transform.mapQuadrilateral(this._bbox),
-                        s = new n(a.round(o[0].getX() + l, !0, 2) + this._alignX, a.round(o[0].getY() + l, !0, 2) + this._alignY),
-                        h = new n(a.round(o[1].getX() + l, !0, 2) + this._alignX, a.round(o[1].getY() + l, !0, 2) + this._alignY),
-                        A = new n(a.round(o[2].getX() + l, !1, 2) + this._alignX, a.round(o[2].getY() + l, !1, 2) + this._alignY),
-                        c = new n(a.round(o[3].getX() + l, !1, 2) + this._alignX, a.round(o[3].getY() + l, !1, 2) + this._alignY),
+                        s = new n(a.round(o[0].getX() + l, true, 2) + this._alignX, a.round(o[0].getY() + l, true, 2) + this._alignY),
+                        h = new n(a.round(o[1].getX() + l, true, 2) + this._alignX, a.round(o[1].getY() + l, true, 2) + this._alignY),
+                        A = new n(a.round(o[2].getX() + l, false, 2) + this._alignX, a.round(o[2].getY() + l, false, 2) + this._alignY),
+                        c = new n(a.round(o[3].getX() + l, false, 2) + this._alignX, a.round(o[3].getY() + l, false, 2) + this._alignY),
                         p = o[0].getX(),
                         u = o[0].getY(),
                         d = o[1].getX(),
@@ -34,7 +34,7 @@ module.exports = function (e, t, i) {
                         (this._alignedBBox = [s, h, A, c]));
                 }
             }
-            i(0).inherit(s, r);
+            require(0 /* IsFiniteNonNegativeNumber */).inherit(s, r);
             var l = 1e-10;
             ((s.prototype._bbox = null),
                 (s.prototype._alignedBBox = null),
@@ -84,9 +84,9 @@ module.exports = function (e, t, i) {
                                     (e.x = Math.floor(e.x + l) + this._alignX),
                                     (e.y = Math.floor(e.y + l) + this._alignY),
                                     this._invTrf.map(e));
-                        return !0;
+                        return true;
                     }
-                    return !1;
+                    return false;
                 }),
                 (s.prototype.hasVertexForRead = function () {
                     return this._source.hasVertexForRead();
@@ -94,5 +94,5 @@ module.exports = function (e, t, i) {
                 (s.prototype.toString = function () {
                     return "[Object GVertexPixelAligner]";
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

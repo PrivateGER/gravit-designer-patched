@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(23),
-            i = n(46),
-            a = o.document,
+        var RegExp = require(23),
+            i = require(46),
+            a = RegExp.document,
             r = i(a) && i(a.createElement);
-        e.exports = function (e) {
+        module.exports = function (e) {
             return r ? a.createElement(e) : {};
         };
     };

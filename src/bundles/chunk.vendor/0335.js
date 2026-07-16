@@ -1,32 +1,32 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(77),
-                o = i(5),
-                a = i(332),
-                s = i(167),
-                l = i(39),
-                h = i(64),
-                A = i(150),
-                c = i(60),
-                p = i(52),
-                u = i(380),
-                d = i(164),
-                g = i(0),
-                f = i(45),
-                m = i(99),
-                y = i(127),
-                _ = i(36),
-                v = i(11),
-                b = i(24),
-                C = i(155),
-                w = i(9),
-                E = i(47),
-                B = i(333);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(77),
+                o = require(5),
+                a = require(332),
+                s = require(167),
+                l = require(39),
+                h = require(64),
+                A = require(150),
+                c = require(60),
+                p = require(52),
+                u = require(380),
+                d = require(164),
+                IsFiniteNonNegativeNumber = require(0),
+                f = require(45),
+                m = require(99),
+                y = require(127),
+                _ = require(36),
+                v = require(11),
+                b = require(24),
+                C = require(155),
+                w = require(9 /* String */),
+                E = require(47),
+                B = require(333);
 
             function x() {
                 a.call(this);
             }
-            (g.inheritAndMix(x, a, [B]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(x, a, [B]),
                 (x._SmoothingManager = function () {}),
                 (x._SmoothingManager.prototype._current = null),
                 (x._SmoothingManager.prototype._currentPoints = null),
@@ -78,7 +78,7 @@ module.exports = function (e, t, i) {
                     this._lastPos = e;
                 }),
                 (x._SmoothingManager.prototype._smoothCurrent = function (e) {
-                    var t = !1,
+                    var t = false,
                         i = e || this._lastPos;
                     if (this._currentPoints.length) {
                         if (this._lastSmoothed) {
@@ -88,7 +88,7 @@ module.exports = function (e, t, i) {
                             var r = this._lastTangent.dot(this._lastTangent);
                             0 !== r && (this._lastTangent = this._lastTangent.scale(1 / Math.sqrt(r)));
                         } else
-                            ((t = !0),
+                            ((t = true),
                                 this._currentPoints.length && this._startingPoint
                                     ? (this._firstTangent = this._currentPoints[0].subtract(this._startingPoint))
                                     : (this._firstTangent = new o(0, 0)));
@@ -138,15 +138,15 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (x.prototype._smoothingManager = null),
-                (x.prototype._released = !0),
+                (x.prototype._released = true),
                 (x.prototype._lastMouseEvent = null),
                 (x.prototype._newPath = null),
                 (x.prototype._createdPath = null),
-                (x.prototype._transactionStarted = !1),
-                (x.prototype._willMerge = !0),
+                (x.prototype._transactionStarted = false),
+                (x.prototype._willMerge = true),
                 (x.prototype._startingSelection = null),
                 (x.prototype._lastReleasedPos = null),
-                (x.prototype._deactivationAllowed = !0),
+                (x.prototype._deactivationAllowed = true),
                 (x.prototype.getCursor = function () {
                     return p.PenStart;
                 }),
@@ -163,7 +163,7 @@ module.exports = function (e, t, i) {
                             e.addEventListener(r.DblClick, this._mouseDblClick, this),
                             h.addEventListener(A, this._modifiersChanged, this)),
                         (this._smoothingManager = new x._SmoothingManager()),
-                        this._editor.setPathResize(!1, !0));
+                        this._editor.setPathResize(false, true));
                 }),
                 (x.prototype.deactivate = function (e, t) {
                     (this._finishTransaction(),
@@ -190,17 +190,17 @@ module.exports = function (e, t, i) {
                     return this._deactivationAllowed;
                 }),
                 (x.prototype._allowDeactivation = function () {
-                    this._deactivationAllowed = !0;
+                    this._deactivationAllowed = true;
                 }),
                 (x.prototype._blockDeactivation = function () {
-                    this._deactivationAllowed = !1;
+                    this._deactivationAllowed = false;
                 }),
                 (x.prototype._createAndAppendPath = function () {
                     var e = new (this._getRelatedItemClass())();
                     return (
-                        this._editor.insertElements([e], !1, !0, !0),
+                        this._editor.insertElements([e], false, true, true),
                         v.each(e.getPaintLayers().getFillLayers(), function (e, t) {
-                            t.setProperty("_vs", !1);
+                            t.setProperty("_vs", false);
                         }),
                         e.removeFlag(n.Flag.Selected),
                         (this._pathEditor = _.openEditor(e)),
@@ -232,7 +232,7 @@ module.exports = function (e, t, i) {
                 (x.prototype._escAction = function () {
                     this._released &&
                         (this._pathEditor &&
-                            (this._pathEditor.updatePartSelection(!1),
+                            (this._pathEditor.updatePartSelection(false),
                             this._pathEditor instanceof y &&
                                 (this._pathEditor.setActiveExtendingMode(C.ExtendingMode.Off),
                                 this._newPath && this._newPath.removeFlag(n.Flag.Selected))),
@@ -244,16 +244,16 @@ module.exports = function (e, t, i) {
                         this._manager.activateSubSelect());
                 }),
                 (x.prototype._startTransaction = function () {
-                    (this._editor.beginTransaction(), (this._transactionStarted = !0));
+                    (this._editor.beginTransaction(), (this._transactionStarted = true));
                 }),
                 (x.prototype._finishTransaction = function () {
                     this._transactionStarted &&
                         (this._editor.commitTransaction(w.get(new E("GFreehandTool", "action.create-freehand-path"))),
-                        (this._transactionStarted = !1));
+                        (this._transactionStarted = false));
                 }),
                 (x.prototype._mouseDown = function (e) {
                     if (e.button === r.BUTTON_LEFT)
-                        if (h.modifiers.shiftKey) this._released = !1;
+                        if (h.modifiers.shiftKey) this._released = false;
                         else {
                             (this._pathEditor && this._pathEditor.blockRemoval(),
                                 (this._lastMouseEvent = e),
@@ -274,7 +274,7 @@ module.exports = function (e, t, i) {
                                 this._lastReleasedPos = [];
                             }
                             (this._mouseMove(e),
-                                (this._released = !1),
+                                (this._released = false),
                                 this._blockDeactivation(),
                                 this._editor.getGuides().beginMap(this._editor.getMappingScopes()),
                                 (t = this._editor.getGuides().mapPoint(t, m.DetailMap.Mode.DetailOnFilterOn)),
@@ -282,7 +282,7 @@ module.exports = function (e, t, i) {
                                 this._editor.updateByMousePosition(
                                     e.client,
                                     this._view.getWorldTransform(this._scene),
-                                    !1,
+                                    false,
                                     this._view.getViewConfiguration()
                                 ),
                                 this._startTransaction(),
@@ -302,7 +302,7 @@ module.exports = function (e, t, i) {
                         this._newPath &&
                         (h.modifiers.shiftKey
                             ? (this._smoothingManager._smoothCurrent(), this._mouseDrag(this._lastMouseEvent))
-                            : this._released && ((this._released = !1), this._mouseRelease(e)));
+                            : this._released && ((this._released = false), this._mouseRelease(e)));
                 }),
                 (x.prototype._mouseMove = function (e) {
                     ((this._lastMouseEvent = e),
@@ -337,7 +337,7 @@ module.exports = function (e, t, i) {
                             var t = this._view.getViewTransform(this._view.getScene().getActivePage()).mapPoint(e.client);
                             this._smoothingManager.move(t);
                         }
-                        this._released = !0;
+                        this._released = true;
                     } else {
                         this._pathEditor && this._pathEditor.allowRemoval();
                         if (((this._lastMouseEvent = e), !this._released))
@@ -346,10 +346,10 @@ module.exports = function (e, t, i) {
                                     this._editor.updateByMousePosition(
                                         e.client,
                                         this._view.getWorldTransform(this._scene),
-                                        !1,
+                                        false,
                                         this._view.getViewConfiguration()
                                     ),
-                                    (this._released = !0));
+                                    (this._released = true));
                                 var i = this._newPath.getAnchorPoints();
                                 if (i.getFirstChild() === i.getLastChild()) {
                                     var r = new f.AnchorPoint();
@@ -371,29 +371,29 @@ module.exports = function (e, t, i) {
                         if (this._startingSelection && this._startingSelection.length) {
                             for (var e = null, t = this._startingSelection.length - 1; t >= 0; t--) {
                                 var i = this._startingSelection[t];
-                                if (i instanceof c && !0 === i.getProperty("closed") && !1 === i.getProperty("fvs")) {
+                                if (i instanceof c && true === i.getProperty("closed") && false === i.getProperty("fvs")) {
                                     e = i;
                                     break;
                                 }
                             }
                             e ||
                                 v.each(this._newPath.getPaintLayers().getFillLayers(), function (e, t) {
-                                    t.setProperty("_vs", !0);
+                                    t.setProperty("_vs", true);
                                 });
                         } else
                             v.each(this._newPath.getPaintLayers().getFillLayers(), function (e, t) {
-                                t.setProperty("_vs", !0);
+                                t.setProperty("_vs", true);
                             });
                 }),
                 (x.prototype._closeIfNeeded = function (e) {
-                    if (!this._newPath) return !1;
+                    if (!this._newPath) return false;
                     var t = this._newPath.getAnchorPoints(),
                         i = t.getFirstChild(),
                         n = t.getLastChild(),
                         r = (i.$x - n.$x) * (i.$x - n.$x) + (i.$y - n.$y) * (i.$y - n.$y),
                         o = window.devicePixelRatio / this._view.getZoom();
                     return (
-                        r < 225 * o * o && (e || (n.setProperties(["x", "y"], [i.$x, i.$y]), this._newPath.correctClosedAttribute()), !0)
+                        r < 225 * o * o && (e || (n.setProperties(["x", "y"], [i.$x, i.$y]), this._newPath.correctClosedAttribute()), true)
                     );
                 }),
                 (x.prototype._getRelatedItemClass = function () {
@@ -405,5 +405,5 @@ module.exports = function (e, t, i) {
                 (x.prototype.toString = function () {
                     return "[Object GFreehandTool]";
                 }),
-                (e.exports = x));
+                (module.exports = x));
         };

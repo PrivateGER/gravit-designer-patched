@@ -1,35 +1,35 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(1);
+        var GObject = require(1);
         const i = {
-            [o.GLocaleLanguage.Portuguese]: "pt-br",
-            [o.GLocaleLanguage.Spanish]: "es",
-            [o.GLocaleLanguage.German]: "de",
-            [o.GLocaleLanguage.Italian]: "it",
-            [o.GLocaleLanguage.French]: "fr",
+            [GObject.GLocaleLanguage.Portuguese]: "pt-br",
+            [GObject.GLocaleLanguage.Spanish]: "es",
+            [GObject.GLocaleLanguage.German]: "de",
+            [GObject.GLocaleLanguage.Italian]: "it",
+            [GObject.GLocaleLanguage.French]: "fr",
         };
-        e.exports = class {
+        module.exports = class {
             constructor() {
-                const e = i[o.GLocale.getLanguage()] || "en",
+                const e = i[GObject.GLocale.getLanguage()] || "en",
                     t = $("<iframe>")
                         .attr("src", "https://www.gravit.linusrath.de/".concat(e, "/messages/windows-store"))
                         .on("load error", () => this._dialog.removeClass("g-loading"));
                 this._dialog = $("<div/>")
                     .addClass("g-loading")
                     .gDialog({
-                        releaseOnClose: !0,
+                        releaseOnClose: true,
                         className: "g-windows-store-announcement-dialog",
                         buttons: [
                             $("<button/>")
                                 .addClass("primary")
-                                .text(o.GLocale.get(new o.GLocaleKey("GLocale", "ok")))
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")))
                                 .on("click", () => this.close()),
                         ],
                     })
                     .append(t);
             }
             open() {
-                this._dialog.gDialog("open", !1);
+                this._dialog.gDialog("open", false);
             }
             close() {
                 this._dialog.gDialog("close");

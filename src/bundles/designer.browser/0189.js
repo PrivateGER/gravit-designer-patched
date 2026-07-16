@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(152),
-            i = n(427),
-            a = n(429),
-            r = n(131),
-            s = n(29),
-            l = n(27),
-            c = n(21),
-            d = o.aTypedArray,
-            u = o.exportTypedArrayMethod,
+        var NATIVE_ARRAY_BUFFER_VIEWS = require(152),
+            i = require(427),
+            a = require(429),
+            r = require(131),
+            s = require(29),
+            l = require(27),
+            c = require(21),
+            d = NATIVE_ARRAY_BUFFER_VIEWS.aTypedArray,
+            u = NATIVE_ARRAY_BUFFER_VIEWS.exportTypedArrayMethod,
             p = l("".slice);
         u(
             "fill",

@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         (function (e) {
-            n.d(t, "a", function () {
+            require.d(exports, "a", function () {
                 return p;
             });
             var o = (function () {
@@ -90,7 +90,7 @@ module.exports = function (e, t, n) {
                 var n,
                     o,
                     i = typeof e;
-                if (i !== typeof t) return !1;
+                if (i !== typeof t) return false;
                 try {
                     for (var a = s(["string", "number", "boolean", "undefined"]), r = a.next(); !r.done; r = a.next()) {
                         if (r.value === i) return e === t;
@@ -104,26 +104,26 @@ module.exports = function (e, t, n) {
                         if (n) throw n.error;
                     }
                 }
-                if (null == e && null == t) return !0;
-                if (null == e || null == t) return !1;
-                if (e.length !== t.length) return !1;
+                if (null == e && null == t) return true;
+                if (null == e || null == t) return false;
+                if (e.length !== t.length) return false;
                 var l = Array.isArray(e),
                     d = Array.isArray(t);
-                if (l !== d) return !1;
+                if (l !== d) return false;
                 if (!l || !d) {
                     var u = Object.keys(e).sort(),
                         p = Object.keys(t).sort();
-                    if (!c(u, p)) return !1;
-                    var g = !0;
+                    if (!c(u, p)) return false;
+                    var g = true;
                     return (
                         Object.keys(e).forEach(function (n) {
-                            c(e[n], t[n]) || (g = !1);
+                            c(e[n], t[n]) || (g = false);
                         }),
                         g
                     );
                 }
-                for (var h = 0; h < e.length; h++) if (!c(e[h], t[h])) return !1;
-                return !0;
+                for (var h = 0; h < e.length; h++) if (!c(e[h], t[h])) return false;
+                return true;
             };
             Object.entries ||
                 (Object.entries = function (e) {
@@ -263,5 +263,5 @@ module.exports = function (e, t, n) {
                         e
                     );
                 })();
-        }).call(this, n(109));
+        }).call(this, require(109));
     };

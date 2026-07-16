@@ -1,26 +1,26 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(23);
-        e.exports = function (e, t) {
-            var n = o.Iterator,
+        var RegExp = require(23);
+        module.exports = function (e, t) {
+            var n = RegExp.Iterator,
                 i = n && n.prototype,
                 a = i && i[e],
-                r = !1;
+                r = false;
             if (a)
                 try {
                     a.call(
                         {
                             next: function () {
-                                return { done: !0 };
+                                return { done: true };
                             },
                             return: function () {
-                                r = !0;
+                                r = true;
                             },
                         },
                         -1
                     );
                 } catch (e) {
-                    e instanceof t || (r = !1);
+                    e instanceof t || (r = false);
                 }
             if (!r) return a;
         };

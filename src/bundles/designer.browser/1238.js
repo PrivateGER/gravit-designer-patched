@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(38), n(26));
-        var o = n(1);
-        n(1150);
+        (require(19), require(38), require(26));
+        var GObject = require(1);
+        require(1150 /* GPatternChooser */);
         function i(e) {
             let t = [
                 ...new Set(
@@ -12,16 +12,16 @@ module.exports = function (e, t, n) {
                                 "• "
                                     .concat(
                                         ((e) =>
-                                            e instanceof o.GNode
+                                            e instanceof GObject.GNode
                                                 ? e.getNodeNameTranslated()
-                                                : e instanceof o.GNoisePattern
-                                                  ? o.GLocale.get(new o.GLocaleKey("GPatternChooser", "pattern-type.noise"))
-                                                  : e instanceof o.GTexturePattern
-                                                    ? o.GLocale.get(new o.GLocaleKey("GPatternChooser", "pattern-type.texture"))
-                                                    : e instanceof o.GBackground
-                                                      ? o.GLocale.get(new o.GLocaleKey("GPatternChooser", "pattern-type.backgroundfill"))
-                                                      : e instanceof o.GAngularGradient
-                                                        ? o.GLocale.get(new o.GLocaleKey("GPatternChooser", "pattern-type.angulargradient"))
+                                                : e instanceof GObject.GNoisePattern
+                                                  ? GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "pattern-type.noise"))
+                                                  : e instanceof GObject.GTexturePattern
+                                                    ? GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "pattern-type.texture"))
+                                                    : e instanceof GObject.GBackground
+                                                      ? GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "pattern-type.backgroundfill"))
+                                                      : e instanceof GObject.GAngularGradient
+                                                        ? GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "pattern-type.angulargradient"))
                                                         : "")(t),
                                         " ["
                                     )
@@ -32,15 +32,15 @@ module.exports = function (e, t, n) {
                 ),
             ].join("<br>");
             ((this._dialog = $("<div></div>").gDialog({
-                releaseOnClose: !0,
-                buttons: [$("<button>" + o.GLocale.get(new o.GLocaleKey("GLocale", "ok")) + "</button>").on("click", () => this.close())],
+                releaseOnClose: true,
+                buttons: [$("<button>" + GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")) + "</button>").on("click", () => this.close())],
             })),
                 $("<div/>")
                     .addClass("message")
                     .css({ lineHeight: "1.5em", maxHeight: "60%", overflow: "auto" })
                     .append(
                         $("<span/>").html(
-                            o.GLocale.get(new o.GLocaleKey("GUnsupportedFeaturesDialog", "text.title-unsupported")) + "<br>" + t
+                            GObject.GLocale.get(new GObject.GLocaleKey("GUnsupportedFeaturesDialog", "text.title-unsupported")) + "<br>" + t
                         )
                     )
                     .appendTo(this._dialog),
@@ -59,18 +59,18 @@ module.exports = function (e, t, n) {
                             )
                             .append(
                                 $("<span></span>").text(
-                                    o.GLocale.get(new o.GLocaleKey("GUnsupportedFeaturesDialog", "text.checked-unsupported"))
+                                    GObject.GLocale.get(new GObject.GLocaleKey("GUnsupportedFeaturesDialog", "text.checked-unsupported"))
                                 )
                             )
                     )
                     .appendTo(this._dialog));
         }
-        (o.GObject.inherit(i, o.GObject),
+        (GObject.GObject.inherit(i, GObject.GObject),
             (i.prototype.open = function () {
                 this._dialog.gDialog("open");
             }),
             (i.prototype.close = function () {
                 this._dialog.gDialog("close");
             }),
-            (e.exports = i));
+            (module.exports = i));
     };

@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(1),
-            i = n(237);
+        var GObject = require(1),
+            GDocument = require(237);
         function a() {}
-        (o.GObject.inherit(a, i),
+        (GObject.GObject.inherit(a, GDocument),
             (a.Item = function (e) {
-                (i.Item.call(this, new a()), (this._extension = e));
+                (GDocument.Item.call(this, new a()), (this._extension = e));
             }),
-            o.GObject.inherit(a.Item, i.Item),
+            GObject.GObject.inherit(a.Item, GDocument.Item),
             (a.Item.prototype._extension = null),
             (a.Item.prototype.getExtension = function () {
                 return this._extension;
@@ -18,5 +18,5 @@ module.exports = function (e, t, n) {
             (a.Item.prototype.write = function (e, t, n, o) {
                 ((this._data = e), t && t());
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

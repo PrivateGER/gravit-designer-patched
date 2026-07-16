@@ -1,78 +1,78 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(69),
-                o = i(187),
-                a = i(77),
-                s = i(5),
-                l = i(87),
-                h = i(104),
-                A = i(179),
-                c = i(60),
-                p = i(52),
-                u = i(24),
-                d = i(113),
-                g = i(59),
-                f = i(0),
-                m = i(56),
-                y = i(70),
-                _ = i(541),
-                v = i(141),
-                b = i(54),
-                C = i(22),
-                w = i(7),
-                E = i(122),
-                B = i(45),
-                x = i(82),
-                P = i(99),
-                S = i(233),
-                T = i(63),
-                I = i(112),
-                F = i(229),
-                R = i(48),
-                D = i(95),
-                k = i(1079),
-                G = i(12),
-                Q = i(81),
-                M = i(64),
-                N = i(17),
-                U = i(9),
-                V = i(47);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(69),
+                o = require(187),
+                a = require(77),
+                s = require(5),
+                l = require(87),
+                h = require(104),
+                A = require(179),
+                c = require(60),
+                p = require(52),
+                u = require(24),
+                d = require(113),
+                g = require(59),
+                IsFiniteNonNegativeNumber = require(0),
+                m = require(56),
+                y = require(70),
+                GPathTool = require(541),
+                v = require(141),
+                b = require(54),
+                C = require(22),
+                w = require(7),
+                E = require(122),
+                B = require(45),
+                GEditor = require(82),
+                P = require(99),
+                S = require(233),
+                T = require(63),
+                I = require(112),
+                F = require(229),
+                R = require(48),
+                D = require(95),
+                k = require(1079),
+                G = require(12),
+                Q = require(81),
+                M = require(64),
+                N = require(17),
+                String = require(9),
+                V = require(47);
 
             function O() {
-                _.call(this);
+                GPathTool.call(this);
             }
-            (f.inherit(O, _),
+            (IsFiniteNonNegativeNumber.inherit(O, GPathTool),
                 (O.prototype.activate = function (e, t) {
-                    (_.prototype.activate.call(this, e, t),
+                    (GPathTool.prototype.activate.call(this, e, t),
                         t || (e.addEventListener(a.Drag, this._mouseDrag, this), e.addEventListener(a.Move, this._mouseMove, this)),
                         (this._cursor = p.Knife));
                 }),
                 (O.prototype.deactivate = function (e, t) {
                     (this._checkMode(),
-                        _.prototype.deactivate.call(this, e, t),
+                        GPathTool.prototype.deactivate.call(this, e, t),
                         e.removeEventListener(a.Drag, this._mouseDrag),
                         e.removeEventListener(a.Move, this._mouseMove),
                         (this._knifePath = null));
                 }),
                 (O.prototype._checkMode = function () {
-                    this._mode = _.Mode.Append;
+                    this._mode = GPathTool.Mode.Append;
                 }),
                 (O.prototype.getDefaultStyle = function () {
                     return null;
                 }),
                 (O.prototype._mouseDown = function (e) {
                     var t = new Date().getTime();
-                    if (t - this._mDownTime < _.DBLCLICKTM) "edit" == u.selectDoubleClickBehavior && this._manager.notifyJobDone(this);
+                    if (t - this._mDownTime < GPathTool.DBLCLICKTM) "edit" == u.selectDoubleClickBehavior && this._manager.notifyJobDone(this);
                     else {
                         var i = null;
                         if (
                             ((this._lastMouseEvent = e),
-                            (this._dragStarted = !1),
+                            (this._dragStarted = false),
                             (this._dragStartPt = null),
                             this._mouseMove(e),
                             (this._mDownTime = t),
-                            (this._released = !1),
-                            M.modifiers.optionKey && (this._firstAlt = !0),
+                            (this._released = false),
+                            M.modifiers.optionKey && (this._firstAlt = true),
                             this._blockDeactivation(),
                             this._checkMode(),
                             this._renewPreviewLink(),
@@ -85,7 +85,7 @@ module.exports = function (e, t, i) {
                                 e.button == a.BUTTON_RIGHT &&
                                     (M.modifiers.optionKey
                                         ? this._editPt.setProperty("tp", B.AnchorPoint.Type.Connector)
-                                        : this._editPt.setProperties(["tp", "cu"], [B.CornerType.Rounded, !0])),
+                                        : this._editPt.setProperties(["tp", "cu"], [B.CornerType.Rounded, true])),
                                 this._invalidate());
                         } else {
                             var o = this._view.getViewTransform(this._view.getScene().getActivePage()).mapPoint(e.client);
@@ -96,8 +96,8 @@ module.exports = function (e, t, i) {
                                 e.button == a.BUTTON_RIGHT &&
                                     (M.modifiers.optionKey
                                         ? i.setProperty("tp", B.AnchorPoint.Type.Connector)
-                                        : i.setProperties(["tp", "cu"], [B.CornerType.Rounded, !0])),
-                                this._addPoint(i, !0, !1));
+                                        : i.setProperties(["tp", "cu"], [B.CornerType.Rounded, true])),
+                                this._addPoint(i, true, false));
                         }
                     }
                 }),
@@ -106,9 +106,9 @@ module.exports = function (e, t, i) {
                         var e,
                             t = this._pathEditor.getPathPreview();
                         if (this._editPt)
-                            ((e = t.getAnchorPoints().getLastChild()), this._editPt != e && ((this._newPoint = !1), (this._editPt = null)));
+                            ((e = t.getAnchorPoints().getLastChild()), this._editPt != e && ((this._newPoint = false), (this._editPt = null)));
                         this._dpathRef = t;
-                    } else ((this._editPt = null), (this._newPoint = !1), (this._dpathRef = null));
+                    } else ((this._editPt = null), (this._newPoint = false), (this._dpathRef = null));
                 }),
                 (O.prototype._mouseMove = function (e) {
                     var t;
@@ -131,7 +131,7 @@ module.exports = function (e, t, i) {
                                 this._editor.getGuides().finishMap(),
                                 (i = this._view.getWorldTransform(this._view.getScene().getActivePage()).mapPoint(n)),
                                 (t = this._constructNewPoint(e, n)),
-                                this._addPoint(t, !0, !1, !0));
+                                this._addPoint(t, true, false, true));
                         } else this._editPt && (this._invalidate(), (i = this._updatePoint(e.client)), this._invalidate());
                         if (this._editPt) (this._pathRef.getAnchorPoints().getFirstChild(), this._pathRef.getAnchorPoints().getLastChild());
                         else ((this._cursor = p.Knife), this.updateCursor());
@@ -169,7 +169,7 @@ module.exports = function (e, t, i) {
                             (null == this._editPt.getPrevious() && null == this._editPt.getNext())
                         )
                             if (n != B.AnchorPoint.Type.Connector) {
-                                this._editPt.setProperty("ah", !1);
+                                this._editPt.setProperty("ah", false);
                                 var s = a.getX(),
                                     l = a.getY();
                                 (this._editPt.setProperties(["tp", "hrx", "hry"], [B.AnchorPoint.Type.Asymmetric, s, l]),
@@ -194,12 +194,12 @@ module.exports = function (e, t, i) {
                         else {
                             var m = a.getX() - r,
                                 y = a.getY() - o;
-                            this._editPt.setProperty("ah", !1);
+                            this._editPt.setProperty("ah", false);
                             var _ = this._dragStartPt.getProperty("hrx");
                             t = null != _ ? _ + m : a.getX();
                             var v = this._dragStartPt.getProperty("hry");
                             ((i = null != v ? v + y : a.getY()),
-                                this._editPt.setProperty("ah", !1),
+                                this._editPt.setProperty("ah", false),
                                 this._editPt.setProperties(["tp", "hrx", "hry"], [B.AnchorPoint.Type.Asymmetric, t, i]),
                                 (this._cursor = p.Knife));
                         }
@@ -223,7 +223,7 @@ module.exports = function (e, t, i) {
                                 e.button == a.BUTTON_LEFT &&
                                     this._editPt.getProperty("tp") != B.AnchorPoint.Type.Connector &&
                                     this._editPt.setProperty("tp", B.AnchorPoint.Type.Symmetric)),
-                            (this._dragStarted = !0),
+                            (this._dragStarted = true),
                             this._updatePointProperties(e.client)));
                 }),
                 (O.prototype._constructNewPoint = function (e, t) {
@@ -246,7 +246,7 @@ module.exports = function (e, t, i) {
                           r || this._dpathRef.getAnchorPoints().getLastChild().removeFlag(n.Flag.Selected),
                           this._dpathRef.getAnchorPoints().appendChild(e),
                           (this._editPt = this._dpathRef.getAnchorPoints().getLastChild()),
-                          (this._newPoint = !0),
+                          (this._newPoint = true),
                           this._invalidate())
                         : ((this._knifePath = new c()),
                           this._knifePath.getAnchorPoints().appendChild(e),
@@ -259,7 +259,7 @@ module.exports = function (e, t, i) {
                           this._invalidate());
                 }),
                 (O.prototype._modifiersChanged = function (e) {
-                    (_.prototype._modifiersChanged.call(this, e),
+                    (GPathTool.prototype._modifiersChanged.call(this, e),
                         this._released &&
                             e.changed.optionKey &&
                             !M.modifiers.optionKey &&
@@ -268,7 +268,7 @@ module.exports = function (e, t, i) {
                             (this._mouseDown(this._lastMouseEvent), this._mouseRelease(this._lastMouseEvent)));
                 }),
                 (O.prototype._mouseRelease = function (e) {
-                    if (!this._released && ((this._released = !0), this._dpathRef)) {
+                    if (!this._released && ((this._released = true), this._dpathRef)) {
                         e.client;
                         (this._dragStarted && this._updatePointProperties(e.client),
                             this._newPoint && this._invalidate(),
@@ -279,10 +279,10 @@ module.exports = function (e, t, i) {
                             this._firstAlt || this._startCutting(),
                             (this._refPt = null));
                     }
-                    ((this._dragStarted = !1),
+                    ((this._dragStarted = false),
                         (this._dragStartPt = null),
                         (this._lastMouseEvent = e),
-                        (this._firstAlt = !1),
+                        (this._firstAlt = false),
                         this._reset(),
                         this._editor.getGuides().invalidate(),
                         this._allowDeactivation());
@@ -293,7 +293,7 @@ module.exports = function (e, t, i) {
                         (this._dpathRef = null),
                         (this._pathRef = null),
                         (this._pathEditor = null),
-                        (this._newPoint = !1),
+                        (this._newPoint = false),
                         (this._editPt = null),
                         (this._dragStartPt = null),
                         (this._refPt = null),
@@ -314,7 +314,7 @@ module.exports = function (e, t, i) {
                             (this._knifePath = null));
                     } finally {
                         try {
-                            this._editor.commitTransaction(U.get(new V("GKnifeTool", "action.cut-shape")));
+                            this._editor.commitTransaction(String.get(new V("GKnifeTool", "action.cut-shape")));
                         } catch (e) {}
                     }
                 }),
@@ -373,11 +373,11 @@ module.exports = function (e, t, i) {
                                 d.rightHandlePosition && (d.rightHandlePosition = o.mapPoint(d.rightHandlePosition)),
                                 (d.position = g));
                         }
-                        if (!0 === t(d)) break;
+                        if (true === t(d)) break;
                     }
                 }),
                 (O.prototype.paint = function (e) {
-                    if ((_.prototype.paint.call(this, e), this._elementPreview)) {
+                    if ((GPathTool.prototype.paint.call(this, e), this._elementPreview)) {
                         var t = this._view.getWorldTransform(this._view.getScene().getActivePage());
                         (this._paintOutline(t, e), this._postPaint(t, e));
                     }
@@ -386,7 +386,7 @@ module.exports = function (e, t, i) {
                     var i,
                         n = this._elementPreview,
                         r = new T(n, e);
-                    (i = new v(r)) && (t.canvas.putVertices(i, !1), t.canvas.strokeVertices(t.knifeOutlineColor, u.outlineWidth));
+                    (i = new v(r)) && (t.canvas.putVertices(i, false), t.canvas.strokeVertices(t.knifeOutlineColor, u.outlineWidth));
                 }),
                 (O.prototype._postPaint = function (e, t) {
                     this._iteratePoints(
@@ -414,7 +414,7 @@ module.exports = function (e, t, i) {
                     (e && ((r = e.mapPoint(i)), (o = e.mapPoint(n))),
                         t.canvas.strokeLine(r.getX(), r.getY(), o.getX(), o.getY(), u.outlineWidth, t.knifeOutlineColor));
                     var a = u.annotationHandles.path.control;
-                    Q.paintAnnotation(t, e, n, a.type, !1, a.size, t.knifeOutlineColor, t.knifeOutlineColor);
+                    Q.paintAnnotation(t, e, n, a.type, false, a.size, t.knifeOutlineColor, t.knifeOutlineColor);
                 }),
                 (O.prototype._getKnifeBBox = function () {
                     var e = this._view.getWorldTransform(this._view.getScene().getActivePage());
@@ -431,10 +431,10 @@ module.exports = function (e, t, i) {
                             this._dpathRef,
                             function (t) {
                                 (t.leftHandlePosition &&
-                                    i(Q.getAnnotationBBox(e, t.leftHandlePosition, u.annotationHandles.path.control.size, !0)),
+                                    i(Q.getAnnotationBBox(e, t.leftHandlePosition, u.annotationHandles.path.control.size, true)),
                                     t.rightHandlePosition &&
-                                        i(Q.getAnnotationBBox(e, t.rightHandlePosition, u.annotationHandles.path.control.size, !0)),
-                                    i(Q.getAnnotationBBox(e, t.position, u.annotationHandles.path.node.size, !0)));
+                                        i(Q.getAnnotationBBox(e, t.rightHandlePosition, u.annotationHandles.path.control.size, true)),
+                                    i(Q.getAnnotationBBox(e, t.position, u.annotationHandles.path.node.size, true)));
                             }.bind(this)
                         ),
                         t
@@ -467,7 +467,7 @@ module.exports = function (e, t, i) {
                         var r = new s(n.getProperty("x"), n.getProperty("y")),
                             o = this._knifePath.getTransform();
                         ((r = (o = o ? o.multiplied(t) : t).mapPoint(r)),
-                            (i = x.convertToConstrain(r.getX(), r.getY(), e.getX(), e.getY(), u.cursorConstraint)));
+                            (i = GEditor.convertToConstrain(r.getX(), r.getY(), e.getX(), e.getY(), u.cursorConstraint)));
                     }
                     return i;
                 }),
@@ -476,12 +476,12 @@ module.exports = function (e, t, i) {
                         var r = this._knifePath.getTransform();
                         return (
                             i && (r = r ? r.multiplied(i) : i),
-                            Q.getAnnotationBBox(r, new s(e.getProperty("x"), e.getProperty("y")), u.annotationHandles.path.node.size, !1)
+                            Q.getAnnotationBBox(r, new s(e.getProperty("x"), e.getProperty("y")), u.annotationHandles.path.node.size, false)
                                 .expanded(n, n, n, n)
                                 .containsPoint(t)
                         );
                     }
-                    return !1;
+                    return false;
                 }),
                 (O.prototype.movePoint = function (e, t, i, n) {
                     var r = this.getTransformFromNative(i),
@@ -523,7 +523,7 @@ module.exports = function (e, t, i) {
                 }),
                 (O.prototype._invalidate = O.prototype.requestInvalidation),
                 (O.prototype._performCut = function () {
-                    var e = !1,
+                    var e = false,
                         t = this._dpathRef,
                         i = new o(),
                         n = [],
@@ -557,7 +557,7 @@ module.exports = function (e, t, i) {
                     for (v = 0; v < g.length; v++) {
                         var x = g[v],
                             P = _[v];
-                        if ((P.getParent() && ((h = P.getParent()), (p = P.getNext(!0))), x !== this._dpathRef && x !== this._pathRef)) {
+                        if ((P.getParent() && ((h = P.getParent()), (p = P.getNext(true))), x !== this._dpathRef && x !== this._pathRef)) {
                             for (
                                 var T,
                                     I,
@@ -567,7 +567,7 @@ module.exports = function (e, t, i) {
                                     Q = x.getProperty("evenodd"),
                                     M = "boolean" == typeof Q && !Q,
                                     N = [],
-                                    U = !1,
+                                    U = false,
                                     V = 0;
                                 V < G.length;
                                 V++
@@ -585,14 +585,14 @@ module.exports = function (e, t, i) {
                                     X = [],
                                     H = [],
                                     W = [],
-                                    Z = !1,
-                                    z = !1,
+                                    Z = false,
+                                    z = false,
                                     j = t.clone();
                                 T = G[V];
                                 for (O = 0; O < T.length; O++) {
                                     var J = T[O],
                                         q = i.intersect(j, J),
-                                        K = c.addIntersectionPoints(j, J, q, !0);
+                                        K = c.addIntersectionPoints(j, J, q, true);
                                     ((Z = Z || J.getProperty("closed")),
                                         (z = z || (this._isPathClosed(J) && q.length > 1)),
                                         K && 0 !== q.length ? ((X = X.concat(K[1])), (H = H.concat(K[0]))) : (W.push(J), (T[O] = null)));
@@ -602,7 +602,7 @@ module.exports = function (e, t, i) {
                                 if (
                                     ($ &&
                                         $ !== k.UNCHANGED &&
-                                        ((U = !0), (Y[0] = Y[0].concat($[0])), (Y[1] = Y[1].concat($[1])), (Y[2] = Y[2].concat($[2]))),
+                                        ((U = true), (Y[0] = Y[0].concat($[0])), (Y[1] = Y[1].concat($[1])), (Y[2] = Y[2].concat($[2]))),
                                     !$)
                                 ) {
                                     D = null;
@@ -619,16 +619,16 @@ module.exports = function (e, t, i) {
                                     for (B = 0; B < ie.length; B++) {
                                         var re = ie[B];
                                         re &&
-                                            (re instanceof c || (re = A.createPathFromVertexSource(re, !1, !1, !0)),
+                                            (re instanceof c || (re = A.createPathFromVertexSource(re, false, false, true)),
                                             ne && re
                                                 ? ne.getPaths().appendChild(re)
-                                                : re && (M && re.setProperty("evenodd", !1), D[te].push(re)));
+                                                : re && (M && re.setProperty("evenodd", false), D[te].push(re)));
                                     }
-                                    ne && (M && ne.setProperty("evenodd", !1), D[te].push(ne));
+                                    ne && (M && ne.setProperty("evenodd", false), D[te].push(ne));
                                 }
                             }
                             if (D && U) {
-                                ((e = !0), _[v].getParent() && h.removeChild(_[v]));
+                                ((e = true), _[v].getParent() && h.removeChild(_[v]));
                                 for (V = 0; V < D.length; V++) {
                                     var oe = new E(),
                                         ae = D[V].length;
@@ -650,7 +650,7 @@ module.exports = function (e, t, i) {
                             }
                         }
                     }
-                    return (u.length && this._editor.updateSelection(!1, u), e);
+                    return (u.length && this._editor.updateSelection(false, u), e);
                 }),
                 (O.prototype._isPathClosed = function (e) {
                     return !!e.getProperty("closed") && e.hasStyleFill();
@@ -658,7 +658,7 @@ module.exports = function (e, t, i) {
                 (O.prototype.elementHitTest = function (e, t) {
                     var i = new F();
                     if (
-                        g.hitTest(e.getX(), e.getY(), t, 2, !1, i) &&
+                        g.hitTest(e.getX(), e.getY(), t, 2, false, i) &&
                         ((elemHitRes = new I(this, i)), i.outline && 0 != i.slope && 1 != i.slope)
                     ) {
                         var n = g.getSegmentPoint(t, i.segment, 0.5);
@@ -670,20 +670,20 @@ module.exports = function (e, t, i) {
                 }),
                 (O.prototype.getTransformedVertices = function (e) {
                     var t = new b();
-                    return (e.getAnchorPoints()._generateVertices(t, e.$trf, !1), t);
+                    return (e.getAnchorPoints()._generateVertices(t, e.$trf, false), t);
                 }),
                 (O.prototype.convertToPath = function (e) {
                     var t = null,
                         i = [],
-                        n = !1;
+                        n = false;
                     if (e instanceof c || e instanceof d) {
                         var r = [];
                         if (e instanceof d) for (var o = (p = e.getPaths()).getFirstChild(); null !== o; o = o.getNext()) r.push(o);
                         else r = [e];
-                        for (var a = !1, s = 0; s < r.length && !a; s++)
+                        for (var a = false, s = 0; s < r.length && !a; s++)
                             for (var h = r[s].getAnchorPoints().getFirstChild(); h; ) {
                                 if (B.isCornerType(h.getProperty("tp")) && (0 !== h.getProperty("cl") || 0 !== h.getProperty("cr"))) {
-                                    a = !0;
+                                    a = true;
                                     break;
                                 }
                                 h = h.getNext();
@@ -739,5 +739,5 @@ module.exports = function (e, t, i) {
                 (O.prototype.toString = function () {
                     return "[Object GKnifeTool]";
                 }),
-                (e.exports = O));
+                (module.exports = O));
         };

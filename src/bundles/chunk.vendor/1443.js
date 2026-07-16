@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(1215),
+module.exports = function (module, exports, require) {
+            var n = require(1215),
                 r = function () {
                     ((this.out = []), (this.position = 0));
                 };
-            (i(0).inherit(r, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(r, n),
                 (r.prototype.getPosition = function () {
                     return this.position;
                 }),
@@ -19,5 +19,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.asArray = function () {
                     return this.out;
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

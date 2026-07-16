@@ -1,45 +1,45 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o,
             i,
             a,
-            r = n(25),
-            s = n(74),
-            l = n(245),
-            c = n(23),
-            d = n(29),
-            u = n(79),
-            p = n(175),
-            g = n(137),
-            h = n(260),
-            f = n(65),
-            m = n(35),
-            y = n(46),
-            v = n(146),
-            _ = n(342),
-            b = n(409).set,
-            w = n(623),
-            C = n(626),
-            x = n(304),
-            S = n(412),
-            E = n(80),
-            A = n(186),
-            T = n(201),
-            G = n(202),
-            P = T.CONSTRUCTOR,
-            D = T.REJECTION_EVENT,
-            L = T.SUBCLASSING,
+            r = require(25),
+            s = require(74),
+            l = require(245),
+            RegExp = require(23),
+            d = require(29),
+            u = require(79),
+            p = require(175),
+            g = require(137),
+            h = require(260),
+            f = require(65),
+            m = require(35),
+            y = require(46),
+            v = require(146),
+            _ = require(342),
+            b = require(409).set,
+            w = require(623),
+            C = require(626),
+            x = require(304),
+            S = require(412),
+            E = require(80),
+            A = require(186),
+            CONSTRUCTOR = require(201),
+            G = require(202),
+            P = CONSTRUCTOR.CONSTRUCTOR,
+            D = CONSTRUCTOR.REJECTION_EVENT,
+            L = CONSTRUCTOR.SUBCLASSING,
             I = E.getterFor("Promise"),
             k = E.set,
             O = A && A.prototype,
             F = A,
             R = O,
-            M = c.TypeError,
-            N = c.document,
-            B = c.process,
+            M = RegExp.TypeError,
+            N = RegExp.document,
+            B = RegExp.process,
             U = G.f,
             $ = U,
-            j = !!(N && N.createEvent && c.dispatchEvent),
+            j = !!(N && N.createEvent && RegExp.dispatchEvent),
             K = function (e) {
                 var t;
                 return !(!y(e) || !m((t = e.then))) && t;
@@ -57,7 +57,7 @@ module.exports = function (e, t, n) {
                 try {
                     s
                         ? (r || (2 === t.rejection && Y(t), (t.rejection = 1)),
-                          !0 === s ? (n = a) : (u && u.enter(), (n = s(a)), u && (u.exit(), (i = !0))),
+                          true === s ? (n = a) : (u && u.enter(), (n = s(a)), u && (u.exit(), (i = true))),
                           n === e.promise ? c(new M("Promise-chain cycle")) : (o = K(n)) ? d(o, n, l, c) : l(n))
                         : c(a);
                 } catch (e) {
@@ -66,21 +66,21 @@ module.exports = function (e, t, n) {
             },
             H = function (e, t) {
                 e.notified ||
-                    ((e.notified = !0),
+                    ((e.notified = true),
                     w(function () {
                         for (var n, o = e.reactions; (n = o.get()); ) V(n, e);
-                        ((e.notified = !1), t && !e.rejection && z(e));
+                        ((e.notified = false), t && !e.rejection && z(e));
                     }));
             },
             W = function (e, t, n) {
                 var o, i;
                 (j
-                    ? (((o = N.createEvent("Event")).promise = t), (o.reason = n), o.initEvent(e, !1, !0), c.dispatchEvent(o))
+                    ? (((o = N.createEvent("Event")).promise = t), (o.reason = n), o.initEvent(e, false, true), RegExp.dispatchEvent(o))
                     : (o = { promise: t, reason: n }),
-                    !D && (i = c["on" + e]) ? i(o) : "unhandledrejection" === e && C("Unhandled promise rejection", n));
+                    !D && (i = RegExp["on" + e]) ? i(o) : "unhandledrejection" === e && C("Unhandled promise rejection", n));
             },
             z = function (e) {
-                d(b, c, function () {
+                d(b, RegExp, function () {
                     var t,
                         n = e.facade,
                         o = e.value;
@@ -99,7 +99,7 @@ module.exports = function (e, t, n) {
                 return 1 !== e.rejection && !e.parent;
             },
             Y = function (e) {
-                d(b, c, function () {
+                d(b, RegExp, function () {
                     var t = e.facade;
                     l ? B.emit("rejectionHandled", t) : W("rejectionhandled", t, e.value);
                 });
@@ -110,26 +110,26 @@ module.exports = function (e, t, n) {
                 };
             },
             Q = function (e, t, n) {
-                e.done || ((e.done = !0), n && (e = n), (e.value = t), (e.state = 2), H(e, !0));
+                e.done || ((e.done = true), n && (e = n), (e.value = t), (e.state = 2), H(e, true));
             },
             J = function (e, t, n) {
                 if (!e.done) {
-                    ((e.done = !0), n && (e = n));
+                    ((e.done = true), n && (e = n));
                     try {
                         if (e.facade === t) throw new M("Promise can't be resolved itself");
                         var o = K(t);
                         o
                             ? w(function () {
-                                  var n = { done: !1 };
+                                  var n = { done: false };
                                   try {
                                       d(o, t, X(J, n, e), X(Q, n, e));
                                   } catch (t) {
                                       Q(n, t, e);
                                   }
                               })
-                            : ((e.value = t), (e.state = 1), H(e, !1));
+                            : ((e.value = t), (e.state = 1), H(e, false));
                     } catch (t) {
-                        Q({ done: !1 }, t, e);
+                        Q({ done: false }, t, e);
                     }
                 }
             };
@@ -147,11 +147,11 @@ module.exports = function (e, t, n) {
             ((o = function (e) {
                 k(this, {
                     type: "Promise",
-                    done: !1,
-                    notified: !1,
-                    parent: !1,
+                    done: false,
+                    notified: false,
+                    parent: false,
                     reactions: new S(),
-                    rejection: !1,
+                    rejection: false,
                     state: 0,
                     value: null,
                 });
@@ -159,7 +159,7 @@ module.exports = function (e, t, n) {
                 var n = I(this),
                     o = U(_(this, F));
                 return (
-                    (n.parent = !0),
+                    (n.parent = true),
                     (o.ok = !m(e) || e),
                     (o.fail = m(t) && t),
                     (o.domain = l ? B.domain : void 0),
@@ -193,12 +193,12 @@ module.exports = function (e, t, n) {
                                 d(a, n, e, t);
                             }).then(e, t);
                         },
-                        { unsafe: !0 }
+                        { unsafe: true }
                     ));
             try {
                 delete O.constructor;
             } catch (e) {}
             p && p(O, R);
         }
-        (r({ global: !0, constructor: !0, wrap: !0, forced: P }, { Promise: F }), g(F, "Promise", !1, !0), h("Promise"));
+        (r({ global: true, constructor: true, wrap: true, forced: P }, { Promise: F }), g(F, "Promise", false, true), h("Promise"));
     };

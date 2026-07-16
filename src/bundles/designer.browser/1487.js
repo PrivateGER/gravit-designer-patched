@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        e.exports = class {
+        module.exports = class {
             static getSetting() {
                 return "show_welcome_screen";
             }

@@ -1,19 +1,19 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        var o = n(10);
-        const i = n(292),
-            a = n(846);
-        e.exports = class {
+        require(8 /* Symbol */);
+        var designerConfig = require(10);
+        const i = require(292),
+            a = require(846);
+        module.exports = class {
             constructor() {
-                this._isListening = !1;
+                this._isListening = false;
             }
             async checkLicense() {
                 let e;
                 if (gDesigner.isOffline()) e = a.newOfflineLicense();
                 else
                     try {
-                        e = a.newLicense(await o.gApi.license.get());
+                        e = a.newLicense(await designerConfig.gApi.license.get());
                     } catch (t) {
                         ((e = a.newDefaultLicense()), console.info("CheckLicense", "exception", t));
                     }
@@ -25,10 +25,10 @@ module.exports = function (e, t, n) {
                         if (!gDesigner.isOffline()) {
                             (await gDesigner.getUser()) &&
                                 !gDesigner.isAnonymous() &&
-                                (o.gApi.license.listen((e) => {
+                                (designerConfig.gApi.license.listen((e) => {
                                     this._setApplicationLicense(a.newLicense(e));
                                 }),
-                                (this._isListening = !0));
+                                (this._isListening = true));
                         }
                     } catch (e) {
                         console.info("LicenseChanged", "exception", e);
@@ -51,7 +51,7 @@ module.exports = function (e, t, n) {
                 } catch (e) {
                     console.error(e);
                 }
-                setInterval(this.checkLicense.bind(this), o.DateAPI.daysToMilliseconds(1));
+                setInterval(this.checkLicense.bind(this), designerConfig.DateAPI.daysToMilliseconds(1));
             }
             _userLoggedEvent() {
                 (this.checkLicense(), this._listenLicense());

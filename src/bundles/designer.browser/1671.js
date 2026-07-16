@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o(e) {
             ((this.id = e), (this._intervals = []), (this._timeouts = []));
         }
-        (n(3),
-            n(4),
-            n(32),
-            n(33),
+        (require(3),
+            require(4),
+            require(32),
+            require(33),
             (o.prototype.exports = null),
             (o.prototype.id = null),
             (o.prototype._intervals = null),
@@ -28,5 +28,5 @@ module.exports = function (e, t, n) {
             (o.prototype.toString = function () {
                 return "[Object GModule]";
             }),
-            (e.exports = o));
+            (module.exports = o));
     };

@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o,
-            i = n(37),
-            a = n(617),
-            r = n(301),
-            s = n(259),
-            l = n(406),
-            c = n(242),
-            d = n(300),
+            i = require(37),
+            a = require(617),
+            r = require(301),
+            s = require(259),
+            l = require(406),
+            c = require(242),
+            d = require(300),
             u = d("IE_PROTO"),
             p = function () {},
             g = function (e) {
@@ -38,8 +38,8 @@ module.exports = function (e, t, n) {
                 for (var n = r.length; n--; ) delete f.prototype[r[n]];
                 return f();
             };
-        ((s[u] = !0),
-            (e.exports =
+        ((s[u] = true),
+            (module.exports =
                 Object.create ||
                 function (e, t) {
                     var n;

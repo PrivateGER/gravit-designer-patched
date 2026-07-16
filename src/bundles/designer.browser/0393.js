@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        const { GEvent: o, GObject: i } = n(1);
+        require(3);
+        const { GEvent: o, GObject: i } = require(1 /* GObject */);
         function a(e, t) {
             ((this.type = e), (this.data = t));
         }
@@ -21,5 +21,5 @@ module.exports = function (e, t, n) {
             (a.prototype.toString = function () {
                 return "[Object GCollaborationEvent]";
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

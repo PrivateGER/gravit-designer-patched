@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(1145),
-                r = i(849);
+module.exports = function (module, exports, require) {
+            var n = require(1145),
+                r = require(849);
 
             function o(e, t, i, o, a) {
                 (n.call(this, "DCTDecode"), 0 !== arguments.length && this.setBuffer(new r().encode(i, e, t, a || 85, o)));
             }
-            (i(0).inherit(o, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(o, n),
                 (o.prototype.setBuffer = function (e) {
                     this._compressed = e;
                 }),
@@ -18,5 +18,5 @@ module.exports = function (e, t, i) {
                 (o.prototype.length = function () {
                     return this._compressed.length;
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

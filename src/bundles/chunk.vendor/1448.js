@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
-            var n = i(7),
-                r = i(14),
-                o = i(228),
-                a = i(133),
-                s = i(6),
-                l = i(28),
-                h = i(5),
-                A = i(293),
-                c = i(440),
-                p = i(249),
-                u = i(87);
+module.exports = function (module, exports, require) {
+            var n = require(7),
+                r = require(14),
+                o = require(228),
+                GScenePaintConfiguration = require(133),
+                s = require(6),
+                GStylable = require(28),
+                h = require(5),
+                A = require(293),
+                c = require(440),
+                p = require(249),
+                u = require(87);
 
             function d() {}
             ((d.prototype.render = function (e, t, i) {
@@ -23,16 +23,16 @@ module.exports = function (e, t, i) {
                         y.resize(f, m);
                         var _ = new o();
                         _.canvas = y;
-                        var v = new a();
-                        ((v.paintMode = a.PaintMode.Full),
-                            (v.paintSharp = !1),
-                            (v.annotations = !1),
+                        var v = new GScenePaintConfiguration();
+                        ((v.paintMode = GScenePaintConfiguration.PaintMode.Full),
+                            (v.paintSharp = false),
+                            (v.annotations = false),
                             (_.configuration = v),
                             (v.clipArea = g),
-                            (v.clipDirty = !1),
-                            (v.enableFxCache = !1),
+                            (v.clipDirty = false),
+                            (v.enableFxCache = false),
                             (v.defaultEffectDetailLevel = 1),
-                            (v.ignoreEffects = !0),
+                            (v.ignoreEffects = true),
                             y.prepare(),
                             y.setOrigin(new h(g.getX() * d, g.getY() * d)),
                             y.setOffset(new h(g.getX() * d, g.getY() * d)),
@@ -48,12 +48,12 @@ module.exports = function (e, t, i) {
                         try {
                             t.paint(_);
                             var E = w
-                                .getTransform(!1)
+                                .getTransform(false)
                                 .inverted()
                                 .mapRect(new s(0, 0, w.getWidth(), w.getHeight()));
                             if ((Q = w.createPatternPaint(i.$pat, E)))
                                 if (Q.transform) {
-                                    var B = w.setTransform(w.getTransform(!0).preMultiplied(Q.transform));
+                                    var B = w.setTransform(w.getTransform(true).preMultiplied(Q.transform));
                                     (w.fillRect(0, 0, 1, 1, Q.paint, i.$opc), w.setTransform(B));
                                 } else w.fillRect(E.getX(), E.getY(), E.getWidth(), E.getHeight(), Q.paint, i.$opc);
                             var x = i.$x * d,
@@ -73,7 +73,7 @@ module.exports = function (e, t, i) {
                         }
                         ((x = g.getX()), (P = g.getY()));
                         var F = new s(x, P, f, m),
-                            R = e.canvas._canvasContext._createImageResource(b, !1, C);
+                            R = e.canvas._canvasContext._createImageResource(b, false, C);
                         F = (F = F.scaled(1 / e.canvas.getScale(), 1 / e.canvas.getScale()))
                             .translated(-F.getX(), -F.getY())
                             .translated(x, P);
@@ -86,10 +86,10 @@ module.exports = function (e, t, i) {
                         var k = e.canvas.createCanvas(F);
                         try {
                             var G = i.$opc;
-                            if (t.hasMixin(l)) {
+                            if (t.hasMixin(GStylable)) {
                                 var Q,
                                     M = t.getPaintLayers();
-                                if (M) (Q = M.getFillLayers(!0)[0]) && (G *= Q.$_op);
+                                if (M) (Q = M.getFillLayers(true)[0]) && (G *= Q.$_op);
                             }
                             var N = k.getGraphics(),
                                 U = new n(1, 0, 0, 1, i.$x, -i.$y);
@@ -102,5 +102,5 @@ module.exports = function (e, t, i) {
                 (d.prototype.toString = function () {
                     return "[Object GPDFDropShadowEffect]";
                 }),
-                (e.exports = d));
+                (module.exports = d));
         };

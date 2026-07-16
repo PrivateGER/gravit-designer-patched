@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(4), n(32), n(97), n(33));
-        const o = n(394),
-            i = n(78),
-            a = n(86),
-            r = n(217);
+        (require(4), require(32), require(97), require(33));
+        const o = require(394),
+            i = require(78),
+            a = require(86),
+            r = require(217);
         function s(e) {
             this._htmlElement = e;
         }
@@ -48,7 +48,7 @@ module.exports = function (e, t, n) {
                     case a.Syncing:
                     case a.Downloading:
                         if ((this._document.isCloudFile() || this._document.isExternalFile()) && e.status === a.Saving) return;
-                        t(!0);
+                        t(true);
                         break;
                     case a.LoadCancelled:
                     case a.DownloadCancelled:
@@ -59,7 +59,7 @@ module.exports = function (e, t, n) {
                     case a.DownloadFailed:
                     case a.Loaded:
                     case a.LoadFailed:
-                        t(!1);
+                        t(false);
                 }
             }),
             (s.prototype._updateFooter = function () {
@@ -80,5 +80,5 @@ module.exports = function (e, t, n) {
             (s.prototype.getHeight = function () {
                 return this._htmlElement[0].clientHeight;
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

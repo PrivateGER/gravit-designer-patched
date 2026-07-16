@@ -1,25 +1,25 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(53);
-        var o = n(1),
-            i = (n(15), n(40)),
-            a = (n(67), n(238)),
-            r = (n(1151), n(857), n(173), n(877), n(44)),
-            s = n(1150);
+        require(53);
+        var GObject = require(1),
+            i = (require(15 /* GPlatform */), require(40 /* GSaveAction */)),
+            a = (require(67), require(238)),
+            r = (require(1151), require(857), require(173), require(877), require(44 /* GSystemDialog */)),
+            GPatternChooser = require(1150);
         function l() {
             (this.initLayout(),
                 this._container.gOverlay({
-                    releaseOnClose: !1,
-                    padding: !1,
+                    releaseOnClose: false,
+                    padding: false,
                     clazz: "pattern-chooser-overlay",
                     customRight: -250,
                 }),
                 this.initContextMenu());
         }
-        (o.GObject.inheritAndMix(l, s),
-            (l.prototype._advancedExpanded = !0),
+        (GObject.GObject.inheritAndMix(l, GPatternChooser),
+            (l.prototype._advancedExpanded = true),
             (l.prototype._longPressTimer = null),
-            (l.prototype._islongPress = !1),
+            (l.prototype._islongPress = false),
             (l.prototype._contextMenu = null),
             (l.prototype._currentLongPressTarget = null),
             (l.prototype._createChoosers = function (e) {
@@ -31,7 +31,7 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<div />")
                                     .addClass("mini-font")
-                                    .text(o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.colors")).toUpperCase())
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.colors")).toUpperCase())
                             )
                             .on("click", e)
                     )
@@ -42,7 +42,7 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<div />")
                                     .addClass("mini-font")
-                                    .text(o.GLocale.get(new o.GLocaleKey("GPatternChooser", "text.swatches")).toUpperCase())
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.swatches")).toUpperCase())
                             )
                             .on(
                                 "click",
@@ -60,7 +60,7 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<div />")
                                     .addClass("mini-font")
-                                    .text(o.GLocale.get(new o.GLocaleKey("GPatternChooser", "text.in-use")).toUpperCase())
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.in-use")).toUpperCase())
                             )
                             .on("click", e)
                     )
@@ -70,7 +70,7 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<div />")
                                     .addClass("mini-font")
-                                    .text(o.GLocale.get(new o.GLocaleKey("GPatternChooser", "text.mixer")).toUpperCase())
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.mixer")).toUpperCase())
                             )
                             .on("click", e)
                     )
@@ -80,19 +80,19 @@ module.exports = function (e, t, n) {
                 this._contextMenu = new a(null, "g-pattern-chooser-context-menu");
                 var t = (e, t, n) => {
                         gDesigner.stats("patternchooser_add_swatch", e);
-                        var i = new o.GSwatch(t, n),
+                        var i = new GObject.GSwatch(t, n),
                             a = gDesigner.getSwatches(e);
                         if (a) {
                             for (var s = 0; s < a.length; ++s)
-                                if (o.GUtil.equals(i, a[s], !0))
-                                    return void r.alert(o.GLocale.get(new o.GLocaleKey("GPatternChooser", "text.equal-swatch-alert")));
+                                if (GObject.GUtil.equals(i, a[s], true))
+                                    return void r.alert(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.equal-swatch-alert")));
                             (a.push(i), gDesigner.setSwatches(e, a));
                         }
                     },
                     n = (e) => {
                         var t = this._pattern.clone();
                         return (
-                            (t instanceof o.GRadialGradient || t instanceof o.GLinearGradient || t instanceof o.GAngularGradient) &&
+                            (t instanceof GObject.GRadialGradient || t instanceof GObject.GLinearGradient || t instanceof GObject.GAngularGradient) &&
                                 (t._stops[0].color = e),
                             t
                         );
@@ -109,12 +109,12 @@ module.exports = function (e, t, n) {
                                 t(this._getSwatchScope("document", this._pattern), this._pattern, this._opacity);
                     };
                 (this._contextMenu
-                    .createAddItem(o.GLocale.get(new o.GLocaleKey("GPatternChooser", "action.add-to-document-swatches")), () => {
+                    .createAddItem(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "action.add-to-document-swatches")), () => {
                         i("document");
                     })
                     .setIcon("gravit-icon-add-swatches"),
                     this._contextMenu
-                        .createAddItem(o.GLocale.get(new o.GLocaleKey("GPatternChooser", "action.add-to-global-swatches")), () => {
+                        .createAddItem(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "action.add-to-global-swatches")), () => {
                             i("global");
                         })
                         .setIcon("gravit-icon-add-swatches"));
@@ -122,7 +122,7 @@ module.exports = function (e, t, n) {
             (l.prototype.__getColorModeParams = function () {
                 return {
                     hexWidth: "25%",
-                    isTouchEnabled: !0,
+                    isTouchEnabled: true,
                     rgbWidth: "12%",
                     cymkWidth: "12%",
                 };
@@ -131,13 +131,13 @@ module.exports = function (e, t, n) {
                 return [
                     {
                         width: "80%",
-                        padding: !1,
+                        padding: false,
                         content: $("<button />")
                             .prepend($("<span></span>").addClass("gravit-icon-add-image"))
                             .append(
                                 $("<div />")
                                     .addClass("mini-font")
-                                    .text(o.GLocale.get(new o.GLocaleKey("GPatternChooser", "action.choose-image")) + "...")
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "action.choose-image")) + "...")
                             )
                             .addClass("pattern-choose-image-button")
                             .on("click", e),
@@ -155,7 +155,7 @@ module.exports = function (e, t, n) {
             (l.prototype._createPatternEditorMaskRow = function (e) {
                 return [
                     {
-                        padding: !1,
+                        padding: false,
                         width: "50px",
                         content: $("<label />")
                             .addClass("g-switch")
@@ -164,16 +164,16 @@ module.exports = function (e, t, n) {
                                     .attr("id", "texture-mask-touch")
                                     .attr("type", "checkbox")
                                     .attr("data-property", "texture_mask")
-                                    .prop("disabled", !0)
+                                    .prop("disabled", true)
                                     .on("change", e)
                             )
                             .append($("<div />")),
                     },
                     {
-                        padding: !1,
+                        padding: false,
                         width: "auto",
                         content: $("<label></label>")
-                            .text(o.GLocale.get(new o.GLocaleKey("GPatternChooser", "action.set-transparency-mask")))
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "action.set-transparency-mask")))
                             .addClass("set-transparency-mask")
                             .attr("for", "texture-mask-touch"),
                     },
@@ -182,9 +182,9 @@ module.exports = function (e, t, n) {
             (l.prototype._createPatternEditorScaleRow = function (e, t, n) {
                 return [
                     {
-                        padding: !1,
+                        padding: false,
                         width: "120px",
-                        content: $("<span></span>").text(o.GLocale.get(new o.GLocaleKey("GPatternChooser", "text.scale"))),
+                        content: $("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.scale"))),
                     },
                     {
                         width: "auto",
@@ -212,7 +212,7 @@ module.exports = function (e, t, n) {
                         content: $("<div />")
                             .addClass("advanced-option")
                             .append(
-                                $("<b>" + o.GLocale.get(new o.GLocaleKey("GPatternChooser", "text.advanced")) + " </b>").addClass("title")
+                                $("<b>" + GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.advanced")) + " </b>").addClass("title")
                             )
                             .append($("<div />").addClass("gravit-icon-right expand-icon").attr("id", "expand-icon"))
                             .on(
@@ -230,7 +230,7 @@ module.exports = function (e, t, n) {
             }),
             (l.prototype.__getCreatePatternEditorParams = function () {
                 return {
-                    isTouchEnabled: !0,
+                    isTouchEnabled: true,
                     repeatWidth: "48%",
                     ghostWidth: "4%",
                     postionWith: "48%",
@@ -246,70 +246,70 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<div/>")
                                     .addClass("title")
-                                    .text(o.GLocale.get(new o.GLocaleKey("GPatternChooser", "text.tints")).toUpperCase())
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.tints")).toUpperCase())
                             )
                             .appendTo(e),
                         n = 1;
                     n <= 8;
                     n += 1
                 )
-                    this._createPaletteSwatch(o.GRGBColor.WHITE, t, !1, !1);
+                    this._createPaletteSwatch(GObject.GRGBColor.WHITE, t, false, false);
                 var i = $("<div />")
                     .attr("data-container", "shades")
                     .addClass("shades")
                     .append(
                         $("<div/>")
                             .addClass("title")
-                            .text(o.GLocale.get(new o.GLocaleKey("GPatternChooser", "text.shades")).toUpperCase())
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.shades")).toUpperCase())
                     )
                     .appendTo(e);
-                for (n = 1; n <= 8; n += 1) this._createPaletteSwatch(o.GRGBColor.WHITE, i, !1, !1);
+                for (n = 1; n <= 8; n += 1) this._createPaletteSwatch(GObject.GRGBColor.WHITE, i, false, false);
                 var a = $("<div />")
                     .attr("data-container", "tones")
                     .addClass("tones")
                     .append(
                         $("<div/>")
                             .addClass("title")
-                            .text(o.GLocale.get(new o.GLocaleKey("GPatternChooser", "text.tones")).toUpperCase())
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.tones")).toUpperCase())
                     )
                     .appendTo(e);
-                for (n = 1; n <= 8; n += 1) this._createPaletteSwatch(o.GRGBColor.WHITE, a, !1, !1);
+                for (n = 1; n <= 8; n += 1) this._createPaletteSwatch(GObject.GRGBColor.WHITE, a, false, false);
                 var r = $("<div />")
                     .attr("data-container", "mixes")
                     .addClass("mixes")
                     .append(
                         $("<div/>")
                             .addClass("title")
-                            .text(o.GLocale.get(new o.GLocaleKey("GPatternChooser", "text.mixes")).toUpperCase())
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.mixes")).toUpperCase())
                     )
                     .appendTo(e);
-                for (n = 1; n <= 8; n += 1) this._createPaletteSwatch(o.GRGBColor.WHITE, r, !1, !1);
+                for (n = 1; n <= 8; n += 1) this._createPaletteSwatch(GObject.GRGBColor.WHITE, r, false, false);
                 this._updateMixerPalette();
             }),
             (l.prototype.__getUpdateMixerPaletteParams = function () {
                 return { maxCount: 8 };
             }),
             (l.prototype.__getCreateUsedPaletteParams = function () {
-                return { isTouchEnabled: !0, maxCount: 8 };
+                return { isTouchEnabled: true, maxCount: 8 };
             }),
             (l.prototype.__getUpdateSwatchesPaletteParams = function () {
-                return { isTouchEnabled: !0 };
+                return { isTouchEnabled: true };
             }),
             (l.prototype.__getUpdateGradientStopParams = function () {
-                return { isTouchEnabled: !0 };
+                return { isTouchEnabled: true };
             }),
             (l.prototype.__getCreatePaletteSwatchParamas = function () {
-                return { isTouchEnabled: !0 };
+                return { isTouchEnabled: true };
             }),
             (l.prototype.__getUpdateOpacityParams = function () {
-                return { isTouchEnabled: !0 };
+                return { isTouchEnabled: true };
             }),
             (l.prototype.__getUpdateColorParams = function () {
-                return { isTouchEnabled: !0 };
+                return { isTouchEnabled: true };
             }),
-            (s.prototype._relayout = function () {
+            (GPatternChooser.prototype._relayout = function () {
                 let e = !(arguments.length > 0 && void 0 !== arguments[0]) || arguments[0];
                 this._container.gOverlay("relayout", { preserveTop: e });
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

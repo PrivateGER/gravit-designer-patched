@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.default = void 0));
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0));
         class o {
             constructor() {
-                ((this._condition = () => !0), (this._finished = !1));
+                ((this._condition = () => true), (this._finished = false));
             }
             _do(e, t) {
                 if (
@@ -15,14 +15,14 @@ module.exports = function (e, t, n) {
                     try {
                         this._runnable instanceof o ? this._runnable._do(e, t) : this._runnable();
                     } finally {
-                        this._finished = !0;
+                        this._finished = true;
                     }
             }
             listen(e) {
                 return ((this._eventClass = e), gDesigner.addEventListener(e, this._listenEvent, this), this);
             }
             _listenEvent(e) {
-                this._do(!1, e);
+                this._do(false, e);
             }
             when(e) {
                 return ((this._condition = e || this._condition), this);
@@ -32,12 +32,12 @@ module.exports = function (e, t, n) {
             }
             abort() {
                 return (
-                    (this._abort = !0),
+                    (this._abort = true),
                     this._eventClass && gDesigner.removeEventListener(this._eventClass, this._listenEvent, this),
                     this._runnable instanceof o && this._runnable.abort(),
                     this
                 );
             }
         }
-        t.default = o;
+        exports.default = o;
     };

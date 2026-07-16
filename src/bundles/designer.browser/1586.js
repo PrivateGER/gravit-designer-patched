@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16),
-            i = n(10),
-            a = o(n(880));
+        var o = require(16),
+            designerConfig = require(10),
+            a = o(require(880));
         class r extends a.default {
             canActivate(e) {
                 return e.isThereOneTouchPointOnTheTarget();
@@ -37,11 +37,11 @@ module.exports = function (e, t, n) {
                         clientY: o,
                     });
                     $(a).trigger(e);
-                }, i.LONG_PRESS_TIME_OUT);
+                }, designerConfig.LONG_PRESS_TIME_OUT);
             }
             _dropLongPressEvent() {
                 this._longPressEventTimeout && clearTimeout(this._longPressEventTimeout);
             }
         }
-        e.exports = r;
+        module.exports = r;
     };

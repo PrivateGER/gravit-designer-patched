@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             var n = {
-                WINANSI: new (i(1432))(),
+                WINANSI: new (require(1432))(),
             };
-            e.exports = n;
+            module.exports = n;
         };

@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i(e, t) {
                 t ? this.setEdge(t) : (this._uid = e);
             }
@@ -19,5 +19,5 @@ module.exports = function (e, t) {
                 (i.prototype.toString = function () {
                     return "[Object GEdgeLink]";
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

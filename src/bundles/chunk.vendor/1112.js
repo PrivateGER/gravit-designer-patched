@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(165),
-                r = i(11);
+module.exports = function (module, exports, require) {
+            var PDFNodeStream = require(165),
+                r = require(11);
 
             function o() {}
             ((o.prototype.concurrencyEncode = function (e, t, i) {
@@ -28,7 +28,7 @@ module.exports = function (e, t, i) {
                 });
             }),
                 (o.prototype.encode = function (e) {
-                    return n.deflate(e);
+                    return PDFNodeStream.deflate(e);
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

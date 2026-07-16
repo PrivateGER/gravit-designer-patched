@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(10);
-        class i extends o.License {
+        var designerConfig = require(10);
+        class i extends designerConfig.License {
             isExpired(e) {
                 return super.isExpired(e || gDesigner.now());
             }
@@ -12,5 +12,5 @@ module.exports = function (e, t, n) {
                 return super.isOfflinePeriodExpired(e || gDesigner.now());
             }
         }
-        e.exports = i;
+        module.exports = i;
     };

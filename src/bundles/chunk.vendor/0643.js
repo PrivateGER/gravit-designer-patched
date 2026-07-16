@@ -1,20 +1,20 @@
-module.exports = function (e, t, i) {
-            var n = i(346),
-                r = i(473),
-                o = i(226),
-                a = i(42),
-                s = i(0),
-                l = i(5),
-                h = i(14),
-                A = i(166),
-                c = i(118);
+module.exports = function (module, exports, require) {
+            var n = require(346),
+                r = require(473),
+                o = require(226),
+                a = require(42),
+                IsFiniteNonNegativeNumber = require(0),
+                l = require(5),
+                h = require(14),
+                A = require(166),
+                c = require(118);
 
             function p(e) {
                 ((this._paintCanvas = e),
                     (this._ctx = e._canvasContext),
                     (this.globalCompositeOperation = this._ctx.globalCompositeOperation));
             }
-            (s.inheritAndMix(p, s, [r, c]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(p, IsFiniteNonNegativeNumber, [r, c]),
                 (p.prototype._ctx = null),
                 (p.prototype._paintCanvas = null),
                 (p.prototype._bgTexture = null),
@@ -69,11 +69,11 @@ module.exports = function (e, t, i) {
                                 for (var A = this._paintCanvas._areas.slice(), c = A[0], p = 1; p < A.length; p++) c = c.united(A[p]);
                                 (this._prepareBackground(c),
                                     this._drawImage(e, t, i, n, r, o, a, s, l),
-                                    this._renderWithBlend(c, null, !0));
+                                    this._renderWithBlend(c, null, true));
                             } else
                                 (this._prepareBackground(),
                                     this._drawImage(e, t, i, n, r, o, a, s, l),
-                                    this._renderWithBlend(null, null, !0));
+                                    this._renderWithBlend(null, null, true));
                         } else this._drawImage(e, t, i, n, r, o, a, s, l);
                     }
                 }),
@@ -92,8 +92,8 @@ module.exports = function (e, t, i) {
                         if (!this.prepareShader()) return;
                         if (this._paintCanvas._areas && this._paintCanvas._areas.length) {
                             for (var e = this._paintCanvas._areas.slice(), t = e[0], i = 1; i < e.length; i++) t = t.united(e[i]);
-                            (this._prepareBackground(t), this._ctx.stroke(), this._renderWithBlend(t, null, !0));
-                        } else (this._prepareBackground(), this._ctx.stroke(), this._renderWithBlend(null, null, !0));
+                            (this._prepareBackground(t), this._ctx.stroke(), this._renderWithBlend(t, null, true));
+                        } else (this._prepareBackground(), this._ctx.stroke(), this._renderWithBlend(null, null, true));
                     } else this._ctx.stroke();
                 }),
                 (p.prototype.strokeRect = function (e, t, i, n) {
@@ -101,8 +101,8 @@ module.exports = function (e, t, i) {
                         if (!this.prepareShader()) return;
                         if (this._paintCanvas._areas && this._paintCanvas._areas.length) {
                             for (var r = this._paintCanvas._areas.slice(), o = r[0], a = 1; a < r.length; a++) o = o.united(r[a]);
-                            (this._prepareBackground(o), this._ctx.strokeRect(e, t, i, n), this._renderWithBlend(o, null, !0));
-                        } else (this._prepareBackground(), this._ctx.strokeRect(e, t, i, n), this._renderWithBlend(null, null, !0));
+                            (this._prepareBackground(o), this._ctx.strokeRect(e, t, i, n), this._renderWithBlend(o, null, true));
+                        } else (this._prepareBackground(), this._ctx.strokeRect(e, t, i, n), this._renderWithBlend(null, null, true));
                     } else this._ctx.strokeRect(e, t, i, n);
                 }),
                 (p.prototype.fill = function (e) {
@@ -110,8 +110,8 @@ module.exports = function (e, t, i) {
                         if (!this.prepareShader()) return;
                         if (this._paintCanvas._areas && this._paintCanvas._areas.length) {
                             for (var t = this._paintCanvas._areas.slice(), i = t[0], n = 1; n < t.length; n++) i = i.united(t[n]);
-                            (this._prepareBackground(i), this._ctx.fill(e), this._renderWithBlend(i, null, !0));
-                        } else (this._prepareBackground(), this._ctx.fill(e), this._renderWithBlend(null, null, !0));
+                            (this._prepareBackground(i), this._ctx.fill(e), this._renderWithBlend(i, null, true));
+                        } else (this._prepareBackground(), this._ctx.fill(e), this._renderWithBlend(null, null, true));
                     } else this._ctx.fill(e);
                 }),
                 (p.prototype.fillRect = function (e, t, i, n) {
@@ -119,8 +119,8 @@ module.exports = function (e, t, i) {
                         if (!this.prepareShader()) return;
                         if (this._paintCanvas._areas && this._paintCanvas._areas.length) {
                             for (var r = this._paintCanvas._areas.slice(), o = r[0], a = 1; a < r.length; a++) o = o.united(r[a]);
-                            (this._prepareBackground(o), this._ctx.fillRect(e, t, i, n), this._renderWithBlend(o, null, !0));
-                        } else (this._prepareBackground(), this._ctx.fillRect(e, t, i, n), this._renderWithBlend(null, null, !0));
+                            (this._prepareBackground(o), this._ctx.fillRect(e, t, i, n), this._renderWithBlend(o, null, true));
+                        } else (this._prepareBackground(), this._ctx.fillRect(e, t, i, n), this._renderWithBlend(null, null, true));
                     } else this._ctx.fillRect(e, t, i, n);
                 }),
                 (p.prototype._makeNonIntersectingAreas = function (e) {
@@ -139,7 +139,7 @@ module.exports = function (e, t, i) {
                         t
                             ? ((h = t.getWidth()), (A = t.getHeight()), (c = t.getX()), (p = t.getY()))
                             : ((h = r), (A = s), (c = i), (p = n)));
-                    var u = this._paintCanvas.getTransform(!0),
+                    var u = this._paintCanvas.getTransform(true),
                         d = this._paintCanvas.getOrigin(),
                         g = this._paintCanvas.getScale();
                     (this._paintCanvas.setTransform(null), this._paintCanvas.setOrigin(new l(0, 0)), this._paintCanvas.setScale(1));
@@ -163,7 +163,7 @@ module.exports = function (e, t, i) {
                 }),
                 (p.prototype._renderWithBlend = function (e, t, i) {
                     var n = this._paintCanvas,
-                        r = n.getTransform(!0),
+                        r = n.getTransform(true),
                         a = n.getOrigin(),
                         s = n.getScale();
                     (n.setTransform(null), n.setOrigin(new l(0, 0)), n.setScale(1));
@@ -209,5 +209,5 @@ module.exports = function (e, t, i) {
                 (p.prototype.toString = function () {
                     return "[Object GBlender]";
                 }),
-                (e.exports = p));
+                (module.exports = p));
         };

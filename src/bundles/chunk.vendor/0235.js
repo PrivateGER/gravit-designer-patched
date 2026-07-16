@@ -1,21 +1,21 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(0),
-                o = i(127),
-                a = i(128),
-                s = i(36),
-                l = i(66),
-                h = i(60),
-                A = i(22),
-                c = i(113),
-                p = i(39),
-                u = i(82),
-                d = i(24);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(127),
+                a = require(128),
+                s = require(36),
+                l = require(66),
+                h = require(60),
+                A = require(22),
+                c = require(113),
+                p = require(39),
+                GEditor = require(82),
+                d = require(24);
 
             function g(e) {
                 a.call(this, e);
             }
-            (r.inherit(g, a),
+            (IsFiniteNonNegativeNumber.inherit(g, a),
                 s.exports(g, c),
                 (g.prototype.edTransform = function (e, t, i, n) {
                     ((this._transform = e), this.hasFlag(p.Flag.Outline) ? this.requestInvalidation() : this.setOutlineTmpFlag());
@@ -36,11 +36,11 @@ module.exports = function (e, t, i) {
                         this.removeOutlineTmpFlag());
                 }),
                 (g.prototype.canApplyTransform = function () {
-                    var e = !1;
+                    var e = false;
                     return (
                         this._iterateChildPathsEditors(
                             function (t) {
-                                if (t.canApplyTransform()) return ((e = !0), !0);
+                                if (t.canApplyTransform()) return ((e = true), true);
                             }.bind(this)
                         ),
                         e
@@ -54,7 +54,7 @@ module.exports = function (e, t, i) {
                             ? a.prototype._applyTransform.call(this, e, t, i, n)
                             : this._iterateChildPathsEditors(
                                   function (e) {
-                                      e.canApplyTransform() && e.applyTransform(e._element, !1, null, n);
+                                      e.canApplyTransform() && e.applyTransform(e._element, false, null, n);
                                   }.bind(this)
                               ),
                         this.resetTransform(r),
@@ -108,7 +108,7 @@ module.exports = function (e, t, i) {
                     if (!this.hasFlag(l.Flag.ResizeAll))
                         for (var n = null, r = this._element.getPaths().getFirstChild(); null != r; r = r.getNext()) {
                             var o = s.openEditor(r);
-                            if ((o.removeFlag(l.Flag.ResizeAll), o.setCatchHandle(!1), (n = o._getPartInfoAt(e, t, i))))
+                            if ((o.removeFlag(l.Flag.ResizeAll), o.setCatchHandle(false), (n = o._getPartInfoAt(e, t, i))))
                                 return (n.data || (n.data = {}), (n.data.ownerEditor = this), n);
                         }
                     return (n = a.prototype._getPartInfoAt.call(this, e, t, i))
@@ -144,33 +144,33 @@ module.exports = function (e, t, i) {
                             var r = t[n];
                             r.data.ownerEditor === this && (e ? r.editor.updatePartSelection(e, [r.id]) : (i = r));
                         }
-                        i && (this.updatePartSelection(!1), i.editor.updatePartSelection(!1, [i.id]));
+                        i && (this.updatePartSelection(false), i.editor.updatePartSelection(false, [i.id]));
                     }
                 }),
                 (g.prototype.getActiveExtendingMode = function () {
                     return null;
                 }),
                 (g.prototype.isPartSelectionUnderCollisionAllowed = function () {
-                    return !0;
+                    return true;
                 }),
                 (g.prototype.updatePartSelectionUnderCollision = function (e, t, i) {
-                    for (var n = !1, r = this._element.getPaths().getFirstChild(); null != r; r = r.getNext()) {
+                    for (var n = false, r = this._element.getPaths().getFirstChild(); null != r; r = r.getNext()) {
                         var o = s.openEditor(r);
-                        (o.removeFlag(l.Flag.ResizeAll), o.setCatchHandle(!1), o.updatePartSelectionUnderCollision(e, t, i) && (n = !0));
+                        (o.removeFlag(l.Flag.ResizeAll), o.setCatchHandle(false), o.updatePartSelectionUnderCollision(e, t, i) && (n = true));
                     }
                     return n;
                 }),
                 (g.prototype.isDeletePartsAllowed = function () {
-                    var e = !1;
+                    var e = false;
                     if (this.hasFlag(p.Flag.Selected) && this._editors) {
-                        var t = !0,
-                            i = !1;
+                        var t = true,
+                            i = false;
                         (this._iterateChildPathsEditors(
                             function (n) {
-                                (e = e || n.isDeletePartsAllowed()) || (n.hasAllPointsSelected() ? (i = !0) : (t = !1));
+                                (e = e || n.isDeletePartsAllowed()) || (n.hasAllPointsSelected() ? (i = true) : (t = false));
                             }.bind(this)
                         ),
-                            e || !i || t || (e = !0));
+                            e || !i || t || (e = true));
                     }
                     return e;
                 }),
@@ -194,19 +194,19 @@ module.exports = function (e, t, i) {
                             }
                             if (this._element.getPaths().getFirstChild() == this._element.getPaths().getLastChild()) {
                                 var a = t.getPaths().getFirstChild();
-                                u.getEditor(t.getScene()).exchangeElements(t, [a], !0);
+                                GEditor.getEditor(t.getScene()).exchangeElements(t, [a], true);
                             }
                         }
                     }
                 }),
                 (g.prototype.isAlignPartsAllowed = function () {
-                    var e = !1;
+                    var e = false;
                     return (
                         this.hasFlag(p.Flag.Selected) &&
                             this._editors &&
                             this._iterateChildPathsEditors(
                                 function (t) {
-                                    if (t.isAlignPartsAllowed()) return (e = !0);
+                                    if (t.isAlignPartsAllowed()) return (e = true);
                                 }.bind(this)
                             ),
                         e
@@ -228,7 +228,7 @@ module.exports = function (e, t, i) {
                         var t = e.element == this._element;
                         if (!t && e.element instanceof h)
                             for (var i = this._element.getPaths().getFirstChild(); null != i && !t; i = i.getNext())
-                                i == e.element && (t = !0);
+                                i == e.element && (t = true);
                         t && (e.type == A.GeometryChangeEvent.Type.After && this.releasePathPreview(), this.requestInvalidation());
                     }
                 }),
@@ -237,7 +237,7 @@ module.exports = function (e, t, i) {
                         (this.requestInvalidation(), (this._flags = this._flags | e));
                         for (var t = this._element.getPaths().getFirstChild(); null != t; t = t.getNext()) {
                             var i = s.openEditor(t);
-                            (i.setCatchHandle(!1),
+                            (i.setCatchHandle(false),
                                 (e & l.Flag.ResizeAll) != l.Flag.ResizeAll && i && !i.hasFlag(e) && i.setFlag(e),
                                 this.hasFlag(l.Flag.ResizeAll) && i && !i.hasFlag(p.Flag.Outline) && i.setFlag(p.Flag.Outline),
                                 i && i.hasFlag(l.Flag.ResizeAll) && i.removeFlag(l.Flag.ResizeAll));
@@ -280,12 +280,12 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (g.prototype.hasPathPartSelection = function () {
-                    var e = !1;
+                    var e = false;
                     return (
                         this._editors &&
                             this._iterateChildPathsEditors(
                                 function (t) {
-                                    if (t.getPartSelection()) return ((e = !0), !0);
+                                    if (t.getPartSelection()) return ((e = true), true);
                                 }.bind(this)
                             ),
                         e
@@ -293,13 +293,13 @@ module.exports = function (e, t, i) {
                 }),
                 (g.prototype._iterateChildPathsEditors = function (e) {
                     if (this._editors && this._element.getPaths().getFirstChild() && s.getEditor(this._element.getPaths().getFirstChild()))
-                        for (var t = !1, i = this._element.getPaths().getFirstChild(); null != i && !t; i = i.getNext()) {
+                        for (var t = false, i = this._element.getPaths().getFirstChild(); null != i && !t; i = i.getNext()) {
                             var n = s.getEditor(i);
-                            if (n) !0 === e(n) && (t = !0);
+                            if (n) true === e(n) && (t = true);
                         }
                 }),
                 (g.prototype.toString = function () {
                     return "[Object GCompoundPathEditor]";
                 }),
-                (e.exports = g));
+                (module.exports = g));
         };

@@ -1,28 +1,28 @@
-module.exports = function (e, t, i) {
-            var n = i(161),
-                r = i(416),
-                o = i(652),
-                a = i(28),
-                s = i(14),
-                l = i(148),
-                h = i(230),
-                A = i(17),
-                c = i(928),
-                p = i(369),
-                u = i(655),
-                d = i(6),
-                g = (i(5), i(215)),
-                f = i(266),
-                m = i(54),
-                y = i(7),
-                _ = i(59),
-                v = i(103),
-                b = i(111),
-                C = i(0),
-                w = i(118);
+module.exports = function (module, exports, require) {
+            var n = require(161),
+                r = require(416),
+                o = require(652),
+                GStylable = require(28),
+                s = require(14),
+                l = require(148),
+                h = require(230),
+                A = require(17),
+                c = require(928),
+                p = require(369),
+                u = require(655),
+                d = require(6),
+                g = (require(5), require(215)),
+                f = require(266),
+                m = require(54),
+                y = require(7),
+                _ = require(59),
+                DUMP_IMAGES = require(103),
+                b = require(111),
+                IsFiniteNonNegativeNumber = require(0),
+                w = require(118);
 
             function E() {}
-            (C.inheritAndMix(E, C, [w]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(E, IsFiniteNonNegativeNumber, [w]),
                 (E.AUTO = -1),
                 (E.textMeter = null),
                 (E.INITIALIZATION_ERROR = "GTLCore: not initialized"),
@@ -42,14 +42,14 @@ module.exports = function (e, t, i) {
                 (E.prototype._textTransformer = null),
                 (E.prototype._renderBounds = null),
                 (E.prototype._padding = null),
-                (E.prototype._wasEdited = !1),
-                (E.prototype._isInlineEdit = !1),
+                (E.prototype._wasEdited = false),
+                (E.prototype._isInlineEdit = false),
                 (E.prototype.initialize = function (e, t, i, n) {
                     E.textMeter || ((r.fontManager = i), (c.fontManager = i), (E.textMeter = r));
                     var a = i.getDefaultFont();
                     if (!a) throw new Error("GTLCore: Cannot instantiate - default font unavailable");
                     (this._initializeDefaults(a), (this._doc = new o()));
-                    var s = v.getRenderer(!0, void 0, void 0, !0);
+                    var s = DUMP_IMAGES.getRenderer(true, void 0, void 0, true);
                     if (
                         ((this._canvas = s.canvas),
                         (this._width = e || 1),
@@ -73,7 +73,7 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (E.prototype.destroy = function () {
-                    (v.destroy(this._canvas), v.destroy(this._fillCanvas), v.destroy(this._strokeCanvas));
+                    (DUMP_IMAGES.destroy(this._canvas), DUMP_IMAGES.destroy(this._fillCanvas), DUMP_IMAGES.destroy(this._strokeCanvas));
                 }),
                 (E.prototype._initializeDefaults = function (e) {
                     if (!l.defaultFormatting.fontFamily) {
@@ -82,8 +82,8 @@ module.exports = function (e, t, i) {
                         var i = parseInt(t["font-weight"]);
                         (Number.isNaN(i) ? (l.defaultFormatting.fontWeight = t["font-weight"]) : (l.defaultFormatting.fontWeight = i),
                             (l.defaultFormatting.fontStyle = t["font-style"]));
-                        var n = a.PropertySetInfo[a.PropertySet.Text].geometryProperties,
-                            r = a.PropertySetInfo[a.PropertySet.Paragraph].geometryProperties;
+                        var n = GStylable.PropertySetInfo[GStylable.PropertySet.Text].geometryProperties,
+                            r = GStylable.PropertySetInfo[GStylable.PropertySet.Paragraph].geometryProperties;
                         l.defaultFormatting.fontSize = n._tfi;
                         var o = n._fc && n._fc instanceof A ? n._fc.toScreenCSS() : "transparent";
                         switch (
@@ -93,16 +93,16 @@ module.exports = function (e, t, i) {
                             (l.defaultFormatting.lineSpacing = r._plh),
                             r._pal)
                         ) {
-                            case a.ParagraphAlignment.Left:
+                            case GStylable.ParagraphAlignment.Left:
                                 l.defaultFormatting.align = "left";
                                 break;
-                            case a.ParagraphAlignment.Center:
+                            case GStylable.ParagraphAlignment.Center:
                                 l.defaultFormatting.align = "center";
                                 break;
-                            case a.ParagraphAlignment.Right:
+                            case GStylable.ParagraphAlignment.Right:
                                 l.defaultFormatting.align = "right";
                                 break;
-                            case a.ParagraphAlignment.Justify:
+                            case GStylable.ParagraphAlignment.Justify:
                                 l.defaultFormatting.align = "justify";
                         }
                     }
@@ -131,7 +131,7 @@ module.exports = function (e, t, i) {
                                       }),
                                 (t = [t]));
                         } else t = e instanceof Array ? e : [e];
-                        return this._doc.load(t, !1);
+                        return this._doc.load(t, false);
                     }
                     this._setDeferred("text", e);
                 }),
@@ -375,7 +375,7 @@ module.exports = function (e, t, i) {
                                     var t = null;
                                     if (this._textTransformer) {
                                         var r = function (e) {
-                                            var n = e.bounds(!1, !0),
+                                            var n = e.bounds(false, true),
                                                 r = new d(n.l, n.t - this.getVShift(), n.w, n.h),
                                                 o = new d(0, 0, n.w, n.h),
                                                 a = this._renderBounds,
@@ -392,7 +392,7 @@ module.exports = function (e, t, i) {
                                         n(
                                             e,
                                             function (e) {
-                                                var t = e.bounds(!1, !0),
+                                                var t = e.bounds(false, true),
                                                     n = new d(t.l, t.t - this.getVShift(), t.w, t.h);
                                                 i.push({
                                                     box: n,
@@ -430,7 +430,7 @@ module.exports = function (e, t, i) {
                 }),
                 (E.prototype.redo = function () {
                     if (!this.isInitialized()) throw new Error(E.INITIALIZATION_ERROR);
-                    return this._doc.performUndo(!0);
+                    return this._doc.performUndo(true);
                 }),
                 (E.prototype.getRange = function (e, t) {
                     return this.isInitialized() ? this._doc.range(e, t) : null;
@@ -459,7 +459,7 @@ module.exports = function (e, t, i) {
                         this._doc.contentChanged(
                             function (t) {
                                 var n;
-                                return (this._changeLock || (n = e(i)), (this._wasEdited = !0), n);
+                                return (this._changeLock || (n = e(i)), (this._wasEdited = true), n);
                             }.bind(this)
                         ));
                 }),
@@ -533,10 +533,10 @@ module.exports = function (e, t, i) {
                     (this._ctx.renderMode(0), t || (t = 1), n & p.RENDERFLAG_SCALEBITMAP && (g *= t));
                     var _ = Math.ceil(g * f),
                         b = Math.ceil(g * m),
-                        C = !1,
+                        C = false,
                         w = this.getCanvas();
-                    (w.width !== _ && ((w.width = _ <= 0 ? 1 : _), v.isRenderPhase() || (this._canvas.width = w.width), (C = !0)),
-                        w.height !== b && ((w.height = b <= 0 ? 1 : b), v.isRenderPhase() || (this._canvas.height = w.height), (C = !0)),
+                    (w.width !== _ && ((w.width = _ <= 0 ? 1 : _), DUMP_IMAGES.isRenderPhase() || (this._canvas.width = w.width), (C = true)),
+                        w.height !== b && ((w.height = b <= 0 ? 1 : b), DUMP_IMAGES.isRenderPhase() || (this._canvas.height = w.height), (C = true)),
                         C || (this._ctx.setTranslate(0, 0), this._ctx.clearRect(0, 0, f, m)),
                         i.shapePaint
                             ? (n & p.RENDERFLAG_STROKE &&
@@ -553,9 +553,9 @@ module.exports = function (e, t, i) {
                             (this._ctx.miterLimit = "number" == typeof i.miterLimit ? i.miterLimit : 10),
                             n & p.RENDERFLAG_VERTEX && (n |= p.RENDERFLAG_NODRAW)),
                         i.evenodd && (n |= p.RENDERFLAG_EVENODDFILL),
-                        i.strokeAlign === a.BorderAlignment.Inside
+                        i.strokeAlign === GStylable.BorderAlignment.Inside
                             ? (n |= p.RENDERFLAG_INSIDEBRD)
-                            : i.strokeAlign === a.BorderAlignment.Outside && (n |= p.RENDERFLAG_OUTSIDEBRD),
+                            : i.strokeAlign === GStylable.BorderAlignment.Outside && (n |= p.RENDERFLAG_OUTSIDEBRD),
                         this._ctx.renderMode(n));
                     var B = 0;
                     (i.valign &&
@@ -582,7 +582,7 @@ module.exports = function (e, t, i) {
                             (this._ctx.setFillTransform(x),
                             n & p.RENDERFLAG_STROKE &&
                                 ((this._ctx.globalAlpha = P), (this._ctx.globalCompositeOperation = s.CompositeOperator.SourceOver))),
-                        e && n & p.RENDERFLAG_DRAWSELECTION && this._doc.drawSelection(this._ctx, e || !1));
+                        e && n & p.RENDERFLAG_DRAWSELECTION && this._doc.drawSelection(this._ctx, e || false));
                     var S = function (e, t) {
                         e.width * e.height != 0 &&
                             ((t.width = e.width),
@@ -592,20 +592,20 @@ module.exports = function (e, t, i) {
                     };
                     if (n & p.RENDERFLAG_FILL) {
                         if (!this._fillCanvas) {
-                            var T = v.getRenderer(!0, void 0, void 0, !0);
+                            var T = DUMP_IMAGES.getRenderer(true, void 0, void 0, true);
                             this._fillCanvas = T.canvas;
                         }
-                        (!v.isRenderPhase() &&
+                        (!DUMP_IMAGES.isRenderPhase() &&
                             w.width * w.height > 0 &&
                             ((this._fillCanvas.width = w.width), (this._fillCanvas.height = w.height)),
                             S(w, this.getCanvas(p.RENDERFLAG_FILL)));
                     }
                     n & p.RENDERFLAG_STROKE &&
                         (n & p.RENDERFLAG_FILL
-                            ? (v.destroy(this._strokeCanvas), (this._strokeCanvas = this._fillCanvas))
+                            ? (DUMP_IMAGES.destroy(this._strokeCanvas), (this._strokeCanvas = this._fillCanvas))
                             : ((this._strokeCanvas && this._fillCanvas !== this._strokeCanvas) ||
-                                  (this._strokeCanvas = v.getRenderer(!0, void 0, void 0, !0).canvas),
-                              !v.isRenderPhase() &&
+                                  (this._strokeCanvas = DUMP_IMAGES.getRenderer(true, void 0, void 0, true).canvas),
+                              !DUMP_IMAGES.isRenderPhase() &&
                                   w.width * w.height > 0 &&
                                   ((this._strokeCanvas.width = w.width), (this._strokeCanvas.height = w.height)),
                               S(w, this.getCanvas(p.RENDERFLAG_STROKE))));
@@ -667,18 +667,18 @@ module.exports = function (e, t, i) {
                     if (!this.isInitialized()) throw new Error(E.INITIALIZATION_ERROR);
                     var i;
                     return e & p.RENDERFLAG_STROKE
-                        ? v.isRenderPhase()
+                        ? DUMP_IMAGES.isRenderPhase()
                             ? this._strokeCanvas
                             : this._strokeCanvas instanceof b.RendererCanvas
                               ? ((i = this._strokeCanvas.$realCanvas) || (i = this._strokeCanvas.__realCanvas), i)
                               : this._strokeCanvas
                         : e & p.RENDERFLAG_FILL
-                          ? v.isRenderPhase()
+                          ? DUMP_IMAGES.isRenderPhase()
                               ? this._fillCanvas
                               : this._fillCanvas instanceof b.RendererCanvas
                                 ? ((i = this._fillCanvas.$realCanvas) || (i = this._fillCanvas.__realCanvas), i)
                                 : this._fillCanvas
-                          : v.isRenderPhase()
+                          : DUMP_IMAGES.isRenderPhase()
                             ? this._canvas
                             : this._canvas instanceof b.RendererCanvas
                               ? ((i = this._canvas.$realCanvas) || (i = this._canvas.__realCanvas), i)
@@ -709,5 +709,5 @@ module.exports = function (e, t, i) {
                 (E.prototype.cloneDocument = function () {
                     return this._doc.clone();
                 }),
-                (e.exports = E));
+                (module.exports = E));
         };

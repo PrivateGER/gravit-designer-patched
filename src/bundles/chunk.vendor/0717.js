@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(89),
-                r = i(115);
-            ((t.parse = function (e, t) {
+            var Parser = require(89),
+                r = require(115);
+            ((exports.parse = function (e, t) {
                 var i = {},
-                    r = new n.Parser(e, t);
+                    r = new Parser.Parser(e, t);
                 return (
                     (i.version = r.parseVersion()),
                     (i.numGlyphs = r.parseUShort()),
@@ -25,7 +25,7 @@ module.exports = function (e, t, i) {
                     i
                 );
             }),
-                (t.make = function (e) {
+                (exports.make = function (e) {
                     return new r.Table("maxp", [
                         {
                             name: "version",

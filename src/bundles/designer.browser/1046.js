@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o, i, a, r, s, l;
-        e.exports =
-            ((l = n(55)),
-            n(736),
+        module.exports =
+            ((l = require(55)),
+            require(736),
             (i = (o = l).lib.WordArray),
             (a = o.algo),
             (r = a.SHA256),

@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(4), i(32), i(38), i(33));
-            const n = i(171),
-                r = i(375),
-                o = i(170),
-                a = i(526);
-            e.exports = class {
+            (require(4), require(32), require(38), require(33));
+            const n = require(171),
+                r = require(375),
+                o = require(170),
+                GOfferDialogV1 = require(526);
+            module.exports = class {
                 constructor(e) {
-                    let { page: t, content: i = "", title: a, cmd: s = {}, closeable: l = !0 } = e;
+                    let { page: t, content: i = "", title: a, cmd: s = {}, closeable: l = true } = e;
                     const { openPurchaseFlow: h, close: A } = s;
                     ((a = a || o.getValue("GOfferDialogV1", "text.offerdialog-v1-default-title")),
                         (this._dialog = n("<div></div>").addClass("g-cloud-ui-offer-dialog-v1")),
@@ -51,7 +51,7 @@ module.exports = function (e, t, i) {
                         n("<div></div>").addClass("money-back").appendTo(d));
                 }
                 _getFooterInfo() {
-                    return a.footerInfo[this._prefix || a.FooterInfoType.Normal];
+                    return GOfferDialogV1.footerInfo[this._prefix || GOfferDialogV1.FooterInfoType.Normal];
                 }
                 getHTMLElement() {
                     return this._dialog;

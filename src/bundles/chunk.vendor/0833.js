@@ -1,20 +1,20 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            const n = i(170),
-                r = i(325);
-            e.exports = (e) => {
+            const n = require(170),
+                r = require(325);
+            module.exports = (e) => {
                 let { accessToken: t, apiKey: i, appId: o, language: a = 0 } = e;
                 n.setLanguage(a);
                 const s = new google.picker.DocsView()
-                        .setIncludeFolders(!0)
-                        .setSelectFolderEnabled(!0)
+                        .setIncludeFolders(true)
+                        .setSelectFolderEnabled(true)
                         .setParent("root")
                         .setLabel(n.get(new r("GGoogleDrive", "text.all-files-tab-title"))),
                     l = new google.picker.DocsView()
-                        .setIncludeFolders(!0)
-                        .setEnableDrives(!0)
-                        .setEnableTeamDrives(!0)
-                        .setSelectFolderEnabled(!0)
+                        .setIncludeFolders(true)
+                        .setEnableDrives(true)
+                        .setEnableTeamDrives(true)
+                        .setSelectFolderEnabled(true)
                         .setParent("root")
                         .setLabel(n.get(new r("GGoogleDrive", "text.team-drives-tab-title")));
                 return new google.picker.PickerBuilder()

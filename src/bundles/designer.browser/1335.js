@@ -1,23 +1,23 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        n(3);
-        var i = n(1),
-            a = n(15),
-            r = o(n(443)),
-            s = o(n(1330));
+        var o = require(16);
+        require(3);
+        var GObject = require(1),
+            GPlatform = require(15),
+            r = o(require(443)),
+            s = o(require(1330));
         const { isExecutingOnMSTeamsSync: l } = r.default;
-        var c = n(863),
-            d = n(449),
-            u = n(18),
-            p = n(31),
-            g = n(1588);
+        var c = require(863),
+            GFitAllAction = require(449),
+            GCategory = require(18),
+            p = require(31),
+            g = require(1588);
         function h() {
-            this._banner.setBannerText(i.GLocale.get(new i.GLocaleKey("GToggleFullscreenAction", "fullscreen-banner")));
+            this._banner.setBannerText(GObject.GLocale.get(new GObject.GLocaleKey("GToggleFullscreenAction", "fullscreen-banner")));
         }
-        (i.GObject.inherit(h, p),
+        (GObject.GObject.inherit(h, p),
             (h.ID = "view.fullscreen"),
-            (h.TITLE = new i.GLocaleKey("GToggleFullscreenAction", "title")),
+            (h.TITLE = new GObject.GLocaleKey("GToggleFullscreenAction", "title")),
             (h.prototype._lastStates = {}),
             (h.prototype._banner = new g()),
             (h.prototype.getId = function () {
@@ -27,10 +27,10 @@ module.exports = function (e, t, n) {
                 return h.TITLE;
             }),
             (h.prototype.getCategory = function () {
-                return u.CATEGORY_VIEW;
+                return GCategory.CATEGORY_VIEW;
             }),
             (h.prototype.getShortcut = function () {
-                return [a.GKey.Constant.ALT_LEFT, a.GKey.Constant.ENTER];
+                return [GPlatform.GKey.Constant.ALT_LEFT, GPlatform.GKey.Constant.ENTER];
             }),
             (h.prototype.isEnabled = function () {
                 return !!gDesigner.getActiveDocument() && this._isSupported();
@@ -62,7 +62,7 @@ module.exports = function (e, t, n) {
                     gDesigner.setPartVisible(c.RightSidebars, !!e && this._lastStates.rightSidebar),
                     gDesigner.setPartVisible(c.LeftSidebars, !!e && this._lastStates.leftSidebar),
                     gDesigner.relayout(),
-                    gDesigner.executeAction(d.ID, void 0, void 0, !0),
+                    gDesigner.executeAction(GFitAllAction.ID, void 0, void 0, true),
                     gDesigner.hasEventListeners(s.default) && gDesigner.trigger(new s.default(e)));
             }),
             (h.prototype._updateLastStates = function () {
@@ -77,5 +77,5 @@ module.exports = function (e, t, n) {
             (h.prototype.toString = function () {
                 return "[Object GToggleFullscreenAction]";
             }),
-            (e.exports = h));
+            (module.exports = h));
     };

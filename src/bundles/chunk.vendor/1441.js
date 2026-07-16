@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(11),
-                r = i(90),
+module.exports = function (module, exports, require) {
+            var n = require(11),
+                r = require(90),
                 o = function (e) {
                     this.references = e;
                 };
-            (i(0).inherit(o, r),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(o, r),
                 (o.prototype.write = function (e) {
                     ((this.offset = e.getPosition()),
                         e.writeln("xref"),
@@ -17,5 +17,5 @@ module.exports = function (e, t, i) {
                             (e.write(n), e.writeln(" 00000 n "));
                         }));
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

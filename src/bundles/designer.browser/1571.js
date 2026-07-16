@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(26));
-        var o = n(10);
+        (require(19), require(26));
+        var designerConfig = require(10);
         const {
                 ANNOTATION_EVENT: i,
                 SHARE_EVENT: a,
@@ -11,9 +11,9 @@ module.exports = function (e, t, n) {
                 LOCK_UPDATE_EVENT: c,
                 FILE_UPDATE_EVENT: d,
                 FILE_AUTO_SAVE_EVENT: u,
-            } = o.gApi.COLLABORATION_EVENTS,
-            p = n(393),
-            g = n(78);
+            } = designerConfig.gApi.COLLABORATION_EVENTS,
+            p = require(393),
+            g = require(78);
         function h() {
             ((this._documents = new Map()), gDesigner.addEventListener(g, this._documentEvent, this));
         }
@@ -33,12 +33,12 @@ module.exports = function (e, t, n) {
                 }
             }),
             (h.prototype.attachDocument = function (e) {
-                if (!o.ENABLE_COLLABORATION) return;
+                if (!designerConfig.ENABLE_COLLABORATION) return;
                 if (this._documents.has(e)) return;
-                const t = new o.gApi.WebSocketClient();
+                const t = new designerConfig.gApi.WebSocketClient();
                 (t.setToken(e.getToken()),
                     t.connect("/v2/realtime/" + e.getId()),
-                    o.ENABLE_COLLABORATION &&
+                    designerConfig.ENABLE_COLLABORATION &&
                         (t.on(i, (t) => {
                             this._trigger(e, p.Type.AnnotationsUpdate, t.data);
                         }),
@@ -52,17 +52,17 @@ module.exports = function (e, t, n) {
                             this._trigger(e, p.Type.LockRequest, t.data);
                         }),
                         t.on(c, (t) => {
-                            const n = t.data && t.data.lock ? new o.Lock(t.data.lock) : null;
+                            const n = t.data && t.data.lock ? new designerConfig.Lock(t.data.lock) : null;
                             this._trigger(e, p.Type.LockUpdated, n);
                         }),
                         t.on(d, (t) => {
                             this._trigger(e, p.Type.FileUpdate, t.data);
                         })),
-                    o.SHARE_ENGINE &&
+                    designerConfig.SHARE_ENGINE &&
                         t.on(a, (t) => {
                             this._trigger(e, p.Type.ShareUpdate, t.data);
                         }),
-                    o.AUTO_SAVE_ENABLED &&
+                    designerConfig.AUTO_SAVE_ENABLED &&
                         t.on(u, (t) => {
                             this._trigger(e, p.Type.FileAutoSave, t.data);
                         }),
@@ -76,5 +76,5 @@ module.exports = function (e, t, n) {
                 const o = new p(t, n);
                 e.hasEventListeners(o) && e.trigger(o);
             }),
-            (e.exports = h));
+            (module.exports = h));
     };

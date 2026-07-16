@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        const { PasswordlessAuthenticationActions: o, gApi: i } = n(10),
-            a = n(44),
-            r = n(604),
-            s = n(337),
-            { GLocale: l, GLocaleKey: c } = n(1);
-        e.exports = class {
+        require(8 /* Symbol */);
+        const { PasswordlessAuthenticationActions: o, gApi: i } = require(10 /* designerConfig */),
+            GSystemDialog = require(44),
+            GProfileDialog = require(604),
+            s = require(337),
+            { GLocale: l, GLocaleKey: c } = require(1 /* GObject */);
+        module.exports = class {
             async execute() {
                 let { [o.SetPassword]: e } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 try {
@@ -14,12 +14,12 @@ module.exports = function (e, t, n) {
                     const t = await gDesigner.getUser();
                     t &&
                         gDesigner.executeWhenReady(() => {
-                            new r(t, r.Tabs.ChangePassword, {
+                            new GProfileDialog(t, GProfileDialog.Tabs.ChangePassword, {
                                 token: e,
-                                tabs: [r.Tabs.ChangePassword],
-                                closeable: !1,
+                                tabs: [GProfileDialog.Tabs.ChangePassword],
+                                closeable: false,
                                 changePasswordOptions: {
-                                    autoClose: !0,
+                                    autoClose: true,
                                     title: l.get(new c("GChangePasswordPanel", "text.set-password")),
                                     info: l.get(new c("GChangePasswordPanel", "text.set-password-info")),
                                 },
@@ -27,7 +27,7 @@ module.exports = function (e, t, n) {
                         });
                 } catch (e) {
                     gDesigner.executeWhenReady(() => {
-                        a.error(e);
+                        GSystemDialog.error(e);
                     });
                 }
             }

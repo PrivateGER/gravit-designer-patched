@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(330),
-                o = i(36),
-                a = i(533),
-                s = i(172),
-                l = i(66);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(330),
+                o = require(36),
+                a = require(533),
+                s = require(172),
+                l = require(66);
 
             function h(e, t) {
                 (r.call(this, e),
@@ -13,13 +13,13 @@ module.exports = function (e, t, i) {
                         this._flags &
                         ~(l.Flag.RotateCorners | l.Flag.RotateHandle | l.Flag.ResizeAll | l.Flag.ResizeCenters | l.Flag.ResizeEdges)));
             }
-            (n.inheritAndMix(h, r, [s]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(h, r, [s]),
                 o.exports(h, a),
                 (h.prototype._showEditor = function (e) {
-                    return !1;
+                    return false;
                 }),
                 (h.prototype.toString = function () {
                     return "[Object GCollaborativeTextAnnotationEditor]";
                 }),
-                (e.exports = h));
+                (module.exports = h));
         };

@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            i(30);
-            e.exports = class {
+            require(30);
+            module.exports = class {
                 constructor(e) {
                     Object.assign(this, e);
                 }

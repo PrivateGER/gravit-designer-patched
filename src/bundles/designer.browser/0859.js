@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        const o = n(1244),
-            i = n(85),
-            { Runtime: a, msTeamsMode: r } = n(10),
-            { storeVendor: s } = n(803),
+        const o = require(1244),
+            i = require(85),
+            { Runtime: a, msTeamsMode: r } = require(10 /* designerConfig */),
+            { storeVendor: s } = require(803),
             l = "darwin",
             c = "win32",
             d = "linux";
@@ -28,5 +28,5 @@ module.exports = function (e, t, n) {
                 return e;
             }
         }
-        e.exports = u;
+        module.exports = u;
     };

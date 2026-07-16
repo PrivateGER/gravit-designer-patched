@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(35);
-        e.exports = function (e) {
+        var o = require(35);
+        module.exports = function (e) {
             return "object" == typeof e ? null !== e : o(e);
         };
     };

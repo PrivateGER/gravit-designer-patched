@@ -1,16 +1,16 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(4), n(13), n(32), n(33));
-        var o = n(1),
-            i = n(67),
-            a = n(608);
+        (require(4), require(13), require(32), require(33));
+        var GObject = require(1),
+            i = require(67),
+            GCreateSymbolAction = require(608);
         function r(e) {
             var t = $(this).data("gsymbolspanel"),
                 n = e.getMultireferenceId();
             if (t.symbolNodes[n])
                 e.isMaster() &&
-                    !e.hasEventListeners(o.GSymbol.AfterThumbnailUpdate) &&
-                    e.addEventListener(o.GSymbol.AfterThumbnailUpdate, l.bind(this));
+                    !e.hasEventListeners(GObject.GSymbol.AfterThumbnailUpdate) &&
+                    e.addEventListener(GObject.GSymbol.AfterThumbnailUpdate, l.bind(this));
             else {
                 var i = c.call(this, e);
                 i && (i.appendTo($(this)), (t.symbolNodes[n] = e));
@@ -24,9 +24,9 @@ module.exports = function (e, t, n) {
                 if (a.length) {
                     if (n.scene) {
                         var r = d.call(this, e);
-                        if (r && (r.removeEventListener(o.GSymbol.AfterThumbnailUpdate, l), !t)) {
+                        if (r && (r.removeEventListener(GObject.GSymbol.AfterThumbnailUpdate, l), !t)) {
                             var s = n.blockHandlers;
-                            ((n.blockHandlers = !0), n.scene.removeSymbol(r), (n.blockHandlers = s));
+                            ((n.blockHandlers = true), n.scene.removeSymbol(r), (n.blockHandlers = s));
                         }
                     }
                     (delete n.symbolNodes[i], a.remove(), 0 === Object.keys(n.symbolNodes).length && y.call(this));
@@ -47,8 +47,8 @@ module.exports = function (e, t, n) {
                     c = 85,
                     d = c * l;
                 (d > 85 && (c = (d = 85) / l), h(r, c, d));
-                var u = e.image.getBitmap().getHTMLElement(!0);
-                if (($(u).css({ width: c, height: d, margin: "5px" }), t.hasFlag(o.GNode.Flag.Selected)))
+                var u = e.image.getBitmap().getHTMLElement(true);
+                if (($(u).css({ width: c, height: d, margin: "5px" }), t.hasFlag(GObject.GNode.Flag.Selected)))
                     a.find(".symbol-title-group").addClass("g-highlighted");
                 $(u).appendTo(r);
             }
@@ -56,20 +56,20 @@ module.exports = function (e, t, n) {
         function c(e) {
             var t = $(this).data("gsymbolspanel");
             if (e.isMaster()) {
-                if (!(e instanceof o.GSymbol)) throw new Error("item not symbol");
+                if (!(e instanceof GObject.GSymbol)) throw new Error("item not symbol");
                 var n = $(this).find(".symbol-panel-info").parent();
                 n.length && n.remove();
                 var a = $("<div />")
-                        .attr("draggable", !1)
+                        .attr("draggable", false)
                         .attr("id", "symbol_" + e.getMultireferenceId())
                         .css({ display: "inline" })
                         .gRichTooltip(
                             i.GRichTooltipConfig.from({
                                 title: e.getProperty("name"),
-                                description: o.GLocale.get(
-                                    new o.GLocaleKey("GCommonNames", "text.symbol-panel-symbol-tooltip-description")
+                                description: GObject.GLocale.get(
+                                    new GObject.GLocaleKey("GCommonNames", "text.symbol-panel-symbol-tooltip-description")
                                 ),
-                                middle: !1,
+                                middle: false,
                                 learnMore: "/docs/organizing-your-designs/symbols/#symbols-panel",
                             })
                         ),
@@ -78,11 +78,11 @@ module.exports = function (e, t, n) {
                 var s = e.getProperty("name");
                 s = s || e.getNodeNameTranslated();
                 var c = $("<span></span>");
-                (e.addEventListener(o.GSymbol.AfterThumbnailUpdate, l.bind(this)), c.addClass("symbol-image").appendTo(r));
+                (e.addEventListener(GObject.GSymbol.AfterThumbnailUpdate, l.bind(this)), c.addClass("symbol-image").appendTo(r));
                 var u = this;
                 return (
                     r
-                        .attr("draggable", !0)
+                        .attr("draggable", true)
                         .css({
                             display: "inline-block",
                             backgroundColor: "#eee",
@@ -95,7 +95,7 @@ module.exports = function (e, t, n) {
                         .on("dragstart", function (n) {
                             ($(this).addClass("g-dragging"),
                                 (n.originalEvent.dataTransfer.effectAllowed = "move"),
-                                n.originalEvent.dataTransfer.setData(o.GNode.MIME_TYPE, o.GNode.serialize(e)),
+                                n.originalEvent.dataTransfer.setData(GObject.GNode.MIME_TYPE, GObject.GNode.serialize(e)),
                                 (t.dragNode = e),
                                 setTimeout(
                                     function () {
@@ -130,24 +130,24 @@ module.exports = function (e, t, n) {
         }
         function u(e) {
             var t = $(this).data("gsymbolspanel");
-            if (!t.blockHandlers && e.node instanceof o.GSymbol)
+            if (!t.blockHandlers && e.node instanceof GObject.GSymbol)
                 if (e.data.created) {
                     r.call(this, e.node);
                     var n = t.scene.getSymbolImage(e.node);
                     n ? l.call(this, { symbol: e.node, image: n }) : e.node.toBitmap();
-                } else s.call(this, e.node, !0);
+                } else s.call(this, e.node, true);
         }
         function p(e) {
-            !$(this).data("gsymbolspanel").blockHandlers && (e.node, o.GSymbol);
+            !$(this).data("gsymbolspanel").blockHandlers && (e.node, GObject.GSymbol);
         }
         function g(e) {
-            for (var t = $(this).data("gsymbolspanel"), n = e.node; n && !(n instanceof o.GSymbol && n.isMaster()); ) n = n.getParent();
+            for (var t = $(this).data("gsymbolspanel"), n = e.node; n && !(n instanceof GObject.GSymbol && n.isMaster()); ) n = n.getParent();
             if (!t.blockHandlers && n) {
                 var i = n.getMultireferenceId(),
                     a = $(this)
                         .find("#symbol_" + i)
                         .find(".symbol-title-group");
-                e.flag === o.GNode.Flag.Selected && (e.set ? a.addClass("g-highlighted") : a.removeClass("g-highlighted"));
+                e.flag === GObject.GNode.Flag.Selected && (e.set ? a.addClass("g-highlighted") : a.removeClass("g-highlighted"));
             }
         }
         function h(e, t, n) {
@@ -174,10 +174,10 @@ module.exports = function (e, t, n) {
                         .append(
                             $("<div></div>")
                                 .addClass("symbol-panel-infotitle")
-                                .text(o.GLocale.get(new o.GLocaleKey("GCreateSymbolAction", "common.nosymbolsdefined")))
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GCreateSymbolAction", "common.nosymbolsdefined")))
                         )
                         .append(
-                            $("<span></span>").text(o.GLocale.get(new o.GLocaleKey("GCreateSymbolAction", "common.nosymbolsdefined-info")))
+                            $("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GCreateSymbolAction", "common.nosymbolsdefined-info")))
                         )
                 )
                 .appendTo($(this));
@@ -209,9 +209,9 @@ module.exports = function (e, t, n) {
             },
             newSymbolClick: function () {
                 return (
-                    gDesigner.canExecuteAction(a.ID) &&
-                        (gDesigner.stats("symbol_click_createnewsymbol"), gDesigner.executeAction(a.ID, void 0, void 0, !0)),
-                    !1
+                    gDesigner.canExecuteAction(GCreateSymbolAction.ID) &&
+                        (gDesigner.stats("symbol_click_createnewsymbol"), gDesigner.executeAction(GCreateSymbolAction.ID, void 0, void 0, true)),
+                    false
                 );
             },
             isSelected: function () {
@@ -234,21 +234,21 @@ module.exports = function (e, t, n) {
                 if (
                     e !== n.scene &&
                     (n.scene &&
-                        n.scene.hasMixin(o.GEventTarget) &&
-                        (n.scene.removeEventListener(o.GNode.AfterSpecialChangeEvent, n.afterSpecialChangeHandler, this),
-                        n.scene.removeEventListener(o.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
-                        n.scene.removeEventListener(o.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this)),
+                        n.scene.hasMixin(GObject.GEventTarget) &&
+                        (n.scene.removeEventListener(GObject.GNode.AfterSpecialChangeEvent, n.afterSpecialChangeHandler, this),
+                        n.scene.removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
+                        n.scene.removeEventListener(GObject.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this)),
                     m.call(this),
                     (n.scene = e),
                     n.scene)
                 ) {
-                    n.scene.hasMixin(o.GEventTarget) &&
+                    n.scene.hasMixin(GObject.GEventTarget) &&
                         ((n.afterSpecialChangeHandler = u.bind(this)),
                         (n.afterPropertiesChangeHandler = p.bind(this)),
                         (n.afterFlagChangeHandler = g.bind(this)),
-                        n.scene.addEventListener(o.GNode.AfterSpecialChangeEvent, n.afterSpecialChangeHandler, this),
-                        n.scene.addEventListener(o.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
-                        n.scene.addEventListener(o.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this));
+                        n.scene.addEventListener(GObject.GNode.AfterSpecialChangeEvent, n.afterSpecialChangeHandler, this),
+                        n.scene.addEventListener(GObject.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
+                        n.scene.addEventListener(GObject.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this));
                     var i = n.scene.getSymbols();
                     i &&
                         i.forEach(

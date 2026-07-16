@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i() {}
             var n;
             ((i.OperatingSystem = {
@@ -11,7 +11,7 @@ module.exports = function (e, t) {
                     Tablet: 20,
                     Phone: 30,
                 }),
-                (i.littleEndian = !0),
+                (i.littleEndian = true),
                 (i.operatingSystem = null),
                 (i.hardware = null),
                 (i.language = null),
@@ -86,5 +86,5 @@ module.exports = function (e, t) {
                     var e = navigator.language || navigator.browserLanguage || navigator.systemLanguage || navigator.userLanguage || "";
                     return e ? e.toLowerCase() : null;
                 })()),
-                (e.exports = i));
+                (module.exports = i));
         };

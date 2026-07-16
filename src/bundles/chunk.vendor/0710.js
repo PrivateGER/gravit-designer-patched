@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(105),
-                r = i(89),
-                o = i(115);
+            var n = require(105),
+                Parser = require(89),
+                o = require(115);
 
             function a(e, t, i) {
                 e.segments.push({
@@ -12,31 +12,31 @@ module.exports = function (e, t, i) {
                     offset: 0,
                 });
             }
-            ((t.parse = function (e, t) {
+            ((exports.parse = function (e, t) {
                 var i,
                     o = {};
-                ((o.version = r.getUShort(e, t)),
+                ((o.version = Parser.getUShort(e, t)),
                     n.argument(0 === o.version, "cmap table version should be 0."),
-                    (o.numTables = r.getUShort(e, t + 2)));
+                    (o.numTables = Parser.getUShort(e, t + 2)));
                 var a = -1,
                     s = -1;
                 for (i = o.numTables - 1; i >= 0; i -= 1) {
-                    var l = r.getUShort(e, t + 4 + 8 * i),
-                        h = r.getUShort(e, t + 4 + 8 * i + 2);
+                    var l = Parser.getUShort(e, t + 4 + 8 * i),
+                        h = Parser.getUShort(e, t + 4 + 8 * i + 2);
                     if (
                         !((3 !== l && 1 !== l) || (0 !== h && 1 !== h && 10 !== h)) ||
                         (0 === l && (0 === h || 1 === h || 2 === h || 3 === h || 4 === h))
                     ) {
-                        a = r.getULong(e, t + 4 + 8 * i + 4);
+                        a = Parser.getULong(e, t + 4 + 8 * i + 4);
                         break;
                     }
-                    0 === l && (s = r.getULong(e, t + 4 + 8 * i + 4));
+                    0 === l && (s = Parser.getULong(e, t + 4 + 8 * i + 4));
                 }
                 if (-1 === a) {
                     if (-1 === s) return null;
                     a = s;
                 }
-                var A = new r.Parser(e, t + a);
+                var A = new Parser.Parser(e, t + a);
                 if (((o.format = A.parseUShort()), 12 === o.format))
                     !(function (e, t) {
                         var i, n;
@@ -61,10 +61,10 @@ module.exports = function (e, t, i) {
                             (e.segCount = s = t.parseUShort() >> 1),
                             t.skip("uShort", 3),
                             (e.glyphIndexMap = {}));
-                        var l = new r.Parser(i, n + o + 14),
-                            h = new r.Parser(i, n + o + 16 + 2 * s),
-                            A = new r.Parser(i, n + o + 16 + 4 * s),
-                            c = new r.Parser(i, n + o + 16 + 6 * s),
+                        var l = new Parser.Parser(i, n + o + 14),
+                            h = new Parser.Parser(i, n + o + 16 + 2 * s),
+                            A = new Parser.Parser(i, n + o + 16 + 4 * s),
+                            c = new Parser.Parser(i, n + o + 16 + 6 * s),
                             p = n + o + 16 + 8 * s;
                         for (a = 0; a < s - 1; a += 1)
                             for (
@@ -76,7 +76,7 @@ module.exports = function (e, t, i) {
                                     ? ((p = c.offset + c.relativeOffset - 2),
                                       (p += m),
                                       (p += 2 * (y - g)),
-                                      0 !== (u = r.getUShort(i, p)) && (u = (u + f) & 65535))
+                                      0 !== (u = Parser.getUShort(i, p)) && (u = (u + f) & 65535))
                                     : (u = (y + f) & 65535),
                                     (e.glyphIndexMap[y] = u));
                     })(o, A, e, t, a);
@@ -127,7 +127,7 @@ module.exports = function (e, t, i) {
                 }
                 return o;
             }),
-                (t.make = function (e) {
+                (exports.make = function (e) {
                     var t,
                         i,
                         n = new o.Table("cmap", [

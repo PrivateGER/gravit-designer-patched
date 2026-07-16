@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(557), n(26));
-        var o = n(16);
-        (n(8), n(271));
+        (require(19), require(557), require(26));
+        var o = require(16);
+        (require(8 /* Symbol */), require(271));
         var i = (function (e, t) {
                 if ("function" == typeof WeakMap)
                     var n = new WeakMap(),
@@ -25,11 +25,11 @@ module.exports = function (e, t, n) {
                                 : (r[t] = e[t]));
                     return r;
                 })(e, t);
-            })(n(10)),
-            a = o(n(389)),
-            r = n(1);
-        const s = n(78),
-            l = n(441),
+            })(require(10 /* designerConfig */)),
+            a = o(require(389 /* GDocument */)),
+            GObject = require(1);
+        const s = require(78),
+            l = require(441),
             {
                 PRODUCT_NAME: c,
                 PRODUCT_APP_NAME: d,
@@ -37,7 +37,7 @@ module.exports = function (e, t, n) {
                 PRODUCT_LANGUAGE: p,
                 PRODUCT_ENVIRONMENT: g,
             } = i.AmplitudeData.UserProperties;
-        e.exports = class {
+        module.exports = class {
             constructor(e) {
                 (gDesigner.addEventListener(s, this._handleDocumentEvent, this),
                     gDesigner.addEventListener(l, this._handleLicenseChangedEvent, this),
@@ -51,7 +51,7 @@ module.exports = function (e, t, n) {
                         [c]: i.default.DESIGNER.TITLE,
                         [d]: i.default.DESIGNER.TITLE,
                         [u]: gDesigner.getVersion(),
-                        [p]: r.GLocale.lookupLocale(r.GLocale.getLanguage()).toUpperCase(),
+                        [p]: GObject.GLocale.lookupLocale(GObject.GLocale.getLanguage()).toUpperCase(),
                         [g]: "production",
                     },
                     e

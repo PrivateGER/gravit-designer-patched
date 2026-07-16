@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(116);
-        e.exports =
+        var o = require(116);
+        module.exports =
             Array.isArray ||
             function (e) {
                 return "Array" === o(e);

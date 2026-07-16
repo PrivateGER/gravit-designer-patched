@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(4), n(13), n(32), n(33));
+        (require(4), require(13), require(32), require(33));
         var o = {
             init: function (e) {
                 return (
@@ -28,12 +28,12 @@ module.exports = function (e, t, n) {
                                     .append($("<span></span>").addClass("gravit-icon-down click-arrow"))
                                     .on("click", e.click);
                         } else t.addClass("no-label");
-                        e.hasOwnProperty("justified") && !0 === e.justified && t.addClass("justified");
+                        e.hasOwnProperty("justified") && true === e.justified && t.addClass("justified");
                         var i = $("<div></div>").addClass("columns").appendTo(t);
                         (e.hasOwnProperty("clickable") && e.clickable && i.addClass("clickable"),
                             e.hasOwnProperty("hoverable") && e.hoverable && i.addClass("hoverable"),
                             e.hasOwnProperty("height") && i.css("height", e.height));
-                        var a = !1;
+                        var a = false;
                         if (
                             (e.columns.forEach(function (t) {
                                 var n = "<div></div>";
@@ -56,8 +56,8 @@ module.exports = function (e, t, n) {
                                     : t.html
                                       ? $(t.html).appendTo(o)
                                       : o.html("&nbsp;"),
-                                    (!t.content || (t.hasOwnProperty("padding") && !1 === t.padding)) && o.addClass("no-padding"),
-                                    t.label && (a = !0),
+                                    (!t.content || (t.hasOwnProperty("padding") && false === t.padding)) && o.addClass("no-padding"),
+                                    t.label && (a = true),
                                     e.isMenu &&
                                         ($("<div/>")
                                             .addClass("gravit-icon-right")
@@ -84,7 +84,7 @@ module.exports = function (e, t, n) {
                                         : t.append(e.label)
                                     : t.html("&nbsp;"),
                                     "auto" === e.width ? t.addClass("auto-grow") : e.width && t.css("width", e.width),
-                                    (!e.content || (e.hasOwnProperty("padding") && !1 === e.padding)) && t.addClass("no-padding"),
+                                    (!e.content || (e.hasOwnProperty("padding") && false === e.padding)) && t.addClass("no-padding"),
                                     t.appendTo(r));
                             });
                         }

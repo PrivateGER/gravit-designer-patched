@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o = Array,
             i = Math.abs,
@@ -6,7 +6,7 @@ module.exports = function (e, t, n) {
             r = Math.floor,
             s = Math.log,
             l = Math.LN2;
-        e.exports = {
+        module.exports = {
             pack: function (e, t, n) {
                 var c,
                     d,

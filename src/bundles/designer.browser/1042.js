@@ -1,19 +1,19 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n.r(t),
-            n.d(t, "encode", function () {
+        (require.r(exports),
+            require.d(exports, "encode", function () {
                 return a;
             }),
-            n.d(t, "decode", function () {
+            require.d(exports, "decode", function () {
                 return r;
             }),
-            n.d(t, "trim", function () {
+            require.d(exports, "trim", function () {
                 return s;
             }),
-            n.d(t, "isBase64", function () {
+            require.d(exports, "isBase64", function () {
                 return l;
             }),
-            n.d(t, "isUrlSafeBase64", function () {
+            require.d(exports, "isUrlSafeBase64", function () {
                 return c;
             }));
         const o = { "+": "-", "/": "_" },

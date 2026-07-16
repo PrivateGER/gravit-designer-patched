@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(5),
-                r = i(338),
-                o = i(90),
-                a = i(0),
+module.exports = function (module, exports, require) {
+            var n = require(5),
+                r = require(338),
+                o = require(90),
+                IsFiniteNonNegativeNumber = require(0),
                 s = function (e) {
                     this._pageSize = e.getPageSize();
                 };
-            (a.inherit(s, o),
+            (IsFiniteNonNegativeNumber.inherit(s, o),
                 (s.prototype._pageSize = null),
                 (s.prototype._y = function (e) {
                     return this._pageSize.relativeY(e);
@@ -17,7 +17,7 @@ module.exports = function (e, t, i) {
                 (s.PointTo = function (e, t, i, r) {
                     (s.call(this, e), (this._point = new n(i, r)), (this._operator = t));
                 }),
-                a.inherit(s.PointTo, s),
+                IsFiniteNonNegativeNumber.inherit(s.PointTo, s),
                 (s.PointTo.prototype.getPoint = function () {
                     return this._point;
                 }),
@@ -33,15 +33,15 @@ module.exports = function (e, t, i) {
                 (s.MoveTo = function (e, t, i) {
                     s.PointTo.call(this, e, "m", t, i);
                 }),
-                a.inherit(s.MoveTo, s.PointTo),
+                IsFiniteNonNegativeNumber.inherit(s.MoveTo, s.PointTo),
                 (s.LineTo = function (e, t, i) {
                     s.PointTo.call(this, e, "l", t, i);
                 }),
-                a.inherit(s.LineTo, s.PointTo),
+                IsFiniteNonNegativeNumber.inherit(s.LineTo, s.PointTo),
                 (s.BezierCurveTo = function (e, t, i, r, o, a, l) {
                     (s.call(this, e), (this._point1 = new n(t, i)), (this._point2 = new n(r, o)), (this._point3 = new n(a, l)));
                 }),
-                a.inherit(s.BezierCurveTo, s),
+                IsFiniteNonNegativeNumber.inherit(s.BezierCurveTo, s),
                 (s.BezierCurveTo.prototype.getPoint1 = function () {
                     return this._point1;
                 }),
@@ -72,5 +72,5 @@ module.exports = function (e, t, i) {
                         e.writeSpace(),
                         e.write("c"));
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

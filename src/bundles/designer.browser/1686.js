@@ -1,25 +1,25 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(20), n(34));
-        var o = n(1);
-        const i = n(44),
-            { DESIGNER: { TITLE: a } = {} } = n(10);
-        e.exports = class {
+        (require(8 /* Symbol */), require(20), require(34));
+        var GObject = require(1);
+        const GSystemDialog = require(44),
+            { DESIGNER: { TITLE: a } = {} } = require(10 /* designerConfig */);
+        module.exports = class {
             async init() {
                 (await this._shouldOpenWarningDialog()) && gDesigner.executeWhenReady(() => this._openWarningDialog());
             }
             _openWarningDialog() {
-                i.custom({
+                GSystemDialog.custom({
                     icon: "info",
-                    closeable: !1,
+                    closeable: false,
                     className: "g-beta-warning-dialog",
-                    title: o.GLocale.get(new o.GLocaleKey("GBetaFlow", "text.title")).replace("%app", a),
-                    subtitle: o.GLocale.get(new o.GLocaleKey("GBetaFlow", "text.message")),
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GBetaFlow", "text.title")).replace("%app", a),
+                    subtitle: GObject.GLocale.get(new GObject.GLocaleKey("GBetaFlow", "text.message")),
                     buttons: [
                         {
-                            label: o.GLocale.get(new o.GLocaleKey("GBetaFlow", "text.i-understand")).toUpperCase(),
-                            closeOnClick: !0,
-                            highlighted: !0,
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GBetaFlow", "text.i-understand")).toUpperCase(),
+                            closeOnClick: true,
+                            highlighted: true,
                         },
                     ],
                     dontShowAgainCb: (e) => {
@@ -28,7 +28,7 @@ module.exports = function (e, t, n) {
                 });
             }
             async _shouldOpenWarningDialog() {
-                return !(await gContainer.getProperty("designer.betaflow.dismiss-warning-dialog", !1));
+                return !(await gContainer.getProperty("designer.betaflow.dismiss-warning-dialog", false));
             }
         };
     };

@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        e.exports = class {
+        module.exports = class {
             constructor(e) {
                 this._event = e;
             }
@@ -25,7 +25,7 @@ module.exports = function (e, t, n) {
             iterateChangedTouches(e) {
                 const t = this._event.changedTouches,
                     n = t.length;
-                for (let o = 0; o < n && !1 !== e(t[o]); o++);
+                for (let o = 0; o < n && false !== e(t[o]); o++);
             }
             isTrusted() {
                 return this._event.isTrusted;

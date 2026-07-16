@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o, i, a;
-        ((i = [n(171), n(605)]),
+        ((i = [require(171), require(605)]),
             void 0 ===
                 (a =
                     "function" ==
@@ -111,11 +111,11 @@ module.exports = function (e, t, n) {
                                                       var n,
                                                           o = e.data(this, i);
                                                       return "instance" === a
-                                                          ? ((l = o), !1)
+                                                          ? ((l = o), false)
                                                           : o
                                                             ? e.isFunction(o[a]) && "_" !== a.charAt(0)
                                                                 ? (n = o[a].apply(o, s)) !== o && void 0 !== n
-                                                                    ? ((l = n && n.jquery ? l.pushStack(n.get()) : n), !1)
+                                                                    ? ((l = n && n.jquery ? l.pushStack(n.get()) : n), false)
                                                                     : void 0
                                                                 : e.error("no such method '" + a + "' for " + t + " widget instance")
                                                             : e.error(
@@ -142,7 +142,7 @@ module.exports = function (e, t, n) {
                                 widgetName: "widget",
                                 widgetEventPrefix: "",
                                 defaultElement: "<div>",
-                                options: { classes: {}, disabled: !1, create: null },
+                                options: { classes: {}, disabled: false, create: null },
                                 _createWidget: function (t, o) {
                                     ((o = e(o || this.defaultElement || this)[0]),
                                         (this.element = e(o)),
@@ -154,7 +154,7 @@ module.exports = function (e, t, n) {
                                         (this.classesElementLookup = {}),
                                         o !== this &&
                                             (e.data(o, this.widgetFullName, this),
-                                            this._on(!0, this.element, {
+                                            this._on(true, this.element, {
                                                 remove: function (e) {
                                                     e.target === o && this.destroy();
                                                 },
@@ -232,7 +232,7 @@ module.exports = function (e, t, n) {
                                                         element: o,
                                                         keys: n,
                                                         classes: t,
-                                                        add: !0,
+                                                        add: true,
                                                     })
                                                 )));
                                 },
@@ -243,10 +243,10 @@ module.exports = function (e, t, n) {
                                             this._removeClass(this.focusable, null, "ui-state-focus")));
                                 },
                                 enable: function () {
-                                    return this._setOptions({ disabled: !1 });
+                                    return this._setOptions({ disabled: false });
                                 },
                                 disable: function () {
-                                    return this._setOptions({ disabled: !0 });
+                                    return this._setOptions({ disabled: true });
                                 },
                                 _classes: function (t) {
                                     var n = [],
@@ -269,7 +269,7 @@ module.exports = function (e, t, n) {
                                             t
                                         )),
                                         this._on(t.element, { remove: "_untrackClassesElement" }),
-                                        t.keys && i(t.keys.match(/\S+/g) || [], !0),
+                                        t.keys && i(t.keys.match(/\S+/g) || [], true),
                                         t.extra && i(t.extra.match(/\S+/g) || []),
                                         n.join(" ")
                                     );
@@ -281,10 +281,10 @@ module.exports = function (e, t, n) {
                                     });
                                 },
                                 _removeClass: function (e, t, n) {
-                                    return this._toggleClass(e, t, n, !1);
+                                    return this._toggleClass(e, t, n, false);
                                 },
                                 _addClass: function (e, t, n) {
-                                    return this._toggleClass(e, t, n, !0);
+                                    return this._toggleClass(e, t, n, true);
                                 },
                                 _toggleClass: function (e, t, n, o) {
                                     o = "boolean" == typeof o ? o : n;
@@ -300,13 +300,13 @@ module.exports = function (e, t, n) {
                                 _on: function (t, n, o) {
                                     var i,
                                         a = this;
-                                    ("boolean" != typeof t && ((o = n), (n = t), (t = !1)),
+                                    ("boolean" != typeof t && ((o = n), (n = t), (t = false)),
                                         o
                                             ? ((n = i = e(n)), (this.bindings = this.bindings.add(n)))
                                             : ((o = n), (n = this.element), (i = this.widget())),
                                         e.each(o, function (o, r) {
                                             function s() {
-                                                if (t || (!0 !== a.options.disabled && !e(this).hasClass("ui-state-disabled")))
+                                                if (t || (true !== a.options.disabled && !e(this).hasClass("ui-state-disabled")))
                                                     return ("string" == typeof r ? a[r] : r).apply(a, arguments);
                                             }
                                             "string" != typeof r && (s.guid = r.guid = r.guid || s.guid || e.guid++);
@@ -366,7 +366,7 @@ module.exports = function (e, t, n) {
                                         for (i in a) i in n || (n[i] = a[i]);
                                     return (
                                         this.element.trigger(n, o),
-                                        !((e.isFunction(r) && !1 === r.apply(this.element[0], [n].concat(o))) || n.isDefaultPrevented())
+                                        !((e.isFunction(r) && false === r.apply(this.element[0], [n].concat(o))) || n.isDefaultPrevented())
                                     );
                                 },
                             }),
@@ -374,7 +374,7 @@ module.exports = function (e, t, n) {
                                 e.Widget.prototype["_" + t] = function (o, i, a) {
                                     var r;
                                     "string" == typeof i && (i = { effect: i });
-                                    var s = i ? (!0 === i || "number" == typeof i ? n : i.effect || n) : t;
+                                    var s = i ? (true === i || "number" == typeof i ? n : i.effect || n) : t;
                                     ("number" == typeof (i = i || {}) && (i = { duration: i }),
                                         (r = !e.isEmptyObject(i)),
                                         (i.complete = a),
@@ -391,6 +391,6 @@ module.exports = function (e, t, n) {
                             e.widget
                         );
                     })
-                        ? o.apply(t, i)
-                        : o) || (e.exports = a));
+                        ? o.apply(exports, i)
+                        : o) || (module.exports = a));
     };

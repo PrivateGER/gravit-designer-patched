@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         (function (t) {
             !(function (n) {
-                e.exports = (function (e) {
+                module.exports = (function (e) {
                     "use strict";
                     function n(e, t) {
                         return (
@@ -25,7 +25,7 @@ module.exports = function (e, t, n) {
                         if (
                             ((this.buffer = e = a.wrapBuffer(e)),
                             (this._isArrayBuffer = d.ArrayBuffer && n(e, ArrayBuffer)),
-                            (this._isPixelData = !1),
+                            (this._isPixelData = false),
                             (this._isDataView = d.DataView && this._isArrayBuffer),
                             (this._isNodeBuffer = d.NodeBuffer && n(e, t)),
                             !this._isNodeBuffer && !this._isArrayBuffer && !n(e, Array))
@@ -64,7 +64,7 @@ module.exports = function (e, t, n) {
                             NodeBuffer: "Buffer" in e,
                             DataView: "DataView" in e,
                             ArrayBuffer: "ArrayBuffer" in e,
-                            PixelData: !1,
+                            PixelData: false,
                         },
                         u = e.TextEncoder,
                         p = e.TextDecoder;
@@ -73,7 +73,7 @@ module.exports = function (e, t, n) {
                             try {
                                 e.writeFloatLE(1 / 0, 0);
                             } catch (e) {
-                                d.NodeBuffer = !1;
+                                d.NodeBuffer = false;
                             }
                         })(new t(4));
                     var g = {
@@ -107,7 +107,7 @@ module.exports = function (e, t, n) {
                                             : d.ArrayBuffer
                                               ? n(e, ArrayBuffer) ||
                                                 n((e = new Uint8Array(e).buffer), ArrayBuffer) ||
-                                                (e = new Uint8Array(o(e, !0)).buffer)
+                                                (e = new Uint8Array(o(e, true)).buffer)
                                               : (e = o(e))),
                                     e
                                 );
@@ -149,7 +149,7 @@ module.exports = function (e, t, n) {
                         }));
                     var h = (a.prototype = {
                             compatibility: d,
-                            jDataView: !0,
+                            jDataView: true,
                             _checkBounds: function (e, t, n) {
                                 if ("number" != typeof e) throw new TypeError("Offset is not a number.");
                                 if ("number" != typeof t) throw new TypeError("Size is not a number.");
@@ -172,7 +172,7 @@ module.exports = function (e, t, n) {
                                         (this._offset = o + l),
                                         n ? s[0] : (s[0] = r)
                                     );
-                                var d = new Uint8Array(n ? this.getBytes(l, o, a, !0) : l);
+                                var d = new Uint8Array(n ? this.getBytes(l, o, a, true) : l);
                                 return ((s = new c(d.buffer, 0, 1)), n ? s[0] : ((s[0] = r), void this._setBytes(o, d, a)));
                             },
                             _arrayAction: function (e, t, n, o, i) {
@@ -191,7 +191,7 @@ module.exports = function (e, t, n) {
                                 return n || 1 >= e ? a : o(a).reverse();
                             },
                             getBytes: function (e, t, n, a) {
-                                var r = this._getBytes(e, t, i(n, !0));
+                                var r = this._getBytes(e, t, i(n, true));
                                 return a ? o(r) : r;
                             },
                             _setBytes: function (e, n, a) {
@@ -201,7 +201,7 @@ module.exports = function (e, t, n) {
                                         ((a = i(a, this._littleEndian)),
                                         (e = i(e, this._offset)),
                                         this._checkBounds(e, r),
-                                        !a && r > 1 && (n = o(n, !0).reverse()),
+                                        !a && r > 1 && (n = o(n, true).reverse()),
                                         (e += this.byteOffset),
                                         this._isArrayBuffer)
                                     )
@@ -212,7 +212,7 @@ module.exports = function (e, t, n) {
                                 }
                             },
                             setBytes: function (e, t, n) {
-                                this._setBytes(e, t, i(n, !0));
+                                this._setBytes(e, t, i(n, true));
                             },
                             getString: function (e, t, n) {
                                 if (this._isNodeBuffer)
@@ -223,7 +223,7 @@ module.exports = function (e, t, n) {
                                         (this._offset = t + e),
                                         this.buffer.toString(n || "binary", this.byteOffset + t, this.byteOffset + this._offset)
                                     );
-                                var o = this._getBytes(e, t, !0);
+                                var o = this._getBytes(e, t, true);
                                 if (((n = "utf8" === n ? "utf-8" : n || "binary"), p && "binary" !== n))
                                     return new p(n).decode(this._isArrayBuffer ? o : new Uint8Array(o));
                                 var a = "";
@@ -243,7 +243,7 @@ module.exports = function (e, t, n) {
                                     u && "binary" !== n
                                         ? (o = new u(n).encode(t))
                                         : ("utf-8" === n && (t = unescape(encodeURIComponent(t))), (o = r(t))),
-                                    this._setBytes(e, o, !0));
+                                    this._setBytes(e, o, true));
                             },
                             getChar: function (e) {
                                 return this.getString(1, e);
@@ -268,7 +268,7 @@ module.exports = function (e, t, n) {
                                     (e = o(e, this.byteLength)),
                                     (t = o(i(t, this.byteLength), this.byteLength)),
                                     n
-                                        ? new a(this.getBytes(t - e, e, !0, !0), void 0, void 0, this._littleEndian)
+                                        ? new a(this.getBytes(t - e, e, true, true), void 0, void 0, this._littleEndian)
                                         : new a(this.buffer, this.byteOffset + e, t - e, this._littleEndian)
                                 );
                             },
@@ -344,7 +344,7 @@ module.exports = function (e, t, n) {
                                     o = n + e,
                                     a = n >>> 3,
                                     r = (o + 7) >>> 3,
-                                    s = this._getBytes(r - a, a, !0),
+                                    s = this._getBytes(r - a, a, true),
                                     l = 0;
                                 (this._bitOffset = 7 & o) && (this._bitOffset -= 8);
                                 for (var c = 0, d = s.length; d > c; c++) l = (l << 8) | s[c];
@@ -411,7 +411,7 @@ module.exports = function (e, t, n) {
                                     a = o.bytes;
                                 ((i &= ~(~(-1 << n) << -this._bitOffset)), (i |= (32 > n ? t & ~(-1 << n) : t) << -this._bitOffset));
                                 for (var r = a.length - 1; r >= 0; r--) ((a[r] = 255 & i), (i >>>= 8));
-                                this._setBytes(o.start, a, !0);
+                                this._setBytes(o.start, a, true);
                             },
                         }),
                         f = {
@@ -432,10 +432,10 @@ module.exports = function (e, t, n) {
                     g))
                         !(function (e) {
                             ((h["get" + e] = function (t, n) {
-                                return this._action(e, !0, t, n);
+                                return this._action(e, true, t, n);
                             }),
                                 (h["set" + e] = function (t, n, o) {
-                                    this._action(e, !1, t, o, n);
+                                    this._action(e, false, t, o, n);
                                 }));
                         })(m);
                     for (var y in ((h._setInt32 = h._setUint32),
@@ -452,5 +452,5 @@ module.exports = function (e, t, n) {
                     return a;
                 })(this);
             })();
-        }).call(this, n(221).Buffer);
+        }).call(this, require(221 /* Buffer */).Buffer);
     };

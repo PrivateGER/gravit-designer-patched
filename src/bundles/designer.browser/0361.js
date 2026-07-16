@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(454),
+        var o = require(454),
             i = TypeError;
-        e.exports = function (e) {
+        module.exports = function (e) {
             if (o(e)) throw new i("The method doesn't accept regular expressions");
             return e;
         };

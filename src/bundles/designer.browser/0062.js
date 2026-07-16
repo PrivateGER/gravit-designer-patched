@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(131),
+        var o = require(131),
             i = String;
-        e.exports = function (e) {
+        module.exports = function (e) {
             if ("Symbol" === o(e)) throw new TypeError("Cannot convert a Symbol value to a string");
             return i(e);
         };

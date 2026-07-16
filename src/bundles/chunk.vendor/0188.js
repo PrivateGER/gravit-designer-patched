@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(68),
-                r = i(11);
+module.exports = function (module, exports, require) {
+            var n = require(68),
+                r = require(11);
 
             function o(e) {
                 n.call(this, e || [1, 1, 1, 1]);
             }
-            (i(50).inherit("Y", o, n),
+            (require(50).inherit("Y", o, n),
                 (o.equals = function (e, t) {
                     return e instanceof o && t instanceof o && r.equals(e._value, t._value);
                 }),
@@ -31,5 +31,5 @@ module.exports = function (e, t, i) {
                 (o.prototype.toString = function () {
                     return "[Object GCMYKColor]";
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

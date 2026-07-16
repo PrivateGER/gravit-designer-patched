@@ -1,17 +1,17 @@
-module.exports = function (e, t, i) {
-            var n = i(48),
-                r = i(161),
-                o = i(50),
-                a = i(14),
-                s = i(369),
-                l = i(54),
-                h = i(63),
-                A = i(59),
-                c = i(195),
-                p = i(7),
-                u = i(103),
-                d = i(111),
-                g = i(266);
+module.exports = function (module, exports, require) {
+            var n = require(48),
+                r = require(161),
+                o = require(50),
+                a = require(14),
+                s = require(369),
+                l = require(54),
+                h = require(63),
+                A = require(59),
+                c = require(195),
+                p = require(7),
+                DUMP_IMAGES = require(103),
+                d = require(111),
+                g = require(266);
 
             function f(e, t) {
                 (t instanceof d.RendererCanvas
@@ -33,7 +33,7 @@ module.exports = function (e, t, i) {
                 (f.prototype.$canvasContext = null),
                 (f.prototype._vstack = null),
                 (f.prototype._sstack = null),
-                (f.prototype._vertexRendering = !1),
+                (f.prototype._vertexRendering = false),
                 (f.prototype._renderMode = s.RENDERFLAG_FILL),
                 (f.prototype._textFillStyle = null),
                 (f.prototype._textStrokeStyle = null),
@@ -41,19 +41,19 @@ module.exports = function (e, t, i) {
                 (f.prototype._strokeTransform = null),
                 (f.prototype._transform = null),
                 (f.prototype.charSpacing = 0),
-                (f.prototype._textUnderline = !1),
-                (f.prototype._textStrikeout = !1),
+                (f.prototype._textUnderline = false),
+                (f.prototype._textStrikeout = false),
                 (f.prototype._textTransformer = null),
-                (f.prototype._textLigatures = !0),
+                (f.prototype._textLigatures = true),
                 (f.prototype._textVariant = null),
                 (f.prototype._langScript = null),
-                (f.prototype._textFractions = !1),
+                (f.prototype._textFractions = false),
                 (f.prototype._textStylisticSet = null),
                 (f.prototype._textLocalizedForm = null),
                 Object.defineProperties(f.prototype, {
                     _canvasContext: {
                         get: function () {
-                            return u.isRenderPhase()
+                            return DUMP_IMAGES.isRenderPhase()
                                 ? this.$canvasContext
                                 : this.$canvasContext instanceof d
                                   ? this.$canvasContext.$realCtx
@@ -333,12 +333,12 @@ module.exports = function (e, t, i) {
                             (e = new h(e, new p(1, 0, 0, 1, t, i))),
                             this._textTransformer)
                         ) {
-                            var r = A.calculateBounds(e, !0);
+                            var r = A.calculateBounds(e, true);
                             e = this._textTransformer.transform(e, t, i, r);
                         }
                         if (
                             (this._renderMode & f.FLAGS_DRAWING
-                                ? this._putVertices(e, !0)
+                                ? this._putVertices(e, true)
                                 : this._renderMode & s.RENDERFLAG_RENDERSTYLES
                                   ? (n || (n = new l()), n.appendVertices(e))
                                   : this._vstack.appendVertices(e),
@@ -389,7 +389,7 @@ module.exports = function (e, t, i) {
                         !(this._renderMode & s.RENDERFLAG_NODRAW) && this._renderMode & f.FLAGS_DRAWING && this._canvasContext.beginPath();
                         var d = {
                             letterSpacing: this.charSpacing,
-                            kerning: !0,
+                            kerning: true,
                             direction: "ltr",
                             features: {
                                 stylisticSet: this.textStylisticSet,
@@ -412,7 +412,7 @@ module.exports = function (e, t, i) {
                                     var E = this._textTransformer.get(g.TYPE);
                                     A = !(!E || E.getDirection() !== g.RTL);
                                 }
-                                var B = C.bounds || h.getGlyphBoundingRect(u, C.glyph, !0);
+                                var B = C.bounds || h.getGlyphBoundingRect(u, C.glyph, true);
                                 ((y.next = _[b + 1].x - C.x),
                                     (y.prev = b > 0 ? C.x - _[b - 1].x : C.x - t),
                                     (y.unicode = C.glyph.unicode),
@@ -654,5 +654,5 @@ module.exports = function (e, t, i) {
                 (f.prototype.clearRect = function (e, t, i, n) {
                     this._canvasContext.clearRect(e, t, i, n);
                 }),
-                (e.exports = f));
+                (module.exports = f));
         };

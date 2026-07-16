@@ -1,22 +1,22 @@
-module.exports = function (e, t, i) {
-            var n = i(82),
-                r = i(0),
-                o = i(108),
-                a = i(52),
-                s = i(77),
-                l = i(5),
-                h = i(24),
-                A = i(6),
-                c = i(167),
-                p = i(7),
-                u = i(164),
-                d = i(64),
-                g = i(11),
-                f = i(215),
-                m = i(266),
-                y = i(195),
-                _ = i(9),
-                v = i(47);
+module.exports = function (module, exports, require) {
+            var GEditor = require(82),
+                IsFiniteNonNegativeNumber = require(0),
+                GFont = require(108),
+                a = require(52),
+                s = require(77),
+                l = require(5),
+                h = require(24),
+                A = require(6),
+                c = require(167),
+                p = require(7),
+                u = require(164),
+                d = require(64),
+                g = require(11),
+                f = require(215),
+                m = require(266),
+                y = require(195),
+                _ = require(9 /* String */),
+                v = require(47);
 
             function b(e) {
                 ((this._toggles = {
@@ -27,12 +27,12 @@ module.exports = function (e, t, i) {
                 }),
                     (this._editor = e));
             }
-            (r.inherit(b, r),
-                (b.HANDLECOPYPASTE = !1),
+            (IsFiniteNonNegativeNumber.inherit(b, IsFiniteNonNegativeNumber),
+                (b.HANDLECOPYPASTE = false),
                 (b.prototype._editor = null),
                 (b.prototype._view = null),
-                (b.prototype._textUnderMouse = !1),
-                (b.prototype._activated = !1),
+                (b.prototype._textUnderMouse = false),
+                (b.prototype._activated = false),
                 (b.prototype._keyboardSelect = 0),
                 (b.prototype._keyboardX = null),
                 (b.prototype._nextKeyboardX = null),
@@ -44,9 +44,9 @@ module.exports = function (e, t, i) {
                 (b.prototype._caretInterval = 0),
                 (b.prototype._lastSelect = void 0),
                 (b.prototype._lastTimeStamp = -1),
-                (b.prototype._lastResult = !1),
+                (b.prototype._lastResult = false),
                 (b.prototype._keyDownHandled = null),
-                (b.prototype._compositionOn = !1),
+                (b.prototype._compositionOn = false),
                 (b.prototype._lastCompositedTextLength = 0),
                 (b.prototype._compositionSelectionDelta = 0),
                 (b.IS_NON_PRINTABLE_REG = /^[\u0000-\u001f\u0080-\u009f\u2029]*$/),
@@ -55,10 +55,10 @@ module.exports = function (e, t, i) {
                 }),
                 (b.prototype.activate = function (e) {
                     var t = this._editor.getElement().getTLCore();
-                    (t && t.setInlineEdit(!0),
-                        (this._activated = !0),
+                    (t && t.setInlineEdit(true),
+                        (this._activated = true),
                         (this._view = e),
-                        (this._textUnderMouse = !0),
+                        (this._textUnderMouse = true),
                         this.showCaretAndSelection(),
                         this._view.setCursor(a.Text),
                         e.addEventListener(s.Move, this._mouseMove, this),
@@ -72,10 +72,10 @@ module.exports = function (e, t, i) {
                 }),
                 (b.prototype.deactivate = function () {
                     var e = this._editor.getElement().getTLCore();
-                    (e && e.setInlineEdit(!1),
+                    (e && e.setInlineEdit(false),
                         this.hideCaretAndSelection(),
                         this._view.setCursor(null),
-                        (this._activated = !1),
+                        (this._activated = false),
                         this._view.isCapturingInput()
                             ? this._view.endCaptureInput()
                             : this._view.removeEventListener(c.Press, this._keyPress, this),
@@ -149,10 +149,10 @@ module.exports = function (e, t, i) {
                         if (t) {
                             var i = t.wordContainingOrdinal(e),
                                 n = i && i.word;
-                            if (n && n.isStartOfList()) return !1;
+                            if (n && n.isStartOfList()) return false;
                         }
                     }
-                    return !0;
+                    return true;
                 }),
                 (b.prototype._exhausted = function (e, t) {
                     var i = this._editor.getElement().getTLCore();
@@ -221,13 +221,13 @@ module.exports = function (e, t, i) {
                 }),
                 (b.prototype._handleKey = function (e, t, i) {
                     var r;
-                    if ((t && !this._compositionOn && (this._shiftKeyDown = !0), this._compositionOn))
-                        switch (((t = !1), e)) {
+                    if ((t && !this._compositionOn && (this._shiftKeyDown = true), this._compositionOn))
+                        switch (((t = false), e)) {
                             case u.Constant.LEFT:
                             case u.Constant.HOME:
                             case u.Constant.RIGHT:
                             case u.Constant.END:
-                                ((i = !1), (r = this._lastCompositedTextLength - this._compositionSelectionDelta));
+                                ((i = false), (r = this._lastCompositedTextLength - this._compositionSelectionDelta));
                                 break;
                             default:
                                 if (i && ("Z" === e || "Y" === e)) break;
@@ -235,14 +235,14 @@ module.exports = function (e, t, i) {
                         }
                     var a = this._editor.getElement().getScene();
                     if (a) {
-                        var s = n.getEditor(a),
+                        var s = GEditor.getEditor(a),
                             l = this._editor.getElement().getTLCore();
                         if (l) {
                             e = this._getTransformedKey(e, l);
                             var h = l.getSelection().start,
                                 A = l.getSelection().end,
                                 c = l.getLength() - 1,
-                                p = !1;
+                                p = false;
                             if (((this._nextKeyboardX = null), t)) {
                                 if (!this._keyboardSelect)
                                     switch (e) {
@@ -260,7 +260,7 @@ module.exports = function (e, t, i) {
                                     }
                             } else this._keyboardSelect = 0;
                             var d = 1 === this._keyboardSelect ? A : h,
-                                g = !1;
+                                g = false;
                             switch ((this._editor.contentSetEnabled(0), e)) {
                                 case u.Constant.LEFT:
                                     if (this._compositionOn)
@@ -271,7 +271,7 @@ module.exports = function (e, t, i) {
                                                 d > 0 &&
                                                 "'" === l.getRange(d - 1, d).plainText() &&
                                                 (d--, this._compositionSelectionDelta++),
-                                            this._isSelectable(d) && (g = !0));
+                                            this._isSelectable(d) && (g = true));
                                     else {
                                         if (t || h == A) {
                                             if (d > 0)
@@ -284,7 +284,7 @@ module.exports = function (e, t, i) {
                                                             : f.ordinal;
                                                 else d--;
                                         } else d = h;
-                                        this._isSelectable(d) && (g = !0);
+                                        this._isSelectable(d) && (g = true);
                                     }
                                     break;
                                 case u.Constant.RIGHT:
@@ -292,7 +292,7 @@ module.exports = function (e, t, i) {
                                         r < this._lastCompositedTextLength &&
                                             ("'" === l.getRange(d, d + 1).plainText() && (d++, this._compositionSelectionDelta--),
                                             this._compositionSelectionDelta > 0 && (d++, this._compositionSelectionDelta--),
-                                            (g = !0));
+                                            (g = true));
                                     else {
                                         var f;
                                         if (t || h == A) {
@@ -300,31 +300,31 @@ module.exports = function (e, t, i) {
                                                 if (i) d = (f = l.wordContainingOrdinal(d)).ordinal + f.word.length;
                                                 else d++;
                                         } else d = A;
-                                        g = !0;
+                                        g = true;
                                     }
                                     break;
                                 case u.Constant.DOWN:
-                                    ((d = this._changeLine(d, 1)), (g = !0));
+                                    ((d = this._changeLine(d, 1)), (g = true));
                                     break;
                                 case u.Constant.UP:
-                                    ((d = this._changeLine(d, -1)), (g = !0));
+                                    ((d = this._changeLine(d, -1)), (g = true));
                                     break;
                                 case u.Constant.HOME:
                                     this._compositionOn
-                                        ? r > 0 && ((d -= r), (this._compositionSelectionDelta = this._lastCompositedTextLength), (g = !0))
-                                        : ((d = this._endOfline(d, -1)), (g = !0));
+                                        ? r > 0 && ((d -= r), (this._compositionSelectionDelta = this._lastCompositedTextLength), (g = true))
+                                        : ((d = this._endOfline(d, -1)), (g = true));
                                     break;
                                 case u.Constant.END:
                                     this._compositionOn
                                         ? r < this._lastCompositedTextLength &&
-                                          ((d += this._lastCompositedTextLength - r), (this._compositionSelectionDelta = 0), (g = !0))
-                                        : ((d = this._endOfline(d, 1)), (g = !0));
+                                          ((d += this._lastCompositedTextLength - r), (this._compositionSelectionDelta = 0), (g = true))
+                                        : ((d = this._endOfline(d, 1)), (g = true));
                                     break;
                                 case u.Constant.PAGE_UP:
-                                    ((d = 0), (g = !0));
+                                    ((d = 0), (g = true));
                                     break;
                                 case u.Constant.PAGE_DOWN:
-                                    ((d = c), (g = !0));
+                                    ((d = c), (g = true));
                                     break;
                                 case u.Constant.BACKSPACE:
                                     (h > 0 && h === A
@@ -333,7 +333,7 @@ module.exports = function (e, t, i) {
                                           l.select(this._focusChar, this._focusChar))
                                         : h !== A &&
                                           (l.getRange(h, A).clear(), (this._focusChar = h), l.select(this._focusChar, this._focusChar)),
-                                        (p = !0));
+                                        (p = true));
                                     break;
                                 case u.Constant.DELETE:
                                     (h < c &&
@@ -342,7 +342,7 @@ module.exports = function (e, t, i) {
                                             : (l.getRange(h, A).clear(),
                                               (this._focusChar = h),
                                               l.select(this._focusChar, this._focusChar))),
-                                        (p = !0));
+                                        (p = true));
                                     break;
                                 case u.Constant.SPACE:
                                     ("lorem" === l.getDocumentRange().plainText().toLowerCase()
@@ -356,26 +356,26 @@ module.exports = function (e, t, i) {
                                           ),
                                           this._editor.invalidateTextWidth())
                                         : l.insert(" "),
-                                        (p = !0));
+                                        (p = true));
                                     break;
                                 case u.Constant.ENTER:
                                     ((m = l.selectedRange()) &&
                                         m.isList() &&
                                         !this._shiftKeyDown &&
-                                        (m.canInsertListItem() ? (l.insert(m.createListItem()), (p = !0)) : (p = m.unlistify(!0))),
+                                        (m.canInsertListItem() ? (l.insert(m.createListItem()), (p = true)) : (p = m.unlistify(true))),
                                         p || l.insert(this._shiftKeyDown ? y.LS : "\n"),
-                                        (p = !0));
+                                        (p = true));
                                     break;
                                 case u.Constant.TAB:
                                     var m;
                                     ((m = l.selectedRange()) &&
                                         m.canChangeListDepth() &&
                                         (p = this._shiftKeyDown ? m.decreaseList() : m.increaseList()),
-                                        p || (l.insert("   "), (p = !0)));
+                                        p || (l.insert("   "), (p = true)));
                                     break;
                                 case "Z":
                                     i &&
-                                        ((p = !0),
+                                        ((p = true),
                                         !this._compositionOn &&
                                             s.hasUndoState() &&
                                             (s.undoState(),
@@ -383,17 +383,17 @@ module.exports = function (e, t, i) {
                                             this._view && this._view.resetInputBoxContent()));
                                     break;
                                 case "Y":
-                                    i && ((p = !0), !this._compositionOn && s.hasRedoState() && s.redoState());
+                                    i && ((p = true), !this._compositionOn && s.hasRedoState() && s.redoState());
                                     break;
                                 case "A":
-                                    i && ((p = !0), l.select(0, c));
+                                    i && ((p = true), l.select(0, c));
                                     break;
                                 case "C":
                                     b.HANDLECOPYPASTE &&
                                         i &&
                                         ((this._richClipboard = l.selectedRange().save()),
                                         (this._plainClipboard = l.selectedRange().plainText()),
-                                        (p = !0));
+                                        (p = true));
                                     break;
                                 case "X":
                                     b.HANDLECOPYPASTE &&
@@ -403,10 +403,10 @@ module.exports = function (e, t, i) {
                                         l.getRange(h, A).clear(),
                                         (this._focusChar = h),
                                         l.select(this._focusChar, this._focusChar),
-                                        (p = !0));
+                                        (p = true));
                                     break;
                                 case "V":
-                                    b.HANDLECOPYPASTE && i && (l.insert(this._richClipboard), this._editor.invalidateTextWidth(), (p = !0));
+                                    b.HANDLECOPYPASTE && i && (l.insert(this._richClipboard), this._editor.invalidateTextWidth(), (p = true));
                             }
                             this._editor.contentSetEnabled(1);
                             var C = this._toggles[e];
@@ -421,7 +421,7 @@ module.exports = function (e, t, i) {
                                     I = S.queryFontFamily(T);
                                 ("fontWeight" === C
                                     ? ((w = this._editor.getProperty("_tfs")),
-                                      ((B = E = parseInt(P) == o.Weight.Bold ? o.Weight.Regular : o.Weight.Bold) === o.Weight.Normal ||
+                                      ((B = E = parseInt(P) == GFont.Weight.Bold ? GFont.Weight.Regular : GFont.Weight.Bold) === GFont.Weight.Normal ||
                                           void 0 === I ||
                                           I.filter(function (e) {
                                               return e.style === w && e.weight === E;
@@ -431,7 +431,7 @@ module.exports = function (e, t, i) {
                                           s.commitTransaction(_.get(new v("GInlineTextEditor", "action.modify-text-properties")))))
                                     : "fontStyle" === C
                                       ? ((E = this._editor.getProperty("_tfw")),
-                                        ((B = w = "italic" == P ? o.Style.Normal : o.Style.Italic) === o.Style.Normal ||
+                                        ((B = w = "italic" == P ? GFont.Style.Normal : GFont.Style.Italic) === GFont.Style.Normal ||
                                             void 0 === I ||
                                             I.filter(function (e) {
                                                 return e.style === w && e.weight === E;
@@ -440,9 +440,9 @@ module.exports = function (e, t, i) {
                                             this._editor.setProperties(["_tfs"], [B]),
                                             s.commitTransaction(_.get(new v("GInlineTextEditor", "action.modify-text-properties")))))
                                       : (this._editor.contentSetEnabled(0),
-                                        x.setFormatting(C, !0 !== P),
+                                        x.setFormatting(C, true !== P),
                                         this._editor.contentSetEnabled(1)),
-                                    (p = !0),
+                                    (p = true),
                                     this._editor.triggerHotkeyEvent([u.Constant.CONTROL, e]));
                             }
                             if (g) {
@@ -462,7 +462,7 @@ module.exports = function (e, t, i) {
                                     var F = A;
                                     ((A = h), (h = F));
                                 }
-                                ((this._focusChar = d), l.select(h, A), (p = !0));
+                                ((this._focusChar = d), l.select(h, A), (p = true));
                             }
                             return ((this._keyboardX = this._nextKeyboardX), p);
                         }
@@ -491,7 +491,7 @@ module.exports = function (e, t, i) {
                                 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 186, 187, 188, 189, 190, 191, 192, 219, 220, 221, 222, 224, 251,
                                 252, 253, 254,
                             ],
-                            l = !1;
+                            l = false;
                         if (n) {
                             var h = n.split("+");
                             h && h.length > 1 && (r = String.fromCharCode(parseInt(h[1], 16)));
@@ -502,7 +502,7 @@ module.exports = function (e, t, i) {
                                     1 === e.length &&
                                     ((r = e), (o = e.toLowerCase().charCodeAt(0)), (n = null))),
                             n && r && r.length
-                                ? (l = !0)
+                                ? (l = true)
                                 : !i &&
                                   r &&
                                   (t
@@ -519,15 +519,15 @@ module.exports = function (e, t, i) {
                 }),
                 (b.prototype._compStart = function (e) {
                     (this._compositionOn && this._view && this._view.resetInputBoxContent(),
-                        (this._compositionOn = !0),
+                        (this._compositionOn = true),
                         (this._lastCompositedTextLength = 0),
                         (this._compositionSelectionDelta = 0));
                 }),
                 (b.prototype._compEnd = function (e) {
-                    (this._view && this._view.resetInputBoxContent(), (this._compositionOn = !1));
+                    (this._view && this._view.resetInputBoxContent(), (this._compositionOn = false));
                 }),
                 (b.prototype._boxInput = function (e) {
-                    "input" === e.type && this._keyPress(e, !0);
+                    "input" === e.type && this._keyPress(e, true);
                 }),
                 (b.prototype._keyPress = function (e, t) {
                     var i = t ? e.target.value : e.keyUTF,
@@ -557,16 +557,16 @@ module.exports = function (e, t, i) {
                                 return (
                                     this._updateTextArea(e),
                                     this._editor.contentSetEnabled(1),
-                                    (this._lastResult = !0),
+                                    (this._lastResult = true),
                                     e.preventDefault(),
                                     e.stopPropagation(),
-                                    !1
+                                    false
                                 );
                             }
                         } else console.log("inlineTextEditor: didn't have focus");
                 }),
                 (b.prototype._keyUp = function (e) {
-                    ((this._keyDownHandled = null), (this._shiftKeyDown = !1), this._updateTextArea(e));
+                    ((this._keyDownHandled = null), (this._shiftKeyDown = false), this._updateTextArea(e));
                 }),
                 (b.prototype._keyDown = function (e) {
                     var t = e.key,
@@ -576,30 +576,30 @@ module.exports = function (e, t, i) {
                     return this._checkTimeStamp(r)
                         ? !this._lastResult && void 0
                         : ((this._lastTimeStamp = r),
-                          (this._lastResult = !1),
+                          (this._lastResult = false),
                           this.hasFocus()
                               ? (this._editor.requestInvalidation(),
                                 this._handleKey(t, i, n)
-                                    ? ((this._lastResult = !0), (this._keyDownHandled = t), e.preventDefault(), e.stopPropagation(), !1)
+                                    ? ((this._lastResult = true), (this._keyDownHandled = t), e.preventDefault(), e.stopPropagation(), false)
                                     : this._canHandleInput(t, i, n)
-                                      ? ((this._lastResult = !0), !1)
+                                      ? ((this._lastResult = true), false)
                                       : void 0)
-                              : (console.log("inlineTextEditor: didn't have focus"), void (this._lastResult = !1)));
+                              : (console.log("inlineTextEditor: didn't have focus"), void (this._lastResult = false)));
                 }),
                 (b.prototype.handleDomKeyDown = function (e) {
-                    if (!e) return !1;
-                    if ("keydown" !== e.type) return !1;
+                    if (!e) return false;
+                    if ("keydown" !== e.type) return false;
                     var t = e.timeStamp || -new Date().getTime(),
                         i = u.translateCode(e.code) || u.translateKey(e.which || e.keyCode, e.location);
                     if (this._checkTimeStamp(t))
                         return (this._keyDownHandled == i && (e.preventDefault(), e.stopPropagation()), this._lastResult);
-                    ((this._lastTimeStamp = t), (this._lastResult = !1), this._editor.requestInvalidation());
+                    ((this._lastTimeStamp = t), (this._lastResult = false), this._editor.requestInvalidation());
                     var n = e.shiftKey,
                         r = e.ctrlKey && !e.altKey;
                     e.keyIdentifier;
                     return this._handleKey(i, n, r)
-                        ? (e.preventDefault(), e.stopPropagation(), (this._lastResult = !0), (this._keyDownHandled = i), !0)
-                        : !!this._canHandleInput(i, n, r) && ((this._lastResult = !0), !0);
+                        ? (e.preventDefault(), e.stopPropagation(), (this._lastResult = true), (this._keyDownHandled = i), true)
+                        : !!this._canHandleInput(i, n, r) && ((this._lastResult = true), true);
                 }),
                 (b.prototype._convertToObjectSpace = function (e) {
                     var t = this._editor.getElement().getTransform(),
@@ -669,7 +669,7 @@ module.exports = function (e, t, i) {
                     if (t && !t.isEmpty()) {
                         t = this._view.getWorldTransform(this._view.getScene().getActivePage()).mapRect(t);
                         var i = h.pickDistance;
-                        t.expanded(i, i, i, i).containsPoint(e.client) ? (this._textUnderMouse = !0) : (this._textUnderMouse = !1);
+                        t.expanded(i, i, i, i).containsPoint(e.client) ? (this._textUnderMouse = true) : (this._textUnderMouse = false);
                     }
                     if ((this._textUnderMouse && this._view.setCursor(a.Text), null !== this._selectDragStart)) {
                         var n = this._editor.getElement().getTLCore();
@@ -686,9 +686,9 @@ module.exports = function (e, t, i) {
                 }),
                 (b.prototype.isSelectionHit = function (e) {
                     var t = this._editor.getElement().getTLCore();
-                    if (!t) return !1;
+                    if (!t) return false;
                     var i = t.getSelection();
-                    if (i.start === i.end) return !1;
+                    if (i.start === i.end) return false;
                     var n = this._convertToObjectSpace(e),
                         r = t.byCoordinate(n.getX(), n.getY() - this._editor._getVerticalOffset());
                     return !!(i && r.ordinal >= i.start && r.ordinal <= i.end);
@@ -696,5 +696,5 @@ module.exports = function (e, t, i) {
                 (b.prototype.toString = function () {
                     return "[Object GInlineTextEditor]";
                 }),
-                (e.exports = b));
+                (module.exports = b));
         };

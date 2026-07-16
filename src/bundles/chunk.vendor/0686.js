@@ -1,18 +1,18 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
 
             function n() {}
             var r;
-            (i(19),
-                i(180),
-                i(181),
-                i(20),
-                i(151),
-                i(692),
-                i(189),
-                i(190),
-                i(191),
-                i(192),
+            (require(19),
+                require(180),
+                require(181),
+                require(20),
+                require(151),
+                require(692),
+                require(189),
+                require(190),
+                require(191),
+                require(192),
                 (n.OperatingSystem = {
                     Unix: 0,
                     Windows: 1,
@@ -23,7 +23,7 @@ module.exports = function (e, t, i) {
                     Tablet: 20,
                     Phone: 30,
                 }),
-                (n.littleEndian = !0),
+                (n.littleEndian = true),
                 (n.operatingSystem = null),
                 (n.hardware = null),
                 (n.language = null),
@@ -98,5 +98,5 @@ module.exports = function (e, t, i) {
                     var e = navigator.language || navigator.browserLanguage || navigator.systemLanguage || navigator.userLanguage || "";
                     return e ? e.toLowerCase() : null;
                 })()),
-                (e.exports = n));
+                (module.exports = n));
         };

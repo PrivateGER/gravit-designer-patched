@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(21),
-            i = n(35),
+        var o = require(21),
+            i = require(35),
             a = /#|\.prototype\./,
             r = function (e, t) {
                 var n = l[s(e)];
@@ -13,5 +13,5 @@ module.exports = function (e, t, n) {
             l = (r.data = {}),
             c = (r.NATIVE = "N"),
             d = (r.POLYFILL = "P");
-        e.exports = r;
+        module.exports = r;
     };

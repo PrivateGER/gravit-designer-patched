@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(11),
-                o = i(118);
-            e.exports = function (e) {
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(11),
+                o = require(118);
+            module.exports = function (e) {
                 ((e.FillPaintLayer = function (t, i, n, r) {
                     e.PaintLayer.call(this, t, i, n, r);
                 }),
@@ -36,7 +36,7 @@ module.exports = function (e, t, i) {
                         return "color" === this.$_bl;
                     }),
                     (e.FillPaintLayer.equals = function (e, t) {
-                        var i = !0;
+                        var i = true;
                         return (
                             ["_bl", "_op", "_pt", "_px"].forEach(
                                 function (n) {

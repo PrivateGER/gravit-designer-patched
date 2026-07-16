@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(77),
-                r = i(24),
-                o = i(327);
+module.exports = function (module, exports, require) {
+            var n = require(77),
+                r = require(24),
+                o = require(327);
 
             function a() {}
             ((a.prototype._view = null),
@@ -19,15 +19,15 @@ module.exports = function (e, t, i) {
                             function (e) {
                                 return e.hasMixin(o);
                             },
-                            !1,
+                            false,
                             -1,
                             r.pickDistance,
-                            !1,
+                            false,
                             null,
-                            !1,
-                            !1,
+                            false,
+                            false,
                             this._view.getViewConfiguration().multiPageView,
-                            !1
+                            false
                         );
                     i &&
                         i[0] &&
@@ -36,5 +36,5 @@ module.exports = function (e, t, i) {
                         i[0].data.action &&
                         i[0].data.action.execute(i[0].element, this._view.getEditor(), this._view);
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

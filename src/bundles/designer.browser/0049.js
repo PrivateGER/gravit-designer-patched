@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(21);
-        e.exports = !o(function () {
+        var o = require(21);
+        module.exports = !o(function () {
             return (
                 7 !==
                 Object.defineProperty({}, 1, {

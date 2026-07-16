@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(4), n(13));
-        var o = n(1);
+        (require(8 /* Symbol */), require(4), require(13));
+        var GObject = require(1);
         function i(e, t, n, o, i, a, r, s, l, c) {
             ((this._container = e),
                 (this._renderer = t),
@@ -18,13 +18,13 @@ module.exports = function (e, t, n) {
             this.id = e;
         }),
             (i.GSimpleTreeNodeNamed.prototype.id = -1),
-            (i.GSimpleTreeNodeNamed.prototype.virtualNode = !1),
+            (i.GSimpleTreeNodeNamed.prototype.virtualNode = false),
             (i.GSimpleTreeNodeNamed.prototype._depth = void 0),
             (i.GSimpleTreeNodeNamed.prototype.isVisible = function () {
-                return !0;
+                return true;
             }),
-            (i.EXPAND_ID = o.GUtil.uuid()),
-            (i.COLLAPSE_ID = o.GUtil.uuid()),
+            (i.EXPAND_ID = GObject.GUtil.uuid()),
+            (i.COLLAPSE_ID = GObject.GUtil.uuid()),
             (i.prototype._container = null),
             (i.prototype._renderer = null),
             (i.prototype._nodeStyle = null),
@@ -42,10 +42,10 @@ module.exports = function (e, t, n) {
                 this.requestInvalidation();
             }),
             (i.prototype._checkTreeSanity = function () {
-                return !0;
+                return true;
             }),
             (i.prototype._isInvalidationBlocked = function () {
-                return !0;
+                return true;
             }),
             (i.prototype._beforeInvalidationStart = async function (e) {}),
             (i.prototype._afterInvalidationEnd = function (e) {}),
@@ -159,5 +159,5 @@ module.exports = function (e, t, n) {
                 return null !== this._invalidation;
             }),
             (i.prototype.refresh = function () {}),
-            (e.exports = i));
+            (module.exports = i));
     };

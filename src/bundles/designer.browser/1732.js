@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        var o = n(1),
-            i = n(10),
-            a = n(357),
-            r = n(604),
-            s = (n(1158), null),
+        require(8 /* Symbol */);
+        var GObject = require(1),
+            designerConfig = require(10),
+            a = require(357),
+            GProfileDialog = require(604),
+            s = (require(1158), null),
             l = null;
         var c = {
             init: function () {
@@ -24,16 +24,16 @@ module.exports = function (e, t, n) {
                         .append(e)
                         .gOverlay({
                             clazz: "g-user-login-dialog" + (a.USERLOGIN.OVERLAY_CLASS ? " " + a.USERLOGIN.OVERLAY_CLASS : ""),
-                            padding: !1,
-                            releaseOnClose: !0,
+                            padding: false,
+                            releaseOnClose: true,
                             closeCallback: function () {
                                 l.remove();
                             },
                         })
                         .gOverlay("open", this)),
                         gDesigner.getUser().then(async (e) => {
-                            let t = !i.PROFILE_DIALOG_URL;
-                            (i.PROFILE_DIALOG_URL && (t = await i.gApi.hasPurchases().catch(() => !1)),
+                            let t = !designerConfig.PROFILE_DIALOG_URL;
+                            (designerConfig.PROFILE_DIALOG_URL && (t = await designerConfig.gApi.hasPurchases().catch(() => false)),
                                 s.removeClass("loading"),
                                 s.append(
                                     (function (e, t) {
@@ -50,20 +50,20 @@ module.exports = function (e, t, n) {
                                                         .addClass("top-section")
                                                         .append([
                                                             $("<button/>")
-                                                                .html(o.GLocale.get(new o.GLocaleKey("GCommonNames", "action.settings")))
+                                                                .html(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.settings")))
                                                                 .addClass("highlight")
                                                                 .css("display", a ? "" : "none")
                                                                 .on("click", async (o) => {
                                                                     (gDesigner.stats("profile_click_open-button"),
-                                                                        i.ALWAYS_SHOW_ACCOUNT_SETTING_DIALOG || t
-                                                                            ? new r(e).open()
-                                                                            : i.PROFILE_DIALOG_URL
-                                                                              ? gContainer.openExternalLink(o, i.PROFILE_DIALOG_URL)
-                                                                              : gContainer.openExternalLink(o, i.gApi.url + "/profile"),
+                                                                        designerConfig.ALWAYS_SHOW_ACCOUNT_SETTING_DIALOG || t
+                                                                            ? new GProfileDialog(e).open()
+                                                                            : designerConfig.PROFILE_DIALOG_URL
+                                                                              ? gContainer.openExternalLink(o, designerConfig.PROFILE_DIALOG_URL)
+                                                                              : gContainer.openExternalLink(o, designerConfig.gApi.url + "/profile"),
                                                                         n());
                                                                 }),
                                                             $("<button/>")
-                                                                .html(o.GLocale.get(new o.GLocaleKey("GCommonNames", "action.sign-out")))
+                                                                .html(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.sign-out")))
                                                                 .addClass("signout")
                                                                 .on("click", function () {
                                                                     (gDesigner.stats("profile_click_signout-button"),

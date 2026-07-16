@@ -1,16 +1,16 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(127),
-                o = i(36),
-                a = i(319),
-                s = i(172),
-                l = i(69),
-                h = i(153);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(127),
+                o = require(36),
+                a = require(319),
+                s = require(172),
+                l = require(69),
+                h = require(153);
 
             function A(e, t) {
                 (r.call(this, e), (this._uid = t));
             }
-            (n.inheritAndMix(A, r, [s]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(A, r, [s]),
                 o.exports(A, a),
                 (A.prototype._showEditor = function (e) {
                     return (!e || e.configuration.isElementAnnotationsVisible(this._element)) && r.prototype._showEditor.call(this, e);
@@ -19,10 +19,10 @@ module.exports = function (e, t, i) {
                     (r.prototype.initialSetup.call(this, e), this._annotationSetup());
                 }),
                 (A.prototype.canHandleDblClick = function () {
-                    return !0;
+                    return true;
                 }),
                 (A.prototype.handleDblClick = function () {
-                    return !0;
+                    return true;
                 }),
                 (A.prototype.isRemovalBlocked = function () {
                     return 0 != (this._element.getProperty("plkt") & l.ProgramLck.NoDelete) || r.prototype.isRemovalBlocked.call(this);
@@ -33,5 +33,5 @@ module.exports = function (e, t, i) {
                 (A.prototype.toString = function () {
                     return "[Object GArrowAnnotationEditor]";
                 }),
-                (e.exports = A));
+                (module.exports = A));
         };

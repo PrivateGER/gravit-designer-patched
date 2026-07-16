@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(184),
-            i = n(360),
-            a = n(203),
-            r = n(80),
-            s = n(88).f,
-            l = n(418),
-            c = n(252),
-            d = n(74),
-            u = n(49),
+        var o = require(184),
+            i = require(360),
+            a = require(203),
+            r = require(80),
+            s = require(88).f,
+            l = require(418),
+            c = require(252),
+            d = require(74),
+            u = require(49),
             p = r.set,
             g = r.getterFor("Array Iterator");
-        e.exports = l(
+        module.exports = l(
             Array,
             "Array",
             function (e, t) {
@@ -21,14 +21,14 @@ module.exports = function (e, t, n) {
                 var e = g(this),
                     t = e.target,
                     n = e.index++;
-                if (!t || n >= t.length) return ((e.target = null), c(void 0, !0));
+                if (!t || n >= t.length) return ((e.target = null), c(void 0, true));
                 switch (e.kind) {
                     case "keys":
-                        return c(n, !1);
+                        return c(n, false);
                     case "values":
-                        return c(t[n], !1);
+                        return c(t[n], false);
                 }
-                return c([n, t[n]], !1);
+                return c([n, t[n]], false);
             },
             "values"
         );

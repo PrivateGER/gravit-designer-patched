@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(29),
-            i = n(65),
-            a = n(37),
-            r = n(185),
-            s = n(204),
+        var o = require(29),
+            i = require(65),
+            a = require(37),
+            r = require(185),
+            s = require(204),
             l = TypeError;
-        e.exports = function (e, t) {
+        module.exports = function (e, t) {
             var n = arguments.length < 2 ? s(e) : t;
             if (i(n)) return a(o(n, e));
             throw new l(r(e) + " is not iterable");

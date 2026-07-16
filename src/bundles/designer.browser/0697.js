@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(131);
-        e.exports = function (e) {
+        var o = require(131);
+        module.exports = function (e) {
             var t = o(e);
             return "BigInt64Array" === t || "BigUint64Array" === t;
         };

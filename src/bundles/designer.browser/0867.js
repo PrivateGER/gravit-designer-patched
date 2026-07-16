@@ -1,30 +1,30 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(328), n(3));
-        var o = n(53),
-            i = n(1),
-            a = n(67),
-            r = n(18),
-            s = n(31);
+        (require(328), require(3));
+        var o = require(53),
+            GObject = require(1),
+            a = require(67),
+            GCategory = require(18),
+            s = require(31);
         function l(e) {
             ((this._type = e),
-                (this._title = new i.GLocaleKey("GDistributeAction", "title." + e)),
+                (this._title = new GObject.GLocaleKey("GDistributeAction", "title." + e)),
                 (l.TOOLTIP_CONFIG = {
                     [a.TOOLTIP_AREA.SIDEBAR]: {
                         [l.Type.Horizontal]: a.GRichTooltipConfig.from({
-                            title: i.GLocale.get(new i.GLocaleKey("GDistributeAction", "text.horizontal-tooltip-title")),
-                            description: i.GLocale.get(new i.GLocaleKey("GDistributeAction", "text.horizontal-tooltip-description")),
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GDistributeAction", "text.horizontal-tooltip-title")),
+                            description: GObject.GLocale.get(new GObject.GLocaleKey("GDistributeAction", "text.horizontal-tooltip-description")),
                             learnMore: "/docs/arrange-objects/distribute/",
                         }),
                         [l.Type.Vertical]: a.GRichTooltipConfig.from({
-                            title: i.GLocale.get(new i.GLocaleKey("GDistributeAction", "text.vertical-tooltip-title")),
-                            description: i.GLocale.get(new i.GLocaleKey("GDistributeAction", "text.vertical-tooltip-description")),
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GDistributeAction", "text.vertical-tooltip-title")),
+                            description: GObject.GLocale.get(new GObject.GLocaleKey("GDistributeAction", "text.vertical-tooltip-description")),
                             learnMore: "/docs/arrange-objects/distribute/",
                         }),
                     },
                 }));
         }
-        (i.GObject.inherit(l, s),
+        (GObject.GObject.inherit(l, s),
             (l.Type = { Horizontal: "horizontal", Vertical: "vertical" }),
             (l.TOOLTIP_CONFIG = null),
             (l.ID = "arrange.distribute"),
@@ -47,7 +47,7 @@ module.exports = function (e, t, n) {
                 }
             }),
             (l.prototype.getCategory = function () {
-                return r.CATEGORY_MODIFY_ALIGN;
+                return GCategory.CATEGORY_MODIFY_ALIGN;
             }),
             (l.prototype.getGroup = function () {
                 return "arrange/align-distribute";
@@ -70,7 +70,7 @@ module.exports = function (e, t, n) {
                 e = [];
                 for (let t = 0; t < s.length; ++t) {
                     var c = s[t];
-                    if (c.hasMixin(i.GElement.Transform)) {
+                    if (c.hasMixin(GObject.GElement.Transform)) {
                         var d = c.getGeometryBBox();
                         if (!d || d.getWidth() + d.getHeight() === 0) continue;
                         e.push({ elbbox: d, element: c });
@@ -100,18 +100,18 @@ module.exports = function (e, t, n) {
                                 if (null === a)
                                     for (let t = 0; t < e.length; ++t)
                                         (o !== e[t].elbbox.getX() &&
-                                            e[t].element.transform(new i.GTransform(1, 0, 0, 1, o - e[t].elbbox.getX(), 0), !0),
+                                            e[t].element.transform(new GObject.GTransform(1, 0, 0, 1, o - e[t].elbbox.getX(), 0), true),
                                             (o += e[t].elbbox.getWidth() + n));
                                 else {
                                     var r = o + e[0].elbbox.getWidth() / 2;
                                     for (let t = 0; t < e.length; ++t) {
                                         var s = r + a * t - e[t].elbbox.getWidth() / 2;
                                         s !== e[t].elbbox.getX() &&
-                                            e[t].element.transform(new i.GTransform(1, 0, 0, 1, s - e[t].elbbox.getX(), 0), !0);
+                                            e[t].element.transform(new GObject.GTransform(1, 0, 0, 1, s - e[t].elbbox.getX(), 0), true);
                                     }
                                 }
                             }.bind(this),
-                            i.GLocale.get(this.getTitle())
+                            GObject.GLocale.get(this.getTitle())
                         );
                     } else if (this._type === l.Type.Vertical) {
                         e.sort(function (e, t) {
@@ -135,18 +135,18 @@ module.exports = function (e, t, n) {
                                 if (null === a)
                                     for (let t = 0; t < e.length; ++t)
                                         (o !== e[t].elbbox.getY() &&
-                                            e[t].element.transform(new i.GTransform(1, 0, 0, 1, 0, o - e[t].elbbox.getY()), !0),
+                                            e[t].element.transform(new GObject.GTransform(1, 0, 0, 1, 0, o - e[t].elbbox.getY()), true),
                                             (o += e[t].elbbox.getHeight() + n));
                                 else {
                                     var r = o + e[0].elbbox.getHeight() / 2;
                                     for (let t = 0; t < e.length; ++t) {
                                         var s = r + a * t - e[t].elbbox.getHeight() / 2;
                                         s !== e[t].elbbox.getX() &&
-                                            e[t].element.transform(new i.GTransform(1, 0, 0, 1, 0, s - e[t].elbbox.getY()), !0);
+                                            e[t].element.transform(new GObject.GTransform(1, 0, 0, 1, 0, s - e[t].elbbox.getY()), true);
                                     }
                                 }
                             }.bind(this),
-                            i.GLocale.get(this.getTitle())
+                            GObject.GLocale.get(this.getTitle())
                         );
                     }
             }),
@@ -156,5 +156,5 @@ module.exports = function (e, t, n) {
             (l.prototype.toString = function () {
                 return "[Object GDistributeAction]";
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

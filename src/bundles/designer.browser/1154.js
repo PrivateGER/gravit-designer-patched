@@ -1,25 +1,25 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(t, "__esModule", { value: !0 }),
-            (t.downloadActiveFile = function () {
+        (Object.defineProperty(exports, "__esModule", { value: true }),
+            (exports.downloadActiveFile = function () {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : null,
                     t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                if (!window.gDesigner) return !1;
+                if (!window.gDesigner) return false;
                 const n = window.gDesigner.getActiveDocument();
-                if (!n) return !1;
-                if (!window.gContainer) return !1;
+                if (!n) return false;
+                if (!window.gContainer) return false;
                 const o = window.gContainer.getStorage();
-                if (!o) return !1;
+                if (!o) return false;
                 e = e || n.getExtension();
                 const i = "".concat(n.getTitle() || "Design", ".").concat(e);
                 return (
                     o.download(i, (e) => {
                         n.store(e, console.log, console.error, t);
                     }),
-                    !0
+                    true
                 );
             }),
-            (t.downloadDataURI = function e(t, n, o, i) {
+            (exports.downloadDataURI = function e(t, n, o, i) {
                 if (t instanceof Blob) {
                     var a = new FileReader();
                     ((a.onloadend = () => {
@@ -31,29 +31,29 @@ module.exports = function (e, t, n) {
                     gContainer.download({ buffer: e, name: n, extension: o, mime: i });
                 }
             }),
-            n(19),
-            n(180),
-            n(181),
-            n(20),
-            n(34),
-            n(247),
-            n(218),
-            n(189),
-            n(190),
-            n(191),
-            n(192));
-        var o = n(1),
-            i = n(1210),
+            require(19),
+            require(180),
+            require(181),
+            require(20),
+            require(34),
+            require(247),
+            require(218),
+            require(189),
+            require(190),
+            require(191),
+            require(192));
+        var GObject = require(1),
+            i = require(1210),
             a = /["\*\/:<>\?\\\|]/g,
             r = /[\0-\x1F\x80-\x9F]/g,
             s = /^\.+$/,
             l =
                 /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\.(?:[\0-\t\x0B\f\x0E-\u2027\u202A-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])*)?$/i,
             c = /[ \.]+$/;
-        ((o.GUtil.sanitizeFilename = function (e, t) {
+        ((GObject.GUtil.sanitizeFilename = function (e, t) {
             return ((t = t || "_"), e.replace(a, t).replace(r, t).replace(s, t).replace(l, t).replace(c, t).substr(0, 255));
         }),
-            (o.GUtil.dataUrlToBlob = function (e) {
+            (GObject.GUtil.dataUrlToBlob = function (e) {
                 if (
                     !/^data:(?:[\0-\t\x0B\f\x0E-\u2027\u202A-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]){0,255};ba[s\u017F]e64,/i.exec(
                         e
@@ -75,7 +75,7 @@ module.exports = function (e, t, n) {
                 for (var i = t.length, a = new Uint8Array(i), r = 0; r < i; ++r) a[r] = t.charCodeAt(r);
                 return new Blob([a], { type: o });
             }),
-            (o.GUtil.readACVFile = function (e) {
+            (GObject.GUtil.readACVFile = function (e) {
                 var t = new i(e),
                     n = { rgb: [], r: [], g: [], b: [] };
                 t.seek(4);

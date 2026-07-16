@@ -1,16 +1,16 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(8), n(3), n(4), n(41));
-        var i = n(1),
-            a = o(n(18)),
-            r = o(n(163)),
-            s = o(n(85)),
-            l = o(n(106));
+        var o = require(16);
+        (require(8 /* Symbol */), require(3), require(4), require(41));
+        var GObject = require(1),
+            a = o(require(18 /* GCategory */)),
+            r = o(require(163 /* GDocument */)),
+            s = o(require(85)),
+            l = o(require(106));
         function c(e) {
             this._source = e;
         }
-        (i.GObject.inherit(c, l.default),
+        (GObject.GObject.inherit(c, l.default),
             (c.getId = function (e) {
                 return "file.import-image-from-ios-".concat(e);
             }),
@@ -20,7 +20,7 @@ module.exports = function (e, t, n) {
                 return c.getId(this._source);
             }),
             (c.prototype.getTitle = function () {
-                return new i.GLocaleKey("GImportImageFromIOSAction", "text.ios-".concat(this._source));
+                return new GObject.GLocaleKey("GImportImageFromIOSAction", "text.ios-".concat(this._source));
             }),
             (c.prototype.getCategory = function () {
                 return a.default.CATEGORY_FILE_IMPORT_IMAGE;
@@ -32,7 +32,7 @@ module.exports = function (e, t, n) {
                 return gContainer.getRuntime() === s.default.Runtime.IPad;
             }),
             (c.prototype.isEnabled = function (e) {
-                if (!l.default.prototype.isEnabled.call(this)) return !1;
+                if (!l.default.prototype.isEnabled.call(this)) return false;
                 const t = gDesigner.getActiveDocument();
                 return (
                     !!t &&
@@ -43,7 +43,7 @@ module.exports = function (e, t, n) {
             }),
             (c.prototype.execute = async function (e, t) {
                 const n = gDesigner.getActiveDocument();
-                if (!n) return !1;
+                if (!n) return false;
                 e = e || n.getStorage() || gDesigner.getDefaultStorage();
                 const o = r.default.FileTypes.filter((e) => e.import_image);
                 try {
@@ -58,5 +58,5 @@ module.exports = function (e, t, n) {
             (c.prototype.toString = function () {
                 return "[Object GImportImageFromIOSAction]";
             }),
-            (e.exports = c));
+            (module.exports = c));
     };

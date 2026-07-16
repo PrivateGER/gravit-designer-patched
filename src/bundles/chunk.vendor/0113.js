@@ -1,31 +1,31 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(63),
-                o = i(56),
-                a = i(141),
-                s = i(104),
-                l = i(22),
-                h = i(76),
-                A = i(59),
-                c = i(45),
-                p = i(9),
-                u = i(140),
-                d = i(6);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(63),
+                o = require(56),
+                a = require(141),
+                s = require(104),
+                l = require(22),
+                h = require(76),
+                A = require(59),
+                c = require(45),
+                String = require(9),
+                u = require(140),
+                d = require(6);
 
             function g() {
                 (o.call(this),
                     this._setDefaultProperties(g.VisualProperties, g.MetaProperties),
                     (this._paths = new g.Paths()),
                     this._paths._setParent(this),
-                    (this._paintSharp = !0));
+                    (this._paintSharp = true));
             }
             (n.inherit("compoundpath", g, o),
                 (g.VisualProperties = {
-                    evenodd: !0,
+                    evenodd: true,
                 }),
                 (g.GeometryProperties = {}),
                 (g.MetaProperties = {
-                    csc: !0,
+                    csc: true,
                 }),
                 (g.Paths = function () {}),
                 n.inheritAndMix("compoundpath.paths", g.Paths, n, [n.Container, n.Multireference, l.Accelerated]),
@@ -33,7 +33,7 @@ module.exports = function (e, t, i) {
                     return e instanceof g;
                 }),
                 (g.Paths.prototype.validateRemoval = function () {
-                    return !1;
+                    return false;
                 }),
                 (g.Paths.prototype.serialize = function () {
                     var e;
@@ -88,22 +88,22 @@ module.exports = function (e, t, i) {
                     return "[Object GCompoundPath.Paths]";
                 }),
                 (g.prototype.getNodeNameTranslated = function () {
-                    return p.getValue("GCompoundPath", "name", this.getNodeName());
+                    return String.getValue("GCompoundPath", "name", this.getNodeName());
                 }),
                 (g.isOwnedPath = function (e) {
                     var t = e.getParent();
                     return t && t instanceof g.Paths;
                 }),
                 (g.prototype._referencedNodes = null),
-                (g.prototype._delayedRefresh = !1),
+                (g.prototype._delayedRefresh = false),
                 (g.prototype._paths = null),
                 (g.prototype._currentPath = null),
                 (g.prototype.rewindVertices = function (e) {
                     if (((this._currentPath = this._paths.getFirstChild()), 0 === e && this._currentPath)) {
                         for (var t = this._currentPath; null != t; t = t.getNext()) t.rewindVertices(0);
-                        return !0;
+                        return true;
                     }
-                    return !1;
+                    return false;
                 }),
                 (g.prototype.readVertex = function (e) {
                     return (
@@ -114,11 +114,11 @@ module.exports = function (e, t, i) {
                 }),
                 (g.prototype.hasVertexForRead = function () {
                     if (this._currentPath) {
-                        if (this._currentPath.hasVertexForRead()) return !0;
+                        if (this._currentPath.hasVertexForRead()) return true;
                         var e = this._currentPath.getNext();
-                        if (e && e.hasVertexForRead()) return !0;
+                        if (e && e.hasVertexForRead()) return true;
                     }
-                    return !1;
+                    return false;
                 }),
                 (g.prototype.getPaths = function () {
                     return this._paths;
@@ -138,15 +138,15 @@ module.exports = function (e, t, i) {
                 (g.prototype._hitInside = function (e, t, i, n) {
                     for (var o = 0, a = 0; a < n.length; a++) {
                         var s = t ? new r(n[a], t) : n[a];
-                        if (A.hitTest(e.getX(), e.getY(), s, 0, !0, i)) {
+                        if (A.hitTest(e.getX(), e.getY(), s, 0, true, i)) {
                             if (!i.outline) {
-                                if (!this.getProperty("evenodd")) return !0;
+                                if (!this.getProperty("evenodd")) return true;
                                 ++o;
                             }
                             ((i.x = null), (i.y = null), (i.slope = null), (i.outline = null), (i.segment = null));
                         }
                     }
-                    return !!(o > 0 && 1 & o) && ((i.outline = !1), !0);
+                    return !!(o > 0 && 1 & o) && ((i.outline = false), true);
                 }),
                 (g.prototype._doPixelAlignment = function (e, t) {
                     var i = this._getAlignTransformation(e);
@@ -223,7 +223,7 @@ module.exports = function (e, t, i) {
                                 r._setScene(e === h._Change.SceneDetached ? null : this._scene);
                         }
                     } else if (e === n._Change.AfterPropertiesChange)
-                        if (t.properties.indexOf("refs") >= 0) this._scene || (this._delayedRefresh = !0);
+                        if (t.properties.indexOf("refs") >= 0) this._scene || (this._delayedRefresh = true);
                         else if (t.properties.indexOf("csc") >= 0 && this._paths)
                             for (r = this._paths.getFirstChild(); null != r; r = r.getNext())
                                 (r._beginBlockChanges([n._Change.BeforePropertiesChange, n._Change.AfterPropertiesChange]),
@@ -240,7 +240,7 @@ module.exports = function (e, t, i) {
                                           e instanceof c.AnchorPoint && "connector" === n.getName(e.getPath()) && e.getPath().relayout();
                                       }.bind(this)
                                   )
-                                : (this._delayedRefresh = !0)),
+                                : (this._delayedRefresh = true)),
                         e === h._Change.SceneAttached &&
                             this._delayedRefresh &&
                             (this._scene.visitReferences(
@@ -249,7 +249,7 @@ module.exports = function (e, t, i) {
                                     e instanceof c.AnchorPoint && "connector" === n.getName(e.getPath()) && e.getPath().relayout();
                                 }.bind(this)
                             ),
-                            (this._delayedRefresh = !1)),
+                            (this._delayedRefresh = false)),
                         e == n._Change.AfterFlagChange && t.set)
                     ) {
                         var a = t;
@@ -300,7 +300,7 @@ module.exports = function (e, t, i) {
                             if (s);
                             else if (this._isEvenOddFill()) {
                                 var g = [],
-                                    f = !1;
+                                    f = false;
                                 for (m = 0; m < p.length && !f; m++) {
                                     y = A ? p[m].getPaintBBox() : p[m].getGeometryBBox();
                                     p[m]._checkPartialCollision(e, y, i, n, r | l.CollisionFlag.CollisionInfo, function (e) {
@@ -327,14 +327,14 @@ module.exports = function (e, t, i) {
                         return i && i.length
                             ? i.reduce(
                                   function (e, i) {
-                                      return e.concat(i.findPivots(!1, t) || []);
+                                      return e.concat(i.findPivots(false, t) || []);
                                   },
-                                  i[0].findPivots(!1, t) || []
+                                  i[0].findPivots(false, t) || []
                               )
                             : null;
                     }
                     for (var n = null, r = this._paths.getFirstChild(); null != r; r = r.getNext()) {
-                        var o = r.findPivots(!1, t);
+                        var o = r.findPivots(false, t);
                         o && (n = n ? n.concat(o) : o);
                     }
                     return n;
@@ -371,5 +371,5 @@ module.exports = function (e, t, i) {
                 (g.prototype.toString = function () {
                     return "[GCompoundPath]";
                 }),
-                (e.exports = g));
+                (module.exports = g));
         };

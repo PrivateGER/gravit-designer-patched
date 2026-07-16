@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         (function (t) {
             var n = function (e) {
                 return e && e.Math === Math && e;
             };
-            e.exports =
+            module.exports =
                 n("object" == typeof globalThis && globalThis) ||
                 n("object" == typeof window && window) ||
                 n("object" == typeof self && self) ||
@@ -14,5 +14,5 @@ module.exports = function (e, t, n) {
                     return this;
                 })() ||
                 Function("return this")();
-        }).call(this, n(109));
+        }).call(this, require(109));
     };

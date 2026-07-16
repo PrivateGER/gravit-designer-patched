@@ -1,22 +1,22 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
             (function (e) {
-                ((t.isBrowser = function () {
+                ((exports.isBrowser = function () {
                     return "undefined" != typeof window;
                 }),
-                    (t.isNode = function () {
+                    (exports.isNode = function () {
                         return "undefined" == typeof window;
                     }),
-                    (t.nodeBufferToArrayBuffer = function (e) {
+                    (exports.nodeBufferToArrayBuffer = function (e) {
                         for (var t = new ArrayBuffer(e.length), i = new Uint8Array(t), n = 0; n < e.length; ++n) i[n] = e[n];
                         return t;
                     }),
-                    (t.arrayBufferToNodeBuffer = function (t) {
+                    (exports.arrayBufferToNodeBuffer = function (t) {
                         for (var i = new e(t.byteLength), n = new Uint8Array(t), r = 0; r < i.length; ++r) i[r] = n[r];
                         return i;
                     }),
-                    (t.checkArgument = function (e, t) {
+                    (exports.checkArgument = function (e, t) {
                         if (!e) throw t;
                     }));
-            }).call(this, i(221).Buffer);
+            }).call(this, require(221 /* Buffer */).Buffer);
         };

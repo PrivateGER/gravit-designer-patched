@@ -1,23 +1,23 @@
-module.exports = function (e, t, i) {
-            var n = i(59),
-                r = i(17),
-                o = i(11),
-                a = i(141),
-                s = i(5),
-                l = i(24),
-                h = i(48),
-                A = i(6),
-                c = i(54),
-                p = i(7),
-                u = i(12),
-                d = i(39),
-                g = i(81),
-                f = i(229),
-                m = i(36),
-                y = i(542),
-                _ = i(749),
-                v = i(750),
-                b = i(543);
+module.exports = function (module, exports, require) {
+            var n = require(59),
+                r = require(17),
+                o = require(11),
+                a = require(141),
+                s = require(5),
+                l = require(24),
+                h = require(48),
+                A = require(6),
+                c = require(54),
+                p = require(7),
+                u = require(12),
+                d = require(39),
+                g = require(81),
+                f = require(229),
+                m = require(36),
+                y = require(542),
+                _ = require(749),
+                v = require(750),
+                b = require(543);
 
             function C(e, t, i, n, r) {
                 var o = e.getSide(A.Side.TOP_LEFT);
@@ -102,7 +102,7 @@ module.exports = function (e, t, i) {
                 (C.prototype.rewindVertices = function (e) {
                     return (
                         (null == this._vertices || this._verticesDirty || 0 == this._vertices.getCount()) &&
-                            (this._vertices.clearVertices(), this._generateVertices(), (this._verticesDirty = !1)),
+                            (this._vertices.clearVertices(), this._generateVertices(), (this._verticesDirty = false)),
                         this._vertices.rewindVertices(e)
                     );
                 }),
@@ -144,7 +144,7 @@ module.exports = function (e, t, i) {
                 }),
                 (C.prototype.paint = function (e, t, i) {
                     var n = t.canvas.resetTransform();
-                    ((this._extTransform = e ? n.multiplied(e) : n), (this._verticesDirty = !0));
+                    ((this._extTransform = e ? n.multiplied(e) : n), (this._verticesDirty = true));
                     var o = l.annotationHandles.tranformBox;
                     if (!this._centerOnly) {
                         if (!this.rewindVertices(0)) return;
@@ -188,7 +188,7 @@ module.exports = function (e, t, i) {
                     if (this._tBoxFlags & C.TBoxFlag.Rotate) {
                         if (i) {
                             ((A = this._getPoint(C.Handles.LEFT_CENTER)), (c = this._getPoint(C.Handles.RIGHT_CENTER)));
-                            t.canvas.strokeLine(A.getX(), A.getY(), c.getX(), c.getY(), 1, t.annotationColor, !0);
+                            t.canvas.strokeLine(A.getX(), A.getY(), c.getX(), c.getY(), 1, t.annotationColor, true);
                         }
                         g.paintAnnotation(
                             t,
@@ -207,17 +207,17 @@ module.exports = function (e, t, i) {
                     (t.canvas.setTransform(n), (this._extTransform = null));
                 }),
                 (C.prototype.hide = function () {
-                    this._centerOnly = !0;
+                    this._centerOnly = true;
                 }),
                 (C.prototype.show = function () {
-                    this._centerOnly = !1;
+                    this._centerOnly = false;
                 }),
                 (C.prototype.setCenterTransform = function (e) {
                     this.cTrf = e;
                 }),
                 (C.prototype.getPartInfoAt = function (e, t, i, r) {
                     var o = null;
-                    t && ((this._extTransform = t), (this._verticesDirty = !0));
+                    t && ((this._extTransform = t), (this._verticesDirty = true));
                     var a = l.annotationHandles.tranformBox,
                         s = this._collectResizeHandles(t);
                     (this._tBoxFlags & C.TBoxFlag.Rotate && s.push(C.Handles.ROTATION_CENTER),
@@ -240,7 +240,7 @@ module.exports = function (e, t, i) {
                     if (
                         !o &&
                         (this._tBoxFlags & C.TBoxFlag.Skew || this._tBoxFlags & C.TBoxFlag.Move) &&
-                        n.hitTest(e.getX(), e.getY(), this, 2 * i, !0, c)
+                        n.hitTest(e.getX(), e.getY(), this, 2 * i, true, c)
                     )
                         if (this._tBoxFlags & C.TBoxFlag.Skew && c.outline) {
                             if (!this._isSkewAnnotationEnabled()) {
@@ -269,7 +269,7 @@ module.exports = function (e, t, i) {
                         !o &&
                             !this._isRotateAnnotationEnabled() &&
                             this._tBoxFlags & C.TBoxFlag.Rotate &&
-                            n.hitTest(e.getX(), e.getY(), this, 2 * C.OUTSIDE_TOLERANCE, !0, c) &&
+                            n.hitTest(e.getX(), e.getY(), this, 2 * C.OUTSIDE_TOLERANCE, true, c) &&
                             (o = u()),
                         o || (o = new d.PartInfo(r, C.FAR_OUTSIDE)),
                         (this._extTransform = null),
@@ -303,12 +303,12 @@ module.exports = function (e, t, i) {
                             y = f[e.id],
                             _ = m.getSide(y);
                         return (
-                            g(_.getX(), _.getY(), !0, !0),
-                            l.isPreserveAspectRatioEnabledForSide(y) && (a = !0),
+                            g(_.getX(), _.getY(), true, true),
+                            l.isPreserveAspectRatioEnabledForSide(y) && (a = true),
                             p.getResizeTransform(m, y, u, d, a, o)
                         );
                     }
-                    if (e.id == C.Handles.ROTATION_CENTER) return (g(this.cx, this.cy, !0, !0), new p(1, 0, 0, 1, u, d));
+                    if (e.id == C.Handles.ROTATION_CENTER) return (g(this.cx, this.cy, true, true), new p(1, 0, 0, 1, u, d));
                     if (!C.isRotating(e.id)) {
                         if (C.isSkewing(e.id)) {
                             var v = new p(1, 0, 0, 1, -this.cx, -this.cy),
@@ -327,7 +327,7 @@ module.exports = function (e, t, i) {
                         return (
                             i.getX() <= this.tlx + B ? (P = this.tlx) : i.getX() >= this.tlx + 2 * B && (P = this.brx),
                             i.getY() <= this.tly + x ? (S = this.tly) : i.getY() >= this.tly + 2 * x && (S = this.bry),
-                            g(P, S, !0, !0),
+                            g(P, S, true, true),
                             new p(1, 0, 0, 1, u, d)
                         );
                     }
@@ -490,5 +490,5 @@ module.exports = function (e, t, i) {
                 (C.prototype.toString = function () {
                     return "[GTransformBox]";
                 }),
-                (e.exports = C));
+                (module.exports = C));
         };

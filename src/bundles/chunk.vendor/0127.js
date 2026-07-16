@@ -1,28 +1,28 @@
-module.exports = function (e, t, i) {
-            var n = i(22),
-                r = i(82),
-                o = i(2),
-                a = i(0),
-                s = i(60),
-                l = i(56),
-                h = i(39),
-                A = i(36),
-                c = i(5),
-                p = i(24),
-                u = i(66),
-                d = i(155),
-                g = i(113),
-                f = i(7),
-                m = i(45),
-                y = i(12),
-                _ = i(81),
-                v = i(64),
-                b = i(59),
-                C = i(17),
-                w = i(52),
-                E = i(6),
-                B = i(28),
-                x = i(207);
+module.exports = function (module, exports, require) {
+            var n = require(22),
+                GEditor = require(82),
+                o = require(2),
+                IsFiniteNonNegativeNumber = require(0),
+                s = require(60),
+                l = require(56),
+                h = require(39),
+                A = require(36),
+                c = require(5),
+                p = require(24),
+                u = require(66),
+                d = require(155),
+                g = require(113),
+                f = require(7),
+                m = require(45),
+                y = require(12),
+                _ = require(81),
+                v = require(64),
+                b = require(59),
+                C = require(17),
+                w = require(52),
+                E = require(6),
+                GStylable = require(28),
+                x = require(207);
 
             function P(e) {
                 (d.call(this, e), (this._flags = this.filterFlags(this._flags)));
@@ -33,7 +33,7 @@ module.exports = function (e, t, i) {
                             point: t[i],
                         }));
             }
-            (a.inherit(P, d),
+            (IsFiniteNonNegativeNumber.inherit(P, d),
                 A.exports(P, s),
                 (P.PartType = {
                     Segment: 1,
@@ -49,8 +49,8 @@ module.exports = function (e, t, i) {
                 }),
                 (P.prototype._sourceIndexToPreviewIndex = null),
                 (P.prototype._constrainPair = null),
-                (P.prototype._constrainPainted = !1),
-                (P.prototype._activeExtedingMode = !1),
+                (P.prototype._constrainPainted = false),
+                (P.prototype._activeExtedingMode = false),
                 (P.prototype.getActiveExtendingMode = function () {
                     return this._activeExtedingMode;
                 }),
@@ -67,31 +67,31 @@ module.exports = function (e, t, i) {
                         };
                     return (
                         this._constrainPair &&
-                            i(_.getAnnotationBBox(null, this._constrainPair[0], p.annotationHandles.path.constrain.size, !0)),
+                            i(_.getAnnotationBBox(null, this._constrainPair[0], p.annotationHandles.path.constrain.size, true)),
                         this._showAnnotations() && !this.hasFlag(u.Flag.ResizeAll)
                             ? (this._transform && (e = this._transform.multiplied(e)),
                               this._iteratePoints(
-                                  !0,
+                                  true,
                                   function (t) {
                                       (t.leftHandlePosition &&
-                                          i(_.getAnnotationBBox(e, t.leftHandlePosition, p.annotationHandles.path.control.size, !0)),
+                                          i(_.getAnnotationBBox(e, t.leftHandlePosition, p.annotationHandles.path.control.size, true)),
                                           t.rightHandlePosition &&
-                                              i(_.getAnnotationBBox(e, t.rightHandlePosition, p.annotationHandles.path.control.size, !0)),
+                                              i(_.getAnnotationBBox(e, t.rightHandlePosition, p.annotationHandles.path.control.size, true)),
                                           t.leftShoulderPosition &&
-                                              i(_.getAnnotationBBox(e, t.leftShoulderPosition, p.annotationHandles.path.corner.size, !0)),
+                                              i(_.getAnnotationBBox(e, t.leftShoulderPosition, p.annotationHandles.path.corner.size, true)),
                                           t.rightShoulderPosition &&
-                                              i(_.getAnnotationBBox(e, t.rightShoulderPosition, p.annotationHandles.path.corner.size, !0)),
-                                          i(_.getAnnotationBBox(e, t.position, p.annotationHandles.path.node.size, !0)));
+                                              i(_.getAnnotationBBox(e, t.rightShoulderPosition, p.annotationHandles.path.corner.size, true)),
+                                          i(_.getAnnotationBBox(e, t.position, p.annotationHandles.path.node.size, true)));
                                   }.bind(this)
                               ))
                             : this.hasFlag(h.Flag.HideEditor) ||
                               this.hasFlag(h.Flag.Outline) ||
                               (this.hasFlag(u.Flag.ResizeAll) && this.hasFlag(h.Flag.Selected)) ||
                               this._iteratePoints(
-                                  !0,
+                                  true,
                                   function (t) {
                                       t.anchorPoint.hasFlag(o.Flag.Highlighted) &&
-                                          i(_.getAnnotationBBox(e, t.position, p.annotationHandles.path.node.size, !0));
+                                          i(_.getAnnotationBBox(e, t.position, p.annotationHandles.path.node.size, true));
                                   }.bind(this)
                               ),
                         t
@@ -191,10 +191,10 @@ module.exports = function (e, t, i) {
                             case P.PartType.Segment:
                                 (this._element._beginBlockEvents([n.GeometryChangeEvent]),
                                     this._element.beginUpdate(),
-                                    this._element.getAnchorPoints()._beginBlockCompositeEvents(!1, !0, !1),
+                                    this._element.getAnchorPoints()._beginBlockCompositeEvents(false, true, false),
                                     this._assignPreviewPointPropertiesToSourcePoint(e.apLeft, ["hrx", "hry", "ah", "tp"]),
                                     this._element._endBlockEvents([n.GeometryChangeEvent]),
-                                    this._element.getAnchorPoints()._endBlockCompositeEvents(!1, !0, !1),
+                                    this._element.getAnchorPoints()._endBlockCompositeEvents(false, true, false),
                                     this._assignPreviewPointPropertiesToSourcePoint(e.apRight, ["hlx", "hly", "ah", "tp"]),
                                     this._element.endUpdate());
                         }
@@ -247,20 +247,20 @@ module.exports = function (e, t, i) {
                     if (this._partSelection && this._partSelection.length > 0 && !this.hasFlag(u.Flag.ResizeAll)) {
                         (e._beginBlockEvents([n.GeometryChangeEvent]),
                             e.beginUpdate(),
-                            e.getAnchorPoints()._beginBlockCompositeEvents(!1, !0, !1));
+                            e.getAnchorPoints()._beginBlockCompositeEvents(false, true, false));
                         for (var o = [], a = 0; a < this._partSelection.length; ++a) {
                             var s = this._partSelection[a];
                             s.type === P.PartType.Point
                                 ? (a == this._partSelection.length - 1 &&
                                       (e._endBlockEvents([n.GeometryChangeEvent]),
-                                      e.getAnchorPoints()._endBlockCompositeEvents(!1, !0, !1)),
+                                      e.getAnchorPoints()._endBlockCompositeEvents(false, true, false)),
                                   this._transferPreviewProperties(s.point, e),
                                   o.push(s))
                                 : s.type === P.PartType.Segment &&
                                   (this._transferPreviewProperties(s.apLeft, e),
                                   a == this._partSelection.length - 1 &&
                                       (e._endBlockEvents([n.GeometryChangeEvent]),
-                                      e.getAnchorPoints()._endBlockCompositeEvents(!1, !0, !1)),
+                                      e.getAnchorPoints()._endBlockCompositeEvents(false, true, false)),
                                   this._transferPreviewProperties(s.apRight, e),
                                   (s.apLeft.getParent().getPreviousPoint(s.apLeft) || s.apRight.getParent().getNextPoint(s.apRight)) &&
                                       (o.push({
@@ -272,7 +272,7 @@ module.exports = function (e, t, i) {
                                           point: s.apRight,
                                       })));
                         }
-                        (e.endUpdate(), this.requestInvalidation(), this.resetTransform(), this.updatePartSelection(!1, o));
+                        (e.endUpdate(), this.requestInvalidation(), this.resetTransform(), this.updatePartSelection(false, o));
                     } else d.prototype._applyTransform.call(this, e, t, i, r);
                     this._constrainPair = null;
                 }),
@@ -303,10 +303,10 @@ module.exports = function (e, t, i) {
                                                 point: s,
                                             },
                                             {
-                                                apSelected: !1,
+                                                apSelected: false,
                                             },
-                                            !1,
-                                            !0
+                                            false,
+                                            true
                                         );
                                     else if (y.isEqualEps(a.slope, 1, 0.001))
                                         i = new h.PartInfo(
@@ -316,10 +316,10 @@ module.exports = function (e, t, i) {
                                                 point: l,
                                             },
                                             {
-                                                apSelected: !1,
+                                                apSelected: false,
                                             },
-                                            !1,
-                                            !0
+                                            false,
+                                            true
                                         );
                                     else {
                                         var d,
@@ -340,10 +340,10 @@ module.exports = function (e, t, i) {
                                                     (Z = _ + (2 / 3) * (B - _)),
                                                     (d = b + (2 / 3) * (E - b)),
                                                     (g = C + (2 / 3) * (B - C)),
-                                                    A.setProperties(["ah", "hrx", "hry"], [!1, W, Z]),
-                                                    u.setProperties(["ah", "hlx", "hly"], [!1, d, g]),
+                                                    A.setProperties(["ah", "hrx", "hry"], [false, W, Z]),
+                                                    u.setProperties(["ah", "hlx", "hly"], [false, d, g]),
                                                     this.requestInvalidation(),
-                                                    (T = this._elementPreview.pathHitTest(new c(a.x, a.y), null, !1)) &&
+                                                    (T = this._elementPreview.pathHitTest(new c(a.x, a.y), null, false)) &&
                                                         T.data &&
                                                         !y.isEqualEps(T.data.slope, 0, 0.001) &&
                                                         !y.isEqualEps(T.data.slope, 1, 0.001) &&
@@ -355,18 +355,18 @@ module.exports = function (e, t, i) {
                                                     (g = C + (2 / 3) * (S - C)),
                                                     (W = f + (2 / 3) * (x - f)),
                                                     (Z = _ + (2 / 3) * (S - _)),
-                                                    A.setProperties(["ah", "hrx", "hry"], [!1, W, Z]),
-                                                    u.setProperties(["ah", "hlx", "hly"], [!1, d, g]),
+                                                    A.setProperties(["ah", "hrx", "hry"], [false, W, Z]),
+                                                    u.setProperties(["ah", "hlx", "hly"], [false, d, g]),
                                                     this.requestInvalidation(),
-                                                    (T = this._elementPreview.pathHitTest(new c(a.x, a.y), null, !1)) &&
+                                                    (T = this._elementPreview.pathHitTest(new c(a.x, a.y), null, false)) &&
                                                         T.data &&
                                                         !y.isEqualEps(T.data.slope, 0, 0.001) &&
                                                         !y.isEqualEps(T.data.slope, 1, 0.001) &&
                                                         (w = T.data));
                                             } else
                                                 a &&
-                                                    (A.setProperty("ah", !1),
-                                                    u.setProperty("ah", !1),
+                                                    (A.setProperty("ah", false),
+                                                    u.setProperty("ah", false),
                                                     this.requestInvalidation(),
                                                     (W = A.getProperty("hrx")),
                                                     (Z = A.getProperty("hry")),
@@ -382,12 +382,12 @@ module.exports = function (e, t, i) {
                                                 G = F - k;
                                             ((W = a.x - R),
                                                 (Z = a.y - k),
-                                                A.setProperties(["ah", "hrx", "hry"], [!1, a.x - R, a.y - k]),
+                                                A.setProperties(["ah", "hrx", "hry"], [false, a.x - R, a.y - k]),
                                                 (d = a.x + D),
                                                 (g = a.y + G),
-                                                u.setProperties(["ah", "hlx", "hly"], [!1, a.x + D, a.y + G]),
+                                                u.setProperties(["ah", "hlx", "hly"], [false, a.x + D, a.y + G]),
                                                 this.requestInvalidation(),
-                                                (T = this._elementPreview.pathHitTest(new c(a.x, a.y), null, !1)) &&
+                                                (T = this._elementPreview.pathHitTest(new c(a.x, a.y), null, false)) &&
                                                     T.data &&
                                                     !y.isEqualEps(T.data.slope, 0, 0.001) &&
                                                     !y.isEqualEps(T.data.slope, 1, 0.001) &&
@@ -445,8 +445,8 @@ module.exports = function (e, t, i) {
                                     this.extendPreviewToFull(),
                                     (X = this.getPathPointPreview(N))
                                         ? (X.setProperties(["cl", "cr"], [O, L]),
-                                          (n = !0),
-                                          (r = !1),
+                                          (n = true),
+                                          (r = false),
                                           (i = new h.PartInfo(
                                               this,
                                               {
@@ -468,7 +468,7 @@ module.exports = function (e, t, i) {
                                         point: N,
                                     },
                                     {
-                                        apSelected: !0,
+                                        apSelected: true,
                                     },
                                     n,
                                     r
@@ -480,15 +480,15 @@ module.exports = function (e, t, i) {
                                 (X = this.getPathPointPreview(N)))
                             ) {
                                 var H = null;
-                                ((n = !0), (r = !1));
+                                ((n = true), (r = false));
                                 if (v.modifiers.optionKey) {
                                     var W = N.getProperty("hrx"),
                                         Z = N.getProperty("hry");
                                     (null === W || null === Z
                                         ? ((H = P.PartType.RightHandle),
-                                          X.setProperties(["ah", "hrx", "hry"], [!1, N.getProperty("x"), N.getProperty("y")]))
+                                          X.setProperties(["ah", "hrx", "hry"], [false, N.getProperty("x"), N.getProperty("y")]))
                                         : ((H = P.PartType.LeftHandle),
-                                          X.setProperties(["ah", "hlx", "hly"], [!1, N.getProperty("x"), N.getProperty("y")])),
+                                          X.setProperties(["ah", "hlx", "hly"], [false, N.getProperty("x"), N.getProperty("y")])),
                                         (i = new h.PartInfo(
                                             this,
                                             {
@@ -496,12 +496,12 @@ module.exports = function (e, t, i) {
                                                 point: N,
                                             },
                                             {
-                                                apSelected: !0,
+                                                apSelected: true,
                                             },
                                             n,
                                             r
                                         )),
-                                        this.updatePartSelection(!0, [i.id]));
+                                        this.updatePartSelection(true, [i.id]));
                                 } else {
                                     var z = N.getProperty("x"),
                                         j = N.getProperty("y");
@@ -509,13 +509,13 @@ module.exports = function (e, t, i) {
                                         ((H = P.PartType.RightHandle),
                                             X.setProperties(
                                                 ["tp", "ah", "hrx", "hry", "hlx", "hly"],
-                                                [m.AnchorPoint.Type.Mirror, !1, z, j, z, j]
+                                                [m.AnchorPoint.Type.Mirror, false, z, j, z, j]
                                             ));
                                     else {
                                         var J = N.getPrevious();
                                         J && !m.isCornerType(J.getProperty("tp"))
-                                            ? ((H = P.PartType.LeftHandle), X.setProperties(["ah", "hlx", "hly"], [!1, z, j]))
-                                            : ((H = P.PartType.RightHandle), X.setProperties(["ah", "hrx", "hry"], [!1, z, j]));
+                                            ? ((H = P.PartType.LeftHandle), X.setProperties(["ah", "hlx", "hly"], [false, z, j]))
+                                            : ((H = P.PartType.RightHandle), X.setProperties(["ah", "hrx", "hry"], [false, z, j]));
                                     }
                                     i = new h.PartInfo(
                                         this,
@@ -524,7 +524,7 @@ module.exports = function (e, t, i) {
                                             point: N,
                                         },
                                         {
-                                            apSelected: !0,
+                                            apSelected: true,
                                         },
                                         n,
                                         r
@@ -539,17 +539,17 @@ module.exports = function (e, t, i) {
                     return e.type == P.PartType.Segment ? w.SelectCurve : d.prototype.getCursor.call(this, e, t);
                 }),
                 (P.prototype.canHandleDblClick = function () {
-                    return !0;
+                    return true;
                 }),
                 (P.prototype.handleDblClick = function (e, t) {
                     if (p.toggleAnchorPointType && e && e.type == P.PartType.Point && this.hasFlag(h.Flag.Detail))
                         return (
                             e.point.getProperty("tp") === m.AnchorPoint.Type.Asymmetric
-                                ? e.point.setProperties(["tp", "ah"], [m.AnchorPoint.Type.Symmetric, !0])
-                                : e.point.setProperties(["tp", "ah"], [m.AnchorPoint.Type.Asymmetric, !1]),
-                            !0
+                                ? e.point.setProperties(["tp", "ah"], [m.AnchorPoint.Type.Symmetric, true])
+                                : e.point.setProperties(["tp", "ah"], [m.AnchorPoint.Type.Asymmetric, false]),
+                            true
                         );
-                    return !1;
+                    return false;
                 }),
                 (P.prototype._attach = function () {
                     var e = this._element.getScene();
@@ -576,7 +576,7 @@ module.exports = function (e, t, i) {
                                 .containsPoint(t)
                         );
                     }
-                    return !1;
+                    return false;
                 }),
                 (P.prototype.getPointCoord = function (e) {
                     var t = null;
@@ -607,14 +607,14 @@ module.exports = function (e, t, i) {
                             r = null;
                         if (
                             (this._iteratePoints(
-                                !1,
+                                false,
                                 function (e) {
                                     var t = null,
-                                        i = !0,
-                                        a = !1;
+                                        i = true,
+                                        a = false;
                                     if (
                                         (n(e.position, p.annotationHandles.path.node.size)
-                                            ? ((t = P.PartType.Point), (i = !1), (a = !0))
+                                            ? ((t = P.PartType.Point), (i = false), (a = true))
                                             : n(e.rightHandlePosition, p.annotationHandles.path.control.size)
                                               ? (t = P.PartType.RightHandle)
                                               : n(e.leftHandlePosition, p.annotationHandles.path.control.size)
@@ -638,14 +638,14 @@ module.exports = function (e, t, i) {
                                                 i,
                                                 a
                                             )),
-                                            !0
+                                            true
                                         );
                                 }.bind(this)
                             ),
                             r)
                         )
                             return r;
-                        var a = this._element.pathHitTest(e, t, !1, p.pickDistance);
+                        var a = this._element.pathHitTest(e, t, false, p.pickDistance);
                         if (a && !y.isEqualEps(a.data.slope, 0) && !y.isEqualEps(a.data.slope, 1)) {
                             var s = a.data,
                                 l = this._element.getAnchorPoints().getChildByIndex(s.segment - 1),
@@ -662,12 +662,12 @@ module.exports = function (e, t, i) {
                                     type: P.SegmentData.HitRes,
                                     hitRes: s,
                                     rightButton: {
-                                        isolated: !1,
-                                        selectable: !0,
+                                        isolated: false,
+                                        selectable: true,
                                     },
                                 },
-                                !0,
-                                !1
+                                true,
+                                false
                             );
                         }
                     }
@@ -686,14 +686,14 @@ module.exports = function (e, t, i) {
                             this._constrainPair[1].getY(),
                             2 * p.outlineWidth,
                             t.highlightOutlineColor,
-                            !1
+                            false
                         ),
-                            _.paintAnnotation(t, null, this._constrainPair[0], i.type, !1, i.size, C.WHITE, t.highlightOutlineColor),
-                            (this._constrainPainted = !0));
+                            _.paintAnnotation(t, null, this._constrainPair[0], i.type, false, i.size, C.WHITE, t.highlightOutlineColor),
+                            (this._constrainPainted = true));
                     }
                     this._showAnnotations() && !this.hasFlag(u.Flag.ResizeAll)
                         ? this._iteratePoints(
-                              !0,
+                              true,
                               function (i) {
                                   if (
                                       (i.leftHandlePosition && this._paintControlHandle(e, t, i.position, i.leftHandlePosition),
@@ -702,14 +702,14 @@ module.exports = function (e, t, i) {
                                   ) {
                                       var n = p.annotationHandles.path.corner;
                                       (i.leftShoulderPosition &&
-                                          _.paintAnnotation(t, e, i.leftShoulderPosition, n.type, !1, n.size, C.WHITE, t.annotationColor),
+                                          _.paintAnnotation(t, e, i.leftShoulderPosition, n.type, false, n.size, C.WHITE, t.annotationColor),
                                           i.rightShoulderPosition &&
                                               _.paintAnnotation(
                                                   t,
                                                   e,
                                                   i.rightShoulderPosition,
                                                   n.type,
-                                                  !1,
+                                                  false,
                                                   n.size,
                                                   C.WHITE,
                                                   t.annotationColor
@@ -733,7 +733,7 @@ module.exports = function (e, t, i) {
                                               e,
                                               i.position,
                                               i.annotation,
-                                              !0,
+                                              true,
                                               n.size,
                                               t.highlightOutlineColor,
                                               C.WHITE,
@@ -746,11 +746,11 @@ module.exports = function (e, t, i) {
                           !this._element.hasFlag(o.Flag.Highlighted) ||
                           (this.hasFlag(u.Flag.ResizeAll) && this.hasFlag(h.Flag.Selected)) ||
                           this._iteratePoints(
-                              !0,
+                              true,
                               function (i) {
                                   if (i.anchorPoint.hasFlag(o.Flag.Highlighted)) {
                                       var n = p.annotationHandles.path.node;
-                                      _.paintAnnotation(t, e, i.position, i.annotation, !0, n.size, t.highlightOutlineColor, C.WHITE);
+                                      _.paintAnnotation(t, e, i.position, i.annotation, true, n.size, t.highlightOutlineColor, C.WHITE);
                                   }
                               }.bind(this)
                           );
@@ -772,7 +772,7 @@ module.exports = function (e, t, i) {
                         if (((this._partSelection = t), i))
                             for (var n = 0; n < i.length; ++n) {
                                 var r = i[n],
-                                    a = !1;
+                                    a = false;
                                 if (t)
                                     for (var s = 0; s < t.length; ++s)
                                         if (
@@ -782,7 +782,7 @@ module.exports = function (e, t, i) {
                                                 r.apLeft == t[s].apLeft &&
                                                 r.apRight == t[s].apRight)
                                         ) {
-                                            a = !0;
+                                            a = true;
                                             break;
                                         }
                                 a ||
@@ -808,7 +808,7 @@ module.exports = function (e, t, i) {
                     var a = p.annotationHandles.path.control,
                         s = a.color || t.selectionOutlineColor;
                     (t.canvas.strokeLine(r.getX(), r.getY(), o.getX(), o.getY(), p.outlineWidth, s),
-                        _.paintAnnotation(t, e, n, a.type, !1, a.size, s, s));
+                        _.paintAnnotation(t, e, n, a.type, false, a.size, s, s));
                 }),
                 (P.prototype._iteratePoints = function (e, t) {
                     for (
@@ -839,7 +839,7 @@ module.exports = function (e, t, i) {
                                 h !== m.AnchorPoint.Type.Mirror &&
                                 h !== m.AnchorPoint.Type.Connector) ||
                                 ((u.annotation = p.annotationHandles.path.node.smoothType),
-                                !0 === a.getProperty("ah") && (u.annotation = p.annotationHandles.path.node.autoType)),
+                                true === a.getProperty("ah") && (u.annotation = p.annotationHandles.path.node.autoType)),
                             a.hasFlag(o.Flag.Selected) || (s && s.hasFlag(o.Flag.Selected)))
                         )
                             null !== (d = new c(a.getProperty("hlx"), a.getProperty("hly"))).getX() &&
@@ -858,9 +858,9 @@ module.exports = function (e, t, i) {
                         ) {
                             var d;
                             if (a.getProperty("cl") && s)
-                                (d = a.getLeftShoulderPoint(!0)) && null !== d.getX() && null !== d.getY() && (u.leftShoulderPosition = d);
+                                (d = a.getLeftShoulderPoint(true)) && null !== d.getX() && null !== d.getY() && (u.leftShoulderPosition = d);
                             if (a.getProperty("cr") && l)
-                                (d = a.getRightShoulderPoint(!0)) &&
+                                (d = a.getRightShoulderPoint(true)) &&
                                     null !== d.getX() &&
                                     null !== d.getY() &&
                                     (u.rightShoulderPosition = d);
@@ -869,15 +869,15 @@ module.exports = function (e, t, i) {
                             var g = r.mapPoint(u.position);
                             (u.leftHandlePosition && (u.leftHandlePosition = r.mapPoint(u.leftHandlePosition)),
                                 u.rightHandlePosition && (u.rightHandlePosition = r.mapPoint(u.rightHandlePosition)),
-                                u.leftShoulderPosition && (u.leftShoulderPosition = a.getLeftShoulderPointTransformed(r, !0)),
-                                u.rightShoulderPosition && (u.rightShoulderPosition = a.getRightShoulderPointTransformed(r, !0)),
+                                u.leftShoulderPosition && (u.leftShoulderPosition = a.getLeftShoulderPointTransformed(r, true)),
+                                u.rightShoulderPosition && (u.rightShoulderPosition = a.getRightShoulderPointTransformed(r, true)),
                                 (u.position = g));
                         }
-                        if (!0 === t(u)) break;
+                        if (true === t(u)) break;
                     }
                 }),
                 (P.prototype.createElementPreview = function () {
-                    this.getPathPreview(!0);
+                    this.getPathPreview(true);
                 }),
                 (P.prototype.getPathPreview = function (e, t) {
                     return (
@@ -914,7 +914,7 @@ module.exports = function (e, t, i) {
                     return e;
                 }),
                 (P.prototype.selectOnePoint = function (e) {
-                    this.updatePartSelection(!1, [
+                    this.updatePartSelection(false, [
                         {
                             type: P.PartType.Point,
                             point: e,
@@ -922,7 +922,7 @@ module.exports = function (e, t, i) {
                     ]);
                 }),
                 (P.prototype.isPartSelectionUnderCollisionAllowed = function () {
-                    return !0;
+                    return true;
                 }),
                 (P.prototype.updatePartSelectionUnderCollision = function (e, t, i) {
                     var n = this._element.getAnchorPoints(),
@@ -935,7 +935,7 @@ module.exports = function (e, t, i) {
                         !i && h.hasFlag(o.Flag.Highlighted) && h.removeFlag(o.Flag.Highlighted);
                         var A = new c(h.getProperty("x"), h.getProperty("y"));
                         ((A = r ? r.mapPoint(A) : A),
-                            b.hitTest(A.getX(), A.getY(), t, 0, !0)
+                            b.hitTest(A.getX(), A.getY(), t, 0, true)
                                 ? i
                                     ? h.hasFlag(o.Flag.Highlighted) || (e && h.hasFlag(o.Flag.Selected))
                                         ? h.hasFlag(o.Flag.Highlighted) &&
@@ -994,20 +994,20 @@ module.exports = function (e, t, i) {
                 }),
                 (P.prototype._canDeletePart = function (e, t) {
                     if (t) {
-                        var i = t._getMasterSibling(e.getMultireferenceId(), !1, !0);
-                        if (i && i !== e) return !1;
+                        var i = t._getMasterSibling(e.getMultireferenceId(), false, true);
+                        if (i && i !== e) return false;
                     }
-                    return !0;
+                    return true;
                 }),
                 (P.prototype.isDeletePartsAllowed = function () {
-                    var e = !1;
+                    var e = false;
                     if (this._partSelection && this._partSelection.length && !this.hasFlag(u.Flag.ResizeAll)) {
                         for (var t = 0, i = this._element.getParent(); i && ("symbol" !== o.getName(i) || i.isMaster()); )
                             i = i.getParent();
                         for (var n = 0; n < this._partSelection.length; ++n)
                             this._partSelection[n].type == P.PartType.Point && this._canDeletePart(this._partSelection[n].point, i) && ++t;
                         for (var r = 0, a = this._element.getAnchorPoints().getFirstChild(); null != a; a = a.getNext(), ++r);
-                        r > t && (e = !0);
+                        r > t && (e = true);
                     }
                     return e;
                 }),
@@ -1029,10 +1029,10 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (P.prototype.isAlignPartsAllowed = function () {
-                    var e = !1;
+                    var e = false;
                     if (this._partSelection && this._partSelection.length && !this.hasFlag(u.Flag.ResizeAll))
                         for (var t = 0; t < this._partSelection.length && !e; ++t)
-                            this._partSelection[t].type == P.PartType.Point && (e = !0);
+                            this._partSelection[t].type == P.PartType.Point && (e = true);
                     return e;
                 }),
                 (P.prototype.alignParts = function (e, t, i) {
@@ -1040,11 +1040,11 @@ module.exports = function (e, t, i) {
                         var r = this._element.getTransform();
                         (this.requestInvalidation(),
                             this._element._beginBlockEvents([n.GeometryChangeEvent]),
-                            this._element.getAnchorPoints()._beginBlockCompositeEvents(!1, !0, !1));
+                            this._element.getAnchorPoints()._beginBlockCompositeEvents(false, true, false));
                         for (var o = 0; o < this._partSelection.length; ++o)
                             if (
                                 (o == this._partSelection.length - 1 &&
-                                    (this._element.getAnchorPoints()._endBlockCompositeEvents(!1, !0, !1),
+                                    (this._element.getAnchorPoints()._endBlockCompositeEvents(false, true, false),
                                     this._element._endBlockEvents([n.GeometryChangeEvent])),
                                 this._partSelection[o].type === P.PartType.Point)
                             ) {
@@ -1061,14 +1061,14 @@ module.exports = function (e, t, i) {
                     return !(e && e instanceof g.Paths);
                 }),
                 (P.prototype.hasAllPointsSelected = function () {
-                    var e = !0;
+                    var e = true;
                     return (
                         this._element.getAnchorPoints().acceptChildren(
                             function (t) {
-                                return (t.hasFlag(o.Flag.Selected) || (e = !1), !0);
+                                return (t.hasFlag(o.Flag.Selected) || (e = false), true);
                             },
-                            !1,
-                            !0
+                            false,
+                            true
                         ),
                         e
                     );
@@ -1124,8 +1124,8 @@ module.exports = function (e, t, i) {
                     var n = new c(i.getProperty("x"), i.getProperty("y")),
                         o = this._element.getTransform();
                     n = (o = o ? o.multiplied(t) : t).mapPoint(n);
-                    var a = r.convertToConstrain(n.getX(), n.getY(), e.getX(), e.getY(), p.cursorConstraint);
-                    return ((this._constrainPair = [n, a]), (this._constrainPainted = !1), a);
+                    var a = GEditor.convertToConstrain(n.getX(), n.getY(), e.getX(), e.getY(), p.cursorConstraint);
+                    return ((this._constrainPair = [n, a]), (this._constrainPainted = false), a);
                 }),
                 (P.prototype._createPathPreviewIfNecessary = function (e) {
                     if (!this._elementPreview) {
@@ -1170,10 +1170,10 @@ module.exports = function (e, t, i) {
                                           r(t) &&
                                           (r((n = a.getLastRelatedPoint(t))) || (a.getNextPoint(n) && r(a.getNextPoint(n))) || (c = n))));
                         if ((((A && !c) || (!A && c) || (A && c && A === c)) && ((A = null), (c = null)), A && c)) {
-                            var u = !0;
-                            for (p = a.getNextPoint(c); p && p != A && u; p = a.getNextPoint(p)) r(p) && ((u = !1), (A = null), (c = null));
+                            var u = true;
+                            for (p = a.getNextPoint(c); p && p != A && u; p = a.getNextPoint(p)) r(p) && ((u = false), (A = null), (c = null));
                         }
-                        var d = !1;
+                        var d = false;
                         p = A = A || a.getFirstChild();
                         h._beginBlockChanges([o._Change.BeforeChildInsert, o._Change.AfterChildInsert]);
                         try {
@@ -1185,8 +1185,8 @@ module.exports = function (e, t, i) {
                                 var f = a.getIndexOfChild(p),
                                     y = h.getIndexOfChild(g);
                                 ((this._sourceIndexToPreviewIndex[f] = y),
-                                    p == c && (d = !0),
-                                    ((p = a.getNextPoint(p)) && p != A) || (d = !0));
+                                    p == c && (d = true),
+                                    ((p = a.getNextPoint(p)) && p != A) || (d = true));
                             }
                         } finally {
                             h._endBlockChanges([o._Change.BeforeChildInsert, o._Change.AfterChildInsert]);
@@ -1198,7 +1198,7 @@ module.exports = function (e, t, i) {
                         ]),
                             A.getProperty("ah") || (c && c.getProperty("ah"))
                                 ? this.extendPreviewToFull()
-                                : this._elementPreview.getProperty("closed") && c && this._elementPreview.setProperty("closed", !1));
+                                : this._elementPreview.getProperty("closed") && c && this._elementPreview.setProperty("closed", false));
                     }
                     return this._elementPreview;
                 }),
@@ -1270,7 +1270,7 @@ module.exports = function (e, t, i) {
                         var h = l.mapPoint(s),
                             A = [t, i],
                             p = [h.getX(), h.getY()];
-                        (("hlx" !== t && "hrx" !== t && "hly" !== i && "hry" !== i) || (A.push("ah"), p.push(!1)), a.setProperties(A, p));
+                        (("hlx" !== t && "hrx" !== t && "hly" !== i && "hry" !== i) || (A.push("ah"), p.push(false)), a.setProperties(A, p));
                     }
                 }),
                 (P.prototype._movePreviewPointShoulders = function (e, t, i) {
@@ -1282,7 +1282,7 @@ module.exports = function (e, t, i) {
                             e.type == P.PartType.LeftShoulder
                                 ? e.point.getLeftShoulderLimitPoint(r)
                                 : e.point.getRightShoulderLimitPoint(r)));
-                    var a = y.getVectorProjection(o.getX(), o.getY(), n.getX(), n.getY(), t.getX(), t.getY(), !0),
+                    var a = y.getVectorProjection(o.getX(), o.getY(), n.getX(), n.getY(), t.getX(), t.getY(), true),
                         s = y.ptDist(a.getX(), a.getY(), o.getX(), o.getY()),
                         l = this.getPathPointPreview(e.point);
                     if (i) {
@@ -1319,10 +1319,10 @@ module.exports = function (e, t, i) {
                     for (var t, i = [], n = 0; n < e.length; ++n)
                         if (e[n].type != P.PartType.Point) i.push(e[n]);
                         else {
-                            t = !0;
+                            t = true;
                             for (var r = 0; r < e.length; ++r)
                                 if (e[r].type == P.PartType.Segment && (e[n].point == e[r].apLeft || e[n].point == e[r].apRight)) {
-                                    t = !1;
+                                    t = false;
                                     break;
                                 }
                             t && i.push(e[n]);
@@ -1343,14 +1343,14 @@ module.exports = function (e, t, i) {
                         t = e && e.getBorderLayers();
                     t &&
                         t.forEach((e) => {
-                            e.setProperty("_ba", B.BorderAlignment.Center);
+                            e.setProperty("_ba", GStylable.BorderAlignment.Center);
                         });
                 }),
                 (P.prototype._afterInsert = function (e) {
-                    e.node instanceof B.BorderPaintLayer && this._handleFinishDrawing();
+                    e.node instanceof GStylable.BorderPaintLayer && this._handleFinishDrawing();
                 }),
                 (P.prototype.toString = function () {
                     return "[Object GPathEditor]";
                 }),
-                (e.exports = P));
+                (module.exports = P));
         };

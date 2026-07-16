@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(0);
-            e.exports = function (e) {
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0);
+            module.exports = function (e) {
                 ((e.PathNumber = function (t, i, n) {
                     e.String.call(this, t, n(i.pathNumber));
                 }),
-                    n.inherit(e.PathNumber, e.String));
+                    IsFiniteNonNegativeNumber.inherit(e.PathNumber, e.String));
             };
         };

@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(4), i(32), i(38), i(33));
-            const n = i(171),
-                r = i(375),
-                o = i(170),
-                a = i(254);
+            (require(4), require(32), require(38), require(33));
+            const n = require(171),
+                r = require(375),
+                o = require(170),
+                a = require(254);
             class s {
                 static get FooterInfoType() {
                     return {
@@ -49,7 +49,7 @@ module.exports = function (e, t, i) {
                     };
                 }
                 constructor(e) {
-                    let { page: t, content: i, title: n, action: r, cmd: a = {}, closeable: s = !0, withFooter: l = !0 } = e;
+                    let { page: t, content: i, title: n, action: r, cmd: a = {}, closeable: s = true, withFooter: l = true } = e;
                     ((this._page = t),
                         (this._content = i),
                         (this._title = n || o.getValue("GOfferDialogV1", "text.offerdialog-v1-default-title")),
@@ -171,5 +171,5 @@ module.exports = function (e, t, i) {
                     return this._ui.dialog;
                 }
             }
-            e.exports = s;
+            module.exports = s;
         };

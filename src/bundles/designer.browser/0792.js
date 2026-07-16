@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         (function (t, o, i) {
             var a;
             ((a = function () {
@@ -6,14 +6,14 @@ module.exports = function (e, t, n) {
                     var t = {};
                     function n(o) {
                         if (t[o]) return t[o].exports;
-                        var i = (t[o] = { i: o, l: !1, exports: {} });
-                        return (e[o].call(i.exports, i, i.exports, n), (i.l = !0), i.exports);
+                        var i = (t[o] = { i: o, l: false, exports: {} });
+                        return (e[o].call(i.exports, i, i.exports, n), (i.l = true), i.exports);
                     }
                     return (
                         (n.m = e),
                         (n.c = t),
                         (n.d = function (e, t, o) {
-                            n.o(e, t) || Object.defineProperty(e, t, { enumerable: !0, get: o });
+                            n.o(e, t) || Object.defineProperty(e, t, { enumerable: true, get: o });
                         }),
                         (n.r = function (e) {
                             ("undefined" != typeof Symbol &&
@@ -21,7 +21,7 @@ module.exports = function (e, t, n) {
                                 Object.defineProperty(e, Symbol.toStringTag, {
                                     value: "Module",
                                 }),
-                                Object.defineProperty(e, "__esModule", { value: !0 }));
+                                Object.defineProperty(e, "__esModule", { value: true }));
                         }),
                         (n.t = function (e, t) {
                             if ((1 & t && (e = n(e)), 8 & t)) return e;
@@ -30,7 +30,7 @@ module.exports = function (e, t, n) {
                             if (
                                 (n.r(o),
                                 Object.defineProperty(o, "default", {
-                                    enumerable: !0,
+                                    enumerable: true,
                                     value: e,
                                 }),
                                 2 & t && "string" != typeof e)
@@ -131,7 +131,7 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, n) {
                         "use strict";
-                        (Object.defineProperty(t, "__esModule", { value: !0 }),
+                        (Object.defineProperty(t, "__esModule", { value: true }),
                             (t.toRomanNumerals = function (e) {
                                 var t = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
                                 d(Number.isInteger(e) && e > 0, "The number should be a positive integer.");
@@ -178,7 +178,7 @@ module.exports = function (e, t, n) {
                             }),
                             (t.createPromiseCapability = function () {
                                 var e = Object.create(null),
-                                    t = !1;
+                                    t = false;
                                 return (
                                     Object.defineProperty(e, "settled", {
                                         get: function () {
@@ -187,10 +187,10 @@ module.exports = function (e, t, n) {
                                     }),
                                     (e.promise = new Promise(function (n, o) {
                                         ((e.resolve = function (e) {
-                                            ((t = !0), n(e));
+                                            ((t = true), n(e));
                                         }),
                                             (e.reject = function (e) {
-                                                ((t = !0), o(e));
+                                                ((t = true), o(e));
                                             }));
                                     })),
                                     e
@@ -244,8 +244,8 @@ module.exports = function (e, t, n) {
                                 return "boolean" == typeof e;
                             }),
                             (t.isEmptyObj = function (e) {
-                                for (var t in e) return !1;
-                                return !0;
+                                for (var t in e) return false;
+                                return true;
                             }),
                             (t.isNum = function (e) {
                                 return "number" == typeof e;
@@ -259,9 +259,9 @@ module.exports = function (e, t, n) {
                             (t.isSameOrigin = function (e, t) {
                                 try {
                                     var n = new i.URL(e);
-                                    if (!n.origin || "null" === n.origin) return !1;
+                                    if (!n.origin || "null" === n.origin) return false;
                                 } catch (e) {
-                                    return !1;
+                                    return false;
                                 }
                                 var o = new i.URL(t, n);
                                 return n.origin === o.origin;
@@ -272,16 +272,16 @@ module.exports = function (e, t, n) {
                                     var n = t ? new i.URL(e, t) : new i.URL(e);
                                     if (
                                         (function (e) {
-                                            if (!e) return !1;
+                                            if (!e) return false;
                                             switch (e.protocol) {
                                                 case "http:":
                                                 case "https:":
                                                 case "ftp:":
                                                 case "mailto:":
                                                 case "tel:":
-                                                    return !0;
+                                                    return true;
                                                 default:
-                                                    return !1;
+                                                    return false;
                                             }
                                         })(n)
                                     )
@@ -295,9 +295,9 @@ module.exports = function (e, t, n) {
                             }),
                             (t.isEvalSupported = function () {
                                 try {
-                                    return (new Function(""), !0);
+                                    return (new Function(""), true);
                                 } catch (e) {
-                                    return !1;
+                                    return false;
                                 }
                             }),
                             (t.log2 = function (e) {
@@ -324,9 +324,9 @@ module.exports = function (e, t, n) {
                                 return (
                                     Object.defineProperty(e, t, {
                                         value: n,
-                                        enumerable: !0,
-                                        configurable: !0,
-                                        writable: !1,
+                                        enumerable: true,
+                                        configurable: true,
+                                        writable: false,
                                     }),
                                     n
                                 );
@@ -357,13 +357,13 @@ module.exports = function (e, t, n) {
                             (t.warn = l),
                             (t.unreachable = c),
                             Object.defineProperty(t, "ReadableStream", {
-                                enumerable: !0,
+                                enumerable: true,
                                 get: function () {
                                     return o.ReadableStream;
                                 },
                             }),
                             Object.defineProperty(t, "URL", {
-                                enumerable: !0,
+                                enumerable: true,
                                 get: function () {
                                     return i.URL;
                                 },
@@ -918,7 +918,7 @@ module.exports = function (e, t, n) {
                         }
                         var a = o(3);
                         if (!a._pdfjsCompatibilityChecked) {
-                            a._pdfjsCompatibilityChecked = !0;
+                            a._pdfjsCompatibilityChecked = true;
                             var r = o(4),
                                 s =
                                     "object" === ("undefined" == typeof window ? "undefined" : i(window)) &&
@@ -943,7 +943,7 @@ module.exports = function (e, t, n) {
                                         var e = document.createElement("div");
                                         if (
                                             (e.classList.add("testOne", "testTwo"),
-                                            !0 !== e.classList.contains("testOne") || !0 !== e.classList.contains("testTwo"))
+                                            true !== e.classList.contains("testOne") || true !== e.classList.contains("testTwo"))
                                         ) {
                                             var t = DOMTokenList.prototype.add,
                                                 n = DOMTokenList.prototype.remove;
@@ -966,7 +966,7 @@ module.exports = function (e, t, n) {
                                 })(),
                                 s &&
                                     !r() &&
-                                    !1 !== document.createElement("div").classList.toggle("test", 0) &&
+                                    false !== document.createElement("div").classList.toggle("test", 0) &&
                                     (DOMTokenList.prototype.toggle = function (e) {
                                         var t = arguments.length > 1 ? !!arguments[1] : !this.contains(e);
                                         return (this[t ? "add" : "remove"](e), t);
@@ -1112,7 +1112,7 @@ module.exports = function (e, t, n) {
                         t.f = n(15)
                             ? Object.defineProperty
                             : function (e, t, n) {
-                                  if ((o(e), (t = a(t, !0)), o(n), i))
+                                  if ((o(e), (t = a(t, true)), o(n), i))
                                       try {
                                           return r(e, t, n);
                                       } catch (e) {}
@@ -1180,7 +1180,7 @@ module.exports = function (e, t, n) {
                             try {
                                 return !!e();
                             } catch (e) {
-                                return !0;
+                                return true;
                             }
                         };
                     },
@@ -1350,7 +1350,7 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, n) {
                         "use strict";
-                        e.exports = !1;
+                        e.exports = false;
                     },
                     function (e, t, n) {
                         "use strict";
@@ -1368,10 +1368,10 @@ module.exports = function (e, t, n) {
                                 "/./"[e](t);
                             } catch (n) {
                                 try {
-                                    return ((t[o] = !1), !"/./"[e](t));
+                                    return ((t[o] = false), !"/./"[e](t));
                                 } catch (e) {}
                             }
-                            return !0;
+                            return true;
                         };
                     },
                     function (e, t, n) {
@@ -1416,7 +1416,7 @@ module.exports = function (e, t, n) {
                     function (e, t, n) {
                         "use strict";
                         var o = n(7),
-                            i = n(41)(!0);
+                            i = n(41)(true);
                         (o(o.P, "Array", {
                             includes: function (e) {
                                 return i(this, e, arguments.length > 1 ? arguments[1] : void 0);
@@ -1436,7 +1436,7 @@ module.exports = function (e, t, n) {
                                     c = i(l.length),
                                     d = a(r, c);
                                 if (e && n != n) {
-                                    for (; c > d; ) if ((s = l[d++]) != s) return !0;
+                                    for (; c > d; ) if ((s = l[d++]) != s) return true;
                                 } else for (; c > d; d++) if ((e || d in l) && l[d] === n) return e || d || 0;
                                 return !e && -1;
                             };
@@ -1474,7 +1474,7 @@ module.exports = function (e, t, n) {
                             i = Array.prototype;
                         (null == i[o] && n(10)(i, o, {}),
                             (e.exports = function (e) {
-                                i[o][e] = !0;
+                                i[o][e] = true;
                             }));
                     },
                     function (e, t, n) {
@@ -1483,7 +1483,7 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, n) {
                         "use strict";
-                        var o = n(48)(!0);
+                        var o = n(48)(true);
                         n(49)(
                             String,
                             "String",
@@ -1495,8 +1495,8 @@ module.exports = function (e, t, n) {
                                     t = this._t,
                                     n = this._i;
                                 return n >= t.length
-                                    ? { value: void 0, done: !0 }
-                                    : ((e = o(t, n)), (this._i += e.length), { value: e, done: !1 });
+                                    ? { value: void 0, done: true }
+                                    : ((e = o(t, n)), (this._i += e.length), { value: e, done: false });
                             }
                         );
                     },
@@ -1564,7 +1564,7 @@ module.exports = function (e, t, n) {
                                 },
                                 C = t + " Iterator",
                                 x = "values" == f,
-                                S = !1,
+                                S = false,
                                 E = e.prototype,
                                 A = E[u] || E["@@iterator"] || (f && E[f]),
                                 T = A || w(f),
@@ -1574,11 +1574,11 @@ module.exports = function (e, t, n) {
                                 (P &&
                                     (b = d(P.call(new e()))) !== Object.prototype &&
                                     b.next &&
-                                    (c(b, C, !0), o || "function" == typeof b[u] || r(b, u, g)),
+                                    (c(b, C, true), o || "function" == typeof b[u] || r(b, u, g)),
                                 x &&
                                     A &&
                                     "values" !== A.name &&
-                                    ((S = !0),
+                                    ((S = true),
                                     (T = function () {
                                         return A.call(this);
                                     })),
@@ -1679,7 +1679,7 @@ module.exports = function (e, t, n) {
                         "use strict";
                         var o = n(21),
                             i = n(42),
-                            a = n(41)(!1),
+                            a = n(41)(false),
                             r = n(56)("IE_PROTO");
                         e.exports = function (e, t) {
                             var n,
@@ -1716,7 +1716,7 @@ module.exports = function (e, t, n) {
                             i = n(21),
                             a = n(30)("toStringTag");
                         e.exports = function (e, t, n) {
-                            e && !i((e = n ? e : e.prototype), a) && o(e, a, { configurable: !0, value: t });
+                            e && !i((e = n ? e : e.prototype), a) && o(e, a, { configurable: true, value: t });
                         };
                     },
                     function (e, t, n) {
@@ -1781,7 +1781,7 @@ module.exports = function (e, t, n) {
                                         for (n = new g((t = l(p.length))); t > y; y++) c(n, y, m ? f(p[y], y) : p[y]);
                                     else
                                         for (u = v.call(p), n = new g(); !(i = u.next()).done; y++)
-                                            c(n, y, m ? r(u, f, [i.value, y], !0) : i.value);
+                                            c(n, y, m ? r(u, f, [i.value, y], true) : i.value);
                                     return ((n.length = y), n);
                                 },
                             }
@@ -1859,24 +1859,24 @@ module.exports = function (e, t, n) {
                     function (e, t, n) {
                         "use strict";
                         var o = n(30)("iterator"),
-                            i = !1;
+                            i = false;
                         try {
                             var a = [7][o]();
                             ((a.return = function () {
-                                i = !0;
+                                i = true;
                             }),
                                 Array.from(a, function () {
                                     throw 2;
                                 }));
                         } catch (e) {}
                         e.exports = function (e, t) {
-                            if (!t && !i) return !1;
-                            var n = !1;
+                            if (!t && !i) return false;
+                            var n = false;
                             try {
                                 var a = [7],
                                     r = a[o]();
                                 ((r.next = function () {
-                                    return { done: (n = !0) };
+                                    return { done: (n = true) };
                                 }),
                                     (a[o] = function () {
                                         return r;
@@ -1993,7 +1993,7 @@ module.exports = function (e, t, n) {
                                     function () {
                                         return "[object " + o(this) + "]";
                                     },
-                                    !0
+                                    true
                                 ));
                     },
                     function (e, t, n) {
@@ -2010,37 +2010,37 @@ module.exports = function (e, t, n) {
                                 u = c("toStringTag"),
                                 p = l.Array,
                                 g = {
-                                    CSSRuleList: !0,
-                                    CSSStyleDeclaration: !1,
-                                    CSSValueList: !1,
-                                    ClientRectList: !1,
-                                    DOMRectList: !1,
-                                    DOMStringList: !1,
-                                    DOMTokenList: !0,
-                                    DataTransferItemList: !1,
-                                    FileList: !1,
-                                    HTMLAllCollection: !1,
-                                    HTMLCollection: !1,
-                                    HTMLFormElement: !1,
-                                    HTMLSelectElement: !1,
-                                    MediaList: !0,
-                                    MimeTypeArray: !1,
-                                    NamedNodeMap: !1,
-                                    NodeList: !0,
-                                    PaintRequestList: !1,
-                                    Plugin: !1,
-                                    PluginArray: !1,
-                                    SVGLengthList: !1,
-                                    SVGNumberList: !1,
-                                    SVGPathSegList: !1,
-                                    SVGPointList: !1,
-                                    SVGStringList: !1,
-                                    SVGTransformList: !1,
-                                    SourceBufferList: !1,
-                                    StyleSheetList: !0,
-                                    TextTrackCueList: !1,
-                                    TextTrackList: !1,
-                                    TouchList: !1,
+                                    CSSRuleList: true,
+                                    CSSStyleDeclaration: false,
+                                    CSSValueList: false,
+                                    ClientRectList: false,
+                                    DOMRectList: false,
+                                    DOMStringList: false,
+                                    DOMTokenList: true,
+                                    DataTransferItemList: false,
+                                    FileList: false,
+                                    HTMLAllCollection: false,
+                                    HTMLCollection: false,
+                                    HTMLFormElement: false,
+                                    HTMLSelectElement: false,
+                                    MediaList: true,
+                                    MimeTypeArray: false,
+                                    NamedNodeMap: false,
+                                    NodeList: true,
+                                    PaintRequestList: false,
+                                    Plugin: false,
+                                    PluginArray: false,
+                                    SVGLengthList: false,
+                                    SVGNumberList: false,
+                                    SVGPathSegList: false,
+                                    SVGPointList: false,
+                                    SVGStringList: false,
+                                    SVGTransformList: false,
+                                    SourceBufferList: false,
+                                    StyleSheetList: true,
+                                    TextTrackCueList: false,
+                                    TextTrackList: false,
+                                    TouchList: false,
                                 },
                                 h = i(g),
                                 f = 0;
@@ -2052,7 +2052,7 @@ module.exports = function (e, t, n) {
                                 v = g[y],
                                 _ = r[y],
                                 b = _ && _.prototype;
-                            if (b && (b[d] || s(b, d, p), b[u] || s(b, u, y), (l[y] = p), v)) for (m in o) b[m] || a(b, m, o[m], !0);
+                            if (b && (b[d] || s(b, d, p), b[u] || s(b, u, y), (l[y] = p), v)) for (m in o) b[m] || a(b, m, o[m], true);
                         }
                     },
                     function (e, t, n) {
@@ -2138,7 +2138,7 @@ module.exports = function (e, t, n) {
                             },
                             k = function (e, t) {
                                 if (!e._n) {
-                                    e._n = !0;
+                                    e._n = true;
                                     var n = e._c;
                                     v(function () {
                                         for (
@@ -2156,7 +2156,7 @@ module.exports = function (e, t, n) {
                                                     try {
                                                         s
                                                             ? (i || (2 == e._h && R(e), (e._h = 1)),
-                                                              !0 === s ? (n = o) : (d && d.enter(), (n = s(o)), d && (d.exit(), (r = !0))),
+                                                              true === s ? (n = o) : (d && d.enter(), (n = s(o)), d && (d.exit(), (r = true))),
                                                               n === t.promise
                                                                   ? c(x("Promise-chain cycle"))
                                                                   : (a = I(n))
@@ -2171,7 +2171,7 @@ module.exports = function (e, t, n) {
 
                                         )
                                             r(n[a++]);
-                                        ((e._c = []), (e._n = !1), t && !e._h && O(e));
+                                        ((e._c = []), (e._n = false), t && !e._h && O(e));
                                     });
                                 }
                             },
@@ -2209,27 +2209,27 @@ module.exports = function (e, t, n) {
                             },
                             M = function (e) {
                                 var t = this;
-                                t._d || ((t._d = !0), ((t = t._w || t)._v = e), (t._s = 2), t._a || (t._a = t._c.slice()), k(t, !0));
+                                t._d || ((t._d = true), ((t = t._w || t)._v = e), (t._s = 2), t._a || (t._a = t._c.slice()), k(t, true));
                             },
                             N = function e(t) {
                                 var n,
                                     o = this;
                                 if (!o._d) {
-                                    ((o._d = !0), (o = o._w || o));
+                                    ((o._d = true), (o = o._w || o));
                                     try {
                                         if (o === t) throw x("Promise can't be resolved itself");
                                         (n = I(t))
                                             ? v(function () {
-                                                  var i = { _w: o, _d: !1 };
+                                                  var i = { _w: o, _d: false };
                                                   try {
                                                       n.call(t, c(e, i, 1), c(M, i, 1));
                                                   } catch (e) {
                                                       M.call(i, e);
                                                   }
                                               })
-                                            : ((o._v = t), (o._s = 1), k(o, !1));
+                                            : ((o._v = t), (o._s = 1), k(o, false));
                                     } catch (e) {
-                                        M.call({ _w: o, _d: !1 }, e);
+                                        M.call({ _w: o, _d: false }, e);
                                     }
                                 }
                             };
@@ -2246,10 +2246,10 @@ module.exports = function (e, t, n) {
                                 ((this._c = []),
                                     (this._a = void 0),
                                     (this._s = 0),
-                                    (this._d = !1),
+                                    (this._d = false),
                                     (this._v = void 0),
                                     (this._h = 0),
-                                    (this._n = !1));
+                                    (this._n = false));
                             }).prototype = n(97)(T.prototype, {
                                 then: function (e, t) {
                                     var n = D(m(this, T));
@@ -2259,7 +2259,7 @@ module.exports = function (e, t, n) {
                                         (n.domain = G ? S.domain : void 0),
                                         this._c.push(n),
                                         this._a && this._a.push(n),
-                                        this._s && k(this, !1),
+                                        this._s && k(this, false),
                                         n.promise
                                     );
                                 },
@@ -2310,13 +2310,13 @@ module.exports = function (e, t, n) {
                                                 var n = [],
                                                     a = 0,
                                                     r = 1;
-                                                (f(e, !1, function (e) {
+                                                (f(e, false, function (e) {
                                                     var s = a++,
-                                                        l = !1;
+                                                        l = false;
                                                     (n.push(void 0),
                                                         r++,
                                                         t.resolve(e).then(function (e) {
-                                                            l || ((l = !0), (n[s] = e), --r || o(n));
+                                                            l || ((l = true), (n[s] = e), --r || o(n));
                                                         }, i));
                                                 }),
                                                     --r || o(n));
@@ -2328,7 +2328,7 @@ module.exports = function (e, t, n) {
                                             n = D(t),
                                             o = n.reject,
                                             i = b(function () {
-                                                f(e, !1, function (e) {
+                                                f(e, false, function (e) {
                                                     t.resolve(e).then(n.resolve, o);
                                                 });
                                             });
@@ -2440,7 +2440,7 @@ module.exports = function (e, t, n) {
                                       ? ((o = function (e) {
                                             d.postMessage(e + "", "*");
                                         }),
-                                        d.addEventListener("message", _, !1))
+                                        d.addEventListener("message", _, false))
                                       : (o =
                                             "onreadystatechange" in c("script")
                                                 ? function (e) {
@@ -2511,9 +2511,9 @@ module.exports = function (e, t, n) {
                                         i.call(o, c);
                                     };
                             else {
-                                var u = !0,
+                                var u = true,
                                     p = document.createTextNode("");
-                                (new a(c).observe(p, { characterData: !0 }),
+                                (new a(c).observe(p, { characterData: true }),
                                     (n = function () {
                                         p.data = u = !u;
                                     }));
@@ -2544,9 +2544,9 @@ module.exports = function (e, t, n) {
                         "use strict";
                         e.exports = function (e) {
                             try {
-                                return { e: !1, v: e() };
+                                return { e: false, v: e() };
                             } catch (e) {
-                                return { e: !0, v: e };
+                                return { e: true, v: e };
                             }
                         };
                     },
@@ -2586,7 +2586,7 @@ module.exports = function (e, t, n) {
                                 t &&
                                 !t[r] &&
                                 i.f(t, r, {
-                                    configurable: !0,
+                                    configurable: true,
                                     get: function () {
                                         return this;
                                     },
@@ -2664,19 +2664,19 @@ module.exports = function (e, t, n) {
                                 get: function (e) {
                                     if (c(e)) {
                                         var t = p(e);
-                                        return !0 === t ? h(u(this, "WeakMap")).get(e) : t ? t[this._i] : void 0;
+                                        return true === t ? h(u(this, "WeakMap")).get(e) : t ? t[this._i] : void 0;
                                     }
                                 },
                                 set: function (e, t) {
                                     return l.def(u(this, "WeakMap"), e, t);
                                 },
                             },
-                            v = (e.exports = n(110)("WeakMap", m, y, l, !0, !0));
+                            v = (e.exports = n(110)("WeakMap", m, y, l, true, true));
                         d(function () {
                             return 7 != new v().set((Object.freeze || Object)(f), 7).get(f);
                         }) &&
                             (s((o = l.getConstructor(m, "WeakMap")).prototype, y),
-                            (r.NEED = !0),
+                            (r.NEED = true),
                             i(["delete", "has", "get", "set"], function (e) {
                                 var t = v.prototype,
                                     n = t[e];
@@ -2723,7 +2723,7 @@ module.exports = function (e, t, n) {
                                         else if (m)
                                             switch (e) {
                                                 case 3:
-                                                    return !0;
+                                                    return true;
                                                 case 5:
                                                     return f;
                                                 case 6:
@@ -2731,7 +2731,7 @@ module.exports = function (e, t, n) {
                                                 case 2:
                                                     C.push(f);
                                             }
-                                        else if (d) return !1;
+                                        else if (d) return false;
                                 return u ? -1 : c || d ? d : C;
                             };
                         };
@@ -2789,7 +2789,7 @@ module.exports = function (e, t, n) {
                             c =
                                 Object.isExtensible ||
                                 function () {
-                                    return !0;
+                                    return true;
                                 },
                             d = !n(16)(function () {
                                 return c(Object.preventExtensions({}));
@@ -2799,7 +2799,7 @@ module.exports = function (e, t, n) {
                             },
                             p = (e.exports = {
                                 KEY: i,
-                                NEED: !1,
+                                NEED: false,
                                 fastKey: function (e, t) {
                                     if (!a(e)) return "symbol" == o(e) ? e : ("string" == typeof e ? "S" : "P") + e;
                                     if (!r(e, i)) {
@@ -2811,8 +2811,8 @@ module.exports = function (e, t, n) {
                                 },
                                 getWeak: function (e, t) {
                                     if (!r(e, i)) {
-                                        if (!c(e)) return !0;
-                                        if (!t) return !1;
+                                        if (!c(e)) return true;
+                                        if (!t) return false;
                                         u(e);
                                     }
                                     return e[i].w;
@@ -2874,22 +2874,22 @@ module.exports = function (e, t, n) {
                                     return (
                                         o(c.prototype, {
                                             delete: function (e) {
-                                                if (!r(e)) return !1;
+                                                if (!r(e)) return false;
                                                 var n = i(e);
-                                                return !0 === n ? f(u(this, t)).delete(e) : n && d(n, this._i) && delete n[this._i];
+                                                return true === n ? f(u(this, t)).delete(e) : n && d(n, this._i) && delete n[this._i];
                                             },
                                             has: function (e) {
-                                                if (!r(e)) return !1;
+                                                if (!r(e)) return false;
                                                 var n = i(e);
-                                                return !0 === n ? f(u(this, t)).has(e) : n && d(n, this._i);
+                                                return true === n ? f(u(this, t)).has(e) : n && d(n, this._i);
                                             },
                                         }),
                                         c
                                     );
                                 },
                                 def: function (e, t, n) {
-                                    var o = i(a(t), !0);
-                                    return (!0 === o ? f(e).set(t, n) : (o[e._i] = n), e);
+                                    var o = i(a(t), true);
+                                    return (true === o ? f(e).set(t, n) : (o[e._i] = n), e);
                                 },
                                 ufstore: f,
                             }));
@@ -2976,7 +2976,7 @@ module.exports = function (e, t, n) {
                                     (A || G) && (x("delete"), x("has"), m && x("get")),
                                     (G || E) && x(b),
                                     y && w.clear && delete w.clear);
-                            } else ((_ = f.getConstructor(t, e, m, b)), r(_.prototype, n), (s.NEED = !0));
+                            } else ((_ = f.getConstructor(t, e, m, b)), r(_.prototype, n), (s.NEED = true));
                             return (g(_, e), (C[e] = _), i(i.G + i.W + i.F * (_ != v), C), y || f.setStrong(_, e, m), _);
                         };
                     },
@@ -3006,12 +3006,12 @@ module.exports = function (e, t, n) {
                                               ((o = n(23)(Function.call, n(113).f(Object.prototype, "__proto__").set, 2))(e, []),
                                                   (t = !(e instanceof Array)));
                                           } catch (e) {
-                                              t = !0;
+                                              t = true;
                                           }
                                           return function (e, n) {
                                               return (a(e, n), t ? (e.__proto__ = n) : o(e, n), e);
                                           };
-                                      })({}, !1)
+                                      })({}, false)
                                     : void 0),
                             check: a,
                         };
@@ -3028,7 +3028,7 @@ module.exports = function (e, t, n) {
                         t.f = n(15)
                             ? c
                             : function (e, t) {
-                                  if (((e = a(e)), (t = r(t, !0)), l))
+                                  if (((e = a(e)), (t = r(t, true)), l))
                                       try {
                                           return c(e, t);
                                       } catch (e) {}
@@ -3078,10 +3078,10 @@ module.exports = function (e, t, n) {
                                               t
                                                   ? ((o = 0),
                                                     (s = a(l, arguments[2], 2)),
-                                                    r(e, !1, function (e) {
+                                                    r(e, false, function (e) {
                                                         n.push(s(e, o++));
                                                     }))
-                                                  : r(e, !1, n.push, n),
+                                                  : r(e, false, n.push, n),
                                               new this(n))
                                     );
                                 },
@@ -3105,12 +3105,12 @@ module.exports = function (e, t, n) {
                             },
                             {
                                 add: function (e) {
-                                    return o.def(i(this, "WeakSet"), e, !0);
+                                    return o.def(i(this, "WeakSet"), e, true);
                                 },
                             },
                             o,
-                            !1,
-                            !0
+                            false,
+                            true
                         );
                     },
                     function (e, t, n) {
@@ -3128,7 +3128,7 @@ module.exports = function (e, t, n) {
                     function (e, t, n) {
                         "use strict";
                         var o = n(7),
-                            i = n(48)(!1);
+                            i = n(48)(false);
                         o(o.P, "String", {
                             codePointAt: function (e) {
                                 return i(this, e);
@@ -3249,12 +3249,12 @@ module.exports = function (e, t, n) {
                                 return (
                                     e === $ && q(U, t, n),
                                     _(e),
-                                    (t = C(t, !0)),
+                                    (t = C(t, true)),
                                     _(n),
                                     a(B, t)
                                         ? (n.enumerable
-                                              ? (a(e, F) && e[F][t] && (e[F][t] = !1), (n = S(n, { enumerable: x(0, !1) })))
-                                              : (a(e, F) || D(e, F, x(1, {})), (e[F][t] = !0)),
+                                              ? (a(e, F) && e[F][t] && (e[F][t] = false), (n = S(n, { enumerable: x(0, false) })))
+                                              : (a(e, F) || D(e, F, x(1, {})), (e[F][t] = true)),
                                           H(e, t, n))
                                         : D(e, t, n)
                                 );
@@ -3265,16 +3265,16 @@ module.exports = function (e, t, n) {
                                 return e;
                             },
                             X = function (e) {
-                                var t = M.call(this, (e = C(e, !0)));
+                                var t = M.call(this, (e = C(e, true)));
                                 return (
                                     !(this === $ && a(B, e) && !a(U, e)) &&
                                     (!(t || !a(this, e) || !a(B, e) || (a(this, F) && this[F][e])) || t)
                                 );
                             },
                             Q = function (e, t) {
-                                if (((e = w(e)), (t = C(t, !0)), e !== $ || !a(B, t) || a(U, t))) {
+                                if (((e = w(e)), (t = C(t, true)), e !== $ || !a(B, t) || a(U, t))) {
                                     var n = P(e, t);
-                                    return (!n || !a(B, t) || (a(e, F) && e[F][t]) || (n.enumerable = !0), n);
+                                    return (!n || !a(B, t) || (a(e, F) && e[F][t]) || (n.enumerable = true), n);
                                 }
                             },
                             J = function (e) {
@@ -3293,10 +3293,10 @@ module.exports = function (e, t, n) {
                                     var e = g(arguments.length > 0 ? arguments[0] : void 0),
                                         t = function t(n) {
                                             (this === $ && t.call(U, n),
-                                                a(this, F) && a(this[F], e) && (this[F][e] = !1),
+                                                a(this, F) && a(this[F], e) && (this[F][e] = false),
                                                 H(this, e, x(1, n)));
                                         };
-                                    return (r && V && H($, e, { configurable: !0, set: t }), W(e));
+                                    return (r && V && H($, e, { configurable: true, set: t }), W(e));
                                 }).prototype,
                                 "toString",
                                 function () {
@@ -3308,7 +3308,7 @@ module.exports = function (e, t, n) {
                             (n(132).f = E.f = J),
                             (n(73).f = X),
                             (n(72).f = Z),
-                            r && !n(32) && l($, "propertyIsEnumerable", X, !0),
+                            r && !n(32) && l($, "propertyIsEnumerable", X, true),
                             (f.f = function (e) {
                                 return W(h(e));
                             })),
@@ -3333,10 +3333,10 @@ module.exports = function (e, t, n) {
                                 for (var t in N) if (N[t] === e) return t;
                             },
                             useSetter: function () {
-                                V = !0;
+                                V = true;
                             },
                             useSimple: function () {
-                                V = !1;
+                                V = false;
                             },
                         }),
                             s(s.S + s.F * !j, "Object", {
@@ -3376,8 +3376,8 @@ module.exports = function (e, t, n) {
                                 ),
                             I.prototype[R] || n(10)(I.prototype, R, I.prototype.valueOf),
                             p(I, "Symbol"),
-                            p(Math, "Math", !0),
-                            p(i.JSON, "JSON", !0));
+                            p(Math, "Math", true),
+                            p(i.JSON, "JSON", true));
                     },
                     function (e, t, n) {
                         "use strict";
@@ -3461,7 +3461,7 @@ module.exports = function (e, t, n) {
                             a = n(95);
                         o(o.P + o.F * /Version\/10\.\d+(\.\d+)? Safari\//.test(a), "String", {
                             padStart: function (e) {
-                                return i(this, e, arguments.length > 1 ? arguments[1] : void 0, !0);
+                                return i(this, e, arguments.length > 1 ? arguments[1] : void 0, true);
                             },
                         });
                     },
@@ -3505,7 +3505,7 @@ module.exports = function (e, t, n) {
                             a = n(95);
                         o(o.P + o.F * /Version\/10\.\d+(\.\d+)? Safari\//.test(a), "String", {
                             padEnd: function (e) {
-                                return i(this, e, arguments.length > 1 ? arguments[1] : void 0, !1);
+                                return i(this, e, arguments.length > 1 ? arguments[1] : void 0, false);
                             },
                         });
                     },
@@ -3516,7 +3516,7 @@ module.exports = function (e, t, n) {
                     function (e, t, n) {
                         "use strict";
                         var o = n(7),
-                            i = n(141)(!1);
+                            i = n(141)(false);
                         o(o.S, "Object", {
                             values: function (e) {
                                 return i(e);
@@ -3538,7 +3538,7 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, n) {
                         "use strict";
-                        var o = !1;
+                        var o = false;
                         if ("undefined" != typeof ReadableStream)
                             try {
                                 (new ReadableStream({
@@ -3546,7 +3546,7 @@ module.exports = function (e, t, n) {
                                         e.close();
                                     },
                                 }),
-                                    (o = !0));
+                                    (o = true));
                             } catch (e) {}
                         t.ReadableStream = o ? ReadableStream : n(143).ReadableStream;
                     },
@@ -3572,8 +3572,8 @@ module.exports = function (e, t, n) {
                                 var t = {};
                                 function n(o) {
                                     if (t[o]) return t[o].exports;
-                                    var i = (t[o] = { i: o, l: !1, exports: {} });
-                                    return (e[o].call(i.exports, i, i.exports, n), (i.l = !0), i.exports);
+                                    var i = (t[o] = { i: o, l: false, exports: {} });
+                                    return (e[o].call(i.exports, i, i.exports, n), (i.l = true), i.exports);
                                 }
                                 return (
                                     (n.m = e),
@@ -3584,8 +3584,8 @@ module.exports = function (e, t, n) {
                                     (n.d = function (e, t, o) {
                                         n.o(e, t) ||
                                             Object.defineProperty(e, t, {
-                                                configurable: !1,
-                                                enumerable: !0,
+                                                configurable: false,
+                                                enumerable: true,
                                                 get: o,
                                             });
                                     }),
@@ -3636,9 +3636,9 @@ module.exports = function (e, t, n) {
                                             (a(t.typeIsObject(e)),
                                                 Object.defineProperty(e, n, {
                                                     value: o,
-                                                    writable: !0,
-                                                    enumerable: !0,
-                                                    configurable: !0,
+                                                    writable: true,
+                                                    enumerable: true,
+                                                    configurable: true,
                                                 }));
                                         }),
                                         (t.createArrayFromList = function (e) {
@@ -3653,15 +3653,15 @@ module.exports = function (e, t, n) {
                                             return (
                                                 Object.defineProperty(n, "value", {
                                                     value: e,
-                                                    enumerable: !0,
-                                                    writable: !0,
-                                                    configurable: !0,
+                                                    enumerable: true,
+                                                    writable: true,
+                                                    configurable: true,
                                                 }),
                                                 Object.defineProperty(n, "done", {
                                                     value: t,
-                                                    enumerable: !0,
-                                                    writable: !0,
-                                                    configurable: !0,
+                                                    enumerable: true,
+                                                    writable: true,
+                                                    configurable: true,
                                                 }),
                                                 n
                                             );
@@ -3741,9 +3741,9 @@ module.exports = function (e, t, n) {
                                         function e(e, t) {
                                             for (var n = 0; n < t.length; n++) {
                                                 var o = t[n];
-                                                ((o.enumerable = o.enumerable || !1),
-                                                    (o.configurable = !0),
-                                                    "value" in o && (o.writable = !0),
+                                                ((o.enumerable = o.enumerable || false),
+                                                    (o.configurable = true),
+                                                    "value" in o && (o.writable = true),
                                                     Object.defineProperty(e, o.key, o));
                                             }
                                         }
@@ -3784,7 +3784,7 @@ module.exports = function (e, t, n) {
                                                     (this._closeRequest = void 0),
                                                     (this._inFlightCloseRequest = void 0),
                                                     (this._pendingAbortRequest = void 0),
-                                                    (this._backpressure = !1));
+                                                    (this._backpressure = false));
                                                 var s = t.type;
                                                 if (void 0 !== s) throw new RangeError("Invalid type is specified");
                                                 ((this._writableStreamController = new N(this, t, o, r)),
@@ -3795,9 +3795,9 @@ module.exports = function (e, t, n) {
                                                     {
                                                         key: "abort",
                                                         value: function (e) {
-                                                            return !1 === b(this)
+                                                            return false === b(this)
                                                                 ? Promise.reject(V("abort"))
-                                                                : !0 === w(this)
+                                                                : true === w(this)
                                                                   ? Promise.reject(
                                                                         new TypeError("Cannot abort a stream that already has a writer")
                                                                     )
@@ -3807,14 +3807,14 @@ module.exports = function (e, t, n) {
                                                     {
                                                         key: "getWriter",
                                                         value: function () {
-                                                            if (!1 === b(this)) throw V("getWriter");
+                                                            if (false === b(this)) throw V("getWriter");
                                                             return _(this);
                                                         },
                                                     },
                                                     {
                                                         key: "locked",
                                                         get: function () {
-                                                            if (!1 === b(this)) throw V("locked");
+                                                            if (false === b(this)) throw V("locked");
                                                             return w(this);
                                                         },
                                                     },
@@ -3830,7 +3830,7 @@ module.exports = function (e, t, n) {
                                     }
                                     function w(e) {
                                         return (
-                                            u(!0 === b(e), "IsWritableStreamLocked should only be used on known writable streams"),
+                                            u(true === b(e), "IsWritableStreamLocked should only be used on known writable streams"),
                                             void 0 !== e._writer
                                         );
                                     }
@@ -3841,8 +3841,8 @@ module.exports = function (e, t, n) {
                                         var o = new TypeError("Requested to abort");
                                         if (void 0 !== e._pendingAbortRequest) return Promise.reject(o);
                                         u("writable" === n || "erroring" === n, "state must be writable or erroring");
-                                        var i = !1;
-                                        "erroring" === n && ((i = !0), (t = void 0));
+                                        var i = false;
+                                        "erroring" === n && ((i = true), (t = void 0));
                                         var a = new Promise(function (n, o) {
                                             e._pendingAbortRequest = {
                                                 _resolve: n,
@@ -3851,7 +3851,7 @@ module.exports = function (e, t, n) {
                                                 _wasAlreadyErroring: i,
                                             };
                                         });
-                                        return (!1 === i && S(e, o), a);
+                                        return (false === i && S(e, o), a);
                                     }
                                     function x(e, t) {
                                         var n = e._state;
@@ -3865,18 +3865,18 @@ module.exports = function (e, t, n) {
                                             (e._state = "erroring"),
                                             (e._storedError = t));
                                         var o = e._writer;
-                                        (void 0 !== o && F(o, t), !1 === G(e) && !0 === n._started && E(e));
+                                        (void 0 !== o && F(o, t), false === G(e) && true === n._started && E(e));
                                     }
                                     function E(e) {
                                         (u("erroring" === e._state, "stream._state === erroring"),
-                                            u(!1 === G(e), "WritableStreamHasOperationMarkedInFlight(stream) === false"),
+                                            u(false === G(e), "WritableStreamHasOperationMarkedInFlight(stream) === false"),
                                             (e._state = "errored"),
                                             e._writableStreamController.__errorSteps());
                                         for (var t = e._storedError, n = 0; n < e._writeRequests.length; n++)
                                             e._writeRequests[n]._reject(t);
                                         if (((e._writeRequests = []), void 0 !== e._pendingAbortRequest)) {
                                             var o = e._pendingAbortRequest;
-                                            if (((e._pendingAbortRequest = void 0), !0 === o._wasAlreadyErroring))
+                                            if (((e._pendingAbortRequest = void 0), true === o._wasAlreadyErroring))
                                                 return (o._reject(t), void P(e));
                                             e._writableStreamController.__abortSteps(o._reason).then(
                                                 function () {
@@ -3929,11 +3929,11 @@ module.exports = function (e, t, n) {
                                         void 0 !== t && (q(t, e._storedError), t._closedPromise.catch(function () {}));
                                     }
                                     function D(e, t) {
-                                        (u("writable" === e._state), u(!1 === T(e)));
+                                        (u("writable" === e._state), u(false === T(e)));
                                         var n = e._writer;
                                         (void 0 !== n &&
                                             t !== e._backpressure &&
-                                            (!0 === t
+                                            (true === t
                                                 ? (function (e) {
                                                       (u(void 0 === e._readyPromise_resolve, "writer._readyPromise_resolve === undefined"),
                                                           u(void 0 === e._readyPromise_reject, "writer._readyPromise_reject === undefined"),
@@ -3942,7 +3942,7 @@ module.exports = function (e, t, n) {
                                                           })),
                                                           (e._readyPromiseState = "pending"));
                                                   })(n)
-                                                : (u(!1 === t), Q(n))),
+                                                : (u(false === t), Q(n))),
                                             (e._backpressure = t));
                                     }
                                     e.exports = {
@@ -3956,7 +3956,7 @@ module.exports = function (e, t, n) {
                                             var t = e._ownerWritableStream;
                                             u(void 0 !== t);
                                             var n = t._state;
-                                            return !0 === T(t) || "closed" === n
+                                            return true === T(t) || "closed" === n
                                                 ? Promise.resolve()
                                                 : "errored" === n
                                                   ? Promise.reject(t._storedError)
@@ -3968,11 +3968,11 @@ module.exports = function (e, t, n) {
                                     };
                                     var L = (function () {
                                         function e(t) {
-                                            if ((i(this, e), !1 === b(t)))
+                                            if ((i(this, e), false === b(t)))
                                                 throw new TypeError(
                                                     "WritableStreamDefaultWriter can only be constructed with a WritableStream instance"
                                                 );
-                                            if (!0 === w(t))
+                                            if (true === w(t))
                                                 throw new TypeError(
                                                     "This stream has already been locked for exclusive writing by another writer"
                                                 );
@@ -3980,7 +3980,7 @@ module.exports = function (e, t, n) {
                                             var n,
                                                 o = t._state;
                                             if ("writable" === o)
-                                                (!1 === T(t) && !0 === t._backpressure
+                                                (false === T(t) && true === t._backpressure
                                                     ? (((n = this)._readyPromise = new Promise(function (e, t) {
                                                           ((n._readyPromise_resolve = e), (n._readyPromise_reject = t));
                                                       })),
@@ -4016,7 +4016,7 @@ module.exports = function (e, t, n) {
                                                 {
                                                     key: "abort",
                                                     value: function (e) {
-                                                        return !1 === I(this)
+                                                        return false === I(this)
                                                             ? Promise.reject(H("abort"))
                                                             : void 0 === this._ownerWritableStream
                                                               ? Promise.reject(W("abort"))
@@ -4029,11 +4029,11 @@ module.exports = function (e, t, n) {
                                                 {
                                                     key: "close",
                                                     value: function () {
-                                                        if (!1 === I(this)) return Promise.reject(H("close"));
+                                                        if (false === I(this)) return Promise.reject(H("close"));
                                                         var e = this._ownerWritableStream;
                                                         return void 0 === e
                                                             ? Promise.reject(W("close"))
-                                                            : !0 === T(e)
+                                                            : true === T(e)
                                                               ? Promise.reject(new TypeError("cannot close an already-closing stream"))
                                                               : k(this);
                                                     },
@@ -4041,7 +4041,7 @@ module.exports = function (e, t, n) {
                                                 {
                                                     key: "releaseLock",
                                                     value: function () {
-                                                        if (!1 === I(this)) throw H("releaseLock");
+                                                        if (false === I(this)) throw H("releaseLock");
                                                         var e = this._ownerWritableStream;
                                                         void 0 !== e && (u(void 0 !== e._writer), R(this));
                                                     },
@@ -4049,7 +4049,7 @@ module.exports = function (e, t, n) {
                                                 {
                                                     key: "write",
                                                     value: function (e) {
-                                                        return !1 === I(this)
+                                                        return false === I(this)
                                                             ? Promise.reject(H("write"))
                                                             : void 0 === this._ownerWritableStream
                                                               ? Promise.reject(W("write to"))
@@ -4059,13 +4059,13 @@ module.exports = function (e, t, n) {
                                                 {
                                                     key: "closed",
                                                     get: function () {
-                                                        return !1 === I(this) ? Promise.reject(H("closed")) : this._closedPromise;
+                                                        return false === I(this) ? Promise.reject(H("closed")) : this._closedPromise;
                                                     },
                                                 },
                                                 {
                                                     key: "desiredSize",
                                                     get: function () {
-                                                        if (!1 === I(this)) throw H("desiredSize");
+                                                        if (false === I(this)) throw H("desiredSize");
                                                         if (void 0 === this._ownerWritableStream) throw W("desiredSize");
                                                         return (
                                                             (e = this._ownerWritableStream),
@@ -4081,7 +4081,7 @@ module.exports = function (e, t, n) {
                                                 {
                                                     key: "ready",
                                                     get: function () {
-                                                        return !1 === I(this) ? Promise.reject(H("ready")) : this._readyPromise;
+                                                        return false === I(this) ? Promise.reject(H("ready")) : this._readyPromise;
                                                     },
                                                 },
                                             ]),
@@ -4101,14 +4101,14 @@ module.exports = function (e, t, n) {
                                                     "The stream (in " + n + " state) is not in the writable state and cannot be closed"
                                                 )
                                             );
-                                        (u("writable" === n || "erroring" === n), u(!1 === T(t)));
+                                        (u("writable" === n || "erroring" === n), u(false === T(t)));
                                         var o,
                                             i = new Promise(function (e, n) {
                                                 var o = { _resolve: e, _reject: n };
                                                 t._closeRequest = o;
                                             });
                                         return (
-                                            !0 === t._backpressure && "writable" === n && Q(e),
+                                            true === t._backpressure && "writable" === n && Q(e),
                                             (o = t._writableStreamController),
                                             f(o, "close", 0),
                                             U(o),
@@ -4169,7 +4169,7 @@ module.exports = function (e, t, n) {
                                         if (n !== e._ownerWritableStream) return Promise.reject(W("write to"));
                                         var a = n._state;
                                         if ("errored" === a) return Promise.reject(n._storedError);
-                                        if (!0 === T(n) || "closed" === a)
+                                        if (true === T(n) || "closed" === a)
                                             return Promise.reject(
                                                 new TypeError("The stream is closing or closed and cannot be written to")
                                             );
@@ -4177,7 +4177,7 @@ module.exports = function (e, t, n) {
                                         u("writable" === a);
                                         var r = (function (e) {
                                             return (
-                                                u(!0 === w(e)),
+                                                u(true === w(e)),
                                                 u("writable" === e._state),
                                                 new Promise(function (t, n) {
                                                     var o = { _resolve: t, _reject: n };
@@ -4194,7 +4194,7 @@ module.exports = function (e, t, n) {
                                                     return void $(e, t);
                                                 }
                                                 var i = e._controlledWritableStream;
-                                                if (!1 === T(i) && "writable" === i._state) {
+                                                if (false === T(i) && "writable" === i._state) {
                                                     var a = j(e);
                                                     D(i, a);
                                                 }
@@ -4205,7 +4205,7 @@ module.exports = function (e, t, n) {
                                     }
                                     var N = (function () {
                                         function e(t, n, o, a) {
-                                            if ((i(this, e), !1 === b(t)))
+                                            if ((i(this, e), false === b(t)))
                                                 throw new TypeError(
                                                     "WritableStreamDefaultController can only be constructed with a WritableStream instance"
                                                 );
@@ -4218,7 +4218,7 @@ module.exports = function (e, t, n) {
                                                 (this._queue = void 0),
                                                 (this._queueTotalSize = void 0),
                                                 y(this),
-                                                (this._started = !1));
+                                                (this._started = false));
                                             var r = l(o, a);
                                             ((this._strategySize = r.size), (this._strategyHWM = r.highWaterMark), D(t, j(this)));
                                         }
@@ -4228,7 +4228,7 @@ module.exports = function (e, t, n) {
                                                     key: "error",
                                                     value: function (e) {
                                                         if (
-                                                            !1 ==
+                                                            false ==
                                                             (!!c((t = this)) &&
                                                                 !!Object.prototype.hasOwnProperty.call(t, "_underlyingSink"))
                                                         )
@@ -4261,12 +4261,12 @@ module.exports = function (e, t, n) {
                                                             .then(
                                                                 function () {
                                                                     (u("writable" === n._state || "erroring" === n._state),
-                                                                        (e._started = !0),
+                                                                        (e._started = true),
                                                                         U(e));
                                                                 },
                                                                 function (t) {
                                                                     (u("writable" === n._state || "erroring" === n._state),
-                                                                        (e._started = !0),
+                                                                        (e._started = true),
                                                                         x(n, t));
                                                                 }
                                                             )
@@ -4282,7 +4282,7 @@ module.exports = function (e, t, n) {
                                     }
                                     function U(e) {
                                         var t = e._controlledWritableStream;
-                                        if (!1 !== e._started && void 0 === t._inFlightWriteRequest) {
+                                        if (false !== e._started && void 0 === t._inFlightWriteRequest) {
                                             var n = t._state;
                                             if ("closed" !== n && "errored" !== n)
                                                 if ("erroring" !== n) {
@@ -4350,7 +4350,7 @@ module.exports = function (e, t, n) {
                                                                                   if (
                                                                                       (u("writable" === t || "erroring" === t),
                                                                                       h(e),
-                                                                                      !1 === T(n) && "writable" === t)
+                                                                                      false === T(n) && "writable" === t)
                                                                                   ) {
                                                                                       var o = j(e);
                                                                                       D(n, o);
@@ -4484,9 +4484,9 @@ module.exports = function (e, t, n) {
                                         function e(e, t) {
                                             for (var n = 0; n < t.length; n++) {
                                                 var o = t[n];
-                                                ((o.enumerable = o.enumerable || !1),
-                                                    (o.configurable = !0),
-                                                    "value" in o && (o.writable = !0),
+                                                ((o.enumerable = o.enumerable || false),
+                                                    (o.configurable = true),
+                                                    "value" in o && (o.writable = true),
                                                     Object.defineProperty(e, o.key, o));
                                             }
                                         }
@@ -4536,7 +4536,7 @@ module.exports = function (e, t, n) {
                                                     (this._state = "readable"),
                                                     (this._reader = void 0),
                                                     (this._storedError = void 0),
-                                                    (this._disturbed = !1),
+                                                    (this._disturbed = false),
                                                     (this._readableStreamController = void 0));
                                                 var r = t.type,
                                                     s = String(r);
@@ -4552,9 +4552,9 @@ module.exports = function (e, t, n) {
                                                     {
                                                         key: "cancel",
                                                         value: function (e) {
-                                                            return !1 === M(this)
+                                                            return false === M(this)
                                                                 ? Promise.reject(De("cancel"))
-                                                                : !0 === N(this)
+                                                                : true === N(this)
                                                                   ? Promise.reject(
                                                                         new TypeError("Cannot cancel a stream that already has a reader")
                                                                     )
@@ -4566,7 +4566,7 @@ module.exports = function (e, t, n) {
                                                         value: function () {
                                                             var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
                                                                 t = e.mode;
-                                                            if (!1 === M(this)) throw De("getReader");
+                                                            if (false === M(this)) throw De("getReader");
                                                             if (void 0 === t) return R(this);
                                                             if ("byob" === (t = String(t))) return F(this);
                                                             throw new RangeError("Invalid mode is specified");
@@ -4595,20 +4595,20 @@ module.exports = function (e, t, n) {
                                                                 o = n.preventClose,
                                                                 i = n.preventAbort,
                                                                 a = n.preventCancel;
-                                                            if (!1 === M(this)) return Promise.reject(De("pipeTo"));
-                                                            if (!1 === T(e))
+                                                            if (false === M(this)) return Promise.reject(De("pipeTo"));
+                                                            if (false === T(e))
                                                                 return Promise.reject(
                                                                     new TypeError(
                                                                         "ReadableStream.prototype.pipeTo's first argument must be a WritableStream"
                                                                     )
                                                                 );
-                                                            if (((o = Boolean(o)), (i = Boolean(i)), (a = Boolean(a)), !0 === N(this)))
+                                                            if (((o = Boolean(o)), (i = Boolean(i)), (a = Boolean(a)), true === N(this)))
                                                                 return Promise.reject(
                                                                     new TypeError(
                                                                         "ReadableStream.prototype.pipeTo cannot be used on a locked ReadableStream"
                                                                     )
                                                                 );
-                                                            if (!0 === G(e))
+                                                            if (true === G(e))
                                                                 return Promise.reject(
                                                                     new TypeError(
                                                                         "ReadableStream.prototype.pipeTo cannot be used on a locked WritableStream"
@@ -4616,57 +4616,57 @@ module.exports = function (e, t, n) {
                                                                 );
                                                             var r = R(this),
                                                                 s = A(e),
-                                                                l = !1,
+                                                                l = false,
                                                                 c = Promise.resolve();
                                                             return new Promise(function (n, d) {
                                                                 var u, p, g;
                                                                 if (
                                                                     (m(t, r._closedPromise, function (t) {
-                                                                        !1 === i
+                                                                        false === i
                                                                             ? y(
                                                                                   function () {
                                                                                       return P(e, t);
                                                                                   },
-                                                                                  !0,
+                                                                                  true,
                                                                                   t
                                                                               )
-                                                                            : v(!0, t);
+                                                                            : v(true, t);
                                                                     }),
                                                                     m(e, s._closedPromise, function (e) {
-                                                                        !1 === a
+                                                                        false === a
                                                                             ? y(
                                                                                   function () {
                                                                                       return j(t, e);
                                                                                   },
-                                                                                  !0,
+                                                                                  true,
                                                                                   e
                                                                               )
-                                                                            : v(!0, e);
+                                                                            : v(true, e);
                                                                     }),
                                                                     (u = t),
                                                                     (p = r._closedPromise),
                                                                     (g = function () {
-                                                                        !1 === o
+                                                                        false === o
                                                                             ? y(function () {
                                                                                   return D(s);
                                                                               })
                                                                             : v();
                                                                     }),
                                                                     "closed" === u._state ? g() : p.then(g).catch(b),
-                                                                    !0 === k(e) || "closed" === e._state)
+                                                                    true === k(e) || "closed" === e._state)
                                                                 ) {
                                                                     var h = new TypeError(
                                                                         "the destination writable stream closed before all data could be piped to it"
                                                                     );
-                                                                    !1 === a
+                                                                    false === a
                                                                         ? y(
                                                                               function () {
                                                                                   return j(t, h);
                                                                               },
-                                                                              !0,
+                                                                              true,
                                                                               h
                                                                           )
-                                                                        : v(!0, h);
+                                                                        : v(true, h);
                                                                 }
                                                                 function f() {
                                                                     var e = c;
@@ -4685,19 +4685,19 @@ module.exports = function (e, t, n) {
                                                                                     return _(n, o);
                                                                                 },
                                                                                 function (e) {
-                                                                                    return _(!0, e);
+                                                                                    return _(true, e);
                                                                                 }
                                                                             )
                                                                             .catch(b);
                                                                     }
-                                                                    !0 !== l &&
-                                                                        ((l = !0),
-                                                                        "writable" === e._state && !1 === k(e) ? f().then(i) : i());
+                                                                    true !== l &&
+                                                                        ((l = true),
+                                                                        "writable" === e._state && false === k(e) ? f().then(i) : i());
                                                                 }
                                                                 function v(t, n) {
-                                                                    !0 !== l &&
-                                                                        ((l = !0),
-                                                                        "writable" === e._state && !1 === k(e)
+                                                                    true !== l &&
+                                                                        ((l = true),
+                                                                        "writable" === e._state && false === k(e)
                                                                             ? f()
                                                                                   .then(function () {
                                                                                       return _(t, n);
@@ -4711,13 +4711,13 @@ module.exports = function (e, t, n) {
                                                                 (function e() {
                                                                     return (
                                                                         (c = Promise.resolve()),
-                                                                        !0 === l
+                                                                        true === l
                                                                             ? Promise.resolve()
                                                                             : s._readyPromise
                                                                                   .then(function () {
                                                                                       return oe(r).then(function (e) {
                                                                                           var t = e.value;
-                                                                                          !0 !== e.done &&
+                                                                                          true !== e.done &&
                                                                                               (c = I(s, t).catch(function () {}));
                                                                                       });
                                                                                   })
@@ -4732,15 +4732,15 @@ module.exports = function (e, t, n) {
                                                     {
                                                         key: "tee",
                                                         value: function () {
-                                                            if (!1 === M(this)) throw De("tee");
-                                                            var e = B(this, !1);
+                                                            if (false === M(this)) throw De("tee");
+                                                            var e = B(this, false);
                                                             return f(e);
                                                         },
                                                     },
                                                     {
                                                         key: "locked",
                                                         get: function () {
-                                                            if (!1 === M(this)) throw De("locked");
+                                                            if (false === M(this)) throw De("locked");
                                                             return N(this);
                                                         },
                                                     },
@@ -4759,17 +4759,17 @@ module.exports = function (e, t, n) {
                                     }
                                     function N(e) {
                                         return (
-                                            _(!0 === M(e), "IsReadableStreamLocked should only be used on known readable streams"),
+                                            _(true === M(e), "IsReadableStreamLocked should only be used on known readable streams"),
                                             void 0 !== e._reader
                                         );
                                     }
                                     function B(e, t) {
-                                        (_(!0 === M(e)), _("boolean" == typeof t));
+                                        (_(true === M(e)), _("boolean" == typeof t));
                                         var n = R(e),
                                             o = {
-                                                closedOrErrored: !1,
-                                                canceled1: !1,
-                                                canceled2: !1,
+                                                closedOrErrored: false,
+                                                canceled1: false,
+                                                canceled2: false,
                                                 reason1: void 0,
                                                 reason2: void 0,
                                             };
@@ -4786,16 +4786,16 @@ module.exports = function (e, t, n) {
                                                     a = e.done;
                                                 if (
                                                     (_("boolean" == typeof a),
-                                                    !0 === a &&
-                                                        !1 === o.closedOrErrored &&
-                                                        (!1 === o.canceled1 && se(t),
-                                                        !1 === o.canceled2 && se(n),
-                                                        (o.closedOrErrored = !0)),
-                                                    !0 !== o.closedOrErrored)
+                                                    true === a &&
+                                                        false === o.closedOrErrored &&
+                                                        (false === o.canceled1 && se(t),
+                                                        false === o.canceled2 && se(n),
+                                                        (o.closedOrErrored = true)),
+                                                    true !== o.closedOrErrored)
                                                 ) {
                                                     var r = i,
                                                         s = i;
-                                                    (!1 === o.canceled1 && le(t, r), !1 === o.canceled2 && le(n, s));
+                                                    (false === o.canceled1 && le(t, r), false === o.canceled2 && le(n, s));
                                                 }
                                             });
                                         };
@@ -4803,7 +4803,7 @@ module.exports = function (e, t, n) {
                                         var a = function e(t) {
                                             var n = e._stream,
                                                 o = e._teeState;
-                                            if (((o.canceled1 = !0), (o.reason1 = t), !0 === o.canceled2)) {
+                                            if (((o.canceled1 = true), (o.reason1 = t), true === o.canceled2)) {
                                                 var i = j(n, f([o.reason1, o.reason2]));
                                                 o._resolve(i);
                                             }
@@ -4813,7 +4813,7 @@ module.exports = function (e, t, n) {
                                         var r = function e(t) {
                                             var n = e._stream,
                                                 o = e._teeState;
-                                            if (((o.canceled2 = !0), (o.reason2 = t), !0 === o.canceled1)) {
+                                            if (((o.canceled2 = true), (o.reason2 = t), true === o.canceled1)) {
                                                 var i = j(n, f([o.reason1, o.reason2]));
                                                 o._resolve(i);
                                             }
@@ -4830,15 +4830,15 @@ module.exports = function (e, t, n) {
                                             (i._branch1 = l._readableStreamController),
                                             (i._branch2 = d._readableStreamController),
                                             n._closedPromise.catch(function (e) {
-                                                !0 !== o.closedOrErrored &&
-                                                    (ce(i._branch1, e), ce(i._branch2, e), (o.closedOrErrored = !0));
+                                                true !== o.closedOrErrored &&
+                                                    (ce(i._branch1, e), ce(i._branch2, e), (o.closedOrErrored = true));
                                             }),
                                             [l, d]
                                         );
                                     }
                                     function U(e) {
                                         return (
-                                            _(!0 === J(e._reader)),
+                                            _(true === J(e._reader)),
                                             _("readable" === e._state || "closed" === e._state),
                                             new Promise(function (t, n) {
                                                 var o = { _resolve: t, _reject: n };
@@ -4848,7 +4848,7 @@ module.exports = function (e, t, n) {
                                     }
                                     function $(e) {
                                         return (
-                                            _(!0 === Z(e._reader)),
+                                            _(true === Z(e._reader)),
                                             _("readable" === e._state),
                                             new Promise(function (t, n) {
                                                 var o = { _resolve: t, _reject: n };
@@ -4858,7 +4858,7 @@ module.exports = function (e, t, n) {
                                     }
                                     function j(e, t) {
                                         return (
-                                            (e._disturbed = !0),
+                                            (e._disturbed = true),
                                             "closed" === e._state
                                                 ? Promise.resolve(void 0)
                                                 : "errored" === e._state
@@ -4870,9 +4870,9 @@ module.exports = function (e, t, n) {
                                         (_("readable" === e._state), (e._state = "closed"));
                                         var t = e._reader;
                                         if (void 0 !== t) {
-                                            if (!0 === Z(t)) {
+                                            if (true === Z(t)) {
                                                 for (var n = 0; n < t._readRequests.length; n++)
-                                                    (0, t._readRequests[n]._resolve)(s(void 0, !0));
+                                                    (0, t._readRequests[n]._resolve)(s(void 0, true));
                                                 t._readRequests = [];
                                             }
                                             !(function (e) {
@@ -4885,13 +4885,13 @@ module.exports = function (e, t, n) {
                                         }
                                     }
                                     function V(e, t) {
-                                        (_(!0 === M(e), "stream must be ReadableStream"),
+                                        (_(true === M(e), "stream must be ReadableStream"),
                                             _("readable" === e._state, "state must be readable"),
                                             (e._state = "errored"),
                                             (e._storedError = t));
                                         var n = e._reader;
                                         if (void 0 !== n) {
-                                            if (!0 === Z(n)) {
+                                            if (true === Z(n)) {
                                                 for (var o = 0; o < n._readRequests.length; o++) n._readRequests[o]._reject(t);
                                                 n._readRequests = [];
                                             } else {
@@ -4914,17 +4914,17 @@ module.exports = function (e, t, n) {
                                     }
                                     function q(e) {
                                         var t = e._reader;
-                                        return void 0 !== t && !1 !== J(t);
+                                        return void 0 !== t && false !== J(t);
                                     }
                                     function Y(e) {
                                         var t = e._reader;
-                                        return void 0 !== t && !1 !== Z(t);
+                                        return void 0 !== t && false !== Z(t);
                                     }
                                     e.exports = {
                                         ReadableStream: O,
                                         IsReadableStreamDisturbed: function (e) {
                                             return (
-                                                _(!0 === M(e), "IsReadableStreamDisturbed should only be used on known readable streams"),
+                                                _(true === M(e), "IsReadableStreamDisturbed should only be used on known readable streams"),
                                                 e._disturbed
                                             );
                                         },
@@ -4935,11 +4935,11 @@ module.exports = function (e, t, n) {
                                     };
                                     var X = (function () {
                                             function e(t) {
-                                                if ((i(this, e), !1 === M(t)))
+                                                if ((i(this, e), false === M(t)))
                                                     throw new TypeError(
                                                         "ReadableStreamDefaultReader can only be constructed with a ReadableStream instance"
                                                     );
-                                                if (!0 === N(t))
+                                                if (true === N(t))
                                                     throw new TypeError(
                                                         "This stream has already been locked for exclusive reading by another reader"
                                                     );
@@ -4950,7 +4950,7 @@ module.exports = function (e, t, n) {
                                                     {
                                                         key: "cancel",
                                                         value: function (e) {
-                                                            return !1 === Z(this)
+                                                            return false === Z(this)
                                                                 ? Promise.reject(Ie("cancel"))
                                                                 : void 0 === this._ownerReadableStream
                                                                   ? Promise.reject(Le("cancel"))
@@ -4960,7 +4960,7 @@ module.exports = function (e, t, n) {
                                                     {
                                                         key: "read",
                                                         value: function () {
-                                                            return !1 === Z(this)
+                                                            return false === Z(this)
                                                                 ? Promise.reject(Ie("read"))
                                                                 : void 0 === this._ownerReadableStream
                                                                   ? Promise.reject(Le("read from"))
@@ -4970,7 +4970,7 @@ module.exports = function (e, t, n) {
                                                     {
                                                         key: "releaseLock",
                                                         value: function () {
-                                                            if (!1 === Z(this)) throw Ie("releaseLock");
+                                                            if (false === Z(this)) throw Ie("releaseLock");
                                                             if (void 0 !== this._ownerReadableStream) {
                                                                 if (this._readRequests.length > 0)
                                                                     throw new TypeError(
@@ -4983,7 +4983,7 @@ module.exports = function (e, t, n) {
                                                     {
                                                         key: "closed",
                                                         get: function () {
-                                                            return !1 === Z(this) ? Promise.reject(Ie("closed")) : this._closedPromise;
+                                                            return false === Z(this) ? Promise.reject(Ie("closed")) : this._closedPromise;
                                                         },
                                                     },
                                                 ]),
@@ -4996,7 +4996,7 @@ module.exports = function (e, t, n) {
                                                     throw new TypeError(
                                                         "ReadableStreamBYOBReader can only be constructed with a ReadableStream instance given a byte source"
                                                     );
-                                                if (!1 === he(t._readableStreamController))
+                                                if (false === he(t._readableStreamController))
                                                     throw new TypeError(
                                                         "Cannot construct a ReadableStreamBYOBReader for a stream not constructed with a byte source"
                                                     );
@@ -5033,7 +5033,7 @@ module.exports = function (e, t, n) {
                                                                                 var n = e._ownerReadableStream;
                                                                                 return (
                                                                                     _(void 0 !== n),
-                                                                                    (n._disturbed = !0),
+                                                                                    (n._disturbed = true),
                                                                                     "errored" === n._state
                                                                                         ? Promise.reject(n._storedError)
                                                                                         : (function (e, t) {
@@ -5063,17 +5063,17 @@ module.exports = function (e, t, n) {
                                                                                                       a.byteOffset,
                                                                                                       0
                                                                                                   );
-                                                                                                  return Promise.resolve(s(r, !0));
+                                                                                                  return Promise.resolve(s(r, true));
                                                                                               }
                                                                                               if (e._queueTotalSize > 0) {
-                                                                                                  if (!0 === we(e, a)) {
+                                                                                                  if (true === we(e, a)) {
                                                                                                       var l = _e(a);
                                                                                                       return (
                                                                                                           xe(e),
-                                                                                                          Promise.resolve(s(l, !1))
+                                                                                                          Promise.resolve(s(l, false))
                                                                                                       );
                                                                                                   }
-                                                                                                  if (!0 === e._closeRequested) {
+                                                                                                  if (true === e._closeRequested) {
                                                                                                       var c = new TypeError(
                                                                                                           "Insufficient bytes to fill elements in the given buffer"
                                                                                                       );
@@ -5175,9 +5175,9 @@ module.exports = function (e, t, n) {
                                         var t = e._ownerReadableStream;
                                         return (
                                             _(void 0 !== t),
-                                            (t._disturbed = !0),
+                                            (t._disturbed = true),
                                             "closed" === t._state
-                                                ? Promise.resolve(s(void 0, !0))
+                                                ? Promise.resolve(s(void 0, true))
                                                 : "errored" === t._state
                                                   ? Promise.reject(t._storedError)
                                                   : (_("readable" === t._state), t._readableStreamController.__pullSteps())
@@ -5185,7 +5185,7 @@ module.exports = function (e, t, n) {
                                     }
                                     var ie = (function () {
                                         function e(t, n, o, a) {
-                                            if ((i(this, e), !1 === M(t)))
+                                            if ((i(this, e), false === M(t)))
                                                 throw new TypeError(
                                                     "ReadableStreamDefaultController can only be constructed with a ReadableStream instance"
                                                 );
@@ -5198,10 +5198,10 @@ module.exports = function (e, t, n) {
                                                 (this._queue = void 0),
                                                 (this._queueTotalSize = void 0),
                                                 S(this),
-                                                (this._started = !1),
-                                                (this._closeRequested = !1),
-                                                (this._pullAgain = !1),
-                                                (this._pulling = !1));
+                                                (this._started = false),
+                                                (this._closeRequested = false),
+                                                (this._pullAgain = false),
+                                                (this._pulling = false));
                                             var r = p(o, a);
                                             ((this._strategySize = r.size), (this._strategyHWM = r.highWaterMark));
                                             var s = this,
@@ -5209,7 +5209,7 @@ module.exports = function (e, t, n) {
                                             Promise.resolve(l)
                                                 .then(
                                                     function () {
-                                                        ((s._started = !0), _(!1 === s._pulling), _(!1 === s._pullAgain), re(s));
+                                                        ((s._started = true), _(false === s._pulling), _(false === s._pullAgain), re(s));
                                                     },
                                                     function (e) {
                                                         de(s, e);
@@ -5222,8 +5222,8 @@ module.exports = function (e, t, n) {
                                                 {
                                                     key: "close",
                                                     value: function () {
-                                                        if (!1 === ae(this)) throw Fe("close");
-                                                        if (!0 === this._closeRequested)
+                                                        if (false === ae(this)) throw Fe("close");
+                                                        if (true === this._closeRequested)
                                                             throw new TypeError(
                                                                 "The stream has already been closed; do not close it again!"
                                                             );
@@ -5240,8 +5240,8 @@ module.exports = function (e, t, n) {
                                                 {
                                                     key: "enqueue",
                                                     value: function (e) {
-                                                        if (!1 === ae(this)) throw Fe("enqueue");
-                                                        if (!0 === this._closeRequested)
+                                                        if (false === ae(this)) throw Fe("enqueue");
+                                                        if (true === this._closeRequested)
                                                             throw new TypeError("stream is closed or draining");
                                                         var t = this._controlledReadableStream._state;
                                                         if ("readable" !== t)
@@ -5256,7 +5256,7 @@ module.exports = function (e, t, n) {
                                                 {
                                                     key: "error",
                                                     value: function (e) {
-                                                        if (!1 === ae(this)) throw Fe("error");
+                                                        if (false === ae(this)) throw Fe("error");
                                                         var t = this._controlledReadableStream;
                                                         if ("readable" !== t._state)
                                                             throw new TypeError("The stream is " + t._state + " and so cannot be errored");
@@ -5276,8 +5276,8 @@ module.exports = function (e, t, n) {
                                                         if (this._queue.length > 0) {
                                                             var t = C(this);
                                                             return (
-                                                                !0 === this._closeRequested && 0 === this._queue.length ? K(e) : re(this),
-                                                                Promise.resolve(s(t, !1))
+                                                                true === this._closeRequested && 0 === this._queue.length ? K(e) : re(this),
+                                                                Promise.resolve(s(t, false))
                                                             );
                                                         }
                                                         var n = $(e);
@@ -5287,7 +5287,7 @@ module.exports = function (e, t, n) {
                                                 {
                                                     key: "desiredSize",
                                                     get: function () {
-                                                        if (!1 === ae(this)) throw Fe("desiredSize");
+                                                        if (false === ae(this)) throw Fe("desiredSize");
                                                         return ue(this);
                                                     },
                                                 },
@@ -5299,43 +5299,43 @@ module.exports = function (e, t, n) {
                                         return !!y(e) && !!Object.prototype.hasOwnProperty.call(e, "_underlyingSource");
                                     }
                                     function re(e) {
-                                        !1 !==
+                                        false !==
                                             (function (e) {
                                                 var t = e._controlledReadableStream;
                                                 return (
                                                     "closed" !== t._state &&
                                                     "errored" !== t._state &&
-                                                    !0 !== e._closeRequested &&
-                                                    !1 !== e._started &&
-                                                    ((!0 === N(t) && z(t) > 0) || ue(e) > 0)
+                                                    true !== e._closeRequested &&
+                                                    false !== e._started &&
+                                                    ((true === N(t) && z(t) > 0) || ue(e) > 0)
                                                 );
                                             })(e) &&
-                                            (!0 !== e._pulling
-                                                ? (_(!1 === e._pullAgain),
-                                                  (e._pulling = !0),
+                                            (true !== e._pulling
+                                                ? (_(false === e._pullAgain),
+                                                  (e._pulling = true),
                                                   d(e._underlyingSource, "pull", [e])
                                                       .then(
                                                           function () {
-                                                              if (((e._pulling = !1), !0 === e._pullAgain))
-                                                                  return ((e._pullAgain = !1), re(e));
+                                                              if (((e._pulling = false), true === e._pullAgain))
+                                                                  return ((e._pullAgain = false), re(e));
                                                           },
                                                           function (t) {
                                                               de(e, t);
                                                           }
                                                       )
                                                       .catch(b))
-                                                : (e._pullAgain = !0));
+                                                : (e._pullAgain = true));
                                     }
                                     function se(e) {
                                         var t = e._controlledReadableStream;
-                                        (_(!1 === e._closeRequested),
+                                        (_(false === e._closeRequested),
                                             _("readable" === t._state),
-                                            (e._closeRequested = !0),
+                                            (e._closeRequested = true),
                                             0 === e._queue.length && K(t));
                                     }
                                     function le(e, t) {
                                         var n = e._controlledReadableStream;
-                                        if ((_(!1 === e._closeRequested), _("readable" === n._state), !0 === N(n) && z(n) > 0)) H(n, t, !1);
+                                        if ((_(false === e._closeRequested), _("readable" === n._state), true === N(n) && z(n) > 0)) H(n, t, false);
                                         else {
                                             var o = 1;
                                             if (void 0 !== e._strategySize) {
@@ -5374,11 +5374,11 @@ module.exports = function (e, t, n) {
                                                     {
                                                         key: "respond",
                                                         value: function (e) {
-                                                            if (!1 === fe(this)) throw Re("respond");
+                                                            if (false === fe(this)) throw Re("respond");
                                                             if (void 0 === this._associatedReadableByteStreamController)
                                                                 throw new TypeError("This BYOB request has been invalidated");
                                                             !(function (e, t) {
-                                                                if (((t = Number(t)), !1 === l(t)))
+                                                                if (((t = Number(t)), false === l(t)))
                                                                     throw new RangeError("bytesWritten must be a finite");
                                                                 (_(e._pendingPullIntos.length > 0), Ae(e, t));
                                                             })(this._associatedReadableByteStreamController, e);
@@ -5387,7 +5387,7 @@ module.exports = function (e, t, n) {
                                                     {
                                                         key: "respondWithNewView",
                                                         value: function (e) {
-                                                            if (!1 === fe(this)) throw Re("respond");
+                                                            if (false === fe(this)) throw Re("respond");
                                                             if (void 0 === this._associatedReadableByteStreamController)
                                                                 throw new TypeError("This BYOB request has been invalidated");
                                                             if (!ArrayBuffer.isView(e))
@@ -5419,7 +5419,7 @@ module.exports = function (e, t, n) {
                                         })(),
                                         ge = (function () {
                                             function e(t, n, o) {
-                                                if ((i(this, e), !1 === M(t)))
+                                                if ((i(this, e), false === M(t)))
                                                     throw new TypeError(
                                                         "ReadableByteStreamController can only be constructed with a ReadableStream instance given a byte source"
                                                     );
@@ -5429,16 +5429,16 @@ module.exports = function (e, t, n) {
                                                     );
                                                 ((this._controlledReadableStream = t),
                                                     (this._underlyingByteSource = n),
-                                                    (this._pullAgain = !1),
-                                                    (this._pulling = !1),
+                                                    (this._pullAgain = false),
+                                                    (this._pulling = false),
                                                     ye(this),
                                                     (this._queue = this._queueTotalSize = void 0),
                                                     S(this),
-                                                    (this._closeRequested = !1),
-                                                    (this._started = !1),
+                                                    (this._closeRequested = false),
+                                                    (this._started = false),
                                                     (this._strategyHWM = g(o)));
                                                 var a = n.autoAllocateChunkSize;
-                                                if (void 0 !== a && (!1 === Number.isInteger(a) || a <= 0))
+                                                if (void 0 !== a && (false === Number.isInteger(a) || a <= 0))
                                                     throw new RangeError("autoAllocateChunkSize must be a positive integer");
                                                 ((this._autoAllocateChunkSize = a), (this._pendingPullIntos = []));
                                                 var r = this,
@@ -5446,7 +5446,7 @@ module.exports = function (e, t, n) {
                                                 Promise.resolve(s)
                                                     .then(
                                                         function () {
-                                                            ((r._started = !0), _(!1 === r._pulling), _(!1 === r._pullAgain), me(r));
+                                                            ((r._started = true), _(false === r._pulling), _(false === r._pullAgain), me(r));
                                                         },
                                                         function (e) {
                                                             "readable" === t._state && Ge(r, e);
@@ -5459,8 +5459,8 @@ module.exports = function (e, t, n) {
                                                     {
                                                         key: "close",
                                                         value: function () {
-                                                            if (!1 === he(this)) throw Me("close");
-                                                            if (!0 === this._closeRequested)
+                                                            if (false === he(this)) throw Me("close");
+                                                            if (true === this._closeRequested)
                                                                 throw new TypeError(
                                                                     "The stream has already been closed; do not close it again!"
                                                                 );
@@ -5474,11 +5474,11 @@ module.exports = function (e, t, n) {
                                                             !(function (e) {
                                                                 var t = e._controlledReadableStream;
                                                                 if (
-                                                                    (_(!1 === e._closeRequested),
+                                                                    (_(false === e._closeRequested),
                                                                     _("readable" === t._state),
                                                                     e._queueTotalSize > 0)
                                                                 )
-                                                                    e._closeRequested = !0;
+                                                                    e._closeRequested = true;
                                                                 else {
                                                                     if (
                                                                         e._pendingPullIntos.length > 0 &&
@@ -5497,8 +5497,8 @@ module.exports = function (e, t, n) {
                                                     {
                                                         key: "enqueue",
                                                         value: function (e) {
-                                                            if (!1 === he(this)) throw Me("enqueue");
-                                                            if (!0 === this._closeRequested)
+                                                            if (false === he(this)) throw Me("enqueue");
+                                                            if (true === this._closeRequested)
                                                                 throw new TypeError("stream is closed or draining");
                                                             var t = this._controlledReadableStream._state;
                                                             if ("readable" !== t)
@@ -5513,29 +5513,29 @@ module.exports = function (e, t, n) {
                                                                 );
                                                             !(function (e, t) {
                                                                 var n = e._controlledReadableStream;
-                                                                (_(!1 === e._closeRequested), _("readable" === n._state));
+                                                                (_(false === e._closeRequested), _("readable" === n._state));
                                                                 var o = t.buffer,
                                                                     i = t.byteOffset,
                                                                     a = t.byteLength,
                                                                     r = u(o);
-                                                                if (!0 === Y(n))
+                                                                if (true === Y(n))
                                                                     if (0 === z(n)) be(e, r, i, a);
                                                                     else {
                                                                         _(0 === e._queue.length);
                                                                         var s = new Uint8Array(r, i, a);
-                                                                        H(n, s, !1);
+                                                                        H(n, s, false);
                                                                     }
                                                                 else
-                                                                    !0 === q(n)
+                                                                    true === q(n)
                                                                         ? (be(e, r, i, a), Ee(e))
-                                                                        : (_(!1 === N(n), "stream must not be locked"), be(e, r, i, a));
+                                                                        : (_(false === N(n), "stream must not be locked"), be(e, r, i, a));
                                                             })(this, e);
                                                         },
                                                     },
                                                     {
                                                         key: "error",
                                                         value: function (e) {
-                                                            if (!1 === he(this)) throw Me("error");
+                                                            if (false === he(this)) throw Me("error");
                                                             var t = this._controlledReadableStream;
                                                             if ("readable" !== t._state)
                                                                 throw new TypeError(
@@ -5559,7 +5559,7 @@ module.exports = function (e, t, n) {
                                                         key: "__pullSteps",
                                                         value: function () {
                                                             var e = this._controlledReadableStream;
-                                                            if ((_(!0 === Y(e)), this._queueTotalSize > 0)) {
+                                                            if ((_(true === Y(e)), this._queueTotalSize > 0)) {
                                                                 _(0 === z(e));
                                                                 var t = this._queue.shift();
                                                                 ((this._queueTotalSize -= t.byteLength), xe(this));
@@ -5569,7 +5569,7 @@ module.exports = function (e, t, n) {
                                                                 } catch (e) {
                                                                     return Promise.reject(e);
                                                                 }
-                                                                return Promise.resolve(s(n, !1));
+                                                                return Promise.resolve(s(n, false));
                                                             }
                                                             var o = this._autoAllocateChunkSize;
                                                             if (void 0 !== o) {
@@ -5597,7 +5597,7 @@ module.exports = function (e, t, n) {
                                                     {
                                                         key: "byobRequest",
                                                         get: function () {
-                                                            if (!1 === he(this)) throw Me("byobRequest");
+                                                            if (false === he(this)) throw Me("byobRequest");
                                                             if (void 0 === this._byobRequest && this._pendingPullIntos.length > 0) {
                                                                 var e = this._pendingPullIntos[0],
                                                                     t = new Uint8Array(
@@ -5613,7 +5613,7 @@ module.exports = function (e, t, n) {
                                                     {
                                                         key: "desiredSize",
                                                         get: function () {
-                                                            if (!1 === he(this)) throw Me("desiredSize");
+                                                            if (false === he(this)) throw Me("desiredSize");
                                                             return Pe(this);
                                                         },
                                                     },
@@ -5630,38 +5630,38 @@ module.exports = function (e, t, n) {
                                         );
                                     }
                                     function me(e) {
-                                        !1 !==
+                                        false !==
                                             (function (e) {
                                                 var t = e._controlledReadableStream;
                                                 return (
                                                     "readable" === t._state &&
-                                                    !0 !== e._closeRequested &&
-                                                    !1 !== e._started &&
-                                                    ((!0 === Y(t) && z(t) > 0) || (!0 === q(t) && W(t) > 0) || Pe(e) > 0)
+                                                    true !== e._closeRequested &&
+                                                    false !== e._started &&
+                                                    ((true === Y(t) && z(t) > 0) || (true === q(t) && W(t) > 0) || Pe(e) > 0)
                                                 );
                                             })(e) &&
-                                            (!0 !== e._pulling
-                                                ? (_(!1 === e._pullAgain),
-                                                  (e._pulling = !0),
+                                            (true !== e._pulling
+                                                ? (_(false === e._pullAgain),
+                                                  (e._pulling = true),
                                                   d(e._underlyingByteSource, "pull", [e])
                                                       .then(
                                                           function () {
-                                                              ((e._pulling = !1), !0 === e._pullAgain && ((e._pullAgain = !1), me(e)));
+                                                              ((e._pulling = false), true === e._pullAgain && ((e._pullAgain = false), me(e)));
                                                           },
                                                           function (t) {
                                                               "readable" === e._controlledReadableStream._state && Ge(e, t);
                                                           }
                                                       )
                                                       .catch(b))
-                                                : (e._pullAgain = !0));
+                                                : (e._pullAgain = true));
                                     }
                                     function ye(e) {
                                         (Se(e), (e._pendingPullIntos = []));
                                     }
                                     function ve(e, t) {
                                         _("errored" !== e._state, "state must not be errored");
-                                        var n = !1;
-                                        "closed" === e._state && (_(0 === t.bytesFilled), (n = !0));
+                                        var n = false;
+                                        "closed" === e._state && (_(0 === t.bytesFilled), (n = true));
                                         var o = _e(t);
                                         "default" === t.readerType
                                             ? H(e, o, n)
@@ -5686,8 +5686,8 @@ module.exports = function (e, t, n) {
                                             a = t.bytesFilled + i,
                                             s = a - (a % n),
                                             l = i,
-                                            c = !1;
-                                        s > o && ((l = s - t.bytesFilled), (c = !0));
+                                            c = false;
+                                        s > o && ((l = s - t.bytesFilled), (c = true));
                                         for (var d = e._queue; l > 0; ) {
                                             var u = d[0],
                                                 p = Math.min(l, u.byteLength),
@@ -5699,7 +5699,7 @@ module.exports = function (e, t, n) {
                                                 (l -= p));
                                         }
                                         return (
-                                            !1 === c &&
+                                            false === c &&
                                                 (_(0 === e._queueTotalSize, "queue must be empty"),
                                                 _(t.bytesFilled > 0),
                                                 _(t.bytesFilled < t.elementSize)),
@@ -5711,7 +5711,7 @@ module.exports = function (e, t, n) {
                                     }
                                     function xe(e) {
                                         (_("readable" === e._controlledReadableStream._state),
-                                            0 === e._queueTotalSize && !0 === e._closeRequested ? K(e._controlledReadableStream) : me(e));
+                                            0 === e._queueTotalSize && true === e._closeRequested ? K(e._controlledReadableStream) : me(e));
                                     }
                                     function Se(e) {
                                         void 0 !== e._byobRequest &&
@@ -5720,10 +5720,10 @@ module.exports = function (e, t, n) {
                                             (e._byobRequest = void 0));
                                     }
                                     function Ee(e) {
-                                        for (_(!1 === e._closeRequested); e._pendingPullIntos.length > 0; ) {
+                                        for (_(false === e._closeRequested); e._pendingPullIntos.length > 0; ) {
                                             if (0 === e._queueTotalSize) return;
                                             var t = e._pendingPullIntos[0];
-                                            !0 === we(e, t) && (Te(e), ve(e._controlledReadableStream, t));
+                                            true === we(e, t) && (Te(e), ve(e._controlledReadableStream, t));
                                         }
                                     }
                                     function Ae(e, t) {
@@ -5735,7 +5735,7 @@ module.exports = function (e, t, n) {
                                             !(function (e, t) {
                                                 ((t.buffer = u(t.buffer)), _(0 === t.bytesFilled, "bytesFilled must be 0"));
                                                 var n = e._controlledReadableStream;
-                                                if (!0 === q(n)) for (; W(n) > 0; ) ve(n, Te(e));
+                                                if (true === q(n)) for (; W(n) > 0; ) ve(n, Te(e));
                                             })(e, n);
                                         } else
                                             (_("readable" === o._state),
@@ -5840,9 +5840,9 @@ module.exports = function (e, t, n) {
                                         function e(e, t) {
                                             for (var n = 0; n < t.length; n++) {
                                                 var o = t[n];
-                                                ((o.enumerable = o.enumerable || !1),
-                                                    (o.configurable = !0),
-                                                    "value" in o && (o.writable = !0),
+                                                ((o.enumerable = o.enumerable || false),
+                                                    (o.configurable = true),
+                                                    "value" in o && (o.writable = true),
                                                     Object.defineProperty(e, o.key, o));
                                             }
                                         }
@@ -5869,34 +5869,34 @@ module.exports = function (e, t, n) {
                                         v = y.WritableStream,
                                         _ = y.WritableStreamDefaultControllerError;
                                     function b(e, t) {
-                                        if (!0 === e._errored) throw new TypeError("TransformStream is already errored");
-                                        if (!0 === e._readableClosed) throw new TypeError("Readable side is already closed");
+                                        if (true === e._errored) throw new TypeError("TransformStream is already errored");
+                                        if (true === e._readableClosed) throw new TypeError("Readable side is already closed");
                                         var n = e._readableController;
                                         try {
                                             h(n, t);
                                         } catch (t) {
-                                            throw ((e._readableClosed = !0), C(e, t), e._storedError);
+                                            throw ((e._readableClosed = true), C(e, t), e._storedError);
                                         }
-                                        !0 == m(n) <= 0 && !1 === e._backpressure && E(e, !0);
+                                        true == m(n) <= 0 && false === e._backpressure && E(e, true);
                                     }
                                     function w(e) {
-                                        (a(!1 === e._errored), a(!1 === e._readableClosed));
+                                        (a(false === e._errored), a(false === e._readableClosed));
                                         try {
                                             g(e._readableController);
                                         } catch (e) {
-                                            a(!1);
+                                            a(false);
                                         }
-                                        e._readableClosed = !0;
+                                        e._readableClosed = true;
                                     }
                                     function C(e, t) {
-                                        !1 === e._errored && x(e, t);
+                                        false === e._errored && x(e, t);
                                     }
                                     function x(e, t) {
-                                        (a(!1 === e._errored),
-                                            (e._errored = !0),
+                                        (a(false === e._errored),
+                                            (e._errored = true),
                                             (e._storedError = t),
-                                            !1 === e._writableDone && _(e._writableController, t),
-                                            !1 === e._readableClosed && f(e._readableController, t));
+                                            false === e._writableDone && _(e._writableController, t),
+                                            false === e._readableClosed && f(e._readableController, t));
                                     }
                                     function S(e) {
                                         return (
@@ -5904,9 +5904,9 @@ module.exports = function (e, t, n) {
                                                 void 0 !== e._backpressureChangePromise,
                                                 "_backpressureChangePromise should have been initialized"
                                             ),
-                                            !1 === e._backpressure
+                                            false === e._backpressure
                                                 ? Promise.resolve()
-                                                : (a(!0 === e._backpressure, "_backpressure should have been initialized"),
+                                                : (a(true === e._backpressure, "_backpressure should have been initialized"),
                                                   e._backpressureChangePromise)
                                         );
                                     }
@@ -5958,15 +5958,15 @@ module.exports = function (e, t, n) {
                                                         key: "write",
                                                         value: function (e) {
                                                             return (function (e, t) {
-                                                                (a(!1 === e._errored),
-                                                                    a(!1 === e._transforming),
-                                                                    a(!1 === e._backpressure),
-                                                                    (e._transforming = !0));
+                                                                (a(false === e._errored),
+                                                                    a(false === e._transforming),
+                                                                    a(false === e._backpressure),
+                                                                    (e._transforming = true));
                                                                 var n = e._transformer,
                                                                     o = e._transformStreamController;
                                                                 return l(n, "transform", [t, o], A, [t, o]).then(
                                                                     function () {
-                                                                        return ((e._transforming = !1), S(e));
+                                                                        return ((e._transforming = false), S(e));
                                                                     },
                                                                     function (t) {
                                                                         return (C(e, t), Promise.reject(t));
@@ -5979,7 +5979,7 @@ module.exports = function (e, t, n) {
                                                         key: "abort",
                                                         value: function () {
                                                             var e = this._transformStream;
-                                                            ((e._writableDone = !0), x(e, new TypeError("Writable side aborted")));
+                                                            ((e._writableDone = true), x(e, new TypeError("Writable side aborted")));
                                                         },
                                                     },
                                                     {
@@ -5987,13 +5987,13 @@ module.exports = function (e, t, n) {
                                                         value: function () {
                                                             var e = this._transformStream;
                                                             return (
-                                                                a(!1 === e._transforming),
-                                                                (e._writableDone = !0),
+                                                                a(false === e._transforming),
+                                                                (e._writableDone = true),
                                                                 c(e._transformer, "flush", [e._transformStreamController])
                                                                     .then(function () {
-                                                                        return !0 === e._errored
+                                                                        return true === e._errored
                                                                             ? Promise.reject(e._storedError)
-                                                                            : (!1 === e._readableClosed && w(e), Promise.resolve());
+                                                                            : (false === e._readableClosed && w(e), Promise.resolve());
                                                                     })
                                                                     .catch(function (t) {
                                                                         return (C(e, t), Promise.reject(e._storedError));
@@ -6023,10 +6023,10 @@ module.exports = function (e, t, n) {
                                                                             void 0 !== t._backpressureChangePromise,
                                                                             "_backpressureChangePromise should have been initialized"
                                                                         ),
-                                                                        !0 === t._backpressure
+                                                                        true === t._backpressure
                                                                             ? Promise.resolve()
                                                                             : (a(
-                                                                                  !1 === t._backpressure,
+                                                                                  false === t._backpressure,
                                                                                   "_backpressure should have been initialized"
                                                                               ),
                                                                               t._backpressureChangePromise)
@@ -6041,14 +6041,14 @@ module.exports = function (e, t, n) {
                                                             var e = this._transformStream;
                                                             return (
                                                                 a(
-                                                                    !0 === e._backpressure,
+                                                                    true === e._backpressure,
                                                                     "pull() should be never called while _backpressure is false"
                                                                 ),
                                                                 a(
                                                                     void 0 !== e._backpressureChangePromise,
                                                                     "_backpressureChangePromise should have been initialized"
                                                                 ),
-                                                                E(e, !1),
+                                                                E(e, false),
                                                                 e._backpressureChangePromise
                                                             );
                                                         },
@@ -6057,7 +6057,7 @@ module.exports = function (e, t, n) {
                                                         key: "cancel",
                                                         value: function () {
                                                             var e = this._transformStream;
-                                                            ((e._readableClosed = !0), x(e, new TypeError("Readable side canceled")));
+                                                            ((e._readableClosed = true), x(e, new TypeError("Readable side canceled")));
                                                         },
                                                     },
                                                 ]),
@@ -6066,7 +6066,7 @@ module.exports = function (e, t, n) {
                                         })(),
                                         L = (function () {
                                             function e(t) {
-                                                if ((i(this, e), !1 === G(t)))
+                                                if ((i(this, e), false === G(t)))
                                                     throw new TypeError(
                                                         "TransformStreamDefaultController can only be constructed with a TransformStream instance"
                                                     );
@@ -6081,18 +6081,18 @@ module.exports = function (e, t, n) {
                                                     {
                                                         key: "enqueue",
                                                         value: function (e) {
-                                                            if (!1 === T(this)) throw k("enqueue");
+                                                            if (false === T(this)) throw k("enqueue");
                                                             b(this._controlledTransformStream, e);
                                                         },
                                                     },
                                                     {
                                                         key: "close",
                                                         value: function () {
-                                                            if (!1 === T(this)) throw k("close");
+                                                            if (false === T(this)) throw k("close");
                                                             !(function (e) {
-                                                                if (!0 === e._errored)
+                                                                if (true === e._errored)
                                                                     throw new TypeError("TransformStream is already errored");
-                                                                if (!0 === e._readableClosed)
+                                                                if (true === e._readableClosed)
                                                                     throw new TypeError("Readable side is already closed");
                                                                 w(e);
                                                             })(this._controlledTransformStream);
@@ -6101,9 +6101,9 @@ module.exports = function (e, t, n) {
                                                     {
                                                         key: "error",
                                                         value: function (e) {
-                                                            if (!1 === T(this)) throw k("error");
+                                                            if (false === T(this)) throw k("error");
                                                             !(function (e, t) {
-                                                                if (!0 === e._errored)
+                                                                if (true === e._errored)
                                                                     throw new TypeError("TransformStream is already errored");
                                                                 x(e, t);
                                                             })(this._controlledTransformStream, e);
@@ -6112,7 +6112,7 @@ module.exports = function (e, t, n) {
                                                     {
                                                         key: "desiredSize",
                                                         get: function () {
-                                                            if (!1 === T(this)) throw k("desiredSize");
+                                                            if (false === T(this)) throw k("desiredSize");
                                                             var e = this._controlledTransformStream._readableController;
                                                             return m(e);
                                                         },
@@ -6127,14 +6127,14 @@ module.exports = function (e, t, n) {
                                                 (i(this, e), (this._transformer = t));
                                                 var n = t.readableStrategy,
                                                     o = t.writableStrategy;
-                                                ((this._transforming = !1),
-                                                    (this._errored = !1),
+                                                ((this._transforming = false),
+                                                    (this._errored = false),
                                                     (this._storedError = void 0),
                                                     (this._writableController = void 0),
                                                     (this._readableController = void 0),
                                                     (this._transformStreamController = void 0),
-                                                    (this._writableDone = !1),
-                                                    (this._readableClosed = !1),
+                                                    (this._writableDone = false),
+                                                    (this._readableClosed = false),
                                                     (this._backpressure = void 0),
                                                     (this._backpressureChangePromise = void 0),
                                                     (this._backpressureChangePromise_resolve = void 0),
@@ -6155,7 +6155,7 @@ module.exports = function (e, t, n) {
                                                     h = s(t, "start", [g._transformStreamController]);
                                                 (r(h),
                                                     l.catch(function (e) {
-                                                        !1 === g._errored && ((g._errored = !0), (g._storedError = e));
+                                                        false === g._errored && ((g._errored = true), (g._storedError = e));
                                                     }));
                                             }
                                             return (
@@ -6163,14 +6163,14 @@ module.exports = function (e, t, n) {
                                                     {
                                                         key: "readable",
                                                         get: function () {
-                                                            if (!1 === G(this)) throw O("readable");
+                                                            if (false === G(this)) throw O("readable");
                                                             return this._readable;
                                                         },
                                                     },
                                                     {
                                                         key: "writable",
                                                         get: function () {
-                                                            if (!1 === G(this)) throw O("writable");
+                                                            if (false === G(this)) throw O("writable");
                                                             return this._writable;
                                                         },
                                                     },
@@ -6210,7 +6210,7 @@ module.exports = function (e, t, n) {
                                               : typeof e;
                                       })(e);
                         }
-                        var i = !1;
+                        var i = false;
                         try {
                             if ("function" == typeof URL && "object" === o(URL.prototype) && "origin" in URL.prototype) {
                                 var a = new URL("b", "http://a");
@@ -6241,7 +6241,7 @@ module.exports = function (e, t, n) {
                                 return void 0 !== e[t];
                             }
                             function i() {
-                                (p.call(this), (this._isInvalid = !0));
+                                (p.call(this), (this._isInvalid = true));
                             }
                             function a(e) {
                                 return ("" === e && i.call(this), e.toLowerCase());
@@ -6265,8 +6265,8 @@ module.exports = function (e, t, n) {
                                 var h = u || "scheme start",
                                     f = 0,
                                     m = "",
-                                    y = !1,
-                                    v = !1,
+                                    y = false,
+                                    v = false,
                                     _ = [];
                                 e: for (; (t[f - 1] !== l || 0 === f) && !this._isInvalid; ) {
                                     var b = t[f];
@@ -6295,7 +6295,7 @@ module.exports = function (e, t, n) {
                                                     continue;
                                                 }
                                                 if (((this._scheme = m), (m = ""), u)) break e;
-                                                (o(this._scheme) && (this._isRelative = !0),
+                                                (o(this._scheme) && (this._isRelative = true),
                                                     (h =
                                                         "file" === this._scheme
                                                             ? "relative"
@@ -6328,7 +6328,7 @@ module.exports = function (e, t, n) {
                                             h = "authority ignore slashes";
                                             break;
                                         case "relative":
-                                            if (((this._isRelative = !0), "file" !== this._scheme && (this._scheme = p._scheme), b === l)) {
+                                            if (((this._isRelative = true), "file" !== this._scheme && (this._scheme = p._scheme), b === l)) {
                                                 ((this._host = p._host),
                                                     (this._port = p._port),
                                                     (this._path = p._path.slice()),
@@ -6409,7 +6409,7 @@ module.exports = function (e, t, n) {
                                             break;
                                         case "authority":
                                             if ("@" === b) {
-                                                (y && (g("@ already seen."), (m += "%40")), (y = !0));
+                                                (y && (g("@ already seen."), (m += "%40")), (y = true));
                                                 for (var x = 0; x < m.length; x++) {
                                                     var S = m[x];
                                                     if ("\t" !== S && "\n" !== S && "\r" !== S)
@@ -6446,7 +6446,7 @@ module.exports = function (e, t, n) {
                                                     continue;
                                                 }
                                                 "\t" !== b && "\n" !== b && "\r" !== b
-                                                    ? ("[" === b ? (v = !0) : "]" === b && (v = !1), (m += b))
+                                                    ? ("[" === b ? (v = true) : "]" === b && (v = false), (m += b))
                                                     : g("Invalid code point in host/hostname: " + b);
                                             } else if (((this._host = a.call(this, m)), (m = ""), (h = "port"), "hostname" === u)) break e;
                                             break;
@@ -6519,8 +6519,8 @@ module.exports = function (e, t, n) {
                                     (this._path = []),
                                     (this._query = ""),
                                     (this._fragment = ""),
-                                    (this._isInvalid = !1),
-                                    (this._isRelative = !1));
+                                    (this._isInvalid = false),
+                                    (this._isRelative = false));
                             }
                             function g(e, t) {
                                 (void 0 === t || t instanceof g || (t = new g(String(t))), (this._url = e), p.call(this));
@@ -6615,7 +6615,7 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, o) {
                         "use strict";
-                        (Object.defineProperty(t, "__esModule", { value: !0 }),
+                        (Object.defineProperty(t, "__esModule", { value: true }),
                             (t.getDocument = function (e) {
                                 var t,
                                     n = new I();
@@ -6655,22 +6655,22 @@ module.exports = function (e, t, n) {
                                     else o[c] = new a.URL(t[c], window.location).href;
                                 ((o.rangeChunkSize = o.rangeChunkSize || 65536),
                                     (o.CMapReaderFactory = o.CMapReaderFactory || r.DOMCMapReaderFactory),
-                                    (o.ignoreErrors = !0 !== o.stopAtErrors),
-                                    (o.pdfBug = !0 === o.pdfBug));
+                                    (o.ignoreErrors = true !== o.stopAtErrors),
+                                    (o.pdfBug = true === o.pdfBug));
                                 var g = Object.values(a.NativeImageDecoding);
                                 if (
                                     ((void 0 !== o.nativeImageDecoderSupport && g.includes(o.nativeImageDecoderSupport)) ||
                                         (o.nativeImageDecoderSupport =
                                             l.apiCompatibilityParams.nativeImageDecoderSupport || a.NativeImageDecoding.DECODE),
                                     Number.isInteger(o.maxImageSize) || (o.maxImageSize = -1),
-                                    "boolean" != typeof o.isEvalSupported && (o.isEvalSupported = !0),
+                                    "boolean" != typeof o.isEvalSupported && (o.isEvalSupported = true),
                                     "boolean" != typeof o.disableFontFace &&
-                                        (o.disableFontFace = l.apiCompatibilityParams.disableFontFace || !1),
-                                    "boolean" != typeof o.disableRange && (o.disableRange = !1),
-                                    "boolean" != typeof o.disableStream && (o.disableStream = !1),
-                                    "boolean" != typeof o.disableAutoFetch && (o.disableAutoFetch = !1),
+                                        (o.disableFontFace = l.apiCompatibilityParams.disableFontFace || false),
+                                    "boolean" != typeof o.disableRange && (o.disableRange = false),
+                                    "boolean" != typeof o.disableStream && (o.disableStream = false),
+                                    "boolean" != typeof o.disableAutoFetch && (o.disableAutoFetch = false),
                                     "boolean" != typeof o.disableCreateObjectURL &&
-                                        (o.disableCreateObjectURL = l.apiCompatibilityParams.disableCreateObjectURL || !1),
+                                        (o.disableCreateObjectURL = l.apiCompatibilityParams.disableCreateObjectURL || false),
                                     (0, a.setVerbosityLevel)(o.verbosity),
                                     !s)
                                 ) {
@@ -6791,17 +6791,17 @@ module.exports = function (e, t, n) {
                                 })(e) ||
                                 (function (e, t) {
                                     var n = [],
-                                        o = !0,
-                                        i = !1,
+                                        o = true,
+                                        i = false,
                                         a = void 0;
                                     try {
                                         for (
                                             var r, s = e[Symbol.iterator]();
                                             !(o = (r = s.next()).done) && (n.push(r.value), !t || n.length !== t);
-                                            o = !0
+                                            o = true
                                         );
                                     } catch (e) {
-                                        ((i = !0), (a = e));
+                                        ((i = true), (a = e));
                                     } finally {
                                         try {
                                             o || null == s.return || s.return();
@@ -6839,9 +6839,9 @@ module.exports = function (e, t, n) {
                         function w(e, t) {
                             for (var n = 0; n < t.length; n++) {
                                 var o = t[n];
-                                ((o.enumerable = o.enumerable || !1),
-                                    (o.configurable = !0),
-                                    "value" in o && (o.writable = !0),
+                                ((o.enumerable = o.enumerable || false),
+                                    (o.configurable = true),
+                                    "value" in o && (o.writable = true),
                                     Object.defineProperty(e, o.key, o));
                             }
                         }
@@ -6862,9 +6862,9 @@ module.exports = function (e, t, n) {
                         }
                         var S,
                             E,
-                            A = !1,
-                            T = !1;
-                        ("undefined" == typeof window ? ((A = !0), (T = !0)) : (T = !0),
+                            A = false,
+                            T = false;
+                        ("undefined" == typeof window ? ((A = true), (T = true)) : (T = true),
                             "undefined" != typeof requirejs && requirejs.toUrl && (S = requirejs.toUrl("pdfjs-dist/build/pdf.worker.js")));
                         var G,
                             P = "undefined" != typeof requirejs && requirejs.load;
@@ -6872,16 +6872,16 @@ module.exports = function (e, t, n) {
                             ((E = T
                                 ? function () {
                                       return new Promise(function (e, t) {
-                                          n.e(13)
+                                          require.e(13)
                                               .then(
                                                   function () {
                                                       try {
                                                           var o;
-                                                          ((o = n(1192)), e(o.WorkerMessageHandler));
+                                                          ((o = require(1192)), e(o.WorkerMessageHandler));
                                                       } catch (e) {
                                                           t(e);
                                                       }
-                                                  }.bind(null, n)
+                                                  }.bind(null, require)
                                               )
                                               .catch(t);
                                       });
@@ -6918,7 +6918,7 @@ module.exports = function (e, t, n) {
                                             (this._transport = null),
                                             (this._worker = null),
                                             (this.docId = "d" + L++),
-                                            (this.destroyed = !1),
+                                            (this.destroyed = false),
                                             (this.onPassword = null),
                                             (this.onProgress = null),
                                             (this.onUnsupportedFeature = null));
@@ -6930,7 +6930,7 @@ module.exports = function (e, t, n) {
                                                 value: function () {
                                                     var e = this;
                                                     return (
-                                                        (this.destroyed = !0),
+                                                        (this.destroyed = true),
                                                         (this._transport ? this._transport.destroy() : Promise.resolve()).then(function () {
                                                             ((e._transport = null), e._worker && (e._worker.destroy(), (e._worker = null)));
                                                         })
@@ -6991,18 +6991,18 @@ module.exports = function (e, t, n) {
                                         {
                                             key: "onDataRange",
                                             value: function (e, t) {
-                                                var n = !0,
-                                                    o = !1,
+                                                var n = true,
+                                                    o = false,
                                                     i = void 0;
                                                 try {
                                                     for (
                                                         var a, r = this._rangeListeners[Symbol.iterator]();
                                                         !(n = (a = r.next()).done);
-                                                        n = !0
+                                                        n = true
                                                     )
                                                         (0, a.value)(e, t);
                                                 } catch (e) {
-                                                    ((o = !0), (i = e));
+                                                    ((o = true), (i = e));
                                                 } finally {
                                                     try {
                                                         n || null == r.return || r.return();
@@ -7017,18 +7017,18 @@ module.exports = function (e, t, n) {
                                             value: function (e) {
                                                 var t = this;
                                                 this._readyCapability.promise.then(function () {
-                                                    var n = !0,
-                                                        o = !1,
+                                                    var n = true,
+                                                        o = false,
                                                         i = void 0;
                                                     try {
                                                         for (
                                                             var a, r = t._progressListeners[Symbol.iterator]();
                                                             !(n = (a = r.next()).done);
-                                                            n = !0
+                                                            n = true
                                                         )
                                                             (0, a.value)(e);
                                                     } catch (e) {
-                                                        ((o = !0), (i = e));
+                                                        ((o = true), (i = e));
                                                     } finally {
                                                         try {
                                                             n || null == r.return || r.return();
@@ -7044,18 +7044,18 @@ module.exports = function (e, t, n) {
                                             value: function (e) {
                                                 var t = this;
                                                 this._readyCapability.promise.then(function () {
-                                                    var n = !0,
-                                                        o = !1,
+                                                    var n = true,
+                                                        o = false,
                                                         i = void 0;
                                                     try {
                                                         for (
                                                             var a, r = t._progressiveReadListeners[Symbol.iterator]();
                                                             !(n = (a = r.next()).done);
-                                                            n = !0
+                                                            n = true
                                                         )
                                                             (0, a.value)(e);
                                                     } catch (e) {
-                                                        ((o = !0), (i = e));
+                                                        ((o = true), (i = e));
                                                     } finally {
                                                         try {
                                                             n || null == r.return || r.return();
@@ -7226,10 +7226,10 @@ module.exports = function (e, t, n) {
                                     (this._pdfBug = i),
                                     (this.commonObjs = o.commonObjs),
                                     (this.objs = new U()),
-                                    (this.cleanupAfterRender = !1),
-                                    (this.pendingCleanup = !1),
+                                    (this.cleanupAfterRender = false),
+                                    (this.pendingCleanup = false),
                                     (this.intentStates = Object.create(null)),
-                                    (this.destroyed = !1));
+                                    (this.destroyed = false));
                             }
                             return (
                                 C(e, [
@@ -7296,30 +7296,30 @@ module.exports = function (e, t, n) {
                                                 x = e.progress,
                                                 S = void 0 === x ? null : x,
                                                 E = this._stats;
-                                            (E.time("Overall"), (this.pendingCleanup = !1));
+                                            (E.time("Overall"), (this.pendingCleanup = false));
                                             var A = "print" === s ? "print" : "display",
                                                 T = v || new r.DOMCanvasFactory(),
                                                 G = new f.WebGLContext({ enable: c });
                                             this.intentStates[A] || (this.intentStates[A] = Object.create(null));
                                             var P = this.intentStates[A];
                                             P.displayReadyCapability ||
-                                                ((P.receivingOperatorList = !0),
+                                                ((P.receivingOperatorList = true),
                                                 (P.displayReadyCapability = (0, a.createPromiseCapability)()),
                                                 (P.operatorList = {
                                                     fnArray: [],
                                                     argsArray: [],
-                                                    lastChunk: !1,
+                                                    lastChunk: false,
                                                 }),
                                                 E.time("Page Request"),
                                                 this._transport.messageHandler.send("RenderPageRequest", {
                                                     pageIndex: this.pageNumber - 1,
                                                     intent: A,
-                                                    renderInteractiveForms: !0 === u,
+                                                    renderInteractiveForms: true === u,
                                                 }));
                                             var D = function (e) {
                                                     var n = P.renderTasks.indexOf(L);
                                                     (n >= 0 && P.renderTasks.splice(n, 1),
-                                                        t.cleanupAfterRender && (t.pendingCleanup = !0),
+                                                        t.cleanupAfterRender && (t.pendingCleanup = true),
                                                         t._tryCleanup(),
                                                         e ? L.capability.reject(e) : L.capability.resolve(),
                                                         E.timeEnd("Rendering"),
@@ -7374,14 +7374,14 @@ module.exports = function (e, t, n) {
                                                             n >= 0 && t.renderTasks.splice(n, 1);
                                                         }
                                                     }),
-                                                    (t.receivingOperatorList = !0),
+                                                    (t.receivingOperatorList = true),
                                                     (t.opListReadCapability = (0, a.createPromiseCapability)()),
                                                     (t.renderTasks = []),
                                                     t.renderTasks.push(e),
                                                     (t.operatorList = {
                                                         fnArray: [],
                                                         argsArray: [],
-                                                        lastChunk: !1,
+                                                        lastChunk: false,
                                                     }),
                                                     this._stats.time("Page Request"),
                                                     this._transport.messageHandler.send("RenderPageRequest", {
@@ -7405,8 +7405,8 @@ module.exports = function (e, t, n) {
                                                 "GetTextContent",
                                                 {
                                                     pageIndex: this.pageNumber - 1,
-                                                    normalizeWhitespace: !0 === n,
-                                                    combineTextItems: !0 !== i,
+                                                    normalizeWhitespace: true === n,
+                                                    combineTextItems: true !== i,
                                                 },
                                                 {
                                                     highWaterMark: a,
@@ -7442,7 +7442,7 @@ module.exports = function (e, t, n) {
                                     {
                                         key: "_destroy",
                                         value: function () {
-                                            ((this.destroyed = !0), (this._transport.pageCache[this.pageIndex] = null));
+                                            ((this.destroyed = true), (this._transport.pageCache[this.pageIndex] = null));
                                             var e = [];
                                             return (
                                                 Object.keys(this.intentStates).forEach(function (t) {
@@ -7454,7 +7454,7 @@ module.exports = function (e, t, n) {
                                                 }, this),
                                                 this.objs.clear(),
                                                 (this.annotationsPromise = null),
-                                                (this.pendingCleanup = !1),
+                                                (this.pendingCleanup = false),
                                                 Promise.all(e)
                                             );
                                         },
@@ -7463,7 +7463,7 @@ module.exports = function (e, t, n) {
                                         key: "cleanup",
                                         value: function () {
                                             var e = arguments.length > 0 && void 0 !== arguments[0] && arguments[0];
-                                            ((this.pendingCleanup = !0), this._tryCleanup(e));
+                                            ((this.pendingCleanup = true), this._tryCleanup(e));
                                         },
                                     },
                                     {
@@ -7481,7 +7481,7 @@ module.exports = function (e, t, n) {
                                                 this.objs.clear(),
                                                 (this.annotationsPromise = null),
                                                 e && this._stats instanceof r.StatTimer && (this._stats = new r.StatTimer()),
-                                                (this.pendingCleanup = !1));
+                                                (this.pendingCleanup = false));
                                         },
                                     },
                                     {
@@ -7498,7 +7498,7 @@ module.exports = function (e, t, n) {
                                                 (n.operatorList.fnArray.push(e.fnArray[o]), n.operatorList.argsArray.push(e.argsArray[o]));
                                             n.operatorList.lastChunk = e.lastChunk;
                                             for (var a = 0; a < n.renderTasks.length; a++) n.renderTasks[a].operatorListChanged();
-                                            e.lastChunk && ((n.receivingOperatorList = !1), this._tryCleanup());
+                                            e.lastChunk && ((n.receivingOperatorList = false), this._tryCleanup());
                                         },
                                     },
                                     {
@@ -7645,8 +7645,8 @@ module.exports = function (e, t, n) {
                                     if ((b(this, s), r && t.has(r))) throw new Error("Cannot use more than one PDFWorker per port");
                                     if (
                                         ((this.name = o),
-                                        (this.destroyed = !1),
-                                        (this.postMessageTransfers = !1 !== c),
+                                        (this.destroyed = false),
+                                        (this.postMessageTransfers = false !== c),
                                         (this.verbosity = u),
                                         (this._readyCapability = (0, a.createPromiseCapability)()),
                                         (this._port = null),
@@ -7705,7 +7705,7 @@ module.exports = function (e, t, n) {
                                                                               ? ((n._messageHandler = l),
                                                                                 (n._port = s),
                                                                                 (n._webWorker = s),
-                                                                                e.supportTransfers || (n.postMessageTransfers = !1),
+                                                                                e.supportTransfers || (n.postMessageTransfers = false),
                                                                                 n._readyCapability.resolve(),
                                                                                 l.send("configure", {
                                                                                     verbosity: n.verbosity,
@@ -7743,7 +7743,7 @@ module.exports = function (e, t, n) {
                                                 key: "_setupFakeWorker",
                                                 value: function () {
                                                     var t = this;
-                                                    (A || ((0, a.warn)("Setting up fake worker."), (A = !0)),
+                                                    (A || ((0, a.warn)("Setting up fake worker."), (A = true)),
                                                         (function () {
                                                             if (e) return e.promise;
                                                             e = (0, a.createPromiseCapability)();
@@ -7783,7 +7783,7 @@ module.exports = function (e, t, n) {
                                             {
                                                 key: "destroy",
                                                 value: function () {
-                                                    ((this.destroyed = !0),
+                                                    ((this.destroyed = true),
                                                         this._webWorker && (this._webWorker.terminate(), (this._webWorker = null)),
                                                         t.delete(this._port),
                                                         (this._port = null),
@@ -7847,7 +7847,7 @@ module.exports = function (e, t, n) {
                                             baseUrl: i.cMapUrl,
                                             isCompressed: i.cMapPacked,
                                         })),
-                                        (this.destroyed = !1),
+                                        (this.destroyed = false),
                                         (this.destroyCapability = null),
                                         (this._passwordCapability = null),
                                         (this._networkStream = o),
@@ -7865,7 +7865,7 @@ module.exports = function (e, t, n) {
                                             value: function () {
                                                 var e = this;
                                                 if (this.destroyCapability) return this.destroyCapability.promise;
-                                                ((this.destroyed = !0),
+                                                ((this.destroyed = true),
                                                     (this.destroyCapability = (0, a.createPromiseCapability)()),
                                                     this._passwordCapability &&
                                                         this._passwordCapability.reject(
@@ -8166,7 +8166,7 @@ module.exports = function (e, t, n) {
                                                                                 a &&
                                                                                     "data" in a &&
                                                                                     a.data.length > 8e6 &&
-                                                                                    (r.cleanupAfterRender = !0));
+                                                                                    (r.cleanupAfterRender = true));
                                                                             break;
                                                                         default:
                                                                             throw new Error("Got unknown object type ".concat(i));
@@ -8194,7 +8194,7 @@ module.exports = function (e, t, n) {
                                                                 var t = this.pageCache[e.pageNum - 1].intentStates[e.intent];
                                                                 if (!t.displayReadyCapability) throw new Error(e.error);
                                                                 if ((t.displayReadyCapability.reject(e.error), t.operatorList)) {
-                                                                    t.operatorList.lastChunk = !0;
+                                                                    t.operatorList.lastChunk = true;
                                                                     for (var n = 0; n < t.renderTasks.length; n++)
                                                                         t.renderTasks[n].operatorListChanged();
                                                                 }
@@ -8421,7 +8421,7 @@ module.exports = function (e, t, n) {
                                                     : (this._objs[e] = {
                                                           capability: (0, a.createPromiseCapability)(),
                                                           data: null,
-                                                          resolved: !1,
+                                                          resolved: false,
                                                       });
                                             },
                                         },
@@ -8447,7 +8447,7 @@ module.exports = function (e, t, n) {
                                             key: "resolve",
                                             value: function (e, t) {
                                                 var n = this._ensureObj(e);
-                                                ((n.resolved = !0), (n.data = t), n.capability.resolve(t));
+                                                ((n.resolved = true), (n.data = t), n.capability.resolve(t));
                                             },
                                         },
                                         {
@@ -8520,11 +8520,11 @@ module.exports = function (e, t, n) {
                                             (this.CanvasGraphics = u || c.CanvasGraphics),
                                             (this.webGLContext = p),
                                             (this._pdfBug = m),
-                                            (this.running = !1),
+                                            (this.running = false),
                                             (this.graphicsReadyCallback = null),
-                                            (this.graphicsReady = !1),
-                                            (this._useRequestAnimationFrame = !0 === h && "undefined" != typeof window),
-                                            (this.cancelled = !1),
+                                            (this.graphicsReady = false),
+                                            (this._useRequestAnimationFrame = true === h && "undefined" != typeof window),
+                                            (this.cancelled = false),
                                             (this.capability = (0, a.createPromiseCapability)()),
                                             (this.task = new $(this)),
                                             (this._continueBound = this._continue.bind(this)),
@@ -8574,7 +8574,7 @@ module.exports = function (e, t, n) {
                                                                 background: r,
                                                             }),
                                                             (this.operatorListIdx = 0),
-                                                            (this.graphicsReady = !0),
+                                                            (this.graphicsReady = true),
                                                             this.graphicsReadyCallback && this.graphicsReadyCallback());
                                                     }
                                                 },
@@ -8583,8 +8583,8 @@ module.exports = function (e, t, n) {
                                                 key: "cancel",
                                                 value: function () {
                                                     var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : null;
-                                                    ((this.running = !1),
-                                                        (this.cancelled = !0),
+                                                    ((this.running = false),
+                                                        (this.cancelled = true),
                                                         this.gfx && this.gfx.endDrawing(),
                                                         this._canvas && N.delete(this._canvas),
                                                         this.callback(
@@ -8608,7 +8608,7 @@ module.exports = function (e, t, n) {
                                             {
                                                 key: "_continue",
                                                 value: function () {
-                                                    ((this.running = !0),
+                                                    ((this.running = true),
                                                         this.cancelled ||
                                                             (this.task.onContinue
                                                                 ? this.task.onContinue(this._scheduleNextBound)
@@ -8651,7 +8651,7 @@ module.exports = function (e, t, n) {
                                                                                 )),
                                                                                     this.operatorListIdx ===
                                                                                         this.operatorList.argsArray.length &&
-                                                                                        ((this.running = !1),
+                                                                                        ((this.running = false),
                                                                                         this.operatorList.lastChunk &&
                                                                                             (this.gfx.endDrawing(),
                                                                                             this._canvas && N.delete(this._canvas),
@@ -8808,9 +8808,9 @@ module.exports = function (e, t, n) {
                                                 function n() {
                                                     for (; t.length; ) {
                                                         var o = t.pop();
-                                                        if (o in e) return ((n.value = o), (n.done = !1), n);
+                                                        if (o in e) return ((n.value = o), (n.done = false), n);
                                                     }
-                                                    return ((n.done = !0), n);
+                                                    return ((n.done = true), n);
                                                 }
                                             );
                                         }),
@@ -8822,7 +8822,7 @@ module.exports = function (e, t, n) {
                                                     ((this.prev = 0),
                                                     (this.next = 0),
                                                     (this.sent = this._sent = void 0),
-                                                    (this.done = !1),
+                                                    (this.done = false),
                                                     (this.delegate = null),
                                                     (this.method = "next"),
                                                     (this.arg = void 0),
@@ -8833,7 +8833,7 @@ module.exports = function (e, t, n) {
                                                         "t" === t.charAt(0) && i.call(this, t) && !isNaN(+t.slice(1)) && (this[t] = void 0);
                                             },
                                             stop: function () {
-                                                this.done = !0;
+                                                this.done = true;
                                                 var e = this.tryEntries[0].completion;
                                                 if ("throw" === e.type) throw e.arg;
                                                 return this.rval;
@@ -8858,10 +8858,10 @@ module.exports = function (e, t, n) {
                                                         var s = i.call(a, "catchLoc"),
                                                             l = i.call(a, "finallyLoc");
                                                         if (s && l) {
-                                                            if (this.prev < a.catchLoc) return n(a.catchLoc, !0);
+                                                            if (this.prev < a.catchLoc) return n(a.catchLoc, true);
                                                             if (this.prev < a.finallyLoc) return n(a.finallyLoc);
                                                         } else if (s) {
-                                                            if (this.prev < a.catchLoc) return n(a.catchLoc, !0);
+                                                            if (this.prev < a.catchLoc) return n(a.catchLoc, true);
                                                         } else {
                                                             if (!l) throw new Error("try statement without catch or finally");
                                                             if (this.prev < a.finallyLoc) return n(a.finallyLoc);
@@ -8944,7 +8944,7 @@ module.exports = function (e, t, n) {
                                                 if ("executing" === o) throw new Error("Generator is already running");
                                                 if ("completed" === o) {
                                                     if ("throw" === i) throw a;
-                                                    return { value: void 0, done: !0 };
+                                                    return { value: void 0, done: true };
                                                 }
                                                 for (n.method = i, n.arg = a; ; ) {
                                                     var r = n.delegate;
@@ -9066,7 +9066,7 @@ module.exports = function (e, t, n) {
                                     ((t.type = "normal"), delete t.arg, (e.completion = t));
                                 }
                                 function A(e) {
-                                    ((this.tryEntries = [{ tryLoc: "root" }]), e.forEach(S, this), this.reset(!0));
+                                    ((this.tryEntries = [{ tryLoc: "root" }]), e.forEach(S, this), this.reset(true));
                                 }
                                 function T(e) {
                                     if (e) {
@@ -9076,8 +9076,8 @@ module.exports = function (e, t, n) {
                                         if (!isNaN(e.length)) {
                                             var n = -1,
                                                 o = function t() {
-                                                    for (; ++n < e.length; ) if (i.call(e, n)) return ((t.value = e[n]), (t.done = !1), t);
-                                                    return ((t.value = void 0), (t.done = !0), t);
+                                                    for (; ++n < e.length; ) if (i.call(e, n)) return ((t.value = e[n]), (t.done = false), t);
+                                                    return ((t.value = void 0), (t.done = true), t);
                                                 };
                                             return (o.next = o);
                                         }
@@ -9085,7 +9085,7 @@ module.exports = function (e, t, n) {
                                     return { next: G };
                                 }
                                 function G() {
-                                    return { value: void 0, done: !0 };
+                                    return { value: void 0, done: true };
                                 }
                             })(
                                 (function () {
@@ -9103,13 +9103,13 @@ module.exports = function (e, t, n) {
                                     (e.paths = []),
                                     e.children || (e.children = []),
                                     Object.defineProperty(e, "loaded", {
-                                        enumerable: !0,
+                                        enumerable: true,
                                         get: function () {
                                             return e.l;
                                         },
                                     }),
                                     Object.defineProperty(e, "id", {
-                                        enumerable: !0,
+                                        enumerable: true,
                                         get: function () {
                                             return e.i;
                                         },
@@ -9121,7 +9121,7 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, n) {
                         "use strict";
-                        (Object.defineProperty(t, "__esModule", { value: !0 }),
+                        (Object.defineProperty(t, "__esModule", { value: true }),
                             (t.addLinkAttributes = function (e) {
                                 var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
                                     n = t.url,
@@ -9167,9 +9167,9 @@ module.exports = function (e, t, n) {
                         function a(e, t) {
                             for (var n = 0; n < t.length; n++) {
                                 var o = t[n];
-                                ((o.enumerable = o.enumerable || !1),
-                                    (o.configurable = !0),
-                                    "value" in o && (o.writable = !0),
+                                ((o.enumerable = o.enumerable || false),
+                                    (o.configurable = true),
+                                    "value" in o && (o.writable = true),
                                     Object.defineProperty(e, o.key, o));
                             }
                         }
@@ -9233,7 +9233,7 @@ module.exports = function (e, t, n) {
                                                     ? new Promise(function (e, i) {
                                                           var a = t.baseUrl + n + (t.isCompressed ? ".bcmap" : ""),
                                                               r = new XMLHttpRequest();
-                                                          (r.open("GET", a, !0),
+                                                          (r.open("GET", a, true),
                                                               t.isCompressed && (r.responseType = "arraybuffer"),
                                                               (r.onreadystatechange = function () {
                                                                   if (r.readyState === XMLHttpRequest.DONE) {
@@ -9499,7 +9499,7 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, n) {
                         "use strict";
-                        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.FontLoader = t.FontFaceObject = void 0));
+                        (Object.defineProperty(t, "__esModule", { value: true }), (t.FontLoader = t.FontFaceObject = void 0));
                         var o,
                             i = (o = n(147)) && o.__esModule ? o : { default: o },
                             a = n(1);
@@ -9553,9 +9553,9 @@ module.exports = function (e, t, n) {
                         function p(e, t) {
                             for (var n = 0; n < t.length; n++) {
                                 var o = t[n];
-                                ((o.enumerable = o.enumerable || !1),
-                                    (o.configurable = !0),
-                                    "value" in o && (o.writable = !0),
+                                ((o.enumerable = o.enumerable || false),
+                                    (o.configurable = true),
+                                    "value" in o && (o.writable = true),
                                     Object.defineProperty(e, o.key, o));
                             }
                         }
@@ -9623,7 +9623,7 @@ module.exports = function (e, t, n) {
                                                                         }
                                                                         return e.abrupt("return");
                                                                     case 2:
-                                                                        if (((t.attached = !0), !this.isFontLoadingAPISupported)) {
+                                                                        if (((t.attached = true), !this.isFontLoadingAPISupported)) {
                                                                             e.next = 19;
                                                                             break;
                                                                         }
@@ -9652,7 +9652,7 @@ module.exports = function (e, t, n) {
                                                                                     .concat(n.family, "': '")
                                                                                     .concat(e.t0, "'.")
                                                                             ),
-                                                                            (t.disableFontFace = !0),
+                                                                            (t.disableFontFace = true),
                                                                             e.t0
                                                                         );
                                                                     case 18:
@@ -9759,8 +9759,8 @@ module.exports = function (e, t, n) {
                                             ((e.prototype = Object.create(t && t.prototype, {
                                                 constructor: {
                                                     value: e,
-                                                    writable: !0,
-                                                    configurable: !0,
+                                                    writable: true,
+                                                    configurable: true,
                                                 },
                                             })),
                                                 t && c(e, t));
@@ -9772,11 +9772,11 @@ module.exports = function (e, t, n) {
                                                     var t = this.loadingContext,
                                                         n = {
                                                             id: "pdfjs-font-loading-".concat(t.nextRequestId++),
-                                                            done: !1,
+                                                            done: false,
                                                             complete: function () {
                                                                 for (
                                                                     (0, a.assert)(!n.done, "completeRequest() cannot be called twice."),
-                                                                        n.done = !0;
+                                                                        n.done = true;
                                                                     t.requests.length > 0 && t.requests[0].done;
 
                                                                 ) {
@@ -9854,7 +9854,7 @@ module.exports = function (e, t, n) {
                                                     var e = "undefined" != typeof document && !!document.fonts;
                                                     if (e && "undefined" != typeof navigator) {
                                                         var t = /Mozilla\/5.0.*?rv:(\d+).*? Gecko/.exec(navigator.userAgent);
-                                                        t && t[1] < 63 && (e = !1);
+                                                        t && t[1] < 63 && (e = false);
                                                     }
                                                     return (0, a.shadow)(this, "isFontLoadingAPISupported", e);
                                                 },
@@ -9862,11 +9862,11 @@ module.exports = function (e, t, n) {
                                             {
                                                 key: "isSyncFontLoadingSupported",
                                                 get: function () {
-                                                    var e = !1;
-                                                    if ("undefined" == typeof navigator) e = !0;
+                                                    var e = false;
+                                                    if ("undefined" == typeof navigator) e = true;
                                                     else {
                                                         var t = /Mozilla\/5.0.*?rv:(\d+).*? Gecko/.exec(navigator.userAgent);
-                                                        t && t[1] >= 14 && (e = !0);
+                                                        t && t[1] >= 14 && (e = true);
                                                     }
                                                     return (0, a.shadow)(this, "isSyncFontLoadingSupported", e);
                                                 },
@@ -9905,9 +9905,9 @@ module.exports = function (e, t, n) {
                                         p = n.fontRegistry,
                                         g = void 0 === p ? null : p;
                                     for (var h in (u(this, e), (this.compiledGlyphs = Object.create(null)), t)) this[h] = t[h];
-                                    ((this.isEvalSupported = !1 !== i),
-                                        (this.disableFontFace = !0 === r),
-                                        (this.ignoreErrors = !0 === l),
+                                    ((this.isEvalSupported = false !== i),
+                                        (this.disableFontFace = true === r),
+                                        (this.ignoreErrors = true === l),
                                         (this._onUnsupportedFeature = d),
                                         (this.fontRegistry = g));
                                 }
@@ -9982,13 +9982,13 @@ module.exports = function (e, t, n) {
                             a = ("undefined" != typeof navigator && navigator.userAgent) || "",
                             r = /Trident/.test(a),
                             s = /CriOS/.test(a);
-                        ((r || s) && (o.disableCreateObjectURL = !0),
-                            i() && ((o.disableFontFace = !0), (o.nativeImageDecoderSupport = "none")),
+                        ((r || s) && (o.disableCreateObjectURL = true),
+                            i() && ((o.disableFontFace = true), (o.nativeImageDecoderSupport = "none")),
                             (t.apiCompatibilityParams = Object.freeze(o)));
                     },
                     function (e, t, n) {
                         "use strict";
-                        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.CanvasGraphics = void 0));
+                        (Object.defineProperty(t, "__esModule", { value: true }), (t.CanvasGraphics = void 0));
                         var o = n(1),
                             i = n(155),
                             a = {
@@ -10104,7 +10104,7 @@ module.exports = function (e, t, n) {
                             })(),
                             l = (function () {
                                 function e() {
-                                    ((this.alphaIsShape = !1),
+                                    ((this.alphaIsShape = false),
                                         (this.fontSize = 0),
                                         (this.fontSizeScale = 1),
                                         (this.textMatrix = o.IDENTITY_MATRIX),
@@ -10122,7 +10122,7 @@ module.exports = function (e, t, n) {
                                         (this.textRise = 0),
                                         (this.fillColor = "#000000"),
                                         (this.strokeColor = "#000000"),
-                                        (this.patternFill = !1),
+                                        (this.patternFill = false),
                                         (this.fillAlpha = 1),
                                         (this.strokeAlpha = 1),
                                         (this.lineWidth = 1),
@@ -10147,7 +10147,7 @@ module.exports = function (e, t, n) {
                                         (this.current = new l()),
                                         (this.stateStack = []),
                                         (this.pendingClip = null),
-                                        (this.pendingEOFill = !1),
+                                        (this.pendingEOFill = false),
                                         (this.res = null),
                                         (this.xobjs = null),
                                         (this.commonObjs = t),
@@ -10365,7 +10365,7 @@ module.exports = function (e, t, n) {
                                             this.ctx.restore(),
                                             i)
                                         ) {
-                                            var c = this.cachedCanvases.getCanvas("transparent", s, l, !0);
+                                            var c = this.cachedCanvases.getCanvas("transparent", s, l, true);
                                             ((this.compositeCtx = this.ctx),
                                                 (this.transparentCanvas = c.canvas),
                                                 (this.ctx = c.context),
@@ -10498,7 +10498,7 @@ module.exports = function (e, t, n) {
                                             t = e.canvas.width,
                                             n = e.canvas.height,
                                             o = "smaskGroupAt" + this.groupLevel,
-                                            i = this.cachedCanvases.getCanvas(o, t, n, !0),
+                                            i = this.cachedCanvases.getCanvas(o, t, n, true),
                                             a = this.ctx,
                                             r = a.mozCurrentTransform;
                                         this.ctx.save();
@@ -10634,30 +10634,30 @@ module.exports = function (e, t, n) {
                                         e = void 0 === e || e;
                                         var t = this.ctx,
                                             n = this.current.fillColor,
-                                            o = !1;
+                                            o = false;
                                         (this.current.patternFill &&
                                             (t.save(),
                                             this.baseTransform && t.setTransform.apply(t, this.baseTransform),
                                             (t.fillStyle = n.getPattern(t, this)),
-                                            (o = !0)),
-                                            this.pendingEOFill ? (t.fill("evenodd"), (this.pendingEOFill = !1)) : t.fill(),
+                                            (o = true)),
+                                            this.pendingEOFill ? (t.fill("evenodd"), (this.pendingEOFill = false)) : t.fill(),
                                             o && t.restore(),
                                             e && this.consumePath());
                                     },
                                     eoFill: function () {
-                                        ((this.pendingEOFill = !0), this.fill());
+                                        ((this.pendingEOFill = true), this.fill());
                                     },
                                     fillStroke: function () {
-                                        (this.fill(!1), this.stroke(!1), this.consumePath());
+                                        (this.fill(false), this.stroke(false), this.consumePath());
                                     },
                                     eoFillStroke: function () {
-                                        ((this.pendingEOFill = !0), this.fillStroke());
+                                        ((this.pendingEOFill = true), this.fillStroke());
                                     },
                                     closeFillStroke: function () {
                                         (this.closePath(), this.fillStroke());
                                     },
                                     closeEOFillStroke: function () {
-                                        ((this.pendingEOFill = !0), this.closePath(), this.fillStroke());
+                                        ((this.pendingEOFill = true), this.closePath(), this.fillStroke());
                                     },
                                     endPath: function () {
                                         this.consumePath();
@@ -10782,9 +10782,9 @@ module.exports = function (e, t, n) {
                                     get isFontSubpixelAAEnabled() {
                                         var e = this.canvasFactory.create(10, 10).context;
                                         (e.scale(1.5, 1), e.fillText("I", 0, 10));
-                                        for (var t = e.getImageData(0, 0, 10, 10).data, n = !1, i = 3; i < t.length; i += 4)
+                                        for (var t = e.getImageData(0, 0, 10, 10).data, n = false, i = 3; i < t.length; i += 4)
                                             if (t[i] > 0 && t[i] < 255) {
-                                                n = !0;
+                                                n = true;
                                                 break;
                                             }
                                         return (0, o.shadow)(this, "isFontSubpixelAAEnabled", n);
@@ -10840,7 +10840,7 @@ module.exports = function (e, t, n) {
                                                         P,
                                                         D,
                                                         L,
-                                                        I = !1,
+                                                        I = false,
                                                         k = (S.isSpace ? c : 0) + l,
                                                         O = S.unicode,
                                                         F = S.accent,
@@ -10859,7 +10859,7 @@ module.exports = function (e, t, n) {
                                                         var M = ((1e3 * r.measureText(O).width) / i) * s;
                                                         if (R < M && this.isFontSubpixelAAEnabled) {
                                                             var N = R / M;
-                                                            ((I = !0), r.save(), r.scale(N, 1), (E /= N));
+                                                            ((I = true), r.save(), r.scale(N, 1), (E /= N));
                                                         } else R !== M && (E += (((R - M) / 2e3) * i) / s);
                                                     }
                                                     var B = R * m + k * d;
@@ -10949,7 +10949,7 @@ module.exports = function (e, t, n) {
                                         this.current.strokeColor = this.getColorN_Pattern(arguments);
                                     },
                                     setFillColorN: function () {
-                                        ((this.current.fillColor = this.getColorN_Pattern(arguments)), (this.current.patternFill = !0));
+                                        ((this.current.fillColor = this.getColorN_Pattern(arguments)), (this.current.patternFill = true));
                                     },
                                     setStrokeRGBColor: function (e, t, n) {
                                         var i = o.Util.makeCssRgb(e, t, n);
@@ -10957,7 +10957,7 @@ module.exports = function (e, t, n) {
                                     },
                                     setFillRGBColor: function (e, t, n) {
                                         var i = o.Util.makeCssRgb(e, t, n);
-                                        ((this.ctx.fillStyle = i), (this.current.fillColor = i), (this.current.patternFill = !1));
+                                        ((this.ctx.fillStyle = i), (this.current.fillColor = i), (this.current.patternFill = false));
                                     },
                                     setStrokeCMYKColor: function (e, t, n, i) {
                                         var a = o.Util.makeCssCMYK(e, t, n, i);
@@ -10965,13 +10965,13 @@ module.exports = function (e, t, n) {
                                     },
                                     setFillCMYKColor: function (e, t, n, i) {
                                         var a = o.Util.makeCssCMYK(e, t, n, i);
-                                        ((this.ctx.fillStyle = a), (this.current.fillColor = a), (this.current.patternFill = !1));
+                                        ((this.ctx.fillStyle = a), (this.current.fillColor = a), (this.current.patternFill = false));
                                     },
                                     shadingFill: function (e) {
                                         var t = this.ctx;
                                         this.save();
                                         var n = (0, i.getShadingPatternFromIR)(e);
-                                        t.fillStyle = n.getPattern(t, this, !0);
+                                        t.fillStyle = n.getPattern(t, this, true);
                                         var a = t.mozCurrentTransformInverse;
                                         if (a) {
                                             var r = t.canvas,
@@ -11031,7 +11031,7 @@ module.exports = function (e, t, n) {
                                         (l > 4096 && ((u = l / 4096), (l = 4096)), d > 4096 && ((p = d / 4096), (d = 4096)));
                                         var g = "groupAt" + this.groupLevel;
                                         e.smask && (g += "_smask_" + (this.smaskCounter++ % 2));
-                                        var h = this.cachedCanvases.getCanvas(g, l, d, !0),
+                                        var h = this.cachedCanvases.getCanvas(g, l, d, true),
                                             f = h.context;
                                         (f.scale(1 / u, 1 / p),
                                             f.translate(-r, -s),
@@ -11066,8 +11066,8 @@ module.exports = function (e, t, n) {
                                         var t = this.ctx;
                                         ((this.ctx = this.groupStack.pop()),
                                             void 0 !== this.ctx.imageSmoothingEnabled
-                                                ? (this.ctx.imageSmoothingEnabled = !1)
-                                                : (this.ctx.mozImageSmoothingEnabled = !1),
+                                                ? (this.ctx.imageSmoothingEnabled = false)
+                                                : (this.ctx.mozImageSmoothingEnabled = false),
                                             e.smask ? (this.tempSMask = this.smaskStack.pop()) : this.ctx.drawImage(t.canvas, 0, 0),
                                             this.restore());
                                     },
@@ -11384,7 +11384,7 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, n) {
                         "use strict";
-                        (Object.defineProperty(t, "__esModule", { value: !0 }),
+                        (Object.defineProperty(t, "__esModule", { value: true }),
                             (t.getShadingPatternFromIR = function (e) {
                                 var t = i[e[0]];
                                 if (!t) throw new Error("Unknown IR type: ".concat(e[0]));
@@ -11543,10 +11543,10 @@ module.exports = function (e, t, n) {
                                             figures: a,
                                             context: w,
                                         })),
-                                            (d = s.getCanvas("mesh", C, x, !1)).context.drawImage(c, 2, 2),
+                                            (d = s.getCanvas("mesh", C, x, false)).context.drawImage(c, 2, 2),
                                             (c = d.canvas));
                                     else {
-                                        var S = (d = s.getCanvas("mesh", C, x, !1)).context,
+                                        var S = (d = s.getCanvas("mesh", C, x, false)).context,
                                             E = S.createImageData(y, v);
                                         if (r) {
                                             var A = E.data;
@@ -11645,7 +11645,7 @@ module.exports = function (e, t, n) {
                                             b = [v[0] * _[0], v[1] * _[1]];
                                         ((m = Math.min(Math.ceil(Math.abs(m * b[0])), 3e3)),
                                             (y = Math.min(Math.ceil(Math.abs(y * b[1])), 3e3)));
-                                        var w = e.cachedCanvases.getCanvas("pattern", m, y, !0),
+                                        var w = e.cachedCanvases.getCanvas("pattern", m, y, true),
                                             C = w.context,
                                             x = c.createCanvasGraphics(C);
                                         ((x.groupLevel = e.groupLevel),
@@ -11715,7 +11715,7 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, n) {
                         "use strict";
-                        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.GlobalWorkerOptions = void 0));
+                        (Object.defineProperty(t, "__esModule", { value: true }), (t.GlobalWorkerOptions = void 0));
                         var o = Object.create(null);
                         ((t.GlobalWorkerOptions = o),
                             (o.workerPort = void 0 === o.workerPort ? null : o.workerPort),
@@ -11723,7 +11723,7 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, n) {
                         "use strict";
-                        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.MessageHandler = h));
+                        (Object.defineProperty(t, "__esModule", { value: true }), (t.MessageHandler = h));
                         var o,
                             i = (o = n(147)) && o.__esModule ? o : { default: o },
                             a = n(1);
@@ -11827,7 +11827,7 @@ module.exports = function (e, t, n) {
                                 (this.comObj = n),
                                 (this.callbackId = 1),
                                 (this.streamId = 1),
-                                (this.postMessageTransfers = !0),
+                                (this.postMessageTransfers = true),
                                 (this.streamSinks = Object.create(null)),
                                 (this.streamControllers = Object.create(null)));
                             var i = (this.callbacksCapabilities = Object.create(null)),
@@ -11856,7 +11856,7 @@ module.exports = function (e, t, n) {
                                                         n.postMessage({
                                                             sourceName: c,
                                                             targetName: d,
-                                                            isReply: !0,
+                                                            isReply: true,
                                                             callbackId: t.callbackId,
                                                             data: e,
                                                         });
@@ -11865,7 +11865,7 @@ module.exports = function (e, t, n) {
                                                         n.postMessage({
                                                             sourceName: c,
                                                             targetName: d,
-                                                            isReply: !0,
+                                                            isReply: true,
                                                             callbackId: t.callbackId,
                                                             error: p(e),
                                                         });
@@ -11922,7 +11922,7 @@ module.exports = function (e, t, n) {
                                                 (i.streamControllers[r] = {
                                                     controller: n,
                                                     startCall: o,
-                                                    isClosed: !1,
+                                                    isClosed: false,
                                                 }),
                                                 i.postMessage({
                                                     sourceName: s,
@@ -11953,7 +11953,7 @@ module.exports = function (e, t, n) {
                                             var t = (0, a.createPromiseCapability)();
                                             return (
                                                 (i.streamControllers[r].cancelCall = t),
-                                                (i.streamControllers[r].isClosed = !0),
+                                                (i.streamControllers[r].isClosed = true),
                                                 i.postMessage({
                                                     sourceName: s,
                                                     targetName: l,
@@ -12011,15 +12011,15 @@ module.exports = function (e, t, n) {
                                             }
                                         },
                                         close: function () {
-                                            this.isCancelled || ((this.isCancelled = !0), u({ stream: "close" }), delete n.streamSinks[i]);
+                                            this.isCancelled || ((this.isCancelled = true), u({ stream: "close" }), delete n.streamSinks[i]);
                                         },
                                         error: function (e) {
-                                            this.isCancelled || ((this.isCancelled = !0), u({ stream: "error", reason: e }));
+                                            this.isCancelled || ((this.isCancelled = true), u({ stream: "error", reason: e }));
                                         },
                                         sinkCapability: d,
                                         onPull: null,
                                         onCancel: null,
-                                        isCancelled: !1,
+                                        isCancelled: false,
                                         desiredSize: r,
                                         ready: null,
                                     };
@@ -12028,10 +12028,10 @@ module.exports = function (e, t, n) {
                                     (this.streamSinks[i] = p),
                                     c(o[0], [e.data, p], o[1]).then(
                                         function () {
-                                            u({ stream: "start_complete", success: !0 });
+                                            u({ stream: "start_complete", success: true });
                                         },
                                         function (e) {
-                                            u({ stream: "start_complete", success: !1, reason: e });
+                                            u({ stream: "start_complete", success: false, reason: e });
                                         }
                                     ));
                             },
@@ -12076,7 +12076,7 @@ module.exports = function (e, t, n) {
                                         break;
                                     case "pull":
                                         if (!this.streamSinks[e.streamId]) {
-                                            r({ stream: "pull_complete", success: !0 });
+                                            r({ stream: "pull_complete", success: true });
                                             break;
                                         }
                                         (this.streamSinks[e.streamId].desiredSize <= 0 &&
@@ -12085,12 +12085,12 @@ module.exports = function (e, t, n) {
                                             (this.streamSinks[e.streamId].desiredSize = e.desiredSize),
                                             c(this.streamSinks[e.streamId].onPull).then(
                                                 function () {
-                                                    r({ stream: "pull_complete", success: !0 });
+                                                    r({ stream: "pull_complete", success: true });
                                                 },
                                                 function (e) {
                                                     r({
                                                         stream: "pull_complete",
-                                                        success: !1,
+                                                        success: false,
                                                         reason: e,
                                                     });
                                                 }
@@ -12107,7 +12107,7 @@ module.exports = function (e, t, n) {
                                             this.streamControllers[e.streamId].isClosed)
                                         )
                                             break;
-                                        ((this.streamControllers[e.streamId].isClosed = !0),
+                                        ((this.streamControllers[e.streamId].isClosed = true),
                                             this.streamControllers[e.streamId].controller.close(),
                                             s());
                                         break;
@@ -12123,18 +12123,18 @@ module.exports = function (e, t, n) {
                                         if (!this.streamSinks[e.streamId]) break;
                                         (c(this.streamSinks[e.streamId].onCancel, [u(e.reason)]).then(
                                             function () {
-                                                r({ stream: "cancel_complete", success: !0 });
+                                                r({ stream: "cancel_complete", success: true });
                                             },
                                             function (e) {
                                                 r({
                                                     stream: "cancel_complete",
-                                                    success: !1,
+                                                    success: false,
                                                     reason: e,
                                                 });
                                             }
                                         ),
                                             this.streamSinks[e.streamId].sinkCapability.reject(u(e.reason)),
-                                            (this.streamSinks[e.streamId].isCancelled = !0),
+                                            (this.streamSinks[e.streamId].isCancelled = true),
                                             delete this.streamSinks[e.streamId]);
                                         break;
                                     default:
@@ -12151,15 +12151,15 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, n) {
                         "use strict";
-                        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.Metadata = void 0));
+                        (Object.defineProperty(t, "__esModule", { value: true }), (t.Metadata = void 0));
                         var o = n(1),
                             i = n(159);
                         function a(e, t) {
                             for (var n = 0; n < t.length; n++) {
                                 var o = t[n];
-                                ((o.enumerable = o.enumerable || !1),
-                                    (o.configurable = !0),
-                                    "value" in o && (o.writable = !0),
+                                ((o.enumerable = o.enumerable || false),
+                                    (o.configurable = true),
+                                    "value" in o && (o.writable = true),
                                     Object.defineProperty(e, o.key, o));
                             }
                         }
@@ -12284,17 +12284,17 @@ module.exports = function (e, t, n) {
                                 })(e) ||
                                 (function (e, t) {
                                     var n = [],
-                                        o = !0,
-                                        i = !1,
+                                        o = true,
+                                        i = false,
                                         a = void 0;
                                     try {
                                         for (
                                             var r, s = e[Symbol.iterator]();
                                             !(o = (r = s.next()).done) && (n.push(r.value), !t || n.length !== t);
-                                            o = !0
+                                            o = true
                                         );
                                     } catch (e) {
-                                        ((i = !0), (a = e));
+                                        ((i = true), (a = e));
                                     } finally {
                                         try {
                                             o || null == s.return || s.return();
@@ -12353,16 +12353,16 @@ module.exports = function (e, t, n) {
                         function d(e, t) {
                             for (var n = 0; n < t.length; n++) {
                                 var o = t[n];
-                                ((o.enumerable = o.enumerable || !1),
-                                    (o.configurable = !0),
-                                    "value" in o && (o.writable = !0),
+                                ((o.enumerable = o.enumerable || false),
+                                    (o.configurable = true),
+                                    "value" in o && (o.writable = true),
                                     Object.defineProperty(e, o.key, o));
                             }
                         }
                         function u(e, t, n) {
                             return (t && d(e.prototype, t), n && d(e, n), e);
                         }
-                        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.SimpleXMLParser = void 0));
+                        (Object.defineProperty(t, "__esModule", { value: true }), (t.SimpleXMLParser = void 0));
                         var p = 0,
                             g = -2,
                             h = -3,
@@ -12482,11 +12482,11 @@ module.exports = function (e, t, n) {
                                                                     if ("DOCTYPE" !== e.substring(n + 1, n + 8))
                                                                         return void this.onError(y);
                                                                     var a = e.indexOf("[", n + 8),
-                                                                        r = !1;
+                                                                        r = false;
                                                                     if ((o = e.indexOf(">", n + 8)) < 0) return void this.onError(f);
                                                                     if (a > 0 && o > a) {
                                                                         if ((o = e.indexOf("]>", n + 8)) < 0) return void this.onError(f);
-                                                                        r = !0;
+                                                                        r = true;
                                                                     }
                                                                     var s = e.substring(n + 8, o + (r ? 1 : 0));
                                                                     (this.onDoctype(s), (n = o + (r ? 2 : 1)));
@@ -12495,8 +12495,8 @@ module.exports = function (e, t, n) {
                                                             default:
                                                                 var l = this._parseContent(e, n);
                                                                 if (null === l) return void this.onError(y);
-                                                                var c = !1;
-                                                                if ("/>" === e.substring(n + l.parsed, n + l.parsed + 2)) c = !0;
+                                                                var c = false;
+                                                                if ("/>" === e.substring(n + l.parsed, n + l.parsed + 2)) c = true;
                                                                 else if (">" !== e.substring(n + l.parsed, n + l.parsed + 1))
                                                                     return void this.onError(v);
                                                                 (this.onBeginElement(l.name, l.attributes, c),
@@ -12536,7 +12536,7 @@ module.exports = function (e, t, n) {
                                         (this.nodeValue = n),
                                         Object.defineProperty(this, "parentNode", {
                                             value: null,
-                                            writable: !0,
+                                            writable: true,
                                         }));
                                 }
                                 return (
@@ -12595,7 +12595,7 @@ module.exports = function (e, t, n) {
                                         if ("function" != typeof t && null !== t)
                                             throw new TypeError("Super expression must either be null or a function");
                                         ((e.prototype = Object.create(t && t.prototype, {
-                                            constructor: { value: e, writable: !0, configurable: !0 },
+                                            constructor: { value: e, writable: true, configurable: true },
                                         })),
                                             t && l(e, t));
                                     })(t, e),
@@ -12630,8 +12630,8 @@ module.exports = function (e, t, n) {
                                             value: function (e) {
                                                 if (
                                                     !(function (e) {
-                                                        for (var t = 0, n = e.length; t < n; t++) if (!_(e, t)) return !1;
-                                                        return !0;
+                                                        for (var t = 0, n = e.length; t < n; t++) if (!_(e, t)) return false;
+                                                        return true;
                                                     })(e)
                                                 ) {
                                                     var t = new w("#text", e);
@@ -12677,7 +12677,7 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, n) {
                         "use strict";
-                        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.PDFDataTransportStream = void 0));
+                        (Object.defineProperty(t, "__esModule", { value: true }), (t.PDFDataTransportStream = void 0));
                         var o,
                             i = (o = n(147)) && o.__esModule ? o : { default: o },
                             a = n(1);
@@ -12734,7 +12734,7 @@ module.exports = function (e, t, n) {
                             }
                             function t(e, t) {
                                 ((this._stream = e),
-                                    (this._done = !1),
+                                    (this._done = false),
                                     (this._filename = null),
                                     (this._queuedChunks = t || []),
                                     (this._requests = []),
@@ -12749,7 +12749,7 @@ module.exports = function (e, t, n) {
                                     (this._end = n),
                                     (this._queuedChunk = null),
                                     (this._requests = []),
-                                    (this._done = !1),
+                                    (this._done = false),
                                     (this.onProgress = null));
                             }
                             return (
@@ -12760,7 +12760,7 @@ module.exports = function (e, t, n) {
                                             this._fullRequestReader ? this._fullRequestReader._enqueue(t) : this._queuedChunks.push(t);
                                         else {
                                             var n = this._rangeReaders.some(function (n) {
-                                                return n._begin === e.begin && (n._enqueue(t), !0);
+                                                return n._begin === e.begin && (n._enqueue(t), true);
                                             });
                                             (0, a.assert)(n);
                                         }
@@ -12796,7 +12796,7 @@ module.exports = function (e, t, n) {
                                     _enqueue: function (e) {
                                         this._done ||
                                             (this._requests.length > 0
-                                                ? this._requests.shift().resolve({ value: e, done: !1 })
+                                                ? this._requests.shift().resolve({ value: e, done: false })
                                                 : this._queuedChunks.push(e));
                                     },
                                     get headersReady() {
@@ -12829,7 +12829,7 @@ module.exports = function (e, t, n) {
                                                                     }
                                                                     return (
                                                                         (t = this._queuedChunks.shift()),
-                                                                        e.abrupt("return", { value: t, done: !1 })
+                                                                        e.abrupt("return", { value: t, done: false })
                                                                     );
                                                                 case 3:
                                                                     if (!this._done) {
@@ -12838,7 +12838,7 @@ module.exports = function (e, t, n) {
                                                                     }
                                                                     return e.abrupt("return", {
                                                                         value: void 0,
-                                                                        done: !0,
+                                                                        done: true,
                                                                     });
                                                                 case 5:
                                                                     return (
@@ -12860,9 +12860,9 @@ module.exports = function (e, t, n) {
                                             return n.apply(this, arguments);
                                         }),
                                     cancel: function (e) {
-                                        ((this._done = !0),
+                                        ((this._done = true),
                                             this._requests.forEach(function (e) {
-                                                e.resolve({ value: void 0, done: !0 });
+                                                e.resolve({ value: void 0, done: true });
                                             }),
                                             (this._requests = []));
                                     },
@@ -12872,16 +12872,16 @@ module.exports = function (e, t, n) {
                                         this._done ||
                                             (0 === this._requests.length
                                                 ? (this._queuedChunk = e)
-                                                : (this._requests.shift().resolve({ value: e, done: !1 }),
+                                                : (this._requests.shift().resolve({ value: e, done: false }),
                                                   this._requests.forEach(function (e) {
-                                                      e.resolve({ value: void 0, done: !0 });
+                                                      e.resolve({ value: void 0, done: true });
                                                   }),
                                                   (this._requests = [])),
-                                            (this._done = !0),
+                                            (this._done = true),
                                             this._stream._removeRangeReader(this));
                                     },
                                     get isStreamingSupported() {
-                                        return !1;
+                                        return false;
                                     },
                                     read:
                                         ((o = s(
@@ -12899,7 +12899,7 @@ module.exports = function (e, t, n) {
                                                                     return (
                                                                         (t = this._queuedChunk),
                                                                         (this._queuedChunk = null),
-                                                                        e.abrupt("return", { value: t, done: !1 })
+                                                                        e.abrupt("return", { value: t, done: false })
                                                                     );
                                                                 case 4:
                                                                     if (!this._done) {
@@ -12908,7 +12908,7 @@ module.exports = function (e, t, n) {
                                                                     }
                                                                     return e.abrupt("return", {
                                                                         value: void 0,
-                                                                        done: !0,
+                                                                        done: true,
                                                                     });
                                                                 case 6:
                                                                     return (
@@ -12930,9 +12930,9 @@ module.exports = function (e, t, n) {
                                             return o.apply(this, arguments);
                                         }),
                                     cancel: function (e) {
-                                        ((this._done = !0),
+                                        ((this._done = true),
                                             this._requests.forEach(function (e) {
-                                                e.resolve({ value: void 0, done: !0 });
+                                                e.resolve({ value: void 0, done: true });
                                             }),
                                             (this._requests = []),
                                             this._stream._removeRangeReader(this));
@@ -12945,14 +12945,14 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, n) {
                         "use strict";
-                        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.WebGLContext = void 0));
+                        (Object.defineProperty(t, "__esModule", { value: true }), (t.WebGLContext = void 0));
                         var o = n(1);
                         function i(e, t) {
                             for (var n = 0; n < t.length; n++) {
                                 var o = t[n];
-                                ((o.enumerable = o.enumerable || !1),
-                                    (o.configurable = !0),
-                                    "value" in o && (o.writable = !0),
+                                ((o.enumerable = o.enumerable || false),
+                                    (o.configurable = true),
+                                    "value" in o && (o.writable = true),
                                     Object.defineProperty(e, o.key, o));
                             }
                         }
@@ -12963,7 +12963,7 @@ module.exports = function (e, t, n) {
                                 (!(function (e, t) {
                                     if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function");
                                 })(this, e),
-                                    (this._enabled = !0 === o));
+                                    (this._enabled = true === o));
                             }
                             var t, n, a;
                             return (
@@ -13046,7 +13046,7 @@ module.exports = function (e, t, n) {
                             }
                             var a, r;
                             function s() {
-                                a || ((r = document.createElement("canvas")), (a = r.getContext("webgl", { premultipliedalpha: !1 })));
+                                a || ((r = document.createElement("canvas")), (a = r.getContext("webgl", { premultipliedalpha: false })));
                             }
                             var l = null,
                                 c = null;
@@ -13055,7 +13055,7 @@ module.exports = function (e, t, n) {
                                     try {
                                         return (s(), !!a);
                                     } catch (e) {}
-                                    return !1;
+                                    return false;
                                 },
                                 composeSMask: function (e, c, d) {
                                     var u = e.width,
@@ -13093,7 +13093,7 @@ module.exports = function (e, t, n) {
                                                     i.STATIC_DRAW
                                                 ),
                                                 i.enableVertexAttribArray(u),
-                                                i.vertexAttribPointer(u, 2, i.FLOAT, !1, 0, 0),
+                                                i.vertexAttribPointer(u, 2, i.FLOAT, false, 0, 0),
                                                 i.uniform1i(p, 0),
                                                 i.uniform1i(g, 1),
                                                 (l = d));
@@ -13116,7 +13116,7 @@ module.exports = function (e, t, n) {
                                         f.bindBuffer(f.ARRAY_BUFFER, v),
                                         f.bufferData(f.ARRAY_BUFFER, new Float32Array([0, 0, u, 0, 0, p, 0, p, u, 0, u, p]), f.STATIC_DRAW),
                                         f.enableVertexAttribArray(g.positionLocation),
-                                        f.vertexAttribPointer(g.positionLocation, 2, f.FLOAT, !1, 0, 0),
+                                        f.vertexAttribPointer(g.positionLocation, 2, f.FLOAT, false, 0, 0),
                                         f.clearColor(0, 0, 0, 0),
                                         f.enable(f.BLEND),
                                         f.blendFunc(f.ONE, f.ONE_MINUS_SRC_ALPHA),
@@ -13243,13 +13243,13 @@ module.exports = function (e, t, n) {
                                     (h.bindBuffer(h.ARRAY_BUFFER, O),
                                         h.bufferData(h.ARRAY_BUFFER, _, h.STATIC_DRAW),
                                         h.enableVertexAttribArray(p.positionLocation),
-                                        h.vertexAttribPointer(p.positionLocation, 2, h.FLOAT, !1, 0, 0));
+                                        h.vertexAttribPointer(p.positionLocation, 2, h.FLOAT, false, 0, 0));
                                     var F = h.createBuffer();
                                     return (
                                         h.bindBuffer(h.ARRAY_BUFFER, F),
                                         h.bufferData(h.ARRAY_BUFFER, b, h.STATIC_DRAW),
                                         h.enableVertexAttribArray(p.colorLocation),
-                                        h.vertexAttribPointer(p.colorLocation, 3, h.UNSIGNED_BYTE, !1, 0, 0),
+                                        h.vertexAttribPointer(p.colorLocation, 3, h.UNSIGNED_BYTE, false, 0, 0),
                                         h.uniform2f(p.scaleLocation, u.scaleX, u.scaleY),
                                         h.uniform2f(p.offsetLocation, u.offsetX, u.offsetY),
                                         h.drawArrays(h.TRIANGLES, 0, v),
@@ -13270,7 +13270,7 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, n) {
                         "use strict";
-                        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.renderTextLayer = void 0));
+                        (Object.defineProperty(t, "__esModule", { value: true }), (t.renderTextLayer = void 0));
                         var o,
                             i = n(1),
                             a = (o = n(3)) && o.__esModule ? o : { default: o },
@@ -13284,7 +13284,7 @@ module.exports = function (e, t, n) {
                                             style: null,
                                             angle: 0,
                                             canvasWidth: 0,
-                                            isWhitespace: !1,
+                                            isWhitespace: false,
                                             originalTransform: null,
                                             paddingBottom: 0,
                                             paddingLeft: 0,
@@ -13293,7 +13293,7 @@ module.exports = function (e, t, n) {
                                             scale: 1,
                                         };
                                     if ((n._textDivs.push(s), (r = o.str), !e.test(r)))
-                                        return ((l.isWhitespace = !0), void n._textDivProperties.set(s, l));
+                                        return ((l.isWhitespace = true), void n._textDivProperties.set(s, l));
                                     var c = i.Util.transform(n._viewport.transform, o.transform),
                                         d = Math.atan2(c[1], c[0]),
                                         u = a[o.fontName];
@@ -13350,9 +13350,9 @@ module.exports = function (e, t, n) {
                                         var t = e._textDivs,
                                             n = e._capability,
                                             o = t.length;
-                                        if (o > 1e5) return ((e._renderingDone = !0), void n.resolve());
+                                        if (o > 1e5) return ((e._renderingDone = true), void n.resolve());
                                         if (!e._textContentStream) for (var i = 0; i < o; i++) e._layoutText(t[i]);
-                                        ((e._renderingDone = !0), n.resolve());
+                                        ((e._renderingDone = true), n.resolve());
                                     }
                                 }
                                 function r(e) {
@@ -13526,7 +13526,7 @@ module.exports = function (e, t, n) {
                                             r++
                                         )
                                             if (void 0 === (i = (o = n[r]).boundary).x2New) {
-                                                var g = !1;
+                                                var g = false;
                                                 for (s = t - 1; !g && s >= 0 && n[s].start >= i.y1; s--) g = n[s].boundary === i;
                                                 for (s = a + 1; !g && s < n.length && n[s].end <= i.y2; s++) g = n[s].boundary === i;
                                                 for (s = 0; !g && s < d.length; s++) g = d[s].boundary === i;
@@ -13560,8 +13560,8 @@ module.exports = function (e, t, n) {
                                         (this._layoutTextLastFontFamily = null),
                                         (this._layoutTextCtx = null),
                                         (this._textDivProperties = new WeakMap()),
-                                        (this._renderingDone = !1),
-                                        (this._canceled = !1),
+                                        (this._renderingDone = false),
+                                        (this._canceled = false),
                                         (this._capability = (0, i.createPromiseCapability)()),
                                         (this._renderTimer = null),
                                         (this._bounds = []));
@@ -13575,7 +13575,7 @@ module.exports = function (e, t, n) {
                                             (this._reader &&
                                                 (this._reader.cancel(new i.AbortException("text layer task cancelled")),
                                                 (this._reader = null)),
-                                                (this._canceled = !0),
+                                                (this._canceled = true),
                                                 null !== this._renderTimer && (clearTimeout(this._renderTimer), (this._renderTimer = null)),
                                                 this._capability.reject("canceled"));
                                         },
@@ -13610,9 +13610,9 @@ module.exports = function (e, t, n) {
                                                 a = Object.create(null),
                                                 r = document.createElement("canvas");
                                             if (
-                                                ((r.mozOpaque = !0),
+                                                ((r.mozOpaque = true),
                                                 (this._layoutTextCtx = r.getContext("2d", {
-                                                    alpha: !1,
+                                                    alpha: false,
                                                 })),
                                                 this._textContent)
                                             ) {
@@ -13688,7 +13688,7 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, n) {
                         "use strict";
-                        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.AnnotationLayer = void 0));
+                        (Object.defineProperty(t, "__esModule", { value: true }), (t.AnnotationLayer = void 0));
                         var o = n(151),
                             i = n(1);
                         function a(e, t, n) {
@@ -13736,7 +13736,7 @@ module.exports = function (e, t, n) {
                             if ("function" != typeof t && null !== t)
                                 throw new TypeError("Super expression must either be null or a function");
                             ((e.prototype = Object.create(t && t.prototype, {
-                                constructor: { value: e, writable: !0, configurable: !0 },
+                                constructor: { value: e, writable: true, configurable: true },
                             })),
                                 t && u(e, t));
                         }
@@ -13753,9 +13753,9 @@ module.exports = function (e, t, n) {
                         function g(e, t) {
                             for (var n = 0; n < t.length; n++) {
                                 var o = t[n];
-                                ((o.enumerable = o.enumerable || !1),
-                                    (o.configurable = !0),
-                                    "value" in o && (o.writable = !0),
+                                ((o.enumerable = o.enumerable || false),
+                                    (o.configurable = true),
+                                    "value" in o && (o.writable = true),
                                     Object.defineProperty(e, o.key, o));
                             }
                         }
@@ -13921,7 +13921,7 @@ module.exports = function (e, t, n) {
                                                     color: n.color,
                                                     title: n.title,
                                                     contents: n.contents,
-                                                    hideWrapper: !0,
+                                                    hideWrapper: true,
                                                 }).render();
                                                 ((o.style.left = e.style.width), e.appendChild(o));
                                             },
@@ -13970,7 +13970,7 @@ module.exports = function (e, t, n) {
                                                 var n = this;
                                                 ((e.href = this.linkService.getDestinationHash(t)),
                                                     (e.onclick = function () {
-                                                        return (t && n.linkService.navigateTo(t), !1);
+                                                        return (t && n.linkService.navigateTo(t), false);
                                                     }),
                                                     t && (e.className = "internalLink"));
                                             },
@@ -13981,7 +13981,7 @@ module.exports = function (e, t, n) {
                                                 var n = this;
                                                 ((e.href = this.linkService.getAnchorUrl("")),
                                                     (e.onclick = function () {
-                                                        return (n.linkService.executeNamedAction(t), !1);
+                                                        return (n.linkService.executeNamedAction(t), false);
                                                     }),
                                                     (e.className = "internalLink"));
                                             },
@@ -14122,7 +14122,7 @@ module.exports = function (e, t, n) {
                                                 return (
                                                     (e.disabled = this.data.readOnly),
                                                     (e.type = "checkbox"),
-                                                    this.data.fieldValue && "Off" !== this.data.fieldValue && e.setAttribute("checked", !0),
+                                                    this.data.fieldValue && "Off" !== this.data.fieldValue && e.setAttribute("checked", true),
                                                     this.container.appendChild(e),
                                                     this.container
                                                 );
@@ -14148,7 +14148,7 @@ module.exports = function (e, t, n) {
                                                     (e.disabled = this.data.readOnly),
                                                     (e.type = "radio"),
                                                     (e.name = this.data.fieldName),
-                                                    this.data.fieldValue === this.data.buttonValue && e.setAttribute("checked", !0),
+                                                    this.data.fieldValue === this.data.buttonValue && e.setAttribute("checked", true),
                                                     this.container.appendChild(e),
                                                     this.container
                                                 );
@@ -14190,13 +14190,13 @@ module.exports = function (e, t, n) {
                                                 var e = document.createElement("select");
                                                 ((e.disabled = this.data.readOnly),
                                                     this.data.combo ||
-                                                        ((e.size = this.data.options.length), this.data.multiSelect && (e.multiple = !0)));
+                                                        ((e.size = this.data.options.length), this.data.multiSelect && (e.multiple = true)));
                                                 for (var t = 0, n = this.data.options.length; t < n; t++) {
                                                     var o = this.data.options[t],
                                                         i = document.createElement("option");
                                                     ((i.textContent = o.displayValue),
                                                         (i.value = o.exportValue),
-                                                        this.data.fieldValue.includes(o.displayValue) && i.setAttribute("selected", !0),
+                                                        this.data.fieldValue.includes(o.displayValue) && i.setAttribute("selected", true),
                                                         e.appendChild(i));
                                                 }
                                                 return (this.container.appendChild(e), this.container);
@@ -14257,8 +14257,8 @@ module.exports = function (e, t, n) {
                                         (this.color = t.color),
                                         (this.title = t.title),
                                         (this.contents = t.contents),
-                                        (this.hideWrapper = t.hideWrapper || !1),
-                                        (this.pinned = !1));
+                                        (this.hideWrapper = t.hideWrapper || false),
+                                        (this.pinned = false));
                                 }
                                 return (
                                     h(e, [
@@ -14268,7 +14268,7 @@ module.exports = function (e, t, n) {
                                                 var e = document.createElement("div");
                                                 ((e.className = "popupWrapper"),
                                                     (this.hideElement = this.hideWrapper ? e : this.container),
-                                                    this.hideElement.setAttribute("hidden", !0));
+                                                    this.hideElement.setAttribute("hidden", true));
                                                 var t = document.createElement("div");
                                                 t.className = "popup";
                                                 var n = this.color;
@@ -14283,9 +14283,9 @@ module.exports = function (e, t, n) {
                                                 return (
                                                     (l.textContent = this.title),
                                                     this.trigger.addEventListener("click", this._toggle.bind(this)),
-                                                    this.trigger.addEventListener("mouseover", this._show.bind(this, !1)),
-                                                    this.trigger.addEventListener("mouseout", this._hide.bind(this, !1)),
-                                                    t.addEventListener("click", this._hide.bind(this, !0)),
+                                                    this.trigger.addEventListener("mouseover", this._show.bind(this, false)),
+                                                    this.trigger.addEventListener("mouseout", this._hide.bind(this, false)),
+                                                    t.addEventListener("click", this._hide.bind(this, true)),
                                                     t.appendChild(l),
                                                     t.appendChild(s),
                                                     e.appendChild(t),
@@ -14311,14 +14311,14 @@ module.exports = function (e, t, n) {
                                         {
                                             key: "_toggle",
                                             value: function () {
-                                                this.pinned ? this._hide(!0) : this._show(!0);
+                                                this.pinned ? this._hide(true) : this._show(true);
                                             },
                                         },
                                         {
                                             key: "_show",
                                             value: function () {
                                                 var e = arguments.length > 0 && void 0 !== arguments[0] && arguments[0];
-                                                (e && (this.pinned = !0),
+                                                (e && (this.pinned = true),
                                                     this.hideElement.hasAttribute("hidden") &&
                                                         (this.hideElement.removeAttribute("hidden"), (this.container.style.zIndex += 1)));
                                             },
@@ -14327,10 +14327,10 @@ module.exports = function (e, t, n) {
                                             key: "_hide",
                                             value: function () {
                                                 var e = !(arguments.length > 0 && void 0 !== arguments[0]) || arguments[0];
-                                                (e && (this.pinned = !1),
+                                                (e && (this.pinned = false),
                                                     this.hideElement.hasAttribute("hidden") ||
                                                         this.pinned ||
-                                                        (this.hideElement.setAttribute("hidden", !0), (this.container.style.zIndex -= 1)));
+                                                        (this.hideElement.setAttribute("hidden", true), (this.container.style.zIndex -= 1)));
                                             },
                                         },
                                     ]),
@@ -14341,7 +14341,7 @@ module.exports = function (e, t, n) {
                                 function t(e) {
                                     p(this, t);
                                     var n = !!(e.data.hasPopup || e.data.title || e.data.contents);
-                                    return s(this, c(t).call(this, e, n, !0));
+                                    return s(this, c(t).call(this, e, n, true));
                                 }
                                 return (
                                     d(t, e),
@@ -14377,7 +14377,7 @@ module.exports = function (e, t, n) {
                                 function t(e) {
                                     p(this, t);
                                     var n = !!(e.data.hasPopup || e.data.title || e.data.contents);
-                                    return s(this, c(t).call(this, e, n, !0));
+                                    return s(this, c(t).call(this, e, n, true));
                                 }
                                 return (
                                     d(t, e),
@@ -14415,7 +14415,7 @@ module.exports = function (e, t, n) {
                                 function t(e) {
                                     p(this, t);
                                     var n = !!(e.data.hasPopup || e.data.title || e.data.contents);
-                                    return s(this, c(t).call(this, e, n, !0));
+                                    return s(this, c(t).call(this, e, n, true));
                                 }
                                 return (
                                     d(t, e),
@@ -14455,7 +14455,7 @@ module.exports = function (e, t, n) {
                                     p(this, t);
                                     var o = !!(e.data.hasPopup || e.data.title || e.data.contents);
                                     return (
-                                        ((n = s(this, c(t).call(this, e, o, !0))).containerClassName = "polylineAnnotation"),
+                                        ((n = s(this, c(t).call(this, e, o, true))).containerClassName = "polylineAnnotation"),
                                         (n.svgElementName = "svg:polyline"),
                                         n
                                     );
@@ -14520,7 +14520,7 @@ module.exports = function (e, t, n) {
                                     p(this, t);
                                     var o = !!(e.data.hasPopup || e.data.title || e.data.contents);
                                     return (
-                                        ((n = s(this, c(t).call(this, e, o, !0))).containerClassName = "inkAnnotation"),
+                                        ((n = s(this, c(t).call(this, e, o, true))).containerClassName = "inkAnnotation"),
                                         (n.svgElementName = "svg:polyline"),
                                         n
                                     );
@@ -14569,7 +14569,7 @@ module.exports = function (e, t, n) {
                                 function t(e) {
                                     p(this, t);
                                     var n = !!(e.data.hasPopup || e.data.title || e.data.contents);
-                                    return s(this, c(t).call(this, e, n, !0));
+                                    return s(this, c(t).call(this, e, n, true));
                                 }
                                 return (
                                     d(t, e),
@@ -14592,7 +14592,7 @@ module.exports = function (e, t, n) {
                                 function t(e) {
                                     p(this, t);
                                     var n = !!(e.data.hasPopup || e.data.title || e.data.contents);
-                                    return s(this, c(t).call(this, e, n, !0));
+                                    return s(this, c(t).call(this, e, n, true));
                                 }
                                 return (
                                     d(t, e),
@@ -14615,7 +14615,7 @@ module.exports = function (e, t, n) {
                                 function t(e) {
                                     p(this, t);
                                     var n = !!(e.data.hasPopup || e.data.title || e.data.contents);
-                                    return s(this, c(t).call(this, e, n, !0));
+                                    return s(this, c(t).call(this, e, n, true));
                                 }
                                 return (
                                     d(t, e),
@@ -14638,7 +14638,7 @@ module.exports = function (e, t, n) {
                                 function t(e) {
                                     p(this, t);
                                     var n = !!(e.data.hasPopup || e.data.title || e.data.contents);
-                                    return s(this, c(t).call(this, e, n, !0));
+                                    return s(this, c(t).call(this, e, n, true));
                                 }
                                 return (
                                     d(t, e),
@@ -14661,7 +14661,7 @@ module.exports = function (e, t, n) {
                                 function t(e) {
                                     p(this, t);
                                     var n = !!(e.data.hasPopup || e.data.title || e.data.contents);
-                                    return s(this, c(t).call(this, e, n, !0));
+                                    return s(this, c(t).call(this, e, n, true));
                                 }
                                 return (
                                     d(t, e),
@@ -14684,7 +14684,7 @@ module.exports = function (e, t, n) {
                                 function t(e) {
                                     var n;
                                     p(this, t);
-                                    var a = (n = s(this, c(t).call(this, e, !0))).data.file,
+                                    var a = (n = s(this, c(t).call(this, e, true))).data.file,
                                         r = a.filename,
                                         d = a.content;
                                     return (
@@ -14752,7 +14752,7 @@ module.exports = function (e, t, n) {
                                                             linkService: e.linkService,
                                                             downloadManager: e.downloadManager,
                                                             imageResourcesPath: e.imageResourcesPath || "",
-                                                            renderInteractiveForms: e.renderInteractiveForms || !1,
+                                                            renderInteractiveForms: e.renderInteractiveForms || false,
                                                             svgFactory: new o.DOMSVGFactory(),
                                                         });
                                                         a.isRenderable && e.div.appendChild(a.render());
@@ -14779,7 +14779,7 @@ module.exports = function (e, t, n) {
                     },
                     function (e, o, a) {
                         "use strict";
-                        (Object.defineProperty(o, "__esModule", { value: !0 }), (o.SVGGraphics = void 0));
+                        (Object.defineProperty(o, "__esModule", { value: true }), (o.SVGGraphics = void 0));
                         var r,
                             s = a(1),
                             l = a(151),
@@ -14911,7 +14911,7 @@ module.exports = function (e, t, n) {
                                             try {
                                                 var o;
                                                 o = parseInt(i.versions.node) >= 8 ? e : new t(e);
-                                                var a = n(1389).deflateSync(o, { level: 9 });
+                                                var a = require(1389).deflateSync(o, { level: 9 });
                                                 return a instanceof Uint8Array ? a : new Uint8Array(a);
                                             } catch (e) {
                                                 (0, s.warn)("Not compressing PNG because zlib.deflateSync is unavailable: " + e);
@@ -15021,8 +15021,8 @@ module.exports = function (e, t, n) {
                                     (this.commonObjs = e),
                                     (this.objs = t),
                                     (this.pendingClip = null),
-                                    (this.pendingEOFill = !1),
-                                    (this.embedFonts = !1),
+                                    (this.pendingEOFill = false),
+                                    (this.embedFonts = false),
                                     (this.embeddedFonts = Object.create(null)),
                                     (this.cssStyle = null),
                                     (this.forceDataSchema = !!n));
@@ -15474,7 +15474,7 @@ module.exports = function (e, t, n) {
                                             r++;
                                             var o = this.svgFactory.createElement("svg:clipPath");
                                             (o.setAttributeNS(null, "id", n), o.setAttributeNS(null, "transform", t(this.transformMatrix)));
-                                            var i = e.element.cloneNode(!0);
+                                            var i = e.element.cloneNode(true);
                                             ("evenodd" === this.pendingClip
                                                 ? i.setAttributeNS(null, "clip-rule", "evenodd")
                                                 : i.setAttributeNS(null, "clip-rule", "nonzero"),
@@ -15706,7 +15706,7 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, o) {
                         "use strict";
-                        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.PDFNodeStream = void 0));
+                        (Object.defineProperty(t, "__esModule", { value: true }), (t.PDFNodeStream = void 0));
                         var i,
                             a = (i = o(147)) && i.__esModule ? i : { default: i },
                             r = o(1),
@@ -15743,7 +15743,7 @@ module.exports = function (e, t, n) {
                             if ("function" != typeof t && null !== t)
                                 throw new TypeError("Super expression must either be null or a function");
                             ((e.prototype = Object.create(t && t.prototype, {
-                                constructor: { value: e, writable: !0, configurable: !0 },
+                                constructor: { value: e, writable: true, configurable: true },
                             })),
                                 t && p(e, t));
                         }
@@ -15785,19 +15785,19 @@ module.exports = function (e, t, n) {
                         function m(e, t) {
                             for (var n = 0; n < t.length; n++) {
                                 var o = t[n];
-                                ((o.enumerable = o.enumerable || !1),
-                                    (o.configurable = !0),
-                                    "value" in o && (o.writable = !0),
+                                ((o.enumerable = o.enumerable || false),
+                                    (o.configurable = true),
+                                    "value" in o && (o.writable = true),
                                     Object.defineProperty(e, o.key, o));
                             }
                         }
                         function y(e, t, n) {
                             return (t && m(e.prototype, t), n && m(e, n), e);
                         }
-                        var v = n(178),
-                            _ = n(571),
-                            b = n(572),
-                            w = n(570),
+                        var v = require(178),
+                            _ = require(571),
+                            b = require(572),
+                            w = require(570),
                             C = /^file:\/\/\/[a-zA-Z]:\//,
                             x = (function () {
                                 function e(t) {
@@ -15854,16 +15854,16 @@ module.exports = function (e, t, n) {
                                 function e(t) {
                                     (f(this, e),
                                         (this._url = t.url),
-                                        (this._done = !1),
+                                        (this._done = false),
                                         (this._storedError = null),
                                         (this.onProgress = null));
                                     var n = t.source;
                                     ((this._contentLength = n.length),
                                         (this._loaded = 0),
                                         (this._filename = null),
-                                        (this._disableRange = n.disableRange || !1),
+                                        (this._disableRange = n.disableRange || false),
                                         (this._rangeChunkSize = n.rangeChunkSize),
-                                        this._rangeChunkSize || this._disableRange || (this._disableRange = !0),
+                                        this._rangeChunkSize || this._disableRange || (this._disableRange = true),
                                         (this._isStreamingSupported = !n.disableStream),
                                         (this._isRangeSupported = !n.disableRange),
                                         (this._readableStream = null),
@@ -15892,7 +15892,7 @@ module.exports = function (e, t, n) {
                                                                             }
                                                                             return e.abrupt("return", {
                                                                                 value: void 0,
-                                                                                done: !0,
+                                                                                done: true,
                                                                             });
                                                                         case 4:
                                                                             if (!this._storedError) {
@@ -15920,7 +15920,7 @@ module.exports = function (e, t, n) {
                                                                                 (n = new Uint8Array(t).buffer),
                                                                                 e.abrupt("return", {
                                                                                     value: n,
-                                                                                    done: !1,
+                                                                                    done: false,
                                                                                 })
                                                                             );
                                                                         case 14:
@@ -15958,7 +15958,7 @@ module.exports = function (e, t, n) {
                                                         t._readCapability.resolve();
                                                     }),
                                                     e.on("end", function () {
-                                                        (e.destroy(), (t._done = !0), t._readCapability.resolve());
+                                                        (e.destroy(), (t._done = true), t._readCapability.resolve());
                                                     }),
                                                     e.on("error", function (e) {
                                                         t._error(e);
@@ -16007,7 +16007,7 @@ module.exports = function (e, t, n) {
                                 function e(t) {
                                     (f(this, e),
                                         (this._url = t.url),
-                                        (this._done = !1),
+                                        (this._done = false),
                                         (this._storedError = null),
                                         (this.onProgress = null),
                                         (this._loaded = 0),
@@ -16038,7 +16038,7 @@ module.exports = function (e, t, n) {
                                                                             }
                                                                             return e.abrupt("return", {
                                                                                 value: void 0,
-                                                                                done: !0,
+                                                                                done: true,
                                                                             });
                                                                         case 4:
                                                                             if (!this._storedError) {
@@ -16065,7 +16065,7 @@ module.exports = function (e, t, n) {
                                                                                 (n = new Uint8Array(t).buffer),
                                                                                 e.abrupt("return", {
                                                                                     value: n,
-                                                                                    done: !1,
+                                                                                    done: false,
                                                                                 })
                                                                             );
                                                                         case 14:
@@ -16103,7 +16103,7 @@ module.exports = function (e, t, n) {
                                                         t._readCapability.resolve();
                                                     }),
                                                     e.on("end", function () {
-                                                        (e.destroy(), (t._done = !0), t._readCapability.resolve());
+                                                        (e.destroy(), (t._done = true), t._readCapability.resolve());
                                                     }),
                                                     e.on("error", function (e) {
                                                         t._error(e);
@@ -16239,7 +16239,7 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, n) {
                         "use strict";
-                        (Object.defineProperty(t, "__esModule", { value: !0 }),
+                        (Object.defineProperty(t, "__esModule", { value: true }),
                             (t.createResponseStatusError = function (e, t) {
                                 return 404 === e || (0 === e && /^file:/.test(t))
                                     ? new o.MissingPDFException('Missing PDF "' + t + '".')
@@ -16262,7 +16262,7 @@ module.exports = function (e, t, n) {
                                     i = e.rangeChunkSize,
                                     a = e.disableRange;
                                 (0, o.assert)(i > 0, "Range chunk size must be larger than zero");
-                                var r = { allowRangeRequests: !1, suggestedLength: void 0 },
+                                var r = { allowRangeRequests: false, suggestedLength: void 0 },
                                     s = parseInt(t("Content-Length"), 10);
                                 return Number.isInteger(s)
                                     ? ((r.suggestedLength = s),
@@ -16271,7 +16271,7 @@ module.exports = function (e, t, n) {
                                           !n ||
                                           "bytes" !== t("Accept-Ranges") ||
                                           "identity" !== (t("Content-Encoding") || "identity") ||
-                                          (r.allowRangeRequests = !0),
+                                          (r.allowRangeRequests = true),
                                       r)
                                     : r;
                             }),
@@ -16290,17 +16290,17 @@ module.exports = function (e, t, n) {
                                 })(e) ||
                                 (function (e, t) {
                                     var n = [],
-                                        o = !0,
-                                        i = !1,
+                                        o = true,
+                                        i = false,
                                         a = void 0;
                                     try {
                                         for (
                                             var r, s = e[Symbol.iterator]();
                                             !(o = (r = s.next()).done) && (n.push(r.value), !t || n.length !== t);
-                                            o = !0
+                                            o = true
                                         );
                                     } catch (e) {
-                                        ((i = !0), (a = e));
+                                        ((i = true), (a = e));
                                     } finally {
                                         try {
                                             o || null == s.return || s.return();
@@ -16315,9 +16315,9 @@ module.exports = function (e, t, n) {
                                 })()
                             );
                         }
-                        (Object.defineProperty(t, "__esModule", { value: !0 }),
+                        (Object.defineProperty(t, "__esModule", { value: true }),
                             (t.getFilenameFromContentDispositionHeader = function (e) {
-                                var t = !0,
+                                var t = true,
                                     n = r("filename\\*", "i").exec(e);
                                 if (n) {
                                     var i = c((n = n[1]));
@@ -16354,15 +16354,15 @@ module.exports = function (e, t, n) {
                                     if (e) {
                                         if (!/^[\x00-\xFF]+$/.test(n)) return n;
                                         try {
-                                            var o = new TextDecoder(e, { fatal: !0 }),
+                                            var o = new TextDecoder(e, { fatal: true }),
                                                 i = Array.from(n, function (e) {
                                                     return 255 & e.charCodeAt(0);
                                                 });
-                                            ((n = o.decode(new Uint8Array(i))), (t = !1));
+                                            ((n = o.decode(new Uint8Array(i))), (t = false));
                                         } catch (o) {
                                             if (/^utf-?8$/i.test(e))
                                                 try {
-                                                    ((n = decodeURIComponent(escape(n))), (t = !1));
+                                                    ((n = decodeURIComponent(escape(n))), (t = false));
                                                 } catch (e) {}
                                         }
                                     }
@@ -16408,7 +16408,7 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, n) {
                         "use strict";
-                        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.PDFFetchStream = void 0));
+                        (Object.defineProperty(t, "__esModule", { value: true }), (t.PDFFetchStream = void 0));
                         var o,
                             i = (o = n(147)) && o.__esModule ? o : { default: o },
                             a = n(1),
@@ -16444,9 +16444,9 @@ module.exports = function (e, t, n) {
                         function d(e, t) {
                             for (var n = 0; n < t.length; n++) {
                                 var o = t[n];
-                                ((o.enumerable = o.enumerable || !1),
-                                    (o.configurable = !0),
-                                    "value" in o && (o.writable = !0),
+                                ((o.enumerable = o.enumerable || false),
+                                    (o.configurable = true),
+                                    "value" in o && (o.writable = true),
                                     Object.defineProperty(e, o.key, o));
                             }
                         }
@@ -16513,9 +16513,9 @@ module.exports = function (e, t, n) {
                                     for (var i in ((this._withCredentials = o.withCredentials),
                                     (this._contentLength = o.length),
                                     (this._headersCapability = (0, a.createPromiseCapability)()),
-                                    (this._disableRange = o.disableRange || !1),
+                                    (this._disableRange = o.disableRange || false),
                                     (this._rangeChunkSize = o.rangeChunkSize),
-                                    this._rangeChunkSize || this._disableRange || (this._disableRange = !0),
+                                    this._rangeChunkSize || this._disableRange || (this._disableRange = true),
                                     "undefined" != typeof AbortController && (this._abortController = new AbortController()),
                                     (this._isStreamingSupported = !o.disableStream),
                                     (this._isRangeSupported = !o.disableRange),
@@ -16588,7 +16588,7 @@ module.exports = function (e, t, n) {
                                                                                 (a = new Uint8Array(n).buffer),
                                                                                 e.abrupt("return", {
                                                                                     value: a,
-                                                                                    done: !1,
+                                                                                    done: false,
                                                                                 })
                                                                             );
                                                                         case 13:
@@ -16705,7 +16705,7 @@ module.exports = function (e, t, n) {
                                                                                 (a = new Uint8Array(n).buffer),
                                                                                 e.abrupt("return", {
                                                                                     value: a,
-                                                                                    done: !1,
+                                                                                    done: false,
                                                                                 })
                                                                             );
                                                                         case 13:
@@ -16742,7 +16742,7 @@ module.exports = function (e, t, n) {
                     },
                     function (e, t, n) {
                         "use strict";
-                        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.PDFNetworkStream = f), (t.NetworkManager = d));
+                        (Object.defineProperty(t, "__esModule", { value: true }), (t.PDFNetworkStream = f), (t.NetworkManager = d));
                         var o = s(n(147)),
                             i = n(1),
                             a = n(166),
@@ -16780,7 +16780,7 @@ module.exports = function (e, t, n) {
                                 (t = t || {}),
                                 (this.isHttp = /^https?:/i.test(e)),
                                 (this.httpHeaders = (this.isHttp && t.httpHeaders) || {}),
-                                (this.withCredentials = t.withCredentials || !1),
+                                (this.withCredentials = t.withCredentials || false),
                                 (this.getXhr =
                                     t.getXhr ||
                                     function () {
@@ -16805,7 +16805,7 @@ module.exports = function (e, t, n) {
                                         "moz-chunked-arraybuffer" === e.responseType
                                     );
                                 } catch (e) {
-                                    return !1;
+                                    return false;
                                 }
                             })();
                         function f(e) {
@@ -16830,15 +16830,15 @@ module.exports = function (e, t, n) {
                             ((this._url = t.url),
                                 (this._fullRequestId = e.requestFull(n)),
                                 (this._headersReceivedCapability = (0, i.createPromiseCapability)()),
-                                (this._disableRange = t.disableRange || !1),
+                                (this._disableRange = t.disableRange || false),
                                 (this._contentLength = t.length),
                                 (this._rangeChunkSize = t.rangeChunkSize),
-                                this._rangeChunkSize || this._disableRange || (this._disableRange = !0),
-                                (this._isStreamingSupported = !1),
-                                (this._isRangeSupported = !1),
+                                this._rangeChunkSize || this._disableRange || (this._disableRange = true),
+                                (this._isStreamingSupported = false),
+                                (this._isRangeSupported = false),
                                 (this._cachedChunks = []),
                                 (this._requests = []),
-                                (this._done = !1),
+                                (this._done = false),
                                 (this._storedError = void 0),
                                 (this._filename = null),
                                 (this.onProgress = null));
@@ -16852,7 +16852,7 @@ module.exports = function (e, t, n) {
                             ((this._requestId = e.requestRange(t, n, o)),
                                 (this._requests = []),
                                 (this._queuedChunk = null),
-                                (this._done = !1),
+                                (this._done = false),
                                 (this.onProgress = null),
                                 (this.onClosed = null));
                         }
@@ -16881,7 +16881,7 @@ module.exports = function (e, t, n) {
                                     h && e.onProgressiveData
                                         ? ((t.responseType = "moz-chunked-arraybuffer"),
                                           (o.onProgressiveData = e.onProgressiveData),
-                                          (o.mozChunked = !0))
+                                          (o.mozChunked = true))
                                         : (t.responseType = "arraybuffer"),
                                     e.onError &&
                                         (t.onerror = function (n) {
@@ -16921,7 +16921,7 @@ module.exports = function (e, t, n) {
                                         else {
                                             var i = o.status || 200;
                                             if ((200 === i && 206 === n.expectedStatus) || i === n.expectedStatus) {
-                                                this.loadedRequests[e] = !0;
+                                                this.loadedRequests[e] = true;
                                                 var a = u(o);
                                                 if (206 === i) {
                                                     var r = o.getResponseHeader("Content-Range"),
@@ -16939,8 +16939,8 @@ module.exports = function (e, t, n) {
                                 }
                             },
                             hasPendingRequests: function () {
-                                for (var e in this.pendingRequests) return !0;
-                                return !1;
+                                for (var e in this.pendingRequests) return true;
+                                return false;
                             },
                             getRequestXhr: function (e) {
                                 return this.pendingRequests[e].xhr;
@@ -17004,26 +17004,26 @@ module.exports = function (e, t, n) {
                                         }),
                                         i = o.allowRangeRequests,
                                         r = o.suggestedLength;
-                                    (i && (this._isRangeSupported = !0),
+                                    (i && (this._isRangeSupported = true),
                                         (this._contentLength = r || this._contentLength),
                                         (this._filename = (0, a.extractFilenameFromHeader)(n)));
                                     var s = this._manager;
                                     (s.isStreamingRequest(e)
-                                        ? (this._isStreamingSupported = !0)
+                                        ? (this._isStreamingSupported = true)
                                         : this._isRangeSupported && s.abortRequest(e),
                                         this._headersReceivedCapability.resolve());
                                 },
                                 _onProgressiveData: function (e) {
                                     this._requests.length > 0
-                                        ? this._requests.shift().resolve({ value: e, done: !1 })
+                                        ? this._requests.shift().resolve({ value: e, done: false })
                                         : this._cachedChunks.push(e);
                                 },
                                 _onDone: function (e) {
                                     (e && this._onProgressiveData(e.chunk),
-                                        (this._done = !0),
+                                        (this._done = true),
                                         this._cachedChunks.length > 0 ||
                                             (this._requests.forEach(function (e) {
-                                                e.resolve({ value: void 0, done: !0 });
+                                                e.resolve({ value: void 0, done: true });
                                             }),
                                             (this._requests = [])));
                                 },
@@ -17081,7 +17081,7 @@ module.exports = function (e, t, n) {
                                                                 }
                                                                 return (
                                                                     (t = this._cachedChunks.shift()),
-                                                                    e.abrupt("return", { value: t, done: !1 })
+                                                                    e.abrupt("return", { value: t, done: false })
                                                                 );
                                                             case 5:
                                                                 if (!this._done) {
@@ -17090,7 +17090,7 @@ module.exports = function (e, t, n) {
                                                                 }
                                                                 return e.abrupt("return", {
                                                                     value: void 0,
-                                                                    done: !0,
+                                                                    done: true,
                                                                 });
                                                             case 7:
                                                                 return (
@@ -17112,10 +17112,10 @@ module.exports = function (e, t, n) {
                                         return p.apply(this, arguments);
                                     }),
                                 cancel: function (e) {
-                                    ((this._done = !0),
+                                    ((this._done = true),
                                         this._headersReceivedCapability.reject(e),
                                         this._requests.forEach(function (e) {
-                                            e.resolve({ value: void 0, done: !0 });
+                                            e.resolve({ value: void 0, done: true });
                                         }),
                                         (this._requests = []),
                                         this._manager.isPendingRequest(this._fullRequestId) &&
@@ -17130,11 +17130,11 @@ module.exports = function (e, t, n) {
                                 _onDone: function (e) {
                                     var t = e.chunk;
                                     (this._requests.length > 0
-                                        ? this._requests.shift().resolve({ value: t, done: !1 })
+                                        ? this._requests.shift().resolve({ value: t, done: false })
                                         : (this._queuedChunk = t),
-                                        (this._done = !0),
+                                        (this._done = true),
                                         this._requests.forEach(function (e) {
-                                            e.resolve({ value: void 0, done: !0 });
+                                            e.resolve({ value: void 0, done: true });
                                         }),
                                         (this._requests = []),
                                         this._close());
@@ -17143,7 +17143,7 @@ module.exports = function (e, t, n) {
                                     !this.isStreamingSupported && this.onProgress && this.onProgress({ loaded: e.loaded });
                                 },
                                 get isStreamingSupported() {
-                                    return !1;
+                                    return false;
                                 },
                                 read:
                                     ((g = c(
@@ -17161,7 +17161,7 @@ module.exports = function (e, t, n) {
                                                                 return (
                                                                     (t = this._queuedChunk),
                                                                     (this._queuedChunk = null),
-                                                                    e.abrupt("return", { value: t, done: !1 })
+                                                                    e.abrupt("return", { value: t, done: false })
                                                                 );
                                                             case 4:
                                                                 if (!this._done) {
@@ -17170,7 +17170,7 @@ module.exports = function (e, t, n) {
                                                                 }
                                                                 return e.abrupt("return", {
                                                                     value: void 0,
-                                                                    done: !0,
+                                                                    done: true,
                                                                 });
                                                             case 6:
                                                                 return (
@@ -17192,9 +17192,9 @@ module.exports = function (e, t, n) {
                                         return g.apply(this, arguments);
                                     }),
                                 cancel: function (e) {
-                                    ((this._done = !0),
+                                    ((this._done = true),
                                         this._requests.forEach(function (e) {
-                                            e.resolve({ value: void 0, done: !0 });
+                                            e.resolve({ value: void 0, done: true });
                                         }),
                                         (this._requests = []),
                                         this._manager.isPendingRequest(this._requestId) && this._manager.abortRequest(this._requestId),
@@ -17204,6 +17204,6 @@ module.exports = function (e, t, n) {
                     },
                 ]);
             }),
-                (e.exports = a()));
-        }).call(this, n(221).Buffer, n(109), n(183));
+                (module.exports = a()));
+        }).call(this, require(221 /* Buffer */).Buffer, require(109), require(183));
     };

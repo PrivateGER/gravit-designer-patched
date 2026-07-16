@@ -1,16 +1,16 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(51),
-                o = i(14),
-                a = i(12),
-                s = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(51),
+                o = require(14),
+                a = require(12),
+                String = require(9);
 
             function l() {
                 (r.call(this), this._setDefaultProperties(l.GeometryProperties));
             }
             (n.inherit("GGLSepiaEffect", l, r),
                 (l.prototype.getNodeNameTranslated = function () {
-                    return s.getValue("GGLSepiaEffect", "name", this.getNodeName());
+                    return String.getValue("GGLSepiaEffect", "name", this.getNodeName());
                 }),
                 (l.GeometryProperties = {
                     shp: {
@@ -33,5 +33,5 @@ module.exports = function (e, t, i) {
                 (l.prototype.removeNativeEffect = function (e, t, i) {
                     e.setFilter(o.Filter.Sepia, null);
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

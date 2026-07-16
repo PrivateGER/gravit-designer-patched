@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(2),
-                o = i(73),
-                a = i(84),
-                s = i(69);
-            i(142);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(2),
+                o = require(73),
+                a = require(84),
+                s = require(69);
+            require(142);
 
             function l() {
                 (o.call(this),
@@ -46,7 +46,7 @@ module.exports = function (e, t, i) {
                     return "annlst" === r.getName(e);
                 }),
                 (l.prototype.isPaintable = function (e) {
-                    return !1;
+                    return false;
                 }),
                 (l.prototype._handleChange = function (e, t) {
                     if (e === r._Change.Store) {
@@ -66,7 +66,7 @@ module.exports = function (e, t, i) {
                         var u = t.blob;
                         (t.options.separateSaving &&
                             ((u.own = {
-                                "@": r._nodeClassToNameMap[n.getTypeId(this)],
+                                "@": r._nodeClassToNameMap[IsFiniteNonNegativeNumber.getTypeId(this)],
                             }),
                             (t.blob = u.own)),
                             this.storeProperties(t.blob, a.Linkable.MetaProperties));
@@ -84,5 +84,5 @@ module.exports = function (e, t, i) {
                 (l.prototype.toString = function () {
                     return "[GCollaborativeTextAnnotation]";
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

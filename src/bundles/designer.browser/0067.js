@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.default = t.TOOLTIP_AREA = t.GRichTooltipConfig = void 0), n(290), n(3));
-        const o = (t.GRichTooltipConfig = function (e) {
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = exports.TOOLTIP_AREA = exports.GRichTooltipConfig = void 0), require(290), require(3));
+        const o = (exports.GRichTooltipConfig = function (e) {
             let {
                 title: t,
                 description: n,
@@ -49,8 +49,8 @@ module.exports = function (e, t, n) {
             (o.prototype._side = null),
             (o.prototype._learnMore = null),
             (o.prototype._upgradeToProStatsValue = null),
-            (o.prototype._forceShow = !1),
-            (o.prototype._flipHorizontal = !1),
+            (o.prototype._forceShow = false),
+            (o.prototype._flipHorizontal = false),
             (o.prototype.setConfig = function (e) {
                 let {
                     title: t,
@@ -103,7 +103,7 @@ module.exports = function (e, t, n) {
             (o.prototype.toString = function () {
                 return "[Object GRichTooltipConfig]";
             }));
-        t.TOOLTIP_AREA = {
+        exports.TOOLTIP_AREA = {
             TOOLBAR: "TOOLBAR",
             SIDEBAR: "SIDEBAR",
             MAIN_MENU: {
@@ -111,5 +111,5 @@ module.exports = function (e, t, n) {
                 TRY_EXP_PDF_ADVANCED_SETTING: "TRY_EXP_PDF_ADVANCED_SETTING",
             },
         };
-        t.default = o;
+        exports.default = o;
     };

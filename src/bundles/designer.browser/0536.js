@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        e.exports = class {
+        require(8 /* Symbol */);
+        module.exports = class {
             constructor(e) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0;
                 ((this._factory = e), (this._timeout = t), (this._lastCheckTime = 0));

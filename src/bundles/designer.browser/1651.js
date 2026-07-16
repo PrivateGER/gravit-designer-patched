@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16),
-            i = n(1),
-            a = n(15),
-            r = o(n(31)),
-            s = o(n(18));
+        var o = require(16),
+            GObject = require(1),
+            GPlatform = require(15),
+            r = o(require(31)),
+            s = o(require(18 /* GCategory */));
         class l extends r.default {
             constructor(e) {
-                (super(), (this._type = e), (this._title = new i.GLocaleKey("GChangeActiveWindowAction", "title.".concat(this._type))));
+                (super(), (this._type = e), (this._title = new GObject.GLocaleKey("GChangeActiveWindowAction", "title.".concat(this._type))));
             }
             getId() {
                 return "".concat(l.ID, ".").concat(this._type);
@@ -19,15 +19,15 @@ module.exports = function (e, t, n) {
                 return s.default.CATEGORY_VIEW;
             }
             isVisible() {
-                return !1;
+                return false;
             }
             getShortcut() {
-                const e = [a.GKey.Constant.OPTION];
+                const e = [GPlatform.GKey.Constant.OPTION];
                 switch (this._type) {
                     case l.Type.Next:
-                        return e.concat(a.GKey.Constant.PERIOD);
+                        return e.concat(GPlatform.GKey.Constant.PERIOD);
                     case l.Type.Previous:
-                        return e.concat(a.GKey.Constant.COMMA);
+                        return e.concat(GPlatform.GKey.Constant.COMMA);
                     default:
                         return null;
                 }
@@ -61,5 +61,5 @@ module.exports = function (e, t, n) {
                 return "[Object GChangeActiveWindowAction]";
             }
         }
-        ((l.ID = "view.change-active-window"), (l.Type = { Next: "next", Previous: "previous" }), (e.exports = l));
+        ((l.ID = "view.change-active-window"), (l.Type = { Next: "next", Previous: "previous" }), (module.exports = l));
     };

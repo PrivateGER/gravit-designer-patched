@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        e.exports = {
+        module.exports = {
             CSSRuleList: 0,
             CSSStyleDeclaration: 0,
             CSSValueList: 0,

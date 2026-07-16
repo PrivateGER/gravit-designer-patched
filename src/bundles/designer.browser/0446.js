@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16),
-            i = n(1),
-            a = o(n(119)),
-            r = o(n(860));
+        var o = require(16),
+            GObject = require(1),
+            a = o(require(119 /* GCommonNames */)),
+            r = o(require(860));
         function s(e) {
             let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : () => {};
             ((this._cb = e), (this._showFormCb = t), this._run());
         }
-        (i.GObject.inherit(s, i.GObject),
+        (GObject.GObject.inherit(s, GObject.GObject),
             (s.prototype._close = function () {
                 this._dialog && this._dialog.gDialog("close");
             }),
@@ -17,7 +17,7 @@ module.exports = function (e, t, n) {
                     return (
                         new r.default((e) => {
                             e && !e.anonymous && this._logged(e);
-                        }).open({ anonymous: !0, signup: !0, animate: !0 }),
+                        }).open({ anonymous: true, signup: true, animate: true }),
                         void this._showFormCb()
                     );
                 this._cb && this._cb();
@@ -36,11 +36,11 @@ module.exports = function (e, t, n) {
                                 $("<div/>").addClass("logo").appendTo(t),
                                 $("<span/>")
                                     .addClass("title")
-                                    .text(i.GLocale.get(new i.GLocaleKey("GLoginPanel", "text.title")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginPanel", "text.title")))
                                     .appendTo(t),
                                 $("<span/>")
                                     .addClass("subtitle")
-                                    .text(i.GLocale.get(new i.GLocaleKey("GLoginPanel", "text.subtitle")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginPanel", "text.subtitle")))
                                     .appendTo(t));
                             var n = $("<div/>");
                             n.addClass("buttons").appendTo(t);
@@ -49,7 +49,7 @@ module.exports = function (e, t, n) {
                                 (o.on("click", t),
                                     o
                                         .addClass(e)
-                                        .text(i.GLocale.get(new i.GLocaleKey("GLoginPanel", "text." + e)))
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginPanel", "text." + e)))
                                         .appendTo(n));
                             };
                             (o("login", () => {
@@ -65,10 +65,10 @@ module.exports = function (e, t, n) {
                         }
                     }),
                     this._dialog.gDialog({
-                        releaseOnClose: !0,
+                        releaseOnClose: true,
                         className: "g-login-panel loading",
                     }),
-                    this._dialog.gDialog("open", !0));
+                    this._dialog.gDialog("open", true));
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

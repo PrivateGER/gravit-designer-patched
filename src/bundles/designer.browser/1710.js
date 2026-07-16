@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8),
-            n(3),
-            n(4),
-            n(1352),
-            (e.exports = (e) => {
+        (require(8 /* Symbol */),
+            require(3),
+            require(4),
+            require(1352),
+            (module.exports = (e) => {
                 ((e._DragAndDropHelper = function (e) {
                     this._vtree = e;
                 }),
@@ -23,7 +23,7 @@ module.exports = function (e, t, n) {
                         (this._vtree.beginUpdate(),
                             this._vtree.removeNode(t),
                             this._vtree.insertNodeAfter(e, t),
-                            this._vtree.endUpdate(!0));
+                            this._vtree.endUpdate(true));
                     }),
                     (e._DragAndDropHelper.prototype.setDroppableNodeUpper = function (e) {
                         ((this._droppableNodeUpper = e), (this._droppableNodeLower = null));
@@ -31,7 +31,7 @@ module.exports = function (e, t, n) {
                         (this._vtree.beginUpdate(),
                             this._vtree.removeNode(t),
                             this._vtree.insertNodeBefore(e, t),
-                            this._vtree.endUpdate(!0));
+                            this._vtree.endUpdate(true));
                     }),
                     (e._DragAndDropHelper.prototype.drop = function () {
                         const e = this._vtree._dragNode,
@@ -41,7 +41,7 @@ module.exports = function (e, t, n) {
                             (this._vtree.beginUpdate(),
                                 this._vtree.removeNode(e),
                                 this._vtree.appendNode(t, e),
-                                this._vtree.endUpdate(!0),
+                                this._vtree.endUpdate(true),
                                 this._vtree._dropCallback && this._vtree._dropCallback(t, null, null, [e]));
                         } else if (this._droppableNodeUpper) {
                             const n = this._droppableNodeUpper;

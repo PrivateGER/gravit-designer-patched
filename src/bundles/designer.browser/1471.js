@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        const { GFontManager: o } = n(1);
-        e.exports = class {
+        require(8 /* Symbol */);
+        const { GFontManager: o } = require(1 /* GObject */);
+        module.exports = class {
             constructor(e) {
                 ((this._fontManager = e),
                     this._fontManager.addEventListener(o.FontAvailableEvent, this._fontEvent, this),

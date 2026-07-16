@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(58), n(30), n(20), n(271), n(71), n(151), n(34), n(91), n(4), n(32), n(33));
-        var i = n(40),
-            a = o(n(263));
-        const { FILE_ID_PREFIX: r } = n(10);
+        var o = require(16);
+        (require(58), require(30), require(20), require(271), require(71), require(151), require(34), require(91), require(4), require(32), require(33));
+        var GSaveAction = require(40),
+            a = o(require(263 /* GRegex */));
+        const { FILE_ID_PREFIX: r } = require(10 /* designerConfig */);
         function s() {
             this._permissions = [];
         }
@@ -48,7 +48,7 @@ module.exports = function (e, t, n) {
                 return (!e.toLowerCase().endsWith(t) ? (e += t) : (e = e.substr(0, e.lastIndexOf(".")) + t), e);
             }),
             (s.prototype.getNameWithoutExtension = function () {
-                return (0, i.getFileNameWithoutExtension)(this.getName(), this.getExtension());
+                return (0, GSaveAction.getFileNameWithoutExtension)(this.getName(), this.getExtension());
             }),
             (s.prototype.getName = function () {
                 return (this.name && this.name.trim()) || this.name;
@@ -198,5 +198,5 @@ module.exports = function (e, t, n) {
                 }
                 return e;
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

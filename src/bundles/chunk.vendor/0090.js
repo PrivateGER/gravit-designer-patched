@@ -1,8 +1,8 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i() {}
             ((i.prototype.write = function (e) {}),
                 (i.prototype.isEmpty = function () {
-                    return !1;
+                    return false;
                 }),
                 (i.prototype.equals = function (e) {
                     return this === e;
@@ -17,5 +17,5 @@ module.exports = function (e, t) {
                 (i.Container.prototype.toString = function () {
                     return "[Object GPDFObject.Container]";
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

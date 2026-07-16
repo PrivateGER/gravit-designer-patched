@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(4), n(13));
-        var o = n(1),
-            i = n(394);
+        (require(4), require(13));
+        var GObject = require(1),
+            i = require(394);
         function a(e) {
             ((this._htmlElement = e), (this._collapseIcon = $('<span class="collapse-icon"><span></span><span></span></span>')));
         }
@@ -69,7 +69,7 @@ module.exports = function (e, t, n) {
                         var a = $("<button></button>")
                                 .addClass("panel-tab")
                                 .attr("data-panel-id", n.getId())
-                                .text(o.GLocale.get(n.getTitle()))
+                                .text(GObject.GLocale.get(n.getTitle()))
                                 .on(
                                     "click",
                                     function (e) {
@@ -114,5 +114,5 @@ module.exports = function (e, t, n) {
                     if (this._panels[t].panel.getId() === e) return this._panels[t];
                 }
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

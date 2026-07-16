@@ -1,19 +1,19 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(108),
-                o = i(63),
-                a = i(48),
-                s = i(6),
-                l = i(54),
-                h = i(59),
-                A = i(7),
-                c = i(708),
-                p = i(726),
-                u = i(11),
-                d = i(838),
-                g = i(9),
-                f = i(457),
-                m = i(266),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                GFont = require(108),
+                o = require(63),
+                a = require(48),
+                s = require(6),
+                l = require(54),
+                h = require(59),
+                A = require(7),
+                c = require(708),
+                p = require(726),
+                u = require(11),
+                d = require(838),
+                g = require(9 /* String */),
+                f = require(457),
+                m = require(266),
                 y = [
                     [69632, 69759, "BRAHMI"],
                     [6656, 6687, "BUGINESE"],
@@ -48,7 +48,7 @@ module.exports = function (e, t, i) {
                     (this._stylisticSets = void 0),
                     (this._localizedForms = void 0));
             }
-            (n.inherit(_, r),
+            (IsFiniteNonNegativeNumber.inherit(_, GFont),
                 (_.prototype._smallCaps = void 0),
                 (_.prototype._fractions = void 0),
                 (_.prototype._stylisticSets = void 0),
@@ -116,7 +116,7 @@ module.exports = function (e, t, i) {
                 (_.prototype._openTypeFont = null),
                 (_.prototype._ghbFont = null),
                 (_.prototype.isResolved = function () {
-                    return !0;
+                    return true;
                 }),
                 (_.prototype.toFontFaceSrc = function () {
                     for (var e = "", t = new Uint8Array(this._buffer), i = t.byteLength, n = 0; n < i; n++) e += String.fromCharCode(t[n]);
@@ -145,20 +145,20 @@ module.exports = function (e, t, i) {
                     }
 
                     function h(e) {
-                        if (e.length <= 1) return !1;
+                        if (e.length <= 1) return false;
                         for (var t = 0; t < e.length; t++) {
                             var i = e.codePointAt(t);
-                            if (i >= 768 && i <= 879) return !0;
+                            if (i >= 768 && i <= 879) return true;
                         }
-                        return !1;
+                        return false;
                     }
                     if ((this._shouldSetScriptNameByLanguage(r) && this._setScriptNameByLanguage(r), " " !== e)) {
                         if (((o = new d.Buffer(e)), r)) {
                             if (r.script && !r.noghb && !r.generateText) {
                                 var A = d.nameToTag(r.script);
-                                l(A) || h(e) ? (o.setScript(A), (a = !0)) : (a = !1);
+                                l(A) || h(e) ? (o.setScript(A), (a = true)) : (a = false);
                             }
-                            !r.variant || r.noghb || r.generateText || (a = !0);
+                            !r.variant || r.noghb || r.generateText || (a = true);
                         }
                         if (void 0 === a && r && !r.noghb) a = !!(l(o.getScript()) || this._openTypeFont.hasGHBTables || h(e));
                     }
@@ -173,11 +173,11 @@ module.exports = function (e, t, i) {
                         var f = o.directionForScript(o.getScript());
                         if ((g.setScale(n || 72), r && r.variant)) {
                             var m,
-                                y = !1;
+                                y = false;
                             try {
                                 m = JSON.parse(r.variant);
                             } catch (e) {
-                                y = !0;
+                                y = true;
                             }
                             !y && m && g.setVariations(m);
                         }
@@ -274,7 +274,7 @@ module.exports = function (e, t, i) {
                     if (i) {
                         if (!(n = this._boundsCache[r.index])) {
                             var o = this.getGlyphOutline(1, 0, 0, r);
-                            ((n = h.calculateBounds(o, !0) || new s()), (this._boundsCache[r.index] = n));
+                            ((n = h.calculateBounds(o, true) || new s()), (this._boundsCache[r.index] = n));
                         }
                         n = n.scaled(e, e);
                     } else {
@@ -296,7 +296,7 @@ module.exports = function (e, t, i) {
                                 0,
                                 this._openTypeFont.unitsPerEm,
                                 {
-                                    hinting: !0,
+                                    hinting: true,
                                 },
                                 this._openTypeFont
                             );
@@ -368,7 +368,7 @@ module.exports = function (e, t, i) {
                                 for (n = 0; n < y.length; n++) {
                                     var l = y[n];
                                     if (s.unicode >= l[0] && s.unicode <= l[1]) {
-                                        r[l[2]] = !0;
+                                        r[l[2]] = true;
                                         break;
                                     }
                                 }
@@ -378,7 +378,7 @@ module.exports = function (e, t, i) {
                     return i;
                 }),
                 (_.prototype.getAvailableVariants = function () {
-                    if (this.hasFeature(r.Features.Variants)) {
+                    if (this.hasFeature(GFont.Features.Variants)) {
                         var e = this._openTypeFont.tables.fvar,
                             t = [];
                         if (e)
@@ -438,17 +438,17 @@ module.exports = function (e, t, i) {
                 }),
                 (_.prototype.hasFeature = function (e) {
                     switch (e) {
-                        case r.Features.SmallCaps:
+                        case GFont.Features.SmallCaps:
                             return (
                                 null == this._smallCaps &&
-                                    (this._smallCaps = Object.values(r.SmallCapsUnicodeMap).every(
+                                    (this._smallCaps = Object.values(GFont.SmallCapsUnicodeMap).every(
                                         function (e) {
                                             return 0 !== this._openTypeFont.charToGlyph(e).index;
                                         }.bind(this)
                                     )),
                                 this._smallCaps
                             );
-                        case r.Features.Variants:
+                        case GFont.Features.Variants:
                             if (
                                 this._openTypeFont.tables.fvar &&
                                 this._openTypeFont.tables.fvar.axes &&
@@ -456,8 +456,8 @@ module.exports = function (e, t, i) {
                                 this._openTypeFont.tables.fvar.instances &&
                                 this._openTypeFont.tables.fvar.instances.length > 0
                             )
-                                return !0;
-                        case r.Features.Fractions:
+                                return true;
+                        case GFont.Features.Fractions:
                             if (null == this._fractions) {
                                 var t = this._openTypeFont.substitution.getDefaultScriptName(),
                                     i = this._openTypeFont.charToGlyphIndex(String.fromCharCode(8260)),
@@ -466,12 +466,12 @@ module.exports = function (e, t, i) {
                                 this._fractions = !!(0 !== i && n && n.length && o && o.length);
                             }
                             return this._fractions;
-                        case r.Features.StylisticSet:
+                        case GFont.Features.StylisticSet:
                             return this._hasStylisticSetsAvailable();
-                        case r.Features.LocalizedForm:
+                        case GFont.Features.LocalizedForm:
                             return this._hasLocalizedFormsAvailable();
                     }
-                    return !1;
+                    return false;
                 }),
                 (_.prototype._hasStylisticSetsAvailable = function () {
                     if (void 0 === this._stylisticSets) {
@@ -479,7 +479,7 @@ module.exports = function (e, t, i) {
                         this._stylisticSets = e.some(
                             function (e) {
                                 var t = this.getAvailableStylisticSets(e);
-                                if (t && t.length > 0) return !0;
+                                if (t && t.length > 0) return true;
                             }.bind(this)
                         );
                     }
@@ -493,7 +493,7 @@ module.exports = function (e, t, i) {
                                 return this.getAvailableLanguageSystemTags(e).some(
                                     function (t) {
                                         var i = this._openTypeFont.substitution.getFeature("locl", e, t);
-                                        if (i && i.length > 0) return !0;
+                                        if (i && i.length > 0) return true;
                                     }.bind(this)
                                 );
                             }.bind(this)
@@ -501,5 +501,5 @@ module.exports = function (e, t, i) {
                     }
                     return this._localizedForms;
                 }),
-                (e.exports = _));
+                (module.exports = _));
         };

@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
-            var n = i(50),
-                r = i(0),
-                o = i(641),
-                a = i(11);
+module.exports = function (module, exports, require) {
+            var n = require(50),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(641),
+                a = require(11);
 
             function s(e) {
                 this._value = e && e instanceof Array ? e.slice() : null;
@@ -11,7 +11,7 @@ module.exports = function (e, t, i) {
             function l(e) {
                 return Math.min(255, Math.max(0, Math.round(e)));
             }
-            (r.inherit(s, n),
+            (IsFiniteNonNegativeNumber.inherit(s, n),
                 (s.ColorModes = {
                     RGB: "RGB",
                     HSB: "HSB",
@@ -36,7 +36,7 @@ module.exports = function (e, t, i) {
                             };
                             if (t && 0 === t.indexOf("file"))
                                 try {
-                                    var a = i(178).readFileSync(t.substring("file://".length) + "/" + s.IccProfileNames[e]);
+                                    var a = require(178).readFileSync(t.substring("file://".length) + "/" + s.IccProfileNames[e]);
                                     a && r(a.buffer);
                                 } finally {
                                     n && n();
@@ -46,7 +46,7 @@ module.exports = function (e, t, i) {
                                 (l.addEventListener("load", function () {
                                     200 == l.status && l.response && l.response instanceof ArrayBuffer && r(l.response);
                                 }),
-                                    n && l.addEventListener("loadend", n, !1),
+                                    n && l.addEventListener("loadend", n, false),
                                     l.open("GET", (t || "assets/data/icc/") + s.IccProfileNames[e]),
                                     (l.responseType = "arraybuffer"),
                                     l.send(null));
@@ -354,5 +354,5 @@ module.exports = function (e, t, i) {
                 (s.prototype.toString = function () {
                     return "[Object GColor]";
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

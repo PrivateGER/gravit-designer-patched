@@ -1,18 +1,18 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(91), n(842));
-        var o = n(16);
-        (Object.defineProperty(t, "__esModule", { value: !0 }),
-            (t._cloneChildrenIntoReceiver = E),
-            (t._mergeChildren = x),
-            (t._mergePath = C),
-            (t._mergeProperties = b),
-            (t._mergeStyle = w),
-            (t._removeDeletedChildren = S),
-            (t._tryAndCatch = void 0),
-            (t._updateCommonChildren = A),
-            (t.areNodePropertiesDifferent = y),
-            (t.base64StringToString = function (e) {
+        (require(91), require(842));
+        var o = require(16);
+        (Object.defineProperty(exports, "__esModule", { value: true }),
+            (exports._cloneChildrenIntoReceiver = E),
+            (exports._mergeChildren = x),
+            (exports._mergePath = C),
+            (exports._mergeProperties = b),
+            (exports._mergeStyle = w),
+            (exports._removeDeletedChildren = S),
+            (exports._tryAndCatch = void 0),
+            (exports._updateCommonChildren = A),
+            (exports.areNodePropertiesDifferent = y),
+            (exports.base64StringToString = function (e) {
                 let t;
                 try {
                     t = f(l.toByteArray(e));
@@ -21,10 +21,10 @@ module.exports = function (e, t, n) {
                 }
                 return t;
             }),
-            (t.base64URLSafeEncode = function (e) {
+            (exports.base64URLSafeEncode = function (e) {
                 return (0, r.trim)((0, r.encode)(e));
             }),
-            (t.blockChanges = function (e, t, n, o) {
+            (exports.blockChanges = function (e, t, n, o) {
                 n && n.startBlockReferenceChanges();
                 o && o.beginUpdate();
                 e && e._beginSelectionUpdate();
@@ -33,34 +33,34 @@ module.exports = function (e, t, n) {
                         e.beginUpdate();
                     });
             }),
-            (t.buildDialogDocumentHasUpdates = function (e, t, n, o) {
-                return c.custom({
-                    subtitle: i.GLocale.get(new i.GLocaleKey("GSaveAction", "has-new-version-when-save-message")),
+            (exports.buildDialogDocumentHasUpdates = function (e, t, n, o) {
+                return GSystemDialog.custom({
+                    subtitle: GObject.GLocale.get(new GObject.GLocaleKey("GSaveAction", "has-new-version-when-save-message")),
                     className: "g-has-updates-warning-dialog",
                     icon: "info",
-                    closeable: !1,
+                    closeable: false,
                     buttons: [
                         {
-                            label: i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.cancel")),
-                            closeOnClick: !0,
-                            shortcut: c.Shortcut.Esc,
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.cancel")),
+                            closeOnClick: true,
+                            shortcut: GSystemDialog.Shortcut.Esc,
                             position: "left",
                             onclick: () => {
                                 o && o.call(this, e);
                             },
                         },
                         {
-                            label: i.GLocale.get(new i.GLocaleKey("GSaveAction", "has-new-version-when-save-reload")),
-                            closeOnClick: !0,
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GSaveAction", "has-new-version-when-save-reload")),
+                            closeOnClick: true,
                             onclick: () => {
                                 (gDesigner.getToolbar()._updateActions(), t.call(this, e));
                             },
                         },
                         {
-                            label: i.GLocale.get(new i.GLocaleKey("GSaveAction", "has-new-version-when-save-save")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GSaveAction", "has-new-version-when-save-save")),
                             className: "primary",
-                            closeOnClick: !0,
-                            shortcut: c.Shortcut.Enter,
+                            closeOnClick: true,
+                            shortcut: GSystemDialog.Shortcut.Enter,
                             onclick: () => {
                                 n.call(this, e);
                             },
@@ -68,8 +68,8 @@ module.exports = function (e, t, n) {
                     ],
                 });
             }),
-            (t.chaining = void 0),
-            (t.debounce = function (e, t) {
+            (exports.chaining = void 0),
+            (exports.debounce = function (e, t) {
                 let n;
                 return function () {
                     const o = arguments;
@@ -79,11 +79,11 @@ module.exports = function (e, t, n) {
                     (n && clearTimeout(n), (n = setTimeout(i, t)));
                 };
             }),
-            (t.decodeFromUTF8 = f),
-            (t.decodeHTML = function (e) {
+            (exports.decodeFromUTF8 = f),
+            (exports.decodeHTML = function (e) {
                 return $("<textarea/>").html(e).text();
             }),
-            (t.decrypt = function (e) {
+            (exports.decrypt = function (e) {
                 try {
                     var t = e.split(":"),
                         n = t.shift(),
@@ -98,8 +98,8 @@ module.exports = function (e, t, n) {
                     return;
                 }
             }),
-            (t.encodeToUTF8 = m),
-            (t.encrypt = function (e) {
+            (exports.encodeToUTF8 = m),
+            (exports.encrypt = function (e) {
                 try {
                     var t = s.lib.WordArray.random(32),
                         n = s.AES.encrypt(e, g, {
@@ -112,8 +112,8 @@ module.exports = function (e, t, n) {
                     return;
                 }
             }),
-            (t.fakeFunction = function () {}),
-            (t.getAnnotationType = function (e) {
+            (exports.fakeFunction = function () {}),
+            (exports.getAnnotationType = function (e) {
                 let t = e
                     .toString()
                     .match(
@@ -121,16 +121,16 @@ module.exports = function (e, t, n) {
                     );
                 return (t && t[1]) || null;
             }),
-            (t.getExtensionFromString = function (e, t) {
+            (exports.getExtensionFromString = function (e, t) {
                 var n = new RegExp("\\b" + t.join("|") + "\\b", "gim"),
                     o = e.match(n);
                 return o ? o[0] : null;
             }),
-            (t.getFileNameWithoutExtension = function (e, t) {
+            (exports.getFileNameWithoutExtension = function (e, t) {
                 e.toLowerCase().endsWith(".".concat(t).toLowerCase()) && (e = e.substr(0, e.lastIndexOf(".")));
                 return e;
             }),
-            (t.getFileSHA256Digest = async function (e) {
+            (exports.getFileSHA256Digest = async function (e) {
                 e instanceof Blob ? (e = await e.arrayBuffer()) : "string" == typeof e && (e = m(e));
                 return s
                     .SHA256(
@@ -142,7 +142,7 @@ module.exports = function (e, t, n) {
                     )
                     .toString();
             }),
-            (t.getFileStateAndRole = function (e, t) {
+            (exports.getFileStateAndRole = function (e, t) {
                 let n,
                     o = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
                 const i = t.getPrivateShareList();
@@ -152,23 +152,23 @@ module.exports = function (e, t, n) {
                         ? ((n = d.makeFromShare(t)),
                           l
                               ? Object.assign(o, {
-                                    owner: !0,
-                                    edit: !0,
-                                    inspect: !0,
-                                    copy: !0,
+                                    owner: true,
+                                    edit: true,
+                                    inspect: true,
+                                    copy: true,
                                     comment: !!u,
-                                    share: !0,
+                                    share: true,
                                 })
                               : Object.assign(o, {
-                                    owner: !1,
-                                    share: !1,
+                                    owner: false,
+                                    share: false,
                                     edit: p,
                                     copy: a,
                                     inspect: r,
                                     comment: !!u && s,
                                     sharing: c,
                                 }))
-                        : c && Object.assign(o, { sharing: !0 });
+                        : c && Object.assign(o, { sharing: true });
                 });
                 const a = i.find((e) => e.owner);
                 if (a) {
@@ -176,7 +176,7 @@ module.exports = function (e, t, n) {
                     ((o.owner = t), (o.share = t));
                 }
                 const r = t.getPublicShare();
-                r && r.access && ((o.isPrivate = !1), (o.sharing = !0));
+                r && r.access && ((o.isPrivate = false), (o.sharing = true));
                 return (
                     Object.assign(o, {
                         isPrivate: i && i.filter((e) => !e.owner).length > 0,
@@ -184,7 +184,7 @@ module.exports = function (e, t, n) {
                     { state: o, role: n, publicShare: r }
                 );
             }),
-            (t.getSizeInfo = function (e) {
+            (exports.getSizeInfo = function (e) {
                 var t = e;
                 const n = 1e6,
                     o = 1e3 * n;
@@ -197,41 +197,41 @@ module.exports = function (e, t, n) {
                 s && ((i.kb = s), (t -= 1e3 * s));
                 return i;
             }),
-            (t.getVersionFromString = function (e, t, n) {
+            (exports.getVersionFromString = function (e, t, n) {
                 var o = e.match(t.join("|"));
                 return o ? o[0] : n;
             }),
-            (t.isDifferent = v),
-            (t.isFunction = function (e) {
-                if (void 0 === e) return !1;
+            (exports.isDifferent = v),
+            (exports.isFunction = function (e) {
+                if (void 0 === e) return false;
                 var t = Object.prototype.toString.call(e);
                 return ["[object Function]", "[object AsyncFunction]", "[object GeneratorFunction]", "[object Proxy]"].indexOf(t) >= 0;
             }),
-            (t.isPassiveSupported = function () {
+            (exports.isPassiveSupported = function () {
                 if (void 0 === T) {
-                    T = !1;
+                    T = false;
                     try {
                         const e = {
                             get passive() {
-                                return ((T = !0), !1);
+                                return ((T = true), false);
                             },
                         };
                         (window.addEventListener("test", null, e), window.removeEventListener("test", null, e));
                     } catch (e) {
-                        T = !1;
+                        T = false;
                     }
                 }
                 return T;
             }),
-            (t.isSupportedScreenSize = function (e) {
-                if (!e && i.GSystem.hardware === i.GSystem.Hardware.Tablet) {
+            (exports.isSupportedScreenSize = function (e) {
+                if (!e && GObject.GSystem.hardware === GObject.GSystem.Hardware.Tablet) {
                     return (window.screen.height > window.screen.width ? window.screen.height : window.screen.width) >= p;
                 }
                 return (e || window.screen.availWidth) >= p;
             }),
-            (t.isSymbol = h),
-            (t.isSymbolInstance = void 0),
-            (t.iterateAroundIndex = function (e, t, n) {
+            (exports.isSymbol = h),
+            (exports.isSymbolInstance = void 0),
+            (exports.iterateAroundIndex = function (e, t, n) {
                 var o = 0,
                     i = 0,
                     a = e.length;
@@ -240,7 +240,7 @@ module.exports = function (e, t, n) {
                     (n(e[r], r), o++, i > 0 && t - i >= 0 ? (i = -i) : i > 0 ? i++ : t - i + 1 < a ? (i = 1 - i) : i--);
                 }
             }),
-            (t.iterateEqualStyleLayers = function (e, t, n, o) {
+            (exports.iterateEqualStyleLayers = function (e, t, n, o) {
                 var a = [];
                 if (n.length > 1) {
                     for (var r = 0; r < n.length; r++) {
@@ -251,9 +251,9 @@ module.exports = function (e, t, n) {
                         else if ("effect" === e) for (var c = s.getEffects().getFirstChild(); null !== c; c = c.getNext()) l.push(c);
                         for (var d = 0; d < l.length; d++) {
                             var u = l[d];
-                            (("fill" === e && i.GStylable.FillPaintLayer.equals(u, t)) ||
-                                ("border" === e && i.GStylable.BorderPaintLayer.equals(u, t)) ||
-                                ("effect" === e && i.GUtil.equals(u, t))) &&
+                            (("fill" === e && GObject.GStylable.FillPaintLayer.equals(u, t)) ||
+                                ("border" === e && GObject.GStylable.BorderPaintLayer.equals(u, t)) ||
+                                ("effect" === e && GObject.GUtil.equals(u, t))) &&
                                 a.push(u);
                         }
                     }
@@ -262,8 +262,8 @@ module.exports = function (e, t, n) {
                     });
                 } else o(t);
             }),
-            (t.mergeNode = _),
-            (t.releaseChanges = function (e, t, n) {
+            (exports.mergeNode = _),
+            (exports.releaseChanges = function (e, t, n) {
                 t &&
                     t.forEach((e) => {
                         e.endUpdate();
@@ -276,46 +276,46 @@ module.exports = function (e, t, n) {
                     });
                 n && n.endBlockReferenceChanges();
             }),
-            (t.removeAllSuffixWhichLikeExtension = function (e, t) {
+            (exports.removeAllSuffixWhichLikeExtension = function (e, t) {
                 const n = ".".concat(t).toLowerCase();
                 for (; e.toLowerCase().endsWith(n); ) e = e.substr(0, e.lastIndexOf("."));
                 return e;
             }),
-            (t.resolveDocumentImages = function (e, t) {
+            (exports.resolveDocumentImages = function (e, t) {
                 let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
                 return new Promise(async (o, a) => {
-                    const r = (e) => e === i.GImage.ImageStatus.Loaded || e === i.GImage.ImageStatus.Error;
+                    const r = (e) => e === GObject.GImage.ImageStatus.Loaded || e === GObject.GImage.ImageStatus.Error;
                     let s = 0;
                     if (
                         (e.accept((e) => {
-                            e instanceof i.GImage && !r(e.getStatus()) && s++;
+                            e instanceof GObject.GImage && !r(e.getStatus()) && s++;
                         }),
                         s > 0)
                     ) {
                         let l = setTimeout(() => {
-                            (s > 0 || n.cancelled) && (e.removeEventListener(i.GImage.StatusEvent, c), a());
+                            (s > 0 || n.cancelled) && (e.removeEventListener(GObject.GImage.StatusEvent, c), a());
                         }, t);
                         const c = (t) => {
                             let { status: d } = t;
                             (r(d) &&
                                 --s <= 0 &&
-                                (l && (clearTimeout(l), (l = null)), e.removeEventListener(i.GImage.StatusEvent, c), o(!0)),
-                                n.cancelled && (l && (clearTimeout(l), (l = null)), e.removeEventListener(i.GImage.StatusEvent, c), a()));
+                                (l && (clearTimeout(l), (l = null)), e.removeEventListener(GObject.GImage.StatusEvent, c), o(true)),
+                                n.cancelled && (l && (clearTimeout(l), (l = null)), e.removeEventListener(GObject.GImage.StatusEvent, c), a()));
                         };
-                        e.addEventListener(i.GImage.StatusEvent, c);
-                    } else o(!0);
+                        e.addEventListener(GObject.GImage.StatusEvent, c);
+                    } else o(true);
                 });
             }),
-            (t.saveBBoxes = function (e) {
+            (exports.saveBBoxes = function (e) {
                 var t = [];
                 e.accept(function (e) {
-                    if (e instanceof i.GElement) {
-                        var n = e.getPaintBBox(!1, null, !0);
+                    if (e instanceof GObject.GElement) {
+                        var n = e.getPaintBBox(false, null, true);
                         t.push(n);
                     }
                 });
                 for (var n = new Float64Array(4 * t.length), o = 0; o < t.length; ++o)
-                    for (var a = i.GRect.serialize(t[o]), r = 0; r < 4; ++r) n[4 * o + r] = a[r];
+                    for (var a = GObject.GRect.serialize(t[o]), r = 0; r < 4; ++r) n[4 * o + r] = a[r];
                 ((s = "Test_invisible-.dat"),
                     (l = n),
                     navigator.webkitTemporaryStorage.requestQuota(1e3, function (e) {
@@ -329,7 +329,7 @@ module.exports = function (e, t, n) {
                                     window.webkitResolveLocalFileSystemURL(
                                         t,
                                         function (e) {
-                                            e.getFile(s, { create: !0 }, function (e) {
+                                            e.getFile(s, { create: true }, function (e) {
                                                 e.createWriter(
                                                     function (e) {
                                                         ((e.onwriteend = function () {
@@ -362,73 +362,73 @@ module.exports = function (e, t, n) {
                     }));
                 var s, l;
             }),
-            (t.sleep = function (e) {
+            (exports.sleep = function (e) {
                 return new Promise((t) => setTimeout(t, e));
             }),
-            (t.stringToBase64String = function (e) {
+            (exports.stringToBase64String = function (e) {
                 return l.fromByteArray(m(e));
             }),
-            (t.throttle = function (e, t) {
+            (exports.throttle = function (e, t) {
                 let n;
                 return function () {
                     const o = arguments;
-                    n || (e.apply(this, o), (n = !0), setTimeout(() => (n = !1), t));
+                    n || (e.apply(this, o), (n = true), setTimeout(() => (n = false), t));
                 };
             }),
-            (t.toCapitalize = function (e) {
+            (exports.toCapitalize = function (e) {
                 return e.charAt(0).toUpperCase() + e.slice(1);
             }),
-            (t.toMD5 = function (e) {
+            (exports.toMD5 = function (e) {
                 return s.MD5(e).toString();
             }),
-            (t.trimStart = function (e, t) {
+            (exports.trimStart = function (e, t) {
                 if (!t || !t.length) return e;
                 if (!e || !e.startsWith(t)) return e;
                 return e.substring(t.length);
             }),
-            (t.watchDog = void 0),
-            n(58),
-            n(19),
-            n(180),
-            n(181),
-            n(30),
-            n(8),
-            n(356),
-            n(20),
-            n(3),
-            n(271),
-            n(71),
-            n(151),
-            n(134),
-            n(1041),
-            n(218),
-            n(189),
-            n(190),
-            n(191),
-            n(192),
-            n(4),
-            n(41),
-            n(13),
-            n(32),
-            n(38),
-            n(97),
-            n(33));
-        var i = n(1),
-            a = o(n(84)),
-            r = n(1042);
-        const s = n(1043);
-        var l = n(250),
-            c = n(44);
-        const d = n(433),
-            { HAS_ANNOTATIONS: u, MIN_SUPPORTED_SCREEN_SIZE: p } = n(10);
-        t.watchDog = {
+            (exports.watchDog = void 0),
+            require(58),
+            require(19),
+            require(180),
+            require(181),
+            require(30),
+            require(8 /* Symbol */),
+            require(356),
+            require(20),
+            require(3),
+            require(271),
+            require(71),
+            require(151),
+            require(134),
+            require(1041),
+            require(218),
+            require(189),
+            require(190),
+            require(191),
+            require(192),
+            require(4),
+            require(41),
+            require(13),
+            require(32),
+            require(38),
+            require(97),
+            require(33));
+        var GObject = require(1),
+            a = o(require(84)),
+            r = require(1042);
+        const s = require(1043);
+        var l = require(250),
+            GSystemDialog = require(44);
+        const d = require(433),
+            { HAS_ANNOTATIONS: u, MIN_SUPPORTED_SCREEN_SIZE: p } = require(10 /* designerConfig */);
+        exports.watchDog = {
             trap: (e, t, n, o) => (i) =>
                 ((e, t, n, o, i) =>
                     gDesigner.isEnabledProFeatures(i) || (n && n(e))
                         ? t
                             ? t(e)
                             : void 0
-                        : (o && o(e), e.stopImmediatePropagation(), e.preventDefault(), gDesigner.handlePROFeatureInterruption(), !1))(
+                        : (o && o(e), e.stopImmediatePropagation(), e.preventDefault(), gDesigner.handlePROFeatureInterruption(), false))(
                     i,
                     e,
                     t,
@@ -437,7 +437,7 @@ module.exports = function (e, t, n) {
                 ),
             check: (e, t) => (gDesigner.isEnabledProFeatures() ? e : t),
         };
-        t._tryAndCatch = async (e) => {
+        exports._tryAndCatch = async (e) => {
             try {
                 await e();
             } catch (e) {
@@ -446,7 +446,7 @@ module.exports = function (e, t, n) {
         };
         const g = s.enc.Latin1.parse(s.enc.Latin1.stringify(s.SHA256("#a09j!@10jas-109827s*%#1098XAapoc-9908#!123")));
         function h(e, t) {
-            const n = (e) => e && e instanceof i.GSymbol && (!t || !e.isMaster());
+            const n = (e) => e && e instanceof GObject.GSymbol && (!t || !e.isMaster());
             return !!n(e) || !!e.findParent(n);
         }
         function f(e) {
@@ -455,7 +455,7 @@ module.exports = function (e, t, n) {
         function m(e) {
             return new TextEncoder("utf-8").encode(e);
         }
-        t.isSymbolInstance = (e) => h(e, !0);
+        exports.isSymbolInstance = (e) => h(e, true);
         function y(e, t) {
             let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [];
             const o = (e) =>
@@ -464,45 +464,45 @@ module.exports = function (e, t, n) {
                         .map((e) => e.slice(1)),
                 a = o(e),
                 r = o(t);
-            return !i.GUtil.equals(a, r) || !e.arePropertiesEqual(t, a);
+            return !GObject.GUtil.equals(a, r) || !e.arePropertiesEqual(t, a);
         }
         function v(e, t, n) {
-            if ((n || (n = ["$lmd", "$storedUrl", "$__ids"]), !(e instanceof t.constructor))) return !0;
-            if (e.hasMixin(i.GNode.Properties) !== t.hasMixin(i.GNode.Properties)) return !0;
-            if (e.hasMixin(i.GNode.Properties) && y(e, t, n)) return !0;
-            if (e.hasMixin(i.GElement.Stylable) !== t.hasMixin(i.GElement.Stylable)) return !0;
-            if (e.hasMixin(i.GElement.Stylable)) {
+            if ((n || (n = ["$lmd", "$storedUrl", "$__ids"]), !(e instanceof t.constructor))) return true;
+            if (e.hasMixin(GObject.GNode.Properties) !== t.hasMixin(GObject.GNode.Properties)) return true;
+            if (e.hasMixin(GObject.GNode.Properties) && y(e, t, n)) return true;
+            if (e.hasMixin(GObject.GElement.Stylable) !== t.hasMixin(GObject.GElement.Stylable)) return true;
+            if (e.hasMixin(GObject.GElement.Stylable)) {
                 const o = e.getEffects(),
                     i = t.getEffects();
-                if (Boolean(o) !== Boolean(i)) return !0;
-                if (o && v(o, i, n)) return !0;
+                if (Boolean(o) !== Boolean(i)) return true;
+                if (o && v(o, i, n)) return true;
                 const a = e.getPaintLayers(),
                     r = t.getPaintLayers();
-                if (Boolean(a) !== Boolean(r)) return !0;
-                if (a && v(a, r, n)) return !0;
+                if (Boolean(a) !== Boolean(r)) return true;
+                if (a && v(a, r, n)) return true;
             }
-            if (e.hasMixin(i.GNode.Container) !== t.hasMixin(i.GNode.Container)) return !0;
-            if (e instanceof i.GPathBase != t instanceof i.GPathBase) return !0;
-            if (e instanceof i.GPathBase) {
+            if (e.hasMixin(GObject.GNode.Container) !== t.hasMixin(GObject.GNode.Container)) return true;
+            if (e instanceof GObject.GPathBase != t instanceof GObject.GPathBase) return true;
+            if (e instanceof GObject.GPathBase) {
                 var o = e.getAnchorPoints(),
                     a = o.getChildren(),
                     r = t.getAnchorPoints(),
                     s = r.getChildren();
-                if (a.length !== s.length) return !0;
+                if (a.length !== s.length) return true;
                 for (var l = 0; l < a.length; l++) {
                     var c = o.getChildByIndex(l),
                         d = r.getChildByIndex(l);
-                    if (c ^ d) return !0;
-                    if (y(c, d, n)) return !0;
+                    if (c ^ d) return true;
+                    if (y(c, d, n)) return true;
                 }
             }
-            if (e.hasMixin(i.GNode.Container)) {
+            if (e.hasMixin(GObject.GNode.Container)) {
                 const o = e.getChildren(),
                     i = t.getChildren();
-                if (o.length !== i.length) return !0;
-                for (let e = 0; e < o.length; e++) if (v(o[e], i[e], n)) return !0;
+                if (o.length !== i.length) return true;
+                for (let e = 0; e < o.length; e++) if (v(o[e], i[e], n)) return true;
             }
-            return !1;
+            return false;
         }
         function _(e, t) {
             try {
@@ -521,7 +521,7 @@ module.exports = function (e, t, n) {
             e.setProperties(n, t.getProperties(n));
         }
         function w(e, t) {
-            if (e.hasMixin(i.GElement.Stylable)) {
+            if (e.hasMixin(GObject.GElement.Stylable)) {
                 var n = e.getPaintLayers(),
                     o = t.getPaintLayers(),
                     r = n.getBorderLayers(),
@@ -541,13 +541,13 @@ module.exports = function (e, t, n) {
             }
         }
         function C(e, t) {
-            if (e instanceof i.GPathBase) {
+            if (e instanceof GObject.GPathBase) {
                 var n = e.getAnchorPoints();
                 (n.beginUpdate(), n.clearChildren(), n.deserialize(t.getAnchorPoints().serialize()), n.endUpdate());
             }
         }
         function x(e, t) {
-            if (!e.hasMixin(i.GNode.Container)) return;
+            if (!e.hasMixin(GObject.GNode.Container)) return;
             let n = e.getChildren(),
                 o = t.getChildren();
             (S(e, t), E(e, t), A(n, o));
@@ -574,5 +574,5 @@ module.exports = function (e, t, n) {
             });
         }
         let T;
-        t.chaining = (e, t) => () => e() && t();
+        exports.chaining = (e, t) => () => e() && t();
     };

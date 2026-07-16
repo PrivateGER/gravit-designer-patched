@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(619),
-            i = n(46),
-            a = n(92),
-            r = n(620);
-        e.exports =
+        var o = require(619),
+            i = require(46),
+            a = require(92),
+            r = require(620);
+        module.exports =
             Object.setPrototypeOf ||
             ("__proto__" in {}
                 ? (function () {
                       var e,
-                          t = !1,
+                          t = false,
                           n = {};
                       try {
                           ((e = o(Object.prototype, "__proto__", "set"))(n, []), (t = n instanceof Array));

@@ -1,34 +1,34 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(674);
+        require(674);
         var o,
-            i = n(25),
-            a = n(49),
-            r = n(423),
-            s = n(23),
-            l = n(124),
-            c = n(27),
-            d = n(79),
-            u = n(120),
-            p = n(146),
-            g = n(61),
-            h = n(415),
-            f = n(675),
-            m = n(157),
-            y = n(309).codeAt,
-            v = n(676),
-            _ = n(62),
-            b = n(137),
-            w = n(303),
-            C = n(424),
-            x = n(80),
+            i = require(25),
+            a = require(49),
+            r = require(423),
+            RegExp = require(23),
+            l = require(124),
+            c = require(27),
+            d = require(79),
+            u = require(120),
+            p = require(146),
+            g = require(61),
+            h = require(415),
+            f = require(675),
+            m = require(157),
+            y = require(309).codeAt,
+            v = require(676),
+            _ = require(62),
+            b = require(137),
+            w = require(303),
+            C = require(424),
+            x = require(80),
             S = x.set,
             E = x.getterFor("URL"),
             A = C.URLSearchParams,
             T = C.getState,
-            G = s.URL,
-            P = s.TypeError,
-            D = s.parseInt,
+            G = RegExp.URL,
+            P = RegExp.TypeError,
+            D = RegExp.parseInt,
             L = Math.floor,
             I = Math.pow,
             k = c("".charAt),
@@ -74,7 +74,7 @@ module.exports = function (e, t, n) {
                         n++
                     )
                         (i && 0 === e[n]) ||
-                            (i && (i = !1), o === n ? ((t += n ? ":" : "::"), (i = !0)) : ((t += R(e[n], 16)), n < 7 && (t += ":")));
+                            (i && (i = false), o === n ? ((t += n ? ":" : "::"), (i = true)) : ((t += R(e[n], 16)), n < 7 && (t += ":")));
                     return "[" + t + "]";
                 }
                 return e;
@@ -140,7 +140,7 @@ module.exports = function (e, t, n) {
                     if ((i = this.parse(r))) throw new P(i);
                     this.searchParams = null;
                 } else {
-                    if ((void 0 !== n && (o = new Oe(n, !0)), (i = this.parse(r, null, o)))) throw new P(i);
+                    if ((void 0 !== n && (o = new Oe(n, true)), (i = this.parse(r, null, o)))) throw new P(i);
                     ((a = T(new A())).bindURL(this), (this.searchParams = a));
                 }
             };
@@ -156,9 +156,9 @@ module.exports = function (e, t, n) {
                     d = t || ge,
                     u = 0,
                     p = "",
-                    h = !1,
-                    y = !1,
-                    v = !1;
+                    h = false,
+                    y = false,
+                    v = false;
                 for (
                     e = _(e),
                         t ||
@@ -170,7 +170,7 @@ module.exports = function (e, t, n) {
                             (c.path = []),
                             (c.query = null),
                             (c.fragment = null),
-                            (c.cannotBeABaseURL = !1),
+                            (c.cannotBeABaseURL = false),
                             (e = B(e, ee, "")),
                             (e = B(e, te, "$1"))),
                         e = B(e, ne, ""),
@@ -212,7 +212,7 @@ module.exports = function (e, t, n) {
                                             ? (d = be)
                                             : "/" === i[u + 1]
                                               ? ((d = ye), u++)
-                                              : ((c.cannotBeABaseURL = !0), N(c.path, ""), (d = Le)));
+                                              : ((c.cannotBeABaseURL = true), N(c.path, ""), (d = Le)));
                             }
                             break;
                         case fe:
@@ -222,7 +222,7 @@ module.exports = function (e, t, n) {
                                     (c.path = m(n.path)),
                                     (c.query = n.query),
                                     (c.fragment = ""),
-                                    (c.cannotBeABaseURL = !0),
+                                    (c.cannotBeABaseURL = true),
                                     (d = ke));
                                 break;
                             }
@@ -301,13 +301,13 @@ module.exports = function (e, t, n) {
                             break;
                         case Ce:
                             if ("@" === a) {
-                                (h && (p = "%40" + p), (h = !0), (r = f(p)));
+                                (h && (p = "%40" + p), (h = true), (r = f(p)));
                                 for (var b = 0; b < r.length; b++) {
                                     var w = r[b];
                                     if (":" !== w || v) {
                                         var C = le(w, se);
                                         v ? (c.password += C) : (c.username += C);
-                                    } else v = !0;
+                                    } else v = true;
                                 }
                                 p = "";
                             } else if (a === o || "/" === a || "?" === a || "#" === a || ("\\" === a && c.isSpecial())) {
@@ -329,7 +329,7 @@ module.exports = function (e, t, n) {
                                     if (((p = ""), (d = Pe), t)) return;
                                     continue;
                                 }
-                                ("[" === a ? (y = !0) : "]" === a && (y = !1), (p += a));
+                                ("[" === a ? (y = true) : "]" === a && (y = false), (p += a));
                             } else {
                                 if ("" === p) return "Invalid host";
                                 if ((s = c.parseHost(p))) return s;
@@ -383,7 +383,7 @@ module.exports = function (e, t, n) {
                             (n &&
                                 "file" === n.scheme &&
                                 !ue(F(m(i, u), "")) &&
-                                (de(n.path[0], !0) ? N(c.path, n.path[0]) : (c.host = n.host)),
+                                (de(n.path[0], true) ? N(c.path, n.path[0]) : (c.host = n.host)),
                                 (d = De));
                             continue;
                         case Ge:
@@ -571,7 +571,7 @@ module.exports = function (e, t, n) {
             shortenPath: function () {
                 var e = this.path,
                     t = e.length;
-                !t || ("file" === this.scheme && 1 === t && de(e[0], !0)) || e.length--;
+                !t || ("file" === this.scheme && 1 === t && de(e[0], true)) || e.length--;
             },
             serialize: function () {
                 var e = this,
@@ -693,7 +693,7 @@ module.exports = function (e, t, n) {
         var Fe = function (e) {
                 var t = p(this, Re),
                     n = w(arguments.length, 1) > 1 ? arguments[1] : void 0,
-                    o = S(t, new Oe(e, !1, n));
+                    o = S(t, new Oe(e, false, n));
                 a ||
                     ((t.href = o.serialize()),
                     (t.origin = o.getOrigin()),
@@ -719,8 +719,8 @@ module.exports = function (e, t, n) {
                         function (e) {
                             return E(this)[t](e);
                         },
-                    configurable: !0,
-                    enumerable: !0,
+                    configurable: true,
+                    enumerable: true,
                 };
             };
         if (
@@ -743,7 +743,7 @@ module.exports = function (e, t, n) {
                 function () {
                     return E(this).serialize();
                 },
-                { enumerable: !0 }
+                { enumerable: true }
             ),
             d(
                 Re,
@@ -751,7 +751,7 @@ module.exports = function (e, t, n) {
                 function () {
                     return E(this).serialize();
                 },
-                { enumerable: !0 }
+                { enumerable: true }
             ),
             G)
         ) {
@@ -759,5 +759,5 @@ module.exports = function (e, t, n) {
                 Be = G.revokeObjectURL;
             (Ne && d(Fe, "createObjectURL", l(Ne, G)), Be && d(Fe, "revokeObjectURL", l(Be, G)));
         }
-        (b(Fe, "URL"), i({ global: !0, constructor: !0, forced: !r, sham: !a }, { URL: Fe }));
+        (b(Fe, "URL"), i({ global: true, constructor: true, forced: !r, sham: !a }, { URL: Fe }));
     };

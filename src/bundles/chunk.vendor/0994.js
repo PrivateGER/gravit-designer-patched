@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(105),
-                r = i(89),
-                o = i(115);
+            var n = require(105),
+                Parser = require(89),
+                o = require(115);
 
             function a(e, t) {
                 var i = JSON.stringify(e),
@@ -55,7 +55,7 @@ module.exports = function (e, t, i) {
 
             function l(e, t, i) {
                 var n = {},
-                    o = new r.Parser(e, t);
+                    o = new Parser.Parser(e, t);
                 return (
                     (n.tag = o.parseTag()),
                     (n.minValue = o.parseFixed()),
@@ -97,12 +97,12 @@ module.exports = function (e, t, i) {
 
             function A(e, t, i, n) {
                 var o = {},
-                    a = new r.Parser(e, t);
+                    a = new Parser.Parser(e, t);
                 ((o.name = n[a.parseUShort()] || {}), a.skip("uShort", 1), (o.coordinates = {}));
                 for (var s = 0; s < i.length; ++s) o.coordinates[i[s].tag] = a.parseFixed();
                 return o;
             }
-            ((t.make = function (e, t) {
+            ((exports.make = function (e, t) {
                 var i = new o.Table("fvar", [
                     {
                         name: "version",
@@ -145,8 +145,8 @@ module.exports = function (e, t, i) {
                 for (var r = 0; r < e.instances.length; r++) i.fields = i.fields.concat(h(r, e.instances[r], e.axes, t));
                 return i;
             }),
-                (t.parse = function (e, t, i) {
-                    var o = new r.Parser(e, t),
+                (exports.parse = function (e, t, i) {
+                    var o = new Parser.Parser(e, t),
                         a = o.parseULong();
                     n.argument(65536 === a, "Unsupported fvar table version.");
                     var s = o.parseOffset16();

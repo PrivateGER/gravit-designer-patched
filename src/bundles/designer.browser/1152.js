@@ -1,35 +1,35 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(58), n(30), n(8), n(196), n(3));
-        var i = n(1),
-            a = n(847),
-            r = o(n(1239)),
-            s = o(n(388)),
-            l = o(n(1481)),
-            c = n(10),
-            d = o(n(594));
-        const u = n(86),
-            p = n(336),
-            g = n(436),
-            h = n(78),
-            f = n(156),
+        var o = require(16);
+        (require(58), require(30), require(8 /* Symbol */), require(196), require(3));
+        var GObject = require(1),
+            a = require(847),
+            r = o(require(1239)),
+            s = o(require(388)),
+            l = o(require(1481)),
+            designerConfig = require(10),
+            d = o(require(594));
+        const u = require(86),
+            p = require(336),
+            g = require(436),
+            h = require(78),
+            f = require(156),
             m = 10,
             y = 50,
             v = 80,
             _ = 100;
         function b() {}
-        (i.GObject.inherit(b, s.default),
+        (GObject.GObject.inherit(b, s.default),
             (b.Item = function (e, t) {
                 let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null;
                 (s.default.Item.call(this, e, t),
                     (this._ext = null),
                     (this._token = n),
                     this._setExtension(),
-                    g.call(this, c.FILE_ID_PREFIX.SHAREPOINT));
+                    g.call(this, designerConfig.FILE_ID_PREFIX.SHAREPOINT));
             }),
-            i.GObject.inheritAndMix(b.Item, s.default.Item, [g]),
-            (b.Item.prototype._app = c.FILE_ID_PREFIX.SHAREPOINT),
+            GObject.GObject.inheritAndMix(b.Item, s.default.Item, [g]),
+            (b.Item.prototype._app = designerConfig.FILE_ID_PREFIX.SHAREPOINT),
             (b.Item.prototype.getId = function () {
                 const e = this._getSharepointId();
                 return e ? "".concat(this._app, "_").concat(e) : null;
@@ -97,7 +97,7 @@ module.exports = function (e, t, n) {
                                               relativeUrl: t,
                                               type: a,
                                           });
-                                          return (this.setFile(r), this._setExtension(), this.updateShadowFile(), o.call(this, !0));
+                                          return (this.setFile(r), this._setExtension(), this.updateShadowFile(), o.call(this, true));
                                       })
                                       .catch(r)
                                 : r();
@@ -114,17 +114,17 @@ module.exports = function (e, t, n) {
                     this.getFile().id === e.getFile().id &&
                     new Date(this.getFile().updated) > new Date(e.getFile().updated)
                 )
-                    return !0;
+                    return true;
                 const t = this.getFile(),
                     n = e.getFile();
                 return new Date(t.getModificationTime()).getTime() > new Date(n.getModificationTime()).getTime();
             }),
             (b.Item.prototype.hasVersionControl = function () {
-                return !0;
+                return true;
             }),
             (b.Item.prototype.hasUpdates = async function () {
                 const e = this.getFile();
-                if (!this.getId() || !e || (!e.updated && !e.getModificationTime())) return !1;
+                if (!this.getId() || !e || (!e.updated && !e.getModificationTime())) return false;
                 const t = await this.getLatestFileInfo();
                 return new b.Item(this.getStorage(), t).isVersionNewerThan(this);
             }),
@@ -164,7 +164,7 @@ module.exports = function (e, t, n) {
             }),
             (b.Item.prototype.write = async function (e, t, n, o, a) {
                 if (this._writing) return;
-                this._writing = !0;
+                this._writing = true;
                 let r = null;
                 try {
                     (gContainer.verifyEnoughMemoryToSave(e), (r = e.getEditor().markSavePoint()));
@@ -175,7 +175,7 @@ module.exports = function (e, t, n) {
                             s && s(e);
                         },
                         c = e.isNew();
-                    (l(m), i.GUtil.prepareForSaving(e.getScene(), this.getExtension()));
+                    (l(m), GObject.GUtil.prepareForSaving(e.getScene(), this.getExtension()));
                     const d = await this._getDocumentBlob(e, o, a);
                     (l(y),
                         this._verifyFileNotTooSmall(d.size, e),
@@ -199,7 +199,7 @@ module.exports = function (e, t, n) {
                 } catch (t) {
                     (e.updateStatus(u.SaveFailed), r && r.rollback(), n && n(t));
                 } finally {
-                    this._writing = !1;
+                    this._writing = false;
                 }
             }),
             (b.Item.prototype._getDocumentBlob = async function (e, t, n) {
@@ -209,14 +209,14 @@ module.exports = function (e, t, n) {
                     o = await this._exportDocumentToCDR(e, a, n);
                 } else {
                     var r = e.getScene(),
-                        s = i.GNode.serialize(r, i.GUtil.extend({ save: !0 }, n));
+                        s = GObject.GNode.serialize(r, GObject.GUtil.extend({ save: true }, n));
                     o = new Blob([s]);
                 }
                 return o;
             }),
             (b.Item.prototype._checkHttpResponseAndThrowIfNecessary = function (e) {
-                if (e.status >= c.HTTP_STATUS_CODES.BAD_REQUEST) {
-                    if (e.status === c.HTTP_STATUS_CODES.BAD_REQUEST)
+                if (e.status >= designerConfig.HTTP_STATUS_CODES.BAD_REQUEST) {
+                    if (e.status === designerConfig.HTTP_STATUS_CODES.BAD_REQUEST)
                         throw Error("Invalid this.response, probably corrupted upload: " + e.status);
                     throw Error("Invalid response status: " + e.status);
                 }
@@ -234,11 +234,11 @@ module.exports = function (e, t, n) {
             }),
             (b.Item.prototype.createOrUpdateFileWithMetadata = async function (e) {
                 if (!this._writing) {
-                    this._writing = !0;
+                    this._writing = true;
                     try {
                         await this._createOrUpdateFile(e);
                     } finally {
-                        this._writing = !1;
+                        this._writing = false;
                     }
                 }
             }),
@@ -275,12 +275,12 @@ module.exports = function (e, t, n) {
                         t = await this._getAndUpdateCheckOutFileStatus();
                     if (this.isCheckedOutByMe()) return;
                     if (t === r.default.FILE_STATUS.LOCKED)
-                        throw new d.default(i.GLocale.get(new i.GLocaleKey("GSharePointStorage", "text.error-failed-check-out-file")));
+                        throw new d.default(GObject.GLocale.get(new GObject.GLocaleKey("GSharePointStorage", "text.error-failed-check-out-file")));
                     (await this._getClient().checkOutFile(e), this._setCheckOutStatus(r.default.FILE_STATUS.LOCKED_BY_ME));
                 } catch (e) {
                     throw e instanceof d.default
                         ? e
-                        : new d.default(i.GLocale.get(new i.GLocaleKey("GSharePointStorage", "text.error-failed-check-out-file")));
+                        : new d.default(GObject.GLocale.get(new GObject.GLocaleKey("GSharePointStorage", "text.error-failed-check-out-file")));
                 }
             }),
             (b.Item.prototype.checkIn = async function (e, t) {
@@ -296,8 +296,8 @@ module.exports = function (e, t, n) {
                         e instanceof d.default
                             ? e
                             : new d.default(
-                                  i.GLocale.get(
-                                      i.GLocale.get(new i.GLocaleKey("GFilesPanelViewSharepoint", "text.error-could-not-check-in"))
+                                  GObject.GLocale.get(
+                                      GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewSharepoint", "text.error-could-not-check-in"))
                                   )
                               )
                     );
@@ -306,8 +306,8 @@ module.exports = function (e, t, n) {
             (b.Item.prototype._setCheckOutStatus = function (e) {
                 const t = this.getFile();
                 (e === r.default.FILE_STATUS.AVAILABLE
-                    ? (t.checkedOut = !1)
-                    : (e !== r.default.FILE_STATUS.LOCKED_BY_ME && e !== r.default.FILE_STATUS.LOCKED) || (t.checkedOut = !0),
+                    ? (t.checkedOut = false)
+                    : (e !== r.default.FILE_STATUS.LOCKED_BY_ME && e !== r.default.FILE_STATUS.LOCKED) || (t.checkedOut = true),
                     (t.checkOutStatus = e),
                     this._triggerStorageItemEvent(p.Type.FileUpdated));
             }),
@@ -328,7 +328,7 @@ module.exports = function (e, t, n) {
                 return this.getFile().checkOutStatus === r.default.FILE_STATUS.LOADING;
             }),
             (b.Item.prototype.isEditingEnabled = function () {
-                return !c.msTeamsMode || this.isCheckedOutByMe();
+                return !designerConfig.msTeamsMode || this.isCheckedOutByMe();
             }),
             (b.Item.prototype._getAndUpdateCheckOutFileStatus = async function () {
                 const e = await this._getCheckOutFileStatus();
@@ -387,8 +387,8 @@ module.exports = function (e, t, n) {
                     const n = await e._getUser(),
                         o = await e.getFileCreator(t);
                     return [
-                        { email: n.getEmail(), role: c.ShareRoles.ContentEditor.id },
-                        { email: o.getEmail(), role: c.ShareRoles.Owner.id },
+                        { email: n.getEmail(), role: designerConfig.ShareRoles.ContentEditor.id },
+                        { email: o.getEmail(), role: designerConfig.ShareRoles.Owner.id },
                     ];
                 }
                 return [];
@@ -396,5 +396,5 @@ module.exports = function (e, t, n) {
             (b.Item.prototype.toString = function () {
                 return "[Object GSharePointStorage.Item]";
             }),
-            (e.exports = b));
+            (module.exports = b));
     };

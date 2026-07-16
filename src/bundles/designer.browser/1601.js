@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(15),
-            a = n(18),
-            r = n(31);
+        require(3);
+        var GObject = require(1),
+            GPlatform = require(15),
+            GCategory = require(18),
+            r = require(31);
         function s() {}
-        (o.GObject.inherit(s, r),
+        (GObject.GObject.inherit(s, r),
             (s.ID = "file.new"),
-            (s.TITLE = new o.GLocaleKey("GNewAction", "title")),
+            (s.TITLE = new GObject.GLocaleKey("GNewAction", "title")),
             (s.prototype.getId = function () {
                 return s.ID;
             }),
@@ -19,28 +19,28 @@ module.exports = function (e, t, n) {
                 return s.TITLE;
             }),
             (s.prototype.getCategory = function () {
-                return a.CATEGORY_FILE;
+                return GCategory.CATEGORY_FILE;
             }),
             (s.prototype.getGroup = function () {
                 return "document";
             }),
             (s.prototype.getShortcut = function () {
-                return [i.GKey.Constant.OPTION, "N"];
+                return [GPlatform.GKey.Constant.OPTION, "N"];
             }),
             (s.prototype.getAdditionalShortcuts = function () {
-                return [[i.GKey.Constant.META, "N"]];
+                return [[GPlatform.GKey.Constant.META, "N"]];
             }),
             (s.prototype.execute = function () {
                 (gContainer.newDocumentActionPerformed(),
                     gDesigner.openNewDocumentDialog({
-                        closable: !0,
-                        showCloudOptions: !0,
+                        closable: true,
+                        showCloudOptions: true,
                         defaultOption: "start-option",
-                        newOrFromTemplate: !0,
+                        newOrFromTemplate: true,
                     }));
             }),
             (s.prototype.toString = function () {
                 return "[Object GNewAction]";
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

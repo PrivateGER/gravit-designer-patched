@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(372).Factory,
-                r = i(372).GTranslation;
-            e.exports = function () {
+            var n = require(372 /* GLocaleKey */).Factory,
+                r = require(372 /* GLocaleKey */).GTranslation;
+            module.exports = function () {
                 return n(r.Projects.Cloud);
             };
         };

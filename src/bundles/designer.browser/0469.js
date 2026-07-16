@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        e.exports = function () {
+        module.exports = function () {
             ((this.text = 0),
                 (this.time = 0),
                 (this.xflags = 0),
@@ -10,6 +10,6 @@ module.exports = function (e, t, n) {
                 (this.name = ""),
                 (this.comment = ""),
                 (this.hcrc = 0),
-                (this.done = !1));
+                (this.done = false));
         };
     };

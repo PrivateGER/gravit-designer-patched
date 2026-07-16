@@ -1,32 +1,32 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        n(3);
-        var i = n(1),
-            a = o(n(31)),
-            r = o(n(18)),
-            s = o(n(119)),
-            l = o(n(1159)),
-            c = o(n(219)),
-            d = o(n(256)),
-            u = n(67);
+        var o = require(16);
+        require(3);
+        var GObject = require(1),
+            a = o(require(31)),
+            r = o(require(18 /* GCategory */)),
+            s = o(require(119 /* GCommonNames */)),
+            l = o(require(1159)),
+            c = o(require(219)),
+            d = o(require(256 /* GOfflineDialog */)),
+            u = require(67);
         function p() {
-            ((this._title = new i.GLocaleKey("GVersionsHistoryAction", "title")),
+            ((this._title = new GObject.GLocaleKey("GVersionsHistoryAction", "title")),
                 (p.TOOLTIP_CONFIG = {
                     [u.TOOLTIP_AREA.MAIN_MENU.TRY_PRO_COMMON]: u.GRichTooltipConfig.from({
-                        title: i.GLocale.get(new i.GLocaleKey("GVersionsHistoryAction", "text.try-this-feature-pro-tooltip-title")),
-                        description: i.GLocale.get(
-                            new i.GLocaleKey("GVersionsHistoryAction", "text.try-this-feature-pro-tooltip-description")
+                        title: GObject.GLocale.get(new GObject.GLocaleKey("GVersionsHistoryAction", "text.try-this-feature-pro-tooltip-title")),
+                        description: GObject.GLocale.get(
+                            new GObject.GLocaleKey("GVersionsHistoryAction", "text.try-this-feature-pro-tooltip-description")
                         ),
                         learnMore:
                             "/docs/basics/working-with-files/working-with-Corel%20Vector-cloud/#version-history",
                         upgradeToProStatsValue: "gravit-versions-history",
-                        middle: !1,
-                        side: !0,
+                        middle: false,
+                        side: true,
                     }),
                 }));
         }
-        (i.GObject.inherit(p, a.default),
+        (GObject.GObject.inherit(p, a.default),
             (p.ID = "gravit-versions-history"),
             (p.GroupID = "file"),
             (p.TOOLTIP_CONFIG = null),
@@ -38,7 +38,7 @@ module.exports = function (e, t, n) {
                 return this._title;
             }),
             (p.prototype.isPro = function () {
-                return !0;
+                return true;
             }),
             (p.prototype.getTooltipArea = function () {
                 return u.TOOLTIP_AREA.MAIN_MENU.TRY_PRO_COMMON;
@@ -56,14 +56,14 @@ module.exports = function (e, t, n) {
                 return p.GroupID;
             }),
             (p.prototype.isEnabled = function () {
-                if (!gDesigner.getApplicationManager().isShareEnabled()) return !1;
+                if (!gDesigner.getApplicationManager().isShareEnabled()) return false;
                 var e = (gDesigner.getActiveDocument() && gDesigner.getActiveDocument().getStorageItem()) || null,
                     t = !!gDesigner.getActiveDocument() && gDesigner.getActiveDocument().getScene().isCloudSynchronization();
                 return s.default.isOnline() && e && t;
             }),
             (p.prototype.execute = function () {
                 if (gDesigner.getWindows().getActiveWindow().getDocument().isModified())
-                    return (new c.default(i.GLocale.get(new i.GLocaleKey("GVersionsHistoryAction", "unsaved-modifications"))).open(), !1);
+                    return (new c.default(GObject.GLocale.get(new GObject.GLocaleKey("GVersionsHistoryAction", "unsaved-modifications"))).open(), false);
                 const e = () => {
                     gDesigner &&
                         gDesigner.hasEventListeners(l.default) &&
@@ -77,5 +77,5 @@ module.exports = function (e, t, n) {
             (p.prototype.toString = function () {
                 return "[Object GVersionsHistoryAction]";
             }),
-            (e.exports = p));
+            (module.exports = p));
     };

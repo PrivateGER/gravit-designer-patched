@@ -1,18 +1,18 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(20), n(34), n(4), n(13), n(38));
-        const { GLocale: o, GLocaleKey: i } = n(1),
-            a = n(1166),
-            r = n(177),
+        (require(8 /* Symbol */), require(20), require(34), require(4), require(13), require(38));
+        const { GLocale: o, GLocaleKey: i } = require(1 /* GObject */),
+            a = require(1166),
+            r = require(177),
             {
                 gApi: s,
                 Notification: l,
                 NotificationConstants: {
                     ACTIONS: { ACTION_APPROVE: c, ACTION_REQUEST_APPROVE: d, ACTION_REOPEN: u, ACTION_IN_REVIEW: p } = {},
                 },
-            } = n(10);
+            } = require(10 /* designerConfig */);
         function g() {
-            ((this._container = null), (this._opened = !1));
+            ((this._container = null), (this._opened = false));
         }
         ((g.prototype._updateHistoryList = async function () {
             const e = this._container.find(".list");
@@ -64,7 +64,7 @@ module.exports = function (e, t, n) {
         }),
             (g.prototype.open = function () {
                 if (this._opened) return;
-                ((this._opened = !0),
+                ((this._opened = true),
                     this._container && this._container.remove(),
                     (this._container = $("<div/>").gDialog({
                         className: "g-file-status-history-dialog",
@@ -77,12 +77,12 @@ module.exports = function (e, t, n) {
                     $("<div></div>")
                         .addClass("btn-close")
                         .click(() => {
-                            ((this._opened = !1), this._container.gDialog("close"));
+                            ((this._opened = false), this._container.gDialog("close"));
                         })
                         .append($("<span></span>").addClass("gravit-icon-close"))
                         .appendTo(e),
                     $("<div/>").addClass("list").appendTo(this._container));
-                (this._container.gDialog("open", !1), this._updateHistoryList());
+                (this._container.gDialog("open", false), this._updateHistoryList());
             }),
             (g.prototype._getUserNameFromNotification = function (e) {
                 return new r({
@@ -90,5 +90,5 @@ module.exports = function (e, t, n) {
                     last_name: e.last_name,
                 }).getFullUserName();
             }),
-            (e.exports = g));
+            (module.exports = g));
     };

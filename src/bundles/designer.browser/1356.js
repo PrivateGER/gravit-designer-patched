@@ -1,21 +1,21 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(58), n(19), n(30), n(8), n(20), n(71), n(151), n(34), n(91), n(4), n(41), n(13), n(32), n(38), n(33), n(26));
-        var i = n(10),
-            a = n(882),
-            r = n(1353),
-            s = n(263),
-            l = n(67),
-            c = o(n(358)),
-            d = o(n(1324)),
-            u = o(n(883));
-        const { GSystem: p, GLocale: g, GLocaleKey: h, GUtil: f, GComment: m, GAnnotation: y, GObject: v, GNode: _ } = n(1),
-            { NEW_COMMENT_READ_TIMEOUT: b, ANNOTATION_PERMANENT_LINK: w, IS_COREL: C } = ((0, r.createAdditionalMentions)(), n(10)),
-            x = n(1191),
-            S = n(1166),
-            E = n(434),
-            { getAnnotationType: A } = n(40);
+        var o = require(16);
+        (require(58), require(19), require(30), require(8 /* Symbol */), require(20), require(71), require(151), require(34), require(91), require(4), require(41), require(13), require(32), require(38), require(33), require(26));
+        var designerConfig = require(10),
+            a = require(882),
+            GAnnotationPanel = require(1353),
+            GRegex = require(263),
+            l = require(67),
+            c = o(require(358)),
+            d = o(require(1324)),
+            u = o(require(883));
+        const { GSystem: p, GLocale: g, GLocaleKey: h, GUtil: f, GComment: m, GAnnotation: y, GObject: v, GNode: _ } = require(1 /* GObject */),
+            { NEW_COMMENT_READ_TIMEOUT: b, ANNOTATION_PERMANENT_LINK: w, IS_COREL: C } = ((0, GAnnotationPanel.createAdditionalMentions)(), require(10 /* designerConfig */)),
+            x = require(1191),
+            S = require(1166),
+            E = require(434),
+            { getAnnotationType: A } = require(40 /* GSaveAction */);
         function T(e) {
             let {
                 container: t,
@@ -57,7 +57,7 @@ module.exports = function (e, t, n) {
                 (this._onCopyPermalinkClick = m),
                 (this._onAssignTo = y),
                 (this._mainAnnotObject = v),
-                (this._shouldAssign = !1),
+                (this._shouldAssign = false),
                 (this._assignees = []),
                 (this._mentionsCollection = []),
                 (this._data = r.data),
@@ -70,33 +70,33 @@ module.exports = function (e, t, n) {
                 this._init());
         }
         function G(e) {
-            if (13 !== e.keyCode) return !1;
+            if (13 !== e.keyCode) return false;
             if (p.operatingSystem !== p.OperatingSystem.OSX_IOS) {
-                if (!e.shiftKey) return !0;
+                if (!e.shiftKey) return true;
             } else {
-                if (!e.altKey) return !0;
+                if (!e.altKey) return true;
                 if ("keydown" === e.type) {
                     let t = $(e.target).val();
                     $(e.target).val(t + "\n");
                 }
             }
-            return !1;
+            return false;
         }
         function P(e) {
             return (t) => t.getFirstName() === e || t.getFullUserName() === e || t.getEmail() === e;
         }
         function D(e) {
-            const t = (0, r.createAdditionalMentions)();
+            const t = (0, GAnnotationPanel.createAdditionalMentions)();
             return Object.values(t).find((t) => t.getUID() === e);
         }
         function L(e) {
             return f.xss(e);
         }
         (v.inherit(T, x),
-            (T.prototype._isRead = !1),
-            (T.prototype._isTypeResolved = !1),
-            (T.prototype._isTypeReopened = !1),
-            (T.prototype._isParentAnnotResolved = !1),
+            (T.prototype._isRead = false),
+            (T.prototype._isTypeResolved = false),
+            (T.prototype._isTypeReopened = false),
+            (T.prototype._isParentAnnotResolved = false),
             (T.prototype._init = function () {
                 var e,
                     t = this._container,
@@ -119,9 +119,9 @@ module.exports = function (e, t, n) {
                             l.GRichTooltipConfig.from({
                                 title: n.getProperty("email") || r.getEmail() || " ",
                                 description: e,
-                                forceShow: !0,
-                                middle: !1,
-                                flipHorizontal: !0,
+                                forceShow: true,
+                                middle: false,
+                                flipHorizontal: true,
                                 marginLeft: 26,
                             })
                         );
@@ -160,14 +160,14 @@ module.exports = function (e, t, n) {
                         case m.Type.Open:
                             (I.addClass("automatic").text(g.get(new h("GAnnotationPanel", "text.re-opened"))),
                                 this._updateReadUnreadStatus(v),
-                                (this._isTypeReopened = !0),
-                                (this._isTypeResolved = !1));
+                                (this._isTypeReopened = true),
+                                (this._isTypeResolved = false));
                             break;
                         case m.Type.Close:
                             (I.addClass("automatic").text(g.get(new h("GAnnotationPanel", "text.marked-as-resolved"))),
-                                (this._isRead = !0),
-                                (this._isTypeResolved = !0),
-                                (this._isTypeReopened = !1));
+                                (this._isRead = true),
+                                (this._isTypeResolved = true),
+                                (this._isTypeReopened = false));
                     }
                 else
                     (this._updateParentAnnotResolvedStatus(n),
@@ -210,7 +210,7 @@ module.exports = function (e, t, n) {
                         });
                 if (
                     (O.mentionsInput({
-                        elastic: !1,
+                        elastic: false,
                         onDataRequest: (e, t, n) => {
                             let o = this._data.filter(
                                 (e) =>
@@ -228,7 +228,7 @@ module.exports = function (e, t, n) {
                     this._annotationCommentContainer.find(".mentions-autocomplete-list").delegate("li", "mousedown", () => {
                         a.showAssigneeRow.call(this, O);
                     }),
-                    this.setMentionOverlayBorderVisiblity(!1),
+                    this.setMentionOverlayBorderVisiblity(false),
                     (this._onlyOneAssignee = $("<span>")
                         .addClass("only-one-assignee")
                         .html(1 === this._mentionsCollection.length ? this._mentionsCollection[0].name : "")
@@ -318,18 +318,18 @@ module.exports = function (e, t, n) {
                     v.prepend(e);
                 }
                 (n.hasFlag(_.Flag.Selected) || (n instanceof m && n.getParent().hasFlag(_.Flag.Selected))) &&
-                    (this.setCollapseState(!0), this.setVisiblity(!0));
+                    (this.setCollapseState(true), this.setVisiblity(true));
                 var F = $("<span>").addClass("annotation-action-group").appendTo(v);
                 if (this._isCommentingEditingEnable && n.hasMixin(y)) {
                     var R = n.getProperty("rsv"),
-                        M = !1,
+                        M = false,
                         N = "";
                     (R
-                        ? ((M = !0),
+                        ? ((M = true),
                           (N = f
                               ? g.get(new h("GAnnotationPanel", "text.reopen"))
                               : g.get(new h("GAnnotationPanel", "text.marked-as-resolved"))))
-                        : ((M = !1), (N = g.get(new h("GAnnotationPanel", "text.resolve")))),
+                        : ((M = false), (N = g.get(new h("GAnnotationPanel", "text.resolve")))),
                         (!R && !f) ||
                             (n.getProperty("asgn") || []).length ||
                             $("<span>")
@@ -356,7 +356,7 @@ module.exports = function (e, t, n) {
                     U = $("<div></div>")
                         .addClass("annotations-menu")
                         .gOverlay({
-                            releaseOnClose: !1,
+                            releaseOnClose: false,
                             closeCallback: () => {
                                 B.removeClass("g-active");
                             },
@@ -480,7 +480,7 @@ module.exports = function (e, t, n) {
                 (this._annotationCommentContainer.removeClass("g-edit-mode"),
                     this._contentEditorButtons.hide(),
                     this._assigneeRow.hide(),
-                    this.setMentionOverlayBorderVisiblity(!1));
+                    this.setMentionOverlayBorderVisiblity(false));
             }),
             (T.prototype.toggleHighlight = function (e) {
                 this._container.toggleClass("g-highlighted-row", e);
@@ -512,10 +512,10 @@ module.exports = function (e, t, n) {
                 var t = this._annotation,
                     n = gDesigner.getSyncUser(),
                     o = c.default.isOwner(n, t);
-                if (this._isParentAnnotResolved || o || (t.getProperty("read") || []).includes(n.getUID())) this._isRead = !0;
+                if (this._isParentAnnotResolved || o || (t.getProperty("read") || []).includes(n.getUID())) this._isRead = true;
                 else {
                     var a = null;
-                    (i.SHOW_SIDEBAR_BADGE &&
+                    (designerConfig.SHOW_SIDEBAR_BADGE &&
                         ((a = $("<div/>")
                             .addClass("new-comment")
                             .append([
@@ -532,7 +532,7 @@ module.exports = function (e, t, n) {
                                 e.includes(n.getUID()) ||
                                     (t.setProperty("read", e.concat(n.getUID())),
                                     a && a.remove(),
-                                    (this._isRead = !0),
+                                    (this._isRead = true),
                                     this._container.addClass("new-element"));
                             }, b));
                 }
@@ -560,7 +560,7 @@ module.exports = function (e, t, n) {
                             ((e.value = t.showText), (e.showText = t.showText));
                         }),
                         e.find(".annotation-comment-editor").mentionsInput("setMentions", i)),
-                        this.setMentionOverlayBorderVisiblity(!0),
+                        this.setMentionOverlayBorderVisiblity(true),
                         s.trigger("input"),
                         s[0].setSelectionRange(s[0].textLength, s[0].textLength),
                         l.show(),
@@ -575,11 +575,11 @@ module.exports = function (e, t, n) {
                 let t = "string" == typeof e ? e : L(e.getProperty("text"));
                 if (((t = t || ""), !gDesigner.getActiveDocument() || !gDesigner.getActiveDocument().getStorageItem()))
                     return { html: t, mentioned: [] };
-                let n = t.match(s.GRegex.String.USERNAME_RE);
+                let n = t.match(GRegex.GRegex.String.USERNAME_RE);
                 if (!(n || []).length) return { html: t, mentioned: [] };
                 let o = (this._data || []).filter((e) => {
                         let t = (e.getRole && e.getRole()) || e.role;
-                        return !t.is(i.ShareRoles.Viewer) && !t.is(i.ShareRoles.NoAccess);
+                        return !t.is(designerConfig.ShareRoles.Viewer) && !t.is(designerConfig.ShareRoles.NoAccess);
                     }),
                     a = [];
                 if (
@@ -629,5 +629,5 @@ module.exports = function (e, t, n) {
                     { html: t, mentioned: r }
                 );
             }),
-            (e.exports = T));
+            (module.exports = T));
     };

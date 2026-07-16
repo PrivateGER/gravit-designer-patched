@@ -1,19 +1,19 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(105),
-                r = i(115),
-                o = i(710),
-                a = i(711),
-                s = i(713),
-                l = i(714),
-                h = i(715),
-                A = i(716),
-                c = i(717),
-                p = i(718),
-                u = i(719),
-                d = i(720),
-                g = i(721),
-                f = i(722);
+            var n = require(105),
+                r = require(115),
+                o = require(710),
+                a = require(711),
+                s = require(713),
+                l = require(714),
+                h = require(715),
+                A = require(716),
+                c = require(717),
+                p = require(718),
+                u = require(719),
+                d = require(720),
+                g = require(721),
+                f = require(722);
 
             function m(e) {
                 return (Math.log(e) / Math.log(2)) | 0;
@@ -138,9 +138,9 @@ module.exports = function (e, t, i) {
                 for (var t = 0, i = 0; i < e.length; i += 1) t += e[i];
                 return t / e.length;
             }
-            ((t.computeCheckSum = y),
-                (t.make = v),
-                (t.fontToTable = function (e) {
+            ((exports.computeCheckSum = y),
+                (exports.make = v),
+                (exports.fontToTable = function (e) {
                     for (
                         var t, i = [], n = [], r = [], m = [], _ = [], w = [], E = [], B = 0, x = 0, P = 0, S = 0, T = 0, I = 0;
                         I < e.glyphs.length;
@@ -263,10 +263,10 @@ module.exports = function (e, t, i) {
                     var te = v(ee),
                         ie = y(te.encode()),
                         ne = te.fields,
-                        re = !1;
+                        re = false;
                     for (I = 0; I < ne.length; I += 1)
                         if ("head table" === ne[I].name) {
-                            ((ne[I].value.checkSumAdjustment = 2981146554 - ie), (re = !0));
+                            ((ne[I].value.checkSumAdjustment = 2981146554 - ie), (re = true));
                             break;
                         }
                     if (!re) throw new Error("Could not find head table with checkSum to adjust.");

@@ -1,4 +1,4 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
             const n = {
                 production: "GTM-PCQVB7H",
@@ -7,7 +7,7 @@ module.exports = function (e, t, i) {
                 beta: "GTM-NW9G8S4",
                 rc: "GTM-TTRN3TK",
             };
-            e.exports = class {
+            module.exports = class {
                 static getContainerId() {
                     return n[arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : ""] || n.trunk;
                 }

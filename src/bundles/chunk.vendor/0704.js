@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            i(3);
-            var n = i(947);
+            require(3);
+            var n = require(947);
 
             function r(e, t, i, n) {
                 ((this.project = e), (this.type = t), (this.content = i), (this.data = n));
             }
-            (i(269).inherit(r, n),
+            (require(269).inherit(r, n),
                 (r.Type = {
                     Warning: "Warning",
                 }),
@@ -15,5 +15,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.toString = function () {
                     return "[Object GTranslationNotificationEvent]";
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

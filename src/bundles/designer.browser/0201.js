@@ -1,23 +1,23 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(23),
-            i = n(186),
-            a = n(35),
-            r = n(277),
-            s = n(299),
-            l = n(43),
-            c = n(407),
-            d = n(74),
-            u = n(213),
+        var RegExp = require(23),
+            i = require(186),
+            a = require(35),
+            r = require(277),
+            s = require(299),
+            l = require(43),
+            c = require(407),
+            d = require(74),
+            u = require(213),
             p = i && i.prototype,
             g = l("species"),
-            h = !1,
-            f = a(o.PromiseRejectionEvent),
+            h = false,
+            f = a(RegExp.PromiseRejectionEvent),
             m = r("Promise", function () {
                 var e = s(i),
                     t = e !== String(i);
-                if (!t && 66 === u) return !0;
-                if (d && (!p.catch || !p.finally)) return !0;
+                if (!t && 66 === u) return true;
+                if (d && (!p.catch || !p.finally)) return true;
                 if (!u || u < 51 || !/native code/.test(e)) {
                     var n = new i(function (e) {
                             e(1);
@@ -28,9 +28,9 @@ module.exports = function (e, t, n) {
                                 function () {}
                             );
                         };
-                    if ((((n.constructor = {})[g] = o), !(h = n.then(function () {}) instanceof o))) return !0;
+                    if ((((n.constructor = {})[g] = o), !(h = n.then(function () {}) instanceof o))) return true;
                 }
                 return !(t || ("BROWSER" !== c && "DENO" !== c) || f);
             });
-        e.exports = { CONSTRUCTOR: m, REJECTION_EVENT: f, SUBCLASSING: h };
+        module.exports = { CONSTRUCTOR: m, REJECTION_EVENT: f, SUBCLASSING: h };
     };

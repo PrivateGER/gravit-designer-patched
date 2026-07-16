@@ -1,16 +1,16 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(110),
-            a = n(200),
-            r = n(29),
-            s = n(27),
-            l = n(21),
-            c = n(35),
-            d = n(241),
-            u = n(157),
-            p = n(666),
-            g = n(295),
+        var o = require(25),
+            i = require(110),
+            a = require(200),
+            r = require(29),
+            s = require(27),
+            l = require(21),
+            c = require(35),
+            d = require(241),
+            u = require(157),
+            p = require(666),
+            g = require(295),
             h = String,
             f = i("JSON", "stringify"),
             m = s(/./.exec),
@@ -48,7 +48,7 @@ module.exports = function (e, t, n) {
             };
         f &&
             o(
-                { target: "JSON", stat: !0, arity: 3, forced: S || E },
+                { target: "JSON", stat: true, arity: 3, forced: S || E },
                 {
                     stringify: function (e, t, n) {
                         var o = u(arguments),

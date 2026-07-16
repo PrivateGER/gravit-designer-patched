@@ -1,9 +1,9 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
         (function () {
             !(function (e) {
                 "use strict";
                 function t(e, t) {
-                    var n = { raw: !0, chunkSize: 1048576 };
+                    var n = { raw: true, chunkSize: 1048576 };
                     (t && "number" == typeof t.level && (n.level = t.level),
                         (this._backEnd = e ? new pako.Deflate(n) : new pako.Inflate(n)),
                         (this._chunks = []),
@@ -11,10 +11,10 @@ module.exports = function (e, t) {
                         (this._backEnd.onData = this._onData.bind(this)));
                 }
                 function n(e) {
-                    t.call(this, !0, e);
+                    t.call(this, true, e);
                 }
                 function o() {
-                    t.call(this, !1);
+                    t.call(this, false);
                 }
                 ((t.prototype._onData = function (e) {
                     (this._chunks.push(e), (this._dataLength += e.length));
@@ -35,10 +35,10 @@ module.exports = function (e, t) {
                         return ((n.length = 0), (this._dataLength = 0), t);
                     }),
                     (t.prototype.append = function (e, t) {
-                        return (this._backEnd.push(e, !1), this._fetchData());
+                        return (this._backEnd.push(e, false), this._fetchData());
                     }),
                     (t.prototype.flush = function () {
-                        return (this._backEnd.push(new Uint8Array(0), !0), this._fetchData());
+                        return (this._backEnd.push(new Uint8Array(0), true), this._fetchData());
                     }),
                     (n.prototype = Object.create(t.prototype)),
                     (o.prototype = Object.create(t.prototype)));

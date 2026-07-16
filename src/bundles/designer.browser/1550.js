@@ -1,18 +1,18 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(8), n(20), n(34), n(4), n(41), n(13));
-        var i = n(1),
-            a = n(1163),
-            r = o(n(1090)),
-            s = o(n(358)),
-            l = n(40),
-            c = n(10);
-        const d = n(0),
-            u = n(1551),
-            p = n(1174);
+        var o = require(16);
+        (require(8 /* Symbol */), require(20), require(34), require(4), require(41), require(13));
+        var GObject = require(1),
+            a = require(1163),
+            r = o(require(1090)),
+            s = o(require(358)),
+            GSaveAction = require(40),
+            designerConfig = require(10);
+        const IsFiniteNonNegativeNumber = require(0),
+            u = require(1551),
+            p = require(1174);
         function g() {}
-        (d.inherit(g, u),
+        (IsFiniteNonNegativeNumber.inherit(g, u),
             (g.prototype.render = async function (e, t) {
                 (this._createUI(e), await this._updateUIForFile(e, t));
             }),
@@ -22,7 +22,7 @@ module.exports = function (e, t, n) {
                 ($("<button/>")
                     .gShareButton({
                         clazz: "file-panel-share-button",
-                        defaultText: i.GLocale.get(new i.GLocaleKey("GFilesPanelViewBase", "text.share-this-file")),
+                        defaultText: GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.share-this-file")),
                         stats: "filespanel-view_infoPanel_share",
                         restrictedStats: "filespanel-view_infoPanel_nonprotriespro-share",
                     })
@@ -35,7 +35,7 @@ module.exports = function (e, t, n) {
                     .addClass("collaborators")
                     .append($("<div/>").addClass("gravit-icon-collaborators"))
                     .append($("<div/>").addClass("collaborators-number").text("0"))
-                    .append($("<span/>").text(" " + i.GLocale.get(new i.GLocaleKey("GFilesPanelViewBase", "text.collaborators"))))
+                    .append($("<span/>").text(" " + GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.collaborators"))))
                     .appendTo(n)
                     .hide(),
                     $("<span/>")
@@ -45,7 +45,7 @@ module.exports = function (e, t, n) {
                         .append(
                             $("<span/>")
                                 .addClass("comments-label")
-                                .text(i.GLocale.get(new i.GLocaleKey("GFilesPanelViewBase", "text.comments")))
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.comments")))
                         )
                         .appendTo(n)
                         .hide(),
@@ -54,7 +54,7 @@ module.exports = function (e, t, n) {
                         .append(
                             $("<div/>")
                                 .addClass("label")
-                                .text(i.GLocale.get(new i.GLocaleKey("GFilesPanelViewBase", "text.status")) + ": ")
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.status")) + ": ")
                         )
                         .append($("<div/>").addClass("state").text(""))
                         .appendTo(e)
@@ -69,7 +69,7 @@ module.exports = function (e, t, n) {
                     h = e.find(".collaboration"),
                     f = e.find(".status"),
                     m = e.find(".collaborators");
-                (e.find(".file-preview").attr("src", t.getPreviewURL() || c.DEFAULT_FILE_THUMBNAIL),
+                (e.find(".file-preview").attr("src", t.getPreviewURL() || designerConfig.DEFAULT_FILE_THUMBNAIL),
                     e.find(".file-preview").unbind("dblclick"),
                     e.find(".file-preview").on("dblclick", (e) => {
                         (e.stopPropagation(), e.preventDefault(), this._triggerEvent(p.Type.DoubleClickFile, t));
@@ -78,35 +78,35 @@ module.exports = function (e, t, n) {
                     e.data("fileId", t.id));
                 const y = await r.default.createStorageItem(t);
                 y.supportsShadowFile() && (await y.syncShadowFile());
-                const v = await c.gApi.getFileExtended(y.getId()).catch(() => null);
+                const v = await designerConfig.gApi.getFileExtended(y.getId()).catch(() => null);
                 g.text(
-                    i.GLocale.get(new i.GLocaleKey("GFilesPanelViewBase", "text.created")).replace(
+                    GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.created")).replace(
                         "%createdTime",
                         (0, a.dateToFilePreviewFormat)(t.created || v.created)
                     )
                 );
                 const _ = (v && s.default.getCommentsCount(v)) || 0;
-                (o.text(_), d.text(i.GLocale.get(new i.GLocaleKey("GFilesPanelViewBase", 1 === _ ? "text.comment" : "text.comments"))));
+                (o.text(_), d.text(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", 1 === _ ? "text.comment" : "text.comments"))));
                 let b = null,
                     w = null,
-                    C = !1;
+                    C = false;
                 if (!v)
                     return (
                         h.hide(),
-                        n.gShareButton("update", { disabled: !0, isSharing: !1 }),
-                        void n.attr("data-title", i.GLocale.get(new i.GLocaleKey("GFilesPanelViewBase", "text.can-only-share-by-owner")))
+                        n.gShareButton("update", { disabled: true, isSharing: false }),
+                        void n.attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.can-only-share-by-owner")))
                     );
                 {
                     const e = gDesigner.getSyncUser();
                     (({
                         state: { isPrivate: b, sharing: w, owner: C },
-                    } = (0, l.getFileStateAndRole)(e, v, {})),
+                    } = (0, GSaveAction.getFileStateAndRole)(e, v, {})),
                         !gDesigner.getApplicationManager().isShareEngineEnabled() || (w && !C) || n.show(),
                         h.show());
                 }
                 if (
                     (n.gShareButton("update", {
-                        disabled: !1,
+                        disabled: false,
                         storeItem: y,
                         isSharing: w,
                         closeCallback: () => {
@@ -126,18 +126,18 @@ module.exports = function (e, t, n) {
             (g.prototype._updateStatus = function (e, t) {
                 const n = e.find(".state");
                 switch (t) {
-                    case c.FileStatus.IN_REVIEW:
-                        n.text(i.GLocale.get(new i.GLocaleKey("GReviewDockerProperties", "text.review-title")));
+                    case designerConfig.FileStatus.IN_REVIEW:
+                        n.text(GObject.GLocale.get(new GObject.GLocaleKey("GReviewDockerProperties", "text.review-title")));
                         break;
-                    case c.FileStatus.REOPENED:
-                        n.text(i.GLocale.get(new i.GLocaleKey("GReviewDockerProperties", "text.reopen-title")));
+                    case designerConfig.FileStatus.REOPENED:
+                        n.text(GObject.GLocale.get(new GObject.GLocaleKey("GReviewDockerProperties", "text.reopen-title")));
                         break;
-                    case c.FileStatus.AWAITING_APPROVAL:
-                        n.text(i.GLocale.get(new i.GLocaleKey("GReviewDockerProperties", "text.request-approval-title")));
+                    case designerConfig.FileStatus.AWAITING_APPROVAL:
+                        n.text(GObject.GLocale.get(new GObject.GLocaleKey("GReviewDockerProperties", "text.request-approval-title")));
                         break;
-                    case c.FileStatus.APPROVED:
-                        n.text(i.GLocale.get(new i.GLocaleKey("GReviewDockerProperties", "text.approved-title")));
+                    case designerConfig.FileStatus.APPROVED:
+                        n.text(GObject.GLocale.get(new GObject.GLocaleKey("GReviewDockerProperties", "text.approved-title")));
                 }
             }),
-            (e.exports = g));
+            (module.exports = g));
     };

@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i(e, t) {
                 ((this._data = e), (this._file = t));
             }
@@ -14,5 +14,5 @@ module.exports = function (e, t) {
                 (i.prototype._getReference = function (e) {
                     return this._file.getReference(e);
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

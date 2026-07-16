@@ -1,5 +1,5 @@
-module.exports = function (e, t) {
-            e.exports = {
+module.exports = function (module, exports) {
+            module.exports = {
                 English: 0,
                 German: 1,
                 Chinese: 2,

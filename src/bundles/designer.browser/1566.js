@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(168), n(30), n(8), n(196), n(3), n(91), n(4), n(13), n(32), n(38), n(169), n(33), n(26), n(125), n(126), n(114));
-        var o = n(1);
+        (require(19), require(168 /* PDFFetchStream */), require(30), require(8 /* Symbol */), require(196), require(3), require(91), require(4), require(13), require(32), require(38), require(169 /* PDFNetworkStream */), require(33), require(26), require(125), require(126), require(114));
+        var GObject = require(1);
         const {
                 gApi: i,
                 IS_TRUNK: a,
@@ -13,30 +13,30 @@ module.exports = function (e, t, n) {
                 rcURL: u,
                 prodURL: p,
                 HAS_ANNOTATIONS: g,
-            } = n(10),
-            { sleep: h, watchDog: f } = n(40),
-            m = n(44),
-            y = n(85),
+            } = require(10 /* designerConfig */),
+            { sleep: h, watchDog: f } = require(40 /* GSaveAction */),
+            GSystemDialog = require(44),
+            y = require(85),
             v = [
                 {
                     id: "copy",
-                    label: new o.GLocaleKey("GShareDialog", "text.allow-to-save-label"),
-                    info: new o.GLocaleKey("GShareDialog", "text.allow-to-save-info"),
-                    pro: !1,
-                    sharePermissions: { copy: !0, comment: !!g },
+                    label: new GObject.GLocaleKey("GShareDialog", "text.allow-to-save-label"),
+                    info: new GObject.GLocaleKey("GShareDialog", "text.allow-to-save-info"),
+                    pro: false,
+                    sharePermissions: { copy: true, comment: !!g },
                     analyticsRef: "save",
                 },
                 {
                     id: "inspect",
-                    label: new o.GLocaleKey("GShareDialog", "text.allow-to-inspect-label"),
-                    info: new o.GLocaleKey("GShareDialog", "text.allow-to-inspect-info"),
-                    pro: !0,
-                    default: !0,
-                    sharePermissions: { inspect: !0, comment: !!g },
+                    label: new GObject.GLocaleKey("GShareDialog", "text.allow-to-inspect-label"),
+                    info: new GObject.GLocaleKey("GShareDialog", "text.allow-to-inspect-info"),
+                    pro: true,
+                    default: true,
+                    sharePermissions: { inspect: true, comment: !!g },
                     analyticsRef: "inspect",
                 },
             ];
-        e.exports = class {
+        module.exports = class {
             constructor(e, t) {
                 ((this._user = e),
                     (this._dialog = $("<div/>")
@@ -46,12 +46,12 @@ module.exports = function (e, t, n) {
                                 .append(
                                     $("<span/>")
                                         .addClass("title")
-                                        .text(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.title")))
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.title")))
                                 )
                                 .append(
                                     $("<div/>")
                                         .addClass("share-switch")
-                                        .append($("<span/>").text(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.switch-on"))))
+                                        .append($("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.switch-on"))))
                                         .append(
                                             $("<div/>")
                                                 .addClass("editor")
@@ -68,11 +68,11 @@ module.exports = function (e, t, n) {
                                                                     (t &&
                                                                         this._lastSharePermissions &&
                                                                         (n = Object.assign({}, this._lastSharePermissions, n)),
-                                                                        this._toggleLoading(!0),
+                                                                        this._toggleLoading(true),
                                                                         this._setSharePermissions(n)
                                                                             .catch(this._handleException)
                                                                             .finally(() => {
-                                                                                this._toggleLoading(!1);
+                                                                                this._toggleLoading(false);
                                                                             }));
                                                                 })
                                                         )
@@ -84,7 +84,7 @@ module.exports = function (e, t, n) {
                         .append(
                             $("<span/>")
                                 .addClass("subtitle")
-                                .text(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.subtitle-on")))
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.subtitle-on")))
                         )
                         .append(
                             $("<div/>")
@@ -92,11 +92,11 @@ module.exports = function (e, t, n) {
                                 .append(
                                     $("<div/>")
                                         .addClass("share-input")
-                                        .append($("<input>").attr("type", "text").attr("readonly", !0))
+                                        .append($("<input>").attr("type", "text").attr("readonly", true))
                                         .append(
                                             $("<div/>")
                                                 .addClass("share-copied")
-                                                .append($("<span/>").text(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.copied"))))
+                                                .append($("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.copied"))))
                                         )
                                 )
                                 .append(
@@ -105,7 +105,7 @@ module.exports = function (e, t, n) {
                                         .addClass("g-highlight-button")
                                         .addClass("highlighted")
                                         .append($("<span/>").addClass("icon").addClass("gravit-icon-share-copy"))
-                                        .append($("<span/>").text(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.copy"))))
+                                        .append($("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.copy"))))
                                         .on("click", async (e) => {
                                             const t = $(e.target).closest(".share-link"),
                                                 n = t.find("input").val();
@@ -119,10 +119,10 @@ module.exports = function (e, t, n) {
                                                         (e.addClass("visible"), await h(2e3), e.removeClass("visible"));
                                                     })
                                                     .catch((e) => {
-                                                        m.alert(
+                                                        GSystemDialog.alert(
                                                             (e && e.message) ||
-                                                                o.GLocale.get(
-                                                                    new o.GLocaleKey("GShareDialog", "text.failed-copying-to-clipboard")
+                                                                GObject.GLocale.get(
+                                                                    new GObject.GLocaleKey("GShareDialog", "text.failed-copying-to-clipboard")
                                                                 )
                                                         );
                                                     }));
@@ -146,18 +146,18 @@ module.exports = function (e, t, n) {
                                         } = e;
                                         const d = $("<div/>").attr("id", t).addClass("share-setting-container"),
                                             u = (e) => {
-                                                this._toggleLoading(!0);
+                                                this._toggleLoading(true);
                                                 const t = $(e.target).closest("input").is(":checked");
                                                 gDesigner.stats("sharedialog_click_${analyticsRef}", t);
                                                 const n = Object.entries(a).reduce((e, n) => ((e[n[0]] = n[1] && t), e), {}),
                                                     o = Object.assign(this._getSharePermissions(), n, {
-                                                        access: !0,
+                                                        access: true,
                                                     });
                                                 ((this._lastSharePermissions = o),
                                                     this._setSharePermissions(o)
                                                         .catch(this._handleException)
                                                         .finally(() => {
-                                                            this._toggleLoading(!1);
+                                                            this._toggleLoading(false);
                                                         }));
                                             },
                                             p = () => gDesigner.stats("sharedialog_nonprotriespro_".concat(c));
@@ -176,10 +176,10 @@ module.exports = function (e, t, n) {
                                                         .append(
                                                             $("<span/>")
                                                                 .addClass("title")
-                                                                .text(o.GLocale.get(n))
+                                                                .text(GObject.GLocale.get(n))
                                                                 .append(s ? $("<span></span>").gPro() : "")
                                                         )
-                                                        .append($("<span/>").addClass("subtitle").text(o.GLocale.get(i)))
+                                                        .append($("<span/>").addClass("subtitle").text(GObject.GLocale.get(i)))
                                                 )
                                                 .appendTo(d),
                                             r && this._buildShareByInput(r).appendTo(d),
@@ -189,7 +189,7 @@ module.exports = function (e, t, n) {
                                 )
                         )
                         .gDialog({
-                            releaseOnClose: !0,
+                            releaseOnClose: true,
                             className: "g-share-dialog-legacy",
                         })),
                     $("<div/>")
@@ -197,9 +197,9 @@ module.exports = function (e, t, n) {
                         .append($("<span />").addClass("gravit-icon-close"))
                         .on("click", () => this.close())
                         .appendTo(this._dialog),
-                    this._toggleLoading(!0),
+                    this._toggleLoading(true),
                     i
-                        .getFile(t.getId(), !0)
+                        .getFile(t.getId(), true)
                         .then(async (e) => {
                             if (((this._file = e), this._updateProperties(), this._shareList && this._shareList.length))
                                 this._lastSharePermissions = this._getSharePermissions();
@@ -210,19 +210,19 @@ module.exports = function (e, t, n) {
                                         return t;
                                     })
                                     .reduce((e, t) => Object.assign({}, t, e), {});
-                                ((this._lastSharePermissions = e), await this._setSharePermissions(Object.assign(e, { access: !0 })));
+                                ((this._lastSharePermissions = e), await this._setSharePermissions(Object.assign(e, { access: true })));
                             }
                         })
                         .catch(this._handleException)
                         .finally(() => {
-                            this._toggleLoading(!1);
+                            this._toggleLoading(false);
                         }));
             }
             _handleException(e) {
-                m.alert(i.formatError(e));
+                GSystemDialog.alert(i.formatError(e));
             }
             _isSharingByLink() {
-                return !0;
+                return true;
             }
             _getSharePermissions() {
                 if (this._shareList) {
@@ -264,7 +264,7 @@ module.exports = function (e, t, n) {
                               return i.deleteShare(t);
                           })
                       )),
-                    (this._file = await i.getFile(this._file.id, !0)),
+                    (this._file = await i.getFile(this._file.id, true)),
                     this._updateProperties());
             }
             _updateProperties() {
@@ -277,10 +277,10 @@ module.exports = function (e, t, n) {
                     this._dialog
                         .find(".subtitle")
                         .first()
-                        .text(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.subtitle-".concat(t ? "on" : "off")))),
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.subtitle-".concat(t ? "on" : "off")))),
                     this._dialog
                         .find(".share-switch > span")
-                        .text(o.GLocale.get(new o.GLocaleKey("GShareDialog", "text.switch-".concat(t ? "on" : "off")))),
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.switch-".concat(t ? "on" : "off")))),
                     this._dialog.find(".share-switch input").prop("checked", t),
                     this._dialog.find("#copy > .share-setting-input > input").prop("checked", n),
                     this._dialog.find("#inspect > .share-setting-input > input").prop("checked", i));
@@ -312,7 +312,7 @@ module.exports = function (e, t, n) {
                 this._dialog.toggleClass("g-loading", !!e);
             }
             open() {
-                this._dialog.gDialog("open", !0);
+                this._dialog.gDialog("open", true);
             }
             close() {
                 this._dialog.gDialog("close");

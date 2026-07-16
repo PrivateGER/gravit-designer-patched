@@ -1,16 +1,16 @@
-module.exports = function (e, t, i) {
-            var n = i(154),
-                r = i(0),
-                o = i(36),
-                a = i(66),
-                s = i(22),
-                l = i(159),
-                h = i(7);
+module.exports = function (module, exports, require) {
+            var n = require(154),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(36),
+                a = require(66),
+                s = require(22),
+                l = require(159),
+                h = require(7);
 
             function A(e) {
                 n.call(this, e);
             }
-            (r.inherit(A, n),
+            (IsFiniteNonNegativeNumber.inherit(A, n),
                 o.exports(A, l),
                 (A.prototype.paint = function (e, t) {
                     var i = t.selectionOutlineColor,
@@ -37,10 +37,10 @@ module.exports = function (e, t, i) {
                                     var c = o.openEditor(A),
                                         p = new a.EdTransformOptions();
                                     ((p.fullContentsTransform = !!t),
-                                        (A.dependentUpdate = !0),
+                                        (A.dependentUpdate = true),
                                         c.edTransform(this._transform, null, null, p),
                                         c.applyTransform(A, t, i, n),
-                                        (A.dependentUpdate = !1));
+                                        (A.dependentUpdate = false));
                                 }
                     }
                     a.prototype._applyTransform.call(this, e);
@@ -50,7 +50,7 @@ module.exports = function (e, t, i) {
                     if (!a.getProperty("frm"))
                         for (var l = a.getFirstChild(); null != l; l = l.getNext()) {
                             if (l instanceof s)
-                                ((l.dependentUpdate = !0), o.openEditor(l).edTransform(e, null, null, r), (l.dependentUpdate = !1));
+                                ((l.dependentUpdate = true), o.openEditor(l).edTransform(e, null, null, r), (l.dependentUpdate = false));
                         }
                     n.prototype.edTransform.call(this, e, t, i, r);
                 }),
@@ -77,5 +77,5 @@ module.exports = function (e, t, i) {
                 (A.prototype.toString = function () {
                     return "[Object GLayerEditor]";
                 }),
-                (e.exports = A));
+                (module.exports = A));
         };

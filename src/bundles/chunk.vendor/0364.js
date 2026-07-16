@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(42),
-                r = i(0),
-                o = i(14);
+module.exports = function (module, exports, require) {
+            var n = require(42),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(14);
 
             function a(e) {
                 var t = function (e, t) {
@@ -55,11 +55,11 @@ module.exports = function (e, t, i) {
                     "        float aOffset = abs((angle - startAngle) / (endAngle - startAngle));\n        vec4 color = mix(startColor, endColor, aOffset);\n        /* Multiply by the transparency of the source pixel */\n        /* vec3 output = color.rgb * src.a;*/\n        gl_FragColor.rgb = (inputColor.rgb*(1.0-opacity) + color.rgb*opacity)+screenSpaceDither(texCoord*texSize);\n        gl_FragColor.a = inputColor.a*(1.0-opacity) + color.a*opacity;\n        }        "),
                     n.call(this, e, n.tilingAwareVertexSource, r));
             }
-            (r.inherit(a, n),
+            (IsFiniteNonNegativeNumber.inherit(a, n),
                 (a.MAX_ANGLES = 16),
                 (a.ANTIALIAS_ANGLE = 1),
-                (a.LEFT = !1),
-                (a.RIGHT = !1),
+                (a.LEFT = false),
+                (a.RIGHT = false),
                 (a.prototype.additionalGradient = null),
                 (a.prototype.render = function (e, t, i, n, r, o, a, s) {
                     var l = [],
@@ -94,7 +94,7 @@ module.exports = function (e, t, i) {
                             tileSize: [this.glEffect.width, this.glEffect.height],
                             offset: [i, n],
                         };
-                    (this.simpleShader.call(this, f, a, s), l[0] % Math.PI > 1e-4 && this.fxaa(i, n, r, o, !0));
+                    (this.simpleShader.call(this, f, a, s), l[0] % Math.PI > 1e-4 && this.fxaa(i, n, r, o, true));
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

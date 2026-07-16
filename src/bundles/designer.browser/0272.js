@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o, i, a;
-        e.exports =
-            ((a = n(55)),
+        module.exports =
+            ((a = require(55)),
             (i = (o = a).lib.WordArray),
             (o.enc.Base64 = {
                 stringify: function (e) {

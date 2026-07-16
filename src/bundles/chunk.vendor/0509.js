@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i(e, t) {
                 this.forEach = n(e, t);
             }
@@ -105,7 +105,7 @@ module.exports = function (e, t) {
                 }),
                 (i.prototype.skip = function (e) {
                     return this.per(function (t, i) {
-                        return e > 0 ? (e--, !1) : t(i);
+                        return e > 0 ? (e--, false) : t(i);
                     });
                 }),
                 (i.prototype.take = function (e) {
@@ -131,7 +131,7 @@ module.exports = function (e, t) {
                     var i = t,
                         n = 2 == arguments.length;
                     return this.per(function (t, r) {
-                        (t((i = n ? e(i, r) : r)), (n = !0));
+                        (t((i = n ? e(i, r) : r)), (n = true));
                     });
                 }),
                 (i.prototype.into = function (e, t) {
@@ -141,7 +141,7 @@ module.exports = function (e, t) {
                             return "number" != typeof e ? Number.MAX_VALUE : e;
                         })(t)),
                         this.listen(function (i) {
-                            if (t <= 0) return !0;
+                            if (t <= 0) return true;
                             (e.push(i), t--);
                         })
                     );
@@ -157,7 +157,7 @@ module.exports = function (e, t) {
                         o < 1
                             ? this
                             : this.listen(function (e) {
-                                  if ((0 === t && n(e), t++, i(t), r(e), t >= o)) return !0;
+                                  if ((0 === t && n(e), t++, i(t), r(e), t >= o)) return true;
                               })
                     );
                 }),
@@ -165,10 +165,10 @@ module.exports = function (e, t) {
                     return this.forEach(l, e);
                 }),
                 (i.prototype.some = function (e) {
-                    var t = !1;
+                    var t = false;
                     return (
                         this.listen(function (i) {
-                            if (e(i)) return ((t = !0), !0);
+                            if (e(i)) return ((t = true), true);
                         }).submit(),
                         t
                     );
@@ -200,10 +200,10 @@ module.exports = function (e, t) {
                     return this.reduce(p, 0);
                 }),
                 (i.prototype.and = function () {
-                    return this.reduce(u, !0);
+                    return this.reduce(u, true);
                 }),
                 (i.prototype.or = function () {
-                    return this.reduce(d, !1);
+                    return this.reduce(d, false);
                 }),
                 (i.prototype.not = function () {
                     return this.map(g);
@@ -212,9 +212,9 @@ module.exports = function (e, t) {
                     var t = 0;
                     return o(function (i) {
                         !(function n() {
-                            !0 !== i(t++) && setTimeout(n, e);
+                            true !== i(t++) && setTimeout(n, e);
                         })();
                     });
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

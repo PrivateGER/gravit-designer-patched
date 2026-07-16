@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(1231),
-                o = i(1232);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(1231),
+                o = require(1232);
 
             function a(e, t) {
                 (r.call(this, e),
@@ -11,7 +11,7 @@ module.exports = function (e, t, i) {
                     this.put("/Encoding", "/WinAnsiEncoding"),
                     (this._encoding = o.WINANSI));
             }
-            (n.inherit(a, r),
+            (IsFiniteNonNegativeNumber.inherit(a, r),
                 (a.prototype._encoding = null),
                 (a.BASE_14 = [
                     "Courier",
@@ -37,5 +37,5 @@ module.exports = function (e, t, i) {
                         return t === e;
                     });
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

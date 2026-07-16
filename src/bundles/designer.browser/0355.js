@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n.r(t);
+        require.r(exports);
         class o extends Error {
             constructor(...e) {
                 (super(...e), (this.constructor = o), (this.__proto__ = o.prototype), (this.name = "AppError"));
@@ -9,5 +9,5 @@ module.exports = function (e, t, n) {
                 return this.message;
             }
         }
-        t.default = o;
+        exports.default = o;
     };

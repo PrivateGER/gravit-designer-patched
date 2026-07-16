@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(557), n(26), Object.defineProperty(t, "__esModule", { value: !0 }), (t.default = void 0), n(8));
+        (require(19), require(557), require(26), Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0), require(8 /* Symbol */));
         var o = (function (e, t) {
             if ("function" == typeof WeakMap)
                 var n = new WeakMap(),
@@ -23,10 +23,10 @@ module.exports = function (e, t, n) {
                             : (r[t] = e[t]));
                 return r;
             })(e, t);
-        })(n(1480));
-        const i = n(10);
-        let a = !1,
-            r = !1,
+        })(require(1480));
+        const designerConfig = require(10);
+        let a = false,
+            r = false,
             s = null;
         const l = {
             TeamsMode: {
@@ -37,7 +37,7 @@ module.exports = function (e, t, n) {
                 OTHER: { label: "Other" },
             },
             isExecutingOnMSTeams: async () => {
-                const e = await l.getTeamsContext().catch(() => !1);
+                const e = await l.getTeamsContext().catch(() => false);
                 return !!e && !!e.tid;
             },
             getTeamsEnv: async function () {
@@ -55,7 +55,7 @@ module.exports = function (e, t, n) {
             isExecutingOnChannelOrChatSingletonPromise: () => r,
             initTeams: () => {
                 if (s) return Promise.resolve();
-                const e = i.msTeamsMode ? 15e3 : 0;
+                const e = designerConfig.msTeamsMode ? 15e3 : 0;
                 return new Promise((t, n) => {
                     const i = setTimeout(() => {
                         n();
@@ -79,5 +79,5 @@ module.exports = function (e, t, n) {
             a = e;
         }),
             (r = l.isExecutingOnChannelOrChat()));
-        t.default = l;
+        exports.default = l;
     };

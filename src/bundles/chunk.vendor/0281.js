@@ -1,18 +1,18 @@
-module.exports = function (e, t, i) {
-            var n = i(75),
-                r = i(0),
-                o = i(108),
-                a = i(72),
-                s = i(568);
+module.exports = function (module, exports, require) {
+            var n = require(75),
+                IsFiniteNonNegativeNumber = require(0),
+                GFont = require(108),
+                a = require(72),
+                s = require(568);
 
             function l() {
                 this._fonts = [];
             }
-            (r.inherit(l, n),
+            (IsFiniteNonNegativeNumber.inherit(l, n),
                 (l.FontAvailableEvent = function (e) {
                     this.font = e;
                 }),
-                r.inherit(l.FontAvailableEvent, a),
+                IsFiniteNonNegativeNumber.inherit(l.FontAvailableEvent, a),
                 (l.FontAvailableEvent.prototype.font = null),
                 (l.FontAvailableEvent.prototype.toString = function () {
                     return "[Event GFontManager.FontAvailableEvent]";
@@ -20,7 +20,7 @@ module.exports = function (e, t, i) {
                 (l.FontUnavailableEvent = function (e) {
                     this.font = e;
                 }),
-                r.inherit(l.FontUnavailableEvent, a),
+                IsFiniteNonNegativeNumber.inherit(l.FontUnavailableEvent, a),
                 (l.FontUnavailableEvent.prototype.font = null),
                 (l.FontUnavailableEvent.prototype.toString = function () {
                     return "[Event GFontManager.FontUnavailableEvent]";
@@ -33,7 +33,7 @@ module.exports = function (e, t, i) {
                         (this.failed = r),
                         (this.tryToResolveMissingFont = void 0 === o || o));
                 }),
-                r.inherit(l.ResolveFontEvent, a),
+                IsFiniteNonNegativeNumber.inherit(l.ResolveFontEvent, a),
                 (l.ResolveFontEvent.prototype.family = null),
                 (l.ResolveFontEvent.prototype.tryToResolveMissingFont = null),
                 (l.ResolveFontEvent.prototype.style = null),
@@ -46,7 +46,7 @@ module.exports = function (e, t, i) {
                 (l.QueryFontFamilyEvent = function (e, t, i) {
                     ((this.family = e), (this.callback = t), (this.failed = i));
                 }),
-                r.inherit(l.QueryFontFamilyEvent, a),
+                IsFiniteNonNegativeNumber.inherit(l.QueryFontFamilyEvent, a),
                 (l.QueryFontFamilyEvent.prototype.family = null),
                 (l.QueryFontFamilyEvent.prototype.callback = null),
                 (l.QueryFontFamilyEvent.prototype.failed = null),
@@ -67,7 +67,7 @@ module.exports = function (e, t, i) {
                     if (!e.isResolved())
                         for (var t = 0; t < this._fonts.length; ++t) {
                             var i = this._fonts[t];
-                            if (i.isResolved() && o.equals(i, e)) {
+                            if (i.isResolved() && GFont.equals(i, e)) {
                                 e = i;
                                 break;
                             }
@@ -92,7 +92,7 @@ module.exports = function (e, t, i) {
                         ? r
                         : this.hasEventListeners(l.ResolveFontEvent)
                           ? (r || ((r = new s(e, t, i)), this._fonts.push(r)),
-                            r.setFailed(!1),
+                            r.setFailed(false),
                             this.trigger(
                                 new l.ResolveFontEvent(e, t, i, this._resolvedFont.bind(this), this._unresolvedFont.bind(this, r), n)
                             ),
@@ -145,17 +145,17 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (l.prototype._unresolvedFont = function (e) {
-                    (e.setFailed(!0), this.hasEventListeners(l.FontUnavailableEvent) && this.trigger(new l.FontUnavailableEvent(e)));
+                    (e.setFailed(true), this.hasEventListeners(l.FontUnavailableEvent) && this.trigger(new l.FontUnavailableEvent(e)));
                 }),
                 (l.prototype._resolvedFont = function (e) {
                     if (e.isResolved())
                         for (var t = 0; t < this._fonts.length; ++t)
-                            if (o.equals(this._fonts[t], e) && !this._fonts[t].isResolved()) {
+                            if (GFont.equals(this._fonts[t], e) && !this._fonts[t].isResolved()) {
                                 ((this._fonts[t] = e),
-                                    o.equals(e, this._defaultFont) && (this._defaultFont = e),
+                                    GFont.equals(e, this._defaultFont) && (this._defaultFont = e),
                                     this.hasEventListeners(l.FontAvailableEvent) && this.trigger(new l.FontAvailableEvent(e)));
                                 break;
                             }
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

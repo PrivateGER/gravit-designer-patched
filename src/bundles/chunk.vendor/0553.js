@@ -1,41 +1,41 @@
-module.exports = function (e, t, i) {
-            var n = i(64),
-                r = i(150),
-                o = i(75),
-                a = i(0),
-                s = i(72),
-                l = i(5),
-                h = i(211),
-                A = i(761),
-                c = i(551),
-                p = i(758),
-                u = i(335),
-                d = i(764),
-                g = i(756),
-                f = i(757),
-                m = i(748),
-                y = i(759),
-                _ = i(550),
-                v = i(753),
-                b = i(539),
-                C = i(548),
-                w = i(384),
-                E = i(549),
-                B = i(762),
-                x = i(763),
-                P = i(754),
-                S = i(386),
-                T = i(547),
-                I = i(746),
-                F = i(755),
-                R = i(738),
-                D = i(77),
-                k = i(765),
-                G = i(767),
-                Q = i(769),
-                M = i(771),
-                N = i(773),
-                U = i(775);
+module.exports = function (module, exports, require) {
+            var n = require(64),
+                r = require(150),
+                o = require(75),
+                IsFiniteNonNegativeNumber = require(0),
+                s = require(72),
+                l = require(5),
+                h = require(211),
+                A = require(761),
+                c = require(551),
+                p = require(758),
+                u = require(335),
+                d = require(764),
+                g = require(756),
+                f = require(757),
+                m = require(748),
+                y = require(759),
+                _ = require(550),
+                GPathsGraphTool = require(753),
+                b = require(539),
+                C = require(548),
+                w = require(384),
+                E = require(549),
+                B = require(762),
+                x = require(763),
+                P = require(754),
+                S = require(386),
+                GTextTool = require(547),
+                I = require(746),
+                F = require(755),
+                R = require(738),
+                D = require(77),
+                k = require(765),
+                G = require(767),
+                Q = require(769),
+                M = require(771),
+                N = require(773),
+                U = require(775);
 
             function V() {
                 ((this._tools = []),
@@ -48,7 +48,7 @@ module.exports = function (e, t, i) {
                     this.addTool(new _()),
                     this.addTool(new b()),
                     this.addTool(new A()),
-                    this.addTool(new v()),
+                    this.addTool(new GPathsGraphTool()),
                     this.addTool(new u()),
                     this.addTool(new d()),
                     this.addTool(new E()),
@@ -57,7 +57,7 @@ module.exports = function (e, t, i) {
                     this.addTool(new w()),
                     this.addTool(new P()),
                     this.addTool(new B()),
-                    this.addTool(new T()),
+                    this.addTool(new GTextTool()),
                     this.addTool(new f()),
                     this.addTool(new p()),
                     this.addTool(new x()),
@@ -72,21 +72,21 @@ module.exports = function (e, t, i) {
                     this.addTool(new M()),
                     this.addTool(new U()));
             }
-            (a.inheritAndMix(V, a, [o]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(V, IsFiniteNonNegativeNumber, [o]),
                 (V.ToolChangedEvent = function (e, t, i) {
                     ((this.previousTool = e), (this.newTool = t), (this.light = !!i));
                 }),
-                a.inherit(V.ToolChangedEvent, s),
+                IsFiniteNonNegativeNumber.inherit(V.ToolChangedEvent, s),
                 (V.ToolChangedEvent.prototype.previousTool = null),
                 (V.ToolChangedEvent.prototype.newTool = null),
-                (V.ToolChangedEvent.prototype.light = !1),
+                (V.ToolChangedEvent.prototype.light = false),
                 (V.ToolChangedEvent.prototype.toString = function () {
                     return "[Event GToolManager.ToolChangedEvent]";
                 }),
                 (V.InvalidationRequestEvent = function (e, t) {
                     ((this.manager = e), (this.area = t));
                 }),
-                a.inherit(V.InvalidationRequestEvent, s),
+                IsFiniteNonNegativeNumber.inherit(V.InvalidationRequestEvent, s),
                 (V.InvalidationRequestEvent.prototype.manager = null),
                 (V.InvalidationRequestEvent.prototype.area = null),
                 (V.InvalidationRequestEvent.prototype.toString = function () {
@@ -99,23 +99,23 @@ module.exports = function (e, t, i) {
                 (V.prototype._view = null),
                 (V.prototype._temporaryActiveTool = null),
                 (V.prototype._tempActivationTime = null),
-                (V.prototype._lightDeactivation = !1),
+                (V.prototype._lightDeactivation = false),
                 (V.prototype.addTool = function (e) {
                     if (e._manager) throw new Error("Tool is already registered");
                     (this._tools.push(e), (e._manager = this), (this._typeIdToIndexMap = {}));
                     for (var t = 0; t < this._tools.length; ++t) {
                         e = this._tools[t];
-                        this._typeIdToIndexMap[a.getTypeId(e)] = t;
+                        this._typeIdToIndexMap[IsFiniteNonNegativeNumber.getTypeId(e)] = t;
                     }
                 }),
                 (V.prototype.hasTool = function (e) {
-                    return this._typeIdToIndexMap.hasOwnProperty(a.getTypeId(e));
+                    return this._typeIdToIndexMap.hasOwnProperty(IsFiniteNonNegativeNumber.getTypeId(e));
                 }),
                 (V.prototype.getToolCount = function () {
                     return this._tools.length;
                 }),
                 (V.prototype.indexOf = function (e) {
-                    return this._typeIdToIndexMap.hasOwnProperty(a.getTypeId(e)) ? this._typeIdToIndexMap[a.getTypeId(e)] : -1;
+                    return this._typeIdToIndexMap.hasOwnProperty(IsFiniteNonNegativeNumber.getTypeId(e)) ? this._typeIdToIndexMap[IsFiniteNonNegativeNumber.getTypeId(e)] : -1;
                 }),
                 (V.prototype.getTool = function (e) {
                     var t = "number" == typeof e ? e : this.indexOf(e);
@@ -131,12 +131,12 @@ module.exports = function (e, t, i) {
                     if (!this._temporaryActiveTool || i) {
                         if (this._temporaryActiveTool) {
                             if ((e instanceof h || (e = this.getTool(this.indexOf(e))), e == this._activeTool))
-                                return ((this._temporaryActiveTool = null), (this._tempActivationTime = null), !0);
+                                return ((this._temporaryActiveTool = null), (this._tempActivationTime = null), true);
                             this._activeTool.isDeactivatable() && ((this._temporaryActiveTool = null), (this._tempActivationTime = null));
                         }
                         if (!this._temporaryActiveTool) return this._activateTool(e, t);
                     }
-                    return !1;
+                    return false;
                 }),
                 (V.prototype.tempToolKeyActivate = function (e) {
                     if (e && this.getTool(e) !== this._activeTool) {
@@ -150,10 +150,10 @@ module.exports = function (e, t, i) {
                                 (this._lightDeactivation = i),
                                 this._temporaryActiveTool || (this._temporaryActiveTool = t),
                                 this._tempActivationTime || (this._tempActivationTime = new Date().getTime()),
-                                !0
+                                true
                             );
                     }
-                    return !1;
+                    return false;
                 }),
                 (V.prototype.tempToolKeyRelease = function (e, t) {
                     return (
@@ -162,13 +162,13 @@ module.exports = function (e, t, i) {
                             ? this._activateTool(this._temporaryActiveTool)
                             : this._lightDeactivation &&
                               (this._temporaryActiveTool.deactivate(this._view),
-                              this._activeTool.activate(this._view, !0),
+                              this._activeTool.activate(this._view, true),
                               this.hasEventListeners(V.ToolChangedEvent) &&
-                                  this.trigger(new V.ToolChangedEvent(this._temporaryActiveTool, this._activeTool, !1)),
-                              (this._lightDeactivation = !1)),
+                                  this.trigger(new V.ToolChangedEvent(this._temporaryActiveTool, this._activeTool, false)),
+                              (this._lightDeactivation = false)),
                         (this._temporaryActiveTool = null),
                         (this._tempActivationTime = null),
-                        !0)
+                        true)
                     );
                 }),
                 (V.prototype.isContextActivatable = function (e) {
@@ -214,7 +214,7 @@ module.exports = function (e, t, i) {
                             t && this._activeTool.setIcon instanceof Function && this._activeTool.setIcon(t),
                             this._addActiveToolToView(),
                             this.hasEventListeners(V.ToolChangedEvent) && this.trigger(new V.ToolChangedEvent(this._oldTool, e, i)),
-                            !0)
+                            true)
                     );
                 }),
                 (V.prototype._addActiveToolToView = function () {
@@ -269,7 +269,7 @@ module.exports = function (e, t, i) {
                                 ((this._temporaryActiveTool = null), (this._tempActivationTime = null));
                         else if (r && r !== this._activeTool) {
                             var o = this._activeTool;
-                            this._activateTool(r, null, !0) && (this._temporaryActiveTool || (this._temporaryActiveTool = o));
+                            this._activateTool(r, null, true) && (this._temporaryActiveTool || (this._temporaryActiveTool = o));
                         }
                     }
                 }),
@@ -279,5 +279,5 @@ module.exports = function (e, t, i) {
                 (V.prototype.toString = function () {
                     return "[Object GToolManager]";
                 }),
-                (e.exports = V));
+                (module.exports = V));
         };

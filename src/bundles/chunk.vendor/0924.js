@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(195),
-                r = i(59),
-                o = i(7),
-                a = i(63),
-                s = i(6);
-            e.exports = function (e) {
+module.exports = function (module, exports, require) {
+            var n = require(195),
+                r = require(59),
+                o = require(7),
+                a = require(63),
+                s = require(6);
+            module.exports = function (e) {
                 ((e.VertexSource = function (e) {
                     this.source = e;
                 }),
@@ -15,7 +15,7 @@ module.exports = function (e, t, i) {
                         if (!this._markerSource) {
                             var t = (e.fontSize || 20) / 4;
                             ((this._markerSource = new a(this.source, new o(t, 0, 0, t, 0, 0))),
-                                (this._bbox = r.calculateBounds(this._markerSource, !0)));
+                                (this._bbox = r.calculateBounds(this._markerSource, true)));
                         }
                     }),
                     (e.VertexSource.prototype.measure = function (e) {

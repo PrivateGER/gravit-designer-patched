@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        const o = n(1244),
-            i = n(1679),
-            a = n(1682),
-            r = n(1683);
-        e.exports = class {
+        const o = require(1244),
+            i = require(1679),
+            a = require(1682),
+            r = require(1683);
+        module.exports = class {
             static newInAppPurchase(e) {
                 switch (e) {
                     case o.Windows:

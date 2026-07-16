@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(5);
+module.exports = function (module, exports, require) {
+            var n = require(5);
 
             function r() {
                 throw new Error("No instance");
@@ -8,5 +8,5 @@ module.exports = function (e, t, i) {
                 var t = e.replace(/{|}/g, "").trim().split(",");
                 return new n(parseFloat(t[0]), parseFloat(t[1]));
             }),
-                (e.exports = r));
+                (module.exports = r));
         };

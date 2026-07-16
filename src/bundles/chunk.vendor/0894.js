@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(640);
-            e.exports = function (e) {
+module.exports = function (module, exports, require) {
+            var n = require(640);
+            module.exports = function (e) {
                 ((e.deserializeAsync = function (t, i, r, o, a) {
                     var s = null,
                         l = new n(0, 15, function () {

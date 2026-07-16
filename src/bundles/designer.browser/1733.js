@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         const o = {
             init: function () {
                 let {
                     feature: e,
-                    pro: t = !0,
-                    badgeAlwaysVisible: n = !1,
+                    pro: t = true,
+                    badgeAlwaysVisible: n = false,
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 return this.each(function () {
                     var o = $(this);

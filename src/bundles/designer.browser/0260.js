@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(110),
-            i = n(120),
-            a = n(43),
-            r = n(49),
+        var o = require(110),
+            i = require(120),
+            a = require(43),
+            r = require(49),
             s = a("species");
-        e.exports = function (e) {
+        module.exports = function (e) {
             var t = o(e);
             r &&
                 t &&
                 !t[s] &&
                 i(t, s, {
-                    configurable: !0,
+                    configurable: true,
                     get: function () {
                         return this;
                     },

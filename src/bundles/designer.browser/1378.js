@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        n(3);
-        var i = o(n(1195));
+        var o = require(16);
+        require(3);
+        var i = o(require(1195));
         function a(e, t, n, o) {
             (i.default.Item.call(this, e, t, n), (this._fileId = o));
         }
-        (n(1).GObject.inheritAndMix(a, i.default.Item),
+        (require(1 /* GObject */).GObject.inheritAndMix(a, i.default.Item),
             (a.prototype.isRegistrable = function () {
                 return !!this.getId();
             }),
@@ -16,5 +16,5 @@ module.exports = function (e, t, n) {
             (a.prototype.toString = function () {
                 return "[Object GMarketingFileStorageItem]";
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

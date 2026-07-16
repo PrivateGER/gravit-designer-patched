@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(75),
-                r = i(0),
-                o = i(72),
-                a = i(281),
-                s = i(11),
-                l = i(471),
-                h = i(76);
+module.exports = function (module, exports, require) {
+            var n = require(75),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(72),
+                a = require(281),
+                s = require(11),
+                l = require(471),
+                h = require(76);
 
             function A() {
                 ((this._fontManager = new a()), (this._references = {}), (this._transactionRecorder = new l()));
@@ -17,11 +17,11 @@ module.exports = function (e, t, i) {
                     ("undefined" != typeof OffscreenCanvas && e instanceof OffscreenCanvas)
                 );
             }
-            (r.inherit(A, n),
+            (IsFiniteNonNegativeNumber.inherit(A, n),
                 (A.ResolveUrlEvent = function (e, t, i) {
                     ((this.url = e), (this.scene = t), (this.resolved = i));
                 }),
-                r.inherit(A.ResolveUrlEvent, o),
+                IsFiniteNonNegativeNumber.inherit(A.ResolveUrlEvent, o),
                 (A.ResolveUrlEvent.prototype.url = null),
                 (A.ResolveUrlEvent.prototype.scene = null),
                 (A.ResolveUrlEvent.prototype.resolved = null),
@@ -66,10 +66,10 @@ module.exports = function (e, t, i) {
                     return this._references.hasOwnProperty(e) ? this._references[e] : null;
                 }),
                 (A.prototype.increaseMemoryForImage = function (e) {
-                    if (!e) return !0;
+                    if (!e) return true;
                     if (c(e)) {
                         var t = (e.width * e.height) << 2;
-                        if (this._memory + t <= 1 << 30) return ((this._memory += t), !0);
+                        if (this._memory + t <= 1 << 30) return ((this._memory += t), true);
                     }
                     return "undefined" != typeof HTMLImageElement && e instanceof HTMLImageElement;
                 }),
@@ -83,5 +83,5 @@ module.exports = function (e, t, i) {
                             : this.hasEventListeners(A.ResolveUrlEvent) && this.trigger(new A.ResolveUrlEvent(e, i, t))
                         : t(e);
                 }),
-                (e.exports = A));
+                (module.exports = A));
         };

@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o;
-        e.exports =
+        module.exports =
             ((o =
                 o ||
                 (function (e, t) {

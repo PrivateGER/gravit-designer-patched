@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(948);
+            var n = require(948);
 
             function r() {}
-            (i(269).inherit(r, n), (e.exports = new r()));
+            (require(269).inherit(r, n), (module.exports = new r()));
         };

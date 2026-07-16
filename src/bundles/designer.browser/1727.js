@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(57), n(4), n(13));
+        (require(57), require(4), require(13));
         var o = [];
         function i() {
             if (o.length > 0) {
                 var e = $(o[o.length - 1]);
-                $(e).data("gdialog").closable && e.gDialog("close", !0);
+                $(e).data("gdialog").closable && e.gDialog("close", true);
             }
         }
         document.addEventListener("keydown", function (e) {
@@ -16,19 +16,19 @@ module.exports = function (e, t, n) {
                 return (
                     (e = $.extend(
                         {
-                            releaseOnClose: !0,
+                            releaseOnClose: true,
                             className: "",
                             buttons: null,
                             openCallback: null,
                             closeCallback: null,
-                            nowrap: !1,
+                            nowrap: false,
                             closeTimeout: null,
-                            alwaysCloseable: !1,
+                            alwaysCloseable: false,
                         },
                         e
                     )),
                     this.each(function () {
-                        var t = $(this).data("gdialog", { options: e, closable: !1 });
+                        var t = $(this).data("gdialog", { options: e, closable: false });
                         if (
                             (e.nowrap ||
                                 t.addClass("g-dialog-content").wrap(
@@ -53,7 +53,7 @@ module.exports = function (e, t, n) {
                 var t = $(this),
                     n = t.data("gdialog"),
                     a = n.options || {};
-                n && (n.closable = e || !1);
+                n && (n.closable = e || false);
                 var r = t.closest(".g-dialog"),
                     s = $("<div></div>")
                         .addClass("g-dialog-container")

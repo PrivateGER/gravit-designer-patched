@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(124),
-            i = n(29),
-            a = n(93),
-            r = n(323),
-            s = n(305),
-            l = n(302),
-            c = n(101),
-            d = n(420),
-            u = n(246),
-            p = n(204),
+        var o = require(124),
+            i = require(29),
+            a = require(93),
+            r = require(323),
+            s = require(305),
+            l = require(302),
+            c = require(101),
+            d = require(420),
+            u = require(246),
+            p = require(204),
             g = Array;
-        e.exports = function (e) {
+        module.exports = function (e) {
             var t = a(e),
                 n = l(this),
                 h = arguments.length,
@@ -30,7 +30,7 @@ module.exports = function (e, t, n) {
                 for (y = c(t), v = n ? new this(y) : g(y); y > S; S++) ((C = m ? f(t[S], S) : t[S]), d(v, S, C));
             else
                 for (v = n ? new this() : [], w = (b = u(t, x)).next; !(_ = i(w, b)).done; S++)
-                    ((C = m ? r(b, f, [_.value, S], !0) : _.value), d(v, S, C));
+                    ((C = m ? r(b, f, [_.value, S], true) : _.value), d(v, S, C));
             return ((v.length = S), v);
         };
     };

@@ -1,51 +1,51 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(596), n(30), n(57), n(8), n(20), n(34), n(4), n(41), n(13), n(38), n(97), n(26));
-        var o = n(1),
-            i = n(797),
-            a = n(15),
-            r = n(40),
-            s = n(10),
-            l = n(238),
-            c = n(444),
-            d = n(257),
-            u = n(1253);
-        const p = n(1238);
-        var g = n(44);
-        const h = n(389);
+        (require(19), require(596), require(30), require(57), require(8 /* Symbol */), require(20), require(34), require(4), require(41), require(13), require(38), require(97), require(26));
+        var GObject = require(1),
+            i = require(797),
+            GPlatform = require(15),
+            GSaveAction = require(40),
+            designerConfig = require(10),
+            l = require(238),
+            c = require(444),
+            d = require(257),
+            u = require(1253);
+        const GPatternChooser = require(1238);
+        var GSystemDialog = require(44);
+        const GDocument = require(389);
         var f = {};
         function m(e, t, n) {
             ((this._document = e),
                 (this._options = t),
-                (this._settings = o.GUtil.extend(
+                (this._settings = GObject.GUtil.extend(
                     {
                         size: "1x",
                         format: "png",
-                        jpegQuality: s.JPEG_EXPORT_QUALITY_DEFAULT,
+                        jpegQuality: designerConfig.JPEG_EXPORT_QUALITY_DEFAULT,
                         backgroundColor: e ? e.getScene().getActivePage().getProperty("bck") : null,
                         backgroundOpacity: e ? e.getScene().getActivePage().getProperty("bop") : 1,
                         chooserColor: e ? e.getScene().getActivePage().getProperty("bck") : null,
                         chooserOpacity: e ? e.getScene().getActivePage().getProperty("bop") : 1,
-                        convertTextToPath: !1,
+                        convertTextToPath: false,
                         decimalPlacesPrecision: 3,
                         configuration: {
-                            ignoreEffects: !1,
-                            forceEffectsWhenZoomed: !0,
-                            sceneBackground: !0,
+                            ignoreEffects: false,
+                            forceEffectsWhenZoomed: true,
+                            sceneBackground: true,
                             isOutline: function () {
-                                return !1;
+                                return false;
                             },
                         },
-                        preserveEditingCapabilities: !1,
+                        preserveEditingCapabilities: false,
                         layerNamesAsId: i.GSVGExport.DefaultOptions.layerNamesAsId,
-                        downsampleImages: !1,
+                        downsampleImages: false,
                     },
                     this._options || f
                 )));
             var a = this._isUserFree();
             this.init(a, n);
         }
-        (o.GObject.inherit(m, o.GObject),
+        (GObject.GObject.inherit(m, GObject.GObject),
             (m.prototype._warningSection = null),
             (m.prototype._isUserFree = function () {
                 var e = gDesigner.getLicense();
@@ -71,19 +71,19 @@ module.exports = function (e, t, n) {
                         )
                         .appendTo(this._modeContainer);
                 }.bind(this);
-                (n("canvas", o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.canvas")), d["gravit-icon-display"]),
-                    n("selection", o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.selection")), d["gravit-icon-cursor-filled"]),
-                    n("assets", o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.assets")), "gravit-icon-layers"),
+                (n("canvas", GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.canvas")), d["gravit-icon-display"]),
+                    n("selection", GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.selection")), d["gravit-icon-cursor-filled"]),
+                    n("assets", GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.assets")), "gravit-icon-layers"),
                     (this._settingsContainer = $("<div/>").addClass("settings-container").appendTo(this._setupContainer)));
                 var i = function (n, o, i, a) {
-                        a = $.extend({ controlLeft: !1, forbiddenForFree: !0 }, a);
+                        a = $.extend({ controlLeft: false, forbiddenForFree: true }, a);
                         var s = $("<span></span>").addClass("control").append(i);
                         (e && a.forbiddenForFree
                             ? (s
                                   .find("*")
                                   .on(
                                       "mousedown",
-                                      r.watchDog.trap(
+                                      GSaveAction.watchDog.trap(
                                           null,
                                           null,
                                           (e) => {
@@ -97,7 +97,7 @@ module.exports = function (e, t, n) {
                                   )
                                   .on(
                                       "click",
-                                      r.watchDog.trap(
+                                      GSaveAction.watchDog.trap(
                                           null,
                                           null,
                                           (e) => {
@@ -115,7 +115,7 @@ module.exports = function (e, t, n) {
                                   .gPro()
                                   .on(
                                       "click",
-                                      r.watchDog.trap(null, null, (e) => a.prostats && gDesigner.stats(a.prostats))
+                                      GSaveAction.watchDog.trap(null, null, (e) => a.prostats && gDesigner.stats(a.prostats))
                                   )
                                   .after($("<span></span>").gPro()),
                             a.controlLeft && s.addClass("control-left"),
@@ -128,17 +128,17 @@ module.exports = function (e, t, n) {
                             l
                         );
                     }.bind(this),
-                    a = { controlLeft: !0 };
+                    a = { controlLeft: true };
                 (i(
                     "format",
-                    o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.format")),
+                    GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.format")),
                     $("<select/>")
                         .on(
                             "change",
                             function (e) {
                                 ((this._settings.format = $(e.target).val()),
                                     gDesigner.stats("export_change_documenttype", this._settings.format),
-                                    "pdf" !== this._settings.format && (this._settings.configuration.ignoreEffects = !1),
+                                    "pdf" !== this._settings.format && (this._settings.configuration.ignoreEffects = false),
                                     ("pdf" != this._settings.format && "jpg" != this._settings.format) ||
                                         "no-background" != this._settings.background ||
                                         (this._settings.background = "page-background"),
@@ -151,11 +151,11 @@ module.exports = function (e, t, n) {
                         .append($("<option></option>").attr("value", "jpg").text("JPEG"))
                         .append($("<option></option>").attr("value", "svg").text("SVG"))
                         .append($("<option></option>").attr("value", "pdf").text("PDF")),
-                    { forbiddenForFree: !1 }
+                    { forbiddenForFree: false }
                 ),
                     i(
                         "size",
-                        o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.size")),
+                        GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.size")),
                         $("<div></div>")
                             .addClass("g-input-select")
                             .append(
@@ -228,7 +228,7 @@ module.exports = function (e, t, n) {
                         );
                 i(
                     "jpeg-quality",
-                    o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.jpeg-quality")),
+                    GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.jpeg-quality")),
                     $("<div/>").addClass("jpeg-quality").append(u).append($("<label />").append(p)),
                     { prostats: "export_nonprotriespro_jpeg-quality" }
                 );
@@ -239,7 +239,7 @@ module.exports = function (e, t, n) {
                             .on(
                                 "change",
                                 function (e) {
-                                    (!1 & e.isTrigger && gDesigner.stats("export_change_background-pattern", $(e.target).val()),
+                                    (false & e.isTrigger && gDesigner.stats("export_change_background-pattern", $(e.target).val()),
                                         (this._settings.background = $(e.target).val()),
                                         $(e.target)
                                             .next(".export-background-pattern-chooser")
@@ -251,17 +251,17 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<option></option>")
                                     .attr("value", "page-background")
-                                    .text(o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.page-background")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.page-background")))
                             )
                             .append(
                                 $("<option></option>")
                                     .attr("value", "custom-background")
-                                    .text(o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.custom-background")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.custom-background")))
                             )
                             .append(
                                 $("<option></option>")
                                     .attr("value", "no-background")
-                                    .text(o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.no-background")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.no-background")))
                             )
                     )
                     .append(
@@ -269,9 +269,9 @@ module.exports = function (e, t, n) {
                             .css("display", "custom-background" === this._settings.background ? "" : "none")
                             .addClass("export-background-pattern-chooser")
                             .gPatternChooser({
-                                noEyedropper: !0,
-                                types: [o.GColor],
-                                hasOpacity: !0,
+                                noEyedropper: true,
+                                types: [GObject.GColor],
+                                hasOpacity: true,
                             })
                             .gPatternChooser("value", this._settings.chooserColor)
                             .on("chooseropen", function () {
@@ -298,13 +298,13 @@ module.exports = function (e, t, n) {
                     g.find(".export-background-pattern-chooser").gPatternChooser("setPattern", this._settings.chooserColor),
                     this._settings.chooserOpacity &&
                         g.find(".export-background-pattern-chooser").gPatternChooser("opacity", this._settings.chooserOpacity),
-                    i("background-color", o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.background-color")), g, {
+                    i("background-color", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.background-color")), g, {
                         prostats: "export_nonprotriespro_select-background",
                     }),
-                    g.find('option[value="' + this._settings.background + '"]').prop("selected", !0),
+                    g.find('option[value="' + this._settings.background + '"]').prop("selected", true),
                     i(
                         "color-space",
-                        o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.color-mode")),
+                        GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.color-mode")),
                         $("<select/>")
                             .on(
                                 "change",
@@ -325,7 +325,7 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<input/>")
                                     .attr("type", "checkbox")
-                                    .prop("checked", !0)
+                                    .prop("checked", true)
                                     .on(
                                         "change",
                                         function (e) {
@@ -339,7 +339,7 @@ module.exports = function (e, t, n) {
                                     )
                             )
                             .append(
-                                $("<span></span>").html("&nbsp;" + o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.with-effects")))
+                                $("<span></span>").html("&nbsp;" + GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.with-effects")))
                             ),
                         Object.assign({}, a, {
                             prostats: "export_nonprotriespro_ignore-effects",
@@ -347,7 +347,7 @@ module.exports = function (e, t, n) {
                     ),
                     i(
                         "decimal-places-precision",
-                        o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.decimal-places-precision")),
+                        GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.decimal-places-precision")),
                         $("<input/>")
                             .attr("type", "text")
                             .css("width", "63px")
@@ -360,7 +360,7 @@ module.exports = function (e, t, n) {
                                         (this._settings.decimalPlacesPrecision = parseInt($(e.target).gInputBox("value"))));
                                 }.bind(this)
                             ),
-                        { pro: !0, prostats: "export_nonprotriespro_decimalprecision" }
+                        { pro: true, prostats: "export_nonprotriespro_decimalprecision" }
                     ),
                     i(
                         "convert-text-to-path",
@@ -370,7 +370,7 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<input/>")
                                     .attr("type", "checkbox")
-                                    .prop("checked", !0)
+                                    .prop("checked", true)
                                     .on(
                                         "change",
                                         function (e) {
@@ -384,7 +384,7 @@ module.exports = function (e, t, n) {
                             )
                             .append(
                                 $("<span></span>").html(
-                                    "&nbsp;" + o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.export-as-curves"))
+                                    "&nbsp;" + GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.export-as-curves"))
                                 )
                             ),
                         Object.assign({}, a, {
@@ -399,7 +399,7 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<input/>")
                                     .attr("type", "checkbox")
-                                    .prop("checked", !0)
+                                    .prop("checked", true)
                                     .on(
                                         "change",
                                         function (e) {
@@ -412,7 +412,7 @@ module.exports = function (e, t, n) {
                                     )
                             )
                             .append(
-                                $("<span></span>").html("&nbsp;" + o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.export-all")))
+                                $("<span></span>").html("&nbsp;" + GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.export-all")))
                             ),
                         Object.assign({}, a, {
                             prostats: "export_nonprotriespro_export-all",
@@ -436,15 +436,15 @@ module.exports = function (e, t, n) {
                                     )
                             )
                             .append(
-                                $("<span></span>").html("&nbsp;" + o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.layer-as-id")))
+                                $("<span></span>").html("&nbsp;" + GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.layer-as-id")))
                             )
                             .append(
                                 $("<div></div>")
                                     .addClass("description")
-                                    .html(o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.layer-as-id-info")))
+                                    .html(GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.layer-as-id-info")))
                             ),
                         Object.assign(a, {
-                            pro: !0,
+                            pro: true,
                             prostats: "export_nonprotriespro_layer-as-id",
                         })
                     ),
@@ -456,7 +456,7 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<input/>")
                                     .attr("type", "checkbox")
-                                    .prop("checked", !0)
+                                    .prop("checked", true)
                                     .on(
                                         "change",
                                         function (e) {
@@ -470,20 +470,20 @@ module.exports = function (e, t, n) {
                             )
                             .append(
                                 $("<span></span>").html(
-                                    "&nbsp;" + o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.preserve-svg-editing-capabilites"))
+                                    "&nbsp;" + GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.preserve-svg-editing-capabilites"))
                                 )
                             )
                             .append(
                                 $("<div></div>")
                                     .addClass("description")
                                     .html(
-                                        o.GLocale.get(
-                                            new o.GLocaleKey("GExportDialog", "text.preserve-svg-editing-capabilites-description")
+                                        GObject.GLocale.get(
+                                            new GObject.GLocaleKey("GExportDialog", "text.preserve-svg-editing-capabilites-description")
                                         )
                                     )
                             ),
                         Object.assign(a, {
-                            pro: !0,
+                            pro: true,
                             prostats: "export_nonprotriespro_preserve-svg-editing-capabilities",
                         })
                     ),
@@ -506,19 +506,19 @@ module.exports = function (e, t, n) {
                             )
                             .append(
                                 $("<span></span>").html(
-                                    "&nbsp;" + o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.do-not-downsample-images"))
+                                    "&nbsp;" + GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.do-not-downsample-images"))
                                 )
                             )
                             .append(
                                 $("<div></div>")
                                     .addClass("description")
-                                    .html(o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.do-not-downsample-images-info")))
+                                    .html(GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.do-not-downsample-images-info")))
                             ),
                         Object.assign({}, a, { prostats: "do-not-downsample-images" })
                     ),
                     i(
                         "storage-destination",
-                        o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.export-to")),
+                        GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.export-to")),
                         $("<select/>").on("change", () => {
                             const e = this._getSelectedStorageDestination();
                             e && gDesigner.stats("export_change_output", e.stats);
@@ -526,25 +526,25 @@ module.exports = function (e, t, n) {
                     ),
                     (this._previewContainer = $("<div></div>").addClass("preview-container").appendTo(this._dialog)),
                     (this._sizeMenu = new l()),
-                    this._setActiveMode("canvas", !0),
+                    this._setActiveMode("canvas", true),
                     this._updateSettings(),
                     this._updateSizeMenu(),
                     this._dialog.gDialog({
-                        releaseOnClose: !0,
+                        releaseOnClose: true,
                         className: e ? "g-export-dialog dialog-expired-pro" : "g-export-dialog",
                         buttons: [
-                            $("<button>" + o.GLocale.get(new o.GLocaleKey("GLocale", "cancel")) + "</button>").on("click", () => {
+                            $("<button>" + GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "cancel")) + "</button>").on("click", () => {
                                 (gDesigner.stats("export_cancel_button"), this.close());
                             }),
-                            $("<button>" + o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.export")) + "</button>")
+                            $("<button>" + GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.export")) + "</button>")
                                 .addClass("primary")
                                 .on(
                                     "click",
-                                    r.watchDog.trap(
+                                    GSaveAction.watchDog.trap(
                                         () => {
                                             (gDesigner.stats("export_execute_button", this._settings && this._settings.format),
-                                                gDesigner.getAmplitudeHelper().logEvent(s.AmplitudeData.Events.DOCUMENT_EXPORTED, {
-                                                    DOCUMENT_EXPORT_TYPE: s.AmplitudeData.ExportTypes.Advanced,
+                                                gDesigner.getAmplitudeHelper().logEvent(designerConfig.AmplitudeData.Events.DOCUMENT_EXPORTED, {
+                                                    DOCUMENT_EXPORT_TYPE: designerConfig.AmplitudeData.ExportTypes.Advanced,
                                                     DOCUMENT_FILE_FORMAT: this._getFormat(),
                                                 }),
                                                 this._export());
@@ -559,20 +559,20 @@ module.exports = function (e, t, n) {
                     g.find("select").trigger("change"));
             }),
             (m.prototype.open = function () {
-                this._dialog.gDialog("open", !0);
+                this._dialog.gDialog("open", true);
             }),
             (m.prototype.close = function () {
                 (this._chooserElem && this._chooserElem.gPatternChooser("close"), this._dialog.gDialog("close"));
             }),
             (m.prototype._shouldWarningBeShown = function (e) {
-                if (!this._hasFormat()) return !1;
-                if (!(this._settings.format === h.PDF.ext)) return !1;
-                if (!e || !e.length) return !1;
-                const t = new o.GLength(200, o.GLength.Unit.IN).toUnit(o.GLength.Unit.PX),
-                    n = o.GLength.DPI;
+                if (!this._hasFormat()) return false;
+                if (!(this._settings.format === GDocument.PDF.ext)) return false;
+                if (!e || !e.length) return false;
+                const t = new GObject.GLength(200, GObject.GLength.Unit.IN).toUnit(GObject.GLength.Unit.PX),
+                    n = GObject.GLength.DPI;
                 return e.some((e) => {
                     const o = i.GBitmapExport.getBitmapPaintArea(e.element, e.size, n);
-                    if (o.getWidth() > t || o.getHeight() > t) return !0;
+                    if (o.getWidth() > t || o.getHeight() > t) return true;
                 });
             }),
             (m.prototype._updateWarningSection = function (e) {
@@ -594,12 +594,12 @@ module.exports = function (e, t, n) {
                                     .append(
                                         $("<span/>")
                                             .addClass("title")
-                                            .text(o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.warning")))
+                                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.warning")))
                                     )
                                     .append(
                                         $("<div/>")
                                             .addClass("description")
-                                            .text(o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.canvas-bigger-than-200-in")))
+                                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.canvas-bigger-than-200-in")))
                                     )
                             )
                     );
@@ -631,9 +631,9 @@ module.exports = function (e, t, n) {
             }),
             (m.prototype._getFormat = function () {
                 if (this._hasFormat()) {
-                    if ("assets" === this._activeMode) return h.ZIP.ext;
+                    if ("assets" === this._activeMode) return GDocument.ZIP.ext;
                     if (this._previewContainer.find(".item .preview-check input:checked").length > 1) {
-                        if (!(this._settings.format === h.PDF.ext)) return h.ZIP.ext;
+                        if (!(this._settings.format === GDocument.PDF.ext)) return GDocument.ZIP.ext;
                     }
                     return this._settings.format;
                 }
@@ -669,21 +669,21 @@ module.exports = function (e, t, n) {
                 return "canvas" === this._activeMode || "selection" === this._activeMode;
             }),
             (m.prototype._updateBackground = function () {
-                if (((this._settings.configuration.sceneBackground = !0), !this._hasBackgroundColor()))
+                if (((this._settings.configuration.sceneBackground = true), !this._hasBackgroundColor()))
                     return ((this._settings.backgroundColor = null), void (this._settings.backgroundOpacity = 0));
                 if ("custom-background" !== this._settings.background)
                     ((this._settings.configuration.sceneBackground = "page-background" == this._settings.background),
-                        (this._settings.backgroundColor = "jpg" === this._settings.format ? o.GRGBColor.WHITE : null),
+                        (this._settings.backgroundColor = "jpg" === this._settings.format ? GObject.GRGBColor.WHITE : null),
                         (this._settings.backgroundOpacity = 1));
                 else {
-                    this._settings.configuration.sceneBackground = !1;
+                    this._settings.configuration.sceneBackground = false;
                     var e = this._settingsContainer.find("[data-setting=background-color]").find(".export-background-pattern-chooser");
                     if (
                         (e.gPatternChooser("value")
                             ? ((this._settings.backgroundColor = e.gPatternChooser("value")),
                               (this._settings.backgroundOpacity = e.gPatternChooser("opacity")),
-                              this._settings.backgroundColor instanceof o.GColor ||
-                                  ((this._settings.backgroundColor = o.GRGBColor.WHITE),
+                              this._settings.backgroundColor instanceof GObject.GColor ||
+                                  ((this._settings.backgroundColor = GObject.GRGBColor.WHITE),
                                   (this._settings.backgroundOpacity = 1),
                                   e.gPatternChooser("value", this._settings.backgroundColor),
                                   e.gPatternChooser("opacity", this._settings.backgroundOpacity)))
@@ -693,18 +693,18 @@ module.exports = function (e, t, n) {
                               (this._settings.backgroundOpacity = this._document
                                   ? this._document.getScene().getActivePage().getProperty("bop")
                                   : 1),
-                              this._settings.backgroundColor && this._settings.backgroundColor instanceof o.GColor
+                              this._settings.backgroundColor && this._settings.backgroundColor instanceof GObject.GColor
                                   ? null == this._settings.backgroundOpacity && (this._settings.backgroundOpacity = 1)
-                                  : ((this._settings.backgroundOpacity = 1), (this._settings.backgroundColor = o.GRGBColor.WHITE)),
+                                  : ((this._settings.backgroundOpacity = 1), (this._settings.backgroundColor = GObject.GRGBColor.WHITE)),
                               e.gPatternChooser("value", this._settings.backgroundColor),
                               e.gPatternChooser("opacity", this._settings.backgroundOpacity)),
                         "jpg" === this._settings.format)
                     ) {
-                        var t = o.GRGBColor.WHITE.getValue().slice(),
+                        var t = GObject.GRGBColor.WHITE.getValue().slice(),
                             n = this._settings.backgroundColor.getValue().slice();
                         ((t[3] = 1), (n[3] = this._settings.backgroundOpacity));
-                        var i = o.GRGBColor.mix(t, n);
-                        ((this._settings.backgroundColor = new o.GRGBColor(i)), (this._settings.backgroundOpacity = 1));
+                        var i = GObject.GRGBColor.mix(t, n);
+                        ((this._settings.backgroundColor = new GObject.GRGBColor(i)), (this._settings.backgroundOpacity = 1));
                     }
                 }
             }),
@@ -764,12 +764,12 @@ module.exports = function (e, t, n) {
                     this._settingsContainer
                         .find("[data-setting=format]")
                         .find("[value=" + this._settings.format + "]")
-                        .attr("selected", !0),
+                        .attr("selected", true),
                     this._settings.colorSpace &&
                         this._settingsContainer
                             .find("[data-setting=color-space]")
                             .find("[value=" + this._settings.colorSpace + "]")
-                            .attr("selected", !0),
+                            .attr("selected", true),
                     this._settingsContainer
                         .find("[data-setting=do-not-downsample-images]")
                         .css("display", this._hasFormat() && "pdf" === this._settings.format ? "" : "none")
@@ -784,7 +784,7 @@ module.exports = function (e, t, n) {
                         .css("display", "selection" === this._activeMode ? "none" : ""),
                     $(".export-background-selector")
                         .find('option[value="' + this._settings.background + '"]')
-                        .prop("selected", !0),
+                        .prop("selected", true),
                     this._updateStorageDestinationSetting());
             }),
             (m.prototype._generateExportables = function () {
@@ -806,11 +806,11 @@ module.exports = function (e, t, n) {
                         downsampleImages: this._settings.downsampleImages,
                     };
                     if ("canvas" === this._activeMode)
-                        return u.generateExportables(this._document.getScene(), $.extend({ name: this._document.getTitle() }, e), !1);
+                        return u.generateExportables(this._document.getScene(), $.extend({ name: this._document.getTitle() }, e), false);
                     var t = this._document.getEditor().getSelection();
-                    return t && t.length ? u.generateExportables(t, e, !1) : [];
+                    return t && t.length ? u.generateExportables(t, e, false) : [];
                 }
-                if ("assets" === this._activeMode) return u.generateExportables(this._document.getScene(), null, !0);
+                if ("assets" === this._activeMode) return u.generateExportables(this._document.getScene(), null, true);
             }),
             (m.prototype._export = async function (e) {
                 this._options || (f = this._settings);
@@ -827,8 +827,8 @@ module.exports = function (e, t, n) {
                         for (var l = [], c = 0; c < t.length; ++c)
                             for (var d = 0; d < s.length; ++d) {
                                 if (
-                                    (s[d] instanceof o.GPage &&
-                                        t[c].element instanceof o.GPage &&
+                                    (s[d] instanceof GObject.GPage &&
+                                        t[c].element instanceof GObject.GPage &&
                                         s[d].getReferenceId() === t[c].element.getReferenceId()) ||
                                     s[d] === t[c].element
                                 ) {
@@ -842,16 +842,16 @@ module.exports = function (e, t, n) {
                     if (
                         t.some((e) => {
                             if ("jpg" === e.format || "png" === e.format) {
-                                var t = o.GLength.DPI,
+                                var t = GObject.GLength.DPI,
                                     n = i.GBitmapExport.getBitmapPaintArea(e.element, e.size, t);
-                                if (n.getWidth() > h.width || n.getHeight() > h.height || n.getWidth() * n.getHeight() > h.area) return !0;
+                                if (n.getWidth() > h.width || n.getHeight() > h.height || n.getWidth() * n.getHeight() > h.area) return true;
                             }
-                            return !1;
+                            return false;
                         })
                     )
-                        return void g
+                        return void GSystemDialog
                             .alert(
-                                o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.default-limit"))
+                                GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.default-limit"))
                                     .replace("%width", h.width)
                                     .replace("%height", h.height)
                                     .replace("%area", h.area / 1024 / 1024 + "MP")
@@ -864,11 +864,11 @@ module.exports = function (e, t, n) {
                                 !i.GPDFExport.isSupported(e.element, !e.configuration || !e.configuration.ignoreEffects, e.size)
                         )
                     )
-                        return void g
+                        return void GSystemDialog
                             .alert(
-                                o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.pdf-limit")).replace(
+                                GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.pdf-limit")).replace(
                                     "%limit",
-                                    Math.round(a.GPlatform.maxPngDataSize / 1024 / 1024) + "MB"
+                                    Math.round(GPlatform.GPlatform.maxPngDataSize / 1024 / 1024) + "MB"
                                 )
                             )
                             .css({ width: "500px" });
@@ -877,7 +877,7 @@ module.exports = function (e, t, n) {
                         if (e && !(await this._checkWriteAccess(e))) return;
                         var m = $("<div></div>")
                                 .addClass("export-overlay")
-                                .text(o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.exporting")) + "...")
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.exporting")) + "...")
                                 .appendTo(this._dialog),
                             y = $("<div></div>").addClass("message").append($("<span></span>"));
                         let n = {
@@ -886,17 +886,17 @@ module.exports = function (e, t, n) {
                                 y.find("span").text(e);
                             },
                             close: () => m.remove(),
-                            error: () => n.message(o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.pdf-export-error"))),
+                            error: () => n.message(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.pdf-export-error"))),
                         };
                         const a = { storageDestination: e },
                             r = (e) => {
-                                e && g.error(e, { closeCallback: () => this.close() });
+                                e && GSystemDialog.error(e, { closeCallback: () => this.close() });
                             };
                         (t.length &&
                             "pdf" === t[0].format &&
                             (m.append(
                                 $("<button>")
-                                    .text(o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.cancel")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.cancel")))
                                     .on("click", () => {
                                         (n.abort && n.abort(), n.close());
                                     })
@@ -907,11 +907,11 @@ module.exports = function (e, t, n) {
                                 this._document.getStorage() || gDesigner.getDefaultStorage(),
                                 this._document.getTitle(),
                                 () => {
-                                    if ((this.close(), !gDesigner.getSetting("disable_warning_unsupported_features", !1))) {
+                                    if ((this.close(), !gDesigner.getSetting("disable_warning_unsupported_features", false))) {
                                         let e = [];
                                         for (let n of t)
                                             "svg" === n.format && (e = e.concat(i.GSVGExport.getUnsupportedFeatures(n.element)));
-                                        e.length && new p(e).open();
+                                        e.length && new GPatternChooser(e).open();
                                     }
                                 },
                                 () => this.close(),
@@ -937,7 +937,7 @@ module.exports = function (e, t, n) {
                 const t = this._document.getStorage() || gDesigner.getDefaultStorage(),
                     n = await t.getWritePermission(e),
                     o = n.isAuthorized();
-                return (!o && n.hasStatusText() && g.error(n.getStatusText(), { showTitle: !1 }), o);
+                return (!o && n.hasStatusText() && GSystemDialog.error(n.getStatusText(), { showTitle: false }), o);
             }),
             (m.prototype._formatCaption = function (e) {
                 return "pdf" === this._settings.format ? e.replace(/[^0-9\.]/g, "") + "dpi" : e;
@@ -948,10 +948,10 @@ module.exports = function (e, t, n) {
                 if ("pdf" === this._settings.format) {
                     const t = this._document && this._document.getScene() && this._document.getScene().getProperty("dpi");
                     ((e = isNaN(t) ? "72dpi" : t + "dpi"),
-                        this._sizeMenu.createAddItem(o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.default")) + " (72dpi)"),
-                        this._sizeMenu.createAddItem(o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.web")) + " (96dpi)"),
-                        this._sizeMenu.createAddItem(o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.medium-quality")) + " (150dpi)"),
-                        this._sizeMenu.createAddItem(o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.high-quality")) + " (300dpi)"));
+                        this._sizeMenu.createAddItem(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.default")) + " (72dpi)"),
+                        this._sizeMenu.createAddItem(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.web")) + " (96dpi)"),
+                        this._sizeMenu.createAddItem(GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.medium-quality")) + " (150dpi)"),
+                        this._sizeMenu.createAddItem(GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.high-quality")) + " (300dpi)"));
                 } else
                     (this._sizeMenu.createAddItem("1x"),
                         this._sizeMenu.createAddItem("2x"),
@@ -983,7 +983,7 @@ module.exports = function (e, t, n) {
                                     .append(
                                         $("<span></span>")
                                             .addClass("text")
-                                            .text(o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.preparing-preview")) + "...")
+                                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.preparing-preview")) + "...")
                                     )
                                     .appendTo(this._previewContainer),
                                 a = [],
@@ -1022,12 +1022,12 @@ module.exports = function (e, t, n) {
                             l = a[r];
                             var p,
                                 g,
-                                h = o.GBitmap.ImageType.PNG,
+                                h = GObject.GBitmap.ImageType.PNG,
                                 f = null;
-                            "jpg" === l.format && ((h = o.GBitmap.ImageType.JPEG), (f = (l.jpegQuality || 100) / 100));
+                            "jpg" === l.format && ((h = GObject.GBitmap.ImageType.JPEG), (f = (l.jpegQuality || 100) / 100));
                             var m = window.devicePixelRatio;
                             if (d) {
-                                var y = new o.GLength(50, o.GLength.Unit.PX);
+                                var y = new GObject.GLength(50, GObject.GLength.Unit.PX);
                                 p = (g = l.element.toBitmap(
                                     y,
                                     y,
@@ -1043,8 +1043,8 @@ module.exports = function (e, t, n) {
                                 var _ = l.element._getBitmapPaintArea(),
                                     b = [0],
                                     w = i.GBitmapExport.convertSizeToScale(_.getWidth(), _.getHeight(), l.size, null, b),
-                                    C = _.getWidth() * (b[0] / o.GLength.DPI) * w.getX(),
-                                    x = _.getHeight() * (b[0] / o.GLength.DPI) * w.getY(),
+                                    C = _.getWidth() * (b[0] / GObject.GLength.DPI) * w.getX(),
+                                    x = _.getHeight() * (b[0] / GObject.GLength.DPI) * w.getY(),
                                     S = l.size;
                                 ((C > 1920 || x > 1080) && (S = Math.min(1920 / _.getWidth(), 1080 / _.getHeight()) + "x"),
                                     (p = (g = i.GBitmapExport.export(
@@ -1054,7 +1054,7 @@ module.exports = function (e, t, n) {
                                         l.configuration,
                                         null,
                                         l.backgroundOpacity,
-                                        !0
+                                        true
                                     )).toImageDataUrl(h, f)));
                             }
                             var E = g.getWidth() / m,
@@ -1062,7 +1062,7 @@ module.exports = function (e, t, n) {
                                 T = $("<img />").attr("src", p),
                                 G = $("<div></div>")
                                     .addClass("preview-image")
-                                    .css("background", o.GPattern.asCSSBackground(null, 0))
+                                    .css("background", GObject.GPattern.asCSSBackground(null, 0))
                                     .append(T);
                             if ((u.push({ img: T, w: E, h: A, preview: G }), d)) {
                                 var P = "";
@@ -1097,13 +1097,13 @@ module.exports = function (e, t, n) {
                             case "selection":
                                 $("<div></div>")
                                     .addClass("empty")
-                                    .text(o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.selection-warning")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.selection-warning")))
                                     .appendTo(this._previewContainer);
                                 break;
                             case "assets":
                                 $("<div></div>")
                                     .addClass("empty")
-                                    .text(o.GLocale.get(new o.GLocaleKey("GExportDialog", "text.assets-warning")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GExportDialog", "text.assets-warning")))
                                     .appendTo(this._previewContainer);
                         }
                 } finally {
@@ -1132,5 +1132,5 @@ module.exports = function (e, t, n) {
                                 break;
                             }
             }),
-            (e.exports = m));
+            (module.exports = m));
     };

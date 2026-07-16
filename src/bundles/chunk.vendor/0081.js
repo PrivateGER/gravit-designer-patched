@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(17),
-                r = i(6),
-                o = i(5),
-                a = i(24),
-                s = i(14),
+module.exports = function (module, exports, require) {
+            var n = require(17),
+                r = require(6),
+                o = require(5),
+                a = require(24),
+                s = require(14),
                 l = {};
             var h = {
                 SHADOW_SIZE: 2,
@@ -46,7 +46,7 @@ module.exports = function (e, t, i) {
                                     (t.moveTo(v - i, b - i), t.lineTo(v + i, b - i), t.lineTo(v + i, b + i), t.lineTo(v - i, b + i));
                                     break;
                                 case "circle":
-                                    t.arc(v, b, i, 0, 2 * Math.PI, !1);
+                                    t.arc(v, b, i, 0, 2 * Math.PI, false);
                                     break;
                                 case "diamond":
                                     (t.moveTo(v - i - 1, b), t.lineTo(v, b - i - 1), t.lineTo(v + i + 1, b), t.lineTo(v, b + i + 1));
@@ -82,7 +82,7 @@ module.exports = function (e, t, i) {
                     t && (i = t.mapPoint(i));
                     var y = Math.floor(i.getX() - m.width / 2),
                         _ = Math.floor(i.getY() - m.height / 2);
-                    e.canvas.drawImage(m, y, _, !0);
+                    e.canvas.drawImage(m, y, _, true);
                 },
                 getAnnotationBBox: function (e, t, i, n) {
                     ((t = t || new o(0, 0)), e && (t = e.mapPoint(t)));
@@ -99,5 +99,5 @@ module.exports = function (e, t, i) {
                     return e + 4 + h.SHADOW_SIZE * a.outlineWidth * 4;
                 },
             };
-            e.exports = h;
+            module.exports = h;
         };

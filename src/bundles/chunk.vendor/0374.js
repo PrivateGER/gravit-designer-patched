@@ -1,4 +1,4 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
             const n = {
                     SharePoint: "sharepoint",
@@ -14,7 +14,7 @@ module.exports = function (e, t, i) {
                         code: n.GoogleDrive,
                     },
                 ];
-            e.exports = {
+            module.exports = {
                 supportedApps: n,
                 externalApps: r,
                 REQUEST_NEW_FEATURE_URL: "https://corelvector.ideas.aha.io/",

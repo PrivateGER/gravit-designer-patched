@@ -1,37 +1,37 @@
-module.exports = function (e, t, i) {
-            var n = i(50),
-                r = i(2),
-                o = i(76),
-                a = i(915),
-                s = i(0),
-                l = i(11),
-                h = i(72),
-                A = i(132),
-                c = i(69),
-                p = i(104),
-                u = i(22),
-                d = i(45),
-                g = i(83),
-                f = i(472),
-                m = i(6),
-                y = i(7),
-                _ = i(63),
-                v = i(511),
-                b = i(658),
-                C = i(933),
-                w = i(9),
-                E = i(47),
-                B = i(207),
-                x = i(662),
-                P = i(517),
-                S = i(14),
-                T = i(12),
-                I = i(118),
-                F = i(111),
-                R = i(103),
-                D = i(140),
-                k = i(59),
-                G = i(68);
+module.exports = function (module, exports, require) {
+            var n = require(50),
+                r = require(2),
+                o = require(76),
+                a = require(915),
+                IsFiniteNonNegativeNumber = require(0),
+                l = require(11),
+                h = require(72),
+                A = require(132),
+                c = require(69),
+                p = require(104),
+                u = require(22),
+                d = require(45),
+                g = require(83),
+                f = require(472),
+                m = require(6),
+                y = require(7),
+                _ = require(63),
+                v = require(511),
+                b = require(658),
+                C = require(933),
+                String = require(9),
+                E = require(47),
+                B = require(207),
+                x = require(662),
+                P = require(517),
+                S = require(14),
+                T = require(12),
+                I = require(118),
+                F = require(111),
+                DUMP_IMAGES = require(103),
+                D = require(140),
+                k = require(59),
+                G = require(68);
 
             function Q(e, t) {
                 (u.call(this),
@@ -49,7 +49,7 @@ module.exports = function (e, t, i) {
                     this._setDefaultProperties(Q.MetaProperties, Q.GeometryProperties, Q.VisualProperties),
                     t || this.insertPage());
             }
-            (i(507),
+            (require(507),
                 r.inheritAndMix("scene", Q, u, [r.Container, r.Properties, r.Store, u.Accelerated]),
                 (Q.AXONO_ANGLE1 = Math.PI / 6),
                 (Q.AXONO_ANGLE2 = -Q.AXONO_ANGLE1),
@@ -64,8 +64,8 @@ module.exports = function (e, t, i) {
                     v: 10,
                     lmd: 0,
                     cid: null,
-                    cfs: !1,
-                    can: !1,
+                    cfs: false,
+                    can: false,
                     asec: null,
                     ut: A.Unit.PX,
                     ur: 1,
@@ -82,7 +82,7 @@ module.exports = function (e, t, i) {
                     name: null,
                     _links: {},
                     __ids: [],
-                    rb: !1,
+                    rb: false,
                     cst: null,
                     dpi: A.DPI,
                     pi: 0,
@@ -91,7 +91,7 @@ module.exports = function (e, t, i) {
                 (Q.inheritedPageProps = ["w", "h", "ml", "mt", "mr", "mb", "bl", "bck", "bop"]),
                 (Q.GeometryProperties = {
                     pgx: 2,
-                    mp: !1,
+                    mp: false,
                 }),
                 (Q.VisualProperties = {
                     lbs: 10,
@@ -114,7 +114,7 @@ module.exports = function (e, t, i) {
                         i = i.getParent();
                     }
                 }),
-                s.inherit(Q.InvalidationRequestEvent, h),
+                IsFiniteNonNegativeNumber.inherit(Q.InvalidationRequestEvent, h),
                 (Q.InvalidationRequestEvent.prototype.area = null),
                 (Q.InvalidationRequestEvent.prototype.page = null),
                 (Q.InvalidationRequestEvent.prototype.toString = function () {
@@ -123,7 +123,7 @@ module.exports = function (e, t, i) {
                 (Q.InvalidationFinishedEvent = function (e, t, i) {
                     ((this.scene = e), (this.configuration = t), (this.wasDirty = i));
                 }),
-                s.inherit(Q.InvalidationFinishedEvent, h),
+                IsFiniteNonNegativeNumber.inherit(Q.InvalidationFinishedEvent, h),
                 (Q.InvalidationFinishedEvent.prototype.scene = null),
                 (Q.InvalidationFinishedEvent.prototype.configuration = null),
                 (Q.InvalidationFinishedEvent.prototype.wasDirty = null),
@@ -133,7 +133,7 @@ module.exports = function (e, t, i) {
                 (Q.RecordedTransactionStartedEvent = function (e) {
                     this.scene = e;
                 }),
-                s.inherit(Q.RecordedTransactionStartedEvent, h),
+                IsFiniteNonNegativeNumber.inherit(Q.RecordedTransactionStartedEvent, h),
                 (Q.RecordedTransactionStartedEvent.prototype.scene = null),
                 (Q.RecordedTransactionStartedEvent.prototype.toString = function () {
                     return "[Event GScene.RecordedTransactionStartedEvent]";
@@ -141,7 +141,7 @@ module.exports = function (e, t, i) {
                 (Q.RecordedTransactionFinishedEvent = function (e) {
                     this.scene = e;
                 }),
-                s.inherit(Q.RecordedTransactionFinishedEvent, h),
+                IsFiniteNonNegativeNumber.inherit(Q.RecordedTransactionFinishedEvent, h),
                 (Q.RecordedTransactionFinishedEvent.prototype.scene = null),
                 (Q.RecordedTransactionFinishedEvent.prototype.toString = function () {
                     return "[Event GScene.RecordedTransactionFinishedEvent]";
@@ -149,22 +149,22 @@ module.exports = function (e, t, i) {
                 (Q.prototype._activePage = null),
                 (Q.prototype._linksLookup = null),
                 (Q.prototype._temporarilyDisabledLinks = null),
-                (Q.prototype._linksAreSane = !0),
+                (Q.prototype._linksAreSane = true),
                 (Q.prototype._invalidateFrom = 0),
                 (Q.prototype._pendingActions = null),
-                (Q.prototype._callingPendingActions = !1),
+                (Q.prototype._callingPendingActions = false),
                 (Q.prototype._styles = null),
                 (Q.prototype._swatches = null),
-                (Q.prototype._duringRecordedTransaction = !1),
+                (Q.prototype._duringRecordedTransaction = false),
                 (Q.prototype._lastInvalidationFinishedEvent = null),
-                (Q.prototype._pre310 = !1),
+                (Q.prototype._pre310 = false),
                 (Q.prototype._trfSettings = null),
                 (Q.prototype._dictionary = null),
                 (Q.prototype._symbolDictionary = null),
                 (Q.prototype._destroyables = null),
                 (Q.prototype._savedScreenBBox = null),
                 (Q.prototype._referenceCounter = 0),
-                (Q.prototype._released = !1),
+                (Q.prototype._released = false),
                 (Q.prototype._lastTimeAnnotationsFromCloudModified = 0),
                 (Q.prototype.getDictionary = function () {
                     return this._dictionary;
@@ -176,7 +176,7 @@ module.exports = function (e, t, i) {
                     return this._released;
                 }),
                 (Q.prototype.releaseDictionaries = function () {
-                    ((this._released = !0),
+                    ((this._released = true),
                         this._dictionary.release(),
                         this._symbolDictionary.release(),
                         this.getWorkspace().cleanReferences(this));
@@ -187,16 +187,16 @@ module.exports = function (e, t, i) {
                         this.iteratePages(function (t) {
                             var i = t.getAnnotations();
                             i && e.push(i);
-                        }, !0),
+                        }, true),
                         e
                     );
                 }),
                 (Q.prototype.hasAnnotations = function () {
-                    var e = !1;
+                    var e = false;
                     return (
                         this.iteratePages(function (t) {
                             e = e || t.hasAnnotations();
-                        }, !0),
+                        }, true),
                         e
                     );
                 }),
@@ -205,7 +205,7 @@ module.exports = function (e, t, i) {
                     if (
                         (this.iteratePages(function (e) {
                             t.push(e);
-                        }, !0),
+                        }, true),
                         e.length !== t.length)
                     )
                         throw "Invalid number of pages or annotations";
@@ -214,7 +214,7 @@ module.exports = function (e, t, i) {
                 (Q.prototype.cleanAnnotations = function () {
                     this.iteratePages(function (e) {
                         e.setAnnotations(null);
-                    }, !0);
+                    }, true);
                 }),
                 (Q.prototype.getLastTimeAnnotationsFromCloudModified = function () {
                     return this._lastTimeAnnotationsFromCloudModified;
@@ -223,7 +223,7 @@ module.exports = function (e, t, i) {
                     this._lastTimeAnnotationsFromCloudModified = e;
                 }),
                 (Q.prototype.removeSymbol = function (e) {
-                    (this._symbolDictionary.removeEntry(e.getMultireferenceId(), !0),
+                    (this._symbolDictionary.removeEntry(e.getMultireferenceId(), true),
                         this.visitLinks(e, function (e) {
                             "symbol" === r.getName(e) && e.getParent().removeChild(e);
                         }),
@@ -235,7 +235,7 @@ module.exports = function (e, t, i) {
                 }),
                 (Q.prototype.hasLinkedFiles = function () {
                     for (
-                        var e, t = this._dictionary.getEntries(), i = !1, n = 0, r = t.length;
+                        var e, t = this._dictionary.getEntries(), i = false, n = 0, r = t.length;
                         n < r && !(i = (e = t[n].value) && 0 === e.indexOf("file://") && t[n].hasReferences());
                         n++
                     );
@@ -248,7 +248,7 @@ module.exports = function (e, t, i) {
                     return !!this.$cid && this.$cfs;
                 }),
                 (Q.prototype.setCloudAnnotations = function (e) {
-                    e ? this.setProperties(["cid", "can"], [e, !0]) : this.setProperties(["can"], [!1]);
+                    e ? this.setProperties(["cid", "can"], [e, true]) : this.setProperties(["can"], [false]);
                 }),
                 (Q.prototype.isCloudAnnotations = function () {
                     return !!this.$cid && (this.$can || this.$cfs);
@@ -286,10 +286,10 @@ module.exports = function (e, t, i) {
                                                     i.hasEventListeners(f))
                                                 ) {
                                                     var a = this._workspace.getReference(t._referenceId);
-                                                    i.trigger(new f(a, i, !0));
+                                                    i.trigger(new f(a, i, true));
                                                 }
                                                 var s = e[t._referenceId];
-                                                if ((s || (s = []), s.push(i), (e[t._referenceId] = s), ++n === i.$rtxt.length)) return !1;
+                                                if ((s || (s = []), s.push(i), (e[t._referenceId] = s), ++n === i.$rtxt.length)) return false;
                                             }
                                         }.bind(this)
                                     ),
@@ -323,19 +323,19 @@ module.exports = function (e, t, i) {
                                                 A.getReferenceId() === _.getProperty("sref") &&
                                                     (l.push(_),
                                                     h.push(_.getSceneId()),
-                                                    _.hasEventListeners(f) && _.trigger(new f(A, _, !0))));
+                                                    _.hasEventListeners(f) && _.trigger(new f(A, _, true))));
                                         }
                                     } else {
                                         for (var p, m = [], y = 0; y < h.length; y++) {
-                                            p = !1;
+                                            p = false;
                                             for (c = 0; c < a.length; c++) {
                                                 var _;
                                                 if (n[c] === h[y])
                                                     if ((_ = a[c]).getWorkspace()) {
                                                         (l.push(_),
                                                             (h[y] = _.getSceneId()),
-                                                            _.hasEventListeners(f) && _.trigger(new f(A, _, !0)),
-                                                            (p = !0));
+                                                            _.hasEventListeners(f) && _.trigger(new f(A, _, true)),
+                                                            (p = true));
                                                         break;
                                                     }
                                             }
@@ -396,9 +396,9 @@ module.exports = function (e, t, i) {
                         this._linksLookup || (this._linksLookup = {});
                         var r,
                             o,
-                            a = !1;
+                            a = false;
                         if (n.hasOwnProperty(i))
-                            (o = (r = n[i]).indexOf(t.getSceneId())) >= 0 && (r.splice(o, 1), 0 === r.length && delete n[i], (a = !0));
+                            (o = (r = n[i]).indexOf(t.getSceneId())) >= 0 && (r.splice(o, 1), 0 === r.length && delete n[i], (a = true));
                         if (!a && this._temporarilyDisabledLinks)
                             if (this._temporarilyDisabledLinks.hasOwnProperty(i))
                                 if ((r = n[i])) (o = r.indexOf(t.getSceneId())) >= 0 && (r.splice(o, 1), 0 === r.length && delete n[i]);
@@ -425,7 +425,7 @@ module.exports = function (e, t, i) {
                     var i, n;
                     if (((i = e instanceof o ? e.getSceneId() : e), "string" == typeof t)) n = t;
                     else {
-                        if (!t || !t.hasMixin(r.Reference)) return !1;
+                        if (!t || !t.hasMixin(r.Reference)) return false;
                         n = t.getReferenceId();
                     }
                     return !!this.$_links.hasOwnProperty(n) && !(this.$_links[n].indexOf(i) < 0);
@@ -442,7 +442,7 @@ module.exports = function (e, t, i) {
                             var n = this._linksLookup[i];
                             if (n) {
                                 n = n.slice();
-                                for (var r = 0; r < n.length; ++r) if (!1 === t(n[r])) return;
+                                for (var r = 0; r < n.length; ++r) if (false === t(n[r])) return;
                             }
                         }
                     } else
@@ -453,7 +453,7 @@ module.exports = function (e, t, i) {
                         );
                 }),
                 (Q.prototype.hasLinks = function (e) {
-                    if (!e) return !1;
+                    if (!e) return false;
                     var t = null;
                     return ((t = "string" == typeof e ? e : e.getReferenceId()), this.$_links.hasOwnProperty(t));
                 }),
@@ -462,16 +462,16 @@ module.exports = function (e, t, i) {
                     if (i)
                         for (var n = t.getSceneId(), r = i.length, a = 0; a < r; a++) {
                             var s = i[a];
-                            if (s && s instanceof o && s.getSceneId() === n) return !0;
+                            if (s && s instanceof o && s.getSceneId() === n) return true;
                         }
-                    return !1;
+                    return false;
                 }),
                 (Q.prototype.hasReferences = function (e) {
-                    if (!e) return !1;
+                    if (!e) return false;
                     if ("string" == typeof e) {
-                        for (var t in this.$_links) if (this.$_links[t].indexOf(e) >= 0) return !0;
-                    } else if (this._linksLookup) for (var t in this.$_links) if (this._linkLookupHasSceneNode(t, e)) return !0;
-                    return !1;
+                        for (var t in this.$_links) if (this.$_links[t].indexOf(e) >= 0) return true;
+                    } else if (this._linksLookup) for (var t in this.$_links) if (this._linkLookupHasSceneNode(t, e)) return true;
+                    return false;
                 }),
                 (Q.prototype.linkCount = function (e) {
                     var t = null;
@@ -492,10 +492,10 @@ module.exports = function (e, t, i) {
                     return t;
                 }),
                 (Q.prototype.startBlockReferenceChanges = function () {
-                    this.setProperty("rb", !0);
+                    this.setProperty("rb", true);
                 }),
                 (Q.prototype.endBlockReferenceChanges = function (e) {
-                    (this.setProperty("rb", !1), e || (this._cleanupLinks(this.$_links), (this._temporarilyDisabledLinks = null)));
+                    (this.setProperty("rb", false), e || (this._cleanupLinks(this.$_links), (this._temporarilyDisabledLinks = null)));
                 }),
                 (Q.prototype._cleanupLinks = function (e) {
                     var t = {};
@@ -503,9 +503,9 @@ module.exports = function (e, t, i) {
                         var n = this._linksLookup[i];
                         if (n) {
                             for (var r = e[i], o = r.length - 1; o >= 0; o--) {
-                                for (var a = r[o], s = !1, l = 0; l < n.length; l++) {
+                                for (var a = r[o], s = false, l = 0; l < n.length; l++) {
                                     if (n[l].getSceneId() === a) {
-                                        s = !0;
+                                        s = true;
                                         break;
                                     }
                                 }
@@ -589,7 +589,7 @@ module.exports = function (e, t, i) {
                     var e,
                         t = this.queryCount("page"),
                         i = ["name"],
-                        n = [w.get(new E("GScene", "page")) + " " + (t + 1).toString()],
+                        n = [String.get(new E("GScene", "page")) + " " + (t + 1).toString()],
                         r = null;
                     (this.$mpg || this.$ompg || this.$empg) &&
                         (r = (t + 1) % 2 == 0 ? (this.$empg ? this.$empg : this.$mpg) : this.$ompg ? this.$ompg : this.$mpg);
@@ -610,15 +610,15 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (Q.prototype.getNodeNameTranslated = function () {
-                    return w.getValue("GScene", "name", this.getNodeName());
+                    return String.getValue("GScene", "name", this.getNodeName());
                 }),
                 (Q.prototype.iteratePages = function (e, t, i) {
                     if (i) {
                         for (var n = this.getLastChild(); null !== n; n = n.getPrevious())
-                            if (n instanceof g && (t || n.$vis) && !1 === e(n)) return;
+                            if (n instanceof g && (t || n.$vis) && false === e(n)) return;
                     } else
                         for (n = this.getFirstChild(); null !== n; n = n.getNext())
-                            if (n instanceof g && (t || n.$vis) && !1 === e(n)) return;
+                            if (n instanceof g && (t || n.$vis) && false === e(n)) return;
                 }),
                 (Q.prototype.getActivePage = function () {
                     if (this._activePage && !this._activePage.hasFlag(r.Flag.Active))
@@ -747,13 +747,13 @@ module.exports = function (e, t, i) {
                 }),
                 (Q.prototype._finishPaint = function (e) {
                     this.hasEventListeners(Q.InvalidationFinishedEvent) &&
-                        this.trigger(new Q.InvalidationFinishedEvent(this, e.configuration, !0));
+                        this.trigger(new Q.InvalidationFinishedEvent(this, e.configuration, true));
                 }),
                 (Q.prototype._paintChildren = function (e, t) {
-                    var i = !1;
+                    var i = false;
                     if (e.configuration.clipArea && e.canvas.hasClip()) {
                         var n = e.configuration.clipArea;
-                        (e.canvas.clipRect(n.getX(), n.getY(), n.getWidth(), n.getHeight()), (i = !0));
+                        (e.canvas.clipRect(n.getX(), n.getY(), n.getWidth(), n.getHeight()), (i = true));
                     }
                     var o = e.canvas.getOrigin(),
                         a = e.canvas.getScale(),
@@ -775,7 +775,7 @@ module.exports = function (e, t, i) {
                         for (var c = 0; c < A.length; c++)
                             ((node = A[c]),
                                 node instanceof g &&
-                                    ((h = node.getPosition(!0)),
+                                    ((h = node.getPosition(true)),
                                     e.canvas.setOrigin(o.subtract(h.scale(a))),
                                     e.dirtyMatcher &&
                                         ((l = new y(1, 0, 0, 1, -h.getX(), -h.getY())),
@@ -790,7 +790,7 @@ module.exports = function (e, t, i) {
                     return e || u.prototype._getBitmapPaintArea.call(this);
                 }),
                 (Q.prototype._paintToBitmap = function (e) {
-                    return ((e.configuration.clipToPage = !0), u.prototype._paintToBitmap.call(this, e));
+                    return ((e.configuration.clipToPage = true), u.prototype._paintToBitmap.call(this, e));
                 }),
                 (Q.prototype.getPaintBBox = function (e, t, i) {
                     if (!i && !this.isVisible()) return null;
@@ -852,7 +852,7 @@ module.exports = function (e, t, i) {
                     if (o) {
                         var h = t & u.CollisionFlag.PaintBBox,
                             A = D.RETRIEVE_MODE_INTERSECT,
-                            c = k.calculateBounds(e, !0),
+                            c = k.calculateBounds(e, true),
                             p = h ? this.retrieveChildrenInPaintBBox(c, A) : this.retrieveChildrenInGeometryBBox(c, A);
                         p &&
                             p.forEach(function (a) {
@@ -864,7 +864,7 @@ module.exports = function (e, t, i) {
                     return l;
                 }),
                 (Q.prototype._getAccelElementOffset = function (e) {
-                    return e instanceof g ? e.getPosition(!0) : null;
+                    return e instanceof g ? e.getPosition(true) : null;
                 }),
                 (Q.prototype.getGeometryBBox = function (e, t) {
                     return t ? this.getChildrenGeometryBBox(e, t) : u.prototype.getGeometryBBox.call(this, e);
@@ -876,7 +876,7 @@ module.exports = function (e, t, i) {
                             var o = r.getPaintBBox(null, t, i);
                             if (o) {
                                 if (e) {
-                                    var a = r.getPosition(!0);
+                                    var a = r.getPosition(true);
                                     (0 === a.getX() && 0 === a.getY()) || (o = o.translated(a.getX(), a.getY()));
                                 }
                                 n = n ? n.united(o) : o;
@@ -891,7 +891,7 @@ module.exports = function (e, t, i) {
                             var r = n.getGeometryBBox(e);
                             if (r && (r.getHeight() > 0 || r.getWidth() > 0)) {
                                 if (t) {
-                                    var o = n.getPosition(!0);
+                                    var o = n.getPosition(true);
                                     (0 === o.getX() && 0 === o.getY()) || (r = r.translated(o.getX(), o.getY()));
                                 }
                                 i = i ? i.united(r) : r;
@@ -951,7 +951,7 @@ module.exports = function (e, t, i) {
                                                 Number.isNaN(parseInt(o[3])) ||
                                                 (a[2] = Math.max(a[2], parseInt(o[3]) + 1))));
                             }
-                        }, !0),
+                        }, true),
                             (i = s + " " + a.join(".")),
                             t.setProperty("name", i));
                     }
@@ -971,7 +971,7 @@ module.exports = function (e, t, i) {
                 }),
                 (Q.prototype.reassignMasterPages = function () {
                     if (!this.$rb && !this._isRestoring)
-                        for (var e = !0, t = this.getFirstChild(); null != t; t = t.getNext())
+                        for (var e = true, t = this.getFirstChild(); null != t; t = t.getNext())
                             if (t instanceof g) {
                                 var i = e ? (this.$ompg ? this.$ompg : this.$mpg) : this.$empg ? this.$empg : this.$mpg;
                                 (this._fixSingleMpg(t, i), (e = !e));
@@ -1019,7 +1019,7 @@ module.exports = function (e, t, i) {
                                     function (e) {
                                         if (l.indexOf(e) < 0) {
                                             var t = c()[e];
-                                            t && a && t.hasEventListeners(f) && t.trigger(new f(a, t, !0));
+                                            t && a && t.hasEventListeners(f) && t.trigger(new f(a, t, true));
                                         }
                                     }.bind(this)
                                 ),
@@ -1028,7 +1028,7 @@ module.exports = function (e, t, i) {
                                         (!e._scene || s.indexOf(e.getSceneId()) < 0) &&
                                             a &&
                                             e.hasEventListeners(f) &&
-                                            e.trigger(new f(a, e, !1));
+                                            e.trigger(new f(a, e, false));
                                     }.bind(this)
                                 ),
                                 (this._linksLookup[t] = s
@@ -1037,7 +1037,7 @@ module.exports = function (e, t, i) {
                                             var t = c()[e];
                                             if (null === t && a) {
                                                 var i = h[l.indexOf(e)];
-                                                i && i.hasEventListeners(f) && i.trigger(new f(a, i, !1));
+                                                i && i.hasEventListeners(f) && i.trigger(new f(a, i, false));
                                             }
                                             return t;
                                         }.bind(this)
@@ -1054,7 +1054,7 @@ module.exports = function (e, t, i) {
                                 ((a = this._workspace.getReference(t)) &&
                                     A.forEach(
                                         function (e) {
-                                            e.hasEventListeners(f) && e.trigger(new f(a, e, !1));
+                                            e.hasEventListeners(f) && e.trigger(new f(a, e, false));
                                         }.bind(this)
                                     ),
                                     delete this._linksLookup[t]);
@@ -1079,14 +1079,14 @@ module.exports = function (e, t, i) {
                 (Q.prototype._checkLinksSanity = function () {
                     var e = this.$_links,
                         t = this._linksLookup;
-                    if (!t) return !0;
+                    if (!t) return true;
                     for (var i in e) {
-                        if (!t.hasOwnProperty(i)) return !1;
+                        if (!t.hasOwnProperty(i)) return false;
                         var n = e[i],
                             r = t[i];
-                        if (!n || !r) return !1;
-                        if (!n.length) return !1;
-                        if (n.length !== r.length) return (console.warn("Links: prop len != dyn len"), !1);
+                        if (!n || !r) return false;
+                        if (!n.length) return false;
+                        if (n.length !== r.length) return (console.warn("Links: prop len != dyn len"), false);
                         for (
                             var a = r.map(function (e) {
                                     return e && e instanceof o ? e.getSceneId() : null;
@@ -1096,20 +1096,20 @@ module.exports = function (e, t, i) {
                             s++
                         ) {
                             var l = n[s];
-                            if (!l) return !1;
-                            if (a.indexOf(l) < 0) return !1;
+                            if (!l) return false;
+                            if (a.indexOf(l) < 0) return false;
                         }
                     }
-                    for (var i in t) if (!e.hasOwnProperty(i)) return !1;
-                    return !0;
+                    for (var i in t) if (!e.hasOwnProperty(i)) return false;
+                    return true;
                 }),
                 (Q.prototype._handleChange = function (e, t) {
                     if (e === r._Change.PrepareRestore) {
                         (this._activePage && (this.removeChild(this.getActivePage()), (this._activePage = null)),
-                            t.blob.hasOwnProperty("dictionary") ? this._dictionary.deserialize(t.blob.dictionary) : (this._pre310 = !0),
+                            t.blob.hasOwnProperty("dictionary") ? this._dictionary.deserialize(t.blob.dictionary) : (this._pre310 = true),
                             this._symbolDictionary.deserialize(t.blob.symbolDictionary));
                         var a = t.blob.cst;
-                        (a && a instanceof Array && (this.$cst = a), (this._isRestoring = !0));
+                        (a && a instanceof Array && (this.$cst = a), (this._isRestoring = true));
                     } else if (e === r._Change.Store)
                         (this.storeProperties(
                             t.blob,
@@ -1132,7 +1132,7 @@ module.exports = function (e, t, i) {
                                 if ("cfs" === e || "cid" === e) {
                                     if (t.options && t.options.singleton) return null;
                                 } else if ("cst" === e) {
-                                    if (i(70).dontStorePaths) return null;
+                                    if (require(70).dontStorePaths) return null;
                                 } else if ("pi" === e) {
                                     if (t.options && t.options.save) return this._activePage ? this.getIndexOfChild(this._activePage) : 0;
                                 }
@@ -1151,11 +1151,11 @@ module.exports = function (e, t, i) {
                     else if (e === r._Change.Restore) {
                         if (t.blob.hasOwnProperty("$")) {
                             var s = t.blob.$,
-                                l = !1;
+                                l = false;
                             if (s.length)
                                 for (var h = 0; h < s.length; ++h) {
                                     var A = s[h];
-                                    r._nameToNodeClassMap[A["@"]].toString() === g.toString() && (l = !0);
+                                    r._nameToNodeClassMap[A["@"]].toString() === g.toString() && (l = true);
                                 }
                             l || (t.blob.hasOwnProperty("h") || (t.blob.h = 0), t.blob.hasOwnProperty("w") || (t.blob.w = 0));
                         }
@@ -1174,17 +1174,17 @@ module.exports = function (e, t, i) {
                             (N = r.deserialize(t.blob.ompg)) && N instanceof g && this.setProperty("ompg", N);
                         if (t.blob.hasOwnProperty("empg"))
                             (U = r.deserialize(t.blob.empg)) && U instanceof g && this.setProperty("empg", U);
-                        (this._recreateLinksLookup(), (this._isRestoring = !1));
+                        (this._recreateLinksLookup(), (this._isRestoring = false));
                         var p = this.getChildByIndex(this.getProperty("pi"));
                         (this.setActivePage(p),
                             B.pagesPerRow ||
                                 this.iteratePages(function (e) {
                                     if (!e.$off) {
-                                        var t = e.getPosition(!0, !0, !0);
+                                        var t = e.getPosition(true, true, true);
                                         e.$off = new y().translated(t.getX(), t.getY());
                                     }
-                                }, !0),
-                            (this._pre310 = !1));
+                                }, true),
+                            (this._pre310 = false));
                     } else if (e === r._Change.BeforePropertiesChange) {
                         ["gaw", "gx", "gy"].forEach(function (e) {
                             var i = t.properties.indexOf(e);
@@ -1280,13 +1280,13 @@ module.exports = function (e, t, i) {
                                 ? ((D = this._invalidateFrom), this._getInvalidationArea(D))
                                 : ((D = this.getIndexOfChild(t)), this._getInvalidationArea(D));
                         if (t instanceof g && !t.$off && !B.pagesPerRow) {
-                            var k = t.getPosition(!0, !0, !0);
+                            var k = t.getPosition(true, true, true);
                             t.setProperty("off", new y().translated(k.getX(), k.getY()));
                         }
                     } else if (e == u._Change.ChildGeometryUpdate)
                         t &&
                             t[0] instanceof g &&
-                            ((t[1] = !0), this._invalidateArea(t[2] || this._getInvalidationArea(this.getIndexOfChild(t[0]))));
+                            ((t[1] = true), this._invalidateArea(t[2] || this._getInvalidationArea(this.getIndexOfChild(t[0]))));
                     else if (e === r._Change.WorkspaceAttached || e === r._Change.WorkspaceDetach) {
                         var M, N, U;
                         ((M = this.getProperty("mpg")) && M._setWorkspace(e === r._Change.WorkspaceDetach ? null : this._workspace),
@@ -1302,20 +1302,20 @@ module.exports = function (e, t, i) {
                         var e = this._linksAreSane;
                         ((this._linksAreSane = this._checkLinksSanity()),
                             this._linksAreSane
-                                ? ((this._callingPendingActions = !0),
+                                ? ((this._callingPendingActions = true),
                                   this._pendingActions.forEach(
                                       function (e) {
                                           e.call(this);
                                       }.bind(this)
                                   ),
                                   (this._pendingActions = []),
-                                  (this._callingPendingActions = !1),
+                                  (this._callingPendingActions = false),
                                   e || console.log("Links became sane."))
                                 : console.warn("links are not sane!"));
                     }
                 }),
                 (Q.prototype._getInvalidationArea = function (e, t) {
-                    var i = !1,
+                    var i = false,
                         n = null,
                         r = [];
                     return (
@@ -1325,9 +1325,9 @@ module.exports = function (e, t, i) {
                               })
                             : this.iteratePages(
                                   function (t) {
-                                      (e === this.getIndexOfChild(t) && (i = !0), i && r.push(t));
+                                      (e === this.getIndexOfChild(t) && (i = true), i && r.push(t));
                                   }.bind(this),
-                                  !1
+                                  false
                               ),
                         r.forEach(
                             function (e) {
@@ -1335,7 +1335,7 @@ module.exports = function (e, t, i) {
                                     r = e.getPosition(!t);
                                 i = i.translated(r.getX(), r.getY());
                                 var o = this.getLabelBBox(e.getScaleLabelFactor()).getHeight();
-                                if (((n = n ? n.united(i.expanded(0, o, 0, 0)) : i.expanded(0, o, 0, 0)), t)) return !1;
+                                if (((n = n ? n.united(i.expanded(0, o, 0, 0)) : i.expanded(0, o, 0, 0)), t)) return false;
                             }.bind(this)
                         ),
                         n
@@ -1353,13 +1353,13 @@ module.exports = function (e, t, i) {
                             break;
                         }
                     this._swatches || ((this._swatches = new x()), this.appendChild(this._swatches));
-                    var t = this.getProperty("swatches", !0);
+                    var t = this.getProperty("swatches", true);
                     if (t) {
                         for (var i = JSON.parse(t), r = 0; r < i.length; ++r) {
                             var o = new P(n.deserialize(i[r]));
                             this._swatches.appendChild(o);
                         }
-                        this.setProperty("swatches", null, !0);
+                        this.setProperty("swatches", null, true);
                     }
                     return this._swatches;
                 }),
@@ -1393,7 +1393,7 @@ module.exports = function (e, t, i) {
                     ) {
                         for (var e = 0; e < this._destroyables.length; e++) {
                             var t = this._destroyables[e];
-                            t instanceof F ? R.destroy(t) : t.hasMixin(I) && t.destroy();
+                            t instanceof F ? DUMP_IMAGES.destroy(t) : t.hasMixin(I) && t.destroy();
                         }
                         this._destroyables = [];
                     }
@@ -1406,12 +1406,12 @@ module.exports = function (e, t, i) {
                         for (var t, i = 0; i < e.length; i++) {
                             t = e[i];
                             var n = this._destroyables.indexOf(t);
-                            (n >= 0 && (this._destroyables[n] = null), t instanceof F ? R.destroy(t) : t.hasMixin(I) && t.destroy());
+                            (n >= 0 && (this._destroyables[n] = null), t instanceof F ? DUMP_IMAGES.destroy(t) : t.hasMixin(I) && t.destroy());
                         }
                         this._destroyables = this._destroyables.filter(function (e) {
                             return !!e;
                         });
                     }
                 }),
-                (e.exports = Q));
+                (module.exports = Q));
         };

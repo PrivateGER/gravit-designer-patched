@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(11),
-                o = i(7),
-                a = i(70),
-                s = i(17),
-                l = i(5),
-                h = i(6),
-                A = (i(22), i(28)),
-                c = i(1204);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(11),
+                o = require(7),
+                a = require(70),
+                s = require(17),
+                l = require(5),
+                h = require(6),
+                A = (require(22), require(28 /* GStylable */)),
+                c = require(1204);
 
             function p() {}
 
@@ -31,7 +31,7 @@ module.exports = function (e, t, i) {
             function f(e, t) {
                 return !(!r.equals(e, t) && ("__pdfimportgradtype__" in e || "__pdfimportgradtype__" in t));
             }
-            (n.inherit(p, c),
+            (IsFiniteNonNegativeNumber.inherit(p, c),
                 (u.prototype.lines = null),
                 (u.prototype.defaultFill = null),
                 (u.prototype.defaultBorder = null),
@@ -76,10 +76,10 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (u.prototype.toGText = function () {
-                    var e = !0;
+                    var e = true;
                     if (
                         (this.acceptLines(function (t) {
-                            t.isEmpty() || (e = !1);
+                            t.isEmpty() || (e = false);
                         }),
                         e)
                     )
@@ -110,9 +110,9 @@ module.exports = function (e, t, i) {
                         g = new a();
                     if (
                         ((g._$itext = this),
-                        g.setProperty("sc", !0),
+                        g.setProperty("sc", true),
                         g.transform(r),
-                        g.setProperties(["_tfi", "_aw", "_ah", "_fc"], [i.defaultFontSize, !0, !0, h]),
+                        g.setProperties(["_tfi", "_aw", "_ah", "_fc"], [i.defaultFontSize, true, true, h]),
                         u)
                     ) {
                         var f = new A.BorderPaintLayer(u);
@@ -143,9 +143,9 @@ module.exports = function (e, t, i) {
                 }),
                 (d.prototype.isEmpty = function () {
                     for (var e = 0; e < this.words.length; e++) {
-                        if ("" !== this.words[e].text.trim()) return !1;
+                        if ("" !== this.words[e].text.trim()) return false;
                     }
-                    return !0;
+                    return true;
                 }),
                 (d.prototype.getFirstWord = function () {
                     return this.words[0];
@@ -287,7 +287,7 @@ module.exports = function (e, t, i) {
                     return n;
                 }),
                 (p.prototype.mergeTexts = function (e, t) {
-                    var i = !1,
+                    var i = false,
                         n = e.$trf,
                         r = t.$trf;
                     if (c.Transform.sameTransformation(n, r) && e._$itext.canMerge(t._$itext)) {
@@ -302,19 +302,19 @@ module.exports = function (e, t, i) {
                         n = t._$itext,
                         a = i.getLastLine(),
                         s = n.getFirstLine();
-                    if (a.startPoint.getY() === s.startPoint.getY()) return !1;
+                    if (a.startPoint.getY() === s.startPoint.getY()) return false;
                     var A = i.getGeometryBBox(),
                         c = n.getGeometryBBox(),
                         p = c.translated(0, -c.getY()).translated(0, A.getY());
                     if (A.intersectsRect(p)) {
-                        if (!A.containsRect(p) && Math.abs(A.getX() - c.getX()) > 2) return !1;
+                        if (!A.containsRect(p) && Math.abs(A.getX() - c.getX()) > 2) return false;
                         var u = (a = i.getLastLine()).ascent / a.transform.getScaleFactor(),
                             f = c.getY() - A.getSide(h.Side.BOTTOM_LEFT).getY();
                         if (Math.abs(f) <= a.ascent) {
                             var m = a.getLastWord(),
                                 y = n.getFirstLine().getFirstWord();
-                            if (!m.transform.decomposed().skew.isIdentity()) return !1;
-                            if (!new g(m).canMergeColor(new g(y))) return !1;
+                            if (!m.transform.decomposed().skew.isIdentity()) return false;
+                            if (!new g(m).canMergeColor(new g(y))) return false;
                             a.acceptWords(function (e) {
                                 e.lineSpacing = u + f / a.transform.getScaleFactor() + "";
                             });
@@ -323,20 +323,20 @@ module.exports = function (e, t, i) {
                             var v = e.getTransform().getTranslation(),
                                 b = l.min(v, n.getGeometryBBox().getSide(h.Side.TOP_LEFT)),
                                 C = new o().translated(-v.getX(), -v.getY()).translated(b.getX(), b.getY());
-                            return (e.transform(C), e.setText(i.getContent()), !0);
+                            return (e.transform(C), e.setText(i.getContent()), true);
                         }
                     }
-                    return !1;
+                    return false;
                 }),
                 (p.prototype._mergeHorizontalTexts = function (e, t) {
                     var i = e._$itext,
                         n = t._$itext,
                         r = i.getLastLine(),
                         o = n.getFirstLine();
-                    if (r.startPoint.getY() !== o.startPoint.getY()) return !1;
+                    if (r.startPoint.getY() !== o.startPoint.getY()) return false;
                     var a = new g(r.getLastWord()),
                         s = new g(o.getFirstWord());
-                    if (!a.canMergeColor(s)) return !1;
+                    if (!a.canMergeColor(s)) return false;
                     var l = s.getHStartPoint() - a.getHEndPoint();
                     if (Math.abs(l) <= 10) {
                         if (l > 0)
@@ -344,30 +344,30 @@ module.exports = function (e, t, i) {
                                 var h = a.splice(-1);
                                 ((h.charSpacing = l), r.add(h.word));
                             } else a.charSpacing = l;
-                        return (r.merge(o), e.setText(i.getContent()), !0);
+                        return (r.merge(o), e.setText(i.getContent()), true);
                     }
-                    return !1;
+                    return false;
                 }),
                 (p.prototype._applyAlignmentsAndIdentations = function (e) {
                     var t = e._$itext,
                         i = t.getGeometryBBox(),
-                        n = !1;
+                        n = false;
                     (t.acceptLines(function (e) {
                         if (!e.isBreakLine() && e.startPoint.getX() != i.getX()) {
                             var t = i.getSide(h.Side.TOP_RIGHT).getX() - e.endPoint.getX(),
                                 o = e.startPoint.getX() - i.getX(),
                                 a = e.getFirstWord();
-                            if ((Math.abs(t - o) <= 2 && ((a.align = "center"), (n = !0)), !a.align)) {
+                            if ((Math.abs(t - o) <= 2 && ((a.align = "center"), (n = true)), !a.align)) {
                                 var s = r.extend({}, a);
                                 ((s.text = " "),
                                     (s.wordSpacing = parseInt(e.startPoint.getX() - i.getX())),
                                     (e.startPoint = new l(i.getX(), e.startPoint.getY())),
                                     e.words.unshift(s),
-                                    (n = !0));
+                                    (n = true));
                             }
                         }
                     }),
                         n && e.setText(t.getContent()));
                 }),
-                (e.exports = p));
+                (module.exports = p));
         };

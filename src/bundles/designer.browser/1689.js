@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o(e, t) {
             let n,
@@ -17,7 +17,7 @@ module.exports = function (e, t, n) {
         }
         (($.expr[":"].editable = function (e) {
             const t = $(e);
-            if ("true" === t.attr("contenteditable") || e.isContentEditable) return !0;
+            if ("true" === t.attr("contenteditable") || e.isContentEditable) return true;
             if (t.is("input")) {
                 const e = t.attr("type");
                 return (

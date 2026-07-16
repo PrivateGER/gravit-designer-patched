@@ -1,25 +1,25 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(512),
-                o = i(513),
-                a = i(929),
-                s = i(14),
-                l = i(28),
-                h = i(17),
-                A = i(12),
-                c = i(45),
-                p = i(22),
-                u = i(11);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(512),
+                o = require(513),
+                a = require(929),
+                s = require(14),
+                GStylable = require(28),
+                h = require(17),
+                A = require(12),
+                c = require(45),
+                p = require(22),
+                u = require(11);
 
             function d() {
                 (this._setDefaultProperties(d.GeometryProperties), (this.$uid = new o()), (this._facets = []));
             }
-            (n.inheritAndMix("GPGEdge", d, n, [n.Store, n.Container, n.Properties, a, l, n.Multireference]),
+            (n.inheritAndMix("GPGEdge", d, n, [n.Store, n.Container, n.Properties, a, GStylable, n.Multireference]),
                 (d.GeometryProperties = {
                     uid: null,
-                    cSt: !1,
+                    cSt: false,
                 }),
-                (d.prototype.painted = !1),
+                (d.prototype.painted = false),
                 (d.prototype._pathBase = null),
                 (d.prototype._facets = null),
                 (d.SplitPoint = function (e, t, i) {
@@ -35,7 +35,7 @@ module.exports = function (e, t, i) {
                     return e instanceof n.MapContainer && (!e.getParent() || "Paths Graph" === n.getName(e.getParent()));
                 }),
                 (d.prototype.getStylePropertySets = function () {
-                    return [l.PropertySet.BorderPaintLayers, l.PropertySet.FillPaintLayers];
+                    return [GStylable.PropertySet.BorderPaintLayers, GStylable.PropertySet.FillPaintLayers];
                 }),
                 (d.prototype._styleRepaint = function (e) {
                     this._parent instanceof n.MapContainer &&
@@ -187,7 +187,7 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (d.prototype.hasSameStyle = function (e) {
-                    return u.equals(this.getPaintLayers().getBorderLayers(!0), e.getPaintLayers().getBorderLayers(!0));
+                    return u.equals(this.getPaintLayers().getBorderLayers(true), e.getPaintLayers().getBorderLayers(true));
                 }),
                 (d.prototype.getStyleBorderPadding = function (e) {
                     var t = 0.5 * e.$_bw;
@@ -199,15 +199,15 @@ module.exports = function (e, t, i) {
                         : e === n._Change.Store
                           ? (t.blob.props = this.serialize())
                           : e === n._Change.Restore && t.blob.hasOwnProperty("props") && this.deserialize(t.blob.props),
-                        l.prototype._handleStyleChange.call(this, e, t),
+                        GStylable.prototype._handleStyleChange.call(this, e, t),
                         n.prototype._handleChange.call(this, e, t),
                         e == n._Change.AfterChildRemove && t instanceof c && (this._pathBase = null));
                 }),
                 (d.prototype._paintBorder = function (e, t, i, n, r) {
                     var o = this._pathBase;
-                    (t && ((o = new c(!1, this._pathBase.cloneAnchorPoints())).setProperty("trf", t), o.assignStyleFrom(this)),
+                    (t && ((o = new c(false, this._pathBase.cloneAnchorPoints())).setProperty("trf", t), o.assignStyleFrom(this)),
                         u.each(o.getPaintLayers().getBorderLayers(), function (e, t) {
-                            t.setProperty("_ba", l.BorderAlignment.Center);
+                            t.setProperty("_ba", GStylable.BorderAlignment.Center);
                         }),
                         (o._scene = i));
                     var a = e.canvas,
@@ -267,7 +267,7 @@ module.exports = function (e, t, i) {
                                     (b.strokeVertices(h.BLACK, p, r.$_bds, _, r.$_blj, r.$_bml, 1), o._paintBorderMarkers(e, h.BLACK, r), x)
                                 ) {
                                     T = x.inverted().mapRect(T);
-                                    var I = b.setTransform(b.getTransform(!0).multiplied(x));
+                                    var I = b.setTransform(b.getTransform(true).multiplied(x));
                                     (b.fillRect(
                                         T.getX(),
                                         T.getY(),
@@ -299,7 +299,7 @@ module.exports = function (e, t, i) {
                     var i = null;
                     if (t.$_bhm || t.$_btm) {
                         var n = this._pathBase;
-                        e && ((n = new c(!1, this._pathBase.cloneAnchorPoints())).setProperty("trf", e), n.assignStyleFrom(this));
+                        e && ((n = new c(false, this._pathBase.cloneAnchorPoints())).setProperty("trf", e), n.assignStyleFrom(this));
                         i = n.getGeometryBBox();
                         i = n._calculateMarkersBorderBBox(i, t);
                     }
@@ -308,5 +308,5 @@ module.exports = function (e, t, i) {
                 (d.prototype.toString = function () {
                     return "[Object GPGEdge]";
                 }),
-                (e.exports = d));
+                (module.exports = d));
         };

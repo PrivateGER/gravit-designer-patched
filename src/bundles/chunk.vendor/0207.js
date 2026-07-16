@@ -1,10 +1,10 @@
-module.exports = function (e, t) {
-            e.exports = {
+module.exports = function (module, exports) {
+            module.exports = {
                 pagesPerRow: null,
                 pageGap: null,
-                scaleLabel: !0,
+                scaleLabel: true,
                 scaleLabelFactor: 1,
-                pagesCanOverlap: !0,
-                defaultBorderPositionForLines: !1,
+                pagesCanOverlap: true,
+                defaultBorderPositionForLines: false,
             };
         };

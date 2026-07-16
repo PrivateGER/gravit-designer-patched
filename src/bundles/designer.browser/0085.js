@@ -1,22 +1,22 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(58), n(19), n(168), n(96), n(8), n(3), n(71), n(4), n(13), n(169), n(26), n(125), n(126), n(114));
-        var i = n(1),
-            a = n(1036),
-            r = n(10),
-            s = o(n(734)),
-            l = (o(n(355)), o(n(1037))),
-            c = n(255),
-            d = n(590),
-            u = n(18),
-            p = n(843),
-            g = n(257),
-            h = n(219),
-            f = n(44),
-            m = n(78);
+        var o = require(16);
+        (require(58), require(19), require(168 /* PDFFetchStream */), require(96), require(8 /* Symbol */), require(3), require(71), require(4), require(13), require(169 /* PDFNetworkStream */), require(26), require(125), require(126), require(114));
+        var GObject = require(1),
+            GCommonNames = require(1036),
+            designerConfig = require(10),
+            s = o(require(734)),
+            l = (o(require(355)), o(require(1037))),
+            c = require(255),
+            d = require(590),
+            GCategory = require(18),
+            p = require(843),
+            g = require(257),
+            h = require(219),
+            GSystemDialog = require(44),
+            m = require(78);
         function y() {}
-        (i.GObject.inherit(y, i.GEventTarget),
+        (GObject.GObject.inherit(y, GObject.GEventTarget),
             (y.OpenFileRequest = function (e, t) {
                 ((this._type = e), (this._content = t));
             }),
@@ -41,9 +41,9 @@ module.exports = function (e, t, n) {
                 PurchaseFlow: "purchase_flow",
                 PurchaseFlowNew: "purchase_flow_new",
                 Purchase: "purchase",
-                ResetPassword: r.PasswordlessAuthenticationActions.ResetPassword,
-                SetPassword: r.PasswordlessAuthenticationActions.SetPassword,
-                PasswordlessToken: r.PasswordlessAuthenticationActions.PasswordlessToken,
+                ResetPassword: designerConfig.PasswordlessAuthenticationActions.ResetPassword,
+                SetPassword: designerConfig.PasswordlessAuthenticationActions.SetPassword,
+                PasswordlessToken: designerConfig.PasswordlessAuthenticationActions.PasswordlessToken,
                 ConfirmEmail: "confirm_email",
                 Account: "account",
                 Purchases: "purchases",
@@ -64,7 +64,7 @@ module.exports = function (e, t, n) {
                 PWA: "pwa",
                 IPad: "ipad",
             }),
-            (y.GravitLanguages = [...i.GLocale.getAvailableLanguages()]),
+            (y.GravitLanguages = [...GObject.GLocale.getAvailableLanguages()]),
             (y.prototype._recentDocuments = null),
             (y.prototype._deepLinking = null),
             (y.prototype.getRuntime = function () {
@@ -83,7 +83,7 @@ module.exports = function (e, t, n) {
                 return null;
             }),
             (y.prototype.supportsLocalFonts = function () {
-                return !1;
+                return false;
             }),
             (y.prototype.getProperty = function (e) {
                 return new Promise((t) => {
@@ -107,7 +107,7 @@ module.exports = function (e, t, n) {
                 let { name: t, value: n } = e;
                 return navigator.cookieEnabled
                     ? ((document.cookie = "".concat(t, "=").concat(n, "; path=/")),
-                      (document.cookie = "".concat(t, "=").concat(n, "; path=/; domain=").concat(r.DOMAIN)),
+                      (document.cookie = "".concat(t, "=").concat(n, "; path=/; domain=").concat(designerConfig.DOMAIN)),
                       Promise.resolve())
                     : Promise.reject();
             }),
@@ -136,13 +136,13 @@ module.exports = function (e, t, n) {
                 const t = e && e.getToken();
                 if (t) {
                     const n = gDesigner.getActiveDocument();
-                    (!n || e === n) && r.gApi.setToken({ token: t });
+                    (!n || e === n) && designerConfig.gApi.setToken({ token: t });
                 }
             }),
             (y.prototype.start = function () {}),
             (y.prototype.preLogin = async function () {}),
             (y.prototype.signWithMagicLink = function (e, t, n) {
-                return r.gApi.magicLink.authenticate(e, t, n);
+                return designerConfig.gApi.magicLink.authenticate(e, t, n);
             }),
             (y.prototype.canUnload = function (e, t) {
                 let n = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
@@ -160,10 +160,10 @@ module.exports = function (e, t, n) {
                             const t = e.language;
                             if (y.GravitLanguages.indexOf(t) >= 0) await l.default.setLanguage(t);
                             else {
-                                let e = i.GSystem.language && i.GLocale.lookupLanguage(i.GSystem.language);
+                                let e = GObject.GSystem.language && GObject.GLocale.lookupLanguage(GObject.GSystem.language);
                                 e && y.GravitLanguages.includes(e)
                                     ? await l.default.setLanguage(e)
-                                    : await l.default.setLanguage(i.GLocaleLanguage.English);
+                                    : await l.default.setLanguage(GObject.GLocaleLanguage.English);
                             }
                         }
                     });
@@ -176,13 +176,13 @@ module.exports = function (e, t, n) {
                         }
                     });
                 async function o(e) {
-                    const t = i.GLocale.lookupLanguage(e);
+                    const t = GObject.GLocale.lookupLanguage(e);
                     null !== t &&
                         (y.GravitLanguages.indexOf(t) >= 0
                             ? ("undefined" != typeof gDesigner && gDesigner.setSetting("language", t), await l.default.setLanguage(t))
-                            : await l.default.setLanguage(i.GLocaleLanguage.English));
+                            : await l.default.setLanguage(GObject.GLocaleLanguage.English));
                 }
-                r.gApi
+                designerConfig.gApi
                     .getUser()
                     .then(async (t) => {
                         (t && !t.anonymous ? await o(t.locale) : await n(), e && e());
@@ -207,9 +207,9 @@ module.exports = function (e, t, n) {
                 this._recentDocuments = e;
                 const n = gDesigner.getMainMenu();
                 if (n) {
-                    const e = (t = n.findItem(i.GLocale.get(u.CATEGORY_FILE.label)));
+                    const e = (t = n.findItem(GObject.GLocale.get(GCategory.CATEGORY_FILE.label)));
                     if (e && e.getMenu()) {
-                        const n = e.getMenu().findItem(i.GLocale.get(u.CATEGORY_FILE_OPEN_RECENT.label).split("/")[1]);
+                        const n = e.getMenu().findItem(GObject.GLocale.get(GCategory.CATEGORY_FILE_OPEN_RECENT.label).split("/")[1]);
                         n && (t = n.getMenu());
                     }
                 }
@@ -217,7 +217,7 @@ module.exports = function (e, t, n) {
                     if ((t.clearItems(), e.length > 0))
                         for (var o = e[0] instanceof this._storage.constructor.Item, a = 0; a < e.length; ++a) {
                             let n = e[a];
-                            n instanceof this._storage.constructor.Item || !o || (gDesigner.addMenuSeparator(t), (o = !1));
+                            n instanceof this._storage.constructor.Item || !o || (gDesigner.addMenuSeparator(t), (o = false));
                             const i = this.getRecentDocumentIconClass(n),
                                 r = n.getName() + "." + n.getExtension().toLowerCase();
                             gDesigner.addMenuItem(t, r, i, null, null, function () {
@@ -225,13 +225,13 @@ module.exports = function (e, t, n) {
                                     gDesigner.openDocument(n);
                                 } catch (e) {
                                     if (!(e instanceof s.default)) throw e;
-                                    f.externalFileError(!0);
+                                    GSystemDialog.externalFileError(true);
                                 }
                             });
                         }
                     else {
                         var r = gDesigner.addMenuItem(t);
-                        gDesigner.updateMenuItem(r, i.GLocale.get(p.TITLE), !1, !1);
+                        gDesigner.updateMenuItem(r, GObject.GLocale.get(p.TITLE), false, false);
                     }
             }),
             (y.prototype.getRecentDocumentIconClass = function (e) {
@@ -247,11 +247,11 @@ module.exports = function (e, t, n) {
             }),
             (y.prototype.triggerClose = function () {}),
             (y.prototype.getGoogleAPI = function () {
-                return a.GDefaultGoogleAPI;
+                return GCommonNames.GDefaultGoogleAPI;
             }),
             (y.prototype.signWithOAuth = function (e) {
                 return new Promise((t, n) => {
-                    r.gApi
+                    designerConfig.gApi
                         .popup("/auth/" + e)
                         .then((e) => {
                             e ? t(e) : n();
@@ -267,21 +267,21 @@ module.exports = function (e, t, n) {
                 });
             }),
             (y.prototype.isMemoryInfoAvailable = function () {
-                return !1;
+                return false;
             }),
             (y.prototype.getMemoryInfo = function () {
                 return null;
             }),
             (y.prototype._getJsHeapLimitSize = function () {
-                return window.performance.memory ? window.performance.memory.jsHeapSizeLimit : r.JS_HEAP_SIZE_LIMIT_POYFILL;
+                return window.performance.memory ? window.performance.memory.jsHeapSizeLimit : designerConfig.JS_HEAP_SIZE_LIMIT_POYFILL;
             }),
             (y.prototype._estimatingMemoryUsage = function () {
                 return (
                     gDesigner
                         .getDocuments()
                         .reduce((e, t) => (e + (t && t.getStorageItem()) ? t.getStorageItem().documentRealFileSize : 0), 0) *
-                        r.FILE_SIZE_TO_RAM_COEFFCIENT +
-                    r.MIN_JS_HEAP_SIZE
+                        designerConfig.FILE_SIZE_TO_RAM_COEFFCIENT +
+                    designerConfig.MIN_JS_HEAP_SIZE
                 );
             }),
             (y.prototype.verifyEnoughMemoryToSave = function (e) {
@@ -290,9 +290,9 @@ module.exports = function (e, t, n) {
                         var t = this._estimatingMemoryUsage(),
                             n =
                                 this._getJsHeapLimitSize() -
-                                (t += e.getStorageItem().documentRealFileSize * r.FILE_SIZE_TO_SAVING_RAM_COEFFCIENT);
+                                (t += e.getStorageItem().documentRealFileSize * designerConfig.FILE_SIZE_TO_SAVING_RAM_COEFFCIENT);
                         if (2 * e.getStorageItem().documentRealFileSize > n) {
-                            var o = i.GLocale.get(new i.GLocaleKey("GContainer", "text.not-memary-enough"));
+                            var o = GObject.GLocale.get(new GObject.GLocaleKey("GContainer", "text.not-memary-enough"));
                             new h(o).open();
                         }
                     }
@@ -325,5 +325,5 @@ module.exports = function (e, t, n) {
             (y.prototype._getNativeShareLinkInstance = function () {
                 return null;
             }),
-            (e.exports = y));
+            (module.exports = y));
     };

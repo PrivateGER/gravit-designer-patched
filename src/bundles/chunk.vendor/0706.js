@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            const n = i(171),
-                r = i(375),
-                o = i(526),
-                { learnmore: a } = i(253),
-                s = i(170),
-                l = i(325);
-            i(417).self();
-            e.exports = class {
+            const n = require(171),
+                r = require(375),
+                GOfferDialogV1 = require(526),
+                { learnmore: a } = require(253),
+                s = require(170),
+                l = require(325);
+            require(417 /* gApi */).self();
+            module.exports = class {
                 static get ContentType() {
-                    return o.ContentType;
+                    return GOfferDialogV1.ContentType;
                 }
                 static get __i18n__() {
                     return "GReminderDialog";
@@ -49,7 +49,7 @@ module.exports = function (e, t, i) {
                         page: p,
                         campaign: u,
                         withFooter: d,
-                        content: g = o.DEFAULT_CONTENT,
+                        content: g = GOfferDialogV1.DEFAULT_CONTENT,
                     } = e;
                     ((this._impl = A), s.setLanguage(this._impl.getLanguage()));
                     let f = null;
@@ -60,7 +60,7 @@ module.exports = function (e, t, i) {
                                 (r("".concat(p, "_click_continuebutton")), this.close());
                             },
                         });
-                    const m = new o({
+                    const m = new GOfferDialogV1({
                         page: p,
                         title: t,
                         content: g,

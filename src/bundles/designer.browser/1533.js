@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(4), n(13));
-        var o = n(1);
-        const i = n(156),
-            { FILE_FORMATS: a } = n(10),
+        (require(8 /* Symbol */), require(4), require(13));
+        var GObject = require(1);
+        const i = require(156),
+            { FILE_FORMATS: a } = require(10 /* designerConfig */),
             r = a.find((e) => e.default),
-            { COMMAND_SAVE: s } = n(591),
-            l = n(1164);
-        e.exports = class extends l {
+            { COMMAND_SAVE: s } = require(591 /* COMMAND_SAVE */),
+            l = require(1164);
+        module.exports = class extends l {
             constructor(e, t) {
                 super(e, t);
             }
@@ -21,18 +21,18 @@ module.exports = function (e, t, n) {
                         id: e,
                         file: t,
                         metadata: i,
-                        scene: o.GNode.serialize(n, { save: !0 }),
+                        scene: GObject.GNode.serialize(n, { save: true }),
                         type: r.type,
                     });
                     this._worker.addEventListener(
                         "message",
                         function (e) {
                             const { cmd: t, id: n, data: o } = e.data;
-                            if ((t !== s.SUCCESS && t !== s.FAILED) || n !== c) return !1;
+                            if ((t !== s.SUCCESS && t !== s.FAILED) || n !== c) return false;
                             t === s.SUCCESS ? a(o.file) : t === s.FAILED && l();
-                            return !0;
+                            return true;
                         }.bind(this),
-                        { once: !0 }
+                        { once: true }
                     );
                 });
             }

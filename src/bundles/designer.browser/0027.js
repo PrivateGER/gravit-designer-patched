@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(239),
+        var o = require(239),
             i = Function.prototype,
             a = i.call,
             r = o && i.bind.bind(a, a);
-        e.exports = o
+        module.exports = o
             ? r
             : function (e) {
                   return function () {

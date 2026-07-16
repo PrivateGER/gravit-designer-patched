@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(53),
+        var o = require(53),
             i = {
                 "gravit-cloud": "gravit-icon-cloud",
                 "modify.merge": "gravit-icon-merge-union",
@@ -24,5 +24,5 @@ module.exports = function (e, t, n) {
             (i["arrange.order." + o.GEditor.ArrangeOrderType.SendBackward] = "gravit-icon-bring-back"),
             (i["arrange.order." + o.GEditor.ArrangeOrderType.SendToFront] = "gravit-icon-send-to-front"),
             (i["arrange.order." + o.GEditor.ArrangeOrderType.SendToBack] = "gravit-icon-send-to-back"),
-            (e.exports = i));
+            (module.exports = i));
     };

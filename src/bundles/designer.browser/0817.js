@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         var o = {
             "./glangulargradientshader": 364,
             "./glangulargradientshader.js": 364,
@@ -75,10 +75,10 @@ module.exports = function (e, t, n) {
         };
         function i(e) {
             var t = a(e);
-            return n(t);
+            return require(t);
         }
         function a(e) {
-            if (!n.o(o, e)) {
+            if (!require.o(o, e)) {
                 var t = new Error("Cannot find module '" + e + "'");
                 throw ((t.code = "MODULE_NOT_FOUND"), t);
             }
@@ -88,6 +88,6 @@ module.exports = function (e, t, n) {
             return Object.keys(o);
         }),
             (i.resolve = a),
-            (e.exports = i),
+            (module.exports = i),
             (i.id = 817));
     };

@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(11),
-                r = i(5),
-                o = i(6),
-                a = i(132),
-                s = i(64);
+module.exports = function (module, exports, require) {
+            var n = require(11),
+                r = require(5),
+                o = require(6),
+                a = require(132),
+                s = require(64);
 
             function l() {
                 throw new Error("This class cannot be instantiated");
@@ -24,7 +24,7 @@ module.exports = function (e, t, i) {
                 return (
                     (r = n.extend(
                         {
-                            forceEffectsWhenZoomed: !0,
+                            forceEffectsWhenZoomed: true,
                         },
                         r
                     )),
@@ -56,7 +56,7 @@ module.exports = function (e, t, i) {
                                 var n = e.getSelfCanvasUsedArea();
                                 (n.getWidth() > t && (t = n.getWidth()), n.getHeight() > i && (i = n.getHeight()));
                             }
-                            return !0;
+                            return true;
                         }),
                         new o(0, 0, t, i)
                     );
@@ -103,5 +103,5 @@ module.exports = function (e, t, i) {
                     }
                     return new r(l, h);
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

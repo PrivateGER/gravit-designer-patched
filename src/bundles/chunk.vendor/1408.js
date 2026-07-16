@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(800);
+module.exports = function (module, exports, require) {
+            var n = require(800);
 
             function r(e, t, i, r) {
                 (n.call(this, r),
@@ -10,7 +10,7 @@ module.exports = function (e, t, i) {
                     this.putDictionary("/ColorSpace", i.name),
                     this.putDictionary("/BitsPerComponent", 8));
             }
-            (i(0).inherit(r, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(r, n),
                 (r.prototype.getWidth = function () {
                     return this.dictionary.get("/Width");
                 }),
@@ -30,5 +30,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.toString = function () {
                     return "[Object GPDFImage]";
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

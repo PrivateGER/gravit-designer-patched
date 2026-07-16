@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
-            var n = i(1109),
-                r = i(559),
-                o = i(1111),
-                a = i(390),
+module.exports = function (module, exports, require) {
+            var n = require(1109),
+                r = require(559),
+                o = require(1111),
+                a = require(390),
                 s = {
                     RGB: {
                         name: "/DeviceRGB",
@@ -59,5 +59,5 @@ module.exports = function (e, t, i) {
                     },
                     _cmykToRGB: {},
                 };
-            e.exports = s;
+            module.exports = s;
         };

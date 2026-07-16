@@ -1,17 +1,17 @@
-module.exports = function (e, t, i) {
-            var n = i(104),
-                r = i(112),
-                o = i(2),
-                a = i(22),
-                s = i(28),
-                l = i(7),
-                h = i(6),
-                A = i(12),
-                c = i(73),
-                p = i(63),
-                u = i(14),
-                d = i(17),
-                g = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(104),
+                r = require(112),
+                o = require(2),
+                a = require(22),
+                GStylable = require(28),
+                l = require(7),
+                h = require(6),
+                A = require(12),
+                c = require(73),
+                p = require(63),
+                u = require(14),
+                d = require(17),
+                String = require(9);
 
             function f() {
                 (n.call(this), this._setDefaultProperties(f.GeometryProperties));
@@ -22,23 +22,23 @@ module.exports = function (e, t, i) {
                     frm: null,
                 }),
                 (f.prototype.getStylePropertySets = function () {
-                    return [s.PropertySet.Style, s.PropertySet.Effects];
+                    return [GStylable.PropertySet.Style, GStylable.PropertySet.Effects];
                 }),
                 (f.prototype.transform = function (e, t, i) {
                     if (e && !e.isIdentity()) {
                         var n = this.getProperty("frm");
-                        ((this._relayoutNow = !1),
-                            n && ((this._layoutTransform = e), (this._relayoutNow = !this._relayout), (this._relayout = !0)),
+                        ((this._relayoutNow = false),
+                            n && ((this._layoutTransform = e), (this._relayoutNow = !this._relayout), (this._relayout = true)),
                             this.beginUpdate());
                         try {
                             this.assignTransformFrom(e, this);
-                            for (var r = this.getFirstChild(!0); null != r; r = r.getNext(!0))
+                            for (var r = this.getFirstChild(true); null != r; r = r.getNext(true))
                                 (!n ||
                                     !this.dependentUpdate ||
                                     t ||
                                     (r instanceof a && r.hasMixin(a.Transform) && !r.getProperty("hacr") && !r.getProperty("vacr"))) &&
                                     (!i || i.indexOf(r) < 0) &&
-                                    ((r.dependentUpdate = !0), r.transform(e, t, i), (r.dependentUpdate = !1));
+                                    ((r.dependentUpdate = true), r.transform(e, t, i), (r.dependentUpdate = false));
                         } finally {
                             this.endUpdate();
                         }
@@ -46,14 +46,14 @@ module.exports = function (e, t, i) {
                             this._relayoutNow &&
                             (this._layoutAnchorContents(null, null, this._layoutTransform),
                             (this._layoutTransform = null),
-                            (this._relayoutNow = !1));
+                            (this._relayoutNow = false));
                     }
                 }),
                 (f.prototype.setTransform = function (e) {
                     this.setProperty("trf", e);
                 }),
                 (f.prototype.getNodeNameTranslated = function () {
-                    return g.getValue("GGroup", "name", this.getNodeName());
+                    return String.getValue("GGroup", "name", this.getNodeName());
                 }),
                 (f.prototype.getTransform = function () {
                     return this.getProperty("trf");
@@ -159,10 +159,10 @@ module.exports = function (e, t, i) {
                 }),
                 (f.prototype._handleChange = function (e, t) {
                     this._handleGeometryChangeForProperties(e, t, f.GeometryProperties);
-                    var i = !1;
+                    var i = false;
                     if (
                         (e == a._Change.ChildGeometryUpdate
-                            ? t && t[0] && t[0].getParent() === this && (this._notifyChange(a._Change.PrepareGeometryUpdate), (i = !0))
+                            ? t && t[0] && t[0].getParent() === this && (this._notifyChange(a._Change.PrepareGeometryUpdate), (i = true))
                             : e === o._Change.Store
                               ? this.storeProperties(t.blob, f.GeometryProperties, function (e, t) {
                                     return "trf" === e && t ? l.serialize(t) : "frm" === e && t ? h.serialize(t) : t;
@@ -177,7 +177,7 @@ module.exports = function (e, t, i) {
                         var r = t[2];
                         (!r && t[0] && t[0] instanceof a && (r = t[0].getPaintBBox()),
                             this._notifyChange(a._Change.FinishGeometryUpdate, [2, r]));
-                    } else e != a._Change.PrepareChildAnchoring || this.getProperty("frm") || this.setFrame(!0);
+                    } else e != a._Change.PrepareChildAnchoring || this.getProperty("frm") || this.setFrame(true);
                 }),
                 (f.prototype.setFrame = function (e) {
                     var t = this.getAngle(),
@@ -200,5 +200,5 @@ module.exports = function (e, t, i) {
                 (f.prototype.toString = function () {
                     return "[GGroup]";
                 }),
-                (e.exports = f));
+                (module.exports = f));
         };

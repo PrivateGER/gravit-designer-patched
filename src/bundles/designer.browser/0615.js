@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(110),
-            i = n(27),
-            a = n(243),
-            r = n(404),
-            s = n(37),
+        var o = require(110),
+            i = require(27),
+            a = require(243),
+            r = require(404),
+            s = require(37),
             l = i([].concat);
-        e.exports =
+        module.exports =
             o("Reflect", "ownKeys") ||
             function (e) {
                 var t = a.f(s(e)),

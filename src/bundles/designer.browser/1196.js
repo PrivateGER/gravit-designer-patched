@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(1375),
-            a = n(93),
-            r = n(101),
-            s = n(130),
-            l = n(573);
+        var o = require(25),
+            i = require(1375),
+            a = require(93),
+            r = require(101),
+            s = require(130),
+            l = require(573);
         o(
-            { target: "Array", proto: !0 },
+            { target: "Array", proto: true },
             {
                 flat: function () {
                     var e = arguments.length ? arguments[0] : void 0,

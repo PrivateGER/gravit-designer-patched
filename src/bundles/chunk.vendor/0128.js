@@ -1,24 +1,24 @@
-module.exports = function (e, t, i) {
-            var n = i(82),
-                r = i(50),
-                o = i(0),
-                a = i(28),
-                s = i(56),
-                l = i(36),
-                h = i(70),
-                A = i(268),
-                c = i(95),
-                p = i(274),
-                u = i(7),
-                d = i(39),
-                g = i(24),
-                f = (i(11), i(9)),
-                m = i(47);
+module.exports = function (module, exports, require) {
+            var GEditor = require(82),
+                r = require(50),
+                IsFiniteNonNegativeNumber = require(0),
+                GStylable = require(28),
+                s = require(56),
+                l = require(36),
+                h = require(70),
+                A = require(268),
+                c = require(95),
+                p = require(274),
+                u = require(7),
+                d = require(39),
+                g = require(24),
+                f = (require(11), require(9 /* String */)),
+                m = require(47);
 
             function y(e) {
                 p.call(this, e);
             }
-            (o.inherit(y, p),
+            (IsFiniteNonNegativeNumber.inherit(y, p),
                 (y.prototype.initialSetup = function (e) {
                     var t = this.getDefaultStyle();
                     if (
@@ -38,16 +38,16 @@ module.exports = function (e, t, i) {
                             u = this.getElement(),
                             d = [],
                             g = [],
-                            f = t.getProperty("ps") || [a.PropertySet.Style],
+                            f = t.getProperty("ps") || [GStylable.PropertySet.Style],
                             m = ["geometryProperties", "visualProperties"];
                         for (i = 0; i < f.length; i++)
-                            for (p = f[i], l = a.PropertySetInfo[p], n = 0; n < m.length; n++)
+                            for (p = f[i], l = GStylable.PropertySetInfo[p], n = 0; n < m.length; n++)
                                 if ((o = l[m[n]])) for (r in o) (d.push(r), g.push(t.getProperty(r)));
                         u.setProperties(d, g);
                         var y = t.getPaintLayers();
                         if (y)
                             for (var _ = y.getFirstChild(); _; _ = _.getNext()) {
-                                var v = _ instanceof a.BorderPaintLayer ? new a.BorderPaintLayer() : new a.FillPaintLayer();
+                                var v = _ instanceof GStylable.BorderPaintLayer ? new GStylable.BorderPaintLayer() : new GStylable.FillPaintLayer();
                                 (v.assignFrom(_), u.getPaintLayers().appendChild(v));
                             }
                         var b = t.getEffects();
@@ -55,30 +55,30 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (y.prototype.acceptDrop = function (e, t, i, o) {
-                    if (l.prototype.acceptDrop.call(this, e, t, i, o)) return !0;
+                    if (l.prototype.acceptDrop.call(this, e, t, i, o)) return true;
                     if (i instanceof r && o instanceof s.HitResult) {
-                        var h = n.getEditor(this.getElement().getScene());
+                        var h = GEditor.getEditor(this.getElement().getScene());
                         h.beginTransaction();
                         try {
                             switch (o.type) {
                                 case s.HitResult.Type.Stroke:
                                     (this.getElement().getPaintLayers().clearBorderLayers(),
-                                        this.getElement().getPaintLayers().appendChild(new a.BorderPaintLayer(i)));
+                                        this.getElement().getPaintLayers().appendChild(new GStylable.BorderPaintLayer(i)));
                                     break;
                                 default:
                                     (this.getElement().getPaintLayers().clearFillLayers(),
-                                        this.getElement().getPaintLayers().appendChild(new a.FillPaintLayer(i)));
+                                        this.getElement().getPaintLayers().appendChild(new GStylable.FillPaintLayer(i)));
                             }
                         } finally {
                             h.commitTransaction(f.get(new m("GShapeEditor", "action.drop-pattern")));
                         }
-                        return !0;
+                        return true;
                     }
-                    return !1;
+                    return false;
                 }),
                 (y.prototype.getDefaultStyle = function () {
                     var e = this.getElement(),
-                        t = o.getTypeId(e),
+                        t = IsFiniteNonNegativeNumber.getTypeId(e),
                         i = e.getScene()
                             ? e
                                   .getScene()
@@ -91,13 +91,13 @@ module.exports = function (e, t, i) {
                                 ? e
                                       .getScene()
                                       .getStyles()
-                                      .querySingle('style[_sdf="' + o.getTypeId(s) + '"]')
+                                      .querySingle('style[_sdf="' + IsFiniteNonNegativeNumber.getTypeId(s) + '"]')
                                 : null),
                         i
                     );
                 }),
                 (y.prototype._hasCenterCross = function () {
-                    return !1;
+                    return false;
                 }),
                 (y.prototype._postPaint = function (e, t) {
                     if (this.hasFlag(d.Flag.Selected) && this.hasFlag(d.Flag.Detail) && this._hasCenterCross() && g.centerCrossSize > 0) {
@@ -105,7 +105,7 @@ module.exports = function (e, t, i) {
                             n = i.getTransform(),
                             r = n || new u(1, 0, 0, 1, 0, 0);
                         r = e ? r.multiplied(e) : r;
-                        var o = i.getCenter(!1);
+                        var o = i.getCenter(false);
                         if (o) {
                             o = r.mapPoint(o);
                             var a = 2 * g.centerCrossSize,
@@ -134,5 +134,5 @@ module.exports = function (e, t, i) {
                 (y.prototype.toString = function () {
                     return "[Object GShapeEditor]";
                 }),
-                (e.exports = y));
+                (module.exports = y));
         };

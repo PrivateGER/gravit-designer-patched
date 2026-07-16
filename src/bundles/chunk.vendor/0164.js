@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(176),
-                o = i(9);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(176),
+                o = require(9 /* String */);
 
             function a() {}
-            (n.inherit(a, n),
+            (IsFiniteNonNegativeNumber.inherit(a, IsFiniteNonNegativeNumber),
                 (a.Constant = {
                     CHARACTER: 0,
                     SPACE: 1,
@@ -441,5 +441,5 @@ module.exports = function (e, t, i) {
                             "number" == typeof e[o] ? (n += a.toLocalizedShort(e[o])) : (n += a.toSystemShortcut(e[o])));
                     return n;
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

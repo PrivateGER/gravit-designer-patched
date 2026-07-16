@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i() {}
             ((i.prototype.scene = null),
                 (i.prototype.paintContext = null),
@@ -8,5 +8,5 @@ module.exports = function (e, t) {
                 (i.prototype.screen = null),
                 (i.prototype.panRepaint = null),
                 (i.prototype.callback = null),
-                (e.exports = i));
+                (module.exports = i));
         };

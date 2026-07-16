@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(110),
-            i = n(35),
-            a = n(144),
-            r = n(398),
+        var o = require(110),
+            i = require(35),
+            a = require(144),
+            r = require(398),
             s = Object;
-        e.exports = r
+        module.exports = r
             ? function (e) {
                   return "symbol" == typeof e;
               }

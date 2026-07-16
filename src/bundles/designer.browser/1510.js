@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        var o = n(1),
-            i = n(40),
-            a = n(257);
+        require(8 /* Symbol */);
+        var GObject = require(1),
+            GSaveAction = require(40),
+            a = require(257);
         class r {
             constructor(e) {
                 let { closeCallback: t } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
@@ -20,7 +20,7 @@ module.exports = function (e, t, n) {
                                     .append(
                                         $("<span/>")
                                             .addClass("label")
-                                            .text(o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.save-to-file")))
+                                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.save-to-file")))
                                     )
                             )
                             .on("click", async function () {
@@ -38,7 +38,7 @@ module.exports = function (e, t, n) {
                                     .append(
                                         $("<span/>")
                                             .addClass("label")
-                                            .text(o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.save-to-cloud")))
+                                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.save-to-cloud")))
                                     )
                             )
                             .on("click", async function () {
@@ -46,17 +46,17 @@ module.exports = function (e, t, n) {
                             })
                     )),
                     this._dialog.gDialog({
-                        releaseOnClose: !0,
+                        releaseOnClose: true,
                         className: "g-save-chooser-dialog",
                         closeTimeout: 0,
                         closeCallback: t,
                     }));
             }
             open() {
-                this._dialog.gDialog("open", !0);
+                this._dialog.gDialog("open", true);
             }
             close() {
-                return (this._dialog.gDialog("close", !1), (0, i.sleep)(0));
+                return (this._dialog.gDialog("close", false), (0, GSaveAction.sleep)(0));
             }
             static file() {
                 return "file";
@@ -65,5 +65,5 @@ module.exports = function (e, t, n) {
                 return "cloud";
             }
         }
-        e.exports = r;
+        module.exports = r;
     };

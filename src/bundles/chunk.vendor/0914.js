@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(2);
-            e.exports = function (e) {
+module.exports = function (module, exports, require) {
+            var n = require(2);
+            module.exports = function (e) {
                 ((e.Linkable = function () {}),
                     (e.Linkable.MetaProperties = {
                         targetGuid: null,

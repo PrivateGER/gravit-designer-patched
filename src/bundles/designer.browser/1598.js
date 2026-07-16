@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(18),
-            a = n(31);
+        require(3);
+        var GObject = require(1),
+            GCategory = require(18),
+            a = require(31);
         function r() {}
-        (o.GObject.inherit(r, a),
+        (GObject.GObject.inherit(r, a),
             (r.ID = "view.zoom.fit-current-layer"),
-            (r.TITLE = new o.GLocaleKey("GFitCurrentLayerAction", "title")),
+            (r.TITLE = new GObject.GLocaleKey("GFitCurrentLayerAction", "title")),
             (r.prototype.getId = function () {
                 return r.ID;
             }),
@@ -15,7 +15,7 @@ module.exports = function (e, t, n) {
                 return r.TITLE;
             }),
             (r.prototype.getCategory = function () {
-                return i.CATEGORY_VIEW;
+                return GCategory.CATEGORY_VIEW;
             }),
             (r.prototype.getGroup = function () {
                 return "zoom";
@@ -28,10 +28,10 @@ module.exports = function (e, t, n) {
             (r.prototype.execute = function () {
                 var e = gDesigner.getActiveDocument(),
                     t = e.getScene().getActiveLayer();
-                e.getActiveWindow().getView().zoomAll(t.getPaintBBox(), !1, !0);
+                e.getActiveWindow().getView().zoomAll(t.getPaintBBox(), false, true);
             }),
             (r.prototype.toString = function () {
                 return "[Object GFitCurrentLayerAction]";
             }),
-            (e.exports = r));
+            (module.exports = r));
     };

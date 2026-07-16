@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i(e, t) {
                 ((this._canvas = document.createElement("canvas")), (this.width = e), (this.height = t), (this.context = null));
             }
@@ -25,5 +25,5 @@ module.exports = function (e, t) {
                 (i.prototype.getHTMLElement = function () {
                     return this._canvas;
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

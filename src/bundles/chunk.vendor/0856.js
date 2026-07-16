@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(1145),
-                r = i(0),
-                o = i(165);
+module.exports = function (module, exports, require) {
+            var n = require(1145),
+                IsFiniteNonNegativeNumber = require(0),
+                PDFNodeStream = require(165);
 
             function a(e) {
-                (n.call(this, "FlateDecode"), e && this.setBuffer(o.deflate(e)));
+                (n.call(this, "FlateDecode"), e && this.setBuffer(PDFNodeStream.deflate(e)));
             }
-            (r.inherit(a, n),
+            (IsFiniteNonNegativeNumber.inherit(a, n),
                 (a.prototype.setBuffer = function (e) {
                     this._compressed = e;
                 }),
@@ -22,5 +22,5 @@ module.exports = function (e, t, i) {
                 (a.prototype.toString = function () {
                     return "[Object GPDFFlateDecode]";
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

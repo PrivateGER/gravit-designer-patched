@@ -1,23 +1,23 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(69),
-                o = i(22),
-                a = i(127),
-                s = i(36),
-                l = i(39),
-                h = i(285),
-                A = i(172),
-                c = i(54),
-                p = i(63),
-                u = i(141),
-                d = i(59),
-                g = i(7),
-                f = i(153);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(69),
+                o = require(22),
+                a = require(127),
+                s = require(36),
+                l = require(39),
+                h = require(285),
+                A = require(172),
+                c = require(54),
+                p = require(63),
+                u = require(141),
+                d = require(59),
+                g = require(7),
+                f = require(153);
 
             function m(e, t) {
                 (a.call(this, e), (this._uid = t));
             }
-            (n.inheritAndMix(m, a, [A]), s.exports(m, h));
+            (IsFiniteNonNegativeNumber.inheritAndMix(m, a, [A]), s.exports(m, h));
             var y = c.deserialize([
                     1, 7, 1, 2, 25, 1, 4, 31, 7, 4, 28.311490120000002, 1, 4, 31, 3.68850988, 2, 31, 25, 4, 25, 31, 4, 31,
                     28.311490120000002, 4, 28.311490120000002, 31, 2, 7, 31, 4, 1, 25, 4, 3.68850988, 31, 4, 1, 28.311490120000002, 2, 1, 7,
@@ -43,27 +43,27 @@ module.exports = function (e, t, i) {
                     5.670000076293945, 4, 2.5299999713897705, 4.400000095367432, 4, 7, 2, 4, 4.400000095367432, 2.5299999713897705, 4,
                     5.670000076293945, 2, 5, 0, 0,
                 ]),
-                v = d.calculateBounds(_, !0).expanded(1, 1, 1, 1);
+                v = d.calculateBounds(_, true).expanded(1, 1, 1, 1);
             ((m.prototype._showEditor = function (e) {
                 return (!e || e.configuration.isElementAnnotationsVisible(this._element)) && a.prototype._showEditor.call(this, e);
             }),
                 (m.prototype.movePart = function (e, t, i, n, r, o, s) {
-                    return a.prototype.movePart.call(this, e, t, i, n, r, !0, s);
+                    return a.prototype.movePart.call(this, e, t, i, n, r, true, s);
                 }),
                 (m.prototype.initialSetup = function (e) {
                     (a.prototype.initialSetup.call(this, e), this._annotationSetup());
                 }),
                 (m.prototype.canHandleDblClick = function () {
-                    return !0;
+                    return true;
                 }),
                 (m.prototype.handleDblClick = function () {
-                    return !0;
+                    return true;
                 }),
                 (m.prototype.isRemovalBlocked = function () {
                     return 0 != (this._element.getProperty("plkt") & r.ProgramLck.NoDelete) || a.prototype.isRemovalBlocked.call(this);
                 }),
                 (m.prototype._showAnnotations = function () {
-                    return !1;
+                    return false;
                 }),
                 (m.prototype.getCustomBBox = function (e, t) {
                     var i = e;
@@ -83,14 +83,14 @@ module.exports = function (e, t, i) {
                             f = new u(c);
                         d &&
                             f &&
-                            (t.canvas.putVertices(d, !1),
-                            t.canvas.fillVertices("#fff", 1, 0, !0),
-                            t.canvas.putVertices(f, !1),
+                            (t.canvas.putVertices(d, false),
+                            t.canvas.fillVertices("#fff", 1, 0, true),
+                            t.canvas.putVertices(f, false),
                             t.canvas.fillVertices(
                                 n || (this.hasFlag(l.Flag.Highlighted) ? t.highlightOutlineColor : t.selectionOutlineColor),
                                 1,
                                 0,
-                                !0
+                                true
                             ));
                     }
                 }),
@@ -100,5 +100,5 @@ module.exports = function (e, t, i) {
                 (m.prototype.toString = function () {
                     return "[Object GCommentAnnotationEditor]";
                 }),
-                (e.exports = m));
+                (module.exports = m));
         };

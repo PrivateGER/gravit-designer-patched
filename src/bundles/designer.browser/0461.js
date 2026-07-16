@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(199).PROPER,
-            i = n(21),
-            a = n(248);
-        e.exports = function (e) {
+        var o = require(199 /* PROPER */).PROPER,
+            i = require(21),
+            a = require(248);
+        module.exports = function (e) {
             return i(function () {
                 return !!a[e]() || "​᠎" !== "​᠎"[e]() || (o && a[e].name !== e);
             });

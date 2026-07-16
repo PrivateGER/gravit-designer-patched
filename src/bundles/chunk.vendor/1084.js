@@ -1,16 +1,16 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(73),
-                o = i(289),
-                a = i(66),
-                s = i(274),
-                l = i(22),
-                h = i(36);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(73),
+                o = require(289),
+                a = require(66),
+                s = require(274),
+                l = require(22),
+                h = require(36);
 
             function A(e) {
                 (s.call(this, e), (this._flags &= ~(a.Flag.RotateCorners | a.Flag.RotateHandle)));
             }
-            (n.inherit(A, s),
+            (IsFiniteNonNegativeNumber.inherit(A, s),
                 h.exports(A, o),
                 (A.prototype.createElementPreview = function () {
                     if (!this._elementPreview) {
@@ -48,5 +48,5 @@ module.exports = function (e, t, i) {
                 (A.prototype.toString = function () {
                     return "[Object GSliceEditor]";
                 }),
-                (e.exports = A));
+                (module.exports = A));
         };

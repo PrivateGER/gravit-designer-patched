@@ -1,41 +1,41 @@
-module.exports = function (e, t, i) {
-            var n = i(893),
-                r = i(133),
-                o = i(2),
-                a = i(83),
-                s = i(160),
-                l = i(0),
-                h = i(72),
-                A = i(5),
-                c = i(77),
-                p = i(6),
-                u = i(7),
-                d = i(644),
-                g = i(64),
-                f = i(14),
-                m = i(663),
-                y = i(228),
-                _ = i(664),
-                v = i(207),
-                b = i(103),
-                C = i(12),
-                w = ((m = i(663)), i(166)),
-                E = i(176),
-                B = i(470),
-                x = !1;
+module.exports = function (module, exports, require) {
+            var n = require(893),
+                GScenePaintConfiguration = require(133),
+                o = require(2),
+                a = require(83),
+                s = require(160),
+                IsFiniteNonNegativeNumber = require(0),
+                h = require(72),
+                A = require(5),
+                c = require(77),
+                p = require(6),
+                u = require(7),
+                d = require(644),
+                g = require(64),
+                f = require(14),
+                m = require(663),
+                y = require(228),
+                _ = require(664),
+                v = require(207),
+                DUMP_IMAGES = require(103),
+                C = require(12),
+                w = ((m = require(663)), require(166)),
+                E = require(176),
+                B = require(470),
+                x = false;
 
             function P(e) {
                 (d.apply(this, arguments.length > 1 ? Array.prototype.slice.call(arguments, 1) : null),
-                    (this._inputHtmlElement = this._createHTMLElement(!0)),
+                    (this._inputHtmlElement = this._createHTMLElement(true)),
                     this._htmlElement.appendChild(this._inputHtmlElement),
                     (this._htmlElement.className += " g-scene-widget"),
                     (this._scene = e),
                     e.increaseReferenceCounter(),
                     (this._viewOffset = [0, 0, 0, 0]),
                     (this._viewMargin = [0, 0, 0, 0]),
-                    (this._logicalPixels = !0),
+                    (this._logicalPixels = true),
                     this._viewConfiguration ||
-                        ((this._viewConfiguration = new r()), (this._viewConfiguration.enableFxCache = !w.WORKER_RENDERING_ENABLED)),
+                        ((this._viewConfiguration = new GScenePaintConfiguration()), (this._viewConfiguration.enableFxCache = !w.WORKER_RENDERING_ENABLED)),
                     P.options.panOrZoomOnWheel && this.addEventListener(c.Wheel, this._wheelListener, this),
                     this.addEventListener(c.Leave, this._leaveListener, this),
                     this.addEventListener(c.Enter, this._enterListener, this),
@@ -58,7 +58,7 @@ module.exports = function (e, t, i) {
                         (this._debugCanvas._canvasContext.canvas.style.top = "0px"),
                         this._htmlElement.appendChild(this._debugCanvas._canvasContext.canvas)),
                     E.hardware !== E.Hardware.Desktop &&
-                        ((w.DELETE_EFFECT_TEXTURES_AFTER_DRAW = !0), (w.DELETE_BLEND_AND_GRADIENT_TEXTURES_AFTER_DRAW = !0)),
+                        ((w.DELETE_EFFECT_TEXTURES_AFTER_DRAW = true), (w.DELETE_BLEND_AND_GRADIENT_TEXTURES_AFTER_DRAW = true)),
                     (this._panHelperCanvas = new f()),
                     this._panHelperCanvas.setRenderAlgorithm(f.RenderAlgorithm.Crisp),
                     this._panHelperCanvas.setImageSmoothingQuality(f.SmoothingQuality.High),
@@ -96,28 +96,28 @@ module.exports = function (e, t, i) {
                     (this._fakeTextBox.style.fontSize = "4px"),
                     this._fakeTextDiv.appendChild(this._fakeTextBox),
                     this._htmlElement.appendChild(this._fakeTextDiv),
-                    e.addEventListener(o.AfterFlagChangeEvent, this._afterFlagChange, this, void 0, void 0, !0),
-                    e.addEventListener(s.InvalidationRequestEvent, this._sceneInvalidationRequest, this, void 0, void 0, !0),
-                    e.addEventListener(s.RecordedTransactionStartedEvent, this._recordedTransactionStarted, this, void 0, void 0, !0),
-                    e.addEventListener(s.RecordedTransactionFinishedEvent, this._recordedTranactionFinished, this, void 0, void 0, !0),
-                    this._updateViewTransforms(!0, !0));
+                    e.addEventListener(o.AfterFlagChangeEvent, this._afterFlagChange, this, void 0, void 0, true),
+                    e.addEventListener(s.InvalidationRequestEvent, this._sceneInvalidationRequest, this, void 0, void 0, true),
+                    e.addEventListener(s.RecordedTransactionStartedEvent, this._recordedTransactionStarted, this, void 0, void 0, true),
+                    e.addEventListener(s.RecordedTransactionFinishedEvent, this._recordedTranactionFinished, this, void 0, void 0, true),
+                    this._updateViewTransforms(true, true));
             }
-            (b.init(w.ENABLE_RENDERER, w.ENABLE_DEBUG),
-                b.setRenderParameters({
+            (DUMP_IMAGES.init(w.ENABLE_RENDERER, w.ENABLE_DEBUG),
+                DUMP_IMAGES.setRenderParameters({
                     offscreen: w.USE_OFFSCREEN_ALWAYS,
                 }),
-                l.inherit(P, d),
+                IsFiniteNonNegativeNumber.inherit(P, d),
                 (P.UPDATEHEIGHT = 50),
                 (P.GRAVIT_IME = "gravit-ime-textarea-608209"),
                 (P.options = {
                     minZoomFactor: 0.06,
                     maxZoomFactor: 256,
-                    panOrZoomOnWheel: !0,
-                    limitScrollingToView: !1,
+                    panOrZoomOnWheel: true,
+                    limitScrollingToView: false,
                     pinchToZoomFactor: 100,
                 }),
                 (P.TransformEvent = function () {}),
-                l.inherit(P.TransformEvent, h),
+                IsFiniteNonNegativeNumber.inherit(P.TransformEvent, h),
                 (P.TransformEvent.prototype.toString = function () {
                     return "[Object GSceneWidget.TransformEvent]";
                 }),
@@ -148,7 +148,7 @@ module.exports = function (e, t, i) {
                 (P.prototype._scrollDX = 0),
                 (P.prototype._scrollDY = 0),
                 (P.prototype._zoom = 1),
-                (P.prototype._logicalPixels = !1),
+                (P.prototype._logicalPixels = false),
                 (P.prototype._worldToViewTransform = null),
                 (P.prototype._viewToWorldTransform = null),
                 (P.prototype._lastInvalidatedWtoVtransform = null),
@@ -157,11 +157,11 @@ module.exports = function (e, t, i) {
                 (P.prototype._cumulativeInvalidationArea = null),
                 (P.prototype._viewConfiguration = null),
                 (P.prototype._pendingInvalidationEvent = null),
-                (P.prototype._duringRecordedTransaction = !1),
+                (P.prototype._duringRecordedTransaction = false),
                 (P.prototype._zoomSteps = [0.12, 0.25, 0.5, 0.66, 1, 1.5, 2, 3, 4, 8, 16, 32, 64, 128]),
-                (P.prototype._wheelScrollingOrZooming = !1),
-                (P.prototype._isPanning = !1),
-                (P.prototype._isZooming = !1),
+                (P.prototype._wheelScrollingOrZooming = false),
+                (P.prototype._isPanning = false),
+                (P.prototype._isZooming = false),
                 (P.prototype.hasRulers = function () {
                     return null !== this._horizontalRuler;
                 }),
@@ -212,7 +212,7 @@ module.exports = function (e, t, i) {
                     e && !this._horizontalRuler
                         ? ((this._horizontalRuler = new n(n.Orientation.Horizontal, this._scene)),
                           (this._verticalRuler = new n(n.Orientation.Vertical, this._scene)),
-                          (this._unitRuler = new n(null, this._scene, void 0, !0, this._viewConfiguration)),
+                          (this._unitRuler = new n(null, this._scene, void 0, true, this._viewConfiguration)),
                           this._htmlElement.insertBefore(this._horizontalRuler._htmlElement, this._inlineHintDiv),
                           this._htmlElement.insertBefore(this._verticalRuler._htmlElement, this._inlineHintDiv),
                           this._htmlElement.insertBefore(this._unitRuler._htmlElement, this._inlineHintDiv),
@@ -252,7 +252,7 @@ module.exports = function (e, t, i) {
                                 o = new p(0, 0, e * i, t * i);
                             (this._dirtyElementList.setArea(r),
                                 this._dirtySceneList.setArea(o),
-                                this.invalidate(null, !0),
+                                this.invalidate(null, true),
                                 this._relayoutRulers(),
                                 n && n());
                         }.bind(this);
@@ -261,9 +261,9 @@ module.exports = function (e, t, i) {
                                   (g.cancelFrame(this._resizeRequestFrameId), (this._resizeRequestFrameId = null)),
                               this._scheduleRendering(
                                   function () {
-                                      this.resize.call(this, e, t, !0, n);
+                                      this.resize.call(this, e, t, true, n);
                                   }.bind(this),
-                                  !0
+                                  true
                               ))
                             : r();
                     }
@@ -395,7 +395,7 @@ module.exports = function (e, t, i) {
                         a = this.getViewBox();
                     if (i && this._viewConfiguration.multiPageView) {
                         var s = this._scene.getActivePage();
-                        s && (n = n.add(s.getPosition(!0)));
+                        s && (n = n.add(s.getPosition(true)));
                     }
                     if (t) {
                         var l = this.getWorldTransform().mapRect(new p(n.getX() - r / 2, n.getY() - o / 2, r, o)),
@@ -415,12 +415,12 @@ module.exports = function (e, t, i) {
                         e &&
                             !e.isEmpty() &&
                             (this._sceneCanvas.setDirtyCache(e, this.getLogicalZoom(), this._scrollX, this._scrollY),
-                            this.invalidate(e, !0)));
+                            this.invalidate(e, true)));
                 }),
                 (P.prototype.invalidate = function (e, t, i) {
                     var n = t ? this._dirtySceneList : this._dirtyElementList;
                     if (e) {
-                        if (e.isEmpty()) return !1;
+                        if (e.isEmpty()) return false;
                     } else (n.reset(), (e = n.getArea()));
                     return e && n.dirty(e.getX(), e.getY(), e.getWidth(), e.getHeight())
                         ? (t
@@ -433,35 +433,35 @@ module.exports = function (e, t, i) {
                               : w.DEBUG_AREAS & w.DBG_AREAS_INFO.Editor &&
                                 this._debugCanvas.fillRect(e.getX(), e.getY(), e.getWidth(), e.getHeight(), "#0f0", 0.05),
                           null == this._repaintRequestFrameId && this._scheduleRendering(this._repaint.bind(this)),
-                          !0)
+                          true)
                         : (null === this._repaintRequestFrameId &&
                               null === this._finishPanRequestFrameId &&
                               (this._duringRecordedTransaction
-                                  ? (this._pendingInvalidationEvent = !0)
-                                  : this._scene.trigger(new s.InvalidationFinishedEvent(this._scene, this._viewConfiguration, !1))),
-                          !1);
+                                  ? (this._pendingInvalidationEvent = true)
+                                  : this._scene.trigger(new s.InvalidationFinishedEvent(this._scene, this._viewConfiguration, false))),
+                          false);
                 }),
                 (P.prototype._recordedTransactionStarted = function (e) {
-                    this._duringRecordedTransaction = !0;
+                    this._duringRecordedTransaction = true;
                 }),
                 (P.prototype._recordedTranactionFinished = function (e) {
-                    ((this._duringRecordedTransaction = !1),
+                    ((this._duringRecordedTransaction = false),
                         this._scene &&
                             null === this._repaintRequestFrameId &&
                             this._pendingInvalidationEvent &&
-                            this._scene.trigger(new s.InvalidationFinishedEvent(this._scene, this._viewConfiguration, !1)),
-                        (this._pendingInvalidationEvent = !1));
+                            this._scene.trigger(new s.InvalidationFinishedEvent(this._scene, this._viewConfiguration, false)),
+                        (this._pendingInvalidationEvent = false));
                 }),
                 (P.prototype.release = function () {
-                    (this.setRulers(!1),
-                        this.removeAllEventListeners(!0),
-                        this._scene.removeAllEventListeners(!0),
-                        this._scene.getDictionary().removeAllEventListeners(!0),
-                        this._scene.getSymbolDictionary().removeAllEventListeners(!0),
-                        this._scene.__graphic_editor__ && this._scene.__graphic_editor__.removeAllEventListeners(!0),
+                    (this.setRulers(false),
+                        this.removeAllEventListeners(true),
+                        this._scene.removeAllEventListeners(true),
+                        this._scene.getDictionary().removeAllEventListeners(true),
+                        this._scene.getSymbolDictionary().removeAllEventListeners(true),
+                        this._scene.__graphic_editor__ && this._scene.__graphic_editor__.removeAllEventListeners(true),
                         this._scene.iteratePages(function (e) {
-                            e.removeAllEventListeners(!0);
-                        }, !0),
+                            e.removeAllEventListeners(true);
+                        }, true),
                         this._scene.decreaseReferenceCounter(),
                         this._sceneCanvas.destroy(),
                         this._debugCanvas && this._debugCanvas.destroy(),
@@ -472,8 +472,8 @@ module.exports = function (e, t, i) {
                         this._elementPaintContext.destroy(),
                         this._scene.releaseDictionaries(),
                         B.destroyTextures(),
-                        (this._pendingInvalidationEvent = !1),
-                        (this._duringRecordedTransaction = !1),
+                        (this._pendingInvalidationEvent = false),
+                        (this._duringRecordedTransaction = false),
                         this._repaintRequestFrameId && (g.cancelFrame(this._repaintRequestFrameId), (this._repaintRequestFrameId = null)),
                         this._resizeRequestFrameId && (g.cancelFrame(this._resizeRequestFrameId), (this._resizeRequestFrameId = null)),
                         this._finishPanRequestFrameId &&
@@ -493,9 +493,9 @@ module.exports = function (e, t, i) {
                         var o = f.getScreenDPI(),
                             s = this.getViewBox().scaled(o, o);
                         B =
-                            this._viewConfiguration.paintMode === r.PaintMode.Output
+                            this._viewConfiguration.paintMode === GScenePaintConfiguration.PaintMode.Output
                                 ? this._scene
-                                      .getGeometryBBox(!1, this._viewConfiguration.multiPageView)
+                                      .getGeometryBBox(false, this._viewConfiguration.multiPageView)
                                       .scaled(this.getLogicalZoom(), this.getLogicalZoom())
                                 : this._scene
                                       .getPaintBBox(this._viewConfiguration.multiPageView)
@@ -511,8 +511,8 @@ module.exports = function (e, t, i) {
                                 h = (1 * (v.pageGap || 20)) / this.getLogicalZoom(),
                                 c = l(
                                     s.getSide(p.Side.CENTER),
-                                    this._viewConfiguration.paintMode === r.PaintMode.Output
-                                        ? this._scene.getGeometryBBox(!1, this._viewConfiguration.multiPageView).getSide(p.Side.CENTER)
+                                    this._viewConfiguration.paintMode === GScenePaintConfiguration.PaintMode.Output
+                                        ? this._scene.getGeometryBBox(false, this._viewConfiguration.multiPageView).getSide(p.Side.CENTER)
                                         : this._scene.getPaintBBox(this._viewConfiguration.multiPageView).getSide(p.Side.CENTER)
                                 ),
                                 d = s.getSide(p.Side.BOTTOM_RIGHT),
@@ -524,7 +524,7 @@ module.exports = function (e, t, i) {
                         if (!g) return;
                         var m,
                             y = g;
-                        m = this._viewConfiguration.paintMode === r.PaintMode.Output ? y.getGeometryBBox() : y.getPaintBBox();
+                        m = this._viewConfiguration.paintMode === GScenePaintConfiguration.PaintMode.Output ? y.getGeometryBBox() : y.getPaintBBox();
                         var _,
                             b = this._scene.getLabelBBox(y.getScaleLabelFactor()).getHeight(),
                             C = y.getPosition(this._viewConfiguration.multiPageView),
@@ -533,7 +533,7 @@ module.exports = function (e, t, i) {
                                 (m = m.translated(C.getX(), C.getY()).expanded(0, b, 0, 0)).getSide(p.Side.BOTTOM_RIGHT).add(new A(h, h))
                             ),
                             E = s.getSide(p.Side.TOP_LEFT);
-                        if (this._viewConfiguration.paintMode === r.PaintMode.Output) {
+                        if (this._viewConfiguration.paintMode === GScenePaintConfiguration.PaintMode.Output) {
                             var B,
                                 x = this._scene.getActivePage();
                             _ = (B = x && x.getGeometryBBox()) && B.getSide(p.Side.TOP_LEFT).add(new A(-h, 0));
@@ -559,7 +559,7 @@ module.exports = function (e, t, i) {
                 }),
                 (P.prototype._paintScene = function (e, t, i) {
                     (w.ENABLE_TIMING && console.time("Compositing time"),
-                        (x = !0),
+                        (x = true),
                         this._sceneCanvas.paintAndRender(
                             this._scene,
                             this._scenePaintContext,
@@ -693,7 +693,7 @@ module.exports = function (e, t, i) {
                                     (this._scenePaintContext.dirtyMatcher = t));
                                 var s = this._scenePaintContext.noWebGL;
                                 this._scenePaintContext.configuration.noWebGL = !(
-                                    !b.getRenderParameters().quickRender && !b.getRenderParameters().noWebGL
+                                    !DUMP_IMAGES.getRenderParameters().quickRender && !DUMP_IMAGES.getRenderParameters().noWebGL
                                 );
                                 var l = this,
                                     h = this._panSubAreas.slice(),
@@ -706,15 +706,15 @@ module.exports = function (e, t, i) {
                                           })
                                           .concat(h))
                                     : (l._cumulativeInvalidationArea = h),
-                                    this._paintScene(this.getScreenBox(), !0, function (t, r, o) {
+                                    this._paintScene(this.getScreenBox(), true, function (t, r, o) {
                                         (r || w.DRAW_DURING_RENDERING || w.SHOW_LOWRES_GIMMICK) &&
                                             (w.ENABLE_TIMING && console.time("post render"),
-                                            l._finishPaint(e, !1, i, n, r, t),
+                                            l._finishPaint(e, false, i, n, r, t),
                                             w.ENABLE_TIMING && console.timeEnd("post render"),
                                             r &&
                                                 ((l._scenePaintContext.configuration.noWebGL = s),
                                                 (l._scenePaintContext.dirtyMatcher = null),
-                                                (x = !1),
+                                                (x = false),
                                                 w.ENABLE_TIMING && console.timeEnd("rendering")));
                                     }));
                             }
@@ -722,24 +722,24 @@ module.exports = function (e, t, i) {
                             this._scenePaintContext.dirtyMatcher = t;
                             s = this._scenePaintContext.noWebGL;
                             this._scenePaintContext.configuration.noWebGL = !(
-                                !b.getRenderParameters().quickRender && !b.getRenderParameters().noWebGL
+                                !DUMP_IMAGES.getRenderParameters().quickRender && !DUMP_IMAGES.getRenderParameters().noWebGL
                             );
                             l = this;
-                            this._paintScene(this.getScreenBox(), !1, function (t, r, o) {
+                            this._paintScene(this.getScreenBox(), false, function (t, r, o) {
                                 (r || w.DRAW_DURING_RENDERING || w.SHOW_LOWRES_GIMMICK) &&
                                     (w.ENABLE_TIMING && console.time("post render"),
-                                    l._finishPaint(e, !0, i, n, r, t),
+                                    l._finishPaint(e, true, i, n, r, t),
                                     w.ENABLE_TIMING && console.timeEnd("post render"),
                                     r &&
                                         ((l._scenePaintContext.configuration.noWebGL = s),
                                         (l._scenePaintContext.dirtyMatcher = null),
-                                        (x = !1),
+                                        (x = false),
                                         w.ENABLE_TIMING && console.timeEnd("rendering"),
                                         !o &&
                                             l._finishPanRequestFrameId &&
                                             ((l._cumulativeInvalidationArea = null), (l._finishPanRequestFrameId = null))));
                             });
-                        } else this._finishPaint(e, !0, i, n, !0);
+                        } else this._finishPaint(e, true, i, n, true);
                         this._panSubAreas && (this._panSubAreas = null);
                     } finally {
                         ((this._repaintRequestFrameId = null),
@@ -748,10 +748,10 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (P.prototype.beginZoom = function (e) {
-                    ((this._isZooming = !0),
+                    ((this._isZooming = true),
                         null !== this._repaintRequestFrameId &&
                             (g.cancelFrame(this._repaintRequestFrameId), (this._repaintRequestFrameId = null)),
-                        b.setRenderParameters(
+                        DUMP_IMAGES.setRenderParameters(
                             e || {
                                 quickRender: w.QUICK_RENDER_WHEN_ZOOMING,
                                 noWebGL: w.NO_WEBGL_WHEN_ZOOMING,
@@ -760,28 +760,28 @@ module.exports = function (e, t, i) {
                 }),
                 (P.prototype.finishZoom = function () {
                     if (this._isZooming && !this._isPanning) {
-                        this._isZooming = !1;
+                        this._isZooming = false;
                         var e = this;
                         this._scheduleRendering(function () {
-                            b.setRenderParameters({
-                                quickRender: !1,
-                                noWebGL: !1,
+                            DUMP_IMAGES.setRenderParameters({
+                                quickRender: false,
+                                noWebGL: false,
                             });
                             var t = e._getSceneRect();
-                            (e.invalidate(t, !0), e._repaint());
+                            (e.invalidate(t, true), e._repaint());
                         });
                     }
                 }),
                 (P.prototype.beginPan = function (e) {
-                    ((this._isPanning = !0),
+                    ((this._isPanning = true),
                         null !== this._finishPanRequestFrameId
                             ? (g.cancelFrame(this._finishPanRequestFrameId),
                               (this._finishPanRequestFrameId = null),
-                              b.setRenderParameters({
+                              DUMP_IMAGES.setRenderParameters({
                                   quickRender: w.QUICK_RENDER_WHEN_PANNING,
                                   noWebGL: w.NO_WEBGL_WHEN_PANNING,
                               }))
-                            : b.setRenderParameters(
+                            : DUMP_IMAGES.setRenderParameters(
                                   e || {
                                       quickRender: w.QUICK_RENDER_WHEN_PANNING,
                                       noWebGL: w.NO_WEBGL_WHEN_PANNING,
@@ -793,24 +793,24 @@ module.exports = function (e, t, i) {
                         (this._isZooming &&
                             ("number" == typeof this._wheelScrollingOrZooming &&
                                 (clearTimeout(this._wheelScrollingOrZooming), (this._wheelScrollingOrZooming = null)),
-                            (this._isZooming = !1),
+                            (this._isZooming = false),
                             (this._cumulativeInvalidationArea = [this._getSceneRect()])),
-                            (this._isPanning = !1));
+                            (this._isPanning = false));
                         var t = this;
                         this._scheduleRendering(
                             function () {
-                                b.setRenderParameters({
-                                    quickRender: !1,
-                                    noWebGL: !1,
+                                DUMP_IMAGES.setRenderParameters({
+                                    quickRender: false,
+                                    noWebGL: false,
                                 });
                                 var i = t._getSceneRect();
                                 ((t._cumulativeInvalidationArea || []).forEach(function (e) {
-                                    t.invalidate(e.intersected(i), !0);
+                                    t.invalidate(e.intersected(i), true);
                                 }),
                                     e && e());
                             },
-                            !1,
-                            !0
+                            false,
+                            true
                         );
                     }
                 }),
@@ -832,13 +832,13 @@ module.exports = function (e, t, i) {
                             (v.scaleLabelFactor = this._viewToWorldTransform.getScaleFactor()),
                             !t)
                         ) {
-                            var o = !1;
+                            var o = false;
                             if (i && this._viewToWorldTransform) {
                                 var a = f.getScreenDPI(),
                                     s = i.mapRect(new p(0, 0, this.getWidth() * a, this.getHeight() * a)),
                                     l = this._viewToWorldTransform.mapRect(new p(0, 0, this.getWidth() * a, this.getHeight() * a));
                                 if (C.isEqualEps(s.getWidth(), l.getWidth(), 1e-6) && C.isEqualEps(s.getHeight(), l.getHeight(), 1e-6)) {
-                                    var h = l.subtracted(s, !0),
+                                    var h = l.subtracted(s, true),
                                         A = null;
                                     A =
                                         h instanceof Array
@@ -846,8 +846,8 @@ module.exports = function (e, t, i) {
                                                   return r.mapRect(e);
                                               })
                                             : [r.mapRect(h)];
-                                    for (var c = !1, d = 0; d < A.length; d++) c = this.invalidate(A[d], !0) || c;
-                                    (((!w.ENABLE_RENDERER && c) || w.ENABLE_RENDERER) && (this._panSubAreas = A), (o = !0));
+                                    for (var c = false, d = 0; d < A.length; d++) c = this.invalidate(A[d], true) || c;
+                                    (((!w.ENABLE_RENDERER && c) || w.ENABLE_RENDERER) && (this._panSubAreas = A), (o = true));
                                 }
                             }
                             a = f.getScreenDPI();
@@ -856,7 +856,7 @@ module.exports = function (e, t, i) {
                                 y = g.getHeight();
                             ((g = g.expanded(m, y, m, y)),
                                 this._scene.setScreenBox(this.getViewTransform(this._scene).mapRect(g)),
-                                o || this.invalidate(null, !0));
+                                o || this.invalidate(null, true));
                         }
                         !e && this.hasEventListeners(P.TransformEvent) && this.trigger(P.TRANSFORMEVENT);
                     }
@@ -900,7 +900,7 @@ module.exports = function (e, t, i) {
                         }
                         t = (t = this.getWorldTransform(e.page || this._scene).mapRect(t)).expanded(2, 2, 2, 2);
                     }
-                    (this.invalidate(t, !0), this._sceneCanvas.setDirtyCache(t, this.getLogicalZoom(), this._scrollX, this._scrollY));
+                    (this.invalidate(t, true), this._sceneCanvas.setDirtyCache(t, this.getLogicalZoom(), this._scrollX, this._scrollY));
                 }),
                 (P.prototype.getViewVisibleArea = function () {
                     var e = this._viewOffset[0];
@@ -917,7 +917,7 @@ module.exports = function (e, t, i) {
                         ("number" == typeof this._wheelScrollingOrZooming &&
                             (clearTimeout(this._wheelScrollingOrZooming),
                             (this._cumulativeInvalidationArea = null),
-                            (this._isPanning = !1),
+                            (this._isPanning = false),
                             (this._wheelScrollingOrZooming = null)),
                             (this._wheelScrollingOrZooming = setTimeout(
                                 function () {
@@ -947,7 +947,7 @@ module.exports = function (e, t, i) {
                     } else
                         ("number" == typeof this._wheelScrollingOrZooming &&
                             (clearTimeout(this._wheelScrollingOrZooming),
-                            this._isZooming && ((this._isZooming = !1), (this._cumulativeInvalidationArea = [this._getSceneRect()])),
+                            this._isZooming && ((this._isZooming = false), (this._cumulativeInvalidationArea = [this._getSceneRect()])),
                             (this._wheelScrollingOrZooming = null)),
                             (this._wheelScrollingOrZooming = setTimeout(
                                 function () {
@@ -975,17 +975,17 @@ module.exports = function (e, t, i) {
                     e.node instanceof a && e.flag === o.Flag.Active && e.set && this._relayoutRulers();
                 }),
                 (P.prototype.startTouchMode = function () {
-                    b.setRenderParameters({
+                    DUMP_IMAGES.setRenderParameters({
                         quickRender: w.QUICK_RENDER_WHEN_ZOOMING,
                         noWebGL: w.NO_WEBGL_WHEN_ZOOMING,
                     });
                 }),
                 (P.prototype.endTouchMode = function () {
-                    (b.setRenderParameters({
-                        quickRender: !1,
-                        noWebGL: !1,
+                    (DUMP_IMAGES.setRenderParameters({
+                        quickRender: false,
+                        noWebGL: false,
                     }),
-                        this.invalidate(null, !0));
+                        this.invalidate(null, true));
                 }),
                 (P.prototype.cleanCache = function () {
                     this._sceneCanvas.cleanCache();
@@ -1003,5 +1003,5 @@ module.exports = function (e, t, i) {
                 (P.prototype.toString = function () {
                     return "[Object GSceneWidget]";
                 }),
-                (e.exports = P));
+                (module.exports = P));
         };

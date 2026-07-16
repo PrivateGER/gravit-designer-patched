@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            e.exports = {
+            module.exports = {
                 ACTION_REQUEST_REVIEW: "ACTION_REQUEST_REVIEW",
                 ACTION_REQUEST_APPROVAL: "ACTION_REQUEST_APPROVAL",
                 ACTION_REOPEN: "ACTION_REOPEN",

@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(4), i(32), i(33));
+            (require(4), require(32), require(33));
             const n = 1,
-                r = i(958);
+                r = require(958);
             class o {
                 constructor(e, t) {
                     ((this.name = e), (this.data = t));
                 }
             }
-            e.exports = (e) => {
+            module.exports = (e) => {
                 e.WebSocketClient = class extends (
                     class {
                         constructor() {
@@ -42,7 +42,7 @@ module.exports = function (e, t, i) {
                         return this._token || e.token;
                     }
                     connect(e) {
-                        let { keepAlive: t = !0, autoReconnect: i = !0 } =
+                        let { keepAlive: t = true, autoReconnect: i = true } =
                             arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                         const a = () => {
                             ((this._ws = this._open(e)),

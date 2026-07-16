@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(559),
-                r = i(0),
-                o = i(188),
-                a = i(437),
-                s = i(390),
-                l = i(182),
+module.exports = function (module, exports, require) {
+            var n = require(559),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(188),
+                a = require(437),
+                s = require(390),
+                l = require(182),
                 h = function (e) {
                     var t = 1;
                     if (e instanceof o) e = e.getValue();
@@ -20,12 +20,12 @@ module.exports = function (e, t, i) {
                         ((this._cmyk = s.rgbToCMYK(r.asRGBA())), (this._alpha = r.getAlpha()));
                     }
                 };
-            (r.inheritAndMix(h, a, [s]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(h, a, [s]),
                 (h.prototype.getAlpha = function () {
                     return this._alpha;
                 }),
                 (h.prototype.asArray = function () {
                     return new l([this._cmyk[0] || 0, this._cmyk[1] || 0, this._cmyk[2] || 0, this._cmyk[3] || 0]);
                 }),
-                (e.exports = h));
+                (module.exports = h));
         };

@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o = setInterval(function () {
             navigator.onLine && ($(document).trigger("networkAvailable"), clearInterval(o));
         }, 2e4);
-        t.youtubePlaylist = "https://www.youtube.com/playlist?list=PLqsk_4aqUvEYxmy5NpQakcZXa6_3w-I8F";
+        exports.youtubePlaylist = "https://www.youtube.com/playlist?list=PLqsk_4aqUvEYxmy5NpQakcZXa6_3w-I8F";
     };

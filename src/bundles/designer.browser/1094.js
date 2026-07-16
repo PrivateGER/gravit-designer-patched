@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(592);
-        const { isUTS: i, UTStoCDA: a } = n(1095);
+        require(3);
+        var o = require(592);
+        const { isUTS: i, UTStoCDA: a } = require(1095);
         function r(e, t, n, r) {
             if (!t) throw new o("GCloudAnnotations: no cloud annotations id");
             if (!e) throw new o("GCloudAnnotations: empty cloud annotations result", t);
@@ -15,8 +15,8 @@ module.exports = function (e, t, n) {
                 throw new o("GCloudAnnotations: no lastUpdateTime inside cloud annotations", t);
             ((this.annotationsCollection = e.annotationsCollection),
                 i(this.annotationsCollection)
-                    ? ((this.annotationsCollection = a(this.annotationsCollection)), r && (r.hasUTS = !0))
-                    : r && (r.hasUTS = !1),
+                    ? ((this.annotationsCollection = a(this.annotationsCollection)), r && (r.hasUTS = true))
+                    : r && (r.hasUTS = false),
                 (this.lastUpdateTime = new Date(e.lastUpdateTime).getTime()),
                 (this.cid = t),
                 n && (this.accessToken = n));
@@ -28,5 +28,5 @@ module.exports = function (e, t, n) {
             (r.prototype.toString = function () {
                 return "[GCloudAnnotations]";
             }),
-            (e.exports = r));
+            (module.exports = r));
     };

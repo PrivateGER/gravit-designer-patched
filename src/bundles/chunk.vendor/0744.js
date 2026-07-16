@@ -1,21 +1,21 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(99),
-                o = i(17),
-                a = i(14);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(99),
+                o = require(17),
+                a = require(14);
 
             function s(e) {
                 r.call(this, e);
             }
-            (n.inheritAndMix(s, r, [r.Visual]),
-                (s.SCALE = !0),
-                (s.GATHER_ALL = !1),
+            (IsFiniteNonNegativeNumber.inheritAndMix(s, r, [r.Visual]),
+                (s.SCALE = true),
+                (s.GATHER_ALL = false),
                 (s.LabelItem = function (e, t, i, n, r) {
                     ((this._position = e), (this._label = i), (this._color = n || null), (this._isScaleLabel = !!r), (this._width = t));
                 }),
                 (s.LabelItem._position = null),
                 (s.LabelItem._label = null),
-                (s.LabelItem._isScaleLabel = !1),
+                (s.LabelItem._isScaleLabel = false),
                 (s.LabelItem.prototype.getLabel = function () {
                     return this._label;
                 }),
@@ -73,5 +73,5 @@ module.exports = function (e, t, i) {
                 (s.prototype.toString = function () {
                     return "[Object GLabelGuide]";
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

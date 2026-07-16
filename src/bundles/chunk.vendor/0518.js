@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(50),
-                r = i(17),
-                o = i(265),
-                a = i(139),
-                s = i(73),
-                l = i(661),
-                h = i(7),
-                A = i(28);
-            i(14);
+module.exports = function (module, exports, require) {
+            var n = require(50),
+                r = require(17),
+                o = require(265),
+                a = require(139),
+                s = require(73),
+                l = require(661),
+                h = require(7),
+                GStylable = require(28);
+            require(14);
 
             function c(e) {
                 (a.call(this),
@@ -33,14 +33,14 @@ module.exports = function (e, t, i) {
                 (c.prototype.setType = function (e) {
                     switch (((this._type = e), this._node.getPaintLayers().clearFillLayers(), e)) {
                         case c.Type.Original:
-                            this._node.getPaintLayers().appendChild(new A.FillPaintLayer(new o()));
+                            this._node.getPaintLayers().appendChild(new GStylable.FillPaintLayer(new o()));
                             break;
                         case c.Type.Black:
                         case c.Type.Color:
-                            this._node.getPaintLayers().appendChild(new A.FillPaintLayer(r.WHITE));
+                            this._node.getPaintLayers().appendChild(new GStylable.FillPaintLayer(r.WHITE));
                             break;
                         case c.Type.White:
-                            this._node.getPaintLayers().appendChild(new A.FillPaintLayer(r.BLACK));
+                            this._node.getPaintLayers().appendChild(new GStylable.FillPaintLayer(r.BLACK));
                     }
                     this._node
                         .getEffects()
@@ -48,7 +48,7 @@ module.exports = function (e, t, i) {
                         .setProperty("shp", {
                             amount: this.getAmount(),
                             colored: this._type === c.Type.Color,
-                            transparency: !0,
+                            transparency: true,
                         });
                 }),
                 (c.prototype.getType = function () {
@@ -65,7 +65,7 @@ module.exports = function (e, t, i) {
                             .setProperty("shp", {
                                 amount: this._amount,
                                 colored: this._type === c.Type.Color,
-                                transparency: !0,
+                                transparency: true,
                             }));
                 }),
                 (c.prototype.getAmount = function () {
@@ -73,18 +73,18 @@ module.exports = function (e, t, i) {
                 }),
                 (c.prototype.getTexture = function (e, t) {
                     var i = this._node.clone();
-                    if ((i.transform(new h().scaled(this._scaleX, this._scaleY), !0), this._type === c.Type.Original)) {
+                    if ((i.transform(new h().scaled(this._scaleX, this._scaleY), true), this._type === c.Type.Original)) {
                         var n = e.getBitmap().clone(e.getTransform().mapRect(t));
                         if (n) {
                             var r = new a(n.getHTMLElement());
                             a.ScaleSettings.stretch(r);
                             var o = i.getPaintLayers(),
                                 s = o.getFirstChild(),
-                                l = new A.FillPaintLayer(r);
+                                l = new GStylable.FillPaintLayer(r);
                             o.insertChild(l, s);
                         }
                     }
-                    return i.toBitmap(void 0, void 0, void 0, void 0, void 0, void 0, void 0, void 0, !1);
+                    return i.toBitmap(void 0, void 0, void 0, void 0, void 0, void 0, void 0, void 0, false);
                 }),
                 (c.prototype.clone = function () {
                     var e = this.serialize(),
@@ -102,10 +102,10 @@ module.exports = function (e, t, i) {
                     return null;
                 }),
                 (c.prototype.isWebGL = function () {
-                    return !0;
+                    return true;
                 }),
                 (c.prototype.toString = function () {
                     return "[Object GNoisePattern]";
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

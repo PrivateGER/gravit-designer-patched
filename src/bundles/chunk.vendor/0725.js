@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(105),
-                r = i(529),
-                o = i(89),
-                a = i(326);
+            var n = require(105),
+                r = require(529),
+                Parser = require(89),
+                a = require(326);
 
             function s(e, t, i, n, r) {
                 var o;
@@ -17,7 +17,7 @@ module.exports = function (e, t, i) {
                 var r,
                     a,
                     l,
-                    h = new o.Parser(t, i);
+                    h = new Parser.Parser(t, i);
                 if (
                     ((e.numberOfContours = h.parseShort()),
                     (e._xMin = h.parseShort()),
@@ -49,8 +49,8 @@ module.exports = function (e, t, i) {
                     } else e.points = [];
                 } else if (0 === e.numberOfContours) e.points = [];
                 else {
-                    ((e.isComposite = !0), (e.points = []), (e.components = []));
-                    for (var y = !0; y; ) {
+                    ((e.isComposite = true), (e.points = []), (e.components = []));
+                    for (var y = true; y; ) {
                         r = h.parseUShort();
                         var _ = {
                             glyphIndex: h.parseUShort(),
@@ -180,7 +180,7 @@ module.exports = function (e, t, i) {
                     }
                 return A(t.points);
             }
-            ((t.parse = function (e, t, i, n) {
+            ((exports.parse = function (e, t, i, n) {
                 var o,
                     a = new r.GlyphSet(n);
                 for (o = 0; o < i.length - 1; o += 1) {
@@ -189,5 +189,5 @@ module.exports = function (e, t, i) {
                 }
                 return a;
             }),
-                (t.getPath = A));
+                (exports.getPath = A));
         };

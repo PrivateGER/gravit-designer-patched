@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(188),
-                r = i(2),
-                o = i(76),
-                a = i(11),
-                s = i(139),
-                l = i(518),
-                h = i(50);
+module.exports = function (module, exports, require) {
+            var n = require(188),
+                r = require(2),
+                o = require(76),
+                a = require(11),
+                s = require(139),
+                l = require(518),
+                h = require(50);
 
             function A(e, t) {
                 (o.call(this), this._setDefaultProperties(A.visualProperties), this.setProperties(["_pt", "_op"], [e, null == t ? 1 : t]));
@@ -35,11 +35,11 @@ module.exports = function (e, t, i) {
                     return "swatches" === r.getName(e);
                 }),
                 (A.equals = function (e, t) {
-                    var i = !0;
+                    var i = true;
                     if (
                         (["_pt", "_op"].forEach(
                             function (n) {
-                                i = i && a.equals(e.getProperty(n), t.getProperty(n), !0);
+                                i = i && a.equals(e.getProperty(n), t.getProperty(n), true);
                             }.bind(this)
                         ),
                         i)
@@ -50,7 +50,7 @@ module.exports = function (e, t, i) {
                             ? (i = n._type === r._type)
                             : n instanceof s &&
                               r instanceof s &&
-                              ((i = !0),
+                              ((i = true),
                               [
                                   "_url",
                                   "_repeatMode",
@@ -73,5 +73,5 @@ module.exports = function (e, t, i) {
                 (A.prototype.toString = function () {
                     return "[Mixin GSwatch]";
                 }),
-                (e.exports = A));
+                (module.exports = A));
         };

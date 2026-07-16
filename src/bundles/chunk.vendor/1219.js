@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(90),
-                r = i(0),
+module.exports = function (module, exports, require) {
+            var n = require(90),
+                IsFiniteNonNegativeNumber = require(0),
                 o = function (e, t) {
                     ((this._node = e), (this._type = t));
                 };
-            (r.inherit(o, n),
+            (IsFiniteNonNegativeNumber.inherit(o, n),
                 (o.Type = {
                     BEGIN: 0,
                     END: 1,
@@ -13,10 +13,10 @@ module.exports = function (e, t, i) {
                     return this._type;
                 }),
                 (o.prototype.isEmpty = function () {
-                    return !0;
+                    return true;
                 }),
                 (o.prototype.equals = function (e) {
                     return e instanceof o && this._node == e._node && this._type === e._type;
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

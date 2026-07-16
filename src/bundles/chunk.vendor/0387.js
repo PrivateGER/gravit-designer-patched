@@ -1,48 +1,48 @@
-module.exports = function (e, t, i) {
-            var n = i(82),
-                r = i(161),
-                o = i(2),
-                a = i(0),
-                s = i(17),
-                l = i(68),
-                h = i(11),
-                A = i(56),
-                c = i(69),
-                p = i(752),
-                u = i(128),
-                d = i(36),
-                g = i(70),
-                f = i(5),
-                m = i(24),
-                y = i(66),
-                _ = i(6),
-                v = i(7),
-                b = i(12),
-                C = i(73),
-                w = i(39),
-                E = i(81),
-                B = (i(52), i(22)),
-                x = i(167),
-                P = i(64),
-                S = i(108),
-                T = i(215),
-                I = i(164),
-                F = i(9),
-                R = i(47),
-                D = i(176);
+module.exports = function (module, exports, require) {
+            var GEditor = require(82),
+                r = require(161),
+                o = require(2),
+                IsFiniteNonNegativeNumber = require(0),
+                s = require(17),
+                l = require(68),
+                h = require(11),
+                A = require(56),
+                c = require(69),
+                p = require(752),
+                u = require(128),
+                d = require(36),
+                g = require(70),
+                f = require(5),
+                m = require(24),
+                y = require(66),
+                _ = require(6),
+                v = require(7),
+                b = require(12),
+                C = require(73),
+                w = require(39),
+                E = require(81),
+                B = (require(52), require(22)),
+                x = require(167),
+                P = require(64),
+                GFont = require(108),
+                T = require(215),
+                I = require(164),
+                F = require(9 /* String */),
+                R = require(47),
+                D = require(176);
 
             function k(e) {
-                ((this._inlineEditEnabled = !0), u.call(this, e));
+                ((this._inlineEditEnabled = true), u.call(this, e));
             }
-            (a.inherit(k, u),
+            (IsFiniteNonNegativeNumber.inherit(k, u),
                 d.exports(k, g),
                 (k.DISTANCE_HANDLER_ID = h.uuid()),
                 (k.prototype._inlineEditor = null),
-                (k.prototype._dontSetContent = !1),
+                (k.prototype._dontSetContent = false),
                 (k.prototype._currentRangeFormatting = null),
-                (k.prototype._fullContentsTransform = !1),
+                (k.prototype._fullContentsTransform = false),
                 (k.prototype._view = null),
-                (k.prototype._inlineEditEnabled = !0),
+                (k.prototype._inlineEditEnabled = true),
                 (k.prototype._toggles = {
                     B: "fontWeight",
                     I: "fontStyle",
@@ -54,7 +54,7 @@ module.exports = function (e, t, i) {
                     var n = this.getElement().hasPathAttached(),
                         r = (this.getElement().getProperty("trf"), e.indexOf("trf"));
                     (n && r >= 0 && (e.splice(r, 1), t.splice(r, 1), !e.length)) ||
-                        this.getElement().setProperties(e, t, !1, !1, i, this.isInlineEdit(), !1);
+                        this.getElement().setProperties(e, t, false, false, i, this.isInlineEdit(), false);
                 }),
                 (k.prototype.getFonts = function () {
                     var e = [];
@@ -79,9 +79,9 @@ module.exports = function (e, t, i) {
                     u.prototype.initialSetup.call(this, null);
                 }),
                 (k.prototype.acceptDrop = function (e, t, i, r) {
-                    if (u.prototype.acceptDrop.call(this, e, t, i, r)) return !0;
+                    if (u.prototype.acceptDrop.call(this, e, t, i, r)) return true;
                     if (t === d.DropType.FontFamily) {
-                        var o = n.getEditor(this.getElement().getScene());
+                        var o = GEditor.getEditor(this.getElement().getScene());
                         if (o) {
                             o.beginTransaction();
                             try {
@@ -90,15 +90,15 @@ module.exports = function (e, t, i) {
                                 o.commitTransaction(F.get(new R("GTextEditor", "action.drop-font")));
                             }
                         }
-                        return !0;
+                        return true;
                     }
-                    return !1;
+                    return false;
                 }),
                 (k.prototype._detach = function () {
                     if (this.isInlineEdit()) {
                         var e = this.getElement();
                         if (!e) return;
-                        var t = n.getEditor(e.getScene());
+                        var t = GEditor.getEditor(e.getScene());
                         t && t.closeInlineEditor();
                     }
                 }),
@@ -108,7 +108,7 @@ module.exports = function (e, t, i) {
                             i = P.modifiers.metaKey,
                             r = P.modifiers.shiftKey,
                             o = this.getElement().getTLCore(),
-                            a = n.getEditor(this.getElement().getScene()),
+                            a = GEditor.getEditor(this.getElement().getScene()),
                             s = this._toggles[t];
                         if (i && !r && s) {
                             var l,
@@ -122,7 +122,7 @@ module.exports = function (e, t, i) {
                             ("fontWeight" === s
                                 ? ((l = this.getProperty("_tfs")),
                                   (c =
-                                      (A = h = parseInt(p) == S.Weight.Bold ? S.Weight.Regular : S.Weight.Bold) === S.Weight.Normal ||
+                                      (A = h = parseInt(p) == GFont.Weight.Bold ? GFont.Weight.Regular : GFont.Weight.Bold) === GFont.Weight.Normal ||
                                       void 0 === g ||
                                       g.filter(function (e) {
                                           return e.style === l && e.weight === h;
@@ -133,7 +133,7 @@ module.exports = function (e, t, i) {
                                 : "fontStyle" === s &&
                                   ((h = this.getProperty("_tfw")),
                                   (c =
-                                      (A = l = "italic" == p ? S.Style.Normal : S.Style.Italic) === S.Style.Normal ||
+                                      (A = l = "italic" == p ? GFont.Style.Normal : GFont.Style.Italic) === GFont.Style.Normal ||
                                       void 0 === g ||
                                       g.filter(function (e) {
                                           return e.style === l && e.weight === h;
@@ -160,7 +160,7 @@ module.exports = function (e, t, i) {
                                         a,
                                         s = t.getTLCore();
                                     if (
-                                        ((o = n.getEditor(t.getScene())),
+                                        ((o = GEditor.getEditor(t.getScene())),
                                         (i = s.getRichContent()),
                                         (r = JSON.stringify(i)),
                                         (a = s.getWasEdited()),
@@ -168,7 +168,7 @@ module.exports = function (e, t, i) {
                                     ) {
                                         !e && o && o.beginTransaction();
                                         try {
-                                            (t.setProperties(["content"], [r], !1, !1, !1, !1, !1, this._dontSetContent),
+                                            (t.setProperties(["content"], [r], false, false, false, false, false, this._dontSetContent),
                                                 t.getProperty("afs") && t.adaptFontSizeToFitBBox());
                                         } finally {
                                             (!e && o && o.commitTransaction(F.get(new R("GTextEditor", "action.edit-text"))),
@@ -186,7 +186,7 @@ module.exports = function (e, t, i) {
                                     } else console.log("same content tried set");
                                 }
                             }.bind(this),
-                            !0
+                            true
                         ));
                 }),
                 (k.prototype.getDefaultStyle = function () {
@@ -195,18 +195,18 @@ module.exports = function (e, t, i) {
                         ? e
                               .getScene()
                               .getStyles()
-                              .querySingle('style[_sdf="' + a.getTypeId(g) + '"]')
+                              .querySingle('style[_sdf="' + IsFiniteNonNegativeNumber.getTypeId(g) + '"]')
                         : null;
                 }),
                 (k.prototype._getPartInfoAt = function (e, t, i) {
                     if (this._element.hasPathAttached()) {
                         var n = this._getDistHandlePosition(t);
                         if (
-                            E.getAnnotationBBox(null, n, m.annotationHandles.textOnPath.size, !1)
+                            E.getAnnotationBBox(null, n, m.annotationHandles.textOnPath.size, false)
                                 .expanded(m.annotPickDistance, m.annotPickDistance, m.annotPickDistance, m.annotPickDistance)
                                 .containsPoint(e)
                         ) {
-                            var r = new w.PartInfo(this, k.DISTANCE_HANDLER_ID, null, !0, !0);
+                            var r = new w.PartInfo(this, k.DISTANCE_HANDLER_ID, null, true, true);
                             if (r) return r;
                         }
                     }
@@ -222,12 +222,12 @@ module.exports = function (e, t, i) {
                 }),
                 (k.prototype.canApplyTransform = function () {
                     if (this.hasPathAttached()) {
-                        if (this._elementPreview) return !1;
+                        if (this._elementPreview) return false;
                         if (this._transform) {
                             var e = this._transform.getTranslation();
-                            if (this._transform.translated(-e.getX(), -e.getY()).isIdentity()) return !0;
+                            if (this._transform.translated(-e.getX(), -e.getY()).isIdentity()) return true;
                         }
-                        return !1;
+                        return false;
                     }
                     return this._elementPreview || u.prototype.canApplyTransform.call(this);
                 }),
@@ -236,7 +236,7 @@ module.exports = function (e, t, i) {
                         u.prototype._applyTransform.call(this, e.hasPathAttached() ? e._attachedPath : e, t, i, n));
                 }),
                 (k.prototype.resetTransform = function () {
-                    ((this._fullContentsTransform = !1), u.prototype.resetTransform.call(this));
+                    ((this._fullContentsTransform = false), u.prototype.resetTransform.call(this));
                 }),
                 (k.prototype.edTransform = function (e, t, i, n) {
                     ((this._fullContentsTransform = (n && !!n.fullContentsTransform) || this.getElement().getProperty("sc")),
@@ -267,8 +267,8 @@ module.exports = function (e, t, i) {
                         var p = n.mapPoint(i),
                             d = this._element.getProperty("trf");
                         d && d.invertible() && (p = d.inverted().mapPoint(p));
-                        var g = A.inverseTransform(p.subtract(c), !0);
-                        (this._element.setProperty("tpthl", g.getX() + (this._element.$tpthl || 0), null, !1, !0),
+                        var g = A.inverseTransform(p.subtract(c), true);
+                        (this._element.setProperty("tpthl", g.getX() + (this._element.$tpthl || 0), null, false, true),
                             this.requestInvalidation());
                     }
                     return l;
@@ -313,20 +313,20 @@ module.exports = function (e, t, i) {
                                         t.side !== _.Side.LEFT_CENTER &&
                                         this._element.getProperty("ah") &&
                                         !this._element.hasPathAttached() &&
-                                        (s.push("ah"), l.push(!1)),
+                                        (s.push("ah"), l.push(false)),
                                     t.side !== _.Side.TOP_CENTER &&
                                         t.side !== _.Side.BOTTOM_CENTER &&
                                         this._element.getProperty("aw") &&
                                         !this._element.hasPathAttached() &&
-                                        (s.push("aw"), l.push(!1)),
-                                    s.length && this._element.setProperties(s, l, !1, !1, !1),
+                                        (s.push("aw"), l.push(false)),
+                                    s.length && this._element.setProperties(s, l, false, false, false),
                                     this._element.transformSourceBBox(h),
                                     void 0 !== o
                                         ? this._element.setProperties(["_tfi"], [o])
                                         : void 0 !== a && this._element.setProperties(["content"], [a]),
                                     this._preTransform &&
                                         !this._preTransform.isIdentity() &&
-                                        B.Transform.prototype.preTransform.call(this._element, this._preTransform, !1, n),
+                                        B.Transform.prototype.preTransform.call(this._element, this._preTransform, false, n),
                                     this._element.endUpdate(),
                                     this.resetTransform());
                             } else
@@ -340,7 +340,7 @@ module.exports = function (e, t, i) {
                 }),
                 (k.prototype.processPaste = function (e) {
                     var t = null;
-                    if (!this.isInlineEdit()) return !1;
+                    if (!this.isInlineEdit()) return false;
                     if (
                         (e instanceof g
                             ? (t = e.getContent())
@@ -348,7 +348,7 @@ module.exports = function (e, t, i) {
                               (D.OperatingSystem.Windows && (e = h.replaceMicrosoftLineFeed(e)), (t = e)),
                         !t)
                     )
-                        return !1;
+                        return false;
                     var i = this._element.getTLCore();
                     return i
                         ? (this.requestInvalidation(),
@@ -356,7 +356,7 @@ module.exports = function (e, t, i) {
                           i.insert(this._element._shorten(t)),
                           this.invalidateTextWidth(),
                           this.contentSetEnabled(1),
-                          !0)
+                          true)
                         : 0;
                 }),
                 (k.prototype.invalidateTextWidth = function () {
@@ -370,7 +370,7 @@ module.exports = function (e, t, i) {
                             a = e._getWidth();
                         if (o && o.getMatrix()[0] < 0) {
                             if (n.getX() < 0 && n.getX() + n.getWidth() > 50) {
-                                e.setProperties(["aw", "w"], [!1, a]);
+                                e.setProperties(["aw", "w"], [false, a]);
                                 var s = (n.getWidth() + n.getX()) / n.getWidth();
                                 ((l = (l = new v()).scaled(s, 1)), e.transformSourceBBox(l));
                             }
@@ -378,7 +378,7 @@ module.exports = function (e, t, i) {
                             var l = new v(),
                                 h = t - i;
                             if (n.getWidth() - h > 50) {
-                                e.setProperties(["aw", "w"], [!1, a]);
+                                e.setProperties(["aw", "w"], [false, a]);
                                 s = (n.getWidth() - h) / n.getWidth();
                                 ((l = l.scaled(s, 1)), e.transformSourceBBox(l));
                             }
@@ -392,7 +392,7 @@ module.exports = function (e, t, i) {
                     this._dontSetContent = !e;
                 }),
                 (k.prototype.canHandleDblClick = function () {
-                    return !0;
+                    return true;
                 }),
                 (k.prototype.handleDblClick = function (e, t) {
                     return (
@@ -400,7 +400,7 @@ module.exports = function (e, t, i) {
                         (t.side === _.Side.RIGHT_CENTER
                             ? this._element.setProperty("aw", !this._element.getProperty("aw"))
                             : t.side === _.Side.BOTTOM_CENTER && this._element.setProperty("ah", !this._element.getProperty("ah")),
-                        !0)
+                        true)
                     );
                 }),
                 (k.prototype._getVerticalOffset = function () {
@@ -508,7 +508,7 @@ module.exports = function (e, t, i) {
                             return new f(Math.floor(e.getX()) + 0.5, Math.floor(e.getY()) + 0.5);
                         })),
                         p &&
-                            (e.canvas.putVertices(p, !0),
+                            (e.canvas.putVertices(p, true),
                             2 == p.length
                                 ? e.canvas.strokeVertices(n, Math.sqrt(h.getScaleFactor()) || 1, null, null, null, null, r)
                                 : a
@@ -590,9 +590,9 @@ module.exports = function (e, t, i) {
                 }),
                 (k.prototype._paintOutline = function (e, t, i, n, r) {
                     if (!this.getElement().hasPathAttached()) {
-                        var o = !0;
+                        var o = true;
                         (this.isInlineEdit() && (o = !this.getElement().getProperty("ah") || !this.getElement().getProperty("aw")),
-                            o && y.prototype._paintOutline.call(this, e, t, !0, n));
+                            o && y.prototype._paintOutline.call(this, e, t, true, n));
                     }
                     var a,
                         h,
@@ -628,7 +628,7 @@ module.exports = function (e, t, i) {
                         }
                         var S = v.length ? v[E].fontColor : n;
                         (m && ((hsv = l.rgbToHSV(s.parseCSSColor(S))), (hsv[2] += m), (S = l.rgbToHtmlHex(l.hsvToRGB(hsv)))),
-                            this._drawBBox(t, c, a, S, _, !0));
+                            this._drawBBox(t, c, a, S, _, true));
                     } else if (h && h.length)
                         if (h[0].transform) {
                             A = this._mergeRectangles(h);
@@ -639,7 +639,7 @@ module.exports = function (e, t, i) {
                                     A[x],
                                     n || (this.hasFlag(w.Flag.Highlighted) ? t.highlightOutlineColor : t.selectionOutlineColor),
                                     0.3,
-                                    !1
+                                    false
                                 );
                         } else
                             for (x = 0; x < h.length; x++)
@@ -649,7 +649,7 @@ module.exports = function (e, t, i) {
                                     h[x],
                                     n || (this.hasFlag(w.Flag.Highlighted) ? t.highlightOutlineColor : t.selectionOutlineColor),
                                     0.3,
-                                    !1
+                                    false
                                 );
                     else if (this.getElement().hasPathAttached() && !this.isInlineEdit()) {
                         if (!(d = this.getElement().getTLCore())) return;
@@ -663,8 +663,8 @@ module.exports = function (e, t, i) {
                                     A[x],
                                     n || (this.hasFlag(w.Flag.Highlighted) ? t.highlightOutlineColor : t.selectionOutlineColor),
                                     0.3,
-                                    !1,
-                                    !0
+                                    false,
+                                    true
                                 );
                         }
                     }
@@ -718,25 +718,25 @@ module.exports = function (e, t, i) {
                         var i = this._getDistHandlePosition(e);
                         if (i) {
                             var n = m.annotationHandles.textOnPath;
-                            E.paintAnnotation(t, null, i, n.type, !1, n.size, s.WHITE, t.annotationColor);
+                            E.paintAnnotation(t, null, i, n.type, false, n.size, s.WHITE, t.annotationColor);
                         }
                     }
                 }),
                 (k.prototype._triggerSelectionChanged = function () {
-                    var e = n.getEditor(this.getElement().getScene());
+                    var e = GEditor.getEditor(this.getElement().getScene());
                     e &&
-                        e.hasEventListeners(n.InlineEditorEvent) &&
-                        e.trigger(new n.InlineEditorEvent(this, n.InlineEditorEvent.Type.SelectionChanged));
+                        e.hasEventListeners(GEditor.InlineEditorEvent) &&
+                        e.trigger(new GEditor.InlineEditorEvent(this, GEditor.InlineEditorEvent.Type.SelectionChanged));
                 }),
                 (k.prototype._triggerTextEdited = function (e) {
-                    var t = n.getEditor(this.getElement().getScene());
+                    var t = GEditor.getEditor(this.getElement().getScene());
                     t &&
-                        t.hasEventListeners(n.InlineEditorEvent) &&
-                        t.trigger(new n.InlineEditorEvent(this, n.InlineEditorEvent.Type.TextEdited, e));
+                        t.hasEventListeners(GEditor.InlineEditorEvent) &&
+                        t.trigger(new GEditor.InlineEditorEvent(this, GEditor.InlineEditorEvent.Type.TextEdited, e));
                 }),
                 (k.prototype.triggerHotkeyEvent = function (e) {
-                    var t = n.getEditor(this.getElement().getScene());
-                    t && t.hasEventListeners(n.HotkeyEvent) && t.trigger(new n.HotkeyEvent(e));
+                    var t = GEditor.getEditor(this.getElement().getScene());
+                    t && t.hasEventListeners(GEditor.HotkeyEvent) && t.trigger(new GEditor.HotkeyEvent(e));
                 }),
                 (k.prototype._nextCaretToggle = 0),
                 (k.prototype._caretUpdate = function () {
@@ -746,7 +746,7 @@ module.exports = function (e, t, i) {
                             ? (t = new Date().getTime()) > this._nextCaretToggle &&
                               ((e = this._element.getTLCore()),
                               (this._nextCaretToggle = t + 500),
-                              e && e.toggleCaret() && this.getElement().repaint(!0))
+                              e && e.toggleCaret() && this.getElement().repaint(true))
                             : (e = this._element.getTLCore()) && e.isCaretVisible() && e.toggleCaret());
                 }),
                 (k.prototype.adjustInlineEditForView = function (e, t) {
@@ -762,8 +762,8 @@ module.exports = function (e, t, i) {
                         !this._element.isFakeText() &&
                         this._element.$_ed
                     )
-                        return !0;
-                    return !1;
+                        return true;
+                    return false;
                 }),
                 (k.prototype.isInlineEdit = function () {
                     return null !== this._inlineEditor && this._inlineEditor.isActivated();
@@ -781,11 +781,11 @@ module.exports = function (e, t, i) {
                                     if (!this.getParentEditor()) return r.UNSUBSCRIBE;
                                     (this._triggerSelectionChanged(), this.getElement().repaint());
                                 }.bind(this),
-                                !0
+                                true
                             )),
                         (this._nextCaretToggle = new Date().getTime()),
                         this._inlineEditor.activate(e),
-                        this.getElement().repaint(!0));
+                        this.getElement().repaint(true));
                 }),
                 (k.prototype.isSelectionHit = function (e) {
                     return !!this.isInlineEdit() && this._inlineEditor.isSelectionHit(e);
@@ -799,21 +799,21 @@ module.exports = function (e, t, i) {
                 (k.prototype.finishInlineEdit = function () {
                     this._inlineEditor._view;
                     (this._inlineEditor.deactivate(),
-                        this.getElement().repaint(!1),
+                        this.getElement().repaint(false),
                         this.getElement().getProperty("plkt") & c.ProgramLck.NoSizeChanges || this.setFlag(y.Flag.ResizeAll));
                     var e = this.getElement().getTLCore();
                     if (
                         e &&
-                        (this.getElement().setProperty("_we", this.getElement().getProperty("_we") || e.getWasEdited(), !1, !1, !1),
+                        (this.getElement().setProperty("_we", this.getElement().getProperty("_we") || e.getWasEdited(), false, false, false),
                         e.getLength() <= 1)
                     ) {
-                        var t = n.getEditor(this.getElement().getScene());
-                        t && t.deleteSelection(!0);
+                        var t = GEditor.getEditor(this.getElement().getScene());
+                        t && t.deleteSelection(true);
                     }
                     return "Modify Text Content";
                 }),
                 (k.prototype.canHandleKeyEvents = function () {
-                    return !0;
+                    return true;
                 }),
                 (k.prototype.setInlineEditEnabled = function (e) {
                     this._inlineEditEnabled = e;
@@ -821,5 +821,5 @@ module.exports = function (e, t, i) {
                 (k.prototype.toString = function () {
                     return "[Object GTextEditor]";
                 }),
-                (e.exports = k));
+                (module.exports = k));
         };

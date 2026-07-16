@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(5),
-                r = i(6),
-                o = i(12);
+module.exports = function (module, exports, require) {
+            var n = require(5),
+                r = require(6),
+                o = require(12);
 
             function a(e, t, i, n, r, o) {
                 ((this._sx = "number" == typeof e ? e : 1),
@@ -345,5 +345,5 @@ module.exports = function (e, t, i) {
                         ")]"
                     );
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

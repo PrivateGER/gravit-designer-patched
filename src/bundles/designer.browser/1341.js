@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16),
-            i = n(1),
-            a = n(15),
-            r = o(n(31)),
-            s = o(n(18)),
-            l = n(198);
+        var o = require(16),
+            GObject = require(1),
+            GPlatform = require(15),
+            r = o(require(31)),
+            s = o(require(18 /* GCategory */)),
+            SidebarsIds = require(198);
         class c extends r.default {
             constructor(e) {
-                (super(), (this._type = e), (this._title = new i.GLocaleKey("GChangeActivePageAction", "title.".concat(this._type))));
+                (super(), (this._type = e), (this._title = new GObject.GLocaleKey("GChangeActivePageAction", "title.".concat(this._type))));
             }
             getId() {
                 return "".concat(c.ID, ".").concat(this._type);
@@ -20,15 +20,15 @@ module.exports = function (e, t, n) {
                 return s.default.CATEGORY_VIEW;
             }
             isVisible() {
-                return !1;
+                return false;
             }
             getShortcut() {
-                const e = [a.GKey.Constant.META, a.GKey.Constant.OPTION];
+                const e = [GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.OPTION];
                 switch (this._type) {
                     case c.Type.Next:
-                        return e.concat(a.GKey.Constant.DOWN);
+                        return e.concat(GPlatform.GKey.Constant.DOWN);
                     case c.Type.Previous:
-                        return e.concat(a.GKey.Constant.UP);
+                        return e.concat(GPlatform.GKey.Constant.UP);
                     default:
                         return null;
                 }
@@ -36,16 +36,16 @@ module.exports = function (e, t, n) {
             getAdditionalShortcuts() {
                 switch (this._type) {
                     case c.Type.Next:
-                        return [a.GKey.Constant.PAGE_DOWN];
+                        return [GPlatform.GKey.Constant.PAGE_DOWN];
                     case c.Type.Previous:
-                        return [a.GKey.Constant.PAGE_UP];
+                        return [GPlatform.GKey.Constant.PAGE_UP];
                     default:
                         return null;
                 }
             }
             execute() {
                 const e = gDesigner.getLeftSidebars(),
-                    t = e && e.getSidebar(l.SidebarsIds.GOutlineSidebar),
+                    t = e && e.getSidebar(SidebarsIds.SidebarsIds.GOutlineSidebar),
                     n = gDesigner.getActiveDocument(),
                     o = n && n.getScene();
                 if (t && o) {
@@ -56,7 +56,7 @@ module.exports = function (e, t, n) {
             getNextPage(e) {
                 const t = e.getActivePage();
                 for (let e = this._getNextPageAccordingToType(t); null !== e; e = this._getNextPageAccordingToType(e))
-                    if (e instanceof i.GPage) return e;
+                    if (e instanceof GObject.GPage) return e;
                 return null;
             }
             _getNextPageAccordingToType(e) {
@@ -73,5 +73,5 @@ module.exports = function (e, t, n) {
                 return "[Object GChangeActivePageAction]";
             }
         }
-        ((c.ID = "view.change-active-page"), (c.Type = { Next: "next", Previous: "previous" }), (e.exports = c));
+        ((c.ID = "view.change-active-page"), (c.Type = { Next: "next", Previous: "previous" }), (module.exports = c));
     };

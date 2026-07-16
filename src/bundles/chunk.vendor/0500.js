@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(42),
-                r = i(206);
+module.exports = function (module, exports, require) {
+            var n = require(42),
+                r = require(206);
 
             function o(e) {
                 (n.call(
@@ -11,7 +11,7 @@ module.exports = function (e, t, i) {
                 ),
                     (this.blur = new r(this.glEffect)));
             }
-            (i(0).inherit(o, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(o, n),
                 (o.prototype.render = function (e, t) {
                     (this.glEffect.extraTexture.ensureFormat(this.glEffect.texture),
                         this.glEffect.texture.use(),
@@ -43,5 +43,5 @@ module.exports = function (e, t, i) {
                 (o.prototype.destroy = function () {
                     (this.blur && this.blur.destroy(), n.prototype.destroy.call(this));
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

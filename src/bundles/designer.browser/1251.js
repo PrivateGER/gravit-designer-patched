@@ -1,7 +1,7 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
         function n(t) {
             return (
-                (e.exports = n =
+                (module.exports = n =
                     "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
                         ? function (e) {
                               return typeof e;
@@ -11,10 +11,10 @@ module.exports = function (e, t) {
                                   ? "symbol"
                                   : typeof e;
                           }),
-                (e.exports.__esModule = !0),
-                (e.exports.default = e.exports),
+                (module.exports.__esModule = true),
+                (module.exports.default = module.exports),
                 n(t)
             );
         }
-        ((e.exports = n), (e.exports.__esModule = !0), (e.exports.default = e.exports));
+        ((module.exports = n), (module.exports.__esModule = true), (module.exports.default = module.exports));
     };

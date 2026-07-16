@@ -1,55 +1,55 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(11),
-                o = i(99),
-                a = i(5),
-                s = i(87),
-                l = i(104),
-                h = i(159),
-                A = i(84),
-                c = i(366),
-                p = i(506),
-                u = i(179),
-                d = i(739),
-                g = i(60),
-                f = i(72),
-                m = i(24),
-                y = i(113),
-                _ = i(153),
-                v = i(740),
-                b = i(1076),
-                C = i(741),
-                w = i(75),
-                E = i(0),
-                B = i(70),
-                x = i(268),
-                P = i(6),
-                S = i(22),
-                T = i(162),
-                I = i(7),
-                F = i(122),
-                R = i(45),
-                D = i(233),
-                k = i(544),
-                G = i(36),
-                Q = i(210),
-                M = i(742),
-                N = i(743),
-                U = i(12),
-                V = i(160),
-                O = i(83),
-                L = i(216),
-                Y = i(69),
-                X = i(63),
-                H = i(28),
-                W = i(66),
-                Z = i(540),
-                z = i(1077),
-                j = i(9),
-                J = i(47),
-                q = (i(56), i(531)),
-                K = i(471),
-                ee = i(140);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(11),
+                o = require(99),
+                a = require(5),
+                s = require(87),
+                l = require(104),
+                h = require(159),
+                A = require(84),
+                c = require(366),
+                p = require(506),
+                u = require(179),
+                d = require(739),
+                g = require(60),
+                f = require(72),
+                m = require(24),
+                y = require(113),
+                _ = require(153),
+                v = require(740),
+                b = require(1076),
+                C = require(741),
+                w = require(75),
+                IsFiniteNonNegativeNumber = require(0),
+                B = require(70),
+                x = require(268),
+                P = require(6),
+                S = require(22),
+                T = require(162),
+                I = require(7),
+                F = require(122),
+                R = require(45),
+                D = require(233),
+                k = require(544),
+                G = require(36),
+                Q = require(210),
+                M = require(742),
+                N = require(743),
+                U = require(12),
+                V = require(160),
+                O = require(83),
+                L = require(216),
+                Y = require(69),
+                X = require(63),
+                GStylable = require(28),
+                W = require(66),
+                Z = require(540),
+                z = require(1077),
+                String = require(9),
+                J = require(47),
+                q = (require(56), require(531)),
+                K = require(471),
+                ee = require(140);
 
             function te(e) {
                 ((this._scene = e),
@@ -60,7 +60,7 @@ module.exports = function (e, t, i) {
                     (this._guides = new Q(this._scene)));
                 var t = new _(this._guides);
                 (t.setPriority(_.PRIORITY.DISTANCE_FIRST),
-                    this._guides.addGuide(t, !0),
+                    this._guides.addGuide(t, true),
                     this._guides.addGuide(new v(this._guides)),
                     this._guides.addGuide(new d(this._guides)),
                     this._guides.addGuide(new C(this._guides)),
@@ -70,15 +70,15 @@ module.exports = function (e, t, i) {
                     this._guides.addGuide(new z(this._guides)),
                     this._guides.addGuide(new b(this._guides)),
                     (this._distanceHelper = new Z(this._scene)),
-                    this._scene.addEventListener(n.AfterInsertEvent, this._afterNodeInsert, this, void 0, void 0, !0),
-                    this._scene.addEventListener(n.BeforeRemoveEvent, this._beforeNodeRemove, this, void 0, void 0, !0),
-                    this._scene.addEventListener(n.BeforeFlagChangeEvent, this._beforeFlagChange, this, void 0, void 0, !0),
-                    this._scene.addEventListener(n.AfterFlagChangeEvent, this._afterFlagChange, this, void 0, void 0, !0),
-                    this._scene.addEventListener(S.GeometryChangeEvent, this._geometryChange, this, void 0, void 0, !0));
+                    this._scene.addEventListener(n.AfterInsertEvent, this._afterNodeInsert, this, void 0, void 0, true),
+                    this._scene.addEventListener(n.BeforeRemoveEvent, this._beforeNodeRemove, this, void 0, void 0, true),
+                    this._scene.addEventListener(n.BeforeFlagChangeEvent, this._beforeFlagChange, this, void 0, void 0, true),
+                    this._scene.addEventListener(n.AfterFlagChangeEvent, this._afterFlagChange, this, void 0, void 0, true),
+                    this._scene.addEventListener(S.GeometryChangeEvent, this._geometryChange, this, void 0, void 0, true));
                 var i = this._scene.queryAll(":selected");
                 if (i && i.length) for (var r = 0; r < i.length; ++r) this._tryAddToSelection(i[r]);
             }
-            (E.inherit(te, w),
+            (IsFiniteNonNegativeNumber.inherit(te, w),
                 (te._SavePoint = function (e, t, i) {
                     ((this._oldId = t), (this._newId = i), (this._editor = e));
                 }),
@@ -155,7 +155,7 @@ module.exports = function (e, t, i) {
                                 if (t) {
                                     var l = te.getElementPage(o);
                                     if (l) {
-                                        var h = l.getPosition(!0);
+                                        var h = l.getPosition(true);
                                         a = a.translated(h.getX(), h.getY());
                                     }
                                 }
@@ -175,7 +175,7 @@ module.exports = function (e, t, i) {
                             if ((a = o ? o.getElementSelectionBBox() : r.getGeometryBBox())) {
                                 var s = te.getElementPage(r);
                                 if (s) {
-                                    var l = s.getPosition(!0);
+                                    var l = s.getPosition(true);
                                     a = a.translated(l.getX(), l.getY());
                                 }
                                 i = i ? i.united(a) : a;
@@ -203,18 +203,18 @@ module.exports = function (e, t, i) {
                     var r,
                         o = e;
                     if (!o) {
-                        if (!i || !i.getParent()) return !1;
+                        if (!i || !i.getParent()) return false;
                         o = i.getParent();
                     }
-                    if (!t) return !1;
-                    if (i === t) return !1;
+                    if (!t) return false;
+                    if (i === t) return false;
                     if (
                         (i ? (r = i.getPrevious()) : o.hasMixin(n.Container) && (r = o.getLastChild()),
                         r === t && (r = r.getPrevious()),
                         t.getProperty("plkt") & Y.ProgramLck.AlwaysBack &&
                             !(o instanceof O || o instanceof V || o.getProperty("plkt") & Y.ProgramLck.AlwaysBack))
                     )
-                        return !1;
+                        return false;
                     if (r) {
                         if (r.getProperty("plkt") & Y.ProgramLck.AlwaysBack) {
                             var a = r.getNext();
@@ -227,7 +227,7 @@ module.exports = function (e, t, i) {
                 (te.FileDropEvent = function (e, t) {
                     ((this.file = e), (this.position = t));
                 }),
-                E.inherit(te.FileDropEvent, f),
+                IsFiniteNonNegativeNumber.inherit(te.FileDropEvent, f),
                 (te.FileDropEvent.file = null),
                 (te.FileDropEvent.position = null),
                 (te.FileDropEvent.prototype.toString = function () {
@@ -236,7 +236,7 @@ module.exports = function (e, t, i) {
                 (te.CustomDropEvent = function (e, t) {
                     ((this.data = e), (this.position = t));
                 }),
-                E.inherit(te.CustomDropEvent, f),
+                IsFiniteNonNegativeNumber.inherit(te.CustomDropEvent, f),
                 (te.CustomDropEvent.data = null),
                 (te.CustomDropEvent.position = null),
                 (te.CustomDropEvent.prototype.toString = function () {
@@ -253,7 +253,7 @@ module.exports = function (e, t, i) {
                                 e
                             )));
                 }),
-                E.inherit(te.ModifiedEvent, f),
+                IsFiniteNonNegativeNumber.inherit(te.ModifiedEvent, f),
                 (te.ModifiedEvent.Type = {
                     Raw: 1,
                     Undo: 2,
@@ -267,7 +267,7 @@ module.exports = function (e, t, i) {
                 (te.SelectionChangedEvent = function (e) {
                     e && (this.data = e);
                 }),
-                E.inherit(te.SelectionChangedEvent, f),
+                IsFiniteNonNegativeNumber.inherit(te.SelectionChangedEvent, f),
                 (te.SelectionChangedEvent.prototype.toString = function () {
                     return "[Event GEditor.SelectionChangedEvent]";
                 }),
@@ -275,7 +275,7 @@ module.exports = function (e, t, i) {
                 (te.InlineEditorEvent = function (e, t, i) {
                     ((this.editor = e), (this.type = t), (this.data = i));
                 }),
-                E.inherit(te.InlineEditorEvent, f),
+                IsFiniteNonNegativeNumber.inherit(te.InlineEditorEvent, f),
                 (te.InlineEditorEvent.Type = {
                     BeforeOpen: 0,
                     AfterOpen: 1,
@@ -294,7 +294,7 @@ module.exports = function (e, t, i) {
                 (te.InvalidationRequestEvent = function (e, t) {
                     ((this.editor = e), (this.args = t));
                 }),
-                E.inherit(te.InvalidationRequestEvent, f),
+                IsFiniteNonNegativeNumber.inherit(te.InvalidationRequestEvent, f),
                 (te.InvalidationRequestEvent.prototype.editor = null),
                 (te.InvalidationRequestEvent.prototype.args = null),
                 (te.InvalidationRequestEvent.prototype.getEditorPage = function () {
@@ -310,11 +310,11 @@ module.exports = function (e, t, i) {
                     return "[Event GEditor.InvalidationRequestEvent]";
                 }),
                 (te.EdGeometryChangeEvent = function () {}),
-                E.inherit(te.EdGeometryChangeEvent, f),
+                IsFiniteNonNegativeNumber.inherit(te.EdGeometryChangeEvent, f),
                 (te.HotkeyEvent = function (e) {
                     this.keys = e;
                 }),
-                E.inherit(te.HotkeyEvent, f),
+                IsFiniteNonNegativeNumber.inherit(te.HotkeyEvent, f),
                 (te.HotkeyEvent.keys = null),
                 (te.HotkeyEvent.toString = function () {
                     return "[Event GEditor.HotkeyEvent]";
@@ -324,9 +324,9 @@ module.exports = function (e, t, i) {
                 (te.prototype._lastCloneSelection = null),
                 (te.prototype._storedSelection = null),
                 (te.prototype._selectionUpdateCounter = 0),
-                (te.prototype._selectionDetail = !1),
-                (te.prototype._selectionEdit = !1),
-                (te.prototype._pathResize = !0),
+                (te.prototype._selectionDetail = false),
+                (te.prototype._selectionEdit = false),
+                (te.prototype._pathResize = true),
                 (te.prototype._transactionStack = null),
                 (te.prototype._startingScene = null),
                 (te.prototype._undoStates = null),
@@ -367,22 +367,22 @@ module.exports = function (e, t, i) {
                 (te.prototype.setSelectionDetail = function (e, t, n) {
                     if (e !== this._selectionDetail || t) {
                         this._selectionDetail = e;
-                        var r = i(39);
+                        var r = require(39);
                         if (this._selection)
                             for (var o = 0; o < this._selection.length; ++o) {
                                 var a = G.getEditor(this._selection[o]);
                                 if (a) {
-                                    var s = i(329);
+                                    var s = require(329);
                                     if (this._selectionDetail)
                                         (a.setFlag(r.Flag.Detail),
                                             a instanceof s &&
                                                 "subselect" == m.selectDoubleClickBehavior &&
-                                                a.setEditMode(!0, t, !0, n ? n.getWorldTransform().getScaleFactor() : null));
+                                                a.setEditMode(true, t, true, n ? n.getWorldTransform().getScaleFactor() : null));
                                     else {
-                                        var l = i(235);
+                                        var l = require(235);
                                         ((a.getPartSelection() || (a instanceof l && a.hasPathPartSelection())) &&
-                                            a.updatePartSelection(!1, null),
-                                            a instanceof s && "subselect" == m.selectDoubleClickBehavior && a.setEditMode(!1, t),
+                                            a.updatePartSelection(false, null),
+                                            a instanceof s && "subselect" == m.selectDoubleClickBehavior && a.setEditMode(false, t),
                                             a.removeFlag(r.Flag.Detail));
                                     }
                                 }
@@ -396,16 +396,16 @@ module.exports = function (e, t, i) {
                 (te.prototype.setSelectionEdit = function (e, t, n) {
                     if (e !== this._selectionEdit || t) {
                         this._selectionEdit = e;
-                        var r = i(66),
-                            o = i(127),
-                            a = i(235),
-                            s = i(275);
+                        var r = require(66),
+                            o = require(127),
+                            a = require(235),
+                            s = require(275);
                         if (this._selection)
                             for (var l = 0; l < this._selection.length; ++l) {
                                 var h = G.getEditor(this._selection[l]);
                                 h &&
                                     (h.hasSelectionEditing()
-                                        ? h.setEditMode(e, t, !0, n ? n.getWorldTransform().getScaleFactor() : null)
+                                        ? h.setEditMode(e, t, true, n ? n.getWorldTransform().getScaleFactor() : null)
                                         : h instanceof o ||
                                           h instanceof a ||
                                           h instanceof s ||
@@ -418,7 +418,7 @@ module.exports = function (e, t, i) {
                 }),
                 (te.prototype.setPathResize = function (e, t) {
                     if ((this._pathResize !== e || t) && ((this._pathResize = e), this._selection))
-                        for (var n = i(127), r = i(235), o = i(275), a = i(66), s = 0; s < this._selection.length; ++s) {
+                        for (var n = require(127), r = require(235), o = require(275), a = require(66), s = 0; s < this._selection.length; ++s) {
                             var l = G.getEditor(this._selection[s]);
                             ((l instanceof n && !y.isOwnedPath(this._selection[s])) || l instanceof r || l instanceof o) &&
                                 (this._pathResize ? l.setFlag(a.Flag.ResizeAll) : l.removeFlag(a.Flag.ResizeAll));
@@ -429,7 +429,7 @@ module.exports = function (e, t, i) {
                 }),
                 (te.prototype.hideSelection = function () {
                     if (this._selection) {
-                        for (var e = i(39), t = i(154), n = 0; n < this._selection.length; ++n) {
+                        for (var e = require(39), t = require(154), n = 0; n < this._selection.length; ++n) {
                             var r = G.getEditor(this._selection[n]);
                             r instanceof t && r.setFlag(e.Flag.HideEditor);
                         }
@@ -438,7 +438,7 @@ module.exports = function (e, t, i) {
                 }),
                 (te.prototype.resetHideSelection = function () {
                     if (this._selection) {
-                        for (var e = i(39), t = i(154), n = 0; n < this._selection.length; ++n) {
+                        for (var e = require(39), t = require(154), n = 0; n < this._selection.length; ++n) {
                             var r = G.getEditor(this._selection[n]);
                             r instanceof t && r.removeFlag(e.Flag.HideEditor);
                         }
@@ -453,16 +453,16 @@ module.exports = function (e, t, i) {
                     return this._distanceHelper;
                 }),
                 (te.prototype.activateDistanceHelper = function (e) {
-                    var t = !0;
+                    var t = true;
                     if (e && this._keysOff && this._keysOff.length)
-                        for (var i = 0; i < this._keysOff.length && t; ++i) this._keysOff[i] == e && (t = !1);
-                    return !!t && (this._distanceHelper.activateMeasurement(), !0);
+                        for (var i = 0; i < this._keysOff.length && t; ++i) this._keysOff[i] == e && (t = false);
+                    return !!t && (this._distanceHelper.activateMeasurement(), true);
                 }),
                 (te.prototype.keysOff = function (e) {
                     if (e && e.length)
                         if (this._keysOff)
                             for (var t = 0; t < e.length; ++t) {
-                                for (var i = !0, n = 0; n < this._keysOff.length && i; ++n) this._keysOff[n] == e[t] && (i = !1);
+                                for (var i = true, n = 0; n < this._keysOff.length && i; ++n) this._keysOff[n] == e[t] && (i = false);
                                 i && this._keysOff.push(e[t]);
                             }
                         else this._keysOff = e.slice();
@@ -502,11 +502,11 @@ module.exports = function (e, t, i) {
                             s.hasMixin(n.Container) &&
                                 s.acceptChildren(
                                     function (e) {
-                                        if (!(e instanceof S)) return !1;
+                                        if (!(e instanceof S)) return false;
                                         o.push(e);
                                     },
-                                    !1,
-                                    !0
+                                    false,
+                                    true
                                 );
                         }
                         o.length && (i = o);
@@ -547,8 +547,8 @@ module.exports = function (e, t, i) {
                     var e = null,
                         t = this._scene.getActivePage();
                     ((e = t ? (t.isFixedSized() ? t.getGeometryBBox() : t.getPaintBBox()) : this._scene.getPaintBBox()),
-                        this.arrangeAlign(te.ArrangeAlignType.AlignCenter, null, !0, e, !0),
-                        this.arrangeAlign(te.ArrangeAlignType.AlignMiddle, null, !0, e, !0));
+                        this.arrangeAlign(te.ArrangeAlignType.AlignCenter, null, true, e, true),
+                        this.arrangeAlign(te.ArrangeAlignType.AlignMiddle, null, true, e, true));
                 }),
                 (te.prototype.getAnnotationsExceptions = function (e) {
                     var t = this._uid,
@@ -575,7 +575,7 @@ module.exports = function (e, t, i) {
                             (e instanceof B &&
                                 e.hasPathAttached() &&
                                 r.visitLinks(e, function (e) {
-                                    if (e instanceof R) return ((n = [e]), !1);
+                                    if (e instanceof R) return ((n = [e]), false);
                                 }),
                                 e instanceof x && (n = [e.getSrcPath(), e.getDstPath()]),
                                 n &&
@@ -625,24 +625,24 @@ module.exports = function (e, t, i) {
                             var g = r[a].transform,
                                 f = s.clone({
                                     exceptions: o,
-                                    copy: !0,
+                                    copy: true,
                                     copyIgnoreProperties: m.propertiesExcludedFromCopying,
                                 });
                             if (f) {
                                 if (f instanceof O) {
                                     s.getParent().insertChild(f);
-                                    var y = f.getPosition(!0, !0, !0, !0);
+                                    var y = f.getPosition(true, true, true, true);
                                     (f.setProperty("off", new I(1, 0, 0, 1, y.getX(), y.getY())), this._scene.renameClone(s, f));
                                 } else s.getParent().insertChild(f, s.getNext());
-                                (f instanceof O || !g || !f.hasMixin(S.Transform) || f.transform(g, !0), l.push(f), t && d.push(s));
+                                (f instanceof O || !g || !f.hasMixin(S.Transform) || f.transform(g, true), l.push(f), t && d.push(s));
                             }
                         }
                         if (l.length > 0) {
                             var _ = G.getEditor(this._scene),
                                 v = !!_ && _.isTransformBoxActive();
-                            (this.updateSelection(!1, l),
+                            (this.updateSelection(false, l),
                                 l[0] instanceof O && this._scene.setActivePage(l[0]),
-                                (_ = G.getEditor(this._scene)) && v && _.setTransformBoxActive(!0));
+                                (_ = G.getEditor(this._scene)) && v && _.setTransformBoxActive(true));
                         }
                         return (t && (this._lastCloneSelection = d.slice()), l);
                     }
@@ -659,11 +659,11 @@ module.exports = function (e, t, i) {
                     ) {
                         (e || this.beginTransaction(), this._beginSelectionUpdate());
                         try {
-                            for (var i = n.order(t, !0), r = 0; r < i.length; ++r) {
+                            for (var i = n.order(t, true), r = 0; r < i.length; ++r) {
                                 for (var o = i[r], a = o.getParent(); a && (!(a instanceof L) || a.isMaster()); ) a = a.getParent();
-                                if (a && o.hasMixin(n.Multireference)) !!a._getMasterSibling(o.getMultireferenceId(), !1, !0) || (a = null);
+                                if (a && o.hasMixin(n.Multireference)) !!a._getMasterSibling(o.getMultireferenceId(), false, true) || (a = null);
                                 if (o instanceof Y && a && !this._selectionDetail)
-                                    (o.setProperties(["vis", "lkt"], [!1, Y.LockType.Full]),
+                                    (o.setProperties(["vis", "lkt"], [false, Y.LockType.Full]),
                                         o.removeFlag(n.Flag.Selected),
                                         o.removeFlag(n.Flag.Highlighted));
                                 else if (o instanceof l && !o.hasFlag(S.Flag.PartialLocked)) {
@@ -684,7 +684,7 @@ module.exports = function (e, t, i) {
                             }
                         } finally {
                             (this._finishSelectionUpdate(),
-                                e || this.commitTransaction(j.get(new J("GEditor", "action.delete-selection"))));
+                                e || this.commitTransaction(String.get(new J("GEditor", "action.delete-selection"))));
                         }
                     }
                     return null;
@@ -779,33 +779,33 @@ module.exports = function (e, t, i) {
                         (this._scene.acceptChildren(
                             function (t) {
                                 if ((a = A.indexOf(t)) >= 0) {
-                                    ((l = !1), A.splice(a, 1));
+                                    ((l = false), A.splice(a, 1));
                                     var i = t;
                                     (o
                                         ? p._selectionDetail &&
                                           ((!e && t.hasFlag(n.Flag.Highlighted)) ||
                                               ((s = G.openEditor(i)) &&
                                                   s.isPartSelectionUnderCollisionAllowed() &&
-                                                  (r && (h = u(i)), s.updatePartSelectionUnderCollision(e, h, !0))))
+                                                  (r && (h = u(i)), s.updatePartSelectionUnderCollision(e, h, true))))
                                         : (t.hasFlag(n.Flag.Highlighted) && !e) ||
                                           (p._selectionDetail && (s = G.openEditor(i)),
                                           p._selectionDetail && s && s.isPartSelectionUnderCollisionAllowed()
                                               ? (p._selectionDetail || (s = G.openEditor(i)),
-                                                s && (r && (h = u(i)), s.updatePartSelectionUnderCollision(e, h, !0)))
+                                                s && (r && (h = u(i)), s.updatePartSelectionUnderCollision(e, h, true)))
                                               : (p._selectionDetail && r && (h = u(i)),
                                                 (p._selectionDetail && !i.isFullUnderCollision(h)) ||
                                                     (e && i.hasFlag(n.Flag.Selected)
                                                         ? e &&
                                                           i.hasFlag(n.Flag.Selected) &&
-                                                          ((l = !0),
+                                                          ((l = true),
                                                           i.hasFlag(n.Flag.Highlighted) && (i.removeFlag(n.Flag.Highlighted), removeFlag++))
                                                         : i.setFlag(n.Flag.Highlighted)))),
                                         e && !o && (l || i.hasFlag(n.Flag.Highlighted) || c.push(i)));
                                 } else t.hasFlag(n.Flag.Highlighted) && t.removeFlag(n.Flag.Highlighted);
-                                return !0;
+                                return true;
                             },
-                            !1,
-                            !0
+                            false,
+                            true
                         ),
                         !o && e && c.length)
                     )
@@ -836,15 +836,15 @@ module.exports = function (e, t, i) {
                 (te.prototype.clearInternalSelection = function (e, t) {
                     var i = e.hasMixin(n.Container) ? e.getInternalSelectedNodes() : null;
                     if (i && i.length) {
-                        if (r.equals(t, i)) return !1;
+                        if (r.equals(t, i)) return false;
                         this._beginSelectionUpdate();
                         try {
                             for (var o = 0; o < i.length; ++o) (!t || t.indexOf(i[o]) < 0) && i[o].removeFlag(n.Flag.Selected);
                         } finally {
-                            return (this._finishSelectionUpdate(), !0);
+                            return (this._finishSelectionUpdate(), true);
                         }
                     }
-                    return !1;
+                    return false;
                 }),
                 (te.prototype.storeSelection = function () {
                     this._storedSelection = this._saveSelection();
@@ -906,7 +906,7 @@ module.exports = function (e, t, i) {
                     }
                     var E = null;
                     return (
-                        l && (((E = new W.EdTransformOptions()).isMultiPage = !0), (E.doCollisionlessTransform = h)),
+                        l && (((E = new W.EdTransformOptions()).isMultiPage = true), (E.doCollisionlessTransform = h)),
                         this.transformSelection(new I(1, 0, 0, 1, p.getX(), p.getY()), i, n, E),
                         new a(p.getX(), p.getY())
                     );
@@ -923,7 +923,7 @@ module.exports = function (e, t, i) {
                         ((A = i < 0 ? u.getX() : i > 0 ? p.getX() : d.getX()), (c = n < 0 ? u.getY() : n > 0 ? p.getY() : d.getY()));
                         var g = new I(1, 0, 0, 1, -A, -c).multiplied(new I(e, 0, 0, t, 0, 0)).multiplied(new I(1, 0, 0, 1, A, c)),
                             f = null;
-                        (s && ((f = new W.EdTransformOptions()).isMultiPage = !0), this.transformSelection(g, o, a, f));
+                        (s && ((f = new W.EdTransformOptions()).isMultiPage = true), this.transformSelection(g, o, a, f));
                     }
                 }),
                 (te.prototype.transformSelection = function (e, t, i, n) {
@@ -932,7 +932,7 @@ module.exports = function (e, t, i) {
                         for (
                             var r = this.filterIndividualElements(this._selection),
                                 o = this._scene ? this._scene.getActivePage() : null,
-                                a = o ? o.getPosition(!0) : null,
+                                a = o ? o.getPosition(true) : null,
                                 s = 0;
                             s < r.length;
                             ++s
@@ -942,7 +942,7 @@ module.exports = function (e, t, i) {
                                 A = G.getEditor(h);
                             if (A)
                                 if (n && n.isMultiPage && (l = te.getElementPage(h))) {
-                                    var c = l.getPosition(!0);
+                                    var c = l.getPosition(true);
                                     a && (c = c.subtract(a));
                                     var p = new I(1, 0, 0, 1, c.getX(), c.getY());
                                     A.edTransform(p.multiplied(e).multiplied(p.inverted()), t, i, n);
@@ -964,7 +964,7 @@ module.exports = function (e, t, i) {
                                 })).length
                             )
                                 return;
-                            for (var o = i(154), a = 0; a < r.length; ++a) {
+                            for (var o = require(154), a = 0; a < r.length; ++a) {
                                 var s = r[a],
                                     l = G.getEditor(s);
                                 l && l instanceof o && l.resize(e, t, n);
@@ -984,7 +984,7 @@ module.exports = function (e, t, i) {
                             if (this._selEditor) this._selEditor.applyPartMove(e, t, null, r);
                             else {
                                 o = this.filterIndividualElements(this._selection);
-                                var l = i(154);
+                                var l = require(154);
                                 for (a = 0; a < o.length; ++a) {
                                     var h = o[a];
                                     r.length && r.indexOf(h);
@@ -995,7 +995,7 @@ module.exports = function (e, t, i) {
                                 }
                             }
                         } finally {
-                            n || this.commitTransaction(j.get(new J("GEditor", "action.resize-selecion")));
+                            n || this.commitTransaction(String.get(new J("GEditor", "action.resize-selecion")));
                         }
                     }
                 }),
@@ -1037,7 +1037,7 @@ module.exports = function (e, t, i) {
                                                 ? g.hasMixin(n.Store)
                                                     ? (f = g.clone({
                                                           exceptions: h,
-                                                          copy: !0,
+                                                          copy: true,
                                                           copyIgnoreProperties: m.propertiesExcludedFromCopying,
                                                       })) &&
                                                       (g.getParent().insertChild(f, g.getNext()),
@@ -1051,14 +1051,14 @@ module.exports = function (e, t, i) {
                                     }
                                 }
                                 (this._selEditor && this._selEditor.resetTransform(),
-                                    !i && p.length > 0 && this.updateSelection(!1, p),
+                                    !i && p.length > 0 && this.updateSelection(false, p),
                                     e && (this._lastCloneSelection = A.slice()));
                             } finally {
                                 t ||
                                     this.commitTransaction(
                                         e
-                                            ? j.get(new J("GEditor", "action.transform-clone-selection"))
-                                            : j.get(new J("GEditor", "action.transform-selection"))
+                                            ? String.get(new J("GEditor", "action.transform-clone-selection"))
+                                            : String.get(new J("GEditor", "action.transform-selection"))
                                     );
                             }
                         }
@@ -1084,10 +1084,10 @@ module.exports = function (e, t, i) {
                         var p = s || null,
                             u = null,
                             d = null,
-                            g = !1;
+                            g = false;
                         if (r && this.hasSelection())
-                            for (var f = n.order(this._selection.slice(), !0), m = 0; m < f.length && !g; ++m)
-                                if ((l && f[m].getParent() === l) || (!l && f[m].getParent() === a)) ((p = f[m].getNext()), (g = !0));
+                            for (var f = n.order(this._selection.slice(), true), m = 0; m < f.length && !g; ++m)
+                                if ((l && f[m].getParent() === l) || (!l && f[m].getParent() === a)) ((p = f[m].getNext()), (g = true));
                                 else if (!u) {
                                     ((u = f[m].getParent()), (d = f[m].getNext()));
                                     for (var y = 0; y < e.length && u; ++y)
@@ -1103,8 +1103,8 @@ module.exports = function (e, t, i) {
                         (!g && u && ((a = u), (p = d)),
                             (e = e.filter(function (t) {
                                 if (t instanceof B)
-                                    for (var i = 0; i < e.length; i++) if (e[i] instanceof R && e[i].hasReferencedText(t)) return !1;
-                                return !0;
+                                    for (var i = 0; i < e.length; i++) if (e[i] instanceof R && e[i].hasReferencedText(t)) return false;
+                                return true;
                             })),
                             i || this.beginTransaction());
                         var _ = null;
@@ -1126,18 +1126,18 @@ module.exports = function (e, t, i) {
                                             C.concat(v).some(function (t) {
                                                 if (t.getMultireferenceId() === e.getMultireferenceId()) {
                                                     var i = b.getWorkspace().getReference(t.getProperty("masterRef"));
-                                                    if (i && i.getScene() && i.getScene() === b) return !0;
+                                                    if (i && i.getScene() && i.getScene() === b) return true;
                                                 }
-                                                return !1;
+                                                return false;
                                             }) ||
-                                            ((e._master = !0), v.push(e)),
+                                            ((e._master = true), v.push(e)),
                                         e._master ||
                                             C.some(function (t) {
                                                 if (t.getMultireferenceId() === e.getMultireferenceId())
                                                     return (
                                                         e.getProperty("masterRef") !== t.getProperty("masterRef") &&
                                                             e.setProperty("masterRef", t.getProperty("masterRef")),
-                                                        !0
+                                                        true
                                                     );
                                             }));
                                 });
@@ -1167,22 +1167,22 @@ module.exports = function (e, t, i) {
                                         !b.isLinked(e, e.getMasterSymbol()) &&
                                         b.link(e.getMasterSymbol(), e);
                                 })),
-                                this.updateSelection(!1, e));
+                                this.updateSelection(false, e));
                         } finally {
-                            i || this.commitTransaction(j.get(new J("GEditor", "action.insert-elements")));
+                            i || this.commitTransaction(String.get(new J("GEditor", "action.insert-elements")));
                         }
                     }
                 }),
                 (te.prototype.exchangeElements = function (e, t, i) {
                     i || this.beginTransaction();
                     try {
-                        for (var r = e.getParent(), o = e.getNext(!0), a = e.hasFlag(n.Flag.Selected), s = 0; s < t.length; ++s) {
+                        for (var r = e.getParent(), o = e.getNext(true), a = e.hasFlag(n.Flag.Selected), s = 0; s < t.length; ++s) {
                             var l = t[s];
                             (l.getParent() && l.getParent().removeChild(l), r.insertChild(l, o), a && l.setFlag(n.Flag.Selected));
                         }
                         r.removeChild(e);
                     } finally {
-                        i || this.commitTransaction(j.get(new J("GEditor", "action.change-elements")));
+                        i || this.commitTransaction(String.get(new J("GEditor", "action.change-elements")));
                     }
                 }),
                 (te.prototype.convertSelectionToPaths = function (e) {
@@ -1198,12 +1198,12 @@ module.exports = function (e, t, i) {
                     if (t.length) {
                         (e || this.beginTransaction(), this._beginSelectionUpdate());
                         try {
-                            this.updateSelection(!1, t);
+                            this.updateSelection(false, t);
                             for (r = 0; r < t.length; ++r) {
                                 var a = t[r];
                                 a.removeFlag(n.Flag.Selected);
                                 var l = a.getParent(),
-                                    h = a.getNext(!0),
+                                    h = a.getNext(true),
                                     A = null;
                                 if (a instanceof R) {
                                     l.removeChild(a);
@@ -1228,10 +1228,10 @@ module.exports = function (e, t, i) {
                                     }
                                 } else l.removeChild(a);
                             }
-                            ((t = null), this.updateSelection(!1, i));
+                            ((t = null), this.updateSelection(false, i));
                         } finally {
                             (this._finishSelectionUpdate(),
-                                e || this.commitTransaction(j.get(new J("GEditor", "action.convert-to-paths"))));
+                                e || this.commitTransaction(String.get(new J("GEditor", "action.convert-to-paths"))));
                         }
                     }
                 }),
@@ -1278,7 +1278,7 @@ module.exports = function (e, t, i) {
                         if (!this._selection || 0 === this._selection.length) return;
                         t = r = this._selection.slice();
                     }
-                    ((t = e === te.ArrangeOrderType.SendToFront || e === te.ArrangeOrderType.SendBackward ? n.order(t) : n.order(t, !0)),
+                    ((t = e === te.ArrangeOrderType.SendToFront || e === te.ArrangeOrderType.SendBackward ? n.order(t) : n.order(t, true)),
                         i || this.beginTransaction());
                     try {
                         for (var o = 0; o < t.length; ++o) {
@@ -1318,9 +1318,9 @@ module.exports = function (e, t, i) {
                             }
                         }
                     } finally {
-                        i || this.commitTransaction(j.get(new J("GEditor", "action.arrange-order")));
+                        i || this.commitTransaction(String.get(new J("GEditor", "action.arrange-order")));
                     }
-                    r && this.updateSelection(!1, r);
+                    r && this.updateSelection(false, r);
                 }),
                 (te.prototype.arrangeAlign = function (e, t, i, n, r, o) {
                     if (!t) {
@@ -1352,40 +1352,40 @@ module.exports = function (e, t, i) {
                                 case te.ArrangeAlignType.AlignLeft:
                                     u && u.isAlignPartsAllowed()
                                         ? u.alignParts(te.ArrangeAlignType.AlignLeft, d.getX(), null)
-                                        : d.getX() !== c.getX() && p.transform(new I(1, 0, 0, 1, d.getX() - c.getX(), 0), !0);
+                                        : d.getX() !== c.getX() && p.transform(new I(1, 0, 0, 1, d.getX() - c.getX(), 0), true);
                                     break;
                                 case te.ArrangeAlignType.AlignCenter:
                                     var g = d.getX() + d.getWidth() / 2;
                                     u && u.isAlignPartsAllowed()
                                         ? u.alignParts(te.ArrangeAlignType.AlignCenter, g, null)
                                         : g !== c.getX() + c.getWidth() / 2 &&
-                                          p.transform(new I(1, 0, 0, 1, g - c.getX() - c.getWidth() / 2, 0), !0);
+                                          p.transform(new I(1, 0, 0, 1, g - c.getX() - c.getWidth() / 2, 0), true);
                                     break;
                                 case te.ArrangeAlignType.AlignRight:
                                     var f = d.getX() + d.getWidth();
                                     u && u.isAlignPartsAllowed()
                                         ? u.alignParts(te.ArrangeAlignType.AlignRight, f, null)
                                         : f !== c.getX() + c.getWidth() &&
-                                          p.transform(new I(1, 0, 0, 1, f - c.getWidth() - c.getX(), 0), !0);
+                                          p.transform(new I(1, 0, 0, 1, f - c.getWidth() - c.getX(), 0), true);
                                     break;
                                 case te.ArrangeAlignType.AlignTop:
                                     u && u.isAlignPartsAllowed()
                                         ? u.alignParts(te.ArrangeAlignType.AlignTop, null, d.getY())
-                                        : d.getY() !== c.getY() && p.transform(new I(1, 0, 0, 1, 0, d.getY() - c.getY()), !0);
+                                        : d.getY() !== c.getY() && p.transform(new I(1, 0, 0, 1, 0, d.getY() - c.getY()), true);
                                     break;
                                 case te.ArrangeAlignType.AlignMiddle:
                                     g = d.getY() + d.getHeight() / 2;
                                     u && u.isAlignPartsAllowed()
                                         ? u.alignParts(te.ArrangeAlignType.AlignMiddle, null, g)
                                         : g !== c.getY() + c.getHeight() / 2 &&
-                                          p.transform(new I(1, 0, 0, 1, 0, g - c.getY() - c.getHeight() / 2), !0);
+                                          p.transform(new I(1, 0, 0, 1, 0, g - c.getY() - c.getHeight() / 2), true);
                                     break;
                                 case te.ArrangeAlignType.AlignBottom:
                                     var m = d.getY() + d.getHeight();
                                     u && u.isAlignPartsAllowed()
                                         ? u.alignParts(te.ArrangeAlignType.AlignBottom, null, m)
                                         : m !== c.getY() + c.getHeight() &&
-                                          p.transform(new I(1, 0, 0, 1, 0, m - c.getHeight() - c.getY()), !0);
+                                          p.transform(new I(1, 0, 0, 1, 0, m - c.getHeight() - c.getY()), true);
                                     break;
                                 case te.ArrangeAlignType.AlignJustifyHorizontal:
                                     (d.getX() === c.getX() && c.getWidth() === d.getWidth()) ||
@@ -1409,7 +1409,7 @@ module.exports = function (e, t, i) {
                             }
                         }
                     } finally {
-                        r || this.commitTransaction(j.get(new J("GEditor", "action.arrange-alignment")));
+                        r || this.commitTransaction(String.get(new J("GEditor", "action.arrange-alignment")));
                     }
                 }),
                 (te.prototype.updateByMousePosition = function (e, t, r, o) {
@@ -1446,15 +1446,15 @@ module.exports = function (e, t, i) {
                                 }),
                                 _ >= 0 && y.unshift(A));
                             for (var v = 0; v < y.length && !d; v++)
-                                d = y[v]._detailHitTest(e, t, h, !1, null, !!o && o.multiPageView, !y[v].isScaleLabel());
+                                d = y[v]._detailHitTest(e, t, h, false, null, !!o && o.multiPageView, !y[v].isScaleLabel());
                             if (
                                 (d &&
                                     !r &&
                                     (a.getActivePage() !== d.element && a.setActivePage(d.element),
-                                    d.data.label && this.updateSelection(!1, [d.element])),
+                                    d.data.label && this.updateSelection(false, [d.element])),
                                 m.pageSelectable)
                             ) {
-                                var b = i(331).MOVE_MASTER;
+                                var b = require(331 /* MOVE_MASTER */).MOVE_MASTER;
                                 a.iteratePages(function (e) {
                                     r && d && e === d.element && d.data.label && (b || !a.hasLinks(e))
                                         ? e.setFlag(n.Flag.Highlighted)
@@ -1471,10 +1471,10 @@ module.exports = function (e, t, i) {
                 (te.prototype.clearHighlighted = function () {
                     this._scene.acceptChildren(
                         function (e) {
-                            return (e.hasFlag(n.Flag.Highlighted) && e.removeFlag(n.Flag.Highlighted), !0);
+                            return (e.hasFlag(n.Flag.Highlighted) && e.removeFlag(n.Flag.Highlighted), true);
                         },
-                        !1,
-                        !0
+                        false,
+                        true
                     );
                 }),
                 (te.prototype.importStates = function (e, t) {
@@ -1530,7 +1530,7 @@ module.exports = function (e, t, i) {
                                                     var e = n.restore(this.node),
                                                         i = null === t.next ? null : o._seqIdToNode(this.nextSeq),
                                                         r = o._seqIdToNode(this.parentSeq);
-                                                    (t.makeRecorded && ((this.insertedNode = e), (e.recordedTransaction = !0)),
+                                                    (t.makeRecorded && ((this.insertedNode = e), (e.recordedTransaction = true)),
                                                         r.insertChild(e, i));
                                                 }));
                                             break;
@@ -1543,13 +1543,13 @@ module.exports = function (e, t, i) {
                                                     },
                                                 })),
                                                 (t.action = function () {
-                                                    var e = !1,
+                                                    var e = false,
                                                         t = this.node;
                                                     (t instanceof S &&
                                                         !t.isRecordedTransaction() &&
-                                                        ((t.recordedTransaction = !0), (e = !0)),
+                                                        ((t.recordedTransaction = true), (e = true)),
                                                         t.setProperties(this.properties, this.values, this.custom),
-                                                        e && (t.recordedTransaction = !1));
+                                                        e && (t.recordedTransaction = false));
                                                 }));
                                             break;
                                         case K.ActionType.FlagSet:
@@ -1568,13 +1568,13 @@ module.exports = function (e, t, i) {
                                             (null !== r.node && (t.nodeSeq = r.node),
                                                 (t.action = function () {
                                                     var e = o._seqIdToNode(this.nodeSeq),
-                                                        t = !1;
+                                                        t = false;
                                                     (this.withInvalidation &&
                                                         (e instanceof S &&
                                                             !e.isRecordedTransaction() &&
-                                                            ((e.recordedTransaction = !0), (t = !0)),
+                                                            ((e.recordedTransaction = true), (t = true)),
                                                         e._notifyChange(S._Change.PrepareGeometryUpdate),
-                                                        t && (e.recordedTransaction = !1)),
+                                                        t && (e.recordedTransaction = false)),
                                                         e._beginBlockChanges(this.changes));
                                                 }));
                                             break;
@@ -1586,9 +1586,9 @@ module.exports = function (e, t, i) {
                                                         this.withInvalidation &&
                                                             (e instanceof S &&
                                                                 !e.isRecordedTransaction() &&
-                                                                ((e.recordedTransaction = !0), (recordedSet = !0)),
+                                                                ((e.recordedTransaction = true), (recordedSet = true)),
                                                             e._notifyChange(S._Change.FinishGeometryUpdate),
-                                                            recordedSet && (e.recordedTransaction = !1)));
+                                                            recordedSet && (e.recordedTransaction = false)));
                                                 }));
                                             break;
                                         case K.ActionType.BeginSelectionUpdate:
@@ -1720,21 +1720,21 @@ module.exports = function (e, t, i) {
                 }),
                 (te.prototype._transactionRedo = function (e) {
                     if (e.newSelection && e.newSelection.length)
-                        for (var t = 0; t < e.newSelection.length; ++t) e.newSelection[t].element.recordedTransaction = !0;
+                        for (var t = 0; t < e.newSelection.length; ++t) e.newSelection[t].element.recordedTransaction = true;
                     for (t = 0; t < e.actions.length; ++t) e.actions[t].action();
                     if (
                         (this._fixDebugData(e.newSelection, e.actions),
                         this._loadSelection(e.newSelection),
                         e.newSelection && e.newSelection.length)
                     )
-                        for (t = 0; t < e.newSelection.length; ++t) e.newSelection[t].element.recordedTransaction = !1;
+                        for (t = 0; t < e.newSelection.length; ++t) e.newSelection[t].element.recordedTransaction = false;
                 }),
                 (te.prototype._transactionUndo = function (e) {
                     if (e.selection && e.selection.length)
-                        for (var t = 0; t < e.selection.length; ++t) e.selection[t].element.recordedTransaction = !0;
+                        for (var t = 0; t < e.selection.length; ++t) e.selection[t].element.recordedTransaction = true;
                     for (t = e.actions.length - 1; t >= 0; --t) e.actions[t].revert();
                     if ((this._loadSelection(e.selection), e.selection && e.selection.length))
-                        for (t = 0; t < e.selection.length; ++t) e.selection[t].element.recordedTransaction = !1;
+                        for (t = 0; t < e.selection.length; ++t) e.selection[t].element.recordedTransaction = false;
                 }),
                 (te.prototype.commitTransaction = function (e, t) {
                     if (!this._transactionStack.length) throw new Error("Nothing to commit, transaction stack is empty.");
@@ -1833,7 +1833,7 @@ module.exports = function (e, t, i) {
                     if (this.hasUndoState()) {
                         if ("function" == typeof e) {
                             for (var t, i = this._undoStates.length - 1; i >= 0; i--) {
-                                if ((t = this._undoStates[i]).id === this._savePointId) return !1;
+                                if ((t = this._undoStates[i]).id === this._savePointId) return false;
                                 if (t.data) {
                                     if (
                                         t.data.newSelection &&
@@ -1841,26 +1841,26 @@ module.exports = function (e, t, i) {
                                             return !e(t.element);
                                         })
                                     )
-                                        return !0;
+                                        return true;
                                     if (
                                         t.data.selection &&
                                         t.data.selection.some(function (t) {
                                             return !e(t.element);
                                         })
                                     )
-                                        return !0;
+                                        return true;
                                     if (
                                         !t.data.newSelection &&
                                         !t.data.selection &&
                                         t.data.actions &&
                                         t.data.actions.some(function (t) {
-                                            if (t.isPropertyChangeAction && !e(t.node)) return !0;
+                                            if (t.isPropertyChangeAction && !e(t.node)) return true;
                                         })
                                     )
-                                        return !0;
+                                        return true;
                                 }
                             }
-                            return !1;
+                            return false;
                         }
                         return this._undoStates[this._undoStates.length - 1].id !== this._savePointId;
                     }
@@ -1877,11 +1877,11 @@ module.exports = function (e, t, i) {
                                     var s = o[a];
                                     if (s.isPropertyChangeAction && s.node === e) {
                                         if (++i < t) break;
-                                        return !0;
+                                        return true;
                                     }
                                 }
                         }
-                    return !1;
+                    return false;
                 }),
                 (te.prototype.isInlineEditing = function () {
                     return !!this._currentInlineEditorNode;
@@ -1912,10 +1912,10 @@ module.exports = function (e, t, i) {
                                 (this._currentInlineEditorNode = e),
                                 this.hasEventListeners(te.InlineEditorEvent) &&
                                     this.trigger(new te.InlineEditorEvent(r, te.InlineEditorEvent.Type.AfterOpen)),
-                                !0
+                                true
                             );
                     }
-                    return !1;
+                    return false;
                 }),
                 (te.prototype.updateInlineEditorForView = function (e) {
                     if (this._currentInlineEditorNode) {
@@ -1924,7 +1924,7 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (te.prototype.closeInlineEditor = function () {
-                    var e = !1;
+                    var e = false;
                     return (
                         this._currentInlineEditorNode &&
                             (e = this._finishEditorInlineEdit(this._currentInlineEditorNode)) &&
@@ -1947,12 +1947,12 @@ module.exports = function (e, t, i) {
                 (te.prototype._beforeFlagChange = function (e) {}),
                 (te.prototype._afterFlagChange = function (e) {
                     if (e.node instanceof S) {
-                        var t = i(39);
+                        var t = require(39);
                         if (e.flag === n.Flag.Selected) e.set ? this._tryAddToSelection(e.node) : this._tryRemoveFromSelection(e.node);
                         else if (e.flag == n.Flag.Highlighted) {
                             var r;
-                            if (e.set) (r = G.openEditor(e.node, !1, !0)) && r.setFlag(t.Flag.Highlighted);
-                            else ((r = G.openEditor(e.node, !1, !0)) && r.removeFlag(t.Flag.Highlighted), this._tryCloseEditor(e.node));
+                            if (e.set) (r = G.openEditor(e.node, false, true)) && r.setFlag(t.Flag.Highlighted);
+                            else ((r = G.openEditor(e.node, false, true)) && r.removeFlag(t.Flag.Highlighted), this._tryCloseEditor(e.node));
                         }
                     }
                 }),
@@ -1985,7 +1985,7 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (te.prototype.updateSelectionEditors = function () {
-                    var e = i(39),
+                    var e = require(39),
                         t = this.getIndividualSelection();
                     if (
                         (t &&
@@ -1997,7 +1997,7 @@ module.exports = function (e, t, i) {
                     )
                         if (this._selEditor) this._selEditor.updateFromSelection();
                         else {
-                            var n = i(745);
+                            var n = require(745);
                             ((this._selEditor = new n()),
                                 this._selEditor.activate(this._scene, this),
                                 (r = G.getEditor(this._scene)).insertEditor(this._selEditor),
@@ -2022,26 +2022,26 @@ module.exports = function (e, t, i) {
                 (te.prototype._tryAddToSelection = function (e) {
                     if (e instanceof S && e.hasFlag(n.Flag.Selected)) {
                         var t = G.openEditor(e),
-                            r = i(39);
+                            r = require(39);
                         if (t) {
                             (t.setFlag(r.Flag.Selected), this._selectionDetail && t.setFlag(r.Flag.Detail));
-                            var o = i(235),
-                                a = i(275),
-                                s = i(127),
-                                l = i(66),
-                                h = i(329);
-                            (t instanceof s && y.isOwnedPath(t.getElement()) && t.setCatchHandle(!1),
+                            var o = require(235),
+                                a = require(275),
+                                s = require(127),
+                                l = require(66),
+                                h = require(329);
+                            (t instanceof s && y.isOwnedPath(t.getElement()) && t.setCatchHandle(false),
                                 (t instanceof s && !y.isOwnedPath(t.getElement())) || t instanceof o || t instanceof a
                                     ? (this._pathResize || t.removeFlag(l.Flag.ResizeAll),
-                                      t instanceof a && this._selectionEdit && t.setEditMode(!0))
+                                      t instanceof a && this._selectionEdit && t.setEditMode(true))
                                     : this._selectionEdit
                                       ? t instanceof h
-                                          ? t.setEditMode(!0)
+                                          ? t.setEditMode(true)
                                           : t.removeFlag(l.Flag.ResizeAll)
                                       : this._selectionDetail &&
                                         t instanceof h &&
                                         "subselect" == m.selectDoubleClickBehavior &&
-                                        t.setEditMode(!0),
+                                        t.setEditMode(true),
                                 t.validateSelectionChange() &&
                                     (this._selection || (this._selection = []), this._selection.push(e), this._updatedSelection()));
                         }
@@ -2050,9 +2050,9 @@ module.exports = function (e, t, i) {
                 (te.prototype._tryRemoveFromSelection = function (e) {
                     if (e instanceof S) {
                         var t = G.getEditor(e),
-                            n = i(39);
+                            n = require(39);
                         if (
-                            (t && t.hasFlag(n.Flag.Selected) && (t.removeFlag(n.Flag.Selected), this._tryCloseEditor(e, !0)),
+                            (t && t.hasFlag(n.Flag.Selected) && (t.removeFlag(n.Flag.Selected), this._tryCloseEditor(e, true)),
                             this._selection)
                         ) {
                             for (var r = -1, o = 0; o < this._selection.length; ++o) {
@@ -2067,7 +2067,7 @@ module.exports = function (e, t, i) {
                 }),
                 (te.prototype._tryCloseEditor = function (e, t) {
                     var n = G.getEditor(e),
-                        r = i(39);
+                        r = require(39);
                     if (
                         n &&
                         !n.hasFlag(r.Flag.Selected) &&
@@ -2088,16 +2088,16 @@ module.exports = function (e, t, i) {
                         try {
                             i = t.finishInlineEdit();
                         } finally {
-                            this.commitTransaction(i || j.get(new J("GEditor", "action.inline-editing")));
+                            this.commitTransaction(i || String.get(new J("GEditor", "action.inline-editing")));
                         }
                         return (
                             e === this._currentInlineEditorNode && (this._currentInlineEditorNode = null),
                             this.hasEventListeners(te.InlineEditorEvent) &&
                                 this.trigger(new te.InlineEditorEvent(t, te.InlineEditorEvent.Type.AfterClose)),
-                            !0
+                            true
                         );
                     }
-                    return !1;
+                    return false;
                 }),
                 (te.prototype._closeEditor = function (e) {
                     (this._finishEditorInlineEdit(e), G.closeElementEditor(e));
@@ -2125,12 +2125,12 @@ module.exports = function (e, t, i) {
                 (te.prototype._loadSelection = function (e) {
                     if (e && 0 !== e.length) {
                         for (var t = [], i = 0; i < e.length; ++i) t.push(e[i].element);
-                        this.updateSelection(!1, t);
+                        this.updateSelection(false, t);
                         for (i = 0; i < e.length; ++i)
                             if (e[i].parts || e[i].data) {
                                 var n = G.getEditor(e[i].element);
                                 n &&
-                                    (e[i].data && n.restoreEditorStateData(e[i].data), e[i].parts && n.updatePartSelection(!1, e[i].parts));
+                                    (e[i].data && n.restoreEditorStateData(e[i].data), e[i].parts && n.updatePartSelection(false, e[i].parts));
                             }
                     } else this.clearSelection();
                 }),
@@ -2141,12 +2141,12 @@ module.exports = function (e, t, i) {
                             this._scene.getActivePage() &&
                             this._scene.getActivePage().acceptChildren(
                                 function (t) {
-                                    if (t.hasMixin(H) && !t.hasFlag(S.Flag.FullLocked)) {
+                                    if (t.hasMixin(GStylable) && !t.hasFlag(S.Flag.FullLocked)) {
                                         var n = t.getPaintLayers();
                                         if (n)
                                             for (var o = n.getFirstChild(); null !== o; o = o.getNext())
                                                 if (
-                                                    o instanceof H.FillPaintLayer &&
+                                                    o instanceof GStylable.FillPaintLayer &&
                                                     o.getProperty("_pt") &&
                                                     r.equals(e, o.getProperty("_pt"))
                                                 ) {
@@ -2155,10 +2155,10 @@ module.exports = function (e, t, i) {
                                                 }
                                     }
                                 },
-                                !1,
-                                !0
+                                false,
+                                true
                             ),
-                        i.length > 0 && (t || this.updateSelection(!1, i), i)
+                        i.length > 0 && (t || this.updateSelection(false, i), i)
                     );
                 }),
                 (te.prototype.blinkSelection = function (e, t) {
@@ -2226,7 +2226,7 @@ module.exports = function (e, t, i) {
                     if (ie.length <= e) throw new Error("Sequence ID too big");
                     return ie[e];
                 }),
-                (te.prototype._debugBugged = !1),
+                (te.prototype._debugBugged = false),
                 (te.prototype._fixDebugData = function (e, t) {
                     if ("function" == typeof gdb_loaddesign) {
                         if (this._debugBugged || !m.debugTransactions) return;
@@ -2245,13 +2245,13 @@ module.exports = function (e, t, i) {
                             return;
                         if (((ie = null), "selection" === e && t))
                             for (var r = 0; r < t.length; r++) {
-                                var o = !1;
+                                var o = false;
                                 if (i)
                                     for (var a = 0; a < i.length; a++)
                                         if (i[a].action.type === K.ActionType.Insert && i[a].action.node === t[r].element) {
-                                            ((i[a].action.makeRecorded = !0),
-                                                (o = !0),
-                                                (t[r].elementInserted = !0),
+                                            ((i[a].action.makeRecorded = true),
+                                                (o = true),
+                                                (t[r].elementInserted = true),
                                                 (t[r].elementAction = a));
                                             break;
                                         }
@@ -2262,5 +2262,5 @@ module.exports = function (e, t, i) {
                             }
                     }
                 }),
-                (e.exports = te));
+                (module.exports = te));
         };

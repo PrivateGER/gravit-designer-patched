@@ -1,29 +1,29 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(3), n(4), n(41));
-        var i = n(1),
-            a = n(15),
-            r = n(67),
-            s = o(n(85)),
-            l = n(10),
-            c = n(18),
-            d = n(163),
-            u = n(31);
+        var o = require(16);
+        (require(3), require(4), require(41));
+        var GObject = require(1),
+            GPlatform = require(15),
+            r = require(67),
+            s = o(require(85)),
+            designerConfig = require(10),
+            GCategory = require(18),
+            GDocument = require(163),
+            u = require(31);
         function p() {
             p.TOOLTIP_CONFIG = {
                 [r.TOOLTIP_AREA.TOOLBAR]: r.GRichTooltipConfig.from({
-                    title: i.GLocale.get(new i.GLocaleKey("GPlaceImportAction", "tooltip-title")),
-                    description: i.GLocale.get(new i.GLocaleKey("GPlaceImportAction", "tooltip-description")),
-                    middle: !1,
-                    video: l.gApi.getRichTooltipVideoURL("Place_Image.mp4"),
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GPlaceImportAction", "tooltip-title")),
+                    description: GObject.GLocale.get(new GObject.GLocaleKey("GPlaceImportAction", "tooltip-description")),
+                    middle: false,
+                    video: designerConfig.gApi.getRichTooltipVideoURL("Place_Image.mp4"),
                     learnMore: "/docs/working-with-images/insert-images/#place-image",
                 }),
             };
         }
-        (i.GObject.inherit(p, u),
+        (GObject.GObject.inherit(p, u),
             (p.ID = "file.place-import"),
-            (p.TITLE = new i.GLocaleKey("GPlaceImportAction", "title")),
+            (p.TITLE = new GObject.GLocaleKey("GPlaceImportAction", "title")),
             (p.TOOLTIP_CONFIG = null),
             (p.prototype.getId = function () {
                 return p.ID;
@@ -32,7 +32,7 @@ module.exports = function (e, t, n) {
                 return p.TITLE;
             }),
             (p.prototype.getCategory = function () {
-                return c.CATEGORY_FILE_IMPORT;
+                return GCategory.CATEGORY_FILE_IMPORT;
             }),
             (p.prototype.getGroup = function () {
                 return "import/place-import";
@@ -53,17 +53,17 @@ module.exports = function (e, t, n) {
                 );
             }),
             (p.prototype.getShortcut = function () {
-                return [a.GKey.Constant.OPTION, "P"];
+                return [GPlatform.GKey.Constant.OPTION, "P"];
             }),
             (p.prototype.execute = function (e, t) {
                 var n = gDesigner.getActiveDocument();
-                if (!n) return !1;
+                if (!n) return false;
                 (e = e || n.getStorage() || gDesigner.getDefaultStorage()).openPrompt(
-                    d.FileTypes.filter((e) => e.import_image),
+                    GDocument.FileTypes.filter((e) => e.import_image),
                     (e) => {
                         (gDesigner.stats("import-placeimport_open_localfile", e.getExtension()), n.placeOrImport(e), t && t());
                     },
-                    !1
+                    false
                 );
             }),
             (p.prototype.getTooltipConfig = function (e) {
@@ -72,5 +72,5 @@ module.exports = function (e, t, n) {
             (p.prototype.toString = function () {
                 return "[Object GPlaceImportAction]";
             }),
-            (e.exports = p));
+            (module.exports = p));
     };

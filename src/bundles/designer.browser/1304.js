@@ -1,19 +1,19 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(3), n(38));
-        var i = n(1),
-            a = o(n(609));
+        var o = require(16);
+        (require(3), require(38));
+        var GObject = require(1),
+            a = o(require(609));
         function r(e) {
             ((this._type = e), a.default.call(this, r.getId(e), r.getTitle(e)));
         }
-        (i.GObject.inherit(r, a.default),
+        (GObject.GObject.inherit(r, a.default),
             (r.ID = "edit.select-by-paintlayer"),
             (r.getId = function (e) {
                 return "".concat(r.ID, ".").concat(e);
             }),
             (r.getTitle = function (e) {
-                return new i.GLocaleKey("GSelectByPaintLayerAction", "title.".concat(e));
+                return new GObject.GLocaleKey("GSelectByPaintLayerAction", "title.".concat(e));
             }),
             (r.Type = {
                 Fill: "fill",
@@ -40,17 +40,17 @@ module.exports = function (e, t, n) {
                 }
             }),
             (r.prototype._getFillPatterns = function (e) {
-                if (e.hasMixin(i.GStylable)) {
+                if (e.hasMixin(GObject.GStylable)) {
                     const t = e.getPaintLayers(),
-                        n = t && t.getFillLayers(!0);
+                        n = t && t.getFillLayers(true);
                     if (n && n.length > 0) return n.map((e) => e.getProperty("_pt"));
                 }
                 return a.default.EmptyValue;
             }),
             (r.prototype._getBorderPatterns = function (e) {
-                if (e.hasMixin(i.GStylable)) {
+                if (e.hasMixin(GObject.GStylable)) {
                     const t = e.getPaintLayers(),
-                        n = t && t.getBorderLayers(!0);
+                        n = t && t.getBorderLayers(true);
                     if (n && n.length) return n.map((e) => e.getProperty("_pt"));
                 }
                 return a.default.EmptyValue;
@@ -58,5 +58,5 @@ module.exports = function (e, t, n) {
             (r.prototype.toString = function () {
                 return "[Object GSelectByPaintLayerAction]";
             }),
-            (e.exports = r));
+            (module.exports = r));
     };

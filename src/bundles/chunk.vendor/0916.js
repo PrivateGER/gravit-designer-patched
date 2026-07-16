@@ -1,7 +1,7 @@
-module.exports = function (e, t, i) {
-            var n = i(148),
-                r = i(509),
-                o = i(368);
+module.exports = function (module, exports, require) {
+            var n = require(148),
+                r = require(509),
+                o = require(368);
 
             function a(e, t, i) {
                 ((this.doc = e), (this.start = t), (this.end = i), t > i && ((this.start = i), (this.end = t)));
@@ -22,7 +22,7 @@ module.exports = function (e, t, i) {
                                 if (t.isEOF()) return [];
                                 ((s = Math.min(s, t.start)), (l = Math.min(Math.max(l, t.end), i.frame.length - 1)));
                                 var A = t.prev,
-                                    c = !1;
+                                    c = false;
                                 return (
                                     null == h &&
                                         (A && A.isList()
@@ -35,9 +35,9 @@ module.exports = function (e, t, i) {
                                                       },
                                                   ],
                                                   t.getFormatting(),
-                                                  !0
+                                                  true
                                               )),
-                                              (c = !0))
+                                              (c = true))
                                             : (h = [])),
                                     r
                                         .create(t.runs, t)
@@ -126,7 +126,7 @@ module.exports = function (e, t, i) {
                                                   },
                                               ],
                                               (u || c).getFormatting(),
-                                              !0
+                                              true
                                           );
                                 var f = r
                                         .create(c.runs, c)
@@ -155,7 +155,7 @@ module.exports = function (e, t, i) {
                                     var y = 0;
                                     (c.save().some(function (e) {
                                         if (e.text && e.text.$ && 0 === e.text.$.indexOf("List"))
-                                            return (isNaN(e.listDepth) || (y = e.listDepth), !0);
+                                            return (isNaN(e.listDepth) || (y = e.listDepth), true);
                                     }),
                                         (f = f.map(function (e) {
                                             return Object.create(e, {
@@ -175,7 +175,7 @@ module.exports = function (e, t, i) {
                                                 },
                                             },
                                             m,
-                                            !0
+                                            true
                                         )
                                     ),
                                     f
@@ -192,7 +192,7 @@ module.exports = function (e, t, i) {
                                     },
                                 });
                             }),
-                        p = !1;
+                        p = false;
                     return (
                         c.length &&
                             (h && (c = h.concat(c)),
@@ -231,15 +231,15 @@ module.exports = function (e, t, i) {
                     return r.create(this.runs, this).per(n.consolidate()).all();
                 }),
                 (a.prototype.isEOF = function () {
-                    for (var e = !1, t = this.start; t < this.end; t++) {
+                    for (var e = false, t = this.start; t < this.end; t++) {
                         var i = this.doc.wordContainingOrdinal(t),
                             n = i && i.word;
                         if (n) {
                             if (!n.eof) {
-                                e = !1;
+                                e = false;
                                 break;
                             }
-                            e = !0;
+                            e = true;
                         }
                     }
                     return e;
@@ -269,7 +269,7 @@ module.exports = function (e, t, i) {
                                     return (
                                         isNaN(t.listDepth) && !isNaN(e.listDepth) && (t.listDepth = e.listDepth),
                                         "string" != typeof t.listMarker && (t.listMarker = e.listMarker),
-                                        !0
+                                        true
                                     );
                             }),
                         n.format(
@@ -281,14 +281,14 @@ module.exports = function (e, t, i) {
                                 },
                             ],
                             t,
-                            !0
+                            true
                         )
                     );
                 }),
                 (a.prototype.canInsertListItem = function () {
                     if (this.isList()) {
                         var e = r.create(this.blocks, this).all();
-                        if (e.length > 1) return !0;
+                        if (e.length > 1) return true;
                         if (this.start === this.end) {
                             var t = e.shift();
                             if (t.end === this.doc.frame.length - 1)
@@ -298,25 +298,25 @@ module.exports = function (e, t, i) {
                                         return "object" == typeof e.text && e.text.$ === o.List.Close;
                                     })
                                 )
-                                    return !1;
-                            return !0;
+                                    return false;
+                            return true;
                         }
                     }
-                    return !1;
+                    return false;
                 }),
                 (a.prototype.canChangeListDepth = function () {
                     if (this.isList()) {
                         var e = r.create(this.blocks, this).all();
-                        if (e.length > 1) return !0;
+                        if (e.length > 1) return true;
                         if (this.start === this.end) {
                             var t = e.shift();
-                            if (t && t.start + 1 === this.start) return !0;
+                            if (t && t.start + 1 === this.start) return true;
                         }
                     }
-                    return !1;
+                    return false;
                 }),
                 (a.prototype._changeListDepth = function (e) {
-                    var t = !1;
+                    var t = false;
                     return (
                         this.doc.transaction(
                             function () {
@@ -334,7 +334,7 @@ module.exports = function (e, t, i) {
                                                     var o = Math.min(10, Math.max(0, n + e));
                                                     n !== o && i.setFormatting("listDepth", o);
                                                 }
-                                                t = !0;
+                                                t = true;
                                             }
                                         }.bind(this)
                                     );
@@ -374,5 +374,5 @@ module.exports = function (e, t, i) {
                     }
                     i && (n.format(i, r), this.setText(i));
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

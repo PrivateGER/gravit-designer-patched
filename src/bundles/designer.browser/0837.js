@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
         String.prototype.codePointAt ||
             (function () {
                 "use strict";
@@ -26,8 +26,8 @@ module.exports = function (e, t) {
                 e
                     ? e(String.prototype, "codePointAt", {
                           value: t,
-                          configurable: !0,
-                          writable: !0,
+                          configurable: true,
+                          writable: true,
                       })
                     : (String.prototype.codePointAt = t);
             })();

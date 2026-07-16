@@ -1,74 +1,74 @@
-module.exports = function (e, t, i) {
-            var n = i(147),
-                r = i(139),
-                o = i(283),
-                a = i(2),
-                s = i(1236),
-                l = i(11),
-                h = i(68),
-                A = i(265),
-                c = i(518),
-                p = i(1202),
-                u = i(1148),
-                d = i(289),
-                g = i(84),
-                f = i(285),
-                m = i(14),
-                y = i(159),
-                _ = i(60),
-                v = i(214),
-                b = (i(51), i(1458)),
-                C = i(113),
-                w = i(282),
-                E = i(158),
-                B = i(1459),
-                x = i(138),
-                P = i(1237),
-                S = i(17),
-                T = i(188),
-                I = i(5),
-                F = i(249),
-                R = i(73),
-                D = i(70),
-                k = i(6),
-                G = i(162),
-                Q = i(7),
-                M = i(122),
-                N = i(216),
-                U = i(1149),
-                V = i(284),
-                O = i(438),
-                L = i(233),
-                Y = i(321),
-                X = i(432),
-                H = i(852),
-                W = i(48),
-                Z = (i(95), i(160)),
-                z = i(83),
-                j = i(1465),
-                J = i(28),
-                q = i(22),
-                K = i(798),
-                $ = i(1466),
-                ee = i(56),
-                te = (i(1119), i(12)),
-                ie = i(132),
-                ne = i(801);
+module.exports = function (module, exports, require) {
+            var n = require(147),
+                r = require(139),
+                o = require(283),
+                a = require(2),
+                s = require(1236),
+                l = require(11),
+                h = require(68),
+                A = require(265),
+                c = require(518),
+                p = require(1202),
+                u = require(1148),
+                d = require(289),
+                g = require(84),
+                f = require(285),
+                m = require(14),
+                y = require(159),
+                _ = require(60),
+                v = require(214),
+                b = (require(51), require(1458)),
+                C = require(113),
+                w = require(282),
+                E = require(158),
+                B = require(1459),
+                x = require(138),
+                P = require(1237),
+                S = require(17),
+                T = require(188),
+                I = require(5),
+                F = require(249),
+                R = require(73),
+                D = require(70),
+                k = require(6),
+                G = require(162),
+                Q = require(7),
+                M = require(122),
+                N = require(216),
+                U = require(1149),
+                V = require(284),
+                O = require(438),
+                L = require(233),
+                Y = require(321),
+                X = require(432),
+                H = require(852),
+                W = require(48),
+                Z = (require(95), require(160)),
+                z = require(83),
+                j = require(1465),
+                GStylable = require(28),
+                q = require(22),
+                K = require(798),
+                $ = require(1466),
+                ee = require(56),
+                te = (require(1119), require(12)),
+                ie = require(132),
+                ne = require(801);
 
             function re() {}
             ((re.DefaultOptions = {
-                forceRoot: !1,
-                viewBox: !0,
-                clipToPage: !1,
-                preserveEditingCapabilities: !0,
-                layerNamesAsId: !1,
-                print: !1,
+                forceRoot: false,
+                viewBox: true,
+                clipToPage: false,
+                preserveEditingCapabilities: true,
+                layerNamesAsId: false,
+                print: false,
                 rasterizeUnsupportedObjectsByCDR: void 0,
-                useImageDictionary: !0,
+                useImageDictionary: true,
                 unit: ie.Unit.PT,
                 dpi: ie.DPI,
-                includeInvisible: !1,
-                annotations: !1,
+                includeInvisible: false,
+                annotations: false,
             }),
                 (re.Encoders = {
                     GScene: function (e) {},
@@ -160,10 +160,10 @@ module.exports = function (e, t, i) {
                     });
                 }),
                 (re.hasSupportedEffects = function (e) {
-                    var t = !1;
+                    var t = false;
                     return (
                         e.accept(function (e) {
-                            if (e.hasMixin(J)) {
+                            if (e.hasMixin(GStylable)) {
                                 var i = e.getEffects();
                                 if (
                                     i &&
@@ -171,21 +171,21 @@ module.exports = function (e, t, i) {
                                         return re.isSupportedEffect(e);
                                     })
                                 )
-                                    return ((t = !0), !1);
+                                    return ((t = true), false);
                             }
                         }),
                         t
                     );
                 }),
                 (re.getUnsupportedFeatures = function (e, t) {
-                    if (((t = t || []), e.hasMixin(J))) {
+                    if (((t = t || []), e.hasMixin(GStylable))) {
                         var i = [];
                         l.each(e.getEffects().getChildren(), function (e, t) {
                             re.isSupportedEffect(t) || i.push(t);
                         });
                         var n = e.getPaintLayers();
                         (n &&
-                            n.getLayers(null, !0).forEach(function (e) {
+                            n.getLayers(null, true).forEach(function (e) {
                                 (e.$_pt instanceof A || e.$_pt instanceof r || e.$_pt instanceof o) && i.push(e.$_pt);
                             }),
                             i.length &&
@@ -199,26 +199,26 @@ module.exports = function (e, t, i) {
                     return t;
                 }),
                 (re.hasUnsupportedObjectsByCDR = function (e) {
-                    if (re.hasUnsupportedEffects(e)) return !0;
-                    if (e.hasMixin(J)) {
+                    if (re.hasUnsupportedEffects(e)) return true;
+                    if (e.hasMixin(GStylable)) {
                         var t = e.getPaintLayers();
                         if (t) {
-                            var i = t.getFillLayers(!0) || [];
-                            if (i.length > 1) return !0;
-                            var n = t.getBorderLayers(!0) || [];
-                            if (n.length > 1) return !0;
+                            var i = t.getFillLayers(true) || [];
+                            if (i.length > 1) return true;
+                            var n = t.getBorderLayers(true) || [];
+                            if (n.length > 1) return true;
                             if (
                                 i.some(function (e) {
                                     return !(e.$_pt instanceof h);
                                 })
                             )
-                                return !0;
+                                return true;
                             if (
                                 n.some(function (e) {
                                     return !(e.$_pt instanceof h);
                                 })
                             )
-                                return !0;
+                                return true;
                         }
                         if (
                             e
@@ -228,47 +228,47 @@ module.exports = function (e, t, i) {
                                     return !!e;
                                 })
                         )
-                            return !0;
+                            return true;
                     }
-                    var r = !1;
+                    var r = false;
                     if (e.hasMixin(a.Container))
                         for (var o = e.getFirstChild(); null != o; o = o.getNext())
                             if (re.hasUnsupportedObjectsByCDR(o)) {
-                                r = !0;
+                                r = true;
                                 break;
                             }
                     return r;
                 }),
                 (re.hasUnsupportedEffects = function (e) {
-                    var t = !1;
-                    if (e.hasMixin(J)) {
+                    var t = false;
+                    if (e.hasMixin(GStylable)) {
                         var i = e.getPaintLayers();
                         if (
                             i &&
-                            i.getFillLayers(!0).filter(function (e) {
+                            i.getFillLayers(true).filter(function (e) {
                                 return e.$_pt instanceof A || e.$_pt instanceof r || e.$_pt instanceof o;
                             }).length
                         )
-                            return !0;
+                            return true;
                         l.each(e.getEffects().getChildren(), function (e, i) {
                             re._SUPPORTED_EFFECTS.find(function (e) {
                                 return i instanceof e;
-                            }) || (t = !0);
+                            }) || (t = true);
                         });
                     }
                     if (t) return t;
                     if (e.hasMixin(a.Container))
-                        for (var n = e.getFirstChild(); null != n; n = n.getNext()) re.hasUnsupportedEffects(n) && (t = !0);
+                        for (var n = e.getFirstChild(); null != n; n = n.getNext()) re.hasUnsupportedEffects(n) && (t = true);
                     return t;
                 }),
                 (re.checkNativeShape = function (e) {
                     var t = e._renderContext,
                         i = l.extend({}, re.DefaultOptions);
                     if ((l.extend(i, t.options || {}), "boolean" == typeof i.rasterizeUnsupportedObjectsByCDR)) {
-                        if (i.rasterizeUnsupportedObjectsByCDR && re.hasUnsupportedObjectsByCDR(e)) return !1;
-                    } else if (re.hasUnsupportedEffects(e)) return !1;
+                        if (i.rasterizeUnsupportedObjectsByCDR && re.hasUnsupportedObjectsByCDR(e)) return false;
+                    } else if (re.hasUnsupportedEffects(e)) return false;
                     var n = e.getTransform();
-                    if ((n || (n = new Q()), !n.isIdentity() && !(e instanceof v) && (!e) instanceof R)) return !1;
+                    if ((n || (n = new Q()), !n.isIdentity() && !(e instanceof v) && (!e) instanceof R)) return false;
                     var r,
                         o = t.peek(),
                         a = t.createSvgElement("g");
@@ -314,7 +314,7 @@ module.exports = function (e, t, i) {
                             var b = [];
                             (e.iterateSegments(function (e, t, i) {
                                 t || (b.push(e.getX()), b.push(e.getY()));
-                            }, !0),
+                            }, true),
                                 y.setAttribute("points", ne.formatMatrix(b).join(",")),
                                 O.setAttributeId(y, e, i),
                                 O.exportAttributes(y, e, i),
@@ -331,14 +331,14 @@ module.exports = function (e, t, i) {
                         var x,
                             P = e.getProperty("bl_sx"),
                             S = e.getProperty("bl_sy"),
-                            T = (e.getProperty("br_sx"), e.getProperty("br_sy"), !1);
+                            T = (e.getProperty("br_sx"), e.getProperty("br_sy"), false);
                         if (
                             (e.iterateSegments(function (e, t, i, n, r) {
-                                if (n > 0 || r > 0) return ((T = !0), !0);
+                                if (n > 0 || r > 0) return ((T = true), true);
                             }),
                             T)
                         )
-                            return !1;
+                            return false;
                         (P || S) && (E.setAttribute("rx", P), E.setAttribute("ry", S));
                         var F = new Q().getMatrix();
                         if (n.isIdentity()) x = n.mapRect(w);
@@ -381,7 +381,7 @@ module.exports = function (e, t, i) {
                         B.getEffectMarkup(e, H, X),
                         H.filter && (a.setAttribute("filter", H.filter), o.appendChild(X)),
                         r ? s.createMask(t, a.children[0], o, "!m" === r) : (M.setElementStyle(a), o.appendChild(a)),
-                        !0
+                        true
                     );
                 }),
                 (re.renderAsNativePath = function (e, t, i, n) {
@@ -402,7 +402,7 @@ module.exports = function (e, t, i) {
                     var t = e._renderContext,
                         i = l.extend({}, re.DefaultOptions);
                     l.extend(i, t.options || {});
-                    var n = !1;
+                    var n = false;
                     if (
                         ("boolean" == typeof i.rasterizeUnsupportedObjectsByCDR
                             ? i.rasterizeUnsupportedObjectsByCDR && (n = re.hasUnsupportedObjectsByCDR(e))
@@ -415,11 +415,11 @@ module.exports = function (e, t, i) {
                             s,
                             h,
                             p,
-                            u = e.getPaintBBox(!1, null, i.includeInvisible);
-                        if (((a = u.getX()), (s = u.getY()), (r = u.getWidth()), (o = u.getHeight()), e.hasMixin(J))) {
+                            u = e.getPaintBBox(false, null, i.includeInvisible);
+                        if (((a = u.getX()), (s = u.getY()), (r = u.getWidth()), (o = u.getHeight()), e.hasMixin(GStylable))) {
                             var d = e.getPaintLayers();
                             if (d)
-                                d.getFillLayers(!0).some(function (e) {
+                                d.getFillLayers(true).some(function (e) {
                                     return e.$_pt instanceof A || e.$_pt instanceof c;
                                 }) &&
                                     (p = K.export(
@@ -430,7 +430,7 @@ module.exports = function (e, t, i) {
                                         i.dpi || 72,
                                         null,
                                         null,
-                                        e.getPaintBBox(!1, null, i.includeInvisible)
+                                        e.getPaintBBox(false, null, i.includeInvisible)
                                     ));
                         }
                         (p || (p = K.export(e, null, null, null, i.dpi || 72)), (h = p.toImageDataUrl("image/png", null)));
@@ -449,7 +449,7 @@ module.exports = function (e, t, i) {
                             _ = e.getProperty("_sbl");
                         (_ && "normal" !== _ && y.set("mix-blend-mode", _),
                             m.setAttribute("style", y.toString()),
-                            (e._renderContext.wasRasterized = !0));
+                            (e._renderContext.wasRasterized = true));
                     }
                     return n;
                 }),
@@ -498,7 +498,7 @@ module.exports = function (e, t, i) {
                                 else {
                                     if (void 0 !== i.drawImage) return void re.renderExportCanvas(n, a, c, A, i, s, l);
                                     var h = {
-                                        isMask: !1,
+                                        isMask: false,
                                         maskTarget: A,
                                     };
                                     re.processPath(a, A, c, i, r, n.getSvgStyleObject(o + t), s, h);
@@ -510,10 +510,10 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (re.setCommonFillStyles = function (e, t, i, r) {
-                    if (e.hasMixin(J)) {
+                    if (e.hasMixin(GStylable)) {
                         var o = e.getPaintLayers();
                         if (o) {
-                            var a = o.getFillLayers(!0);
+                            var a = o.getFillLayers(true);
                             if (a.length)
                                 return void l.each(
                                     a,
@@ -556,13 +556,13 @@ module.exports = function (e, t, i) {
                     t.setAttribute("fill", "none");
                 }),
                 (re.setCommonStrokeStyles = function (e, t, i) {
-                    if (e.hasMixin(J)) {
+                    if (e.hasMixin(GStylable)) {
                         var r = e.getPaintLayers();
                         if (r) {
-                            var o = r.getBorderLayers(!0);
+                            var o = r.getBorderLayers(true);
                             if (o.length) {
                                 var a,
-                                    h = o.length > 1 || r.getFillLayers(!0).length > 1,
+                                    h = o.length > 1 || r.getFillLayers(true).length > 1,
                                     A = [],
                                     c = function (e, t) {
                                         e &&
@@ -576,7 +576,7 @@ module.exports = function (e, t, i) {
                                     function (r, o) {
                                         var A = t;
                                         h &&
-                                            ((A = t.cloneNode(!0)).setAttribute("fill", "none"),
+                                            ((A = t.cloneNode(true)).setAttribute("fill", "none"),
                                             A.removeAttribute("stroke"),
                                             A.removeAttribute("stroke-width"),
                                             A.removeAttribute("stroke-dasharray"),
@@ -596,8 +596,8 @@ module.exports = function (e, t, i) {
                                             d = o.getProperty("_bw"),
                                             g = o.getProperty("_ba"),
                                             f = A;
-                                        if ((e instanceof R || e instanceof v) && g === J.BorderAlignment.Outside) {
-                                            ((f = A.cloneNode(!1)), A.parentNode.insertBefore(f, A));
+                                        if ((e instanceof R || e instanceof v) && g === GStylable.BorderAlignment.Outside) {
+                                            ((f = A.cloneNode(false)), A.parentNode.insertBefore(f, A));
                                             var y = {};
                                             (e instanceof R
                                                 ? ((y.x = parseFloat(A.getAttribute("x")) - d / 2),
@@ -609,12 +609,12 @@ module.exports = function (e, t, i) {
                                                     f.setAttribute(e, y[e]);
                                                 }),
                                                 O.replaceFill(f, "transparent"));
-                                        } else if (g !== J.BorderAlignment.Center) {
+                                        } else if (g !== GStylable.BorderAlignment.Center) {
                                             d *= 2;
-                                            var _ = A.cloneNode(!0);
-                                            (s.createMask(e._renderContext, _, A, g === J.BorderAlignment.Outside, !0),
+                                            var _ = A.cloneNode(true);
+                                            (s.createMask(e._renderContext, _, A, g === GStylable.BorderAlignment.Outside, true),
                                                 A.hasAttribute("fill") &&
-                                                    ((_ = A.cloneNode(!0)).removeAttribute("stroke"),
+                                                    ((_ = A.cloneNode(true)).removeAttribute("stroke"),
                                                     _.removeAttribute("stroke-width"),
                                                     _.removeAttribute("stroke-dasharray"),
                                                     _.removeAttribute("stroke-opacity"),
@@ -715,7 +715,7 @@ module.exports = function (e, t, i) {
                                                 h.setAttribute("width", s.firstElementChild.getAttribute("width")),
                                                 h.setAttribute("height", s.firstElementChild.getAttribute("height")),
                                                 h.setAttribute("patternUnits", "userSpaceOnUse"));
-                                            var A = e.getPaintBBox(!1, null, i.includeInvisible),
+                                            var A = e.getPaintBBox(false, null, i.includeInvisible),
                                                 c = e._renderContext.createSvgElement("rect");
                                             (c.setAttribute("x", ne.formatNumber(A.getX())),
                                                 c.setAttribute("y", ne.formatNumber(A.getY())),
@@ -830,7 +830,7 @@ module.exports = function (e, t, i) {
                                 (i.appendChild(C), C.setAttribute("id", f));
                             }
                             C.appendChild(h);
-                            var w = b.cloneNode(!0);
+                            var w = b.cloneNode(true);
                             (w.removeAttribute("mask"),
                                 w.removeAttribute("fill"),
                                 w.removeAttribute("stroke"),
@@ -852,7 +852,7 @@ module.exports = function (e, t, i) {
                     var l = t.createElementNS("http://www.w3.org/2000/svg", "g");
                     n.appendChild(l);
                     var h = {
-                        isMask: !1,
+                        isMask: false,
                         maskTarget: l,
                     };
                     switch (o) {
@@ -973,9 +973,9 @@ module.exports = function (e, t, i) {
                     if ((l.extend(i, t.options || {}), !re.checkRasterize(e))) {
                         t = e._renderContext;
                         var n,
-                            r = e.getTransform(!0);
+                            r = e.getTransform(true);
                         if (0 != (n = null != r ? r.getRotationFactor() : 0)) {
-                            var o = e.getCenter(!0),
+                            var o = e.getCenter(true),
                                 a = new Q().translated(-o.getX(), -o.getY()).scaled(1, 1).rotated(-n).translated(o.getX(), o.getY());
                             (e.transform(a), e.getGeometryBBox(i.includeInvisible), e.transform(a.inverted()));
                         } else e.getGeometryBBox(i.includeInvisible);
@@ -1045,7 +1045,7 @@ module.exports = function (e, t, i) {
                                 b.setAttribute("height", "100%"),
                                 b.setAttribute("fill", "white"));
                         }
-                        (e.hasMixin(J) && (p = e.getPaintLayers()) && (c = p.getFillLayers()),
+                        (e.hasMixin(GStylable) && (p = e.getPaintLayers()) && (c = p.getFillLayers()),
                             p && p.clearFillLayers(),
                             re.generateSvgPath(e, h),
                             c &&
@@ -1076,11 +1076,11 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (re._shouldConverTextToPath = function (e, t) {
-                    if (t && t.convertTextToPath) return !0;
-                    if (e.isFakeText()) return !0;
+                    if (t && t.convertTextToPath) return true;
+                    if (e.isFakeText()) return true;
                     var i = e.getPaintLayers(),
-                        n = i.getFillLayers(!0),
-                        r = i.getBorderLayers(!0);
+                        n = i.getFillLayers(true),
+                        r = i.getBorderLayers(true);
                     return !!(n.length > 1 || r.length > 1 || e.getProperty("dir"));
                 }),
                 (re._shouldRenderNode = function (e) {
@@ -1089,11 +1089,11 @@ module.exports = function (e, t, i) {
                 (re.renderNode = function (e, t, i, n) {
                     if (re._shouldRenderNode(e)) {
                         var r = e.getProperty("vis");
-                        if (!1 !== r || n) {
-                            var o = !1;
+                        if (false !== r || n) {
+                            var o = false;
                             if (e instanceof D)
                                 if (re._shouldConverTextToPath(e, t.options)) {
-                                    o = !0;
+                                    o = true;
                                     for (var h = e.getTextShapes(), A = 0; A < h.length; A++) re.renderNode(h[A], t, null, n);
                                 } else {
                                     var c = Object.create(Object.getPrototypeOf(e));
@@ -1101,26 +1101,26 @@ module.exports = function (e, t, i) {
                                         (c.__source__ = e),
                                         c.setTLCore(new $(e, t.options)),
                                         (c._finishPaint = function (e) {
-                                            (this.__proto__._finishPaint.call(this, e), (this.__source__._runsDirty = !0));
+                                            (this.__proto__._finishPaint.call(this, e), (this.__source__._runsDirty = true));
                                         }),
                                         (e = c));
                                 }
                             ((e._export = {}), (e._renderContext = t), (e._paintContext = t.paintContext));
-                            var p = !1,
-                                u = !1,
-                                d = !1,
+                            var p = false,
+                                u = false,
+                                d = false,
                                 m = t.paintContext._ignoreContents;
-                            if (((t.paintContext._ignoreContents = !1), e instanceof Z)) {
+                            if (((t.paintContext._ignoreContents = false), e instanceof Z)) {
                                 var v = t.svgDoc.documentElement,
                                     b = null,
                                     C = v.getAttribute("width"),
                                     w = v.getAttribute("height");
                                 if (!C || !w) {
-                                    var E = e.getPaintBBox(!0, null, n);
+                                    var E = e.getPaintBBox(true, null, n);
                                     if (e.isFixedSized())
                                         ((C = (b = new k(0, 0, E.getWidth(), E.getHeight())).getWidth().toString()),
                                             (w = b.getHeight().toString()),
-                                            (t._ignoreContents = !0));
+                                            (t._ignoreContents = true));
                                     else {
                                         b = E || new k(0, 0, 0, 0);
                                         var x = t.createSvgElement("g");
@@ -1145,7 +1145,7 @@ module.exports = function (e, t, i) {
                                 if (e instanceof M || e instanceof N) {
                                     var F = l.extend({}, re.DefaultOptions);
                                     l.extend(F, t.options || {});
-                                    var R = !1;
+                                    var R = false;
                                     ("boolean" == typeof F.rasterizeUnsupportedObjectsByCDR
                                         ? F.rasterizeUnsupportedObjectsByCDR && (R = re.hasUnsupportedObjectsByCDR(e))
                                         : (R = re.hasUnsupportedEffects(e)),
@@ -1176,31 +1176,31 @@ module.exports = function (e, t, i) {
                                     (0, (d = e.hasMixin(a.Container) && e.getChildren().length > 0));
                                 } else
                                     e instanceof L
-                                        ? (u = !0)
+                                        ? (u = true)
                                         : e instanceof z || (d = e.hasMixin(a.Container) && e.getChildren().length > 0);
-                            else ((u = !0), (d = !1));
+                            else ((u = true), (d = false));
                             d && (t.paintContext._ignoreContents = function (e, t) {});
-                            var W = !1;
-                            (e.hasMixin(J) && (W = (j = e.getPaintLayers()) && j.hasStyleFill()),
+                            var W = false;
+                            (e.hasMixin(GStylable) && (W = (j = e.getPaintLayers()) && j.hasStyleFill()),
                                 W || (e instanceof D && (W = o || !!e.getProperty("_fc"))));
                             var j,
-                                q = d && !W && (!j || !j.getBorderLayers(!0).length);
-                            if ((q && j && j.appendChild(new J.FillPaintLayer(new S([255, 255, 255]))), !o)) {
+                                q = d && !W && (!j || !j.getBorderLayers(true).length);
+                            if ((q && j && j.appendChild(new GStylable.FillPaintLayer(new S([255, 255, 255]))), !o)) {
                                 var K = e.toString().replace(/[\[\]]/g, "");
                                 K = K.replace(/^Object /, "");
                                 var ee = re.Encoders[K];
                                 ee instanceof Function
-                                    ? p || ((e._renderContext.wasRasterized = !1), ee.call(this, e), (p = e._renderContext.wasRasterized))
+                                    ? p || ((e._renderContext.wasRasterized = false), ee.call(this, e), (p = e._renderContext.wasRasterized))
                                     : console.warn("Missing encoder for node type " + K);
                             }
-                            if (q) if (e.hasMixin(J)) (j = e.getPaintLayers()) && j.clearFillLayers();
+                            if (q) if (e.hasMixin(GStylable)) (j = e.getPaintLayers()) && j.clearFillLayers();
                             if (!p && (!u || d)) {
                                 if (d) {
                                     var te = t.createSvgElement("g"),
                                         ie = t.peek().lastChild;
                                     if (ie) {
                                         var oe = s.filterElementsUsedForMasking(ie),
-                                            ae = e.getProperty("_ba") === J.BorderAlignment.Outside,
+                                            ae = e.getProperty("_ba") === GStylable.BorderAlignment.Outside,
                                             se = s.createMaskDefinitionFromShape(t.svgDoc, ie, ae);
                                         if (q) for (; ie.firstChild; ) ie.removeChild(ie.firstChild);
                                         if (
@@ -1212,7 +1212,7 @@ module.exports = function (e, t, i) {
                                             for (var le = 0; le < oe.length; le++) {
                                                 var he = oe[le];
                                                 if (he.parentNode === ie && he.getAttribute("stroke-width")) {
-                                                    var Ae = he.cloneNode(!1);
+                                                    var Ae = he.cloneNode(false);
                                                     (O.replaceFill(Ae, "transparent"), ie.appendChild(Ae));
                                                 }
                                             }
@@ -1232,16 +1232,16 @@ module.exports = function (e, t, i) {
                     }
                 }),
                 (re.setVisibility = function (e, t) {
-                    !1 === t && e.setAttribute("visibility", "hidden");
+                    false === t && e.setAttribute("visibility", "hidden");
                 }),
                 (re.renderPage = function (e, t, i, n, r) {
                     var a = t.createSvgElement("g");
-                    if ((t.peek().appendChild(a), t.push(a), !t.options || !1 !== t.options.sceneBackground)) {
+                    if ((t.peek().appendChild(a), t.push(a), !t.options || false !== t.options.sceneBackground)) {
                         var A = t.createSvgElement("rect"),
                             c = e.getProperty("w"),
                             p = e.getProperty("h");
                         if (!e.isFixedSized()) {
-                            var u = e.getPaintBBox(!1, null, r);
+                            var u = e.getPaintBBox(false, null, r);
                             u &&
                                 ((c = u.getWidth()),
                                 (p = u.getHeight()),
@@ -1250,7 +1250,7 @@ module.exports = function (e, t, i) {
                         }
                         if (c && p) {
                             (A.setAttribute("width", ne.formatNumber(c)), A.setAttribute("height", ne.formatNumber(p)));
-                            var d = s.createMaskDefinitionFromShape(t.svgDoc, A, !1),
+                            var d = s.createMaskDefinitionFromShape(t.svgDoc, A, false),
                                 g = t.createSvgElement("defs");
                             (g.appendChild(d),
                                 a.parentNode.insertBefore(g, a),
@@ -1266,15 +1266,15 @@ module.exports = function (e, t, i) {
                                     a.appendChild(m),
                                     f instanceof o)
                                 ) {
-                                    var y = !0,
+                                    var y = true,
                                         _ = t.options || {};
                                     if (
                                         ("boolean" == typeof _.rasterizeUnsupportedObjectsByCDR &&
-                                            (_.rasterizeUnsupportedObjectsByCDR || (y = !1)),
+                                            (_.rasterizeUnsupportedObjectsByCDR || (y = false)),
                                         y)
                                     ) {
                                         var v = new R(0, 0, c, p);
-                                        v.getPaintLayers().appendChild(new J.FillPaintLayer(f));
+                                        v.getPaintLayers().appendChild(new GStylable.FillPaintLayer(f));
                                         var b = v.toBitmap().toImageDataUrl(),
                                             C = t.createSvgElement("image");
                                         (C.setAttribute("width", ne.formatNumber(c)),
@@ -1301,5 +1301,5 @@ module.exports = function (e, t, i) {
                     for (var B = e.getFirstChild(); null != B; B = B.getNext()) re.renderNode(B, t, null, r);
                     t.pop();
                 }),
-                (e.exports = re));
+                (module.exports = re));
         };

@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(23),
-            i = n(35),
+        var RegExp = require(23),
+            i = require(35),
             a = function (e) {
                 return i(e) ? e : void 0;
             };
-        e.exports = function (e, t) {
-            return arguments.length < 2 ? a(o[e]) : o[e] && o[e][t];
+        module.exports = function (e, t) {
+            return arguments.length < 2 ? a(RegExp[e]) : RegExp[e] && RegExp[e][t];
         };
     };

@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(5),
-                r = i(6),
-                o = i(2),
-                a = i(45),
-                s = i(12),
-                l = (i(22), i(9));
+module.exports = function (module, exports, require) {
+            var n = require(5),
+                r = require(6),
+                o = require(2),
+                a = require(45),
+                s = require(12),
+                l = (require(22), require(9 /* String */));
 
             function h(e, t, i, n) {
                 ((e || 0 === e) && (this._x = e),
@@ -12,27 +12,27 @@ module.exports = function (e, t, i) {
                     i && (this._w = i),
                     n && (this._h = n),
                     a.call(this),
-                    (this.$closed = !0),
+                    (this.$closed = true),
                     this._setDefaultProperties(h.GeometryProperties),
                     this._invalidatePath(),
-                    (this._paintSharp = !0));
+                    (this._paintSharp = true));
             }
             (o.inherit("rectangle", h, a),
                 (h.GeometryProperties = {
-                    uf: !0,
-                    tl_uf: !0,
+                    uf: true,
+                    tl_uf: true,
                     tl_ct: a.CornerType.Rounded,
                     tl_sx: 0,
                     tl_sy: 0,
-                    tr_uf: !0,
+                    tr_uf: true,
                     tr_ct: a.CornerType.Rounded,
                     tr_sx: 0,
                     tr_sy: 0,
-                    br_uf: !0,
+                    br_uf: true,
                     br_ct: a.CornerType.Rounded,
                     br_sx: 0,
                     br_sy: 0,
-                    bl_uf: !0,
+                    bl_uf: true,
                     bl_ct: a.CornerType.Rounded,
                     bl_sx: 0,
                     bl_sy: 0,
@@ -57,7 +57,7 @@ module.exports = function (e, t, i) {
                 (h.prototype._y = -1),
                 (h.prototype._w = 2),
                 (h.prototype._h = 2),
-                (h.prototype._blockHandle = !1),
+                (h.prototype._blockHandle = false),
                 (h.prototype.iterateSegments = function (e, t) {
                     for (var i = t ? this.$trf : null, o = 0; o < h.SIDES.length; ++o) {
                         var a = h.SIDES[o],
@@ -78,7 +78,7 @@ module.exports = function (e, t, i) {
                         }
                         if (
                             (i && (l = i.mapPoint(l)),
-                            !0 === e(l, a, this["$" + s + "_ct"], this["$" + s + "_sx"], this["$" + s + "_sy"], o))
+                            true === e(l, a, this["$" + s + "_ct"], this["$" + s + "_sx"], this["$" + s + "_sy"], o))
                         )
                             break;
                     }
@@ -97,9 +97,9 @@ module.exports = function (e, t, i) {
                 }),
                 (h.prototype._handleChange = function (e, t) {
                     if (e === o._Change.Store)
-                        if (this.$uf) ((t.blob.uf = !0), (t.blob.ct = this.$tl_ct), (t.blob.sl = this.$tl_sx));
+                        if (this.$uf) ((t.blob.uf = true), (t.blob.ct = this.$tl_ct), (t.blob.sl = this.$tl_sx));
                         else {
-                            t.blob.uf = !1;
+                            t.blob.uf = false;
                             for (var i = 0; i < h.SIDES.length; ++i) {
                                 var n = h.SIDES[i],
                                     r = h.getGeometryPropertiesSidePrefix(n);
@@ -109,7 +109,7 @@ module.exports = function (e, t, i) {
                             }
                         }
                     else if (e === o._Change.Restore) {
-                        if (!0 !== t.blob.uf && !1 !== t.blob.uf) this._setDefaultProperties(h.GeometryProperties);
+                        if (true !== t.blob.uf && false !== t.blob.uf) this._setDefaultProperties(h.GeometryProperties);
                         else {
                             this.$uf = t.blob.uf;
                             for (i = 0; i < h.SIDES.length; ++i) {
@@ -132,45 +132,45 @@ module.exports = function (e, t, i) {
                         var s = [],
                             l = [],
                             A = t.properties,
-                            c = !1;
-                        if ((this._blockHandle && (c = !0), !c)) {
+                            c = false;
+                        if ((this._blockHandle && (c = true), !c)) {
                             if (this.$uf) {
                                 var p = null,
                                     u = null,
-                                    d = !1,
-                                    g = !1;
+                                    d = false,
+                                    g = false;
                                 for (i = 0; i < h.SIDES.length && (!d || !g); ++i) {
                                     ((n = h.SIDES[i]), (r = h.getGeometryPropertiesSidePrefix(n)));
                                     if (!d) {
                                         var f = r + "_sx";
-                                        if (A.indexOf(f) >= 0) ((p = this["$" + f]), (d = !0));
+                                        if (A.indexOf(f) >= 0) ((p = this["$" + f]), (d = true));
                                         else {
                                             f = r + "_sy";
-                                            A.indexOf(f) >= 0 && ((p = this["$" + f]), (d = !0));
+                                            A.indexOf(f) >= 0 && ((p = this["$" + f]), (d = true));
                                         }
                                     }
                                     if (!g) {
                                         f = r + "_ct";
-                                        A.indexOf(f) >= 0 && ((u = this["$" + f]), (g = !0));
+                                        A.indexOf(f) >= 0 && ((u = this["$" + f]), (g = true));
                                     }
                                 }
                                 (d || (p = this.getProperty("tl_sx")),
                                     g || (u = this.getProperty("tl_ct")),
                                     s.push("tl_uf", "tr_uf", "br_uf", "bl_uf"),
-                                    l.push(!0, !0, !0, !0),
+                                    l.push(true, true, true, true),
                                     s.push("tl_sx", "tl_sy", "tr_sx", "tr_sy", "br_sx", "br_sy", "bl_sx", "bl_sy"),
                                     l.push(p, p, p, p, p, p, p, p),
                                     s.push("tl_ct", "tr_ct", "br_ct", "bl_ct"),
                                     l.push(u, u, u, u));
                             } else
                                 for (i = 0; i < h.SIDES.length; ++i) {
-                                    ((n = h.SIDES[i]), (p = null), (d = !1));
+                                    ((n = h.SIDES[i]), (p = null), (d = false));
                                     if (this["$" + (r = h.getGeometryPropertiesSidePrefix(n)) + "_uf"]) {
                                         f = r + "_sx";
-                                        if (A.indexOf(f) >= 0) ((p = this["$" + f]), (d = !0));
+                                        if (A.indexOf(f) >= 0) ((p = this["$" + f]), (d = true));
                                         else {
                                             f = r + "_sy";
-                                            A.indexOf(f) >= 0 && ((p = this["$" + f]), (d = !0));
+                                            A.indexOf(f) >= 0 && ((p = this["$" + f]), (d = true));
                                         }
                                         (d || (p = this.getProperty(r + "_sx")),
                                             s.push(r + "_sx"),
@@ -179,12 +179,12 @@ module.exports = function (e, t, i) {
                                             l.push(p));
                                     }
                                 }
-                            ((this._blockHandle = !0),
-                                this.setProperties(s, l, !1, !1, t.temporary),
+                            ((this._blockHandle = true),
+                                this.setProperties(s, l, false, false, t.temporary),
                                 this._invalidatePath(),
                                 this._handleGeometryChangeForProperties(e, t, h.GeometryProperties));
                         }
-                        this._blockHandle = !1;
+                        this._blockHandle = false;
                     } else this._blockHandle || this._handleGeometryChangeForProperties(e, t, h.GeometryProperties);
                     a.prototype._handleChange.call(this, e, t);
                 }),
@@ -196,7 +196,7 @@ module.exports = function (e, t, i) {
                         var e = this.getTransform().decomposed();
                         return !e.skew.isIdentity() || !e.rotate.isIdentity();
                     }
-                    return !1;
+                    return false;
                 }),
                 (h.prototype.calculateMitterLimit = function (e) {
                     var t = function (e, t, i) {
@@ -212,7 +212,7 @@ module.exports = function (e, t, i) {
                         n = [];
                     this.iterateSegments(function (e, t, i) {
                         n.push(e);
-                    }, !0);
+                    }, true);
                     for (var r = n.length - 1; r > 0; r -= 2) {
                         var o = n[r],
                             a = n[r - 1],
@@ -223,18 +223,18 @@ module.exports = function (e, t, i) {
                 }),
                 (h.prototype._invalidatePath = function () {
                     var e = this.getAnchorPoints();
-                    (this.beginUpdate(), e._beginBlockCompositeEvents(!0, !0, !0));
+                    (this.beginUpdate(), e._beginBlockCompositeEvents(true, true, true));
                     try {
                         (e.clearChildren(),
                             this.iterateSegments(
                                 function (t, i, n, r, o) {
                                     var s = new a.AnchorPoint();
-                                    (s.setProperties(["tp", "x", "y", "cl", "cr", "cu"], [n, t.getX(), t.getY(), r, o, !1]),
+                                    (s.setProperties(["tp", "x", "y", "cl", "cr", "cu"], [n, t.getX(), t.getY(), r, o, false]),
                                         e.appendChild(s));
                                 }.bind(this)
                             ));
                     } finally {
-                        (this.endUpdate(), e._endBlockCompositeEvents(!0, !0, !0));
+                        (this.endUpdate(), e._endBlockCompositeEvents(true, true, true));
                     }
                 }),
                 (h.prototype.assignFrom = function (e) {
@@ -267,5 +267,5 @@ module.exports = function (e, t, i) {
                 (h.prototype.toString = function () {
                     return "[GRectangle]";
                 }),
-                (e.exports = h));
+                (module.exports = h));
         };

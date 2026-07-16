@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
-            var n = i(82),
-                r = i(0),
-                o = i(52),
-                a = i(128),
-                s = i(751),
-                l = i(545),
-                h = i(331),
-                A = i(39);
+module.exports = function (module, exports, require) {
+            var GEditor = require(82),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(52),
+                a = require(128),
+                s = require(751),
+                l = require(545),
+                MOVE_MASTER = require(331),
+                A = require(39);
 
             function c() {}
-            (r.inherit(c, A),
+            (IsFiniteNonNegativeNumber.inherit(c, A),
                 (c.options = {
                     snapDistance: 5,
                 }),
@@ -20,16 +20,16 @@ module.exports = function (e, t, i) {
                 (c.prototype.activate = function (e) {
                     var t = e.parentEditor;
                     return (
-                        (t instanceof a || t instanceof h || t instanceof l || t instanceof s) &&
-                        (t.insertEditor(this), this.setFlag(A.Flag.Selected), this.requestInvalidation(), !0)
+                        (t instanceof a || t instanceof MOVE_MASTER || t instanceof l || t instanceof s) &&
+                        (t.insertEditor(this), this.setFlag(A.Flag.Selected), this.requestInvalidation(), true)
                     );
                 }),
                 (c.prototype.deactivate = function () {
                     (this._parentEditor &&
-                        (this.updatePartSelection(!1, null, !0),
+                        (this.updatePartSelection(false, null, true),
                         this.removeFlag(A.Flag.Selected),
                         this.requestInvalidation(),
-                        this._parentEditor.removeEditor(this, !0)),
+                        this._parentEditor.removeEditor(this, true)),
                         this._manager.notifyDeactivated(this));
                 }),
                 (c.prototype.validateAlreadyActive = function (e) {
@@ -49,7 +49,7 @@ module.exports = function (e, t, i) {
                 }),
                 (c.prototype.requestInvalidation = function (e) {
                     var t = this._manager.getScene();
-                    t && n.getEditor(t).requestInvalidation(this, e);
+                    t && GEditor.getEditor(t).requestInvalidation(this, e);
                 }),
                 (c.prototype.movePart = function (e, t, i, n, r, o, a) {
                     (A.prototype.movePart.call(this, e, t, i, n, r, o, a), this._manager.blockEditorUpdate());
@@ -60,5 +60,5 @@ module.exports = function (e, t, i) {
                 (c.prototype.toString = function () {
                     return "[Object GStyleEditor]";
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

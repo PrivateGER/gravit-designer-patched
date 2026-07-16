@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(391),
-                r = i(0),
-                o = i(197),
-                a = i(1440),
-                s = i(440),
-                l = i(7),
-                h = i(5),
+module.exports = function (module, exports, require) {
+            var n = require(391),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(197),
+                a = require(1440),
+                s = require(440),
+                l = require(7),
+                h = require(5),
                 A = function (e, t, i, r) {
                     (o.call(this),
                         (this.contents = e),
@@ -17,7 +17,7 @@ module.exports = function (e, t, i) {
                         this.put("/MediaBox", new a(0, 0, i, r)),
                         (this.lastObject = null));
                 };
-            (r.inherit(A, o),
+            (IsFiniteNonNegativeNumber.inherit(A, o),
                 (A.prototype._origin = null),
                 (A.prototype.setBleedBox = function (e) {
                     this.put("/BleedBox", new a(e.getX(), e.getY(), e.getWidth(), e.getHeight()));
@@ -45,5 +45,5 @@ module.exports = function (e, t, i) {
                 (A.prototype.getContents = function () {
                     return this.contents.getPDFObject();
                 }),
-                (e.exports = A));
+                (module.exports = A));
         };

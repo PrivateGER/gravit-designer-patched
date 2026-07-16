@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(646),
-                r = i(647),
-                o = i(5),
-                a = i(48),
-                s = i(54),
-                l = i(59),
-                h = i(12),
-                A = i(140);
+module.exports = function (module, exports, require) {
+            var n = require(646),
+                r = require(647),
+                o = require(5),
+                a = require(48),
+                s = require(54),
+                l = require(59),
+                h = require(12),
+                A = require(140);
 
             function c(e, t, i, n, r) {
                 ((this._closed = e),
@@ -15,14 +15,14 @@ module.exports = function (e, t, i) {
                     (this._blockIntersector = r),
                     void 0 !== n && (this._approximationScale = n));
             }
-            ((c.prototype._firstIntersect = !1),
+            ((c.prototype._firstIntersect = false),
                 (c.prototype._polyLine0 = null),
                 (c.prototype._polyLine1 = null),
-                (c.prototype._slopesAsLengths = !1),
-                (c.prototype._closed = !1),
-                (c.prototype._retainBezier = !1),
-                (c.prototype._useIntersector = !1),
-                (c.prototype._blockIntersector = !1),
+                (c.prototype._slopesAsLengths = false),
+                (c.prototype._closed = false),
+                (c.prototype._retainBezier = false),
+                (c.prototype._useIntersector = false),
+                (c.prototype._blockIntersector = false),
                 (c.prototype._approximationScale = void 0));
             Math.PI;
             ((c.PolyLine = function () {}),
@@ -39,9 +39,9 @@ module.exports = function (e, t, i) {
                 (c.PolyLine.prototype.m = 0),
                 (c.PolyLine.prototype.seg = 0),
                 (c.PolyLine.prototype.index = 0),
-                (c.PolyLine.prototype.isLast = !1),
-                (c.PolyLine.prototype.isLastSegment = !1),
-                (c.PolyLine.prototype.isIsect = !1),
+                (c.PolyLine.prototype.isLast = false),
+                (c.PolyLine.prototype.isLastSegment = false),
+                (c.PolyLine.prototype.isIsect = false),
                 (c.PolyLine.prototype.insertPoint = function (e, t, i, n, r) {
                     return (
                         (this.point = new o(e, t)),
@@ -65,7 +65,7 @@ module.exports = function (e, t, i) {
                 }),
                 (c.PolyLine.prototype.getOddEven = function (e) {
                     var t = this,
-                        i = !1,
+                        i = false,
                         n = t,
                         r = t.next;
                     if (!e || !r || !r.point) return 0;
@@ -108,8 +108,8 @@ module.exports = function (e, t, i) {
                         r = [],
                         o = [],
                         a = [];
-                    if (!this.next.point || !e.next.point || this.isLast || e.isLast) return !1;
-                    if (((t = this.currCurve), (i = e.currCurve), (t && !t.nextCurve.point) || (i && !i.nextCurve.point))) return !1;
+                    if (!this.next.point || !e.next.point || this.isLast || e.isLast) return false;
+                    if (((t = this.currCurve), (i = e.currCurve), (t && !t.nextCurve.point) || (i && !i.nextCurve.point))) return false;
                     if (
                         (t
                             ? (n.push(t.point.getX(), t.cp1.getX()),
@@ -185,7 +185,7 @@ module.exports = function (e, t, i) {
                         (n.push(o._makePolygon(i[a])), r.push([]));
                     for (a = 0; a < i.length; a++)
                         for (var l = a + 1; l < i.length; l++)
-                            o.intersect(i[a], i[l], !1, !0, n[a], n[l]) ||
+                            o.intersect(i[a], i[l], false, true, n[a], n[l]) ||
                                 (n[a].getOddEven(n[l].point) ? r[a].push(l) : n[l].getOddEven(n[a].point) && r[l].push(a));
                     var h = [],
                         A = [];
@@ -204,7 +204,7 @@ module.exports = function (e, t, i) {
                     return ((g.containers = h), (g.polys = A), g);
                 }),
                 (c.polyFromVertexSource = function (e, t, i) {
-                    var n = new c(i, !1, !1, 2);
+                    var n = new c(i, false, false, 2);
                     return ((n._slopesAsLengths = t), n._makePolygon(e));
                 }),
                 (c.quadTreeFromPolygon = function (e) {
@@ -277,7 +277,7 @@ module.exports = function (e, t, i) {
                         this._addPoly(a),
                         (this._polyLine0 = h),
                         (this._polyLine1 = a),
-                        (this._firstIntersect = n || !1),
+                        (this._firstIntersect = n || false),
                         this._treeIntersect(h, e === t, i, p)
                     );
                 }),
@@ -300,12 +300,12 @@ module.exports = function (e, t, i) {
                             for (var r = "polySeg" + n, a = [], s = e.length - 1; s >= 0; s--) {
                                 var l = (t = e[s])[r];
                                 if (t[r].currCurve) a[l.seg] ? a[l.seg].push(t) : (a[l.seg] = [t]);
-                                else if (((i = t.pt), o.equals(i, l.point))) t[r].isIsect = !0;
+                                else if (((i = t.pt), o.equals(i, l.point))) t[r].isIsect = true;
                                 else {
                                     var A = this._getPlacement(l, i);
                                     A.currCurve
                                         ? ((t[r] = A), a[A.seg] ? a[A.seg].push(t) : (a[A.seg] = [t]))
-                                        : ((t[r] = A.appendPoint(i.getX(), i.getY())), (t[r].isIsect = !0));
+                                        : ((t[r] = A.appendPoint(i.getX(), i.getY())), (t[r].isIsect = true));
                                 }
                             }
                             a.forEach(function (e) {
@@ -331,7 +331,7 @@ module.exports = function (e, t, i) {
                                         ) {
                                             var m = (_ = e[f])["slope" + n];
                                             for (i = _.pt, t = a; a.next !== A && !(m <= a.next.m || a.next === A); ) a = a.next;
-                                            (((a = _[r] = a.appendPoint(i.getX(), i.getY(), !0)).isIsect = !0),
+                                            (((a = _[r] = a.appendPoint(i.getX(), i.getY(), true)).isIsect = true),
                                                 t !== a &&
                                                     (h.isEqualEps(c, m, 1e-8)
                                                         ? t.nextCurve && (t.nextCurve = t.cp1 = t.cp2 = null)
@@ -358,7 +358,7 @@ module.exports = function (e, t, i) {
                                             var _;
                                             m = (_ = e[f])["slope" + n];
                                             for (i = _.pt, t = a; a.next !== A && !(m <= a.next.m || a.next === A); ) a = a.next;
-                                            (((a = _[r] = a.appendPoint(i.getX(), i.getY(), !0)).isIsect = !0),
+                                            (((a = _[r] = a.appendPoint(i.getX(), i.getY(), true)).isIsect = true),
                                                 t !== a &&
                                                     (h.isEqualEps(c, m, 1e-8)
                                                         ? t.nextCurve && (t.nextCurve = t.cp1 = t.cp2 = null)
@@ -390,10 +390,10 @@ module.exports = function (e, t, i) {
                                 (i = t.pt),
                                 o.equals(i, t.polySeg0.point) ||
                                     (t.polySeg0 = this._getPlacement(t.polySeg0, i).appendPoint(i.getX(), i.getY())),
-                                (t.polySeg0.isIsect = !0),
+                                (t.polySeg0.isIsect = true),
                                 o.equals(i, t.polySeg1.point) ||
                                     (t.polySeg1 = this._getPlacement(t.polySeg1, i).appendPoint(i.getX(), i.getY())),
-                                (t.polySeg1.isIsect = !0));
+                                (t.polySeg1.isIsect = true));
                 }),
                 (c.prototype.getFirstPoly = function () {
                     return this._polyLine0;
@@ -412,22 +412,22 @@ module.exports = function (e, t, i) {
                         s = (t = new c.PolyLine()),
                         l = 0,
                         h = l,
-                        A = !1,
+                        A = false,
                         p = null;
                     for (e.rewindVertices(0); e.readVertex(r); )
                         switch (r.command) {
                             case a.Command.Move:
                                 if (!A && this._closed && i && t.point)
                                     (n && !this._veq(n, i) && ((s = s.insertPoint(n.x, n.y, 0, l)), (n = null)),
-                                        (s.isLast = !0),
+                                        (s.isLast = true),
                                         (s.firstSegNum = h),
-                                        (s.isLastSegment = !0),
+                                        (s.isLastSegment = true),
                                         (s = s.insertPoint(i.x, i.y, 0, ++l)));
                                 else if (i && p) {
-                                    if (((p.isLast = !0), (f = p) === s)) ((f.isLastSegment = !0), (f.firstSegNum = h));
-                                    else for (; f !== s; ) (f.next === s && ((f.isLastSegment = !0), (f.firstSegNum = h)), (f = f.next));
+                                    if (((p.isLast = true), (f = p) === s)) ((f.isLastSegment = true), (f.firstSegNum = h));
+                                    else for (; f !== s; ) (f.next === s && ((f.isLastSegment = true), (f.firstSegNum = h)), (f = f.next));
                                 }
-                                (i && t.point ? ((i = r), (n = r), (r = new a())) : ((i = n = r), (r = new a())), (h = l + 1), (A = !1));
+                                (i && t.point ? ((i = r), (n = r), (r = new a())) : ((i = n = r), (r = new a())), (h = l + 1), (A = false));
                                 break;
                             case a.Command.Line:
                                 n ? ((p = s), (s = s.insertPoint(n.x, n.y, 0, ++l)), (n = r), (r = new a())) : ((n = r), (r = new a()));
@@ -457,7 +457,7 @@ module.exports = function (e, t, i) {
                                 } else ((n = r), (r = new a()));
                                 break;
                             case a.Command.Close:
-                                ((A = !0),
+                                ((A = true),
                                     i &&
                                         (n && !this._veq(n, i) && ((s = s.insertPoint(n.x, n.y, 0, l)), (n = null)),
                                         (p = s),
@@ -468,16 +468,16 @@ module.exports = function (e, t, i) {
                         }
                     if (!A && this._closed && i && t.point)
                         (n && !this._veq(i, n) && ((s = s.insertPoint(n.x, n.y, 0, l)), (n = null)),
-                            (s.isLast = !0),
-                            (s.isLastSegment = !0),
+                            (s.isLast = true),
+                            (s.isLastSegment = true),
                             (s.firstSegNum = h),
                             (s = s.insertPoint(i.x, i.y, 0, ++l)));
                     else if (!A && n && t.point)
-                        ((s.isLast = !0), (s.isLastSegment = !0), (s.firstSegNum = h), (s = s.insertPoint(n.x, n.y, 0, l)));
+                        ((s.isLast = true), (s.isLastSegment = true), (s.firstSegNum = h), (s = s.insertPoint(n.x, n.y, 0, l)));
                     else if (p) {
                         var f;
-                        if (((p.isLast = !0), (f = p) === s)) ((f.isLastSegment = !0), (f.firstSegNum = h));
-                        else for (; f !== s; ) (f.next === s && ((f.isLastSegment = !0), (f.firstSegNum = h)), (f = f.next));
+                        if (((p.isLast = true), (f = p) === s)) ((f.isLastSegment = true), (f.firstSegNum = h));
+                        else for (; f !== s; ) (f.next === s && ((f.isLastSegment = true), (f.firstSegNum = h)), (f = f.next));
                     }
                     return t;
                 }),
@@ -541,9 +541,9 @@ module.exports = function (e, t, i) {
                                 for (v = 0; v < _.length; v++) {
                                     var b, C, w;
                                     if ((b = _[v]).isLastSegment) throw new Error("QuadTree has invalid objects");
-                                    var E = !0;
+                                    var E = true;
                                     if (
-                                        (b.currCurve && e.currCurve && b.currCurve.cp2 && e.currCurve.cp2 && (E = !1),
+                                        (b.currCurve && e.currCurve && b.currCurve.cp2 && e.currCurve.cp2 && (E = false),
                                         this._retainBezier && (this._useIntersector || E) && !this._blockIntersector)
                                     ) {
                                         if (!(w = m[(C = (o + 1) * e.seg + b.seg)] || 0)) {
@@ -623,7 +623,7 @@ module.exports = function (e, t, i) {
                 (c.prototype._addIsect = function (e, t) {
                     var i = 1e-10;
                     e.some(function (e) {
-                        if (!o.equals(e.pt, t.pt, 1e-9)) return !1;
+                        if (!o.equals(e.pt, t.pt, 1e-9)) return false;
                         var n = e.slope0,
                             r = t.slope0,
                             a = e.polySeg0.seg,
@@ -776,5 +776,5 @@ module.exports = function (e, t, i) {
                         (e = this._recursive_bezier3(e, y, _, f, m, o, a, s + (l - s) / 2, l, A, c, p + 1))
                     );
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

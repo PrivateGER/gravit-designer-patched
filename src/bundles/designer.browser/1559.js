@@ -1,16 +1,16 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(37),
-            a = n(121),
-            r = n(143),
+        var o = require(25),
+            i = require(37),
+            a = require(121),
+            ReadableStream = require(143),
             s = [].push;
         o(
-            { target: "Iterator", proto: !0, real: !0 },
+            { target: "Iterator", proto: true, real: true },
             {
                 toArray: function () {
                     var e = [];
-                    return (a(r(i(this)), s, { that: e, IS_RECORD: !0 }), e);
+                    return (a(ReadableStream(i(this)), s, { that: e, IS_RECORD: true }), e);
                 },
             }
         );

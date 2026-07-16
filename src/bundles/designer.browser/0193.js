@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(702);
-        o({ global: !0, forced: parseFloat !== i }, { parseFloat: i });
+        var o = require(25),
+            i = require(702);
+        o({ global: true, forced: parseFloat !== i }, { parseFloat: i });
     };

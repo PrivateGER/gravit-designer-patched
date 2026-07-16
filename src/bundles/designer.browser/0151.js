@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(29),
-            i = n(278),
-            a = n(37),
-            r = n(46),
-            s = n(117),
-            l = n(62),
-            c = n(92),
-            d = n(145),
-            u = n(308),
-            p = n(279);
+        var o = require(29),
+            i = require(278),
+            a = require(37),
+            r = require(46),
+            s = require(117),
+            l = require(62),
+            c = require(92),
+            d = require(145),
+            u = require(308),
+            p = require(279);
         i("match", function (e, t, n) {
             return [
                 function (t) {

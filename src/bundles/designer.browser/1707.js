@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(29),
-            a = n(37),
-            r = n(143),
-            s = n(1708),
-            l = n(576),
-            c = n(102),
-            d = n(371),
-            u = n(149),
-            p = n(74),
+        var o = require(25),
+            i = require(29),
+            a = require(37),
+            ReadableStream = require(143),
+            s = require(1708),
+            l = require(576),
+            c = require(102),
+            d = require(371),
+            u = require(149),
+            p = require(74),
             g = !p && u("drop", RangeError),
             h = d(function () {
                 for (var e, t = this.iterator, n = this.next; this.remaining; )
@@ -17,7 +17,7 @@ module.exports = function (e, t, n) {
                 if (((e = a(i(n, t))), !(this.done = !!e.done))) return e.value;
             });
         o(
-            { target: "Iterator", proto: !0, real: !0, forced: p || g },
+            { target: "Iterator", proto: true, real: true, forced: p || g },
             {
                 drop: function (e) {
                     var t;
@@ -27,7 +27,7 @@ module.exports = function (e, t, n) {
                     } catch (e) {
                         c(this, "throw", e);
                     }
-                    return g ? i(g, this, t) : new h(r(this), { remaining: t });
+                    return g ? i(g, this, t) : new h(ReadableStream(this), { remaining: t });
                 },
             }
         );

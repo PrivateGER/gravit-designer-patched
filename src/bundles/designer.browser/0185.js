@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o = String;
-        e.exports = function (e) {
+        module.exports = function (e) {
             try {
                 return o(e);
             } catch (e) {

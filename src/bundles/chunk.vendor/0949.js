@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(372).GLocaleLanguage;
-            e.exports = n;
+            var n = require(372 /* GLocaleKey */).GLocaleLanguage;
+            module.exports = n;
         };

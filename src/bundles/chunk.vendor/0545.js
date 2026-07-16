@@ -1,27 +1,27 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(0),
-                o = i(546),
-                a = i(52),
-                s = i(36),
-                l = i(331),
-                h = i(5),
-                A = i(24),
-                c = i(160),
-                p = i(22),
-                u = i(39),
-                d = i(81),
-                g = i(7),
-                f = i(82),
-                m = i(66),
-                y = i(12),
-                _ = i(9),
-                v = i(47);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(546),
+                a = require(52),
+                s = require(36),
+                MOVE_MASTER = require(331),
+                h = require(5),
+                A = require(24),
+                c = require(160),
+                p = require(22),
+                u = require(39),
+                d = require(81),
+                g = require(7),
+                GEditor = require(82),
+                m = require(66),
+                y = require(12),
+                String = require(9),
+                v = require(47);
 
             function b(e) {
                 s.call(this, e);
             }
-            (r.inherit(b, s),
+            (IsFiniteNonNegativeNumber.inherit(b, s),
                 b.exports(b, c),
                 (b.prototype._transformBox = null),
                 (b.prototype._visuals = null),
@@ -44,7 +44,7 @@ module.exports = function (e, t, i) {
                         for (var n = 0; n < this._editors.length; ++n) {
                             var r = this._editors[n];
                             if (!i || i(r))
-                                if (r instanceof l) {
+                                if (r instanceof MOVE_MASTER) {
                                     var o = r.getElement().getPosition(t.configuration.multiPageView),
                                         a = e.preMultiplied(new g(1, 0, 0, 1, o.getX(), o.getY()));
                                     this._editors[n].paint(a, t);
@@ -59,7 +59,7 @@ module.exports = function (e, t, i) {
                             this._getGraphicEditor().getIndividualSelection();
                             var r,
                                 o = this._element.getActivePage();
-                            (r = o ? o.getPosition(!0) : null) && t.canvas.setOrigin(n.subtract(r.scale(i)));
+                            (r = o ? o.getPosition(true) : null) && t.canvas.setOrigin(n.subtract(r.scale(i)));
                         }
                         if (
                             (this._transformBox.paint(e, t, this.getTBoxMode() == b.TBoxMode.ROTATE),
@@ -98,10 +98,10 @@ module.exports = function (e, t, i) {
                     return t;
                 }),
                 (b.prototype._detach = function () {
-                    this._transformBox && this.setTransformBoxActive(!1);
+                    this._transformBox && this.setTransformBoxActive(false);
                 }),
                 (b.prototype.isRelativeToPage = function () {
-                    return !1;
+                    return false;
                 }),
                 (b.prototype.isTransformBoxActive = function () {
                     return null != this._transformBox;
@@ -118,7 +118,7 @@ module.exports = function (e, t, i) {
                         }
                         (this._transformBox ||
                             (this._element.addEventListener(p.GeometryChangeEvent, this._geometryChange, this),
-                            this._getGraphicEditor().addEventListener(f.SelectionChangedEvent, this._selectionChanged, this)),
+                            this._getGraphicEditor().addEventListener(GEditor.SelectionChangedEvent, this._selectionChanged, this)),
                             i && (this._tBoxFlags = i),
                             this._updateSelectionTransformBox(t, !t && null != this._transformBox));
                     } else {
@@ -126,7 +126,7 @@ module.exports = function (e, t, i) {
                         if (
                             (this._transformBox &&
                                 (this._element.removeEventListener(p.GeometryChangeEvent, this._geometryChange, this),
-                                this._getGraphicEditor().removeEventListener(f.SelectionChangedEvent, this._selectionChanged, this),
+                                this._getGraphicEditor().removeEventListener(GEditor.SelectionChangedEvent, this._selectionChanged, this),
                                 this.requestInvalidation(),
                                 (this._transformBox = null),
                                 this._updateTBoxMode(b.TBoxMode.NA),
@@ -152,7 +152,7 @@ module.exports = function (e, t, i) {
                         i = this._getGraphicEditor().getIndividualSelection();
                     if (i && i.length) {
                         var n = this._element.getActivePage(),
-                            r = n ? n.getPosition(!0) : null;
+                            r = n ? n.getPosition(true) : null;
                         !r || (y.isEqualEps(r.getX(), 0) && y.isEqualEps(r.getY(), 0)) || (t = new g(1, 0, 0, 1, r.getX(), r.getY()));
                     }
                     (t &&
@@ -184,7 +184,7 @@ module.exports = function (e, t, i) {
                         try {
                             this._transformBox.applyCenterTransform();
                         } finally {
-                            this._getGraphicEditor().commitTransaction(_.get(new v("GEditor", "action.move")));
+                            this._getGraphicEditor().commitTransaction(String.get(new v("GEditor", "action.move")));
                         }
                         this.requestInvalidation();
                     }
@@ -234,10 +234,10 @@ module.exports = function (e, t, i) {
                     var n = null,
                         r = this._getGraphicEditor().getIndividualSelection(),
                         a = null,
-                        s = !1;
+                        s = false;
                     if (i.getViewConfiguration().multiPageView) {
                         var l = this._element.getActivePage();
-                        a = l ? l.getPosition(!0) : null;
+                        a = l ? l.getPosition(true) : null;
                     }
                     (this._tBoxData
                         ? ((n = new u.PartInfo(this._tBoxData.editor, this._tBoxData.id, this._tBoxData.data)),
@@ -247,10 +247,10 @@ module.exports = function (e, t, i) {
                                   : this._transformBox.getRotationSegment(e, t)))
                         : (n = this.getTBoxPartInfoAt(e, t, A.pickDistance, i.getViewConfiguration().multiPageView)),
                         (this._mouseInfo && this._mouseInfo.id == n.id && this._mouseInfo.data == n.data) ||
-                            ((this._mouseInfo = n), (s = !0)));
+                            ((this._mouseInfo = n), (s = true)));
                     var h = null;
                     this._visuals = null;
-                    var c = f.getGroupTransformBBox(r, !0);
+                    var c = GEditor.getGroupTransformBBox(r, true);
                     if (
                         c &&
                         !c.isEmpty() &&
@@ -274,7 +274,7 @@ module.exports = function (e, t, i) {
                 (b.prototype.getTBoxPartInfoAt = function (e, t, i, n) {
                     if (n) {
                         var r = this._element.getActivePage(),
-                            o = r ? r.getPosition(!0) : null;
+                            o = r ? r.getPosition(true) : null;
                         o && (t = t.preMultiplied(new g(1, 0, 0, 1, o.getX(), o.getY())));
                     }
                     return this._transformBox.getPartInfoAt(e, t, i, this);
@@ -297,7 +297,7 @@ module.exports = function (e, t, i) {
                 (b.prototype.transformTBox = function (e, t, i, n, r, o, a) {
                     if (this._tBoxMode != b.TBoxMode.PASSIVE && this._tBoxMode != b.TBoxMode.NA) {
                         var s = this._getGraphicEditor().getGuides();
-                        (s.useExclusions(this._getGraphicEditor().getAlignExclusions(!1)),
+                        (s.useExclusions(this._getGraphicEditor().getAlignExclusions(false)),
                             s.beginMap(this._getGraphicEditor().getMappingScopes()));
                         var l = o;
                         l || this._tBoxMode != b.TBoxMode.SKEW || (l = 10);
@@ -306,7 +306,7 @@ module.exports = function (e, t, i) {
                             this._transformBox.setTransform(h);
                             var A = new m.EdTransformOptions();
                             ((A.isMultiPage = !!a),
-                                (A.fullContentsTransform = !0),
+                                (A.fullContentsTransform = true),
                                 this._getGraphicEditor().transformSelection(h, null, null, A));
                         } else (this._transformBox.setCenterTransform(h), this.requestInvalidation());
                         return h;
@@ -317,7 +317,7 @@ module.exports = function (e, t, i) {
                     (this._getGraphicEditor().getGuides().invalidate(),
                         this._tBoxMode == b.TBoxMode.CNTRMOVE
                             ? (this._applyTBoxCenterTransform(), this.showTransformBox())
-                            : this._getGraphicEditor().applySelectionTransform(e, !1, !1, !0),
+                            : this._getGraphicEditor().applySelectionTransform(e, false, false, true),
                         this._updateTBoxMode(b.TBoxMode.PASSIVE),
                         (this._tBoxData = null),
                         (this._mouseInfo = null));
@@ -333,10 +333,10 @@ module.exports = function (e, t, i) {
                             ? ((r = e.getX()), (a = e.getY()))
                             : this._transformBox && t && ((r = this._transformBox.cx), (a = this._transformBox.cy)),
                             (this._transformBox = null));
-                        var s = f.getGroupTransformBBox(i, !0);
+                        var s = GEditor.getGroupTransformBBox(i, true);
                         if (s) {
                             var l = this._element.getActivePage(),
-                                h = l ? l.getPosition(!0) : null;
+                                h = l ? l.getPosition(true) : null;
                             (h && (s = s.translated(-h.getX(), -h.getY())),
                                 (this._transformBox = new o(s, r, a, this._tBoxFlags, this.getElement())));
                         }
@@ -347,17 +347,17 @@ module.exports = function (e, t, i) {
                             (this._tBoxData = null),
                             (this._mouseInfo = null),
                             this._visualsArea && (this._visualsArea = null));
-                    } else this.setTransformBoxActive(!1);
+                    } else this.setTransformBoxActive(false);
                 }),
                 (b.prototype._geometryChange = function (e) {
                     this._transformBox &&
                         e.element.hasFlag(n.Flag.Selected) &&
                         (e.type == p.GeometryChangeEvent.Type.After || e.type == p.GeometryChangeEvent.Type.Child) &&
                         ((this._transformBox.trf || this._transformBox.cTrf) && this._transformBox.applyCenterTransform(),
-                        this._updateSelectionTransformBox(null, !0));
+                        this._updateSelectionTransformBox(null, true));
                 }),
                 (b.prototype._selectionChanged = function (e) {
-                    this.setTransformBoxActive(!0);
+                    this.setTransformBoxActive(true);
                 }),
                 (b.prototype._getGraphicEditor = function () {
                     return this._element.__graphic_editor__;
@@ -365,5 +365,5 @@ module.exports = function (e, t, i) {
                 (b.prototype.toString = function () {
                     return "[Object GSceneEditor]";
                 }),
-                (e.exports = b));
+                (module.exports = b));
         };

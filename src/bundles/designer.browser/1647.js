@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(20), n(34), n(4), n(32), n(33));
-        var i = n(1),
-            a = n(53),
-            r = n(15),
-            s = o(n(31)),
-            l = o(n(18));
+        var o = require(16);
+        (require(20), require(34), require(4), require(32), require(33));
+        var GObject = require(1),
+            a = require(53),
+            GPlatform = require(15),
+            s = o(require(31)),
+            l = o(require(18 /* GCategory */));
         class c extends s.default {
             constructor() {
                 (super(), (this._opacityLevel = null), (this._timeoutId = null), (this._currentValue = ""));
@@ -18,7 +18,7 @@ module.exports = function (e, t, n) {
                 return c.TITLE;
             }
             getFullTitle() {
-                return i.GLocale.getValue("GChangeOpacityAction", "full-title").replace(
+                return GObject.GLocale.getValue("GChangeOpacityAction", "full-title").replace(
                     "%value",
                     "100% (10%, 20%, 25%, 26%, 30%, 40%, ... 90%)"
                 );
@@ -27,21 +27,21 @@ module.exports = function (e, t, n) {
                 return l.default.CATEGORY_EDIT;
             }
             isVisible() {
-                return !1;
+                return false;
             }
             getAdditionalShortcuts() {
                 return [
-                    r.GKey.Constant.Digit0,
-                    r.GKey.Constant.Digit1,
-                    r.GKey.Constant.Digit2,
-                    r.GKey.Constant.Digit3,
-                    r.GKey.Constant.Digit4,
-                    r.GKey.Constant.Digit5,
-                    r.GKey.Constant.Digit6,
-                    r.GKey.Constant.Digit7,
-                    r.GKey.Constant.Digit8,
-                    r.GKey.Constant.Digit9,
-                ].map((e) => [r.GKey.Constant.SHIFT, e]);
+                    GPlatform.GKey.Constant.Digit0,
+                    GPlatform.GKey.Constant.Digit1,
+                    GPlatform.GKey.Constant.Digit2,
+                    GPlatform.GKey.Constant.Digit3,
+                    GPlatform.GKey.Constant.Digit4,
+                    GPlatform.GKey.Constant.Digit5,
+                    GPlatform.GKey.Constant.Digit6,
+                    GPlatform.GKey.Constant.Digit7,
+                    GPlatform.GKey.Constant.Digit8,
+                    GPlatform.GKey.Constant.Digit9,
+                ].map((e) => [GPlatform.GKey.Constant.SHIFT, e]);
             }
             execute() {
                 const e = gDesigner.getActiveDocument(),
@@ -54,15 +54,15 @@ module.exports = function (e, t, n) {
                         n,
                         () => {
                             o.forEach((e) => {
-                                e.hasMixin(i.GStylable) && e.setProperty("_stop", this._opacityLevel);
+                                e.hasMixin(GObject.GStylable) && e.setProperty("_stop", this._opacityLevel);
                             });
                         },
-                        i.GLocale.get(c.TITLE)
+                        GObject.GLocale.get(c.TITLE)
                     ),
                     this._setOpacityLevel());
             }
             executeFromShortcut(e) {
-                const t = r.GKey.translateCode(e.code),
+                const t = GPlatform.GKey.translateCode(e.code),
                     n = this._currentValue;
                 (this._setCurrentValue(t),
                     n
@@ -72,10 +72,10 @@ module.exports = function (e, t, n) {
                           }, s.default.SHORTCUT_DELAY)));
             }
             isKeyBoardEventRequiredToExecute() {
-                return !0;
+                return true;
             }
             getShortcutHint(e) {
-                const t = [r.GKey.Constant.SHIFT, "0 (1, 2, 25, 26, 3, 4, ... 9)"];
+                const t = [GPlatform.GKey.Constant.SHIFT, "0 (1, 2, 25, 26, 3, 4, ... 9)"];
                 return s.default.getActionShortcutHint(t, e);
             }
             _processDefinedCurrentValue() {
@@ -83,7 +83,7 @@ module.exports = function (e, t, n) {
                     this._currentValue.length > 1 &&
                         "0" === this._currentValue[0] &&
                         (this._currentValue = this._currentValue.replace("0", ".")));
-                const e = i.GUtil.parseNumber(this._currentValue);
+                const e = GObject.GUtil.parseNumber(this._currentValue);
                 if ("number" == typeof e && !isNaN(e)) {
                     const t = this._getOpacityLevel(e);
                     (this._setOpacityLevel(t), this.execute.apply(this));
@@ -107,5 +107,5 @@ module.exports = function (e, t, n) {
                 return "[Object GChangeOpacityAction]";
             }
         }
-        ((c.ID = "edit.change-opacity"), (c.TITLE = new i.GLocaleKey("GChangeOpacityAction", "title")), (e.exports = c));
+        ((c.ID = "edit.change-opacity"), (c.TITLE = new GObject.GLocaleKey("GChangeOpacityAction", "title")), (module.exports = c));
     };

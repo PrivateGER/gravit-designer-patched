@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(30), n(8));
-        const o = n(337),
-            i = n(1338),
-            { gApi: a, PurchaseStatus: r } = n(10),
-            { IS_TRUNK: s } = n(231);
+        (require(30), require(8 /* Symbol */));
+        const o = require(337),
+            i = require(1338),
+            { gApi: a, PurchaseStatus: r } = require(10 /* designerConfig */),
+            { IS_TRUNK: s } = require(231 /* IS_TRUNK */);
         let l;
         class c {
             static getInstance() {
@@ -55,5 +55,5 @@ module.exports = function (e, t, n) {
                 return !(!s || t !== r.SuccessfulTestOrder) || t === r.Paid;
             }
         }
-        e.exports = c;
+        module.exports = c;
     };

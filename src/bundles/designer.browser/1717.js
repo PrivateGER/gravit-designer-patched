@@ -1,19 +1,19 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(19), n(57), n(91), n(4), n(13), n(26));
-        var i = n(53),
-            a = n(1),
-            r = (n(15), o(n(565))),
-            s = n(67),
-            l = o(n(135)),
-            c = n(451).GVirtualTree,
-            d = (n(451).GVirtualTreeNode, n(451).GVirtualTreeNodeNamed),
-            { VTREE_FREE_HEIGHT: u, VTREE_FREE_HEIGHT_TOUCH: p } = n(10),
-            g = (n(173), n(450));
+        var o = require(16);
+        (require(19), require(57), require(91), require(4), require(13), require(26));
+        var i = require(53),
+            GObject = require(1),
+            r = (require(15 /* GPlatform */), o(require(565))),
+            s = require(67),
+            l = o(require(135)),
+            c = require(451 /* GVirtualTree */).GVirtualTree,
+            d = (require(451 /* GVirtualTree */).GVirtualTreeNode, require(451 /* GVirtualTree */).GVirtualTreeNodeNamed),
+            { VTREE_FREE_HEIGHT: u, VTREE_FREE_HEIGHT_TOUCH: p } = require(10 /* designerConfig */),
+            g = (require(173), require(450));
         function h() {}
         function f(e, t, n, o, i) {
-            var a = !0,
+            var a = true,
                 r = $(this).data("gpagepanel");
             if (r.options.canDropCallback) {
                 for (
@@ -32,8 +32,8 @@ module.exports = function (e, t, n) {
             return a;
         }
         function m(e, t, n, o) {
-            if (!n || !n.length || !e) return !1;
-            var i = !0;
+            if (!n || !n.length || !e) return false;
+            var i = true;
             if (gDesigner.getApplicationManager().isEditingEnabled()) {
                 for (var a = 0; a < n.length && i; ++a) (i = !e.isLocked() && n[a] && n[a].validateInsertion(e, t)) && o.push[a];
                 return i;
@@ -78,7 +78,7 @@ module.exports = function (e, t, n) {
                 n = $(this).data("gpagepanel").pagesTreeNodeMapByNodes;
             e.accept(
                 function (e) {
-                    if (e instanceof a.GPage) {
+                    if (e instanceof GObject.GPage) {
                         var o = n.get(e);
                         o && (n.delete(e), (t[o.treeId] = null));
                     }
@@ -90,17 +90,17 @@ module.exports = function (e, t, n) {
                 o = w.call(this, e),
                 l = o.node;
             if (l) {
-                if (!(l instanceof a.GPage)) throw new Error("item not page");
+                if (!(l instanceof GObject.GPage)) throw new Error("item not page");
                 var c = l.getProperty("lkt"),
                     d = !!l.getSlavePages().length,
                     u = 0 === l.getProperty("w") && 0 === l.getProperty("h"),
                     p = $(t);
-                p.attr("draggable", !1)
+                p.attr("draggable", false)
                     .on("mouseenter", function () {
-                        l.getProperty("w") && !l.hasFlag(a.GElement.Flag.Hidden) && l.setFlag(a.GNode.Flag.Highlighted);
+                        l.getProperty("w") && !l.hasFlag(GObject.GElement.Flag.Hidden) && l.setFlag(GObject.GNode.Flag.Highlighted);
                     })
                     .on("mouseleave", function () {
-                        l.getProperty("w") && !l.hasFlag(a.GElement.Flag.Hidden) && l.removeFlag(a.GNode.Flag.Highlighted);
+                        l.getProperty("w") && !l.hasFlag(GObject.GElement.Flag.Hidden) && l.removeFlag(GObject.GNode.Flag.Highlighted);
                     });
                 var h = $("<span></span>").addClass("page-title-group");
                 (h.appendTo(p), (o.element = h));
@@ -109,9 +109,9 @@ module.exports = function (e, t, n) {
                 var m = $("<span></span>").html(f);
                 m.addClass("page-title").appendTo(h);
                 var y = this;
-                (l.hasFlag(a.GElement.Flag.PartialLocked) ||
+                (l.hasFlag(GObject.GElement.Flag.PartialLocked) ||
                     h
-                        .attr("draggable", !0)
+                        .attr("draggable", true)
                         .attr("data-drag-mode", r.default.PRESS_AND_HOLD)
                         .on("dragstart", function (e) {
                             if (n.options.startDraggingCallback) {
@@ -137,11 +137,11 @@ module.exports = function (e, t, n) {
                                             }.bind(this),
                                             0
                                         ));
-                                } else $(this).attr("draggable", !1);
+                                } else $(this).attr("draggable", false);
                             }
                         }),
-                    p.toggleClass("g-active", l.hasFlag(a.GNode.Flag.Active)),
-                    n.blockHighlight || p.toggleClass("g-highlighted-row", l.hasFlag(a.GNode.Flag.Highlighted)),
+                    p.toggleClass("g-active", l.hasFlag(GObject.GNode.Flag.Active)),
+                    n.blockHighlight || p.toggleClass("g-highlighted-row", l.hasFlag(GObject.GNode.Flag.Highlighted)),
                     !c &&
                         gDesigner.getApplicationManager().isEditingEnabled() &&
                         $(h).gAutoEdit({
@@ -157,53 +157,53 @@ module.exports = function (e, t, n) {
                                         function () {
                                             l.setProperty("name", e);
                                         },
-                                        a.GLocale.get(new a.GLocaleKey("GPagePanel", "action.rename-page"))
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GPagePanel", "action.rename-page"))
                                     );
                             },
                         }));
                 var v = $("<span></span>").addClass("page-icon gravit-icon-page").insertBefore(m);
                 gDesigner.isTouchEnabled() &&
                     (u
-                        ? (v.toggleClass("gravit-icon-page-infinity", !0), v.toggleClass("gravit-icon-page", !1))
-                        : d && (v.toggleClass("gravit-icon-page-master", !0), v.toggleClass("gravit-icon-page", !1)));
+                        ? (v.toggleClass("gravit-icon-page-infinity", true), v.toggleClass("gravit-icon-page", false))
+                        : d && (v.toggleClass("gravit-icon-page-master", true), v.toggleClass("gravit-icon-page", false)));
                 var _ = c ? "gravit-icon-lock" : "gravit-icon-unlock";
                 ((_ = gDesigner.isTouchEnabled() ? _ + "-small" : _),
                     $("<span></span>")
                         .addClass("page-action page-lock " + _)
                         .toggleClass("g-active", !!c)
-                        .attr("data-title", a.GLocale.get(new a.GLocaleKey("GCommonNames", "action.toggle-lock")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-lock")))
                         .on("click", function (e) {
                             (gDesigner.stats("pages_change_lock"), e.stopPropagation());
                             var t = l.getProperty("lkt");
-                            ((t = t ? null : a.GBlock.LockType.Full),
+                            ((t = t ? null : GObject.GBlock.LockType.Full),
                                 i.GEditor.tryRunTransaction(
                                     l,
                                     function () {
-                                        if ((l.setProperty("lkt", t), t === a.GBlock.LockType.Full)) {
-                                            n.scene.setProperty("edit", !1);
+                                        if ((l.setProperty("lkt", t), t === GObject.GBlock.LockType.Full)) {
+                                            n.scene.setProperty("edit", false);
                                             var e = gDesigner.getActiveDocument();
                                             e && e.getEditor().clearSelection();
-                                        } else n.scene.setProperty("edit", !0);
+                                        } else n.scene.setProperty("edit", true);
                                     },
-                                    a.GLocale.get(new a.GLocaleKey("GCommonNames", "action.toggle-lock"))
+                                    GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-lock"))
                                 ));
                         })
                         .appendTo(p)
                         .gRichTooltip(
                             s.GRichTooltipConfig.from({
-                                title: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.page-toggle-lock-tooltip-title")),
-                                description: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.page-toggle-lock-tooltip-description")),
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.page-toggle-lock-tooltip-title")),
+                                description: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.page-toggle-lock-tooltip-description")),
                                 learnMore: "/docs/organizing-your-designs/pages/#page-panel",
                             })
                         ));
-                var b = !1 === l.getProperty("vis");
+                var b = false === l.getProperty("vis");
                 p.toggleClass("page-hiden", b);
                 var x = b ? "gravit-icon-hide" : "gravit-icon-display";
                 ((x = gDesigner.isTouchEnabled() ? x + "-small" : x),
                     $("<span></span>")
                         .addClass("page-action page-visibility " + x)
                         .toggleClass("g-active", b)
-                        .attr("data-title", a.GLocale.get(new a.GLocaleKey("GCommonNames", "action.toggle-visibility")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-visibility")))
                         .on("click", function (e) {
                             (gDesigner.stats("pages_change_visibility"), e.stopPropagation());
                             var t = !l.getProperty("vis");
@@ -212,15 +212,15 @@ module.exports = function (e, t, n) {
                                 function () {
                                     l.setProperty("vis", t);
                                 },
-                                a.GLocale.get(new a.GLocaleKey("GCommonNames", "action.toggle-visibility"))
+                                GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-visibility"))
                             );
                         })
                         .appendTo(p)
                         .gRichTooltip(
                             s.GRichTooltipConfig.from({
-                                title: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.page-toggle-visibility-tooltip-title")),
-                                description: a.GLocale.get(
-                                    new a.GLocaleKey("GCommonNames", "text.page-toggle-visibility-tooltip-description")
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.page-toggle-visibility-tooltip-title")),
+                                description: GObject.GLocale.get(
+                                    new GObject.GLocaleKey("GCommonNames", "text.page-toggle-visibility-tooltip-description")
                                 ),
                                 learnMore: "/docs/organizing-your-designs/pages/#page-panel",
                             })
@@ -248,10 +248,10 @@ module.exports = function (e, t, n) {
         function G(e) {
             var t,
                 n,
-                o = a.GUtil.uuid(),
+                o = GObject.GUtil.uuid(),
                 i = $(this).data("gpagepanel"),
                 r = i.vtree;
-            for (r.beginUpdate(), t = e.getNext(); t && !(t instanceof a.GPage); t = t.getNext());
+            for (r.beginUpdate(), t = e.getNext(); t && !(t instanceof GObject.GPage); t = t.getNext());
             var s = t ? C.call(this, t) : null;
             ((n = s ? E.call(this, o, s) : A.call(this, o, null)),
                 (i.pagesTreeNodeMap[o] = { node: e, treeNode: n, element: null }),
@@ -267,14 +267,14 @@ module.exports = function (e, t, n) {
             t && (T.call(this, t), x.call(this, e));
         }
         function D(e) {
-            !$(this).data("gpagepanel").blockHandlers && e.node instanceof a.GPage && G.call(this, e.node);
+            !$(this).data("gpagepanel").blockHandlers && e.node instanceof GObject.GPage && G.call(this, e.node);
         }
         function L(e) {
-            !$(this).data("gpagepanel").blockHandlers && e.node instanceof a.GPage && P.call(this, e.node);
+            !$(this).data("gpagepanel").blockHandlers && e.node instanceof GObject.GPage && P.call(this, e.node);
         }
         function I(e) {
-            if (!e.temporary && !$(this).data("gpagepanel").blockHandlers && (e.node instanceof a.GPage || e.node instanceof a.GScene)) {
-                if (e.node instanceof a.GScene && 1 === e.properties.length && "pi" === e.properties[0]) return;
+            if (!e.temporary && !$(this).data("gpagepanel").blockHandlers && (e.node instanceof GObject.GPage || e.node instanceof GObject.GScene)) {
+                if (e.node instanceof GObject.GScene && 1 === e.properties.length && "pi" === e.properties[0]) return;
                 $(this).data("gpagepanel").vtree.requestInvalidation();
             }
         }
@@ -288,20 +288,20 @@ module.exports = function (e, t, n) {
         function O(e) {
             var t = $(this).data("gpagepanel"),
                 n = $(this).data("gpagepanel").vtree;
-            if (!t.blockHandlers && e.node instanceof a.GPage)
+            if (!t.blockHandlers && e.node instanceof GObject.GPage)
                 if (
-                    e.flag === a.GElement.Flag.Hidden ||
-                    e.flag === a.GElement.Flag.PartialLocked ||
-                    e.flag === a.GElement.Flag.FullLocked ||
-                    e.flag === a.GNode.Flag.Active
+                    e.flag === GObject.GElement.Flag.Hidden ||
+                    e.flag === GObject.GElement.Flag.PartialLocked ||
+                    e.flag === GObject.GElement.Flag.FullLocked ||
+                    e.flag === GObject.GNode.Flag.Active
                 ) {
                     var o = e.node.getScene(),
                         i = o && o.getActivePage();
                     if (i && i == e.node && e.set) {
                         var r = C.call(this, e.node);
-                        (n.expandAndFocus(r, !0), e.flag === a.GNode.Flag.Active ? k.call(this, r) : n.requestInvalidation());
+                        (n.expandAndFocus(r, true), e.flag === GObject.GNode.Flag.Active ? k.call(this, r) : n.requestInvalidation());
                     }
-                } else t.blockHighlight || e.flag !== a.GNode.Flag.Highlighted || n.requestInvalidation();
+                } else t.blockHighlight || e.flag !== GObject.GNode.Flag.Highlighted || n.requestInvalidation();
         }
         function F(e) {
             "touch" === e.key && N._updateLayout.call(this);
@@ -316,7 +316,7 @@ module.exports = function (e, t, n) {
             var e = $(this).data("gpagepanel");
             (e.vtree.clean(), (e.pagesTreeNodeMap = {}), (e.pagesTreeNodeMapByNodes = new Map()), (e.scene = null));
         }
-        a.GObject.inheritAndMix(h, a.GObject);
+        GObject.GObject.inheritAndMix(h, GObject.GObject);
         var N = {
             init: function (e) {
                 return (
@@ -362,7 +362,7 @@ module.exports = function (e, t, n) {
                                     e.upSeparatorSpan2Style,
                                     e.downSeparatorSpan1Style,
                                     e.downSeparatorSpan2Style,
-                                    !1,
+                                    false,
                                     0,
                                     21
                                 ),
@@ -391,28 +391,28 @@ module.exports = function (e, t, n) {
                 if (
                     e !== n.scene &&
                     (n.scene &&
-                        n.scene.hasMixin(a.GEventTarget) &&
-                        (n.scene.removeEventListener(a.GNode.AfterInsertEvent, n.afterNodeInsertHandler, this),
-                        n.scene.removeEventListener(a.GNode.BeforeRemoveEvent, n.beforeNodeRemoveHandler, this),
-                        n.scene.removeEventListener(a.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
-                        n.scene.removeEventListener(a.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this),
+                        n.scene.hasMixin(GObject.GEventTarget) &&
+                        (n.scene.removeEventListener(GObject.GNode.AfterInsertEvent, n.afterNodeInsertHandler, this),
+                        n.scene.removeEventListener(GObject.GNode.BeforeRemoveEvent, n.beforeNodeRemoveHandler, this),
+                        n.scene.removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
+                        n.scene.removeEventListener(GObject.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this),
                         gDesigner.removeEventListener(l.default, n.settingChangedEvent, this)),
                     M.call(this),
                     (n.scene = e),
                     n.scene)
                 ) {
-                    n.scene.hasMixin(a.GEventTarget) &&
+                    n.scene.hasMixin(GObject.GEventTarget) &&
                         ((n.afterNodeInsertHandler = D.bind(this)),
                         (n.beforeNodeRemoveHandler = L.bind(this)),
                         (n.afterPropertiesChangeHandler = I.bind(this)),
                         (n.afterFlagChangeHandler = O.bind(this)),
                         (n.settingChangedEvent = F.bind(this)),
                         gDesigner.addEventListener(l.default, n.settingChangedEvent, this),
-                        n.scene.addEventListener(a.GNode.AfterInsertEvent, n.afterNodeInsertHandler, this),
-                        n.scene.addEventListener(a.GNode.BeforeRemoveEvent, n.beforeNodeRemoveHandler, this),
-                        n.scene.addEventListener(a.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
-                        n.scene.addEventListener(a.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this));
-                    for (var o = n.scene.getLastChild(); null !== o; o = o.getPrevious()) o instanceof a.GPage && G.call(this, o);
+                        n.scene.addEventListener(GObject.GNode.AfterInsertEvent, n.afterNodeInsertHandler, this),
+                        n.scene.addEventListener(GObject.GNode.BeforeRemoveEvent, n.beforeNodeRemoveHandler, this),
+                        n.scene.addEventListener(GObject.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
+                        n.scene.addEventListener(GObject.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this));
+                    for (var o = n.scene.getLastChild(); null !== o; o = o.getPrevious()) o instanceof GObject.GPage && G.call(this, o);
                     N._updateLayout.call(this);
                 }
                 return this;
@@ -438,7 +438,7 @@ module.exports = function (e, t, n) {
                 }
             },
         };
-        ((e.exports = h),
+        ((module.exports = h),
             ($.fn.gPagePanel = function (e) {
                 return N[e]
                     ? N[e].apply(this, Array.prototype.slice.call(arguments, 1))

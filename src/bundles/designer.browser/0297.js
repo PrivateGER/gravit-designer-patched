@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(74),
-            i = n(23),
-            a = n(298),
-            r = (e.exports = i["__core-js_shared__"] || a("__core-js_shared__", {}));
+        var o = require(74),
+            RegExp = require(23),
+            a = require(298),
+            r = (module.exports = RegExp["__core-js_shared__"] || a("__core-js_shared__", {}));
         (r.versions || (r.versions = [])).push({
             version: "3.42.0",
             mode: o ? "pure" : "global",

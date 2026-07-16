@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(90),
-                r = i(0);
+module.exports = function (module, exports, require) {
+            var n = require(90),
+                IsFiniteNonNegativeNumber = require(0);
 
             function o(e) {
                 this._style = e || o.Style.BUTT;
@@ -10,10 +10,10 @@ module.exports = function (e, t, i) {
                 ROUND: 1,
                 SQUARE: 2,
             }),
-                r.inherit(o, n),
+                IsFiniteNonNegativeNumber.inherit(o, n),
                 (o.prototype._style = o.Style.BUTT),
                 (o.prototype.write = function (e) {
                     (e.write(this._style), e.writeSpace(), e.write("J"));
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

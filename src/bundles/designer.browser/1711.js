@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(26));
-        n(53);
-        var o = n(1),
-            i = (n(15), n(40), n(67), n(1351)),
-            a = n(451).GVirtualTree,
-            r = (n(451).GVirtualTreeNode, n(451).GVirtualTreeNodeNamed),
-            { VTREE_FREE_HEIGHT: s } = n(10);
-        (n(173), n(450));
+        (require(19), require(26));
+        require(53);
+        var GObject = require(1),
+            i = (require(15 /* GPlatform */), require(40 /* GSaveAction */), require(67), require(1351)),
+            a = require(451 /* GVirtualTree */).GVirtualTree,
+            r = (require(451 /* GVirtualTree */).GVirtualTreeNode, require(451 /* GVirtualTree */).GVirtualTreeNodeNamed),
+            { VTREE_FREE_HEIGHT: s } = require(10 /* designerConfig */);
+        (require(173), require(450));
         function l() {}
         function c(e) {
             var t = $(this).data("gselectedpanel"),
@@ -20,7 +20,7 @@ module.exports = function (e, t, n) {
         }
         function d(e) {
             var t = g.call(this, e.id);
-            t && (e.expanded ? t.setFlag(o.GNode.Flag.Expanded) : t.removeFlag(o.GNode.Flag.Expanded));
+            t && (e.expanded ? t.setFlag(GObject.GNode.Flag.Expanded) : t.removeFlag(GObject.GNode.Flag.Expanded));
         }
         function u(e, t) {
             var n = $(this).data("gselectedpanel");
@@ -77,18 +77,18 @@ module.exports = function (e, t, n) {
                 s < i.length;
                 s++
             ) {
-                var l = o.GUtil.uuid(),
+                var l = GObject.GUtil.uuid(),
                     c = i[s].element,
-                    d = (c instanceof o.GBlock ? c.getLabel() : c.getNodeNameTranslated(), "temp-" + n.indexOf(i[s]));
+                    d = (c instanceof GObject.GBlock ? c.getLabel() : c.getNodeNameTranslated(), "temp-" + n.indexOf(i[s]));
                 if (a[d]) {
-                    r((p = m.call(this, l, null, !0)), c, l);
+                    r((p = m.call(this, l, null, true)), c, l);
                     for (let e = 0; e < a[d].length; e++) {
-                        var u = o.GUtil.uuid();
-                        r(m.call(this, u, p, !1), a[d][e], u);
+                        var u = GObject.GUtil.uuid();
+                        r(m.call(this, u, p, false), a[d][e], u);
                     }
                 } else {
                     var p;
-                    r((p = m.call(this, l, null, !1)), c, l);
+                    r((p = m.call(this, l, null, false)), c, l);
                 }
             }
             t.endUpdate();
@@ -97,7 +97,7 @@ module.exports = function (e, t, n) {
             var e = $(this).data("gselectedpanel");
             (e.vtree.clean(), (e.layersTreeNodeMap = {}), (e.layersTreeNodeMapByNodes = new Map()));
         }
-        o.GObject.inheritAndMix(l, o.GObject);
+        GObject.GObject.inheritAndMix(l, GObject.GObject);
         var b = {
             init: function (e) {
                 return (
@@ -115,7 +115,7 @@ module.exports = function (e, t, n) {
                             renderer: f.bind(this),
                             toggleRenderer: p.bind(this),
                             separatorRenderer: null,
-                            canDropCallback: () => !1,
+                            canDropCallback: () => false,
                             moveCallback: null,
                             isDuplicateEffectCallback: null,
                             duplicateCallback: null,
@@ -139,7 +139,7 @@ module.exports = function (e, t, n) {
                                     e.separatorRenderer ? e.separatorRenderer : null,
                                     e.freeHeight,
                                     e.insertIntoStyle,
-                                    () => !1,
+                                    () => false,
                                     null,
                                     e.isDuplicateEffectCallback,
                                     null,
@@ -149,7 +149,7 @@ module.exports = function (e, t, n) {
                                     e.upSeparatorSpan2Style,
                                     e.downSeparatorSpan1Style,
                                     e.downSeparatorSpan2Style,
-                                    !1,
+                                    false,
                                     15,
                                     21,
                                     e.bottomHeight,
@@ -176,7 +176,7 @@ module.exports = function (e, t, n) {
                 return arguments.length ? (e !== n.selections && (_.call(this), (n.selections = e), v.call(this)), this) : n.selections;
             },
         };
-        ((e.exports = l),
+        ((module.exports = l),
             ($.fn.gSelectedPanel = function (e) {
                 return b[e]
                     ? b[e].apply(this, Array.prototype.slice.call(arguments, 1))

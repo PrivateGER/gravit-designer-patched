@@ -1,23 +1,23 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16),
-            i = n(1),
-            a = n(15),
-            r = o(n(18)),
-            s = o(n(31)),
-            l = o(n(1281));
+        var o = require(16),
+            GObject = require(1),
+            GPlatform = require(15),
+            r = o(require(18 /* GCategory */)),
+            s = o(require(31)),
+            l = o(require(1281));
         class c extends l.default {
             static getActionSubId(e) {
                 return "".concat(c.ID, ".").concat(e);
             }
             static getValidItems(e) {
                 let t = [];
-                if (e instanceof i.GGroup || e instanceof i.GCompoundShape)
+                if (e instanceof GObject.GGroup || e instanceof GObject.GCompoundShape)
                     for (let n = e.getFirstChild(); null !== n; n = n.getNext()) {
                         const e = c.getValidItems(n);
                         t = t.concat(e);
                     }
-                else e.hasMixin(i.GVertexSource) && e.validateInsertion(new i.GCompoundShape()) && t.push(e);
+                else e.hasMixin(GObject.GVertexSource) && e.validateInsertion(new GObject.GCompoundShape()) && t.push(e);
                 return t;
             }
             getId() {
@@ -33,10 +33,10 @@ module.exports = function (e, t, n) {
                 return "structure-group";
             }
             isVisible() {
-                return !1;
+                return false;
             }
             getShortcut() {
-                return [a.GKey.Constant.SHIFT, a.GKey.Constant.META, a.GKey.Constant.Y];
+                return [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.Y];
             }
             getIcon() {
                 return super.getIcon.call(this);
@@ -45,17 +45,17 @@ module.exports = function (e, t, n) {
                 const e = gDesigner.getActiveDocument(),
                     t = e && e.getEditor(),
                     n = t && t.getIndividualSelection();
-                if (!n || !n.length) return !1;
+                if (!n || !n.length) return false;
                 let o = [];
                 for (let e = 0; e < n.length; ++e) {
                     const t = n[e];
-                    if (((o = o.concat(c.getValidItems(t))), o.length > 1)) return !0;
+                    if (((o = o.concat(c.getValidItems(t))), o.length > 1)) return true;
                 }
                 if (1 === o.length) {
                     const e = o[0];
-                    return e instanceof i.GCompoundShape || e.getParent() instanceof i.GCompoundShape;
+                    return e instanceof GObject.GCompoundShape || e.getParent() instanceof GObject.GCompoundShape;
                 }
-                return !1;
+                return false;
             }
             getShortcutHint(e) {
                 return s.default.prototype.getShortcutHint.call(this, e);
@@ -68,5 +68,5 @@ module.exports = function (e, t, n) {
                 return "[Object GMergeMainAction]";
             }
         }
-        ((c.ID = "modify.merge"), (c.TITLE = new i.GLocaleKey("GMergeMainAction", "title")), (e.exports = c));
+        ((c.ID = "modify.merge"), (c.TITLE = new GObject.GLocaleKey("GMergeMainAction", "title")), (module.exports = c));
     };

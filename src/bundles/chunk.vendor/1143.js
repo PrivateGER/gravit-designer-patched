@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(850),
-                o = i(1215);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(850),
+                o = require(1215);
 
             function a(e) {
                 this._byteBuffer = new r(e || 10240);
             }
-            (n.inherit(a, o),
+            (IsFiniteNonNegativeNumber.inherit(a, o),
                 (a.prototype._byteBuffer = null),
                 (a.prototype.getPosition = function () {
                     return this._byteBuffer.getBytePosition();
@@ -30,5 +30,5 @@ module.exports = function (e, t, i) {
                 (a.prototype._writeBuffer = function (e) {
                     this._byteBuffer.writeArray(e);
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

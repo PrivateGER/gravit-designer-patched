@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
                 r = void 0;
 
             function o() {}
             ((o.MIME_TYPE = "application/gravit+pattern"),
                 (o.inherit = function (e, t, i) {
-                    (n.inherit(t, i || o), (o._idClassMap[e] = t));
+                    (IsFiniteNonNegativeNumber.inherit(t, i || o), (o._idClassMap[e] = t));
                 }),
                 (o.inheritAndMix = function (e, t, i, r) {
-                    (n.inheritAndMix(t, i || o, r), (o._idClassMap[e] = t));
+                    (IsFiniteNonNegativeNumber.inheritAndMix(t, i || o, r), (o._idClassMap[e] = t));
                 }),
                 (o._idClassMap = {}),
                 (o.asCSSBackground = function (e, t, i, n) {
@@ -56,13 +56,13 @@ module.exports = function (e, t, i) {
                     return null;
                 }),
                 (o.prototype.isWebGL = function () {
-                    return !1;
+                    return false;
                 }),
                 (o.prototype.clone = function () {
                     throw new Error("Not Supported");
                 }),
                 (o.prototype.hasMixin = function (e) {
-                    return n.prototype.hasMixin.call(this, e);
+                    return IsFiniteNonNegativeNumber.prototype.hasMixin.call(this, e);
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

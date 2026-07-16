@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(1009),
-                r = i(2),
-                o = i(28),
-                a = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(1009),
+                r = require(2),
+                GStylable = require(28),
+                String = require(9);
 
             function s() {
-                (o.Effect.call(this), this._setDefaultProperties(s.VisualProperties));
+                (GStylable.Effect.call(this), this._setDefaultProperties(s.VisualProperties));
             }
-            (r.inherit("clGradingEffect", s, o.Effect),
+            (r.inherit("clGradingEffect", s, GStylable.Effect),
                 (s.equals = function (e, t) {
                     return e instanceof s && t instanceof s && e.arePropertiesEqual(t, Object.keys(s.VisualProperties));
                 }),
@@ -15,10 +15,10 @@ module.exports = function (e, t, i) {
                     cp: null,
                 }),
                 (s.prototype.getEffectType = function () {
-                    return o.Effect.Type.Filter;
+                    return GStylable.Effect.Type.Filter;
                 }),
                 (s.prototype.getNodeNameTranslated = function () {
-                    return a.getValue("GColorGradingEffect", "name", this.getNodeName());
+                    return String.getValue("GColorGradingEffect", "name", this.getNodeName());
                 }),
                 (s.prototype.render = function (e, t, i, r) {
                     this.$cp && e.getBitmap().applyFilter(n, this.$cp);
@@ -28,10 +28,10 @@ module.exports = function (e, t, i) {
                         ? this.storeProperties(t.blob, s.VisualProperties)
                         : e === r._Change.Restore && this.restoreProperties(t.blob, s.VisualProperties),
                         this._handleVisualChangeForProperties(e, t, s.VisualProperties),
-                        o.Effect.prototype._handleChange.call(this, e, t));
+                        GStylable.Effect.prototype._handleChange.call(this, e, t));
                 }),
                 (s.prototype.toString = function () {
                     return "[Object GColorGradingEffect]";
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

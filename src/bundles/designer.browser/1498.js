@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o(e) {
             this._htmlElement = e;
@@ -9,5 +9,5 @@ module.exports = function (e, t, n) {
             (o.prototype.setEnabled = function (e) {
                 $("#overlay").css("display", e ? "none" : "unset");
             }),
-            (e.exports = o));
+            (module.exports = o));
     };

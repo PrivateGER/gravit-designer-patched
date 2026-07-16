@@ -1,29 +1,29 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(t, "__esModule", { value: !0 }),
-            (t.default =
-                t.GFilesPanelSortTypes =
-                t.GFilesPanelSortDirections =
-                t.GFilesPanelFileTypesFilter =
-                t.GFilesPanelClipboardModes =
+        (Object.defineProperty(exports, "__esModule", { value: true }),
+            (exports.default =
+                exports.GFilesPanelSortTypes =
+                exports.GFilesPanelSortDirections =
+                exports.GFilesPanelFileTypesFilter =
+                exports.GFilesPanelClipboardModes =
                     void 0));
-        const o = n(47),
+        const o = require(47),
             i =
-                ((t.GFilesPanelFileTypesFilter = [
+                ((exports.GFilesPanelFileTypesFilter = [
                     {
                         id: "gvdesign",
                         name: new o("GFilesPanel", "text.filter-type-gvdesign"),
                         type: "application/gravit+design",
                     },
                 ]),
-                (t.GFilesPanelSortTypes = {
+                (exports.GFilesPanelSortTypes = {
                     UPDATED: "updated",
                     NAME: "name",
                     CREATED: "created",
                 })),
-            a = (t.GFilesPanelSortDirections = { ASCEND: !0, DESCEND: !1 }),
-            r = (t.GFilesPanelClipboardModes = { DEFAULT: 1, COPY: 2, CUT: 3 });
-        t.default = {
+            a = (exports.GFilesPanelSortDirections = { ASCEND: true, DESCEND: false }),
+            r = (exports.GFilesPanelClipboardModes = { DEFAULT: 1, COPY: 2, CUT: 3 });
+        exports.default = {
             GFilesPanelSortTypes: i,
             GFilesPanelSortDirections: a,
             GFilesPanelClipboardModes: r,

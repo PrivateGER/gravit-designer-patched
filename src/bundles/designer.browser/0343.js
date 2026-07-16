@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(43)("iterator"),
-            i = !1;
+        var o = require(43)("iterator"),
+            i = false;
         try {
             var a = 0,
                 r = {
@@ -9,7 +9,7 @@ module.exports = function (e, t, n) {
                         return { done: !!a++ };
                     },
                     return: function () {
-                        i = !0;
+                        i = true;
                     },
                 };
             ((r[o] = function () {
@@ -19,19 +19,19 @@ module.exports = function (e, t, n) {
                     throw 2;
                 }));
         } catch (e) {}
-        e.exports = function (e, t) {
+        module.exports = function (e, t) {
             try {
-                if (!t && !i) return !1;
+                if (!t && !i) return false;
             } catch (e) {
-                return !1;
+                return false;
             }
-            var n = !1;
+            var n = false;
             try {
                 var a = {};
                 ((a[o] = function () {
                     return {
                         next: function () {
-                            return { done: (n = !0) };
+                            return { done: (n = true) };
                         },
                     };
                 }),

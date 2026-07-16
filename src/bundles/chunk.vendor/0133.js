@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(907),
-                r = i(0),
-                o = i(47);
+module.exports = function (module, exports, require) {
+            var n = require(907),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(47);
 
             function a() {}
-            (r.inherit(a, n),
+            (IsFiniteNonNegativeNumber.inherit(a, n),
                 (a.PaintMode = {
                     Full: "F",
                     Fast: "S",
@@ -19,29 +19,29 @@ module.exports = function (e, t, i) {
                 }),
                 (a.prototype.watermark = null),
                 (a.prototype.paintMode = a.PaintMode.Full),
-                (a.prototype.pixelMode = !1),
-                (a.prototype.clipToPage = !1),
-                (a.prototype.guides = !0),
-                (a.prototype.slices = !0),
-                (a.prototype.annotations = !0),
-                (a.prototype.elementAnnotations = !1),
-                (a.prototype.showResolvedAnnotations = !1),
+                (a.prototype.pixelMode = false),
+                (a.prototype.clipToPage = false),
+                (a.prototype.guides = true),
+                (a.prototype.slices = true),
+                (a.prototype.annotations = true),
+                (a.prototype.elementAnnotations = false),
+                (a.prototype.showResolvedAnnotations = false),
                 (a.prototype.clipArea = null),
-                (a.prototype.ignoreEffects = !1),
-                (a.prototype.noWebGL = !1),
-                (a.prototype.forceEffectsWhenZoomed = !1),
-                (a.prototype.enableFxCache = !0),
-                (a.prototype.clipDirty = !0),
+                (a.prototype.ignoreEffects = false),
+                (a.prototype.noWebGL = false),
+                (a.prototype.forceEffectsWhenZoomed = false),
+                (a.prototype.enableFxCache = true),
+                (a.prototype.clipDirty = true),
                 (a.prototype.defaultEffectDetailLevel = null),
-                (a.prototype.sceneBackground = !0),
-                (a.prototype.multiPageView = !1),
-                (a.prototype.ignoreRulerOffsets = !1),
-                (a.prototype.rulerLeftFill = !1),
-                (a.prototype.thumbnails = !0),
+                (a.prototype.sceneBackground = true),
+                (a.prototype.multiPageView = false),
+                (a.prototype.ignoreRulerOffsets = false),
+                (a.prototype.rulerLeftFill = false),
+                (a.prototype.thumbnails = true),
                 (a.prototype.thumbnailSize = 85),
-                (a.prototype.pageThumbnails = !1),
+                (a.prototype.pageThumbnails = false),
                 (a.prototype.pageThumbnailSize = 85),
-                (a.prototype.paintSharp = !0),
+                (a.prototype.paintSharp = true),
                 (a.prototype.isOutline = function (e) {
                     return this.paintMode === a.PaintMode.Outline || !(!e || !e.isOutline());
                 }),
@@ -55,12 +55,12 @@ module.exports = function (e, t, i) {
                     return !(!this.slices || !this.isAnnotationsVisible());
                 }),
                 (a.prototype.isElementAnnotationsVisible = function (e) {
-                    if (!this.elementAnnotations || !this.isAnnotationsVisible()) return !1;
+                    if (!this.elementAnnotations || !this.isAnnotationsVisible()) return false;
                     if (e) {
-                        if (e.getProperty("rmd")) return !1;
-                        if (!this.showResolvedAnnotations && e.getProperty("rsv")) return !1;
+                        if (e.getProperty("rmd")) return false;
+                        if (!this.showResolvedAnnotations && e.getProperty("rsv")) return false;
                     }
-                    return !0;
+                    return true;
                 }),
                 (a.prototype.isClipToPage = function (e) {
                     return this.clipToPage || this.paintMode === a.PaintMode.Output;
@@ -68,5 +68,5 @@ module.exports = function (e, t, i) {
                 (a.prototype.toString = function () {
                     return "[Object GScenePaintConfiguration]";
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

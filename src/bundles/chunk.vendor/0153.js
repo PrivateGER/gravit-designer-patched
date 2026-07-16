@@ -1,24 +1,24 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(99),
-                o = i(5),
-                a = i(6),
-                s = i(104),
-                l = i(22),
-                h = i(210),
-                A = i(24),
-                c = i(12),
-                p = i(2),
-                u = i(69),
-                d = i(159),
-                g = i(83),
-                f = i(140);
-            i(11);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(99),
+                o = require(5),
+                a = require(6),
+                s = require(104),
+                l = require(22),
+                h = require(210),
+                A = require(24),
+                c = require(12),
+                p = require(2),
+                u = require(69),
+                d = require(159),
+                g = require(83),
+                f = require(140);
+            require(11);
 
             function m(e) {
                 (r.call(this, e), (this._priority = m.PRIORITY.DISTANCE_FIRST));
             }
-            (n.inheritAndMix(m, r, [r.Map]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(m, r, [r.Map]),
                 (m.ID = "guide.bbox"),
                 (m.GUIDE_MARGIN = 20),
                 (m.PRIORITY = {
@@ -27,7 +27,7 @@ module.exports = function (e, t, i) {
                 }),
                 (m.prototype._priority = null),
                 (m.prototype._snapElems = null),
-                (m.prototype._scoped = !1),
+                (m.prototype._scoped = false),
                 (m.prototype._snapMainPage = null),
                 (m.prototype._eSnapElems = null),
                 (m.prototype.getId = function () {
@@ -51,19 +51,19 @@ module.exports = function (e, t, i) {
                         B = new o(e, t),
                         x = B;
                     this._guides.isMultiPageEnabled()
-                        ? (E && ((A = E.getPosition(!0)), s ? (B = B.subtract(A)) : (x = B.add(A))),
+                        ? (E && ((A = E.getPosition(true)), s ? (B = B.subtract(A)) : (x = B.add(A))),
                           this._scene.iteratePages(
                               function (e) {
                                   var t = e.getGeometryBBox(),
-                                      i = e.getPosition(!0);
+                                      i = e.getPosition(true);
                                   return t
                                       ? (t = t.translated(i.getX(), i.getY())).containsPoint(x)
-                                          ? ((b = e), (C = A ? t.translated(-A.getX(), -A.getY()) : t), (w = i), !1)
+                                          ? ((b = e), (C = A ? t.translated(-A.getX(), -A.getY()) : t), (w = i), false)
                                           : void 0
-                                      : ((b = e), (C = null), (w = i), !1);
+                                      : ((b = e), (C = null), (w = i), false);
                               }.bind(this)
                           ))
-                        : E && ((A = (b = E).getPosition(!1)), (C = b.getGeometryBBox()), (w = A), s && (B = B.subtract(A)));
+                        : E && ((A = (b = E).getPosition(false)), (C = b.getGeometryBBox()), (w = A), s && (B = B.subtract(A)));
                     var P = function (e) {
                         if (this._exclusions && this._exclusions.length)
                             for (var t = 0; t < this._exclusions.length; ++t) if (this._exclusions[t] == e) return;
@@ -74,8 +74,8 @@ module.exports = function (e, t, i) {
                                 m = i.getSide(a.Side.CENTER).add(w);
                             A && ((r = r.subtract(A)), (s = s.subtract(A)), (m = m.subtract(A)));
                             var _ = [r, s, m],
-                                b = !1;
-                            for (t = 0; t < _.length && !b; ++t) (C && !C.containsPoint(_[t], !0)) || (b = !0);
+                                b = false;
+                            for (t = 0; t < _.length && !b; ++t) (C && !C.containsPoint(_[t], true)) || (b = true);
                             if (!b) return;
                             for (t = 0; t < _.length; ++t) {
                                 var E = _[t];
@@ -193,7 +193,7 @@ module.exports = function (e, t, i) {
                     if (this._guides.isMultiPageEnabled()) {
                         y &&
                             !n &&
-                            ((l = y.getPosition(!0)),
+                            ((l = y.getPosition(true)),
                             (g = g.map(function (e) {
                                 return e.add(l);
                             })),
@@ -202,8 +202,8 @@ module.exports = function (e, t, i) {
                             this._scene.iteratePages(
                                 function (e) {
                                     var t = e.getGeometryBBox(),
-                                        i = e.getPosition(!0);
-                                    if (t && t.translated(i.getX(), i.getY()).containsPoint(g[v])) return ((m = e), (_ = i), !1);
+                                        i = e.getPosition(true);
+                                    if (t && t.translated(i.getX(), i.getY()).containsPoint(g[v])) return ((m = e), (_ = i), false);
                                 }.bind(this)
                             );
                         _ &&
@@ -214,7 +214,7 @@ module.exports = function (e, t, i) {
                     } else
                         (m = y) &&
                             n &&
-                            ((l = m.getPosition(!1)),
+                            ((l = m.getPosition(false)),
                             (g = g.map(function (e) {
                                 return e.subtract(l);
                             })),
@@ -253,7 +253,7 @@ module.exports = function (e, t, i) {
                     }.bind(this);
                     (this._scoped && m != this._snapMainPage && this._setEffectiveScope(m), this._applySnappingToPivots(g, t, m, b));
                     var C = function (e) {
-                            for (var t, i = !1, n = [], r = [], o = null, a = 0; a < e.length && !i; ++a) {
+                            for (var t, i = false, n = [], r = [], o = null, a = 0; a < e.length && !i; ++a) {
                                 ((t = e[a]),
                                     !(i = !f.intersected(t.bBox).isEmpty()) &&
                                         (null === o || t.absDelta <= o) &&
@@ -274,7 +274,7 @@ module.exports = function (e, t, i) {
                         w = function (e, i) {
                             for (var n, r, o = [], a = 0; a < e.length - 1; ++a)
                                 for (var s = a + 1; s < e.length; ++s) {
-                                    var l = e[a].bBox.getXYOffset(e[s].bBox, !0, !0);
+                                    var l = e[a].bBox.getXYOffset(e[s].bBox, true, true);
                                     i
                                         ? l.y &&
                                           !l.x &&
@@ -296,8 +296,8 @@ module.exports = function (e, t, i) {
                                     p = e[o[A].j].bBox;
                                 if (
                                     (i
-                                        ? ((n = f.getXYOffset(c, !1, !0).y), (r = f.getXYOffset(p, !1, !0).y))
-                                        : ((n = f.getXYOffset(c, !0, !1).x), (r = f.getXYOffset(p, !0, !1).x)),
+                                        ? ((n = f.getXYOffset(c, false, true).y), (r = f.getXYOffset(p, false, true).y))
+                                        : ((n = f.getXYOffset(c, true, false).x), (r = f.getXYOffset(p, true, false).x)),
                                     n && r)
                                 ) {
                                     var u = Math.abs(Math.abs(n) - Math.abs(o[A].offsJfromI));
@@ -365,8 +365,8 @@ module.exports = function (e, t, i) {
                         if (E.length > 1 || B.length > 1) {
                             var x = null,
                                 P = null;
-                            (E.length > 1 && (x = w(E, !0)),
-                                B.length > 1 && (P = w(B, !0)),
+                            (E.length > 1 && (x = w(E, true)),
+                                B.length > 1 && (P = w(B, true)),
                                 x && (!P || x.absDeltaY <= P.absDeltaY) ? (u = x) : P && (u = P));
                         }
                     }
@@ -377,8 +377,8 @@ module.exports = function (e, t, i) {
                         if (T.length > 1 || I.length > 1) {
                             var F = null,
                                 R = null;
-                            (T.length > 1 && (F = w(T, !1)),
-                                I.length > 1 && (R = w(I, !1)),
+                            (T.length > 1 && (F = w(T, false)),
+                                I.length > 1 && (R = w(I, false)),
                                 F && (!R || F.absDeltaX <= R.absDeltaX) ? (d = F) : R && (d = R));
                         }
                     }
@@ -386,7 +386,7 @@ module.exports = function (e, t, i) {
                         if (u && (!d || u.absDeltaX < d.absDeltaY || (u.absDeltaX == d.absDeltaY && u.absDeltaY <= d.absDeltaX))) {
                             c = e.translated(u.deltaX, u.deltaY);
                             var D = f.translated(u.deltaX, u.deltaY);
-                            if (((r[0] = u.deltaX), (r[1] = u.deltaY), (p = this.getDistGuides(u.bbox1, u.bbox2, D, !0))))
+                            if (((r[0] = u.deltaX), (r[1] = u.deltaY), (p = this.getDistGuides(u.bbox1, u.bbox2, D, true))))
                                 for (v = 0; v < p.length; ++v)
                                     o.push({
                                         guide: p[v],
@@ -395,7 +395,7 @@ module.exports = function (e, t, i) {
                         } else if (d) {
                             c = e.translated(d.deltaX, d.deltaY);
                             D = f.translated(d.deltaX, d.deltaY);
-                            if (((r[0] = d.deltaX), (r[1] = d.deltaY), (p = this.getDistGuides(d.bbox1, d.bbox2, D, !1))))
+                            if (((r[0] = d.deltaX), (r[1] = d.deltaY), (p = this.getDistGuides(d.bbox1, d.bbox2, D, false))))
                                 for (v = 0; v < p.length; ++v)
                                     s.push({
                                         guide: p[v],
@@ -438,7 +438,7 @@ module.exports = function (e, t, i) {
                               _.push(m.getSide(a.Side.TOP_LEFT)),
                               _.push(m.getSide(a.Side.LEFT_CENTER)),
                               _.push(m.getSide(a.Side.BOTTOM_LEFT)));
-                        for (var v = !0, b = 0; b < y.length; ++b)
+                        for (var v = true, b = 0; b < y.length; ++b)
                             for (var C = y[b], w = 0; w < _.length; ++w) {
                                 var E = _[w];
                                 if ((n && c.isEqualEps(C.getX(), E.getX())) || (!n && c.isEqualEps(C.getY(), E.getY()))) {
@@ -459,7 +459,7 @@ module.exports = function (e, t, i) {
                                                         bounds: [C.getX(), E.getX()],
                                                     },
                                                 ])),
-                                          (v = !1))
+                                          (v = false))
                                         : ((B.freeSegments = B.freeSegments ? B.freeSegments : []),
                                           (B.freeSegmentsColor = A.distanceHelperColor),
                                           n
@@ -472,15 +472,15 @@ module.exports = function (e, t, i) {
                     return u.length ? u : null;
                 }),
                 (m.prototype.isRelativeToPage = function () {
-                    return !0;
+                    return true;
                 }),
                 (m.prototype.isScopeSupported = function () {
-                    return !0;
+                    return true;
                 }),
                 (m.prototype.setScope = function (e) {
                     if (e && e.length) {
                         this._snapElems = [];
-                        for (var t = null, i = !1, n = this._scene.getActivePage(), r = 0; r < e.length; ++r) {
+                        for (var t = null, i = false, n = this._scene.getActivePage(), r = 0; r < e.length; ++r) {
                             var o = e[r];
                             if (o.hasMixin(p.Container))
                                 for (var a = o.getFirstChild(); null != a; a = a.getNext()) a instanceof u && this._snapElems.push(a);
@@ -491,10 +491,10 @@ module.exports = function (e, t, i) {
                                         : o.findParent(function (e) {
                                               return e instanceof g;
                                           })) == n &&
-                                    (i = !0));
+                                    (i = true));
                         }
-                        ((this._scoped = !0), (this._snapMainPage = i ? n : t));
-                    } else ((this._snapElems = null), (this._scoped = !1), (this._snapMainPage = null));
+                        ((this._scoped = true), (this._snapMainPage = i ? n : t));
+                    } else ((this._snapElems = null), (this._scoped = false), (this._snapMainPage = null));
                     this._eSnapElems = null;
                 }),
                 (m.prototype._setEffectiveScope = function (e) {
@@ -551,5 +551,5 @@ module.exports = function (e, t, i) {
                 (m.prototype.toString = function () {
                     return "[Object GBBoxGuide]";
                 }),
-                (e.exports = m));
+                (module.exports = m));
         };

@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(54),
-                r = i(48),
-                o = i(12);
+module.exports = function (module, exports, require) {
+            var n = require(54),
+                r = require(48),
+                o = require(12);
 
             function a(e) {
                 this.cutterSource = e;
             }
             ((a.UNCHANGED = 1),
-                (a.ALLOW_ODD_CLOSED = !0),
+                (a.ALLOW_ODD_CLOSED = true),
                 (a.prototype.performCut = function (e, t, i, n, r, o, s) {
                     var l = null,
                         h = null;
@@ -46,11 +46,11 @@ module.exports = function (e, t, i) {
                     if (g - (f - 1) != this.cutterSource._vertices.getCount()) return null;
                     var m = [],
                         y = n ? -1 : 0,
-                        _ = !1;
+                        _ = false;
                     for (A = p.length - 1; A >= 0; A--)
                         if (p[A]) {
                             var v = [];
-                            ((_ = this._breakApart(p[A], !1, v) || _), (m = m.concat(v)), (f = v.length), (g = 0));
+                            ((_ = this._breakApart(p[A], false, v) || _), (m = m.concat(v)), (f = v.length), (g = 0));
                             for (var b = 0; b < f; b++) g += v[b].getCount();
                             if (g - (f - 1) != p[A]._vertices.getCount() + y) return null;
                         }
@@ -97,23 +97,23 @@ module.exports = function (e, t, i) {
                         var i = e[t].path0,
                             n = e[t].path1,
                             r = e[t].pt;
-                        if (i && !s(l(i), r)) return !1;
-                        if (n && !s(h(n), r)) return !1;
+                        if (i && !s(l(i), r)) return false;
+                        if (n && !s(h(n), r)) return false;
                     }
-                    return !0;
+                    return true;
                 }),
                 (a.prototype._vertexHasIsect = function (e, t) {
-                    if (!t) return !1;
+                    if (!t) return false;
                     do {
-                        if ((e.x === t.x || o.isEqualEps(e.x, t.x, 0.05)) && (e.y === t.y || o.isEqualEps(e.y, t.y, 0.05))) return !0;
+                        if ((e.x === t.x || o.isEqualEps(e.x, t.x, 0.05)) && (e.y === t.y || o.isEqualEps(e.y, t.y, 0.05))) return true;
                     } while ((t = t.next));
-                    return !1;
+                    return false;
                 }),
                 (a.prototype._getSegment = function (e, t) {
                     var i = [],
                         n = new r(),
                         o = null,
-                        a = !0;
+                        a = true;
                     for (e.rewindVertices(0); a && e.readVertex(n); ) {
                         switch ((1 === t && (i = []), n.command)) {
                             case r.Command.Move:
@@ -140,7 +140,7 @@ module.exports = function (e, t, i) {
                                 ((o = n), (n = new r()));
                                 break;
                             case r.Command.Close:
-                                a = !1;
+                                a = false;
                         }
                         if (0 === t && i.length) break;
                     }
@@ -211,23 +211,23 @@ module.exports = function (e, t, i) {
                         a,
                         s = new r(),
                         l = new r(),
-                        h = !0,
+                        h = true,
                         A = new n();
                     ((i.length = 0), i.push(A));
-                    var c = !1;
+                    var c = false;
                     for (e.rewindVertices(0); h && e.readVertex(s); )
                         switch (s.command) {
                             case r.Command.Move:
                                 ((o = this._vertexHasIsect(s, this.isectsCut)),
                                     t && (a = this._vertexHasIsect(s, this.isectsCutter)),
-                                    (A.getCount() || o || a) && ((o || a) && (A = new n()), i.push(A), (c = !0)),
+                                    (A.getCount() || o || a) && ((o || a) && (A = new n()), i.push(A), (c = true)),
                                     A.addVertex(s.command, s.x, s.y));
                                 break;
                             case r.Command.Line:
                                 (A.addVertex(s.command, s.x, s.y),
                                     (o = this._vertexHasIsect(s, this.isectsCut)),
                                     t && (a = this._vertexHasIsect(s, this.isectsCutter)),
-                                    (o || a) && ((A = new n()).addVertex(r.Command.Move, s.x, s.y), i.push(A), (c = !0)));
+                                    (o || a) && ((A = new n()).addVertex(r.Command.Move, s.x, s.y), i.push(A), (c = true)));
                                 break;
                             case r.Command.Curve:
                                 var p = {
@@ -240,7 +240,7 @@ module.exports = function (e, t, i) {
                                     A.addVertex(s.command, s.x, s.y),
                                     (o = this._vertexHasIsect(p, this.isectsCut)),
                                     t && (a = this._vertexHasIsect(p, this.isectsCutter)),
-                                    (o || a) && ((A = new n()), i.push(A), A.addVertex(r.Command.Move, p.x, p.y), (c = !0)));
+                                    (o || a) && ((A = new n()), i.push(A), A.addVertex(r.Command.Move, p.x, p.y), (c = true)));
                                 break;
                             case r.Command.Curve2:
                                 p = {
@@ -255,10 +255,10 @@ module.exports = function (e, t, i) {
                                     A.addVertex(l.command, l.x, l.y),
                                     (o = this._vertexHasIsect(p, this.isectsCut)),
                                     t && (a = this._vertexHasIsect(p, this.isectsCutter)),
-                                    (o || a) && ((A = new n()), i.push(A), A.addVertex(r.Command.Move, p.x, p.y), (c = !0)));
+                                    (o || a) && ((A = new n()), i.push(A), A.addVertex(r.Command.Move, p.x, p.y), (c = true)));
                                 break;
                             case r.Command.Close:
-                                h = !1;
+                                h = false;
                                 break;
                             default:
                                 throw new Error("Unknown vertex command: " + s.command.toString());
@@ -295,7 +295,7 @@ module.exports = function (e, t, i) {
                     var c = e[A],
                         p = h(c),
                         u = l(c);
-                    i = !1;
+                    i = false;
                     for (var d = a - 1; d >= 0; d--) {
                         var g = t[d];
                         if (g.getCount()) {
@@ -304,26 +304,26 @@ module.exports = function (e, t, i) {
                                 y = d === a - 1,
                                 _ = 0 === d;
                             if (s(m, p)) {
-                                (r[this._getSide(g, c, null, 2)].push(c), (i = !0));
+                                (r[this._getSide(g, c, null, 2)].push(c), (i = true));
                                 break;
                             }
                             if (s(f, u)) {
-                                (r[this._getSide(g, c, null, 1)].push(c), (i = !0));
+                                (r[this._getSide(g, c, null, 1)].push(c), (i = true));
                                 break;
                             }
                             if (y && s(m, u)) {
-                                (r[this._getSide(g, c, null, 3)].push(n.clone(c, !0)), (i = !0));
+                                (r[this._getSide(g, c, null, 3)].push(n.clone(c, true)), (i = true));
                                 break;
                             }
                             if (_ && s(f, p)) {
-                                (r[this._getSide(g, c, null, 0)].push(n.clone(c, !0)), (i = !0));
+                                (r[this._getSide(g, c, null, 0)].push(n.clone(c, true)), (i = true));
                                 break;
                             }
                         }
                     }
-                    if (!i) return !1;
+                    if (!i) return false;
                 }
-                return (e.splice(0, e.length), e.push(r[0], r[1], r[2]), !0);
+                return (e.splice(0, e.length), e.push(r[0], r[1], r[2]), true);
             }),
                 (a.prototype._fitVertices = function (e, t, i) {
                     var r = [[], [], []],
@@ -348,12 +348,12 @@ module.exports = function (e, t, i) {
                                 if (C) {
                                     var w = h(C),
                                         E = l(C),
-                                        B = !1;
+                                        B = false;
                                     if (s(_, w) && this._getSide(d, C, null, 0) == y) {
-                                        if (((B = !0), (f = n.clone(C, !0)), (R = r[y][u]))) {
+                                        if (((B = true), (f = n.clone(C, true)), (R = r[y][u]))) {
                                             g = R.path;
                                             var x = h(g);
-                                            if (!s(x, _)) return (console.log("second source to same path?"), !1);
+                                            if (!s(x, _)) return (console.log("second source to same path?"), false);
                                         } else g = n.clone(d);
                                         (this._prependVertices(g, f),
                                             (_ = E),
@@ -363,10 +363,10 @@ module.exports = function (e, t, i) {
                                                 path: g,
                                             }));
                                     } else if (s(_, E) && this._getSide(d, C, null, 1) == y) {
-                                        if (((B = !0), (f = n.clone(C)), (R = r[y][u]))) {
+                                        if (((B = true), (f = n.clone(C)), (R = r[y][u]))) {
                                             g = R.path;
                                             x = h(g);
-                                            if (!s(x, _)) return (console.log("second source to same path?"), !1);
+                                            if (!s(x, _)) return (console.log("second source to same path?"), false);
                                         } else g = n.clone(d);
                                         (this._prependVertices(g, f),
                                             (_ = w),
@@ -376,10 +376,10 @@ module.exports = function (e, t, i) {
                                                 path: g,
                                             }));
                                     } else if (s(v, w) && this._getSide(d, C, null, 2) == y) {
-                                        if (((B = !0), (f = n.clone(C)), (R = r[y][u]))) {
+                                        if (((B = true), (f = n.clone(C)), (R = r[y][u]))) {
                                             g = R.path;
                                             var P = l(g);
-                                            if (!s(P, v)) return (console.log("second source to same path?"), !1);
+                                            if (!s(P, v)) return (console.log("second source to same path?"), false);
                                         } else g = n.clone(d);
                                         (this._appendVertices(g, f),
                                             (v = E),
@@ -389,10 +389,10 @@ module.exports = function (e, t, i) {
                                                 path: g,
                                             }));
                                     } else if (s(v, E) && this._getSide(d, C, null, 3) == y) {
-                                        if (((B = !0), (f = n.clone(C, !0)), (R = r[y][u]))) {
+                                        if (((B = true), (f = n.clone(C, true)), (R = r[y][u]))) {
                                             g = R.path;
                                             P = l(g);
-                                            if (!s(P, v)) return (console.log("second source to same path?"), !1);
+                                            if (!s(P, v)) return (console.log("second source to same path?"), false);
                                         } else g = n.clone(d);
                                         (this._appendVertices(g, f),
                                             (v = w),
@@ -431,16 +431,16 @@ module.exports = function (e, t, i) {
                                             R = null;
                                         if (I.path === F.path) continue;
                                         if (s(I.startPoint, F.startPoint)) {
-                                            if (!(R = n.clone(F.path, !0))) return !1;
+                                            if (!(R = n.clone(F.path, true))) return false;
                                             (this._prependVertices(I.path, R), (I.startPoint = F.endPoint), (r[y][T] = null));
                                         } else if (s(I.endPoint, F.endPoint)) {
-                                            if (!(R = n.clone(F.path, !0))) return !1;
+                                            if (!(R = n.clone(F.path, true))) return false;
                                             (this._appendVertices(I.path, R), (I.endPoint = F.startPoint), (r[y][T] = null));
                                         } else if (s(I.startPoint, F.endPoint)) {
-                                            if (!(R = n.clone(F.path, !1))) return !1;
+                                            if (!(R = n.clone(F.path, false))) return false;
                                             (this._prependVertices(I.path, R), (I.startPoint = F.startPoint), (r[y][T] = null));
                                         } else if (s(I.endPoint, F.startPoint)) {
-                                            if (!(R = n.clone(F.path, !1))) return !1;
+                                            if (!(R = n.clone(F.path, false))) return false;
                                             (this._appendVertices(I.path, R), (I.endPoint = F.endPoint), (r[y][T] = null));
                                         }
                                     }
@@ -457,7 +457,7 @@ module.exports = function (e, t, i) {
                         e.push(D);
                     }
                     for (u = e.length - 1; u >= 0; u--) for (b = e[u].length - 1; b >= 0; b--) this._correctMoveTo(e[u][b]);
-                    return !0;
+                    return true;
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

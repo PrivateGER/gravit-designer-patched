@@ -1,16 +1,16 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(105),
-                r = i(723),
+            var n = require(105),
+                r = require(723),
                 o = function (e) {
                     r.call(this, e, "gsub");
                 };
 
             function a(e, t) {
                 var i = e.length;
-                if (i !== t.length) return !1;
-                for (var n = 0; n < i; n++) if (e[n] !== t[n]) return !1;
-                return !0;
+                if (i !== t.length) return false;
+                for (var n = 0; n < i; n++) if (e[n] !== t[n]) return false;
+                return true;
             }
 
             function s(e, t, i) {
@@ -90,7 +90,7 @@ module.exports = function (e, t, i) {
                     return n;
                 }),
                 (o.prototype.addSingle = function (e, t, i, r) {
-                    var o = s(this.getLookupTables(i, r, e, 1, !0)[0], 2, {
+                    var o = s(this.getLookupTables(i, r, e, 1, true)[0], 2, {
                         substFormat: 2,
                         coverage: {
                             format: 1,
@@ -104,7 +104,7 @@ module.exports = function (e, t, i) {
                     (l < 0 && ((l = -1 - l), o.coverage.glyphs.splice(l, 0, a), o.substitute.splice(l, 0, 0)), (o.substitute[l] = t.by));
                 }),
                 (o.prototype.addAlternate = function (e, t, i, r) {
-                    var o = s(this.getLookupTables(i, r, e, 3, !0)[0], 1, {
+                    var o = s(this.getLookupTables(i, r, e, 3, true)[0], 1, {
                         substFormat: 1,
                         coverage: {
                             format: 1,
@@ -119,7 +119,7 @@ module.exports = function (e, t, i) {
                         (o.alternateSets[l] = t.by));
                 }),
                 (o.prototype.addLigature = function (e, t, i, r) {
-                    var o = this.getLookupTables(i, r, e, 4, !0)[0],
+                    var o = this.getLookupTables(i, r, e, 4, true)[0],
                         s = o.subtables[0];
                     (s ||
                         ((s = {
@@ -172,5 +172,5 @@ module.exports = function (e, t, i) {
                             return this.addLigature(e, t, i, n);
                     }
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

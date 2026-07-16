@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(712);
+            var n = require(712);
 
             function r(e, t, i) {
                 Object.defineProperty(e, t, {
@@ -10,8 +10,8 @@ module.exports = function (e, t, i) {
                     set: function (t) {
                         e[i] = t;
                     },
-                    enumerable: !0,
-                    configurable: !0,
+                    enumerable: true,
+                    configurable: true,
                 });
             }
 
@@ -25,14 +25,14 @@ module.exports = function (e, t, i) {
                 (o.prototype.push = function (e, t) {
                     ((this.glyphs[e] = t), this.length++);
                 }),
-                (t.GlyphSet = o),
-                (t.glyphLoader = function (e, t) {
+                (exports.GlyphSet = o),
+                (exports.glyphLoader = function (e, t) {
                     return new n.Glyph({
                         index: t,
                         font: e,
                     });
                 }),
-                (t.ttfGlyphLoader = function (e, t, i, o, a, s) {
+                (exports.ttfGlyphLoader = function (e, t, i, o, a, s) {
                     return function () {
                         var l = new n.Glyph({
                             index: t,
@@ -52,7 +52,7 @@ module.exports = function (e, t, i) {
                         );
                     };
                 }),
-                (t.cffGlyphLoader = function (e, t, i, r) {
+                (exports.cffGlyphLoader = function (e, t, i, r) {
                     return function () {
                         var o = new n.Glyph({
                             index: t,

@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(672);
-        e.exports = function (e, t) {
+        var o = require(672);
+        module.exports = function (e, t) {
             return new (o(e))(0 === t ? 0 : t);
         };
     };

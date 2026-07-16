@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o() {}
-        (n(30),
-            n(57),
+        (require(30),
+            require(57),
             (o.prototype.type = null),
             (o.prototype.hasKey = function (e) {
                 return this.hasOwnProperty(e);
@@ -24,5 +24,5 @@ module.exports = function (e, t, n) {
                 CDRAPP: "cdr",
                 GVDESIGN: "gvdesign",
             }),
-            (e.exports = o));
+            (module.exports = o));
     };

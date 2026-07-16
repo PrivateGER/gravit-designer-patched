@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
-            var n = i(284),
-                r = i(236),
-                o = i(0),
-                a = i(12),
-                s = i(64);
+module.exports = function (module, exports, require) {
+            var n = require(284),
+                r = require(236),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(12),
+                s = require(64);
 
             function l() {
-                r.call(this, !1, !1);
+                r.call(this, false, false);
             }
-            (i(747),
-                o.inherit(l, r),
+            (require(747),
+                IsFiniteNonNegativeNumber.inherit(l, r),
                 (l.prototype._getRelatedItemClass = function () {
                     return n;
                 }),
@@ -46,19 +46,19 @@ module.exports = function (e, t, i) {
                                 ["pts", "cx", "cy", "ir", "or", "ia", "oa"],
                                 [n, i[0].getX(), i[0].getY(), Math.max(0.5, u), p, c, A]
                             ),
-                            !0
+                            true
                         );
                     }
-                    return !1;
+                    return false;
                 }),
                 (l.prototype._showMousePositionInlineHint = function () {
-                    return !0;
+                    return true;
                 }),
                 (l.prototype._showAreaInlineHint = function () {
-                    return !0;
+                    return true;
                 }),
                 (l.prototype._hasCenterCross = function () {
-                    return !0;
+                    return true;
                 }),
                 (l.prototype._lockAngle = function (e) {
                     return (Math.round((12 * e) / Math.PI) * Math.PI) / 12;
@@ -66,5 +66,5 @@ module.exports = function (e, t, i) {
                 (l.prototype.toString = function () {
                     return "[Object GPolygonTool]";
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

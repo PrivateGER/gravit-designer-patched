@@ -1,17 +1,17 @@
-module.exports = function (e, t, i) {
-            var n = i(147),
-                r = i(50),
-                o = i(2),
-                a = i(28),
-                s = i(17),
-                l = i(14),
-                h = i(6),
-                A = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(147),
+                r = require(50),
+                o = require(2),
+                GStylable = require(28),
+                s = require(17),
+                l = require(14),
+                h = require(6),
+                String = require(9);
 
             function c() {
-                (a.Effect.call(this), this._setDefaultProperties(c.VisualProperties));
+                (GStylable.Effect.call(this), this._setDefaultProperties(c.VisualProperties));
             }
-            (o.inherit("overlayEffect", c, a.Effect),
+            (o.inherit("overlayEffect", c, GStylable.Effect),
                 (c.equals = function (e, t) {
                     return e instanceof c && t instanceof c && e.arePropertiesEqual(t, Object.keys(c.VisualProperties));
                 }),
@@ -29,13 +29,13 @@ module.exports = function (e, t, i) {
                         },
                     ]),
                     opc: 1,
-                    alm: !1,
+                    alm: false,
                 }),
                 (c.prototype.getEffectType = function () {
-                    return a.Effect.Type.Filter;
+                    return GStylable.Effect.Type.Filter;
                 }),
                 (c.prototype.getNodeNameTranslated = function () {
-                    return A.getValue("GOverlayEffect", "name", this.getNodeName());
+                    return String.getValue("GOverlayEffect", "name", this.getNodeName());
                 }),
                 (c.prototype.getTrackTempPropNames = function () {
                     return this.getPatternPropNames();
@@ -46,7 +46,7 @@ module.exports = function (e, t, i) {
                 (c.prototype.render = function (e, t, i, n) {
                     if (this.$pat && this.$opc > 0) {
                         var r = e
-                                .getTransform(!1)
+                                .getTransform(false)
                                 .inverted()
                                 .mapRect(new h(0, 0, e.getWidth(), e.getHeight())),
                             o = e.createPatternPaint(this.$pat, r);
@@ -54,7 +54,7 @@ module.exports = function (e, t, i) {
                             var a = this.$alm ? l.CompositeOperator.DestinationIn : l.CompositeOperator.SourceAtTop;
                             if (o.transform) {
                                 r = o.transform.inverted().mapRect(r);
-                                var s = e.setTransform(e.getTransform(!0).preMultiplied(o.transform));
+                                var s = e.setTransform(e.getTransform(true).preMultiplied(o.transform));
                                 (e.fillRect(r.getX(), r.getY(), r.getWidth(), r.getHeight(), o.paint, this.$opc, a), e.setTransform(s));
                             } else e.fillRect(r.getX(), r.getY(), r.getWidth(), r.getHeight(), o.paint, this.$opc, a);
                         }
@@ -70,10 +70,10 @@ module.exports = function (e, t, i) {
                               return t && "pat" === e ? r.deserialize(t) : t;
                           }),
                         this._handleVisualChangeForProperties(e, t, c.VisualProperties),
-                        a.Effect.prototype._handleChange.call(this, e, t));
+                        GStylable.Effect.prototype._handleChange.call(this, e, t));
                 }),
                 (c.prototype.toString = function () {
                     return "[Object GOverlayEffect]";
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

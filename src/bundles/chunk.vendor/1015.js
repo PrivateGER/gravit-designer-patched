@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(51),
-                o = i(28),
-                a = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(51),
+                GStylable = require(28),
+                String = require(9);
 
             function s() {
                 (r.call(this), this._setDefaultProperties(s.GeometryProperties));
             }
             (n.inherit("GGLOuterGlowEffect", s, r),
                 (s.prototype.getEffectType = function () {
-                    return o.Effect.Type.PostEffect;
+                    return GStylable.Effect.Type.PostEffect;
                 }),
                 (s.prototype.getEffectPadding = function () {
                     return this.$shp.radius;
@@ -29,7 +29,7 @@ module.exports = function (e, t, i) {
                     return t;
                 }),
                 (s.prototype.getNodeNameTranslated = function () {
-                    return a.getValue("GGLOuterGlowEffect", "name", this.getNodeName());
+                    return String.getValue("GGLOuterGlowEffect", "name", this.getNodeName());
                 }),
                 (s.GeometryProperties = {
                     shp: {
@@ -47,5 +47,5 @@ module.exports = function (e, t, i) {
                     radius: [0, 50],
                     intensity: [0, 2],
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

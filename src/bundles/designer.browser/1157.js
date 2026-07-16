@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(15),
-            i = n(1),
+        var GPlatform = require(15),
+            GObject = require(1),
             a = function (e) {
-                e.changed.escapeKey && (e.isImmediatePropagationStopped = !0);
+                e.changed.escapeKey && (e.isImmediatePropagationStopped = true);
             },
             r = {
                 _activeMenu: null,
@@ -17,7 +17,7 @@ module.exports = function (e, t, n) {
                 },
                 setActiveMenu: function (e, t, n) {
                     (r._activeMenu &&
-                        (o.GPlatform.removeEventListener(o.GModifiersChangedEvent, a, r._activeMenu && r._activeMenu.getHtmlElement()),
+                        (GPlatform.GPlatform.removeEventListener(GPlatform.GModifiersChangedEvent, a, r._activeMenu && r._activeMenu.getHtmlElement()),
                         t || r._activeMenu.close(),
                         (r._activeMenu = null),
                         (r._activeActivationCallback = null),
@@ -28,7 +28,7 @@ module.exports = function (e, t, n) {
                         (r._activeMenu = e),
                         (r._activeActivationCallback = n),
                         r._activeMenu &&
-                            (o.GPlatform.addEventListener(o.GModifiersChangedEvent, a, e.getHtmlElement(), null, !0),
+                            (GPlatform.GPlatform.addEventListener(GPlatform.GModifiersChangedEvent, a, e.getHtmlElement(), null, true),
                             document.addEventListener("mousemove", r._activeMenuMouseMoveListener),
                             document.addEventListener("mousedown", r._activeMenuMouseUpDownListener),
                             setTimeout(function () {
@@ -64,7 +64,7 @@ module.exports = function (e, t, n) {
                     ) {
                         var r = e[a];
                         if (r.isAvailable()) {
-                            var s = i.GLocale.get(r.getCategory()),
+                            var s = GObject.GLocale.get(r.getCategory()),
                                 l = r.getGroup(),
                                 c = s ? s.split("/") : null,
                                 d = l ? [""].concat(l.split("/")) : null;
@@ -75,7 +75,7 @@ module.exports = function (e, t, n) {
                                 for (var p = 0; p < c.length; ++p) {
                                     ((s = c[p]), (l = d ? d[p] : null));
                                     var g = u.findItem(s);
-                                    (g || ((g = t.createMenuItem(!0)).setCaption(s), o(u, g, l), u.addItem(g)), (u = g.getMenu()));
+                                    (g || ((g = t.createMenuItem(true)).setCaption(s), o(u, g, l), u.addItem(g)), (u = g.getMenu()));
                                 }
                             var h = t.createMenuItem();
                             (h.setAction(r), o(u, h, d ? d[d.length - 1] : null), u.addItem(h));
@@ -83,5 +83,5 @@ module.exports = function (e, t, n) {
                     }
                 },
             };
-        e.exports = r;
+        module.exports = r;
     };

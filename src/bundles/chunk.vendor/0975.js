@@ -1,20 +1,20 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(8), i(20), i(34));
-            const n = i(706),
-                r = i(707),
-                o = i(417).self(),
-                a = i(354),
-                s = i(170),
-                { TRIAL_MESSAGE_WEB_CONTENT_URL_TEMPLATE: l, UPGRADE_SCREEN_WEB_CONTENT_URL_TEMPLATE: h } = i(374),
-                { DateAPI: A } = i(209);
-            e.exports = class {
+            (require(8 /* Symbol */), require(20), require(34));
+            const n = require(706),
+                GPaywallDialog = require(707),
+                o = require(417 /* gApi */).self(),
+                a = require(354),
+                s = require(170),
+                { TRIAL_MESSAGE_WEB_CONTENT_URL_TEMPLATE: l, UPGRADE_SCREEN_WEB_CONTENT_URL_TEMPLATE: h } = require(374 /* SUPPORT_URL */),
+                { DateAPI: A } = require(209 /* GLocale */);
+            module.exports = class {
                 constructor() {
                     throw new Error("No instance");
                 }
                 static async newProExpireSoon(e) {
                     let { impl: t, now: i } = e;
-                    return new r({
+                    return new GPaywallDialog({
                         type: "reminder/accessending",
                         impl: t,
                         gApi: o,
@@ -29,9 +29,9 @@ module.exports = function (e, t, i) {
                         new n({
                             page: "reminder/proexpired",
                             title: s.getValue("GReminderDialog", "text.subscription-expired"),
-                            dismiss: !1,
+                            dismiss: false,
                             impl: t,
-                            closeable: !0,
+                            closeable: true,
                             campaign: a.StoreCampaign.TrialSeries,
                         })
                     );
@@ -43,8 +43,8 @@ module.exports = function (e, t, i) {
                         new n({
                             page: "reminder/trialexpired",
                             title: s.getValue("GReminderDialog", "text.upgrade-screen"),
-                            closeable: !0,
-                            dismiss: !1,
+                            closeable: true,
+                            dismiss: false,
                             campaign: a.StoreCampaign.TrialSeries,
                             impl: t,
                         })
@@ -59,9 +59,9 @@ module.exports = function (e, t, i) {
                         impl: t,
                         page: "reminder/trialmessage",
                         title: o,
-                        closeable: !0,
-                        withFooter: !1,
-                        dismiss: !1,
+                        closeable: true,
+                        withFooter: false,
+                        dismiss: false,
                         content: {
                             type: n.ContentType.Web,
                             data: l.replace("%lang", s.getLocaleTagISO6391()),
@@ -75,9 +75,9 @@ module.exports = function (e, t, i) {
                         new n({
                             page: "reminder/upgrade",
                             title: s.getValue("GReminderDialog", "text.upgrade-screen"),
-                            closeable: !0,
-                            dismiss: !1,
-                            withFooter: !1,
+                            closeable: true,
+                            dismiss: false,
+                            withFooter: false,
                             content: {
                                 type: n.ContentType.Web,
                                 data: h.replace("%lang", s.getLocaleTagISO6391()),

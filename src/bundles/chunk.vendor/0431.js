@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            e.exports = {
+            module.exports = {
                 Events: {
                     DOCUMENT_CREATED: "document.created",
                     DOCUMENT_OPENED: "document.opened",

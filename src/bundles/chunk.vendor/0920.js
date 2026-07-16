@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(230),
-                o = i(921),
-                a = i(653),
-                s = i(267),
-                l = i(161),
-                h = i(368),
-                A = i(654);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(230),
+                o = require(921),
+                a = require(653),
+                s = require(267),
+                l = require(161),
+                h = require(368),
+                A = require(654);
 
             function c() {
                 throw new Error("GTLCodes class cannot be instantiated");
@@ -26,7 +26,7 @@ module.exports = function (e, t, i) {
                           (this._spacing = o || 0))
                         : console.warn("There is a bug somewhere, inline should not be null");
                 }),
-                n.inherit(c.InlineNode, s),
+                IsFiniteNonNegativeNumber.inherit(c.InlineNode, s),
                 (c.InlineNode.prototype.type = "inline"),
                 (c.InlineNode.prototype.inline = null),
                 (c.InlineNode.prototype._parent = null),
@@ -96,7 +96,7 @@ module.exports = function (e, t, i) {
                         }.bind(this)
                     );
                 }),
-                (c.ListEnd.prototype.eof = !0),
+                (c.ListEnd.prototype.eof = true),
                 (c.ListEnd.prototype.measure = function () {
                     return {
                         width: 0,
@@ -111,7 +111,7 @@ module.exports = function (e, t, i) {
                 (c.ListNext = function () {
                     c.ListEnd.apply(this, arguments);
                 }),
-                n.inherit(c.ListNext, c.ListEnd),
+                IsFiniteNonNegativeNumber.inherit(c.ListNext, c.ListEnd),
                 (c.ListStart = function (e, t, i) {
                     ((this.obj = e),
                         (this.data = t),
@@ -177,7 +177,7 @@ module.exports = function (e, t, i) {
                                     }
                                 );
                             (g || (g = B.obj),
-                                ((d = new c.InlineNode(B, p, n, 1, r, v)).block = !0),
+                                ((d = new c.InlineNode(B, p, n, 1, r, v)).block = true),
                                 (u = new a(
                                     e + _ + v + d.measured.width,
                                     t,
@@ -205,10 +205,10 @@ module.exports = function (e, t, i) {
                                               c = 0,
                                               g = t + d.measured.ascent,
                                               f = d.measured.ascent + d.measured.descent;
-                                          if (h) ((g = s.baseline || 0), (f = Math.max(o.height, f)), (c = s.bounds(!1, !0).l));
+                                          if (h) ((g = s.baseline || 0), (f = Math.max(o.height, f)), (c = s.bounds(false, true).l));
                                           else {
                                               var m = e + _ + v + d.measured.width,
-                                                  b = new A(null, m, i, g, d.measured.ascent, d.measured.descent, [r], n, l).bounds(!1, !0),
+                                                  b = new A(null, m, i, g, d.measured.ascent, d.measured.descent, [r], n, l).bounds(false, true),
                                                   C = r.lineSpacing();
                                               ((f = "number" == typeof C ? b.h * C : parseFloat(C)), (c = b.l));
                                           }
@@ -272,7 +272,7 @@ module.exports = function (e, t, i) {
                                                         },
                                                     }),
                                                 ]),
-                                                !0
+                                                true
                                             );
                                         break;
                                     case h.List.Close:
@@ -293,9 +293,9 @@ module.exports = function (e, t, i) {
                         e.spliceWordsWithRuns(e.words.length - 1, 0, n);
                     }
                 }),
-                i(922)(c),
-                i(923)(c),
-                i(924)(c),
-                i(925)(c),
-                (e.exports = c));
+                require(922)(c),
+                require(923)(c),
+                require(924)(c),
+                require(925)(c),
+                (module.exports = c));
         };

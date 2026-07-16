@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(30);
-        const o = n(1072);
-        e.exports = Object.assign({}, o);
+        require(30);
+        const o = require(1072);
+        module.exports = Object.assign({}, o);
     };

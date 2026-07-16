@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16),
-            i = n(1),
-            a = n(15),
-            r = o(n(18)),
-            s = o(n(1281)),
-            l = n(198);
+        var o = require(16),
+            GObject = require(1),
+            GPlatform = require(15),
+            r = o(require(18 /* GCategory */)),
+            s = o(require(1281)),
+            SidebarsIds = require(198);
         class c extends s.default {
             getId() {
                 return c.ID;
@@ -17,19 +17,19 @@ module.exports = function (e, t, n) {
                 return r.default.CATEGORY_MODIFY;
             }
             isVisible() {
-                return !1;
+                return false;
             }
             getShortcut() {
-                return [a.GKey.Constant.META, a.GKey.Constant.OPTION, a.GKey.Constant.A];
+                return [GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.OPTION, GPlatform.GKey.Constant.A];
             }
             isEnabled() {
-                return gDesigner.getRightSidebars().getActiveSidebar() === l.SidebarsIds.GInspectorSidebar;
+                return gDesigner.getRightSidebars().getActiveSidebar() === SidebarsIds.SidebarsIds.GInspectorSidebar;
             }
             toString() {
                 return "[Object GChangeAnchorPointsJointTypeMainAction]";
             }
         }
         ((c.ID = "modify.change-anchor-points-joint-type"),
-            (c.TITLE = new i.GLocaleKey("GChangeAnchorPointsJointTypeMainAction", "title")),
-            (e.exports = c));
+            (c.TITLE = new GObject.GLocaleKey("GChangeAnchorPointsJointTypeMainAction", "title")),
+            (module.exports = c));
     };

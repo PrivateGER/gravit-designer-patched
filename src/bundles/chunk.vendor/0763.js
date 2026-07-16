@@ -1,24 +1,24 @@
-module.exports = function (e, t, i) {
-            var n = i(64),
-                r = i(150),
-                o = i(0),
-                a = i(5),
-                s = i(52),
-                l = i(6),
-                h = i(77),
-                A = i(289),
-                c = i(211),
-                p = i(24);
+module.exports = function (module, exports, require) {
+            var n = require(64),
+                r = require(150),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(5),
+                s = require(52),
+                l = require(6),
+                h = require(77),
+                A = require(289),
+                c = require(211),
+                p = require(24);
 
             function u() {
                 c.call(this);
             }
-            (o.inherit(u, c),
+            (IsFiniteNonNegativeNumber.inherit(u, c),
                 (u.prototype._dragStart = null),
                 (u.prototype._dragCurrent = null),
                 (u.prototype._slice = null),
                 (u.prototype._dragArea = null),
-                (u.prototype._hasCreatedSlice = !1),
+                (u.prototype._hasCreatedSlice = false),
                 (u.prototype.getCursor = function () {
                     return s.Cross;
                 }),
@@ -59,7 +59,7 @@ module.exports = function (e, t, i) {
                         this._editor.updateByMousePosition(
                             e.client,
                             this._view.getWorldTransform(this._scene),
-                            !1,
+                            false,
                             this._view.getViewConfiguration()
                         );
                 }),
@@ -68,10 +68,10 @@ module.exports = function (e, t, i) {
                         var t = this._view.getViewTransform(this._view.getScene().getActivePage()).mapPoint(e.client);
                         t = this._editor.getGuides().mapPoint(t);
                     }
-                    ((this._hasCreatedSlice = !1), this._manager.notifyJobDone(this));
+                    ((this._hasCreatedSlice = false), this._manager.notifyJobDone(this));
                 }),
                 (u.prototype._mouseDragStart = function (e) {
-                    ((this._hasCreatedSlice = !1),
+                    ((this._hasCreatedSlice = false),
                         (this._dragStart = this._view.getViewTransform(this._view.getScene().getActivePage()).mapPoint(e.client)),
                         this._editor.getGuides().beginMap(),
                         (this._dragStart = this._editor.getGuides().mapPoint(this._dragStart)),
@@ -97,7 +97,7 @@ module.exports = function (e, t, i) {
                         (this._dragArea = null),
                         this.updateCursor(),
                         this._editor.insertElements([t]),
-                        (this._hasCreatedSlice = !0));
+                        (this._hasCreatedSlice = true));
                 }),
                 (u.prototype._modifiersChanged = function (e) {
                     (e.changed.shiftKey || e.changed.optionKey || e.changed.metaKey) && this._invalidateSlice();
@@ -142,5 +142,5 @@ module.exports = function (e, t, i) {
                 (u.prototype.toString = function () {
                     return "[Object GSliceTool]";
                 }),
-                (e.exports = u));
+                (module.exports = u));
         };

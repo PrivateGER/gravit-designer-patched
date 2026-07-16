@@ -1,26 +1,26 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(53),
-            i = n(1),
-            a = n(15),
-            r = n(67),
-            s = n(18),
-            l = n(31);
+        require(3);
+        var o = require(53),
+            GObject = require(1),
+            GPlatform = require(15),
+            r = require(67),
+            GCategory = require(18),
+            l = require(31);
         function c() {
             c.TOOLTIP_CONFIG = {
                 [r.TOOLTIP_AREA.TOOLBAR]: r.GRichTooltipConfig.from({
-                    title: i.GLocale.get(new i.GLocaleKey("GZoomInAction", "tooltip-title")),
-                    description: i.GLocale.get(new i.GLocaleKey("GZoomInAction", "tooltip-description")),
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GZoomInAction", "tooltip-title")),
+                    description: GObject.GLocale.get(new GObject.GLocaleKey("GZoomInAction", "tooltip-description")),
                     shortcut: c.SHORTCUT,
                 }),
             };
         }
-        (i.GObject.inherit(c, l),
+        (GObject.GObject.inherit(c, l),
             (c.ID = "view.zoom.in"),
-            (c.TITLE = new i.GLocaleKey("GZoomInAction", "title")),
+            (c.TITLE = new GObject.GLocaleKey("GZoomInAction", "title")),
             (c.ZOOM_STEP = 2),
-            (c.SHORTCUT = [a.GKey.Constant.META, "+"]),
+            (c.SHORTCUT = [GPlatform.GKey.Constant.META, "+"]),
             (c.TOOLTIP_CONFIG = null),
             (c.prototype.getId = function () {
                 return c.ID;
@@ -29,7 +29,7 @@ module.exports = function (e, t, n) {
                 return c.TITLE;
             }),
             (c.prototype.getCategory = function () {
-                return s.CATEGORY_VIEW_MAGNIFICATION;
+                return GCategory.CATEGORY_VIEW_MAGNIFICATION;
             }),
             (c.prototype.getGroup = function () {
                 return "zoom/magnification";
@@ -38,7 +38,7 @@ module.exports = function (e, t, n) {
                 return c.SHORTCUT;
             }),
             (c.prototype.isShortcutGlobal = function () {
-                return !0;
+                return true;
             }),
             (c.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-zoom-in" : null;
@@ -46,7 +46,7 @@ module.exports = function (e, t, n) {
             (c.prototype.isEnabled = function () {
                 var e = gDesigner.getWindows().getActiveWindow(),
                     t = e ? e.getView() : null;
-                return t && t.getZoom() < a.GSceneWidget.options.maxZoomFactor;
+                return t && t.getZoom() < GPlatform.GSceneWidget.options.maxZoomFactor;
             }),
             (c.prototype.execute = function () {
                 var e = gDesigner.getWindows().getActiveWindow().getView(),
@@ -54,7 +54,7 @@ module.exports = function (e, t, n) {
                 if (o.GZoomTool.options.zoomLevels) {
                     for (var n = o.GZoomTool.options.zoomLevels, i = e.getZoom(), r = n.length - 1, s = 0; s < n.length; s++)
                         if ((i < n[r - s] && (t = n[r - s]), i === n[s])) {
-                            t = r > 0 ? n[s + 1] : a.GSceneWidget.options.maxZoomFactor;
+                            t = r > 0 ? n[s + 1] : GPlatform.GSceneWidget.options.maxZoomFactor;
                             break;
                         }
                 } else t = e.getZoom() * c.ZOOM_STEP;
@@ -66,5 +66,5 @@ module.exports = function (e, t, n) {
             (c.prototype.toString = function () {
                 return "[Object GZoomInAction]";
             }),
-            (e.exports = c));
+            (module.exports = c));
     };

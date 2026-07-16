@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(196));
-        e.exports = class {
+        (require(8 /* Symbol */), require(196));
+        module.exports = class {
             constructor() {
                 this._promiseQueue = [];
             }

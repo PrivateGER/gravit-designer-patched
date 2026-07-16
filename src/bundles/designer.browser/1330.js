@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(1);
+        var GObject = require(1);
         function i(e) {
             this.fullscreen = e;
         }
-        (o.GObject.inherit(i, o.GEvent), (i.prototype.fullscreen = !1), (e.exports = i));
+        (GObject.GObject.inherit(i, GObject.GEvent), (i.prototype.fullscreen = false), (module.exports = i));
     };

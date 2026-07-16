@@ -1,32 +1,32 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19),
-            n(596),
-            n(180),
-            n(181),
-            n(57),
-            n(20),
-            n(34),
-            n(134),
-            n(218),
-            n(692),
-            n(189),
-            n(190),
-            n(191),
-            n(192),
-            n(4),
-            n(41),
-            n(32),
-            n(33));
-        var o = n(1),
-            i = n(10),
-            a = n(381);
+        (require(19),
+            require(596),
+            require(180),
+            require(181),
+            require(57),
+            require(20),
+            require(34),
+            require(134),
+            require(218),
+            require(692),
+            require(189),
+            require(190),
+            require(191),
+            require(192),
+            require(4),
+            require(41),
+            require(32),
+            require(33));
+        var GObject = require(1),
+            designerConfig = require(10),
+            a = require(381);
         function r(e) {
             if (r._instance) throw new Error("This class cannot be instantiated multiple times");
             ((r._instance = this), a.call(this, e));
         }
-        o.GObject.inherit(r, a);
-        var s = o.GUtil.uuid();
+        GObject.GObject.inherit(r, a);
+        var s = GObject.GUtil.uuid();
         ((r.DEFAULT_PORT = 32119),
             (r.START_PORT_SPAN = 1),
             (r.PORT_SPAN = 5),
@@ -65,16 +65,16 @@ module.exports = function (e, t, n) {
                     }.bind(r._instance);
                 e = setInterval(n, 2e3);
             }),
-            (r.prototype._firstConnect = !0),
-            (r.prototype._tlsError = !1),
-            (r.prototype._initialized = !1),
+            (r.prototype._firstConnect = true),
+            (r.prototype._tlsError = false),
+            (r.prototype._initialized = false),
             (r.prototype._connection = null),
             (r.prototype._tmpConnection = null),
             (r.prototype._fontList = null),
-            (r.prototype._doReverse = !1),
+            (r.prototype._doReverse = false),
             (r.prototype._fontListLength = -1),
             (r.prototype._taskQueue = []),
-            (r.prototype._taskLock = !1),
+            (r.prototype._taskLock = false),
             (r.prototype._resolveCallback = null),
             (r.prototype._oldUnresolved = null),
             (r.prototype._listCallbacks = []),
@@ -93,7 +93,7 @@ module.exports = function (e, t, n) {
                     else
                         try {
                             (console.log("tasklock: true (connect)"),
-                                (this._taskLock = !0),
+                                (this._taskLock = true),
                                 t === r.DEFAULT_PORT
                                     ? (this._tmpConnection = new WebSocket("wss://127.0.0.1:" + t))
                                     : (this._tmpConnection = new WebSocket("ws://127.0.0.1:" + t)),
@@ -108,7 +108,7 @@ module.exports = function (e, t, n) {
                                                 (this._tmpConnection.close(),
                                                 (this._tmpConnection = null),
                                                 console.log("tasklock: false"),
-                                                (this._taskLock = !1),
+                                                (this._taskLock = false),
                                                 (this._timeout = null),
                                                 console.log("connection time out"),
                                                 this._cbFatal());
@@ -117,7 +117,7 @@ module.exports = function (e, t, n) {
                                     )));
                         } catch (e) {
                             t === r.DEFAULT_PORT
-                                ? ((this._tlsError = !0), setTimeout(this._connect.bind(this), 50, t + 1))
+                                ? ((this._tlsError = true), setTimeout(this._connect.bind(this), 50, t + 1))
                                 : setTimeout(this._connect.bind(this), 2e3, t + 1);
                         }
             }),
@@ -130,10 +130,10 @@ module.exports = function (e, t, n) {
                 (this._setData(e, r.Cmd.probe), this._connection.send(e.buffer));
             }),
             (r.prototype._onClose = function (e) {
-                (console.log("socket closing:" + e), (this._connection = null), (this._tmpConnection = null), (this._initialized = !1));
+                (console.log("socket closing:" + e), (this._connection = null), (this._tmpConnection = null), (this._initialized = false));
             }),
             (r.prototype._error = function () {
-                if ((console.log("tasklock: false (error)"), (this._taskLock = !1), this._tmpConnection && !this._connection)) {
+                if ((console.log("tasklock: false (error)"), (this._taskLock = false), this._tmpConnection && !this._connection)) {
                     var e = this._tmpConnection.url.split(":"),
                         t = parseInt(e[e.length - 1]);
                     this._tmpConnection = null;
@@ -154,7 +154,7 @@ module.exports = function (e, t, n) {
                     s.addEventListener(
                         "loadend",
                         function () {
-                            var e = !1;
+                            var e = false;
                             if (null === i) ((i = s.result), (i = (i = new Uint8Array(i))[0]), s.readAsArrayBuffer(o));
                             else if (null === a) {
                                 a = s.result;
@@ -162,8 +162,8 @@ module.exports = function (e, t, n) {
                                     l = new Uint32Array(n.buffer);
                                 (l[0] !== r.Cmd.stamp
                                     ? (n.reverse(),
-                                      (l = new Uint32Array(n.buffer))[0] === r.Cmd.stamp && ((this._doReverse = !0), (e = !0)))
-                                    : (e = !0),
+                                      (l = new Uint32Array(n.buffer))[0] === r.Cmd.stamp && ((this._doReverse = true), (e = true)))
+                                    : (e = true),
                                     e && s.readAsArrayBuffer(t));
                             } else this._handleCmd(i, s.result);
                         }.bind(this)
@@ -180,21 +180,21 @@ module.exports = function (e, t, n) {
                     var t = this._listCallbacks[e];
                     (this._listCallbacks.shift(),
                         this._fontList && 1 == this._fontList.length && this._fontList[0].special
-                            ? t.done(this._fontList, !0, null)
+                            ? t.done(this._fontList, true, null)
                             : t.fail());
                 }
                 (this._resolveCallback &&
                     ((t = this._resolveCallback),
                     this._isInitialized() || (this._oldUnresolved ? this._oldUnresolved.push(t) : (this._oldUnresolved = [t])),
                     (this._resolveCallback = null),
-                    t.fail ? t.fail() : t(!0)),
-                    (this._taskLock = !1));
+                    t.fail ? t.fail() : t(true)),
+                    (this._taskLock = false));
             }),
             (r.prototype._cbFatal = function () {
-                (gDesigner.getSetting("system_fonts_enabled", !0)
-                    ? ((this._fontListLength = 1), (this._fontList = [{ family: "", special: !0, fonts: [{ weight: 400, style: "N" }] }]))
+                (gDesigner.getSetting("system_fonts_enabled", true)
+                    ? ((this._fontListLength = 1), (this._fontList = [{ family: "", special: true, fonts: [{ weight: 400, style: "N" }] }]))
                     : ((this._fontListLength = 0), (this._fontList = [])),
-                    (this._firstConnect = !1),
+                    (this._firstConnect = false),
                     this._cbFail());
             }),
             (r.prototype._cbDone = function (e) {
@@ -204,14 +204,14 @@ module.exports = function (e, t, n) {
                         ((t = this._listCallbacks[n]),
                             this._listCallbacks.shift(),
                             (this._listCallbacks = null),
-                            t.done(this._fontList, !0, null));
+                            t.done(this._fontList, true, null));
                 (this._resolveCallback && ((t = this._resolveCallbacks[n]), (this._resolveCallback = null), e ? t.done(e) : t()),
                     this._oldUnresolved &&
                         (this._oldUnresolved.forEach(function (t) {
                             e ? t.done(e) : t();
                         }),
                         (this._oldUnresolved = null)),
-                    (this._taskLock = !1));
+                    (this._taskLock = false));
             }),
             (r.prototype._handleCmd = function (e, t) {
                 try {
@@ -266,14 +266,14 @@ module.exports = function (e, t, n) {
                                         }
                                 ((this._fontListLength = l.length),
                                     (this._fontList = l),
-                                    (this._initialized = !0),
+                                    (this._initialized = true),
                                     console.log("tasklock: false (cmd list)"),
-                                    (this._taskLock = !1),
+                                    (this._taskLock = false),
                                     this._cbDone());
                             } else
                                 w == r.Cmd.error
-                                    ? (console.log("tasklock: false (cmd list err1)"), (this._taskLock = !1), this._cbFail())
-                                    : (console.log("tasklock: false (cmd list err2)"), (this._taskLock = !1), this._cbFail());
+                                    ? (console.log("tasklock: false (cmd list err1)"), (this._taskLock = false), this._cbFail())
+                                    : (console.log("tasklock: false (cmd list err2)"), (this._taskLock = false), this._cbFail());
                             break;
                         case r.Cmd.previews:
                             break;
@@ -292,7 +292,7 @@ module.exports = function (e, t, n) {
                 ((e[0] = n >> 24), (e[1] = (n >> 16) & 255), (e[2] = (n >> 8) & 255), (e[3] = (n >> 0) & 255), (e[4] = t));
             }),
             (r.prototype.hasEnabler = function () {
-                return !0;
+                return true;
             }),
             (r.prototype.getEnabler = function () {
                 var e = document.createElement("div");
@@ -306,7 +306,7 @@ module.exports = function (e, t, n) {
                     !(!this._connection || !this._initialized) &&
                     (0 == this._connection.readyState ||
                         1 == this._connection.readyState ||
-                        ((this._connection = null), (this._tmpConnection = null), (this._initialized = !1), !1))
+                        ((this._connection = null), (this._tmpConnection = null), (this._initialized = false), false))
                 );
             }),
             (r.prototype._getInstallButton = function () {
@@ -314,10 +314,10 @@ module.exports = function (e, t, n) {
                 "http://127.0.0.1:9000" === r.HOST &&
                     (r.HOST =
                         "https://" +
-                        (i.domain.startsWith("corelvector") ? "app-" : "") +
+                        (designerConfig.domain.startsWith("corelvector") ? "app-" : "") +
                         gDesigner.getEnv().split(".")[0] +
                         "." +
-                        i.domain);
+                        designerConfig.domain);
                 var e = document.createElement("object");
                 e.data = r.LAUNCHER_PATH;
                 var t = document.createElement("div");
@@ -359,7 +359,7 @@ module.exports = function (e, t, n) {
                     }
             }),
             (r.prototype._initialize = function () {
-                gDesigner.getSetting("system_fonts_enabled", !0)
+                gDesigner.getSetting("system_fonts_enabled", true)
                     ? this._taskLock || (this._tlsError ? this._connect(r.DEFAULT_PORT + 1) : this._connect(r.DEFAULT_PORT))
                     : this._cbFatal();
             }),
@@ -373,7 +373,7 @@ module.exports = function (e, t, n) {
                                 : t.family.toLowerCase() == e.toLowerCase();
                         })
                         .slice(t, t + n),
-                    !0,
+                    true,
                     null
                 );
             }),
@@ -409,5 +409,5 @@ module.exports = function (e, t, n) {
             (r.prototype.getProviderId = function () {
                 return s;
             }),
-            (e.exports = r));
+            (module.exports = r));
     };

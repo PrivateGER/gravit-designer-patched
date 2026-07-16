@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(29),
-            i = n(37),
-            a = n(145);
-        e.exports = function (e, t, n) {
+        var o = require(29),
+            i = require(37),
+            a = require(145);
+        module.exports = function (e, t, n) {
             var r, s;
             i(e);
             try {
@@ -13,7 +13,7 @@ module.exports = function (e, t, n) {
                 }
                 r = o(r, e);
             } catch (e) {
-                ((s = !0), (r = e));
+                ((s = true), (r = e));
             }
             if ("throw" === t) throw n;
             if (s) throw r;

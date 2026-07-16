@@ -1,24 +1,24 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1);
-        const i = n(18),
-            a = n(31);
-        var r = n(219),
-            s = n(85);
-        const { IS_TRUNK: l, IS_LOCALHOST: c, IS_BETA: d } = n(231);
+        require(3);
+        var GObject = require(1);
+        const GCategory = require(18),
+            a = require(31);
+        var r = require(219),
+            s = require(85);
+        const { IS_TRUNK: l, IS_LOCALHOST: c, IS_BETA: d } = require(231 /* IS_TRUNK */);
         function u(e) {
             let t = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
             ((this._serverName = e), (this._isDefault = !!t));
         }
-        (o.GObject.inherit(u, a),
+        (GObject.GObject.inherit(u, a),
             (u.ID = "help.switchwebcdr"),
-            (u.TITLE = new o.GLocaleKey("GSwitchWebcdrAction", "title")),
+            (u.TITLE = new GObject.GLocaleKey("GSwitchWebcdrAction", "title")),
             (u.prototype.getId = function () {
                 return u.ID + "." + this._serverName;
             }),
             (u.prototype.isCheckable = function () {
-                return !0;
+                return true;
             }),
             (u.prototype.isChecked = function () {
                 let e = gDesigner.getSetting("webcdr_choice");
@@ -28,13 +28,13 @@ module.exports = function (e, t, n) {
                 return this._serverName;
             }),
             (u.prototype.getCategory = function () {
-                return i.CATEGORY_HELP_SWITCHWEBCDR;
+                return GCategory.CATEGORY_HELP_SWITCHWEBCDR;
             }),
             (u.prototype.getGroup = function () {
                 return "help/switchwebcdr";
             }),
             (u.prototype.isEnabled = function () {
-                return !0;
+                return true;
             }),
             (u.prototype.isVisible = function () {
                 return !!(l || d || c);
@@ -45,10 +45,10 @@ module.exports = function (e, t, n) {
             (u.prototype._reloadApp = function () {
                 gContainer.getRuntime() === s.Runtime.Browser || gContainer.getRuntime() === s.Runtime.PWA
                     ? location.reload()
-                    : new r(o.GLocale.get(new o.GLocaleKey("GNewDocumentDialog", "text.restart-app"))).open();
+                    : new r(GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.restart-app"))).open();
             }),
             (u.prototype.toString = function () {
                 return "[Object GSwitchWebcdrAction]";
             }),
-            (e.exports = u));
+            (module.exports = u));
     };

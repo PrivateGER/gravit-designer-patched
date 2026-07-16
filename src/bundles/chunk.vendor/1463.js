@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(68),
-                r = i(438);
+module.exports = function (module, exports, require) {
+            var n = require(68),
+                r = require(438);
 
             function o() {}
             ((o.apply = function (e, t, i) {
@@ -39,5 +39,5 @@ module.exports = function (e, t, i) {
                         operator: "over",
                     }));
             }),
-                (e.exports = o));
+                (module.exports = o));
         };

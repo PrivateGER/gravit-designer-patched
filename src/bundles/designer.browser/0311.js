@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o = (function () {
             for (var e, t = [], n = 0; n < 256; n++) {
@@ -8,7 +8,7 @@ module.exports = function (e, t, n) {
             }
             return t;
         })();
-        e.exports = function (e, t, n, i) {
+        module.exports = function (e, t, n, i) {
             var a = o,
                 r = i + n;
             e ^= -1;

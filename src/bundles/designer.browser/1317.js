@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(1185);
+        require(3);
+        var GObject = require(1),
+            GOutlineAction = require(1185);
         function a() {}
-        (o.GObject.inherit(a, i),
+        (GObject.GObject.inherit(a, GOutlineAction),
             (a.ID = "modify.offset"),
-            (a.TITLE = new o.GLocaleKey("GOffsetAction", "title")),
+            (a.TITLE = new GObject.GLocaleKey("GOffsetAction", "title")),
             (a.prototype.getId = function () {
                 return a.ID;
             }),
@@ -23,27 +23,27 @@ module.exports = function (e, t, n) {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-expand-shrink" : null;
             }),
             (a.prototype._dialogPromptMessage = function () {
-                return o.GLocale.get(new o.GLocaleKey("GOffsetAction", "text.dialog-prompt-message"));
+                return GObject.GLocale.get(new GObject.GLocaleKey("GOffsetAction", "text.dialog-prompt-message"));
             }),
             (a.prototype._makeOffsetter = function (e, t) {
                 var n;
-                if (t.hasMixin(o.GStylable)) {
+                if (t.hasMixin(GObject.GStylable)) {
                     var i = t.getPaintLayers();
                     if (i) {
-                        var a = i.getBorderLayers(!0).pop();
+                        var a = i.getBorderLayers(true).pop();
                         a && (n = a.$_blc);
                     }
                 }
                 return (
-                    (t = o.GPathUtil.makeClockWise(t)),
-                    e > 0 ? new o.GVertexOffsetter(t, e, !1, !0, 0, n) : new o.GVertexOffsetter(t, -e, !0, !1, 0, n)
+                    (t = GObject.GPathUtil.makeClockWise(t)),
+                    e > 0 ? new GObject.GVertexOffsetter(t, e, false, true, 0, n) : new GObject.GVertexOffsetter(t, -e, true, false, 0, n)
                 );
             }),
             (a.prototype._dialogAlertMessage = function () {
-                return o.GLocale.get(new o.GLocaleKey("GOffsetAction", "text.invalid-value"));
+                return GObject.GLocale.get(new GObject.GLocaleKey("GOffsetAction", "text.invalid-value"));
             }),
             (a.prototype.toString = function () {
                 return "[Object GOffsetAction]";
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

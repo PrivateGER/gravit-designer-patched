@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            i(30);
-            const { ACCESS: n, INSPECT: r, COMMENT: o, COPY: a, SHARE: s, EDIT: l, OWNER: h, APPROVE: A, PASSWORD_PROTECT: c } = i(352),
-                { GLocale: p, GLocaleKey: u } = i(209),
+            require(30);
+            const { ACCESS: n, INSPECT: r, COMMENT: o, COPY: a, SHARE: s, EDIT: l, OWNER: h, APPROVE: A, PASSWORD_PROTECT: c } = require(352),
+                { GLocale: p, GLocaleKey: u } = require(209 /* GLocale */),
                 d = (e) =>
                     Object.freeze(
                         Object.assign(
@@ -34,13 +34,13 @@ module.exports = function (e, t, i) {
                             e
                         )
                     );
-            e.exports = Object.freeze({
+            module.exports = Object.freeze({
                 NoAccess: d({
                     id: "no_access",
                     i18n: "no-access",
                     level: 0,
                     permissions: {
-                        [n]: !1,
+                        [n]: false,
                     },
                 }),
                 Viewer: d({
@@ -48,7 +48,7 @@ module.exports = function (e, t, i) {
                     level: 1,
                     mentionName: "viewers",
                     permissions: {
-                        [n]: !0,
+                        [n]: true,
                     },
                 }),
                 Developer: d({
@@ -56,62 +56,62 @@ module.exports = function (e, t, i) {
                     level: 2,
                     mentionName: "developers",
                     permissions: {
-                        [n]: !0,
-                        [r]: !0,
-                        [a]: !0,
+                        [n]: true,
+                        [r]: true,
+                        [a]: true,
                     },
                 }),
                 Reviewer: d({
                     id: "reviewer",
                     level: 3,
                     mentionName: "reviewers",
-                    pro: !0,
+                    pro: true,
                     permissions: {
-                        [n]: !0,
-                        [o]: !0,
+                        [n]: true,
+                        [o]: true,
                     },
                 }),
                 Approver: d({
                     id: "approver",
                     level: 4,
                     mentionName: "approvers",
-                    pro: !0,
+                    pro: true,
                     permissions: {
-                        [n]: !0,
-                        [o]: !0,
-                        [A]: !0,
+                        [n]: true,
+                        [o]: true,
+                        [A]: true,
                     },
                 }),
                 CoAuthor: d({
                     id: "co_author",
                     i18n: "co-author",
                     level: 5,
-                    pro: !0,
-                    assignable: !1,
+                    pro: true,
+                    assignable: false,
                     mentionName: "coauthors",
                     permissions: {
-                        [n]: !0,
-                        [r]: !0,
-                        [a]: !0,
-                        [o]: !0,
-                        [l]: !0,
+                        [n]: true,
+                        [r]: true,
+                        [a]: true,
+                        [o]: true,
+                        [l]: true,
                     },
                 }),
                 Owner: d({
                     id: "owner",
                     level: 6,
                     mentionName: "owner",
-                    assignable: !1,
+                    assignable: false,
                     permissions: {
-                        [h]: !0,
-                        [A]: !0,
-                        [c]: !0,
-                        [n]: !0,
-                        [r]: !0,
-                        [a]: !0,
-                        [o]: !0,
-                        [s]: !0,
-                        [l]: !0,
+                        [h]: true,
+                        [A]: true,
+                        [c]: true,
+                        [n]: true,
+                        [r]: true,
+                        [a]: true,
+                        [o]: true,
+                        [s]: true,
+                        [l]: true,
                     },
                 }),
             });

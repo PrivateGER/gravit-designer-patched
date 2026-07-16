@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i() {
                 throw new Error("This class cannot be instantiated");
             }
@@ -14,5 +14,5 @@ module.exports = function (e, t) {
                 (i.RENDERFLAG_VERTEX = 4),
                 (i.RENDERFLAG_STROKE = 2),
                 (i.RENDERFLAG_FILL = 1),
-                (e.exports = i));
+                (module.exports = i));
         };

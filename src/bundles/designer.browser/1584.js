@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(53);
-        const i = n(878),
-            a = n(1585),
-            r = n(879),
-            s = n(1586),
-            l = n(1329);
-        e.exports = class extends i {
+        var o = require(53);
+        const i = require(878),
+            a = require(1585),
+            r = require(879),
+            s = require(1586),
+            l = require(1329);
+        module.exports = class extends i {
             constructor(e) {
                 (super(e), this.addGesture(new a()), this.addGesture(new r()), this.addGesture(new l()), this.addGesture(new s()));
             }

@@ -1,51 +1,51 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(53),
-            i = n(1),
-            a = n(15),
-            r = n(67),
-            s = n(18),
-            l = n(31);
+        require(3);
+        var o = require(53),
+            GObject = require(1),
+            GPlatform = require(15),
+            r = require(67),
+            GCategory = require(18),
+            l = require(31);
         function c(e) {
             ((this._type = e),
-                (this._title = new i.GLocaleKey("GAlignAction", "title." + e)),
+                (this._title = new GObject.GLocaleKey("GAlignAction", "title." + e)),
                 (c.TOOLTIP_CONFIG = {
                     [r.TOOLTIP_AREA.SIDEBAR]: {
                         [o.GEditor.ArrangeAlignType.AlignLeft]: r.GRichTooltipConfig.from({
-                            title: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-left-tooltip-title")),
-                            description: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-left-tooltip-description")),
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GAlignAction", "text.align-left-tooltip-title")),
+                            description: GObject.GLocale.get(new GObject.GLocaleKey("GAlignAction", "text.align-left-tooltip-description")),
                             learnMore: "/docs/arrange-objects/align/#align-left",
                         }),
                         [o.GEditor.ArrangeAlignType.AlignCenter]: r.GRichTooltipConfig.from({
-                            title: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-center-tooltip-title")),
-                            description: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-center-tooltip-description")),
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GAlignAction", "text.align-center-tooltip-title")),
+                            description: GObject.GLocale.get(new GObject.GLocaleKey("GAlignAction", "text.align-center-tooltip-description")),
                             learnMore: "/docs/arrange-objects/align/#align-center",
                         }),
                         [o.GEditor.ArrangeAlignType.AlignRight]: r.GRichTooltipConfig.from({
-                            title: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-right-tooltip-title")),
-                            description: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-right-tooltip-description")),
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GAlignAction", "text.align-right-tooltip-title")),
+                            description: GObject.GLocale.get(new GObject.GLocaleKey("GAlignAction", "text.align-right-tooltip-description")),
                             learnMore: "/docs/arrange-objects/align/#align-right",
                         }),
                         [o.GEditor.ArrangeAlignType.AlignTop]: r.GRichTooltipConfig.from({
-                            title: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-top-tooltip-title")),
-                            description: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-top-tooltip-description")),
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GAlignAction", "text.align-top-tooltip-title")),
+                            description: GObject.GLocale.get(new GObject.GLocaleKey("GAlignAction", "text.align-top-tooltip-description")),
                             learnMore: "/docs/arrange-objects/align/#align-top",
                         }),
                         [o.GEditor.ArrangeAlignType.AlignMiddle]: r.GRichTooltipConfig.from({
-                            title: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-middle-tooltip-title")),
-                            description: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-middle-tooltip-description")),
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GAlignAction", "text.align-middle-tooltip-title")),
+                            description: GObject.GLocale.get(new GObject.GLocaleKey("GAlignAction", "text.align-middle-tooltip-description")),
                             learnMore: "/docs/arrange-objects/align/#align-middle",
                         }),
                         [o.GEditor.ArrangeAlignType.AlignBottom]: r.GRichTooltipConfig.from({
-                            title: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-bottom-tooltip-title")),
-                            description: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-bottom-tooltip-description")),
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GAlignAction", "text.align-bottom-tooltip-title")),
+                            description: GObject.GLocale.get(new GObject.GLocaleKey("GAlignAction", "text.align-bottom-tooltip-description")),
                             learnMore: "/docs/arrange-objects/align/#align-bottom",
                         }),
                     },
                 }));
         }
-        (i.GObject.inherit(c, l),
+        (GObject.GObject.inherit(c, l),
             (c.ID = "arrange.align"),
             (c.TOOLTIP_CONFIG = null),
             (c.prototype._type = null),
@@ -57,7 +57,7 @@ module.exports = function (e, t, n) {
                 return this._title;
             }),
             (c.prototype.getCategory = function () {
-                return s.CATEGORY_MODIFY_ALIGN;
+                return GCategory.CATEGORY_MODIFY_ALIGN;
             }),
             (c.prototype.getGroup = function () {
                 var e = "";
@@ -79,7 +79,7 @@ module.exports = function (e, t, n) {
                 return "arrange/align-" + e;
             }),
             (c.prototype.getShortcut = function () {
-                const e = [a.GKey.Constant.OPTION];
+                const e = [GPlatform.GKey.Constant.OPTION];
                 switch (this._type) {
                     case o.GEditor.ArrangeAlignType.AlignLeft:
                         return e.concat("A");
@@ -119,9 +119,9 @@ module.exports = function (e, t, n) {
                     case o.GEditor.ArrangeAlignType.AlignTop:
                     case o.GEditor.ArrangeAlignType.AlignMiddle:
                     case o.GEditor.ArrangeAlignType.AlignBottom:
-                        return !0;
+                        return true;
                     default:
-                        return !1;
+                        return false;
                 }
             }),
             (c.prototype.getTooltipConfig = function (e) {
@@ -130,5 +130,5 @@ module.exports = function (e, t, n) {
             (c.prototype.toString = function () {
                 return "[Object GAlignAction]";
             }),
-            (e.exports = c));
+            (module.exports = c));
     };

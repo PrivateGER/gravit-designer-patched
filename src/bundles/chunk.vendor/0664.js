@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(6);
+module.exports = function (module, exports, require) {
+            var n = require(6);
 
             function r() {}
             ((r.options = {
@@ -26,12 +26,12 @@ module.exports = function (e, t, i) {
                     return t;
                 }),
                 (r.Matcher.prototype.isDirty = function (e) {
-                    if (this._unitedArea && !this._unitedArea.intersectsRect(e)) return !1;
+                    if (this._unitedArea && !this._unitedArea.intersectsRect(e)) return false;
                     if (this._rects && this._rects.length > 0)
                         for (var t = 0; t < this._rects.length; ++t) {
-                            if (this._rects[t].intersectsRect(e)) return !0;
+                            if (this._rects[t].intersectsRect(e)) return true;
                         }
-                    return !1;
+                    return false;
                 }),
                 (r.Matcher.prototype.transform = function (e) {
                     if ((this._unitedArea && (this._unitedArea = e.mapRect(this._unitedArea)), this._rects && this._rects.length > 0))
@@ -55,7 +55,7 @@ module.exports = function (e, t, i) {
                     for (var e = [], t = 0; t < this._rects.length; t++) {
                         for (var i = [this._rects[t]], r = 0; r < e.length; r++) {
                             for (var o = [], a = 0; a < i.length; a++) {
-                                var s = i[a].subtracted(e[r], !0);
+                                var s = i[a].subtracted(e[r], true);
                                 s instanceof Array
                                     ? ((s = s.filter(function (e) {
                                           return e && e.getWidth() > 0 && e.getHeight() > 0;
@@ -82,7 +82,7 @@ module.exports = function (e, t, i) {
                     var o = Math.floor(e),
                         a = Math.floor(t);
                     if (((i = Math.ceil(e + i) - o), (n = Math.ceil(t + n) - a), (e = o), (t = a), this._area)) {
-                        if (!this._area.intersectsRectXYWH(e, t, i, n)) return !1;
+                        if (!this._area.intersectsRectXYWH(e, t, i, n)) return false;
                         (e < this._area.getX() && (e = this._area.getX()),
                             t < this._area.getY() && (t = this._area.getY()),
                             e + i > this._area.getX() + this._area.getWidth() && (i = this._area.getX() + this._area.getWidth() - e),
@@ -99,7 +99,7 @@ module.exports = function (e, t, i) {
                         if (e >= l) {
                             if (t >= h) {
                                 if (e + i <= l + A) {
-                                    if (t + n <= h + c) return !1;
+                                    if (t + n <= h + c) return false;
                                     if (t < h + c) {
                                         ((n = t + n - (h + c)), (t = h + c), (s = -1));
                                         continue;
@@ -158,7 +158,7 @@ module.exports = function (e, t, i) {
                             return ((this._dirties[s][2] = 0), (this._dirties[s][3] = 0), this.dirty(u, d, g, f));
                         }
                     }
-                    return ((this._dirties[this._numDirties++] = [e, t, i, n]), !0);
+                    return ((this._dirties[this._numDirties++] = [e, t, i, n]), true);
                 }),
                 (r.prototype.translate = function (e, t) {
                     if (this._dirties && this._numDirties > 0)
@@ -186,5 +186,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.toString = function () {
                     return "[Object GDirtyList]";
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

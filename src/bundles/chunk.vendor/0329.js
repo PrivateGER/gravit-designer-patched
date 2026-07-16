@@ -1,35 +1,35 @@
-module.exports = function (e, t, i) {
-            var n = i(11),
-                r = i(5),
-                o = i(39),
-                a = i(52),
-                s = i(24),
-                l = i(59),
-                h = i(0),
-                A = i(17),
-                c = i(330),
-                p = i(56),
-                u = (i(22), i(45)),
-                d = i(73),
-                g = i(6),
-                f = i(54),
-                m = i(7),
-                y = i(82),
-                _ = i(63),
-                v = i(36),
-                b = i(66),
-                C = i(48),
-                w = i(95),
-                E = i(12),
-                B = i(229),
-                x = i(14),
-                P = i(9),
-                S = i(47);
+module.exports = function (module, exports, require) {
+            var n = require(11),
+                r = require(5),
+                o = require(39),
+                a = require(52),
+                s = require(24),
+                l = require(59),
+                IsFiniteNonNegativeNumber = require(0),
+                A = require(17),
+                c = require(330),
+                p = require(56),
+                u = (require(22), require(45)),
+                d = require(73),
+                g = require(6),
+                f = require(54),
+                m = require(7),
+                GEditor = require(82),
+                _ = require(63),
+                v = require(36),
+                b = require(66),
+                C = require(48),
+                w = require(95),
+                E = require(12),
+                B = require(229),
+                x = require(14),
+                String = require(9),
+                S = require(47);
 
             function T(e) {
                 c.call(this, e);
             }
-            (h.inherit(T, c), v.exports(T, w));
+            (IsFiniteNonNegativeNumber.inherit(T, c), v.exports(T, w));
             var I = x.getScreenDPI();
             ((T.Annots = {
                 Width: 5 * I,
@@ -45,7 +45,7 @@ module.exports = function (e, t, i) {
                         (this._alignment = b.OutlineAlignment.Outside),
                         this.removeFlag(b.Flag.ResizeAll | b.Flag.RotateCorners | b.Flag.RotateHandle));
                 }),
-                h.inherit(T.ImageBoxEditor, b),
+                IsFiniteNonNegativeNumber.inherit(T.ImageBoxEditor, b),
                 (T.ImageBoxEditor.prototype._image = null),
                 (T.ImageBoxEditor.prototype._preTransform = null),
                 (T.ImageBoxEditor.prototype.getBox = function () {
@@ -58,10 +58,10 @@ module.exports = function (e, t, i) {
                     return "Image";
                 }),
                 (T.ImageBoxEditor.prototype.requestInvalidation = function (e) {
-                    this._image.getScene() && y.getEditor(this._image.getScene()).requestInvalidation(this, e);
+                    this._image.getScene() && GEditor.getEditor(this._image.getScene()).requestInvalidation(this, e);
                 }),
                 (T.ImageBoxEditor.prototype._showOutline = function () {
-                    return !0;
+                    return true;
                 }),
                 (T.ImageBoxEditor.prototype.transformBox = function (e, t) {
                     var i = this.getBox();
@@ -93,7 +93,7 @@ module.exports = function (e, t, i) {
                         if (i && !i.isEmpty()) {
                             var n = this.getBoxTransform();
                             (n && (t = n.multiplied(t)), this._preTransform && (t = this._preTransform.multiplied(t)), (i = t.mapRect(i)));
-                            var r = this.getCustomBBox(e, !1);
+                            var r = this.getCustomBBox(e, false);
                             r && (i = i.united(r));
                             var a = this.getBBoxMargin();
                             i = i.expanded(a, a, a, a);
@@ -110,7 +110,7 @@ module.exports = function (e, t, i) {
                         this.resetTransform()),
                         b.prototype._applyPartMove.call(this, e, t, i, n));
                 }),
-                (T.prototype._editMode = !1),
+                (T.prototype._editMode = false),
                 (T.prototype.initialSetup = function (e) {}),
                 (T.prototype.createElementPreview = function () {
                     if (!this._elementPreview) {
@@ -137,7 +137,7 @@ module.exports = function (e, t, i) {
                         : v.prototype._applyTransform.call(this, e, t, i, n);
                 }),
                 (T.prototype.hasSelectionEditing = function () {
-                    return !0;
+                    return true;
                 }),
                 (T.prototype.setEditMode = function (e, t, i, n) {
                     if (this._editMode !== e || t)
@@ -166,12 +166,12 @@ module.exports = function (e, t, i) {
                                         w = l.getSide(g.Side.CENTER),
                                         B = new m(1, 0, 0, 1, -w.getX(), -w.getY()).scaled(C, b).translated(w.getX(), w.getY()),
                                         x = this._element.getScene(),
-                                        I = x ? y.getEditor(x) : null;
+                                        I = x ? GEditor.getEditor(x) : null;
                                     I && I.beginTransaction();
                                     try {
                                         this._element.setProperty("trf", h ? B.multiplied(h) : B);
                                     } finally {
-                                        I && I.commitTransaction(P.get(new S("GImageEditor", "action.crop-image")));
+                                        I && I.commitTransaction(String.get(new S("GImageEditor", "action.crop-image")));
                                     }
                                 }
                             }
@@ -183,11 +183,11 @@ module.exports = function (e, t, i) {
                         } else if (!this._editMode && this._imgBoxEditor) {
                             this._imgBoxEditor.requestInvalidation();
                             var F = this._imgBoxEditor;
-                            ((this._imgBoxEditor = null), this.removeEditor(F, !0));
+                            ((this._imgBoxEditor = null), this.removeEditor(F, true));
                         }
                 }),
                 (T.prototype.removeFlag = function (e) {
-                    (0 != (this._flags & e) && 0 != (e & o.Flag.Selected) && this.setEditMode(!1), c.prototype.removeFlag.call(this, e));
+                    (0 != (this._flags & e) && 0 != (e & o.Flag.Selected) && this.setEditMode(false), c.prototype.removeFlag.call(this, e));
                 }),
                 (T.prototype.getBBox = function (e) {
                     var t = c.prototype.getBBox.call(this, e);
@@ -229,7 +229,7 @@ module.exports = function (e, t, i) {
                             else if (e === T.IMAGEINTERNAL_PART_ID) {
                                 this._imgBoxEditor && o.prototype.movePart.call(this._imgBoxEditor, e, t, i, n, r, a, s);
                                 var B = t.origTrf ? t.origTrf.multiplied(E) : E;
-                                this._element.setImageTransform(B, !1, !0);
+                                this._element.setImageTransform(B, false, true);
                             }
                         }
                     }
@@ -241,7 +241,7 @@ module.exports = function (e, t, i) {
                             ? (this._prepareApplyTransform(this._element), this._applyTransform(this._element))
                             : this.resetTransform()
                         : e === T.IMAGEINTERNAL_PART_ID &&
-                          (this._element.setImageTransform(this._element.getImageTransform(), !0),
+                          (this._element.setImageTransform(this._element.getImageTransform(), true),
                           this._imgBoxEditor && o.prototype.resetTransform.call(this._imgBoxEditor)),
                         c.prototype._applyPartMove.call(this, e, t, i, n));
                 }),
@@ -274,7 +274,7 @@ module.exports = function (e, t, i) {
                         for (var h = 1; h < 4; ++h) s.addVertex(C.Command.Line, r[h].getX(), r[h].getY());
                         s.addVertex(C.Command.Close);
                         var A = new B();
-                        if (l.hitTest(e.getX(), e.getY(), s, 0, !0, A))
+                        if (l.hitTest(e.getX(), e.getY(), s, 0, true, A))
                             return new o.PartInfo(
                                 this,
                                 T.IMAGEINTERNAL_PART_ID,
@@ -282,8 +282,8 @@ module.exports = function (e, t, i) {
                                     point: e,
                                     origTrf: this._element.getImageTransform(),
                                 },
-                                !0,
-                                !1
+                                true,
+                                false
                             );
                     }
                     return null;
@@ -299,15 +299,15 @@ module.exports = function (e, t, i) {
                     for (var a = 1; a < 4; ++a) r.addVertex(C.Command.Line, n[a].getX(), n[a].getY());
                     r.addVertex(C.Command.Close);
                     var s = new B();
-                    return l.hitTest(e.getX(), e.getY(), r, 2 * i, !1, s)
+                    return l.hitTest(e.getX(), e.getY(), r, 2 * i, false, s)
                         ? new o.PartInfo(
                               this,
                               T.CROPFRAME_PART_ID,
                               {
                                   point: e,
                               },
-                              !0,
-                              !1
+                              true,
+                              false
                           )
                         : null;
                 }),
@@ -319,7 +319,7 @@ module.exports = function (e, t, i) {
                             t,
                             function (t, i, r, a) {
                                 var h = new B();
-                                if (l.hitTest(e.getX(), e.getY(), t, 2 * s.annotPickDistance, !0, h))
+                                if (l.hitTest(e.getX(), e.getY(), t, 2 * s.annotPickDistance, true, h))
                                     return (
                                         (n = new o.PartInfo(
                                             this,
@@ -329,10 +329,10 @@ module.exports = function (e, t, i) {
                                                 point: i,
                                                 resizeSegment: a,
                                             },
-                                            !0,
-                                            !1
+                                            true,
+                                            false
                                         )),
-                                        !0
+                                        true
                                     );
                             }.bind(this)
                         ),
@@ -448,13 +448,13 @@ module.exports = function (e, t, i) {
                             ) {
                                 var w = u[C],
                                     B = this._getResizeSegment(w.side, d, y, v);
-                                if (!0 === t(w.vertices, w.point, w.side, B)) break;
+                                if (true === t(w.vertices, w.point, w.side, B)) break;
                             }
                         }
                     }
                 }),
                 (T.prototype._constructAngleAnnot = function (e, t, i, n, o, a) {
-                    var s = !1;
+                    var s = false;
                     if (n > 0 && o > 0) {
                         var l = E.getPointAtLength(t.getX(), t.getY(), e.getX(), e.getY(), T.Annots.AngleLength),
                             h = E.getPointAtLength(t.getX(), t.getY(), i.getX(), i.getY(), T.Annots.AngleLength),
@@ -477,24 +477,24 @@ module.exports = function (e, t, i) {
                               a.addVertex(C.Command.Line, v.getX(), v.getY()),
                               a.addVertex(C.Command.Line, u.getX(), u.getY()),
                               a.addVertex(C.Command.Close),
-                              (s = !0))
+                              (s = true))
                             : (v = E.getIntersectionPoint(l.getX(), l.getY(), u.getX(), u.getY(), h.getX(), h.getY(), y.getX(), y.getY()))
                               ? (a.addVertex(C.Command.Move, l.getX(), l.getY()),
                                 a.addVertex(C.Command.Line, t.getX(), t.getY()),
                                 a.addVertex(C.Command.Line, h.getX(), h.getY()),
                                 a.addVertex(C.Command.Line, v.getX(), v.getY()),
                                 a.addVertex(C.Command.Close),
-                                (s = !0))
+                                (s = true))
                               : (a.addVertex(C.Command.Move, l.getX(), l.getY()),
                                 a.addVertex(C.Command.Line, t.getX(), t.getY()),
                                 a.addVertex(C.Command.Line, h.getX(), h.getY()),
                                 a.addVertex(C.Command.Close),
-                                (s = !0));
+                                (s = true));
                     }
                     return s;
                 }),
                 (T.prototype._constructMiddleAnnot = function (e, t, i, n, o) {
-                    var a = !1;
+                    var a = false;
                     if (n > 0) {
                         var s = i.getX() - e.getX(),
                             l = i.getY() - e.getY(),
@@ -508,15 +508,15 @@ module.exports = function (e, t, i) {
                             o.addVertex(C.Command.Line, u.getX(), u.getY()),
                             o.addVertex(C.Command.Line, c.getX(), c.getY()),
                             o.addVertex(C.Command.Close),
-                            (a = !0));
+                            (a = true));
                     }
                     return a;
                 }),
                 (T.prototype._showResizeHandlesInDetailMode = function () {
-                    return !0;
+                    return true;
                 }),
                 (T.prototype.toString = function () {
                     return "[Object GImageEditor]";
                 }),
-                (e.exports = T));
+                (module.exports = T));
         };

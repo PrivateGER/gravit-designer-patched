@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(26));
-        const o = n(255);
-        e.exports = class {
+        (require(19), require(26));
+        const o = require(255);
+        module.exports = class {
             constructor() {
                 this._missingFonts = [];
             }

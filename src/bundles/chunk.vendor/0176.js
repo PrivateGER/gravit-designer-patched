@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             var n,
-                r = i(610);
+                r = require(610);
 
             function o() {}
             ((o.OperatingSystem = {
@@ -13,7 +13,7 @@ module.exports = function (e, t, i) {
                     Tablet: 20,
                     Phone: 30,
                 }),
-                (o.littleEndian = !0),
+                (o.littleEndian = true),
                 (o.operatingSystem = null),
                 (o.hardware = null),
                 (o.language = null),
@@ -107,5 +107,5 @@ module.exports = function (e, t, i) {
                     ).split("-");
                     return 2 == e.length || e ? e[0].toLowerCase() : null;
                 })()),
-                (e.exports = o));
+                (module.exports = o));
         };

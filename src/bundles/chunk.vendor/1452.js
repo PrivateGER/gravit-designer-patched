@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(6);
+module.exports = function (module, exports, require) {
+            var n = require(6);
 
             function r() {}
             ((r.tile = function (e, t) {
@@ -22,5 +22,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.toString = function () {
                     return "[Object GPDFRect]";
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

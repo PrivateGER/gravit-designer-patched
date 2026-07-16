@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(124),
-            i = n(27),
-            a = n(240),
-            r = n(93),
-            s = n(101),
-            l = n(573),
+        var o = require(124),
+            i = require(27),
+            a = require(240),
+            r = require(93),
+            s = require(101),
+            l = require(573),
             c = i([].push),
             d = function (e) {
                 var t = 1 === e,
@@ -26,7 +26,7 @@ module.exports = function (e, t, n) {
                             else if (_)
                                 switch (e) {
                                     case 3:
-                                        return !0;
+                                        return true;
                                     case 5:
                                         return v;
                                     case 6:
@@ -37,14 +37,14 @@ module.exports = function (e, t, n) {
                             else
                                 switch (e) {
                                     case 4:
-                                        return !1;
+                                        return false;
                                     case 7:
                                         c(A, v);
                                 }
                     return u ? -1 : i || d ? d : A;
                 };
             };
-        e.exports = {
+        module.exports = {
             forEach: d(0),
             map: d(1),
             filter: d(2),

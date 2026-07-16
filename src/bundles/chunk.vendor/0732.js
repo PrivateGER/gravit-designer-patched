@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(51),
-                o = i(14),
-                a = i(12),
-                s = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(51),
+                o = require(14),
+                a = require(12),
+                String = require(9);
 
             function l() {
                 (r.call(this), this._setDefaultProperties(l.GeometryProperties));
@@ -17,7 +17,7 @@ module.exports = function (e, t, i) {
                     sh: "GGLHueSaturationShader",
                 }),
                 (l.prototype.getNodeNameTranslated = function () {
-                    return s.getValue("GGLHueSaturationEffect", "name", this.getNodeName());
+                    return String.getValue("GGLHueSaturationEffect", "name", this.getNodeName());
                 }),
                 (l.RANGES = {
                     hue: [-1, 1],
@@ -37,5 +37,5 @@ module.exports = function (e, t, i) {
                 (l.prototype.removeNativeEffect = function (e, t, i) {
                     e.setFilter(o.Filter.Saturate, null);
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

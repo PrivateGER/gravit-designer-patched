@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16),
-            i = n(1),
-            a = o(n(565)),
+        var o = require(16),
+            GObject = require(1),
+            a = o(require(565)),
             r = {
                 init: function (e) {
                     return (
-                        (e = $.extend({ allowDrag: !0, allowDrop: !0 }, e)),
+                        (e = $.extend({ allowDrag: true, allowDrop: true }, e)),
                         this.each(function () {
                             var t = this,
                                 n = $(this);
@@ -25,13 +25,13 @@ module.exports = function (e, t, n) {
                                             if (o) {
                                                 (t.stopPropagation(), n.trigger("patterndrag", o));
                                                 var a = gDragImage().css({
-                                                    background: i.GPattern.asCSSBackground(o),
+                                                    background: GObject.GPattern.asCSSBackground(o),
                                                     width: "20px",
                                                     height: "20px",
                                                 });
                                                 (t.dataTransfer.setDragImage(a[0], 10, 10),
                                                     (t.dataTransfer.effectAllowed = "move"),
-                                                    t.dataTransfer.setData(i.GPattern.MIME_TYPE, i.GPattern.serialize(o)),
+                                                    t.dataTransfer.setData(GObject.GPattern.MIME_TYPE, GObject.GPattern.serialize(o)),
                                                     (t.dataTransfer.sourceElement = this));
                                             } else t.preventDefault();
                                         })
@@ -49,24 +49,24 @@ module.exports = function (e, t, n) {
                                             e.stopPropagation();
                                             var o = n.data("gpatterntarget"),
                                                 a = e.originalEvent,
-                                                s = a.dataTransfer.getData(i.GPattern.MIME_TYPE);
-                                            if (s && (s = i.GPattern.deserialize(s))) {
-                                                var l = !0;
+                                                s = a.dataTransfer.getData(GObject.GPattern.MIME_TYPE);
+                                            if (s && (s = GObject.GPattern.deserialize(s))) {
+                                                var l = true;
                                                 if (o.types && o.types.length > 0) {
-                                                    l = !1;
+                                                    l = false;
                                                     for (var c = 0; c < o.types.length; ++c)
                                                         if (o.types[c] && s instanceof o.types[c]) {
-                                                            l = !0;
+                                                            l = true;
                                                             break;
                                                         }
                                                 }
                                                 if (l) {
                                                     var d = n.data("gpatterntarget").pattern;
-                                                    (i.GUtil.equals(s, d) || (r.value.call(t, s), n.trigger("patternchange", s)),
+                                                    (GObject.GUtil.equals(s, d) || (r.value.call(t, s), n.trigger("patternchange", s)),
                                                         n.trigger("patterndrop", [s, a]));
                                                 }
                                             }
-                                            return !1;
+                                            return false;
                                         }));
                         })
                     );
@@ -75,7 +75,7 @@ module.exports = function (e, t, n) {
                     var t = $(this),
                         n = t.data("gpatterntarget") || {};
                     return arguments.length
-                        ? ((e = "string" == typeof e ? i.GPattern.deserialize(e) : e), (n.pattern = e), this)
+                        ? ((e = "string" == typeof e ? GObject.GPattern.deserialize(e) : e), (n.pattern = e), this)
                         : n.pattern || null;
                 },
                 types: function (e) {

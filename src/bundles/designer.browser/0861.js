@@ -1,50 +1,50 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(30), n(3));
-        var o = n(1),
-            i = n(15),
-            a = n(67),
-            r = n(18),
-            s = n(31),
-            l = n(1513),
-            c = n(446),
-            d = n(447);
-        const u = n(86),
-            p = n(44);
+        (require(30), require(3));
+        var GObject = require(1),
+            GPlatform = require(15),
+            a = require(67),
+            GCategory = require(18),
+            s = require(31),
+            GExportDialog = require(1513),
+            GLoginPanel = require(446),
+            GSaveAction = require(447);
+        const u = require(86),
+            GSystemDialog = require(44);
         function g(e) {
             ((this._options = e || null),
                 (g.TOOLTIP_CONFIG = {
                     [a.TOOLTIP_AREA.TOOLBAR]: a.GRichTooltipConfig.from({
-                        title: o.GLocale.get(new o.GLocaleKey("GExportAction", "tooltip-title")),
-                        description: o.GLocale.get(new o.GLocaleKey("GExportAction", "tooltip-description")),
+                        title: GObject.GLocale.get(new GObject.GLocaleKey("GExportAction", "tooltip-title")),
+                        description: GObject.GLocale.get(new GObject.GLocaleKey("GExportAction", "tooltip-description")),
                         shortcut: g.SHORTCUT,
                         learnMore: "/docs/import-export/export/",
                     }),
                     [a.TOOLTIP_AREA.MAIN_MENU.TRY_PRO_COMMON]: a.GRichTooltipConfig.from({
-                        title: o.GLocale.get(new o.GLocaleKey("GExportAction", "text.try-this-feature-pro-tooltip-title")),
-                        description: o.GLocale.get(new o.GLocaleKey("GExportAction", "text.try-this-feature-pro-tooltip-description")),
+                        title: GObject.GLocale.get(new GObject.GLocaleKey("GExportAction", "text.try-this-feature-pro-tooltip-title")),
+                        description: GObject.GLocale.get(new GObject.GLocaleKey("GExportAction", "text.try-this-feature-pro-tooltip-description")),
                         learnMore: "/docs/import-export/export/#advanced-export",
                         upgradeToProStatsValue: "file.export",
-                        middle: !1,
-                        side: !0,
+                        middle: false,
+                        side: true,
                     }),
                     [a.TOOLTIP_AREA.MAIN_MENU.TRY_EXP_PDF_ADVANCED_SETTING]: a.GRichTooltipConfig.from({
-                        title: o.GLocale.get(new o.GLocaleKey("GExportAction", "text.try-export-pdf-advanced-setting-tooltip-title")),
-                        description: o.GLocale.get(
-                            new o.GLocaleKey("GExportAction", "text.try-export-pdf-advanced-setting-tooltip-description")
+                        title: GObject.GLocale.get(new GObject.GLocaleKey("GExportAction", "text.try-export-pdf-advanced-setting-tooltip-title")),
+                        description: GObject.GLocale.get(
+                            new GObject.GLocaleKey("GExportAction", "text.try-export-pdf-advanced-setting-tooltip-description")
                         ),
                         learnMore: "/docs/import-export/export/#advanced-export",
                         upgradeToProStatsValue: "file.export.pdf",
-                        middle: !1,
-                        side: !0,
+                        middle: false,
+                        side: true,
                     }),
                 }),
                 this._initProTooltip());
         }
-        (o.GObject.inherit(g, s),
+        (GObject.GObject.inherit(g, s),
             (g.ID = "file.export"),
-            (g.TITLE = new o.GLocaleKey("GExportAction", "title")),
-            (g.SHORTCUT = [i.GKey.Constant.SHIFT, i.GKey.Constant.META, "E"]),
+            (g.TITLE = new GObject.GLocaleKey("GExportAction", "title")),
+            (g.SHORTCUT = [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "E"]),
             (g.TOOLTIP_CONFIG = null),
             (g.prototype._initProTooltip = function () {
                 g.TOOLTIP_CONFIG[a.TOOLTIP_AREA.TOOLBAR] = a.GRichTooltipConfig.from(
@@ -57,7 +57,7 @@ module.exports = function (e, t, n) {
                 return this._options && this._options.format ? g.ID + "." + this._options.format : g.ID;
             }),
             (g.prototype.getTitle = function () {
-                return this._options ? new o.GLocaleKey("GExportAction", "title.advanced-options") : g.TITLE;
+                return this._options ? new GObject.GLocaleKey("GExportAction", "title.advanced-options") : g.TITLE;
             }),
             (g.prototype.getGroupIcon = function () {
                 return this._options ? null : "gravit-icon-export";
@@ -66,19 +66,19 @@ module.exports = function (e, t, n) {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-export" : null;
             }),
             (g.prototype.getCategory = function () {
-                return this._options && "pdf" == this._options.format ? r.CATEGORY_FILE_EXPORT_PDF : r.CATEGORY_FILE_EXPORT;
+                return this._options && "pdf" == this._options.format ? GCategory.CATEGORY_FILE_EXPORT_PDF : GCategory.CATEGORY_FILE_EXPORT;
             }),
             (g.prototype.getGroup = function () {
                 return this._options ? "export/file-type/export" : "export/export";
             }),
             (g.prototype.isPro = function () {
-                return !0;
+                return true;
             }),
             (g.prototype.getShortcut = function () {
                 return this._options ? null : g.SHORTCUT;
             }),
             (g.prototype.isEnabled = function () {
-                if (!gDesigner.getApplicationManager().isExportEnabled()) return !1;
+                if (!gDesigner.getApplicationManager().isExportEnabled()) return false;
                 return !!gDesigner.getActiveDocument();
             }),
             (g.prototype.execute = function () {
@@ -86,22 +86,22 @@ module.exports = function (e, t, n) {
                     t = gDesigner.getActiveDocument(),
                     n = this;
                 function i(t) {
-                    new l(t, n._options || e, n.getId()).open();
+                    new GExportDialog(t, n._options || e, n.getId()).open();
                 }
                 t && t.isCommercialProductFile()
                     ? t.openPaywall(this.getId())
                     : t.hasPagesWithInfiniteEmptyCanvas()
-                      ? p.alert(o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.error-emtpy-infinite-canvas")))
-                      : new c(
+                      ? GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.error-emtpy-infinite-canvas")))
+                      : new GLoginPanel(
                             () => {
                                 $(".g-export-dialog").length ||
                                     (t.isNew()
-                                        ? p.confirm(
-                                              o.GLocale.get(new o.GLocaleKey("GExportAction", "text.save-before-export")),
+                                        ? GSystemDialog.confirm(
+                                              GObject.GLocale.get(new GObject.GLocaleKey("GExportAction", "text.save-before-export")),
                                               (e) => {
                                                   e
                                                       ? gDesigner.executeAction(
-                                                            d.ID,
+                                                            GSaveAction.ID,
                                                             [
                                                                 t,
                                                                 function () {
@@ -110,14 +110,14 @@ module.exports = function (e, t, n) {
                                                                     const { documentStatus: t = null } = e;
                                                                     t && t === u.Saved && i(gDesigner.getActiveDocument());
                                                                 },
-                                                                !0,
+                                                                true,
                                                             ],
                                                             "unsavedhandler"
                                                         )
                                                       : i(t);
                                               },
-                                              o.GLocale.get(new o.GLocaleKey("GLocale", "no")),
-                                              o.GLocale.get(new o.GLocaleKey("GLocale", "yes"))
+                                              GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "no")),
+                                              GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "yes"))
                                           )
                                         : i(t));
                             },
@@ -139,5 +139,5 @@ module.exports = function (e, t, n) {
             (g.prototype.toString = function () {
                 return "[Object GExportAction]";
             }),
-            (e.exports = g));
+            (module.exports = g));
     };

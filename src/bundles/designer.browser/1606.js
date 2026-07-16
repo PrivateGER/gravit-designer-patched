@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16),
-            i = n(15),
-            a = n(1),
-            r = n(198),
-            s = o(n(18)),
-            l = o(n(31));
+        var o = require(16),
+            GPlatform = require(15),
+            GObject = require(1),
+            SidebarsIds = require(198),
+            s = o(require(18 /* GCategory */)),
+            l = o(require(31));
         class c extends l.default {
             getId() {
                 return c.ID;
@@ -17,24 +17,24 @@ module.exports = function (e, t, n) {
                 return s.default.CATEGORY_MODIFY;
             }
             getShortcut() {
-                return [i.GKey.Constant.META, "2"];
+                return [GPlatform.GKey.Constant.META, "2"];
             }
             isVisible() {
-                return !1;
+                return false;
             }
             execute() {
                 const e = gDesigner.getLeftSidebars().getActiveSidebar(),
-                    t = gDesigner.getLeftSidebars().getSidebar(r.SidebarsIds.GOutlineSidebar),
+                    t = gDesigner.getLeftSidebars().getSidebar(SidebarsIds.SidebarsIds.GOutlineSidebar),
                     n = t.getLayerPanel(),
                     o = n.gLayerPanel("getCurrentFocusedNode");
                 if (o && e === t.getId()) {
                     const e = n.gLayerPanel("getItem", o);
-                    e.hasFlag(a.GNode.Flag.Selected) && n.gLayerPanel("toggleLockStatusOfLayerOrItem", e);
+                    e.hasFlag(GObject.GNode.Flag.Selected) && n.gLayerPanel("toggleLockStatusOfLayerOrItem", e);
                 }
             }
             toString() {
                 return "[Object GLockLayerAction]";
             }
         }
-        ((c.ID = "modify.lock-layer"), (c.TITLE = new a.GLocaleKey("GLockLayerAction", "title")), (e.exports = c));
+        ((c.ID = "modify.lock-layer"), (c.TITLE = new GObject.GLocaleKey("GLockLayerAction", "title")), (module.exports = c));
     };

@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
-            var n = i(1224),
-                r = i(1225),
+module.exports = function (module, exports, require) {
+            var n = require(1224),
+                r = require(1225),
                 o = function (e, t) {
                     r.call(this, e.getDocument(), e, new n(), t);
                 };
-            (i(0).inherit(o, r), (e.exports = o));
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(o, r), (module.exports = o));
         };

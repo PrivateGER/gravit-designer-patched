@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(42);
+module.exports = function (module, exports, require) {
+            var n = require(42);
 
             function r(e) {
                 var t =
@@ -25,7 +25,7 @@ module.exports = function (e, t, i) {
                         "        uniform highp sampler2D texture;        varying highp vec2 texCoord;        void main() {            gl_FragColor = texture2D(texture, 1.0 - texCoord);        }        "
                     )));
             }
-            (i(0).inherit(r, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(r, n),
                 (r.prototype._revxShader = null),
                 (r.prototype._revyShader = null),
                 (r.prototype._revxyShader = null),
@@ -93,5 +93,5 @@ module.exports = function (e, t, i) {
                         ),
                         d && d.simpleShader.call(d, null, y, y));
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

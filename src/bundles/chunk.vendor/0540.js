@@ -1,17 +1,17 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(6),
-                o = i(5),
-                a = i(24),
-                s = i(75),
-                l = i(72),
-                h = i(14),
-                A = i(7);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(6),
+                o = require(5),
+                a = require(24),
+                s = require(75),
+                l = require(72),
+                h = require(14),
+                A = require(7);
 
             function c(e) {
-                ((this._scene = e), (this._activated = !1));
+                ((this._scene = e), (this._activated = false));
             }
-            (n.inherit(c, s),
+            (IsFiniteNonNegativeNumber.inherit(c, s),
                 (c.ValueDirection = {
                     Up: 1,
                     Down: 2,
@@ -24,14 +24,14 @@ module.exports = function (e, t, i) {
                 (c.InvalidationRequestEvent = function (e) {
                     this.area = e;
                 }),
-                n.inherit(c.InvalidationRequestEvent, l),
+                IsFiniteNonNegativeNumber.inherit(c.InvalidationRequestEvent, l),
                 (c.InvalidationRequestEvent.prototype.area = null),
                 (c.InvalidationRequestEvent.prototype.toString = function () {
                     return "[Event GDistanceHelper.InvalidationRequestEvent]";
                 }),
                 (c.prototype._scene = null),
                 (c.prototype._view = null),
-                (c.prototype._activated = !1),
+                (c.prototype._activated = false),
                 (c.prototype._visuals = null),
                 (c.prototype._baseRect = null),
                 (c.prototype._targetRect = null),
@@ -40,10 +40,10 @@ module.exports = function (e, t, i) {
                     this._view = e;
                 }),
                 (c.prototype.activateMeasurement = function () {
-                    this._view && ((this._activated = !0), this.clearVisuals(), (this._area = null));
+                    this._view && ((this._activated = true), this.clearVisuals(), (this._area = null));
                 }),
                 (c.prototype.deactivateMeasurement = function () {
-                    (this.invalidate(), (this._activated = !1));
+                    (this.invalidate(), (this._activated = false));
                 }),
                 (c.prototype.isActivated = function () {
                     return this._activated;
@@ -51,7 +51,7 @@ module.exports = function (e, t, i) {
                 (c.prototype.refreshVisuals = function (e, t, i, n) {
                     if (this._activated) {
                         (this.clearVisuals(), this.invalidate(), i && (this._baseRect = e), n && (this._targetRect = t));
-                        var a = e.getXYOffset(t, !0, !0, !0);
+                        var a = e.getXYOffset(t, true, true, true);
                         if (a.x || a.y)
                             if (a.x && !a.y) {
                                 ((re =
@@ -108,7 +108,7 @@ module.exports = function (e, t, i) {
                                     v = a.y > 0 ? t.getY() : t.getSide(r.Side.BOTTOM_LEFT).getY(),
                                     b = new o(h - l / 2, _);
                                 ((R = [new o(h, _), new o(m, _)]), (k = a.y > 0 ? c.ValueDirection.Up : c.ValueDirection.Down));
-                                (G = this.correctValuePoint(b, g, R, k, null, null, !0)).valuePt
+                                (G = this.correctValuePoint(b, g, R, k, null, null, true)).valuePt
                                     ? (this._visuals.push({
                                           line: G.line,
                                           value: l,
@@ -137,7 +137,7 @@ module.exports = function (e, t, i) {
                                     w = a.x > 0 ? t.getX() : t.getSide(r.Side.TOP_RIGHT).getX(),
                                     E = new o(C, d - u / 2);
                                 ((R = [new o(C, d), new o(C, y)]), (k = a.x > 0 ? c.ValueDirection.Left : c.ValueDirection.Right));
-                                (G = this.correctValuePoint(E, f, R, k, null, null, !0)).valuePt
+                                (G = this.correctValuePoint(E, f, R, k, null, null, true)).valuePt
                                     ? (this._visuals.push({
                                           line: G.line,
                                           value: u,
@@ -661,7 +661,7 @@ module.exports = function (e, t, i) {
                             this._area = this._area ? this._area.united(g) : g;
                         }
                         if (this._area && this._view.getViewConfiguration().multiPageView) {
-                            var f = this._scene.getActivePage().getPosition(!0),
+                            var f = this._scene.getActivePage().getPosition(true),
                                 m = new A(1, 0, 0, 1, f.getX(), f.getY());
                             this._area = m.mapRect(this._area);
                         }
@@ -680,7 +680,7 @@ module.exports = function (e, t, i) {
                     if (this._activated) {
                         e = e;
                         if (t.configuration.multiPageView) {
-                            var i = this._scene.getActivePage().getPosition(!0);
+                            var i = this._scene.getActivePage().getPosition(true);
                             e = e.preMultiplied(new A(1, 0, 0, 1, i.getX(), i.getY()));
                         }
                         if (this._baseRect) {
@@ -851,5 +851,5 @@ module.exports = function (e, t, i) {
                 (c.prototype.toString = function () {
                     return "[DistanceHelper]";
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

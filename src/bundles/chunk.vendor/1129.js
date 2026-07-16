@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(147),
-                o = i(12),
-                a = i(793),
-                s = i(598);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(147),
+                o = require(12),
+                a = require(793),
+                s = require(598);
 
             function l() {
                 a.apply(this, arguments);
             }
-            (n.inherit(l, a),
+            (IsFiniteNonNegativeNumber.inherit(l, a),
                 (l.prototype._getGradient = function () {
                     if (this._data) {
                         var e = s.parse(this._data.from),
@@ -23,5 +23,5 @@ module.exports = function (e, t, i) {
                     }
                     return new r(null, 1, o.toRadians(90), 0.5, 0);
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

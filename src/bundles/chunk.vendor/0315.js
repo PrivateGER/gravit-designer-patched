@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(42);
+module.exports = function (module, exports, require) {
+            var n = require(42);
 
             function r(e) {
                 (n.call(this, e, n.tilingAwareVertexSource, this._blurFinish),
                     (this._bendAndBlur = new n(e, n.tilingAwareVertexSource, this._bendAndBlurSrc)));
             }
-            (i(0).inherit(r, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(r, n),
                 (r.MAX_BLUR = 80),
                 (r.MAX_BLUR2 = 40),
                 (r.RADIUS_TO_BLUR = 2),
@@ -67,5 +67,5 @@ module.exports = function (e, t, i) {
                 (r.prototype._radiusToSigma = function (e) {
                     return e / (Math.sqrt(2 * Math.log(255)) - 1);
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

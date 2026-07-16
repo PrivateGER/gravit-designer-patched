@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(0);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0);
 
             function r() {}
             ((r.prototype._listeners = null),
-                (r.prototype.temporaryReceiver = !1),
+                (r.prototype.temporaryReceiver = false),
                 (r.prototype.addEventListener = function (e, t, i, r, o, a) {
-                    var s = n.getTypeId(e);
+                    var s = IsFiniteNonNegativeNumber.getTypeId(e);
                     this._listeners || (this._listeners = {});
                     var l = t;
                     if (i || r) {
@@ -22,23 +22,23 @@ module.exports = function (e, t, i) {
                                   listener: t,
                                   sourceListener: l,
                                   target: i,
-                                  registered: !0,
+                                  registered: true,
                                   persistent: a,
                               })
                             : this._listeners[s].listeners.push({
                                   listener: t,
                                   sourceListener: l,
                                   target: i,
-                                  registered: !0,
+                                  registered: true,
                                   persistent: a,
                               }));
                 }),
                 (r.prototype.removeEventListener = function (e, t, i) {
-                    var r = n.getTypeId(e),
-                        o = !1;
+                    var r = IsFiniteNonNegativeNumber.getTypeId(e),
+                        o = false;
                     if (this._listeners && r in this._listeners) {
                         for (var a = this._listeners[r].listeners, s = 0; s < a.length; ++s)
-                            a[s].sourceListener != t || (i && a[s].target !== i) || ((a[s].registered = !1), a.splice(s, 1), (o = !0), --s);
+                            a[s].sourceListener != t || (i && a[s].target !== i) || ((a[s].registered = false), a.splice(s, 1), (o = true), --s);
                         0 == a.length && delete this._listeners[r];
                     }
                     return o;
@@ -50,18 +50,18 @@ module.exports = function (e, t, i) {
                             for (var i = t.length - 1; i >= 0; i--) {
                                 for (var n = this._listeners[t[i]], r = n.listeners.length - 1; r >= 0; r--) {
                                     var o = n.listeners[r];
-                                    (!e && o.persistent) || ((o.registered = !1), n.listeners.splice(r, 1));
+                                    (!e && o.persistent) || ((o.registered = false), n.listeners.splice(r, 1));
                                 }
                                 0 === n.listeners.length && delete this._listeners[t[i]];
                             }
                     }
                 }),
                 (r.prototype.hasEventListeners = function (e) {
-                    return !(!this._listeners || !(n.getTypeId(e) in this._listeners));
+                    return !(!this._listeners || !(IsFiniteNonNegativeNumber.getTypeId(e) in this._listeners));
                 }),
                 (r.prototype.trigger = function (e) {
                     if (((e.sender = this), this._listeners)) {
-                        var t = n.getTypeId(e);
+                        var t = IsFiniteNonNegativeNumber.getTypeId(e);
                         if (t in this._listeners)
                             for (var i = this._listeners[t].listeners.slice(), r = 0; r < i.length; r++) {
                                 var o = i[r];
@@ -72,5 +72,5 @@ module.exports = function (e, t, i) {
                             }
                     }
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

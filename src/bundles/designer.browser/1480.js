@@ -1,29 +1,29 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         (window,
-            (e.exports = (function (e) {
+            (module.exports = (function (e) {
                 var t = {};
                 function n(o) {
                     if (t[o]) return t[o].exports;
-                    var i = (t[o] = { i: o, l: !1, exports: {} });
-                    return (e[o].call(i.exports, i, i.exports, n), (i.l = !0), i.exports);
+                    var i = (t[o] = { i: o, l: false, exports: {} });
+                    return (e[o].call(i.exports, i, i.exports, n), (i.l = true), i.exports);
                 }
                 return (
                     (n.m = e),
                     (n.c = t),
                     (n.d = function (e, t, o) {
-                        n.o(e, t) || Object.defineProperty(e, t, { enumerable: !0, get: o });
+                        n.o(e, t) || Object.defineProperty(e, t, { enumerable: true, get: o });
                     }),
                     (n.r = function (e) {
                         ("undefined" != typeof Symbol &&
                             Symbol.toStringTag &&
                             Object.defineProperty(e, Symbol.toStringTag, { value: "Module" }),
-                            Object.defineProperty(e, "__esModule", { value: !0 }));
+                            Object.defineProperty(e, "__esModule", { value: true }));
                     }),
                     (n.t = function (e, t) {
                         if ((1 & t && (e = n(e)), 8 & t)) return e;
                         if (4 & t && "object" == typeof e && e && e.__esModule) return e;
                         var o = Object.create(null);
-                        if ((n.r(o), Object.defineProperty(o, "default", { enumerable: !0, value: e }), 2 & t && "string" != typeof e))
+                        if ((n.r(o), Object.defineProperty(o, "default", { enumerable: true, value: e }), 2 & t && "string" != typeof e))
                             for (var i in e)
                                 n.d(
                                     o,
@@ -62,7 +62,7 @@ module.exports = function (e, t, n) {
                                     (!o && i in t) || ((o = o || Array.prototype.slice.call(t, 0, i))[i] = t[i]);
                             return e.concat(o || Array.prototype.slice.call(t));
                         };
-                    (Object.defineProperty(t, "__esModule", { value: !0 }),
+                    (Object.defineProperty(t, "__esModule", { value: true }),
                         (t.sendMessageEventToChild =
                             t.waitForMessageQueue =
                             t.sendMessageToParent =
@@ -150,9 +150,9 @@ module.exports = function (e, t, n) {
                         "id" in e.data && "number" == typeof e.data.id
                             ? ((n = e.data),
                               (t = l.callbacks[n.id]) &&
-                                  (t.apply(null, o(o([], n.args, !0), [n.isPartialResponse], !1)),
+                                  (t.apply(null, o(o([], n.args, true), [n.isPartialResponse], false)),
                                   (function (e) {
-                                      return !0 === e.data.isPartialResponse;
+                                      return true === e.data.isPartialResponse;
                                   })(e) || delete l.callbacks[n.id]))
                             : "func" in e.data && "string" == typeof e.data.func && ((n = e.data), (0, r.callHandler)(n.func, n.args));
                     }
@@ -180,8 +180,8 @@ module.exports = function (e, t, n) {
                             (s.currentWindow = s.currentWindow || window),
                             (s.parentWindow =
                                 s.currentWindow.parent !== s.currentWindow.self ? s.currentWindow.parent : s.currentWindow.opener),
-                            (s.parentWindow || t) && s.currentWindow.addEventListener("message", l.messageListener, !1),
-                            s.parentWindow || ((a.GlobalVars.isFramelessWindow = !0), (window.onNativeMessage = u)));
+                            (s.parentWindow || t) && s.currentWindow.addEventListener("message", l.messageListener, false),
+                            s.parentWindow || ((a.GlobalVars.isFramelessWindow = true), (window.onNativeMessage = u)));
                         try {
                             ((s.parentOrigin = "*"), c("initialize", [i.version], e));
                         } finally {
@@ -189,7 +189,7 @@ module.exports = function (e, t, n) {
                         }
                     }),
                         (t.uninitializeCommunication = function () {
-                            (s.currentWindow.removeEventListener("message", l.messageListener, !1),
+                            (s.currentWindow.removeEventListener("message", l.messageListener, false),
                                 (s.parentWindow = null),
                                 (s.parentOrigin = null),
                                 (s.childWindow = null),
@@ -216,7 +216,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }),
+                    (Object.defineProperty(t, "__esModule", { value: true }),
                         (t.processAdditionalValidOrigins =
                             t.isApiSupportedOnMobile =
                             t.isHostClientMobile =
@@ -244,9 +244,9 @@ module.exports = function (e, t, n) {
                         for (var e = [], t = 0; t < arguments.length; t++) e[t] = arguments[t];
                         if (!r.GlobalVars.initializeCalled) throw new Error("The library has not yet been initialized");
                         if (r.GlobalVars.frameContext && e && 0 < e.length) {
-                            for (var n = !1, o = 0; o < e.length; o++)
+                            for (var n = false, o = 0; o < e.length; o++)
                                 if (e[o] === r.GlobalVars.frameContext) {
-                                    n = !0;
+                                    n = true;
                                     break;
                                 }
                             if (!n) throw new Error("This call is not allowed in the '" + r.GlobalVars.frameContext + "' context");
@@ -272,7 +272,7 @@ module.exports = function (e, t, n) {
                             );
                             var t = {};
                             ((e = e.filter(function (e) {
-                                return !t[e] && (t[e] = !0);
+                                return !t[e] && (t[e] = true);
                             })),
                                 (r.GlobalVars.additionalValidOrigins = e),
                                 0 < r.GlobalVars.additionalValidOrigins.length
@@ -284,7 +284,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }),
+                    (Object.defineProperty(t, "__esModule", { value: true }),
                         (t.ChannelType = t.TaskModuleDimension = t.UserTeamRole = t.TeamType = t.FrameContexts = t.HostClientType = void 0),
                         (function (e) {
                             ((e.desktop = "desktop"),
@@ -336,7 +336,7 @@ module.exports = function (e, t, n) {
                                     (!o && i in t) || ((o = o || Array.prototype.slice.call(t, 0, i))[i] = t[i]);
                             return e.concat(o || Array.prototype.slice.call(t));
                         };
-                    (Object.defineProperty(t, "__esModule", { value: !0 }),
+                    (Object.defineProperty(t, "__esModule", { value: true }),
                         (t.registerBeforeUnloadHandler =
                             t.registerOnLoadHandler =
                             t.registerFocusEnterHandler =
@@ -381,13 +381,13 @@ module.exports = function (e, t, n) {
                             (r.handlers.focusEnter = c));
                     }),
                         (t.callHandler = function (e, t) {
-                            return (e = r.handlers[e]) ? [!0, e.apply(this, t)] : [!1, void 0];
+                            return (e = r.handlers[e]) ? [true, e.apply(this, t)] : [false, void 0];
                         }),
                         (t.registerHandler = function (e, t, n, i) {
-                            (void 0 === n && (n = !0),
+                            (void 0 === n && (n = true),
                                 void 0 === i && (i = []),
                                 t
-                                    ? ((r.handlers[e] = t), n && (0, a.sendMessageToParent)("registerHandler", o([e], i, !0)))
+                                    ? ((r.handlers[e] = t), n && (0, a.sendMessageToParent)("registerHandler", o([e], i, true)))
                                     : delete r.handlers[e]);
                         }),
                         (t.removeHandler = function (e) {
@@ -412,7 +412,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }),
+                    (Object.defineProperty(t, "__esModule", { value: true }),
                         (t.userOriginUrlValidationRegExp =
                             t.validOriginRegExp =
                             t.validOrigins =
@@ -470,7 +470,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }),
+                    (Object.defineProperty(t, "__esModule", { value: true }),
                         (t.generateGUID = t.compareSDKVersions = t.getGenericOnCompleteHandler = t.generateRegExpFromUrls = void 0));
                     var o = n(22);
                     function i(e) {
@@ -507,7 +507,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }),
+                    (Object.defineProperty(t, "__esModule", { value: true }),
                         (t.ErrorCode = t.FileOpenPreference = void 0),
                         (function (e) {
                             ((e.Inline = "inline"), (e.Desktop = "desktop"), (e.Web = "web"));
@@ -532,17 +532,17 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.GlobalVars = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.GlobalVars = void 0));
                     var o = (function () {
                         function e() {}
                         return (
-                            (e.initializeCalled = !1),
-                            (e.initializeCompleted = !1),
+                            (e.initializeCalled = false),
+                            (e.initializeCompleted = false),
                             (e.additionalValidOrigins = []),
                             (e.additionalValidOriginsRegexp = null),
                             (e.initializeCallbacks = []),
-                            (e.isFramelessWindow = !1),
-                            (e.printCapabilityEnabled = !1),
+                            (e.isFramelessWindow = false),
+                            (e.printCapabilityEnabled = false),
                             e
                         );
                     })();
@@ -550,7 +550,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }),
+                    (Object.defineProperty(t, "__esModule", { value: true }),
                         (t.stageView =
                             t.sharing =
                             t.video =
@@ -601,300 +601,300 @@ module.exports = function (e, t, n) {
                                 void 0));
                     var o = n(25);
                     Object.defineProperty(t, "appInitialization", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return o.appInitialization;
                         },
                     });
                     var i = n(11);
                     Object.defineProperty(t, "authentication", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return i.authentication;
                         },
                     });
                     var a = n(2);
                     (Object.defineProperty(t, "FrameContexts", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return a.FrameContexts;
                         },
                     }),
                         Object.defineProperty(t, "HostClientType", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return a.HostClientType;
                             },
                         }),
                         Object.defineProperty(t, "TaskModuleDimension", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return a.TaskModuleDimension;
                             },
                         }),
                         Object.defineProperty(t, "TeamType", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return a.TeamType;
                             },
                         }),
                         Object.defineProperty(t, "UserTeamRole", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return a.UserTeamRole;
                             },
                         }),
                         Object.defineProperty(t, "ChannelType", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return a.ChannelType;
                             },
                         }));
                     var r = n(6);
                     (Object.defineProperty(t, "ErrorCode", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return r.ErrorCode;
                         },
                     }),
                         Object.defineProperty(t, "FileOpenPreference", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return r.FileOpenPreference;
                             },
                         }));
                     var s = n(26);
                     (Object.defineProperty(t, "enablePrintCapability", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return s.enablePrintCapability;
                         },
                     }),
                         Object.defineProperty(t, "executeDeepLink", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.executeDeepLink;
                             },
                         }),
                         Object.defineProperty(t, "getContext", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.getContext;
                             },
                         }),
                         Object.defineProperty(t, "getMruTabInstances", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.getMruTabInstances;
                             },
                         }),
                         Object.defineProperty(t, "getTabInstances", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.getTabInstances;
                             },
                         }),
                         Object.defineProperty(t, "initialize", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.initialize;
                             },
                         }),
                         Object.defineProperty(t, "initializeWithFrameContext", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.initializeWithFrameContext;
                             },
                         }),
                         Object.defineProperty(t, "print", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.print;
                             },
                         }),
                         Object.defineProperty(t, "registerBackButtonHandler", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.registerBackButtonHandler;
                             },
                         }),
                         Object.defineProperty(t, "registerBeforeUnloadHandler", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.registerBeforeUnloadHandler;
                             },
                         }),
                         Object.defineProperty(t, "registerFocusEnterHandler", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.registerFocusEnterHandler;
                             },
                         }),
                         Object.defineProperty(t, "registerChangeSettingsHandler", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.registerChangeSettingsHandler;
                             },
                         }),
                         Object.defineProperty(t, "registerFullScreenHandler", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.registerFullScreenHandler;
                             },
                         }),
                         Object.defineProperty(t, "registerOnLoadHandler", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.registerOnLoadHandler;
                             },
                         }),
                         Object.defineProperty(t, "registerOnThemeChangeHandler", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.registerOnThemeChangeHandler;
                             },
                         }),
                         Object.defineProperty(t, "registerAppButtonClickHandler", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.registerAppButtonClickHandler;
                             },
                         }),
                         Object.defineProperty(t, "registerAppButtonHoverEnterHandler", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.registerAppButtonHoverEnterHandler;
                             },
                         }),
                         Object.defineProperty(t, "registerAppButtonHoverLeaveHandler", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.registerAppButtonHoverLeaveHandler;
                             },
                         }),
                         Object.defineProperty(t, "setFrameContext", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.setFrameContext;
                             },
                         }),
                         Object.defineProperty(t, "shareDeepLink", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return s.shareDeepLink;
                             },
                         }));
                     var l = n(27);
                     (Object.defineProperty(t, "returnFocus", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return l.returnFocus;
                         },
                     }),
                         Object.defineProperty(t, "navigateBack", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return l.navigateBack;
                             },
                         }),
                         Object.defineProperty(t, "navigateCrossDomain", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return l.navigateCrossDomain;
                             },
                         }),
                         Object.defineProperty(t, "navigateToTab", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return l.navigateToTab;
                             },
                         }));
                     var c = n(12);
                     Object.defineProperty(t, "settings", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return c.settings;
                         },
                     });
                     var d = n(28);
                     Object.defineProperty(t, "tasks", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return d.tasks;
                         },
                     });
                     var u = n(16);
                     (Object.defineProperty(t, "ChildAppWindow", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return u.ChildAppWindow;
                         },
                     }),
                         Object.defineProperty(t, "ParentAppWindow", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return u.ParentAppWindow;
                             },
                         }));
                     var p = n(15);
                     Object.defineProperty(t, "menus", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return p.menus;
                         },
                     });
                     var g = n(17);
                     Object.defineProperty(t, "media", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return g.media;
                         },
                     });
                     var h = n(29);
                     Object.defineProperty(t, "location", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return h.location;
                         },
                     });
                     var f = n(30);
                     Object.defineProperty(t, "meeting", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return f.meeting;
                         },
                     });
                     var m = n(31);
                     Object.defineProperty(t, "monetization", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return m.monetization;
                         },
                     });
                     var y = n(32);
                     Object.defineProperty(t, "people", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return y.people;
                         },
                     });
                     var v = n(33);
                     Object.defineProperty(t, "video", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return v.video;
                         },
                     });
                     var _ = n(34);
                     Object.defineProperty(t, "sharing", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return _.sharing;
                         },
                     });
                     var b = n(35);
                     Object.defineProperty(t, "stageView", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return b.stageView;
                         },
@@ -950,7 +950,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.authentication = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.authentication = void 0));
                     var o = n(1),
                         i = n(7),
                         a = n(2),
@@ -988,7 +988,7 @@ module.exports = function (e, t, n) {
                                     return [a.FrameContexts.authentication, i.GlobalVars.hostClientType];
                                 }),
                                 (0, s.registerHandler)("navigateCrossDomain", function () {
-                                    return !1;
+                                    return false;
                                 }));
                         }
                         function u(e) {
@@ -1028,8 +1028,8 @@ module.exports = function (e, t, n) {
                             return (e = -1 === o ? e : e.substr(0, o)) + i;
                         }
                         ((e.initialize = function () {
-                            ((0, s.registerHandler)("authentication.authenticate.success", u, !1),
-                                (0, s.registerHandler)("authentication.authenticate.failure", p, !1));
+                            ((0, s.registerHandler)("authentication.authenticate.success", u, false),
+                                (0, s.registerHandler)("authentication.authenticate.failure", p, false));
                         }),
                             (e.registerAuthenticationHandlers = function (e) {
                                 t = e;
@@ -1135,7 +1135,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.settings = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.settings = void 0));
                     var o = n(1),
                         i = n(2),
                         a = n(5),
@@ -1147,7 +1147,7 @@ module.exports = function (e, t, n) {
                             ((e = new c(e)), t ? t(e) : e.notifySuccess());
                         }
                         ((e.initialize = function () {
-                            ((0, s.registerHandler)("settings.save", l, !1), (0, s.registerHandler)("settings.remove", d, !1));
+                            ((0, s.registerHandler)("settings.save", l, false), (0, s.registerHandler)("settings.remove", d, false));
                         }),
                             (e.setValidityState = function (e) {
                                 ((0, o.ensureInitialized)(i.FrameContexts.settings, i.FrameContexts.remove),
@@ -1176,16 +1176,16 @@ module.exports = function (e, t, n) {
                             }));
                         var c = (function () {
                             function e(e) {
-                                ((this.notified = !1), (this.result = e || {}));
+                                ((this.notified = false), (this.result = e || {}));
                             }
                             return (
                                 (e.prototype.notifySuccess = function () {
-                                    (this.ensureNotNotified(), (0, r.sendMessageToParent)("settings.save.success"), (this.notified = !0));
+                                    (this.ensureNotNotified(), (0, r.sendMessageToParent)("settings.save.success"), (this.notified = true));
                                 }),
                                 (e.prototype.notifyFailure = function (e) {
                                     (this.ensureNotNotified(),
                                         (0, r.sendMessageToParent)("settings.save.failure", [e]),
-                                        (this.notified = !0));
+                                        (this.notified = true));
                                 }),
                                 (e.prototype.ensureNotNotified = function () {
                                     if (this.notified) throw new Error("The SaveEvent may only notify success or failure once.");
@@ -1199,16 +1199,16 @@ module.exports = function (e, t, n) {
                         }
                         var u = (function () {
                             function e() {
-                                this.notified = !1;
+                                this.notified = false;
                             }
                             return (
                                 (e.prototype.notifySuccess = function () {
-                                    (this.ensureNotNotified(), (0, r.sendMessageToParent)("settings.remove.success"), (this.notified = !0));
+                                    (this.ensureNotNotified(), (0, r.sendMessageToParent)("settings.remove.success"), (this.notified = true));
                                 }),
                                 (e.prototype.notifyFailure = function (e) {
                                     (this.ensureNotNotified(),
                                         (0, r.sendMessageToParent)("settings.remove.failure", [e]),
-                                        (this.notified = !0));
+                                        (this.notified = true));
                                 }),
                                 (e.prototype.ensureNotNotified = function () {
                                     if (this.notified) throw new Error("The removeEvent may only notify success or failure once.");
@@ -1220,7 +1220,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.logs = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.logs = void 0));
                     var o = n(1),
                         i = n(0),
                         a = n(3);
@@ -1236,7 +1236,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }),
+                    (Object.defineProperty(t, "__esModule", { value: true }),
                         (t.registerUserSettingsChangeHandler =
                             t.getConfigSetting =
                             t.getChatMembers =
@@ -1332,12 +1332,12 @@ module.exports = function (e, t, n) {
                             ((0, o.ensureInitialized)(), (0, r.sendMessageToParent)("getConfigSetting", [t], e));
                         }),
                         (t.registerUserSettingsChangeHandler = function (e, t) {
-                            ((0, o.ensureInitialized)(), (0, s.registerHandler)("userSettingsChange", t, !0, [e]));
+                            ((0, o.ensureInitialized)(), (0, s.registerHandler)("userSettingsChange", t, true, [e]));
                         }));
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.menus = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.menus = void 0));
                     var o = n(1),
                         i = n(0),
                         a = n(3);
@@ -1349,7 +1349,7 @@ module.exports = function (e, t, n) {
                             n,
                             r,
                             s = function () {
-                                ((this.enabled = !0), (this.selected = !1));
+                                ((this.enabled = true), (this.selected = false));
                             };
                         function l(e) {
                             (r && r(e)) || ((0, o.ensureInitialized)(), (0, i.sendMessageToParent)("viewConfigItemPress", [e]));
@@ -1365,9 +1365,9 @@ module.exports = function (e, t, n) {
                                 ((e.dropDown = "dropDown"), (e.popOver = "popOver"));
                             })(e.MenuListType || (e.MenuListType = {})),
                             (e.initialize = function () {
-                                ((0, a.registerHandler)("navBarMenuItemPress", c, !1),
-                                    (0, a.registerHandler)("actionMenuItemPress", d, !1),
-                                    (0, a.registerHandler)("setModuleView", l, !1));
+                                ((0, a.registerHandler)("navBarMenuItemPress", c, false),
+                                    (0, a.registerHandler)("actionMenuItemPress", d, false),
+                                    (0, a.registerHandler)("setModuleView", l, false));
                             }),
                             (e.setUpViews = function (e, t) {
                                 ((0, o.ensureInitialized)(), (r = t), (0, i.sendMessageToParent)("setUpViews", [e]));
@@ -1382,7 +1382,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.ParentAppWindow = t.ChildAppWindow = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.ParentAppWindow = t.ChildAppWindow = void 0));
                     var o = n(1),
                         i = n(2),
                         a = n(5),
@@ -1409,8 +1409,8 @@ module.exports = function (e, t, n) {
                                     get: function () {
                                         return this._instance || (this._instance = new this());
                                     },
-                                    enumerable: !1,
-                                    configurable: !0,
+                                    enumerable: false,
+                                    configurable: true,
                                 }),
                                 (e.prototype.postMessage = function (e, t) {
                                     ((0, o.ensureInitialized)(i.FrameContexts.task),
@@ -1448,7 +1448,7 @@ module.exports = function (e, t, n) {
                                 }
                                 (o(e, t), (e.prototype = null === t ? Object.create(t) : ((n.prototype = t.prototype), new n())));
                             });
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.media = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.media = void 0));
                     var a = n(7),
                         r = n(6),
                         s = n(1),
@@ -1687,7 +1687,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }),
+                    (Object.defineProperty(t, "__esModule", { value: true }),
                         (t.validatePeoplePickerInput =
                             t.validateScanBarCodeInput =
                             t.validateViewImagesInput =
@@ -1768,12 +1768,12 @@ module.exports = function (e, t, n) {
                         }),
                         (t.validatePeoplePickerInput = function (e) {
                             if (e) {
-                                if (e.title && "string" != typeof e.title) return !1;
-                                if (e.setSelected && "object" != typeof e.setSelected) return !1;
-                                if (e.openOrgWideSearchInChatOrChannel && "boolean" != typeof e.openOrgWideSearchInChatOrChannel) return !1;
-                                if (e.singleSelect && "boolean" != typeof e.singleSelect) return !1;
+                                if (e.title && "string" != typeof e.title) return false;
+                                if (e.setSelected && "object" != typeof e.setSelected) return false;
+                                if (e.openOrgWideSearchInChatOrChannel && "boolean" != typeof e.openOrgWideSearchInChatOrChannel) return false;
+                                if (e.singleSelect && "boolean" != typeof e.singleSelect) return false;
                             }
-                            return !0;
+                            return true;
                         }));
                 },
                 function (e, t, n) {
@@ -1784,7 +1784,7 @@ module.exports = function (e, t, n) {
                                 ? function (e, t, n, o) {
                                       (void 0 === o && (o = n),
                                           Object.defineProperty(e, o, {
-                                              enumerable: !0,
+                                              enumerable: true,
                                               get: function () {
                                                   return t[n];
                                               },
@@ -1798,11 +1798,11 @@ module.exports = function (e, t, n) {
                             function (e, t) {
                                 for (var n in e) "default" === n || Object.prototype.hasOwnProperty.call(t, n) || o(t, e, n);
                             };
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), i(n(20), t), i(n(8), t));
+                    (Object.defineProperty(t, "__esModule", { value: true }), i(n(20), t), i(n(8), t));
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }),
+                    (Object.defineProperty(t, "__esModule", { value: true }),
                         (t.teams =
                             t.appEntity =
                             t.files =
@@ -1829,148 +1829,148 @@ module.exports = function (e, t, n) {
                                 void 0));
                     var o = n(21);
                     Object.defineProperty(t, "bot", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return o.bot;
                         },
                     });
                     var i = n(13);
                     Object.defineProperty(t, "logs", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return i.logs;
                         },
                     });
                     var a = n(36);
                     (Object.defineProperty(t, "NotificationTypes", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return a.NotificationTypes;
                         },
                     }),
                         Object.defineProperty(t, "ViewerActionTypes", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return a.ViewerActionTypes;
                             },
                         }),
                         Object.defineProperty(t, "UserSettingTypes", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return a.UserSettingTypes;
                             },
                         }));
                     var r = n(14);
                     (Object.defineProperty(t, "enterFullscreen", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return r.enterFullscreen;
                         },
                     }),
                         Object.defineProperty(t, "exitFullscreen", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return r.exitFullscreen;
                             },
                         }),
                         Object.defineProperty(t, "getChatMembers", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return r.getChatMembers;
                             },
                         }),
                         Object.defineProperty(t, "getConfigSetting", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return r.getConfigSetting;
                             },
                         }),
                         Object.defineProperty(t, "getUserJoinedTeams", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return r.getUserJoinedTeams;
                             },
                         }),
                         Object.defineProperty(t, "openFilePreview", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return r.openFilePreview;
                             },
                         }),
                         Object.defineProperty(t, "sendCustomMessage", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return r.sendCustomMessage;
                             },
                         }),
                         Object.defineProperty(t, "showNotification", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return r.showNotification;
                             },
                         }),
                         Object.defineProperty(t, "sendCustomEvent", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return r.sendCustomEvent;
                             },
                         }),
                         Object.defineProperty(t, "registerCustomHandler", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return r.registerCustomHandler;
                             },
                         }),
                         Object.defineProperty(t, "uploadCustomApp", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return r.uploadCustomApp;
                             },
                         }),
                         Object.defineProperty(t, "registerUserSettingsChangeHandler", {
-                            enumerable: !0,
+                            enumerable: true,
                             get: function () {
                                 return r.registerUserSettingsChangeHandler;
                             },
                         }));
                     var s = n(37);
                     Object.defineProperty(t, "conversations", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return s.conversations;
                         },
                     });
                     var l = n(38);
                     Object.defineProperty(t, "meetingRoom", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return l.meetingRoom;
                         },
                     });
                     var c = n(39);
                     Object.defineProperty(t, "remoteCamera", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return c.remoteCamera;
                         },
                     });
                     var d = n(40);
                     Object.defineProperty(t, "files", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return d.files;
                         },
                     });
                     var u = n(41);
                     Object.defineProperty(t, "appEntity", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return u.appEntity;
                         },
                     });
                     var p = n(42);
                     Object.defineProperty(t, "teams", {
-                        enumerable: !0,
+                        enumerable: true,
                         get: function () {
                             return p.teams;
                         },
@@ -1978,7 +1978,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.bot = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.bot = void 0));
                     var o = n(0),
                         i = n(1);
                     !(function (e) {
@@ -2064,7 +2064,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.appInitialization = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.appInitialization = void 0));
                     var o = n(1),
                         i = n(4),
                         a = n(0);
@@ -2101,7 +2101,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }),
+                    (Object.defineProperty(t, "__esModule", { value: true }),
                         (t.initializeWithFrameContext =
                             t.setFrameContext =
                             t.executeDeepLink =
@@ -2139,7 +2139,7 @@ module.exports = function (e, t, n) {
                         h = n(3);
                     function f(e, t) {
                         (i.GlobalVars.initializeCalled ||
-                            ((i.GlobalVars.initializeCalled = !0),
+                            ((i.GlobalVars.initializeCalled = true),
                             h.initializeHandlers(),
                             (0, d.initializeCommunication)(function (e, t, n) {
                                 (void 0 === n && (n = a.defaultSDKVersionForCompatCheck),
@@ -2150,7 +2150,7 @@ module.exports = function (e, t, n) {
                                         return e();
                                     }),
                                     (i.GlobalVars.initializeCallbacks = []),
-                                    (i.GlobalVars.initializeCompleted = !0));
+                                    (i.GlobalVars.initializeCompleted = true));
                             }, t),
                             u.authentication.initialize(),
                             r.settings.initialize(),
@@ -2193,22 +2193,22 @@ module.exports = function (e, t, n) {
                                     (y(null), v(null), _(null), w(null), C(null), b(null), l.logs.registerGetLogHandler(null)),
                                 i.GlobalVars.frameContext === c.FrameContexts.settings && r.settings.registerOnSaveHandler(null),
                                 i.GlobalVars.frameContext === c.FrameContexts.remove && r.settings.registerOnRemoveHandler(null),
-                                (i.GlobalVars.initializeCalled = !1),
-                                (i.GlobalVars.initializeCompleted = !1),
+                                (i.GlobalVars.initializeCalled = false),
+                                (i.GlobalVars.initializeCompleted = false),
                                 (i.GlobalVars.initializeCallbacks = []),
                                 (i.GlobalVars.additionalValidOrigins = []),
                                 (i.GlobalVars.frameContext = null),
                                 (i.GlobalVars.hostClientType = null),
-                                ((i.GlobalVars.isFramelessWindow = !1), d.uninitializeCommunication)());
+                                ((i.GlobalVars.isFramelessWindow = false), d.uninitializeCommunication)());
                         }),
                         (t.enablePrintCapability = function () {
                             i.GlobalVars.printCapabilityEnabled ||
-                                ((i.GlobalVars.printCapabilityEnabled = !0),
+                                ((i.GlobalVars.printCapabilityEnabled = true),
                                 (0, o.ensureInitialized)(),
                                 document.addEventListener("keydown", function (e) {
                                     (e.ctrlKey || e.metaKey) &&
                                         80 === e.keyCode &&
-                                        (m(), (e.cancelBubble = !0), e.preventDefault(), e.stopImmediatePropagation());
+                                        (m(), (e.cancelBubble = true), e.preventDefault(), e.stopImmediatePropagation());
                                 }));
                         }),
                         (t.print = m),
@@ -2264,7 +2264,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }),
+                    (Object.defineProperty(t, "__esModule", { value: true }),
                         (t.navigateBack = t.navigateCrossDomain = t.navigateToTab = t.returnFocus = void 0));
                     var o = n(1),
                         i = n(5),
@@ -2327,7 +2327,7 @@ module.exports = function (e, t, n) {
                                     t.indexOf(i[o]) < 0 && Object.prototype.propertyIsEnumerable.call(e, i[o]) && (n[i[o]] = e[i[o]]);
                             return n;
                         };
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.tasks = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.tasks = void 0));
                     var i = n(2),
                         a = n(16),
                         r = n(0),
@@ -2367,7 +2367,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.location = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.location = void 0));
                     var o = n(6),
                         i = n(1),
                         a = n(2),
@@ -2396,7 +2396,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.meeting = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.meeting = void 0));
                     var o = n(0),
                         i = n(3),
                         a = n(1),
@@ -2487,7 +2487,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.monetization = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.monetization = void 0));
                     var o = n(0),
                         i = n(1),
                         a = n(2);
@@ -2499,7 +2499,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.people = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.people = void 0));
                     var o = n(1),
                         i = n(2),
                         a = n(6),
@@ -2518,7 +2518,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.video = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.video = void 0));
                     var o = n(0),
                         i = n(1),
                         a = n(2),
@@ -2555,7 +2555,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.sharing = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.sharing = void 0));
                     var o = n(1),
                         i = n(0),
                         a = n(6),
@@ -2631,7 +2631,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.stageView = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.stageView = void 0));
                     var o = n(0),
                         i = n(1),
                         a = n(2);
@@ -2643,7 +2643,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }),
+                    (Object.defineProperty(t, "__esModule", { value: true }),
                         (t.UserSettingTypes = t.ViewerActionTypes = t.NotificationTypes = void 0),
                         (function (e) {
                             ((e.fileDownloadStart = "fileDownloadStart"), (e.fileDownloadComplete = "fileDownloadComplete"));
@@ -2657,7 +2657,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.conversations = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.conversations = void 0));
                     var o = n(1),
                         i = n(2),
                         a = n(0),
@@ -2709,7 +2709,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.meetingRoom = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.meetingRoom = void 0));
                     var o = n(1),
                         i = n(0),
                         a = n(3);
@@ -2755,7 +2755,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.remoteCamera = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.remoteCamera = void 0));
                     var o = n(1),
                         i = n(2),
                         a = n(0),
@@ -2839,7 +2839,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.files = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.files = void 0));
                     var o = n(0),
                         i = n(1),
                         a = n(8);
@@ -2905,12 +2905,12 @@ module.exports = function (e, t, n) {
                                 (0, o.sendMessageToParent)("files.openCloudStorageFile", [e, t, n]);
                             }),
                             (e.getExternalProviders = function (e, t) {
-                                if ((void 0 === e && (e = !1), (0, i.ensureInitialized)(a.FrameContexts.content), !t))
+                                if ((void 0 === e && (e = false), (0, i.ensureInitialized)(a.FrameContexts.content), !t))
                                     throw new Error("[files.getExternalProviders] Callback cannot be null");
                                 (0, o.sendMessageToParent)("files.getExternalProviders", [e], t);
                             }),
                             (e.copyMoveFiles = function (e, t, n, r, s, l) {
-                                if ((void 0 === s && (s = !1), (0, i.ensureInitialized)(a.FrameContexts.content), !e || 0 === e.length))
+                                if ((void 0 === s && (s = false), (0, i.ensureInitialized)(a.FrameContexts.content), !e || 0 === e.length))
                                     throw new Error("[files.copyMoveFiles] selectedFiles cannot be null or empty");
                                 if (!t) throw new Error("[files.copyMoveFiles] providerCode cannot be null or empty");
                                 if (!n) throw new Error("[files.copyMoveFiles] destinationFolder cannot be null or empty");
@@ -2932,7 +2932,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.appEntity = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.appEntity = void 0));
                     var o = n(0),
                         i = n(1),
                         a = n(8);
@@ -2945,7 +2945,7 @@ module.exports = function (e, t, n) {
                 },
                 function (e, t, n) {
                     "use strict";
-                    (Object.defineProperty(t, "__esModule", { value: !0 }), (t.teams = void 0));
+                    (Object.defineProperty(t, "__esModule", { value: true }), (t.teams = void 0));
                     var o = n(0),
                         i = n(1),
                         a = n(8);

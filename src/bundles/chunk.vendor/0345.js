@@ -1,12 +1,12 @@
-module.exports = function (e, t, i) {
-            var n = i(5),
-                r = i(6),
-                o = i(132),
-                a = i(895),
-                s = i(896),
-                l = i(111),
-                h = i(205),
-                A = i(103);
+module.exports = function (module, exports, require) {
+            var n = require(5),
+                r = require(6),
+                o = require(132),
+                a = require(895),
+                s = require(896),
+                l = require(111),
+                h = require(205),
+                DUMP_IMAGES = require(103);
 
             function c(e, t) {
                 var i = 0,
@@ -24,7 +24,7 @@ module.exports = function (e, t, i) {
                               ? (o = e)
                               : e instanceof CanvasRenderingContext2D && (o = e.canvas)
                           : (o = e._canvasContext.canvas),
-                    o ? (this._canvas = o) : ((this._canvas = A.getRenderer().canvas), (this._canvas.width = i), (this._canvas.height = r)),
+                    o ? (this._canvas = o) : ((this._canvas = DUMP_IMAGES.getRenderer().canvas), (this._canvas.width = i), (this._canvas.height = r)),
                     (this._canvasContext = this._canvas.getContext("2d")),
                     a && i >= 0 && r >= 0 && this._canvasContext.drawImage(a),
                     (this._offset = new n(0, 0)));
@@ -222,10 +222,10 @@ module.exports = function (e, t, i) {
                     );
                 }),
                 (c.prototype.applyFilter = function (e, t, i) {
-                    return this.modifyPixels(e.apply, t, i, !0);
+                    return this.modifyPixels(e.apply, t, i, true);
                 }),
                 (c.prototype.toString = function () {
                     return "[Object GBitmap]";
                 }),
-                (e.exports = c));
+                (module.exports = c));
         };

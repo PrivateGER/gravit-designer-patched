@@ -1,5 +1,5 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(129).match(/firefox\/(\d+)/i);
-        e.exports = !!o && +o[1];
+        var o = require(129).match(/firefox\/(\d+)/i);
+        module.exports = !!o && +o[1];
     };

@@ -1,15 +1,15 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(2),
-                o = i(54),
-                a = i(95),
-                s = i(73),
-                l = i(70),
-                h = i(9),
-                A = i(327),
-                c = i(532),
-                p = i(999),
-                u = i(1e3);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(2),
+                o = require(54),
+                a = require(95),
+                s = require(73),
+                l = require(70),
+                String = require(9),
+                A = require(327),
+                c = require(532),
+                p = require(999),
+                u = require(1e3);
 
             function d() {
                 (a.call(this),
@@ -18,12 +18,12 @@ module.exports = function (e, t, i) {
                     this._setDefaultProperties(d.GeometryProperties),
                     this._setDefaultProperties(d.MetaProperties),
                     (this._runs = []),
-                    (this._runsDirty = !1),
+                    (this._runsDirty = false),
                     (this._vertexContainer = new o()),
-                    (this.__gtype_id__ = n.getTypeId(d)),
-                    (this._textMode = !1),
+                    (this.__gtype_id__ = IsFiniteNonNegativeNumber.getTypeId(d)),
+                    (this._textMode = false),
                     (this.getNodeNameTranslated = function () {
-                        return h.getValue("GCollabText", "name", this.getNodeName());
+                        return String.getValue("GCollabText", "name", this.getNodeName());
                     }),
                     this.addAction(new u()));
             }
@@ -33,7 +33,7 @@ module.exports = function (e, t, i) {
                     textTrf: null,
                 }),
                 (d.MetaProperties = {
-                    collab: !0,
+                    collab: true,
                     Guid: null,
                 }),
                 (d.setModeText = function (e) {
@@ -46,14 +46,14 @@ module.exports = function (e, t, i) {
                         (e.getActions = d.prototype.getActions.bind(e)),
                         (e.addAction = d.prototype.addAction.bind(e)),
                         (e._fontAvailableEvent = d.prototype._fontAvailableEvent.bind(e)),
-                        (e._textMode = !0),
+                        (e._textMode = true),
                         (e.$imgTrf = e.$trf),
                         (e.$trf = e.$textTrf),
-                        (e.$afs = !0),
+                        (e.$afs = true),
                         e.adaptFontSizeToFitBBox());
                 }),
                 (d.setModeImage = function (e) {
-                    e._textMode && (Object.setPrototypeOf(e, d.prototype), (e._textMode = !1), (e.$textTrf = e.$trf), (e.$trf = e.$imgTrf));
+                    e._textMode && (Object.setPrototypeOf(e, d.prototype), (e._textMode = false), (e.$textTrf = e.$trf), (e.$trf = e.$imgTrf));
                 }),
                 (d.isTextMode = function (e) {
                     return !!e._textMode;
@@ -83,7 +83,7 @@ module.exports = function (e, t, i) {
                     return (
                         (this._textMode
                             ? l.prototype._detailHitTest.call(this, e, t, i, n)
-                            : s.prototype._detailHitTest.call(this, e, t, i, !0)) || this.hitActionTest(e, t)
+                            : s.prototype._detailHitTest.call(this, e, t, i, true)) || this.hitActionTest(e, t)
                     );
                 }),
                 (d.prototype._fontAvailableEvent = function (e) {
@@ -92,5 +92,5 @@ module.exports = function (e, t, i) {
                 (d.prototype.toString = function () {
                     return "[GCollabText]";
                 }),
-                (e.exports = d));
+                (module.exports = d));
         };

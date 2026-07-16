@@ -1,15 +1,15 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16),
-            i = n(1),
-            a = n(15),
-            r = o(n(18)),
-            s = o(n(1168)),
-            l = n(198),
-            c = o(n(1345));
+        var o = require(16),
+            GObject = require(1),
+            GPlatform = require(15),
+            r = o(require(18 /* GCategory */)),
+            s = o(require(1168)),
+            SidebarsIds = require(198),
+            c = o(require(1345));
         class d extends s.default {
             constructor(e) {
-                (super(e), (this._title = new i.GLocaleKey("GChangeAnchorPointsJointTypeSubAction", "title.".concat(this._type))));
+                (super(e), (this._title = new GObject.GLocaleKey("GChangeAnchorPointsJointTypeSubAction", "title.".concat(this._type))));
             }
             _getMainActionId() {
                 return c.default.ID;
@@ -20,21 +20,21 @@ module.exports = function (e, t, n) {
             getShortcutSubKey() {
                 switch (this._type) {
                     case d.Type.Straight:
-                        return a.GKey.Constant.S;
+                        return GPlatform.GKey.Constant.S;
                     case d.Type.Mirrored:
-                        return a.GKey.Constant.M;
+                        return GPlatform.GKey.Constant.M;
                     case d.Type.Disconnected:
-                        return a.GKey.Constant.D;
+                        return GPlatform.GKey.Constant.D;
                     case d.Type.Connector:
-                        return a.GKey.Constant.C;
+                        return GPlatform.GKey.Constant.C;
                     case d.Type.Asymmetric:
-                        return a.GKey.Constant.A;
+                        return GPlatform.GKey.Constant.A;
                     default:
                         return null;
                 }
             }
             execute() {
-                const e = gDesigner.getRightSidebars().getSidebar(l.SidebarsIds.GInspectorSidebar),
+                const e = gDesigner.getRightSidebars().getSidebar(SidebarsIds.SidebarsIds.GInspectorSidebar),
                     t = this._getNodeType();
                 t && e.setPathPointsNodeType(t);
             }
@@ -43,13 +43,13 @@ module.exports = function (e, t, n) {
                     case d.Type.Straight:
                         return "-";
                     case d.Type.Mirrored:
-                        return i.GPathBase.AnchorPoint.Type.Mirror;
+                        return GObject.GPathBase.AnchorPoint.Type.Mirror;
                     case d.Type.Disconnected:
-                        return i.GPathBase.AnchorPoint.Type.Asymmetric;
+                        return GObject.GPathBase.AnchorPoint.Type.Asymmetric;
                     case d.Type.Connector:
-                        return i.GPathBase.AnchorPoint.Type.Connector;
+                        return GObject.GPathBase.AnchorPoint.Type.Connector;
                     case d.Type.Asymmetric:
-                        return i.GPathBase.AnchorPoint.Type.Symmetric;
+                        return GObject.GPathBase.AnchorPoint.Type.Symmetric;
                     default:
                         return null;
                 }
@@ -65,5 +65,5 @@ module.exports = function (e, t, n) {
             Connector: "connector",
             Asymmetric: "asymmetric",
         }),
-            (e.exports = d));
+            (module.exports = d));
     };

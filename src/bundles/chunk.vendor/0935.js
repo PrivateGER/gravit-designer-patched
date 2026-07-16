@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(6);
+module.exports = function (module, exports, require) {
+            var n = require(6);
 
             function r() {
                 ((this._yStrips = []), (this._intervals = []));
@@ -82,17 +82,17 @@ module.exports = function (e, t, i) {
                         if (t < n)
                             return {
                                 idx: i,
-                                outside: !0,
+                                outside: true,
                             };
                         if (t >= n && t < r)
                             return {
                                 idx: i,
-                                outside: !1,
+                                outside: false,
                             };
                     }
                     return {
                         idx: e.length,
-                        outside: !0,
+                        outside: true,
                     };
                 }),
                 (r.prototype._locate = function (e, t) {
@@ -105,7 +105,7 @@ module.exports = function (e, t, i) {
                             if (t >= o && t < a)
                                 return {
                                     idx: r,
-                                    outside: !1,
+                                    outside: false,
                                 };
                             i = r + 1;
                         }
@@ -114,11 +114,11 @@ module.exports = function (e, t, i) {
                     return i > e.length - 1
                         ? {
                               idx: e.length,
-                              outside: !0,
+                              outside: true,
                           }
                         : {
                               idx: i,
-                              outside: !0,
+                              outside: true,
                           };
                 }),
                 (r.prototype.merge = function (e, t) {
@@ -240,5 +240,5 @@ module.exports = function (e, t, i) {
                         }
                     return t;
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

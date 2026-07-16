@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        e.exports = function (e) {
+        module.exports = function (e) {
             return null == e;
         };
     };

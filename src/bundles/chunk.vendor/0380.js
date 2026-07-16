@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
-            var r = n(5),
-                o = n(12),
-                a = n(59);
+module.exports = function (module, exports, require) {
+            var r = require(5),
+                o = require(12),
+                a = require(59);
 
             function s(e, t) {
                 ((this.error = e || 1e-6), (this.tolerance = t || Math.sqrt(this.error + l)), (this.polys = []));
@@ -28,7 +28,7 @@ module.exports = function (e, t, n) {
             ((s.prototype.polys = null),
                 (s.prototype.tolerance = 0),
                 (s.prototype.error = 0),
-                (s.prototype.force = !1),
+                (s.prototype.force = false),
                 (s.prototype.fitCurve = function (e, t, i, n) {
                     var o,
                         a,
@@ -318,5 +318,5 @@ module.exports = function (e, t, n) {
                 (s.prototype.toString = function () {
                     return "[Object GVertexFitter]";
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

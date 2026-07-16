@@ -1,23 +1,23 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(11),
-                o = i(233),
-                a = i(264),
-                s = i(70),
-                l = i(28),
-                h = i(17),
-                A = i(87),
-                c = i(122),
-                p = i(2),
-                u = i(796),
-                d = i(795),
-                g = i(439),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(11),
+                o = require(233),
+                a = require(264),
+                s = require(70),
+                GStylable = require(28),
+                h = require(17),
+                A = require(87),
+                c = require(122),
+                p = require(2),
+                u = require(796),
+                d = require(795),
+                g = require(439),
                 f = [a.OR, a.SUB, a.AND, a.XOR];
 
             function m() {
                 u.apply(this, arguments);
             }
-            (n.inherit(m, u),
+            (IsFiniteNonNegativeNumber.inherit(m, u),
                 (m.prototype.parse = function () {
                     var e = this._data.style,
                         t = this._data.isVisible,
@@ -52,7 +52,7 @@ module.exports = function (e, t, i) {
                     var i = this._getTransformation();
                     if (this.isCompoundShape()) {
                         var n = function (e) {
-                                (e._beginBlockCompositeEvents(!0, !0),
+                                (e._beginBlockCompositeEvents(true, true),
                                     e._beginBlockChanges([
                                         p._Change.BeforeChildRemove,
                                         p._Change.AfterChildRemove,
@@ -61,7 +61,7 @@ module.exports = function (e, t, i) {
                                     ]));
                             },
                             o = function (e) {
-                                (e._endBlockCompositeEvents(!0, !0),
+                                (e._endBlockCompositeEvents(true, true),
                                     e._endBlockChanges([
                                         p._Change.BeforeChildRemove,
                                         p._Change.AfterChildRemove,
@@ -80,11 +80,11 @@ module.exports = function (e, t, i) {
                             l = a.map(function (e) {
                                 return e._data.booleanOperation;
                             }),
-                            h = !1,
+                            h = false,
                             A = null;
                         s.forEach(function (e, t) {
                             var i = l[t];
-                            ((void 0 !== i && -1 !== i) || (i = 3), A ? A !== i && (h = !0) : (A = i));
+                            ((void 0 !== i && -1 !== i) || (i = 3), A ? A !== i && (h = true) : (A = i));
                         });
                         var c = null;
                         if (h)
@@ -110,7 +110,7 @@ module.exports = function (e, t, i) {
                         else c = this._merge(f[l.shift()], s);
                         c.setProperty("evenodd", this.isEvenOdd());
                         var w = r.extend({}, this._data);
-                        ((w.noTransform = !0), delete w.layers, new g(w, this._file, null, c).parse(), c.transform(i), e.appendChild(c));
+                        ((w.noTransform = true), delete w.layers, new g(w, this._file, null, c).parse(), c.transform(i), e.appendChild(c));
                     } else u.prototype.appendTo.call(this, e, t);
                 }),
                 (m.prototype._postAppendTo = function () {
@@ -127,16 +127,16 @@ module.exports = function (e, t, i) {
                     var i,
                         n = new o(),
                         r = [],
-                        p = !0;
+                        p = true;
                     if (
                         (t.forEach(
                             function (e) {
                                 ((r = r.concat(this._getValidItems(e))),
                                     e.hasMixin(A) && e.validateInsertion(n) && e.getParent() instanceof o
                                         ? i
-                                            ? i !== e.getParent() && (p = !1)
+                                            ? i !== e.getParent() && (p = false)
                                             : (i = e.getParent())
-                                        : (p = !1));
+                                        : (p = false));
                             }.bind(this)
                         ),
                         r.length > 1)
@@ -150,13 +150,13 @@ module.exports = function (e, t, i) {
                         try {
                             if ((n.beginUpdate(), n.setProperty("evenodd", r[0].getProperty("evenodd")), r[0] instanceof s)) {
                                 var f = r[0];
-                                if (!f.getPaintLayers().getFillLayers(!0).length && f.getProperty("_fc")) {
+                                if (!f.getPaintLayers().getFillLayers(true).length && f.getProperty("_fc")) {
                                     n.getPaintLayers().clearFillLayers();
                                     var m =
                                         "string" == typeof f.getProperty("_fc")
                                             ? h.fromCSSColor(f.getProperty("_fc"))
                                             : f.getProperty("_fc");
-                                    n.getPaintLayers().appendChild(new l.FillPaintLayer(m));
+                                    n.getPaintLayers().appendChild(new GStylable.FillPaintLayer(m));
                                 }
                             }
                             var y = [],
@@ -183,5 +183,5 @@ module.exports = function (e, t, i) {
                     }
                     return n;
                 }),
-                (e.exports = m));
+                (module.exports = m));
         };

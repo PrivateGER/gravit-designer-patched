@@ -1,41 +1,41 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(23),
-            i = n(27),
-            a = n(49),
-            r = n(425),
-            s = n(199),
-            l = n(100),
-            c = n(120),
-            d = n(232),
-            u = n(21),
-            p = n(146),
-            g = n(130),
-            h = n(117),
-            f = n(426),
-            m = n(687),
-            y = n(691),
-            v = n(208),
-            _ = n(175),
-            b = n(427),
-            w = n(157),
-            C = n(288),
-            x = n(341),
-            S = n(137),
-            E = n(80),
-            A = s.PROPER,
-            T = s.CONFIGURABLE,
+        var RegExp = require(23),
+            i = require(27),
+            a = require(49),
+            r = require(425),
+            PROPER = require(199),
+            l = require(100),
+            c = require(120),
+            d = require(232),
+            u = require(21),
+            p = require(146),
+            g = require(130),
+            h = require(117),
+            f = require(426),
+            m = require(687),
+            y = require(691),
+            v = require(208),
+            _ = require(175),
+            b = require(427),
+            w = require(157),
+            C = require(288),
+            x = require(341),
+            S = require(137),
+            E = require(80),
+            A = PROPER.PROPER,
+            T = PROPER.CONFIGURABLE,
             G = E.getterFor("ArrayBuffer"),
             P = E.getterFor("DataView"),
             D = E.set,
-            L = o.ArrayBuffer,
+            L = RegExp.ArrayBuffer,
             I = L,
             k = I && I.prototype,
-            O = o.DataView,
+            O = RegExp.DataView,
             F = O && O.prototype,
             R = Object.prototype,
-            M = o.Array,
-            N = o.RangeError,
+            M = RegExp.Array,
+            N = RegExp.RangeError,
             B = i(b),
             U = i([].reverse),
             $ = y.pack,
@@ -60,7 +60,7 @@ module.exports = function (e, t, n) {
             },
             Y = function (e, t, n) {
                 c(e.prototype, t, {
-                    configurable: !0,
+                    configurable: true,
                     get: function () {
                         return n(this)[t];
                     },
@@ -117,13 +117,13 @@ module.exports = function (e, t, n) {
                                 ee(this, e, (t << 24) >> 24);
                             },
                         },
-                        { unsafe: !0 }
+                        { unsafe: true }
                     ));
         } else
             ((k = (I = function (e) {
                 p(this, k);
                 var t = f(e);
-                (D(this, { type: "ArrayBuffer", bytes: B(M(t), 0), byteLength: t }), a || ((this.byteLength = t), (this.detached = !1)));
+                (D(this, { type: "ArrayBuffer", bytes: B(M(t), 0), byteLength: t }), a || ((this.byteLength = t), (this.detached = false)));
             }).prototype),
                 (F = (O = function (e, t, n) {
                     (p(this, F), p(e, k));
@@ -194,5 +194,5 @@ module.exports = function (e, t, n) {
                         Q(this, 8, e, q, t, arguments.length > 2 && arguments[2]);
                     },
                 }));
-        (S(I, "ArrayBuffer"), S(O, "DataView"), (e.exports = { ArrayBuffer: I, DataView: O }));
+        (S(I, "ArrayBuffer"), S(O, "DataView"), (module.exports = { ArrayBuffer: I, DataView: O }));
     };

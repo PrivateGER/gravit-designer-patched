@@ -1,22 +1,22 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(1);
+        var GObject = require(1);
         function i(e, t) {
-            ((this._neverRemind = !1),
+            ((this._neverRemind = false),
                 (this._agreeCb = e),
                 (this._rejectCb = t || this.close),
                 gContainer.getProperty("designer.settings.warn-linked-image-dialog.never-remind").then((t) => {
-                    (t = t || !1) ? e() : this._init();
+                    (t = t || false) ? e() : this._init();
                 }));
         }
-        (o.GObject.inherit(i, o.GObject),
+        (GObject.GObject.inherit(i, GObject.GObject),
             (i.prototype._init = function () {
                 ((this._dialog = $("<div></div>")
                     .addClass("container")
                     .append(
                         $("<div />")
                             .addClass("text-content")
-                            .text(o.GLocale.get(new o.GLocaleKey("GWarnLinkedImageDialog", "warn-linked-image.text")))
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GWarnLinkedImageDialog", "warn-linked-image.text")))
                     )
                     .append(
                         $("<div />")
@@ -36,21 +36,21 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<span />")
                                     .addClass("checkbox-text")
-                                    .html(o.GLocale.get(new o.GLocaleKey("GWarnLinkedImageDialog", "warn-linked-image.never-remind")))
+                                    .html(GObject.GLocale.get(new GObject.GLocaleKey("GWarnLinkedImageDialog", "warn-linked-image.never-remind")))
                             )
                     )
                     .gDialog({
-                        releaseOnClose: !0,
+                        releaseOnClose: true,
                         className: "g-warn-linked-image-dialog",
                         buttons: [
                             $("<button />")
                                 .addClass("native-button")
                                 .attr("type", "submit")
-                                .html(o.GLocale.get(new o.GLocaleKey("GWarnLinkedImageDialog", "warn-linked-image.proceed")))
+                                .html(GObject.GLocale.get(new GObject.GLocaleKey("GWarnLinkedImageDialog", "warn-linked-image.proceed")))
                                 .on("click", this.save.bind(this)),
                             $("<button />")
                                 .addClass("native-button")
-                                .html(o.GLocale.get(new o.GLocaleKey("GWarnLinkedImageDialog", "warn-linked-image.cancel")))
+                                .html(GObject.GLocale.get(new GObject.GLocaleKey("GWarnLinkedImageDialog", "warn-linked-image.cancel")))
                                 .on("click", this._rejectCb.bind(this)),
                         ],
                     })),
@@ -64,15 +64,15 @@ module.exports = function (e, t, n) {
                 (this._neverRemind &&
                     gContainer &&
                     gContainer.setProperty &&
-                    gContainer.setProperty("designer.settings.warn-linked-image-dialog.never-remind", !0),
+                    gContainer.setProperty("designer.settings.warn-linked-image-dialog.never-remind", true),
                     this.close(),
                     this._agreeCb());
             }),
             (i.prototype.open = function () {
-                this._dialog.gDialog("open", !0);
+                this._dialog.gDialog("open", true);
             }),
             (i.prototype.close = function () {
                 this._dialog.gDialog("close");
             }),
-            (e.exports = i));
+            (module.exports = i));
     };

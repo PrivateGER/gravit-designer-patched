@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        const { PasswordlessAuthenticationActions: o, gApi: i } = n(10),
-            a = n(337),
-            r = n(44);
-        e.exports = class {
+        require(8 /* Symbol */);
+        const { PasswordlessAuthenticationActions: o, gApi: i } = require(10 /* designerConfig */),
+            a = require(337),
+            GSystemDialog = require(44);
+        module.exports = class {
             async execute() {
                 let { [o.PasswordlessToken]: e } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 try {
@@ -15,7 +15,7 @@ module.exports = function (e, t, n) {
                     );
                 } catch (e) {
                     gDesigner.executeWhenReady(() => {
-                        r.error(e);
+                        GSystemDialog.error(e);
                     });
                 }
             }

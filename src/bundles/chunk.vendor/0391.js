@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(90);
+module.exports = function (module, exports, require) {
+            var n = require(90);
 
             function r(e) {
                 this.pdfIndirectObject = e;
             }
-            (i(0).inherit(r, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(r, n),
                 (r.prototype.write = function (e) {
                     (e.write(this.getPDFIndirectObject().number), e.write(" "), e.write(this.getPDFIndirectObject().type), e.write(" R"));
                 }),
@@ -14,5 +14,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.getPDFObject = function () {
                     return this.getPDFIndirectObject().getPDFObject();
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

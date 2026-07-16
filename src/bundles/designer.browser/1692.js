@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8),
+        (require(8 /* Symbol */),
             (function () {
                 function e() {
                     return new Promise((e, t) => {

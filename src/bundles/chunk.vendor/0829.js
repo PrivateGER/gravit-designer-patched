@@ -1,4 +1,4 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
             const {
                     quotas: n,
@@ -7,22 +7,22 @@ module.exports = function (e, t, i) {
                     defaultUserSettings: {
                         license: { offlineCountdown: a },
                     },
-                } = i(253),
-                s = i(430),
-                l = i(972),
-                h = i(373);
+                } = require(253),
+                s = require(430),
+                l = require(972),
+                h = require(373);
             class A {
                 static get FREEMIUM_END_DATE() {
                     return new Date("2 Aug 2022 00:00:00 GMT");
                 }
                 constructor(e) {
                     let {
-                        offline: t = !1,
+                        offline: t = false,
                         license: i = s.Free,
                         expire: n,
                         created: r,
                         registered: o,
-                        legacy: a = !1,
+                        legacy: a = false,
                         offlineExpire: l,
                         specialPrice: A,
                         deactivated: c,
@@ -53,7 +53,7 @@ module.exports = function (e, t, i) {
                 }
                 isExpired(e) {
                     return this.isGuest()
-                        ? !this._expire || h.lt(this._expire, e || h.now(), !1)
+                        ? !this._expire || h.lt(this._expire, e || h.now(), false)
                         : !!this._expire && h.lt(this._expire, e || Date.now());
                 }
                 isOfflinePeriodExpired(e) {
@@ -140,7 +140,7 @@ module.exports = function (e, t, i) {
                     return !this.isGuest() || !this.isExpired();
                 }
                 canUpgrade() {
-                    return !0;
+                    return true;
                 }
                 isTrialAvailable() {
                     return this.isDefault() || this.isFree();
@@ -229,5 +229,5 @@ module.exports = function (e, t, i) {
                     return "[Object License]";
                 }
             }
-            e.exports = A;
+            module.exports = A;
         };

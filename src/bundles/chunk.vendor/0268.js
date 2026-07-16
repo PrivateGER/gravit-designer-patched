@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(60),
-                r = i(28),
-                o = i(2),
-                a = i(22),
-                s = i(45),
-                l = i(6),
-                h = i(12),
-                A = i(76),
-                c = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(60),
+                GStylable = require(28),
+                o = require(2),
+                a = require(22),
+                s = require(45),
+                l = require(6),
+                h = require(12),
+                A = require(76),
+                String = require(9);
 
             function p() {
                 n.apply(this, arguments);
@@ -30,7 +30,7 @@ module.exports = function (e, t, i) {
                         });
                 }),
                 (p.prototype.getNodeNameTranslated = function () {
-                    return c.getValue("GConnector", "name", this.getNodeName());
+                    return String.getValue("GConnector", "name", this.getNodeName());
                 }),
                 (p.prototype.relayout = function () {
                     if (this._anchorPoints && this._anchorPoints.getFirstChild() && this._anchorPoints.getLastChild()) {
@@ -131,11 +131,11 @@ module.exports = function (e, t, i) {
                 (p.prototype.transformAnchors = function (e) {
                     (this._beginBlockEvents([a.GeometryChangeEvent]),
                         this.beginUpdate(),
-                        this.getAnchorPoints()._beginBlockCompositeEvents(!1, !0, !1));
+                        this.getAnchorPoints()._beginBlockCompositeEvents(false, true, false));
                     for (var t = this.getAnchorPoints().getFirstChild(); null != t; t = t.getNext())
                         t.transferProperties(t._getTransformedCopy(e), [s.AnchorPoint.GeometryProperties]);
                     (this._endBlockEvents([a.GeometryChangeEvent]),
-                        this.getAnchorPoints()._endBlockCompositeEvents(!1, !0, !1),
+                        this.getAnchorPoints()._endBlockCompositeEvents(false, true, false),
                         this.endUpdate());
                 }),
                 (p.prototype._handleChange = function (e, t) {
@@ -143,7 +143,7 @@ module.exports = function (e, t, i) {
                         (e !== A._Change.SceneDetached && e !== A._Change.SceneAttached) || this._relayoutConnectors());
                 }),
                 (p.prototype.getStylePropertySets = function () {
-                    return [r.PropertySet.Style, r.PropertySet.BorderPaintLayers, r.PropertySet.Effects];
+                    return [GStylable.PropertySet.Style, GStylable.PropertySet.BorderPaintLayers, GStylable.PropertySet.Effects];
                 }),
-                (e.exports = p));
+                (module.exports = p));
         };

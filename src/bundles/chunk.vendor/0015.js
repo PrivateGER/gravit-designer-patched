@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            e.exports = {
-                GKey: i(164),
-                GSceneWidget: i(363),
-                GMouseEvent: i(77),
-                GModifiers: i(514),
-                GModifiersChangedEvent: i(150),
-                GPlatform: i(64),
-                GInputRecorder: i(645),
+module.exports = function (module, exports, require) {
+            module.exports = {
+                GKey: require(164),
+                GSceneWidget: require(363),
+                GMouseEvent: require(77),
+                GModifiers: require(514),
+                GModifiersChangedEvent: require(150),
+                GPlatform: require(64),
+                GInputRecorder: require(645),
             };
         };

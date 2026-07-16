@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(8);
-        const { gApi: o } = n(10);
-        e.exports = class {
+        require(8 /* Symbol */);
+        const { gApi: o } = require(10 /* designerConfig */);
+        module.exports = class {
             canMakePayments() {
-                return !0;
+                return true;
             }
             getOptions() {
                 return null;

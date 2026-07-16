@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = (i(9), i(47), i(64));
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = (require(9 /* String */), require(47), require(64));
 
             function o() {}
-            (n.inherit(o, n),
+            (IsFiniteNonNegativeNumber.inherit(o, IsFiniteNonNegativeNumber),
                 (o.import = function (e, t) {
                     var i = new FileReader();
                     ((i.onload = function () {
@@ -27,5 +27,5 @@ module.exports = function (e, t, i) {
                         e instanceof Uint8Array && (e = new Blob([e])),
                         i.readAsDataURL(e));
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

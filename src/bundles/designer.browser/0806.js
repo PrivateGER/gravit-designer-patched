@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(394);
+        require(3);
+        var GObject = require(1),
+            i = require(394);
         function a() {
             i.call(this);
         }
-        (o.GObject.inherit(a, i),
+        (GObject.GObject.inherit(a, i),
             (a.prototype.getOrientation = function () {
                 return null;
             }),
@@ -20,28 +20,28 @@ module.exports = function (e, t, n) {
                 return gDesigner.getSetting("sidebars_width_".concat(this.getId()), this.getDefaultWidth());
             }),
             (a.prototype.isResizeable = function () {
-                return !1;
+                return false;
             }),
             (a.prototype.isDeactivatable = function () {
-                return !0;
+                return true;
             }),
             (a.prototype.relayout = function () {}),
             (a.prototype.resize = function () {}),
             (a.prototype.init = function (e) {}),
             (a.prototype.activate = function () {}),
             (a.prototype.isToolAllowed = function (e) {
-                return !0;
+                return true;
             }),
             (a.prototype.deactivate = function () {}),
             (a.prototype.getTouchTools = function (e) {
-                let { disableContextSensitive: t = !1 } = e;
+                let { disableContextSensitive: t = false } = e;
                 return null;
             }),
             (a.prototype.updateBadge = function (e) {
-                return !1;
+                return false;
             }),
             (a.prototype.toString = function () {
                 return "[Object GSidebar]";
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

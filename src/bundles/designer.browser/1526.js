@@ -1,10 +1,10 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(1527);
+        require(3);
+        var GObject = require(1),
+            i = require(1527);
         function a(e) {
-            ((this._htmlElement = $("<div></div>").addClass("g-effects-panel").gOverlay({ releaseOnClose: !1, padding: !1 })),
+            ((this._htmlElement = $("<div></div>").addClass("g-effects-panel").gOverlay({ releaseOnClose: false, padding: false })),
                 (this._catTranslate = e));
         }
         ((a.prototype._htmlElement = null),
@@ -37,7 +37,7 @@ module.exports = function (e, t, n) {
                     if (e[n] instanceof i) this.addItem(e[n]);
                     else {
                         t = new i(
-                            o.GLocale.getValue(e[n].i18n, "name"),
+                            GObject.GLocale.getValue(e[n].i18n, "name"),
                             e[n].icon,
                             e[n].clazz,
                             e[n].cb,
@@ -57,5 +57,5 @@ module.exports = function (e, t, n) {
             (a.prototype.toString = function () {
                 return "[Object GEffectsPanel]";
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

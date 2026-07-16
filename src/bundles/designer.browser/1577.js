@@ -1,18 +1,18 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(30), n(8));
-        var i = n(10),
-            a = n(1),
-            r = o(n(1187));
+        var o = require(16);
+        (require(30), require(8 /* Symbol */));
+        var designerConfig = require(10),
+            GObject = require(1),
+            r = o(require(1187));
         function s() {}
-        (a.GObject.inherit(s, i.GPaywallDialog.Impl),
+        (GObject.GObject.inherit(s, designerConfig.GPaywallDialog.Impl),
             (s.prototype.open = function (e) {
                 let { dialog: t } = e;
-                this._dialog = t.getHTMLElement().gDialog({ releaseOnClose: !0, nowrap: !0 }).gDialog("open");
+                this._dialog = t.getHTMLElement().gDialog({ releaseOnClose: true, nowrap: true }).gDialog("open");
             }),
             (s.prototype.close = function () {
-                let { licenseHasBeenUpgraded: e = !1 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                let { licenseHasBeenUpgraded: e = false } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 (this._dialog.closest(".g-dialog-container").remove(), e && gDesigner.requestLicenseUpdate());
             }),
             (s.prototype.openPurchaseFlow = async function (e) {
@@ -44,15 +44,15 @@ module.exports = function (e, t, n) {
                 return gDesigner.getSyncUser();
             }),
             (s.prototype.getLanguage = function () {
-                return a.GLocale.getLanguage();
+                return GObject.GLocale.getLanguage();
             }));
         class l extends r.default {
             constructor(e) {
                 (super(), (this._dialogOptions = e));
             }
             async open() {
-                new i.GPaywallDialog(Object.assign(this._dialogOptions, { impl: new s(), gApi: i.gApi })).open();
+                new designerConfig.GPaywallDialog(Object.assign(this._dialogOptions, { impl: new s(), gApi: designerConfig.gApi })).open();
             }
         }
-        e.exports = l;
+        module.exports = l;
     };

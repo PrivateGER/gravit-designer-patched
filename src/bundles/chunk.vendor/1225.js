@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(1143),
-                o = i(800),
-                a = i(182),
-                s = i(440),
-                l = i(7),
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(1143),
+                o = require(800),
+                a = require(182),
+                s = require(440),
+                l = require(7),
                 h = function (e, t, i, n, A) {
                     o.call(this, {
                         _out: null,
@@ -32,9 +32,9 @@ module.exports = function (e, t, i) {
                         this.putDictionary("/FormType", h.FormType.DEFAULT),
                         i && this.putDictionary("/Group", i));
                 };
-            (n.inherit(h, o),
+            (IsFiniteNonNegativeNumber.inherit(h, o),
                 (h.FormType = {
                     DEFAULT: 1,
                 }),
-                (e.exports = h));
+                (module.exports = h));
         };

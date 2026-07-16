@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1);
+        require(3);
+        var GObject = require(1);
         function i(e) {
             this.connected = e;
         }
-        (o.GObject.inherit(i, o.GEvent),
-            (i.prototype.connected = !1),
+        (GObject.GObject.inherit(i, GObject.GEvent),
+            (i.prototype.connected = false),
             (i.prototype.toString = function () {
                 return "[Object GNetworkAvailabilityChangedEvent]";
             }),
-            (e.exports = i));
+            (module.exports = i));
     };

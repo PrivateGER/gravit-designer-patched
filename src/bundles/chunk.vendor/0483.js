@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(42);
+module.exports = function (module, exports, require) {
+            var n = require(42);
 
             function r(e) {
                 (n.call(
@@ -18,7 +18,7 @@ module.exports = function (e, t, i) {
                             "        void main() {            vec2 color = vec2(0.0);            vec2 total = vec2(0.0);                        /* randomize the lookup values to hide the fixed number of samples */            float offset = random(vec3(12.9898, 78.233, 151.7182), 0.0);                        for (float t = -30.0; t <= 30.0; t++) {                float percent = (t + offset - 0.5) / 30.0;                float weight = 1.0 - abs(percent);                vec2 sample = texture2D(texture, texCoord + delta * percent).xy;                color.x += sample.x * weight;                total.x += weight;                if (abs(t) < 15.0) {                    weight = weight * 2.0 - 1.0;                    color.y += sample.y * weight;                    total.y += weight;                }            }            float c = clamp(10000.0 * (color.y / total.y - color.x / total.x) + 0.5, 0.0, 1.0);            gl_FragColor = vec4(c, c, c, 1.0);        }    "
                     )));
             }
-            (i(0).inherit(r, n),
+            (require(0 /* IsFiniteNonNegativeNumber */).inherit(r, n),
                 (r.prototype.edgeWork2 = null),
                 (r.prototype.render = function (e, t) {
                     var i = this.glEffect.width,
@@ -34,5 +34,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.destroy = function () {
                     (this.edgeWork2 && this.edgeWork2.destroy(), n.prototype.destroy.call(this));
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

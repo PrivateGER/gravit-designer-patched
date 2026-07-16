@@ -1,24 +1,24 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(30), n(3), n(26), n(125), n(126), n(114));
-        var o = n(1),
-            i = n(15),
-            a = n(797),
-            r = n(40),
-            s = n(18),
-            l = n(31),
-            c = n(446),
-            d = n(219),
-            u = n(1610),
-            p = n(85);
-        const g = n(44);
+        (require(19), require(30), require(3), require(26), require(125), require(126), require(114));
+        var GObject = require(1),
+            GPlatform = require(15),
+            a = require(797),
+            GSaveAction = require(40),
+            GCategory = require(18),
+            l = require(31),
+            GLoginPanel = require(446),
+            d = require(219),
+            u = require(1610),
+            p = require(85);
+        const GSystemDialog = require(44);
         var h = null,
-            f = !1,
-            m = !1;
+            f = false,
+            m = false;
         function y() {}
-        (o.GObject.inherit(y, l),
+        (GObject.GObject.inherit(y, l),
             (y.ID = "file.print"),
-            (y.TITLE = new o.GLocaleKey("GPrintAction", "title")),
+            (y.TITLE = new GObject.GLocaleKey("GPrintAction", "title")),
             (y.prototype.getId = function () {
                 return y.ID;
             }),
@@ -29,29 +29,29 @@ module.exports = function (e, t, n) {
                 return "gravit-icon-print";
             }),
             (y.prototype.getCategory = function () {
-                return s.CATEGORY_FILE;
+                return GCategory.CATEGORY_FILE;
             }),
             (y.prototype.getGroup = function () {
                 return "print";
             }),
             (y.prototype.isEnabled = function () {
-                if (!gDesigner.getApplicationManager().isExportEnabled()) return !1;
+                if (!gDesigner.getApplicationManager().isExportEnabled()) return false;
                 const e = gDesigner.getActiveDocument();
                 return e && (!e.isNew() || e.isModified());
             }),
             (y.prototype.getShortcut = function () {
-                return [i.GKey.Constant.COMMAND, "P"];
+                return [GPlatform.GKey.Constant.COMMAND, "P"];
             }),
             (y.prototype.execute = function () {
                 var e = gDesigner.getActiveDocument(),
                     t = e.getScene(),
                     n = new u.Item("PDF"),
                     i = {
-                        suppressMessages: !0,
+                        suppressMessages: true,
                         dpi: gDesigner.isEnabledProFeatures() ? 300 : 150,
-                        preserveEditingCapabilities: !1,
+                        preserveEditingCapabilities: false,
                         jpegQuality: 100,
-                        export: !0,
+                        export: true,
                     },
                     s = () => {
                         console.log("NO DATA :(");
@@ -59,21 +59,21 @@ module.exports = function (e, t, n) {
                 const l = () => {
                     -1 !== navigator.userAgent.indexOf("Firefox") ||
                     (gContainer.getRuntime() === p.Runtime.Electron && a.GSVGExport.hasSupportedEffects(t))
-                        ? g.confirm(
-                              o.GLocale.get(new o.GLocaleKey("GPrintAction", "printing-warning")),
+                        ? GSystemDialog.confirm(
+                              GObject.GLocale.get(new GObject.GLocaleKey("GPrintAction", "printing-warning")),
                               (e) => {
                                   e && y();
                               },
                               void 0,
                               void 0,
                               void 0,
-                              !0,
-                              !0
+                              true,
+                              true
                           )
                         : y();
                 };
                 var y = () => {
-                        Object.assign(i, { convertTextToPath: !0 });
+                        Object.assign(i, { convertTextToPath: true });
                         let n = [];
                         t.iteratePages(function (e) {
                             n.push(e);
@@ -84,7 +84,7 @@ module.exports = function (e, t, n) {
                                 if ((o.push(c), n.shift(), n.length)) return void a.GSVGExport.export(n[0], i, l);
                                 let d = "";
                                 for (var u = 0; u < o.length; u++) {
-                                    let e = "data:image/svg+xml;base64," + (0, r.stringToBase64String)(o[u]);
+                                    let e = "data:image/svg+xml;base64," + (0, GSaveAction.stringToBase64String)(o[u]);
                                     d = d.concat("<img style='height:100%;width:auto;max-width:100%;display:block;' src='" + e + "'/>");
                                 }
                                 var p = h.contentDocument;
@@ -98,20 +98,20 @@ module.exports = function (e, t, n) {
                                         try {
                                             h.contentWindow.print();
                                         } catch (e) {
-                                            ((m = !0), v());
+                                            ((m = true), v());
                                         }
                                     }));
                             };
                         n.length && a.GSVGExport.export(n[0], i, l);
                     },
-                    v = () => new d(o.GLocale.get(new o.GLocaleKey("GPrintAction", "printing-disabled"))).open(),
+                    v = () => new d(GObject.GLocale.get(new GObject.GLocaleKey("GPrintAction", "printing-disabled"))).open(),
                     _ = () => {
                         if (h.src) {
                             h.focus();
                             try {
                                 h.contentWindow.print();
                             } catch (e) {
-                                ((f = !0), (h.onload = l), (h.src = "about:blank"));
+                                ((f = true), (h.onload = l), (h.src = "about:blank"));
                             }
                         }
                     },
@@ -129,8 +129,8 @@ module.exports = function (e, t, n) {
                     (h.style.bottom = "0"),
                     (h.style.zIndex = "-1"),
                     document.body.appendChild(h),
-                    gContainer.getRuntime() === p.Runtime.Electron && (f = !0)),
-                    new c(
+                    gContainer.getRuntime() === p.Runtime.Electron && (f = true)),
+                    new GLoginPanel(
                         () => {
                             !(function () {
                                 if (m) v();
@@ -139,9 +139,9 @@ module.exports = function (e, t, n) {
                                     var o = 0,
                                         r = [300, 150, 72, 36, null];
                                     gDesigner.isEnabledProFeatures() || r.shift();
-                                    for (var c = !1; !a.GPDFExport.isSupported(t, !0, r[o++] + "dpi"); )
+                                    for (var c = false; !a.GPDFExport.isSupported(t, true, r[o++] + "dpi"); )
                                         if (null === r[o]) {
-                                            c = !0;
+                                            c = true;
                                             break;
                                         }
                                     c ? ((h.onload = null), y()) : ((i.dpi = r[o - 1]), (h.onload = _), e.store(n, b, s, i));
@@ -156,5 +156,5 @@ module.exports = function (e, t, n) {
             (y.prototype.toString = function () {
                 return "[Object GPrintAction]";
             }),
-            (e.exports = y));
+            (module.exports = y));
     };

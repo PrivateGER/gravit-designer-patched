@@ -1,18 +1,18 @@
-module.exports = function (e, t, i) {
-            var n = i(50),
-                r = i(2),
-                o = i(28),
-                a = i(17),
-                s = i(68),
-                l = i(14),
-                h = i(6),
-                A = i(249),
-                c = i(9);
+module.exports = function (module, exports, require) {
+            var n = require(50),
+                r = require(2),
+                GStylable = require(28),
+                a = require(17),
+                s = require(68),
+                l = require(14),
+                h = require(6),
+                A = require(249),
+                String = require(9);
 
             function p() {
-                (o.Effect.call(this), this._setDefaultProperties(p.GeometryProperties, p.VisualProperties), (this._blur = new A()));
+                (GStylable.Effect.call(this), this._setDefaultProperties(p.GeometryProperties, p.VisualProperties), (this._blur = new A()));
             }
-            (r.inherit("dropShadowEffect", p, o.Effect),
+            (r.inherit("dropShadowEffect", p, GStylable.Effect),
                 (p.prototype._blur = null),
                 (p.equals = function (e, t) {
                     return (
@@ -31,13 +31,13 @@ module.exports = function (e, t, i) {
                     opc: 0.65,
                 }),
                 (p.prototype.getEffectType = function () {
-                    return o.Effect.Type.PreEffect;
+                    return GStylable.Effect.Type.PreEffect;
                 }),
                 (p.prototype.isOverlayEffect = function () {
-                    return !0;
+                    return true;
                 }),
                 (p.prototype.getNodeNameTranslated = function () {
-                    return c.getValue("GDropShadowEffect", "name", this.getNodeName());
+                    return String.getValue("GDropShadowEffect", "name", this.getNodeName());
                 }),
                 (p.prototype.getEffectPadding = function () {
                     var e = Math.ceil(1.3 * this.$r);
@@ -66,13 +66,13 @@ module.exports = function (e, t, i) {
                                 s = this.$y * n,
                                 A = this.$r * n,
                                 c = t
-                                    .getTransform(!1)
+                                    .getTransform(false)
                                     .inverted()
                                     .mapRect(new h(0, 0, t.getWidth(), t.getHeight())),
                                 p = t.createPatternPaint(this.$pat, c);
                             if (p)
                                 if (p.transform) {
-                                    var u = t.setTransform(t.getTransform(!0).preMultiplied(p.transform));
+                                    var u = t.setTransform(t.getTransform(true).preMultiplied(p.transform));
                                     (t.fillRect(0, 0, 1, 1, p.paint, this.$opc), t.setTransform(u));
                                 } else t.fillRect(c.getX(), c.getY(), c.getWidth(), c.getHeight(), p.paint, this.$opc);
                             (t.drawCanvas(e, a, s, 1, l.CompositeOperator.DestinationIn),
@@ -93,7 +93,7 @@ module.exports = function (e, t, i) {
                           })),
                         this._handleGeometryChangeForProperties(e, t, p.GeometryProperties),
                         this._handleVisualChangeForProperties(e, t, p.VisualProperties),
-                        o.Effect.prototype._handleChange.call(this, e, t));
+                        GStylable.Effect.prototype._handleChange.call(this, e, t));
                 }),
                 (p.prototype.toString = function () {
                     return "[Object GDropShadowEffect]";
@@ -104,5 +104,5 @@ module.exports = function (e, t, i) {
                 (p.prototype.destroy = function () {
                     this._blur && this._blur.destroy();
                 }),
-                (e.exports = p));
+                (module.exports = p));
         };

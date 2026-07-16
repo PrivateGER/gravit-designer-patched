@@ -1,9 +1,9 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(60),
-                o = i(84),
-                a = i(0),
-                s = i(6);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                r = require(60),
+                o = require(84),
+                IsFiniteNonNegativeNumber = require(0),
+                s = require(6);
 
             function l() {
                 (r.call(this), this.initializeAnnotation());
@@ -33,7 +33,7 @@ module.exports = function (e, t, i) {
                         var d = t.blob;
                         if (t.options.separateSaving) {
                             ((d.own = {
-                                "@": n._nodeClassToNameMap[a.getTypeId(this)],
+                                "@": n._nodeClassToNameMap[IsFiniteNonNegativeNumber.getTypeId(this)],
                             }),
                                 (t.blob = d.own));
                             var g = this.getGeometryBBox();
@@ -52,5 +52,5 @@ module.exports = function (e, t, i) {
                 (l.prototype.toString = function () {
                     return "[GPencilAnnotation]";
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

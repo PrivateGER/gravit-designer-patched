@@ -1,22 +1,22 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(58), n(57), n(4), n(13), n(32), n(33));
-        var o = n(1),
-            i = n(15),
-            a = n(394),
-            r = n(135),
-            s = n(863),
-            { SidebarsIds: l } = n(198),
-            c = n(807);
+        (require(58), require(57), require(4), require(13), require(32), require(33));
+        var GObject = require(1),
+            GPlatform = require(15),
+            a = require(394),
+            r = require(135),
+            s = require(863),
+            { SidebarsIds: l } = require(198 /* SidebarsIds */),
+            c = require(807);
         function d(e, t, n) {
             ((this._htmlElement = e),
                 (this._orientation = t),
                 (this._frame = n),
                 (this._sidebarWidths = {}),
-                (this._canResize = !1),
-                (this._isResizing = !1));
+                (this._canResize = false),
+                (this._isResizing = false));
         }
-        (o.GObject.inherit(d, o.GEventTarget),
+        (GObject.GObject.inherit(d, GObject.GEventTarget),
             (d.Orientation = { Left: "left", Right: "right" }),
             (d.SidebarEvent = c),
             (d.prototype._htmlElement = null),
@@ -132,7 +132,7 @@ module.exports = function (e, t, n) {
                                 $("<div/>")
                                     .addClass("sidebar-option sidebar-" + e.getId())
                                     .append([
-                                        $("<span/>").addClass("sidebar-title").text(o.GLocale.get(e.getTitle())),
+                                        $("<span/>").addClass("sidebar-title").text(GObject.GLocale.get(e.getTitle())),
                                         $("<span/>").addClass("g-badge").hide(),
                                     ])
                                     .on("click", this._tryActivateSidebar.bind(this, e))
@@ -183,29 +183,29 @@ module.exports = function (e, t, n) {
                     (this._mouseReleaseHandler = this._resizeMouseUp.bind(this)),
                     document.addEventListener("mousemove", this._mouseMoveHandler),
                     document.addEventListener("mousedown", this._mouseDownHandler),
-                    document.addEventListener("mouseup", this._mouseReleaseHandler, !0),
+                    document.addEventListener("mouseup", this._mouseReleaseHandler, true),
                     document.addEventListener("dragstart", this._mouseMoveHandler),
                     document.addEventListener("drag", this._mouseMoveHandler),
-                    document.addEventListener("dragend", this._mouseMoveHandler, !0),
+                    document.addEventListener("dragend", this._mouseMoveHandler, true),
                     this._updateTouchToolbar());
             }),
             (d.prototype.setView = function (e) {
                 e !== this._view &&
                     (this._view &&
-                        (this._view.removeEventListener(i.GMouseEvent.Down, this._mouseDownHandler, this),
-                        this._view.removeEventListener(i.GMouseEvent.Move, this._mouseMoveHandler, this),
-                        this._view.removeEventListener(i.GMouseEvent.DragStart, this._mouseMoveHandler, this),
-                        this._view.removeEventListener(i.GMouseEvent.Drag, this._mouseMoveHandler, this),
-                        this._view.removeEventListener(i.GMouseEvent.DragEnd, this._mouseMoveHandler, this),
-                        this._view.removeEventListener(i.GMouseEvent.Release, this._mouseReleaseHandler, this)),
+                        (this._view.removeEventListener(GPlatform.GMouseEvent.Down, this._mouseDownHandler, this),
+                        this._view.removeEventListener(GPlatform.GMouseEvent.Move, this._mouseMoveHandler, this),
+                        this._view.removeEventListener(GPlatform.GMouseEvent.DragStart, this._mouseMoveHandler, this),
+                        this._view.removeEventListener(GPlatform.GMouseEvent.Drag, this._mouseMoveHandler, this),
+                        this._view.removeEventListener(GPlatform.GMouseEvent.DragEnd, this._mouseMoveHandler, this),
+                        this._view.removeEventListener(GPlatform.GMouseEvent.Release, this._mouseReleaseHandler, this)),
                     (this._view = e),
                     this._view &&
-                        (this._view.addEventListener(i.GMouseEvent.Down, this._mouseDownHandler, this),
-                        this._view.addEventListener(i.GMouseEvent.Move, this._mouseMoveHandler, this),
-                        this._view.addEventListener(i.GMouseEvent.DragStart, this._mouseMoveHandler, this),
-                        this._view.addEventListener(i.GMouseEvent.Drag, this._mouseMoveHandler, this),
-                        this._view.addEventListener(i.GMouseEvent.DragEnd, this._mouseMoveHandler, this),
-                        this._view.addEventListener(i.GMouseEvent.Release, this._mouseReleaseHandler, this)));
+                        (this._view.addEventListener(GPlatform.GMouseEvent.Down, this._mouseDownHandler, this),
+                        this._view.addEventListener(GPlatform.GMouseEvent.Move, this._mouseMoveHandler, this),
+                        this._view.addEventListener(GPlatform.GMouseEvent.DragStart, this._mouseMoveHandler, this),
+                        this._view.addEventListener(GPlatform.GMouseEvent.Drag, this._mouseMoveHandler, this),
+                        this._view.addEventListener(GPlatform.GMouseEvent.DragEnd, this._mouseMoveHandler, this),
+                        this._view.addEventListener(GPlatform.GMouseEvent.Release, this._mouseReleaseHandler, this)));
             }),
             (d.prototype._isActiveSidebarDeactivatable = function () {
                 return !(this.getSidebar(this._activeSidebar) && !this.getSidebar(this._activeSidebar).isDeactivatable());
@@ -216,11 +216,11 @@ module.exports = function (e, t, n) {
                     (gDesigner.stats("sidebars_activate_sidebar", (e && e.getId()) || "unkn"),
                     this.setActiveSidebar(e.getId()),
                     this.setSidebarEnabled(e.getId(), e.isEnabled()),
-                    !0)
+                    true)
                 );
             }),
             (d.prototype.disableContextSensitive = function () {
-                this._updateTouchToolbar({ disableContextSensitive: !0 });
+                this._updateTouchToolbar({ disableContextSensitive: true });
             }),
             (d.prototype.enableContextSensitive = function () {
                 this._updateTouchToolbar();
@@ -231,7 +231,7 @@ module.exports = function (e, t, n) {
                         var t;
                         (e instanceof MouseEvent
                             ? (t = e.pageX)
-                            : ((e.isImmediatePropagationStopped = !0), (t = e.client.getX() / o.GPaintCanvas.getScreenDPI())),
+                            : ((e.isImmediatePropagationStopped = true), (t = e.client.getX() / GObject.GPaintCanvas.getScreenDPI())),
                             e.stopPropagation instanceof Function && e.stopPropagation(),
                             (this._newWidth = this._orientation === d.Orientation.Left ? t : window.innerWidth - t),
                             this._newWidth < this._minimumWidth && (this._newWidth = this._minimumWidth),
@@ -244,7 +244,7 @@ module.exports = function (e, t, n) {
                                     ? this._htmlElement[0].offsetWidth
                                     : window.innerWidth - this._htmlElement[0].offsetWidth,
                             a =
-                                o.GMath.isEqualEps(e.pageX, i, 3 * o.GPaintCanvas.getScreenDPI()) &&
+                                GObject.GMath.isEqualEps(e.pageX, i, 3 * GObject.GPaintCanvas.getScreenDPI()) &&
                                 this._orientation !== d.Orientation.Right;
                         (a || this._canResize) &&
                             (a && !this._canResize
@@ -257,16 +257,16 @@ module.exports = function (e, t, n) {
                 this._canResize &&
                     t &&
                     t.isResizeable() &&
-                    ((this._isResizing = !0),
+                    ((this._isResizing = true),
                     (this._minimumWidth = t.getMinimumWidth()),
-                    e instanceof i.GMouseEvent && (e.isImmediatePropagationStopped = !0),
+                    e instanceof GPlatform.GMouseEvent && (e.isImmediatePropagationStopped = true),
                     e.stopPropagation instanceof Function && e.stopPropagation());
             }),
             (d.prototype._resizeMouseUp = function (e) {
                 if (this._isResizing) {
-                    (e instanceof i.GMouseEvent && (e.isImmediatePropagationStopped = !0),
+                    (e instanceof GPlatform.GMouseEvent && (e.isImmediatePropagationStopped = true),
                         e.stopPropagation instanceof Function && e.stopPropagation(),
-                        (this._isResizing = !1));
+                        (this._isResizing = false));
                     var t = this.getSidebar(this._activeSidebar);
                     t && gDesigner.setSetting("sidebars_width_" + t.getId(), this._newWidth);
                 }
@@ -368,5 +368,5 @@ module.exports = function (e, t, n) {
                         e.container[t ? "removeClass" : "addClass"]("g-disabled");
                     }));
             }),
-            (e.exports = d));
+            (module.exports = d));
     };

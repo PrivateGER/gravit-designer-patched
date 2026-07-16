@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         (function (o) {
             var i, a;
             void 0 ===
@@ -41,14 +41,14 @@ module.exports = function (e, t, n) {
                         function i(e, t) {
                             for (var n = 0; n < t.length; n++) {
                                 var o = t[n];
-                                ((o.enumerable = o.enumerable || !1),
-                                    (o.configurable = !0),
-                                    "value" in o && (o.writable = !0),
+                                ((o.enumerable = o.enumerable || false),
+                                    (o.configurable = true),
+                                    "value" in o && (o.writable = true),
                                     Object.defineProperty(e, u(o.key), o));
                             }
                         }
                         function a(e, t, n) {
-                            return (t && i(e.prototype, t), n && i(e, n), Object.defineProperty(e, "prototype", { writable: !1 }), e);
+                            return (t && i(e.prototype, t), n && i(e, n), Object.defineProperty(e, "prototype", { writable: false }), e);
                         }
                         function r(t, n) {
                             var o = ("undefined" != typeof Symbol && t[Symbol.iterator]) || t["@@iterator"];
@@ -77,7 +77,7 @@ module.exports = function (e, t, n) {
                                     return {
                                         s: a,
                                         n: function () {
-                                            return i >= t.length ? { done: !0 } : { done: !1, value: t[i++] };
+                                            return i >= t.length ? { done: true } : { done: false, value: t[i++] };
                                         },
                                         e: function (e) {
                                             throw e;
@@ -90,8 +90,8 @@ module.exports = function (e, t, n) {
                                 );
                             }
                             var r,
-                                s = !0,
-                                l = !1;
+                                s = true,
+                                l = false;
                             return {
                                 s: function () {
                                     o = o.call(t);
@@ -101,7 +101,7 @@ module.exports = function (e, t, n) {
                                     return ((s = e.done), e);
                                 },
                                 e: function (e) {
-                                    ((l = !0), (r = e));
+                                    ((l = true), (r = e));
                                 },
                                 f: function () {
                                     try {
@@ -164,8 +164,8 @@ module.exports = function (e, t, n) {
                                         (n(this, e),
                                             Object.defineProperty(this, "listeners", {
                                                 value: {},
-                                                writable: !0,
-                                                configurable: !0,
+                                                writable: true,
+                                                configurable: true,
                                             }));
                                     },
                                     [
@@ -222,19 +222,19 @@ module.exports = function (e, t, n) {
                                         n(this, o),
                                         (e = t(this, o)).listeners || p.call(e),
                                         Object.defineProperty(e, "aborted", {
-                                            value: !1,
-                                            writable: !0,
-                                            configurable: !0,
+                                            value: false,
+                                            writable: true,
+                                            configurable: true,
                                         }),
                                         Object.defineProperty(e, "onabort", {
                                             value: null,
-                                            writable: !0,
-                                            configurable: !0,
+                                            writable: true,
+                                            configurable: true,
                                         }),
                                         Object.defineProperty(e, "reason", {
                                             value: void 0,
-                                            writable: !0,
-                                            configurable: !0,
+                                            writable: true,
+                                            configurable: true,
                                         }),
                                         e
                                     );
@@ -244,9 +244,9 @@ module.exports = function (e, t, n) {
                                         if ("function" != typeof t && null !== t)
                                             throw new TypeError("Super expression must either be null or a function");
                                         ((e.prototype = Object.create(t && t.prototype, {
-                                            constructor: { value: e, writable: !0, configurable: !0 },
+                                            constructor: { value: e, writable: true, configurable: true },
                                         })),
-                                            Object.defineProperty(e, "prototype", { writable: !1 }),
+                                            Object.defineProperty(e, "prototype", { writable: false }),
                                             t && c(e, t));
                                     })(o, e),
                                     a(
@@ -262,7 +262,7 @@ module.exports = function (e, t, n) {
                                                 key: "dispatchEvent",
                                                 value: function (e) {
                                                     ("abort" === e.type &&
-                                                        ((this.aborted = !0),
+                                                        ((this.aborted = true),
                                                         "function" == typeof this.onabort && this.onabort.call(this, e)),
                                                         (function (e, t, n, o) {
                                                             var i = s(l(1 & o ? e.prototype : e), t, n);
@@ -354,8 +354,8 @@ module.exports = function (e, t, n) {
                                         (n(this, e),
                                             Object.defineProperty(this, "signal", {
                                                 value: new g(),
-                                                writable: !0,
-                                                configurable: !0,
+                                                writable: true,
+                                                configurable: true,
                                             }));
                                     },
                                     [
@@ -384,12 +384,12 @@ module.exports = function (e, t, n) {
                                                         } catch (e) {
                                                             "undefined" != typeof document
                                                                 ? document.createEvent
-                                                                    ? (t = document.createEvent("Event")).initEvent("abort", !1, !1)
+                                                                    ? (t = document.createEvent("Event")).initEvent("abort", false, false)
                                                                     : ((t = document.createEventObject()).type = "abort")
                                                                 : (t = {
                                                                       type: "abort",
-                                                                      bubbles: !1,
-                                                                      cancelable: !1,
+                                                                      bubbles: false,
+                                                                      cancelable: false,
                                                                   });
                                                         }
                                                         return ((t.reason = e), t);
@@ -408,7 +408,7 @@ module.exports = function (e, t, n) {
                             })();
                         function f(e) {
                             return e.__FORCE_INSTALL_ABORTCONTROLLER_POLYFILL
-                                ? (console.log("__FORCE_INSTALL_ABORTCONTROLLER_POLYFILL=true is set, will force install polyfill"), !0)
+                                ? (console.log("__FORCE_INSTALL_ABORTCONTROLLER_POLYFILL=true is set, will force install polyfill"), true)
                                 : ("function" == typeof e.Request && !e.Request.prototype.hasOwnProperty("signal")) || !e.AbortController;
                         }
                         ("undefined" != typeof Symbol &&
@@ -444,9 +444,9 @@ module.exports = function (e, t, n) {
                                                         return (
                                                             n &&
                                                                 Object.defineProperty(o, "signal", {
-                                                                    writable: !1,
-                                                                    enumerable: !1,
-                                                                    configurable: !0,
+                                                                    writable: false,
+                                                                    enumerable: false,
+                                                                    configurable: true,
                                                                     value: n,
                                                                 }),
                                                             o
@@ -470,7 +470,7 @@ module.exports = function (e, t, n) {
                                                                     function () {
                                                                         return t(o);
                                                                     },
-                                                                    { once: !0 }
+                                                                    { once: true }
                                                                 );
                                                             });
                                                             return (t && t.signal && delete t.signal, Promise.race([i, c(e, t)]));
@@ -485,21 +485,21 @@ module.exports = function (e, t, n) {
                                         ((e.fetch = n),
                                             (e.Request = o),
                                             Object.defineProperty(e, "AbortController", {
-                                                writable: !0,
-                                                enumerable: !1,
-                                                configurable: !0,
+                                                writable: true,
+                                                enumerable: false,
+                                                configurable: true,
                                                 value: h,
                                             }),
                                             Object.defineProperty(e, "AbortSignal", {
-                                                writable: !0,
-                                                enumerable: !1,
-                                                configurable: !0,
+                                                writable: true,
+                                                enumerable: false,
+                                                configurable: true,
                                                 value: g,
                                             }));
                                     } else console.warn("fetch() is not available, cannot install abortcontroller-polyfill");
                             })("undefined" != typeof self ? self : o));
                     })
-                        ? i.call(t, n, t, e)
-                        : i) || (e.exports = a);
-        }).call(this, n(109));
+                        ? i.call(exports, require, exports, module)
+                        : i) || (module.exports = a);
+        }).call(this, require(109));
     };

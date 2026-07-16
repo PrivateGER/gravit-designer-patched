@@ -1,22 +1,22 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(58), n(19), n(57), n(8), n(71), n(91), n(4), n(41), n(13), n(38), n(26), n(125), n(126), n(114));
-        var i = n(1),
-            a = o(n(1343)),
-            r = o(n(44)),
-            s = n(40);
+        var o = require(16);
+        (require(58), require(19), require(57), require(8 /* Symbol */), require(71), require(91), require(4), require(41), require(13), require(38), require(26), require(125), require(126), require(114));
+        var GObject = require(1),
+            a = o(require(1343)),
+            r = o(require(44 /* GSystemDialog */)),
+            GSaveAction = require(40);
         function l() {}
-        (i.GObject.inherit(l, i.GObject),
+        (GObject.GObject.inherit(l, GObject.GObject),
             (l.prototype._translationManager = null),
             (l.prototype._hasUnappliedChanges = null),
-            (l.prototype._shouldDownloadMetaData = !1),
+            (l.prototype._shouldDownloadMetaData = false),
             (l.prototype._currentLanguage = null),
             (l.prototype._dialog = null),
             (l.prototype.init = function () {
                 ((this._translationManager = gDesigner.getTranslationManager()),
                     (this._dialog = $("<div></div>").gDialog({
-                        releaseOnClose: !0,
+                        releaseOnClose: true,
                         className: "g-translation-tool-dialog",
                     })),
                     $("<div></div>")
@@ -87,30 +87,30 @@ module.exports = function (e, t, n) {
                         .append($("<button></button>").addClass("button").text("Apply").on("click", this._applyChanges.bind(this)))
                         .append($("<button></button>").addClass("button").text("Download").on("click", this._downloadMetaData.bind(this)))
                         .appendTo(this._panel)),
-                    this._handleProjectChange(i.GTranslation.Projects.Designer),
+                    this._handleProjectChange(GObject.GTranslation.Projects.Designer),
                     this.open());
             }),
             (l.prototype.open = function () {
-                this._dialog.gDialog("open", !1);
+                this._dialog.gDialog("open", false);
             }),
             (l.prototype._handleProjectChange = function (e) {
                 (this._translationManager.loadProjectTranslations(e),
                     this._updateUIComponents(),
-                    this._handleLanguageChange(i.GLocaleLanguage.Default, !0));
+                    this._handleLanguageChange(GObject.GLocaleLanguage.Default, true));
             }),
             (l.prototype._applyChanges = function () {
                 this._translationManager.applyTranslationPatch([this._translation]).then(() => {
-                    ((this._hasUnappliedChanges = !1), (this._shouldDownloadMetaData = !0));
+                    ((this._hasUnappliedChanges = false), (this._shouldDownloadMetaData = true));
                 });
             }),
             (l.prototype._toggleCurrentLanguageAvailability = function (e) {
-                ((this._translation.isAvailable = e), (this._hasUnappliedChanges = !0));
+                ((this._translation.isAvailable = e), (this._hasUnappliedChanges = true));
             }),
             (l.prototype._handleLanguageChange = function (e) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
                 if (!t && parseInt(this._currentLanguage) === parseInt(e)) return;
                 const n = () => {
-                    (this._setLoadingStatus(!0), (this._currentLanguage = parseInt(e)), (this._hasUnappliedChanges = !1));
+                    (this._setLoadingStatus(true), (this._currentLanguage = parseInt(e)), (this._hasUnappliedChanges = false));
                     let t = this._translationManager.isConsideringExtension();
                     (this._header.find(".language-chooser").val(this._currentLanguage),
                         this._body.find(".translations-container").remove());
@@ -137,7 +137,7 @@ module.exports = function (e, t, n) {
                                                 ((a = s ? r : a),
                                                 $("<input></input>")
                                                     .addClass("key")
-                                                    .attr("disabled", !0)
+                                                    .attr("disabled", true)
                                                     .attr("placeholder", "Key")
                                                     .val(o)
                                                     .attr("data-title", a)
@@ -161,7 +161,7 @@ module.exports = function (e, t, n) {
                                                     })
                                                     .on("change", (t) => {
                                                         ((this._translation.translations[e][o] = t.target.value),
-                                                            (this._hasUnappliedChanges = !0));
+                                                            (this._hasUnappliedChanges = true));
                                                     })
                                                     .attr("placeholder", "Translation")
                                                     .val(a)
@@ -193,7 +193,7 @@ module.exports = function (e, t, n) {
                                                             language: this._currentLanguage,
                                                             path: e,
                                                             key: o,
-                                                            extension: !0,
+                                                            extension: true,
                                                             originalValue: l,
                                                         })
                                                         .on("change", (t) => {
@@ -204,7 +204,7 @@ module.exports = function (e, t, n) {
                                                                       (this._translation.translationsExtended[e] = {}),
                                                                   (this._translation.translationsExtended[e][o] = t.target.value))
                                                                 : delete this._translation.translationsExtended[e][o],
-                                                                (this._hasUnappliedChanges = !0));
+                                                                (this._hasUnappliedChanges = true));
                                                         })
                                                         .attr("placeholder", "Extension")
                                                         .val(l || "")
@@ -218,7 +218,7 @@ module.exports = function (e, t, n) {
                             })
                         ),
                         n.appendTo(this._body),
-                        this._setLoadingStatus(!1));
+                        this._setLoadingStatus(false));
                 };
                 this._hasUnappliedChanges
                     ? r.default.confirm("You have modified strings, you'll lose them if you don't apply them first, are you sure?", (e) => {
@@ -241,10 +241,10 @@ module.exports = function (e, t, n) {
                     : this._close();
             }),
             (l.prototype._close = function () {
-                ((this._hasUnappliedChanges = !1),
+                ((this._hasUnappliedChanges = false),
                     (this._currentLanguage = null),
-                    (this._shouldDownloadMetaData = !1),
-                    this._dialog.gDialog("close", !1, 0));
+                    (this._shouldDownloadMetaData = false),
+                    this._dialog.gDialog("close", false, 0));
             }),
             (l.prototype._downloadMetaData = async function () {
                 var e = async () => {
@@ -252,7 +252,7 @@ module.exports = function (e, t, n) {
                         "translations_".concat(this._translationManager.getActiveProject(), ".json").toLowerCase(),
                         await this._translationManager.getMetaData()
                     ),
-                        (this._shouldDownloadMetaData = !1));
+                        (this._shouldDownloadMetaData = false));
                 };
                 this._hasUnappliedChanges
                     ? r.default.confirm("You have modified strings, do you want to download before applying your changes?", (t) => {
@@ -261,7 +261,7 @@ module.exports = function (e, t, n) {
                     : e();
             }),
             (l.prototype._exportAsCSV = async function () {
-                var e = Object.keys(i.GLocaleLanguage)[Object.values(i.GLocaleLanguage).indexOf(this._currentLanguage)];
+                var e = Object.keys(GObject.GLocaleLanguage)[Object.values(GObject.GLocaleLanguage).indexOf(this._currentLanguage)];
                 this._manageDownload(
                     "translations_".concat(this._translationManager.getActiveProject(), "_").concat(e, ".csv").toLocaleLowerCase(),
                     await this._translationManager.export(a.default.FormatTypes.CSV, this._currentLanguage, this._onlyExportEmptyStrings)
@@ -269,25 +269,25 @@ module.exports = function (e, t, n) {
             }),
             (l.prototype._handleCSVImport = async function () {
                 try {
-                    (this._setLoadingStatus(!0),
+                    (this._setLoadingStatus(true),
                         gDesigner.getDefaultStorage().openPrompt(
                             [{ ext: "csv", mime: "text/csv" }],
                             (e) => {
                                 e &&
                                     e.read((e) => {
-                                        var t = (0, s.decodeFromUTF8)(e);
+                                        var t = (0, GSaveAction.decodeFromUTF8)(e);
                                         this._translationManager
                                             .import(t)
-                                            .then(() => this._handleLanguageChange(this._currentLanguage, !0))
+                                            .then(() => this._handleLanguageChange(this._currentLanguage, true))
                                             .catch((e) => this._handleError(e));
                                     });
                             },
-                            !1
+                            false
                         ));
                 } catch (e) {
                     this._handleError(e);
                 } finally {
-                    this._setLoadingStatus(!1);
+                    this._setLoadingStatus(false);
                 }
             }),
             (l.prototype._manageDownload = function (e, t) {
@@ -314,7 +314,7 @@ module.exports = function (e, t, n) {
                                   this._translationManager
                                       .createNewLanguage(e, t, n)
                                       .then((e) => {
-                                          ((this._shouldDownloadMetaData = !0),
+                                          ((this._shouldDownloadMetaData = true),
                                               this._updateUIComponents(),
                                               this._handleLanguageChange(e.keyValue));
                                       })
@@ -329,11 +329,11 @@ module.exports = function (e, t, n) {
                 var e = this._header.find(".language-chooser");
                 (e.find("option").remove(),
                     e.append(
-                        Object.keys(i.GLocaleLanguage)
+                        Object.keys(GObject.GLocaleLanguage)
                             .filter((e) => "Default" !== e)
-                            .filter((e) => !!this._translationManager.getTranslationByKey(i.GLocaleLanguage[e]))
-                            .map((e) => $("<option></option>").text(e).attr("value", i.GLocaleLanguage[e]))
+                            .filter((e) => !!this._translationManager.getTranslationByKey(GObject.GLocaleLanguage[e]))
+                            .map((e) => $("<option></option>").text(e).attr("value", GObject.GLocaleLanguage[e]))
                     ));
             }),
-            (e.exports = l));
+            (module.exports = l));
     };

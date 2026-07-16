@@ -1,23 +1,23 @@
-module.exports = function (e, t, i) {
-            var n = i(99),
-                r = i(541),
-                o = i(0),
-                a = i(52),
-                s = i(77),
-                l = i(5),
-                h = i(24),
-                A = i(60),
-                c = i(45),
-                p = i(64),
-                u = i(155),
-                d = i(333);
+module.exports = function (module, exports, require) {
+            var n = require(99),
+                GPathTool = require(541),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(52),
+                s = require(77),
+                l = require(5),
+                h = require(24),
+                A = require(60),
+                c = require(45),
+                p = require(64),
+                u = require(155),
+                d = require(333);
 
             function g() {
-                r.call(this);
+                GPathTool.call(this);
             }
-            (o.inheritAndMix(g, r, [d]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(g, GPathTool, [d]),
                 (g.prototype.activate = function (e, t) {
-                    (r.prototype.activate.call(this, e, t),
+                    (GPathTool.prototype.activate.call(this, e, t),
                         t ||
                             (e.addEventListener(s.Drag, this._mouseDrag, this),
                             e.addEventListener(s.Move, this._mouseMove, this),
@@ -27,7 +27,7 @@ module.exports = function (e, t, i) {
                 }),
                 (g.prototype.deactivate = function (e, t) {
                     (this._checkMode(),
-                        r.prototype.deactivate.call(this, e, t),
+                        GPathTool.prototype.deactivate.call(this, e, t),
                         e.removeEventListener(s.Drag, this._mouseDrag),
                         e.removeEventListener(s.Move, this._mouseMove),
                         e.removeEventListener(s.DragStart, this._mouseDragStart, this),
@@ -41,7 +41,7 @@ module.exports = function (e, t, i) {
                 }),
                 (g.prototype._mouseDown = function (e) {
                     var t = new Date().getTime();
-                    if (t - this._mDownTime < r.DBLCLICKTM)
+                    if (t - this._mDownTime < GPathTool.DBLCLICKTM)
                         "edit" == h.selectDoubleClickBehavior ? this._manager.notifyJobDone(this) : this._mouseDblClick(e);
                     else {
                         ((this._mDownTime = t), (this._lastMouseEvent = e));
@@ -51,16 +51,16 @@ module.exports = function (e, t, i) {
                             (this._editor.updateByMousePosition(
                                 e.client,
                                 this._view.getWorldTransform(this._scene),
-                                !1,
+                                false,
                                 this._view.getViewConfiguration()
                             ),
-                            (this._dragStarted = !1),
+                            (this._dragStarted = false),
                             (this._dragStartPt = null),
                             (this._newPoint = null),
                             (this._editPt = null),
                             e.button == s.BUTTON_LEFT || (e.button == s.BUTTON_RIGHT && p.modifiers.optionKey))
                         ) {
-                            if (((this._released = !1), this._blockDeactivation(), this._checkMode(), this._mode == r.Mode.Edit)) {
+                            if (((this._released = false), this._blockDeactivation(), this._checkMode(), this._mode == GPathTool.Mode.Edit)) {
                                 this._mouseDownOnEdit(e, function (e) {
                                     p.modifiers.optionKey &&
                                         e.getProperty("tp") != c.AnchorPoint.Type.Connector &&
@@ -68,7 +68,7 @@ module.exports = function (e, t, i) {
                                 });
                             }
                             var l;
-                            if (this._mode != r.Mode.Edit)
+                            if (this._mode != GPathTool.Mode.Edit)
                                 if (
                                     (this._renewPreviewLink(),
                                     (i = this._constrainIfNeeded(
@@ -78,7 +78,7 @@ module.exports = function (e, t, i) {
                                     )),
                                     this._pathEditor &&
                                         (l =
-                                            this._mode == r.Mode.Append
+                                            this._mode == GPathTool.Mode.Append
                                                 ? this._pathRef.getAnchorPoints().getFirstChild()
                                                 : this._pathRef.getAnchorPoints().getLastChild()),
                                     l &&
@@ -90,11 +90,11 @@ module.exports = function (e, t, i) {
                                         ))
                                 )
                                     (this._setCursorForPosition(a.PenEnd),
-                                        this._startTransaction(r.Transaction.ModifyPathProperties),
-                                        this._pathRef.setProperty("closed", !0),
+                                        this._startTransaction(GPathTool.Transaction.ModifyPathProperties),
+                                        this._pathRef.setProperty("closed", true),
                                         this._makePointMajor(l),
                                         this._pathEditor.setActiveExtendingMode(u.ExtendingMode.Off),
-                                        (this._mode = r.Mode.Edit),
+                                        (this._mode = GPathTool.Mode.Edit),
                                         (this._editPt = this._pathEditor.getPathPointPreview(l)),
                                         this._pathEditor.requestInvalidation());
                                 else {
@@ -109,7 +109,7 @@ module.exports = function (e, t, i) {
                                         (this._setCursorForPosition(a.Pen),
                                             this._pathEditor &&
                                                 (d =
-                                                    this._mode == r.Mode.Append
+                                                    this._mode == GPathTool.Mode.Append
                                                         ? this._pathRef.getAnchorPoints().getLastChild()
                                                         : this._pathRef.getAnchorPoints().getFirstChild()),
                                             d &&
@@ -122,7 +122,7 @@ module.exports = function (e, t, i) {
                                                 ? (this._makePointMajor(d),
                                                   (this._editPt = this._pathEditor.getPathPointPreview(d)),
                                                   this._pathEditor.requestInvalidation())
-                                                : ((o = this._constructNewPoint(e, A)), this._addPoint(o, !0, !1)));
+                                                : ((o = this._constructNewPoint(e, A)), this._addPoint(o, true, false)));
                                 }
                             this._pathEditor && this._pathEditor.blockRemoval();
                         }
@@ -131,12 +131,12 @@ module.exports = function (e, t, i) {
                 (g.prototype._mouseMove = function (e) {
                     if (this._released) {
                         this._lastMouseEvent = e;
-                        var t = !0;
+                        var t = true;
                         if (
-                            (this._mode == r.Mode.Edit &&
+                            (this._mode == GPathTool.Mode.Edit &&
                                 p.modifiers.shiftKey &&
                                 (this._setCursorForPosition(null, e.client),
-                                this._cursor == a.PenPlusMiddle && (t = !1),
+                                this._cursor == a.PenPlusMiddle && (t = false),
                                 this._highlightMiddle(e.client)),
                             t)
                         ) {
@@ -147,7 +147,7 @@ module.exports = function (e, t, i) {
                                 this._editor.getGuides().finishMap(),
                                 this._pathEditor &&
                                     this._pathEditor.getActiveExtendingMode() &&
-                                    (this._mode == r.Mode.Append || this._mode == r.Mode.Prepend) &&
+                                    (this._mode == GPathTool.Mode.Append || this._mode == GPathTool.Mode.Prepend) &&
                                     this._hitSideConnectPoints(i))
                             )
                                 this._setCursorForPosition(a.PenEnd);
@@ -170,7 +170,7 @@ module.exports = function (e, t, i) {
                             (this._refPt = null)),
                         this._editPt && !this._released)
                     ) {
-                        ((this._lastMouseEvent = e), (this._dragStarted = !0), this._pathEditor.requestInvalidation());
+                        ((this._lastMouseEvent = e), (this._dragStarted = true), this._pathEditor.requestInvalidation());
                         var t,
                             i = this._updatePoint(e.client);
                         (this._newPoint || this._pathRef.getAnchorPoints().getFirstChild() != this._pathRef.getAnchorPoints().getLastChild()
@@ -194,7 +194,7 @@ module.exports = function (e, t, i) {
                 (g.prototype._constructNewPoint = function (e, t) {
                     var i = new A.AnchorPoint();
                     return (
-                        i.setProperties(["x", "y", "ah"], [t.getX(), t.getY(), !0]),
+                        i.setProperties(["x", "y", "ah"], [t.getX(), t.getY(), true]),
                         e.button == s.BUTTON_LEFT
                             ? p.modifiers.optionKey && i.setProperty("tp", c.AnchorPoint.Type.Symmetric)
                             : i.setProperty("tp", c.AnchorPoint.Type.Connector),
@@ -206,10 +206,10 @@ module.exports = function (e, t, i) {
                         this._pathRef &&
                         (this._newPoint ||
                             this._pathRef.getAnchorPoints().getFirstChild() != this._pathRef.getAnchorPoints().getLastChild()) &&
-                        (this._mode == r.Mode.Append || this._mode == r.Mode.Prepend)
+                        (this._mode == GPathTool.Mode.Append || this._mode == GPathTool.Mode.Prepend)
                     ) {
                         var e, t;
-                        this._mode == r.Mode.Append
+                        this._mode == GPathTool.Mode.Append
                             ? ((e = this._dpathRef.getAnchorPoints().getLastChild()), (t = this._pathRef.getAnchorPoints().getFirstChild()))
                             : ((e = this._dpathRef.getAnchorPoints().getFirstChild()),
                               (t = this._pathRef.getAnchorPoints().getLastChild()));
@@ -223,58 +223,58 @@ module.exports = function (e, t, i) {
                                     this._view.getWorldTransform(this._view.getScene().getActivePage()),
                                     h.annotDropDistance
                                 ) &&
-                                (this._transactionType == r.Transaction.NoTransaction
-                                    ? this._startTransaction(r.Transaction.ModifyPathProperties)
-                                    : (this._transactionType = r.Transaction.ModifyPathProperties),
+                                (this._transactionType == GPathTool.Transaction.NoTransaction
+                                    ? this._startTransaction(GPathTool.Transaction.ModifyPathProperties)
+                                    : (this._transactionType = GPathTool.Transaction.ModifyPathProperties),
                                 this._pathRef.beginUpdate(),
                                 this._pathEditor.selectOnePoint(t),
-                                p.modifiers.optionKey && t.setProperties(["ah", "tp"], [!1, c.AnchorPoint.Type.Asymmetric]),
+                                p.modifiers.optionKey && t.setProperties(["ah", "tp"], [false, c.AnchorPoint.Type.Asymmetric]),
                                 t.getProperty("ah") || t.setProperties(["hlx", "hly"], [e.getProperty("hlx"), e.getProperty("hly")]),
                                 this._dpathRef.getAnchorPoints().removeChild(e),
                                 this._newPoint ||
                                     ((e =
-                                        this._mode == r.Mode.Append
+                                        this._mode == GPathTool.Mode.Append
                                             ? this._pathRef.getAnchorPoints().getLastChild()
                                             : this._pathRef.getAnchorPoints().getFirstChild()),
                                     this._pathRef.getAnchorPoints().removeChild(e)),
-                                this._dpathRef.setProperty("closed", !0),
-                                this._pathRef.setProperty("closed", !0),
+                                this._dpathRef.setProperty("closed", true),
+                                this._pathRef.setProperty("closed", true),
                                 this._pathRef.endUpdate(),
                                 this._pathEditor.requestInvalidation(),
                                 this._pathEditor.setActiveExtendingMode(u.ExtendingMode.Off),
-                                (this._newPoint = !1)));
+                                (this._newPoint = false)));
                     }
                 }),
                 (g.prototype._mouseRelease = function (e) {
                     if ((this._pathEditor && this._pathEditor.allowRemoval(), this._editor.getGuides().invalidate(), !this._released))
                         try {
-                            if (((this._released = !0), this._mode == r.Mode.Append || this._mode == r.Mode.Prepend)) {
+                            if (((this._released = true), this._mode == GPathTool.Mode.Append || this._mode == GPathTool.Mode.Prepend)) {
                                 var t = this._updatePoint(e.client);
                                 (this._closeIfNeeded(),
                                     this._pathRef && this._pathRef.getProperty("closed")
-                                        ? (this._setCursorForPosition(a.PenMinus), (this._mode = r.Mode.Edit))
+                                        ? (this._setCursorForPosition(a.PenMinus), (this._mode = GPathTool.Mode.Edit))
                                         : this._newPoint
-                                          ? (this._addPoint(this._editPt, !1, !0), this._setCursorForPosition(a.Pen))
+                                          ? (this._addPoint(this._editPt, false, true), this._setCursorForPosition(a.Pen))
                                           : this._editPt &&
                                             this._pathRef &&
-                                            (this._transactionType == r.Transaction.NoTransaction &&
-                                                this._startTransaction(r.Transaction.MovePoint),
+                                            (this._transactionType == GPathTool.Transaction.NoTransaction &&
+                                                this._startTransaction(GPathTool.Transaction.MovePoint),
                                             this._pathEditor.applyTransform(this._pathRef),
                                             this._setCursorForPosition(a.PenEnd),
                                             this._pathEditor.setActiveExtendingMode(
-                                                this._mode == r.Mode.Prepend ? u.ExtendingMode.Beginning : u.ExtendingMode.End
+                                                this._mode == GPathTool.Mode.Prepend ? u.ExtendingMode.Beginning : u.ExtendingMode.End
                                             )),
                                     this._commitChanges());
-                            } else if (this._mode == r.Mode.Edit && (this._editPt || this._refPt))
+                            } else if (this._mode == GPathTool.Mode.Edit && (this._editPt || this._refPt))
                                 if (this._dragStarted && this._editPt && this._pathRef) {
                                     t = this._updatePoint(e.client);
-                                    (this._transactionType == r.Transaction.NoTransaction &&
-                                        this._startTransaction(r.Transaction.MovePoint),
+                                    (this._transactionType == GPathTool.Transaction.NoTransaction &&
+                                        this._startTransaction(GPathTool.Transaction.MovePoint),
                                         this._pathEditor.applyTransform(this._pathRef),
                                         this._setCursorForPosition(null, t),
                                         this._commitChanges());
                                 } else this._editPt ? this._commitChanges() : this._mouseNoDragReleaseOnEdit(e.client);
-                            ((this._dragStarted = !1), (this._dragStartPt = null));
+                            ((this._dragStarted = false), (this._dragStartPt = null));
                         } finally {
                             this._finishTransaction();
                         }
@@ -283,5 +283,5 @@ module.exports = function (e, t, i) {
                 (g.prototype.toString = function () {
                     return "[Object GBezigonTool]";
                 }),
-                (e.exports = g));
+                (module.exports = g));
         };

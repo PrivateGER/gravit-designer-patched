@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(195);
-            e.exports = function (e) {
+module.exports = function (module, exports, require) {
+            var n = require(195);
+            module.exports = function (e) {
                 ((e.String = function (e, t) {
                     ((this.value = t), (this.obj = e));
                 }),

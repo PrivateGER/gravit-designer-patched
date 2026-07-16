@@ -1,16 +1,16 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(58), n(8), n(71));
-        const o = n(177),
-            i = n(805),
-            { gApi: a } = n(10),
+        (require(58), require(8 /* Symbol */), require(71));
+        const o = require(177),
+            i = require(805),
+            { gApi: a } = require(10 /* designerConfig */),
             r = {};
-        let s = !1;
+        let s = false;
         const l = (e) => {
             delete r[e.user.getUID()];
         };
         function c(e) {
-            (e instanceof o || (e = new o(e)), (this._user = e), s || (gDesigner.addEventListener(i, l), (s = !0)));
+            (e instanceof o || (e = new o(e)), (this._user = e), s || (gDesigner.addEventListener(i, l), (s = true)));
         }
         ((c.getUserDataFromAnnotAndUser = function (e, t) {
             const n = e.getProperty("uid");
@@ -31,7 +31,7 @@ module.exports = function (e, t, n) {
                 return (
                     (async (e) => {
                         if (!r.hasOwnProperty(e)) {
-                            const t = await a.getUser(e, !0).catch(() => Promise.resolve(null));
+                            const t = await a.getUser(e, true).catch(() => Promise.resolve(null));
                             r[e] = new o(t);
                         }
                         return r[e];
@@ -40,13 +40,13 @@ module.exports = function (e, t, n) {
                             (t = this._user.avatar || o.avatar) &&
                             (t.includes("graph.microsoft.com") || ("http" !== t.substr(0, 4) && "assets" !== t.substr(0, 6))
                                 ? "<svg" === t.substr(0, 4) &&
-                                  n.empty().append($(t).addClass("g-user-preview").toggleClass("grayed", !1).addClass("svg"))
+                                  n.empty().append($(t).addClass("g-user-preview").toggleClass("grayed", false).addClass("svg"))
                                 : (this._user.hasOwnPictureAvatar() || (!this._user.avatar && o.hasOwnPictureAvatar())) &&
-                                  n.empty().append($("<img>").attr("src", t).addClass("g-user-preview").toggleClass("grayed", !1))),
+                                  n.empty().append($("<img>").attr("src", t).addClass("g-user-preview").toggleClass("grayed", false))),
                             e && e());
                     }),
                     n
                 );
             }),
-            (e.exports = c));
+            (module.exports = c));
     };

@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(353)("Int8", function (e) {
+        require(353)("Int8", function (e) {
             return function (t, n, o) {
                 return e(this, t, n, o);
             };

@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(46),
-            i = n(116),
-            a = n(43)("match");
-        e.exports = function (e) {
+        var o = require(46),
+            i = require(116),
+            a = require(43)("match");
+        module.exports = function (e) {
             var t;
             return o(e) && (void 0 !== (t = e[a]) ? !!t : "RegExp" === i(e));
         };

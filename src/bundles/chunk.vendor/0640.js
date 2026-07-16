@@ -1,7 +1,7 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             function i(e, t, n) {
                 ((this._stack = []),
-                    (this._abort = !1),
+                    (this._abort = false),
                     (this._steps = 0),
                     (this._endTime = Date.now() + this._executionTime),
                     (this._executionSteps = "number" == typeof e ? e : i.EXECUTION_STEPS),
@@ -14,7 +14,7 @@ module.exports = function (e, t) {
                 (i.prototype._executionSteps = null),
                 (i.prototype._executionTime = null),
                 (i.prototype._steps = 0),
-                (i.prototype._abort = !1),
+                (i.prototype._abort = false),
                 (i.prototype._done = null),
                 (i.prototype.execute = function (e, t, i) {
                     if (this._abort) throw new Error("AbortError");
@@ -27,7 +27,7 @@ module.exports = function (e, t) {
                         1 === this._stack.length && this._continue());
                 }),
                 (i.prototype.abort = function () {
-                    this._abort = !0;
+                    this._abort = true;
                 }),
                 (i.prototype._scheduleNext = function () {
                     "undefined" != typeof window
@@ -59,5 +59,5 @@ module.exports = function (e, t) {
                         else this._done && this._done();
                     }
                 }),
-                (e.exports = i));
+                (module.exports = i));
         };

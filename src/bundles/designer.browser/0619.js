@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(27),
-            i = n(65);
-        e.exports = function (e, t, n) {
+        var o = require(27),
+            i = require(65);
+        module.exports = function (e, t, n) {
             try {
                 return o(i(Object.getOwnPropertyDescriptor(e, t)[n]));
             } catch (e) {}

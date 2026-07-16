@@ -1,38 +1,38 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(3), n(4), n(13));
-        var o = n(1),
-            i = n(15),
-            a = n(40),
-            r = n(1247),
-            s = n(10),
-            l = n(67),
-            c = n(18),
-            d = n(31),
-            u = n(445),
-            p = n(448),
-            g = n(86),
-            h = n(119),
-            f = n(1510),
-            m = n(1511);
-        const y = n(44),
-            v = n(1512);
-        var _ = n(85),
-            b = "." + s.FILE_FORMATS.find((e) => e.default).ext;
+        (require(8 /* Symbol */), require(3), require(4), require(13));
+        var GObject = require(1),
+            GPlatform = require(15),
+            GSaveAction = require(40),
+            r = require(1247),
+            designerConfig = require(10),
+            l = require(67),
+            GCategory = require(18),
+            d = require(31),
+            GSaveAsAction = require(445),
+            p = require(448),
+            g = require(86),
+            GCommonNames = require(119),
+            f = require(1510),
+            GWarnLinkedImageDialog = require(1511);
+        const GSystemDialog = require(44),
+            v = require(1512);
+        var _ = require(85),
+            b = "." + designerConfig.FILE_FORMATS.find((e) => e.default).ext;
         function w() {
             w.TOOLTIP_CONFIG = {
                 [l.TOOLTIP_AREA.TOOLBAR]: l.GRichTooltipConfig.from({
-                    title: o.GLocale.get(new o.GLocaleKey("GSaveAction", "tooltip-title")),
-                    description: o.GLocale.get(new o.GLocaleKey("GSaveAction", "tooltip-description")),
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GSaveAction", "tooltip-title")),
+                    description: GObject.GLocale.get(new GObject.GLocaleKey("GSaveAction", "tooltip-description")),
                     shortcut: w.SHORTCUT,
                     learnMore: "/docs/basics/working-with-files/save-and-open-files/#save",
                 }),
             };
         }
-        (o.GObject.inherit(w, d),
+        (GObject.GObject.inherit(w, d),
             (w.ID = "file.save"),
-            (w.TITLE = new o.GLocaleKey("GSaveAction", "title")),
-            (w.SHORTCUT = [i.GKey.Constant.META, "S"]),
+            (w.TITLE = new GObject.GLocaleKey("GSaveAction", "title")),
+            (w.SHORTCUT = [GPlatform.GKey.Constant.META, "S"]),
             (w.TOOLTIP_CONFIG = null),
             (w.prototype.getId = function () {
                 return w.ID;
@@ -44,7 +44,7 @@ module.exports = function (e, t, n) {
                 return "gravit-icon-save";
             }),
             (w.prototype.getCategory = function () {
-                return c.CATEGORY_FILE;
+                return GCategory.CATEGORY_FILE;
             }),
             (w.prototype.getGroup = function () {
                 return "file";
@@ -53,7 +53,7 @@ module.exports = function (e, t, n) {
                 return w.SHORTCUT;
             }),
             (w.prototype.isShortcutGlobal = function () {
-                return !0;
+                return true;
             }),
             (w.prototype.isEnabled = function (e) {
                 return (
@@ -61,32 +61,32 @@ module.exports = function (e, t, n) {
                     !(!(e = e || gDesigner.getActiveDocument()) || (!e.isModified() && !e.isNew())) &&
                     !e.isSynchronizing() &&
                     (!(e.isNew() || !e.getStorageItem() || !e.getStorageItem().getStorage().canSave()) ||
-                        gDesigner.canExecuteAction(u.ID + b, [null, e], void 0, !0))
+                        gDesigner.canExecuteAction(GSaveAsAction.ID + b, [null, e], void 0, true))
                 );
             }),
             (w.prototype.execute = function (e, t, n) {
                 const o = e || gDesigner.getActiveDocument();
-                if (o && o.isCommercialProductFile()) return (o.openPaywall(this.getId()), !1);
-                (gContainer.getRuntime() === _.Runtime.IPad && (n = !0), this._save(o, t, n));
+                if (o && o.isCommercialProductFile()) return (o.openPaywall(this.getId()), false);
+                (gContainer.getRuntime() === _.Runtime.IPad && (n = true), this._save(o, t, n));
             }),
             (w.prototype._performSave = async function (e, t) {
                 (await e.isUpdateAvailable())
-                    ? a.buildDialogDocumentHasUpdates.call(
+                    ? GSaveAction.buildDialogDocumentHasUpdates.call(
                           this,
                           e,
                           function () {
                               e.reload();
                           },
                           function () {
-                              h.performSave(e, t);
+                              GCommonNames.performSave(e, t);
                           }
                       )
-                    : h.performSave(e, t);
+                    : GCommonNames.performSave(e, t);
             }),
             (w.prototype._save = async function (e, t, n) {
                 if (gDesigner.getDefaultStorage().canSave()) {
                     if (!e.getScene().hasLinkedFiles()) return this._saveDesktop(e, t, n);
-                    new m(() => {
+                    new GWarnLinkedImageDialog(() => {
                         this._saveDesktop(e, t, n);
                     }).open();
                 } else {
@@ -97,7 +97,7 @@ module.exports = function (e, t, n) {
                     } else if (e.isExternalFile()) e.storeToCloud(e.getScene(), t);
                     else {
                         if (!e.hasCloudReference()) return this._saveToCloud(e, t);
-                        if (!e.isCloudSyncOn()) return gDesigner.executeAction(u.ID + b, [null, e, t], void 0, !0);
+                        if (!e.isCloudSyncOn()) return gDesigner.executeAction(GSaveAsAction.ID + b, [null, e, t], void 0, true);
                         if (!(await e.canSaveToCloud())) return this._saveToCloud(e, t);
                         e.chooseLatestDocument(
                             e.getScene(),
@@ -121,7 +121,7 @@ module.exports = function (e, t, n) {
                         async function (n) {
                             if (n === f.file()) {
                                 if (await p.prototype._hasUnsupported.call(this, e)) return;
-                                return gDesigner.executeAction(u.ID + b, [null, e, t], void 0, !0);
+                                return gDesigner.executeAction(GSaveAsAction.ID + b, [null, e, t], void 0, true);
                             }
                             if (n === f.cloud()) return this._saveToCloud(e, t);
                         }.bind(this),
@@ -148,7 +148,7 @@ module.exports = function (e, t, n) {
                                       });
                             },
                             (n) => {
-                                n && 404 === n.status ? e.store(e.getStorageItem(), t) : y.alert(s.gApi.formatError(n));
+                                n && 404 === n.status ? e.store(e.getStorageItem(), t) : GSystemDialog.alert(designerConfig.gApi.formatError(n));
                             },
                             (e, t) => t.lastModifiedDate().getTime() > e.lastModifiedDate().getTime()
                         );
@@ -167,14 +167,14 @@ module.exports = function (e, t, n) {
                         e,
                         (n) => {
                             n === g.Loaded
-                                ? gDesigner.removeDocument(e, null, !0)
+                                ? gDesigner.removeDocument(e, null, true)
                                 : n === g.Saved
                                   ? t && t({ documentStatus: g.Saved })
                                   : n === g.SaveCancelled && t && t({ documentStatus: g.SaveCancelled });
                         },
                     ],
                     void 0,
-                    !0
+                    true
                 );
             }),
             (w.prototype.getTooltipConfig = function (e) {
@@ -183,5 +183,5 @@ module.exports = function (e, t, n) {
             (w.prototype.toString = function () {
                 return "[Object GSaveAction]";
             }),
-            (e.exports = w));
+            (module.exports = w));
     };

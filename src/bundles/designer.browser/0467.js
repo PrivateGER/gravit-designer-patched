@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        e.exports = function (e, t) {
+        module.exports = function (e, t) {
             var n, o, i, a, r, s, l, c, d, u, p, g, h, f, m, y, v, _, b, w, C, x, S, E, A;
             ((n = e.state),
                 (o = e.next_in),

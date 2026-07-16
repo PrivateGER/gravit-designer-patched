@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(195),
-                r = i(508);
+module.exports = function (module, exports, require) {
+            var n = require(195),
+                r = require(508);
 
             function o(e, t) {
                 var i, a, s, l, h;
                 if (
                     ("string" == typeof e.text
                         ? (1 === e.text.length &&
-                              ("\n" === e.text[0] || e.text[0] === n.LS ? ((a = !0), (h = e.text[0] === n.LS)) : (a = !1),
+                              ("\n" === e.text[0] || e.text[0] === n.LS ? ((a = true), (h = e.text[0] === n.LS)) : (a = false),
                               (s = " " === e.text[0])),
                           (i = o.DoMeasure ? n.measure(a ? n.NBSP : e.text, e) : new r()))
                         : (i = (l = t(e.text) || o.DefaultInline).measure ? l.measure(e) : new r()),
@@ -30,8 +30,8 @@ module.exports = function (e, t, i) {
                     l && (this.code = l));
             }
             ((o.prototype.run = null),
-                (o.prototype.isNewLine = !1),
-                (o.prototype.isSoftBreak = !1),
+                (o.prototype.isNewLine = false),
+                (o.prototype.isSoftBreak = false),
                 (o.prototype.width = 0),
                 (o.prototype.ascent = 0),
                 (o.prototype.descent = 0),
@@ -50,7 +50,7 @@ module.exports = function (e, t, i) {
                           (e.save(), this.code.draw(e, t, i, this.width, this.ascent, this.descent, this.run), e.restore());
                 }),
                 (o.DefaultInline = function () {}),
-                (o.DoMeasure = !0),
+                (o.DoMeasure = true),
                 (o.DefaultInline.measure = function (e) {
                     var t = n.measure("?", e);
                     return {
@@ -70,5 +70,5 @@ module.exports = function (e, t, i) {
                         (e.fillStyle = "black"),
                         e.fillText("?", t + 2, i));
                 }),
-                (e.exports = o));
+                (module.exports = o));
         };

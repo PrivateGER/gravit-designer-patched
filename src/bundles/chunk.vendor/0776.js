@@ -1,28 +1,28 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(69),
-                o = i(127),
-                a = i(36),
-                s = i(318),
-                l = i(172),
-                h = i(153);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(69),
+                o = require(127),
+                a = require(36),
+                s = require(318),
+                l = require(172),
+                h = require(153);
 
             function A(e, t) {
                 (o.call(this, e), (this._uid = t));
             }
-            (n.inheritAndMix(A, o, [l]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(A, o, [l]),
                 a.exports(A, s),
                 (A.prototype._showEditor = function (e) {
                     return (!e || e.configuration.isElementAnnotationsVisible(this._element)) && o.prototype._showEditor.call(this, e);
                 }),
                 (A.prototype._showAnnotations = function () {
-                    return !1;
+                    return false;
                 }),
                 (A.prototype.canHandleDblClick = function () {
-                    return !0;
+                    return true;
                 }),
                 (A.prototype.handleDblClick = function () {
-                    return !0;
+                    return true;
                 }),
                 (A.prototype.isRemovalBlocked = function () {
                     return 0 != (this._element.getProperty("plkt") & r.ProgramLck.NoDelete) || o.prototype.isRemovalBlocked.call(this);
@@ -36,5 +36,5 @@ module.exports = function (e, t, i) {
                 (A.prototype.toString = function () {
                     return "[Object GHighlighterAnnotationEditor]";
                 }),
-                (e.exports = A));
+                (module.exports = A));
         };

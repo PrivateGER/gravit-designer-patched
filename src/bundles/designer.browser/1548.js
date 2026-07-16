@@ -1,7 +1,7 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(8), n(196), n(4), n(13), n(38));
-        const o = n(156);
+        (require(8 /* Symbol */), require(196), require(4), require(13), require(38));
+        const o = require(156);
         function i(e, t, n) {
             var o;
             ((this._folder = e),
@@ -43,17 +43,17 @@ module.exports = function (e, t, n) {
                     .appendTo(o)),
                 this._update());
         }
-        ((i.prototype._isRootFolder = !1),
+        ((i.prototype._isRootFolder = false),
             (i.prototype._parent = null),
             (i.prototype._container = null),
             (i.prototype._element = null),
             (i.prototype._folderContainer = null),
             (i.prototype._folderContext = null),
             (i.prototype._folder = null),
-            (i.prototype._loading = !1),
+            (i.prototype._loading = false),
             (i.prototype._children = null),
-            (i.prototype._isOpen = !1),
-            (i.prototype._done = !1),
+            (i.prototype._isOpen = false),
+            (i.prototype._done = false),
             (i.prototype.isRootFolder = function () {
                 return this._isRootFolder;
             }),
@@ -93,7 +93,7 @@ module.exports = function (e, t, n) {
                 return this._done;
             }),
             (i.prototype.loadChildrenOnDemand = function (e) {
-                this.setLoading(!0);
+                this.setLoading(true);
                 const t = (this._children || []).length;
                 return e(this._folder, 100, t)
                     .then((e) => {
@@ -104,7 +104,7 @@ module.exports = function (e, t, n) {
                             this.update());
                     })
                     .finally(() => {
-                        this.setLoading(!1);
+                        this.setLoading(false);
                     });
             }),
             (i.prototype.refresh = function () {
@@ -189,7 +189,7 @@ module.exports = function (e, t, n) {
             (i.prototype.setChildren = function (e) {
                 ((this._children = e),
                     this._childrenContainer.empty(),
-                    (this._children && this._children.length) || (this._isOpen = !1),
+                    (this._children && this._children.length) || (this._isOpen = false),
                     this._children && this._children.length && this._childrenContainer.append(e.map((e) => e.getHTMLContainer())));
             }),
             (i.prototype.getChildren = function () {
@@ -198,5 +198,5 @@ module.exports = function (e, t, n) {
             (i.prototype.getHTMLElement = function () {
                 return this._element;
             }),
-            (e.exports = i));
+            (module.exports = i));
     };

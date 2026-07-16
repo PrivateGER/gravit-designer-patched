@@ -1,13 +1,13 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(328), n(20), n(34), n(38));
-        var o = n(1),
-            i = n(841),
-            a = n(217),
-            r = n(86);
-        const s = n(381),
-            l = n(256),
-            c = n(291);
+        (require(328), require(20), require(34), require(38));
+        var GObject = require(1),
+            GMissingFontsDialog = require(841),
+            a = require(217),
+            r = require(86);
+        const s = require(381),
+            GOfflineDialog = require(256),
+            c = require(291);
         var d = [],
             u = function () {};
         function p() {
@@ -53,7 +53,7 @@ module.exports = function (e, t, n) {
                                 (s._missingFontsDialog
                                     ? (s._missingFontsDialog.setProviderEnablers(c), s._missingFontsDialog.setMissingFonts(l))
                                     : l.length &&
-                                      (s._missingFontsDialog = new i(t, l, c, (e) => {
+                                      (s._missingFontsDialog = new GMissingFontsDialog(t, l, c, (e) => {
                                           ((s._missingFontsDialog = null), (s.keepFontsMessage = null));
                                           var n = s._missingFontsActions[t.sessionId];
                                           for (var o in e) n[o] = e[o];
@@ -71,15 +71,15 @@ module.exports = function (e, t, n) {
                 t && !o._listenerFor[t.sessionId] && ((o._listenerFor[t.sessionId] = n), o.addEventListener(a, n));
             }
         }
-        (o.GObject.inherit(p, o.GEventTarget),
+        (GObject.GObject.inherit(p, GObject.GEventTarget),
             (p.ResetEvent = function (e) {
                 this.manager = e;
             }),
-            o.GObject.inherit(p.ResetEvent, o.GEvent),
+            GObject.GObject.inherit(p.ResetEvent, GObject.GEvent),
             (p.MissingFontEvent = function (e, t, n) {
                 ((this.manager = e), (this.evt = t), (this.provider = n));
             }),
-            o.GObject.inherit(p.MissingFontEvent, o.GEvent),
+            GObject.GObject.inherit(p.MissingFontEvent, GObject.GEvent),
             (p.prototype.manager = null),
             (p.prototype._resetProviders = null),
             (p.prototype.init = function () {
@@ -87,7 +87,7 @@ module.exports = function (e, t, n) {
             }),
             (p.prototype._networkAvailabilityChangedEvent = function (e) {
                 if (this._resetProviders && this._resetProviders.length && e.connected)
-                    for (; this._resetProviders.length; ) this.reset(this._resetProviders.shift(), !0);
+                    for (; this._resetProviders.length; ) this.reset(this._resetProviders.shift(), true);
             }),
             (p.registerProvider = function (e) {
                 var t = new e(p._instance);
@@ -113,15 +113,15 @@ module.exports = function (e, t, n) {
             (p.disableProviders = function (e) {
                 if (p._instance) {
                     for (var t = 0; t < e.length; t++)
-                        for (var n = e[t], o = 0; o < d.length; o++) d[o] instanceof n ? d[o].setEnabled(!1) : d[o].setEnabled(!0);
-                    p._instance.reset(null, !1, !0);
+                        for (var n = e[t], o = 0; o < d.length; o++) d[o] instanceof n ? d[o].setEnabled(false) : d[o].setEnabled(true);
+                    p._instance.reset(null, false, true);
                 }
             }),
             (p.enableProviders = function (e, t) {
                 if (p._instance) {
                     for (var n = 0; n < e.length; n++)
-                        for (var o = e[n], i = 0; i < d.length; i++) d[i] instanceof o ? d[i].setEnabled(!0) : t || d[i].setEnabled(!1);
-                    t || p._instance.reset(null, !1, !0);
+                        for (var o = e[n], i = 0; i < d.length; i++) d[i] instanceof o ? d[i].setEnabled(true) : t || d[i].setEnabled(false);
+                    t || p._instance.reset(null, false, true);
                 }
             }),
             (p.resolveQueryFontFamily = function (e) {
@@ -130,7 +130,7 @@ module.exports = function (e, t, n) {
                         var n = t.searchFamilyInCache(e.family);
                         e.callback(n && n.fonts && n.fonts.length ? n.fonts : []);
                     };
-                t.isCacheEmpty() ? t.query(n, "%", !0) : n();
+                t.isCacheEmpty() ? t.query(n, "%", true) : n();
             }),
             (p._triggerMissingFont = function (e, t) {
                 var n = p.getInstance();
@@ -143,13 +143,13 @@ module.exports = function (e, t, n) {
                         ? n.resolveFont(e.family, e.style, e.weight, {
                               done: function (t) {
                                   var n;
-                                  (e.sender instanceof o.GFontManager && (n = e.sender._getFont(e.family, e.style, e.weight)),
-                                      (n && n.isResolved()) || (n = o.GOpenTypeFont.create(e.family, e.style, e.weight, t)),
+                                  (e.sender instanceof GObject.GFontManager && (n = e.sender._getFont(e.family, e.style, e.weight)),
+                                      (n && n.isResolved()) || (n = GObject.GOpenTypeFont.create(e.family, e.style, e.weight, t)),
                                       n && e.resolved(n));
                               },
                               fail: function (t) {
                                   t && t === s.Errors.ConnectionError
-                                      ? gDesigner.isOffline() && l.openUnavailableFeature(() => p.resolveFont(e))
+                                      ? gDesigner.isOffline() && GOfflineDialog.openUnavailableFeature(() => p.resolveFont(e))
                                       : (e.failed(), p._triggerMissingFont(e, n), g(e));
                               },
                           })
@@ -159,8 +159,8 @@ module.exports = function (e, t, n) {
                           ? n.resolveFont(e.family, e.style, e.weight, {
                                 done: function (n) {
                                     var i;
-                                    (e.sender instanceof o.GFontManager && (i = e.sender._getFont(e.family, e.style, e.weight)),
-                                        (i && i.isResolved()) || (i = o.GOpenTypeFont.create(e.family, e.style, e.weight, n)),
+                                    (e.sender instanceof GObject.GFontManager && (i = e.sender._getFont(e.family, e.style, e.weight)),
+                                        (i && i.isResolved()) || (i = GObject.GOpenTypeFont.create(e.family, e.style, e.weight, n)),
                                         i ? e.resolved(i) : p.resolveFont(e, t + 1));
                                 },
                                 fail: function () {
@@ -176,12 +176,12 @@ module.exports = function (e, t, n) {
             (p.prototype._lastLoaded = 0),
             (p.prototype._loadedPreviews = 0),
             (p.prototype._lastLoadedPreviews = 0),
-            (p.prototype._loading = !1),
+            (p.prototype._loading = false),
             (p.prototype._timeStamp = 0),
             (p.prototype._firstCallback = null),
             (p.prototype._missingFontsDialog = null),
             (p.prototype._missingFontsActions = null),
-            (p.prototype._showMissingFontsDialog = !0),
+            (p.prototype._showMissingFontsDialog = true),
             (p.prototype._listenerFor = {}),
             (p.prototype.getMissingFontsDialog = function () {
                 return this._missingFontsDialog;
@@ -211,7 +211,7 @@ module.exports = function (e, t, n) {
                     e >= d.length)
                 )
                     return (
-                        (this._loading = !1),
+                        (this._loading = false),
                         (this._timeStamp = o),
                         void (l
                             ? (this._loadedPreviews = this._lastLoadedPreviews)
@@ -222,7 +222,7 @@ module.exports = function (e, t, n) {
                                       ((m[n] = { faces: i.slice(), total: a }), y.unshift(n) > 30 && delete m[y.pop()]),
                                   c || ((h[n] = { faces: i, total: a }), f.unshift(n) > 30 && delete h[f.pop()])),
                               t({ faces: i, total: a }),
-                              c || this._providerProbe(0, t, n, o, [], 0, r, !0, c, u)))
+                              c || this._providerProbe(0, t, n, o, [], 0, r, true, c, u)))
                     );
                 var C,
                     x = p + (p < 9999 ? 9999 : w),
@@ -316,7 +316,7 @@ module.exports = function (e, t, n) {
                     (this._lastLoaded = 0),
                     (this._loadedPreviews = 0),
                     (this._lastLoadedPreviews = 0),
-                    (this._loading = !1),
+                    (this._loading = false),
                     (this._timeStamp = 0),
                     (h = {}),
                     (f = []),
@@ -327,21 +327,21 @@ module.exports = function (e, t, n) {
             }),
             (p.prototype.loadMore = function (e, t) {
                 if (!this._loading) {
-                    if (0 === this._loadedPreviews && 0 === this._lastLoadedPreviews) this._providerProbe(0, e, t, n, [], 0, !1, !0);
+                    if (0 === this._loadedPreviews && 0 === this._lastLoadedPreviews) this._providerProbe(0, e, t, n, [], 0, false, true);
                     else if (this._loadedPreviews >= 9999 && this._lastLoadedPreviews < this._loadedPreviews + 20)
                         if (this._loaded >= 9999 && this._lastLoaded < this._loaded + 9999) {
-                            this._loading = !0;
+                            this._loading = true;
                             var n = new Date().getTime();
-                            this._providerProbe(0, e, t, n, [], 0, !1, !1);
+                            this._providerProbe(0, e, t, n, [], 0, false, false);
                         } else {
-                            this._loading = !0;
+                            this._loading = true;
                             n = new Date().getTime();
-                            this._providerProbe(0, e, t, n, [], 0, !1, !0);
+                            this._providerProbe(0, e, t, n, [], 0, false, true);
                         }
                     else if (this._loaded >= 9999 && this._lastLoaded < this._loaded + 9999) {
-                        this._loading = !0;
+                        this._loading = true;
                         n = new Date().getTime();
-                        this._providerProbe(0, e, t, n, [], 0, !1, !1);
+                        this._providerProbe(0, e, t, n, [], 0, false, false);
                     }
                     return this._lastLoadedPreviews;
                 }
@@ -371,10 +371,10 @@ module.exports = function (e, t, n) {
                         }
                     }
                     var s = new Date().getTime();
-                    ((this._loading = !0),
+                    ((this._loading = true),
                         (this._loaded = this._loadedPreviews = 0),
                         (this._lastLoaded = this._lastLoadedPreviews = 0),
-                        this._providerProbe(0, e, t, s, [], 0, !0, !1, n));
+                        this._providerProbe(0, e, t, s, [], 0, true, false, n));
                 }
             }),
             (p.prototype.normalizeQuery = function (e) {
@@ -404,5 +404,5 @@ module.exports = function (e, t, n) {
                 }
                 return null;
             }),
-            (e.exports = p));
+            (module.exports = p));
     };

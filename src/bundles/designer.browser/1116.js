@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         (function (e, t) {
             !(function (e, n) {
                 "use strict";
@@ -10,7 +10,7 @@ module.exports = function (e, t, n) {
                         s,
                         l = 1,
                         c = {},
-                        d = !1,
+                        d = false,
                         u = e.document,
                         p = Object.getPrototypeOf && Object.getPrototypeOf(e);
                     ((p = p && p.setTimeout ? p : e),
@@ -22,11 +22,11 @@ module.exports = function (e, t, n) {
                               })
                             : !(function () {
                                     if (e.postMessage && !e.importScripts) {
-                                        var t = !0,
+                                        var t = true,
                                             n = e.onmessage;
                                         return (
                                             (e.onmessage = function () {
-                                                t = !1;
+                                                t = false;
                                             }),
                                             e.postMessage("", "*"),
                                             (e.onmessage = n),
@@ -57,7 +57,7 @@ module.exports = function (e, t, n) {
                                 (s = function (t) {
                                     t.source === e && "string" == typeof t.data && 0 === t.data.indexOf(r) && h(+t.data.slice(r.length));
                                 }),
-                                e.addEventListener ? e.addEventListener("message", s, !1) : e.attachEvent("onmessage", s),
+                                e.addEventListener ? e.addEventListener("message", s, false) : e.attachEvent("onmessage", s),
                                 (o = function (t) {
                                     e.postMessage(r + t, "*");
                                 })),
@@ -77,7 +77,7 @@ module.exports = function (e, t, n) {
                     else {
                         var t = c[e];
                         if (t) {
-                            d = !0;
+                            d = true;
                             try {
                                 !(function (e) {
                                     var t = e.callback,
@@ -100,11 +100,11 @@ module.exports = function (e, t, n) {
                                     }
                                 })(t);
                             } finally {
-                                (g(e), (d = !1));
+                                (g(e), (d = false));
                             }
                         }
                     }
                 }
             })("undefined" == typeof self ? (void 0 === e ? this : e) : self);
-        }).call(this, n(109), n(183));
+        }).call(this, require(109), require(183));
     };

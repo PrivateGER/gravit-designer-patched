@@ -1,4 +1,4 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        e.exports = { DEFAULT: 0, PRESS_AND_HOLD: 1 };
+        module.exports = { DEFAULT: 0, PRESS_AND_HOLD: 1 };
     };

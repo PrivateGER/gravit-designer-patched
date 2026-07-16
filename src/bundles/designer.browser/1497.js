@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(20), n(34));
-        var o = n(10);
-        const { GLocale: i, GLocaleKey: a } = n(1);
+        (require(20), require(34));
+        var designerConfig = require(10);
+        const { GLocale: i, GLocaleKey: a } = require(1 /* GObject */);
         function r(e) {
             this._htmlElement = e;
         }
@@ -14,12 +14,12 @@ module.exports = function (e, t, n) {
                         .getValue("GBanner", "text.access-expire")
                         .replace(
                             "%link",
-                            o.CloudUtils.getYearlySubscriptionUrl(
-                                o.UTM.buildStoreCampaignParams(
-                                    o.UTM.StoreCampaign.CorelVectorTrial,
-                                    o.UTM.Vehicle.IPM,
-                                    o.UTM.Source.APP,
-                                    o.UTM.Medium.IPM
+                            designerConfig.CloudUtils.getYearlySubscriptionUrl(
+                                designerConfig.UTM.buildStoreCampaignParams(
+                                    designerConfig.UTM.StoreCampaign.CorelVectorTrial,
+                                    designerConfig.UTM.Vehicle.IPM,
+                                    designerConfig.UTM.Source.APP,
+                                    designerConfig.UTM.Medium.IPM
                                 )
                             )
                         )
@@ -29,5 +29,5 @@ module.exports = function (e, t, n) {
             (r.prototype.setEnabled = function (e) {
                 $("#banner").css("display", e ? "none" : "unset");
             }),
-            (e.exports = r));
+            (module.exports = r));
     };

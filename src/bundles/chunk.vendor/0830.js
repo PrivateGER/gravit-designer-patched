@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            (i(30), i(20), i(107), i(247), i(91));
-            const n = i(973),
-                { sanitizeName: r } = i(254),
-                o = i(583),
-                { GLocale: a, GLocaleKey: s } = i(209);
+            (require(30), require(20), require(107), require(247), require(91));
+            const n = require(973),
+                { sanitizeName: r } = require(254),
+                o = require(583),
+                { GLocale: a, GLocaleKey: s } = require(209 /* GLocale */);
 
             function l() {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -52,5 +52,5 @@ module.exports = function (e, t, i) {
                     }
                     return r(this.login || this.email || (e ? a.get(new s("GCommonNames", "text.unknown-user")) : "Unknown"));
                 }),
-                (e.exports = l));
+                (module.exports = l));
         };

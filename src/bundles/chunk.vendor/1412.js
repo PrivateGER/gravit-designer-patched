@@ -1,13 +1,13 @@
-module.exports = function (e, t, i) {
-            var n = i(90),
-                r = i(0),
-                o = i(338),
-                a = i(564);
+module.exports = function (module, exports, require) {
+            var n = require(90),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(338),
+                a = require(564);
 
             function s(e) {
                 this._width = e;
             }
-            (r.inherit(s, n),
+            (IsFiniteNonNegativeNumber.inherit(s, n),
                 (s.prototype._width = null),
                 (s.prototype.write = function (e) {
                     (e.write(o.normalizeNumber(this._width)), e.writeSpace(), e.write(a.setLineWidth));
@@ -15,5 +15,5 @@ module.exports = function (e, t, i) {
                 (s.prototype.toString = function () {
                     return "[GPDFSetLineWidthOperation]";
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

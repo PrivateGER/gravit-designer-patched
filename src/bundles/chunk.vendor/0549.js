@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(7),
-                r = i(236),
-                o = i(0),
-                a = i(73);
+module.exports = function (module, exports, require) {
+            var n = require(7),
+                r = require(236),
+                IsFiniteNonNegativeNumber = require(0),
+                a = require(73);
 
             function s() {
-                r.call(this, !0, !0);
+                r.call(this, true, true);
             }
-            (i(330),
-                o.inherit(s, r),
+            (require(330),
+                IsFiniteNonNegativeNumber.inherit(s, r),
                 (s.prototype._getRelatedItemClass = function () {
                     return a;
                 }),
@@ -26,20 +26,20 @@ module.exports = function (e, t, i) {
                                 t.getY() + t.getHeight() / 2
                             )
                         ),
-                        !0)
+                        true)
                     );
                 }),
                 (s.prototype._hasCenterCross = function () {
-                    return !0;
+                    return true;
                 }),
                 (s.prototype._showMousePositionInlineHint = function () {
-                    return !0;
+                    return true;
                 }),
                 (s.prototype._showAreaInlineHint = function () {
-                    return !0;
+                    return true;
                 }),
                 (s.prototype.toString = function () {
                     return "[Object GRectangleTool]";
                 }),
-                (e.exports = s));
+                (module.exports = s));
         };

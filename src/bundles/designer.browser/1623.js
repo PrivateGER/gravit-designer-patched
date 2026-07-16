@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(18),
-            a = n(31),
-            r = n(119);
+        require(3);
+        var GObject = require(1),
+            GCategory = require(18),
+            a = require(31),
+            GCommonNames = require(119);
         function s() {}
-        (o.GObject.inherit(s, a),
+        (GObject.GObject.inherit(s, a),
             (s.ID = "file.open-from-template"),
-            (s.TITLE = new o.GLocaleKey("GNewFromTemplateAction", "title")),
+            (s.TITLE = new GObject.GLocaleKey("GNewFromTemplateAction", "title")),
             (s.prototype.getId = function () {
                 return s.ID;
             }),
@@ -16,25 +16,25 @@ module.exports = function (e, t, n) {
                 return s.TITLE;
             }),
             (s.prototype.getCategory = function () {
-                return i.CATEGORY_FILE;
+                return GCategory.CATEGORY_FILE;
             }),
             (s.prototype.getGroup = function () {
                 return "document";
             }),
             (s.prototype.isEnabled = function () {
-                return r.isOnline() && !gDesigner.isOffline(6e5) && gDesigner.getApplicationManager().isCreatingNewDocumentEnabled();
+                return GCommonNames.isOnline() && !gDesigner.isOffline(6e5) && gDesigner.getApplicationManager().isCreatingNewDocumentEnabled();
             }),
             (s.prototype.execute = function () {
                 (gContainer.newDocumentActionPerformed(),
                     gDesigner.openNewDocumentDialog({
-                        closable: !0,
-                        showCloudOptions: !0,
+                        closable: true,
+                        showCloudOptions: true,
                         defaultOption: "templates-option",
-                        newOrFromTemplate: !0,
+                        newOrFromTemplate: true,
                     }));
             }),
             (s.prototype.toString = function () {
                 return "[Object GNewFromTemplateAction]";
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

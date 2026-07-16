@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            e.exports = class {
+            module.exports = class {
                 static get __i18n__() {
                     return "GCommonNames";
                 }

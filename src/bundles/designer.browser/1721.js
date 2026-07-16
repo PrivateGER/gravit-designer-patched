@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(57);
-        var o = n(1156),
-            i = n(444),
+        require(57);
+        var o = require(1156),
+            i = require(444),
             a = {
                 init: function (e) {
                     return (
@@ -11,7 +11,7 @@ module.exports = function (e, t, n) {
                                 menu: null,
                                 defaultAction: null,
                                 dblclick: null,
-                                touch: !1,
+                                touch: false,
                                 reference: null,
                             },
                             e

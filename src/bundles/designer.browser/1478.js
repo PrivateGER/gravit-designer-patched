@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(t, "__esModule", { value: !0 }), (t.GCloudUser = r), (t.default = void 0), n(58), n(3), n(71));
-        var o = n(1241);
-        const i = n(0),
-            a = n(177);
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.GCloudUser = r), (exports.default = void 0), require(58), require(3), require(71));
+        var o = require(1241);
+        const IsFiniteNonNegativeNumber = require(0),
+            a = require(177);
         function r() {}
-        (i.inherit(r, a),
+        (IsFiniteNonNegativeNumber.inherit(r, a),
             (r.ValidRoles = [
                 o.GCloudRole.Type.Viewer,
                 o.GCloudRole.Type.Coauthor,
@@ -41,5 +41,5 @@ module.exports = function (e, t, n) {
             (r.prototype.toString = function () {
                 return "[Object GCloudUser]";
             }));
-        t.default = r;
+        exports.default = r;
     };

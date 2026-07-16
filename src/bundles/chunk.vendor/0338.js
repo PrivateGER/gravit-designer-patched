@@ -1,4 +1,4 @@
-module.exports = function (e, t) {
+module.exports = function (module, exports) {
             var i = {
                 normalizeNumber: function (e) {
                     return (
@@ -11,5 +11,5 @@ module.exports = function (e, t) {
                     return i.join("") + n;
                 },
             };
-            e.exports = i;
+            module.exports = i;
         };

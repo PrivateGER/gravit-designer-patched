@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(58), n(8));
-        const o = n(86),
-            i = n(78),
-            a = n(1531),
-            r = n(1532),
-            s = n(1533),
-            l = n(156),
-            c = n(790),
-            d = n(554);
+        (require(58), require(8 /* Symbol */));
+        const o = require(86),
+            i = require(78),
+            a = require(1531),
+            r = require(1532),
+            s = require(1533),
+            l = require(156),
+            c = require(790),
+            d = require(554);
         function u(e) {
             ((this._worker = e), (this._docs = []));
         }
@@ -50,10 +50,10 @@ module.exports = function (e, t, n) {
                             ),
                             gDesigner.trigger(new i(i.Type.Modified, e)),
                             gDesigner.trigger(new i(i.Type.AutoSaveSynchronized, e)),
-                            !0
+                            true
                         );
                     }
-                    return !1;
+                    return false;
                 } catch (t) {
                     throw (gDesigner.trigger(new i(i.Type.AutoSaveSynchronizationFailed, e)), n && n.rollback(), t);
                 } finally {
@@ -80,5 +80,5 @@ module.exports = function (e, t, n) {
                     t
                 );
             }),
-            (e.exports = u));
+            (module.exports = u));
     };

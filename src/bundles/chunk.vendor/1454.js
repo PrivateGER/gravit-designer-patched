@@ -1,14 +1,14 @@
-module.exports = function (e, t, i) {
-            var n = i(83),
-                r = i(2),
-                o = i(1235);
+module.exports = function (module, exports, require) {
+            var n = require(83),
+                r = require(2),
+                o = require(1235);
 
             function a(e) {
                 ((this._effectsEnabled = e), (this._incompatibleNodes = []), (this._rasterizableNodes = []));
             }
             ((a.prototype._rasterizableNodes = null),
                 (a.prototype._incompatibleNodes = null),
-                (a.prototype._effectsEnabled = !1),
+                (a.prototype._effectsEnabled = false),
                 (a.prototype.processNode = function (e) {
                     (o.isCompatible(e, this._effectsEnabled) ||
                         (this._incompatibleNodes.push(e), this._shouldRaster(e) && this._rasterizableNodes.push(e)),
@@ -42,9 +42,9 @@ module.exports = function (e, t, i) {
                                 return i == e;
                             })
                         )
-                            return !1;
+                            return false;
                     }
-                    return !0;
+                    return true;
                 }),
                 (a.prototype._processMasterPages = function (e) {
                     var t = e.getMasterPages();
@@ -59,5 +59,5 @@ module.exports = function (e, t, i) {
                             }.bind(this)
                         );
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

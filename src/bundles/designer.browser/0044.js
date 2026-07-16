@@ -1,21 +1,21 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(30), n(57), n(8), n(20), n(34), n(4), n(13), n(32), n(38), n(33), n(26));
-        var o = n(1),
-            i = n(15);
+        (require(19), require(30), require(57), require(8 /* Symbol */), require(20), require(34), require(4), require(13), require(32), require(38), require(33), require(26));
+        var GObject = require(1),
+            GPlatform = require(15);
         class a {
             static error(e) {
-                let { showTitle: t = !0, closeCallback: n } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                let { showTitle: t = true, closeCallback: n } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 return a.custom({
-                    title: t ? o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.something-wrong")) : "",
+                    title: t ? GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.something-wrong")) : "",
                     subtitle: gApi.formatError(e),
                     closeCallback: n,
                 });
             }
             static externalFileError(e) {
                 let t = e
-                    ? o.GLocale.get(new o.GLocaleKey("GContainer", "text.load-failed-from-recent"))
-                    : o.GLocale.get(new o.GLocaleKey("GContainer", "text.load-failed-from-link"));
+                    ? GObject.GLocale.get(new GObject.GLocaleKey("GContainer", "text.load-failed-from-recent"))
+                    : GObject.GLocale.get(new GObject.GLocaleKey("GContainer", "text.load-failed-from-link"));
                 return a.custom({ subtitle: t, icon: "error" });
             }
             static splashScreenError(e, t, n) {
@@ -31,11 +31,11 @@ module.exports = function (e, t, n) {
                                 })
                         ),
                     o.gDialog({
-                        releaseOnClose: !0,
+                        releaseOnClose: true,
                         className: "g-system-dialog g-splash-screen-error-dialog",
                         buttons: i,
                     }),
-                    o.gDialog("open", !1),
+                    o.gDialog("open", false),
                     o
                 );
             }
@@ -45,7 +45,7 @@ module.exports = function (e, t, n) {
                         try {
                             return gContainer.getProperty(c);
                         } catch (e) {
-                            return !1;
+                            return false;
                         }
                     };
                     if (await e()) return;
@@ -53,39 +53,39 @@ module.exports = function (e, t, n) {
                 var d = $("<div></div>").append($("<div></div>").addClass("message").html(e));
                 let u;
                 const p = (e) => {
-                    (u && document.removeEventListener("keydown", u, !0), d.gDialog("close"), t && t(e));
+                    (u && document.removeEventListener("keydown", u, true), d.gDialog("close"), t && t(e));
                 };
                 (s || l) &&
                     ((u = (e) => {
-                        s && i.GKey.translateKey(e.keyCode) === i.GKey.Constant.ENTER
-                            ? d.gDialog("isOpen") && (e.preventDefault(), e.stopImmediatePropagation(), p(!0))
+                        s && GPlatform.GKey.translateKey(e.keyCode) === GPlatform.GKey.Constant.ENTER
+                            ? d.gDialog("isOpen") && (e.preventDefault(), e.stopImmediatePropagation(), p(true))
                             : l &&
-                              i.GKey.translateKey(e.keyCode) === i.GKey.Constant.ESC &&
+                              GPlatform.GKey.translateKey(e.keyCode) === GPlatform.GKey.Constant.ESC &&
                               d.gDialog("isOpen") &&
-                              (e.preventDefault(), e.stopImmediatePropagation(), p(!1));
+                              (e.preventDefault(), e.stopImmediatePropagation(), p(false));
                     }),
-                    document.addEventListener("keydown", u, !0));
+                    document.addEventListener("keydown", u, true));
                 const g = (e) => (e && "object" == typeof e ? e.text : e),
                     h = (e) => !!e && "object" == typeof e && !!e.pro,
                     f = !!(m = a) && "object" == typeof m && !!m.disabled;
                 var m;
                 (d.gDialog({
-                    releaseOnClose: !0,
+                    releaseOnClose: true,
                     className: "g-system-dialog g-confirm-dialog" + (c ? " g-onetime-dialog" : ""),
                     buttons: [
                         $("<button></button>")
-                            .text(g(n) || o.GLocale.get(new o.GLocaleKey("GLocale", "cancel")))
+                            .text(g(n) || GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "cancel")))
                             .gPro({ pro: h(n) })
                             .on("click", () => {
-                                p(!1);
+                                p(false);
                             }),
                         $("<button></button>")
                             .addClass("primary")
                             .toggleClass("g-disabled", f)
-                            .text(g(a) || o.GLocale.get(new o.GLocaleKey("GLocale", "ok")))
+                            .text(g(a) || GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")))
                             .gPro({ pro: h(a) })
                             .on("click", () => {
-                                f || p(!0);
+                                f || p(true);
                             }),
                     ],
                 }),
@@ -98,12 +98,12 @@ module.exports = function (e, t, n) {
                                     $("<input>")
                                         .attr("type", "checkbox")
                                         .on("change", function () {
-                                            this.checked ? gContainer.setProperty(c, !0) : gContainer.setProperty(c, !1);
+                                            this.checked ? gContainer.setProperty(c, true) : gContainer.setProperty(c, false);
                                         }),
-                                    $("<span></span>").text(o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.do-not-show-again"))),
+                                    $("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.do-not-show-again"))),
                                 ])
                             ),
-                    null === r && (r = !1),
+                    null === r && (r = false),
                     d.gDialog("open", r));
             }
             static prompt(e, t, n, i, a, r) {
@@ -123,50 +123,50 @@ module.exports = function (e, t, n) {
                         .append($("<div></div>").addClass("message").html(e))
                         .append($("<div></div>").addClass("input").append(l));
                 (c.gDialog({
-                    releaseOnClose: !0,
+                    releaseOnClose: true,
                     className: "g-system-dialog g-prompt-dialog " + r,
                     buttons: [
                         $("<button></button>")
-                            .text(i || o.GLocale.get(new o.GLocaleKey("GLocale", "cancel")))
+                            .text(i || GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "cancel")))
                             .on("click", () => {
                                 (c.gDialog("close"), t && t());
                             }),
                         $("<button></button>")
                             .addClass("primary")
-                            .text(a || o.GLocale.get(new o.GLocaleKey("GLocale", "ok")))
+                            .text(a || GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")))
                             .on("click", () => {
                                 t && (t(!!s || l.val()), c.gDialog("close"));
                             }),
                     ],
                 }),
-                    c.gDialog("open", !0),
+                    c.gDialog("open", true),
                     c.find("input:first-child").focus().select());
             }
             static alert(e, t) {
-                let { closeByEnter: n = !0, className: a } = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
+                let { closeByEnter: n = true, className: a } = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
                 var r,
                     s = $("<div></div>").append($("<div></div>").addClass("message").html(e));
                 const l = () => {
-                    (n && document.removeEventListener("keypress", r, !0), s.gDialog("close"), t && t());
+                    (n && document.removeEventListener("keypress", r, true), s.gDialog("close"), t && t());
                 };
                 return (
                     (r = (e) => {
-                        i.GKey.translateKey(e.keyCode) === i.GKey.Constant.ENTER &&
+                        GPlatform.GKey.translateKey(e.keyCode) === GPlatform.GKey.Constant.ENTER &&
                             s.gDialog("isOpen") &&
                             (e.preventDefault(), e.stopImmediatePropagation(), l());
                     }),
                     s.gDialog({
-                        releaseOnClose: !0,
+                        releaseOnClose: true,
                         className: "g-system-dialog g-alert-dialog" + (a ? " " + a : ""),
                         buttons: [
                             $("<button></button>")
                                 .addClass("primary")
-                                .text(o.GLocale.get(new o.GLocaleKey("GLocale", "ok")))
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")))
                                 .on("click", () => l()),
                         ],
                     }),
-                    s.gDialog("open", !1),
-                    n && document.addEventListener("keypress", r, !0),
+                    s.gDialog("open", false),
+                    n && document.addEventListener("keypress", r, true),
                     s
                 );
             }
@@ -176,12 +176,12 @@ module.exports = function (e, t, n) {
                         var i = $("<div></div>").append($("<div></div>").addClass("message").html(e));
                         return (
                             i.gDialog({
-                                releaseOnClose: !0,
+                                releaseOnClose: true,
                                 className: "g-system-dialog g-onetime-dialog",
                                 buttons: [
                                     $("<button></button>")
                                         .addClass("primary")
-                                        .text(o.GLocale.get(new o.GLocaleKey("GLocale", "ok")))
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")))
                                         .on("click", () => {
                                             i.gDialog("close");
                                         }),
@@ -195,42 +195,42 @@ module.exports = function (e, t, n) {
                                         $("<input>")
                                             .attr("type", "checkbox")
                                             .on("change", function () {
-                                                this.checked ? gContainer.setProperty(t, !0) : gContainer.setProperty(t, !1);
+                                                this.checked ? gContainer.setProperty(t, true) : gContainer.setProperty(t, false);
                                             }),
-                                        $("<span></span>").text(o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.do-not-show-again"))),
+                                        $("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.do-not-show-again"))),
                                     ])
                                 ),
-                            i.gDialog("open", !1),
+                            i.gDialog("open", false),
                             i
                         );
                     }
                 });
             }
             static showCDRWarning() {
-                return gDesigner.getSetting("disable_cdr_warning", !1)
+                return gDesigner.getSetting("disable_cdr_warning", false)
                     ? Promise.resolve()
                     : this.info({
                           className: "g-cdr-warning",
                           setting: "disable_cdr_warning",
-                          title: o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-warning-title")),
-                          label: o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-warning-label")),
-                          message: o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-warning-message")),
+                          title: GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-warning-title")),
+                          label: GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-warning-label")),
+                          message: GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-warning-message")),
                       });
             }
             static showCDRUnsupportedObjectWarning(e) {
-                if (!this.isDialogOpen(".g-system-dialog.g-dialog-v1") && !gDesigner.getSetting("disable_cdr_unsupported_effect", !1)) {
+                if (!this.isDialogOpen(".g-system-dialog.g-dialog-v1") && !gDesigner.getSetting("disable_cdr_unsupported_effect", false)) {
                     const t =
-                        e instanceof o.GStylable.Effect
-                            ? o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-unsupported-object-warning-effect-name")).replace(
+                        e instanceof GObject.GStylable.Effect
+                            ? GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-object-warning-effect-name")).replace(
                                   "%name",
                                   e.getNodeNameTranslated()
                               )
-                            : o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-unsupported-object-warning-generic-name"));
+                            : GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-object-warning-generic-name"));
                     return this.info({
                         setting: "disable_cdr_unsupported_effect",
-                        title: o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-warning-title")),
-                        label: o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-label")),
-                        message: o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-unsupported-object-warning-message")).replace(
+                        title: GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-warning-title")),
+                        label: GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-label")),
+                        message: GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-object-warning-message")).replace(
                             "%name",
                             t
                         ),
@@ -240,34 +240,34 @@ module.exports = function (e, t, n) {
             }
             static showCDRUnsupportedObjectsWarning() {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
-                return gDesigner.getSetting("disable_cdr_unsupported_effects", !1)
+                return gDesigner.getSetting("disable_cdr_unsupported_effects", false)
                     ? Promise.resolve(gDesigner.getSetting("default_cdr_unsupported_effects", 1))
                     : (gDesigner.stats("unsupported-dialog_open"),
                       this.warning({
                           setting: "disable_cdr_unsupported_effects",
-                          title: o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-title")),
-                          label: o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-label")),
-                          message: o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-message")),
+                          title: GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-title")),
+                          label: GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-label")),
+                          message: GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-message")),
                           options: {
                               setting: "default_cdr_unsupported_effects",
                               values: [
-                                  o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-option-0")),
-                                  o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-option-1")),
-                                  o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-option-2")),
-                                  o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-option-3")),
+                                  GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-option-0")),
+                                  GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-option-1")),
+                                  GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-option-2")),
+                                  GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-option-3")),
                               ],
                               tooltips: [
-                                  o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-option-0-tooltip")),
-                                  o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-option-1-tooltip")),
+                                  GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-option-0-tooltip")),
+                                  GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-option-1-tooltip")),
                                   "",
-                                  o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-option-3-tooltip")),
+                                  GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-option-3-tooltip")),
                               ],
                               onClick: () => {
                                   gDesigner.stats("unsupported-dialog_click_option");
                               },
                           },
                           details: {
-                              label: o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-details-label")),
+                              label: GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-details-label")),
                               onClick: () => {
                                   gDesigner.stats("unsupported-dialog_click_details");
                               },
@@ -288,15 +288,15 @@ module.exports = function (e, t, n) {
                             icon: "assets/icon/dialog/warning.svg",
                             buttons: [
                                 $("<button/>")
-                                    .text(o.GLocale.get(new o.GLocaleKey("GLocale", "cancel")))
-                                    .attr("data-title", o.GLocale.get(new o.GLocaleKey("GFilesPanel", "action.cancel-tooltip")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "cancel")))
+                                    .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "action.cancel-tooltip")))
                                     .on("click", (t) => {
                                         (e.onCancel && e.onCancel.call(this),
-                                            $(t.target).closest(".g-dialog-content").gDialog("close", !0));
+                                            $(t.target).closest(".g-dialog-content").gDialog("close", true));
                                     }),
                                 $("<button/>")
                                     .addClass("primary")
-                                    .text(o.GLocale.get(new o.GLocaleKey("GLocale", "ok")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")))
                                     .on("click", (t) => {
                                         (e.onSubmit && e.onSubmit.call(this), $(t.target).closest(".g-dialog-content").gDialog("close"));
                                     }),
@@ -314,7 +314,7 @@ module.exports = function (e, t, n) {
                             buttons: [
                                 $("<button/>")
                                     .addClass("primary")
-                                    .text(o.GLocale.get(new o.GLocaleKey("GLocale", "ok")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")))
                                     .on("click", (e) => $(e.target).closest(".g-dialog-content").gDialog("close")),
                             ],
                         },
@@ -331,7 +331,7 @@ module.exports = function (e, t, n) {
                     label: t = "",
                     message: n = "",
                     icon: i = "assets/icon/dialog/info.svg",
-                    closeable: a = !0,
+                    closeable: a = true,
                     buttons: r = [],
                     details: s,
                     options: l,
@@ -341,7 +341,7 @@ module.exports = function (e, t, n) {
                 const u = {},
                     p = new Promise((e, t) => Object.assign(u, { resolve: e, reject: t })),
                     g = $("<div></div>").gDialog({
-                        releaseOnClose: !0,
+                        releaseOnClose: true,
                         className: "g-system-dialog g-dialog-v1 " + d,
                         closeCallback: (e) => {
                             e
@@ -357,7 +357,7 @@ module.exports = function (e, t, n) {
                             $("<div></div>")
                                 .addClass("g-btn-close")
                                 .append($("<span></span>").addClass("gravit-icon-close"))
-                                .on("click", () => g.gDialog("close", !0))
+                                .on("click", () => g.gDialog("close", true))
                         ),
                     $("<main></main>")
                         .append(
@@ -445,7 +445,7 @@ module.exports = function (e, t, n) {
                                                       .append($("<input>").attr("type", "checkbox").attr("data-property", c))
                                                       .append(
                                                           $("<span/>").text(
-                                                              o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.do-not-show-again"))
+                                                              GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.do-not-show-again"))
                                                           )
                                                       )
                                                 : ""
@@ -461,12 +461,12 @@ module.exports = function (e, t, n) {
             static messageWithInfo(e) {
                 let { mainMessage: t, infoMessage: n } = e;
                 const i = $("<div />").gDialog({
-                        releaseOnClose: !0,
+                        releaseOnClose: true,
                         className: "g-system-dialog g-message-with-info-dialog",
                         buttons: [
                             $("<button/>")
                                 .addClass("primary")
-                                .text(o.GLocale.get(new o.GLocaleKey("GLocale", "ok")))
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")))
                                 .on("click", () => i.gDialog("close")),
                         ],
                     }),
@@ -484,7 +484,7 @@ module.exports = function (e, t, n) {
                                 )
                                 .append($("<div />").addClass("info-message-content").html(n))
                         ),
-                    i.gDialog("open", !0)
+                    i.gDialog("open", true)
                 );
             }
             static custom(e) {
@@ -497,13 +497,13 @@ module.exports = function (e, t, n) {
                     buttons: s = [],
                     openCallback: l,
                     closeCallback: c,
-                    closeable: d = !0,
+                    closeable: d = true,
                     className: u = "",
                     dontShowAgainCb: p,
                 } = e;
                 var g = [];
                 const h = $("<div></div>").gDialog({
-                    releaseOnClose: !0,
+                    releaseOnClose: true,
                     className: "g-system-dialog g-custom-dialog ".concat(u),
                     closeCallback: (e) => {
                         (g.length && (g.forEach((e) => Mousetrap.unbind(e)), (g = [])), c && c(e));
@@ -535,7 +535,7 @@ module.exports = function (e, t, n) {
                                     }),
                                 $("<span></span>")
                                     .addClass("dont-show-this-again-message")
-                                    .text(o.GLocale.get(new o.GLocaleKey("GSystemDialog", "text.do-not-show-again"))),
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.do-not-show-again"))),
                             ])
                         ),
                         m.append(
@@ -547,12 +547,12 @@ module.exports = function (e, t, n) {
                                     className: i,
                                     position: a,
                                     shortcut: r,
-                                    closeOnClick: s = !1,
+                                    closeOnClick: s = false,
                                 } = e;
-                                var l = !1,
+                                var l = false,
                                     c = () => {
                                         l ||
-                                            ((l = !0),
+                                            ((l = true),
                                             r && (Mousetrap.unbind(r), g.splice(g.indexOf(r), 1)),
                                             g.length && (g.forEach((e) => Mousetrap.unbind(e)), (g = [])),
                                             s && h.gDialog("close"),
@@ -576,26 +576,26 @@ module.exports = function (e, t, n) {
                 return (h.gDialog("open", d), h);
             }
             static advanced(e) {
-                let { title: t = "", buttons: n = [], closeCallback: o, closeable: i = !0 } = e;
+                let { title: t = "", buttons: n = [], closeCallback: o, closeable: i = true } = e;
                 var a = [],
                     r = $("<div></div>").append($("<div></div>").addClass("message").html(t));
                 return (
                     r.gDialog({
-                        releaseOnClose: !0,
+                        releaseOnClose: true,
                         className: "g-system-dialog g-advanced-dialog",
                         closeCallback: (e) => {
                             (a.length && (a.forEach((e) => Mousetrap.unbind(e)), (a = [])), o && o(e));
                         },
                         buttons: n.map((e) => {
-                            let { label: t, onclick: n, highlighted: o, className: i, position: s, shortcut: l, closeOnClick: c = !1 } = e;
-                            var d = !1,
+                            let { label: t, onclick: n, highlighted: o, className: i, position: s, shortcut: l, closeOnClick: c = false } = e;
+                            var d = false,
                                 u = () => {
                                     d ||
-                                        ((d = !0),
+                                        ((d = true),
                                         l && (Mousetrap.unbind(l), a.splice(a.indexOf(l), 1)),
                                         a.length && (a.forEach((e) => Mousetrap.unbind(e)), (a = [])),
                                         n(r),
-                                        c && r.gDialog("close", !1));
+                                        c && r.gDialog("close", false));
                                 },
                                 p = $("<button></button>")
                                     .append($("<span></span>").text(t))
@@ -617,5 +617,5 @@ module.exports = function (e, t, n) {
                 return "[Object GSystemDialog]";
             }
         }
-        ((a.Shortcut = { Esc: "esc", Enter: "enter" }), (e.exports = a));
+        ((a.Shortcut = { Esc: "esc", Enter: "enter" }), (module.exports = a));
     };

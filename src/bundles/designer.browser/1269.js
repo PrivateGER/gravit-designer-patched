@@ -1,16 +1,16 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(3), n(4), n(13), n(32), n(33));
-        var o = n(1),
-            i = n(53),
-            a = n(357),
-            r = n(67),
-            s = n(123),
-            l = (n(173), n(135));
+        (require(3), require(4), require(13), require(32), require(33));
+        var GObject = require(1),
+            i = require(53),
+            a = require(357),
+            r = require(67),
+            s = require(123),
+            l = (require(173), require(135));
         function c() {
             this._pathes = [];
         }
-        (o.GObject.inherit(c, s),
+        (GObject.GObject.inherit(c, s),
             (c.prototype._panel = null),
             (c.prototype._document = null),
             (c.prototype._pathes = null),
@@ -45,27 +45,27 @@ module.exports = function (e, t, n) {
                             .append(
                                 $("<option></option>")
                                     .attr("value", "-")
-                                    .text(o.GLocale.get(new o.GLocaleKey("GPathProperties", "text.straight")))
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "text.straight")))
                             )
                             .append(
                                 $("<option></option>")
-                                    .attr("value", o.GPathBase.AnchorPoint.Type.Mirror)
-                                    .text(o.GLocale.get(new o.GLocaleKey("GPathBase", "anchor-point.mirror")))
+                                    .attr("value", GObject.GPathBase.AnchorPoint.Type.Mirror)
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GPathBase", "anchor-point.mirror")))
                             )
                             .append(
                                 $("<option></option>")
-                                    .attr("value", o.GPathBase.AnchorPoint.Type.Asymmetric)
-                                    .text(o.GLocale.get(new o.GLocaleKey("GPathBase", "anchor-point.asymmetric")))
+                                    .attr("value", GObject.GPathBase.AnchorPoint.Type.Asymmetric)
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GPathBase", "anchor-point.asymmetric")))
                             )
                             .append(
                                 $("<option></option>")
-                                    .attr("value", o.GPathBase.AnchorPoint.Type.Symmetric)
-                                    .text(o.GLocale.get(new o.GLocaleKey("GPathBase", "anchor-point.symmetric")))
+                                    .attr("value", GObject.GPathBase.AnchorPoint.Type.Symmetric)
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GPathBase", "anchor-point.symmetric")))
                             )
                             .append(
                                 $("<option></option>")
-                                    .attr("value", o.GPathBase.AnchorPoint.Type.Connector)
-                                    .text(o.GLocale.get(new o.GLocaleKey("GPathBase", "anchor-point.connector")))
+                                    .attr("value", GObject.GPathBase.AnchorPoint.Type.Connector)
+                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GPathBase", "anchor-point.connector")))
                             )
                             .on("change", function (e) {
                                 n(e);
@@ -97,9 +97,9 @@ module.exports = function (e, t, n) {
                                 min: 0,
                                 max: 100,
                                 richTooltipConfig: r.GRichTooltipConfig.from({
-                                    title: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.corner-radius-slider-tooltip-title")),
-                                    description: o.GLocale.get(
-                                        new o.GLocaleKey("GCommonNames", "text.corner-radius-slider-tooltip-description")
+                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.corner-radius-slider-tooltip-title")),
+                                    description: GObject.GLocale.get(
+                                        new GObject.GLocaleKey("GCommonNames", "text.corner-radius-slider-tooltip-description")
                                     ),
                                 }),
                             })
@@ -115,7 +115,7 @@ module.exports = function (e, t, n) {
                                     n < t._points.length;
                                     ++n
                                 )
-                                    t._points[n].setProperty("cl", e, !1, !1, !0);
+                                    t._points[n].setProperty("cl", e, false, false, true);
                                 t._panel
                                     .find('[type="text"][data-point-property="cl"]')
                                     .gInputBox(
@@ -142,7 +142,7 @@ module.exports = function (e, t, n) {
                     throw new Error("Unknown input property: " + e);
                 }.bind(this);
                 ($("<div></div>")
-                    .attr("path-only", !0)
+                    .attr("path-only", true)
                     .gPropertyRow({
                         columns: [
                             {
@@ -163,7 +163,7 @@ module.exports = function (e, t, n) {
                                                 }.bind(this)
                                             )
                                     )
-                                    .append($("<span></span>").text(o.GLocale.get(new o.GLocaleKey("GPathProperties", "text.closed")))),
+                                    .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "text.closed")))),
                             },
                             {
                                 width: "60%",
@@ -183,7 +183,7 @@ module.exports = function (e, t, n) {
                                             )
                                     )
                                     .append(
-                                        $("<span></span>").text(o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.autoscale-corners")))
+                                        $("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.autoscale-corners")))
                                     ),
                             },
                         ],
@@ -191,9 +191,9 @@ module.exports = function (e, t, n) {
                     .appendTo(this._panel),
                     $("<div></div>")
                         .addClass("position-row")
-                        .attr("point-only", !0)
+                        .attr("point-only", true)
                         .gPropertyRow({
-                            label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.position")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.position")),
                             columns: [
                                 { width: "32%", content: i("x") },
                                 { width: "32%", content: i("y") },
@@ -204,13 +204,13 @@ module.exports = function (e, t, n) {
                     $("<div></div>")
                         .addClass(a.PATHPROPERTIES.PATH_JOIN_CLASS)
                         .addClass("joint-row")
-                        .attr("point-only", !0)
+                        .attr("point-only", true)
                         .gPropertyRow({
-                            label: o.GLocale.get(new o.GLocaleKey("GPathProperties", "text.joint")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "text.joint")),
                             columns: [
                                 {
                                     width: "25%",
-                                    padding: !1,
+                                    padding: false,
                                     content: $("<button></button>")
                                         .addClass("g-button")
                                         .css({
@@ -219,35 +219,35 @@ module.exports = function (e, t, n) {
                                             borderBottomLeftRadius: "3px",
                                         })
                                         .attr("data-node-type", "-")
-                                        .attr("data-title", o.GLocale.get(new o.GLocaleKey("GPathProperties", "text.straight")))
+                                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "text.straight")))
                                         .append($("<span></span>").addClass("gravit-icon-node-straight"))
                                         .on("click", n),
                                 },
                                 {
                                     width: "25%",
-                                    padding: !1,
+                                    padding: false,
                                     content: $("<button></button>")
                                         .addClass("g-button")
                                         .css({ borderRadius: "0px" })
-                                        .attr("data-node-type", o.GPathBase.AnchorPoint.Type.Mirror)
-                                        .attr("data-title", o.GLocale.get(new o.GLocaleKey("GPathBase", "anchor-point.mirror")))
+                                        .attr("data-node-type", GObject.GPathBase.AnchorPoint.Type.Mirror)
+                                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GPathBase", "anchor-point.mirror")))
                                         .append($("<span></span>").addClass("gravit-icon-node-mirrored"))
                                         .on("click", n),
                                 },
                                 {
                                     width: "25%",
-                                    padding: !1,
+                                    padding: false,
                                     content: $("<button></button>")
                                         .addClass("g-button")
                                         .css({ borderRadius: "0px" })
-                                        .attr("data-node-type", o.GPathBase.AnchorPoint.Type.Asymmetric)
-                                        .attr("data-title", o.GLocale.get(new o.GLocaleKey("GPathBase", "anchor-point.asymmetric")))
+                                        .attr("data-node-type", GObject.GPathBase.AnchorPoint.Type.Asymmetric)
+                                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GPathBase", "anchor-point.asymmetric")))
                                         .append($("<span></span>").addClass("gravit-icon-node-disconnected"))
                                         .on("click", n),
                                 },
                                 {
                                     width: "25%",
-                                    padding: !1,
+                                    padding: false,
                                     content: $("<button></button>")
                                         .addClass("g-button")
                                         .css({
@@ -255,8 +255,8 @@ module.exports = function (e, t, n) {
                                             borderTopRightRadius: "3px",
                                             borderBottomRightRadius: "3px",
                                         })
-                                        .attr("data-node-type", o.GPathBase.AnchorPoint.Type.Symmetric)
-                                        .attr("data-title", o.GLocale.get(new o.GLocaleKey("GPathBase", "anchor-point.symmetric")))
+                                        .attr("data-node-type", GObject.GPathBase.AnchorPoint.Type.Symmetric)
+                                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GPathBase", "anchor-point.symmetric")))
                                         .append($("<span></span>").addClass("gravit-icon-node-assymetric"))
                                         .on("click", n),
                                 },
@@ -264,13 +264,13 @@ module.exports = function (e, t, n) {
                         })
                         .addClass("joint")
                         .appendTo(this._panel),
-                    $("<hr/>").attr("point-only", !0).attr("corner-only", !0).appendTo(e),
+                    $("<hr/>").attr("point-only", true).attr("corner-only", true).appendTo(e),
                     $("<div></div>")
-                        .attr("point-only", !0)
-                        .attr("corner-only", !0)
+                        .attr("point-only", true)
+                        .attr("corner-only", true)
                         .addClass("path-corner-chooser")
                         .gPropertyRow({
-                            label: o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.corner")),
+                            label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.corner")),
                             columns: [
                                 { width: "auto", content: i("cl-slider") },
                                 { clazz: "corners-radius-no-padding" },
@@ -289,8 +289,8 @@ module.exports = function (e, t, n) {
                         : (this._panel.find(".closed-checkbox").gCheckboxSlider("unmount"),
                           this._panel.find(".csc-checkbox").gCheckboxSlider("unmount")),
                     this._document &&
-                        (this._document.getScene().removeEventListener(o.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
-                        this._document.getScene().removeEventListener(o.GElement.AfterFlagChangeEvent, this._afterFlagChange),
+                        (this._document.getScene().removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
+                        this._document.getScene().removeEventListener(GObject.GElement.AfterFlagChangeEvent, this._afterFlagChange),
                         this._document.getEditor().removeEventListener(i.GEditor.EdGeometryChangeEvent, this._edGeometryChange, this),
                         gDesigner.removeEventListener(l, this._settingChanged),
                         (this._document = null)),
@@ -299,15 +299,15 @@ module.exports = function (e, t, n) {
                     e)
                 ) {
                     for (var n = 0; n < t.length; ++n)
-                        if (t[n] instanceof o.GPath || t[n] instanceof o.GCompoundPath) {
+                        if (t[n] instanceof GObject.GPath || t[n] instanceof GObject.GCompoundPath) {
                             var a = t[n];
                             this._pathes.push(a);
                             var r = function (e) {
                                 for (var t = e.getAnchorPoints().getFirstChild(); null !== t; t = t.getNext())
-                                    t.hasFlag(o.GNode.Flag.Selected) &&
+                                    t.hasFlag(GObject.GNode.Flag.Selected) &&
                                         (this._points.push(t), 1 == this._points.legth && (this._mainPath = e));
                             }.bind(this);
-                            if (a instanceof o.GPath) r(a);
+                            if (a instanceof GObject.GPath) r(a);
                             else for (var s = a.getPaths().getFirstChild(); null !== s; s = s.getNext()) r(s);
                         }
                     if (this._pathes.length && this._pathes.length === t.length)
@@ -315,29 +315,29 @@ module.exports = function (e, t, n) {
                             (this._document = e),
                             this._document
                                 .getScene()
-                                .addEventListener(o.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
-                            this._document.getScene().addEventListener(o.GElement.AfterFlagChangeEvent, this._afterFlagChange, this),
+                                .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                            this._document.getScene().addEventListener(GObject.GElement.AfterFlagChangeEvent, this._afterFlagChange, this),
                             this._document.getEditor().addEventListener(i.GEditor.EdGeometryChangeEvent, this._edGeometryChange, this),
                             gDesigner.addEventListener(l, this._settingChanged, this),
                             this._updatePathProperties(),
                             this._updatePointProperties(),
-                            !0
+                            true
                         );
                 }
-                return !1;
+                return false;
             }),
             (c.prototype._getTargetNodeType = function (e) {
                 return e.is("select") ? e.val() : e.closest("[data-node-type]").attr("data-node-type");
             }),
             (c.prototype._getStatsNodeType = function (e) {
                 switch (e) {
-                    case o.GPathBase.AnchorPoint.Type.Mirror:
+                    case GObject.GPathBase.AnchorPoint.Type.Mirror:
                         return "Mirror";
-                    case o.GPathBase.AnchorPoint.Type.Asymmetric:
+                    case GObject.GPathBase.AnchorPoint.Type.Asymmetric:
                         return "Asymmetric";
-                    case o.GPathBase.AnchorPoint.Type.Symmetric:
+                    case GObject.GPathBase.AnchorPoint.Type.Symmetric:
                         return "Symmetric";
-                    case o.GPathBase.AnchorPoint.Type.Connector:
+                    case GObject.GPathBase.AnchorPoint.Type.Connector:
                         return "Connector";
                     default:
                         return "Straight";
@@ -355,35 +355,35 @@ module.exports = function (e, t, n) {
                             i = null;
                         ("-" === e &&
                             ((t = ["tp", "hlx", "hly", "hrx", "hry", "ah"]),
-                            (i = [o.GPathBase.CornerType.Rounded, null, null, null, null, !1])),
+                            (i = [GObject.GPathBase.CornerType.Rounded, null, null, null, null, false])),
                             this._points.forEach((n) => {
                                 if (
                                     "-" !== e &&
-                                    ((t = ["ah", "tp"]), (i = [!1, e]), null === n.getProperty("hlx") && null === n.getProperty("hrx"))
+                                    ((t = ["ah", "tp"]), (i = [false, e]), null === n.getProperty("hlx") && null === n.getProperty("hrx"))
                                 ) {
                                     const a = n.getParent().getPreviousPoint(n),
                                         r = a ? a.getProperty("hrx") : null,
                                         s = n.getParent().getNextPoint(n),
                                         l = s ? s.getProperty("hlx") : null;
-                                    if (e != o.GPathBase.AnchorPoint.Type.Asymmetric || null !== r || null !== l) i[0] = !0;
+                                    if (e != GObject.GPathBase.AnchorPoint.Type.Asymmetric || null !== r || null !== l) i[0] = true;
                                     else {
                                         const e = n.getProperty("x"),
                                             r = n.getProperty("y");
-                                        if (a && a.getProperty("tp") != o.GPathBase.AnchorPoint.Type.Connector) {
+                                        if (a && a.getProperty("tp") != GObject.GPathBase.AnchorPoint.Type.Connector) {
                                             const n = a.getProperty("x"),
                                                 s = a.getProperty("y");
-                                            if (!o.GMath.isEqualEps(e, n) || !o.GMath.isEqualEps(r, s)) {
-                                                const a = e + (n - e) * o.GPathBase.AnchorPoint.HANDLE_COEFF,
-                                                    l = r + (s - r) * o.GPathBase.AnchorPoint.HANDLE_COEFF;
+                                            if (!GObject.GMath.isEqualEps(e, n) || !GObject.GMath.isEqualEps(r, s)) {
+                                                const a = e + (n - e) * GObject.GPathBase.AnchorPoint.HANDLE_COEFF,
+                                                    l = r + (s - r) * GObject.GPathBase.AnchorPoint.HANDLE_COEFF;
                                                 (t.push("hlx"), t.push("hly"), i.push(a), i.push(l));
                                             }
                                         }
-                                        if (s && s.getProperty("tp") != o.GPathBase.AnchorPoint.Type.Connector) {
+                                        if (s && s.getProperty("tp") != GObject.GPathBase.AnchorPoint.Type.Connector) {
                                             const n = s.getProperty("x"),
                                                 a = s.getProperty("y");
-                                            if (!o.GMath.isEqualEps(e, n) || !o.GMath.isEqualEps(r, a)) {
-                                                const s = e + (n - e) * o.GPathBase.AnchorPoint.HANDLE_COEFF,
-                                                    l = r + (a - r) * o.GPathBase.AnchorPoint.HANDLE_COEFF;
+                                            if (!GObject.GMath.isEqualEps(e, n) || !GObject.GMath.isEqualEps(r, a)) {
+                                                const s = e + (n - e) * GObject.GPathBase.AnchorPoint.HANDLE_COEFF,
+                                                    l = r + (a - r) * GObject.GPathBase.AnchorPoint.HANDLE_COEFF;
                                                 (t.push("hrx"), t.push("hry"), i.push(s), i.push(l));
                                             }
                                         }
@@ -392,10 +392,10 @@ module.exports = function (e, t, n) {
                                 n.setProperties(t, i);
                                 let a = n.getProperty("tp");
                                 const r = n.getProperty("ah");
-                                a == o.GPathBase.AnchorPoint.Type.Mirror && r && n.setProperty("ah", !1);
+                                a == GObject.GPathBase.AnchorPoint.Type.Mirror && r && n.setProperty("ah", false);
                             }));
                     } finally {
-                        n.commitTransaction(o.GLocale.get(new o.GLocaleKey("GPathProperties", "action.modify-path-node-type")));
+                        n.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "action.modify-path-node-type")));
                     }
                 }
             }),
@@ -405,7 +405,7 @@ module.exports = function (e, t, n) {
                     this._points.length > 0 && this._points[0] === e.node && this._updatePointProperties());
             }),
             (c.prototype._afterFlagChange = function (e) {
-                if (e.flag === o.GNode.Flag.Selected && e.node instanceof o.GPathBase.AnchorPoint) {
+                if (e.flag === GObject.GNode.Flag.Selected && e.node instanceof GObject.GPathBase.AnchorPoint) {
                     var t = e.node.getParent() ? e.node.getParent().getParent() : null,
                         n = t && t.getParent() && t.getParent().getParent() ? t.getParent().getParent() : null;
                     ((t && this._pathes.indexOf(t) >= 0) || (n && this._pathes.indexOf(n) >= 0)) &&
@@ -422,14 +422,14 @@ module.exports = function (e, t, n) {
                 else {
                     this._panel.find("[path-only]").css("display", "");
                     var e = this._pathes[0];
-                    e instanceof o.GPath
+                    e instanceof GObject.GPath
                         ? (this._panel
                               .find('input[data-path-property="closed"]')
-                              .prop("disabled", !1)
+                              .prop("disabled", false)
                               .prop("checked", e.getProperty("closed")),
-                          this._panel.find('input[data-path-property="csc"]').prop("disabled", !1).prop("checked", !!e.getProperty("csc")))
-                        : (this._panel.find('input[data-path-property="closed"]').prop("disabled", !0).prop("checked", !1),
-                          this._panel.find('input[data-path-property="csc"]').prop("disabled", !1).prop("checked", !!e.getProperty("csc")));
+                          this._panel.find('input[data-path-property="csc"]').prop("disabled", false).prop("checked", !!e.getProperty("csc")))
+                        : (this._panel.find('input[data-path-property="closed"]').prop("disabled", true).prop("checked", false),
+                          this._panel.find('input[data-path-property="csc"]').prop("disabled", false).prop("checked", !!e.getProperty("csc")));
                 }
             }),
             (c.prototype._settingChanged = function (e) {
@@ -446,11 +446,11 @@ module.exports = function (e, t, n) {
                         this._panel
                             .find('input[data-point-property="y"]')
                             .val(this._document.getScene().pointToString(t.getY(), this._document.getScene().getOptimalDecimalsCount())));
-                    var n = !0,
+                    var n = true,
                         i = e.getProperty("tp");
-                    for (var a in o.GPathBase.AnchorPoint.Type)
-                        if (o.GPathBase.AnchorPoint.Type[a] === i) {
-                            n = !1;
+                    for (var a in GObject.GPathBase.AnchorPoint.Type)
+                        if (GObject.GPathBase.AnchorPoint.Type[a] === i) {
+                            n = false;
                             break;
                         }
                     var r = n ? "-" : i;
@@ -463,7 +463,7 @@ module.exports = function (e, t, n) {
                         this._panel
                             .find('[data-point-property="ctp"]')
                             .css("display", n ? "" : "none")
-                            .gCornerTypePicker("value", n ? i : o.GPathBase.CornerType.Rounded),
+                            .gCornerTypePicker("value", n ? i : GObject.GPathBase.CornerType.Rounded),
                         this._panel
                             .find('div[data-point-property="cl"]')
                             .prop("disabled", !n)
@@ -501,7 +501,7 @@ module.exports = function (e, t, n) {
                     a = e.getPath();
                 a && (t = i.GElementEditor.getEditor(a))
                     ? (t.getPaintElement() != a && (e = t.getPathPointPreview(e)), (n = t.getPointCoord(e)))
-                    : (n = new o.GPoint(e.getProperty("x"), e.getProperty("y")));
+                    : (n = new GObject.GPoint(e.getProperty("x"), e.getProperty("y")));
                 return n;
             }),
             (c.prototype._transformPoint = function (e, t, n) {
@@ -519,24 +519,24 @@ module.exports = function (e, t, n) {
                 try {
                     for (var i = 0; i < this._pathes.length; ++i) this._pathes[i].setProperties(e, t);
                 } finally {
-                    n.commitTransaction(o.GLocale.get(new o.GLocaleKey("GPathProperties", "action.modify-path-properties")));
+                    n.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "action.modify-path-properties")));
                 }
             }),
             (c.prototype._setBorderAlignmentCenter = function () {
                 var e,
                     t,
                     n = ["_ba"],
-                    i = [o.GStylable.BorderAlignment.Center],
+                    i = [GObject.GStylable.BorderAlignment.Center],
                     a = this._document.getEditor();
                 a.beginTransaction();
                 try {
                     for (var r = 0, s = this._pathes.length; r < s; ++r) {
                         e = this._pathes[r].getPaintLayers().getBorderLayers();
                         for (var l = 0, c = e.length; l < c; l++)
-                            (t = e[l]) instanceof o.GStylable.BorderPaintLayer && t.setProperties(n, i);
+                            (t = e[l]) instanceof GObject.GStylable.BorderPaintLayer && t.setProperties(n, i);
                     }
                 } finally {
-                    a.commitTransaction(o.GLocale.get(new o.GLocaleKey("GPathProperties", "action.modify-path-properties")));
+                    a.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "action.modify-path-properties")));
                 }
             }),
             (c.prototype._assignPointProperty = function (e, t) {
@@ -547,15 +547,15 @@ module.exports = function (e, t, n) {
                         var a = this._points[i];
                         if ("x" === e) {
                             var r = this._getPointCoord(a),
-                                s = new o.GTransform(1, 0, 0, 1, t - r.getX(), 0);
+                                s = new GObject.GTransform(1, 0, 0, 1, t - r.getX(), 0);
                             this._transformPoint(a, s, r);
                         } else if ("y" === e) {
-                            ((r = this._getPointCoord(a)), (s = new o.GTransform(1, 0, 0, 1, 0, t - r.getY())));
+                            ((r = this._getPointCoord(a)), (s = new GObject.GTransform(1, 0, 0, 1, 0, t - r.getY())));
                             this._transformPoint(a, s, r);
                         } else a.setProperties([e], [t]);
                     }
                 } finally {
-                    n.commitTransaction(o.GLocale.get(new o.GLocaleKey("GPathProperties", "action.modify-point-properties")));
+                    n.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "action.modify-point-properties")));
                 }
             }),
             (c.prototype._assignPointProperties = function (e, t) {
@@ -565,11 +565,11 @@ module.exports = function (e, t, n) {
                 try {
                     for (var i = 0; i < this._points.length; ++i) this._points[i].setProperties(e, t);
                 } finally {
-                    n.commitTransaction(o.GLocale.get(new o.GLocaleKey("GPathProperties", "action.modify-point-properties")));
+                    n.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "action.modify-point-properties")));
                 }
             }),
             (c.prototype.toString = function () {
                 return "[Object GPathProperties]";
             }),
-            (e.exports = c));
+            (module.exports = c));
     };

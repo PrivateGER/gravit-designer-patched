@@ -1,102 +1,102 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n.r(t),
-            n.d(t, "createInstance", function () {
+        (require.r(exports),
+            require.d(exports, "createInstance", function () {
                 return Le;
             }),
-            n.d(t, "add", function () {
+            require.d(exports, "add", function () {
                 return ke;
             }),
-            n.d(t, "flush", function () {
+            require.d(exports, "flush", function () {
                 return Oe;
             }),
-            n.d(t, "getDeviceId", function () {
+            require.d(exports, "getDeviceId", function () {
                 return Fe;
             }),
-            n.d(t, "getSessionId", function () {
+            require.d(exports, "getSessionId", function () {
                 return Re;
             }),
-            n.d(t, "getUserId", function () {
+            require.d(exports, "getUserId", function () {
                 return Me;
             }),
-            n.d(t, "groupIdentify", function () {
+            require.d(exports, "groupIdentify", function () {
                 return Ne;
             }),
-            n.d(t, "identify", function () {
+            require.d(exports, "identify", function () {
                 return Be;
             }),
-            n.d(t, "init", function () {
+            require.d(exports, "init", function () {
                 return Ue;
             }),
-            n.d(t, "logEvent", function () {
+            require.d(exports, "logEvent", function () {
                 return $e;
             }),
-            n.d(t, "remove", function () {
+            require.d(exports, "remove", function () {
                 return je;
             }),
-            n.d(t, "reset", function () {
+            require.d(exports, "reset", function () {
                 return Ke;
             }),
-            n.d(t, "revenue", function () {
+            require.d(exports, "revenue", function () {
                 return Ve;
             }),
-            n.d(t, "setDeviceId", function () {
+            require.d(exports, "setDeviceId", function () {
                 return He;
             }),
-            n.d(t, "setGroup", function () {
+            require.d(exports, "setGroup", function () {
                 return We;
             }),
-            n.d(t, "setOptOut", function () {
+            require.d(exports, "setOptOut", function () {
                 return ze;
             }),
-            n.d(t, "setSessionId", function () {
+            require.d(exports, "setSessionId", function () {
                 return qe;
             }),
-            n.d(t, "setTransport", function () {
+            require.d(exports, "setTransport", function () {
                 return Ye;
             }),
-            n.d(t, "setUserId", function () {
+            require.d(exports, "setUserId", function () {
                 return Xe;
             }),
-            n.d(t, "track", function () {
+            require.d(exports, "track", function () {
                 return Qe;
             }),
-            n.d(t, "runQueuedFunctions", function () {
+            require.d(exports, "runQueuedFunctions", function () {
                 return ne;
             }),
-            n.d(t, "Revenue", function () {
+            require.d(exports, "Revenue", function () {
                 return O;
             }),
-            n.d(t, "Identify", function () {
+            require.d(exports, "Identify", function () {
                 return k;
             }),
-            n.d(t, "Types", function () {
+            require.d(exports, "Types", function () {
                 return o;
             }));
         var o = {};
-        (n.r(o),
-            n.d(o, "ServerZone", function () {
+        (require.r(o),
+            require.d(o, "ServerZone", function () {
                 return m;
             }),
-            n.d(o, "SpecialEventType", function () {
+            require.d(o, "SpecialEventType", function () {
                 return w;
             }),
-            n.d(o, "IdentifyOperation", function () {
+            require.d(o, "IdentifyOperation", function () {
                 return _;
             }),
-            n.d(o, "RevenueProperty", function () {
+            require.d(o, "RevenueProperty", function () {
                 return b;
             }),
-            n.d(o, "LogLevel", function () {
+            require.d(o, "LogLevel", function () {
                 return f;
             }),
-            n.d(o, "PluginType", function () {
+            require.d(o, "PluginType", function () {
                 return g;
             }),
-            n.d(o, "Status", function () {
+            require.d(o, "Status", function () {
                 return h;
             }),
-            n.d(o, "TransportType", function () {
+            require.d(o, "TransportType", function () {
                 return V;
             }));
         var i = function (e, t) {
@@ -210,7 +210,7 @@ module.exports = function (e, t, n) {
                                         i = s;
                                         break;
                                     case 4:
-                                        return (a.label++, { value: s[1], done: !1 });
+                                        return (a.label++, { value: s[1], done: false });
                                     case 5:
                                         (a.label++, (o = s[1]), (s = [0]));
                                         continue;
@@ -244,7 +244,7 @@ module.exports = function (e, t, n) {
                                 n = i = 0;
                             }
                         if (5 & s[0]) throw s[1];
-                        return { value: s[0] ? s[1] : void 0, done: !0 };
+                        return { value: s[0] ? s[1] : void 0, done: true };
                     })([s, l]);
                 };
             }
@@ -355,16 +355,16 @@ module.exports = function (e, t, n) {
                     flushIntervalMillis: 1e4,
                     logLevel: f.Warn,
                     loggerProvider: new x(),
-                    optOut: !1,
+                    optOut: false,
                     serverUrl: "https://api2.amplitude.com/2/httpapi",
                     serverZone: m.US,
-                    useBatch: !1,
+                    useBatch: false,
                 };
             },
             E = (function () {
                 function e(e) {
                     var t, n, o;
-                    this._optOut = !1;
+                    this._optOut = false;
                     var i = S();
                     ((this.apiKey = e.apiKey),
                         (this.flushIntervalMillis = e.flushIntervalMillis || i.flushIntervalMillis),
@@ -393,8 +393,8 @@ module.exports = function (e, t, n) {
                         set: function (e) {
                             this._optOut = e;
                         },
-                        enumerable: !1,
-                        configurable: !0,
+                        enumerable: false,
+                        configurable: true,
                     }),
                     e
                 );
@@ -421,7 +421,7 @@ module.exports = function (e, t, n) {
                         (this.retryTimeout = 1e3),
                         (this.throttleTimeout = 3e4),
                         (this.storageKey = ""),
-                        (this.scheduled = !1),
+                        (this.scheduled = false),
                         (this.queue = []));
                 }
                 return (
@@ -478,8 +478,8 @@ module.exports = function (e, t, n) {
                         for (var e = this, t = [], n = 0; n < arguments.length; n++) t[n] = arguments[n];
                         var o = t.filter(function (t) {
                             return t.attempts < e.config.flushMaxRetries
-                                ? ((t.attempts += 1), !0)
-                                : (e.fulfillRequest([t], 500, "Event rejected due to exceeded retry count"), !1);
+                                ? ((t.attempts += 1), true)
+                                : (e.fulfillRequest([t], 500, "Event rejected due to exceeded retry count"), false);
                         });
                         (o.forEach(function (t) {
                             ((e.queue = e.queue.concat(t)),
@@ -494,16 +494,16 @@ module.exports = function (e, t, n) {
                     (e.prototype.schedule = function (e) {
                         var t = this;
                         this.scheduled ||
-                            ((this.scheduled = !0),
+                            ((this.scheduled = true),
                             setTimeout(function () {
-                                t.flush(!0).then(function () {
-                                    ((t.scheduled = !1), t.queue.length > 0 && t.schedule(e));
+                                t.flush(true).then(function () {
+                                    ((t.scheduled = false), t.queue.length > 0 && t.schedule(e));
                                 });
                             }, e));
                     }),
                     (e.prototype.flush = function (e) {
                         return (
-                            void 0 === e && (e = !1),
+                            void 0 === e && (e = false),
                             l(this, void 0, void 0, function () {
                                 var t,
                                     n,
@@ -545,7 +545,7 @@ module.exports = function (e, t, n) {
                     }),
                     (e.prototype.send = function (e, t) {
                         return (
-                            void 0 === t && (t = !0),
+                            void 0 === t && (t = true),
                             l(this, void 0, void 0, function () {
                                 var n, o, i, a;
                                 return c(this, function (r) {
@@ -613,27 +613,27 @@ module.exports = function (e, t, n) {
                             var o = p(
                                     p(
                                         p(
-                                            p([], u(Object.values(e.body.eventsWithInvalidFields)), !1),
+                                            p([], u(Object.values(e.body.eventsWithInvalidFields)), false),
                                             u(Object.values(e.body.eventsWithMissingFields)),
-                                            !1
+                                            false
                                         ),
                                         u(Object.values(e.body.eventsWithInvalidIdLengths)),
-                                        !1
+                                        false
                                     ),
                                     u(e.body.silencedEvents),
-                                    !1
+                                    false
                                 ).flat(),
                                 i = new Set(o),
                                 a = t.filter(function (t, o) {
-                                    if (!i.has(o)) return !0;
+                                    if (!i.has(o)) return true;
                                     n.fulfillRequest([t], e.statusCode, e.body.error);
                                 });
-                            this.addToQueue.apply(this, p([], u(a), !1));
+                            this.addToQueue.apply(this, p([], u(a), false));
                         }
                     }),
                     (e.prototype.handlePayloadTooLargeResponse = function (e, t) {
                         1 !== t.length
-                            ? ((this.config.flushQueueSize /= 2), this.addToQueue.apply(this, p([], u(t), !1)))
+                            ? ((this.config.flushQueueSize /= 2), this.addToQueue.apply(this, p([], u(t), false)))
                             : this.fulfillRequest(t, e.statusCode, e.body.error);
                     }),
                     (e.prototype.handleRateLimitResponse = function (e, t) {
@@ -646,10 +646,10 @@ module.exports = function (e, t, n) {
                             l = new Set(a),
                             c = t.filter(function (t, o) {
                                 if (!((t.event.user_id && r.has(t.event.user_id)) || (t.event.device_id && s.has(t.event.device_id))))
-                                    return (l.has(o) && (t.timeout = n.throttleTimeout), !0);
+                                    return (l.has(o) && (t.timeout = n.throttleTimeout), true);
                                 n.fulfillRequest([t], e.statusCode, e.body.error);
                             });
-                        this.addToQueue.apply(this, p([], u(c), !1));
+                        this.addToQueue.apply(this, p([], u(c), false));
                     }),
                     (e.prototype.handleOtherReponse = function (e) {
                         var t = this;
@@ -662,7 +662,7 @@ module.exports = function (e, t, n) {
                                         return ((e.timeout = e.attempts * t.retryTimeout), e);
                                     })
                                 ),
-                                !1
+                                false
                             )
                         );
                     }),
@@ -714,25 +714,25 @@ module.exports = function (e, t, n) {
             })(w || (w = {})));
         var D,
             L = function (e) {
-                if (Object.keys(e).length > 1e3) return !1;
+                if (Object.keys(e).length > 1e3) return false;
                 for (var t in e) {
                     var n = e[t];
-                    if (!I(t, n)) return !1;
+                    if (!I(t, n)) return false;
                 }
-                return !0;
+                return true;
             },
             I = function (e, t) {
                 var n, o;
-                if ("string" != typeof e) return !1;
+                if ("string" != typeof e) return false;
                 if (Array.isArray(t)) {
-                    var i = !0;
+                    var i = true;
                     try {
                         for (var a = d(t), r = a.next(); !r.done; r = a.next()) {
                             var s = r.value;
-                            if (Array.isArray(s)) return !1;
+                            if (Array.isArray(s)) return false;
                             if ("object" == typeof s) i = i && L(s);
-                            else if (!["number", "string"].includes(typeof s)) return !1;
-                            if (!i) return !1;
+                            else if (!["number", "string"].includes(typeof s)) return false;
+                            if (!i) return false;
                         }
                     } catch (e) {
                         n = { error: e };
@@ -744,11 +744,11 @@ module.exports = function (e, t, n) {
                         }
                     }
                 } else {
-                    if (null == t) return !1;
+                    if (null == t) return false;
                     if ("object" == typeof t) return L(t);
-                    if (!["number", "string", "boolean"].includes(typeof t)) return !1;
+                    if (!["number", "string", "boolean"].includes(typeof t)) return false;
                 }
-                return !0;
+                return true;
             },
             k = (function () {
                 function e() {
@@ -791,9 +791,9 @@ module.exports = function (e, t, n) {
                     (e.prototype._safeSet = function (e, t, n) {
                         if (this._validate(e, t, n)) {
                             var o = this._properties[e];
-                            return (void 0 === o && ((o = {}), (this._properties[e] = o)), (o[t] = n), this._propertySet.add(t), !0);
+                            return (void 0 === o && ((o = {}), (this._properties[e] = o)), (o[t] = n), this._propertySet.add(t), true);
                         }
-                        return !1;
+                        return false;
                     }),
                     (e.prototype._validate = function (e, t, n) {
                         return (
@@ -844,7 +844,7 @@ module.exports = function (e, t, n) {
             })(),
             F = (function () {
                 function e() {
-                    ((this.queue = []), (this.applying = !1), (this.plugins = []));
+                    ((this.queue = []), (this.applying = false), (this.plugins = []));
                 }
                 return (
                     (e.prototype.register = function (e, t) {
@@ -871,7 +871,7 @@ module.exports = function (e, t, n) {
                         );
                     }),
                     (e.prototype.reset = function () {
-                        ((this.applying = !1), (this.plugins = []));
+                        ((this.applying = false), (this.plugins = []));
                     }),
                     (e.prototype.push = function (e) {
                         var t = this;
@@ -882,10 +882,10 @@ module.exports = function (e, t, n) {
                     (e.prototype.scheduleApply = function (e) {
                         var t = this;
                         this.applying ||
-                            ((this.applying = !0),
+                            ((this.applying = true),
                             setTimeout(function () {
                                 t.apply(t.queue.shift()).then(function () {
-                                    ((t.applying = !1), t.queue.length > 0 && t.scheduleApply(0));
+                                    ((t.applying = false), t.queue.length > 0 && t.scheduleApply(0));
                                 });
                             }, e));
                     }),
@@ -1012,7 +1012,7 @@ module.exports = function (e, t, n) {
             R = (function () {
                 function e(e) {
                     (void 0 === e && (e = "$default"),
-                        (this.initializing = !1),
+                        (this.initializing = false),
                         (this.q = []),
                         (this.dispatchQ = []),
                         (this.logEvent = this.track.bind(this)),
@@ -1193,10 +1193,10 @@ module.exports = function (e, t, n) {
             M = function (e) {
                 return function () {
                     for (var t = [], n = 0; n < arguments.length; n++) t[n] = arguments[n];
-                    return { promise: e.apply(void 0, p([], u(t), !1)) };
+                    return { promise: e.apply(void 0, p([], u(t), false)) };
                 };
             },
-            N = n(1358),
+            N = require(1358),
             B = function () {
                 return N.a.getInstance("$default_instance");
             };
@@ -1255,25 +1255,25 @@ module.exports = function (e, t, n) {
             W =
                 ("".concat(H, "_unsent"),
                 function (e) {
-                    if (Object.keys(e).length > 1e3) return !1;
+                    if (Object.keys(e).length > 1e3) return false;
                     for (var t in e) {
                         var n = e[t];
-                        if (!z(t, n)) return !1;
+                        if (!z(t, n)) return false;
                     }
-                    return !0;
+                    return true;
                 }),
             z = function (e, t) {
                 var n, o;
-                if ("string" != typeof e) return !1;
+                if ("string" != typeof e) return false;
                 if (Array.isArray(t)) {
-                    var i = !0;
+                    var i = true;
                     try {
                         for (var a = d(t), r = a.next(); !r.done; r = a.next()) {
                             var s = r.value;
-                            if (Array.isArray(s)) return !1;
+                            if (Array.isArray(s)) return false;
                             if ("object" == typeof s) i = i && W(s);
-                            else if (!["number", "string"].includes(typeof s)) return !1;
-                            if (!i) return !1;
+                            else if (!["number", "string"].includes(typeof s)) return false;
+                            if (!i) return false;
                         }
                     } catch (e) {
                         n = { error: e };
@@ -1285,11 +1285,11 @@ module.exports = function (e, t, n) {
                         }
                     }
                 } else {
-                    if (null == t) return !1;
+                    if (null == t) return false;
                     if ("object" == typeof t) return W(t);
-                    if (!["number", "string", "boolean"].includes(typeof t)) return !1;
+                    if (!["number", "string", "boolean"].includes(typeof t)) return false;
                 }
-                return !0;
+                return true;
             },
             q = (function () {
                 function e() {
@@ -1332,9 +1332,9 @@ module.exports = function (e, t, n) {
                     (e.prototype._safeSet = function (e, t, n) {
                         if (this._validate(e, t, n)) {
                             var o = this._properties[e];
-                            return (void 0 === o && ((o = {}), (this._properties[e] = o)), (o[t] = n), this._propertySet.add(t), !0);
+                            return (void 0 === o && ((o = {}), (this._properties[e] = o)), (o[t] = n), this._propertySet.add(t), true);
                         }
-                        return !1;
+                        return false;
                     }),
                     (e.prototype._validate = function (e, t, n) {
                         return (
@@ -1349,7 +1349,7 @@ module.exports = function (e, t, n) {
             Y = function (e, t, n) {
                 return (void 0 === t && (t = ""), void 0 === n && (n = 10), [H, t, e.substring(0, n)].filter(Boolean).join("_"));
             },
-            X = n(611),
+            X = require(611),
             Q = function () {
                 var e,
                     t = Object(X.a)();
@@ -1570,8 +1570,8 @@ module.exports = function (e, t, n) {
             ie = function (e) {
                 return e && void 0 !== e._q;
             },
-            ae = n(610),
-            re = n.n(ae),
+            ae = require(610),
+            re = require.n(ae),
             se = function () {
                 var e, t, n, o;
                 if ("undefined" == typeof navigator) return "";
@@ -1707,7 +1707,7 @@ module.exports = function (e, t, n) {
                     (e.prototype.isEnabled = function () {
                         return l(this, void 0, void 0, function () {
                             return c(this, function (e) {
-                                return [2, !0];
+                                return [2, true];
                             });
                         });
                     }),
@@ -1757,7 +1757,7 @@ module.exports = function (e, t, n) {
             })(),
             ue = (function () {
                 function e(e, t) {
-                    ((this.storage = e), (this.isSessionCacheValid = !0), (this.storageKey = Y(t)), (this.cache = { optOut: !1 }));
+                    ((this.storage = e), (this.isSessionCacheValid = true), (this.storageKey = Y(t)), (this.cache = { optOut: false }));
                 }
                 return (
                     (e.prototype.load = function () {
@@ -1769,7 +1769,7 @@ module.exports = function (e, t, n) {
                                     case 0:
                                         return ((t = this), [4, this.storage.get(this.storageKey)]);
                                     case 1:
-                                        return ((t.cache = null !== (e = n.sent()) && void 0 !== e ? e : { optOut: !1 }), [2, this]);
+                                        return ((t.cache = null !== (e = n.sent()) && void 0 !== e ? e : { optOut: false }), [2, this]);
                                 }
                             });
                         });
@@ -1780,7 +1780,7 @@ module.exports = function (e, t, n) {
                     (e.prototype.getSessionId = function () {
                         var e = this;
                         return (
-                            (this.isSessionCacheValid = !0),
+                            (this.isSessionCacheValid = true),
                             this.storage.get(this.storageKey).then(function (t) {
                                 e.isSessionCacheValid && (e.cache.sessionId = null == t ? void 0 : t.sessionId);
                             }),
@@ -1788,7 +1788,7 @@ module.exports = function (e, t, n) {
                         );
                     }),
                     (e.prototype.setSessionId = function (e) {
-                        ((this.isSessionCacheValid = !1), this.setSession({ sessionId: e }));
+                        ((this.isSessionCacheValid = false), this.setSession({ sessionId: e }));
                     }),
                     (e.prototype.getDeviceId = function () {
                         return this.cache.deviceId;
@@ -1963,7 +1963,7 @@ module.exports = function (e, t, n) {
                             return c(this, function (i) {
                                 switch (i.label) {
                                     case 0:
-                                        if (!Object(X.a)()) return [2, !1];
+                                        if (!Object(X.a)()) return [2, false];
                                         ((t = String(Date.now())), (n = new e(this.options)), (o = "AMP_TEST"), (i.label = 1));
                                     case 1:
                                         return (i.trys.push([1, 4, 5, 7]), [4, n.set(o, t)]);
@@ -1972,7 +1972,7 @@ module.exports = function (e, t, n) {
                                     case 3:
                                         return [2, i.sent() === t];
                                     case 4:
-                                        return (i.sent(), [2, !1]);
+                                        return (i.sent(), [2, false]);
                                     case 5:
                                         return [4, n.remove(o)];
                                     case 6:
@@ -2075,7 +2075,7 @@ module.exports = function (e, t, n) {
                             return c(this, function (i) {
                                 switch (i.label) {
                                     case 0:
-                                        if (!Object(X.a)()) return [2, !1];
+                                        if (!Object(X.a)()) return [2, false];
                                         ((t = String(Date.now())), (n = new e()), (o = "AMP_TEST"), (i.label = 1));
                                     case 1:
                                         return (i.trys.push([1, 4, 5, 7]), [4, n.set(o, t)]);
@@ -2084,7 +2084,7 @@ module.exports = function (e, t, n) {
                                     case 3:
                                         return [2, i.sent() === t];
                                     case 4:
-                                        return (i.sent(), [2, !1]);
+                                        return (i.sent(), [2, false]);
                                     case 5:
                                         return [4, n.remove(o)];
                                     case 6:
@@ -2258,7 +2258,7 @@ module.exports = function (e, t, n) {
                                     new Promise(function (o, i) {
                                         "undefined" == typeof XMLHttpRequest && i(new Error("XHRTransport is not supported."));
                                         var a = new XMLHttpRequest();
-                                        (a.open("POST", e, !0),
+                                        (a.open("POST", e, true),
                                             (a.onreadystatechange = function () {
                                                 if (a.readyState === n.state.done)
                                                     try {
@@ -2325,21 +2325,21 @@ module.exports = function (e, t, n) {
                 return {
                     cookieExpiration: 365,
                     cookieSameSite: "Lax",
-                    cookieSecure: !1,
+                    cookieSecure: false,
                     cookieStorage: e,
-                    disableCookies: !1,
+                    disableCookies: false,
                     domain: "",
                     sessionManager: new ue(e, ""),
                     sessionTimeout: 18e5,
                     storageProvider: new de(),
                     trackingOptions: {
-                        deviceManufacturer: !0,
-                        deviceModel: !0,
-                        ipAddress: !0,
-                        language: !0,
-                        osName: !0,
-                        osVersion: !0,
-                        platform: !0,
+                        deviceManufacturer: true,
+                        deviceModel: true,
+                        ipAddress: true,
+                        language: true,
+                        osName: true,
+                        osVersion: true,
+                        platform: true,
                     },
                     transportProvider: new pe(),
                 };
@@ -2414,8 +2414,8 @@ module.exports = function (e, t, n) {
                         set: function (e) {
                             this.sessionManager.setDeviceId(e);
                         },
-                        enumerable: !1,
-                        configurable: !0,
+                        enumerable: false,
+                        configurable: true,
                     }),
                     Object.defineProperty(t.prototype, "userId", {
                         get: function () {
@@ -2424,8 +2424,8 @@ module.exports = function (e, t, n) {
                         set: function (e) {
                             this.sessionManager.setUserId(e);
                         },
-                        enumerable: !1,
-                        configurable: !0,
+                        enumerable: false,
+                        configurable: true,
                     }),
                     Object.defineProperty(t.prototype, "sessionId", {
                         get: function () {
@@ -2434,8 +2434,8 @@ module.exports = function (e, t, n) {
                         set: function (e) {
                             this.sessionManager.setSessionId(e);
                         },
-                        enumerable: !1,
-                        configurable: !0,
+                        enumerable: false,
+                        configurable: true,
                     }),
                     Object.defineProperty(t.prototype, "optOut", {
                         get: function () {
@@ -2445,8 +2445,8 @@ module.exports = function (e, t, n) {
                             var t;
                             null === (t = this.sessionManager) || void 0 === t || t.setOptOut(Boolean(e));
                         },
-                        enumerable: !1,
-                        configurable: !0,
+                        enumerable: false,
+                        configurable: true,
                     }),
                     Object.defineProperty(t.prototype, "lastEventTime", {
                         get: function () {
@@ -2455,8 +2455,8 @@ module.exports = function (e, t, n) {
                         set: function (e) {
                             this.sessionManager.setLastEventTime(e);
                         },
-                        enumerable: !1,
-                        configurable: !0,
+                        enumerable: false,
+                        configurable: true,
                     }),
                     t
                 );
@@ -2678,9 +2678,9 @@ module.exports = function (e, t, n) {
                                           return "".concat(H.toLowerCase(), "_").concat(e.substring(0, 6));
                                       })(e)),
                                       [4, n.getRaw(o)])
-                                    : [2, { optOut: !1 }];
+                                    : [2, { optOut: false }];
                             case 3:
-                                return (i = c.sent()) ? [4, n.remove(o)] : [2, { optOut: !1 }];
+                                return (i = c.sent()) ? [4, n.remove(o)] : [2, { optOut: false }];
                             case 4:
                                 return (
                                     c.sent(),
@@ -2736,7 +2736,7 @@ module.exports = function (e, t, n) {
                                 return c(this, function (c) {
                                     switch (c.label) {
                                         case 0:
-                                            return this.initializing ? [2] : ((this.initializing = !0), [4, Te(t, o)]);
+                                            return this.initializing ? [2] : ((this.initializing = true), [4, Te(t, o)]);
                                         case 1:
                                             return (
                                                 (l = c.sent()),
@@ -2774,7 +2774,7 @@ module.exports = function (e, t, n) {
                                                 (!this.config.sessionId ||
                                                     (this.config.lastEventTime &&
                                                         Date.now() - this.config.lastEventTime > this.config.sessionTimeout)) &&
-                                                    (this.setSessionId(Date.now()), (u = !0)),
+                                                    (this.setSessionId(Date.now()), (u = true)),
                                                 (p = B()).eventBridge.setEventReceiver(function (e) {
                                                     g.track(e.eventType, e.eventProperties);
                                                 }),
@@ -2789,7 +2789,7 @@ module.exports = function (e, t, n) {
                                         case 5:
                                             return (c.sent(), [4, this.add(new G())]);
                                         case 6:
-                                            return (c.sent(), (this.initializing = !1), [4, this.runAttributionStrategy(d.attribution, u)]);
+                                            return (c.sent(), (this.initializing = false), [4, this.runAttributionStrategy(d.attribution, u)]);
                                         case 7:
                                             return (c.sent(), [4, this.runQueuedFunctions("dispatchQ")]);
                                         case 8:
@@ -2801,7 +2801,7 @@ module.exports = function (e, t, n) {
                     }),
                     (t.prototype.runAttributionStrategy = function (e, t) {
                         return (
-                            void 0 === t && (t = !1),
+                            void 0 === t && (t = false),
                             l(this, void 0, void 0, function () {
                                 var n, o, i;
                                 return c(this, function (a) {

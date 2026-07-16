@@ -1,18 +1,18 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         var o,
             i,
             a,
-            r = n(452),
-            s = n(23),
-            l = n(46),
-            c = n(100),
-            d = n(61),
-            u = n(297),
-            p = n(300),
-            g = n(259),
-            h = s.TypeError,
-            f = s.WeakMap;
+            r = require(452),
+            RegExp = require(23),
+            l = require(46),
+            c = require(100),
+            d = require(61),
+            u = require(297),
+            p = require(300),
+            g = require(259),
+            h = RegExp.TypeError,
+            f = RegExp.WeakMap;
         if (r || u.state) {
             var m = u.state || (u.state = new f());
             ((m.get = m.get),
@@ -30,7 +30,7 @@ module.exports = function (e, t, n) {
                 }));
         } else {
             var y = p("state");
-            ((g[y] = !0),
+            ((g[y] = true),
                 (o = function (e, t) {
                     if (d(e, y)) throw new h("Object already initialized");
                     return ((t.facade = e), c(e, y, t), t);
@@ -42,7 +42,7 @@ module.exports = function (e, t, n) {
                     return d(e, y);
                 }));
         }
-        e.exports = {
+        module.exports = {
             set: o,
             get: i,
             has: a,

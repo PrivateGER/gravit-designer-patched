@@ -1,58 +1,58 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(19),
-            n(168),
-            n(328),
-            n(180),
-            n(181),
-            n(96),
-            n(30),
-            n(8),
-            n(356),
-            n(20),
-            n(3),
-            n(271),
-            n(34),
-            n(851),
-            n(91),
-            n(218),
-            n(189),
-            n(190),
-            n(191),
-            n(192),
-            n(4),
-            n(41),
-            n(13),
-            n(32),
-            n(38),
-            n(169),
-            n(97),
-            n(33),
-            n(26));
-        var i = n(1),
-            a = n(1546),
-            r = n(40),
-            s = n(1154),
-            l = n(1552),
-            c = n(862),
-            d = n(858),
-            u = o(n(1556)),
-            p = o(n(86)),
-            g = o(n(119)),
-            h = o(n(802)),
-            f = o(n(1240)),
-            m = o(n(445)),
-            y = o(n(44)),
-            v = o(n(355)),
-            _ = n(10),
-            b = n(519),
-            w = o(n(1557));
-        const C = n(156),
-            x = n(78);
-        var S = _.CloudIntegration.cloudOptions,
-            E = _.CloudIntegration.nativeOption,
-            A = [..._.CloudIntegration.cloudOptions, _.CloudIntegration.nativeOption];
+        var o = require(16);
+        (require(19),
+            require(168 /* PDFFetchStream */),
+            require(328),
+            require(180),
+            require(181),
+            require(96),
+            require(30),
+            require(8 /* Symbol */),
+            require(356),
+            require(20),
+            require(3),
+            require(271),
+            require(34),
+            require(851),
+            require(91),
+            require(218),
+            require(189),
+            require(190),
+            require(191),
+            require(192),
+            require(4),
+            require(41),
+            require(13),
+            require(32),
+            require(38),
+            require(169 /* PDFNetworkStream */),
+            require(97),
+            require(33),
+            require(26));
+        var GObject = require(1),
+            a = require(1546),
+            GSaveAction = require(40),
+            s = require(1154),
+            l = require(1552),
+            GCommonNames = require(862),
+            d = require(858),
+            u = o(require(1556)),
+            p = o(require(86)),
+            g = o(require(119 /* GCommonNames */)),
+            h = o(require(802)),
+            f = o(require(1240)),
+            m = o(require(445 /* GSaveAsAction */)),
+            y = o(require(44 /* GSystemDialog */)),
+            v = o(require(355)),
+            designerConfig = require(10),
+            configBase = require(519),
+            w = o(require(1557));
+        const C = require(156),
+            x = require(78);
+        var S = designerConfig.CloudIntegration.cloudOptions,
+            E = designerConfig.CloudIntegration.nativeOption,
+            A = [...designerConfig.CloudIntegration.cloudOptions, designerConfig.CloudIntegration.nativeOption];
         function T(e) {
             (this._initializeDefaultValues(e), (this._initializingPromise = this._init(e)));
         }
@@ -65,18 +65,18 @@ module.exports = function (e, t, n) {
             (T.IMAGES_WAIT_TIMEOUT = 2e4),
             (T.DriveAccountsSettingName = "designer.filespanel.cloud-accounts"),
             (T.DriveAccountsActiveSettingsName = "designer.filespanel.cloud-accounts.active"),
-            i.GObject.inherit(T, i.GObject),
-            (T.prototype._showEmptyPanel = !1),
-            (T.prototype._hasFolders = !1),
-            (T.prototype._showRecentFiles = !1),
-            (T.prototype._isSaveMode = !1),
+            GObject.GObject.inherit(T, GObject.GObject),
+            (T.prototype._showEmptyPanel = false),
+            (T.prototype._hasFolders = false),
+            (T.prototype._showRecentFiles = false),
+            (T.prototype._isSaveMode = false),
             (T.prototype._documentToSave = null),
             (T.prototype._initializeDefaultValues = function (e) {
                 var t = this;
                 let {
-                    closeCallback: n = r.fakeFunction,
+                    closeCallback: n = GSaveAction.fakeFunction,
                     documentToSave: o,
-                    cancelSave: i = r.fakeFunction,
+                    cancelSave: i = GSaveAction.fakeFunction,
                     defaultFilename: a,
                     readyStateChange: s,
                     showExampleFiles: l,
@@ -84,7 +84,7 @@ module.exports = function (e, t, n) {
                     saveMode: u,
                     driveSettings: p = null,
                     isDashboard: g,
-                    isCorporateStoragesEnabled: h = !0,
+                    isCorporateStoragesEnabled: h = true,
                 } = e;
                 ((this._GUISettings = c || new T.GUISettings()),
                     (this._driveSettings = p || new f.default()),
@@ -93,14 +93,14 @@ module.exports = function (e, t, n) {
                     (this.CURRENT_FILE_LOAD = 0),
                     (this.CURRENT_UPDATE_OPERATION_ID = -1),
                     (this.MODE = d.GFilesPanelClipboardModes.DEFAULT),
-                    (this.BUILD_IN_PROGRESS = !1),
+                    (this.BUILD_IN_PROGRESS = false),
                     (this.DEFAULT_FILENAME = a),
-                    (this._newClipBoard = !1),
+                    (this._newClipBoard = false),
                     (this._showExampleFiles = l),
                     (this._isDashboard = g),
                     (this._isCorporateStoragesEnabled = h),
                     (this.readyStateChange = s),
-                    (this.search = (0, r.debounce)(this.search, 200)));
+                    (this.search = (0, GSaveAction.debounce)(this.search, 200)));
                 var m = (e) =>
                     function () {
                         (t._removeEventListeners(), e(...arguments));
@@ -126,7 +126,7 @@ module.exports = function (e, t, n) {
             }),
             (T.GUISettings = function () {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                return Object.assign({ dialogControls: !0, downloadSourceFile: !1 }, e);
+                return Object.assign({ dialogControls: true, downloadSourceFile: false }, e);
             }),
             (T.prototype.unmount = function () {
                 function e() {
@@ -141,7 +141,7 @@ module.exports = function (e, t, n) {
                     toggleLoading: (e) => this.view.toggleLoading(e),
                     update: () => this.updateFilesList(),
                     close: () => {
-                        (this.view.toggleLoading(!0), this._onCloseCallback());
+                        (this.view.toggleLoading(true), this._onCloseCallback());
                     },
                 };
             }),
@@ -154,15 +154,15 @@ module.exports = function (e, t, n) {
                 let n = await gContainer.getProperty(T.DriveAccountsActiveSettingsName);
                 return (async function (n) {
                     let o,
-                        i = !0;
-                    (await t.updateCloudSettings(), e ? ((i = !1), (o = E)) : (n && (o = t.getCloudSettingsById(n)), o || (o = E)));
+                        i = true;
+                    (await t.updateCloudSettings(), e ? ((i = false), (o = E)) : (n && (o = t.getCloudSettingsById(n)), o || (o = E)));
                     try {
                         await t.setCloudDrive(o, i);
                     } catch (e) {
                         await t.setCloudDrive(E);
                     }
                     ((await T.isFilesGridListStyle()) && t.toListView(),
-                        (await T.isMaximized()) && t._maximizeWindow(!0),
+                        (await T.isMaximized()) && t._maximizeWindow(true),
                         window.addEventListener("resize", t._minimizeWindow.bind(t)));
                 })(n && n.activeSettingsId);
             }),
@@ -195,7 +195,7 @@ module.exports = function (e, t, n) {
                         return (
                             o instanceof Array || (o = []),
                             (e.id = new Date().getTime()),
-                            (e.deletable = !0),
+                            (e.deletable = true),
                             o.push(e),
                             gContainer.setProperty(t.accountSettingsKey, t._settingsToString(o)),
                             t.updateCloudSettings()
@@ -235,35 +235,35 @@ module.exports = function (e, t, n) {
             }),
             (T.prototype.handleNewFolder = function (e) {
                 var t = this;
-                let n = !1;
-                (gDesigner.stats("filespanel_create_cloudfolder"), this.view.toggleLoading(!0));
+                let n = false;
+                (gDesigner.stats("filespanel_create_cloudfolder"), this.view.toggleLoading(true));
                 let o = 0;
                 const a = (r) => {
-                    if ((o++, o > b.MAX_FOLDER_DEPTH_FOR_CLOUD))
+                    if ((o++, o > configBase.MAX_FOLDER_DEPTH_FOR_CLOUD))
                         return (
-                            (n = !1),
-                            t.view.toggleLoading(!1),
-                            void y.default.alert(i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.error-creating-folder")))
+                            (n = false),
+                            t.view.toggleLoading(false),
+                            void y.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-creating-folder")))
                         );
                     let s = {};
                     (t.drive.hasTitleValidation() && (s = t.drive.getTitleValidator()),
                         new u.default(
                             async function (o) {
-                                if (((o = o.trim()), t.view.toggleLoading(!0), t.drive.supportsSaveCollisionFlow())) {
+                                if (((o = o.trim()), t.view.toggleLoading(true), t.drive.supportsSaveCollisionFlow())) {
                                     if (
                                         (await t.drive.folderExists(o, t.drive.getCurrentFolder())) &&
                                         !(await ((l = o),
                                         new Promise((e) => {
                                             y.default.confirm(
-                                                i.GLocale.get(
-                                                    new i.GLocaleKey("GFilesPanel", "text.folder-already-exists-on-current-location")
+                                                GObject.GLocale.get(
+                                                    new GObject.GLocaleKey("GFilesPanel", "text.folder-already-exists-on-current-location")
                                                 ).replace("%foldername", '"'.concat(l, '"')),
                                                 (t) => e(!!t),
                                                 null,
                                                 null,
-                                                !0,
-                                                !0,
-                                                !0
+                                                true,
+                                                true,
+                                                true
                                             );
                                         })))
                                     )
@@ -275,29 +275,29 @@ module.exports = function (e, t, n) {
                                     }
                                 }
                                 var l;
-                                ((n = !0),
+                                ((n = true),
                                     t.drive
                                         .createFolder(o)
                                         .then(() => {
-                                            (t.view.toggleLoading(!1), e ? e() : t.updateFilesList());
+                                            (t.view.toggleLoading(false), e ? e() : t.updateFilesList());
                                         })
                                         .catch((e) => {
-                                            if ((t.view.toggleLoading(!1), e && e.badName))
+                                            if ((t.view.toggleLoading(false), e && e.badName))
                                                 return (
                                                     y.default.alert(e.message),
                                                     setTimeout(() => {
                                                         a(o);
                                                     })
                                                 );
-                                            ((n = !1),
+                                            ((n = false),
                                                 console.error(e),
                                                 y.default.alert(
-                                                    i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.error-creating-folder"))
+                                                    GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-creating-folder"))
                                                 ));
                                         }));
                             },
                             function () {
-                                n || t.view.toggleLoading(!1);
+                                n || t.view.toggleLoading(false);
                             },
                             "primary",
                             r,
@@ -325,15 +325,15 @@ module.exports = function (e, t, n) {
                 var e = this;
                 return (
                     y.default.confirm(
-                        i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.delete-confirm")),
+                        GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.delete-confirm")),
                         function (t) {
                             t && e.deleteSelection();
                         }.bind(this),
                         null,
-                        i.GLocale.get(new i.GLocaleKey("GFilesPanel", "action.delete-button")),
-                        !1,
-                        !0,
-                        !0
+                        GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "action.delete-button")),
+                        false,
+                        true,
+                        true
                     ),
                     this
                 );
@@ -347,27 +347,27 @@ module.exports = function (e, t, n) {
                 const o = (e) =>
                     new Promise((t) => {
                         y.default.confirm(
-                            i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.file-already-exists-on-current-location")).replace(
+                            GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.file-already-exists-on-current-location")).replace(
                                 "%filename",
                                 '"'.concat(e, '"')
                             ),
                             (e) => t(!!e),
                             null,
                             null,
-                            !1,
-                            !0,
-                            !0
+                            false,
+                            true,
+                            true
                         );
                     });
                 if (
-                    (this.view.toggleLoading(!0),
+                    (this.view.toggleLoading(true),
                     gDesigner.stats("filespanel_save_cloudfile", t),
-                    (e = (0, r.removeAllSuffixWhichLikeExtension)(e, t)).trim())
+                    (e = (0, GSaveAction.removeAllSuffixWhichLikeExtension)(e, t)).trim())
                 ) {
                     try {
                         if (this.drive.supportsSaveCollisionFlow()) {
                             if ((await this.drive.fileExists(e, t, this.drive.getCurrentFolder())) && !(await o(e)))
-                                return (this.view.toggleLoading(!1), void this.view.focusFileNameInput({ name: e }));
+                                return (this.view.toggleLoading(false), void this.view.focusFileNameInput({ name: e }));
                             if (this.drive.requiresOverwriteCollisionHandling()) {
                                 for (var a = 0, s = e; await this.drive.fileExists(s, t, this.drive.getCurrentFolder()); )
                                     s = "".concat(e, " (").concat(++a, ")");
@@ -376,9 +376,9 @@ module.exports = function (e, t, n) {
                         }
                         await this._triggerNewFileSave(e, t, n);
                     } catch (e) {
-                        if (e && e.badName) return (this.view.toggleLoading(!1), void y.default.alert(e.message));
+                        if (e && e.badName) return (this.view.toggleLoading(false), void y.default.alert(e.message));
                         this.getDocumentToSave() && gDesigner.trigger(new x(x.Type.SynchronismUpdateFailed, this.getDocumentToSave()));
-                        let t = i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.error-saving-file"));
+                        let t = GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-saving-file"));
                         (e && e.message && e.dontExtend
                             ? (t = e.message)
                             : e && e.message
@@ -387,12 +387,12 @@ module.exports = function (e, t, n) {
                             y.default.alert(t),
                             console.error(e));
                     }
-                    this._onCloseCallback(!0);
+                    this._onCloseCallback(true);
                 } else
-                    y.default.alert(i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.please-inform-valid-file-name")), () => {
-                        (this.view.toggleLoading(!1),
+                    y.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.please-inform-valid-file-name")), () => {
+                        (this.view.toggleLoading(false),
                             this.view.focusFileNameInput({
-                                name: i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.untitled")),
+                                name: GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.untitled")),
                             }));
                     });
                 return this;
@@ -424,18 +424,18 @@ module.exports = function (e, t, n) {
             }),
             (T.prototype.handleBack = function () {
                 if ((gDesigner.stats("filespanel_go-to-parent_cloudfolder"), this.drive.getCurrentFolder())) {
-                    (this.view.toggleLoading(!0), this.drive.navigateToParentFolder());
+                    (this.view.toggleLoading(true), this.drive.navigateToParentFolder());
                     var e = this.drive.getCurrentFolder();
                     (this.view.manageOpenFolder(null, e), this.view.resetSelection());
                 }
-                return (this.updateFilesList(!0, !1), this);
+                return (this.updateFilesList(true, false), this);
             }),
             (T.prototype.navigateToRoot = function () {
                 let e = !(arguments.length > 0 && void 0 !== arguments[0]) || arguments[0];
                 return (
                     gDesigner.stats("filespanel_go-to-root_cloudfolder"),
                     this.drive.isRootFolder() ||
-                        (this.view.toggleLoading(!0),
+                        (this.view.toggleLoading(true),
                         this.drive.setCurrentFolder(this.drive.getRootFolder()),
                         this.navigateToFolder(this.drive.getRootFolder(), e),
                         this.view.manageOpenFolder(null, this.drive.getRootFolder()),
@@ -446,10 +446,10 @@ module.exports = function (e, t, n) {
             (T.prototype.handleSaveAs = function (e, t, n) {
                 (gDesigner.stats("filespanel_download_file", e),
                     this._onCancelSaveCallback(),
-                    gDesigner.executeAction("".concat(m.default.ID, ".").concat(e.toLowerCase()), [null, null, null, t, n], void 0, !0));
+                    gDesigner.executeAction("".concat(m.default.ID, ".").concat(e.toLowerCase()), [null, null, null, t, n], void 0, true));
             }),
             (T.prototype.handleDownload = function () {
-                return (gDesigner.stats("filespanel_download_multiple-files"), this.downloadSelectedFiles(c.DEFAULT_TYPE), this);
+                return (gDesigner.stats("filespanel_download_multiple-files"), this.downloadSelectedFiles(GCommonNames.DEFAULT_TYPE), this);
             }),
             (T.prototype.handleFileDblClick = function (e) {
                 return (
@@ -468,13 +468,13 @@ module.exports = function (e, t, n) {
             }),
             (T.prototype.openFile = async function (e) {
                 e.example && gDesigner.stats("filespanel_open_examplefile", e.name);
-                if (await this.drive.canAccessFile(e).catch((e) => !1))
+                if (await this.drive.canAccessFile(e).catch((e) => false))
                     try {
                         (this._triggerFileOpen(e), this._onCloseCallback());
                     } catch (e) {
                         (console.log(e.stack), y.default.alert(e.message), this.updateFilesList());
                     }
-                else y.default.alert(i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.file-can-not-be-accessed-missing-permissions")));
+                else y.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.file-can-not-be-accessed-missing-permissions")));
             }),
             (T.prototype.handleFolderClick = function (e, t) {
                 return (
@@ -514,8 +514,8 @@ module.exports = function (e, t, n) {
                     o = arguments.length > 3 && void 0 !== arguments[3] && arguments[3];
                 if (o) {
                     if (!(t = this.drive.getFileFormat(e)))
-                        return u(Promise.reject(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.file-not-supported"))));
-                } else t || (t = this.drive.getFileFormat(e) || c.DEFAULT_TYPE);
+                        return u(Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.file-not-supported"))));
+                } else t || (t = this.drive.getFileFormat(e) || GCommonNames.DEFAULT_TYPE);
                 var { ext: a, type: r, mime: s, version: l } = t;
                 r = r || s;
                 const d = this._triggerFileDownload(e, n, a, r, l);
@@ -535,12 +535,12 @@ module.exports = function (e, t, n) {
                             let d,
                                 u = l;
                             if (
-                                ((t.cancel = (0, r.chaining)(t.cancel, () => a.abort())),
+                                ((t.cancel = (0, GSaveAction.chaining)(t.cancel, () => a.abort())),
                                 e.type !== o
-                                    ? ((u = await this._convertBlob(u, { ext: n, type: o, version: i }, t).catch((e) => (d = e || !0))),
+                                    ? ((u = await this._convertBlob(u, { ext: n, type: o, version: i }, t).catch((e) => (d = e || true))),
                                       u || (d = new Error("Unsupported mime type: #".concat(e.type))))
-                                    : o === c.DEFAULT_TYPE.type &&
-                                      ((u = await this._repackNativeBlob(u, t).catch((e) => (d = e || !0))),
+                                    : o === GCommonNames.DEFAULT_TYPE.type &&
+                                      ((u = await this._repackNativeBlob(u, t).catch((e) => (d = e || true))),
                                       u || d || (d = new Error("Error fetching file contents for download"))),
                                 d)
                             ) {
@@ -568,19 +568,19 @@ module.exports = function (e, t, n) {
                     const a = new FileReader();
                     ((a.onload = async function () {
                         const e = new Uint8Array(this.result),
-                            a = i.GNode.deserialize(g.default.unzipData(e), gDesigner.getWorkspace());
-                        var s = { cancelled: !1 };
-                        ((t.cancel = (0, r.chaining)(t.cancel, () => (s.cancelled = !0))),
-                            await (0, r.resolveDocumentImages)(a, T.IMAGES_WAIT_TIMEOUT, s).catch(() => {
+                            a = GObject.GNode.deserialize(g.default.unzipData(e), gDesigner.getWorkspace());
+                        var s = { cancelled: false };
+                        ((t.cancel = (0, GSaveAction.chaining)(t.cancel, () => (s.cancelled = true))),
+                            await (0, GSaveAction.resolveDocumentImages)(a, T.IMAGES_WAIT_TIMEOUT, s).catch(() => {
                                 s.cancelled
                                     ? o()
                                     : o(
                                           new Error(
-                                              i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.file-no-images-cannot-be-processed"))
+                                              GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.file-no-images-cannot-be-processed"))
                                           )
                                       );
                             }));
-                        var l = i.GNode.serialize(a, { save: !0 });
+                        var l = GObject.GNode.serialize(a, { save: true });
                         (null === l || "" === l || l.length < 1 || s.cancelled) && o();
                         var c = new Uint8Array(pako.gzip(l, { level: 9 }).buffer);
                         c.byteLength > 20 ? n(c) : o();
@@ -590,7 +590,7 @@ module.exports = function (e, t, n) {
                 });
             }),
             (T.prototype.downloadSelectedFiles = async function () {
-                let { ext: e, type: t } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : c.DEFAULT_TYPE,
+                let { ext: e, type: t } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : GCommonNames.DEFAULT_TYPE,
                     n = arguments.length > 1 && void 0 !== arguments[1] && arguments[1],
                     o = arguments.length > 2 ? arguments[2] : void 0;
                 if (this.SELECTION.length < 1) return;
@@ -598,7 +598,7 @@ module.exports = function (e, t, n) {
                         this.SELECTION.map(
                             async (e) =>
                                 this.drive.isFileSupported(e) &&
-                                (await this.drive.canAccessFile(e).catch((e) => (console.error("drive.canAccessFile error", e), !1)))
+                                (await this.drive.canAccessFile(e).catch((e) => (console.error("drive.canAccessFile error", e), false)))
                         )
                     ),
                     a = this.SELECTION.filter((e, t) => !!i[t]);
@@ -612,16 +612,16 @@ module.exports = function (e, t, n) {
                 let d = gDesigner.getActiveDocument();
                 (d || (d = gDesigner.newInfiniteDocument()),
                     d.updateStatus(p.default.Downloading, c),
-                    c.text(i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.downloading-files")), !0),
+                    c.text(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.downloading-files")), true),
                     c.progressInfo("0/".concat(s)));
                 let u = 0,
-                    g = !1;
+                    g = false;
                 const h = () => c.progressInfo("".concat(++u, "/").concat(s)),
                     f = () => c.progressInfo("".concat(++u, "/").concat(s)),
-                    m = () => (g = !0),
+                    m = () => (g = true),
                     v = e.map((e, i) => {
                         var s = o;
-                        !s && this.fileRequiresSourceDownload(e) && (s = !0);
+                        !s && this.fileRequiresSourceDownload(e) && (s = true);
                         var d = {
                             ext: ((s && (e.extension || e.ext)) || t).toLowerCase(),
                             type: (s && ((e instanceof C && e.getMimeType()) || e.type)) || n,
@@ -665,7 +665,7 @@ module.exports = function (e, t, n) {
                           $("<div/>")
                               .addClass("error-download-multiple-files")
                               .append(
-                                  $("<span/>").text(i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.error-download-multiple-files")))
+                                  $("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-download-multiple-files")))
                               )
                               .append(
                                   $("<ul/>").append(
@@ -683,20 +683,20 @@ module.exports = function (e, t, n) {
                 const n = this.getAvailableFileTypesFilter();
                 this._navigateDriveToUserFolderOrRoot(e);
                 const o = this.getAvailableFileTypesFilter();
-                (this._clearFileFiltersInCaseAvailableFiltersDoesNotMatch(n, o), t && this.updateFilesList(!0, !1));
+                (this._clearFileFiltersInCaseAvailableFiltersDoesNotMatch(n, o), t && this.updateFilesList(true, false));
                 var i = this.SELECTION.indexOf(e);
                 i > -1 && this.SELECTION.splice(i, 1);
                 var a = this.TEMP_SELECTION.indexOf(e);
                 (a > -1 && this.TEMP_SELECTION.splice(a, 1), this.SELECTION.length < 1 && this.view.resetSelection());
             }),
             (T.prototype._clearFileFiltersInCaseAvailableFiltersDoesNotMatch = function (e, t) {
-                i.GUtil.equals(e, t, !0) || this.clearAllFileTypesFromSelectedFilter();
+                GObject.GUtil.equals(e, t, true) || this.clearAllFileTypesFromSelectedFilter();
             }),
             (T.prototype._navigateDriveToUserFolderOrRoot = function (e) {
                 (this._isUserAllowedToOpenTheFolder(e) || (e = this.drive.getRootFolder()), this.drive.setCurrentFolder(e));
             }),
             (T.prototype._isUserAllowedToOpenTheFolder = function (e) {
-                return !0;
+                return true;
             }),
             (T.prototype.addFolder = function (e) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
@@ -739,28 +739,28 @@ module.exports = function (e, t, n) {
                             e &&
                                 (this.view.toggleRecentFiles(!!e && e.length > 0),
                                 e.forEach((e) => {
-                                    (this.drive.isItemAllowedToBeRendered(e, !0) && this.addFile(e, !0),
+                                    (this.drive.isItemAllowedToBeRendered(e, true) && this.addFile(e, true),
                                         this.drive.itemRequiresLazyUpdate(e).then((t) => {
                                             t &&
                                                 this.drive.getItemLazyUpdate(e).then((e) => {
-                                                    this.addFile(e, !0, !1, !0);
+                                                    this.addFile(e, true, false, true);
                                                 });
                                         }));
                                 })));
                     } catch (e) {
-                        throw new Error(i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.error-fetching-files")));
+                        throw new Error(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-fetching-files")));
                     } finally {
                         this._showRecentFiles = !!e && e.length > 0;
                     }
-                else this._showRecentFiles = !1;
+                else this._showRecentFiles = false;
             }),
             (T.prototype.buildDepth = async function (e) {
                 let t = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
-                if (!gDesigner.getApplicationManager().isOpenFromCloudEnabled()) return (this.view.toggleLoading(!1), Promise.reject());
+                if (!gDesigner.getApplicationManager().isOpenFromCloudEnabled()) return (this.view.toggleLoading(false), Promise.reject());
                 var n = this;
                 if (this.BUILD_IN_PROGRESS) return Promise.reject(new w.default());
                 async function o(e) {
-                    let a = !0;
+                    let a = true;
                     try {
                         var r,
                             s = [];
@@ -771,7 +771,7 @@ module.exports = function (e, t, n) {
                                 try {
                                     s = await n.drive.fetchFiles(l, n.CURRENT_FILE_LOAD, o);
                                 } catch (e) {
-                                    throw new Error(i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.error-fetching-files")));
+                                    throw new Error(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-fetching-files")));
                                 }
                                 ((r = (s = n._sortFilesByMimeType(s)).length), n._updateCurrentFileLoad(r));
                             }
@@ -781,7 +781,7 @@ module.exports = function (e, t, n) {
                                     n.drive.itemRequiresLazyUpdate(e).then((t) => {
                                         t &&
                                             n.drive.getItemLazyUpdate(e).then((e) => {
-                                                n.addFile(e, !1, !1, !0);
+                                                n.addFile(e, false, false, true);
                                             });
                                     }));
                             }),
@@ -789,7 +789,7 @@ module.exports = function (e, t, n) {
                         } else {
                             if (n.hasMoreItemsToLoad() && !n._showExampleFiles) {
                                 try {
-                                    ((await n.drive.getPreviousSelectedFolder()) || (a = !1),
+                                    ((await n.drive.getPreviousSelectedFolder()) || (a = false),
                                         (r = (s = await n.drive.fetchFiles(null, n.CURRENT_FILE_LOAD, o)).length),
                                         n.isSaveMode() || n._isDashboard || (s = s.concat(await n.drive.loadExampleFiles())),
                                         (s = n._sortFilesByMimeType(s)));
@@ -801,7 +801,7 @@ module.exports = function (e, t, n) {
                                         const t =
                                             e && e.message
                                                 ? e.message
-                                                : i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.error-fetching-files"));
+                                                : GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-fetching-files"));
                                         throw new v.default(t);
                                     }
                                     (await n.setCloudDrive(E),
@@ -822,16 +822,16 @@ module.exports = function (e, t, n) {
                                         0 === r &&
                                         !((await n.drive.hasFolders()) && !n.isRootFolder())),
                                     n._showExampleFiles && (s = await n.drive.loadExampleFiles()),
-                                    0 === s.length && (n._showEmptyPanel = !1),
+                                    0 === s.length && (n._showEmptyPanel = false),
                                     n._buildFolder(t)),
                                 n.view.removeExampleFiles(),
                                 s.forEach((e) => {
                                     ((n.drive.isItemAllowedToBeRendered(e) || n._showExampleFiles) &&
-                                        n.addFile(e, !1, n._showExampleFiles || n._showEmptyPanel),
+                                        n.addFile(e, false, n._showExampleFiles || n._showEmptyPanel),
                                         n.drive.itemRequiresLazyUpdate(e).then((t) => {
                                             t &&
                                                 n.drive.getItemLazyUpdate(e).then((e) => {
-                                                    n.addFile(e, !1, n._showExampleFiles, !0);
+                                                    n.addFile(e, false, n._showExampleFiles, true);
                                                 });
                                         }));
                                 }),
@@ -847,21 +847,21 @@ module.exports = function (e, t, n) {
                             console.error(e),
                             y.default.alert(
                                 ""
-                                    .concat(i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.loading-failed")), ":<br />")
+                                    .concat(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed")), ":<br />")
                                     .concat((e && e.message) || e || "")
                             ),
-                            n.view.toggleLoading(!1),
+                            n.view.toggleLoading(false),
                             Promise.reject()
                         );
                     }
                     return (
-                        n.view.toggleLoading(!1),
-                        n.view.shouldFilesBeRequested() && n.hasMoreItemsToLoad() && (await o(!1)),
+                        n.view.toggleLoading(false),
+                        n.view.shouldFilesBeRequested() && n.hasMoreItemsToLoad() && (await o(false)),
                         Promise.resolve(a)
                     );
                 }
-                if ((this.view.toggleLoading(!0), this.hasMoreItemsToLoad())) {
-                    this.BUILD_IN_PROGRESS = !0;
+                if ((this.view.toggleLoading(true), this.hasMoreItemsToLoad())) {
+                    this.BUILD_IN_PROGRESS = true;
                     try {
                         const i = await o(e);
                         if ((n.view.toggleFolders(n._hasFolders && !n._showExampleFiles), t && i)) {
@@ -871,10 +871,10 @@ module.exports = function (e, t, n) {
                                 (await n.view.navigateToFolder(a).catch(() => n.view.navigateToFolder(n.drive.getRootFolder())));
                         }
                     } finally {
-                        this.BUILD_IN_PROGRESS = !1;
+                        this.BUILD_IN_PROGRESS = false;
                     }
                 }
-                this.view.toggleLoading(!1);
+                this.view.toggleLoading(false);
             }),
             (T.prototype._buildFolder = function (e) {
                 if (!e) return;
@@ -902,7 +902,7 @@ module.exports = function (e, t, n) {
             }),
             (T.prototype.updateCloudItemForUserPermission = function (e) {
                 return gDesigner.getApplicationManager().isOnlyFileOpenFromCloudEnabled() && e && e instanceof C
-                    ? (e.setPermissions(Object.values(C.Permission), !1), e.setPermission(C.Permission.Open), e)
+                    ? (e.setPermissions(Object.values(C.Permission), false), e.setPermission(C.Permission.Open), e)
                     : e;
             }),
             (T.prototype.getDefaultCloudSettings = function () {
@@ -919,8 +919,8 @@ module.exports = function (e, t, n) {
             }),
             (T.prototype.setCloudDrive = async function (e) {
                 let t = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
-                if (!e) throw new Error(i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.error-incorrect-cloud-drive-settings")));
-                this.view && this.view.toggleLoading(!0);
+                if (!e) throw new Error(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-incorrect-cloud-drive-settings")));
+                this.view && this.view.toggleLoading(true);
                 const n = A.find((t) => t.type === e.type);
                 if (n.pro && !gDesigner.isEnabledProFeatures()) return void gDesigner.handlePROFeatureInterruption();
                 const o = this.drive,
@@ -932,7 +932,7 @@ module.exports = function (e, t, n) {
                                 await this.drive.install(),
                                 await this.drive.signIn(),
                                 (this.view = new a.GFilesPanelViewNative(this.panel, this)),
-                                this.view.setPermission(a.GFilesPanelViewBase.Permission.CreateFolder, !1));
+                                this.view.setPermission(a.GFilesPanelViewBase.Permission.CreateFolder, false));
                             break;
                         default:
                             ((this.drive = l.GCloudDrive.getInstance()), (this.view = new a.GFilesPanelViewNative(this.panel, this)));
@@ -957,8 +957,8 @@ module.exports = function (e, t, n) {
                     throw (
                         e && e instanceof v.default && (c = e),
                         await this._setCorrectCloud(o, r),
-                        this.view && this.view.toggleLoading(!1),
-                        c || Error(e.message || i.GLocale.get(new i.GLocaleKey("GCommonNames", "text.loading-failed")))
+                        this.view && this.view.toggleLoading(false),
+                        c || Error(e.message || GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed")))
                     );
                 }
             }),
@@ -974,8 +974,8 @@ module.exports = function (e, t, n) {
                 } else if (e.type === h.default.DriveEvent.Type.FolderSwitchRequired) {
                     const { folder: t } = e.data;
                     this.drive.isRootFolder(t)
-                        ? (this.isRootFolder() || this.navigateToRoot(!1), this.updateFilesList(!0, !0))
-                        : (this.drive.setCurrentFolder(t), this.updateFilesList(!0, !0), this.view.navigateToFolder(t));
+                        ? (this.isRootFolder() || this.navigateToRoot(false), this.updateFilesList(true, true))
+                        : (this.drive.setCurrentFolder(t), this.updateFilesList(true, true), this.view.navigateToFolder(t));
                 }
             }),
             (T.prototype.getCreateCloudAccountOptions = async function () {
@@ -993,7 +993,7 @@ module.exports = function (e, t, n) {
                             return (t.pro && gDesigner.isEnabledProFeatures()) || !t.pro;
                         })),
                         (e.CLOUD_SETTINGS = n.concat([E])),
-                        !0
+                        true
                     );
                 });
             }),
@@ -1009,7 +1009,7 @@ module.exports = function (e, t, n) {
                 if ((await this._waitForBuildToFinish(), n === this.CURRENT_UPDATE_OPERATION_ID && o === this.view.getSearchValue())) {
                     (e && t ? this.view.clearFilesAndFolders() : this.view.clearFiles(),
                         (this.CURRENT_FILE_LOAD = 0),
-                        this.view.toggleEmptyPanel(!1));
+                        this.view.toggleEmptyPanel(false));
                     try {
                         await this.buildDepth(e, t);
                     } catch (e) {
@@ -1022,14 +1022,14 @@ module.exports = function (e, t, n) {
                 } else e && this.view.updateLayout();
             }),
             (T.prototype._waitForBuildToFinish = async function () {
-                for (; this.BUILD_IN_PROGRESS; ) await (0, r.sleep)(200);
+                for (; this.BUILD_IN_PROGRESS; ) await (0, GSaveAction.sleep)(200);
             }),
             (T.prototype.search = function () {
-                this.updateFilesList(!1, !1);
+                this.updateFilesList(false, false);
             }),
             (T.prototype.addToSelection = function (e) {
                 if (
-                    (0 === this.SELECTION.length && this.TEMP_SELECTION.length > 0 && (this._newClipBoard = !0),
+                    (0 === this.SELECTION.length && this.TEMP_SELECTION.length > 0 && (this._newClipBoard = true),
                     this.SELECTION.indexOf(e) < 0)
                 ) {
                     if (this.SELECTION.length)
@@ -1039,38 +1039,38 @@ module.exports = function (e, t, n) {
                 }
             }),
             (T.prototype.selectionHasFiles = function () {
-                for (var e = 0, t = this.SELECTION.length; e < t; e++) if (this.drive.isFileSupported(this.SELECTION[e])) return !0;
-                return !1;
+                for (var e = 0, t = this.SELECTION.length; e < t; e++) if (this.drive.isFileSupported(this.SELECTION[e])) return true;
+                return false;
             }),
             (T.prototype.removeFromSelection = function (e) {
                 var t = this.SELECTION.indexOf(e);
-                (t > -1 && this.SELECTION.splice(t, 1), 0 === this.SELECTION.length && this._newClipBoard && (this._newClipBoard = !1));
+                (t > -1 && this.SELECTION.splice(t, 1), 0 === this.SELECTION.length && this._newClipBoard && (this._newClipBoard = false));
             }),
             (T.prototype.resetSelection = function () {
-                ((this.SELECTION = []), (this._newClipBoard = !1));
+                ((this.SELECTION = []), (this._newClipBoard = false));
             }),
             (T.prototype._resetViewSelection = function () {
                 this.view.resetSelection();
             }),
             (T.prototype.isMultiSelectionEnabled = function () {
-                return !0;
+                return true;
             }),
             (T.prototype._addToClipboard = function () {
                 (this._newClipBoard &&
                     (this.resetClipboard(d.GFilesPanelClipboardModes.COPY),
                     this.resetClipboard(d.GFilesPanelClipboardModes.CUT),
-                    (this._newClipBoard = !1)),
+                    (this._newClipBoard = false)),
                     (this.TEMP_SELECTION = this.TEMP_SELECTION.concat(this.SELECTION)),
                     this.view.addToClipboard(this.MODE));
             }),
             (T.prototype.resetClipboard = function (e) {
-                ((this.TEMP_SELECTION = []), (this._newClipBoard = !1), this.view.resetClipboard(e || this.MODE));
+                ((this.TEMP_SELECTION = []), (this._newClipBoard = false), this.view.resetClipboard(e || this.MODE));
             }),
             (T.prototype.performCopyPaste = function (e) {
                 var t = this;
                 this.isClipboardModeCopy(e)
                     ? (gDesigner.stats("filespanel_paste-from-copy_cloud"),
-                      this.view.toggleLoading(!0),
+                      this.view.toggleLoading(true),
                       this.SELECTION[0] && this.drive.setCurrentFolder(this.SELECTION[0]),
                       this.drive
                           .copyPaste(this.TEMP_SELECTION)
@@ -1082,10 +1082,10 @@ module.exports = function (e, t, n) {
                                   t.updateFilesList());
                           })
                           .catch((e) => {
-                              let t = i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.error-moving"));
+                              let t = GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-moving"));
                               (e && e.cloud && e.message && e.message.trim() && (t = e.message),
                                   y.default.alert(t),
-                                  this.view.toggleLoading(!1),
+                                  this.view.toggleLoading(false),
                                   console.error(e));
                           }))
                     : (this.logStatsForCurrentFilesSelection("filespanel_copy_cloud", "filespanel_copy_cloud-multiple"),
@@ -1096,7 +1096,7 @@ module.exports = function (e, t, n) {
                 var t = this;
                 this.isClipboardModeCut(e)
                     ? (gDesigner.stats("filespanel_paste-from-cut_cloud"),
-                      this.view.toggleLoading(!0),
+                      this.view.toggleLoading(true),
                       this.SELECTION[0] && this.drive.setCurrentFolder(this.SELECTION[0]),
                       this.drive
                           .cutPaste(this.TEMP_SELECTION)
@@ -1108,10 +1108,10 @@ module.exports = function (e, t, n) {
                                   t.updateFilesList());
                           })
                           .catch((e) => {
-                              let t = i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.error-moving"));
+                              let t = GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-moving"));
                               (e && e.cloud && e.message && e.message.trim() && (t = e.message),
                                   y.default.alert(t),
-                                  this.view.toggleLoading(!1),
+                                  this.view.toggleLoading(false),
                                   console.error(e));
                           }))
                     : (this.logStatsForCurrentFilesSelection("filespanel_cut_cloud", "filespanel_cut_cloud-multiple"),
@@ -1119,25 +1119,25 @@ module.exports = function (e, t, n) {
                       this._addToClipboard());
             }),
             (T.prototype.performFileMove = function (e, t) {
-                (this.view.toggleLoading(!0),
+                (this.view.toggleLoading(true),
                     gDesigner.stats("filespanel_move"),
                     this.drive
                         .fileMove(e, t)
                         .then(() => {
-                            (this.view.toggleLoading(!1), this.view.resetSelection(), this.updateFilesList());
+                            (this.view.toggleLoading(false), this.view.resetSelection(), this.updateFilesList());
                         })
                         .catch((e) => {
-                            let t = i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.error-moving"));
+                            let t = GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-moving"));
                             (e && e.cloud && e.message && e.message.trim() && (t = e.message),
                                 y.default.alert(t),
-                                this.view.toggleLoading(!1),
+                                this.view.toggleLoading(false),
                                 console.error(e));
                         }));
             }),
             (T.prototype.deleteSelection = function () {
                 var e = this;
                 return (
-                    this.view.toggleLoading(!0),
+                    this.view.toggleLoading(true),
                     (async function () {
                         try {
                             for (var t = 0; t < e.SELECTION.length; ++t) {
@@ -1148,8 +1148,8 @@ module.exports = function (e, t, n) {
                             }
                         } catch (t) {
                             return (
-                                y.default.alert(i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.error-deleting"))),
-                                e.view.toggleLoading(!1),
+                                y.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-deleting"))),
+                                e.view.toggleLoading(false),
                                 void console.error(t)
                             );
                         }
@@ -1168,7 +1168,7 @@ module.exports = function (e, t, n) {
                             }
                             t && e.drive.setCurrentFolder(t);
                         }
-                        (e._triggerFileDeleted(e.SELECTION), e.view.toggleLoading(!1), e.view.resetSelection(), e.updateFilesList());
+                        (e._triggerFileDeleted(e.SELECTION), e.view.toggleLoading(false), e.view.resetSelection(), e.updateFilesList());
                     })()
                 );
             }),
@@ -1176,20 +1176,20 @@ module.exports = function (e, t, n) {
                 this.updateFilesList();
             }),
             (T.prototype._minimizeWindow = function () {
-                (this.view.minimizeWindow(), gContainer && gContainer.setProperty("GFilesPanel.maximized", !1), this.view.updateLayout());
+                (this.view.minimizeWindow(), gContainer && gContainer.setProperty("GFilesPanel.maximized", false), this.view.updateLayout());
             }),
             (T.prototype._maximizeWindow = function (e) {
                 (this.view.maximizeWindow(),
-                    gContainer && gContainer.setProperty("GFilesPanel.maximized", !0),
+                    gContainer && gContainer.setProperty("GFilesPanel.maximized", true),
                     this.hasMoreItemsToLoad() && this.view.shouldFilesBeRequested()
-                        ? this.buildDepth(e, !1).catch((e) => {})
+                        ? this.buildDepth(e, false).catch((e) => {})
                         : this.view.updateLayout());
             }),
             (T.prototype.toCardView = function () {
-                (this.view.toCardView(), gContainer && gContainer.setProperty("GFilesPanel.isFilesListStyle", !1));
+                (this.view.toCardView(), gContainer && gContainer.setProperty("GFilesPanel.isFilesListStyle", false));
             }),
             (T.prototype.toListView = function () {
-                (this.view.toListView(), gContainer && gContainer.setProperty("GFilesPanel.isFilesListStyle", !0));
+                (this.view.toListView(), gContainer && gContainer.setProperty("GFilesPanel.isFilesListStyle", true));
             }),
             (T.prototype.getCurrentFolder = function () {
                 return this.drive.getCurrentFolder();
@@ -1201,18 +1201,18 @@ module.exports = function (e, t, n) {
                 return this.drive.getFolders();
             }),
             (T.prototype.isItemSelected = function (e) {
-                if (this.SELECTION.length < 1) return !1;
+                if (this.SELECTION.length < 1) return false;
                 for (let t = 0, n = this.SELECTION.length; t < n; ++t) {
-                    if (this.SELECTION[t].id === e.id) return !0;
+                    if (this.SELECTION[t].id === e.id) return true;
                 }
-                return !1;
+                return false;
             }),
             (T.prototype.isItemInClipboard = function (e) {
-                if (this.TEMP_SELECTION.length < 1) return !1;
+                if (this.TEMP_SELECTION.length < 1) return false;
                 for (let t = 0, n = this.TEMP_SELECTION.length; t < n; ++t) {
-                    if (this.TEMP_SELECTION[t].id === e.id) return !0;
+                    if (this.TEMP_SELECTION[t].id === e.id) return true;
                 }
-                return !1;
+                return false;
             }),
             (T.prototype.isSaveMode = function () {
                 return this._isSaveMode;
@@ -1279,17 +1279,17 @@ module.exports = function (e, t, n) {
                 return this.drive.getSupportedExtensions().map((e) => e.toUpperCase());
             }),
             (T.prototype.getAvailableExtensions = function () {
-                for (var e = !1, t = null, n = 0; n < this.SELECTION.length && !e; ++n) {
+                for (var e = false, t = null, n = 0; n < this.SELECTION.length && !e; ++n) {
                     var o = this.SELECTION[n],
                         i = this.drive.getSupportedFileFormats().find((e) => o.type === e.type);
                     i && i.secondary && (t ? (e = t.type !== i.type) : (t = i));
                 }
                 return t
                     ? e
-                        ? [c.DEFAULT_TYPE.ext.toUpperCase()]
-                        : [c.DEFAULT_TYPE.ext.toUpperCase(), t.ext.toUpperCase()]
+                        ? [GCommonNames.DEFAULT_TYPE.ext.toUpperCase()]
+                        : [GCommonNames.DEFAULT_TYPE.ext.toUpperCase(), t.ext.toUpperCase()]
                     : this.SELECTION.length
-                      ? c.FILE_EXTENSIONS
+                      ? GCommonNames.FILE_EXTENSIONS
                       : [];
             }),
             (T.prototype.fileRequiresSourceDownload = function (e) {
@@ -1303,10 +1303,10 @@ module.exports = function (e, t, n) {
                 return this._GUISettings;
             }),
             (T.prototype._canDownload = function () {
-                return !0;
+                return true;
             }),
             (T.prototype._isContextMenuAvailableForFile = function (e) {
-                return !0;
+                return true;
             }),
             (T.prototype.logStatsForCurrentFilesSelection = function (e, t, n) {
                 gDesigner.stats(1 === this.getSelection().length ? e : t, n);
@@ -1322,19 +1322,19 @@ module.exports = function (e, t, n) {
                 return [];
             }),
             (T.prototype.getFooterSaveDescriptionForFileExtension = function (e) {
-                return i.GLocale.get(new i.GLocaleKey("GFilesPanel", "text.info-".concat(e.toLowerCase())));
+                return GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.info-".concat(e.toLowerCase())));
             }),
             (T.prototype.toString = function () {
                 return "[Object GFilesPanel]";
             }),
             (T.prototype._stringToSettings = function (e) {
-                return JSON.parse((0, r.base64StringToString)(e));
+                return JSON.parse((0, GSaveAction.base64StringToString)(e));
             }),
             (T.prototype._settingsToString = function (e) {
-                return (0, r.stringToBase64String)(JSON.stringify(e));
+                return (0, GSaveAction.stringToBase64String)(JSON.stringify(e));
             }),
             (T.prototype.manageOpenFolder = function (e, t, n) {
                 this.view.manageOpenFolder(e, t, n);
             }),
-            (e.exports = T));
+            (module.exports = T));
     };

@@ -1,12 +1,12 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         class o {
             static getSetting() {
                 return "scrubbing_flag";
             }
             static isEnabled() {
-                return !!gDesigner.getSetting(o.getSetting(), !0);
+                return !!gDesigner.getSetting(o.getSetting(), true);
             }
         }
-        e.exports = o;
+        module.exports = o;
     };

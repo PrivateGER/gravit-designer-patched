@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(116),
-            i = n(184),
-            a = n(243).f,
-            r = n(157),
+        var o = require(116),
+            i = require(184),
+            a = require(243).f,
+            r = require(157),
             s = "object" == typeof window && window && Object.getOwnPropertyNames ? Object.getOwnPropertyNames(window) : [];
-        e.exports.f = function (e) {
+        module.exports.f = function (e) {
             return s && "Window" === o(e)
                 ? (function (e) {
                       try {

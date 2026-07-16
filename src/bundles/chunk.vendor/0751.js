@@ -1,19 +1,19 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(36),
-                o = i(66),
-                a = i(39),
-                s = i(274),
-                l = i(22),
-                h = i(122),
-                A = i(70),
-                c = i(7),
-                p = i(24);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(36),
+                o = require(66),
+                a = require(39),
+                s = require(274),
+                l = require(22),
+                h = require(122),
+                A = require(70),
+                c = require(7),
+                p = require(24);
 
             function u(e) {
                 s.call(this, e);
             }
-            (n.inherit(u, s),
+            (IsFiniteNonNegativeNumber.inherit(u, s),
                 r.exports(u, h),
                 (u.prototype._paintOutline = function (e, t, i, n, r) {
                     if (this._transform && this._editors && !this._element.getProperty("frm"))
@@ -34,10 +34,10 @@ module.exports = function (e, t, i) {
                                 var h = r.openEditor(s),
                                     A = new o.EdTransformOptions();
                                 ((A.fullContentsTransform = !!t),
-                                    (s.dependentUpdate = !0),
+                                    (s.dependentUpdate = true),
                                     h.edTransform(this._transform, null, null, A),
                                     h.applyTransform(s, t, i, n),
-                                    (s.dependentUpdate = !1));
+                                    (s.dependentUpdate = false));
                             }
                         e.endUpdate();
                     }
@@ -48,7 +48,7 @@ module.exports = function (e, t, i) {
                     if (!o.getProperty("frm"))
                         for (var a = o.getFirstChild(); null != a; a = a.getNext()) {
                             if (a instanceof l)
-                                ((a.dependentUpdate = !0), r.openEditor(a).edTransform(e, null, null, n), (a.dependentUpdate = !1));
+                                ((a.dependentUpdate = true), r.openEditor(a).edTransform(e, null, null, n), (a.dependentUpdate = false));
                         }
                     s.prototype.edTransform.call(this, e, t, i, n);
                 }),
@@ -89,7 +89,7 @@ module.exports = function (e, t, i) {
                     if (e !== o.RESIZE_HANDLE_PART_ID) return s.prototype.movePart.call(this, e, t, i, n, r, l, h);
                     a.prototype.movePart.call(this, e, t, i, n, r, l, h);
                     var u = null;
-                    A && ((u = new o.EdTransformOptions()).isMultiPage = !0);
+                    A && ((u = new o.EdTransformOptions()).isMultiPage = true);
                     var d = n.mapPoint(i);
                     d = r.mapPoint(d);
                     var g = this._element.getSourceBBox();
@@ -103,7 +103,7 @@ module.exports = function (e, t, i) {
                             _ = d.getX() - y.getX(),
                             v = d.getY() - y.getY(),
                             b = l;
-                        p.isPreserveAspectRatioEnabledForSide(t.side) && (b = !0);
+                        p.isPreserveAspectRatioEnabledForSide(t.side) && (b = true);
                         var C = c.getResizeTransform(g, t.side, _, v, b, h);
                         return (m && (C = m.multiplied(C).multiplied(f)), this.edTransform(C, null, null, u), C);
                     }
@@ -119,5 +119,5 @@ module.exports = function (e, t, i) {
                 (u.prototype.toString = function () {
                     return "[Object GGroupEditor]";
                 }),
-                (e.exports = u));
+                (module.exports = u));
         };

@@ -1,20 +1,20 @@
-module.exports = function (e, t, i) {
-            var n = i(2),
-                r = i(0),
-                o = i(56),
-                a = i(28),
-                s = i(52),
-                l = i(77),
-                h = i(211),
-                A = i(162),
-                c = i(9),
-                p = i(47);
+module.exports = function (module, exports, require) {
+            var n = require(2),
+                IsFiniteNonNegativeNumber = require(0),
+                o = require(56),
+                GStylable = require(28),
+                s = require(52),
+                l = require(77),
+                h = require(211),
+                A = require(162),
+                String = require(9),
+                p = require(47);
 
             function u() {
                 h.call(this);
             }
-            (r.inherit(u, h),
-                (u.prototype._transactionStarted = !1),
+            (IsFiniteNonNegativeNumber.inherit(u, h),
+                (u.prototype._transactionStarted = false),
                 (u.prototype.getCursor = function () {
                     return s.Pipette;
                 }),
@@ -24,12 +24,12 @@ module.exports = function (e, t, i) {
                             (e.addEventListener(l.Down, this._mouseDown, this),
                             e.addEventListener(l.Drag, this._mouseFill, this),
                             e.addEventListener(l.Release, this._mouseRelease, this)),
-                        (this._transactionStarted = !1),
-                        this._editor.setSelectionDetail(!0),
-                        this._editor.setSelectionEdit(!0));
+                        (this._transactionStarted = false),
+                        this._editor.setSelectionDetail(true),
+                        this._editor.setSelectionEdit(true));
                 }),
                 (u.prototype.deactivate = function (e, t) {
-                    (!t && this._editor && (this._editor.setSelectionDetail(!1), this._editor.setSelectionEdit(!1)),
+                    (!t && this._editor && (this._editor.setSelectionDetail(false), this._editor.setSelectionEdit(false)),
                         h.prototype.deactivate.call(this, e, t),
                         e.removeEventListener(l.Down, this._mouseDown),
                         e.removeEventListener(l.Drag, this._mouseFill),
@@ -38,27 +38,27 @@ module.exports = function (e, t, i) {
                 (u.prototype.isActivatable = function (e) {
                     var t = e ? e.getEditor() : null,
                         i = t ? t.getIndividualSelection() : null,
-                        n = !1;
+                        n = false;
                     if (i && i.length) {
-                        n = !0;
-                        for (var r = 0; r < i.length && n; ++r) i[r] instanceof A || (n = !1);
+                        n = true;
+                        for (var r = 0; r < i.length && n; ++r) i[r] instanceof A || (n = false);
                     }
                     return n;
                 }),
                 (u.prototype._mouseDown = function (e) {
-                    ((this._transactionStarted = !1), this._mouseFill(e));
+                    ((this._transactionStarted = false), this._mouseFill(e));
                 }),
                 (u.prototype._mouseRelease = function (e) {
                     (this._mouseFill(e),
                         this._transactionStarted &&
-                            (this._editor.commitTransaction(c.get(new p("GFillTool", "action.modify-fill"))),
-                            (this._transactionStarted = !1)));
+                            (this._editor.commitTransaction(String.get(new p("GFillTool", "action.modify-fill"))),
+                            (this._transactionStarted = false)));
                 }),
                 (u.prototype._mouseFill = function (e) {
                     this._editor.updateByMousePosition(
                         e.client,
                         this._view.getWorldTransform(this._scene),
-                        !1,
+                        false,
                         this._view.getViewConfiguration()
                     );
                     var t = this._editor.getIndividualSelection();
@@ -69,24 +69,24 @@ module.exports = function (e, t, i) {
                             function (e) {
                                 return e.hasFlag(n.Flag.Selected) && e instanceof A;
                             },
-                            !1,
+                            false,
                             -1,
                             0,
-                            !0,
+                            true,
                             null,
-                            !1,
-                            !1,
+                            false,
+                            false,
                             this._view.getViewConfiguration().multiPageView
                         );
                         if (i && 1 == i.length && i[0].data.hitRes.type == o.HitResult.Type.Fill) {
                             var r = i[0].data.facet;
                             if (
-                                (this._transactionStarted || (this._editor.beginTransaction(), (this._transactionStarted = !0)),
+                                (this._transactionStarted || (this._editor.beginTransaction(), (this._transactionStarted = true)),
                                 r.setProperties(["cSt"], [!!this._fpt]),
                                 r.getPaintLayers().clearFillLayers(),
                                 this._fpt)
                             )
-                                r.getPaintLayers().appendChild(new a.FillPaintLayer(this._fpt, this._fop));
+                                r.getPaintLayers().appendChild(new GStylable.FillPaintLayer(this._fpt, this._fop));
                             else {
                                 var s = r.getParent();
                                 (s instanceof n.MapContainer && (s = s.getParent()), r.assignStyleFrom(s));
@@ -126,5 +126,5 @@ module.exports = function (e, t, i) {
                 (u.prototype.toString = function () {
                     return "[Object GFillTool]";
                 }),
-                (e.exports = u));
+                (module.exports = u));
         };

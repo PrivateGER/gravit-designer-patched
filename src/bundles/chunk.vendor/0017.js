@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(68),
-                r = i(11);
+module.exports = function (module, exports, require) {
+            var n = require(68),
+                r = require(11);
 
             function o(e) {
                 return (e = Math.round(e)) < 0 ? 0 : e > 255 ? 255 : e;
@@ -9,7 +9,7 @@ module.exports = function (e, t, i) {
             function a(e) {
                 ((e = e ? [o(e[0]), o(e[1]), o(e[2])] : [0, 0, 0]), n.call(this, e));
             }
-            (i(50).inherit("C", a, n),
+            (require(50).inherit("C", a, n),
                 (a.RGBREGEX = /^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*(\d+(?:\.\d+)?))?\s*\)$/),
                 (a.BLACK = new a([0, 0, 0])),
                 (a.WHITE = new a([255, 255, 255])),
@@ -287,5 +287,5 @@ module.exports = function (e, t, i) {
                 (a.prototype.toString = function () {
                     return "[Object GRGBColor]";
                 }),
-                (e.exports = a));
+                (module.exports = a));
         };

@@ -1,26 +1,26 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(19), n(3), n(26));
-        var o = n(1),
-            i = n(15),
-            a = n(40),
-            r = n(67),
-            s = n(18),
-            l = n(106);
+        (require(19), require(3), require(26));
+        var GObject = require(1),
+            GPlatform = require(15),
+            GSaveAction = require(40),
+            r = require(67),
+            GCategory = require(18),
+            l = require(106);
         function c() {
             c.TOOLTIP_CONFIG = {
                 [r.TOOLTIP_AREA.TOOLBAR]: r.GRichTooltipConfig.from({
-                    title: o.GLocale.get(new o.GLocaleKey("GGroupAction", "tooltip-title")),
-                    description: o.GLocale.get(new o.GLocaleKey("GGroupAction", "tooltip-description")),
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GGroupAction", "tooltip-title")),
+                    description: GObject.GLocale.get(new GObject.GLocaleKey("GGroupAction", "tooltip-description")),
                     shortcut: c.SHORTCUT,
                     learnMore: "/docs/organizing-your-designs/groups/",
                 }),
             };
         }
-        (o.GObject.inherit(c, l),
+        (GObject.GObject.inherit(c, l),
             (c.ID = "modify.group"),
-            (c.TITLE = new o.GLocaleKey("GGroupAction", "title")),
-            (c.SHORTCUT = [i.GKey.Constant.META, "G"]),
+            (c.TITLE = new GObject.GLocaleKey("GGroupAction", "title")),
+            (c.SHORTCUT = [GPlatform.GKey.Constant.META, "G"]),
             (c.TOOLTIP_CONFIG = null),
             (c.prototype.getId = function () {
                 return c.ID;
@@ -32,7 +32,7 @@ module.exports = function (e, t, n) {
                 return "gravit-icon-group";
             }),
             (c.prototype.getCategory = function () {
-                return s.CATEGORY_MODIFY;
+                return GCategory.CATEGORY_MODIFY;
             }),
             (c.prototype.getGroup = function () {
                 return "structure-group";
@@ -41,24 +41,24 @@ module.exports = function (e, t, n) {
                 return c.SHORTCUT;
             }),
             (c.prototype.isEnabled = function () {
-                if (!l.prototype.isEnabled.call(this)) return !1;
+                if (!l.prototype.isEnabled.call(this)) return false;
                 var e = gDesigner.getActiveDocument();
                 if (e) {
                     var t = e.getEditor().getIndividualSelection();
                     if (t && t.length > 0)
-                        for (var n = new o.GGroup(), i = t.length - 1; i >= 0; --i) {
+                        for (var n = new GObject.GGroup(), i = t.length - 1; i >= 0; --i) {
                             var a = t[i];
-                            if (a.validateInsertion(n) && !a.getParent().isLocked() && n.validateInsertion(a.getParent())) return !0;
+                            if (a.validateInsertion(n) && !a.getParent().isLocked() && n.validateInsertion(a.getParent())) return true;
                         }
                 }
-                return !1;
+                return false;
             }),
             (c.prototype.execute = function () {
                 var e = gDesigner.getActiveDocument().getEditor(),
-                    t = o.GNode.order(e.getIndividualSelection().slice());
+                    t = GObject.GNode.order(e.getIndividualSelection().slice());
                 e.beginTransaction();
                 try {
-                    for (var n = new o.GGroup(), i = [], r = 0; r < t.length; ++r) {
+                    for (var n = new GObject.GGroup(), i = [], r = 0; r < t.length; ++r) {
                         (p = t[r]).validateInsertion(n) && i.push(p);
                     }
                     if (i.length > 0) {
@@ -72,19 +72,19 @@ module.exports = function (e, t, n) {
                             try {
                                 d = new Set();
                                 for (r = 0; r < i.length; ++r) d.add(i[r].getParent());
-                                (0, a.blockChanges)(e, d, u, n);
+                                (0, GSaveAction.blockChanges)(e, d, u, n);
                                 for (r = 0; r < i.length; ++r) {
                                     var p;
                                     ((p = i[r]).getParent().removeChild(p), n.appendChild(p));
                                 }
                             } finally {
-                                (0, a.releaseChanges)(e, d, u, n);
+                                (0, GSaveAction.releaseChanges)(e, d, u, n);
                             }
                         }
-                        e.updateSelection(!1, [n]);
+                        e.updateSelection(false, [n]);
                     }
                 } finally {
-                    e.commitTransaction(o.GLocale.get(new o.GLocaleKey("GGroupAction", "title")));
+                    e.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GGroupAction", "title")));
                 }
             }),
             (c.prototype.getTooltipConfig = function (e) {
@@ -93,5 +93,5 @@ module.exports = function (e, t, n) {
             (c.prototype.toString = function () {
                 return "[Object GGroupAction]";
             }),
-            (e.exports = c));
+            (module.exports = c));
     };

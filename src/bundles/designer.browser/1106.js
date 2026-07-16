@@ -1,25 +1,25 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(25),
-            i = n(23),
-            a = n(27),
-            r = n(277),
-            s = n(79),
-            l = n(558),
-            c = n(121),
-            d = n(146),
-            u = n(35),
-            p = n(194),
-            g = n(46),
-            h = n(21),
-            f = n(343),
-            m = n(137),
-            y = n(288);
-        e.exports = function (e, t, n) {
+        var o = require(25),
+            RegExp = require(23),
+            a = require(27),
+            r = require(277),
+            s = require(79),
+            l = require(558),
+            c = require(121),
+            d = require(146),
+            u = require(35),
+            p = require(194),
+            g = require(46),
+            h = require(21),
+            f = require(343),
+            m = require(137),
+            y = require(288);
+        module.exports = function (e, t, n) {
             var v = -1 !== e.indexOf("Map"),
                 _ = -1 !== e.indexOf("Weak"),
                 b = v ? "set" : "add",
-                w = i[e],
+                w = RegExp[e],
                 C = w && w.prototype,
                 x = w,
                 S = {},
@@ -63,7 +63,7 @@ module.exports = function (e, t, n) {
                 )
             )
                 ((x = n.getConstructor(t, e, v, b)), l.enable());
-            else if (r(e, !0)) {
+            else if (r(e, true)) {
                 var A = new x(),
                     T = A[b](_ ? {} : -0, 1) !== A,
                     G = h(function () {
@@ -89,6 +89,6 @@ module.exports = function (e, t, n) {
                     (D || T) && E(b),
                     _ && C.clear && delete C.clear);
             }
-            return ((S[e] = x), o({ global: !0, constructor: !0, forced: x !== w }, S), m(x, e), _ || n.setStrong(x, e, v), x);
+            return ((S[e] = x), o({ global: true, constructor: true, forced: x !== w }, S), m(x, e), _ || n.setStrong(x, e, v), x);
         };
     };

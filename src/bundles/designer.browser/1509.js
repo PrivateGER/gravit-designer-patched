@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(20), n(3), n(34), n(91), n(4), n(13));
-        var o = n(10),
-            i = n(1);
+        (require(20), require(3), require(34), require(91), require(4), require(13));
+        var designerConfig = require(10),
+            GObject = require(1);
         function a(e, t, n) {
             let a = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : {};
             ((this._user = e), (this._messageHandler = t), (this._parent = n), (this._options = a));
@@ -42,8 +42,8 @@ module.exports = function (e, t, n) {
             const {
                 changePasswordOptions: {
                     autoClose: l,
-                    title: c = i.GLocale.get(new i.GLocaleKey("GChangePasswordPanel", "text.change-password")),
-                    info: d = i.GLocale.get(new i.GLocaleKey("GChangePasswordPanel", "text.reset-password-info")),
+                    title: c = GObject.GLocale.get(new GObject.GLocaleKey("GChangePasswordPanel", "text.change-password")),
+                    info: d = GObject.GLocale.get(new GObject.GLocaleKey("GChangePasswordPanel", "text.reset-password-info")),
                 } = {},
             } = a;
             let u = $("<div></div>")
@@ -58,48 +58,48 @@ module.exports = function (e, t, n) {
                 .append(
                     $("<button></button>")
                         .addClass("highlight")
-                        .text(i.GLocale.get(new i.GLocaleKey("GChangePasswordPanel", "text.assign")))
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GChangePasswordPanel", "text.assign")))
                         .on("click", () => {
                             const { token: e } = this._options,
                                 t = this._container.find('[data-property="new_password"] > input').val().trim(),
                                 n = this._container.find('[data-property="confirm_password"] > input').val().trim();
                             (gDesigner.stats("profile-dialog_change-password-panel_change-password"),
-                                o.gApi
+                                designerConfig.gApi
                                     .updatePassword({ password: t, confirm_password: n }, e)
                                     .then(() =>
                                         this._messageHandler(
-                                            i.GLocale.get(new i.GLocaleKey("GChangePasswordPanel", "text.reset-password-done")),
+                                            GObject.GLocale.get(new GObject.GLocaleKey("GChangePasswordPanel", "text.reset-password-done")),
                                             "success"
                                         )
                                     )
-                                    .then(() => this._toggleLoading(!1))
+                                    .then(() => this._toggleLoading(false))
                                     .then(() => {
                                         l && this._parent.close();
                                     })
-                                    .catch((e) => this._messageHandler(o.gApi.formatError(e))));
+                                    .catch((e) => this._messageHandler(designerConfig.gApi.formatError(e))));
                         })
                 )
                 .appendTo(this._container),
                 s(
-                    i.GLocale.get(new i.GLocaleKey("GChangePasswordPanel", "text.new-password")),
+                    GObject.GLocale.get(new GObject.GLocaleKey("GChangePasswordPanel", "text.new-password")),
                     "",
                     "new_password",
                     "password",
-                    i.GLocale.get(new i.GLocaleKey("GChangePasswordPanel", "text.placeholder-new-password")),
-                    i.GLocale.get(new i.GLocaleKey("GChangePasswordPanel", "text.new-password-tip"))
-                        .replace("%min-number", o.PasswordRules.PasswordLength.Minimum)
-                        .replace("%max-number", o.PasswordRules.PasswordLength.Maximum)
+                    GObject.GLocale.get(new GObject.GLocaleKey("GChangePasswordPanel", "text.placeholder-new-password")),
+                    GObject.GLocale.get(new GObject.GLocaleKey("GChangePasswordPanel", "text.new-password-tip"))
+                        .replace("%min-number", designerConfig.PasswordRules.PasswordLength.Minimum)
+                        .replace("%max-number", designerConfig.PasswordRules.PasswordLength.Maximum)
                 ).appendTo(u),
                 s(
-                    i.GLocale.get(new i.GLocaleKey("GChangePasswordPanel", "text.confirm-password")),
+                    GObject.GLocale.get(new GObject.GLocaleKey("GChangePasswordPanel", "text.confirm-password")),
                     "",
                     "confirm_password",
                     "password",
-                    i.GLocale.get(new i.GLocaleKey("GChangePasswordPanel", "text.placeholder-confirm-password"))
+                    GObject.GLocale.get(new GObject.GLocaleKey("GChangePasswordPanel", "text.placeholder-confirm-password"))
                 ).appendTo(u),
                 this._messageHandler(d, "important"));
         }
-        (i.GObject.inherit(a, i.GObject),
+        (GObject.GObject.inherit(a, GObject.GObject),
             (a.prototype.getHTMLElement = function () {
                 return this._container;
             }),
@@ -109,5 +109,5 @@ module.exports = function (e, t, n) {
             (a.prototype.toString = function () {
                 return "[Object GChangePasswordPanel]";
             }),
-            (e.exports = a));
+            (module.exports = a));
     };

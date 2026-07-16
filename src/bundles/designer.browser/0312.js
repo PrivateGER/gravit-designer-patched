@@ -1,17 +1,17 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(94),
-            i = !0,
-            a = !0;
+        var o = require(94),
+            i = true,
+            a = true;
         try {
             String.fromCharCode.apply(null, [0]);
         } catch (e) {
-            i = !1;
+            i = false;
         }
         try {
             String.fromCharCode.apply(null, new Uint8Array(1));
         } catch (e) {
-            a = !1;
+            a = false;
         }
         for (var r = new o.Buf8(256), s = 0; s < 256; s++)
             r[s] = s >= 252 ? 6 : s >= 248 ? 5 : s >= 240 ? 4 : s >= 224 ? 3 : s >= 192 ? 2 : 1;
@@ -21,7 +21,7 @@ module.exports = function (e, t, n) {
             return n;
         }
         ((r[254] = r[254] = 1),
-            (t.string2buf = function (e) {
+            (exports.string2buf = function (e) {
                 var t,
                     n,
                     i,
@@ -52,14 +52,14 @@ module.exports = function (e, t, n) {
                                   (t[r++] = 128 | (63 & n))));
                 return t;
             }),
-            (t.buf2binstring = function (e) {
+            (exports.buf2binstring = function (e) {
                 return l(e, e.length);
             }),
-            (t.binstring2buf = function (e) {
+            (exports.binstring2buf = function (e) {
                 for (var t = new o.Buf8(e.length), n = 0, i = t.length; n < i; n++) t[n] = e.charCodeAt(n);
                 return t;
             }),
-            (t.buf2string = function (e, t) {
+            (exports.buf2string = function (e, t) {
                 var n,
                     o,
                     i,
@@ -79,7 +79,7 @@ module.exports = function (e, t, n) {
                     }
                 return l(c, o);
             }),
-            (t.utf8border = function (e, t) {
+            (exports.utf8border = function (e, t) {
                 var n;
                 for ((t = t || e.length) > e.length && (t = e.length), n = t - 1; n >= 0 && 128 == (192 & e[n]); ) n--;
                 return n < 0 || 0 === n ? t : n + r[e[n]] > t ? n : t;

@@ -1,10 +1,10 @@
-module.exports = function (e, t, i) {
-            var n = i(147),
-                r = i(7),
-                o = i(5),
-                a = i(6),
-                s = i(158),
-                l = i(801);
+module.exports = function (module, exports, require) {
+            var n = require(147),
+                r = require(7),
+                o = require(5),
+                a = require(6),
+                s = require(158),
+                l = require(801);
 
             function h(e, t) {
                 ((this.canvas = e),
@@ -107,10 +107,10 @@ module.exports = function (e, t, i) {
                     (this._svg.length > 0 && (this._svg += " "), (this._svg += "Z"));
                 }),
                 (h.prototype.stroke = function () {
-                    ((this._isStroke = !0), this._push());
+                    ((this._isStroke = true), this._push());
                 }),
                 (h.prototype.fill = function (e) {
-                    ((this._isStroke = !1), (this._fillRule = e), this._push());
+                    ((this._isStroke = false), (this._fillRule = e), this._push());
                 }),
                 (h.prototype.clearRect = function (e, t, i, n) {
                     0;
@@ -186,5 +186,5 @@ module.exports = function (e, t, i) {
                         color: t,
                     }));
             };
-            e.exports = h;
+            module.exports = h;
         };

@@ -1,5 +1,5 @@
-module.exports = function (e, t, i) {
-            var n = i(11);
+module.exports = function (module, exports, require) {
+            var n = require(11);
 
             function r(e) {
                 this._uid = e || n.uuid();
@@ -11,5 +11,5 @@ module.exports = function (e, t, i) {
                 (r.prototype.toString = function () {
                     return this._uid.toString();
                 }),
-                (e.exports = r));
+                (module.exports = r));
         };

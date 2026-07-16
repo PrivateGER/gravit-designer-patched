@@ -1,4 +1,4 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             var n;
             !(function (r) {
                 "use strict";
@@ -274,7 +274,7 @@ module.exports = function (e, t, i) {
                             l = new r("0.5");
                         if (!n.c[0]) return new r(n);
                         if (o < 0) throw Error(a + "No square root");
-                        (0 === (o = Math.sqrt(+u(n, !0, !0))) || o === 1 / 0
+                        (0 === (o = Math.sqrt(+u(n, true, true))) || o === 1 / 0
                             ? (((t = n.c.join("")).length + s) & 1 || (t += "0"),
                               (s = (((s + 1) / 2) | 0) - (s < 0 || 1 & s)),
                               (e = new r(((o = Math.sqrt(t)) == 1 / 0 ? "5e" : (o = o.toExponential()).slice(0, o.indexOf("e") + 1)) + s)))
@@ -318,7 +318,7 @@ module.exports = function (e, t, i) {
                             if (e !== ~~e || e < 0 || e > 1e6) throw Error(l);
                             for (i = p(new i.constructor(i), ++e, t); i.c.length < e; ) i.c.push(0);
                         }
-                        return u(i, !0, !!n);
+                        return u(i, true, !!n);
                     }),
                     (h.toFixed = function (e, t) {
                         var i = this,
@@ -327,7 +327,7 @@ module.exports = function (e, t, i) {
                             if (e !== ~~e || e < 0 || e > 1e6) throw Error(l);
                             for (e = e + (i = p(new i.constructor(i), e + i.e + 1, t)).e + 1; i.c.length < e; ) i.c.push(0);
                         }
-                        return u(i, !1, !!n);
+                        return u(i, false, !!n);
                     }),
                     (h.toJSON = h.toString =
                         function () {
@@ -336,8 +336,8 @@ module.exports = function (e, t, i) {
                             return u(e, e.e <= t.NE || e.e >= t.PE, !!e.c[0]);
                         }),
                     (h.toNumber = function () {
-                        var e = +u(this, !0, !0);
-                        if (!0 === this.constructor.strict && !this.eq(e.toString())) throw Error(a + "Imprecise conversion");
+                        var e = +u(this, true, true);
+                        if (true === this.constructor.strict && !this.eq(e.toString())) throw Error(a + "Imprecise conversion");
                         return e;
                     }),
                     (h.toPrecision = function (e, t) {
@@ -353,8 +353,8 @@ module.exports = function (e, t, i) {
                     (h.valueOf = function () {
                         var e = this,
                             t = e.constructor;
-                        if (!0 === t.strict) throw Error(a + "valueOf disallowed");
-                        return u(e, e.e <= t.NE || e.e >= t.PE, !0);
+                        if (true === t.strict) throw Error(a + "valueOf disallowed");
+                        return u(e, e.e <= t.NE || e.e >= t.PE, true);
                     }),
                     ((o = (function e() {
                         function t(i) {
@@ -363,7 +363,7 @@ module.exports = function (e, t, i) {
                             if (i instanceof t) ((n.s = i.s), (n.e = i.e), (n.c = i.c.slice()));
                             else {
                                 if ("string" != typeof i) {
-                                    if (!0 === t.strict && "bigint" != typeof i) throw TypeError(s + "value");
+                                    if (true === t.strict && "bigint" != typeof i) throw TypeError(s + "value");
                                     i = 0 === i && 1 / i < 0 ? "-0" : String(i);
                                 }
                                 c(n, i);
@@ -376,7 +376,7 @@ module.exports = function (e, t, i) {
                             (t.RM = 1),
                             (t.NE = -7),
                             (t.PE = 21),
-                            (t.strict = !1),
+                            (t.strict = false),
                             (t.roundDown = 0),
                             (t.roundHalfUp = 1),
                             (t.roundHalfEven = 2),
@@ -388,6 +388,6 @@ module.exports = function (e, t, i) {
                     void 0 ===
                         (n = function () {
                             return o;
-                        }.call(t, i, t, e)) || (e.exports = n));
+                        }.call(exports, require, exports, module)) || (module.exports = n));
             })();
         };

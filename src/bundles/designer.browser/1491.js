@@ -1,38 +1,38 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(557);
-        var o = n(16);
-        (n(58),
-            n(19),
-            n(168),
-            n(596),
-            n(96),
-            n(30),
-            n(57),
-            n(8),
-            n(20),
-            n(3),
-            n(71),
-            n(34),
-            n(134),
-            n(4),
-            n(41),
-            n(13),
-            n(32),
-            n(38),
-            n(169),
-            n(97),
-            n(33),
-            n(26));
-        var i = n(53),
-            a = n(1),
-            r = n(15),
-            s = n(10),
-            l = n(357),
-            c = o(n(1492)),
-            d = n(1246),
-            u = n(40),
-            p = n(1247),
+        require(557);
+        var o = require(16);
+        (require(58),
+            require(19),
+            require(168 /* PDFFetchStream */),
+            require(596),
+            require(96),
+            require(30),
+            require(57),
+            require(8 /* Symbol */),
+            require(20),
+            require(3),
+            require(71),
+            require(34),
+            require(134),
+            require(4),
+            require(41),
+            require(13),
+            require(32),
+            require(38),
+            require(169 /* PDFNetworkStream */),
+            require(97),
+            require(33),
+            require(26));
+        var i = require(53),
+            GObject = require(1),
+            GPlatform = require(15),
+            designerConfig = require(10),
+            l = require(357),
+            c = o(require(1492)),
+            d = require(1246),
+            GSaveAction = require(40),
+            p = require(1247),
             g = (function (e, t) {
                 if ("function" == typeof WeakMap)
                     var n = new WeakMap(),
@@ -55,107 +55,107 @@ module.exports = function (e, t, n) {
                                 : (r[t] = e[t]));
                     return r;
                 })(e, t);
-            })(n(1739)),
-            h = (o(n(1249)), o(n(1155))),
-            f = o(n(556)),
-            m = o(n(734)),
-            y = o(n(1494)),
-            v = o(n(1496)),
-            _ = o(n(1497)),
-            b = o(n(1498));
-        var w = n(163),
-            C = n(238),
-            x = n(339),
-            S = n(804),
-            E = n(1500),
-            A = n(1521),
-            T = n(1522),
-            G = n(1260),
-            P = n(864),
-            D = n(567),
-            L = n(1539),
-            I = n(395);
-        n(1540);
-        var k = n(1541),
-            O = n(603),
-            F = n(863),
-            R = n(1294),
-            M = n(135),
-            N = n(1151),
-            B = n(78),
-            U = n(1296),
-            j = n(1172),
-            K = n(1170),
-            V = n(1297),
-            H = (n(1298), n(255)),
-            W = n(590),
-            z = n(1544),
-            q = n(1560),
-            Y = n(1562),
-            X = n(1303);
-        n(1563);
-        var Q = n(119),
-            J = n(220),
-            Z = n(85),
-            ee = n(44),
-            te = n(1276),
-            ne = n(1564),
-            oe = n(1250),
-            ie = n(291),
-            ae = n(1313),
-            re = n(860),
-            se = n(441),
-            le = n(292),
-            ce = n(805),
-            de = n(1321),
-            ue = n(392),
-            pe = n(868),
-            ge = n(1322),
-            he = n(1568),
-            fe = n(1569),
-            me = n(1571),
-            ye = n(1165),
-            ve = n(1572),
-            _e = n(846),
-            be = n(337),
-            we = n(1325),
-            Ce = n(785),
-            xe = n(256),
-            Se = n(604),
-            Ee = n(1326),
-            Ae = n(1328),
-            Te = n(808),
-            Ge = n(1188),
-            Pe = n(447),
-            De = n(86),
-            Le = (n(18), n(442));
+            })(require(1739)),
+            h = (o(require(1249)), o(require(1155))),
+            f = o(require(556 /* GGoogleDrive */)),
+            m = o(require(734)),
+            y = o(require(1494)),
+            v = o(require(1496)),
+            _ = o(require(1497)),
+            b = o(require(1498));
+        var GDocument = require(163),
+            C = require(238),
+            x = require(339),
+            S = require(804),
+            GCommonNames = require(1500),
+            A = require(1521),
+            GInfo = require(1522),
+            GOutlineSidebar = require(1260),
+            P = require(864),
+            GAnnotationsSidebar = require(567),
+            L = require(1539),
+            I = require(395);
+        require(1540);
+        var GToolbar = require(1541),
+            O = require(603),
+            F = require(863),
+            GDimensionProperties = require(1294),
+            M = require(135),
+            N = require(1151),
+            B = require(78),
+            U = require(1296),
+            j = require(1172),
+            K = require(1170),
+            V = require(1297),
+            H = (require(1298 /* GUseCouponAction */), require(255)),
+            W = require(590),
+            GNewDocumentDialog = require(1544),
+            GUserNameConfigDialog = require(1560),
+            GInstallPwaDialog = require(1562),
+            GContextMenu = require(1303);
+        require(1563 /* GContextMenu */);
+        var Q = require(119 /* GCommonNames */),
+            J = require(220 /* GCommonNames */),
+            Z = require(85),
+            GSystemDialog = require(44),
+            GAutoSave = require(1276),
+            ne = require(1564),
+            oe = require(1250),
+            ie = require(291),
+            GPaste = require(1313),
+            re = require(860),
+            se = require(441),
+            le = require(292),
+            ce = require(805),
+            de = require(1321),
+            ue = require(392),
+            pe = require(868),
+            GShareManager = require(1322),
+            he = require(1568),
+            fe = require(1569),
+            me = require(1571),
+            ye = require(1165),
+            ve = require(1572),
+            _e = require(846),
+            be = require(337),
+            we = require(1325),
+            Ce = require(785),
+            GOfflineDialog = require(256),
+            GProfileDialog = require(604),
+            Ee = require(1326),
+            Ae = require(1328),
+            Te = require(808),
+            Ge = require(1188),
+            Pe = require(447 /* GSaveAction */),
+            De = require(86),
+            Le = (require(18 /* GCategory */), require(442));
         const {
             defaultLegacyUserSettings: { features: Ie },
-        } = s.defaultUserSettings;
-        var ke = n(10);
+        } = designerConfig.defaultUserSettings;
+        var ke = require(10 /* designerConfig */);
         const { gApi: Oe } = ke;
-        var Fe = n(388),
-            Re = n(1580);
-        const Me = n(1581),
-            Ne = n(1584);
-        var Be = n(1587);
-        n(607);
-        const Ue = n(40),
-            $e = n(177),
-            je = n(1338),
-            Ke = n(1173),
-            Ve = (n(1591), n(1592)),
-            He = n(1593),
-            We = n(1594);
-        var ze = n(1595);
-        (n(1596), ze.addKeycodes({ 173: "-" }), ze.addKeycodes({ 187: "=" }), ze.addKeycodes({ 61: "=" }));
+        var Fe = require(388),
+            Re = require(1580);
+        const Me = require(1581),
+            Ne = require(1584);
+        var Be = require(1587);
+        require(607);
+        const Ue = require(40 /* GSaveAction */),
+            $e = require(177),
+            je = require(1338),
+            Ke = require(1173),
+            Ve = (require(1591), require(1592)),
+            He = require(1593),
+            We = require(1594);
+        var ze = require(1595);
+        (require(1596), ze.addKeycodes({ 173: "-" }), ze.addKeycodes({ 187: "=" }), ze.addKeycodes({ 61: "=" }));
         var qe,
             Ye,
             Xe = 0,
             Qe = null;
         function Je() {
             ((this._settings = {}),
-                (this._settingsLoaded = !1),
+                (this._settingsLoaded = false),
                 (this._swatches = {}),
                 (this._workspace = new i.GEditorWorkspace()),
                 (this._documents = []),
@@ -163,9 +163,9 @@ module.exports = function (e, t, n) {
                 (this._actionsMap = {}),
                 (this._clipboardMimeTypes = {}),
                 (this._license = void 0),
-                (this._reloading = !1),
+                (this._reloading = false),
                 (this._mainMenu = new C()),
-                (this._enabledSubscriptions = !1),
+                (this._enabledSubscriptions = false),
                 (this._documentTouchHandler = new Me(document)),
                 (this._editorTouchHandler = new Ne()),
                 he.clearSingleton(),
@@ -179,7 +179,7 @@ module.exports = function (e, t, n) {
                     (e) => {
                         e.preventDefault();
                     },
-                    !1
+                    false
                 ),
                 window.addEventListener(
                     "drop",
@@ -189,14 +189,14 @@ module.exports = function (e, t, n) {
                             n = t && t.getView();
                         n && n.handleDropEvent(e);
                     },
-                    !1
+                    false
                 ),
                 window.addEventListener(
                     "wheel",
                     (e) => {
-                        (r.GPlatform.modifiers.ctrlKey || r.GPlatform.modifiers.metaKey) && e.preventDefault();
+                        (GPlatform.GPlatform.modifiers.ctrlKey || GPlatform.GPlatform.modifiers.metaKey) && e.preventDefault();
                     },
-                    { passive: !1 }
+                    { passive: false }
                 ),
                 window.addEventListener("gesturestart", (e) => {
                     e.preventDefault();
@@ -212,7 +212,7 @@ module.exports = function (e, t, n) {
                             deltaY: t,
                             clientX: e.clientX,
                             clientY: e.clientY,
-                            ctrlKey: !0,
+                            ctrlKey: true,
                         }),
                         o = this.getWindows() && this.getWindows().getActiveWindow(),
                         i = o && o.getView() && o.getView()._htmlElement;
@@ -238,18 +238,18 @@ module.exports = function (e, t, n) {
                             !n || !n.getView() || (t && ($(t).is(":editable") || o)) || n.getView().focus();
                         }
                     }.bind(this),
-                    !1
+                    false
                 ),
                 document.addEventListener(
                     "contextmenu",
                     function (e) {
                         return !$(e.target).is(":editable") || this.propertyPanelHasContextMenu(e)
-                            ? (e.preventDefault(), !1)
-                            : (e.stopPropagation(), !0);
+                            ? (e.preventDefault(), false)
+                            : (e.stopPropagation(), true);
                     }.bind(this),
-                    !0
+                    true
                 ),
-                this._workspace.addEventListener(a.GWorkspace.ResolveUrlEvent, this._workspaceResolveUrlEvent, this),
+                this._workspace.addEventListener(GObject.GWorkspace.ResolveUrlEvent, this._workspaceResolveUrlEvent, this),
                 this.addEventListener(B, this._documentEvent, this),
                 this.addEventListener(M, this._settingChangedEvent, this),
                 this.addEventListener(le, this._userLoggedEvent, this),
@@ -260,8 +260,8 @@ module.exports = function (e, t, n) {
                 this.addEventListener(ue, this._applicationStateChangedEvent, this),
                 this.addEventListener(pe, this._shareEvent, this),
                 (this._settings.theme = "light"),
-                (this._settings.snap_disabled = !1),
-                (this._settings.snap_zones = !1),
+                (this._settings.snap_disabled = false),
+                (this._settings.snap_zones = false),
                 (this._settings.snap_guides = [
                     i.GGuideLinesGuide.ID,
                     i.GFullPixelsGuide.ID,
@@ -270,50 +270,50 @@ module.exports = function (e, t, n) {
                     i.GPageGuide.ID,
                     i.GGridGuide.ID,
                 ]),
-                (this._settings.rulers_visible = !1),
-                (this._settings.guide_lines_visible = !0),
-                (this._settings.symbol_labels_visible = !0),
-                (this._settings.grid_visible = !0),
-                (this._settings.page_labels_visible = !0),
-                (this._settings.highlight_on_hover = !0),
-                (this._settings.invert_selection = !1),
-                (this._settings.auto_expand_layers = !0),
-                (this._settings.system_fonts_enabled = !0),
-                (this._settings.symbols_panel_shown = !1),
+                (this._settings.rulers_visible = false),
+                (this._settings.guide_lines_visible = true),
+                (this._settings.symbol_labels_visible = true),
+                (this._settings.grid_visible = true),
+                (this._settings.page_labels_visible = true),
+                (this._settings.highlight_on_hover = true),
+                (this._settings.invert_selection = false),
+                (this._settings.auto_expand_layers = true),
+                (this._settings.system_fonts_enabled = true),
+                (this._settings.symbols_panel_shown = false),
                 (this._settings.decimals_num = null),
-                (this._settings.enable_steps_debug = !1),
+                (this._settings.enable_steps_debug = false),
                 (this._settings.enable_cache = "function" == typeof gdb_loaddesign),
-                (this._settings.ui_toolbar_alignment = !0),
-                (this._settings.eps_outline_fonts = !0),
-                (this._settings[te.AUTO_SAVE_SETTING] = !1),
-                (this._settings[te.AUTO_SAVE_INTERVAL_SETTING] = s.AUTOSAVE_INTERVAL_DEFAULT),
-                (this._settings.notifications_disabled = !1),
-                (this._settings.touch = !1),
-                (this._settings[I.getSettingNameForSidebar(I.Orientation.Left)] = !0),
-                (this._settings[I.getSettingNameForSidebar(I.Orientation.Right)] = !0),
+                (this._settings.ui_toolbar_alignment = true),
+                (this._settings.eps_outline_fonts = true),
+                (this._settings[GAutoSave.AUTO_SAVE_SETTING] = false),
+                (this._settings[GAutoSave.AUTO_SAVE_INTERVAL_SETTING] = designerConfig.AUTOSAVE_INTERVAL_DEFAULT),
+                (this._settings.notifications_disabled = false),
+                (this._settings.touch = false),
+                (this._settings[I.getSettingNameForSidebar(I.Orientation.Left)] = true),
+                (this._settings[I.getSettingNameForSidebar(I.Orientation.Right)] = true),
                 $(document).on("networkAvailable", () => {
                     this._initialized && gDesigner.updateRecentDocumentsAction();
                 }),
-                (this._paste = new ae()));
+                (this._paste = new GPaste()));
             const e = (e) => {
                 this.hasEventListeners(ie) && this.trigger(new ie(e));
             };
-            ($(window).on("online", () => e(!0)),
+            ($(window).on("online", () => e(true)),
                 $(window).on("offline", () => {
-                    ("undefined" != typeof dataLayer && dataLayer.push({ event: "NETWORK_DISCONNECTED_EVENT" }), e(!1));
+                    ("undefined" != typeof dataLayer && dataLayer.push({ event: "NETWORK_DISCONNECTED_EVENT" }), e(false));
                 }));
         }
-        (a.GObject.inherit(Je, a.GEventTarget),
+        (GObject.GObject.inherit(Je, GObject.GEventTarget),
             (Je.prototype._documentTouchHandler = null),
             (Je.prototype._editorTouchHandler = null),
             (Je.prototype._persona = d.GPersona.GraphicDesign),
             (Je.prototype._paymentFlow = null),
             (Je.prototype._license = void 0),
             (Je.prototype._translationManager = void 0),
-            (Je.prototype._initialized = !1),
-            (Je.prototype._ready = !1),
+            (Je.prototype._initialized = false),
+            (Je.prototype._ready = false),
             (Je.prototype._settings = null),
-            (Je.prototype._settingsLoaded = !1),
+            (Je.prototype._settingsLoaded = false),
             (Je.prototype._softwareUpdateManager = null),
             (Je.prototype._swatches = null),
             (Je.prototype._workspace = null),
@@ -346,17 +346,17 @@ module.exports = function (e, t, n) {
             (Je.prototype._user = null),
             (Je.prototype._fontsPath = null),
             (Je.prototype._paste = null),
-            (Je.prototype._enabledSubscriptions = !1),
-            (Je.prototype._reloading = !1),
+            (Je.prototype._enabledSubscriptions = false),
+            (Je.prototype._reloading = false),
             (Je.prototype._utm = null),
             (Je.prototype._location = null),
             (Je.prototype._supportedBrowsers = []),
             (Je.prototype._supportedTabletBrowsers = []),
-            (Je.prototype._isBrowserSupported = !0),
-            (Je.prototype._showCreateAccount = !1),
+            (Je.prototype._isBrowserSupported = true),
+            (Je.prototype._showCreateAccount = false),
             (Je.prototype._signupOptions = null),
-            (Je.prototype._enterpriseLoginForm = !1),
-            (Je.prototype._anonymous = !1),
+            (Je.prototype._enterpriseLoginForm = false),
+            (Je.prototype._anonymous = false),
             (Je.prototype._assistantBar = null),
             (Je.prototype._mainMenu = null),
             (Je.prototype._mouseOverContext = {
@@ -370,7 +370,7 @@ module.exports = function (e, t, n) {
             (Je.prototype._cloudCommunicationManager = null),
             (Je.prototype._annotationsManager = null),
             (Je.prototype._cursorManager = null),
-            (Je.prototype._draggableItemIsDragging = !1),
+            (Je.prototype._draggableItemIsDragging = false),
             (Je.prototype._amplitudeHelper = null),
             (Je.prototype._banner = null),
             (Je.prototype._overlay = null),
@@ -384,7 +384,7 @@ module.exports = function (e, t, n) {
                 return this._mainMenu;
             }),
             (Je.prototype.propertyPanelHasContextMenu = function (e) {
-                var t = !1;
+                var t = false;
                 return (
                     e.composedPath &&
                         e.composedPath() &&
@@ -415,12 +415,12 @@ module.exports = function (e, t, n) {
             }),
             (Je.prototype._initBrowserSupported = function (e) {
                 var t = (t) =>
-                    t.some((t) => (t instanceof Object ? a.GSystem.operatingSystem == t.operatingSystem && e == t.platform : e === t));
-                a.GSystem.hardware === a.GSystem.Hardware.Tablet
+                    t.some((t) => (t instanceof Object ? GObject.GSystem.operatingSystem == t.operatingSystem && e == t.platform : e === t));
+                GObject.GSystem.hardware === GObject.GSystem.Hardware.Tablet
                     ? (this._isBrowserSupported = t(this._supportedTabletBrowsers))
-                    : a.GSystem.hardware == a.GSystem.Hardware.Desktop
+                    : GObject.GSystem.hardware == GObject.GSystem.Hardware.Desktop
                       ? (this._isBrowserSupported = t(this._supportedBrowsers))
-                      : (this._isBrowserSupported = !1);
+                      : (this._isBrowserSupported = false);
             }),
             (Je.prototype.isBrowserSupported = function () {
                 return gContainer.getRuntime() === Z.Runtime.IPad || this._isBrowserSupported;
@@ -557,7 +557,7 @@ module.exports = function (e, t, n) {
                     u.setPro(s),
                     u.setNoHover(d),
                     c && u.addClass(c),
-                    this.updateMenuItem(u, t, !0, !1),
+                    this.updateMenuItem(u, t, true, false),
                     e.addItem(u),
                     l && u.setAction(l),
                     u
@@ -583,11 +583,11 @@ module.exports = function (e, t, n) {
             }),
             (Je.prototype.setSetting = function (e, t) {
                 if (this._settingsLoaded) {
-                    for (var n = e instanceof Array ? e : [e], o = e instanceof Array ? t : [t], i = !1, r = 0; r < n.length; ++r) {
+                    for (var n = e instanceof Array ? e : [e], o = e instanceof Array ? t : [t], i = false, r = 0; r < n.length; ++r) {
                         ((e = n[r]), (t = o[r]));
-                        if (!this._settings.hasOwnProperty(e) || !a.GUtil.equals(this._settings[e], t, !0)) {
+                        if (!this._settings.hasOwnProperty(e) || !GObject.GUtil.equals(this._settings[e], t, true)) {
                             var s = this._settings[e];
-                            ((this._settings[e] = t), this.trigger(new M(e, s || void 0, t)), (i = !0));
+                            ((this._settings[e] = t), this.trigger(new M(e, s || void 0, t)), (i = true));
                         }
                     }
                     if (i)
@@ -603,7 +603,7 @@ module.exports = function (e, t, n) {
                         n = [];
                     if (t)
                         for (var o = t.getFirstChild(); null !== o; o = o.getNext()) {
-                            var i = a.GPattern.serialize(o.getProperty("_pt"));
+                            var i = GObject.GPattern.serialize(o.getProperty("_pt"));
                             (((i.startsWith("C#") || i.startsWith("Y#")) && "document" === e) ||
                                 (i.startsWith("L#") && "document-linear-gradient" === e) ||
                                 (i.startsWith("R#") && "document-radial-gradient" === e) ||
@@ -629,7 +629,7 @@ module.exports = function (e, t, n) {
                         if (n) r.getSwatches().clearChildren();
                         else {
                             for (var s = this.getSwatches(e), l = [], c = r.getSwatches().getFirstChild(); null !== c; c = c.getNext())
-                                for (var d = 0; d < s.length; ++d) a.GUtil.equals(c, s[d]) && l.push(c);
+                                for (var d = 0; d < s.length; ++d) GObject.GUtil.equals(c, s[d]) && l.push(c);
                             for (d = 0; d < l.length; ++d) r.getSwatches().removeChild(l[d]);
                         }
                         for (d = 0; d < t.length; ++d) r.getSwatches().appendChild(t[d]);
@@ -641,7 +641,7 @@ module.exports = function (e, t, n) {
                             this._swatches["global-noise-pattern"]
                         );
                         var p = [];
-                        for (d = 0; d < u.length; ++d) p.push(a.GNode.serialize(u[d]));
+                        for (d = 0; d < u.length; ++d) p.push(GObject.GNode.serialize(u[d]));
                         gContainer.setProperty("swatches", p);
                     }
                     this.trigger(new N(e));
@@ -661,12 +661,12 @@ module.exports = function (e, t, n) {
             }),
             (Je.prototype.newInfiniteDocument = function () {
                 var e = this.createScene();
-                e.getActivePage().setProperties(["bck", "w", "h"], [a.GRGBColor.WHITE, 0, 0]);
-                var t = new w(e);
+                e.getActivePage().setProperties(["bck", "w", "h"], [GObject.GRGBColor.WHITE, 0, 0]);
+                var t = new GDocument(e);
                 return (this.addDocument(t), t);
             }),
             (Je.prototype.createScene = function (e) {
-                var t = new a.GScene(this.getWorkspace(), e);
+                var t = new GObject.GScene(this.getWorkspace(), e);
                 return (
                     void 0 !== i.GEditorOptions.scaleBorderWidth && t.setBorderScale(i.GEditorOptions.scaleBorderWidth),
                     void 0 !== i.GEditorOptions.scaleCorners && t.setCornersScale(i.GEditorOptions.scaleCorners),
@@ -674,33 +674,33 @@ module.exports = function (e, t, n) {
                 );
             }),
             (Je.prototype.createNewDocumentDialog = function () {
-                this._newDocumentDialog = new z();
+                this._newDocumentDialog = new GNewDocumentDialog();
             }),
             (Je.prototype.openNewDocumentDialog = function (e) {
                 const t = this.getApplicationManager();
                 (t.isCreatingNewDocumentEnabled() || t.isOpenFromCloudEnabled()) &&
-                    (this._newDocumentDialog || (this._newDocumentDialog = new z()),
+                    (this._newDocumentDialog || (this._newDocumentDialog = new GNewDocumentDialog()),
                     0 === $(".g-new-document-dialog").length
                         ? this._newDocumentDialog.open(e)
                         : e && e.openFromCloud && this._newDocumentDialog.getDialogElement().find(".option.cloud-option").click());
             }),
             (Je.prototype.openCloudSaveDialog = function (e, t, n, o, i) {
                 0 === $(".g-new-document-dialog").length &&
-                    (this._newDocumentDialog || (this._newDocumentDialog = new z()), this._newDocumentDialog.saveCloudFile(e, t, n, o, i));
+                    (this._newDocumentDialog || (this._newDocumentDialog = new GNewDocumentDialog()), this._newDocumentDialog.saveCloudFile(e, t, n, o, i));
             }),
             (Je.prototype._shouldOpenUserNameConfigDialog = function () {
                 return (
                     !(this._user && !this._user.canUpdateSelfAccountData()) &&
-                    !(this._user && this._user.isAnonymous() && !s.ANONYMOUS_SESSION_ENABLED) &&
+                    !(this._user && this._user.isAnonymous() && !designerConfig.ANONYMOUS_SESSION_ENABLED) &&
                     (!this._user || !this._user.getFirstName())
                 );
             }),
             (Je.prototype.openUserNameConfigDialog = function () {
-                if (!s.ENABLE_COLLABORATION) return;
+                if (!designerConfig.ENABLE_COLLABORATION) return;
                 let e = this._shouldOpenUserNameConfigDialog();
                 if (!this._userNameConfigDialog && e) {
                     const e = this._user || { name: "", last_name: "", anonymous: "" };
-                    this._userNameConfigDialog = new q(e.name, e.last_name, e.anonymous);
+                    this._userNameConfigDialog = new GUserNameConfigDialog(e.name, e.last_name, e.anonymous);
                 }
                 e && 0 === $(".g-username-config-dialog").length && this._userNameConfigDialog.open();
             }),
@@ -710,40 +710,40 @@ module.exports = function (e, t, n) {
             (Je.prototype.addDocument = function (e, t) {
                 (void 0 !== t ? this._documents.splice(t, 0, e) : this._documents.push(e),
                     this.hasEventListeners(B) && this.trigger(new B(B.Type.Added, e)),
-                    this._windows.addWindow(e, !1, t));
+                    this._windows.addWindow(e, false, t));
             }),
             (Je.prototype.notifyDocumentModified = function (e) {
                 this.hasEventListeners(B) && this.trigger(new B(B.Type.Modified, e, null));
             }),
             (Je.prototype._isNativeDesign = function (e) {
-                return e === s.FILE_FORMATS.find((e) => e.default).ext.toUpperCase();
+                return e === designerConfig.FILE_FORMATS.find((e) => e.default).ext.toUpperCase();
             }),
             (Je.prototype.isInitialized = function () {
                 return this._initialized;
             }),
             (Je.prototype._canOpenDocument = function (e) {
-                if (!this._initialized) return !1;
+                if (!this._initialized) return false;
                 if (!this.isEnabledProFeatures()) {
-                    let t = w.FileTypes.find((t) => t.ext.toUpperCase() === (e.getExtension() || "").toUpperCase());
+                    let t = GDocument.FileTypes.find((t) => t.ext.toUpperCase() === (e.getExtension() || "").toUpperCase());
                     if (t && t.pro)
                         return (
                             gDesigner.stats("document_nonprotriespro_".concat(t.ext.toLowerCase())),
                             this.handlePROFeatureInterruption(),
-                            !1
+                            false
                         );
                 }
-                return !0;
+                return true;
             }),
             (Je.prototype._processOpenDocument = function (e, t) {
                 const n = e.getExtension(),
                     o = this._isNativeDesign(n),
-                    i = new w(o ? e : null);
+                    i = new GDocument(o ? e : null);
                 if (i.isExtensionAvailableForLoading(n))
                     return (this.addDocument(i, t), (i.fileExtension = n), i.load(e), this.trigger(new B(B.Type.Opened, i)), i);
-                var r = !!w.FileTypes.find((e) => e.ext.toUpperCase() === n.toUpperCase() && "image" === e.category)
+                var r = !!GDocument.FileTypes.find((e) => e.ext.toUpperCase() === n.toUpperCase() && "image" === e.category)
                     ? "text.suggestion-open-image"
                     : "text.unsupported-file-extension";
-                return (ee.alert(a.GLocale.get(new a.GLocaleKey("GDocument", r))), null);
+                return (GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GDocument", r))), null);
             }),
             (Je.prototype.openDocumentWithReload = function (e, t) {
                 if (this._canOpenDocument(e)) return this._processOpenDocument(e, t);
@@ -775,7 +775,7 @@ module.exports = function (e, t, n) {
                     gContainer.getProperty(t).then(function (i) {
                         (o && i && (i = JSON.parse(Ue.base64StringToString(i))), i || (i = []));
                         for (var a = 0; a < i.length; ++a) {
-                            let t = !1;
+                            let t = false;
                             if (gContainer.getRuntime() === Z.Runtime.Electron) t = i[a] === n(e);
                             else {
                                 let n = JSON.parse(i[a]),
@@ -807,7 +807,7 @@ module.exports = function (e, t, n) {
                                         const t = e instanceof f.default.Item ? "googledrive" : null;
                                         return JSON.stringify({ type: t, file: e.getFile() });
                                     },
-                                    !0
+                                    true
                                 );
                             }));
             }),
@@ -852,7 +852,7 @@ module.exports = function (e, t, n) {
             (Je.prototype.handleWelcomeScreenOpenWithUserPermissions = function () {
                 let e = {
                     closable: this.getApplicationManager().isCreatingNewDocumentEnabled(),
-                    showCloudOptions: !0,
+                    showCloudOptions: true,
                     closeCallback: (e) => {
                         e && gDesigner.newInfiniteDocument();
                     },
@@ -860,7 +860,7 @@ module.exports = function (e, t, n) {
                 var t;
                 this.getLicense().canAccessFreemium()
                     ? this.openNewDocumentDialog(e)
-                    : (this._newDocumentDialog || (this._newDocumentDialog = new z()),
+                    : (this._newDocumentDialog || (this._newDocumentDialog = new GNewDocumentDialog()),
                       null === (t = this._newDocumentDialog) || void 0 === t || t._newDocumentCustomSize());
             }),
             (Je.prototype.canExecuteAction = function (e, t) {
@@ -869,7 +869,7 @@ module.exports = function (e, t, n) {
             }),
             (Je.prototype.canActivateTool = function (e) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
-                if (!t || !s.HAS_ANNOTATIONS || this.getRightSidebars().getActiveSidebar() != D.ID) return !0;
+                if (!t || !designerConfig.HAS_ANNOTATIONS || this.getRightSidebars().getActiveSidebar() != GAnnotationsSidebar.ID) return true;
                 const n = ["path", "shape", "knife", "insert"],
                     o = ["special"];
                 return !gravit.tools.some((t) => {
@@ -887,7 +887,7 @@ module.exports = function (e, t, n) {
                             this.getPart(F.Toolbar)
                                 .find(".toolbar-button[data-action='" + e + "']")
                                 .find("button")
-                                .toggleClass("g-disabled", !0);
+                                .toggleClass("g-disabled", true);
                         var r = i.execute;
                         if (("shortcut" === n && (r = i.executeFromShortcut), !o)) {
                             var s = i.isPro() ? (gDesigner.isEnabledProFeatures(e) ? "execute" : "nonprotriespro") : "execute";
@@ -896,29 +896,29 @@ module.exports = function (e, t, n) {
                         var l = r.apply(i, t);
                         if (void 0 !== l) return l;
                     }
-                    return !0;
+                    return true;
                 }
             }),
             (Je.prototype.setOpenSansDefaultFont = function () {
                 var e = this._workspace.getFontManager();
-                (e.setDefaultFont(e.getFont("Open Sans", a.GFont.Style.Normal, a.GFont.Weight.Regular)),
-                    e.setDefaultFontStyles([a.GFont.Style.Normal, a.GFont.Style.Italic]),
+                (e.setDefaultFont(e.getFont("Open Sans", GObject.GFont.Style.Normal, GObject.GFont.Weight.Regular)),
+                    e.setDefaultFontStyles([GObject.GFont.Style.Normal, GObject.GFont.Style.Italic]),
                     e.setDefaultFontWeights([300, 400, 600, 700, 800]));
             }),
             (Je.prototype.isTouchDevice = function () {
-                return s.TOUCH_LAYOUT && ("ontouchstart" in window || !!navigator.msMaxTouchPoints || !!navigator.maxTouchPoints);
+                return designerConfig.TOUCH_LAYOUT && ("ontouchstart" in window || !!navigator.msMaxTouchPoints || !!navigator.maxTouchPoints);
             }),
             (Je.prototype.isTouchEnabled = function () {
                 return (
                     gContainer.getRuntime() === Z.Runtime.IPad ||
-                    (!!s.TOUCH_LAYOUT && this.isEnabledProFeatures() && !!this.getSetting("touch", !1))
+                    (!!designerConfig.TOUCH_LAYOUT && this.isEnabledProFeatures() && !!this.getSetting("touch", false))
                 );
             }),
             (Je.prototype.setTouchEnabled = function (e) {
                 this.setSetting("touch", !!e);
             }),
             (Je.prototype.init = function () {
-                ((this._shareManager = new ge()),
+                ((this._shareManager = new GShareManager()),
                     (this._realtimeManager = new me()),
                     (this._fileReviewManager = new ye()),
                     (this._annotationsManager = new ve()),
@@ -926,49 +926,49 @@ module.exports = function (e, t, n) {
                     H.getInstance().init());
                 var e = this._workspace.getFontManager();
                 if (
-                    (e.addEventListener(a.GFontManager.ResolveFontEvent, this._fontManagerResolveFontEvent, this),
-                    e.addEventListener(a.GFontManager.QueryFontFamilyEvent, this._fontManagerQueryFontFamilyEvent, this),
+                    (e.addEventListener(GObject.GFontManager.ResolveFontEvent, this._fontManagerResolveFontEvent, this),
+                    e.addEventListener(GObject.GFontManager.QueryFontFamilyEvent, this._fontManagerQueryFontFamilyEvent, this),
                     this.setOpenSansDefaultFont(),
-                    a.GLocale.getLanguage() === a.GLocaleLanguage.Chinese || a.GLocale.getLanguage() === a.GLocaleLanguage.ChineseTaiwan)
+                    GObject.GLocale.getLanguage() === GObject.GLocaleLanguage.Chinese || GObject.GLocale.getLanguage() === GObject.GLocaleLanguage.ChineseTaiwan)
                 )
                     H.getProviderInstance(W).hasFont("Noto Sans CS") &&
-                        (e.setDefaultFont(e.getFont("Noto Sans CS", a.GFont.Style.Normal, a.GFont.Weight.Regular)),
-                        e.setDefaultFontStyles([a.GFont.Style.Normal]),
+                        (e.setDefaultFont(e.getFont("Noto Sans CS", GObject.GFont.Style.Normal, GObject.GFont.Weight.Regular)),
+                        e.setDefaultFontStyles([GObject.GFont.Style.Normal]),
                         e.setDefaultFontWeights([100, 200, 300, 400, 500, 600, 800]));
-                else if (a.GLocale.getLanguage() === a.GLocaleLanguage.Japanese) {
+                else if (GObject.GLocale.getLanguage() === GObject.GLocaleLanguage.Japanese) {
                     H.getProviderInstance(W).hasFont("Noto Sans CJK JP") &&
-                        (e.setDefaultFont(e.getFont("Noto Sans CJK JP", a.GFont.Style.Normal, a.GFont.Weight.Regular)),
-                        e.setDefaultFontStyles([a.GFont.Style.Normal]),
+                        (e.setDefaultFont(e.getFont("Noto Sans CJK JP", GObject.GFont.Style.Normal, GObject.GFont.Weight.Regular)),
+                        e.setDefaultFontStyles([GObject.GFont.Style.Normal]),
                         e.setDefaultFontWeights([400, 700]));
                 }
                 ((this._CDRIntegrationEngine = Re.createCDRIntegrationEngine()),
                     (i.GEditorOptions.selectDoubleClickBehavior = "subselect"),
-                    (i.GEditorOptions.coordinatesTooltip = !0),
-                    (i.GEditorOptions.bboxPositionTooltip = !1),
-                    (i.GEditorOptions.sizeTooltip = !1),
-                    (i.GEditorOptions.angleTooltip = !1),
-                    (i.GEditorOptions.showTooltips = !0),
+                    (i.GEditorOptions.coordinatesTooltip = true),
+                    (i.GEditorOptions.bboxPositionTooltip = false),
+                    (i.GEditorOptions.sizeTooltip = false),
+                    (i.GEditorOptions.angleTooltip = false),
+                    (i.GEditorOptions.showTooltips = true),
                     (i.GEditorOptions.propertiesExcludedFromCopying = Le.PropertiesToExcludeFromCopying),
-                    (i.GEditorOptions.adaptiveResizeHandles = !0),
+                    (i.GEditorOptions.adaptiveResizeHandles = true),
                     i.GSkewHorizontalAnnotation.setIcon("assets/annotation/touch/skew-horizontal-handle.png"),
                     i.GSkewVerticalAnnotation.setIcon("assets/annotation/touch/skew-vertical-handle.png"),
                     i.GPreserveAspectRatioAnnotation.setIcon("assets/annotation/touch/preserve-aspect-ratio-handle.png"),
                     i.GRotateAnnotation.setIcon("assets/annotation/touch/rotate-handle.png"),
-                    l.DESIGNER.HIGHLIGHT_COLOR && (a.GPaintContext.prototype.highlightOutlineColor = l.DESIGNER.HIGHLIGHT_COLOR),
-                    gContainer.getProperty(R._keepRatioName).then((e) => {
-                        ((e = e || !1), (i.GEditorOptions.preserveAspectRatio = e), (i.GEditorOptions.allowTextRatioPreservation = e));
+                    l.DESIGNER.HIGHLIGHT_COLOR && (GObject.GPaintContext.prototype.highlightOutlineColor = l.DESIGNER.HIGHLIGHT_COLOR),
+                    gContainer.getProperty(GDimensionProperties._keepRatioName).then((e) => {
+                        ((e = e || false), (i.GEditorOptions.preserveAspectRatio = e), (i.GEditorOptions.allowTextRatioPreservation = e));
                     }),
-                    (a.GSceneOptions.scaleLabel = !1),
-                    (a.GSceneOptions.defaultBorderPositionForLines = !0),
+                    (GObject.GSceneOptions.scaleLabel = false),
+                    (GObject.GSceneOptions.defaultBorderPositionForLines = true),
                     (i.GEditorPaintConfiguration.prototype.pageDecoration.shadow = 4),
                     (i.GEditorPaintConfiguration.prototype.pageDecoration.shadowOffsetY = 2),
                     (i.GEditorPaintConfiguration.prototype.pageDecoration.shadowBackground = "rgba(0,0,0,0.25)"),
                     gContainer.getProperty(V.StoragePropertyName).then((e) => {
-                        e && this.updateGEditorSceneConfigurationPaintMode(a.GScenePaintConfiguration.PaintMode.Outline);
+                        e && this.updateGEditorSceneConfigurationPaintMode(GObject.GScenePaintConfiguration.PaintMode.Outline);
                     }),
                     (i.GGridGuide.MIN_CELL_SPACE = 5));
                 var t = $("body");
-                (t.attr("data-long-press-delay", s.LONG_PRESS_TIME_OUT),
+                (t.attr("data-long-press-delay", designerConfig.LONG_PRESS_TIME_OUT),
                     t.on("long-press", (e) => {
                         const t = jQuery.Event("contextmenu", {
                             pageX: e.detail.clientX,
@@ -983,11 +983,11 @@ module.exports = function (e, t, n) {
                     o = $("<div></div>").attr("id", F.Windows.id).appendTo(n);
                 this._windows = new O(o);
                 var c = $("<div></div>").attr("id", F.Info.id).appendTo(n);
-                this._info = new T(c);
+                this._info = new GInfo(c);
                 var d = $("<div></div>").attr("id", F.Header.id).appendTo(n);
-                this._header = new E(d);
+                this._header = new GCommonNames(d);
                 var p = $("<div></div>").attr("id", F.Toolbar.id).appendTo(n);
-                this._toolbar = new k(p);
+                this._toolbar = new GToolbar(p);
                 var g = $("<div></div>").attr("id", F.Banner.id).appendTo(n);
                 this._banner = new _.default(g);
                 var h = $("<div></div>").attr("id", F.Overlay.id).appendTo(n);
@@ -998,36 +998,36 @@ module.exports = function (e, t, n) {
                 var y = $("<div></div>")
                     .attr("id", F.LeftSidebars.id)
                     .on("mousedown", () => {
-                        this._toggleSideBarAndAssistBarZIndex(!0, !1, !1, !1);
+                        this._toggleSideBarAndAssistBarZIndex(true, false, false, false);
                     })
                     .appendTo(n);
                 this._leftSidebars = new I(y, I.Orientation.Left, n);
                 var v = $("<div></div>")
                     .attr("id", F.RightSidebars.id)
                     .on("mousedown", () => {
-                        this._toggleSideBarAndAssistBarZIndex(!1, !0, !1, !1);
+                        this._toggleSideBarAndAssistBarZIndex(false, true, false, false);
                     })
                     .appendTo(n);
                 ((this._rightSidebars = new I(v, I.Orientation.Right, n)),
                     this._updateStyles(t),
-                    this._initBrowserSupported(r.GPlatform.webBrowser),
+                    this._initBrowserSupported(GPlatform.GPlatform.webBrowser),
                     this.isBrowserSupported() ||
-                        ee.showOneTimeDialog(
-                            a.GLocale.get(
-                                new a.GLocaleKey(
+                        GSystemDialog.showOneTimeDialog(
+                            GObject.GLocale.get(
+                                new GObject.GLocaleKey(
                                     "GSystemDialog",
-                                    a.GSystem.hardware === a.GSystem.Hardware.Tablet
+                                    GObject.GSystem.hardware === GObject.GSystem.Hardware.Tablet
                                         ? "text.unsupported-browser-touch"
                                         : "text.unsupported-browser"
                                 )
                             ).replace("%app", ke.DESIGNER.TITLE),
                             "designer.settings.dont_show_unsupported_browser_dialog"
                         ));
-                let w = (0, u.debounce)(
+                let w = (0, GSaveAction.debounce)(
                     function () {
                         (this.relayout(),
                             setTimeout(() => {
-                                this._windows.getActiveWindow() && this._windows.getActiveWindow().getView().invalidate(null, !0);
+                                this._windows.getActiveWindow() && this._windows.getActiveWindow().getView().invalidate(null, true);
                             }));
                     }.bind(this),
                     500
@@ -1043,18 +1043,18 @@ module.exports = function (e, t, n) {
                 if ((Array.prototype.splice.apply(this._actions, [C, 0].concat(x)), this._createMainMenu(), gravit.tools)) {
                     for (
                         var S = (e) => {
-                                let { tool: t, pro: n = !1, feature: o } = e;
+                                let { tool: t, pro: n = false, feature: o } = e;
                                 return () =>
                                     !(!this.isEnabledProFeatures(o) && n) &&
-                                    !!this.canActivateTool(t, !0) &&
-                                    (gDesigner.stats("tools_activate_shortcut", k.getToolName(t) || "unknown_tool"),
+                                    !!this.canActivateTool(t, true) &&
+                                    (gDesigner.stats("tools_activate_shortcut", GToolbar.getToolName(t) || "unknown_tool"),
                                     this.getToolManager().tempToolKeyActivate(t));
                             },
                             M = (e) => {
-                                let { tool: t, pro: n = !1, feature: o } = e;
+                                let { tool: t, pro: n = false, feature: o } = e;
                                 return () =>
                                     !this.isEnabledProFeatures(o) && n
-                                        ? (this.handlePROFeatureInterruption(), !1)
+                                        ? (this.handlePROFeatureInterruption(), false)
                                         : this.getToolManager().tempToolKeyRelease(t, 450);
                             },
                             N = 0;
@@ -1065,10 +1065,10 @@ module.exports = function (e, t, n) {
                         if (B.key || B.shortcuts) {
                             var j = S(B),
                                 z = M(B);
-                            (B.key && this.registerShortcut([B.key], j, !1, z),
+                            (B.key && this.registerShortcut([B.key], j, false, z),
                                 Array.isArray(B.shortcuts) &&
                                     B.shortcuts.forEach((e) => {
-                                        this.registerShortcut(e, j, !1, z);
+                                        this.registerShortcut(e, j, false, z);
                                     }));
                         }
                     }
@@ -1076,12 +1076,12 @@ module.exports = function (e, t, n) {
                     var q = function () {
                         var e = this.getToolManager();
                         return (
-                            this.getRightSidebars().getActiveSidebar() == D.ID ||
+                            this.getRightSidebars().getActiveSidebar() == GAnnotationsSidebar.ID ||
                                 ((e.getActiveTool() && e.getActiveTool() instanceof i.GSelectTool) || e.activateTool(i.GPointerTool),
                                 e.getActiveTool() instanceof i.GSelectTool &&
                                     e.getActiveTool().getEditMode() !== i.GSelectTool.EditMode.Transform &&
                                     e.getActiveTool().setEditMode(i.GSelectTool.EditMode.Transform)),
-                            !0
+                            true
                         );
                     }.bind(this);
                     this.registerShortcut(["Q"], q);
@@ -1096,63 +1096,63 @@ module.exports = function (e, t, n) {
                     this._windows.init(),
                     this._banner.init(),
                     this._overlay.init(),
-                    this._leftSidebars.setActiveSidebar(G.ID),
+                    this._leftSidebars.setActiveSidebar(GOutlineSidebar.ID),
                     this._rightSidebars.setActiveSidebar(P.ID),
-                    this.setPartVisible(F.Panels, !1),
-                    this.setPartVisible(F.Info, !1),
+                    this.setPartVisible(F.Panels, false),
+                    this.setPartVisible(F.Info, false),
                     this._mainframe.css("display", ""),
-                    a.GColor.setCMYKProfile("USWebCoatedSWOPv2", "assets/data/icc/"),
-                    (this._initialized = !0),
+                    GObject.GColor.setCMYKProfile("USWebCoatedSWOPv2", "assets/data/icc/"),
+                    (this._initialized = true),
                     this._windows.addEventListener(O.WindowEvent, this._windowEvent, this),
                     this._leftSidebars.addEventListener(I.SidebarEvent, this._sidebarEvent, this),
                     this._rightSidebars.addEventListener(I.SidebarEvent, this._sidebarEvent, this),
-                    (this._contextMenu = new X(o)),
+                    (this._contextMenu = new GContextMenu(o)),
                     this.updateLicenseInfo(),
-                    this._updateTitle({ saveToSessionHistory: !1 }),
-                    s.AUTO_SAVE_ENABLED && (this._autoSaveManager = te.getInstance()),
+                    this._updateTitle({ saveToSessionHistory: false }),
+                    designerConfig.AUTO_SAVE_ENABLED && (this._autoSaveManager = GAutoSave.getInstance()),
                     this.getCursorManager().init(),
                     this._updateLayout(),
                     this._initAmplitudeProperties(),
                     this._updateState());
             }),
             (Je.prototype._updateStyles = function (e) {
-                switch (r.GPlatform.webBrowser) {
-                    case r.GPlatform.constructor.WebBrowser.Edge:
+                switch (GPlatform.GPlatform.webBrowser) {
+                    case GPlatform.GPlatform.constructor.WebBrowser.Edge:
                         e.addClass("g-edge");
                         break;
-                    case r.GPlatform.constructor.WebBrowser.Opera:
+                    case GPlatform.GPlatform.constructor.WebBrowser.Opera:
                         e.addClass("g-opera");
                         break;
-                    case r.GPlatform.constructor.WebBrowser.Chrome:
+                    case GPlatform.GPlatform.constructor.WebBrowser.Chrome:
                         e.addClass("g-chrome");
                         break;
-                    case r.GPlatform.constructor.WebBrowser.Firefox:
+                    case GPlatform.GPlatform.constructor.WebBrowser.Firefox:
                         e.addClass("g-firefox");
                         break;
-                    case r.GPlatform.constructor.WebBrowser.Safari:
+                    case GPlatform.GPlatform.constructor.WebBrowser.Safari:
                         e.addClass("g-safari");
                         break;
-                    case r.GPlatform.constructor.WebBrowser.MSIE:
+                    case GPlatform.GPlatform.constructor.WebBrowser.MSIE:
                         e.addClass("g-msie");
                 }
-                switch (a.GSystem.hardware) {
-                    case a.GSystem.Hardware.Desktop:
+                switch (GObject.GSystem.hardware) {
+                    case GObject.GSystem.Hardware.Desktop:
                         e.addClass("g-desktop");
                         break;
-                    case a.GSystem.Hardware.Tablet:
+                    case GObject.GSystem.Hardware.Tablet:
                         e.addClass("g-tablet");
                         break;
-                    case a.GSystem.Hardware.Phone:
+                    case GObject.GSystem.Hardware.Phone:
                         e.addClass("g-phone");
                 }
-                switch (a.GSystem.operatingSystem) {
-                    case a.GSystem.OperatingSystem.Unix:
+                switch (GObject.GSystem.operatingSystem) {
+                    case GObject.GSystem.OperatingSystem.Unix:
                         e.addClass("g-os-unix");
                         break;
-                    case a.GSystem.OperatingSystem.Windows:
+                    case GObject.GSystem.OperatingSystem.Windows:
                         e.addClass("g-os-windows");
                         break;
-                    case a.GSystem.OperatingSystem.OSX_IOS:
+                    case GObject.GSystem.OperatingSystem.OSX_IOS:
                         e.addClass("g-os-osx_ios");
                 }
                 gContainer.getRuntime() === Z.Runtime.IPad && e.addClass("g-ipad");
@@ -1165,7 +1165,7 @@ module.exports = function (e, t, n) {
             }),
             (Je.prototype.isActiveDocument = function (e) {
                 const t = this.getActiveDocument();
-                return !!t && !!(e && e instanceof w) && (t === e || !(!t.getId() || t.getId() !== e.getId()));
+                return !!t && !!(e && e instanceof GDocument) && (t === e || !(!t.getId() || t.getId() !== e.getId()));
             }),
             (Je.prototype._setActiveAssistantBar = function (e) {
                 if (e) {
@@ -1173,7 +1173,7 @@ module.exports = function (e, t, n) {
                         const e = $("<div/>")
                             .attr("id", F.AssistantBar.id)
                             .on("mousedown", () => {
-                                this._toggleSideBarAndAssistBarZIndex(!1, !1, !0, !1);
+                                this._toggleSideBarAndAssistBarZIndex(false, false, true, false);
                             })
                             .appendTo(this._frame);
                         this._assistantBar = new Be(e);
@@ -1189,7 +1189,7 @@ module.exports = function (e, t, n) {
                     void 0 !== o && $(".g-notification-panel").toggleClass("bring-to-front", o));
             }),
             (Je.prototype.sendSideBarAndAssistBarToBack = function () {
-                this._toggleSideBarAndAssistBarZIndex(!1, !1, !1);
+                this._toggleSideBarAndAssistBarZIndex(false, false, false);
             }),
             (Je.prototype.start = function () {
                 return Promise.all([
@@ -1197,8 +1197,8 @@ module.exports = function (e, t, n) {
                         .getProperty("designer.settings")
                         .then((e) => {
                             for (var t in ((e = e || {}), this._settings)) e.hasOwnProperty(t) || (e[t] = this._settings[t]);
-                            for (var n in ((this._settings = e), (this._settingsLoaded = !0), this._settings))
-                                this.trigger(new M(n, void 0, this._settings[n], !0));
+                            for (var n in ((this._settings = e), (this._settingsLoaded = true), this._settings))
+                                this.trigger(new M(n, void 0, this._settings[n], true));
                         })
                         .catch((e) => Promise.reject(e)),
                     gContainer
@@ -1214,8 +1214,8 @@ module.exports = function (e, t, n) {
                                 e)
                             )
                                 for (var t = 0; t < e.length; ++t) {
-                                    var n = a.GNode.deserialize(e[t]) || a.GPattern.deserialize(e[t]),
-                                        o = n instanceof a.GSwatch ? n : new a.GSwatch(n);
+                                    var n = GObject.GNode.deserialize(e[t]) || GObject.GPattern.deserialize(e[t]),
+                                        o = n instanceof GObject.GSwatch ? n : new GObject.GSwatch(n);
                                     this._addGlobalSwatch(o);
                                 }
                             this.trigger(new N("global"));
@@ -1224,7 +1224,7 @@ module.exports = function (e, t, n) {
                 ]);
             }),
             (Je.prototype._addGlobalSwatch = function (e) {
-                var t = a.GPattern.serialize(e.getProperty("_pt"));
+                var t = GObject.GPattern.serialize(e.getProperty("_pt"));
                 t.startsWith("C#") || t.startsWith("Y#")
                     ? this._swatches.global.push(e)
                     : t.startsWith("L#")
@@ -1391,9 +1391,9 @@ module.exports = function (e, t, n) {
             }),
             (Je.prototype.updateGEditorSceneConfigurationPaintMode = function (e) {
                 [
-                    a.GScenePaintConfiguration.PaintMode.Full,
-                    a.GScenePaintConfiguration.PaintMode.Outline,
-                    a.GScenePaintConfiguration.PaintMode.Fast,
+                    GObject.GScenePaintConfiguration.PaintMode.Full,
+                    GObject.GScenePaintConfiguration.PaintMode.Outline,
+                    GObject.GScenePaintConfiguration.PaintMode.Fast,
                 ].indexOf(e) < 0 || (i.GEditorPaintConfiguration.prototype.paintMode = e);
             }),
             (Je.prototype.registerShortcut = function (e, t, n, o) {
@@ -1404,19 +1404,19 @@ module.exports = function (e, t, n) {
                                 s = this.getActiveDocument();
                             if (s && (o = s.getEditor()) && o.isInlineEditing()) {
                                 var l = o.getCurrentInlineEditorNode();
-                                i.GElementEditor && l instanceof a.GText && (r = i.GElementEditor.getEditor(l));
+                                i.GElementEditor && l instanceof GObject.GText && (r = i.GElementEditor.getEditor(l));
                             }
-                            if (!((t && r && r.handleKeyDown(n) && (t || r)) || !0 !== e(n)))
-                                return (n.preventDefault(), n.stopPropagation(), !1);
+                            if (!((t && r && r.handleKeyDown(n) && (t || r)) || true !== e(n)))
+                                return (n.preventDefault(), n.stopPropagation(), false);
                         };
                     }.bind(this),
                     l = n ? ze.bindGlobal : ze.bind;
-                2 === e.length && e[0] === r.GKey.Constant.META && "+" === e[1]
-                    ? (l(this._shortcutToMouseTrapShortcut(e), s(t, !0)),
-                      l("mod+=", s(t, !0), "keydown"),
-                      o && l("mod+=", s(o, !1), "keyup"))
-                    : (l(this._shortcutToMouseTrapShortcut(e), s(t, !0), "keydown"),
-                      o && l(this._shortcutToMouseTrapShortcut(e), s(o, !1), "keyup"));
+                2 === e.length && e[0] === GPlatform.GKey.Constant.META && "+" === e[1]
+                    ? (l(this._shortcutToMouseTrapShortcut(e), s(t, true)),
+                      l("mod+=", s(t, true), "keydown"),
+                      o && l("mod+=", s(o, false), "keyup"))
+                    : (l(this._shortcutToMouseTrapShortcut(e), s(t, true), "keydown"),
+                      o && l(this._shortcutToMouseTrapShortcut(e), s(o, false), "keyup"));
             }),
             (Je.prototype._createMainMenu = function () {
                 for (
@@ -1491,7 +1491,7 @@ module.exports = function (e, t, n) {
                               : "item" === e.type &&
                                 ((e.item = this.addMenuItem(
                                     t,
-                                    a.GLocale.get(e.action.getTitle()),
+                                    GObject.GLocale.get(e.action.getTitle()),
                                     e.action.getIcon(),
                                     e.action.isCheckable(),
                                     e.action.getShortcut(),
@@ -1522,7 +1522,7 @@ module.exports = function (e, t, n) {
                                             "item" === n.type &&
                                                 this.updateMenuItem(
                                                     n.item,
-                                                    a.GLocale.get(n.action.getTitle()),
+                                                    GObject.GLocale.get(n.action.getTitle()),
                                                     n.action.isEnabled(),
                                                     !!n.action.isCheckable() && n.action.isChecked(),
                                                     n.action.isPro(),
@@ -1567,14 +1567,14 @@ module.exports = function (e, t, n) {
                         (o || t
                             ? this._rightSidebars.setActiveSidebar(P.ID)
                             : n
-                              ? this._rightSidebars.setActiveSidebar(D.ID)
+                              ? this._rightSidebars.setActiveSidebar(GAnnotationsSidebar.ID)
                               : this._rightSidebars.setActiveSidebar(null)),
                         this.setPartVisible(F.RightSidebars, n || o || t),
                         this._rightSidebars.relayout());
                 }
                 if (I.isOrientationActiveInSetting(I.Orientation.Left)) {
                     const e = this._leftSidebars.getSidebar(this._leftSidebars.getActiveSidebar());
-                    ((e && e.isVisible()) || (t ? this._leftSidebars.setActiveSidebar(G.ID) : this._leftSidebars.setActiveSidebar(null)),
+                    ((e && e.isVisible()) || (t ? this._leftSidebars.setActiveSidebar(GOutlineSidebar.ID) : this._leftSidebars.setActiveSidebar(null)),
                         this.setPartVisible(F.LeftSidebars, t),
                         this._leftSidebars.relayout());
                 }
@@ -1602,13 +1602,13 @@ module.exports = function (e, t, n) {
                             if (t) {
                                 const n = e.document.isCloudFile() ? e.document.getStorageItem().getFile() : null,
                                     o = n ? n.url_t || n.url : null,
-                                    i = a.GLocale.get(new a.GLocaleKey("GDesigner", "text.preview-by"))
+                                    i = GObject.GLocale.get(new GObject.GLocaleKey("GDesigner", "text.preview-by"))
                                         .replace("%name", t.name)
                                         .replace("%appname", ke.DESIGNER.TITLE);
                                 ($('meta[name="description"]').attr("content", i),
                                     $('meta[property="og:title"]').attr(
                                         "content",
-                                        a.GLocale.get(new a.GLocaleKey("GDesigner", "text.design-by"))
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GDesigner", "text.design-by"))
                                             .replace("%name", t.name)
                                             .replace("%appname", ke.DESIGNER.TITLE)
                                     ),
@@ -1619,7 +1619,7 @@ module.exports = function (e, t, n) {
                                     $('meta[property="og:site_name"]').attr("content", ke.DESIGNER.TITLE));
                             }
                         }
-                        this._updateTitle({ saveToSessionHistory: !1 });
+                        this._updateTitle({ saveToSessionHistory: false });
                         break;
                     case B.Type.StorageItemUpdated:
                         (this._updateTitle(), this._registerUsage(e.document));
@@ -1667,7 +1667,7 @@ module.exports = function (e, t, n) {
             (Je.prototype._settingChangedEvent = function (e) {
                 switch (e.key) {
                     case "touch":
-                        (e.restoring && e.newValue && !this.isTouchEnabled() ? this.setTouchEnabled(!1) : this._updateLayout(),
+                        (e.restoring && e.newValue && !this.isTouchEnabled() ? this.setTouchEnabled(false) : this._updateLayout(),
                             this._updateEditorOptions(),
                             this._updateGTM());
                         break;
@@ -1687,17 +1687,17 @@ module.exports = function (e, t, n) {
                         i.GEditorOptions.highlightOnHover = e.newValue;
                         break;
                     case "dont_store_textpath":
-                        a.GText.dontStorePaths = e.newValue;
+                        GObject.GText.dontStorePaths = e.newValue;
                         break;
                     case "decimals_num":
-                        a.GScene.decimalsNum = e.newValue;
+                        GObject.GScene.decimalsNum = e.newValue;
                         break;
                     case "enable_steps_debug":
                         i.GEditorOptions.debugTransactions = e.newValue;
                         break;
                     case "enable_cache":
                         "function" == typeof gdb_loaddesign &&
-                            ((a.GRendererConfig.ENABLE_CACHE = e.newValue),
+                            ((GObject.GRendererConfig.ENABLE_CACHE = e.newValue),
                             gDesigner.getActiveDocument() &&
                                 gDesigner.getActiveDocument().getActiveWindow() &&
                                 (gDesigner.getActiveDocument().getActiveWindow().getView().cleanCache(),
@@ -1716,21 +1716,21 @@ module.exports = function (e, t, n) {
                 const e = this.getActiveDocument(),
                     t = e && e.getActiveWindow(),
                     n = t && t.getView();
-                n && r.GPlatform.scheduleFrame(() => n.invalidate(null, !0));
+                n && GPlatform.GPlatform.scheduleFrame(() => n.invalidate(null, true));
             }),
             (Je.prototype._applyTouchEditorOptions = function () {
-                const e = a.GPaintCanvas.getScreenDPI();
+                const e = GObject.GPaintCanvas.getScreenDPI();
                 ((i.GEditorOptions.distanceHelperBehaviour = i.GSelectTool._DistanceHelperBehaviour.Click),
-                    (i.GEditorOptions.resizeHandlesInDetailMode = !1),
-                    (i.GEditorOptions.rotateHandleInDetailMode = !1),
-                    (i.GEditorOptions.annotationHandles.suppressRedundantCorners = !0),
+                    (i.GEditorOptions.resizeHandlesInDetailMode = false),
+                    (i.GEditorOptions.rotateHandleInDetailMode = false),
+                    (i.GEditorOptions.annotationHandles.suppressRedundantCorners = true),
                     (i.GEditorOptions.annotationHandles.gradient.size = 16 * e),
                     (i.GEditorOptions.annotationHandles.gradient.sizeBig = 20 * e),
-                    (i.GEditorOptions.annotationHandles.preserveAspectRatio.side = a.GRect.Side.BOTTOM_RIGHT),
-                    (i.GEditorOptions.annotationHandles.tranformBox.skew.enabled = !0),
-                    (i.GEditorOptions.annotationHandles.tranformBox.rotate.enabled = !0),
-                    (i.GEditorOptions.annotationHandles.preserveAspectRatio.enabled = !0),
-                    (a.GPaintContext.prototype.transformBoxOutlineColor = a.GPaintContext.prototype.selectionOutlineColor),
+                    (i.GEditorOptions.annotationHandles.preserveAspectRatio.side = GObject.GRect.Side.BOTTOM_RIGHT),
+                    (i.GEditorOptions.annotationHandles.tranformBox.skew.enabled = true),
+                    (i.GEditorOptions.annotationHandles.tranformBox.rotate.enabled = true),
+                    (i.GEditorOptions.annotationHandles.preserveAspectRatio.enabled = true),
+                    (GObject.GPaintContext.prototype.transformBoxOutlineColor = GObject.GPaintContext.prototype.selectionOutlineColor),
                     (i.GTransformBox.OUTSIDE_TOLERANCE = 0),
                     (i.GEditorOptions.annotPickDistance = 4),
                     (i.GEditorOptions.pickDistance = 20),
@@ -1738,7 +1738,7 @@ module.exports = function (e, t, n) {
                     (i.GEditorOptions.annotationHandles.tranformBox.outlineWidth = 3 * e),
                     (i.GEditorOptions.annotationHandles.tranformBox.pivotSize = 23 * e),
                     (i.GEditorOptions.annotationHandles.tranformBox.pivotOutlineWidth = 3 * e),
-                    (i.GEditorOptions.annotationHandles.tranformBox.outsideStroke = !0),
+                    (i.GEditorOptions.annotationHandles.tranformBox.outsideStroke = true),
                     (i.GEditorOptions.annotationHandles.tranformBox.shadowColor = "transparent"),
                     (i.GEditorOptions.rotateHandle = "bottom"),
                     (i.GEditorOptions.annotationHandles.rotate.size = 23 * e),
@@ -1748,44 +1748,44 @@ module.exports = function (e, t, n) {
                     (i.GEditorOptions.annotationHandles.rotate.distance = 46 * e),
                     (i.GEditorOptions.annotationHandles.resize.size = 23 * e),
                     (i.GEditorOptions.annotationHandles.resize.outlineWidth = 3 * e),
-                    (i.GEditorOptions.annotationHandles.resize.outsideStroke = !0),
+                    (i.GEditorOptions.annotationHandles.resize.outsideStroke = true),
                     (i.GEditorOptions.annotationHandles.resize.shadowColor = "transparent"),
                     (i.GEditorOptions.annotationHandles.rectangle.size = 22 * e),
                     (i.GEditorOptions.annotationHandles.rectangle.outlineWidth = 4 * e),
-                    (i.GEditorOptions.annotationHandles.rectangle.outsideStroke = !0),
+                    (i.GEditorOptions.annotationHandles.rectangle.outsideStroke = true),
                     (i.GEditorOptions.annotationHandles.rectangle.shadowColor = "transparent"),
                     (i.GEditorOptions.annotationHandles.rectangle.maxNumberOfDetailedSegments = 1),
                     (i.GEditorOptions.annotationHandles.polygon.size = 22 * e),
                     (i.GEditorOptions.annotationHandles.polygon.outlineWidth = 4 * e),
-                    (i.GEditorOptions.annotationHandles.polygon.outsideStroke = !0),
+                    (i.GEditorOptions.annotationHandles.polygon.outsideStroke = true),
                     (i.GEditorOptions.annotationHandles.polygon.shadowColor = "transparent"),
                     (i.GEditorOptions.annotationHandles.polygon.maxNumberOfDetailedSegments = 2),
                     (i.GEditorOptions.annotationHandles.ellipse.size = 22 * e),
                     (i.GEditorOptions.annotationHandles.ellipse.outlineWidth = 4 * e),
-                    (i.GEditorOptions.annotationHandles.ellipse.outsideStroke = !0),
+                    (i.GEditorOptions.annotationHandles.ellipse.outsideStroke = true),
                     (i.GEditorOptions.annotationHandles.ellipse.shadowColor = "transparent"),
                     (i.GEditorOptions.annotationHandles.ellipse.maxNumberOfDetailedSegments = 2),
                     (i.GEditorOptions.annotationHandles.path.node.size = 20 * e),
                     (i.GEditorOptions.annotationHandles.path.node.outlineWidth = 2 * e),
                     (i.GEditorOptions.annotationHandles.path.control.size = 10 * e),
-                    i.GSkewHorizontalAnnotation.setIconVisible(!0),
-                    i.GSkewVerticalAnnotation.setIconVisible(!0),
-                    i.GPreserveAspectRatioAnnotation.setIconVisible(!0),
-                    i.GRotateAnnotation.setIconVisible(!0));
+                    i.GSkewHorizontalAnnotation.setIconVisible(true),
+                    i.GSkewVerticalAnnotation.setIconVisible(true),
+                    i.GPreserveAspectRatioAnnotation.setIconVisible(true),
+                    i.GRotateAnnotation.setIconVisible(true));
             }),
             (Je.prototype._applyDefaultEditorOptions = function () {
-                const e = a.GPaintCanvas.getScreenDPI();
+                const e = GObject.GPaintCanvas.getScreenDPI();
                 ((i.GEditorOptions.distanceHelperBehaviour = i.GSelectTool._DistanceHelperBehaviour.Default),
-                    (i.GEditorOptions.resizeHandlesInDetailMode = !0),
-                    (i.GEditorOptions.rotateHandleInDetailMode = !0),
-                    (i.GEditorOptions.annotationHandles.suppressRedundantCorners = !1),
+                    (i.GEditorOptions.resizeHandlesInDetailMode = true),
+                    (i.GEditorOptions.rotateHandleInDetailMode = true),
+                    (i.GEditorOptions.annotationHandles.suppressRedundantCorners = false),
                     (i.GEditorOptions.annotationHandles.gradient.size = 9 * e),
                     (i.GEditorOptions.annotationHandles.gradient.sizeBig = 12 * e),
-                    i.GSkewHorizontalAnnotation.setIconVisible(!1),
-                    i.GSkewVerticalAnnotation.setIconVisible(!1),
-                    i.GPreserveAspectRatioAnnotation.setIconVisible(!1),
-                    i.GRotateAnnotation.setIconVisible(!1),
-                    (a.GPaintContext.prototype.transformBoxOutlineColor = new a.GRGBColor([23, 104, 196])),
+                    i.GSkewHorizontalAnnotation.setIconVisible(false),
+                    i.GSkewVerticalAnnotation.setIconVisible(false),
+                    i.GPreserveAspectRatioAnnotation.setIconVisible(false),
+                    i.GRotateAnnotation.setIconVisible(false),
+                    (GObject.GPaintContext.prototype.transformBoxOutlineColor = new GObject.GRGBColor([23, 104, 196])),
                     (i.GTransformBox.OUTSIDE_TOLERANCE = 100),
                     (i.GEditorOptions.annotPickDistance = 0),
                     (i.GEditorOptions.pickDistance = 4),
@@ -1793,11 +1793,11 @@ module.exports = function (e, t, n) {
                     (i.GEditorOptions.annotationHandles.tranformBox.outlineWidth = null),
                     (i.GEditorOptions.annotationHandles.tranformBox.pivotSize = null),
                     (i.GEditorOptions.annotationHandles.tranformBox.pivotOutlineWidth = null),
-                    (i.GEditorOptions.annotationHandles.tranformBox.outsideStroke = !1),
+                    (i.GEditorOptions.annotationHandles.tranformBox.outsideStroke = false),
                     (i.GEditorOptions.annotationHandles.tranformBox.shadowColor = null),
-                    (i.GEditorOptions.annotationHandles.tranformBox.skew.enabled = !1),
-                    (i.GEditorOptions.annotationHandles.tranformBox.rotate.enabled = !1),
-                    (i.GEditorOptions.annotationHandles.preserveAspectRatio.enabled = !1),
+                    (i.GEditorOptions.annotationHandles.tranformBox.skew.enabled = false),
+                    (i.GEditorOptions.annotationHandles.tranformBox.rotate.enabled = false),
+                    (i.GEditorOptions.annotationHandles.preserveAspectRatio.enabled = false),
                     (i.GEditorOptions.rotateHandle = "top"),
                     (i.GEditorOptions.annotationHandles.rotate.size = 10 * e),
                     (i.GEditorOptions.annotationHandles.rotate.outlineWidth = null),
@@ -1805,19 +1805,19 @@ module.exports = function (e, t, n) {
                     (i.GEditorOptions.annotationHandles.rotate.distance = 16 * e),
                     (i.GEditorOptions.annotationHandles.resize.size = 10 * e),
                     (i.GEditorOptions.annotationHandles.resize.outlineWidth = null),
-                    (i.GEditorOptions.annotationHandles.resize.outsideStroke = !1),
+                    (i.GEditorOptions.annotationHandles.resize.outsideStroke = false),
                     (i.GEditorOptions.annotationHandles.resize.shadowColor = null),
                     (i.GEditorOptions.annotationHandles.rectangle.size = 8 * e),
                     (i.GEditorOptions.annotationHandles.rectangle.outlineWidth = null),
-                    (i.GEditorOptions.annotationHandles.rectangle.outsideStroke = !1),
+                    (i.GEditorOptions.annotationHandles.rectangle.outsideStroke = false),
                     (i.GEditorOptions.annotationHandles.rectangle.shadowColor = null),
                     (i.GEditorOptions.annotationHandles.polygon.size = 8 * e),
                     (i.GEditorOptions.annotationHandles.polygon.outlineWidth = null),
-                    (i.GEditorOptions.annotationHandles.polygon.outsideStroke = !1),
+                    (i.GEditorOptions.annotationHandles.polygon.outsideStroke = false),
                     (i.GEditorOptions.annotationHandles.polygon.shadowColor = null),
                     (i.GEditorOptions.annotationHandles.ellipse.size = 8 * e),
                     (i.GEditorOptions.annotationHandles.ellipse.outlineWidth = null),
-                    (i.GEditorOptions.annotationHandles.ellipse.outsideStroke = !1),
+                    (i.GEditorOptions.annotationHandles.ellipse.outsideStroke = false),
                     (i.GEditorOptions.annotationHandles.ellipse.shadowColor = null),
                     (i.GEditorOptions.annotationHandles.path.node.size = 10 * e),
                     (i.GEditorOptions.annotationHandles.path.node.outlineWidth = null),
@@ -1826,11 +1826,11 @@ module.exports = function (e, t, n) {
             (Je.prototype._updateLayout = function () {
                 ($("body").toggleClass("g-touch", this.isTouchEnabled()),
                     this.isTouchEnabled() ||
-                        (this._leftSidebars && this._leftSidebars.getHtmlElement().toggleClass("bring-to-front", !1),
-                        this._rightSidebars && this._rightSidebars.getHtmlElement().toggleClass("bring-to-front", !1),
-                        this._assistantBar && this._assistantBar.getHtmlElement().toggleClass("bring-to-front", !1)),
+                        (this._leftSidebars && this._leftSidebars.getHtmlElement().toggleClass("bring-to-front", false),
+                        this._rightSidebars && this._rightSidebars.getHtmlElement().toggleClass("bring-to-front", false),
+                        this._assistantBar && this._assistantBar.getHtmlElement().toggleClass("bring-to-front", false)),
                     this._initialized &&
-                        (this._leftSidebars.getActiveSidebar() || this._leftSidebars.setActiveSidebar(G.ID),
+                        (this._leftSidebars.getActiveSidebar() || this._leftSidebars.setActiveSidebar(GOutlineSidebar.ID),
                         this._rightSidebars.getActiveSidebar() || this._rightSidebars.setActiveSidebar(P.ID),
                         this._leftSidebars.setActiveTouchTool(null),
                         this._rightSidebars.setActiveTouchTool(null),
@@ -1850,13 +1850,13 @@ module.exports = function (e, t, n) {
                             (l.DESIGNER.GUIDELINE_COLOR
                                 ? (i.GEditorOptions.guideLineColor = l.DESIGNER.GUIDELINE_COLOR)
                                 : (i.GEditorOptions.guideLineColor =
-                                      "light" === e ? new a.GRGBColor([107, 156, 228]) : new a.GRGBColor([227, 0, 97])),
+                                      "light" === e ? new GObject.GRGBColor([107, 156, 228]) : new GObject.GRGBColor([227, 0, 97])),
                                 l.DESIGNER.GUIDELINEHINT_COLOR
                                     ? (i.GEditorOptions.guideLineHintColor = l.DESIGNER.GUIDELINEHINT_COLOR)
                                     : (i.GEditorOptions.guideLineHintColor = "light" === e ? "blue" : "#F790B6"),
                                 l.DESIGNER.DISTANCEHELPER_COLOR && (i.GEditorOptions.distanceHelperColor = l.DESIGNER.DISTANCEHELPER_COLOR),
                                 l.DESIGNER.HIGHLIGHTOUTLINE_COLOR &&
-                                    (a.GPaintContext.prototype.highlightOutlineColor = new a.GRGBColor([197, 17, 98])));
+                                    (GObject.GPaintContext.prototype.highlightOutlineColor = new GObject.GRGBColor([197, 17, 98])));
                             for (var n = 0; n < t.length; ++n) {
                                 var o = t[n].getView();
                                 o && (o.setRulers(!o.hasRulers()), o.setRulers(!o.hasRulers()));
@@ -1869,22 +1869,22 @@ module.exports = function (e, t, n) {
                 var e = this._windows.getActiveWindow();
                 (e &&
                     e.getView() &&
-                    r.GPlatform.scheduleFrame(
+                    GPlatform.GPlatform.scheduleFrame(
                         function () {
-                            var t = a.GRGBColor.BLACK,
+                            var t = GObject.GRGBColor.BLACK,
                                 n = getComputedStyle(this._windows.getHtmlElement()[0]).getPropertyValue("background-color"),
-                                o = a.GRGBColor.fromCSSColor(n);
+                                o = GObject.GRGBColor.fromCSSColor(n);
                             if (o) {
                                 var i = o.toScreen();
-                                t = (299 * i[0] + 587 * i[1] + 114 * i[2]) / 1e3 >= 128 ? a.GRGBColor.BLACK : a.GRGBColor.WHITE;
+                                t = (299 * i[0] + 587 * i[1] + 114 * i[2]) / 1e3 >= 128 ? GObject.GRGBColor.BLACK : GObject.GRGBColor.WHITE;
                             }
-                            ((a.GPaintContext.prototype.labelColor = t), e && e.getView() && e.getView().invalidate());
+                            ((GObject.GPaintContext.prototype.labelColor = t), e && e.getView() && e.getView().invalidate());
                         }.bind(this)
                     ),
                     this.relayout());
             }),
             (Je.prototype._updateTitle = async function () {
-                let { saveToSessionHistory: e = !0 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                let { saveToSessionHistory: e = true } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 var t = "";
                 let n = ke.DESIGNER.TITLE;
                 var o = gContainer.getRuntime() === Z.Runtime.Browser || gContainer.getRuntime() === Z.Runtime.PWA;
@@ -1898,7 +1898,7 @@ module.exports = function (e, t, n) {
                             e.getOwner() &&
                             !e.isDocumentFromTemplate() &&
                             ((n = ""),
-                            (t = a.GLocale.get(new a.GLocaleKey("GDesigner", "text.design-by"))
+                            (t = GObject.GLocale.get(new GObject.GLocaleKey("GDesigner", "text.design-by"))
                                 .replace("%name", e.getOwner().name)
                                 .replace("%appname", ke.DESIGNER.TITLE))),
                         o)
@@ -1921,7 +1921,7 @@ module.exports = function (e, t, n) {
                                       : window.history.pushState(null, "Title", "/?d=" + t.getId())));
                     }
                 }
-                ((t += n), (document.title = (0, u.decodeHTML)(t)));
+                ((t += n), (document.title = (0, GSaveAction.decodeHTML)(t)));
             }),
             (Je.prototype.addNotification = function (e, t) {
                 this.hasEventListeners(de) && this.trigger(new de(e, t));
@@ -1931,96 +1931,96 @@ module.exports = function (e, t, n) {
                     n > 0 && (t += "+");
                     var o = e[n];
                     if ("number" == typeof o)
-                        switch ((o = r.GKey.transformKey(o))) {
-                            case r.GKey.Constant.SPACE:
+                        switch ((o = GPlatform.GKey.transformKey(o))) {
+                            case GPlatform.GKey.Constant.SPACE:
                                 t += "space";
                                 break;
-                            case r.GKey.Constant.ENTER:
+                            case GPlatform.GKey.Constant.ENTER:
                                 t += "enter";
                                 break;
-                            case r.GKey.Constant.TAB:
+                            case GPlatform.GKey.Constant.TAB:
                                 t += "tab";
                                 break;
-                            case r.GKey.Constant.BACKSPACE:
+                            case GPlatform.GKey.Constant.BACKSPACE:
                                 t += "backspace";
                                 break;
-                            case r.GKey.Constant.CONTROL:
+                            case GPlatform.GKey.Constant.CONTROL:
                                 t += "ctrl";
                                 break;
-                            case r.GKey.Constant.SHIFT:
+                            case GPlatform.GKey.Constant.SHIFT:
                                 t += "shift";
                                 break;
-                            case r.GKey.Constant.ALT_LEFT:
-                            case r.GKey.Constant.ALT_RIGHT:
+                            case GPlatform.GKey.Constant.ALT_LEFT:
+                            case GPlatform.GKey.Constant.ALT_RIGHT:
                                 t += "alt";
                                 break;
-                            case r.GKey.Constant.LEFT:
+                            case GPlatform.GKey.Constant.LEFT:
                                 t += "left";
                                 break;
-                            case r.GKey.Constant.UP:
+                            case GPlatform.GKey.Constant.UP:
                                 t += "up";
                                 break;
-                            case r.GKey.Constant.RIGHT:
+                            case GPlatform.GKey.Constant.RIGHT:
                                 t += "right";
                                 break;
-                            case r.GKey.Constant.DOWN:
+                            case GPlatform.GKey.Constant.DOWN:
                                 t += "down";
                                 break;
-                            case r.GKey.Constant.PAGE_UP:
+                            case GPlatform.GKey.Constant.PAGE_UP:
                                 t += "pageup";
                                 break;
-                            case r.GKey.Constant.PAGE_DOWN:
+                            case GPlatform.GKey.Constant.PAGE_DOWN:
                                 t += "pagedown";
                                 break;
-                            case r.GKey.Constant.HOME:
+                            case GPlatform.GKey.Constant.HOME:
                                 t += "home";
                                 break;
-                            case r.GKey.Constant.END:
+                            case GPlatform.GKey.Constant.END:
                                 t += "end";
                                 break;
-                            case r.GKey.Constant.INSERT:
+                            case GPlatform.GKey.Constant.INSERT:
                                 t += "ins";
                                 break;
-                            case r.GKey.Constant.DELETE:
+                            case GPlatform.GKey.Constant.DELETE:
                                 t += "del";
                                 break;
-                            case r.GKey.Constant.COMMAND:
+                            case GPlatform.GKey.Constant.COMMAND:
                                 t += "meta";
                                 break;
-                            case r.GKey.Constant.F1:
+                            case GPlatform.GKey.Constant.F1:
                                 t += "f1";
                                 break;
-                            case r.GKey.Constant.F2:
+                            case GPlatform.GKey.Constant.F2:
                                 t += "f2";
                                 break;
-                            case r.GKey.Constant.F3:
+                            case GPlatform.GKey.Constant.F3:
                                 t += "f3";
                                 break;
-                            case r.GKey.Constant.F4:
+                            case GPlatform.GKey.Constant.F4:
                                 t += "f4";
                                 break;
-                            case r.GKey.Constant.F5:
+                            case GPlatform.GKey.Constant.F5:
                                 t += "f5";
                                 break;
-                            case r.GKey.Constant.F6:
+                            case GPlatform.GKey.Constant.F6:
                                 t += "f6";
                                 break;
-                            case r.GKey.Constant.F7:
+                            case GPlatform.GKey.Constant.F7:
                                 t += "f7";
                                 break;
-                            case r.GKey.Constant.F8:
+                            case GPlatform.GKey.Constant.F8:
                                 t += "f8";
                                 break;
-                            case r.GKey.Constant.F9:
+                            case GPlatform.GKey.Constant.F9:
                                 t += "f9";
                                 break;
-                            case r.GKey.Constant.F10:
+                            case GPlatform.GKey.Constant.F10:
                                 t += "f10";
                                 break;
-                            case r.GKey.Constant.F11:
+                            case GPlatform.GKey.Constant.F11:
                                 t += "f11";
                                 break;
-                            case r.GKey.Constant.F12:
+                            case GPlatform.GKey.Constant.F12:
                                 t += "f12";
                                 break;
                             default:
@@ -2031,12 +2031,12 @@ module.exports = function (e, t, n) {
                 return t;
             }),
             (Je.prototype.isGravitIME = function (e) {
-                return e && e.className === r.GSceneWidget.GRAVIT_IME;
+                return e && e.className === GPlatform.GSceneWidget.GRAVIT_IME;
             }),
             (Je.prototype.hasModifiedDocuments = function () {
-                for (var e = !1, t = this.getDocuments(), n = 0; n < t.length; ++n)
+                for (var e = false, t = this.getDocuments(), n = 0; n < t.length; ++n)
                     if (t[n].isModified()) {
-                        e = !0;
+                        e = true;
                         break;
                     }
                 return e;
@@ -2054,13 +2054,13 @@ module.exports = function (e, t, n) {
                 );
             }),
             (Je.prototype.getCanvasCenter = function () {
-                var e = a.GPaintCanvas.getScreenDPI(),
+                var e = GObject.GPaintCanvas.getScreenDPI(),
                     t = this.getCanvasWidth() / 2,
                     n = this.getCanvasHeight() / 2;
                 return (
                     (t += "none" !== $("#left-sidebars").css("display") ? $("#left-sidebars").width() : 0),
                     (n += this.getHeader().getHeight() + this.getToolbar().getHeight()),
-                    new a.GPoint(t * e, n * e)
+                    new GObject.GPoint(t * e, n * e)
                 );
             }),
             (Je.prototype.getStylePreview = function (e, t) {
@@ -2068,28 +2068,28 @@ module.exports = function (e, t, n) {
                     ? t
                         ? this._stylesPreview[e.getReferenceId()].textBitmap
                         : this._stylesPreview[e.getReferenceId()].bitmap
-                    : this.createNewStylePreview(e, !0, t);
+                    : this.createNewStylePreview(e, true, t);
             }),
             (Je.prototype.createStyleElement = function (e, t) {
-                var n = new a.GRectangle(0, 0, 50, 50);
-                if (t && $.inArray(a.GStylable.PropertySet.Text, e.getProperty("ps")) >= 0) {
-                    var o = new a.GText();
+                var n = new GObject.GRectangle(0, 0, 50, 50);
+                if (t && $.inArray(GObject.GStylable.PropertySet.Text, e.getProperty("ps")) >= 0) {
+                    var o = new GObject.GText();
                     (o.setText("Ab"), o.assignStyleFrom(e), o.setProperty("_tfi", "20"), o.setBounds(7, 10, 50, 50), n.appendChild(o));
                 } else
                     (n.assignStyleFrom(e),
-                        $.inArray(a.GStylable.PropertySet.FillPaintLayers, e.getProperty("ps")) < 0 &&
-                            $.inArray(a.GStylable.PropertySet.BorderPaintLayers, e.getProperty("ps")) < 0 &&
-                            n.getPaintLayers().appendChild(new a.GStylable.FillPaintLayer(new a.GRGBColor([235, 235, 235]), 1)));
+                        $.inArray(GObject.GStylable.PropertySet.FillPaintLayers, e.getProperty("ps")) < 0 &&
+                            $.inArray(GObject.GStylable.PropertySet.BorderPaintLayers, e.getProperty("ps")) < 0 &&
+                            n.getPaintLayers().appendChild(new GObject.GStylable.FillPaintLayer(new GObject.GRGBColor([235, 235, 235]), 1)));
                 return n;
             }),
             (Je.prototype.createNewStylePreview = function (e, t, n) {
-                var o = this.createStyleElement(e, !1),
-                    i = this.createStyleElement(e, !0);
+                var o = this.createStyleElement(e, false),
+                    i = this.createStyleElement(e, true);
                 if (!gDesigner.getActiveDocument()) return null;
                 var r = gDesigner.getActiveDocument().getEditor().getSelection() || [];
                 r.length > 0 && r[0].appendChild(i);
-                var s = o.toBitmap().toImageDataUrl(a.GBitmap.ImageType.PNG),
-                    l = i.toBitmap().toImageDataUrl(a.GBitmap.ImageType.PNG);
+                var s = o.toBitmap().toImageDataUrl(GObject.GBitmap.ImageType.PNG),
+                    l = i.toBitmap().toImageDataUrl(GObject.GBitmap.ImageType.PNG);
                 return (
                     r.length > 0 && r[0].removeChild(i),
                     t &&
@@ -2149,7 +2149,7 @@ module.exports = function (e, t, n) {
                             uid: t.getUID(),
                         }));
                 else {
-                    const e = a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.anonymous-user")),
+                    const e = GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.anonymous-user")),
                         n = (t && t.getFullUserName()) || e;
                     i.GEditorOptions.userConfig = { userName: n, uid: -1 };
                 }
@@ -2164,7 +2164,7 @@ module.exports = function (e, t, n) {
                     });
             }),
             (Je.prototype._beforeInstallUpdate = function (e) {
-                this._reloading = !0;
+                this._reloading = true;
             }),
             (Je.prototype._updateDataLayerWithLicenseData = function () {
                 if (this._user && "undefined" != typeof dataLayer) {
@@ -2174,17 +2174,17 @@ module.exports = function (e, t, n) {
                         t = Math.floor(e.getTime() / 1e3),
                         n = r.getCreationDate() || new Date(0),
                         o = Math.floor(n.getTime() / 1e3),
-                        i = s.DateAPI.diff(n, e),
-                        a = s.DateAPI.millisecondsToDays(i);
-                    (s.DateAPI.eq(n, new Date(0)) && (o = "0000000000"),
-                        s.DateAPI.eq(e, new Date(0)) && ((a = 0), (t = "0000000000")),
+                        i = designerConfig.DateAPI.diff(n, e),
+                        a = designerConfig.DateAPI.millisecondsToDays(i);
+                    (designerConfig.DateAPI.eq(n, new Date(0)) && (o = "0000000000"),
+                        designerConfig.DateAPI.eq(e, new Date(0)) && ((a = 0), (t = "0000000000")),
                         dataLayer.push({ expirationDate: t }),
                         dataLayer.push({ licenseDuration: a }),
                         dataLayer.push({ creationDate: o }));
                 }
             }),
             (Je.prototype._licenseChangedEvent = async function (e) {
-                (e.license.isDefault() || ((this._enabledSubscriptions = !0), gContainer.setProperty("enabled_subscriptions", !0)),
+                (e.license.isDefault() || ((this._enabledSubscriptions = true), gContainer.setProperty("enabled_subscriptions", true)),
                     "undefined" != typeof dataLayer &&
                         (this._utm && this._utm.forEach((e, t) => dataLayer.push({ [t]: e })),
                         this._updateDataLayerWithLicenseData(),
@@ -2193,26 +2193,26 @@ module.exports = function (e, t, n) {
                         !this.isEnabledProFeatures("offline") &&
                         this.reload({
                             icon: "clock",
-                            title: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.license-offline-title")),
-                            subtitle: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.license-offline-subtitle")),
-                            footer: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.license-offline-footer"))
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.license-offline-title")),
+                            subtitle: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.license-offline-subtitle")),
+                            footer: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.license-offline-footer"))
                                 .replace(
                                     "%close",
                                     $("<span/>")
                                         .addClass("link")
-                                        .text(a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.license-offline-footer-highlight")))
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.license-offline-footer-highlight")))
                                         .prop("outerHTML")
                                 )
                                 .replace("%time", 5),
                             buttons: [
                                 {
-                                    label: a.GLocale.get(new a.GLocaleKey("GLocale", "ok")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")),
                                     onclick: (e) => e.gDialog("close"),
                                 },
                             ],
                             attachTimer: (e) => {
                                 const t = () => {
-                                    ((this._reloading = !1), this.clearCountdown(e), $(window).off("online", t));
+                                    ((this._reloading = false), this.clearCountdown(e), $(window).off("online", t));
                                 };
                                 (navigator.onLine && t(), $(window).on("online", t));
                             },
@@ -2224,7 +2224,7 @@ module.exports = function (e, t, n) {
                         .toggleClass("pro-subscription", e.license.isPro() && !e.license.isExpired())
                         .toggleClass("trial-expired", e.license.isTrial() && e.license.isExpired()),
                     this._toggleAdditionalSubscriptionClasses(e.license),
-                    this.isEnabledProFeatures() || this.setTouchEnabled(!1),
+                    this.isEnabledProFeatures() || this.setTouchEnabled(false),
                     this._updateState());
             }),
             (Je.prototype._toggleAdditionalSubscriptionClasses = function () {}),
@@ -2232,17 +2232,17 @@ module.exports = function (e, t, n) {
                 if (this.isEnabledSubscriptions() && !e) {
                     if (this.getDocuments().some((e) => e.isModified()))
                         return (
-                            ee.alert(a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.save-before-logging-out"))),
+                            GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.save-before-logging-out"))),
                             Promise.reject(void 0)
                         );
                 }
                 return (
                     Ce.clear(),
                     new Promise(async (e, n) => {
-                        (await (0, u._tryAndCatch)(() => Oe.signout()),
+                        (await (0, GSaveAction._tryAndCatch)(() => Oe.signout()),
                             (this._user = null),
                             this.hasEventListeners(le) && this.trigger(new le(null)),
-                            this.isEnabledSubscriptions() && (t || ((this._reloading = !0), location.reload())),
+                            this.isEnabledSubscriptions() && (t || ((this._reloading = true), location.reload())),
                             e());
                     })
                 );
@@ -2254,8 +2254,8 @@ module.exports = function (e, t, n) {
                 let { title: t, subtitle: n, icon: o, footer: i, buttons: a, attachTimer: r } = e;
                 this._initialized &&
                     (this._reloading ||
-                        ((this._reloading = !0),
-                        ee
+                        ((this._reloading = true),
+                        GSystemDialog
                             .custom({
                                 icon: o,
                                 title: t,
@@ -2263,7 +2263,7 @@ module.exports = function (e, t, n) {
                                 footer: i,
                                 buttons: a,
                                 closeCallback: () => {
-                                    const e = this.createCountdown(() => this.signout(!0), 3e5);
+                                    const e = this.createCountdown(() => this.signout(true), 3e5);
                                     r && r(e);
                                 },
                             })
@@ -2275,7 +2275,7 @@ module.exports = function (e, t, n) {
             }),
             (Je.prototype.createCountdown = function (e, t) {
                 let n = null;
-                const o = s.DateAPI.addTime(new Date(), t),
+                const o = designerConfig.DateAPI.addTime(new Date(), t),
                     i = setInterval(() => {
                         const e = o - Date.now();
                         if (e < 0) return (clearInterval(i), void (n && n.remove()));
@@ -2283,7 +2283,7 @@ module.exports = function (e, t, n) {
                             r = Math.floor((e % 6e4) / 1e3);
                         (n || (n = $("<time></time>").attr("data-interval", i).addClass("g-timer").appendTo($("body"))),
                             n.text(
-                                a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.countdown-timer"))
+                                GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.countdown-timer"))
                                     .replace("%minutes", t)
                                     .replace("%seconds", r)
                             ));
@@ -2294,7 +2294,7 @@ module.exports = function (e, t, n) {
             (Je.prototype.openDeactivatedUserDialog = async function (e) {
                 const t = $(
                     "<div>".concat(
-                        a.GLocale.get(new a.GLocaleKey("GDocument", "text.account-deactivated"))
+                        GObject.GLocale.get(new GObject.GLocaleKey("GDocument", "text.account-deactivated"))
                             .replace("%app", ke.DESIGNER.TITLE)
                             .replace("%name", e.getFullUserName() || e.getEmail()),
                         "</div>"
@@ -2303,9 +2303,9 @@ module.exports = function (e, t, n) {
                 (t.find("a").on("click", (t) => {
                     t.preventDefault();
                     let n = $(t.target).closest(".g-dialog-content");
-                    return (Q.resendEmailConfirmation(e).then(() => n.gDialog("close")), !1);
+                    return (Q.resendEmailConfirmation(e).then(() => n.gDialog("close")), false);
                 }),
-                    ee.custom({
+                    GSystemDialog.custom({
                         className: "g-deactivated-user-dialog",
                         subtitle: t,
                         icon: "email",
@@ -2335,7 +2335,7 @@ module.exports = function (e, t, n) {
                             if (!n || (this._user && $e.equals(this._user, n))) {
                                 if (this._user && n && !n.isDeactivated()) {
                                     const e = { stats: void 0 };
-                                    a.GUtil.equals(Object.assign({}, this._user, e), Object.assign({}, n, e), !0) ||
+                                    GObject.GUtil.equals(Object.assign({}, this._user, e), Object.assign({}, n, e), true) ||
                                         (this.hasEventListeners(ce) && this.trigger(new ce(n)));
                                 }
                             } else
@@ -2389,9 +2389,9 @@ module.exports = function (e, t, n) {
                 return this._env;
             }),
             (Je.prototype.hasSynchronizingDocuments = function () {
-                for (var e = !1, t = this.getDocuments(), n = 0; n < t.length; ++n)
+                for (var e = false, t = this.getDocuments(), n = 0; n < t.length; ++n)
                     if (t[n].isSynchronizing()) {
-                        e = !0;
+                        e = true;
                         break;
                     }
                 return e;
@@ -2401,18 +2401,18 @@ module.exports = function (e, t, n) {
                     o,
                     i = this.getActiveDocument();
                 if (!i || !(o = i.getEditor().getSelectionBBox())) {
-                    n = !0;
+                    n = true;
                     var r = e.getScene();
                     r && (o = r.getPaintBBox());
                 }
-                var s = o && !o.isEmpty() ? o.getSide(a.GRect.Side.CENTER) : new a.GPoint(0, 0);
+                var s = o && !o.isEmpty() ? o.getSide(GObject.GRect.Side.CENTER) : new GObject.GPoint(0, 0);
                 if (n && !e.getViewConfiguration().multiPageView) {
                     var l = e.getViewTransform().mapPoint(this.getCanvasCenter());
                     isNaN(l.getX()) || isNaN(l.getY()) || (s = l);
                 }
                 if (e.getViewConfiguration().multiPageView) {
                     var c = e.getScene().getActivePage();
-                    c && (s = s.add(c.getPosition(!0)));
+                    c && (s = s.add(c.getPosition(true)));
                 }
                 e.zoomAtCenter(s, t);
             }),
@@ -2455,65 +2455,65 @@ module.exports = function (e, t, n) {
                     : Promise.resolve();
             }),
             (Je.prototype.canUnloadDocument = function (e) {
-                let { changeActiveDocument: t = !0 } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                let { changeActiveDocument: t = true } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 return new Promise((n, o) => {
-                    if (!e.isModified() && !e.isSynchronizing()) return n(!0);
+                    if (!e.isModified() && !e.isSynchronizing()) return n(true);
                     (t && this.getActiveDocument() !== e && this.activateDocument(e),
-                        gDesigner.canExecuteAction(Pe.ID, [e]) || n(!0),
-                        ee.advanced({
-                            title: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.document-modified")).replace(
+                        gDesigner.canExecuteAction(Pe.ID, [e]) || n(true),
+                        GSystemDialog.advanced({
+                            title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.document-modified")).replace(
                                 "%title",
                                 e.getTitle()
                             ),
                             closeCallback: (e) => e && o({ documentStatus: De.SaveCancelled }),
                             buttons: [
                                 {
-                                    label: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.dont-save")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.dont-save")),
                                     onclick: () => {
-                                        n(!0);
+                                        n(true);
                                     },
-                                    closeOnClick: !0,
+                                    closeOnClick: true,
                                     position: "left",
                                     shortcut: "n",
                                 },
                                 {
-                                    label: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.cancel")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.cancel")),
                                     onclick: () => o({ documentStatus: De.SaveCancelled }),
-                                    closeOnClick: !0,
+                                    closeOnClick: true,
                                     shortcut: "esc",
                                 },
                                 {
-                                    label: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.save")) + "...",
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.save")) + "...",
                                     onclick: () => {
-                                        n(!1);
+                                        n(false);
                                     },
-                                    shortcut: this._shortcutToMouseTrapShortcut(r.GKey.Constant.ENTER),
-                                    highlighted: !0,
-                                    closeOnClick: !0,
+                                    shortcut: this._shortcutToMouseTrapShortcut(GPlatform.GKey.Constant.ENTER),
+                                    highlighted: true,
+                                    closeOnClick: true,
                                 },
                             ],
                         }));
                 });
             }),
             (Je.prototype.exportSwatches = function (e) {
-                for (var t = this.getAllSwatches(e), n = new a.GSwatches(), o = 0; o < t.length; ++o) {
+                for (var t = this.getAllSwatches(e), n = new GObject.GSwatches(), o = 0; o < t.length; ++o) {
                     var i = t[o].clone();
                     n.appendChild(i);
                 }
-                var r = pako.gzip(a.GNode.serialize(n), { level: 9 }),
+                var r = pako.gzip(GObject.GNode.serialize(n), { level: 9 }),
                     s = this.getDefaultStorage();
                 if (s.canPromptSave())
                     s.savePrompt(
                         null,
                         [{ ext: "gvswatch", mime: "application/gzip" }],
                         (e) => {
-                            (e.setSaveCounterMeasureEnabled(!0), e.write(r), e.setSaveCounterMeasureEnabled(!1));
+                            (e.setSaveCounterMeasureEnabled(true), e.write(r), e.setSaveCounterMeasureEnabled(false));
                         },
                         null
                     );
                 else if (s.canDownload()) {
                     s.download("Swatches.gvswatch", (e) => {
-                        e && (e.setSaveCounterMeasureEnabled(!0), e.write(r), e.setSaveCounterMeasureEnabled(!1));
+                        e && (e.setSaveCounterMeasureEnabled(true), e.write(r), e.setSaveCounterMeasureEnabled(false));
                     });
                 }
             }),
@@ -2527,31 +2527,31 @@ module.exports = function (e, t, n) {
                             try {
                                 for (
                                     var o = this.getAllSwatches(e),
-                                        i = a.GNode.deserialize(pako.ungzip(t, { to: "string" })),
+                                        i = GObject.GNode.deserialize(pako.ungzip(t, { to: "string" })),
                                         r = [],
                                         s = i.getFirstChild();
                                     null !== s;
                                     s = s.getNext()
                                 ) {
-                                    for (var l = !0, c = 0; c < o.length; ++c)
-                                        if (a.GUtil.equals(s, o[c])) {
-                                            l = !1;
+                                    for (var l = true, c = 0; c < o.length; ++c)
+                                        if (GObject.GUtil.equals(s, o[c])) {
+                                            l = false;
                                             break;
                                         }
                                     l && r.push(s.clone());
                                 }
-                                if (((o = o.concat(r)), n)) this.setSwatches(e, o, !0);
+                                if (((o = o.concat(r)), n)) this.setSwatches(e, o, true);
                                 else {
                                     for (c = 0; c < r.length; ++c) this._addGlobalSwatch(r[c]);
                                     this.setSwatches(e, this._swatches[e]);
                                 }
                             } catch (e) {
                                 (console.warn("error importing swatches: " + e),
-                                    ee.alert(a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.fail-import-swatch"))));
+                                    GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.fail-import-swatch"))));
                             }
                         });
                     },
-                    !1
+                    false
                 );
             }),
             (Je.prototype.getFontsPath = function () {
@@ -2564,7 +2564,7 @@ module.exports = function (e, t, n) {
                         a = function (e) {
                             return new Promise(function (n, o) {
                                 var a = new XMLHttpRequest();
-                                (a.open("HEAD", t.getAssetsURL() + "" + e, !0),
+                                (a.open("HEAD", t.getAssetsURL() + "" + e, true),
                                     (a.onload = function () {
                                         this.status >= 200 && this.status < 400
                                             ? ((i[e] = parseInt(a.getResponseHeader("Content-Length"))), n())
@@ -2605,7 +2605,7 @@ module.exports = function (e, t, n) {
                         .addClass("fonts-download-progress")
                         .append(
                             $("<span/>")
-                                .text(a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.downloading-fonts")))
+                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.downloading-fonts")))
                                 .addClass("info")
                         )
                         .append($("<span/>").addClass("count").text(" (0%)"))
@@ -2613,7 +2613,7 @@ module.exports = function (e, t, n) {
                     d = function (e) {
                         (c
                             .find(".info")
-                            .text(a.GLocale.get(new a.GLocaleKey("GCommonNames", e ? "text.fonts-downloaded" : "text.error-downloading"))),
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", e ? "text.fonts-downloaded" : "text.error-downloading"))),
                             c.find(".count").remove(),
                             c.append(
                                 $("<span/>")
@@ -2631,7 +2631,7 @@ module.exports = function (e, t, n) {
                         var s = function (e) {
                                 return new Promise(function (t, a) {
                                     var r = new XMLHttpRequest();
-                                    (r.open("GET", n.getAssetsURL() + "" + e, !0),
+                                    (r.open("GET", n.getAssetsURL() + "" + e, true),
                                         (r.responseType = "blob"),
                                         (r.onprogress = function (t) {
                                             ((i[e] = t.loaded),
@@ -2686,14 +2686,14 @@ module.exports = function (e, t, n) {
                         }),
                             Promise.all(l).then(
                                 () => {
-                                    (d(!0), t(r));
+                                    (d(true), t(r));
                                 },
                                 (e) => {
-                                    (console.log(e), d(!1), a());
+                                    (console.log(e), d(false), a());
                                 }
                             ));
                     } catch (e) {
-                        (console.log(e), d(!1), a());
+                        (console.log(e), d(false), a());
                     }
                 });
             }),
@@ -2710,7 +2710,7 @@ module.exports = function (e, t, n) {
                 this._signupOptions = e;
             }),
             (Je.prototype.enterpriseLoginForm = function () {
-                return !1;
+                return false;
             }),
             (Je.prototype.setEnterpriseLoginForm = function (e) {}),
             (Je.prototype.runDeepLink = async function (e) {
@@ -2721,7 +2721,7 @@ module.exports = function (e, t, n) {
                         if (0 === e.indexOf("purchase")) {
                             let o;
                             return (
-                                t.hasOwnProperty("newuser") && (this._showCreateAccount = !0),
+                                t.hasOwnProperty("newuser") && (this._showCreateAccount = true),
                                 ke.PURCHASE.URL_TO_PRODUCT && (o = ke.PURCHASE.URL_TO_PRODUCT[e]),
                                 o &&
                                     (Object.assign(t, { productId: o }),
@@ -2749,12 +2749,12 @@ module.exports = function (e, t, n) {
                                             e.isEmailVerified() &&
                                             this.executeWhenReady(() => {
                                                 const e = this.getLicense();
-                                                (ee.custom({
-                                                    title: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.activating-your-account")),
+                                                (GSystemDialog.custom({
+                                                    title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.activating-your-account")),
                                                     subtitle:
                                                         (e.isPro() || e.isTrial()) &&
-                                                        a.GLocale.get(
-                                                            new a.GLocaleKey("GCommonNames", "text.activating-your-account-subtitle")
+                                                        GObject.GLocale.get(
+                                                            new GObject.GLocaleKey("GCommonNames", "text.activating-your-account-subtitle")
                                                         ),
                                                     icon: "ok",
                                                 }),
@@ -2763,23 +2763,23 @@ module.exports = function (e, t, n) {
                                     })
                                     .catch((e) => {
                                         if (!n) return Promise.reject(e);
-                                        this.executeWhenReady(() => ee.error(e));
+                                        this.executeWhenReady(() => GSystemDialog.error(e));
                                     });
                             }
                             if ("account" === e)
                                 n &&
                                     !this.isAnonymous() &&
                                     this.executeWhenReady(() => {
-                                        new Se(n).open();
+                                        new GProfileDialog(n).open();
                                     });
                             else if ("purchases" === e) {
                                 n &&
                                     (await Oe.hasPurchases()) &&
                                     this.executeWhenReady(() => {
-                                        new Se(n, "purchase").open();
+                                        new GProfileDialog(n, "purchase").open();
                                     });
-                            } else if ("newuser" === e) this._showCreateAccount = !0;
-                            else if ("enterprise" === e) n || (this._enterpriseLoginForm = !0);
+                            } else if ("newuser" === e) this._showCreateAccount = true;
+                            else if ("enterprise" === e) n || (this._enterpriseLoginForm = true);
                             else if ("reset_trial" === e) {
                                 const e = () => {
                                     Oe.license.resetTrial().then(() => gDesigner.requestLicenseUpdate());
@@ -2795,10 +2795,10 @@ module.exports = function (e, t, n) {
                                     Q.activateCoupon(t.procoupon);
                                 });
                             else if ("annot" === e)
-                                s.HAS_ANNOTATIONS &&
+                                designerConfig.HAS_ANNOTATIONS &&
                                     this.executeWhenReady(() => {
                                         const { annot: e } = t;
-                                        (this.setPartVisible(F.RightSidebars, !0), this._rightSidebars.setActiveSidebar(D.ID));
+                                        (this.setPartVisible(F.RightSidebars, true), this._rightSidebars.setActiveSidebar(GAnnotationsSidebar.ID));
                                     });
                             else if (e === Z.DeepLinking.CreateShare && "true" === t[Z.DeepLinking.CreateShare])
                                 new h.default()
@@ -2841,18 +2841,18 @@ module.exports = function (e, t, n) {
                 ((e = $.extend({ campaign: "profeature" }, e)),
                     this.isAnonymous()
                         ? new re(() => {}).open({
-                              anonymous: !0,
-                              signup: !0,
-                              animate: !0,
+                              anonymous: true,
+                              signup: true,
+                              animate: true,
                               options: e,
                           })
                         : this.openProOffer(e));
             }),
             (Je.prototype.handleShareFilePROFeatureInterruption = function () {
-                this.handlePROFeatureInterruption({ shareFile: !0 });
+                this.handlePROFeatureInterruption({ shareFile: true });
             }),
             (Je.prototype._applicationStatusEvent = function (e) {
-                e.status === Te.Status.Ready && (this._ready = !0);
+                e.status === Te.Status.Ready && (this._ready = true);
             }),
             (Je.prototype.executeWhenReady = function (e) {
                 return new h.default()
@@ -2868,7 +2868,7 @@ module.exports = function (e, t, n) {
             }),
             (Je.prototype.openPaymentDialog = async function (e) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                return (this.getAmplitudeHelper().logEvent(s.AmplitudeData.Events.ACCOUNT_CART_SCREEN), gInAppPurchase.purchase(e, t));
+                return (this.getAmplitudeHelper().logEvent(designerConfig.AmplitudeData.Events.ACCOUNT_CART_SCREEN), gInAppPurchase.purchase(e, t));
             }),
             (Je.prototype.getWebURL = function () {
                 return gContainer.getRuntime() === Z.Runtime.Browser || gContainer.getRuntime() === Z.Runtime.PWA
@@ -2877,14 +2877,14 @@ module.exports = function (e, t, n) {
             }),
             (Je.prototype.getAssetsURL = function () {
                 return "production" === this.getEnv()
-                    ? s.prodURL
+                    ? designerConfig.prodURL
                     : this.isBeta()
-                      ? s.betaURL
+                      ? designerConfig.betaURL
                       : "lts" === this.getEnv()
-                        ? s.ltsURL
+                        ? designerConfig.ltsURL
                         : "rc" === this.getEnv()
-                          ? s.rcURL
-                          : "https://app-" + this.getEnv().split(".")[0] + "." + s.domain + "/";
+                          ? designerConfig.rcURL
+                          : "https://app-" + this.getEnv().split(".")[0] + "." + designerConfig.domain + "/";
             }),
             (Je.prototype.getTabByDocument = function (e) {
                 return this.getHeader().getWindowTab(this.getWindows().getWindow(e));
@@ -2897,7 +2897,7 @@ module.exports = function (e, t, n) {
                 t &&
                     t.length &&
                     t.forEach((t) => {
-                        this.registerShortcut(t, (t) => this._executeShortcutAction(e, t), !1);
+                        this.registerShortcut(t, (t) => this._executeShortcutAction(e, t), false);
                     });
             }),
             (Je.prototype._executeShortcutAction = function (e, t) {
@@ -2914,7 +2914,7 @@ module.exports = function (e, t, n) {
                 return !!e && Ie.includes(e);
             }),
             (Je.prototype.isEnabledProFeatures = function (e) {
-                if (!this.isEnabledSubscriptions()) return !0;
+                if (!this.isEnabledSubscriptions()) return true;
                 const t = this.getLicense();
                 return (
                     !(t.isFree() || this.isAnonymous() || t.isGuest()) &&
@@ -2929,12 +2929,12 @@ module.exports = function (e, t, n) {
                 const t = this;
                 (await (async function () {
                     e || (e = Oe.isEnabledSubscriptions());
-                    if (await e.catch(() => !1))
+                    if (await e.catch(() => false))
                         return (
-                            (t._enabledSubscriptions = !0),
+                            (t._enabledSubscriptions = true),
                             void gContainer.setProperty("enabled_subscriptions", t._enabledSubscriptions)
                         );
-                    t._enabledSubscriptions = await gContainer.getProperty("enabled_subscriptions").catch(() => !1);
+                    t._enabledSubscriptions = await gContainer.getProperty("enabled_subscriptions").catch(() => false);
                 })(),
                     await new Promise((e) => {
                         t._applicationManager = new fe(e);
@@ -2963,20 +2963,20 @@ module.exports = function (e, t, n) {
             }),
             (Je.prototype.activateTrialLicense = async function () {
                 const e = async () => {
-                    this.toggleLoading(!0);
+                    this.toggleLoading(true);
                     try {
                         await Oe.license
                             .activateTrial()
                             .then(() => gDesigner.requestLicenseUpdate())
-                            .catch((e) => ee.alert(Oe.formatError(e)));
+                            .catch((e) => GSystemDialog.alert(Oe.formatError(e)));
                     } finally {
-                        this.toggleLoading(!1);
+                        this.toggleLoading(false);
                     }
                 };
-                gDesigner.isOffline() ? xe.openUnavailableFeature(e) : e();
+                gDesigner.isOffline() ? GOfflineDialog.openUnavailableFeature(e) : e();
             }),
             (Je.prototype.requestLicenseUpdate = function () {
-                let { showProOfferInTrial: e = s.LICENSE.UPGRADEABLE } =
+                let { showProOfferInTrial: e = designerConfig.LICENSE.UPGRADEABLE } =
                     arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 return (we.reset("proOfferInTrial", e ? void 0 : gDesigner.now()), be.checkLicense());
             }),
@@ -2984,23 +2984,23 @@ module.exports = function (e, t, n) {
                 return new Date();
             }),
             (Je.prototype.isOffline = function (e) {
-                if (!navigator.onLine) return ((qe = !0), (Xe = Date.now()), !0);
-                const t = e || s.OFFLINE_CHECK_MIN_WAIT;
+                if (!navigator.onLine) return ((qe = true), (Xe = Date.now()), true);
+                const t = e || designerConfig.OFFLINE_CHECK_MIN_WAIT;
                 var n = !!qe;
                 if (Date.now() - Xe > t) {
-                    n = !1;
+                    n = false;
                     var o = new XMLHttpRequest();
                     o.onerror = function () {
-                        (console.log("OFFLINE!!!"), (n = !0));
+                        (console.log("OFFLINE!!!"), (n = true));
                     };
                     try {
-                        (o.open("HEAD", Oe.url + "/connection/test", !1),
-                            (o.withCredentials = s.CONNECTION_TEST_WITH_CREDENTIALS),
+                        (o.open("HEAD", Oe.url + "/connection/test", false),
+                            (o.withCredentials = designerConfig.CONNECTION_TEST_WITH_CREDENTIALS),
                             o.setRequestHeader("Accept", "text/plain"),
                             o.setRequestHeader("Content-Type", "text/plain"),
                             o.send());
                     } catch (e) {
-                        n = !0;
+                        n = true;
                     }
                     qe = n;
                 }
@@ -3011,18 +3011,18 @@ module.exports = function (e, t, n) {
                 if (t) {
                     var n = t.getView();
                     ((n.getViewConfiguration().paintMode = e),
-                        r.GPlatform.scheduleFrame(() => {
+                        GPlatform.GPlatform.scheduleFrame(() => {
                             (n.invalidateAndResetCache(null), this.hasEventListeners(Ae) && this.trigger(new Ae(e)));
                         }));
                 }
             }),
             (Je.prototype.isOfflineAsync = async function () {
-                if (!navigator.onLine) return ((qe = !0), (Xe = Date.now()), !0);
+                if (!navigator.onLine) return ((qe = true), (Xe = Date.now()), true);
                 var e = !!qe,
-                    t = !1;
+                    t = false;
                 if (null === Qe && Date.now() - Xe > 3100) {
                     var n = this.getHeader();
-                    n && n.showBusyIcon(a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.checking-connectivity")));
+                    n && n.showBusyIcon(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.checking-connectivity")));
                     try {
                         await (() =>
                             new Promise((n, o) => {
@@ -3030,23 +3030,23 @@ module.exports = function (e, t, n) {
                                 i = this._initialized ? 3e3 : 2e4;
                                 var a = new XMLHttpRequest();
                                 ((a.onerror = (o) => {
-                                    ((e = !0), (t = !0), n());
+                                    ((e = true), (t = true), n());
                                 }),
                                     (a.onload = (o) => {
-                                        ((e = !1), (t = !0), n());
+                                        ((e = false), (t = true), n());
                                     }));
                                 var r = (Qe = setTimeout(() => {
-                                    (r === Qe && (Qe = null), t || ((e = !0), n()));
+                                    (r === Qe && (Qe = null), t || ((e = true), n()));
                                 }, i));
                                 try {
-                                    (a.open("HEAD", Oe.url + "/connection/test", !0),
-                                        (a.withCredentials = s.CONNECTION_TEST_WITH_CREDENTIALS),
+                                    (a.open("HEAD", Oe.url + "/connection/test", true),
+                                        (a.withCredentials = designerConfig.CONNECTION_TEST_WITH_CREDENTIALS),
                                         (a.timeout = 2e3),
                                         a.setRequestHeader("Accept", "text/plain"),
                                         a.setRequestHeader("Content-Type", "text/plain"),
                                         a.send());
                                 } catch (o) {
-                                    ((e = !0), (t = !0), n());
+                                    ((e = true), (t = true), n());
                                 }
                             }))();
                     } finally {
@@ -3088,7 +3088,7 @@ module.exports = function (e, t, n) {
                     return;
                 const t = gDesigner.now().getTime();
                 gContainer.getProperty(j.closedInstallPWADialogDatePropName).then((e) => {
-                    e && t - e < s.DateAPI.daysToMilliseconds(30)
+                    e && t - e < designerConfig.DateAPI.daysToMilliseconds(30)
                         ? gContainer.setProperty(j.installPWA3timesAWeekPropName, JSON.stringify([]))
                         : gContainer.getProperty(j.installPWA3timesAWeekPropName).then((e) => {
                               let n,
@@ -3100,7 +3100,7 @@ module.exports = function (e, t, n) {
                               n || (n = []);
                               for (let e = 0, i = n.length; e < i; e++) {
                                   const i = n[e];
-                                  t - i < s.DateAPI.daysToMilliseconds(7) && o.push(i);
+                                  t - i < designerConfig.DateAPI.daysToMilliseconds(7) && o.push(i);
                               }
                               (2 === o.length &&
                                   (gDesigner._ready
@@ -3118,8 +3118,8 @@ module.exports = function (e, t, n) {
                 let e = arguments.length > 0 && void 0 !== arguments[0] && arguments[0];
                 if (!this._installPwaDialog) {
                     this._shouldWaitForPWAEvent()
-                        ? ((this._waitingPwaDialog = !0), (this._waitingPwaDialogDarkBackground = e))
-                        : ((this._installPwaDialog = new Y(e)), this._installPwaDialog.open());
+                        ? ((this._waitingPwaDialog = true), (this._waitingPwaDialogDarkBackground = e))
+                        : ((this._installPwaDialog = new GInstallPwaDialog(e)), this._installPwaDialog.open());
                 }
             }),
             (Je.prototype._shouldWaitForPWAEvent = function () {
@@ -3148,7 +3148,7 @@ module.exports = function (e, t, n) {
             }),
             (Je.prototype._initAmplitudeProperties = async function () {
                 const e = await this.getUser();
-                ((this._amplitudeHelper = new s.AmplitudeHelper(g, {
+                ((this._amplitudeHelper = new designerConfig.AmplitudeHelper(g, {
                     userId: null == e ? void 0 : e.id,
                     apiKey: window.AMPLITUDE_API_KEY,
                 })),
@@ -3175,5 +3175,5 @@ module.exports = function (e, t, n) {
                     n = (null == t ? void 0 : t.length) && t[t.length - 1];
                 return !!n && Date.now() - n.createdAt < ke.ACTIVE_USAGE_IDLE_TIME;
             }),
-            (e.exports = Je));
+            (module.exports = Je));
     };

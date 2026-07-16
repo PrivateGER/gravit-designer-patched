@@ -1,3 +1,3 @@
-module.exports = function (e, t) {
-        e.exports = jQuery;
+module.exports = function (module, exports) {
+        module.exports = jQuery;
     };

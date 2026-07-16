@@ -1,14 +1,14 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(3);
-        var o = n(1),
-            i = n(15),
-            a = n(18),
-            r = n(31);
+        require(3);
+        var GObject = require(1),
+            GPlatform = require(15),
+            GCategory = require(18),
+            r = require(31);
         function s() {}
-        (o.GObject.inherit(s, r),
+        (GObject.GObject.inherit(s, r),
             (s.ID = "view.zoom.original"),
-            (s.TITLE = new o.GLocaleKey("GOriginalViewAction", "title")),
+            (s.TITLE = new GObject.GLocaleKey("GOriginalViewAction", "title")),
             (s.prototype.getId = function () {
                 return s.ID;
             }),
@@ -16,13 +16,13 @@ module.exports = function (e, t, n) {
                 return s.TITLE;
             }),
             (s.prototype.getCategory = function () {
-                return a.CATEGORY_VIEW;
+                return GCategory.CATEGORY_VIEW;
             }),
             (s.prototype.getGroup = function () {
                 return "zoom";
             }),
             (s.prototype.getShortcut = function () {
-                return [i.GKey.Constant.META, "0"];
+                return [GPlatform.GKey.Constant.META, "0"];
             }),
             (s.prototype.isEnabled = function () {
                 return !!gDesigner.getActiveDocument();
@@ -34,15 +34,15 @@ module.exports = function (e, t, n) {
                     i = t.getScene();
                 if (i.isFixedSized()) {
                     var a = i.getActivePage();
-                    if (((e = new o.GRect(0, 0, a.getProperty("w"), a.getProperty("h"))), n)) {
-                        var r = a.getPosition(!0);
+                    if (((e = new GObject.GRect(0, 0, a.getProperty("w"), a.getProperty("h"))), n)) {
+                        var r = a.getPosition(true);
                         r && (e = e.translated(r.getX(), r.getY()));
                     }
                 } else e = i.getPaintBBox(n);
-                e && !e.isEmpty() && t.getActiveWindow().getView().zoomAtCenter(e.getSide(o.GRect.Side.CENTER), 1);
+                e && !e.isEmpty() && t.getActiveWindow().getView().zoomAtCenter(e.getSide(GObject.GRect.Side.CENTER), 1);
             }),
             (s.prototype.toString = function () {
                 return "[Object GOriginalViewAction]";
             }),
-            (e.exports = s));
+            (module.exports = s));
     };

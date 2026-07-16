@@ -1,16 +1,16 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(5),
-                o = i(6),
-                a = i(7),
-                s = i(236),
-                l = i(528),
-                h = i(530);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(5),
+                o = require(6),
+                a = require(7),
+                s = require(236),
+                l = require(528),
+                h = require(530);
 
             function A(e, t) {
                 s.call(this, e, t);
             }
-            (n.inherit(A, s),
+            (IsFiniteNonNegativeNumber.inherit(A, s),
                 (A.prototype._sShapeName = null),
                 (A.prototype._sShapeInitWidth = null),
                 (A.prototype._sShapeInitHeight = null),
@@ -82,13 +82,13 @@ module.exports = function (e, t, i) {
                         if (n && !n.isEmpty()) {
                             var r = a.getNativeRectTransformation(n),
                                 o = a.getNativeRectTransformation(t);
-                            return (e.setProperty("trf", r.inverted().multiplied(o)), !0);
+                            return (e.setProperty("trf", r.inverted().multiplied(o)), true);
                         }
                     }
-                    return !1;
+                    return false;
                 }),
                 (A.prototype.toString = function () {
                     return "[Object GSimpleShapeTool]";
                 }),
-                (e.exports = A));
+                (module.exports = A));
         };

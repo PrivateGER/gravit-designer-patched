@@ -1,11 +1,11 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(57), n(3), n(4), n(32), n(33));
+        var o = require(16);
+        (require(57), require(3), require(4), require(32), require(33));
         var i,
-            a = n(10),
-            r = n(40),
-            s = o(n(565));
+            designerConfig = require(10),
+            GSaveAction = require(40),
+            s = o(require(565));
         !(function (e) {
             var t = (function () {
                 function e() {
@@ -19,8 +19,8 @@ module.exports = function (e, t, n) {
                         set: function (e) {
                             this._dropEffect = e;
                         },
-                        enumerable: !0,
-                        configurable: !0,
+                        enumerable: true,
+                        configurable: true,
                     }),
                     Object.defineProperty(e.prototype, "effectAllowed", {
                         get: function () {
@@ -29,15 +29,15 @@ module.exports = function (e, t, n) {
                         set: function (e) {
                             this._effectAllowed = e;
                         },
-                        enumerable: !0,
-                        configurable: !0,
+                        enumerable: true,
+                        configurable: true,
                     }),
                     Object.defineProperty(e.prototype, "types", {
                         get: function () {
                             return Object.keys(this._data);
                         },
-                        enumerable: !0,
-                        configurable: !0,
+                        enumerable: true,
+                        configurable: true,
                     }),
                     (e.prototype.clearData = function (e) {
                         null != e ? delete this._data[e] : (this._data = null);
@@ -59,20 +59,20 @@ module.exports = function (e, t, n) {
             var n = (function () {
                 function e() {
                     if (e._instance) throw "DragDropTouch instance already created.";
-                    var t = (0, r.isPassiveSupported)();
+                    var t = (0, GSaveAction.isPassiveSupported)();
                     if ("ontouchstart" in document || "undefined" != typeof TouchEvent) {
                         ((this._documentTouchStart = this._documentTouchStart.bind(this)),
                             (this._documentTouchEnd = this._documentTouchEnd.bind(this)),
                             (this._documentDragStart = this._documentDragStart.bind(this)),
-                            document.addEventListener("touchstart", this._documentTouchStart, !t || { passive: !0, capture: !0 }),
-                            document.addEventListener("touchend", this._documentTouchEnd, !t || { passive: !0, capture: !0 }),
-                            document.addEventListener("touchcancel", this._documentTouchEnd, !t || { passive: !0, capture: !0 }),
-                            document.addEventListener("dragstart", this._documentDragStart, !0));
+                            document.addEventListener("touchstart", this._documentTouchStart, !t || { passive: true, capture: true }),
+                            document.addEventListener("touchend", this._documentTouchEnd, !t || { passive: true, capture: true }),
+                            document.addEventListener("touchcancel", this._documentTouchEnd, !t || { passive: true, capture: true }),
+                            document.addEventListener("dragstart", this._documentDragStart, true));
                         var n = document;
                         ((this._touchstart = this._touchstart.bind(this)),
                             (this._touchmove = this._touchmove.bind(this)),
                             (this._touchend = this._touchend.bind(this)));
-                        var o = !!t && { passive: !1, capture: !1 };
+                        var o = !!t && { passive: false, capture: false };
                         n.addEventListener("touchstart", this._touchstart, o);
                     }
                 }
@@ -80,12 +80,12 @@ module.exports = function (e, t, n) {
                     (e.getInstance = function () {
                         return e._instance;
                     }),
-                    (e.prototype._touching = !1),
+                    (e.prototype._touching = false),
                     (e.prototype._documentTouchStart = function (e) {
-                        e.isTrusted && (this._touching = !0);
+                        e.isTrusted && (this._touching = true);
                     }),
                     (e.prototype._documentTouchEnd = function (e) {
-                        e.isTrusted && ((this._touching = !1), this._touchend(e));
+                        e.isTrusted && ((this._touching = false), this._touchend(e));
                     }),
                     (e.prototype._documentDragStart = function (e) {
                         e.isTrusted && this._touching && e.cancelable && (e.preventDefault(), e.stopPropagation());
@@ -102,12 +102,12 @@ module.exports = function (e, t, n) {
                                 (this._startTouchTime = new Date().getTime()),
                                 (this._ptDown = this._getPoint(t)),
                                 (this._lastTouch = t),
-                                this._dragSource.addEventListener("touchmove", this._touchmove, !0),
-                                this._dragSource.addEventListener("touchend", this._touchend, !0),
-                                this._dragSource.addEventListener("touchcancel", this._touchend, !0),
+                                this._dragSource.addEventListener("touchmove", this._touchmove, true),
+                                this._dragSource.addEventListener("touchend", this._touchend, true),
+                                this._dragSource.addEventListener("touchcancel", this._touchend, true),
                                 e._ISPRESSHOLDMODE &&
                                     (this._pressHoldInterval = setTimeout(function () {
-                                        ((n._isDragEnabled = !0), (n._dragInitEvent = t), n._touchmove(t));
+                                        ((n._isDragEnabled = true), (n._dragInitEvent = t), n._touchmove(t));
                                     }, e._PRESSHOLDAWAIT)));
                         }
                     }),
@@ -161,7 +161,7 @@ module.exports = function (e, t, n) {
                     (e.prototype._shouldHandle = function (e) {
                         if (e.touches && 1 === e.touches.length) {
                             var t = e.touches[0] && e.touches[0].target;
-                            if (t && t.hasAttribute("draggable") && !t.draggable) return !1;
+                            if (t && t.hasAttribute("draggable") && !t.draggable) return false;
                         }
                         return e && !e.defaultPrevented && e.touches && e.touches.length < 2;
                     }),
@@ -196,8 +196,8 @@ module.exports = function (e, t, n) {
                             (this._lastTouch = null),
                             (this._lastTarget = null),
                             (this._ptDown = null),
-                            (this._isDragEnabled = !1),
-                            (this._isDropZone = !1),
+                            (this._isDragEnabled = false),
+                            (this._isDropZone = false),
                             (this._dataTransfer = new t()),
                             this._pressHoldInterval && clearTimeout(this._pressHoldInterval));
                     }),
@@ -224,7 +224,7 @@ module.exports = function (e, t, n) {
                     (e.prototype._createImage = function (t) {
                         this._img && this._destroyImage();
                         var n = this._imgCustom || this._dragSource;
-                        ((this._img = n.cloneNode(!0)),
+                        ((this._img = n.cloneNode(true)),
                             this._copyStyle(n, this._img),
                             e._ISPRESSHOLDMODE && this._img.classList.add("g-draggable-drag-image"),
                             (this._img.style.left = this._img.style.top = "0px"),
@@ -285,7 +285,7 @@ module.exports = function (e, t, n) {
                                 var i = document.createEvent("Event"),
                                     a = t.touches ? t.touches[0] : t;
                                 if (
-                                    (i.initEvent(n, !0, !0),
+                                    (i.initEvent(n, true, true),
                                     (i.button = 0),
                                     (i.which = i.buttons = 1),
                                     this._copyProps(i, t, e._kbdProps),
@@ -299,12 +299,12 @@ module.exports = function (e, t, n) {
                                     ((i.layerX = s), (i.layerY = l));
                                 }
                                 const c = o.dispatchEvent(i);
-                                return i.defaultPrevented || !1 === c;
+                                return i.defaultPrevented || false === c;
                             }
                         } catch (t) {
                             console.warn("DragDropTouch dispatch event error", t);
                         }
-                        return !1;
+                        return false;
                     }),
                     (e.prototype._closestDraggable = function (e) {
                         for (; e; e = e.parentElement) if (e.hasAttribute("draggable") && e.draggable) return e;
@@ -315,11 +315,11 @@ module.exports = function (e, t, n) {
             })();
             ((n._instance = new n()),
                 (n._OPACITY = 0.5),
-                (n._ISPRESSHOLDMODE = !1),
-                (n._PRESSHOLDAWAIT = a.LONG_PRESS_TIME_OUT),
+                (n._ISPRESSHOLDMODE = false),
+                (n._PRESSHOLDAWAIT = designerConfig.LONG_PRESS_TIME_OUT),
                 (n._PRESSHOLDMARGIN = 25),
-                (n._PRESSHOLDTHRESHOLD = a.MIN_TOUCH_MOVE_DISTANCE),
-                (n.DRAG_MOVE_THRESHOLD = a.MIN_TOUCH_MOVE_DISTANCE || 0),
+                (n._PRESSHOLDTHRESHOLD = designerConfig.MIN_TOUCH_MOVE_DISTANCE),
+                (n.DRAG_MOVE_THRESHOLD = designerConfig.MIN_TOUCH_MOVE_DISTANCE || 0),
                 (n.DRAG_MOVE_LIMIT = 25),
                 (n.DRAG_MOVE_DELAY = 100),
                 (n._rmvAtts = "draggable".split(",")),

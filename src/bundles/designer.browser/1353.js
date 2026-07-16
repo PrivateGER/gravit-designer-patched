@@ -1,8 +1,8 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        const { GLocale: o, GLocaleKey: i } = n(1),
-            a = n(883);
-        e.exports = {
+        const { GLocale: o, GLocaleKey: i } = require(1 /* GObject */),
+            a = require(883);
+        module.exports = {
             createAdditionalMentions: function () {
                 return {
                     MENTION_ALL_REVIEWERS: new a({
@@ -14,7 +14,7 @@ module.exports = function (e, t, n) {
                         type: "contact",
                         role: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-reviewers-role")),
                         email: "",
-                        additional: !0,
+                        additional: true,
                     }),
                     MENTION_ALL_APPROVERS: new a({
                         name: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-approvers-name")),
@@ -25,7 +25,7 @@ module.exports = function (e, t, n) {
                         type: "contact",
                         role: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-approvers-role")),
                         email: "",
-                        additional: !0,
+                        additional: true,
                     }),
                     MENTION_ALL_CO_AUTHORS: new a({
                         name: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-co-author-name")),
@@ -36,7 +36,7 @@ module.exports = function (e, t, n) {
                         type: "contact",
                         role: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-co-author-role")),
                         email: "",
-                        additional: !0,
+                        additional: true,
                     }),
                     MENTION_ALL: new a({
                         name: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-name")),
@@ -47,7 +47,7 @@ module.exports = function (e, t, n) {
                         type: "contact",
                         role: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-role")),
                         email: "",
-                        additional: !0,
+                        additional: true,
                     }),
                     MENTION_OWNER: new a({
                         name: o.get(new i("GAnnotationPanel", "text.additional-collaborators-owner-name")),
@@ -58,7 +58,7 @@ module.exports = function (e, t, n) {
                         type: "contact",
                         role: o.get(new i("GAnnotationPanel", "text.additional-collaborators-owner-role")),
                         email: "",
-                        additional: !0,
+                        additional: true,
                     }),
                 };
             },

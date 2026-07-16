@@ -1,31 +1,31 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        var o = n(16);
-        (n(19), n(57), n(4), n(13), n(26));
-        var i = n(15),
-            a = n(53),
-            r = n(1),
-            s = n(67),
-            l = o(n(340)),
-            c = o(n(807)),
-            d = o(n(198)),
-            u = n(1161),
-            p = o(n(565)),
-            g = n(10),
-            h = n(123),
-            f = n(450);
-        const m = n(607),
-            y = n(44);
+        var o = require(16);
+        (require(19), require(57), require(4), require(13), require(26));
+        var GPlatform = require(15),
+            a = require(53),
+            GObject = require(1),
+            s = require(67),
+            l = o(require(340)),
+            c = o(require(807)),
+            d = o(require(198 /* SidebarsIds */)),
+            u = require(1161),
+            p = o(require(565)),
+            designerConfig = require(10),
+            h = require(123),
+            f = require(450);
+        const m = require(607),
+            GSystemDialog = require(44);
         function v() {}
-        (r.GObject.inherit(v, h),
+        (GObject.GObject.inherit(v, h),
             (v.prototype._panel = null),
             (v.prototype._toolbar = null),
             (v.prototype._elements = null),
             (v.prototype._document = null),
             (v.prototype._advancedStrokePanel = null),
-            (v.prototype._styleEditorChange = !1),
-            (v.prototype._styleEdOn = !1),
-            (v.prototype._ownChange = !1),
+            (v.prototype._styleEditorChange = false),
+            (v.prototype._styleEdOn = false),
+            (v.prototype._ownChange = false),
             (v.prototype._chooserElem = null),
             (v.prototype.init = function (e, t) {
                 ((this._panel = e.addClass("border-properties-panel")),
@@ -40,10 +40,10 @@ module.exports = function (e, t, n) {
                         }),
                     ]),
                     $("<label></label>")
-                        .text(r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "title")))
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "title")))
                         .appendTo(t));
                 var n = this;
-                ((this._advancedStrokePanel = $("<div></div>").css("width", "280px").gOverlay({ releaseOnClose: !1 })),
+                ((this._advancedStrokePanel = $("<div></div>").css("width", "280px").gOverlay({ releaseOnClose: false })),
                     this._advancedStrokePanel.parent().addClass("border-settings"));
                 var o = function (e, t, n) {
                         var o = this._getSelectedPaintLayer();
@@ -69,11 +69,11 @@ module.exports = function (e, t, n) {
                                     var n = t._getSelectedPaintLayer();
                                     if (
                                         (n || (n = $(t._panel).find(".border-block:last").data("paintLayer")),
-                                        t._getProperty(n, "_blj") === r.GPaintCanvas.LineJoin.Miter)
+                                        t._getProperty(n, "_blj") === GObject.GPaintCanvas.LineJoin.Miter)
                                     ) {
-                                        var i = r.GLength.parseEquationValue($(this).val());
+                                        var i = GObject.GLength.parseEquationValue($(this).val());
                                         (gDesigner.stats("border_change_miterlimit", i),
-                                            null !== i && i > 0 ? o(["_vs", e], [!0, i]) : t._updateProperties());
+                                            null !== i && i > 0 ? o(["_vs", e], [true, i]) : t._updateProperties());
                                     }
                                 })
                                 .gInputBox();
@@ -88,10 +88,10 @@ module.exports = function (e, t, n) {
                                             .closest(".columns")
                                             .find('[data-property="_bds"]')
                                             .each(function (e, n) {
-                                                var o = r.GLength.parseEquationValue($(this).val());
+                                                var o = GObject.GLength.parseEquationValue($(this).val());
                                                 null !== o && o >= 0 && t.push(o);
                                             }),
-                                        i(["_vs", e], [!0, t]));
+                                        i(["_vs", e], [true, t]));
                                 })
                                 .gInputBox();
                         if (0 === e.indexOf("_ba-")) {
@@ -99,17 +99,17 @@ module.exports = function (e, t, n) {
                                 a = "",
                                 s = e.substr("_ba-".length);
                             switch (s) {
-                                case r.GStylable.BorderAlignment.Inside:
+                                case GObject.GStylable.BorderAlignment.Inside:
                                     ((n = "gravit-icon-line-stroke-inside"),
-                                        (a = r.GLocale.get(new r.GLocaleKey("GStylable", "border-alignment.inside"))));
+                                        (a = GObject.GLocale.get(new GObject.GLocaleKey("GStylable", "border-alignment.inside"))));
                                     break;
-                                case r.GStylable.BorderAlignment.Center:
+                                case GObject.GStylable.BorderAlignment.Center:
                                     ((n = "gravit-icon-line-stroke-center"),
-                                        (a = r.GLocale.get(new r.GLocaleKey("GStylable", "border-alignment.center"))));
+                                        (a = GObject.GLocale.get(new GObject.GLocaleKey("GStylable", "border-alignment.center"))));
                                     break;
-                                case r.GStylable.BorderAlignment.Outside:
+                                case GObject.GStylable.BorderAlignment.Outside:
                                     ((n = "gravit-icon-line-stroke-outside"),
-                                        (a = r.GLocale.get(new r.GLocaleKey("GStylable", "border-alignment.outside"))));
+                                        (a = GObject.GLocale.get(new GObject.GLocaleKey("GStylable", "border-alignment.outside"))));
                             }
                             return $("<button></button>")
                                 .addClass("g-icon g-flat")
@@ -118,13 +118,13 @@ module.exports = function (e, t, n) {
                                 .attr("data-title", a)
                                 .on("click", function () {
                                     var e = s,
-                                        t = Object.keys(r.GStylable.BorderAlignment);
+                                        t = Object.keys(GObject.GStylable.BorderAlignment);
                                     for (var n of t)
-                                        if (s === r.GStylable.BorderAlignment[n]) {
+                                        if (s === GObject.GStylable.BorderAlignment[n]) {
                                             e = n;
                                             break;
                                         }
-                                    (gDesigner.stats("border_change_align", e), i(["_vs", "_ba"], [!0, s]));
+                                    (gDesigner.stats("border_change_align", e), i(["_vs", "_ba"], [true, s]));
                                 })
                                 .append($("<span></span>").addClass(n));
                         }
@@ -132,17 +132,17 @@ module.exports = function (e, t, n) {
                             ((n = ""), (a = ""));
                             var l = e.substr("_blc-".length);
                             switch (l) {
-                                case r.GPaintCanvas.LineCap.Butt:
+                                case GObject.GPaintCanvas.LineCap.Butt:
                                     ((n = "gravit-icon-line-cap-butt"),
-                                        (a = r.GLocale.get(new r.GLocaleKey("GPaintCanvas", "linecap.butt"))));
+                                        (a = GObject.GLocale.get(new GObject.GLocaleKey("GPaintCanvas", "linecap.butt"))));
                                     break;
-                                case r.GPaintCanvas.LineCap.Round:
+                                case GObject.GPaintCanvas.LineCap.Round:
                                     ((n = "gravit-icon-line-cap-round"),
-                                        (a = r.GLocale.get(new r.GLocaleKey("GPaintCanvas", "linecap.round"))));
+                                        (a = GObject.GLocale.get(new GObject.GLocaleKey("GPaintCanvas", "linecap.round"))));
                                     break;
-                                case r.GPaintCanvas.LineCap.Square:
+                                case GObject.GPaintCanvas.LineCap.Square:
                                     ((n = "gravit-icon-line-cap-square"),
-                                        (a = r.GLocale.get(new r.GLocaleKey("GPaintCanvas", "linecap.square"))));
+                                        (a = GObject.GLocale.get(new GObject.GLocaleKey("GPaintCanvas", "linecap.square"))));
                             }
                             return $("<button></button>")
                                 .addClass("g-icon g-flat")
@@ -150,7 +150,7 @@ module.exports = function (e, t, n) {
                                 .attr("data-title", a)
                                 .attr("data-property", e)
                                 .on("click", function () {
-                                    (gDesigner.stats("border_change_cap", l), i(["_vs", "_blc"], [!0, l]));
+                                    (gDesigner.stats("border_change_cap", l), i(["_vs", "_blc"], [true, l]));
                                 })
                                 .append($("<span></span>").addClass(n));
                         }
@@ -158,17 +158,17 @@ module.exports = function (e, t, n) {
                             ((n = ""), (a = ""));
                             var c = e.substr("_blj-".length);
                             switch (c) {
-                                case r.GPaintCanvas.LineJoin.Bevel:
+                                case GObject.GPaintCanvas.LineJoin.Bevel:
                                     ((n = "gravit-icon-line-join-bevel"),
-                                        (a = r.GLocale.get(new r.GLocaleKey("GPaintCanvas", "linejoin.bevel"))));
+                                        (a = GObject.GLocale.get(new GObject.GLocaleKey("GPaintCanvas", "linejoin.bevel"))));
                                     break;
-                                case r.GPaintCanvas.LineJoin.Round:
+                                case GObject.GPaintCanvas.LineJoin.Round:
                                     ((n = "gravit-icon-line-join-round"),
-                                        (a = r.GLocale.get(new r.GLocaleKey("GPaintCanvas", "linejoin.round"))));
+                                        (a = GObject.GLocale.get(new GObject.GLocaleKey("GPaintCanvas", "linejoin.round"))));
                                     break;
-                                case r.GPaintCanvas.LineJoin.Miter:
+                                case GObject.GPaintCanvas.LineJoin.Miter:
                                     ((n = "gravit-icon-line-join-miter"),
-                                        (a = r.GLocale.get(new r.GLocaleKey("GPaintCanvas", "linejoin.miter"))));
+                                        (a = GObject.GLocale.get(new GObject.GLocaleKey("GPaintCanvas", "linejoin.miter"))));
                             }
                             return $("<button></button>")
                                 .addClass("g-icon g-flat")
@@ -176,7 +176,7 @@ module.exports = function (e, t, n) {
                                 .attr("data-title", a)
                                 .attr("data-property", e)
                                 .on("click", function () {
-                                    (gDesigner.stats("border_change_join", c), i(["_vs", "_blj"], [!0, c]));
+                                    (gDesigner.stats("border_change_join", c), i(["_vs", "_blj"], [true, c]));
                                 })
                                 .append($("<span></span>").addClass(n));
                         }
@@ -222,7 +222,7 @@ module.exports = function (e, t, n) {
                                 .attr("data-property", e)
                                 .on("change", function () {
                                     (gDesigner.stats("border_change_tailmarkerscalation"),
-                                        i([e], [r.GLength.parseEquationValue($(this).gInputBox("value")) / 100]));
+                                        i([e], [GObject.GLength.parseEquationValue($(this).gInputBox("value")) / 100]));
                                 })
                                 .gInputBox({ minValue: 1, incrementValue: 1, postfix: "%" });
                         if ("_bhm" === e || "_btm" === e)
@@ -231,74 +231,74 @@ module.exports = function (e, t, n) {
                                 .append(
                                     $("<option></option>")
                                         .attr("value", "")
-                                        .text(r.GLocale.get(new r.GLocaleKey("GCommonNames", "text.none")))
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.none")))
                                 )
                                 .append(
                                     $("<option></option>")
-                                        .attr("value", r.GStylable.BorderMarker.Circle)
-                                        .text(r.GLocale.get(new r.GLocaleKey("GStylable", "border-marker.circle")))
+                                        .attr("value", GObject.GStylable.BorderMarker.Circle)
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GStylable", "border-marker.circle")))
                                 )
                                 .append(
                                     $("<option></option>")
-                                        .attr("value", r.GStylable.BorderMarker.Bullet)
-                                        .text(r.GLocale.get(new r.GLocaleKey("GStylable", "border-marker.bullet")))
+                                        .attr("value", GObject.GStylable.BorderMarker.Bullet)
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GStylable", "border-marker.bullet")))
                                 )
                                 .append(
                                     $("<option></option>")
-                                        .attr("value", r.GStylable.BorderMarker.Diamond)
-                                        .text(r.GLocale.get(new r.GLocaleKey("GStylable", "border-marker.diamond")))
+                                        .attr("value", GObject.GStylable.BorderMarker.Diamond)
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GStylable", "border-marker.diamond")))
                                 )
                                 .append(
                                     $("<option></option>")
-                                        .attr("value", r.GStylable.BorderMarker.Line)
-                                        .text(r.GLocale.get(new r.GLocaleKey("GStylable", "border-marker.line")))
+                                        .attr("value", GObject.GStylable.BorderMarker.Line)
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GStylable", "border-marker.line")))
                                 )
                                 .append(
                                     $("<option></option>")
-                                        .attr("value", r.GStylable.BorderMarker.LineDouble)
-                                        .text(r.GLocale.get(new r.GLocaleKey("GStylable", "border-marker.linedouble")))
+                                        .attr("value", GObject.GStylable.BorderMarker.LineDouble)
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GStylable", "border-marker.linedouble")))
                                 )
                                 .append(
                                     $("<option></option>")
-                                        .attr("value", r.GStylable.BorderMarker.Arrow)
-                                        .text(r.GLocale.get(new r.GLocaleKey("GStylable", "border-marker.arrow")))
+                                        .attr("value", GObject.GStylable.BorderMarker.Arrow)
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GStylable", "border-marker.arrow")))
                                 )
                                 .append(
                                     $("<option></option>")
-                                        .attr("value", r.GStylable.BorderMarker.ArrowFat)
-                                        .text(r.GLocale.get(new r.GLocaleKey("GStylable", "border-marker.arrowfat")))
+                                        .attr("value", GObject.GStylable.BorderMarker.ArrowFat)
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GStylable", "border-marker.arrowfat")))
                                 )
                                 .append(
                                     $("<option></option>")
-                                        .attr("value", r.GStylable.BorderMarker.ArrowLine)
-                                        .text(r.GLocale.get(new r.GLocaleKey("GStylable", "border-marker.arrowline")))
+                                        .attr("value", GObject.GStylable.BorderMarker.ArrowLine)
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GStylable", "border-marker.arrowline")))
                                 )
                                 .append(
                                     $("<option></option>")
-                                        .attr("value", r.GStylable.BorderMarker.ArrowDoubleLine)
-                                        .text(r.GLocale.get(new r.GLocaleKey("GStylable", "border-marker.arrowdoubleline")))
+                                        .attr("value", GObject.GStylable.BorderMarker.ArrowDoubleLine)
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GStylable", "border-marker.arrowdoubleline")))
                                 )
                                 .append(
                                     $("<option></option>")
-                                        .attr("value", r.GStylable.BorderMarker.ArrowLineBar)
-                                        .text(r.GLocale.get(new r.GLocaleKey("GStylable", "border-marker.arrowlinebar")))
+                                        .attr("value", GObject.GStylable.BorderMarker.ArrowLineBar)
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GStylable", "border-marker.arrowlinebar")))
                                 )
                                 .append(
                                     $("<option></option>")
-                                        .attr("value", r.GStylable.BorderMarker.ArrowPointer)
-                                        .text(r.GLocale.get(new r.GLocaleKey("GStylable", "border-marker.arrowpointer")))
+                                        .attr("value", GObject.GStylable.BorderMarker.ArrowPointer)
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GStylable", "border-marker.arrowpointer")))
                                 )
                                 .append(
                                     $("<option></option>")
                                         .attr("value", "#")
-                                        .prop("disabled", !0)
-                                        .text(r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "option.custom")))
+                                        .prop("disabled", true)
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "option.custom")))
                                 )
                                 .on("change", function (t) {
                                     var n = $(this).val(),
-                                        o = Object.keys(r.GStylable.BorderMarker);
+                                        o = Object.keys(GObject.GStylable.BorderMarker);
                                     for (var a of o)
-                                        if (n === r.GStylable.BorderMarker[a]) {
+                                        if (n === GObject.GStylable.BorderMarker[a]) {
                                             n = a;
                                             break;
                                         }
@@ -308,37 +308,37 @@ module.exports = function (e, t, n) {
                             var d = e.substr("arrow-paste-".length);
                             return $("<button></button>")
                                 .addClass("g-flat g-icon")
-                                .attr("data-title", r.GLocale.get(new r.GLocaleKey("GPasteAction", "title")))
+                                .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GPasteAction", "title")))
                                 .append($("<span></span>").addClass("gravit-icon-paste"))
                                 .on(
                                     "click",
                                     function () {
                                         gDesigner.stats("border_click_paste");
-                                        var e = !1,
-                                            t = r.GNode.deserialize(gDesigner.getClipboardContent(r.GNode.MIME_TYPE));
+                                        var e = false,
+                                            t = GObject.GNode.deserialize(gDesigner.getClipboardContent(GObject.GNode.MIME_TYPE));
                                         if (t && t.length)
                                             for (var n = 0; n < t.length; ++n)
-                                                if (t[n].hasMixin(r.GVertexSource)) {
+                                                if (t[n].hasMixin(GObject.GVertexSource)) {
                                                     var o = t[n],
-                                                        a = r.GVertexInfo.calculateBounds(o, !0);
+                                                        a = GObject.GVertexInfo.calculateBounds(o, true);
                                                     if (a) {
-                                                        var s = a.getSide(r.GRect.Side.BOTTOM_CENTER);
+                                                        var s = a.getSide(GObject.GRect.Side.BOTTOM_CENTER);
                                                         (i(
                                                             [d],
                                                             [
-                                                                new r.GVertexContainer(
-                                                                    new r.GVertexTransformer(
+                                                                new GObject.GVertexContainer(
+                                                                    new GObject.GVertexTransformer(
                                                                         o,
-                                                                        new r.GTransform(1, 0, 0, -1, -s.getX(), -s.getY())
+                                                                        new GObject.GTransform(1, 0, 0, -1, -s.getX(), -s.getY())
                                                                     )
                                                                 ),
                                                             ]
                                                         ),
-                                                            (e = !0));
+                                                            (e = true));
                                                         break;
                                                     }
                                                 }
-                                        e || alert(r.GLocale.get(new r.GLocaleKey("GCommonNames", "arrow-paste.alert")));
+                                        e || alert(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "arrow-paste.alert")));
                                     }.bind(this)
                                 );
                         }
@@ -346,7 +346,7 @@ module.exports = function (e, t, n) {
                     }.bind(this);
                 ($("<div></div>")
                     .gPropertyRow({
-                        justified: !0,
+                        justified: true,
                         columns: [
                             {
                                 width: "50%",
@@ -355,14 +355,14 @@ module.exports = function (e, t, n) {
                                     .append(
                                         $("<div />")
                                             .addClass("border-property-label")
-                                            .text(r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.ends")))
+                                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.ends")))
                                     )
                                     .append(
                                         $("<div />")
                                             .addClass("border-property-content")
-                                            .append(u("_blc-" + r.GPaintCanvas.LineCap.Butt).addClass("g-group-start"))
-                                            .append(u("_blc-" + r.GPaintCanvas.LineCap.Round).addClass("g-group-element"))
-                                            .append(u("_blc-" + r.GPaintCanvas.LineCap.Square).addClass("g-group-end"))
+                                            .append(u("_blc-" + GObject.GPaintCanvas.LineCap.Butt).addClass("g-group-start"))
+                                            .append(u("_blc-" + GObject.GPaintCanvas.LineCap.Round).addClass("g-group-element"))
+                                            .append(u("_blc-" + GObject.GPaintCanvas.LineCap.Square).addClass("g-group-end"))
                                     ),
                             },
                             {
@@ -372,14 +372,14 @@ module.exports = function (e, t, n) {
                                     .append(
                                         $("<div />")
                                             .addClass("border-property-label")
-                                            .text(r.GLocale.get(new r.GLocaleKey("GCommonNames", "text.position")))
+                                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.position")))
                                     )
                                     .append(
                                         $("<div />")
                                             .addClass("border-property-content")
-                                            .append(u("_ba-" + r.GStylable.BorderAlignment.Inside).addClass("g-group-start"))
-                                            .append(u("_ba-" + r.GStylable.BorderAlignment.Center).addClass("g-group-element"))
-                                            .append(u("_ba-" + r.GStylable.BorderAlignment.Outside).addClass("g-group-end"))
+                                            .append(u("_ba-" + GObject.GStylable.BorderAlignment.Inside).addClass("g-group-start"))
+                                            .append(u("_ba-" + GObject.GStylable.BorderAlignment.Center).addClass("g-group-element"))
+                                            .append(u("_ba-" + GObject.GStylable.BorderAlignment.Outside).addClass("g-group-end"))
                                     ),
                             },
                         ],
@@ -387,7 +387,7 @@ module.exports = function (e, t, n) {
                     .appendTo(this._advancedStrokePanel),
                     $("<div></div>")
                         .gPropertyRow({
-                            justified: !0,
+                            justified: true,
                             columns: [
                                 {
                                     width: "50%",
@@ -396,14 +396,14 @@ module.exports = function (e, t, n) {
                                         .append(
                                             $("<div />")
                                                 .addClass("border-property-label")
-                                                .text(r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.joins")))
+                                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.joins")))
                                         )
                                         .append(
                                             $("<div />")
                                                 .addClass("border-property-content")
-                                                .append(u("_blj-" + r.GPaintCanvas.LineJoin.Bevel).addClass("g-group-start"))
-                                                .append(u("_blj-" + r.GPaintCanvas.LineJoin.Miter).addClass("g-group-element "))
-                                                .append(u("_blj-" + r.GPaintCanvas.LineJoin.Round).addClass("g-group-end"))
+                                                .append(u("_blj-" + GObject.GPaintCanvas.LineJoin.Bevel).addClass("g-group-start"))
+                                                .append(u("_blj-" + GObject.GPaintCanvas.LineJoin.Miter).addClass("g-group-element "))
+                                                .append(u("_blj-" + GObject.GPaintCanvas.LineJoin.Round).addClass("g-group-end"))
                                         ),
                                 },
                                 {
@@ -413,15 +413,15 @@ module.exports = function (e, t, n) {
                                         .append(
                                             $("<div />")
                                                 .addClass("border-property-label")
-                                                .text(r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.miter-limit")))
+                                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.miter-limit")))
                                         )
                                         .append($("<div />").addClass("border-property-content top-2px").append(u("_bml")))
                                         .gRichTooltip(
                                             s.GRichTooltipConfig.from({
-                                                title: r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.miter-limit")),
-                                                video: g.gApi.getRichTooltipVideoURL("Miter_Limit.mp4"),
-                                                description: r.GLocale.get(
-                                                    new r.GLocaleKey("GBorderPaintLayerProperties", "text.miter-limit-tooltip-description")
+                                                title: GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.miter-limit")),
+                                                video: designerConfig.gApi.getRichTooltipVideoURL("Miter_Limit.mp4"),
+                                                description: GObject.GLocale.get(
+                                                    new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.miter-limit-tooltip-description")
                                                 ),
                                                 learnMore:
                                                     "/docs/colors-gradients-textures/borders/#miter-limit",
@@ -438,22 +438,22 @@ module.exports = function (e, t, n) {
                                 {
                                     width: "25%",
                                     content: u("_bds"),
-                                    label: r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.dash")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.dash")),
                                 },
                                 {
                                     width: "25%",
                                     content: u("_bds"),
-                                    label: r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.gap")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.gap")),
                                 },
                                 {
                                     width: "25%",
                                     content: u("_bds"),
-                                    label: r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.dash")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.dash")),
                                 },
                                 {
                                     width: "25%",
                                     content: u("_bds"),
-                                    label: r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.gap")),
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.gap")),
                                 },
                             ],
                         })
@@ -465,17 +465,17 @@ module.exports = function (e, t, n) {
                             columns: [
                                 {
                                     width: "45%",
-                                    padding: !1,
+                                    padding: false,
                                     content: $("<div></div>").html(
-                                        r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.start-arrow"))
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.start-arrow"))
                                     ),
                                 },
                                 { width: "10%" },
                                 {
                                     width: "45%",
-                                    padding: !1,
+                                    padding: false,
                                     content: $("<div></div>").html(
-                                        r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.end-arrow"))
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.end-arrow"))
                                     ),
                                 },
                             ],
@@ -495,9 +495,9 @@ module.exports = function (e, t, n) {
                     $("<div></div>")
                         .gPropertyRow({
                             columns: [
-                                { width: "45%", padding: !1, content: u("_bhms") },
+                                { width: "45%", padding: false, content: u("_bhms") },
                                 { width: "10%" },
-                                { width: "45%", padding: !1, content: u("_btms") },
+                                { width: "45%", padding: false, content: u("_btms") },
                             ],
                         })
                         .appendTo(this._advancedStrokePanel),
@@ -507,20 +507,20 @@ module.exports = function (e, t, n) {
                                 {
                                     width: "45%",
                                     prefix: {
-                                        label: r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.outline")),
+                                        label: GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.outline")),
                                         width: "50px",
                                     },
-                                    padding: !1,
+                                    padding: false,
                                     content: u("_bhmo"),
                                 },
                                 { width: "10%" },
                                 {
                                     width: "45%",
                                     prefix: {
-                                        label: r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.outline")),
+                                        label: GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.outline")),
                                         width: "50px",
                                     },
-                                    padding: !1,
+                                    padding: false,
                                     content: u("_btmo"),
                                 },
                             ],
@@ -531,15 +531,15 @@ module.exports = function (e, t, n) {
                             columns: [
                                 {
                                     width: "45%",
-                                    label: r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.marker-position")),
-                                    padding: !1,
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.marker-position")),
+                                    padding: false,
                                     content: u("_bhmi"),
                                 },
                                 { width: "10%" },
                                 {
                                     width: "45%",
-                                    label: r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.marker-position")),
-                                    padding: !1,
+                                    label: GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.marker-position")),
+                                    padding: false,
                                     content: u("_btmi"),
                                 },
                             ],
@@ -566,7 +566,7 @@ module.exports = function (e, t, n) {
                                         )
                                         .append(
                                             $("<span></span>").text(
-                                                r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.autoscale-borders"))
+                                                GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.autoscale-borders"))
                                             )
                                         ),
                                 },
@@ -576,7 +576,7 @@ module.exports = function (e, t, n) {
                     this._toolbar.addClass("list-toolbar border-toolbar"),
                     $("<button></button>")
                         .attr("data-action", "stroke-settings")
-                        .attr("data-title", r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.advanced-stroke-settings")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.advanced-stroke-settings")))
                         .append($("<span></span>").addClass("gravit-icon-settings"))
                         .append($("<span></span>").addClass("gravit-icon-touch-settings"))
                         .on(
@@ -589,11 +589,11 @@ module.exports = function (e, t, n) {
                         )
                         .gRichTooltip(
                             s.GRichTooltipConfig.from({
-                                title: r.GLocale.get(
-                                    new r.GLocaleKey("GBorderPaintLayerProperties", "text.advanced-stroke-settings-tooltip-title")
+                                title: GObject.GLocale.get(
+                                    new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.advanced-stroke-settings-tooltip-title")
                                 ),
-                                description: r.GLocale.get(
-                                    new r.GLocaleKey("GBorderPaintLayerProperties", "text.advanced-stroke-settings-tooltip-description")
+                                description: GObject.GLocale.get(
+                                    new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.advanced-stroke-settings-tooltip-description")
                                 ),
                                 learnMore:
                                     "/docs/colors-gradients-textures/borders/#advanced-stroke-settings",
@@ -602,7 +602,7 @@ module.exports = function (e, t, n) {
                         .appendTo(this._toolbar),
                     $("<button></button>")
                         .attr("data-action", "remove")
-                        .attr("data-title", r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "action.remove-selected-border")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "action.remove-selected-border")))
                         .append($("<span></span>").addClass("gravit-icon-trash"))
                         .append($("<span></span>").addClass("gravit-icon-touch-trash"))
                         .on("click", function (e) {
@@ -616,20 +616,20 @@ module.exports = function (e, t, n) {
                                         (n._iterateEqualPaintLayer(t, function (t) {
                                             e.push(t);
                                         }),
-                                            r.GUtil.each(e, function (e, t) {
+                                            GObject.GUtil.each(e, function (e, t) {
                                                 t.getParent().removeChild(t);
                                             }));
                                     },
-                                    r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "action.remove-border"))
+                                    GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "action.remove-border"))
                                 );
                             const o = gDesigner.getRightSidebars().getSidebar(d.default.SidebarsIds.GInspectorSidebar);
                             o.trigger(new c.default(c.default.Type.ChildRemoved, o));
                         })
                         .gRichTooltip(
                             s.GRichTooltipConfig.from({
-                                title: r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.remove-border-tooltip-title")),
-                                description: r.GLocale.get(
-                                    new r.GLocaleKey("GBorderPaintLayerProperties", "text.remove-border-tooltip-description")
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.remove-border-tooltip-title")),
+                                description: GObject.GLocale.get(
+                                    new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.remove-border-tooltip-description")
                                 ),
                                 learnMore: "/docs/colors-gradients-textures/borders/",
                             })
@@ -637,7 +637,7 @@ module.exports = function (e, t, n) {
                         .appendTo(this._toolbar),
                     $("<button></button>")
                         .attr("data-action", "add")
-                        .attr("data-title", r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "action.add-border")))
+                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "action.add-border")))
                         .append($("<span></span>").addClass("gravit-icon-plus"))
                         .append($("<span></span>").addClass("gravit-icon-touch-plus"))
                         .on(
@@ -649,36 +649,36 @@ module.exports = function (e, t, n) {
                                         function () {
                                             const e = n._document && n._document.getScene(),
                                                 t = e && e.getProperty("cm"),
-                                                o = r.GColorHelper.convertColor(r.GRGBColor.BLACK, t || r.GColor.ColorModes.RGB);
+                                                o = GObject.GColorHelper.convertColor(GObject.GRGBColor.BLACK, t || GObject.GColor.ColorModes.RGB);
                                             for (var i = 0; i < n._elements.length; ++i) {
                                                 var a = n._elements[i],
-                                                    s = new r.GStylable.BorderPaintLayer();
-                                                (a instanceof r.GText
-                                                    ? s.setProperty("_ba", r.GStylable.BorderAlignment.Outside)
-                                                    : a instanceof r.GShape
-                                                      ? a instanceof r.GEllipse && a.$etp === r.GEllipse.Type.Arc
-                                                          ? s.setProperty("_ba", r.GStylable.BorderAlignment.Center)
-                                                          : s.setProperty("_ba", r.GStylable.BorderAlignment.Inside)
-                                                      : a instanceof r.GPath &&
+                                                    s = new GObject.GStylable.BorderPaintLayer();
+                                                (a instanceof GObject.GText
+                                                    ? s.setProperty("_ba", GObject.GStylable.BorderAlignment.Outside)
+                                                    : a instanceof GObject.GShape
+                                                      ? a instanceof GObject.GEllipse && a.$etp === GObject.GEllipse.Type.Arc
+                                                          ? s.setProperty("_ba", GObject.GStylable.BorderAlignment.Center)
+                                                          : s.setProperty("_ba", GObject.GStylable.BorderAlignment.Inside)
+                                                      : a instanceof GObject.GPath &&
                                                         !a.$closed &&
-                                                        s.setProperty("_ba", r.GStylable.BorderAlignment.Center),
+                                                        s.setProperty("_ba", GObject.GStylable.BorderAlignment.Center),
                                                     s.setProperty("_pt", o),
                                                     a.getPaintLayers().appendChild(s));
                                                 const e = gDesigner.getRightSidebars().getSidebar(d.default.SidebarsIds.GInspectorSidebar);
                                                 e.trigger(new c.default(c.default.Type.ChildAdded, e));
                                             }
                                         },
-                                        r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "action.add-border"))
+                                        GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "action.add-border"))
                                     ),
-                                    $(this._toolbar).gAccordion("toggleOpen", !0),
+                                    $(this._toolbar).gAccordion("toggleOpen", true),
                                     $(this._toolbar).gAccordion("init", $(this._panel)));
                             }.bind(this)
                         )
                         .gRichTooltip(
                             s.GRichTooltipConfig.from({
-                                title: r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.add-border-tooltip-title")),
-                                description: r.GLocale.get(
-                                    new r.GLocaleKey("GBorderPaintLayerProperties", "text.add-border-tooltip-description")
+                                title: GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.add-border-tooltip-title")),
+                                description: GObject.GLocale.get(
+                                    new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.add-border-tooltip-description")
                                 ),
                                 learnMore: "/docs/colors-gradients-textures/borders/",
                             })
@@ -688,7 +688,7 @@ module.exports = function (e, t, n) {
                         .getWorkspace()
                         .getStyleEdManager()
                         .addEventListener(a.GStyleEdManager.EditorEvent, this._styleEditorEventHandler, this),
-                    this._panel.data("contextmenu", !0),
+                    this._panel.data("contextmenu", true),
                     this._panel.on("mouseenter", (e) => {
                         (gDesigner.setMouseOverContext(
                             m.BorderPropertiesPanel,
@@ -700,7 +700,7 @@ module.exports = function (e, t, n) {
                                     i = $("<span/>")
                                         .addClass("copy-info-overlay")
                                         .css({ top: o })
-                                        .text(r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "text.copy-border")));
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.copy-border")));
                                 (t && t.remove(),
                                     this._panel.append(i),
                                     setTimeout(() => {
@@ -721,15 +721,15 @@ module.exports = function (e, t, n) {
             }),
             (v.prototype.update = function (e, t, n) {
                 const o = this._styleEditorChange;
-                if ((this._styleEditorChange && (this._styleEditorChange = !1), this._ownChange)) return !0;
+                if ((this._styleEditorChange && (this._styleEditorChange = false), this._ownChange)) return true;
                 if (
                     (this._chooserElem && this._chooserElem.gPatternChooser("close"),
                     this._document &&
-                        (this._document.getScene().removeEventListener(r.GNode.AfterInsertEvent, this._afterInsert, this),
-                        this._document.getScene().removeEventListener(r.GNode.BeforeRemoveEvent, this._beforeRemove, this),
+                        (this._document.getScene().removeEventListener(GObject.GNode.AfterInsertEvent, this._afterInsert, this),
+                        this._document.getScene().removeEventListener(GObject.GNode.BeforeRemoveEvent, this._beforeRemove, this),
                         this._document
                             .getScene()
-                            .removeEventListener(r.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                            .removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                         (this._document = null)),
                     (this._elements = []),
                     e)
@@ -737,26 +737,26 @@ module.exports = function (e, t, n) {
                     for (var i = 0; i < t.length; ++i) {
                         var s = t[i],
                             l = function (e, t) {
-                                t.hasMixin(r.GStylable) &&
-                                    t.getStylePropertySets().indexOf(r.GStylable.PropertySet.FillPaintLayers) >= 0 &&
+                                t.hasMixin(GObject.GStylable) &&
+                                    t.getStylePropertySets().indexOf(GObject.GStylable.PropertySet.FillPaintLayers) >= 0 &&
                                     this._elements.push(t);
                             }.bind(this),
                             c = a.GElementEditor.getEditor(s);
-                        c && c.getStylableParts() ? r.GUtil.each(c.getStylableParts(), l) : l(null, s);
+                        c && c.getStylableParts() ? GObject.GUtil.each(c.getStylableParts(), l) : l(null, s);
                     }
                     if (this._elements.length)
                         return (
                             (this._document = e),
-                            this._document.getScene().addEventListener(r.GNode.AfterInsertEvent, this._afterInsert, this),
-                            this._document.getScene().addEventListener(r.GNode.BeforeRemoveEvent, this._beforeRemove, this),
+                            this._document.getScene().addEventListener(GObject.GNode.AfterInsertEvent, this._afterInsert, this),
+                            this._document.getScene().addEventListener(GObject.GNode.BeforeRemoveEvent, this._beforeRemove, this),
                             this._document
                                 .getScene()
-                                .addEventListener(r.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
+                                .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                             o || this._updateProperties(n),
-                            !0
+                            true
                         );
                 }
-                return !1;
+                return false;
             }),
             (v.prototype.openPatternChooser = function () {
                 this._panel.find(".border-block:first-child").find('[data-property="_pt"]').find(".g-button").click();
@@ -765,13 +765,13 @@ module.exports = function (e, t, n) {
                 this._panel.find(".border-block:first-child").find('[data-property="_pt"]').gPatternChooser("openEyeDropper", e, t);
             }),
             (v.prototype._styleEditorEventHandler = function (e) {
-                this._styleEdOn && e.type == a.GStyleEdManager.EditorEventType.PrepareModifiedEvent && (this._styleEditorChange = !0);
+                this._styleEdOn && e.type == a.GStyleEdManager.EditorEventType.PrepareModifiedEvent && (this._styleEditorChange = true);
             }),
             (v.prototype._updateProperties = function (e) {
                 if (this._elements && this._elements.length) {
                     this._panel.find(".border-block").remove();
                     var t = this._elements[0].getPaintLayers().getBorderLayers();
-                    (r.GUtil.each(
+                    (GObject.GUtil.each(
                         t,
                         function (t, n) {
                             n && this._insertPaintLayer(n, e);
@@ -789,7 +789,7 @@ module.exports = function (e, t, n) {
             }),
             (v.prototype._insertPaintLayer = function (e, t) {
                 var n = this,
-                    o = !1,
+                    o = false,
                     l = null,
                     c = null,
                     d = null,
@@ -800,9 +800,9 @@ module.exports = function (e, t, n) {
                     b = function (e) {
                         if (l) {
                             var t = $(e).data("paintLayer");
-                            if (t && (t !== l || i.GPlatform.modifiers.shiftKey)) return l.getParent() === t.getParent();
+                            if (t && (t !== l || GPlatform.GPlatform.modifiers.shiftKey)) return l.getParent() === t.getParent();
                         }
-                        return !1;
+                        return false;
                     },
                     w = function (t, n, o, i) {
                         this._assign(e, t, n, o, i);
@@ -813,50 +813,50 @@ module.exports = function (e, t, n) {
                                 .attr("data-property", "_pt")
                                 .gPatternChooser({
                                     types: [
-                                        r.GColor,
-                                        r.GLinearGradient,
-                                        r.GRadialGradient,
-                                        r.GAngularGradient,
-                                        r.GBackground,
-                                        r.GTexturePattern,
+                                        GObject.GColor,
+                                        GObject.GLinearGradient,
+                                        GObject.GRadialGradient,
+                                        GObject.GAngularGradient,
+                                        GObject.GBackground,
+                                        GObject.GTexturePattern,
                                     ],
                                 })
                                 .on("chooseropen", function () {
                                     (n._document.getEditor().hideSelection(),
-                                        gDesigner.getWorkspace().getStyleEdManager().updateEditor(e, "_pt", !1),
+                                        gDesigner.getWorkspace().getStyleEdManager().updateEditor(e, "_pt", false),
                                         n._setSelectedPaintLayer(e),
-                                        (n._styleEdOn = !0),
+                                        (n._styleEdOn = true),
                                         (n._chooserElem = $(this)));
                                 })
                                 .on("chooserclose", function (e, t, o) {
                                     if (gDesigner.getWorkspace().getStyleEdManager().getOverlayLock(o)) t();
                                     else if (
-                                        ((n._styleEdOn = !1),
+                                        ((n._styleEdOn = false),
                                         gDesigner.getWorkspace().getStyleEdManager().deactivateEditor(),
                                         n._document && (n._document.getEditor().resetHideSelection(), n._document.hasCDR()))
                                     ) {
                                         var i = gPatternChooser.getPattern();
-                                        !i || i instanceof r.GRGBColor || y.showCDRUnsupportedObjectWarning();
+                                        !i || i instanceof GObject.GRGBColor || GSystemDialog.showCDRUnsupportedObjectWarning();
                                     }
                                     n._chooserElem = null;
                                 })
                                 .on("patternchange", function (e, t, n, o, i, a) {
                                     var r = ["_vs"],
-                                        s = [!0];
+                                        s = [true];
                                     (void 0 !== t && (r.push("_pt"), s.push(t)), "number" == typeof n && (r.push("_op"), s.push(n)));
                                     var l = null;
-                                    (i && ((l = { chooserOn: !0 }), null != a && (l.activeStopIdx = a)), w(r, s, o, l));
+                                    (i && ((l = { chooserOn: true }), null != a && (l.activeStopIdx = a)), w(r, s, o, l));
                                 });
                         if ("_bl" == t)
                             return $("<select></select>")
                                 .gBlendMode()
                                 .gRichTooltip(
                                     s.GRichTooltipConfig.from({
-                                        title: r.GLocale.getValue("GAppearanceProperties", "text.blend-tooltip-title"),
-                                        description: r.GLocale.getValue("GAppearanceProperties", "text.blend-tooltip-description"),
-                                        middle: !1,
-                                        forceShow: !0,
-                                        learnMore: g.LINKS.BLENDING_MODES_DOCUMENTATION_URL,
+                                        title: GObject.GLocale.getValue("GAppearanceProperties", "text.blend-tooltip-title"),
+                                        description: GObject.GLocale.getValue("GAppearanceProperties", "text.blend-tooltip-description"),
+                                        middle: false,
+                                        forceShow: true,
+                                        learnMore: designerConfig.LINKS.BLENDING_MODES_DOCUMENTATION_URL,
                                     })
                                 )
                                 .attr("data-property", "_bl")
@@ -870,11 +870,11 @@ module.exports = function (e, t, n) {
                                 .attr("type", "text")
                                 .on("change", function (e, t) {
                                     (gDesigner.stats("border_change_opacity"),
-                                        w(["_vs", "_op"], [!0, (t || r.GLength.parseEquationValue($(this).gInputBox("value"))) / 100]),
+                                        w(["_vs", "_op"], [true, (t || GObject.GLength.parseEquationValue($(this).gInputBox("value"))) / 100]),
                                         $(e.target)
                                             .parents(".touch")
                                             .find($(".transparency"))
-                                            .gInputSlider("value", r.GLength.parseEquationValue($(this).gInputBox("value"))));
+                                            .gInputSlider("value", GObject.GLength.parseEquationValue($(this).gInputBox("value"))));
                                 })
                                 .gInputBox({
                                     minValue: 0,
@@ -888,17 +888,17 @@ module.exports = function (e, t, n) {
                                 .on("change", function () {
                                     gDesigner.stats("border_change_width");
                                     var e = $(this).gUnitBox("value"),
-                                        o = e ? e.toUnit(r.GLength.Unit.PX) : null;
-                                    null !== o && o >= 0 ? w(["_vs", t], [!0, o]) : n._updateProperties();
+                                        o = e ? e.toUnit(GObject.GLength.Unit.PX) : null;
+                                    null !== o && o >= 0 ? w(["_vs", t], [true, o]) : n._updateProperties();
                                 })
                                 .gUnitBox({ minValue: 0, source: "border" })
                                 .gRichTooltip(
                                     s.GRichTooltipConfig.from({
-                                        title: r.GLocale.get(
-                                            new r.GLocaleKey("GBorderPaintLayerProperties", "text.border-width-tooltip-title")
+                                        title: GObject.GLocale.get(
+                                            new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.border-width-tooltip-title")
                                         ),
-                                        description: r.GLocale.get(
-                                            new r.GLocaleKey("GBorderPaintLayerProperties", "text.border-width-tooltip-description")
+                                        description: GObject.GLocale.get(
+                                            new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.border-width-tooltip-description")
                                         ),
                                         learnMore: "/docs/colors-gradients-textures/borders/",
                                     })
@@ -907,7 +907,7 @@ module.exports = function (e, t, n) {
                             return $("<span></span>")
                                 .attr("data-property", "_vs")
                                 .addClass("border-action border-visibility gravit-icon-touch-show")
-                                .attr("data-title", r.GLocale.get(new r.GLocaleKey("GCommonNames", "action.toggle-visibility")))
+                                .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-visibility")))
                                 .on("click", function (e) {
                                     (gDesigner.stats("border_hide_border"), e.stopPropagation());
                                     var t = $(this).hasClass("gravit-icon-touch-hide");
@@ -994,17 +994,17 @@ module.exports = function (e, t, n) {
                                                     (a.GEditor.tryRunTransaction(
                                                         o,
                                                         function () {
-                                                            if (i.GPlatform.modifiers.shiftKey) {
+                                                            if (GPlatform.GPlatform.modifiers.shiftKey) {
                                                                 var e = l.clone();
                                                                 o.insertChild(e, s < c ? t.getNext() : t);
                                                             } else s !== c && (o.removeChild(l), o.insertChild(l, s < c ? t.getNext() : t));
                                                         },
-                                                        i.GPlatform.modifiers.shiftKey
-                                                            ? r.GLocale.get(
-                                                                  new r.GLocaleKey("GBorderPaintLayerProperties", "action.duplicate-border")
+                                                        GPlatform.GPlatform.modifiers.shiftKey
+                                                            ? GObject.GLocale.get(
+                                                                  new GObject.GLocaleKey("GBorderPaintLayerProperties", "action.duplicate-border")
                                                               )
-                                                            : r.GLocale.get(
-                                                                  new r.GLocaleKey("GBorderPaintLayerProperties", "action.move-border")
+                                                            : GObject.GLocale.get(
+                                                                  new GObject.GLocaleKey("GBorderPaintLayerProperties", "action.move-border")
                                                               )
                                                     ),
                                                         n._updateProperties(),
@@ -1032,14 +1032,14 @@ module.exports = function (e, t, n) {
                                 (a.GEditor.tryRunTransaction(
                                     s,
                                     function () {
-                                        if (i.GPlatform.modifiers.shiftKey) {
+                                        if (GPlatform.GPlatform.modifiers.shiftKey) {
                                             var e = l.clone();
                                             s.insertChild(e, u < p ? o.getNext() : o);
                                         } else u !== p && (s.removeChild(l), s.insertChild(l, u < p ? o.getNext() : o.getPrevious()));
                                     },
-                                    i.GPlatform.modifiers.shiftKey
-                                        ? r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "action.duplicate"))
-                                        : r.GLocale.get(new r.GLocaleKey("GFillPaintLayerProperties", "action.move"))
+                                    GPlatform.GPlatform.modifiers.shiftKey
+                                        ? GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.duplicate"))
+                                        : GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.move"))
                                 ),
                                     n._updateProperties(),
                                     n._setSelectedPaintLayer(l));
@@ -1053,11 +1053,11 @@ module.exports = function (e, t, n) {
                                         (n._iterateEqualPaintLayer(l, function (t) {
                                             e.push(t);
                                         }),
-                                            r.GUtil.each(e, function (e, t) {
+                                            GObject.GUtil.each(e, function (e, t) {
                                                 t.getParent().removeChild(t);
                                             }));
                                     },
-                                    r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "action.remove-border"))
+                                    GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "action.remove-border"))
                                 ),
                                 c && c.css("display", "none"),
                                 (c = null),
@@ -1084,7 +1084,7 @@ module.exports = function (e, t, n) {
                                     content: $("<span></span>")
                                         .attr("data-property", "_vs")
                                         .addClass("border-action border-visibility gravit-icon-display normal")
-                                        .attr("data-title", r.GLocale.get(new r.GLocaleKey("GCommonNames", "action.toggle-visibility")))
+                                        .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-visibility")))
                                         .on("click", function (e) {
                                             (gDesigner.stats("border_hide_border"), e.stopPropagation());
                                             var t = $(this).hasClass("gravit-icon-hide");
@@ -1149,7 +1149,7 @@ module.exports = function (e, t, n) {
             (v.prototype._removePaintLayer = function (e) {
                 this._panel.find(".border-block").each(function (t, n) {
                     var o = $(n);
-                    if (o.data("paintLayer") === e) return (o.remove(), !1);
+                    if (o.data("paintLayer") === e) return (o.remove(), false);
                 });
             }),
             (v.prototype._updatePaintLayer = function (e, t) {
@@ -1159,23 +1159,23 @@ module.exports = function (e, t, n) {
                         var i = $(o);
                         if (i.data("paintLayer") === e) {
                             i.find('[data-property="_pt"]')
-                                .gPatternChooser("setPattern", e.getProperty("_pt", !1, !1, !0))
-                                .gPatternChooser("value", e.getProperty("_pt", !1, !1, !0))
-                                .gPatternChooser("opacity", e.getProperty("_op", !1, !1, !0));
-                            var a = n._getProperty(e, "_bw", !1, null);
+                                .gPatternChooser("setPattern", e.getProperty("_pt", false, false, true))
+                                .gPatternChooser("value", e.getProperty("_pt", false, false, true))
+                                .gPatternChooser("opacity", e.getProperty("_op", false, false, true));
+                            var a = n._getProperty(e, "_bw", false, null);
                             (i.find('[data-property="_bw"]').each(function (e, t) {
                                 $(t)
                                     .gUnitBox({
                                         unit:
-                                            n._document.getScene().getProperty("ut") === r.GLength.Unit.PX
-                                                ? r.GLength.Unit.PX
-                                                : r.GLength.Unit.PT,
+                                            n._document.getScene().getProperty("ut") === GObject.GLength.Unit.PX
+                                                ? GObject.GLength.Unit.PX
+                                                : GObject.GLength.Unit.PT,
                                         minValue: 0,
                                     })
-                                    .gUnitBox("value", null !== a ? new r.GLength(a, r.GLength.Unit.PX) : null);
+                                    .gUnitBox("value", null !== a ? new GObject.GLength(a, GObject.GLength.Unit.PX) : null);
                             }),
                                 i.find('[data-property="_op"]').each(function (t, n) {
-                                    $(n).gInputBox("value", r.GUtil.formatOpacity(100 * e.getProperty("_op", !1, !1, !0)));
+                                    $(n).gInputBox("value", GObject.GUtil.formatOpacity(100 * e.getProperty("_op", false, false, true)));
                                 }),
                                 i.find('[data-property="_bl"]').val(e.getProperty("_bl")));
                             var s = e.getProperty("_vs");
@@ -1195,7 +1195,7 @@ module.exports = function (e, t, n) {
             (v.prototype._assign = function (e, t, n, o, i) {
                 if (o)
                     this._iterateEqualPaintLayer(e, function (e) {
-                        e.setProperties(t, n, !1, !1, !0);
+                        e.setProperties(t, n, false, false, true);
                     });
                 else if (this._document) {
                     var s = null;
@@ -1203,7 +1203,7 @@ module.exports = function (e, t, n) {
                         var l = e.getParent().getIndexOfChild(e);
                         s = $.extend({ borderLayerIndex: l }, i);
                     }
-                    this._ownChange = !0;
+                    this._ownChange = true;
                     var c = this._document.getEditor();
                     c.beginTransaction();
                     try {
@@ -1213,10 +1213,10 @@ module.exports = function (e, t, n) {
                         });
                     } finally {
                         (c.commitTransaction(
-                            r.GLocale.get(new r.GLocaleKey("GBorderPaintLayerProperties", "action.change-border-properties")),
+                            GObject.GLocale.get(new GObject.GLocaleKey("GBorderPaintLayerProperties", "action.change-border-properties")),
                             s
                         ),
-                            (this._ownChange = !1));
+                            (this._ownChange = false));
                     }
                 }
             }),
@@ -1224,28 +1224,28 @@ module.exports = function (e, t, n) {
                 return e ? e.getProperty(t) : null;
             }),
             (v.prototype._afterInsert = function (e) {
-                e.node instanceof r.GStylable.BorderPaintLayer &&
+                e.node instanceof GObject.GStylable.BorderPaintLayer &&
                     e.node.getOwnerStylable() === this._elements[0] &&
                     (this._insertPaintLayer(e.node), this._updateToolbar());
             }),
             (v.prototype._beforeRemove = function (e) {
-                if (e.node instanceof r.GStylable.BorderPaintLayer && e.node.getOwnerStylable() === this._elements[0]) {
+                if (e.node instanceof GObject.GStylable.BorderPaintLayer && e.node.getOwnerStylable() === this._elements[0]) {
                     this._removePaintLayer(e.node);
-                    for (var t = e.node.getPrevious(); t && !(t instanceof r.GStylable.BorderPaintLayer); ) t = t.getPrevious();
-                    if (!(t instanceof r.GStylable.BorderPaintLayer))
-                        for (t = e.node.getNext(); t && !(t instanceof r.GStylable.BorderPaintLayer); ) t = t.getNext();
+                    for (var t = e.node.getPrevious(); t && !(t instanceof GObject.GStylable.BorderPaintLayer); ) t = t.getPrevious();
+                    if (!(t instanceof GObject.GStylable.BorderPaintLayer))
+                        for (t = e.node.getNext(); t && !(t instanceof GObject.GStylable.BorderPaintLayer); ) t = t.getNext();
                     (this._setSelectedPaintLayer(t), this._updateToolbar());
                 }
             }),
             (v.prototype._afterPropertiesChange = function (e) {
-                e.node instanceof r.GStylable.BorderPaintLayer &&
+                e.node instanceof GObject.GStylable.BorderPaintLayer &&
                     e.node.getOwnerStylable() === this._elements[0] &&
                     this._updatePaintLayer(e.node);
             }),
             (v.prototype._updateAdvancedSettings = function () {
                 var e = this,
                     t = function (t) {
-                        var n = this._getProperty(t, "_bds", !1, null),
+                        var n = this._getProperty(t, "_bds", false, null),
                             o = this._advancedStrokePanel;
                         (o.find('[data-property="_bds"]').each(function (e, t) {
                             $(t).val(n && n.length > e ? n[e] : "");
@@ -1253,63 +1253,63 @@ module.exports = function (e, t, n) {
                             o.find('[data-property^="_ba"]').each(function (n, o) {
                                 var i = $(o),
                                     a = i.attr("data-property").substr("_ba-".length);
-                                if (a === r.GStylable.BorderAlignment.Inside || a === r.GStylable.BorderAlignment.Outside) {
-                                    for (var s, l, c = !1, d = !1, u = 0, p = e._elements.length; u < p; u++) {
+                                if (a === GObject.GStylable.BorderAlignment.Inside || a === GObject.GStylable.BorderAlignment.Outside) {
+                                    for (var s, l, c = false, d = false, u = 0, p = e._elements.length; u < p; u++) {
                                         var g = e._elements[u];
-                                        (g instanceof r.GPath && !g.$closed) || (g instanceof r.GEllipse && g.$etp === r.GEllipse.Type.Arc)
-                                            ? (c = !0)
-                                            : (d = !0);
+                                        (g instanceof GObject.GPath && !g.$closed) || (g instanceof GObject.GEllipse && g.$etp === GObject.GEllipse.Type.Arc)
+                                            ? (c = true)
+                                            : (d = true);
                                     }
                                     switch (a) {
-                                        case r.GStylable.BorderAlignment.Inside:
-                                            l = r.GLocale.get(new r.GLocaleKey("GStylable", "border-alignment.inside"));
+                                        case GObject.GStylable.BorderAlignment.Inside:
+                                            l = GObject.GLocale.get(new GObject.GLocaleKey("GStylable", "border-alignment.inside"));
                                             break;
-                                        case r.GStylable.BorderAlignment.Outside:
-                                            l = r.GLocale.get(new r.GLocaleKey("GStylable", "border-alignment.outside"));
+                                        case GObject.GStylable.BorderAlignment.Outside:
+                                            l = GObject.GLocale.get(new GObject.GLocaleKey("GStylable", "border-alignment.outside"));
                                     }
-                                    (c ? i.attr("disabled", !0) : i.attr("disabled", !1),
+                                    (c ? i.attr("disabled", true) : i.attr("disabled", false),
                                         (s =
                                             c && d
-                                                ? r.GLocale.get(
-                                                      new r.GLocaleKey("GBorderPaintLayerProperties", "text.border-alignment.disabled")
+                                                ? GObject.GLocale.get(
+                                                      new GObject.GLocaleKey("GBorderPaintLayerProperties", "text.border-alignment.disabled")
                                                   ) +
                                                   ": " +
                                                   l
                                                 : l),
                                         i.attr("data-title", s));
                                 }
-                                i.toggleClass("g-active", e._getProperty(t, "_ba", !0) === a);
+                                i.toggleClass("g-active", e._getProperty(t, "_ba", true) === a);
                             }),
                             o.find('[data-property^="_blc"]').each(function (n, o) {
                                 var i = $(o),
                                     a = i.attr("data-property").substr("_blc-".length);
-                                i.toggleClass("g-active", e._getProperty(t, "_blc", !0) === a);
+                                i.toggleClass("g-active", e._getProperty(t, "_blc", true) === a);
                             }),
                             o.find('[data-property^="_blj"]').each(function (n, o) {
                                 var i = $(o),
                                     a = i.attr("data-property").substr("_blj-".length);
-                                i.toggleClass("g-active", e._getProperty(t, "_blj", !0) === a);
+                                i.toggleClass("g-active", e._getProperty(t, "_blj", true) === a);
                             }));
                         var i = o.find('[data-property="_bml"]');
-                        (i.gInputBox("value", r.GUtil.formatNumber(this._getProperty(t, "_bml", !0))),
-                            this._getProperty(t, "_blj") !== r.GPaintCanvas.LineJoin.Miter
-                                ? i.attr("disabled", !0)
+                        (i.gInputBox("value", GObject.GUtil.formatNumber(this._getProperty(t, "_bml", true))),
+                            this._getProperty(t, "_blj") !== GObject.GPaintCanvas.LineJoin.Miter
+                                ? i.attr("disabled", true)
                                 : i.removeAttr("disabled"));
-                        var a = this._getProperty(t, "_bhm", !1, null);
-                        o.find('[data-property="_bhm"]').val(a instanceof r.GVertexContainer ? "#" : a || "");
-                        var s = this._getProperty(t, "_btm", !1, null);
-                        (o.find('[data-property="_btm"]').val(s instanceof r.GVertexContainer ? "#" : s || ""),
+                        var a = this._getProperty(t, "_bhm", false, null);
+                        o.find('[data-property="_bhm"]').val(a instanceof GObject.GVertexContainer ? "#" : a || "");
+                        var s = this._getProperty(t, "_btm", false, null);
+                        (o.find('[data-property="_btm"]').val(s instanceof GObject.GVertexContainer ? "#" : s || ""),
                             o
                                 .find('[data-property="_bhms"]')
-                                .gInputBox("value", r.GUtil.formatNumber(100 * this._getProperty(t, "_bhms", !1, 1), 0)),
+                                .gInputBox("value", GObject.GUtil.formatNumber(100 * this._getProperty(t, "_bhms", false, 1), 0)),
                             o
                                 .find('[data-property="_btms"]')
-                                .gInputBox("value", r.GUtil.formatNumber(100 * this._getProperty(t, "_btms", !1, 1), 0)),
-                            o.find('[data-property="_bhmo"]').prop("checked", this._getProperty(t, "_bhmo", !1, !1)),
+                                .gInputBox("value", GObject.GUtil.formatNumber(100 * this._getProperty(t, "_btms", false, 1), 0)),
+                            o.find('[data-property="_bhmo"]').prop("checked", this._getProperty(t, "_bhmo", false, false)),
                             o.find('[data-property="_bhmi"]').gInputSlider("value", 100 * this._getProperty(t, "_bhmi")),
-                            o.find('[data-property="_btmo"]').prop("checked", this._getProperty(t, "_btmo", !1, !1)),
+                            o.find('[data-property="_btmo"]').prop("checked", this._getProperty(t, "_btmo", false, false)),
                             o.find('[data-property="_btmi"]').gInputSlider("value", 100 * this._getProperty(t, "_btmi")),
-                            o.find('[data-property="_bs"]').prop("checked", this._getProperty(t, "_bs", !1, !1)));
+                            o.find('[data-property="_bs"]').prop("checked", this._getProperty(t, "_bs", false, false)));
                     }.bind(this);
                 if (this._getSelectedPaintLayer()) t(this._getSelectedPaintLayer());
                 else {
@@ -1331,7 +1331,7 @@ module.exports = function (e, t, n) {
                 if (e)
                     for (var n = e.getParent().getBorderLayers().indexOf(e), o = 0; o < this._elements.length; ++o) {
                         var i = this._elements[o].getPaintLayers().getBorderLayers();
-                        r.GUtil.each(
+                        GObject.GUtil.each(
                             i,
                             function (i, a) {
                                 ((a && a === e) || (a.constructor === e.constructor && i === n)) && t(a, this._elements[o]);
@@ -1339,5 +1339,5 @@ module.exports = function (e, t, n) {
                         );
                     }
             }),
-            (e.exports = v));
+            (module.exports = v));
     };

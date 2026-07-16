@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(852),
-                r = i(17);
+module.exports = function (module, exports, require) {
+            var n = require(852),
+                r = require(17);
 
             function o() {}
             ((o.apply = function (e, t, i) {
@@ -13,5 +13,5 @@ module.exports = function (e, t, i) {
                     "flood-opacity": 1,
                 });
             }),
-                (e.exports = o));
+                (module.exports = o));
         };

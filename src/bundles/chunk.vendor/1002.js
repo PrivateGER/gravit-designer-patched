@@ -1,11 +1,11 @@
-module.exports = function (e, t, i) {
-            var n = i(264),
-                r = i(187),
-                o = i(380),
-                a = i(5),
-                s = i(87),
-                l = i(54),
-                h = i(12);
+module.exports = function (module, exports, require) {
+            var n = require(264),
+                r = require(187),
+                o = require(380),
+                a = require(5),
+                s = require(87),
+                l = require(54),
+                h = require(12);
 
             function A(e) {
                 if (((this.polys = []), e && (e instanceof l || (e.hasMixin && e.hasMixin(s)))))
@@ -14,7 +14,7 @@ module.exports = function (e, t, i) {
             }
             ((A.prototype.polys = null),
                 (A.prototype.fitter = null),
-                (A.prototype.force = !1),
+                (A.prototype.force = false),
                 (A.prototype.simplify = function (e, t, i) {
                     var n = [];
                     this.fitter = new o(e);
@@ -55,9 +55,9 @@ module.exports = function (e, t, i) {
                         v = 0;
                     if (m) {
                         var b,
-                            C = !0,
+                            C = true,
                             w = null;
-                        o && (w = new r(!1, !1, !1, 2));
+                        o && (w = new r(false, false, false, 2));
                         do {
                             for (; m && m.next && (i || void 0 !== m.cx1); ) {
                                 if (
@@ -159,7 +159,7 @@ module.exports = function (e, t, i) {
                                 ((_ = null), (s = null), (l = null), (v = 0));
                             }
                             if (!C && m === e) break;
-                            (m && (m = m.next), (C = !1));
+                            (m && (m = m.next), (C = false));
                         } while (m && m !== e);
                         return e.getPoints();
                     }
@@ -167,5 +167,5 @@ module.exports = function (e, t, i) {
                 (A.prototype.toString = function () {
                     return "[Object GVertexSimplifier]";
                 }),
-                (e.exports = A));
+                (module.exports = A));
         };

@@ -1,24 +1,24 @@
-module.exports = function (e, t, i) {
-            var n = i(1424),
-                r = i(1425),
-                o = i(799),
-                a = i(1426),
-                s = i(391),
-                l = i(1427),
-                h = i(197),
-                A = i(11),
-                c = i(1428),
-                p = i(1436),
-                u = i(1437),
-                d = i(1438),
-                g = i(1439),
-                f = i(587),
-                m = i(1441),
+module.exports = function (module, exports, require) {
+            var n = require(1424),
+                r = require(1425),
+                o = require(799),
+                GDocument = require(1426),
+                s = require(391),
+                l = require(1427),
+                h = require(197),
+                A = require(11),
+                c = require(1428),
+                p = require(1436),
+                u = require(1437),
+                d = require(1438),
+                g = require(1439),
+                f = require(587),
+                m = require(1441),
                 y = function (e, t, i) {
                     ((this._doc = e),
                         (this.referenceNumber = 1),
                         (this.pageTree = this.getIndirectObject(new p())),
-                        (this.info = this.getIndirectObject(new a(t, i))),
+                        (this.info = this.getIndirectObject(new GDocument(t, i))),
                         (this.catalog = this.getIndirectObject(new h())),
                         this.catalog.getPDFObject().put("/Type", "/Catalog"),
                         this.catalog.getPDFObject().put("/Pages", new s(this.pageTree)),
@@ -74,7 +74,7 @@ module.exports = function (e, t, i) {
                     var t;
                     e &&
                         this.references.some(function (i, n) {
-                            if (i.number === e.number && i.type === e.type) return ((t = n), !0);
+                            if (i.number === e.number && i.type === e.type) return ((t = n), true);
                         }) &&
                         this.references.splice(t, 1);
                 }),
@@ -110,5 +110,5 @@ module.exports = function (e, t, i) {
                         e.writeln("startxref"),
                         e.writeln(t.offset));
                 }),
-                (e.exports = y));
+                (module.exports = y));
         };

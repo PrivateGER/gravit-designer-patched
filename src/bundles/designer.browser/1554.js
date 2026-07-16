@@ -1,9 +1,9 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
         function o() {
             this.stack = [];
         }
-        (n(38),
+        (require(38),
             (o.RawValue = function (e) {
                 this.value = e;
             }),
@@ -48,5 +48,5 @@ module.exports = function (e, t, n) {
                     .join(" ");
             }),
             (o.Connector = { AND: "AND", IN: "IN", OR: "OR" }),
-            (e.exports = o));
+            (module.exports = o));
     };

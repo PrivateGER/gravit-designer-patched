@@ -1,8 +1,8 @@
-module.exports = function (e, t, i) {
+module.exports = function (module, exports, require) {
             "use strict";
-            var n = i(105),
-                r = i(984),
-                o = i(326);
+            var n = require(105),
+                r = require(984),
+                o = require(326);
 
             function a(e) {
                 this.bindConstructorValues(e);
@@ -24,7 +24,7 @@ module.exports = function (e, t, i) {
                         ((t = e.path),
                         (i = t || new o.Path()),
                         {
-                            configurable: !0,
+                            configurable: true,
                             get: function () {
                                 return ("function" == typeof i && (i = i()), i);
                             },
@@ -106,7 +106,7 @@ module.exports = function (e, t, i) {
                         var o = 2 * Math.PI;
                         e.beginPath();
                         for (var a = 0; a < t.length; a += 1)
-                            (e.moveTo(i + t[a].x * r, n + t[a].y * r), e.arc(i + t[a].x * r, n + t[a].y * r, 2, 0, o, !1));
+                            (e.moveTo(i + t[a].x * r, n + t[a].y * r), e.arc(i + t[a].x * r, n + t[a].y * r, 2, 0, o, false));
                         (e.closePath(), e.fill());
                     }
                     ((t = void 0 !== t ? t : 0), (i = void 0 !== i ? i : 0), (n = void 0 !== n ? n : 24));
@@ -153,5 +153,5 @@ module.exports = function (e, t, i) {
                         (e.strokeStyle = "green"),
                         r.line(e, t + A * o, -1e4, t + A * o, 1e4));
                 }),
-                (t.Glyph = a));
+                (exports.Glyph = a));
         };

@@ -55,10 +55,37 @@ hints. This is the preferred way to modify the app:
    bumps the service-worker precache revision in `cacher.js`, and refreshes
    the `.br`/`.gz` variants. Commit `src/bundles/` and `public/` together.
 
-The build is byte-exact: rebuilding without edits reproduces the committed
-bundles bit-for-bit (module order, holes, and glue text are preserved via
-each bundle's `manifest.json`). `npm run split -- <name>` regenerates a
-bundle's split from `public/<name>.js` if you ever patch the bundle directly.
+`npm run split -- <name>` regenerates a bundle's split from
+`public/<name>.js` if you ever patch the bundle directly.
+
+### Readability pipeline
+
+The split modules have been run through a behavior-preserving readability pass
+so they're no longer raw minifier output:
+
+- **`npm run name`** (`scripts/name-modules.js`) derives a human name for each
+  module id from how the bundle uses it (`n(123).GFoo` votes to name module
+  123 `GFoo`), storing them in each bundle's `names.json`. Edit that file to
+  add or correct names; manual entries are always kept. It also regenerates
+  `INDEX.md` keyed on those names.
+- **`npm run refine`** (`scripts/refine-bundle.js`) rewrites the modules using
+  scope-aware AST renames applied as text splices (no code generation):
+  webpack params `(e, t, n)` → `(module, exports, require)`; `var o = n(15)` →
+  `var GPlatform = require(15)` for named modules; inline
+  `require(820 /* GoogleTagManagerSettings */)` annotations; and `!0`/`!1`/
+  `void 0` → `true`/`false`/`undefined`. It skips any module using `eval` and
+  never renames across a free `module`/`exports`/`require` reference. It is
+  idempotent — safe to re-run after adding names.
+- **`npm run verify-refine`** (`scripts/verify-refine.js`) proves the refiner
+  changed nothing but names and literal spellings: it canonicalizes every
+  module (all identifiers → one placeholder, `!0`↔`true`, comments stripped)
+  and diffs the token stream against `git HEAD`. A non-zero exit means a
+  refinement altered behavior. All 1721 modules currently verify clean.
+
+To improve a module further, just rename its variables by hand and
+`npm run build`; the identifiers are already scoped correctly by the tools
+above. When re-refining freshly re-split bundles, run
+`name → refine → verify-refine → build` in that order.
 
 ## Maintenance notes
 

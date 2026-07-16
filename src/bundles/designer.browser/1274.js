@@ -1,31 +1,31 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        (n(193), n(3), n(4), n(13));
-        var o = n(53),
-            i = n(1),
-            a = n(866),
-            r = n(867),
-            s = n(123),
-            l = n(135);
+        (require(193), require(3), require(4), require(13));
+        var o = require(53),
+            GObject = require(1),
+            GAlignAction = require(866),
+            GDistributeAction = require(867),
+            s = require(123),
+            l = require(135);
         function c() {
             this._elements = [];
         }
-        (i.GObject.inherit(c, s),
+        (GObject.GObject.inherit(c, s),
             (c.prototype._panel = null),
             (c.prototype._document = null),
             (c.prototype._elements = null),
             (c.prototype.isGroup = function (e) {
-                return !1;
+                return false;
             }),
             (c.prototype.init = function (e, t) {
                 this._panel = e;
                 var n = (e) => {
-                    var t = a.ID + "." + e,
+                    var t = GAlignAction.ID + "." + e,
                         n = gDesigner.getAction(t);
                     return $("<button></button>")
                         .attr("data-action", t)
                         .on("click", this._executeAction.bind(this))
-                        .text(i.GLocale.get(n.getTitle()));
+                        .text(GObject.GLocale.get(n.getTitle()));
                 };
                 ($("<hr/>").appendTo(this._panel),
                     $("<div></div>")
@@ -49,12 +49,12 @@ module.exports = function (e, t, n) {
                                 {
                                     width: "45%",
                                     prefix: {
-                                        label: i.GLocale.get(new i.GLocaleKey("GAlignProperties", "text.space-x")),
+                                        label: GObject.GLocale.get(new GObject.GLocaleKey("GAlignProperties", "text.space-x")),
                                         width: "50px",
                                     },
                                     content: $("<input>")
                                         .on("keydown", this._spaceEvent.bind(this))
-                                        .attr({ type: "text", "data-dist": r.Type.Horizontal })
+                                        .attr({ type: "text", "data-dist": GDistributeAction.Type.Horizontal })
                                         .val("1")
                                         .gInputBox({ minValue: 1 }),
                                 },
@@ -62,12 +62,12 @@ module.exports = function (e, t, n) {
                                 {
                                     width: "45%",
                                     prefix: {
-                                        label: i.GLocale.get(new i.GLocaleKey("GAlignProperties", "text.space-y")),
+                                        label: GObject.GLocale.get(new GObject.GLocaleKey("GAlignProperties", "text.space-y")),
                                         width: "50px",
                                     },
                                     content: $("<input>")
                                         .on("keydown", this._spaceEvent.bind(this))
-                                        .attr({ type: "text", "data-dist": r.Type.Vertical })
+                                        .attr({ type: "text", "data-dist": GDistributeAction.Type.Vertical })
                                         .val("1")
                                         .gInputBox({ minValue: 1 }),
                                 },
@@ -84,12 +84,12 @@ module.exports = function (e, t, n) {
                     var t = $(e.target).closest("input"),
                         n = t.attr("data-dist"),
                         o = this._document.getScene().stringToPoint(t.gInputBox("value"));
-                    (!isNaN(o) && o > 0 && gDesigner.executeAction(r.ID + "." + n, [this._elements, null, o], "shortcut"),
+                    (!isNaN(o) && o > 0 && gDesigner.executeAction(GDistributeAction.ID + "." + n, [this._elements, null, o], "shortcut"),
                         this._updateDisplayValues());
                 }
             }),
             (c.prototype.isAvailable = function (e) {
-                return !0 === e;
+                return true === e;
             }),
             (c.prototype.update = function (e, t) {
                 if (
@@ -98,11 +98,11 @@ module.exports = function (e, t, n) {
                     e)
                 ) {
                     for (var n = 0; n < t.length; ++n)
-                        !t[n].hasMixin(i.GElement.Transform) || t[n] instanceof i.GPage || this._elements.push(t[n]);
+                        !t[n].hasMixin(GObject.GElement.Transform) || t[n] instanceof GObject.GPage || this._elements.push(t[n]);
                     if (this._elements.length >= 2 && this._elements.length === t.length)
-                        return ((this._document = e), gDesigner.addEventListener(l, this._settingChanged, this), !0);
+                        return ((this._document = e), gDesigner.addEventListener(l, this._settingChanged, this), true);
                 }
-                return !1;
+                return false;
             }),
             (c.prototype._settingChanged = function (e) {
                 "decimals_num" === e.key && this._updateDisplayValues();
@@ -113,12 +113,12 @@ module.exports = function (e, t, n) {
                         var n = $(t),
                             o = parseFloat(n.gInputBox("value"));
                         ((o = isNaN(o) || o <= 0 || !o ? 1 : o),
-                            n.gInputBox("value", i.GUtil.formatNumber(o, this._document.getScene().getOptimalDecimalsCount())));
+                            n.gInputBox("value", GObject.GUtil.formatNumber(o, this._document.getScene().getOptimalDecimalsCount())));
                     }.bind(this)
                 );
             }),
             (c.prototype.toString = function () {
                 return "[Object GAlignProperties]";
             }),
-            (e.exports = c));
+            (module.exports = c));
     };

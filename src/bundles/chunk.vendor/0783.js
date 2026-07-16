@@ -1,16 +1,16 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = i(69),
-                o = (i(73), i(70), i(66), i(387)),
-                a = (i(22), i(36)),
-                s = i(370),
-                l = i(172),
-                h = i(153);
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = require(69),
+                o = (require(73), require(70), require(66), require(387 /* GTextEditor */)),
+                a = (require(22), require(36)),
+                s = require(370),
+                l = require(172),
+                h = require(153);
 
             function A(e, t) {
                 ((this._uid = t), o.call(this, e));
             }
-            (n.inheritAndMix(A, o, [l]),
+            (IsFiniteNonNegativeNumber.inheritAndMix(A, o, [l]),
                 a.exports(A, s),
                 (A.prototype._uid = null),
                 (A.prototype._showEditor = function (e) {
@@ -20,10 +20,10 @@ module.exports = function (e, t, i) {
                     (o.prototype.initialSetup.call(this, e), this._annotationSetup());
                 }),
                 (A.prototype.canHandleDblClick = function () {
-                    return !0;
+                    return true;
                 }),
                 (A.prototype.handleDblClick = function () {
-                    return !0;
+                    return true;
                 }),
                 (A.prototype.isRemovalBlocked = function () {
                     return 0 != (this._element.getProperty("plkt") & r.ProgramLck.NoDelete) || o.prototype.isRemovalBlocked.call(this);
@@ -34,5 +34,5 @@ module.exports = function (e, t, i) {
                 (A.prototype.toString = function () {
                     return "[Object GTextAnnotationEditor]";
                 }),
-                (e.exports = A));
+                (module.exports = A));
         };

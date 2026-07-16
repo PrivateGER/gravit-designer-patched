@@ -1,6 +1,6 @@
-module.exports = function (e, t, i) {
-            var n = i(0),
-                r = e.exports;
+module.exports = function (module, exports, require) {
+            var IsFiniteNonNegativeNumber = require(0),
+                r = module.exports;
             ((r._nodeClassToNameMap = {}),
                 (r._nameToNodeClassMap = {}),
                 [
@@ -37,10 +37,10 @@ module.exports = function (e, t, i) {
                     "pattern/sketchRadialGradient",
                     "pattern/sketchTexturePattern",
                 ].forEach(function (e) {
-                    var t = i(1400)("./" + e.toLowerCase()),
+                    var t = require(1400)("./" + e.toLowerCase()),
                         o = e.split("sketch")[1],
                         a = o[0].toLowerCase() + o.slice(1);
-                    ((r._nodeClassToNameMap[n.getTypeId(t)] = a), (r._nameToNodeClassMap[a] = t));
+                    ((r._nodeClassToNameMap[IsFiniteNonNegativeNumber.getTypeId(t)] = a), (r._nameToNodeClassMap[a] = t));
                 }),
                 (r.getClassFromName = function (e) {
                     var t = r._nameToNodeClassMap[e] || null;

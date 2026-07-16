@@ -1,6 +1,6 @@
-module.exports = function (e, t, n) {
+module.exports = function (module, exports, require) {
         "use strict";
-        n(1);
+        require(1 /* GObject */);
         var o = function () {
             this._timer = 0;
         };
@@ -35,5 +35,5 @@ module.exports = function (e, t, n) {
                     this
                 );
             }),
-            (e.exports = o));
+            (module.exports = o));
     };
