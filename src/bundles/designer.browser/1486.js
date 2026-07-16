@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(30 /* polyfill:Object */), require(4), require(41));
         var i = require(1154),
-            a = _interopRequireDefault(require(389 /* GDocument */)),
+            a = _interopRequireDefault(require(389 /* GFileTypes */)),
             r = _interopRequireDefault(require(163 /* GDocument */)),
             s = _interopRequireDefault(require(1245)),
             GObject = require(1);

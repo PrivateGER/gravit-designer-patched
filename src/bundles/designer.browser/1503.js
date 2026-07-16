@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
         var o = require(53),
             GObject = require(1),
             GPlatform = require(15),
-            GSaveAction = require(40),
+            Utils = require(40),
             designerConfig = require(10),
             l = require(86),
             c = require(217),
@@ -234,7 +234,7 @@ module.exports = function (module, exports, require) {
                                     l.hide(0, function () {
                                         ($(this).show(), $(this)[0].offsetHeight);
                                     }),
-                                    s && (0, GSaveAction.isFunction)(s) && s(e));
+                                    s && (0, Utils.isFunction)(s) && s(e));
                             }
                         }.bind(this);
                         break;

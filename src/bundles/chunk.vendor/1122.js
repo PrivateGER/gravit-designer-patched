@@ -13,7 +13,7 @@ module.exports = function (module, exports, require) {
                 u = require(75),
                 d = require(794),
                 g = require(1401 /* Inflater */).Inflater,
-                f = require(1402).zip;
+                f = require(1402 /* lib:zip.js */).zip;
 
             function m(e) {
                 ((this._data = e),

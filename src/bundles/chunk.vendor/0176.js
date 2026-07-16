@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
             var n,
-                r = require(610);
+                r = require(610 /* lib:ua-parser-js */);
 
             function o() {}
             ((o.OperatingSystem = {

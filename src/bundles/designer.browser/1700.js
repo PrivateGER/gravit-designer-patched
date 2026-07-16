@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(8 /* Symbol */), require(4), require(13));
         var GObject = require(1),
-            GSaveAction = require(40),
+            Utils = require(40),
             a = require(255),
             r = require(1118),
             s = require(1199),
@@ -57,7 +57,7 @@ module.exports = function (module, exports, require) {
                         .append(GObject.GLocale.get(e))
                         .on(
                             "click",
-                            GSaveAction.watchDog.trap(
+                            Utils.watchDog.trap(
                                 function (t) {
                                     n
                                         ? gDesigner.stats("fonts_click_protab", GObject.GLocale.get(e, void 0, GObject.GLocaleLanguage.English))

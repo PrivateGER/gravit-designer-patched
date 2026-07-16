@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(290), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(4), require(13), require(32), require(38), require(33));
         var o = require(357),
             GObject = require(1),
-            GSaveAction = require(40);
+            Utils = require(40);
         const { gApi, LINKS, DESIGNER: { TITLE } = {}, SubscriptionStatus } = require(10 /* designerConfig */),
             d = (require(173), require(337)),
             u = ["number", "name", "price", "date"];
@@ -33,7 +33,7 @@ module.exports = function (module, exports, require) {
                             .attr("type", "text")
                             .attr("data-property", "search")
                             .attr("placeholder", GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.search-label")))
-                            .on("input", (0, GSaveAction.debounce)((0, GSaveAction.throttle)(n, 500), 500))
+                            .on("input", (0, Utils.debounce)((0, Utils.throttle)(n, 500), 500))
                             .on("keyup", (e) => {
                                 13 === e.which && (gDesigner.stats("profile-dialog_purchase-panel_search"), n(e));
                             })

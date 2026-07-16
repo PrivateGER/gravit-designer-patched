@@ -1570,7 +1570,7 @@ module.exports = function (module, exports, require) {
             ie = function (e) {
                 return e && void 0 !== e._q;
             },
-            ae = require(610),
+            ae = require(610 /* lib:ua-parser-js */),
             re = require.n(ae),
             se = function () {
                 var e, t, n, o;

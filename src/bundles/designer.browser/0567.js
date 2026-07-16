@@ -2,194 +2,194 @@ module.exports = function (module, exports, require) {
         "use strict";
         var _interopRequireDefault = require(16);
         (require(58 /* polyfill:Array */), require(8 /* Symbol */), require(3), require(71 /* polyfill:String */), require(4), require(41), require(13), require(32), require(38), require(97), require(33));
-        var i = require(53),
+        var GEditor = require(53),
             GObject = require(1),
             GPlatform = require(15),
-            s = _interopRequireDefault(require(238)),
-            l = _interopRequireDefault(require(339)),
-            c = require(67),
-            d = _interopRequireDefault(require(340)),
+            GMenuModule = _interopRequireDefault(require(238)),
+            GMenuItemModule = _interopRequireDefault(require(339)),
+            richTooltipModule = require(67),
+            touchToolModule = _interopRequireDefault(require(340)),
             GSettingsDialog = require(1275),
-            p = require(444),
-            g = require(78),
-            h = (require(606), require(806)),
-            f = require(395),
-            m = require(864),
-            y = require(123),
-            v = require(1535),
-            _ = require(603),
+            GPosition = require(444),
+            GDocumentEvent = require(78),
+            GSidebar = (require(606), require(806)),
+            GSidebars = require(395),
+            GInspectorSidebar = require(864),
+            GProperties = require(123),
+            GAnnotations = require(1535),
+            GWindows = require(603),
             GAnnotationProperties = require(1536),
-            w = require(358),
-            C = require(592);
-        const x = require(392),
-            S = require(135);
+            GAnnotationsUtils = require(358),
+            AnnotationsError = require(592);
+        const GApplicationStateChangedEvent = require(392),
+            GSettingChangedEvent = require(135);
         var GReviewDockerProperties = require(1537);
-        const A = require(291),
-            T = require(393),
-            G = require(336),
-            P = require(434),
+        const GNetworkAvailabilityChangedEvent = require(291),
+            GCollaborationEvent = require(393),
+            GStorageItemEvent = require(336),
+            AnnotationPermissions = require(434),
             { SHOW_SIDEBAR_BADGE, NOTIFICATION_SETTINGS_ENABLED } = require(10 /* designerConfig */),
-            I = require(86),
-            k = require(217),
-            O = require(1279),
+            DocumentStatus = require(86),
+            GDocumentStatusEvent = require(217),
+            SyncStatus = require(1279),
             {
                 DateAPI,
                 FileStatus: { APPROVED },
             } = require(10 /* designerConfig */),
             SidebarsIds = require(198);
-        function N() {
-            (h.call(this),
+        function GAnnotationsSidebar() {
+            (GSidebar.call(this),
                 (this._annotationPanels = []),
                 (this._annotationProperties = []),
                 (this._handleFocusInEvent = this._handleFocusInEvent.bind(this)),
                 (this._handleFocusOutEvent = this._handleFocusOutEvent.bind(this)));
         }
-        (GObject.GObject.inherit(N, h),
-            (N.ANNOTATION_PROPERTIES_ARROW_POSITION = [32.5, 44, 55.5, 67, 78.5, 90]),
-            (N.ANNOTATION_PROPERTIES_ARROW_POSITION_TOUCH = [25.5, 38, 50.5, 63, 75.5, 88]),
-            (N.ID = SidebarsIds.SidebarsIds.GAnnotationsSidebar),
-            (N.TITLE = new GObject.GLocaleKey("GAnnotationsSidebar", "text.title")),
-            (N.prototype._htmlElement = null),
-            (N.prototype._panelsContainer = null),
-            (N.prototype._annotationPanels = null),
-            (N.prototype._annotationProperties = null),
-            (N.prototype._document = null),
-            (N.prototype._notificationMenu = null),
-            (N.prototype._elements = null),
-            (N.prototype._listenersAdded = false),
-            (N.prototype._annotationToolbar = null),
-            (N.prototype._annotationsToolbarPanel = null),
-            (N.prototype._showResolved = false),
-            (N.prototype._showDistance = i.GEditorOptions.showDistance),
-            (N.prototype._toolExitKey = i.GEditorOptions.toolExitKey),
-            (N.prototype._currentAnnotations = null),
-            (N.prototype._localAnnotations = null),
-            (N.prototype._page = null),
-            (N.prototype.getId = function () {
-                return N.ID;
+        (GObject.GObject.inherit(GAnnotationsSidebar, GSidebar),
+            (GAnnotationsSidebar.ANNOTATION_PROPERTIES_ARROW_POSITION = [32.5, 44, 55.5, 67, 78.5, 90]),
+            (GAnnotationsSidebar.ANNOTATION_PROPERTIES_ARROW_POSITION_TOUCH = [25.5, 38, 50.5, 63, 75.5, 88]),
+            (GAnnotationsSidebar.ID = SidebarsIds.SidebarsIds.GAnnotationsSidebar),
+            (GAnnotationsSidebar.TITLE = new GObject.GLocaleKey("GAnnotationsSidebar", "text.title")),
+            (GAnnotationsSidebar.prototype._htmlElement = null),
+            (GAnnotationsSidebar.prototype._panelsContainer = null),
+            (GAnnotationsSidebar.prototype._annotationPanels = null),
+            (GAnnotationsSidebar.prototype._annotationProperties = null),
+            (GAnnotationsSidebar.prototype._document = null),
+            (GAnnotationsSidebar.prototype._notificationMenu = null),
+            (GAnnotationsSidebar.prototype._elements = null),
+            (GAnnotationsSidebar.prototype._listenersAdded = false),
+            (GAnnotationsSidebar.prototype._annotationToolbar = null),
+            (GAnnotationsSidebar.prototype._annotationsToolbarPanel = null),
+            (GAnnotationsSidebar.prototype._showResolved = false),
+            (GAnnotationsSidebar.prototype._showDistance = GEditor.GEditorOptions.showDistance),
+            (GAnnotationsSidebar.prototype._toolExitKey = GEditor.GEditorOptions.toolExitKey),
+            (GAnnotationsSidebar.prototype._currentAnnotations = null),
+            (GAnnotationsSidebar.prototype._localAnnotations = null),
+            (GAnnotationsSidebar.prototype._page = null),
+            (GAnnotationsSidebar.prototype.getId = function () {
+                return GAnnotationsSidebar.ID;
             }),
-            (N.prototype.getTitle = function () {
-                return N.TITLE;
+            (GAnnotationsSidebar.prototype.getTitle = function () {
+                return GAnnotationsSidebar.TITLE;
             }),
-            (N.prototype.isEnabled = function () {
+            (GAnnotationsSidebar.prototype.isEnabled = function () {
                 return !!this._document;
             }),
-            (N.prototype.isVisible = function () {
+            (GAnnotationsSidebar.prototype.isVisible = function () {
                 return !!gDesigner.getApplicationManager().isCommentingEnabled();
             }),
-            (N.prototype.isDeactivatable = function () {
-                return !this._annotationPanels || !this._annotationPanels.some((e) => e.properties.isAddingAnnotation());
+            (GAnnotationsSidebar.prototype.isDeactivatable = function () {
+                return !this._annotationPanels || !this._annotationPanels.some((panel) => panel.properties.isAddingAnnotation());
             }),
-            (N.prototype.getOrientation = function () {
-                return f.Orientation.Right;
+            (GAnnotationsSidebar.prototype.getOrientation = function () {
+                return GSidebars.Orientation.Right;
             }),
-            (N.prototype.getMinimumWidth = function () {
+            (GAnnotationsSidebar.prototype.getMinimumWidth = function () {
                 return this._getSidebarWidth();
             }),
-            (N.prototype.isResizeable = function () {
+            (GAnnotationsSidebar.prototype.isResizeable = function () {
                 return false;
             }),
-            (N.prototype.getDefaultWidth = function () {
+            (GAnnotationsSidebar.prototype.getDefaultWidth = function () {
                 return this._getSidebarWidth();
             }),
-            (N.prototype._getSidebarWidth = function () {
+            (GAnnotationsSidebar.prototype._getSidebarWidth = function () {
                 return gDesigner.isTouchEnabled() ? 376 : 300;
             }),
-            (N.prototype._storageItemFileStatusEvent = function (e) {
+            (GAnnotationsSidebar.prototype._storageItemFileStatusEvent = function (event) {
                 this._storageItem &&
-                    this._storageItem === e.storageItem &&
-                    ((e.oldStatus !== APPROVED && e.newStatus !== APPROVED) || this._updatePropertyPanels(true));
+                    this._storageItem === event.storageItem &&
+                    ((event.oldStatus !== APPROVED && event.newStatus !== APPROVED) || this._updatePropertyPanels(true));
             }),
-            (N.prototype._toggleShowResolved = function (e) {
-                if (e !== this._showResolved) {
-                    this._showResolved = e;
+            (GAnnotationsSidebar.prototype._toggleShowResolved = function (showResolved) {
+                if (showResolved !== this._showResolved) {
+                    this._showResolved = showResolved;
                     for (var t = this._annotationPanels.length - 1; t >= 0; t--) {
-                        this._annotationPanels[t].properties.toggleShowResolved(e);
+                        this._annotationPanels[t].properties.toggleShowResolved(showResolved);
                     }
-                    ((this._document.getActiveWindow().getView().getViewConfiguration().showResolvedAnnotations = e),
+                    ((this._document.getActiveWindow().getView().getViewConfiguration().showResolvedAnnotations = showResolved),
                         this._document.getActiveWindow().getView().invalidateAndResetCache(null));
                 }
             }),
-            (N.prototype.syncAnnotations = function (e) {
+            (GAnnotationsSidebar.prototype.syncAnnotations = function (pushChanges) {
                 return this._annotationPanels && this._document && this._document.getAnnotationsId()
                     ? this.isAnnotationPropertiesEditing()
                         ? Promise.resolve()
-                        : new Promise((t) => {
-                              (e
-                                  ? w.updateAndReturnCloudAnnotationsForDocument(this._document, this._currentAnnotations)
-                                  : w.getCloudAnnotationsForDocument(this._document)
-                              ).then((n) => {
-                                  let o = n.annotationsCollection,
-                                      i = false;
-                                  this._document && this._document.getAnnotationsId() !== n.cid && t(i);
-                                  let a = false;
-                                  if (o) {
-                                      this._currentAnnotations = o;
+                        : new Promise((resolve) => {
+                              (pushChanges
+                                  ? GAnnotationsUtils.updateAndReturnCloudAnnotationsForDocument(this._document, this._currentAnnotations)
+                                  : GAnnotationsUtils.getCloudAnnotationsForDocument(this._document)
+                              ).then((result) => {
+                                  let annotationsCollection = result.annotationsCollection,
+                                      updated = false;
+                                  this._document && this._document.getAnnotationsId() !== result.cid && resolve(updated);
+                                  let delayed = false;
+                                  if (annotationsCollection) {
+                                      this._currentAnnotations = annotationsCollection;
                                       for (let t = this._annotationPanels.length - 1; t >= 0; t--) {
-                                          let n = this._annotationPanels[t];
-                                          if (n.properties instanceof v) {
-                                              let t = this._getAnnotationsToSet(o, n.properties.getPage()),
-                                                  r = n.properties.setAnnotations(t);
-                                              r === O.UPDATED
-                                                  ? (i = true)
-                                                  : r === O.DELAYED &&
-                                                    ((a = true), n.properties.setDelayedSyncCallback(this.syncAnnotations.bind(this, e)));
+                                          let panel = this._annotationPanels[t];
+                                          if (panel.properties instanceof GAnnotations) {
+                                              let annotationsList = this._getAnnotationsToSet(annotationsCollection, panel.properties.getPage()),
+                                                  syncResult = panel.properties.setAnnotations(annotationsList);
+                                              syncResult === SyncStatus.UPDATED
+                                                  ? (updated = true)
+                                                  : syncResult === SyncStatus.DELAYED &&
+                                                    ((delayed = true), panel.properties.setDelayedSyncCallback(this.syncAnnotations.bind(this, pushChanges)));
                                           }
                                       }
                                   }
-                                  if (((i = i && !a), i)) {
-                                      let e = this._document.getScene();
-                                      (e && e.setLastTimeAnnotationsFromCloudModified(n.lastUpdateTime),
+                                  if (((updated = updated && !delayed), updated)) {
+                                      let scene = this._document.getScene();
+                                      (scene && scene.setLastTimeAnnotationsFromCloudModified(result.lastUpdateTime),
                                           gDesigner.notifyDocumentModified(this._document),
-                                          this._active ? this._activateAnnotations() : this.trigger(h.UPDATE_EVENT));
+                                          this._active ? this._activateAnnotations() : this.trigger(GSidebar.UPDATE_EVENT));
                                   }
-                                  t(i);
+                                  resolve(updated);
                               });
                           })
                     : Promise.resolve();
             }),
-            (N.prototype._getAnnotationsToSet = function (e, t) {
-                let n = w.findAnnotationsListForPage(t, e);
-                return (n || (n = { "@": "annlst" }), n);
+            (GAnnotationsSidebar.prototype._getAnnotationsToSet = function (annotationsCollection, page) {
+                let list = GAnnotationsUtils.findAnnotationsListForPage(page, annotationsCollection);
+                return (list || (list = { "@": "annlst" }), list);
             }),
-            (N.prototype.init = function (e) {
-                (h.prototype.init.call(this, e),
-                    (this._htmlElement = e),
-                    (this._notificationMenu = new s.default(null, "g-annotation-sidebar-notification-menu")));
-                const t = gDesigner.getApplicationManager().isCommentingEditingEnabled();
+            (GAnnotationsSidebar.prototype.init = function (element) {
+                (GSidebar.prototype.init.call(this, element),
+                    (this._htmlElement = element),
+                    (this._notificationMenu = new GMenuModule.default(null, "g-annotation-sidebar-notification-menu")));
+                const commentingEditingEnabled = gDesigner.getApplicationManager().isCommentingEditingEnabled();
                 ((this._sidebarTitle = $("<div></div>").addClass("sidebar-title-inner").append(GObject.GLocale.get(this.getTitle()))),
                     (this._annotationToolbar = $("<div></div>").addClass("toolbar annotations-toolbar")));
-                const n = $("<button></button>");
-                var o = $("<div></div>")
+                const optionsButton = $("<button></button>");
+                var optionsOverlay = $("<div></div>")
                     .addClass("annotation-sidebar-options")
                     .gOverlay({
                         releaseOnClose: false,
                         clazz: "g-annotation-sidebar-option-overlay",
-                        closeCallback: () => n.removeClass("g-active"),
+                        closeCallback: () => optionsButton.removeClass("g-active"),
                     });
                 this._annotationsToolbarPanel = $("<div></div>").addClass("properties-panel").addClass("annotations-properties-panel");
-                var r = $("<div></div>").addClass("annotation-options-box").appendTo(this._annotationToolbar);
-                (n
+                var optionsBox = $("<div></div>").addClass("annotation-options-box").appendTo(this._annotationToolbar);
+                (optionsButton
                     .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationsSidebar", "text.annotation-options")))
                     .addClass("annotation-options")
                     .append($("<span></span>").addClass("gravit-icon-settings"))
                     .on(
                         "click",
-                        function (e) {
-                            (o.gOverlay("open", $(e.target).closest("button")), n.addClass("g-active"));
+                        function (event) {
+                            (optionsOverlay.gOverlay("open", $(event.target).closest("button")), optionsButton.addClass("g-active"));
                         }.bind(this)
                     )
-                    .appendTo(r),
+                    .appendTo(optionsBox),
                     $("<span></span>").addClass("indicator").appendTo(this._annotationToolbar),
                     (this._optionsToolbar = $("<div></div>").gPropertyRow({
                         noPaddingRight: true,
                         clickable: true,
-                        rawClick: (e) => {
-                            var t = !$(e.target).find("input").prop("checked");
-                            ($(e.target).find("input").prop("checked", t),
-                                gDesigner.stats("annotations_settings_show-resolved", t ? "On" : "Off"),
-                                this._toggleShowResolved(t),
-                                e.stopPropagation());
+                        rawClick: (event) => {
+                            var checked = !$(event.target).find("input").prop("checked");
+                            ($(event.target).find("input").prop("checked", checked),
+                                gDesigner.stats("annotations_settings_show-resolved", checked ? "On" : "Off"),
+                                this._toggleShowResolved(checked),
+                                event.stopPropagation());
                         },
                         columns: [
                             {
@@ -199,24 +199,24 @@ module.exports = function (module, exports, require) {
                                         $("<input>")
                                             .attr("type", "checkbox")
                                             .prop("checked", this._showResolved)
-                                            .on("change", (e) => {
-                                                var t = $(e.target).prop("checked");
-                                                (gDesigner.stats("annotations_settings_show-resolved", t ? "On" : "Off"),
-                                                    this._toggleShowResolved(t),
-                                                    e.stopPropagation());
+                                            .on("change", (event) => {
+                                                var checked = $(event.target).prop("checked");
+                                                (gDesigner.stats("annotations_settings_show-resolved", checked ? "On" : "Off"),
+                                                    this._toggleShowResolved(checked),
+                                                    event.stopPropagation());
                                             })
                                     )
                                     .append($("<span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationsSidebar", "text.show-resolved")))),
                             },
                         ],
                     })),
-                    t &&
+                    commentingEditingEnabled &&
                         this._optionsToolbar.gPropertyRow({
                             noPaddingRight: true,
                             clickable: true,
                             rawClick: () => {
                                 gDesigner.getApplicationManager().isCommentingEditingEnabled() &&
-                                    (w.resolveAllComments(this._document), this.relayout(true));
+                                    (GAnnotationsUtils.resolveAllComments(this._document), this.relayout(true));
                             },
                             columns: [
                                 {
@@ -233,15 +233,15 @@ module.exports = function (module, exports, require) {
                         this._optionsToolbar.gPropertyRow({
                             clickable: true,
                             isMenu: true,
-                            rawClick: (e) => {
+                            rawClick: (event) => {
                                 if (this._document && this._document.isCloudFile())
-                                    (this._notificationMenu.open(e.target, p.Position.Right_Bottom, p.Position.Right_Bottom),
+                                    (this._notificationMenu.open(event.target, GPosition.Position.Right_Bottom, GPosition.Position.Right_Bottom),
                                         $("body").find(".hover-notification-container") && this._removeHoverNotificationFrag(),
-                                        this._openHoverNotification(e.target));
+                                        this._openHoverNotification(event.target));
                                 else {
                                     this._optionsToolbar.find(".notification-label").closest(".columns").gTooltip("show");
                                 }
-                                e.stopPropagation();
+                                event.stopPropagation();
                             },
                             columns: [
                                 {
@@ -255,7 +255,7 @@ module.exports = function (module, exports, require) {
                                 },
                             ],
                         }),
-                    this._optionsToolbar.appendTo(o),
+                    this._optionsToolbar.appendTo(optionsOverlay),
                     $("<div/>")
                         .addClass("offline-overlay-message")
                         .append(
@@ -264,23 +264,23 @@ module.exports = function (module, exports, require) {
                                 .append($("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GOfflineDialog", "title.unavailable-feature"))))
                         )
                         .appendTo(this._htmlElement),
-                    gDesigner.addEventListener(g, this._documentEvent, this),
-                    gDesigner.getWindows().addEventListener(_.WindowEvent, this._windowEvent, this),
-                    gDesigner.getToolManager().addEventListener(i.GToolManager.ToolChangedEvent, this._toolChangedEvent, this),
-                    gDesigner.addEventListener(x, this._stateChangedEvent, this),
-                    gDesigner.addEventListener(A, this._networkAvailabilityChangedEvent, this),
+                    gDesigner.addEventListener(GDocumentEvent, this._documentEvent, this),
+                    gDesigner.getWindows().addEventListener(GWindows.WindowEvent, this._windowEvent, this),
+                    gDesigner.getToolManager().addEventListener(GEditor.GToolManager.ToolChangedEvent, this._toolChangedEvent, this),
+                    gDesigner.addEventListener(GApplicationStateChangedEvent, this._stateChangedEvent, this),
+                    gDesigner.addEventListener(GNetworkAvailabilityChangedEvent, this._networkAvailabilityChangedEvent, this),
                     this._activeTool(gDesigner.getToolManager().getActiveTool()),
                     this._updatePropertyPanels(true));
             }),
-            (N.prototype.getTouchTools = function () {
+            (GAnnotationsSidebar.prototype.getTouchTools = function () {
                 if (!this.isEnabled()) return [];
                 if (!this._active) {
-                    const e = this._document && this._document.getEditor(),
-                        t = e && e.getSelection();
-                    if (t && t.length) return [];
+                    const editor = this._document && this._document.getEditor(),
+                        selection = editor && editor.getSelection();
+                    if (selection && selection.length) return [];
                 }
                 return [
-                    new d.default({
+                    new touchToolModule.default({
                         id: "annotation",
                         sidebar: this.getId(),
                         icon: "gravit-icon-touch-comment-docker",
@@ -289,12 +289,12 @@ module.exports = function (module, exports, require) {
                     }),
                 ];
             }),
-            (N.prototype.getAnnotationsProperties = function () {
+            (GAnnotationsSidebar.prototype.getAnnotationsProperties = function () {
                 return [
                     new GAnnotationProperties(
                         [GAnnotationProperties.PropertySet.FillLayer, GAnnotationProperties.PropertySet.BorderLayer, GAnnotationProperties.PropertySet.BorderWidth],
                         GObject.GEllipseAnnotation,
-                        i.GEllipseAnnotationTool,
+                        GEditor.GEllipseAnnotationTool,
                         "gravit-icon-annotationtools-ellipse",
                         "text.tooltip-ellipse-tool",
                         {
@@ -310,7 +310,7 @@ module.exports = function (module, exports, require) {
                     new GAnnotationProperties(
                         [GAnnotationProperties.PropertySet.FillLayer, GAnnotationProperties.PropertySet.BorderLayer, GAnnotationProperties.PropertySet.BorderWidth],
                         GObject.GRectangleAnnotation,
-                        i.GRectangleAnnotationTool,
+                        GEditor.GRectangleAnnotationTool,
                         "gravit-icon-annotationtools-rectangle",
                         "text.tooltip-rectangle-tool",
                         {
@@ -326,7 +326,7 @@ module.exports = function (module, exports, require) {
                     new GAnnotationProperties(
                         [GAnnotationProperties.PropertySet.BorderLayer, GAnnotationProperties.PropertySet.BorderWidth],
                         GObject.GPencilAnnotation,
-                        i.GPencilAnnotationTool,
+                        GEditor.GPencilAnnotationTool,
                         "gravit-icon-annotationtools-pencil",
                         "text.tooltip-pencil-tool",
                         {
@@ -340,7 +340,7 @@ module.exports = function (module, exports, require) {
                     new GAnnotationProperties(
                         [GAnnotationProperties.PropertySet.BorderLayer, GAnnotationProperties.PropertySet.BorderWidth],
                         GObject.GHighlighterAnnotation,
-                        i.GHighlighterAnnotationTool,
+                        GEditor.GHighlighterAnnotationTool,
                         "gravit-icon-annotationtools-highlighter",
                         "text.tooltip-highlighter-tool",
                         {
@@ -359,7 +359,7 @@ module.exports = function (module, exports, require) {
                             GAnnotationProperties.PropertySet.BorderTailMarker,
                         ],
                         GObject.GArrowAnnotation,
-                        i.GArrowAnnotationTool,
+                        GEditor.GArrowAnnotationTool,
                         "gravit-icon-annotationtools-line",
                         "text.tooltip-arrow-tool",
                         {
@@ -373,7 +373,7 @@ module.exports = function (module, exports, require) {
                     new GAnnotationProperties(
                         [GAnnotationProperties.PropertySet.FillLayer],
                         GObject.GCommentAnnotation,
-                        i.GCommentAnnotationTool,
+                        GEditor.GCommentAnnotationTool,
                         "gravit-icon-annotationtools-comment",
                         "text.tooltip-comment-tool",
                         {
@@ -386,107 +386,107 @@ module.exports = function (module, exports, require) {
                     new GReviewDockerProperties(),
                 ];
             }),
-            (N.prototype.activate = function () {
+            (GAnnotationsSidebar.prototype.activate = function () {
                 ((this._active = true),
                     !this._listenersAdded && this._document && (this._addListeners(), this._updatePropertyPanels(true)),
                     this._updateToolbarButtons(),
                     this._document && this._document.getActiveWindow() && this._activateAnnotations(),
-                    gDesigner.getToolManager().activateTool(i.GPointerTool, null, true),
+                    gDesigner.getToolManager().activateTool(GEditor.GPointerTool, null, true),
                     this.syncAnnotations());
             }),
-            (N.prototype.deactivate = function () {
+            (GAnnotationsSidebar.prototype.deactivate = function () {
                 ((this._active = false),
                     this._listenersAdded && this._removeListeners(),
                     this._document && this._document.getActiveWindow() && this._deactivateAnnotations());
             }),
-            (N.prototype._activateAnnotations = function () {
+            (GAnnotationsSidebar.prototype._activateAnnotations = function () {
                 this._document &&
                     (this._document.getEditor().clearSelection(),
                     (this._document.getActiveWindow().getView().getViewConfiguration().elementAnnotations = true),
                     (this._document.getActiveWindow().getView().getViewConfiguration().showResolvedAnnotations = this._showResolved),
-                    (this._showDistance = i.GEditorOptions.showDistance),
-                    (this._toolExitKey = i.GEditorOptions.toolExitKey),
-                    (i.GEditorOptions.showDistance = false),
-                    (i.GEditorOptions.toolExitKey = GPlatform.GKey.Constant.ESC),
+                    (this._showDistance = GEditor.GEditorOptions.showDistance),
+                    (this._toolExitKey = GEditor.GEditorOptions.toolExitKey),
+                    (GEditor.GEditorOptions.showDistance = false),
+                    (GEditor.GEditorOptions.toolExitKey = GPlatform.GKey.Constant.ESC),
                     this._document.getActiveWindow().getView().invalidateAndResetCache(null));
             }),
-            (N.prototype._deactivateAnnotations = function () {
+            (GAnnotationsSidebar.prototype._deactivateAnnotations = function () {
                 if (this._document) {
-                    var e = this._document.getEditor();
-                    (e.getSelection() &&
-                        e.updateSelection(
+                    var editor = this._document.getEditor();
+                    (editor.getSelection() &&
+                        editor.updateSelection(
                             false,
-                            e.getSelection().filter((e) => !e.hasMixin(GObject.GAnnotation))
+                            editor.getSelection().filter((element) => !element.hasMixin(GObject.GAnnotation))
                         ),
                         (this._document.getActiveWindow().getView().getViewConfiguration().elementAnnotations = false),
-                        (i.GEditorOptions.showDistance = this._showDistance),
-                        (i.GEditorOptions.toolExitKey = this._toolExitKey),
+                        (GEditor.GEditorOptions.showDistance = this._showDistance),
+                        (GEditor.GEditorOptions.toolExitKey = this._toolExitKey),
                         this._document.getActiveWindow().getView().invalidateAndResetCache(null));
                 }
             }),
-            (N.prototype._addListeners = function () {
-                var e = this._document.getScene(),
-                    t = this._document.getEditor();
-                (gDesigner.getToolManager().addEventListener(i.GToolManager.ToolChangedEvent, this._updateFromToolOrSelection, this),
-                    t.addEventListener(i.GEditor.SelectionChangedEvent, this._selectionChangedEvent, this),
-                    e.addEventListener(GObject.GNode.AfterFlagChangeEvent, this._afterFlagChangeEvent, this),
-                    e.addEventListener(GObject.GNode.AfterInsertEvent, this._afterInsertEvent, this),
-                    e.addEventListener(GObject.GNode.AfterRemoveEvent, this._afterRemoveEvent, this),
-                    gDesigner.addEventListener(S, this._settingChanged, this),
+            (GAnnotationsSidebar.prototype._addListeners = function () {
+                var scene = this._document.getScene(),
+                    editor = this._document.getEditor();
+                (gDesigner.getToolManager().addEventListener(GEditor.GToolManager.ToolChangedEvent, this._updateFromToolOrSelection, this),
+                    editor.addEventListener(GEditor.GEditor.SelectionChangedEvent, this._selectionChangedEvent, this),
+                    scene.addEventListener(GObject.GNode.AfterFlagChangeEvent, this._afterFlagChangeEvent, this),
+                    scene.addEventListener(GObject.GNode.AfterInsertEvent, this._afterInsertEvent, this),
+                    scene.addEventListener(GObject.GNode.AfterRemoveEvent, this._afterRemoveEvent, this),
+                    gDesigner.addEventListener(GSettingChangedEvent, this._settingChanged, this),
                     gDesigner.isTouchEnabled() &&
                         this._htmlElement &&
                         (this._htmlElement[0].addEventListener("focusin", this._handleFocusInEvent, true),
                         this._htmlElement[0].addEventListener("focusout", this._handleFocusOutEvent, true)),
                     (this._listenersAdded = true));
             }),
-            (N.prototype._removeListeners = function () {
-                var e = this._document.getScene(),
-                    t = this._document.getEditor();
-                (gDesigner.getToolManager().removeEventListener(i.GToolManager.ToolChangedEvent, this._updateFromToolOrSelection, this),
-                    t.removeEventListener(i.GEditor.SelectionChangedEvent, this._selectionChangedEvent, this),
-                    e.removeEventListener(GObject.GNode.AfterFlagChangeEvent, this._afterFlagChangeEvent, this),
-                    e.removeEventListener(GObject.GNode.AfterInsertEvent, this._afterInsertEvent, this),
-                    e.removeEventListener(GObject.GNode.AfterRemoveEvent, this._afterRemoveEvent, this),
-                    gDesigner.removeEventListener(S, this._settingChanged, this),
+            (GAnnotationsSidebar.prototype._removeListeners = function () {
+                var scene = this._document.getScene(),
+                    editor = this._document.getEditor();
+                (gDesigner.getToolManager().removeEventListener(GEditor.GToolManager.ToolChangedEvent, this._updateFromToolOrSelection, this),
+                    editor.removeEventListener(GEditor.GEditor.SelectionChangedEvent, this._selectionChangedEvent, this),
+                    scene.removeEventListener(GObject.GNode.AfterFlagChangeEvent, this._afterFlagChangeEvent, this),
+                    scene.removeEventListener(GObject.GNode.AfterInsertEvent, this._afterInsertEvent, this),
+                    scene.removeEventListener(GObject.GNode.AfterRemoveEvent, this._afterRemoveEvent, this),
+                    gDesigner.removeEventListener(GSettingChangedEvent, this._settingChanged, this),
                     this._htmlElement &&
                         (this._htmlElement[0].removeEventListener("focusin", this._handleFocusInEvent),
                         this._htmlElement[0].removeEventListener("focusout", this._handleFocusOutEvent)),
                     (this._listenersAdded = false));
             }),
-            (N.prototype._stateChangedEvent = async function (e) {
+            (GAnnotationsSidebar.prototype._stateChangedEvent = async function (event) {
                 this._updateToolbar();
             }),
-            (N.prototype._updateToolbar = async function () {
-                const e = gDesigner.getApplicationManager(),
-                    t = e.isCommentingEditingEnabled(),
-                    n = await e.hasAccess(P.RESOLVE_ALL_COMMENT_ANNOTATION),
-                    o = this._optionsToolbar.find(".resolve-all-row");
-                t && n ? o.parent().show() : o.parent().hide();
+            (GAnnotationsSidebar.prototype._updateToolbar = async function () {
+                const applicationManager = gDesigner.getApplicationManager(),
+                    commentingEditingEnabled = applicationManager.isCommentingEditingEnabled(),
+                    canResolveAll = await applicationManager.hasAccess(AnnotationPermissions.RESOLVE_ALL_COMMENT_ANNOTATION),
+                    resolveAllRow = this._optionsToolbar.find(".resolve-all-row");
+                commentingEditingEnabled && canResolveAll ? resolveAllRow.parent().show() : resolveAllRow.parent().hide();
             }),
-            (N.prototype._windowEvent = function (e) {
-                e.type === _.WindowEvent.Type.Activated && this._active && this._activateAnnotations();
+            (GAnnotationsSidebar.prototype._windowEvent = function (event) {
+                event.type === GWindows.WindowEvent.Type.Activated && this._active && this._activateAnnotations();
             }),
-            (N.prototype._documentEvent = function (e) {
-                if (!e.document.isLockedByVersionHistory())
-                    if (e.type === g.Type.Activated) {
-                        ((this._document = e.document), (this._storageItem = this._document.getStorageItem()));
-                        var t = this._document && this._document.getScene();
-                        ((this._localAnnotations = t && t.getAnnotations()),
+            (GAnnotationsSidebar.prototype._documentEvent = function (event) {
+                if (!event.document.isLockedByVersionHistory())
+                    if (event.type === GDocumentEvent.Type.Activated) {
+                        ((this._document = event.document), (this._storageItem = this._document.getStorageItem()));
+                        var scene = this._document && this._document.getScene();
+                        ((this._localAnnotations = scene && scene.getAnnotations()),
                             this._document.isLocked() || this._updateFromToolOrSelection(true),
                             this._active && !this._listenersAdded && this._addListeners(),
                             this._active && this._document.getActiveWindow() && this._activateAnnotations(),
-                            this.trigger(h.UPDATE_EVENT),
-                            this._document.addEventListener(k, this._documentStatusEvent, this),
-                            this._document.addEventListener(T, this._collaborationEvent, this),
-                            gDesigner.addEventListener(G.FileStatusUpdate, this._storageItemFileStatusEvent, this),
+                            this.trigger(GSidebar.UPDATE_EVENT),
+                            this._document.addEventListener(GDocumentStatusEvent, this._documentStatusEvent, this),
+                            this._document.addEventListener(GCollaborationEvent, this._collaborationEvent, this),
+                            gDesigner.addEventListener(GStorageItemEvent.FileStatusUpdate, this._storageItemFileStatusEvent, this),
                             this._updateNotificationMenu());
                     } else
-                        e.type === g.Type.Deactivated
+                        event.type === GDocumentEvent.Type.Deactivated
                             ? (this._listenersAdded && this._removeListeners(),
                               this._document.getActiveWindow() && this._deactivateAnnotations(),
-                              this._document.removeEventListener(k, this._documentStatusEvent, this),
-                              this._document.removeEventListener(T, this._collaborationEvent, this),
-                              gDesigner.removeEventListener(G.FileStatusUpdate, this._storageItemFileStatusEvent, this),
+                              this._document.removeEventListener(GDocumentStatusEvent, this._documentStatusEvent, this),
+                              this._document.removeEventListener(GCollaborationEvent, this._collaborationEvent, this),
+                              gDesigner.removeEventListener(GStorageItemEvent.FileStatusUpdate, this._storageItemFileStatusEvent, this),
                               (this._document = null),
                               (this._storageItem = null),
                               (this._elements = null),
@@ -494,24 +494,24 @@ module.exports = function (module, exports, require) {
                               (this._localAnnotations = null),
                               (this._page = null),
                               this._updatePropertyPanels(true),
-                              this.trigger(h.UPDATE_EVENT))
-                            : e.type === g.Type.StorageItemUpdated && this._updatePropertyPanels(true);
+                              this.trigger(GSidebar.UPDATE_EVENT))
+                            : event.type === GDocumentEvent.Type.StorageItemUpdated && this._updatePropertyPanels(true);
             }),
-            (N.prototype._settingChanged = function (e) {
-                "touch" === e.key && this._updateToolbarButtons();
+            (GAnnotationsSidebar.prototype._settingChanged = function (event) {
+                "touch" === event.key && this._updateToolbarButtons();
             }),
-            (N.prototype._handleFocusInEvent = function (e) {
-                $(e.target).is("textarea") && this._htmlElement.addClass("g-annotation-comment-focus");
+            (GAnnotationsSidebar.prototype._handleFocusInEvent = function (event) {
+                $(event.target).is("textarea") && this._htmlElement.addClass("g-annotation-comment-focus");
             }),
-            (N.prototype._handleFocusOutEvent = function (e) {
-                $(e.target).is("textarea") && this._htmlElement.removeClass("g-annotation-comment-focus");
+            (GAnnotationsSidebar.prototype._handleFocusOutEvent = function (event) {
+                $(event.target).is("textarea") && this._htmlElement.removeClass("g-annotation-comment-focus");
             }),
-            (N.prototype._updateNotificationMenu = function () {
+            (GAnnotationsSidebar.prototype._updateNotificationMenu = function () {
                 (this._notificationMenu.clearItems(),
-                    this._notificationMenu.setTooltipType(c.TOOLTIP_AREA.SIDEBAR),
+                    this._notificationMenu.setTooltipType(richTooltipModule.TOOLTIP_AREA.SIDEBAR),
                     this._document.getId() &&
-                        gApi.updateFileData(this._document.getId()).then((e) => {
-                            const t = [
+                        gApi.updateFileData(this._document.getId()).then((fileData) => {
+                            const items = [
                                 {
                                     caption: GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationsSidebar", "text.notification-all-annotation")),
                                     checked: false,
@@ -528,131 +528,131 @@ module.exports = function (module, exports, require) {
                                     statType: "None",
                                 },
                             ];
-                            ((t[e.data.notifications_disabled || 0].checked = true),
+                            ((items[fileData.data.notifications_disabled || 0].checked = true),
                                 0 === this._notificationMenu.getItemCount() &&
-                                    t.forEach((e) => {
-                                        this._notificationMenu.addItem(this._createMenuItem(e));
+                                    items.forEach((item) => {
+                                        this._notificationMenu.addItem(this._createMenuItem(item));
                                     }));
                         }));
             }),
-            (N.prototype._createMenuItem = function (e) {
-                var t = new l.default(l.default.Type.Item);
+            (GAnnotationsSidebar.prototype._createMenuItem = function (item) {
+                var menuItem = new GMenuItemModule.default(GMenuItemModule.default.Type.Item);
                 return (
-                    t.setChecked(e.checked),
-                    t.setCaption(e.caption),
-                    t.addEventListener(l.default.ActivateEvent, (t) => {
-                        const { sender } = t;
-                        (this._notificationMenu._items.forEach((e) => {
-                            e.setChecked(false);
+                    menuItem.setChecked(item.checked),
+                    menuItem.setCaption(item.caption),
+                    menuItem.addEventListener(GMenuItemModule.default.ActivateEvent, (event) => {
+                        const { sender } = event;
+                        (this._notificationMenu._items.forEach((menuItem) => {
+                            menuItem.setChecked(false);
                         }),
                             sender.setChecked(true),
-                            gDesigner.stats("annotations_settings_notifications", e.statType),
+                            gDesigner.stats("annotations_settings_notifications", item.statType),
                             gApi.updateFileData(this._document.getId(), {
                                 notifications_disabled: this._notificationMenu.indexOf(sender),
                             }));
                     }),
-                    t
+                    menuItem
                 );
             }),
-            (N.prototype._documentStatusEvent = function (e) {
-                e.status === I.Unlocked && this._updateFromToolOrSelection(true);
+            (GAnnotationsSidebar.prototype._documentStatusEvent = function (event) {
+                event.status === DocumentStatus.Unlocked && this._updateFromToolOrSelection(true);
             }),
-            (N.prototype._collaborationEvent = function (e) {
-                if (e.type === T.Type.AnnotationsUpdate) {
-                    const { data: { lastUpdateTime } = {} } = e;
+            (GAnnotationsSidebar.prototype._collaborationEvent = function (event) {
+                if (event.type === GCollaborationEvent.Type.AnnotationsUpdate) {
+                    const { data: { lastUpdateTime } = {} } = event;
                     if (lastUpdateTime && this._document) {
-                        const e = this._document.getScene();
-                        !e ||
-                            (e.getLastTimeAnnotationsFromCloudModified() && !DateAPI.lt(e.getLastTimeAnnotationsFromCloudModified(), lastUpdateTime, false)) ||
+                        const scene = this._document.getScene();
+                        !scene ||
+                            (scene.getLastTimeAnnotationsFromCloudModified() && !DateAPI.lt(scene.getLastTimeAnnotationsFromCloudModified(), lastUpdateTime, false)) ||
                             this.syncAnnotations();
                     }
-                } else e.type === T.Type.ReviewStatusChanged && this._updateToolbar();
+                } else event.type === GCollaborationEvent.Type.ReviewStatusChanged && this._updateToolbar();
             }),
-            (N.prototype.isToolAllowed = function (e) {
-                return !(![i.GHandTool, i.GPointerTool, i.GZoomTool].some((t) => e instanceof t) && !e.hasMixin(i.GAnnotationTool));
+            (GAnnotationsSidebar.prototype.isToolAllowed = function (tool) {
+                return !(![GEditor.GHandTool, GEditor.GPointerTool, GEditor.GZoomTool].some((ToolClass) => tool instanceof ToolClass) && !tool.hasMixin(GEditor.GAnnotationTool));
             }),
-            (N.prototype._toolChangedEvent = function (e) {
-                e.previousTool;
-                var t = e.newTool;
-                if (e.newTool.hasMixin(i.GAnnotationTool)) {
-                    var n = gDesigner.getActiveDocument();
-                    n && n.getEditor() && n.getEditor().clearSelection();
+            (GAnnotationsSidebar.prototype._toolChangedEvent = function (event) {
+                event.previousTool;
+                var newTool = event.newTool;
+                if (event.newTool.hasMixin(GEditor.GAnnotationTool)) {
+                    var activeDocument = gDesigner.getActiveDocument();
+                    activeDocument && activeDocument.getEditor() && activeDocument.getEditor().clearSelection();
                 }
-                this._activeTool(t);
+                this._activeTool(newTool);
             }),
-            (N.prototype._networkAvailabilityChangedEvent = function (e) {
-                (this._htmlElement.toggleClass("offline", !e.connected), e.connected && this.syncAnnotations());
+            (GAnnotationsSidebar.prototype._networkAvailabilityChangedEvent = function (event) {
+                (this._htmlElement.toggleClass("offline", !event.connected), event.connected && this.syncAnnotations());
             }),
-            (N.prototype._activeTool = function (e) {
-                this._annotationToolbar.find(".toolbar-button").each((t, n) => {
-                    var o = $(n).data("toolClass");
-                    e instanceof o ? $(n).addClass("g-active") : $(n).removeClass("g-active");
+            (GAnnotationsSidebar.prototype._activeTool = function (tool) {
+                this._annotationToolbar.find(".toolbar-button").each((index, button) => {
+                    var toolClass = $(button).data("toolClass");
+                    tool instanceof toolClass ? $(button).addClass("g-active") : $(button).removeClass("g-active");
                 });
             }),
-            (N.prototype._afterFlagChangeEvent = function (e) {
-                e.node instanceof GObject.GPage &&
-                    e.flag === GObject.GNode.Flag.Active &&
+            (GAnnotationsSidebar.prototype._afterFlagChangeEvent = function (event) {
+                event.node instanceof GObject.GPage &&
+                    event.flag === GObject.GNode.Flag.Active &&
                     !this._document.getEditor().hasSelection() &&
                     this._updateFromToolOrSelection();
             }),
-            (N.prototype._afterInsertEvent = function (e) {
-                (e.node instanceof GObject.GPage || e.node instanceof GObject.GAnnotationsList) && this._updatePropertyPanels(true);
+            (GAnnotationsSidebar.prototype._afterInsertEvent = function (event) {
+                (event.node instanceof GObject.GPage || event.node instanceof GObject.GAnnotationsList) && this._updatePropertyPanels(true);
             }),
-            (N.prototype._afterRemoveEvent = function (e) {
-                (e.node instanceof GObject.GPage || e.node instanceof GObject.GAnnotationsList) && this._updatePropertyPanels(true);
+            (GAnnotationsSidebar.prototype._afterRemoveEvent = function (event) {
+                (event.node instanceof GObject.GPage || event.node instanceof GObject.GAnnotationsList) && this._updatePropertyPanels(true);
             }),
-            (N.prototype.relayout = function (e) {
-                this._annotationPanels.forEach((t) => t.properties instanceof v && t.properties.relayout(e));
+            (GAnnotationsSidebar.prototype.relayout = function (force) {
+                this._annotationPanels.forEach((panel) => panel.properties instanceof GAnnotations && panel.properties.relayout(force));
             }),
-            (N.prototype._updateSelection = function () {
-                const e = this._document && this._document.getEditor();
-                if (e) {
-                    var t = this._document.getScene().getActivePage();
-                    if (((this._page = t), (this._elements = e.getSelection()), this._elements && this._elements.length)) {
-                        if (this._elements.find((e) => !(e.hasMixin(GObject.GAnnotation) || e instanceof GObject.GPage)))
+            (GAnnotationsSidebar.prototype._updateSelection = function () {
+                const editor = this._document && this._document.getEditor();
+                if (editor) {
+                    var page = this._document.getScene().getActivePage();
+                    if (((this._page = page), (this._elements = editor.getSelection()), this._elements && this._elements.length)) {
+                        if (this._elements.find((element) => !(element.hasMixin(GObject.GAnnotation) || element instanceof GObject.GPage)))
                             return (
                                 (this._elements = []),
                                 console.warn("deactivating annotations"),
-                                void gDesigner.getRightSidebars().setActiveSidebar(m.ID)
+                                void gDesigner.getRightSidebars().setActiveSidebar(GInspectorSidebar.ID)
                             );
-                        this._elements = this._elements.filter((e) => e.hasMixin(GObject.GAnnotation));
+                        this._elements = this._elements.filter((element) => element.hasMixin(GObject.GAnnotation));
                     }
                     if (!this._elements || 0 === this._elements.length) {
-                        var n = gDesigner.getToolManager().getActiveTool();
-                        if (n instanceof i.GItemTool) {
-                            var o = n.getDefaultStyle();
-                            o && (this._elements = [o]);
+                        var tool = gDesigner.getToolManager().getActiveTool();
+                        if (tool instanceof GEditor.GItemTool) {
+                            var defaultStyle = tool.getDefaultStyle();
+                            defaultStyle && (this._elements = [defaultStyle]);
                         }
                     }
                     this._elements || (this._elements = []);
                 }
             }),
-            (N.prototype._selectionChangedEvent = function (e) {
+            (GAnnotationsSidebar.prototype._selectionChangedEvent = function (event) {
                 (this._updateSelection(), this._updatePropertyPanels(false, false, false));
             }),
-            (N.prototype._updateFromToolOrSelection = function (e) {
+            (GAnnotationsSidebar.prototype._updateFromToolOrSelection = function (event) {
                 (this._updateSelection(),
                     this._updatePropertyPanels(
-                        true === e,
-                        e instanceof i.GToolManager.ToolChangedEvent && !(e.newTool instanceof i.GPointerTool)
+                        true === event,
+                        event instanceof GEditor.GToolManager.ToolChangedEvent && !(event.newTool instanceof GEditor.GPointerTool)
                     ));
             }),
-            (N.prototype._updateAnnotationArray = function () {
-                var e,
-                    t = false,
-                    n = false;
+            (GAnnotationsSidebar.prototype._updateAnnotationArray = function () {
+                var fixedPanels,
+                    changed = false,
+                    alreadyInitialized = false;
                 if (
                     (this._panelsContainer
-                        ? (n = true)
+                        ? (alreadyInitialized = true)
                         : ((this._panelsContainer = $("<div></div>").addClass("panels").appendTo(this._htmlElement)),
                           $("<div></div>").addClass("fixed-panels").appendTo(this._panelsContainer),
                           $("<div></div>").addClass("scrolling-panels").appendTo(this._panelsContainer)),
-                    (e = this._panelsContainer.find(".fixed-panels")),
-                    !n)
+                    (fixedPanels = this._panelsContainer.find(".fixed-panels")),
+                    !alreadyInitialized)
                 ) {
-                    (this._sidebarTitle.appendTo(e), this._annotationToolbar.appendTo(e), this._annotationsToolbarPanel.appendTo(e));
+                    (this._sidebarTitle.appendTo(fixedPanels), this._annotationToolbar.appendTo(fixedPanels), this._annotationsToolbarPanel.appendTo(fixedPanels));
                     for (var o = 0; o < this.getAnnotationsProperties().length; o++)
-                        t = this._addPropertiesPanel(this.getAnnotationsProperties()[o], o) || t;
+                        changed = this._addPropertiesPanel(this.getAnnotationsProperties()[o], o) || changed;
                 }
                 if (this._document) {
                     for (o = this._annotationPanels.length - 1; o >= 0; o--) {
@@ -663,121 +663,121 @@ module.exports = function (module, exports, require) {
                             i.divider && i.divider.remove());
                     }
                     ((this._annotationPanels = []),
-                        this._document.getScene().iteratePages((e) => {
-                            t = this._addPropertiesPanel(e) || t;
+                        this._document.getScene().iteratePages((page) => {
+                            changed = this._addPropertiesPanel(page) || changed;
                         }, true));
                 }
-                return t;
+                return changed;
             }),
-            (N.prototype._addPropertiesPanel = function (e, t) {
-                let n,
-                    o,
-                    i = $("<div></div>").css("display", "none").addClass("properties-panel"),
-                    r = false;
-                const s = this._panelsContainer.find(".scrolling-panels");
-                if (e instanceof y) {
-                    n = e;
-                    var l = $("<div></div>").addClass("annotations-property-panel");
-                    if ((n.init(l, this._annotationToolbar), e._availableProperties && 0 === e._availableProperties.length)) return r;
-                    var c = $("<div></div>").css("display", "none");
-                    (e instanceof GAnnotationProperties &&
-                        c.append(
+            (GAnnotationsSidebar.prototype._addPropertiesPanel = function (propertiesOrPage, index) {
+                let properties,
+                    toolbar,
+                    panel = $("<div></div>").css("display", "none").addClass("properties-panel"),
+                    changed = false;
+                const scrollingPanels = this._panelsContainer.find(".scrolling-panels");
+                if (propertiesOrPage instanceof GProperties) {
+                    properties = propertiesOrPage;
+                    var propertyPanel = $("<div></div>").addClass("annotations-property-panel");
+                    if ((properties.init(propertyPanel, this._annotationToolbar), propertiesOrPage._availableProperties && 0 === propertiesOrPage._availableProperties.length)) return changed;
+                    var topArrow = $("<div></div>").css("display", "none");
+                    (propertiesOrPage instanceof GAnnotationProperties &&
+                        topArrow.append(
                             $("<div></div>")
                                 .addClass("arrow-top")
                                 .css(
                                     "right",
                                     (gDesigner.isTouchEnabled()
-                                        ? N.ANNOTATION_PROPERTIES_ARROW_POSITION_TOUCH[t]
-                                        : N.ANNOTATION_PROPERTIES_ARROW_POSITION[t]) + "%"
+                                        ? GAnnotationsSidebar.ANNOTATION_PROPERTIES_ARROW_POSITION_TOUCH[index]
+                                        : GAnnotationsSidebar.ANNOTATION_PROPERTIES_ARROW_POSITION[index]) + "%"
                                 )
                         ),
-                        this._annotationsToolbarPanel.append(c),
-                        this._annotationsToolbarPanel.append(l),
-                        (o = this._annotationToolbar),
-                        (i = l),
+                        this._annotationsToolbarPanel.append(topArrow),
+                        this._annotationsToolbarPanel.append(propertyPanel),
+                        (toolbar = this._annotationToolbar),
+                        (panel = propertyPanel),
                         this._annotationProperties.push({
-                            panel: i,
-                            toolbar: o,
-                            properties: n,
-                            topArrow: c,
+                            panel: panel,
+                            toolbar: toolbar,
+                            properties: properties,
+                            topArrow: topArrow,
                         }));
                 } else {
                     if (
-                        ((o = $("<div></div>").addClass("annotations-page-toolbar toolbar")),
-                        (n = new v()),
-                        i.appendTo(s),
-                        n.init(
-                            i,
-                            o,
+                        ((toolbar = $("<div></div>").addClass("annotations-page-toolbar toolbar")),
+                        (properties = new GAnnotations()),
+                        panel.appendTo(scrollingPanels),
+                        properties.init(
+                            panel,
+                            toolbar,
                             this._active,
                             this._showResolved,
                             this._updatePropertyPanels.bind(this),
-                            function (e) {
-                                this._currentAnnotations = e;
+                            function (annotations) {
+                                this._currentAnnotations = annotations;
                             }.bind(this)
                         ),
-                        "" !== o.html() ? o.insertBefore(i) : (o = null),
+                        "" !== toolbar.html() ? toolbar.insertBefore(panel) : (toolbar = null),
                         this._currentAnnotations)
                     ) {
-                        let t,
-                            n,
-                            o = e.getAnnotations();
-                        t = GObject.GNode.store(o);
-                        let i = false;
+                        let storedAnnotations,
+                            cachedList,
+                            pageAnnotations = propertiesOrPage.getAnnotations();
+                        storedAnnotations = GObject.GNode.store(pageAnnotations);
+                        let matchedById = false;
                         if (
-                            (o.restored
-                                ? (n = w.findAnnotationsListForPage(e, this._currentAnnotations))
-                                : ((n = this._currentAnnotations.find((e) => e["@id"] === t["@id"])), (i = true)),
-                            n && !GObject.GUtil.equals(t, n, true))
+                            (pageAnnotations.restored
+                                ? (cachedList = GAnnotationsUtils.findAnnotationsListForPage(propertiesOrPage, this._currentAnnotations))
+                                : ((cachedList = this._currentAnnotations.find((item) => item["@id"] === storedAnnotations["@id"])), (matchedById = true)),
+                            cachedList && !GObject.GUtil.equals(storedAnnotations, cachedList, true))
                         ) {
-                            let t = GObject.GNode.restore(n);
-                            if (t) {
-                                let n = e.getAnnotations(),
-                                    o = t.getChildren() || [];
-                                if ((t.clearChildren(), i && n.getProperty("aid") !== t.getProperty("aid"))) {
-                                    (n.setProperty("aid", t.getProperty("aid")), n.clearChildren());
-                                    for (let e = 0; e < o.length; e++) n.appendChild(o[e]);
-                                    r = true;
+                            let restoredList = GObject.GNode.restore(cachedList);
+                            if (restoredList) {
+                                let pageAnnotations = propertiesOrPage.getAnnotations(),
+                                    restoredChildren = restoredList.getChildren() || [];
+                                if ((restoredList.clearChildren(), matchedById && pageAnnotations.getProperty("aid") !== restoredList.getProperty("aid"))) {
+                                    (pageAnnotations.setProperty("aid", restoredList.getProperty("aid")), pageAnnotations.clearChildren());
+                                    for (let e = 0; e < restoredChildren.length; e++) pageAnnotations.appendChild(restoredChildren[e]);
+                                    changed = true;
                                 } else {
-                                    let e = w.mergeAnnotations(n, n.getChildren(), t, o);
-                                    r = r || e;
+                                    let merged = GAnnotationsUtils.mergeAnnotations(pageAnnotations, pageAnnotations.getChildren(), restoredList, restoredChildren);
+                                    changed = changed || merged;
                                 }
                             }
                         }
                     }
-                    (n.setPage(e),
+                    (properties.setPage(propertiesOrPage),
                         this._annotationPanels.push({
-                            panel: i,
-                            toolbar: o,
-                            properties: n,
+                            panel: panel,
+                            toolbar: toolbar,
+                            properties: properties,
                         }));
                 }
-                return r;
+                return changed;
             }),
-            (N.prototype._updateToolbarButtons = function () {
-                this._annotationProperties.forEach((e, t) => {
-                    const { topArrow, properties } = e;
+            (GAnnotationsSidebar.prototype._updateToolbarButtons = function () {
+                this._annotationProperties.forEach((entry, index) => {
+                    const { topArrow, properties } = entry;
                     if (properties instanceof GAnnotationProperties) {
-                        const e = gDesigner.isTouchEnabled()
-                            ? N.ANNOTATION_PROPERTIES_ARROW_POSITION_TOUCH
-                            : N.ANNOTATION_PROPERTIES_ARROW_POSITION;
-                        topArrow.find(".arrow-top").css("right", e[t] + "%");
+                        const positions = gDesigner.isTouchEnabled()
+                            ? GAnnotationsSidebar.ANNOTATION_PROPERTIES_ARROW_POSITION_TOUCH
+                            : GAnnotationsSidebar.ANNOTATION_PROPERTIES_ARROW_POSITION;
+                        topArrow.find(".arrow-top").css("right", positions[index] + "%");
                     }
                 });
             }),
-            (N.prototype._updatePropertyPanels = function (e, t) {
-                let n = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
+            (GAnnotationsSidebar.prototype._updatePropertyPanels = function (rebuild, toolChanged) {
+                let shouldRelayout = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
                 if (this._updatingPropertyPanels) return;
                 (this.updateNotificationOption(), (this._updatingPropertyPanels = true));
-                const o = () => {
-                    let o = false;
+                const updatePanels = () => {
+                    let changed = false;
                     try {
-                        e && (o = this._updateAnnotationArray());
-                        var i = this._annotationProperties.concat(this._annotationPanels),
-                            r = this._annotationToolbar.find(".indicator");
-                        r.css("visibility", "hidden");
-                        for (var s = 0; s < i.length; ++s) {
-                            var l = i[s],
+                        rebuild && (changed = this._updateAnnotationArray());
+                        var allPanels = this._annotationProperties.concat(this._annotationPanels),
+                            indicator = this._annotationToolbar.find(".indicator");
+                        indicator.css("visibility", "hidden");
+                        for (var s = 0; s < allPanels.length; ++s) {
+                            var l = allPanels[s],
                                 c = l.properties,
                                 d = c.isAvailable(this._transformMode);
                             if (d)
@@ -790,7 +790,7 @@ module.exports = function (module, exports, require) {
                                         )) || l.panel.hide());
                                 else {
                                     var u = c.getPage().getAnnotations().getChildren();
-                                    ((d = l.properties.update(this._document, u, t)), n && l.properties.relayout());
+                                    ((d = l.properties.update(this._document, u, toolChanged)), shouldRelayout && l.properties.relayout());
                                 }
                             if (l.toolbar && l.toolbar !== this._annotationToolbar)
                                 (l.toolbar.css("display", d ? "" : "none"),
@@ -807,8 +807,8 @@ module.exports = function (module, exports, require) {
                                 l.topArrow.css("display", d ? "" : "none"),
                                 d && !(c instanceof GReviewDockerProperties))
                             ) {
-                                let e = this._annotationToolbar.find("." + c._toolbarIcon);
-                                (r.css("left", e.position().left + e.width() / 2 - 6), r.css("visibility", "visible"));
+                                let toolbarIcon = this._annotationToolbar.find("." + c._toolbarIcon);
+                                (indicator.css("left", toolbarIcon.position().left + toolbarIcon.width() / 2 - 6), indicator.css("visibility", "visible"));
                             }
                             d && this._annotationsToolbarPanel.css("display", "");
                         }
@@ -816,168 +816,168 @@ module.exports = function (module, exports, require) {
                     } finally {
                         this._updatingPropertyPanels = false;
                     }
-                    return o;
+                    return changed;
                 };
                 !this._currentAnnotations && this._document && this._document.getAnnotationsId()
-                    ? w
+                    ? GAnnotationsUtils
                           .getCloudAnnotationsForDocument(this._document)
-                          .then((e) => {
-                              let t = false;
-                              if (this._document && this._document.getAnnotationsId() !== e.cid)
-                                  return ((this._updatingPropertyPanels = false), t);
-                              if (((this._currentAnnotations = e.annotationsCollection), (t = o()), t)) {
-                                  let t = this._document.getScene();
-                                  (t && t.setLastTimeAnnotationsFromCloudModified(e.lastUpdateTime),
+                          .then((result) => {
+                              let changed = false;
+                              if (this._document && this._document.getAnnotationsId() !== result.cid)
+                                  return ((this._updatingPropertyPanels = false), changed);
+                              if (((this._currentAnnotations = result.annotationsCollection), (changed = updatePanels()), changed)) {
+                                  let scene = this._document.getScene();
+                                  (scene && scene.setLastTimeAnnotationsFromCloudModified(result.lastUpdateTime),
                                       gDesigner.notifyDocumentModified(this._document),
-                                      this._active ? this._activateAnnotations() : this.trigger(h.UPDATE_EVENT));
+                                      this._active ? this._activateAnnotations() : this.trigger(GSidebar.UPDATE_EVENT));
                               }
                           })
-                          .catch((e) => {
-                              !this._active || (e instanceof C && e.cid && this._document && this._document.getAnnotationsId() !== e.cid)
+                          .catch((error) => {
+                              !this._active || (error instanceof AnnotationsError && error.cid && this._document && this._document.getAnnotationsId() !== error.cid)
                                   ? (this._updatingPropertyPanels = false)
-                                  : ((this._currentAnnotations = []), o());
+                                  : ((this._currentAnnotations = []), updatePanels());
                           })
-                    : o();
+                    : updatePanels();
             }),
-            (N.prototype.updateBadge = function (e) {
-                var t = { unread: 0, total: 0 },
-                    n = this._annotationPanels.map((e) => e.properties.getPage()),
-                    o = this._document && (this._document.isCloudFile() || this._document.isExternalFile());
+            (GAnnotationsSidebar.prototype.updateBadge = function (badgeElement) {
+                var counts = { unread: 0, total: 0 },
+                    pages = this._annotationPanels.map((panel) => panel.properties.getPage()),
+                    isCloud = this._document && (this._document.isCloudFile() || this._document.isExternalFile());
                 if (SHOW_SIDEBAR_BADGE && !this._active) {
-                    var i = gDesigner.getSyncUser();
-                    if (o) {
+                    var syncUser = gDesigner.getSyncUser();
+                    if (isCloud) {
                         if (this._currentAnnotations) {
-                            n.map((e) => w.findAnnotationsListForPage(e, this._currentAnnotations))
-                                .filter((e) => !!e)
-                                .forEach(function (e) {
-                                    e.$ &&
-                                        e.$.forEach(function (e) {
-                                            var n = w.isOwner(i, e);
-                                            e.rsv ||
-                                                (e.$ && 0 != e.$.length
-                                                    ? (e.$.forEach(function (e) {
-                                                          "cmt" == e["@"] &&
-                                                              (i &&
-                                                                  i.getUID() !== e.uid &&
-                                                                  e.type !== GObject.GComment.Type.Close &&
-                                                                  !(e.read || []).includes(i.getUID()) &&
-                                                                  t.unread++,
-                                                              t.total++);
+                            pages.map((page) => GAnnotationsUtils.findAnnotationsListForPage(page, this._currentAnnotations))
+                                .filter((list) => !!list)
+                                .forEach(function (list) {
+                                    list.$ &&
+                                        list.$.forEach(function (annotation) {
+                                            var isOwner = GAnnotationsUtils.isOwner(syncUser, annotation);
+                                            annotation.rsv ||
+                                                (annotation.$ && 0 != annotation.$.length
+                                                    ? (annotation.$.forEach(function (comment) {
+                                                          "cmt" == comment["@"] &&
+                                                              (syncUser &&
+                                                                  syncUser.getUID() !== comment.uid &&
+                                                                  comment.type !== GObject.GComment.Type.Close &&
+                                                                  !(comment.read || []).includes(syncUser.getUID()) &&
+                                                                  counts.unread++,
+                                                              counts.total++);
                                                       }),
-                                                      n || (e.read || []).includes(i.getUID()) || t.unread++,
-                                                      t.total++)
-                                                    : (n || (e.read || []).includes(i.getUID()) || t.unread++, t.total++));
+                                                      isOwner || (annotation.read || []).includes(syncUser.getUID()) || counts.unread++,
+                                                      counts.total++)
+                                                    : (isOwner || (annotation.read || []).includes(syncUser.getUID()) || counts.unread++, counts.total++));
                                         });
                                 });
                         }
                     } else if (this._localAnnotations) {
-                        n.map((e) => w.findAnnotationsListForPage(e, this._localAnnotations))
-                            .filter((e) => !!e)
-                            .forEach(function (e) {
-                                for (var n = e.getFirstChild(); null !== n && n.hasMixin(GObject.GAnnotation); n = n.getNext()) {
-                                    var o = w.isOwner(i, n);
-                                    if (!n.getProperty("rsv"))
-                                        if (n.getChildren().length > 0) {
-                                            for (var r = n.getFirstChild(); null !== r && r instanceof GObject.GComment; r = r.getNext())
-                                                (i &&
-                                                    i.getUID() !== r.getProperty("uid") &&
+                        pages.map((page) => GAnnotationsUtils.findAnnotationsListForPage(page, this._localAnnotations))
+                            .filter((list) => !!list)
+                            .forEach(function (list) {
+                                for (var annotation = list.getFirstChild(); null !== annotation && annotation.hasMixin(GObject.GAnnotation); annotation = annotation.getNext()) {
+                                    var o = GAnnotationsUtils.isOwner(syncUser, annotation);
+                                    if (!annotation.getProperty("rsv"))
+                                        if (annotation.getChildren().length > 0) {
+                                            for (var r = annotation.getFirstChild(); null !== r && r instanceof GObject.GComment; r = r.getNext())
+                                                (syncUser &&
+                                                    syncUser.getUID() !== r.getProperty("uid") &&
                                                     r.getProperty("type") !== GObject.GComment.Type.Close &&
-                                                    !(r.getProperty("read") || []).includes(i.getUID()) &&
-                                                    t.unread++,
-                                                    t.total++);
-                                            (o || (n.getProperty("read") || []).includes(i.getUID()) || t.unread++, t.total++);
-                                        } else (o || (n.getProperty("read") || []).includes(i.getUID()) || t.unread++, t.total++);
+                                                    !(r.getProperty("read") || []).includes(syncUser.getUID()) &&
+                                                    counts.unread++,
+                                                    counts.total++);
+                                            (o || (annotation.getProperty("read") || []).includes(syncUser.getUID()) || counts.unread++, counts.total++);
+                                        } else (o || (annotation.getProperty("read") || []).includes(syncUser.getUID()) || counts.unread++, counts.total++);
                                 }
                             });
                     }
                 }
-                return (t.total > 0 && (e.text(t.total), t.unread > 0 ? e.addClass("new") : e.removeClass("new")), !!t.total);
+                return (counts.total > 0 && (badgeElement.text(counts.total), counts.unread > 0 ? badgeElement.addClass("new") : badgeElement.removeClass("new")), !!counts.total);
             }),
-            (N.prototype.isAnnotationPropertiesEditing = function () {
-                return this._annotationProperties.some((e) => {
-                    let { properties: t } = e;
-                    return (t.isEditing && t.isEditing()) || false;
+            (GAnnotationsSidebar.prototype.isAnnotationPropertiesEditing = function () {
+                return this._annotationProperties.some((entry) => {
+                    let { properties: properties } = entry;
+                    return (properties.isEditing && properties.isEditing()) || false;
                 });
             }),
-            (N.prototype.updateNotificationOption = function () {
-                const e = this._optionsToolbar.find(".notification-label").closest(".columns");
+            (GAnnotationsSidebar.prototype.updateNotificationOption = function () {
+                const notificationLabel = this._optionsToolbar.find(".notification-label").closest(".columns");
                 this._document && this._document.isCloudFile()
-                    ? (e.removeAttr("data-title"), e.toggleClass("g-disabled", false))
-                    : (e.attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationsSidebar", "text.save-file-tip"))),
-                      e.toggleClass("g-disabled", true));
+                    ? (notificationLabel.removeAttr("data-title"), notificationLabel.toggleClass("g-disabled", false))
+                    : (notificationLabel.attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationsSidebar", "text.save-file-tip"))),
+                      notificationLabel.toggleClass("g-disabled", true));
             }),
-            (N.prototype.toString = function () {
+            (GAnnotationsSidebar.prototype.toString = function () {
                 return "[Object GAnnotationsSidebar]";
             }),
-            (N.prototype._createHoverNotificationFrag = function () {
-                let e = $("<div>")
+            (GAnnotationsSidebar.prototype._createHoverNotificationFrag = function () {
+                let frag = $("<div>")
                     .addClass("g-menu hover-notification-container")
                     .html(GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationsSidebar", "text.hover-notification")));
                 return (
-                    e
+                    frag
                         .find("span")
                         .addClass("highlight")
                         .click(() => {
-                            new GSettingsDialog().then((e) => e.open());
+                            new GSettingsDialog().then((dialog) => dialog.open());
                         }),
-                    e
+                    frag
                 );
             }),
-            (N.prototype._openHoverNotification = function (e) {
-                let t = this._createHoverNotificationFrag(),
-                    n = $("body").find(".g-annotation-sidebar-notification-menu")[0];
+            (GAnnotationsSidebar.prototype._openHoverNotification = function (targetElement) {
+                let frag = this._createHoverNotificationFrag(),
+                    menuElement = $("body").find(".g-annotation-sidebar-notification-menu")[0];
                 if (
-                    (t.appendTo($("body")),
+                    (frag.appendTo($("body")),
                     document.addEventListener("click", this._removeHoverNotificationFrag),
-                    n &&
-                        (n.addEventListener("mouseenter", function () {
-                            let e = $("body").find(".hover-notification-container");
-                            e.length && $(e[0]).css("display", "block");
+                    menuElement &&
+                        (menuElement.addEventListener("mouseenter", function () {
+                            let frag = $("body").find(".hover-notification-container");
+                            frag.length && $(frag[0]).css("display", "block");
                         }),
-                        n.addEventListener("mouseleave", function () {
-                            let e = $("body").find(".hover-notification-container");
-                            e.length &&
+                        menuElement.addEventListener("mouseleave", function () {
+                            let frag = $("body").find(".hover-notification-container");
+                            frag.length &&
                                 setTimeout(function () {
-                                    $(e[0]).css("display", "none");
+                                    $(frag[0]).css("display", "none");
                                 }, 250);
                         }),
-                        $(n)
+                        $(menuElement)
                             .find("li")
-                            .map((e, t) => {
-                                t.addEventListener("mousedown", function () {
-                                    let e = $("body").find(".hover-notification-container");
-                                    e.length && $(e[0]).css("display", "none");
+                            .map((index, element) => {
+                                element.addEventListener("mousedown", function () {
+                                    let frag = $("body").find(".hover-notification-container");
+                                    frag.length && $(frag[0]).css("display", "none");
                                 });
                             })),
-                    t.parent().is("body"))
+                    frag.parent().is("body"))
                 ) {
-                    var o = t.outerWidth(),
-                        i = t.outerHeight(),
-                        a = $(window).width(),
-                        r = $(window).height(),
-                        s = { x: 0, y: 0, width: 0, height: 0 },
-                        l = $(e),
-                        c = l.offset();
-                    ((s.x = c.left), (s.y = c.top), (s.width = l.outerWidth()), (s.height = l.outerHeight()));
-                    var d = 0;
-                    (d = s.x + s.width) + o > a && (d = s.x - o);
-                    var u = 0;
-                    (u = s.y + s.height) + i > r && (u = s.y - i);
-                    const n = this._rangeLeftX ? this._rangeLeftX : 0;
-                    d < n && (d = n);
-                    const p = this._rangeRightX ? this._rangeRightX : a;
-                    d + o >= p && (d = p - o);
-                    const g = this._rangeLeftY ? this._rangeLeftY : 0;
-                    u < g && (u = g);
-                    const h = this._rangeRightY ? this._rangeRightY : r;
-                    u + i >= h && (u = h - i);
-                    const f = u - i - 10;
-                    (t.css("left", d), t.css("top", f), t.addClass("g-menu-right g-menu-bottom"));
+                    var fragWidth = frag.outerWidth(),
+                        fragHeight = frag.outerHeight(),
+                        windowWidth = $(window).width(),
+                        windowHeight = $(window).height(),
+                        targetRect = { x: 0, y: 0, width: 0, height: 0 },
+                        target = $(targetElement),
+                        offset = target.offset();
+                    ((targetRect.x = offset.left), (targetRect.y = offset.top), (targetRect.width = target.outerWidth()), (targetRect.height = target.outerHeight()));
+                    var left = 0;
+                    (left = targetRect.x + targetRect.width) + fragWidth > windowWidth && (left = targetRect.x - fragWidth);
+                    var top = 0;
+                    (top = targetRect.y + targetRect.height) + fragHeight > windowHeight && (top = targetRect.y - fragHeight);
+                    const minLeft = this._rangeLeftX ? this._rangeLeftX : 0;
+                    left < minLeft && (left = minLeft);
+                    const maxLeft = this._rangeRightX ? this._rangeRightX : windowWidth;
+                    left + fragWidth >= maxLeft && (left = maxLeft - fragWidth);
+                    const minTop = this._rangeLeftY ? this._rangeLeftY : 0;
+                    top < minTop && (top = minTop);
+                    const maxTop = this._rangeRightY ? this._rangeRightY : windowHeight;
+                    top + fragHeight >= maxTop && (top = maxTop - fragHeight);
+                    const finalTop = top - fragHeight - 10;
+                    (frag.css("left", left), frag.css("top", finalTop), frag.addClass("g-menu-right g-menu-bottom"));
                 }
             }),
-            (N.prototype._removeHoverNotificationFrag = function () {
-                let e = $("body").find(".hover-notification-container");
-                e.length && (e.remove(), document.removeEventListener("click", this._removeHoverNotificationFrag));
+            (GAnnotationsSidebar.prototype._removeHoverNotificationFrag = function () {
+                let frag = $("body").find(".hover-notification-container");
+                frag.length && (frag.remove(), document.removeEventListener("click", this._removeHoverNotificationFrag));
             }),
-            (module.exports = N));
+            (module.exports = GAnnotationsSidebar));
     };

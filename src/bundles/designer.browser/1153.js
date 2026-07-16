@@ -2,23 +2,23 @@ module.exports = function (module, exports, require) {
         "use strict";
         var GObject = require(1);
         require(173);
-        function i() {}
-        GObject.GObject.inheritAndMix(i, GObject.GObject);
-        var a = null;
-        ((i.TYPE = {
+        function GPresets() {}
+        GObject.GObject.inheritAndMix(GPresets, GObject.GObject);
+        var presetsCache = null;
+        ((GPresets.TYPE = {
             PRINT: "preset-print",
             WEB: "preset-web",
             SOCIAL: "preset-social",
             SCREEN: "preset-screen",
             MERCH: "preset-merch",
         }),
-            (i.getPresets = function () {
-                let e = arguments.length > 0 && void 0 !== arguments[0] && arguments[0];
+            (GPresets.getPresets = function () {
+                let forceRefresh = arguments.length > 0 && void 0 !== arguments[0] && arguments[0];
                 return (
-                    (a && !e) ||
-                        (a = [
+                    (presetsCache && !forceRefresh) ||
+                        (presetsCache = [
                             {
-                                id: i.TYPE.PRINT,
+                                id: GPresets.TYPE.PRINT,
                                 name: GObject.GLocale.get(new GObject.GLocaleKey("GPresets", "preset-title.print")),
                                 nameEn: GObject.GLocale.get(
                                     new GObject.GLocaleKey("GPresets", "preset-title.print"),
@@ -195,7 +195,7 @@ module.exports = function (module, exports, require) {
                                 ],
                             },
                             {
-                                id: i.TYPE.WEB,
+                                id: GPresets.TYPE.WEB,
                                 name: GObject.GLocale.get(new GObject.GLocaleKey("GPresets", "preset-title.web")),
                                 nameEn: GObject.GLocale.get(new GObject.GLocaleKey("GPresets", "preset-title.web"), void 0, GObject.GLocaleLanguage.English),
                                 subTitle: GObject.GLocale.get(new GObject.GLocaleKey("GPresets", "preset-sub-title.web")),
@@ -269,7 +269,7 @@ module.exports = function (module, exports, require) {
                                 ],
                             },
                             {
-                                id: i.TYPE.SOCIAL,
+                                id: GPresets.TYPE.SOCIAL,
                                 name: GObject.GLocale.get(new GObject.GLocaleKey("GPresets", "preset-title.social")),
                                 nameEn: GObject.GLocale.get(
                                     new GObject.GLocaleKey("GPresets", "preset-title.social"),
@@ -524,7 +524,7 @@ module.exports = function (module, exports, require) {
                                 ],
                             },
                             {
-                                id: i.TYPE.SCREEN,
+                                id: GPresets.TYPE.SCREEN,
                                 name: GObject.GLocale.get(new GObject.GLocaleKey("GPresets", "preset-title.screen")),
                                 nameEn: GObject.GLocale.get(
                                     new GObject.GLocaleKey("GPresets", "preset-title.screen"),
@@ -691,7 +691,7 @@ module.exports = function (module, exports, require) {
                                 ],
                             },
                             {
-                                id: i.TYPE.MERCH,
+                                id: GPresets.TYPE.MERCH,
                                 name: GObject.GLocale.get(new GObject.GLocaleKey("GPresets", "preset-title.merch")),
                                 nameEn: GObject.GLocale.get(
                                     new GObject.GLocaleKey("GPresets", "preset-title.merch"),
@@ -784,8 +784,8 @@ module.exports = function (module, exports, require) {
                                 ],
                             },
                         ]),
-                    a
+                    presetsCache
                 );
             }),
-            (module.exports = i));
+            (module.exports = GPresets));
     };

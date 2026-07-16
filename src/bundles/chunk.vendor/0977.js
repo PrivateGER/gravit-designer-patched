@@ -29,7 +29,7 @@ module.exports = function (module, exports, require) {
                 A = require(978),
                 { Events } = (require(584), require(431)),
                 { learnmore } = require(253),
-                GOfflineDialog = require(980),
+                GCloudUiOfflineDialog = require(980),
                 { PRIVACY_URL, SUPPORT_URL, IMPORT_EXPORT_DOCUMENTATION, VECTOR_PRODUCT_PAGE, CORELDRAW_PAGE } = require(374 /* SUPPORT_URL */),
                 { getSupportUrl, getSubscriptionUrl, getUrlWithQueryParams } = require(254),
                 C = (require(430), /xmas/),
@@ -322,7 +322,7 @@ module.exports = function (module, exports, require) {
                                 A.isAvailable()
                                     ? navigator.onLine
                                         ? grecaptcha.execute(this._resetPasswordRecaptchaWidget)
-                                        : GOfflineDialog.openRetryConnection(null, () => {
+                                        : GCloudUiOfflineDialog.openRetryConnection(null, () => {
                                               grecaptcha.execute(this._resetPasswordRecaptchaWidget);
                                           })
                                     : this._onResetPasswordSubmit(t),
@@ -427,7 +427,7 @@ module.exports = function (module, exports, require) {
                             i
                                 ? navigator.onLine
                                     ? grecaptcha.execute(this._recaptchaWidget)
-                                    : GOfflineDialog.openRetryConnection(null, () => {
+                                    : GCloudUiOfflineDialog.openRetryConnection(null, () => {
                                           grecaptcha.execute(this._recaptchaWidget);
                                       })
                                 : s(),
@@ -1019,7 +1019,7 @@ module.exports = function (module, exports, require) {
                     if ((this._toggleLoading(false), navigator.onLine)) this._showMessage(this._gApi.formatError(e));
                     else {
                         let e = await this._gApi.getUser().catch(() => null);
-                        GOfflineDialog.openRetryConnection(e);
+                        GCloudUiOfflineDialog.openRetryConnection(e);
                     }
                 }),
                 (P.prototype._showMessage = function (e) {

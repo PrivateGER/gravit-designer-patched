@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(19), require(3), require(26));
         var GObject = require(1),
-            GSaveAction = require(40),
+            Utils = require(40),
             a = require(67),
             GCategory = require(18),
             s = require(106);
@@ -104,7 +104,7 @@ module.exports = function (module, exports, require) {
                             g && e.add(g);
                         }
                         try {
-                            (0, GSaveAction.blockChanges)(n, e);
+                            (0, Utils.blockChanges)(n, e);
                             for (s = 0; s < r.length; ++s) {
                                 var h = (d = r[s]).getParent(),
                                     f = d.getNext(),
@@ -122,7 +122,7 @@ module.exports = function (module, exports, require) {
                                 m ? (h.insertChild(m, f), u.push(m), h.removeChild(d)) : u.push(d);
                             }
                         } finally {
-                            ((0, GSaveAction.releaseChanges)(n, e), u.length && n.updateSelection(false, u));
+                            ((0, Utils.releaseChanges)(n, e), u.length && n.updateSelection(false, u));
                         }
                     } finally {
                         n.commitTransaction(GObject.GLocale.get(this.getTitle()));

@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(19), require(3), require(26));
         var GObject = require(1),
             GPlatform = require(15),
-            GSaveAction = require(40),
+            Utils = require(40),
             r = require(67),
             designerConfig = require(10),
             GCategory = require(18),
@@ -62,7 +62,7 @@ module.exports = function (module, exports, require) {
                         l = new Set();
                         for (var d = 0; d < r.length; ++d) l.add(r[d].getParent());
                         try {
-                            (0, GSaveAction.blockChanges)(n, l, i, s);
+                            (0, Utils.blockChanges)(n, l, i, s);
                             for (d = 0; d < r.length; ++d) {
                                 var u = r[d];
                                 u.validateInsertion(s) &&
@@ -72,7 +72,7 @@ module.exports = function (module, exports, require) {
                                     (u.getParent().removeChild(u), s.appendChild(u));
                             }
                         } finally {
-                            ((0, GSaveAction.releaseChanges)(n, l, i, s), n.updateSelection(false, [s]));
+                            ((0, Utils.releaseChanges)(n, l, i, s), n.updateSelection(false, [s]));
                         }
                     } finally {
                         t || n.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GClipAction", "text.clip-selecion")));

@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(19), require(3), require(26));
         var GObject = require(1),
             GPlatform = require(15),
-            GSaveAction = require(40),
+            Utils = require(40),
             r = require(67),
             GCategory = require(18),
             l = require(106);
@@ -77,7 +77,7 @@ module.exports = function (module, exports, require) {
                                 n instanceof GObject.GCompoundShape ||
                                 (n instanceof GObject.GSymbol && !n.getMasterSymbol())) &&
                                 i.add(n.getParent());
-                        (0, GSaveAction.blockChanges)(e, i, s);
+                        (0, Utils.blockChanges)(e, i, s);
                         for (l = 0; l < t.length; ++l)
                             if (
                                 (n = t[l]) instanceof GObject.GGroup ||
@@ -110,7 +110,7 @@ module.exports = function (module, exports, require) {
                                 r.push(n);
                             } else r.push(n);
                     } finally {
-                        (0, GSaveAction.releaseChanges)(e, i, s);
+                        (0, Utils.releaseChanges)(e, i, s);
                     }
                     r.length > 0 && e.updateSelection(false, r);
                 } finally {

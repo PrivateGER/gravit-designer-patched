@@ -15,8 +15,8 @@ module.exports = function (module, exports, require) {
                 },
             }),
             (exports.default = void 0));
-        var i = _interopRequireDefault(require(1547 /* GFilesPanel */)),
-            a = _interopRequireDefault(require(1300 /* GFilesPanel */));
+        var i = _interopRequireDefault(require(1547 /* GFilesPanelViewNative */)),
+            a = _interopRequireDefault(require(1300 /* GFilesPanelViewBase */));
         exports.default = {
             GFilesPanelViewNative: i.default,
             GFilesPanelViewBase: a.default,

@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(19), require(96 /* polyfill:JSON */), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(41), require(38), require(97), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1),
-            GSaveAction = require(40),
+            Utils = require(40),
             r = require(593),
             s = _interopRequireDefault(require(787)),
             l = (function (e, t) {
@@ -272,7 +272,7 @@ module.exports = function (module, exports, require) {
                             return i.status === HTTP_STATUS_CODES.UNAUTHORIZED && (await gContainer.getGoogleAPI().signIn(), 0 === o)
                                 ? this._request(e, t, n, ++o)
                                 : i.status === HTTP_STATUS_CODES.FORBIDDEN && g.isUsageLimitError(r) && o < g.TRIAL_UNTIL_FAIL
-                                  ? (await (0, GSaveAction.sleep)(1e3 * Math.pow(1 + o, 2)), this._request(e, t, n, ++o))
+                                  ? (await (0, Utils.sleep)(1e3 * Math.pow(1 + o, 2)), this._request(e, t, n, ++o))
                                   : Promise.reject(r);
                         }
                         return i;
@@ -291,7 +291,7 @@ module.exports = function (module, exports, require) {
                     return d.status === HTTP_STATUS_CODES.UNAUTHORIZED && (await gContainer.getGoogleAPI().signIn(), 0 === i)
                         ? this._requestWithProgress(e, t, n, o, ++i)
                         : d.status === HTTP_STATUS_CODES.FORBIDDEN && g.isUsageLimitError(u) && i < g.TRIAL_UNTIL_FAIL
-                          ? (await (0, GSaveAction.sleep)(1e3 * Math.pow(1 + i, 2)), this._requestWithProgress(e, t, n, o, ++i))
+                          ? (await (0, Utils.sleep)(1e3 * Math.pow(1 + i, 2)), this._requestWithProgress(e, t, n, o, ++i))
                           : Promise.reject(u);
                 }
                 return (0, r.readResponseWithProgress)(d, o, true);

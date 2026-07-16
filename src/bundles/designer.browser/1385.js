@@ -3,12 +3,12 @@ module.exports = function (module, exports, require) {
         require(8 /* Symbol */);
         var GObject = require(1),
             designerConfig = require(10),
-            GDocument = require(237),
-            GCommonNames = require(220),
-            s = require(40 /* GSaveAction */).decrypt;
+            GStorage = require(237),
+            GCloudStorage = require(220),
+            s = require(40 /* Utils */).decrypt;
         require(173);
         function l() {}
-        (GObject.GObject.inherit(l, GDocument),
+        (GObject.GObject.inherit(l, GStorage),
             (l.prototype.canPromptOpen = function () {
                 return false;
             }),
@@ -22,9 +22,9 @@ module.exports = function (module, exports, require) {
                 return false;
             }),
             (l.Item = function (e, t, n, o) {
-                GCommonNames.CommercialProduct.call(this, e, t, n, o);
+                GCloudStorage.CommercialProduct.call(this, e, t, n, o);
             }),
-            GObject.GObject.inherit(l.Item, GCommonNames.CommercialProduct),
+            GObject.GObject.inherit(l.Item, GCloudStorage.CommercialProduct),
             (l.Item.prototype.getPrice = async function () {
                 return Promise.resolve(this._file.price);
             }),

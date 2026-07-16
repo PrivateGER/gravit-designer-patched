@@ -26,7 +26,7 @@ module.exports = function (module, exports, require) {
             require(126 /* polyfill:URL */),
             require(114));
         var GObject = require(1),
-            a = _interopRequireDefault(require(1476)),
+            a = _interopRequireDefault(require(1476 /* lib:adal */)),
             r = require(802),
             s = _interopRequireDefault(require(119 /* GCommonNames */)),
             designerConfig = require(10),
@@ -34,7 +34,7 @@ module.exports = function (module, exports, require) {
             d = _interopRequireDefault(require(594)),
             u = _interopRequireDefault(require(1477)),
             p = _interopRequireDefault(require(1242 /* GMSTeamsAuthenticator */)),
-            GSaveAction = require(40);
+            Utils = require(40);
         const h = require(156);
         let f = null,
             m = {};
@@ -62,7 +62,7 @@ module.exports = function (module, exports, require) {
             }),
             (v.prototype.getSanitizedFolderRelativePath = function (e) {
                 let t = e;
-                return (this.RELATIVE_PATH && (t = (0, GSaveAction.trimStart)(t, this.RELATIVE_PATH)), (0, GSaveAction.trimStart)(t, "/"));
+                return (this.RELATIVE_PATH && (t = (0, Utils.trimStart)(t, this.RELATIVE_PATH)), (0, Utils.trimStart)(t, "/"));
             }),
             (v.prototype.getSanitizedFileRelativePath = function (e) {
                 return this.RELATIVE_PATH ? "".concat(this.RELATIVE_PATH, "/").concat(e) : e;

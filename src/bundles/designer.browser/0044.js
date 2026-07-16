@@ -3,94 +3,94 @@ module.exports = function (module, exports, require) {
         (require(19), require(30 /* polyfill:Object */), require(57), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(4), require(13), require(32), require(38), require(33), require(26));
         var GObject = require(1),
             GPlatform = require(15);
-        class a {
-            static error(e) {
+        class GSystemDialog {
+            static error(err) {
                 let { showTitle: t = true, closeCallback } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                return a.custom({
+                return GSystemDialog.custom({
                     title: t ? GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.something-wrong")) : "",
-                    subtitle: gApi.formatError(e),
+                    subtitle: gApi.formatError(err),
                     closeCallback: closeCallback,
                 });
             }
-            static externalFileError(e) {
-                let t = e
+            static externalFileError(fromRecent) {
+                let message = fromRecent
                     ? GObject.GLocale.get(new GObject.GLocaleKey("GContainer", "text.load-failed-from-recent"))
                     : GObject.GLocale.get(new GObject.GLocaleKey("GContainer", "text.load-failed-from-link"));
-                return a.custom({ subtitle: t, icon: "error" });
+                return GSystemDialog.custom({ subtitle: message, icon: "error" });
             }
-            static splashScreenError(e, t, n) {
-                var o = $("<div></div>").append($("<div></div>").addClass("message").html(e));
-                const i = [];
+            static splashScreenError(message, buttonLabel, callback) {
+                var dialogElement = $("<div></div>").append($("<div></div>").addClass("message").html(message));
+                const buttons = [];
                 return (
-                    n &&
-                        i.push(
+                    callback &&
+                        buttons.push(
                             $("<button></button>")
-                                .text(t)
-                                .on("click", (e) => {
-                                    (n && n(e), o.gDialog("close"));
+                                .text(buttonLabel)
+                                .on("click", (event) => {
+                                    (callback && callback(event), dialogElement.gDialog("close"));
                                 })
                         ),
-                    o.gDialog({
+                    dialogElement.gDialog({
                         releaseOnClose: true,
                         className: "g-system-dialog g-splash-screen-error-dialog",
-                        buttons: i,
+                        buttons: buttons,
                     }),
-                    o.gDialog("open", false),
-                    o
+                    dialogElement.gDialog("open", false),
+                    dialogElement
                 );
             }
-            static async confirm(e, t, n, a, r, s, l, c) {
-                if (c) {
-                    let e = () => {
+            static async confirm(message, callback, cancelLabel, okLabel, closeable, confirmOnEnter, cancelOnEscape, setting) {
+                if (setting) {
+                    let checkDismissed = () => {
                         try {
-                            return gContainer.getProperty(c);
+                            return gContainer.getProperty(setting);
                         } catch (e) {
                             return false;
                         }
                     };
-                    if (await e()) return;
+                    if (await checkDismissed()) return;
                 }
-                var d = $("<div></div>").append($("<div></div>").addClass("message").html(e));
-                let u;
-                const p = (e) => {
-                    (u && document.removeEventListener("keydown", u, true), d.gDialog("close"), t && t(e));
+                var dialogElement = $("<div></div>").append($("<div></div>").addClass("message").html(message));
+                let keyHandler;
+                const closeDialog = (result) => {
+                    (keyHandler && document.removeEventListener("keydown", keyHandler, true), dialogElement.gDialog("close"), callback && callback(result));
                 };
-                (s || l) &&
-                    ((u = (e) => {
-                        s && GPlatform.GKey.translateKey(e.keyCode) === GPlatform.GKey.Constant.ENTER
-                            ? d.gDialog("isOpen") && (e.preventDefault(), e.stopImmediatePropagation(), p(true))
-                            : l &&
-                              GPlatform.GKey.translateKey(e.keyCode) === GPlatform.GKey.Constant.ESC &&
-                              d.gDialog("isOpen") &&
-                              (e.preventDefault(), e.stopImmediatePropagation(), p(false));
+                (confirmOnEnter || cancelOnEscape) &&
+                    ((keyHandler = (event) => {
+                        confirmOnEnter && GPlatform.GKey.translateKey(event.keyCode) === GPlatform.GKey.Constant.ENTER
+                            ? dialogElement.gDialog("isOpen") && (event.preventDefault(), event.stopImmediatePropagation(), closeDialog(true))
+                            : cancelOnEscape &&
+                              GPlatform.GKey.translateKey(event.keyCode) === GPlatform.GKey.Constant.ESC &&
+                              dialogElement.gDialog("isOpen") &&
+                              (event.preventDefault(), event.stopImmediatePropagation(), closeDialog(false));
                     }),
-                    document.addEventListener("keydown", u, true));
-                const g = (e) => (e && "object" == typeof e ? e.text : e),
-                    h = (e) => !!e && "object" == typeof e && !!e.pro,
-                    f = !!(m = a) && "object" == typeof m && !!m.disabled;
-                var m;
-                (d.gDialog({
+                    document.addEventListener("keydown", keyHandler, true));
+                const getLabelText = (label) => (label && "object" == typeof label ? label.text : label),
+                    isProLabel = (label) => !!label && "object" == typeof label && !!label.pro,
+                    okDisabled = !!(okValue = okLabel) && "object" == typeof okValue && !!okValue.disabled;
+                var okValue;
+                (dialogElement.gDialog({
                     releaseOnClose: true,
-                    className: "g-system-dialog g-confirm-dialog" + (c ? " g-onetime-dialog" : ""),
+                    className: "g-system-dialog g-confirm-dialog" + (setting ? " g-onetime-dialog" : ""),
                     buttons: [
                         $("<button></button>")
-                            .text(g(n) || GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "cancel")))
-                            .gPro({ pro: h(n) })
+                            .text(getLabelText(cancelLabel) || GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "cancel")))
+                            .gPro({ pro: isProLabel(cancelLabel) })
                             .on("click", () => {
-                                p(false);
+                                closeDialog(false);
                             }),
                         $("<button></button>")
                             .addClass("primary")
-                            .toggleClass("g-disabled", f)
-                            .text(g(a) || GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")))
-                            .gPro({ pro: h(a) })
+                            .toggleClass("g-disabled", okDisabled)
+                            .text(getLabelText(okLabel) || GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")))
+                            .gPro({ pro: isProLabel(okLabel) })
                             .on("click", () => {
-                                f || p(true);
+                                okDisabled || closeDialog(true);
                             }),
                     ],
                 }),
-                    c &&
-                        d
+                    setting &&
+                        dialogElement
                             .closest(".g-dialog")
                             .find(".g-dialog-footer")
                             .prepend(
@@ -98,84 +98,84 @@ module.exports = function (module, exports, require) {
                                     $("<input>")
                                         .attr("type", "checkbox")
                                         .on("change", function () {
-                                            this.checked ? gContainer.setProperty(c, true) : gContainer.setProperty(c, false);
+                                            this.checked ? gContainer.setProperty(setting, true) : gContainer.setProperty(setting, false);
                                         }),
                                     $("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.do-not-show-again"))),
                                 ])
                             ),
-                    null === r && (r = false),
-                    d.gDialog("open", r));
+                    null === closeable && (closeable = false),
+                    dialogElement.gDialog("open", closeable));
             }
-            static prompt(e, t, n, i, a, r) {
-                var s = n && "string" != typeof n,
-                    l = s
-                        ? n
+            static prompt(message, callback, valueOrInput, cancelLabel, okLabel, className) {
+                var isCustomInput = valueOrInput && "string" != typeof valueOrInput,
+                    inputElement = isCustomInput
+                        ? valueOrInput
                         : $("<input/>")
                               .addClass("max-width")
                               .attr("type", "text")
-                              .val(n || "")
-                              .on("keypress", (e) => {
-                                  13 === e.keyCode || "Enter" === e.key
-                                      ? (c.gDialog("close"), t && t(!!s || l.val()))
-                                      : (27 !== e.keyCode && "Escape" !== e.key) || (c.gDialog("close"), t && t());
+                              .val(valueOrInput || "")
+                              .on("keypress", (event) => {
+                                  13 === event.keyCode || "Enter" === event.key
+                                      ? (dialogElement.gDialog("close"), callback && callback(!!isCustomInput || inputElement.val()))
+                                      : (27 !== event.keyCode && "Escape" !== event.key) || (dialogElement.gDialog("close"), callback && callback());
                               }),
-                    c = $("<div></div>")
-                        .append($("<div></div>").addClass("message").html(e))
-                        .append($("<div></div>").addClass("input").append(l));
-                (c.gDialog({
+                    dialogElement = $("<div></div>")
+                        .append($("<div></div>").addClass("message").html(message))
+                        .append($("<div></div>").addClass("input").append(inputElement));
+                (dialogElement.gDialog({
                     releaseOnClose: true,
-                    className: "g-system-dialog g-prompt-dialog " + r,
+                    className: "g-system-dialog g-prompt-dialog " + className,
                     buttons: [
                         $("<button></button>")
-                            .text(i || GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "cancel")))
+                            .text(cancelLabel || GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "cancel")))
                             .on("click", () => {
-                                (c.gDialog("close"), t && t());
+                                (dialogElement.gDialog("close"), callback && callback());
                             }),
                         $("<button></button>")
                             .addClass("primary")
-                            .text(a || GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")))
+                            .text(okLabel || GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")))
                             .on("click", () => {
-                                t && (t(!!s || l.val()), c.gDialog("close"));
+                                callback && (callback(!!isCustomInput || inputElement.val()), dialogElement.gDialog("close"));
                             }),
                     ],
                 }),
-                    c.gDialog("open", true),
-                    c.find("input:first-child").focus().select());
+                    dialogElement.gDialog("open", true),
+                    dialogElement.find("input:first-child").focus().select());
             }
-            static alert(e, t) {
-                let { closeByEnter: n = true, className } = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-                var r,
-                    s = $("<div></div>").append($("<div></div>").addClass("message").html(e));
-                const l = () => {
-                    (n && document.removeEventListener("keypress", r, true), s.gDialog("close"), t && t());
+            static alert(message, callback) {
+                let { closeByEnter: closeByEnter = true, className } = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
+                var keyHandler,
+                    dialogElement = $("<div></div>").append($("<div></div>").addClass("message").html(message));
+                const closeDialog = () => {
+                    (closeByEnter && document.removeEventListener("keypress", keyHandler, true), dialogElement.gDialog("close"), callback && callback());
                 };
                 return (
-                    (r = (e) => {
-                        GPlatform.GKey.translateKey(e.keyCode) === GPlatform.GKey.Constant.ENTER &&
-                            s.gDialog("isOpen") &&
-                            (e.preventDefault(), e.stopImmediatePropagation(), l());
+                    (keyHandler = (event) => {
+                        GPlatform.GKey.translateKey(event.keyCode) === GPlatform.GKey.Constant.ENTER &&
+                            dialogElement.gDialog("isOpen") &&
+                            (event.preventDefault(), event.stopImmediatePropagation(), closeDialog());
                     }),
-                    s.gDialog({
+                    dialogElement.gDialog({
                         releaseOnClose: true,
                         className: "g-system-dialog g-alert-dialog" + (className ? " " + className : ""),
                         buttons: [
                             $("<button></button>")
                                 .addClass("primary")
                                 .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")))
-                                .on("click", () => l()),
+                                .on("click", () => closeDialog()),
                         ],
                     }),
-                    s.gDialog("open", false),
-                    n && document.addEventListener("keypress", r, true),
-                    s
+                    dialogElement.gDialog("open", false),
+                    closeByEnter && document.addEventListener("keypress", keyHandler, true),
+                    dialogElement
                 );
             }
-            static showOneTimeDialog(e, t) {
-                return gContainer.getProperty(t).then((n) => {
-                    if (!n) {
-                        var i = $("<div></div>").append($("<div></div>").addClass("message").html(e));
+            static showOneTimeDialog(message, setting) {
+                return gContainer.getProperty(setting).then((alreadyDismissed) => {
+                    if (!alreadyDismissed) {
+                        var dialogElement = $("<div></div>").append($("<div></div>").addClass("message").html(message));
                         return (
-                            i.gDialog({
+                            dialogElement.gDialog({
                                 releaseOnClose: true,
                                 className: "g-system-dialog g-onetime-dialog",
                                 buttons: [
@@ -183,11 +183,11 @@ module.exports = function (module, exports, require) {
                                         .addClass("primary")
                                         .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")))
                                         .on("click", () => {
-                                            i.gDialog("close");
+                                            dialogElement.gDialog("close");
                                         }),
                                 ],
                             }),
-                            i
+                            dialogElement
                                 .closest(".g-dialog")
                                 .find(".g-dialog-footer")
                                 .prepend(
@@ -195,13 +195,13 @@ module.exports = function (module, exports, require) {
                                         $("<input>")
                                             .attr("type", "checkbox")
                                             .on("change", function () {
-                                                this.checked ? gContainer.setProperty(t, true) : gContainer.setProperty(t, false);
+                                                this.checked ? gContainer.setProperty(setting, true) : gContainer.setProperty(setting, false);
                                             }),
                                         $("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.do-not-show-again"))),
                                     ])
                                 ),
-                            i.gDialog("open", false),
-                            i
+                            dialogElement.gDialog("open", false),
+                            dialogElement
                         );
                     }
                 });
@@ -217,13 +217,13 @@ module.exports = function (module, exports, require) {
                           message: GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-warning-message")),
                       });
             }
-            static showCDRUnsupportedObjectWarning(e) {
+            static showCDRUnsupportedObjectWarning(effect) {
                 if (!this.isDialogOpen(".g-system-dialog.g-dialog-v1") && !gDesigner.getSetting("disable_cdr_unsupported_effect", false)) {
-                    const t =
-                        e instanceof GObject.GStylable.Effect
+                    const objectName =
+                        effect instanceof GObject.GStylable.Effect
                             ? GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-object-warning-effect-name")).replace(
                                   "%name",
-                                  e.getNodeNameTranslated()
+                                  effect.getNodeNameTranslated()
                               )
                             : GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-object-warning-generic-name"));
                     return this.info({
@@ -232,14 +232,14 @@ module.exports = function (module, exports, require) {
                         label: GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-objects-warning-label")),
                         message: GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.cdr-unsupported-object-warning-message")).replace(
                             "%name",
-                            t
+                            objectName
                         ),
                     });
                 }
                 return Promise.resolve();
             }
             static showCDRUnsupportedObjectsWarning() {
-                let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
+                let unsupportedEffects = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
                 return gDesigner.getSetting("disable_cdr_unsupported_effects", false)
                     ? Promise.resolve(gDesigner.getSetting("default_cdr_unsupported_effects", 1))
                     : (gDesigner.stats("unsupported-dialog_open"),
@@ -271,7 +271,7 @@ module.exports = function (module, exports, require) {
                               onClick: () => {
                                   gDesigner.stats("unsupported-dialog_click_details");
                               },
-                              items: e,
+                              items: unsupportedEffects,
                           },
                           onCancel: () => {
                               gDesigner.stats("unsupported-dialog_click_cancel");
@@ -279,9 +279,9 @@ module.exports = function (module, exports, require) {
                           onSubmit: () => {
                               gDesigner.stats("unsupported-dialog_click_submit");
                           },
-                      }).then((e) => (gDesigner.setSetting("default_cdr_unsupported_effects", e), e)));
+                      }).then((selectedOption) => (gDesigner.setSetting("default_cdr_unsupported_effects", selectedOption), selectedOption)));
             }
-            static warning(e) {
+            static warning(options) {
                 return this._dialogV1(
                     Object.assign(
                         {
@@ -290,23 +290,23 @@ module.exports = function (module, exports, require) {
                                 $("<button/>")
                                     .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "cancel")))
                                     .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "action.cancel-tooltip")))
-                                    .on("click", (t) => {
-                                        (e.onCancel && e.onCancel.call(this),
-                                            $(t.target).closest(".g-dialog-content").gDialog("close", true));
+                                    .on("click", (event) => {
+                                        (options.onCancel && options.onCancel.call(this),
+                                            $(event.target).closest(".g-dialog-content").gDialog("close", true));
                                     }),
                                 $("<button/>")
                                     .addClass("primary")
                                     .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")))
-                                    .on("click", (t) => {
-                                        (e.onSubmit && e.onSubmit.call(this), $(t.target).closest(".g-dialog-content").gDialog("close"));
+                                    .on("click", (event) => {
+                                        (options.onSubmit && options.onSubmit.call(this), $(event.target).closest(".g-dialog-content").gDialog("close"));
                                     }),
                             ],
                         },
-                        e || {}
+                        options || {}
                     )
                 );
             }
-            static info(e) {
+            static info(options) {
                 return this._dialogV1(
                     Object.assign(
                         {
@@ -315,55 +315,55 @@ module.exports = function (module, exports, require) {
                                 $("<button/>")
                                     .addClass("primary")
                                     .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")))
-                                    .on("click", (e) => $(e.target).closest(".g-dialog-content").gDialog("close")),
+                                    .on("click", (event) => $(event.target).closest(".g-dialog-content").gDialog("close")),
                             ],
                         },
-                        e || {}
+                        options || {}
                     )
                 );
             }
-            static isDialogOpen(e) {
-                return $(e).length > 0;
+            static isDialogOpen(selector) {
+                return $(selector).length > 0;
             }
             static _dialogV1() {
                 let {
-                    title: e = "",
-                    label: t = "",
-                    message: n = "",
-                    icon: i = "assets/icon/dialog/info.svg",
-                    closeable: a = true,
-                    buttons: r = [],
+                    title: title = "",
+                    label: label = "",
+                    message: message = "",
+                    icon: icon = "assets/icon/dialog/info.svg",
+                    closeable: closeable = true,
+                    buttons: buttons = [],
                     details,
                     options,
                     setting,
-                    className: d = "",
+                    className: className = "",
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                const u = {},
-                    p = new Promise((e, t) => Object.assign(u, { resolve: e, reject: t })),
-                    g = $("<div></div>").gDialog({
+                const deferred = {},
+                    promise = new Promise((resolve, reject) => Object.assign(deferred, { resolve: resolve, reject: reject })),
+                    dialogElement = $("<div></div>").gDialog({
                         releaseOnClose: true,
-                        className: "g-system-dialog g-dialog-v1 " + d,
-                        closeCallback: (e) => {
-                            e
-                                ? u.reject()
-                                : (setting && gDesigner.setSetting(setting, g.find('input[data-property="'.concat(setting, '"]')).is(":checked")),
-                                  options ? u.resolve(parseInt(g.find('input[name="options"]:checked').val()) || 0) : u.resolve());
+                        className: "g-system-dialog g-dialog-v1 " + className,
+                        closeCallback: (cancelled) => {
+                            cancelled
+                                ? deferred.reject()
+                                : (setting && gDesigner.setSetting(setting, dialogElement.find('input[data-property="'.concat(setting, '"]')).is(":checked")),
+                                  options ? deferred.resolve(parseInt(dialogElement.find('input[name="options"]:checked').val()) || 0) : deferred.resolve());
                         },
                     }),
-                    h = $("<header></header>").append($("<span/>").addClass("title").text(e)).appendTo(g);
+                    headerElement = $("<header></header>").append($("<span/>").addClass("title").text(title)).appendTo(dialogElement);
                 return (
-                    a &&
-                        h.append(
+                    closeable &&
+                        headerElement.append(
                             $("<div></div>")
                                 .addClass("g-btn-close")
                                 .append($("<span></span>").addClass("gravit-icon-close"))
-                                .on("click", () => g.gDialog("close", true))
+                                .on("click", () => dialogElement.gDialog("close", true))
                         ),
                     $("<main></main>")
                         .append(
                             $("<img/>")
-                                .attr("src", i)
-                                .css("display", i ? "" : "none")
+                                .attr("src", icon)
+                                .css("display", icon ? "" : "none")
                         )
                         .append(
                             $("<div/>")
@@ -371,8 +371,8 @@ module.exports = function (module, exports, require) {
                                 .append(
                                     $("<div/>")
                                         .addClass("content")
-                                        .append($("<span/>").addClass("label").text(t))
-                                        .append($("<pre/>").addClass("message").text(n))
+                                        .append($("<span/>").addClass("label").text(label))
+                                        .append($("<pre/>").addClass("message").text(message))
                                         .append(
                                             details
                                                 ? $("<div/>")
@@ -381,11 +381,11 @@ module.exports = function (module, exports, require) {
                                                           $("<label/>")
                                                               .append($("<span/>").text(details.label))
                                                               .append($("<span/>").addClass("gravit-icon-down icon"))
-                                                              .on("click", (e) => {
+                                                              .on("click", (event) => {
                                                                   details.onClick && details.onClick.call(this);
-                                                                  const t = $(e.target).closest(".details");
-                                                                  (t.find(".panel").toggleClass("collapsed"),
-                                                                      t.find(".icon").toggleClass("gravit-icon-down gravit-icon-up"));
+                                                                  const detailsElement = $(event.target).closest(".details");
+                                                                  (detailsElement.find(".panel").toggleClass("collapsed"),
+                                                                      detailsElement.find(".icon").toggleClass("gravit-icon-down gravit-icon-up"));
                                                               })
                                                       )
                                                       .append(
@@ -393,7 +393,7 @@ module.exports = function (module, exports, require) {
                                                               .addClass("panel collapsed")
                                                               .append(
                                                                   $("<ul/>").append(
-                                                                      details.items.map((e) => $("<li/>").append($("<span/>").text(e)))
+                                                                      details.items.map((item) => $("<li/>").append($("<span/>").text(item)))
                                                                   )
                                                               )
                                                       )
@@ -404,33 +404,33 @@ module.exports = function (module, exports, require) {
                                                 ? $("<div/>")
                                                       .addClass("options")
                                                       .append(
-                                                          options.values.map((e, t) => {
-                                                              let n = $("<label/>")
+                                                          options.values.map((optionLabel, index) => {
+                                                              let optionRow = $("<label/>")
                                                                   .append(
                                                                       $("<input/>")
                                                                           .attr("type", "radio")
                                                                           .attr("name", "options")
-                                                                          .attr("value", t)
+                                                                          .attr("value", index)
                                                                           .prop(
                                                                               "checked",
-                                                                              (e) =>
-                                                                                  e === (options.setting ? gDesigner.getSetting(options.setting, 0) : 0)
+                                                                              (elementIndexInSet) =>
+                                                                                  elementIndexInSet === (options.setting ? gDesigner.getSetting(options.setting, 0) : 0)
                                                                           )
                                                                           .on("change", () => {
                                                                               options.onClick && options.onClick.call(this);
                                                                           })
                                                                   )
-                                                                  .append($("<span/>").text(e));
+                                                                  .append($("<span/>").text(optionLabel));
                                                               return (
                                                                   options.tooltips &&
-                                                                      options.tooltips[t] &&
-                                                                      n.append(
+                                                                      options.tooltips[index] &&
+                                                                      optionRow.append(
                                                                           $("<span/>")
                                                                               .addClass("tooltip")
                                                                               .text("?")
-                                                                              .attr("data-title", options.tooltips[t])
+                                                                              .attr("data-title", options.tooltips[index])
                                                                       ),
-                                                                  n
+                                                                  optionRow
                                                               );
                                                           })
                                                       )
@@ -450,31 +450,31 @@ module.exports = function (module, exports, require) {
                                                       )
                                                 : ""
                                         )
-                                        .append(r.length ? $("<div/>").addClass("buttons").append(r) : "")
+                                        .append(buttons.length ? $("<div/>").addClass("buttons").append(buttons) : "")
                                 )
                         )
-                        .appendTo(g),
-                    g.gDialog("open", a),
-                    p
+                        .appendTo(dialogElement),
+                    dialogElement.gDialog("open", closeable),
+                    promise
                 );
             }
-            static messageWithInfo(e) {
-                let { mainMessage, infoMessage } = e;
-                const i = $("<div />").gDialog({
+            static messageWithInfo(options) {
+                let { mainMessage, infoMessage } = options;
+                const dialogElement = $("<div />").gDialog({
                         releaseOnClose: true,
                         className: "g-system-dialog g-message-with-info-dialog",
                         buttons: [
                             $("<button/>")
                                 .addClass("primary")
                                 .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")))
-                                .on("click", () => i.gDialog("close")),
+                                .on("click", () => dialogElement.gDialog("close")),
                         ],
                     }),
-                    a = $("<div />").addClass("content").appendTo(i);
+                    contentElement = $("<div />").addClass("content").appendTo(dialogElement);
                 return (
-                    mainMessage && a.append($("<div />").addClass("main-message").html(mainMessage)),
+                    mainMessage && contentElement.append($("<div />").addClass("main-message").html(mainMessage)),
                     infoMessage &&
-                        a.append(
+                        contentElement.append(
                             $("<div />")
                                 .addClass("info-message")
                                 .append(
@@ -484,49 +484,49 @@ module.exports = function (module, exports, require) {
                                 )
                                 .append($("<div />").addClass("info-message-content").html(infoMessage))
                         ),
-                    i.gDialog("open", true)
+                    dialogElement.gDialog("open", true)
                 );
             }
-            static custom(e) {
+            static custom(options) {
                 let {
-                    title: t = "",
-                    subtitle: n = "",
-                    styles: i = {},
+                    title: title = "",
+                    subtitle: subtitle = "",
+                    styles: styles = {},
                     footer,
                     icon,
-                    buttons: s = [],
+                    buttons: buttons = [],
                     openCallback,
-                    closeCallback: c,
-                    closeable: d = true,
-                    className: u = "",
+                    closeCallback: closeCallback,
+                    closeable: closeable = true,
+                    className: className = "",
                     dontShowAgainCb,
-                } = e;
-                var g = [];
-                const h = $("<div></div>").gDialog({
+                } = options;
+                var shortcuts = [];
+                const dialogElement = $("<div></div>").gDialog({
                     releaseOnClose: true,
-                    className: "g-system-dialog g-custom-dialog ".concat(u),
-                    closeCallback: (e) => {
-                        (g.length && (g.forEach((e) => Mousetrap.unbind(e)), (g = [])), c && c(e));
+                    className: "g-system-dialog g-custom-dialog ".concat(className),
+                    closeCallback: (cancelled) => {
+                        (shortcuts.length && (shortcuts.forEach((shortcut) => Mousetrap.unbind(shortcut)), (shortcuts = [])), closeCallback && closeCallback(cancelled));
                     },
                     openCallback: openCallback,
                 });
-                (i.dialog && h.css(i.dialog),
-                    d &&
+                (styles.dialog && dialogElement.css(styles.dialog),
+                    closeable &&
                         $("<div></div>")
                             .addClass("g-btn-close")
                             .append($("<span></span>").addClass("gravit-icon-close"))
-                            .on("click", () => h.gDialog("close"))
-                            .appendTo(h),
-                    icon && $("<div></div>").addClass("icon").append($("<div></div>").addClass(icon)).appendTo(h));
-                let f = $("<div></div>")
+                            .on("click", () => dialogElement.gDialog("close"))
+                            .appendTo(dialogElement),
+                    icon && $("<div></div>").addClass("icon").append($("<div></div>").addClass(icon)).appendTo(dialogElement));
+                let contentElement = $("<div></div>")
                     .addClass("content")
-                    .append($("<span></span>").addClass("title").html(t))
-                    .append($("<span></span>").addClass("subtitle").html(n))
-                    .appendTo(h);
-                if ((footer && f.append($("<span></span>").addClass("footer").html(footer)), s && s.length)) {
-                    var m = $("<div></div>").addClass("buttons");
+                    .append($("<span></span>").addClass("title").html(title))
+                    .append($("<span></span>").addClass("subtitle").html(subtitle))
+                    .appendTo(dialogElement);
+                if ((footer && contentElement.append($("<span></span>").addClass("footer").html(footer)), buttons && buttons.length)) {
+                    var buttonsElement = $("<div></div>").addClass("buttons");
                     (dontShowAgainCb &&
-                        m.prepend(
+                        buttonsElement.prepend(
                             $("<label></label>").append([
                                 $("<input>")
                                     .attr("type", "checkbox")
@@ -538,84 +538,84 @@ module.exports = function (module, exports, require) {
                                     .text(GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.do-not-show-again"))),
                             ])
                         ),
-                        m.append(
-                            s.map((e) => {
+                        buttonsElement.append(
+                            buttons.map((button) => {
                                 let {
                                     label,
                                     onclick,
                                     highlighted,
-                                    className: i,
+                                    className: className,
                                     position,
                                     shortcut,
-                                    closeOnClick: s = false,
-                                } = e;
-                                var l = false,
-                                    c = () => {
-                                        l ||
-                                            ((l = true),
-                                            shortcut && (Mousetrap.unbind(shortcut), g.splice(g.indexOf(shortcut), 1)),
-                                            g.length && (g.forEach((e) => Mousetrap.unbind(e)), (g = [])),
-                                            s && h.gDialog("close"),
-                                            onclick && onclick(h));
+                                    closeOnClick: closeOnClick = false,
+                                } = button;
+                                var clicked = false,
+                                    handleClick = () => {
+                                        clicked ||
+                                            ((clicked = true),
+                                            shortcut && (Mousetrap.unbind(shortcut), shortcuts.splice(shortcuts.indexOf(shortcut), 1)),
+                                            shortcuts.length && (shortcuts.forEach((shortcut) => Mousetrap.unbind(shortcut)), (shortcuts = [])),
+                                            closeOnClick && dialogElement.gDialog("close"),
+                                            onclick && onclick(dialogElement));
                                     },
-                                    d = $("<button></button>")
+                                    buttonElement = $("<button></button>")
                                         .append($("<span></span>").text(label))
                                         .addClass("g-pro-button " + (highlighted ? "highlighted" : ""))
-                                        .on("click", () => c());
+                                        .on("click", () => handleClick());
                                 return (
-                                    shortcut && (Mousetrap.bind(shortcut, c), g.push(shortcut)),
-                                    i && ((i = i instanceof Array ? i : [i]), i.forEach((e) => d.addClass(e))),
-                                    position && d.css("float", position),
-                                    d
+                                    shortcut && (Mousetrap.bind(shortcut, handleClick), shortcuts.push(shortcut)),
+                                    className && ((className = className instanceof Array ? className : [className]), className.forEach((cls) => buttonElement.addClass(cls))),
+                                    position && buttonElement.css("float", position),
+                                    buttonElement
                                 );
                             })
                         ),
-                        i.buttons && m.css(i.buttons),
-                        m.appendTo(f));
+                        styles.buttons && buttonsElement.css(styles.buttons),
+                        buttonsElement.appendTo(contentElement));
                 }
-                return (h.gDialog("open", d), h);
+                return (dialogElement.gDialog("open", closeable), dialogElement);
             }
-            static advanced(e) {
-                let { title: t = "", buttons: n = [], closeCallback: o, closeable: i = true } = e;
-                var a = [],
-                    r = $("<div></div>").append($("<div></div>").addClass("message").html(t));
+            static advanced(options) {
+                let { title: title = "", buttons: buttons = [], closeCallback: closeCallback, closeable: closeable = true } = options;
+                var shortcuts = [],
+                    dialogElement = $("<div></div>").append($("<div></div>").addClass("message").html(title));
                 return (
-                    r.gDialog({
+                    dialogElement.gDialog({
                         releaseOnClose: true,
                         className: "g-system-dialog g-advanced-dialog",
-                        closeCallback: (e) => {
-                            (a.length && (a.forEach((e) => Mousetrap.unbind(e)), (a = [])), o && o(e));
+                        closeCallback: (cancelled) => {
+                            (shortcuts.length && (shortcuts.forEach((shortcut) => Mousetrap.unbind(shortcut)), (shortcuts = [])), closeCallback && closeCallback(cancelled));
                         },
-                        buttons: n.map((e) => {
-                            let { label: t, onclick: n, highlighted: o, className: i, position: s, shortcut: l, closeOnClick: c = false } = e;
-                            var d = false,
-                                u = () => {
-                                    d ||
-                                        ((d = true),
-                                        l && (Mousetrap.unbind(l), a.splice(a.indexOf(l), 1)),
-                                        a.length && (a.forEach((e) => Mousetrap.unbind(e)), (a = [])),
-                                        n(r),
-                                        c && r.gDialog("close", false));
+                        buttons: buttons.map((button) => {
+                            let { label: label, onclick: onclick, highlighted: highlighted, className: className, position: position, shortcut: shortcut, closeOnClick: closeOnClick = false } = button;
+                            var clicked = false,
+                                handleClick = () => {
+                                    clicked ||
+                                        ((clicked = true),
+                                        shortcut && (Mousetrap.unbind(shortcut), shortcuts.splice(shortcuts.indexOf(shortcut), 1)),
+                                        shortcuts.length && (shortcuts.forEach((shortcut) => Mousetrap.unbind(shortcut)), (shortcuts = [])),
+                                        onclick(dialogElement),
+                                        closeOnClick && dialogElement.gDialog("close", false));
                                 },
-                                p = $("<button></button>")
-                                    .append($("<span></span>").text(t))
-                                    .addClass(o ? "primary" : "")
-                                    .on("click", () => u());
+                                buttonElement = $("<button></button>")
+                                    .append($("<span></span>").text(label))
+                                    .addClass(highlighted ? "primary" : "")
+                                    .on("click", () => handleClick());
                             return (
-                                l && (Mousetrap.bind(l, u), a.push(l)),
-                                i && ((i = i instanceof Array ? i : [i]), i.forEach((e) => p.addClass(e))),
-                                s && p.css("float", s),
-                                p
+                                shortcut && (Mousetrap.bind(shortcut, handleClick), shortcuts.push(shortcut)),
+                                className && ((className = className instanceof Array ? className : [className]), className.forEach((cls) => buttonElement.addClass(cls))),
+                                position && buttonElement.css("float", position),
+                                buttonElement
                             );
                         }),
                     }),
-                    r.gDialog("open", i),
-                    r
+                    dialogElement.gDialog("open", closeable),
+                    dialogElement
                 );
             }
             toString() {
                 return "[Object GSystemDialog]";
             }
         }
-        ((a.Shortcut = { Esc: "esc", Enter: "enter" }), (module.exports = a));
+        ((GSystemDialog.Shortcut = { Esc: "esc", Enter: "enter" }), (module.exports = GSystemDialog));
     };

@@ -6,7 +6,7 @@ module.exports = function (module, exports, require) {
             a = require(53),
             GPlatform = require(15),
             designerConfig = require(10),
-            GSaveAction = require(40),
+            Utils = require(40),
             c = _interopRequireDefault(require(44 /* GSystemDialog */)),
             GAnnotationsSidebar = require(567),
             GCategory = require(18),
@@ -88,7 +88,7 @@ module.exports = function (module, exports, require) {
                     a.GEditor.tryRunTransaction(
                         e.getScene(),
                         function () {
-                            (0, GSaveAction.iterateEqualStyleLayers)(p, u, m, function (e) {
+                            (0, Utils.iterateEqualStyleLayers)(p, u, m, function (e) {
                                 e.getParent().removeChild(e);
                             });
                         },

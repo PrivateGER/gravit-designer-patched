@@ -3,35 +3,35 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(57), require(4), require(13));
         var GPlatform = require(15),
-            a = require(53),
+            editorModule = require(53),
             GObject = require(1),
             designerConfig = require(10),
-            l = require(67),
-            c = _interopRequireDefault(require(340)),
-            d = _interopRequireDefault(require(807)),
-            u = _interopRequireDefault(require(198 /* SidebarsIds */)),
-            p = require(1161),
-            g = _interopRequireDefault(require(565)),
-            h = require(123),
-            f = require(450);
-        const m = require(607),
+            richTooltipModule = require(67),
+            touchToolModule = _interopRequireDefault(require(340)),
+            sidebarEventModule = _interopRequireDefault(require(807)),
+            appConstants = _interopRequireDefault(require(198 /* SidebarsIds */)),
+            dragIconHelper = require(1161),
+            dragModeModule = _interopRequireDefault(require(565)),
+            GProperties = require(123),
+            contextMenuContexts = require(450);
+        const mouseOverContexts = require(607),
             GSystemDialog = require(44);
-        function v() {}
-        (GObject.GObject.inherit(v, h),
-            (v.prototype._panel = null),
-            (v.prototype._advancedFillPanel = null),
-            (v.prototype._toolbar = null),
-            (v.prototype._elements = null),
-            (v.prototype._document = null),
-            (v.prototype._styleEditorChange = false),
-            (v.prototype._styleEdOn = false),
-            (v.prototype._ownChange = false),
-            (v.prototype._chooserElem = null),
-            (v.prototype.init = function (e, t) {
-                ((this._panel = e.addClass("fill-properties-panel")),
-                    (this._toolbar = t),
+        function GFillPaintLayerProperties() {}
+        (GObject.GObject.inherit(GFillPaintLayerProperties, GProperties),
+            (GFillPaintLayerProperties.prototype._panel = null),
+            (GFillPaintLayerProperties.prototype._advancedFillPanel = null),
+            (GFillPaintLayerProperties.prototype._toolbar = null),
+            (GFillPaintLayerProperties.prototype._elements = null),
+            (GFillPaintLayerProperties.prototype._document = null),
+            (GFillPaintLayerProperties.prototype._styleEditorChange = false),
+            (GFillPaintLayerProperties.prototype._styleEdOn = false),
+            (GFillPaintLayerProperties.prototype._ownChange = false),
+            (GFillPaintLayerProperties.prototype._chooserElem = null),
+            (GFillPaintLayerProperties.prototype.init = function (panelElement, toolbarElement) {
+                ((this._panel = panelElement.addClass("fill-properties-panel")),
+                    (this._toolbar = toolbarElement),
                     this.setTouchTools([
-                        new c.default({
+                        new touchToolModule.default({
                             id: "fill",
                             icon: "gravit-icon-touch-fill",
                             panel: this._panel,
@@ -39,12 +39,12 @@ module.exports = function (module, exports, require) {
                             panelWidth: "368px",
                         }),
                     ]));
-                var n = this;
+                var self = this;
                 this._advancedFillPanel = $("<div></div>").gOverlay({
                     releaseOnClose: false,
                 });
-                var o = function (e) {
-                    if ("evenodd" === e)
+                var createEvenOddInput = function (propertyKey) {
+                    if ("evenodd" === propertyKey)
                         return $("<select></select>")
                             .attr("data-property", "evenodd")
                             .append(
@@ -59,13 +59,13 @@ module.exports = function (module, exports, require) {
                             )
                             .on("change", function () {
                                 (gDesigner.stats("fill_toggle_fill-rule", "1" === $(this).val() ? "enable" : "disable"),
-                                    n._assignProperty(
+                                    self._assignProperty(
                                         "evenodd",
                                         "1" === $(this).val(),
                                         GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.change-fill-rule"))
                                     ));
                             });
-                    throw new Error("Unknown input property: " + e);
+                    throw new Error("Unknown input property: " + propertyKey);
                 }.bind(this);
                 (this._toolbar.addClass("list-toolbar fill-toolbar"),
                     $("<label></label>")
@@ -77,10 +77,10 @@ module.exports = function (module, exports, require) {
                         .append($("<span></span>").addClass("gravit-icon-touch-completely-fill"))
                         .on(
                             "click",
-                            function (e) {
+                            function (event) {
                                 ($(".completely-fill").addClass("g-active"),
                                     $(".winding-fill").removeClass("g-active"),
-                                    n._assignProperty(
+                                    self._assignProperty(
                                         "evenodd",
                                         false,
                                         GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.change-fill-rule"))
@@ -94,10 +94,10 @@ module.exports = function (module, exports, require) {
                         .append($("<span></span>").addClass("gravit-icon-touch-winding-fill"))
                         .on(
                             "click",
-                            function (e) {
+                            function (event) {
                                 ($(".winding-fill").addClass("g-active"),
                                     $(".completely-fill").removeClass("g-active"),
-                                    n._assignProperty(
+                                    self._assignProperty(
                                         "evenodd",
                                         true,
                                         GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.change-fill-rule"))
@@ -112,13 +112,13 @@ module.exports = function (module, exports, require) {
                         .append($("<span></span>").addClass("gravit-icon-settings"))
                         .on(
                             "click",
-                            function (e) {
+                            function (event) {
                                 (gDesigner.stats("fill_open_advancedfillpanel"),
-                                    this._advancedFillPanel.gOverlay("open", $(e.target).closest("button")));
+                                    this._advancedFillPanel.gOverlay("open", $(event.target).closest("button")));
                             }.bind(this)
                         )
                         .gRichTooltip(
-                            l.GRichTooltipConfig.from({
+                            richTooltipModule.GRichTooltipConfig.from({
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "text.fill-rule-tooltip-title")),
                                 description: GObject.GLocale.get(
                                     new GObject.GLocaleKey("GFillPaintLayerProperties", "text.fill-rule-tooltip-description")
@@ -133,28 +133,28 @@ module.exports = function (module, exports, require) {
                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.remove-selected")))
                         .append($("<span></span>").addClass("gravit-icon-trash"))
                         .append($("<span></span>").addClass("gravit-icon-touch-trash"))
-                        .on("click", function (e) {
-                            (gDesigner.stats("fill_remove_fill"), e.stopPropagation());
-                            var t = n._getSelectedPaintLayer();
-                            t &&
-                                a.GEditor.tryRunTransaction(
-                                    n._elements[0],
+                        .on("click", function (event) {
+                            (gDesigner.stats("fill_remove_fill"), event.stopPropagation());
+                            var selectedLayer = self._getSelectedPaintLayer();
+                            selectedLayer &&
+                                editorModule.GEditor.tryRunTransaction(
+                                    self._elements[0],
                                     function () {
-                                        var e = [];
-                                        (n._iterateEqualPaintLayer(t, function (t) {
-                                            e.push(t);
+                                        var layers = [];
+                                        (self._iterateEqualPaintLayer(selectedLayer, function (layer) {
+                                            layers.push(layer);
                                         }),
-                                            GObject.GUtil.each(e, function (e, t) {
-                                                t.getParent().removeChild(t);
+                                            GObject.GUtil.each(layers, function (index, layer) {
+                                                layer.getParent().removeChild(layer);
                                             }));
                                     },
                                     GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.remove"))
                                 );
-                            const o = gDesigner.getRightSidebars().getSidebar(u.default.SidebarsIds.GInspectorSidebar);
-                            o.trigger(new d.default(d.default.Type.ChildRemoved, o));
+                            const inspectorSidebar = gDesigner.getRightSidebars().getSidebar(appConstants.default.SidebarsIds.GInspectorSidebar);
+                            inspectorSidebar.trigger(new sidebarEventModule.default(sidebarEventModule.default.Type.ChildRemoved, inspectorSidebar));
                         })
                         .gRichTooltip(
-                            l.GRichTooltipConfig.from({
+                            richTooltipModule.GRichTooltipConfig.from({
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "text.remove-layer-tooltip-title")),
                                 description: GObject.GLocale.get(
                                     new GObject.GLocaleKey("GFillPaintLayerProperties", "text.remove-layer-tooltip-description")
@@ -170,29 +170,29 @@ module.exports = function (module, exports, require) {
                         .append($("<span></span>").addClass("gravit-icon-touch-plus"))
                         .on(
                             "click",
-                            function (e) {
+                            function (event) {
                                 (gDesigner.stats("fill_add_fill"),
-                                    a.GEditor.tryRunTransaction(
-                                        n._elements[0],
+                                    editorModule.GEditor.tryRunTransaction(
+                                        self._elements[0],
                                         function () {
-                                            const e = n._document && n._document.getScene(),
-                                                t = e && e.getProperty("cm"),
-                                                o = GObject.GColorHelper.convertColor(GObject.GRGBColor.BLACK, t || GObject.GColor.ColorModes.RGB);
-                                            for (var i = 0; i < n._elements.length; ++i) {
+                                            const scene = self._document && self._document.getScene(),
+                                                colorMode = scene && scene.getProperty("cm"),
+                                                color = GObject.GColorHelper.convertColor(GObject.GRGBColor.BLACK, colorMode || GObject.GColor.ColorModes.RGB);
+                                            for (var i = 0; i < self._elements.length; ++i) {
                                                 var a = new GObject.GStylable.FillPaintLayer();
-                                                (a.setProperty("_pt", o), n._elements[i].getPaintLayers().appendChild(a));
+                                                (a.setProperty("_pt", color), self._elements[i].getPaintLayers().appendChild(a));
                                             }
                                         },
                                         GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.add"))
                                     ),
                                     $(this._toolbar).gAccordion("toggleOpen", true),
                                     $(this._toolbar).gAccordion("init", $(this._panel)));
-                                const t = gDesigner.getRightSidebars().getSidebar(u.default.SidebarsIds.GInspectorSidebar);
-                                t.trigger(new d.default(d.default.Type.ChildAdded, t));
+                                const inspectorSidebar = gDesigner.getRightSidebars().getSidebar(appConstants.default.SidebarsIds.GInspectorSidebar);
+                                inspectorSidebar.trigger(new sidebarEventModule.default(sidebarEventModule.default.Type.ChildAdded, inspectorSidebar));
                             }.bind(this)
                         )
                         .gRichTooltip(
-                            l.GRichTooltipConfig.from({
+                            richTooltipModule.GRichTooltipConfig.from({
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "text.add-layer-tooltip-title")),
                                 description: GObject.GLocale.get(
                                     new GObject.GLocaleKey("GFillPaintLayerProperties", "text.add-layer-tooltip-description")
@@ -204,37 +204,37 @@ module.exports = function (module, exports, require) {
                     $("<div></div>")
                         .gPropertyRow({
                             label: GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "text.fill-rule")),
-                            columns: [{ width: "100%", content: o("evenodd") }],
+                            columns: [{ width: "100%", content: createEvenOddInput("evenodd") }],
                         })
                         .appendTo(this._advancedFillPanel),
                     gDesigner
                         .getWorkspace()
                         .getStyleEdManager()
-                        .addEventListener(a.GStyleEdManager.EditorEvent, this._styleEditorEventHandler, this),
+                        .addEventListener(editorModule.GStyleEdManager.EditorEvent, this._styleEditorEventHandler, this),
                     this._panel.data("contextmenu", true),
-                    this._panel.on("mouseenter", (e) => {
+                    this._panel.on("mouseenter", (event) => {
                         (gDesigner.setMouseOverContext(
-                            m.FillPropertiesPanel,
-                            e,
-                            function (e) {
-                                var t = this._panel.find(".copy-info-overlay").eq(0),
-                                    n = this._panel.find(".fill-block.g-selected") || null,
-                                    o = (n && n.position().top) || 0,
-                                    i = $("<span/>")
+                            mouseOverContexts.FillPropertiesPanel,
+                            event,
+                            function (event) {
+                                var copyInfoOverlay = this._panel.find(".copy-info-overlay").eq(0),
+                                    selectedBlock = this._panel.find(".fill-block.g-selected") || null,
+                                    topOffset = (selectedBlock && selectedBlock.position().top) || 0,
+                                    overlay = $("<span/>")
                                         .addClass("copy-info-overlay")
-                                        .css({ top: o })
+                                        .css({ top: topOffset })
                                         .text(GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "text.copy-fill")));
-                                (t && t.remove(),
-                                    this._panel.append(i),
+                                (copyInfoOverlay && copyInfoOverlay.remove(),
+                                    this._panel.append(overlay),
                                     setTimeout(() => {
-                                        i.animate({ opacity: 0, top: "+=20" }, 500, i.remove);
+                                        overlay.animate({ opacity: 0, top: "+=20" }, 500, overlay.remove);
                                     }, 1e3));
                             }.bind(this)
                         ),
-                            this._panel.on("mousemove.check-context", (e) => {
-                                var t = this._panel.outerHeight(),
-                                    n = this._panel.offset();
-                                e.clientY > n.top + t - 2 &&
+                            this._panel.on("mousemove.check-context", (event) => {
+                                var panelHeight = this._panel.outerHeight(),
+                                    panelOffset = this._panel.offset();
+                                event.clientY > panelOffset.top + panelHeight - 2 &&
                                     (gDesigner.setMouseOverContext(null, null, null), this._panel.off("mousemove.check-context"));
                             }));
                     }),
@@ -242,8 +242,8 @@ module.exports = function (module, exports, require) {
                         (this._panel.off("mousemove.check-context"), gDesigner.setMouseOverContext(null, null, null));
                     }));
             }),
-            (v.prototype.update = function (e, t, n) {
-                const o = this._styleEditorChange;
+            (GFillPaintLayerProperties.prototype.update = function (document, elements, options) {
+                const hadStyleEditorChange = this._styleEditorChange;
                 if ((this._styleEditorChange && (this._styleEditorChange = false), this._ownChange)) return true;
                 if (
                     (this._chooserElem && this._chooserElem.gPatternChooser("close"),
@@ -255,129 +255,129 @@ module.exports = function (module, exports, require) {
                             .removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                         (this._document = null)),
                     (this._elements = []),
-                    e)
+                    document)
                 ) {
-                    e.getEditor();
-                    for (var i = 0; i < t.length; ++i) {
-                        var s = t[i],
-                            l = function (e, t) {
-                                t.hasMixin(GObject.GStylable) &&
-                                    t.getStylePropertySets().indexOf(GObject.GStylable.PropertySet.FillPaintLayers) >= 0 &&
-                                    this._elements.push(t);
+                    document.getEditor();
+                    for (var i = 0; i < elements.length; ++i) {
+                        var s = elements[i],
+                            l = function (index, part) {
+                                part.hasMixin(GObject.GStylable) &&
+                                    part.getStylePropertySets().indexOf(GObject.GStylable.PropertySet.FillPaintLayers) >= 0 &&
+                                    this._elements.push(part);
                             }.bind(this),
-                            c = a.GElementEditor.getEditor(s);
+                            c = editorModule.GElementEditor.getEditor(s);
                         c && c.getStylableParts() ? GObject.GUtil.each(c.getStylableParts(), l) : l(null, s);
                     }
                     if (this._elements.length)
                         return (
-                            (this._document = e),
+                            (this._document = document),
                             this._document.getScene().addEventListener(GObject.GNode.AfterInsertEvent, this._afterInsert, this),
                             this._document.getScene().addEventListener(GObject.GNode.BeforeRemoveEvent, this._beforeRemove, this),
                             this._document
                                 .getScene()
                                 .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
-                            o || this._updateProperties(n),
+                            hadStyleEditorChange || this._updateProperties(options),
                             true
                         );
                 }
                 return false;
             }),
-            (v.prototype._styleEditorEventHandler = function (e) {
-                this._styleEdOn && e.type == a.GStyleEdManager.EditorEventType.PrepareModifiedEvent && (this._styleEditorChange = true);
+            (GFillPaintLayerProperties.prototype._styleEditorEventHandler = function (event) {
+                this._styleEdOn && event.type == editorModule.GStyleEdManager.EditorEventType.PrepareModifiedEvent && (this._styleEditorChange = true);
             }),
-            (v.prototype._updateProperties = function (e) {
+            (GFillPaintLayerProperties.prototype._updateProperties = function (extra) {
                 if (this._elements && this._elements.length) {
-                    var t = this._elements[0];
+                    var firstElement = this._elements[0];
                     this._panel.find(".fill-block").remove();
-                    var n = t.getPaintLayers().getFillLayers();
+                    var fillLayers = firstElement.getPaintLayers().getFillLayers();
                     (GObject.GUtil.each(
-                        n,
-                        function (t, n) {
-                            n && this._insertPaintLayer(n, e);
+                        fillLayers,
+                        function (index, layer) {
+                            layer && this._insertPaintLayer(layer, extra);
                         }.bind(this)
                     ),
                         this._advancedFillPanel
                             .find('[data-property="evenodd"]')
-                            .prop("disabled", !t.hasProperty("evenodd"))
-                            .val(t.getProperty("evenodd") ? "1" : "0"),
+                            .prop("disabled", !firstElement.hasProperty("evenodd"))
+                            .val(firstElement.getProperty("evenodd") ? "1" : "0"),
                         this._updateToolbar());
                 } else console.warn("GFillPaintLayerProperties: empty _elements array");
             }),
-            (v.prototype._assignProperty = function (e, t, n) {
-                this._assignProperties([e], [t], n);
+            (GFillPaintLayerProperties.prototype._assignProperty = function (property, value, transactionName) {
+                this._assignProperties([property], [value], transactionName);
             }),
-            (v.prototype._assignProperties = function (e, t, n) {
+            (GFillPaintLayerProperties.prototype._assignProperties = function (properties, values, transactionName) {
                 if (this._document) {
                     this._ownChange = true;
-                    var o = this._document.getEditor();
-                    o.beginTransaction();
+                    var editor = this._document.getEditor();
+                    editor.beginTransaction();
                     try {
-                        for (var i = 0; i < this._elements.length; ++i) this._elements[i].setProperties(e, t);
+                        for (var i = 0; i < this._elements.length; ++i) this._elements[i].setProperties(properties, values);
                     } finally {
-                        (o.commitTransaction(n || GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.modify"))),
+                        (editor.commitTransaction(transactionName || GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.modify"))),
                             (this._ownChange = false));
                     }
                 } else console.warn("GFillPaintLayerProperties: empty _document property");
             }),
-            (v.prototype._updateToolbar = function () {
-                var e = this._panel.find(".fill-block").length > 0;
-                (this._toolbar.toggleClass("empty-list", !e),
-                    this._toolbar.find("[data-action=settings]").css("display", e ? "" : "none"),
-                    this._toolbar.find("[data-action=remove]").css("display", e ? "" : "none"));
+            (GFillPaintLayerProperties.prototype._updateToolbar = function () {
+                var hasBlocks = this._panel.find(".fill-block").length > 0;
+                (this._toolbar.toggleClass("empty-list", !hasBlocks),
+                    this._toolbar.find("[data-action=settings]").css("display", hasBlocks ? "" : "none"),
+                    this._toolbar.find("[data-action=remove]").css("display", hasBlocks ? "" : "none"));
             }),
-            (v.prototype._insertPaintLayer = function (e, t) {
-                var n = this,
-                    o = false,
-                    c = null,
-                    d = null,
-                    u = null,
-                    h = null,
-                    m = null,
-                    v = 0,
-                    _ = 0,
-                    b = function (t, n, o, i) {
-                        if (o)
-                            this._iterateEqualPaintLayer(e, function (e) {
-                                e.setProperties(t, n, false, false, true);
+            (GFillPaintLayerProperties.prototype._insertPaintLayer = function (paintLayer, extra) {
+                var self = this,
+                    canDrag = false,
+                    draggedLayer = null,
+                    dragImage = null,
+                    isOverDeleteIcon = null,
+                    panelOffset = null,
+                    panelHeight = null,
+                    offsetX = 0,
+                    offsetY = 0,
+                    applyChange = function (properties, values, applyToAll, extra) {
+                        if (applyToAll)
+                            this._iterateEqualPaintLayer(paintLayer, function (layer) {
+                                layer.setProperties(properties, values, false, false, true);
                             });
                         else {
                             if (!this._document) return;
-                            var s = null;
-                            if (i) {
-                                var l = e.getParent().getIndexOfChild(e);
-                                s = $.extend({ fillLayerIndex: l }, i);
+                            var extraInfo = null;
+                            if (extra) {
+                                var fillLayerIndex = paintLayer.getParent().getIndexOfChild(paintLayer);
+                                extraInfo = $.extend({ fillLayerIndex: fillLayerIndex }, extra);
                             }
                             this._ownChange = true;
-                            var c = this._document.getEditor();
-                            c.beginTransaction();
+                            var editor = this._document.getEditor();
+                            editor.beginTransaction();
                             try {
-                                this._iterateEqualPaintLayer(e, function (e, o) {
-                                    var i = a.GElementEditor.getEditor(o);
-                                    (i && i.applyPropertiesToParts(t, n)) || e.setProperties(t, n);
+                                this._iterateEqualPaintLayer(paintLayer, function (layer, element) {
+                                    var elementEditor = editorModule.GElementEditor.getEditor(element);
+                                    (elementEditor && elementEditor.applyPropertiesToParts(properties, values)) || layer.setProperties(properties, values);
                                 });
                             } finally {
-                                (c.commitTransaction(
+                                (editor.commitTransaction(
                                     GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.change-properties")),
-                                    s
+                                    extraInfo
                                 ),
                                     (this._ownChange = false));
                             }
                         }
                     }.bind(this),
-                    w = function (e) {
-                        if (c) {
-                            var t = $(e).data("paintLayer");
-                            if (t && (t !== c || GPlatform.GPlatform.modifiers.shiftKey)) return c.getParent() === t.getParent();
+                    isValidDropTarget = function (element) {
+                        if (draggedLayer) {
+                            var targetLayer = $(element).data("paintLayer");
+                            if (targetLayer && (targetLayer !== draggedLayer || GPlatform.GPlatform.modifiers.shiftKey)) return draggedLayer.getParent() === targetLayer.getParent();
                         }
                         return false;
                     },
-                    C = $("<div/>").addClass("g-drop-indicator"),
-                    x = function (e) {
-                        return "_bl" === e
+                    dropIndicator = $("<div/>").addClass("g-drop-indicator"),
+                    createLayerControl = function (propertyKey) {
+                        return "_bl" === propertyKey
                             ? $("<select></select>")
                                   .gBlendMode()
                                   .gRichTooltip(
-                                      l.GRichTooltipConfig.from({
+                                      richTooltipModule.GRichTooltipConfig.from({
                                           title: GObject.GLocale.get(new GObject.GLocaleKey("GAppearanceProperties", "text.blend-tooltip-title")),
                                           description: GObject.GLocale.get(
                                               new GObject.GLocaleKey("GAppearanceProperties", "text.blend-tooltip-description")
@@ -388,18 +388,18 @@ module.exports = function (module, exports, require) {
                                       })
                                   )
                                   .attr("data-property", "_bl")
-                                  .on("change", function (e) {
-                                      (gDesigner.stats("fill_change_blend-mode", $(e.target).val()), b(["_bl"], [$(e.target).val()]));
+                                  .on("change", function (event) {
+                                      (gDesigner.stats("fill_change_blend-mode", $(event.target).val()), applyChange(["_bl"], [$(event.target).val()]));
                                   })
-                            : "_op" === e
+                            : "_op" === propertyKey
                               ? $("<input>")
                                     .addClass("fill-op")
                                     .attr("data-property", "_op")
                                     .attr("type", "text")
-                                    .on("change", function (e, t) {
+                                    .on("change", function (event, value) {
                                         (gDesigner.stats("fill_change_opacity"),
-                                            b(["_vs", "_op"], [true, (t || GObject.GLength.parseEquationValue($(this).gInputBox("value"))) / 100]),
-                                            $(e.target)
+                                            applyChange(["_vs", "_op"], [true, (value || GObject.GLength.parseEquationValue($(this).gInputBox("value"))) / 100]),
+                                            $(event.target)
                                                 .parents(".touch")
                                                 .find(".transparency")
                                                 .gInputSlider("value", GObject.GLength.parseEquationValue($(this).gInputBox("value"))));
@@ -410,100 +410,100 @@ module.exports = function (module, exports, require) {
                                         incrementValue: gDesigner.getOpacityIncrement(),
                                         postfix: "%",
                                     })
-                              : "_vs" === e
+                              : "_vs" === propertyKey
                                 ? $("<span></span>")
                                       .attr("data-property", "_vs")
                                       .addClass("fill-action fill-visibility gravit-icon-touch-show")
                                       .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-visibility")))
-                                      .on("click", function (e) {
-                                          (gDesigner.stats("fill_hide_show"), e.stopPropagation());
-                                          var t = $(this).hasClass("gravit-icon-touch-hide");
-                                          ($(this).removeClass("gravit-icon-touch-" + (t ? "hide" : "show")),
-                                              $(this).addClass("gravit-icon-touch-" + (t ? "show" : "hide")),
-                                              b(["_vs"], [t]));
+                                      .on("click", function (event) {
+                                          (gDesigner.stats("fill_hide_show"), event.stopPropagation());
+                                          var isHidden = $(this).hasClass("gravit-icon-touch-hide");
+                                          ($(this).removeClass("gravit-icon-touch-" + (isHidden ? "hide" : "show")),
+                                              $(this).addClass("gravit-icon-touch-" + (isHidden ? "show" : "hide")),
+                                              applyChange(["_vs"], [isHidden]));
                                       })
-                                : "_ra" === e
+                                : "_ra" === propertyKey
                                   ? $("<div/>")
                                         .addClass("transparency gravit-icon-touch-rectangle")
                                         .gInputSlider({ type: "range", min: 0, max: 100, step: 1 })
-                                        .on("input", function (e) {
-                                            var t = $(e.target),
-                                                n = parseInt(t.gInputSlider("value"));
-                                            t.parents(".touch").find(".fill-op").trigger("change", [n]);
+                                        .on("input", function (event) {
+                                            var target = $(event.target),
+                                                value = parseInt(target.gInputSlider("value"));
+                                            target.parents(".touch").find(".fill-op").trigger("change", [value]);
                                         })
                                   : void 0;
                     },
-                    S = $("<div></div>")
+                    blockElement = $("<div></div>")
                         .addClass("fill-block")
                         .addClass("g-cursor-hand-open")
-                        .attr("data-drag-mode", g.default.PRESS_AND_HOLD)
-                        .data("paintLayer", e)
+                        .attr("data-drag-mode", dragModeModule.default.PRESS_AND_HOLD)
+                        .data("paintLayer", paintLayer)
                         .attr("draggable", "true")
-                        .on("mousedown", function (e) {
-                            ((o =
-                                gDesigner.isTouchEnabled() && e.originalEvent && e.originalEvent.target
-                                    ? !!$(e.originalEvent.target).closest(".drag-indicator").length
-                                    : $(e.target).hasClass("fill-block") ||
-                                      $(e.target).hasClass("gravit-icon-drag-indicator") ||
-                                      $(e.target).hasClass("columns") ||
-                                      $(e.target).hasClass("column")),
-                                $(e.target).closest(".fill-block").toggleClass("g-draggable-disabled", !o));
+                        .on("mousedown", function (event) {
+                            ((canDrag =
+                                gDesigner.isTouchEnabled() && event.originalEvent && event.originalEvent.target
+                                    ? !!$(event.originalEvent.target).closest(".drag-indicator").length
+                                    : $(event.target).hasClass("fill-block") ||
+                                      $(event.target).hasClass("gravit-icon-drag-indicator") ||
+                                      $(event.target).hasClass("columns") ||
+                                      $(event.target).hasClass("column")),
+                                $(event.target).closest(".fill-block").toggleClass("g-draggable-disabled", !canDrag));
                         })
-                        .on("dragstart", function (e) {
-                            if (!o) return (e.preventDefault(), void e.stopPropagation());
-                            var t = $(e.target).closest(".fill-block"),
-                                s = t.offset(),
-                                l = e.originalEvent;
-                            ((d = window.gDragImage()).addClass("drag-delete gravit-icon-trash"),
-                                (h = n._panel.offset()),
-                                (m = n._panel.outerHeight()),
-                                (v = e.clientX - s.left),
-                                (_ = e.clientY - s.top),
-                                l.stopPropagation(),
-                                (c = t.data("paintLayer")),
-                                (l.dataTransfer.effectAllowed = "move"),
-                                l.dataTransfer.setData("text/plain", "dummy_data"),
-                                n._panel.find(".fill-block").each(function (e, t) {
-                                    $(t).append(
+                        .on("dragstart", function (event) {
+                            if (!canDrag) return (event.preventDefault(), void event.stopPropagation());
+                            var draggedBlock = $(event.target).closest(".fill-block"),
+                                blockOffset = draggedBlock.offset(),
+                                originalEvent = event.originalEvent;
+                            ((dragImage = window.gDragImage()).addClass("drag-delete gravit-icon-trash"),
+                                (panelOffset = self._panel.offset()),
+                                (panelHeight = self._panel.outerHeight()),
+                                (offsetX = event.clientX - blockOffset.left),
+                                (offsetY = event.clientY - blockOffset.top),
+                                originalEvent.stopPropagation(),
+                                (draggedLayer = draggedBlock.data("paintLayer")),
+                                (originalEvent.dataTransfer.effectAllowed = "move"),
+                                originalEvent.dataTransfer.setData("text/plain", "dummy_data"),
+                                self._panel.find(".fill-block").each(function (index, block) {
+                                    $(block).append(
                                         $("<div></div>")
                                             .addClass("grid-drag-overlay")
                                             .on("dragenter", function () {
-                                                var e = $(this.parentNode).data("paintLayer");
-                                                if (w(this.parentNode)) {
-                                                    if (c && e && c.getParent() === e.getParent()) {
-                                                        var t = c.getParent(),
-                                                            n = t.getIndexOfChild(c),
-                                                            o = t.getIndexOfChild(e);
-                                                        n !== o &&
-                                                            (n < o ? C.insertBefore(this.parentNode) : C.insertAfter(this.parentNode));
+                                                var layer = $(this.parentNode).data("paintLayer");
+                                                if (isValidDropTarget(this.parentNode)) {
+                                                    if (draggedLayer && layer && draggedLayer.getParent() === layer.getParent()) {
+                                                        var parent = draggedLayer.getParent(),
+                                                            draggedIndex = parent.getIndexOfChild(draggedLayer),
+                                                            targetIndex = parent.getIndexOfChild(layer);
+                                                        draggedIndex !== targetIndex &&
+                                                            (draggedIndex < targetIndex ? dropIndicator.insertBefore(this.parentNode) : dropIndicator.insertAfter(this.parentNode));
                                                     }
-                                                } else C.remove();
+                                                } else dropIndicator.remove();
                                             })
                                             .on("dragleave", function () {
-                                                w(this.parentNode) && $(this).parent().find(".g-drop-indicator").remove();
+                                                isValidDropTarget(this.parentNode) && $(this).parent().find(".g-drop-indicator").remove();
                                             })
-                                            .on("dragover", function (e) {
-                                                var t = e.originalEvent;
-                                                w(this.parentNode) &&
-                                                    (t.preventDefault(), t.stopPropagation(), (t.dataTransfer.dropEffect = "move"));
+                                            .on("dragover", function (event) {
+                                                var originalEvent = event.originalEvent;
+                                                isValidDropTarget(this.parentNode) &&
+                                                    (originalEvent.preventDefault(), originalEvent.stopPropagation(), (originalEvent.dataTransfer.dropEffect = "move"));
                                             })
-                                            .on("drop", function (e) {
-                                                var t = $(this.parentNode).closest(".fill-block").data("paintLayer");
+                                            .on("drop", function (event) {
+                                                var targetLayer = $(this.parentNode).closest(".fill-block").data("paintLayer");
                                                 if (
-                                                    (n._panel.find(".g-drop-indicator").remove(),
-                                                    n._panel.find(".grid-drag-overlay").remove(),
-                                                    c && t && c.getParent() === t.getParent())
+                                                    (self._panel.find(".g-drop-indicator").remove(),
+                                                    self._panel.find(".grid-drag-overlay").remove(),
+                                                    draggedLayer && targetLayer && draggedLayer.getParent() === targetLayer.getParent())
                                                 ) {
-                                                    var o = c.getParent(),
-                                                        s = o.getIndexOfChild(c),
-                                                        l = o.getIndexOfChild(t);
-                                                    (a.GEditor.tryRunTransaction(
-                                                        o,
+                                                    var parent = draggedLayer.getParent(),
+                                                        draggedIndex = parent.getIndexOfChild(draggedLayer),
+                                                        targetIndex = parent.getIndexOfChild(targetLayer);
+                                                    (editorModule.GEditor.tryRunTransaction(
+                                                        parent,
                                                         function () {
                                                             if (GPlatform.GPlatform.modifiers.shiftKey) {
-                                                                var e = c.clone();
-                                                                o.insertChild(e, s < l ? t.getNext() : t);
-                                                            } else s !== l && (o.removeChild(c), o.insertChild(c, s < l ? t.getNext() : t));
+                                                                var clonedLayer = draggedLayer.clone();
+                                                                parent.insertChild(clonedLayer, draggedIndex < targetIndex ? targetLayer.getNext() : targetLayer);
+                                                            } else draggedIndex !== targetIndex && (parent.removeChild(draggedLayer), parent.insertChild(draggedLayer, draggedIndex < targetIndex ? targetLayer.getNext() : targetLayer));
                                                         },
                                                         GPlatform.GPlatform.modifiers.shiftKey
                                                             ? GObject.GLocale.get(
@@ -511,65 +511,65 @@ module.exports = function (module, exports, require) {
                                                               )
                                                             : GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.move"))
                                                     ),
-                                                        n._updateProperties(),
-                                                        n._setSelectedPaintLayer(c));
+                                                        self._updateProperties(),
+                                                        self._setSelectedPaintLayer(draggedLayer));
                                                 }
-                                                c = null;
+                                                draggedLayer = null;
                                             })
                                     );
                                 }));
                         })
-                        .on("drag", function (e) {
-                            u = (0, p.handleDragForDeleteIcon)(e, d, h, m, v, _);
+                        .on("drag", function (event) {
+                            isOverDeleteIcon = (0, dragIconHelper.handleDragForDeleteIcon)(event, dragImage, panelOffset, panelHeight, offsetX, offsetY);
                         })
-                        .on("dragend", function (e) {
-                            var t = e.originalEvent,
-                                o = $(e.target).closest(".fill-block").closest(".fill-block").data("paintLayer");
+                        .on("dragend", function (event) {
+                            var originalEvent = event.originalEvent,
+                                targetLayer = $(event.target).closest(".fill-block").closest(".fill-block").data("paintLayer");
                             if (
-                                (n._panel.find(".g-drop-indicator").remove(),
-                                n._panel.find(".grid-drag-overlay").remove(),
-                                c && o && c.getParent() === o.getParent())
+                                (self._panel.find(".g-drop-indicator").remove(),
+                                self._panel.find(".grid-drag-overlay").remove(),
+                                draggedLayer && targetLayer && draggedLayer.getParent() === targetLayer.getParent())
                             ) {
-                                var s = c.getParent(),
-                                    l = s.getIndexOfChild(c),
-                                    p = s.getIndexOfChild(o);
-                                (a.GEditor.tryRunTransaction(
-                                    s,
+                                var parent = draggedLayer.getParent(),
+                                    draggedIndex = parent.getIndexOfChild(draggedLayer),
+                                    targetIndex = parent.getIndexOfChild(targetLayer);
+                                (editorModule.GEditor.tryRunTransaction(
+                                    parent,
                                     function () {
                                         if (GPlatform.GPlatform.modifiers.shiftKey) {
-                                            var e = c.clone();
-                                            s.insertChild(e, l < p ? o.getNext() : o);
-                                        } else l !== p && (s.removeChild(c), s.insertChild(c, l < p ? o.getNext() : o.getPrevious()));
+                                            var clonedLayer = draggedLayer.clone();
+                                            parent.insertChild(clonedLayer, draggedIndex < targetIndex ? targetLayer.getNext() : targetLayer);
+                                        } else draggedIndex !== targetIndex && (parent.removeChild(draggedLayer), parent.insertChild(draggedLayer, draggedIndex < targetIndex ? targetLayer.getNext() : targetLayer.getPrevious()));
                                     },
                                     GPlatform.GPlatform.modifiers.shiftKey
                                         ? GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.duplicate"))
                                         : GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.move"))
                                 ),
-                                    n._updateProperties(),
-                                    n._setSelectedPaintLayer(c));
+                                    self._updateProperties(),
+                                    self._setSelectedPaintLayer(draggedLayer));
                             }
-                            (c &&
-                                u &&
-                                a.GEditor.tryRunTransaction(
-                                    n._elements[0],
+                            (draggedLayer &&
+                                isOverDeleteIcon &&
+                                editorModule.GEditor.tryRunTransaction(
+                                    self._elements[0],
                                     function () {
-                                        var e = [];
-                                        (n._iterateEqualPaintLayer(c, function (t) {
-                                            e.push(t);
+                                        var layers = [];
+                                        (self._iterateEqualPaintLayer(draggedLayer, function (layer) {
+                                            layers.push(layer);
                                         }),
-                                            GObject.GUtil.each(e, function (e, t) {
-                                                t.getParent().removeChild(t);
+                                            GObject.GUtil.each(layers, function (index, layer) {
+                                                layer.getParent().removeChild(layer);
                                             }));
                                     },
                                     GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.remove"))
                                 ),
-                                d && d.css("display", "none"),
-                                (d = null),
-                                t.stopPropagation(),
-                                (c = null));
+                                dragImage && dragImage.css("display", "none"),
+                                (dragImage = null),
+                                originalEvent.stopPropagation(),
+                                (draggedLayer = null));
                         })
                         .on("click", function () {
-                            n._setSelectedPaintLayer(e);
+                            self._setSelectedPaintLayer(paintLayer);
                         })
                         .gPropertyRow({
                             columns: [
@@ -597,31 +597,31 @@ module.exports = function (module, exports, require) {
                                             hasMask: true,
                                         })
                                         .on("chooseropen", function () {
-                                            (n._document.getEditor().hideSelection(),
-                                                gDesigner.getWorkspace().getStyleEdManager().updateEditor(e, "_pt", false),
-                                                n._setSelectedPaintLayer(e),
-                                                (n._styleEdOn = true),
-                                                (n._chooserElem = $(this)));
+                                            (self._document.getEditor().hideSelection(),
+                                                gDesigner.getWorkspace().getStyleEdManager().updateEditor(paintLayer, "_pt", false),
+                                                self._setSelectedPaintLayer(paintLayer),
+                                                (self._styleEdOn = true),
+                                                (self._chooserElem = $(this)));
                                         })
-                                        .on("chooserclose", function (e, t, o) {
-                                            if (gDesigner.getWorkspace().getStyleEdManager().getOverlayLock(o)) t();
+                                        .on("chooserclose", function (event, deferClose, overlayId) {
+                                            if (gDesigner.getWorkspace().getStyleEdManager().getOverlayLock(overlayId)) deferClose();
                                             else if (
-                                                ((n._styleEdOn = false),
+                                                ((self._styleEdOn = false),
                                                 gDesigner.getWorkspace().getStyleEdManager().deactivateEditor(),
-                                                n._document && (n._document.getEditor().resetHideSelection(), n._document.hasCDR()))
+                                                self._document && (self._document.getEditor().resetHideSelection(), self._document.hasCDR()))
                                             ) {
-                                                var i = gPatternChooser.getPattern();
-                                                !i || i instanceof GObject.GRGBColor || GSystemDialog.showCDRUnsupportedObjectWarning();
+                                                var pattern = gPatternChooser.getPattern();
+                                                !pattern || pattern instanceof GObject.GRGBColor || GSystemDialog.showCDRUnsupportedObjectWarning();
                                             }
-                                            n._chooserElem = null;
+                                            self._chooserElem = null;
                                         })
-                                        .on("patternchange", function (e, t, n, o, i, a) {
-                                            var r = ["_vs"],
-                                                s = [true];
-                                            (void 0 !== t && (r.push("_pt"), s.push(t)),
-                                                "number" == typeof n && (r.push("_op"), s.push(n)));
-                                            var l = null;
-                                            (i && ((l = { chooserOn: true }), null != a && (l.activeStopIdx = a)), b(r, s, o, l));
+                                        .on("patternchange", function (event, pattern, opacity, applyToAll, chooserOn, activeStopIdx) {
+                                            var properties = ["_vs"],
+                                                values = [true];
+                                            (void 0 !== pattern && (properties.push("_pt"), values.push(pattern)),
+                                                "number" == typeof opacity && (properties.push("_op"), values.push(opacity)));
+                                            var extra = null;
+                                            (chooserOn && ((extra = { chooserOn: true }), null != activeStopIdx && (extra.activeStopIdx = activeStopIdx)), applyChange(properties, values, applyToAll, extra));
                                         }),
                                 },
                                 {
@@ -630,7 +630,7 @@ module.exports = function (module, exports, require) {
                                         .addClass("normal")
                                         .gBlendMode()
                                         .gRichTooltip(
-                                            l.GRichTooltipConfig.from({
+                                            richTooltipModule.GRichTooltipConfig.from({
                                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GAppearanceProperties", "text.blend-tooltip-title")),
                                                 description: GObject.GLocale.get(
                                                     new GObject.GLocaleKey("GAppearanceProperties", "text.blend-tooltip-description")
@@ -641,8 +641,8 @@ module.exports = function (module, exports, require) {
                                             })
                                         )
                                         .attr("data-property", "_bl")
-                                        .on("change", function (e) {
-                                            (gDesigner.stats("fill_change_blend-mode", $(e.target).val()), b(["_bl"], [$(e.target).val()]));
+                                        .on("change", function (event) {
+                                            (gDesigner.stats("fill_change_blend-mode", $(event.target).val()), applyChange(["_bl"], [$(event.target).val()]));
                                         }),
                                 },
                                 {
@@ -651,9 +651,9 @@ module.exports = function (module, exports, require) {
                                         .addClass("normal")
                                         .attr("data-property", "_op")
                                         .attr("type", "text")
-                                        .on("change", function (e) {
+                                        .on("change", function (event) {
                                             (gDesigner.stats("fill_change_opacity"),
-                                                b(["_vs", "_op"], [true, GObject.GLength.parseEquationValue($(this).gInputBox("value")) / 100]));
+                                                applyChange(["_vs", "_op"], [true, GObject.GLength.parseEquationValue($(this).gInputBox("value")) / 100]));
                                         })
                                         .gInputBox({
                                             minValue: 0,
@@ -668,12 +668,12 @@ module.exports = function (module, exports, require) {
                                         .attr("data-property", "_vs")
                                         .addClass("fill-action fill-visibility gravit-icon-display normal")
                                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-visibility")))
-                                        .on("click", function (e) {
-                                            (gDesigner.stats("fill_hide_show"), e.stopPropagation());
-                                            var t = $(this).hasClass("gravit-icon-hide");
-                                            ($(this).removeClass("gravit-icon-" + (t ? "hide" : "display")),
-                                                $(this).addClass("gravit-icon-" + (t ? "display" : "hide")),
-                                                b(["_vs"], [t]));
+                                        .on("click", function (event) {
+                                            (gDesigner.stats("fill_hide_show"), event.stopPropagation());
+                                            var isHidden = $(this).hasClass("gravit-icon-hide");
+                                            ($(this).removeClass("gravit-icon-" + (isHidden ? "hide" : "display")),
+                                                $(this).addClass("gravit-icon-" + (isHidden ? "display" : "hide")),
+                                                applyChange(["_vs"], [isHidden]));
                                         }),
                                 },
                                 {
@@ -682,129 +682,129 @@ module.exports = function (module, exports, require) {
                                         .addClass("touch")
                                         .gPropertyRow({
                                             columns: [
-                                                { width: "auto", content: x("_bl") },
-                                                { width: "60px", content: x("_vs") },
+                                                { width: "auto", content: createLayerControl("_bl") },
+                                                { width: "60px", content: createLayerControl("_vs") },
                                             ],
                                         })
                                         .gPropertyRow({
                                             columns: [
-                                                { width: "auto", content: x("_ra") },
-                                                { width: "60px", content: x("_op") },
+                                                { width: "auto", content: createLayerControl("_ra") },
+                                                { width: "60px", content: createLayerControl("_op") },
                                             ],
                                         }),
                                 },
                             ],
                         })
                         .prependTo(this._panel);
-                (S.find(".columns").addClass("g-cursor-hand-open"),
-                    S.find(".column").addClass("g-cursor-hand-open"),
-                    S.find(".touch").parents(".column").addClass("g-touch"),
-                    S.find(".normal").parents(".column").addClass("g-normal"),
-                    S.find('[data-property="_pt"]').parents(".column").addClass("g-color"),
-                    S.find(".transparency").parents(".touch div:last-child>div").addClass("g-transparency"),
-                    S.find(".touch")
+                (blockElement.find(".columns").addClass("g-cursor-hand-open"),
+                    blockElement.find(".column").addClass("g-cursor-hand-open"),
+                    blockElement.find(".touch").parents(".column").addClass("g-touch"),
+                    blockElement.find(".normal").parents(".column").addClass("g-normal"),
+                    blockElement.find('[data-property="_pt"]').parents(".column").addClass("g-color"),
+                    blockElement.find(".transparency").parents(".touch div:last-child>div").addClass("g-transparency"),
+                    blockElement.find(".touch")
                         .find("select")
                         .addClass("g-select")
                         .parent()
                         .append($("<span/>").addClass("gravit-icon-touch-arrowDown")),
-                    S.contextmenu({ context: f.FillPropertyPanel }, function (e) {
-                        e.preventDefault();
-                        var t = $(this).data("paintLayer");
-                        (n._setSelectedPaintLayer(t),
+                    blockElement.contextmenu({ context: contextMenuContexts.FillPropertyPanel }, function (event) {
+                        event.preventDefault();
+                        var layer = $(this).data("paintLayer");
+                        (self._setSelectedPaintLayer(layer),
                             $(gDesigner.getWindows().getHtmlElement()).trigger("contextmenu", {
-                                previousEvent: e,
-                                data: { paintLayer: t },
+                                previousEvent: event,
+                                data: { paintLayer: layer },
                             }));
                     }),
-                    this._setSelectedPaintLayer(e),
-                    this._updatePaintLayer(e, t),
-                    S.find(".transparency").each(function (e, t) {
-                        $(t).gInputSlider("value", parseInt($(this).parents(".touch").find(".fill-op").val()));
+                    this._setSelectedPaintLayer(paintLayer),
+                    this._updatePaintLayer(paintLayer, extra),
+                    blockElement.find(".transparency").each(function (index, element) {
+                        $(element).gInputSlider("value", parseInt($(this).parents(".touch").find(".fill-op").val()));
                     }));
             }),
-            (v.prototype.openPatternChooser = function () {
+            (GFillPaintLayerProperties.prototype.openPatternChooser = function () {
                 this._panel.find(".fill-block:first-child").find('[data-property="_pt"]').find(".g-button").click();
             }),
-            (v.prototype.openEyeDropper = function (e, t) {
+            (GFillPaintLayerProperties.prototype.openEyeDropper = function (e, t) {
                 this._panel.find(".fill-block:first-child").find('[data-property="_pt"]').gPatternChooser("openEyeDropper", e, t);
             }),
-            (v.prototype._setSelectedPaintLayer = function (e) {
-                (this._panel.find(".fill-block").each(function (t, n) {
-                    var o = $(n);
-                    o.toggleClass("g-selected", o.data("paintLayer") === e);
+            (GFillPaintLayerProperties.prototype._setSelectedPaintLayer = function (paintLayer) {
+                (this._panel.find(".fill-block").each(function (index, element) {
+                    var row = $(element);
+                    row.toggleClass("g-selected", row.data("paintLayer") === paintLayer);
                 }),
-                    this._document && this._document.updateActiveStylesList("Fill", e));
+                    this._document && this._document.updateActiveStylesList("Fill", paintLayer));
             }),
-            (v.prototype._getSelectedPaintLayer = function () {
+            (GFillPaintLayerProperties.prototype._getSelectedPaintLayer = function () {
                 return this._panel.find(".fill-block.g-selected").data("paintLayer");
             }),
-            (v.prototype._removePaintLayer = function (e) {
-                this._panel.find(".fill-block").each(function (t, n) {
-                    var o = $(n);
-                    if (o.data("paintLayer") === e) return (o.remove(), false);
+            (GFillPaintLayerProperties.prototype._removePaintLayer = function (paintLayer) {
+                this._panel.find(".fill-block").each(function (index, element) {
+                    var row = $(element);
+                    if (row.data("paintLayer") === paintLayer) return (row.remove(), false);
                 });
             }),
-            (v.prototype._updatePaintLayer = function (e, t) {
-                e &&
-                    this._panel.find(".fill-block").each(function (n, o) {
-                        var i = $(o);
-                        if (i.data("paintLayer") === e) {
-                            (i
+            (GFillPaintLayerProperties.prototype._updatePaintLayer = function (paintLayer, options) {
+                paintLayer &&
+                    this._panel.find(".fill-block").each(function (blockIndex, row) {
+                        var rowElement = $(row);
+                        if (rowElement.data("paintLayer") === paintLayer) {
+                            (rowElement
                                 .find('[data-property="_pt"]')
-                                .gPatternChooser("setPattern", e.getProperty("_pt", false, false, true))
-                                .gPatternChooser("value", e.getProperty("_pt", false, false, true))
-                                .gPatternChooser("opacity", e.getProperty("_op", false, false, true)),
-                                i.find('[data-property="_op"]').each(function (t, n) {
-                                    $(n).gInputBox("value", GObject.GUtil.formatOpacity(100 * e.getProperty("_op", false, false, true)));
+                                .gPatternChooser("setPattern", paintLayer.getProperty("_pt", false, false, true))
+                                .gPatternChooser("value", paintLayer.getProperty("_pt", false, false, true))
+                                .gPatternChooser("opacity", paintLayer.getProperty("_op", false, false, true)),
+                                rowElement.find('[data-property="_op"]').each(function (index, element) {
+                                    $(element).gInputBox("value", GObject.GUtil.formatOpacity(100 * paintLayer.getProperty("_op", false, false, true)));
                                 }),
-                                i.find('[data-property="_bl"]').val(e.getProperty("_bl")));
-                            var s = e.getProperty("_vs");
+                                rowElement.find('[data-property="_bl"]').val(paintLayer.getProperty("_bl")));
+                            var visible = paintLayer.getProperty("_vs");
                             if (
-                                (i
+                                (rowElement
                                     .find('[data-property="_vs"]')
-                                    .removeClass("gravit-icon-" + (s ? "hide" : "display"))
-                                    .addClass("gravit-icon-" + (s ? "display" : "hide")),
-                                t &&
-                                    (t.evtType == a.GEditor.ModifiedEvent.Type.Undo || t.evtType == a.GEditor.ModifiedEvent.Type.Redo) &&
-                                    t.chooserOn &&
-                                    null != t.fillLayerIndex)
+                                    .removeClass("gravit-icon-" + (visible ? "hide" : "display"))
+                                    .addClass("gravit-icon-" + (visible ? "display" : "hide")),
+                                options &&
+                                    (options.evtType == editorModule.GEditor.ModifiedEvent.Type.Undo || options.evtType == editorModule.GEditor.ModifiedEvent.Type.Redo) &&
+                                    options.chooserOn &&
+                                    null != options.fillLayerIndex)
                             )
-                                e.getParent().getIndexOfChild(e) == t.fillLayerIndex &&
-                                    i.find(".preview").trigger("click", null != t.activeStopIdx ? t.activeStopIdx : null);
+                                paintLayer.getParent().getIndexOfChild(paintLayer) == options.fillLayerIndex &&
+                                    rowElement.find(".preview").trigger("click", null != options.activeStopIdx ? options.activeStopIdx : null);
                         }
                     });
             }),
-            (v.prototype._afterInsert = function (e) {
-                e.node instanceof GObject.GStylable.FillPaintLayer &&
-                    e.node.getOwnerStylable() === this._elements[0] &&
-                    (this._insertPaintLayer(e.node), this._updateToolbar());
+            (GFillPaintLayerProperties.prototype._afterInsert = function (event) {
+                event.node instanceof GObject.GStylable.FillPaintLayer &&
+                    event.node.getOwnerStylable() === this._elements[0] &&
+                    (this._insertPaintLayer(event.node), this._updateToolbar());
             }),
-            (v.prototype._beforeRemove = function (e) {
-                if (e.node instanceof GObject.GStylable.FillPaintLayer && e.node.getOwnerStylable() === this._elements[0]) {
-                    this._removePaintLayer(e.node);
-                    for (var t = e.node.getPrevious(); t && !(t instanceof GObject.GStylable.FillPaintLayer); ) t = t.getPrevious();
-                    if (!(t instanceof GObject.GStylable.FillPaintLayer))
-                        for (t = e.node.getNext(); t && !(t instanceof GObject.GStylable.FillPaintLayer); ) t = t.getNext();
-                    (this._setSelectedPaintLayer(t), this._updateToolbar());
+            (GFillPaintLayerProperties.prototype._beforeRemove = function (event) {
+                if (event.node instanceof GObject.GStylable.FillPaintLayer && event.node.getOwnerStylable() === this._elements[0]) {
+                    this._removePaintLayer(event.node);
+                    for (var sibling = event.node.getPrevious(); sibling && !(sibling instanceof GObject.GStylable.FillPaintLayer); ) sibling = sibling.getPrevious();
+                    if (!(sibling instanceof GObject.GStylable.FillPaintLayer))
+                        for (sibling = event.node.getNext(); sibling && !(sibling instanceof GObject.GStylable.FillPaintLayer); ) sibling = sibling.getNext();
+                    (this._setSelectedPaintLayer(sibling), this._updateToolbar());
                 }
             }),
-            (v.prototype._afterPropertiesChange = function (e) {
-                e.node instanceof GObject.GStylable.FillPaintLayer &&
-                    e.node.getOwnerStylable() === this._elements[0] &&
-                    this._updatePaintLayer(e.node);
+            (GFillPaintLayerProperties.prototype._afterPropertiesChange = function (event) {
+                event.node instanceof GObject.GStylable.FillPaintLayer &&
+                    event.node.getOwnerStylable() === this._elements[0] &&
+                    this._updatePaintLayer(event.node);
             }),
-            (v.prototype._iterateEqualPaintLayer = function (e, t) {
-                if (e)
-                    for (var n = e.getParent().getIndexOfChild(e), o = 0; o < this._elements.length; ++o) {
+            (GFillPaintLayerProperties.prototype._iterateEqualPaintLayer = function (paintLayer, callback) {
+                if (paintLayer)
+                    for (var layerIndex = paintLayer.getParent().getIndexOfChild(paintLayer), o = 0; o < this._elements.length; ++o) {
                         var i = this._elements[o].getPaintLayers();
                         GObject.GUtil.each(
                             i.getFillLayers(),
-                            function (a, r) {
-                                ((r && r === e) || (r.constructor === e.constructor && i.getIndexOfChild(r) === n)) &&
-                                    t(r, this._elements[o]);
+                            function (index, layer) {
+                                ((layer && layer === paintLayer) || (layer.constructor === paintLayer.constructor && i.getIndexOfChild(layer) === layerIndex)) &&
+                                    callback(layer, this._elements[o]);
                             }.bind(this)
                         );
                     }
             }),
-            (module.exports = v));
+            (module.exports = GFillPaintLayerProperties));
     };

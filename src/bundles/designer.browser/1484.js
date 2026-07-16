@@ -6,7 +6,7 @@ module.exports = function (module, exports, require) {
             GObject = require(1),
             r = _interopRequireDefault(require(1242 /* GMSTeamsAuthenticator */)),
             s = _interopRequireDefault(require(44 /* GSystemDialog */)),
-            l = _interopRequireDefault(require(443 /* _interopRequireWildcard */)),
+            l = _interopRequireDefault(require(443)),
             c = require(1243);
         const { isPrivateChat, isTeamsChannel } = l.default;
         function p(e) {

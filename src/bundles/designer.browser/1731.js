@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(4), require(13));
         var GObject = require(1),
-            GSaveAction = require(40),
+            Utils = require(40),
             a = (require(173), false),
             r = null,
             s = null;
@@ -408,7 +408,7 @@ module.exports = function (module, exports, require) {
                         };
                     t.gPro().on(
                         "click",
-                        GSaveAction.watchDog.trap(
+                        Utils.watchDog.trap(
                             function () {
                                 (gDesigner.stats("designerstyle_click_openpanel"), t.find(".g-styles-field").hasClass("g-disabled") || n());
                             },

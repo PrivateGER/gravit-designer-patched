@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(8 /* Symbol */), require(3), require(4), require(13));
         var GObject = require(1),
             GPlatform = require(15),
-            GSaveAction = require(40),
+            Utils = require(40),
             r = require(1247),
             designerConfig = require(10),
             l = require(67),
@@ -71,7 +71,7 @@ module.exports = function (module, exports, require) {
             }),
             (w.prototype._performSave = async function (e, t) {
                 (await e.isUpdateAvailable())
-                    ? GSaveAction.buildDialogDocumentHasUpdates.call(
+                    ? Utils.buildDialogDocumentHasUpdates.call(
                           this,
                           e,
                           function () {

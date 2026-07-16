@@ -5,9 +5,9 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             a = require(1479),
             r = _interopRequireDefault(require(44 /* GSystemDialog */)),
-            s = _interopRequireDefault(require(443 /* _interopRequireWildcard */)),
+            s = _interopRequireDefault(require(443)),
             l = require(1243),
-            GSaveAction = require(40);
+            Utils = require(40);
         const { getAuthenticator, getTeamsContext } = s.default;
         function p() {}
         ((p.Error = {
@@ -147,7 +147,7 @@ module.exports = function (module, exports, require) {
                 if (!e) return null;
                 let t = null;
                 try {
-                    t = JSON.parse((0, GSaveAction.base64StringToString)(e));
+                    t = JSON.parse((0, Utils.base64StringToString)(e));
                 } catch (e) {
                     console.error("Cant decode cache tokens");
                 }
@@ -158,7 +158,7 @@ module.exports = function (module, exports, require) {
                 const n = (await getTeamsContext()).loginHint,
                     o = await this._getValidCachedTokens();
                 ((this._tokens = Object.assign({ userId: n }, o, e)),
-                    t && localStorage.setItem(p.CACHED_TOKENS_PROPERTY_NAME, (0, GSaveAction.stringToBase64String)(JSON.stringify(this._tokens))));
+                    t && localStorage.setItem(p.CACHED_TOKENS_PROPERTY_NAME, (0, Utils.stringToBase64String)(JSON.stringify(this._tokens))));
             }),
             (p.prototype.getOrFetchMSTeamsAccessToken = async function () {
                 const e = (this._tokens && this._tokens[l.MS_TEAMS_COMMAND]) || null;

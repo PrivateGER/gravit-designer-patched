@@ -7,8 +7,8 @@ module.exports = function (module, exports, require) {
             r = require(31),
             s = require(844),
             l = require(86),
-            GCommonNames = require(220),
-            d = require(119 /* GCommonNames */),
+            GCloudStorage = require(220),
+            GCommonNames = require(119),
             GLoginPanel = require(446);
         const GOfflineDialog = require(256);
         function g(e) {
@@ -48,7 +48,7 @@ module.exports = function (module, exports, require) {
                 if (!gDesigner.getApplicationManager().isEditingEnabled() && this._type === g.Actions.Save) return false;
                 if (!gDesigner.getApplicationManager().isOpenFromCloudEnabled() && this._type === g.Actions.Open) return false;
                 if (!gDesigner.getApplicationManager().isSavingAsEnabled() && this._type === g.Actions.SaveAs) return false;
-                return !(!gDesigner.getActiveDocument() && this._type !== g.Actions.Open) && !!d.isOnline();
+                return !(!gDesigner.getActiveDocument() && this._type !== g.Actions.Open) && !!GCommonNames.isOnline();
             }),
             (g.prototype.execute = function (e, t, n) {
                 const o = () =>
@@ -71,8 +71,8 @@ module.exports = function (module, exports, require) {
                     var i = gDesigner.getActiveDocument();
                     if (i.isCommercialProductFile()) return void i.openPaywall(this.getId());
                     var a = i.getStorageItem();
-                    a && a instanceof GCommonNames.Item
-                        ? d.performSave(
+                    a && a instanceof GCloudStorage.Item
+                        ? GCommonNames.performSave(
                               i,
                               () => {
                                   t && t(l.Saved);

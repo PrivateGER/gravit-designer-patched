@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         var _interopRequireDefault = require(16);
         (require(58 /* polyfill:Array */), require(30 /* polyfill:Object */), require(20 /* polyfill:RegExp */), require(271 /* polyfill:String */), require(71 /* polyfill:String */), require(151), require(34), require(91 /* polyfill:String */), require(4), require(32), require(33));
-        var GSaveAction = require(40),
+        var Utils = require(40),
             a = _interopRequireDefault(require(263 /* GRegex */));
         const { FILE_ID_PREFIX } = require(10 /* designerConfig */);
         function s() {
@@ -48,7 +48,7 @@ module.exports = function (module, exports, require) {
                 return (!e.toLowerCase().endsWith(t) ? (e += t) : (e = e.substr(0, e.lastIndexOf(".")) + t), e);
             }),
             (s.prototype.getNameWithoutExtension = function () {
-                return (0, GSaveAction.getFileNameWithoutExtension)(this.getName(), this.getExtension());
+                return (0, Utils.getFileNameWithoutExtension)(this.getName(), this.getExtension());
             }),
             (s.prototype.getName = function () {
                 return (this.name && this.name.trim()) || this.name;

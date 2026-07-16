@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(466),
+        var o = require(466 /* lib:pako */),
             i = require(94),
             a = require(312),
             r = require(314),

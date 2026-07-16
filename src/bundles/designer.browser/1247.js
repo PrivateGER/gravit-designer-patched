@@ -7,7 +7,7 @@ module.exports = function (module, exports, require) {
             }),
             (exports.updateSaveOptions = function (e, t, n) {
                 if (n.getFullName()) {
-                    const o = (0, GSaveAction.getExtensionFromString)(
+                    const o = (0, Utils.getExtensionFromString)(
                         n.getFullName(),
                         designerConfig.FILE_FORMATS.map((e) => e.ext.toUpperCase())
                     );
@@ -24,7 +24,7 @@ module.exports = function (module, exports, require) {
                 return e;
             }),
             require(38));
-        var GSaveAction = require(40),
+        var Utils = require(40),
             designerConfig = require(10),
             r = _interopRequireDefault(require(1248));
         const s = require(388);

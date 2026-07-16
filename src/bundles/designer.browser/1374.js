@@ -12,17 +12,17 @@ module.exports = function (module, exports, require) {
             u = require(1380),
             p = require(1118),
             g = require(1199),
-            GCommonNames = require(220),
+            GCloudStorage = require(220),
             f = require(1385),
             m = require(1386),
-            y = require(119 /* GCommonNames */),
+            GCommonNames = require(119),
             GDocument = require(163),
             _ = require(86),
             GPresets = require(1153),
             GSystemDialog = require(44),
             C = require(10 /* designerConfig */).LOCAL_FONTS_API_ENABLED;
         const x = require(1482),
-            { base64StringToString } = require(40 /* GSaveAction */);
+            { base64StringToString } = require(40 /* Utils */);
         function E() {
             ((this._storage = new s()),
                 "serviceWorker" in navigator &&
@@ -208,7 +208,7 @@ module.exports = function (module, exports, require) {
                                           }));
                             } else if (u === r.OpenFileRequest.Type.Template) {
                                 let e = JSON.parse(base64StringToString(decodeURIComponent(p))),
-                                    { file, data } = await y.loadDesignData(e.id),
+                                    { file, data } = await GCommonNames.loadDesignData(e.id),
                                     a = GDocument.FileTypes.find((e) => e.mime === file.type).ext;
                                 file &&
                                     data &&
@@ -230,7 +230,7 @@ module.exports = function (module, exports, require) {
                                         : u === r.OpenFileRequest.Type.Token &&
                                           ((t = p), (d = await gApi.getShare(t, true).catch(() => null)));
                                 if (d)
-                                    n(new GCommonNames.Item(o, d.id, d.name, d, null, t, d.autosave), {
+                                    n(new GCloudStorage.Item(o, d.id, d.name, d, null, t, d.autosave), {
                                         loadingData: s,
                                     });
                                 else {

@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(58 /* polyfill:Array */), require(19), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(71 /* polyfill:String */), require(134 /* polyfill:String */), require(4), require(41), require(26));
         var designerConfig = require(10);
         const i = require(292),
-            GCommonNames = require(220),
+            GCloudStorage = require(220),
             r = require(78),
             s = require(536),
             l = require(177),
@@ -101,7 +101,7 @@ module.exports = function (module, exports, require) {
                 if (!t) return null;
                 const n = t.getId();
                 return n
-                    ? t instanceof GCommonNames.Item
+                    ? t instanceof GCloudStorage.Item
                         ? this.getFileExtended(n).catch(() => null)
                         : t && t.supportsSharing() && t.supportsShadowFile()
                           ? t.getOrCreateCollaborativeFile()

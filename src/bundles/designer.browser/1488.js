@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
         (require(57), require(3), require(4), require(32), require(33));
         var i,
             designerConfig = require(10),
-            GSaveAction = require(40),
+            Utils = require(40),
             s = _interopRequireDefault(require(565));
         !(function (e) {
             var t = (function () {
@@ -59,7 +59,7 @@ module.exports = function (module, exports, require) {
             var n = (function () {
                 function e() {
                     if (e._instance) throw "DragDropTouch instance already created.";
-                    var t = (0, GSaveAction.isPassiveSupported)();
+                    var t = (0, Utils.isPassiveSupported)();
                     if ("ontouchstart" in document || "undefined" != typeof TouchEvent) {
                         ((this._documentTouchStart = this._documentTouchStart.bind(this)),
                             (this._documentTouchEnd = this._documentTouchEnd.bind(this)),

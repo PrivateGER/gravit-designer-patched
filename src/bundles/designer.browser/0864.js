@@ -17,7 +17,7 @@ module.exports = function (module, exports, require) {
             GPathProperties = require(1269),
             GPolygonProperties = require(1270),
             GRectangleProperties = require(1271),
-            _ = require(1272),
+            GSliceProperties = require(1272),
             GTextProperties = require(1273),
             w = require(1274),
             GVersionHistoryProperties = require(1528),
@@ -38,7 +38,7 @@ module.exports = function (module, exports, require) {
                 GTextProperties.prototype.toString(),
                 GImageProperties.prototype.toString(),
                 GRectangleProperties.prototype.toString(),
-                _.prototype.toString(),
+                GSliceProperties.prototype.toString(),
                 GBoolOpProperties.prototype.toString(),
                 GAppearanceProperties.prototype.toString(),
             ]),
@@ -292,7 +292,7 @@ module.exports = function (module, exports, require) {
                     (r.panel.css("display", l ? "" : "none"),
                         r.toolbar &&
                             (r.toolbar.css("display", l ? "" : "none"),
-                            s instanceof _ && l && (i = r.toolbar),
+                            s instanceof GSliceProperties && l && (i = r.toolbar),
                             $.inArray(r.properties.toString(), T.ACCORDIONS) > -1 &&
                                 l &&
                                 (r.toolbar.addClass("appearance-panel-toggle-btn").gAccordion("init", ".properties-panel", "label"),

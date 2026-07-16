@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(58 /* polyfill:Array */), require(19), require(8 /* Symbol */), require(71 /* polyfill:String */), require(4), require(41), require(13), require(32), require(38), require(97), require(33), require(26));
         var GObject = require(1),
             i = require(53),
-            GSaveAction = require(40),
+            Utils = require(40),
             designerConfig = require(10),
             s = require(592),
             l = require(1094);
@@ -155,8 +155,8 @@ module.exports = function (module, exports, require) {
                     let n = i[t],
                         r = l[n.getId()];
                     (r &&
-                        ((0, GSaveAction.isDifferent)(n, r, d.concat(n instanceof GObject.GRectangleAnnotation ? ["$cu"] : [])) &&
-                            ((0, GSaveAction.mergeNode)(r, n), (c = true)),
+                        ((0, Utils.isDifferent)(n, r, d.concat(n instanceof GObject.GRectangleAnnotation ? ["$cu"] : [])) &&
+                            ((0, Utils.mergeNode)(r, n), (c = true)),
                         r.setProperty("mtime", n.getProperty("mtime"))),
                         1 === s[n.getId()] && n.setFlag(GObject.GNode.Flag.Selected),
                         l[n.getId()] || (e.appendChild(n), (c = true)));

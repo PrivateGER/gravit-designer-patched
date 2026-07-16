@@ -25,7 +25,7 @@ module.exports = function (module, exports, require) {
                         (s = t.filter((e) => e.getRole().is(designerConfig.ShareRoles.Approver))),
                         (l = t.filter((e) => e.getRole().is(designerConfig.ShareRoles.CoAuthor))),
                         (d = t.filter((e) => e.getRole().is(designerConfig.ShareRoles.Owner))));
-                    const e = (0, GAnnotationPanel.createAdditionalMentions)();
+                    const e = (0, GAnnotationAdditionalMentions.createAdditionalMentions)();
                     (o && o.length && u.push(e.MENTION_ALL_REVIEWERS),
                         s && s.length && u.push(e.MENTION_ALL_APPROVERS),
                         l && l.length && u.push(e.MENTION_ALL_CO_AUTHORS),
@@ -42,7 +42,7 @@ module.exports = function (module, exports, require) {
                 };
             }),
             (exports.replaceAdditionalCollabShowTextBeforeSend = function (e) {
-                const t = (0, GAnnotationPanel.createAdditionalMentions)();
+                const t = (0, GAnnotationAdditionalMentions.createAdditionalMentions)();
                 return (
                     this._mentionsCollection.forEach((n) => {
                         n.id === t.MENTION_ALL.id
@@ -129,8 +129,8 @@ module.exports = function (module, exports, require) {
             require(26));
         var designerConfig = require(10),
             a = _interopRequireDefault(require(883)),
-            GAnnotationPanel = require(1353);
-        const s = (0, GAnnotationPanel.createAdditionalMentions)(),
+            GAnnotationAdditionalMentions = require(1353);
+        const s = (0, GAnnotationAdditionalMentions.createAdditionalMentions)(),
             l = {};
         async function c(e) {
             return (l.hasOwnProperty(e) || (l[e] = designerConfig.gApi.getUser(e, true).catch(() => null)), l[e]);

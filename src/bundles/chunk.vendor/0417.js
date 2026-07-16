@@ -18,11 +18,11 @@ module.exports = function (module, exports, require) {
                 require(125),
                 require(126 /* polyfill:URL */),
                 require(114));
-            const n = exports,
-                r = require(938),
-                o = require(574),
-                a = require(577),
-                s = require(952);
+            const api = exports,
+                SharingStatistics = require(938),
+                GFile = require(574),
+                providerIds = require(577),
+                errorCodes = require(952);
             require(824);
             const {
                     getUserName,
@@ -37,7 +37,7 @@ module.exports = function (module, exports, require) {
                 } = require(254),
                 { providers } = require(253);
             if (
-                ((n.version = "v1"),
+                ((api.version = "v1"),
                 Object({
                     NODE_ENV: "production",
                     APP_VERSION: "3.15.0",
@@ -53,109 +53,109 @@ module.exports = function (module, exports, require) {
                     "undefined" != typeof window &&
                     (!window.hasOwnProperty("URLSearchParams") || !window.hasOwnProperty("fetch") || !Array.hasOwnProperty("from")))
             ) {
-                var y = document.createElement("script");
-                ((y.src = "https://cdn.polyfill.io/v2/polyfill.min.js?features=default,URL,fetch"),
-                    document.body.insertBefore(y, document.body.firstChild));
+                var polyfillScript = document.createElement("script");
+                ((polyfillScript.src = "https://cdn.polyfill.io/v2/polyfill.min.js?features=default,URL,fetch"),
+                    document.body.insertBefore(polyfillScript, document.body.firstChild));
             }
-            let _ = [];
+            let onlineQueue = [];
             "undefined" != typeof window &&
                 window.addEventListener &&
                 window.addEventListener("online", () => {
-                    for (; _.length; ) _.pop().call(null);
+                    for (; onlineQueue.length; ) onlineQueue.pop().call(null);
                 });
-            const v = navigator.cookieEnabled;
-            let b,
-                C,
-                w,
-                E = {
-                    beforeSendRequest: (e) => {
-                        let { url, query } = e;
+            const cookiesEnabled = navigator.cookieEnabled;
+            let httpGet,
+                httpHead,
+                fetchJSON,
+                hooks = {
+                    beforeSendRequest: (request) => {
+                        let { url, query } = request;
                     },
                     onError: (e, t, i) => {},
                 };
-            ((n.setHooks = function () {
-                let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                return Object.assign(E, e);
+            ((api.setHooks = function () {
+                let hooksOverride = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                return Object.assign(hooks, hooksOverride);
             }),
-                (n.setToken = function () {
-                    let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    ((b = function (t) {
-                        let i = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
-                            r = arguments.length > 2 ? arguments[2] : void 0;
-                        return T(
-                            F(
-                                n.url + t,
-                                Object.assign({}, e, i, {
-                                    lang: n.lang,
+                (api.setToken = function () {
+                    let authParams = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                    ((httpGet = function (path) {
+                        let queryParams = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
+                            timeout = arguments.length > 2 ? arguments[2] : void 0;
+                        return rawFetch(
+                            buildUrl(
+                                api.url + path,
+                                Object.assign({}, authParams, queryParams, {
+                                    lang: api.lang,
                                 })
                             ),
                             {},
-                            r
-                        ).then(I);
+                            timeout
+                        ).then(handleResponse);
                     }),
-                        (C = function (t) {
-                            let i = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
-                                r = arguments.length > 2 ? arguments[2] : void 0;
-                            return T(
-                                F(
-                                    n.url + t,
-                                    Object.assign({}, e, i, {
-                                        lang: n.lang,
+                        (httpHead = function (path) {
+                            let queryParams = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
+                                timeout = arguments.length > 2 ? arguments[2] : void 0;
+                            return rawFetch(
+                                buildUrl(
+                                    api.url + path,
+                                    Object.assign({}, authParams, queryParams, {
+                                        lang: api.lang,
                                     })
                                 ),
                                 {
                                     method: "HEAD",
                                 },
-                                r
+                                timeout
                             );
                         }),
-                        (w = function (t, i) {
-                            let r = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {},
-                                o = arguments.length > 3 ? arguments[3] : void 0;
-                            return T(
-                                F(
-                                    n.url + t,
-                                    Object.assign({}, e, r, {
-                                        lang: n.lang,
+                        (fetchJSON = function (path, requestOptions) {
+                            let queryParams = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {},
+                                timeout = arguments.length > 3 ? arguments[3] : void 0;
+                            return rawFetch(
+                                buildUrl(
+                                    api.url + path,
+                                    Object.assign({}, authParams, queryParams, {
+                                        lang: api.lang,
                                     })
                                 ),
-                                i,
-                                o
-                            ).then(I);
+                                requestOptions,
+                                timeout
+                            ).then(handleResponse);
                         }));
                 }));
-            const B = (e) => new URL(location.href).searchParams.get(e),
-                x = B("token"),
-                P = B("EWOSU"),
-                S = B("directlink");
-            (n.setToken({
-                token: x,
-                EWOSU: P,
-                directlink: S,
+            const getQueryParam = (paramName) => new URL(location.href).searchParams.get(paramName),
+                tokenParam = getQueryParam("token"),
+                ewosuParam = getQueryParam("EWOSU"),
+                directLinkParam = getQueryParam("directlink");
+            (api.setToken({
+                token: tokenParam,
+                EWOSU: ewosuParam,
+                directlink: directLinkParam,
             }),
-                Object.assign(n, {
-                    GET: b,
-                    HEAD: C,
-                    fetchJSON: w,
-                    token: x,
-                    getUrl: F,
+                Object.assign(api, {
+                    GET: httpGet,
+                    HEAD: httpHead,
+                    fetchJSON: fetchJSON,
+                    token: tokenParam,
+                    getUrl: buildUrl,
                 }));
-            const T = (e, t, i) => {
-                    var r = new URL(e);
-                    let o;
-                    if ((r.searchParams.get("lang") || (r.searchParams.append("lang", n.getLanguage()), (e = r.href)), i)) {
-                        const e = new AbortController();
-                        ((o = e.signal), setTimeout(() => e.abort(), i));
+            const rawFetch = (url, requestOptions, timeout) => {
+                    var parsedUrl = new URL(url);
+                    let signal;
+                    if ((parsedUrl.searchParams.get("lang") || (parsedUrl.searchParams.append("lang", api.getLanguage()), (url = parsedUrl.href)), timeout)) {
+                        const controller = new AbortController();
+                        ((signal = controller.signal), setTimeout(() => controller.abort(), timeout));
                     }
-                    return fetch(e, {
-                        method: t.method || "GET",
+                    return fetch(url, {
+                        method: requestOptions.method || "GET",
                         body:
-                            (window.File && t.body instanceof window.File) || (window.FormData && t.body instanceof window.FormData)
-                                ? t.body
-                                : t.body && JSON.stringify(t.body),
+                            (window.File && requestOptions.body instanceof window.File) || (window.FormData && requestOptions.body instanceof window.FormData)
+                                ? requestOptions.body
+                                : requestOptions.body && JSON.stringify(requestOptions.body),
                         credentials: "include",
                         headers: Object.assign(
-                            !t || !t.body || (window.FormData && t.body instanceof window.FormData)
+                            !requestOptions || !requestOptions.body || (window.FormData && requestOptions.body instanceof window.FormData)
                                 ? {}
                                 : {
                                       "Content-Type": "application/json",
@@ -163,130 +163,130 @@ module.exports = function (module, exports, require) {
                             {
                                 Accept: "json",
                             },
-                            !v && {
-                                Authorization: R.gApiToken || "",
+                            !cookiesEnabled && {
+                                Authorization: tokenStore.gApiToken || "",
                             },
-                            t.headers
+                            requestOptions.headers
                         ),
-                        signal: o,
+                        signal: signal,
                     })
-                        .then((i) => {
-                            if (false === i.ok) {
-                                const { onError } = E || {};
-                                onError && onError.call(null, i, e, t);
+                        .then((response) => {
+                            if (false === response.ok) {
+                                const { onError } = hooks || {};
+                                onError && onError.call(null, response, url, requestOptions);
                             }
-                            return i;
+                            return response;
                         })
-                        .catch((i) => {
-                            const { onError: n } = E || {};
-                            return (n && n.call(null, i, e, t), i);
+                        .catch((error) => {
+                            const { onError: onErrorHandler } = hooks || {};
+                            return (onErrorHandler && onErrorHandler.call(null, error, url, requestOptions), error);
                         });
                 },
-                I = (e) => {
-                    if (204 == e.status) {
-                        if (e.text) return;
+                handleResponse = (response) => {
+                    if (204 == response.status) {
+                        if (response.text) return;
                         return Promise.accept({
-                            status: e.status,
+                            status: response.status,
                             cloud: true,
                         });
                     }
-                    return e.status < 400
-                        ? e.json
-                            ? e.json()
+                    return response.status < 400
+                        ? response.json
+                            ? response.json()
                             : Promise.accept({
-                                  status: e.status,
+                                  status: response.status,
                                   cloud: true,
                               })
-                        : e.json
-                          ? e.json().then((t) =>
+                        : response.json
+                          ? response.json().then((errorBody) =>
                                 Promise.reject(
-                                    Object.assign(t, {
-                                        status: e.status,
+                                    Object.assign(errorBody, {
+                                        status: response.status,
                                         cloud: true,
                                     })
                                 )
                             )
                           : Promise.reject({
-                                status: e.status || e.message,
+                                status: response.status || response.message,
                                 cloud: true,
                             });
                 };
 
-            function F(e, t) {
-                ((t = t || {}).lang || (t.lang = n.getLanguage()),
-                    E &&
-                        "function" == typeof E.beforeSendRequest &&
-                        E.beforeSendRequest({
-                            url: e,
-                            query: t,
+            function buildUrl(url, query) {
+                ((query = query || {}).lang || (query.lang = api.getLanguage()),
+                    hooks &&
+                        "function" == typeof hooks.beforeSendRequest &&
+                        hooks.beforeSendRequest({
+                            url: url,
+                            query: query,
                         }));
-                var i = new URLSearchParams();
-                for (var r in t) ("string" != typeof t[r] && "number" != typeof t[r] && "boolean" != typeof t[r]) || i.set(r, t[r]);
-                var o = i + "",
-                    a = e.indexOf("?") >= 0 ? "&" : "?";
-                return e + (o && a + o);
+                var searchParams = new URLSearchParams();
+                for (var r in query) ("string" != typeof query[r] && "number" != typeof query[r] && "boolean" != typeof query[r]) || searchParams.set(r, query[r]);
+                var queryString = searchParams + "",
+                    separator = url.indexOf("?") >= 0 ? "&" : "?";
+                return url + (queryString && separator + queryString);
             }
-            let R = {};
+            let tokenStore = {};
             if (window.chrome && chrome.storage && chrome.storage.local)
                 (console.log("Chrome app detected"),
-                    chrome.storage.local.get("gApiToken", function (e) {
-                        ((R._token = e),
-                            Object.defineProperty(R, "token", {
-                                set(e) {
+                    chrome.storage.local.get("gApiToken", function (storedItems) {
+                        ((tokenStore._token = storedItems),
+                            Object.defineProperty(tokenStore, "token", {
+                                set(value) {
                                     (chrome.storage.local.set({
-                                        gApiToken: e,
+                                        gApiToken: value,
                                     }),
-                                        (R._token = e));
+                                        (tokenStore._token = value));
                                 },
-                                get: () => R._token,
+                                get: () => tokenStore._token,
                             }));
                     }));
             else
                 try {
-                    R = window.localStorage;
+                    tokenStore = window.localStorage;
                 } catch (e) {
                     console.log(e);
                 }
-            ((n.managementUrl = "https://cloud-management.corel.com"),
+            ((api.managementUrl = "https://cloud-management.corel.com"),
                 /trunk|bleed|^localhost$/.test(location.hostname)
-                    ? ((n.url = "https://gravit.plasmatrap.com"),
-                      (n.websocketURL = "wss://gravit.plasmatrap.com"),
-                      (n.managementUrl = "https://cloud-management-trunk.corel.com"))
+                    ? ((api.url = "https://gravit.plasmatrap.com"),
+                      (api.websocketURL = "wss://gravit.plasmatrap.com"),
+                      (api.managementUrl = "https://cloud-management-trunk.corel.com"))
                     : /rc/.test(location.hostname) || /staging/.test(location.hostname)
-                      ? ((n.url = "https://gravit.plasmatrap.com"),
-                        (n.websocketURL = "wss://gravit.plasmatrap.com"),
-                        (n.managementUrl = "https://cloud-management-trunk.corel.com"))
+                      ? ((api.url = "https://gravit.plasmatrap.com"),
+                        (api.websocketURL = "wss://gravit.plasmatrap.com"),
+                        (api.managementUrl = "https://cloud-management-trunk.corel.com"))
                       : /beta/.test(location.hostname) || /preview/.test(location.hostname)
-                        ? ((n.url = "https://gravit.plasmatrap.com"), (n.websocketURL = "wss://gravit.plasmatrap.com"))
-                        : ((n.url = "https://gravit.plasmatrap.com"), (n.websocketURL = "wss://gravit.plasmatrap.com")),
-                (n.setLanguage = (e) => (n.lang = e)),
-                (n.getLanguage = () => n.lang),
-                (n.lang = 0),
-                (n.getAppStatus = (e) =>
-                    T("".concat(n.managementUrl, "/api/v1/status/").concat(e), {
+                        ? ((api.url = "https://gravit.plasmatrap.com"), (api.websocketURL = "wss://gravit.plasmatrap.com"))
+                        : ((api.url = "https://gravit.plasmatrap.com"), (api.websocketURL = "wss://gravit.plasmatrap.com")),
+                (api.setLanguage = (language) => (api.lang = language)),
+                (api.getLanguage = () => api.lang),
+                (api.lang = 0),
+                (api.getAppStatus = (statusId) =>
+                    rawFetch("".concat(api.managementUrl, "/api/v1/status/").concat(statusId), {
                         method: "GET",
-                    }).then((e) => I(e))),
-                (n.self = () => ((n.url = location.origin), n)),
-                (n.diagnostic = (e) =>
-                    T("".concat(n.url, "/report/diagnostic"), {
+                    }).then((response) => handleResponse(response))),
+                (api.self = () => ((api.url = location.origin), api)),
+                (api.diagnostic = (report) =>
+                    rawFetch("".concat(api.url, "/report/diagnostic"), {
                         method: "POST",
-                        body: e,
+                        body: report,
                     })),
-                (n.getUserSettings = () => b("/user/settings")),
-                (n.updateUserSettings = (e, t) =>
-                    w("/user/settings", {
+                (api.getUserSettings = () => httpGet("/user/settings")),
+                (api.updateUserSettings = (settingsData, nonPublic) =>
+                    fetchJSON("/user/settings", {
                         method: "PUT",
                         body: Object.assign(
                             {},
                             {
-                                data: e,
+                                data: settingsData,
                             },
                             {
-                                nonPublic: t,
+                                nonPublic: nonPublic,
                             }
                         ),
                     })),
-                (n.getPrice = function () {
+                (api.getPrice = function () {
                     let {
                         productId,
                         coupon,
@@ -294,9 +294,9 @@ module.exports = function (module, exports, require) {
                         country,
                         provider,
                     } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    const o = providers[provider || a.Cleverbridge];
-                    return o
-                        ? o.getPrice({
+                    const priceProvider = providers[provider || providerIds.Cleverbridge];
+                    return priceProvider
+                        ? priceProvider.getPrice({
                               productId: productId,
                               coupon: coupon,
                               currency: currency,
@@ -304,412 +304,412 @@ module.exports = function (module, exports, require) {
                           })
                         : Promise.resolve({});
                 }),
-                (n.getProduct = function (e) {
-                    let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : a.Cleverbridge;
-                    return b("/payment/".concat(t, "/product"), e).then((e) =>
-                        e.productId ? n.getPrice(e).then((t) => Object.assign(e, t)) : e
+                (api.getProduct = function (queryParams) {
+                    let provider = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : providerIds.Cleverbridge;
+                    return httpGet("/payment/".concat(provider, "/product"), queryParams).then((product) =>
+                        product.productId ? api.getPrice(product).then((priceInfo) => Object.assign(product, priceInfo)) : product
                     );
                 }),
-                (n.subscription = {}),
-                (n.subscription.getNextBillingDate = () => b("/subscription/nextbillingdate")),
-                (n.subscription.isLifetime = () =>
-                    b("/subscription/lifetime").then((e) => {
-                        let { lifetime } = e;
+                (api.subscription = {}),
+                (api.subscription.getNextBillingDate = () => httpGet("/subscription/nextbillingdate")),
+                (api.subscription.isLifetime = () =>
+                    httpGet("/subscription/lifetime").then((result) => {
+                        let { lifetime } = result;
                         return !!lifetime;
                     })),
-                (n.activateSubscription = function (e) {
-                    let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : a.Cleverbridge;
-                    return b("/subscription/".concat(t, "/activate/").concat(e));
+                (api.activateSubscription = function (subscriptionId) {
+                    let provider = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : providerIds.Cleverbridge;
+                    return httpGet("/subscription/".concat(provider, "/activate/").concat(subscriptionId));
                 }),
-                (n.deactivateSubscription = function (e) {
-                    let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : a.Cleverbridge;
-                    return b("/subscription/".concat(t, "/deactivate/").concat(e));
+                (api.deactivateSubscription = function (subscriptionId) {
+                    let provider = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : providerIds.Cleverbridge;
+                    return httpGet("/subscription/".concat(provider, "/deactivate/").concat(subscriptionId));
                 }),
-                (n.isEnabledSubscriptions = () => b("/subscription/test").then((e) => 1 == e.status)),
-                (n.confirmEmail = (e) => b("/confirm-email/".concat(e))),
-                (n.resendEmailConfirmation = (e) =>
-                    w("/resend-confirm-email", {
+                (api.isEnabledSubscriptions = () => httpGet("/subscription/test").then((response) => 1 == response.status)),
+                (api.confirmEmail = (confirmationToken) => httpGet("/confirm-email/".concat(confirmationToken))),
+                (api.resendEmailConfirmation = (body) =>
+                    fetchJSON("/resend-confirm-email", {
                         method: "POST",
-                        body: e,
+                        body: body,
                     })),
-                (n.quota = () => b("/quota").then((e) => e.quota)),
-                (n.listen = function (e, t) {
-                    let i = arguments.length > 2 && void 0 !== arguments[2] && arguments[2];
-                    const r = new n.WebSocketClient(),
-                        o = (e) => {
+                (api.quota = () => httpGet("/quota").then((response) => response.quota)),
+                (api.listen = function (eventName, callback) {
+                    let once = arguments.length > 2 && void 0 !== arguments[2] && arguments[2];
+                    const socket = new api.WebSocketClient(),
+                        handler = (message) => {
                             try {
-                                t(e.data);
+                                callback(message.data);
                             } finally {
-                                i && r.close();
+                                once && socket.close();
                             }
                         };
-                    return (r.connect(e), r.on(e.substr(1), o), r);
+                    return (socket.connect(eventName), socket.on(eventName.substr(1), handler), socket);
                 }),
-                (n.license = {
-                    get: () => b("/license"),
-                    listen: (e) => n.listen("/license", e, false),
-                    activateTrial: (e) =>
-                        T("".concat(n.url, "/activate-trial/").concat(e || ""), {
+                (api.license = {
+                    get: () => httpGet("/license"),
+                    listen: (callback) => api.listen("/license", callback, false),
+                    activateTrial: (licenseCode) =>
+                        rawFetch("".concat(api.url, "/activate-trial/").concat(licenseCode || ""), {
                             method: "POST",
                         }),
                     resetTrial: () =>
-                        T(n.url + "/reset-trial", {
+                        rawFetch(api.url + "/reset-trial", {
                             method: "POST",
                         }),
-                    everSubscribed: () => b("/ever-subscribed"),
-                    totalSubscriptionDays: () => b("/total-subscription-days"),
+                    everSubscribed: () => httpGet("/ever-subscribed"),
+                    totalSubscriptionDays: () => httpGet("/total-subscription-days"),
                 }),
-                (n.checkout = function (e, t) {
-                    let i = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-                    const r = {},
-                        o = new Promise((e) =>
-                            Object.assign(r, {
-                                resolve: e,
+                (api.checkout = function (url, target) {
+                    let options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
+                    const deferred = {},
+                        promise = new Promise((resolve) =>
+                            Object.assign(deferred, {
+                                resolve: resolve,
                             })
                         ),
-                        a = n.listen("/payload", (e) => r.resolve(e), true);
-                    if (t instanceof HTMLElement) {
-                        let n = document.createElement("iframe"),
-                            { events } = i;
-                        (events && Object.keys(events).forEach((e) => n.addEventListener(e, events[e], false)), t.appendChild(n), n.setAttribute("src", e));
+                        payloadListener = api.listen("/payload", (payload) => deferred.resolve(payload), true);
+                    if (target instanceof HTMLElement) {
+                        let iframe = document.createElement("iframe"),
+                            { events } = options;
+                        (events && Object.keys(events).forEach((eventName) => iframe.addEventListener(eventName, events[eventName], false)), target.appendChild(iframe), iframe.setAttribute("src", url));
                     } else {
-                        let i;
-                        if ("_blank" === t) i = window.open(e, "Checkout");
+                        let childWindow;
+                        if ("_blank" === target) childWindow = window.open(url, "Checkout");
                         else {
-                            var s = null != window.screenLeft ? window.screenLeft : screen.left,
-                                l = null != window.screenTop ? window.screenTop : screen.top,
-                                h = window.innerWidth
+                            var screenLeft = null != window.screenLeft ? window.screenLeft : screen.left,
+                                screenTop = null != window.screenTop ? window.screenTop : screen.top,
+                                viewportWidth = window.innerWidth
                                     ? window.innerWidth
                                     : document.documentElement.clientWidth
                                       ? document.documentElement.clientWidth
                                       : screen.width,
-                                A = window.innerHeight
+                                viewportHeight = window.innerHeight
                                     ? window.innerHeight
                                     : document.documentElement.clientHeight
                                       ? document.documentElement.clientHeight
                                       : screen.height,
-                                c = 1e3,
-                                p = 680,
-                                u = h / 2 - c / 2 + s,
-                                d = A / 2 - p / 2 + l;
-                            i = window.open(e, "Checkout", "scrollbars=yes, width=" + c + ", height=" + p + ", top=" + d + ", left=" + u);
+                                popupWidth = 1e3,
+                                popupHeight = 680,
+                                popupLeft = viewportWidth / 2 - popupWidth / 2 + screenLeft,
+                                popupTop = viewportHeight / 2 - popupHeight / 2 + screenTop;
+                            childWindow = window.open(url, "Checkout", "scrollbars=yes, width=" + popupWidth + ", height=" + popupHeight + ", top=" + popupTop + ", left=" + popupLeft);
                         }
-                        window.focus && i.focus();
+                        window.focus && childWindow.focus();
                     }
                     return {
-                        promise: o,
-                        cancel: () => a.close(),
+                        promise: promise,
+                        cancel: () => payloadListener.close(),
                     };
                 }),
-                (n.coupon = {}),
-                (n.coupon.activate = (e) => b("/coupon/activate/" + e)),
-                (n.coupon.getReport = function () {
-                    let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    return w(F("/coupon/report", e), {
+                (api.coupon = {}),
+                (api.coupon.activate = (couponCode) => httpGet("/coupon/activate/" + couponCode)),
+                (api.coupon.getReport = function () {
+                    let options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                    return fetchJSON(buildUrl("/coupon/report", options), {
                         method: "GET",
                     });
                 }),
-                (n.coupon.getGeneralReport = function () {
-                    let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    return w(F("/coupon/report/general", e), {
+                (api.coupon.getGeneralReport = function () {
+                    let options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                    return fetchJSON(buildUrl("/coupon/report/general", options), {
                         method: "GET",
                     });
                 }),
-                (n.coupon.create = (e) =>
-                    w("/coupon/create", {
+                (api.coupon.create = (body) =>
+                    fetchJSON("/coupon/create", {
                         method: "PUT",
-                        body: e,
+                        body: body,
                     })),
-                (n.coupon.export = function () {
-                    let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    return b("/coupon/report/export", e);
+                (api.coupon.export = function () {
+                    let options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                    return httpGet("/coupon/report/export", options);
                 }),
-                (n.coupon.exportLink = function () {
-                    let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    return F("".concat(n.url, "/coupon/report/export"), e);
+                (api.coupon.exportLink = function () {
+                    let options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                    return buildUrl("".concat(api.url, "/coupon/report/export"), options);
                 }),
-                (n.coupon.revokeUsage = (e) =>
-                    w("/coupon/usage/" + e + "/revoke", {
+                (api.coupon.revokeUsage = (couponId) =>
+                    fetchJSON("/coupon/usage/" + couponId + "/revoke", {
                         method: "POST",
                     })),
-                (n.coupon.batch = {}),
-                (n.coupon.batch.removeUnusedCoupons = function () {
-                    let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
-                    return w("/coupon/unused", {
+                (api.coupon.batch = {}),
+                (api.coupon.batch.removeUnusedCoupons = function () {
+                    let coupons = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
+                    return fetchJSON("/coupon/unused", {
                         method: "DELETE",
                         body: {
-                            coupons: e,
+                            coupons: coupons,
                         },
                     });
                 }),
-                (n.coupon.batch.deleteCoupons = function () {
-                    let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
-                    return w("/coupon", {
+                (api.coupon.batch.deleteCoupons = function () {
+                    let coupons = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
+                    return fetchJSON("/coupon", {
                         method: "DELETE",
                         body: {
-                            coupons: e,
+                            coupons: coupons,
                         },
                     });
                 }),
-                (n.coupon.batch.revokeCoupons = function () {
-                    let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
-                    return w("/coupon/revoke", {
+                (api.coupon.batch.revokeCoupons = function () {
+                    let coupons = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
+                    return fetchJSON("/coupon/revoke", {
                         method: "POST",
                         body: {
-                            coupons: e,
+                            coupons: coupons,
                         },
                     });
                 }),
-                (n.coupon.batch.removeUnusedCouponsByGroups = function () {
-                    let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
-                    return w("/coupon/group/unused", {
+                (api.coupon.batch.removeUnusedCouponsByGroups = function () {
+                    let groups = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
+                    return fetchJSON("/coupon/group/unused", {
                         method: "DELETE",
                         body: {
-                            groups: e,
+                            groups: groups,
                         },
                     });
                 }),
-                (n.coupon.batch.deleteCouponsByGroups = function () {
-                    let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
-                    return w("/coupon/group", {
+                (api.coupon.batch.deleteCouponsByGroups = function () {
+                    let groups = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
+                    return fetchJSON("/coupon/group", {
                         method: "DELETE",
                         body: {
-                            groups: e,
+                            groups: groups,
                         },
                     });
                 }),
-                (n.coupon.batch.revokeCouponsByGroups = function () {
-                    let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
-                    return w("/coupon/group/revoke", {
+                (api.coupon.batch.revokeCouponsByGroups = function () {
+                    let groups = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
+                    return fetchJSON("/coupon/group/revoke", {
                         method: "POST",
                         body: {
-                            groups: e,
+                            groups: groups,
                         },
                     });
                 }),
-                (n.getPurchase = (e) => b("/purchase/" + e)),
-                (n.listPurchases = (e) => b("/purchases", e)),
-                (n.hasPurchases = (e) =>
-                    C(
+                (api.getPurchase = (purchaseId) => httpGet("/purchase/" + purchaseId)),
+                (api.listPurchases = (options) => httpGet("/purchases", options)),
+                (api.hasPurchases = (options) =>
+                    httpHead(
                         "/purchases",
-                        Object.assign(e || {}, {
+                        Object.assign(options || {}, {
                             limit: 1,
                         })
-                    ).then((e) => 204 !== e.status && e.status < 400)),
-                (n.listPurchasedProducts = (e) => b("/purchase/products", e)),
-                (n.getPurchasedFile = (e) => b("/purchase/product/" + e + "/file")),
-                (n.getPurchasedProduct = (e) => b("/purchase/product/" + e)),
-                (n.hasPurchasedProduct = (e) => C("/purchase/product/" + e).then((e) => 204 !== e.status && e.status < 400)),
-                (n.getProviderContentDetails = (e) => b("/store/v1/content/details/".concat(e))),
-                (n.getProviderContentFile = (e) => b("/store/v1/content/file/".concat(e))),
-                (n.getProviderExternalAsset = (e) => b("/provider/v1/asset/".concat(e))),
-                (n.software = {
+                    ).then((response) => 204 !== response.status && response.status < 400)),
+                (api.listPurchasedProducts = (options) => httpGet("/purchase/products", options)),
+                (api.getPurchasedFile = (purchaseId) => httpGet("/purchase/product/" + purchaseId + "/file")),
+                (api.getPurchasedProduct = (purchaseId) => httpGet("/purchase/product/" + purchaseId)),
+                (api.hasPurchasedProduct = (e) => httpHead("/purchase/product/" + e).then((e) => 204 !== e.status && e.status < 400)),
+                (api.getProviderContentDetails = (contentId) => httpGet("/store/v1/content/details/".concat(contentId))),
+                (api.getProviderContentFile = (contentId) => httpGet("/store/v1/content/file/".concat(contentId))),
+                (api.getProviderExternalAsset = (assetId) => httpGet("/provider/v1/asset/".concat(assetId))),
+                (api.software = {
                     getRelease: function () {
-                        let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                        return b("/software/release", e);
+                        let options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                        return httpGet("/software/release", options);
                     },
                 }),
-                (n.getSubscriptionByPurchase = function (e) {
-                    let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : a.Cleverbridge;
-                    return b("/subscription/".concat(t, "/purchase/").concat(e));
+                (api.getSubscriptionByPurchase = function (purchaseId) {
+                    let provider = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : providerIds.Cleverbridge;
+                    return httpGet("/subscription/".concat(provider, "/purchase/").concat(purchaseId));
                 }),
-                (n.getLocation = () => b("/geo/me")),
-                (n.isNewsletterRequired = () => b("/newsletter/required").then((e) => 1 == e.result)),
-                (n.getUser = (e, t) => b("/user".concat(e ? "/" + e : "", "?public=").concat(t ? 1 : 0))),
-                (n.updateUser = (e) =>
-                    w("/user", {
+                (api.getLocation = () => httpGet("/geo/me")),
+                (api.isNewsletterRequired = () => httpGet("/newsletter/required").then((result) => 1 == result.result)),
+                (api.getUser = (userId, isPublic) => httpGet("/user".concat(userId ? "/" + userId : "", "?public=").concat(isPublic ? 1 : 0))),
+                (api.updateUser = (userData) =>
+                    fetchJSON("/user", {
                         method: "PUT",
-                        body: e,
+                        body: userData,
                     })),
-                (n.updateAvatar = (e) =>
-                    w("/user/me/avatar", {
+                (api.updateAvatar = (file) =>
+                    fetchJSON("/user/me/avatar", {
                         method: "PUT",
-                        body: e,
+                        body: file,
                         headers: {
-                            "Content-Type": e.type,
+                            "Content-Type": file.type,
                         },
                     })),
-                (n.listUsers = (e) => b("/users", e)),
-                (n.listFiles = (e) => b("/file", e)),
-                (n.listMarket = (e) => b("/market", e)),
-                (n.listMarketV2 = (e) => b("/v2/market", e)),
-                (n.listVersions = (e, t) =>
-                    t && t.split("").every((e) => ["t", "s", "r", "f"].includes(e))
-                        ? b("/file/" + e + "/versions/type/" + t)
-                        : b("/file/" + e + "/versions")),
-                (n.getFile = (e, t, i, n) => {
-                    var r = "";
+                (api.listUsers = (options) => httpGet("/users", options)),
+                (api.listFiles = (options) => httpGet("/file", options)),
+                (api.listMarket = (options) => httpGet("/market", options)),
+                (api.listMarketV2 = (options) => httpGet("/v2/market", options)),
+                (api.listVersions = (fileId, versionType) =>
+                    versionType && versionType.split("").every((type) => ["t", "s", "r", "f"].includes(type))
+                        ? httpGet("/file/" + fileId + "/versions/type/" + versionType)
+                        : httpGet("/file/" + fileId + "/versions")),
+                (api.getFile = (file, full, version, type) => {
+                    var typeSegment = "";
                     return (
-                        n && ["t", "s", "r"].indexOf(n) >= 0 && (r = "/type/" + n),
-                        "string" == typeof e
-                            ? b("/file/" + e + (t ? "/full" : "") + (i ? "/version/" + i + r : ""))
-                            : e.token
-                              ? b("/share/" + e.token + (t ? "/full" : ""))
-                              : b("/file/" + e.id + (t ? "/full" : "") + (i ? "/version/" + i + r : ""))
+                        type && ["t", "s", "r"].indexOf(type) >= 0 && (typeSegment = "/type/" + type),
+                        "string" == typeof file
+                            ? httpGet("/file/" + file + (full ? "/full" : "") + (version ? "/version/" + version + typeSegment : ""))
+                            : file.token
+                              ? httpGet("/share/" + file.token + (full ? "/full" : ""))
+                              : httpGet("/file/" + file.id + (full ? "/full" : "") + (version ? "/version/" + version + typeSegment : ""))
                     );
                 }),
-                (n.getFileExtended = (e) => n.getFile(e, true).then((e) => new o(e))),
-                (n.getCollaborators = (e) => b("/file/" + e + "/collaborators")),
-                (n.getExternalFile = (e) => b("/file/external/".concat(e)).then((e) => new o(e))),
-                (n.annotations = {}),
-                (n.annotations.getHistory = (e) => b("/file/" + e + "/annotations/history")),
-                (n.annotations.getDesignHistory = (e) => b("/file/" + e + "/annotations/history/design")),
-                (n.resolveUrls = (e, t) => b("/file/" + e + "/urls/" + t)),
-                (n.createFile = (e) =>
-                    w("/file", {
+                (api.getFileExtended = (e) => api.getFile(e, true).then((e) => new GFile(e))),
+                (api.getCollaborators = (fileId) => httpGet("/file/" + fileId + "/collaborators")),
+                (api.getExternalFile = (e) => httpGet("/file/external/".concat(e)).then((e) => new GFile(e))),
+                (api.annotations = {}),
+                (api.annotations.getHistory = (fileId) => httpGet("/file/" + fileId + "/annotations/history")),
+                (api.annotations.getDesignHistory = (fileId) => httpGet("/file/" + fileId + "/annotations/history/design")),
+                (api.resolveUrls = (fileId, urlType) => httpGet("/file/" + fileId + "/urls/" + urlType)),
+                (api.createFile = (fileData) =>
+                    fetchJSON("/file", {
                         method: "POST",
-                        body: e,
+                        body: fileData,
                     })),
-                (n.updateFile = (e, t) =>
-                    w("/file/" + e, {
+                (api.updateFile = (fileId, fileData) =>
+                    fetchJSON("/file/" + fileId, {
                         method: "PUT",
-                        body: t,
+                        body: fileData,
                     })),
-                (n.updateFilePassword = (e, t) =>
-                    w("/file/" + e + "/password", {
+                (api.updateFilePassword = (fileId, password) =>
+                    fetchJSON("/file/" + fileId + "/password", {
                         method: "PUT",
-                        body: t,
+                        body: password,
                     })),
-                (n.updateFileData = (e, t) =>
-                    w("/file/" + e + "/data", {
+                (api.updateFileData = (fileId, fileData) =>
+                    fetchJSON("/file/" + fileId + "/data", {
                         method: "PUT",
-                        body: t,
+                        body: fileData,
                     })),
-                (n.updateAnnotations = (e, t, i) =>
-                    i
-                        ? w(
-                              "/file/" + e + "/annotations",
+                (api.updateAnnotations = (fileId, annotations, token) =>
+                    token
+                        ? fetchJSON(
+                              "/file/" + fileId + "/annotations",
                               {
                                   method: "PUT",
-                                  body: t,
+                                  body: annotations,
                               },
                               {
-                                  token: i,
+                                  token: token,
                               }
                           )
-                        : w("/file/" + e + "/annotations", {
+                        : fetchJSON("/file/" + fileId + "/annotations", {
                               method: "PUT",
-                              body: t,
+                              body: annotations,
                           })),
-                (n.getAnnotations = (e, t) =>
-                    t
-                        ? b("/file/" + e + "/annotations", {
-                              token: t,
+                (api.getAnnotations = (fileId, token) =>
+                    token
+                        ? httpGet("/file/" + fileId + "/annotations", {
+                              token: token,
                           })
-                        : b("/file/" + e + "/annotations")),
-                (n.updateStatus = (e, t) =>
-                    w("/file/" + e + "/status", {
+                        : httpGet("/file/" + fileId + "/annotations")),
+                (api.updateStatus = (fileId, status) =>
+                    fetchJSON("/file/" + fileId + "/status", {
                         method: "POST",
                         body: {
-                            status: t,
+                            status: status,
                         },
                     })),
-                (n.signedPutUrls = (e, t) =>
-                    w("/file/" + e + "/urls", {
+                (api.signedPutUrls = (fileId, urls) =>
+                    fetchJSON("/file/" + fileId + "/urls", {
                         method: "PUT",
-                        body: t,
+                        body: urls,
                     })),
-                (n.deleteFile = (e) =>
-                    w("/file/" + e, {
+                (api.deleteFile = (fileId) =>
+                    fetchJSON("/file/" + fileId, {
                         method: "DELETE",
                     })),
-                (n.copyFile = (e, t) =>
-                    w("/file/" + e, {
+                (api.copyFile = (fileId, fileData) =>
+                    fetchJSON("/file/" + fileId, {
                         method: "COPY",
-                        body: t,
+                        body: fileData,
                     })),
-                (n.shareWithUser = (e, t, i) =>
-                    w("/file/" + e + "/user/" + t, {
+                (api.shareWithUser = (fileId, userId, permission) =>
+                    fetchJSON("/file/" + fileId + "/user/" + userId, {
                         method: "PUT",
-                        body: i,
+                        body: permission,
                     })),
-                (n.unshareWithUser = (e, t) =>
-                    w("/file/" + e + "/user/" + t, {
+                (api.unshareWithUser = (fileId, userId) =>
+                    fetchJSON("/file/" + fileId + "/user/" + userId, {
                         method: "DELETE",
                     })),
-                (n.createShare = (e, t, i) =>
-                    w("/file/" + e + "/share", {
+                (api.createShare = (fileId, shareOptions, annotations) =>
+                    fetchJSON("/file/" + fileId + "/share", {
                         method: "POST",
                         body: Object.assign(
                             {
-                                annots: i,
+                                annots: annotations,
                             },
-                            t
+                            shareOptions
                         ),
                     })),
-                (n.updateShare = (e, t) =>
-                    w("/share/" + e, {
+                (api.updateShare = (shareId, shareData) =>
+                    fetchJSON("/share/" + shareId, {
                         method: "PUT",
-                        body: t,
+                        body: shareData,
                     })),
-                (n.deleteShare = (e) =>
-                    w("/share/" + e, {
+                (api.deleteShare = (shareId) =>
+                    fetchJSON("/share/" + shareId, {
                         method: "DELETE",
                     })),
-                (n.getShare = (e, t) => b("/share/" + e + (t ? "/full" : ""))),
-                (n.checkEnterpriseToken = (e) => b("/share/checkenterprise/" + e)),
-                (n.getSharingStatistics = () => b("/sharing/statistics").then((e) => new r(e))),
-                (n.share = {}),
-                (n.share.sendInvitationEmails = function (e) {
-                    let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [];
-                    return w("/share/" + e + "/send-invitation-emails", {
+                (api.getShare = (shareId, full) => httpGet("/share/" + shareId + (full ? "/full" : ""))),
+                (api.checkEnterpriseToken = (token) => httpGet("/share/checkenterprise/" + token)),
+                (api.getSharingStatistics = () => httpGet("/sharing/statistics").then((stats) => new SharingStatistics(stats))),
+                (api.share = {}),
+                (api.share.sendInvitationEmails = function (shareId) {
+                    let emails = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [];
+                    return fetchJSON("/share/" + shareId + "/send-invitation-emails", {
                         method: "POST",
                         body: {
-                            emails: t,
+                            emails: emails,
                         },
                     });
                 }),
-                (n.requestPermission = (e, t) =>
-                    w("/request/permission/" + e, {
+                (api.requestPermission = (shareId, permission) =>
+                    fetchJSON("/request/permission/" + shareId, {
                         method: "POST",
-                        body: t,
+                        body: permission,
                     })),
-                (n.usage = (e, t) =>
-                    w("/file/" + e + "/usage", {
+                (api.usage = (fileId, usage) =>
+                    fetchJSON("/file/" + fileId + "/usage", {
                         method: "PUT",
-                        body: t,
+                        body: usage,
                     })),
-                (n.updateFileFormat = (e, t) =>
-                    w("/file/" + e + "/fileformat", {
+                (api.updateFileFormat = (fileId, format) =>
+                    fetchJSON("/file/" + fileId + "/fileformat", {
                         method: "POST",
-                        body: t,
+                        body: format,
                     })),
-                (n.listComments = (e, t) => b("/file/" + e + "/comment", t)),
-                (n.updateComment = (e, t) =>
-                    w("/comment/" + e, {
+                (api.listComments = (fileId, options) => httpGet("/file/" + fileId + "/comment", options)),
+                (api.updateComment = (commentId, commentData) =>
+                    fetchJSON("/comment/" + commentId, {
                         method: "PUT",
-                        body: t,
+                        body: commentData,
                     })),
-                (n.deleteComment = (e) =>
-                    w("/comment/" + e, {
+                (api.deleteComment = (commentId) =>
+                    fetchJSON("/comment/" + commentId, {
                         method: "DELETE",
                     })),
-                (n.createComment = (e, t) =>
-                    w("/file/" + e + "/comment", {
+                (api.createComment = (fileId, commentData) =>
+                    fetchJSON("/file/" + fileId + "/comment", {
                         method: "POST",
-                        body: t,
+                        body: commentData,
                     })),
-                (n.createReply = (e, t) =>
-                    w("/comment/" + e + "/reply", {
+                (api.createReply = (commentId, replyData) =>
+                    fetchJSON("/comment/" + commentId + "/reply", {
                         method: "POST",
-                        body: t,
+                        body: replyData,
                     })),
-                (n.listAnonymousTokens = () =>
-                    w("/anonymous/token", {
+                (api.listAnonymousTokens = () =>
+                    fetchJSON("/anonymous/token", {
                         method: "GET",
                     })),
-                (n.createAnonymousToken = () =>
-                    w("/anonymous/token", {
+                (api.createAnonymousToken = () =>
+                    fetchJSON("/anonymous/token", {
                         method: "PUT",
                     })),
-                (n.deleteAnonymousToken = (e) =>
-                    w("/anonymous/token/" + e, {
+                (api.deleteAnonymousToken = (tokenId) =>
+                    fetchJSON("/anonymous/token/" + tokenId, {
                         method: "DELETE",
                     })),
-                (n.popup = (e, t) =>
-                    (function (e, t) {
-                        e = F(
-                            e,
+                (api.popup = (url, newtab) =>
+                    (function (url, newtab) {
+                        url = buildUrl(
+                            url,
                             Object.assign(
                                 {},
                                 {
@@ -717,197 +717,197 @@ module.exports = function (module, exports, require) {
                                 }
                             )
                         );
-                        var i = new URL(n.url + e);
-                        const r = {
-                            newtab: t,
+                        var targetUrl = new URL(api.url + url);
+                        const popupOptions = {
+                            newtab: newtab,
                             name: "Sign in - Gravit",
-                            url: i.toString(),
+                            url: targetUrl.toString(),
                         };
-                        if (!t) {
-                            var o = null != window.screenLeft ? window.screenLeft : screen.left,
-                                a = null != window.screenTop ? window.screenTop : screen.top,
-                                l = window.innerWidth
+                        if (!newtab) {
+                            var screenLeft = null != window.screenLeft ? window.screenLeft : screen.left,
+                                screenTop = null != window.screenTop ? window.screenTop : screen.top,
+                                viewportWidth = window.innerWidth
                                     ? window.innerWidth
                                     : document.documentElement.clientWidth
                                       ? document.documentElement.clientWidth
                                       : screen.width,
-                                h = window.innerHeight
+                                viewportHeight = window.innerHeight
                                     ? window.innerHeight
                                     : document.documentElement.clientHeight
                                       ? document.documentElement.clientHeight
                                       : screen.height,
-                                A = l / 2 - 230 + o,
-                                c = h / 2 - 340 + a;
-                            Object.assign(r, {
+                                popupLeft = viewportWidth / 2 - 230 + screenLeft,
+                                popupTop = viewportHeight / 2 - 340 + screenTop;
+                            Object.assign(popupOptions, {
                                 w: 460,
                                 h: 680,
-                                top: c,
-                                left: A,
+                                top: popupTop,
+                                left: popupLeft,
                             });
                         }
-                        var p = k.call(null, r);
-                        if (!p)
+                        var popupWindow = popupFactory.call(null, popupOptions);
+                        if (!popupWindow)
                             return Promise.reject({
-                                code: s.ERR_POPUP_HAS_BEEN_BLOCKED,
+                                code: errorCodes.ERR_POPUP_HAS_BEEN_BLOCKED,
                             });
-                        return new Promise(function (e, t) {
-                            window.addEventListener("message", function i(n) {
-                                const { data: { token } = {} } = n;
+                        return new Promise(function (resolve, reject) {
+                            window.addEventListener("message", function messageListener(event) {
+                                const { data: { token } = {} } = event;
                                 if (token) {
-                                    if (n.source != p && !p && n.origin.indexOf("chrome-extension:") < 0)
-                                        return (console.warn("Token was rejected because there is an invalid source", n.source), t());
-                                    (p && p.close(), window.removeEventListener("message", i), e(n.data));
+                                    if (event.source != popupWindow && !popupWindow && event.origin.indexOf("chrome-extension:") < 0)
+                                        return (console.warn("Token was rejected because there is an invalid source", event.source), reject());
+                                    (popupWindow && popupWindow.close(), window.removeEventListener("message", messageListener), resolve(event.data));
                                 }
                             });
                         });
-                    })((e || "").replace(/^(?!\/)/, "/"), t).then(function (e) {
-                        let { token: t, userSignup } = e;
+                    })((url || "").replace(/^(?!\/)/, "/"), newtab).then(function (authResult) {
+                        let { token: authToken, userSignup } = authResult;
                         return (
-                            v || (R.gApiToken = t),
-                            n.getUser().then((e) =>
-                                Object.assign(e, {
+                            cookiesEnabled || (tokenStore.gApiToken = authToken),
+                            api.getUser().then((user) =>
+                                Object.assign(user, {
                                     new: "true" == userSignup,
                                 })
                             )
                         );
                     })),
-                (n.signin = (e) =>
-                    T(n.url + "/signin", {
+                (api.signin = (credentials) =>
+                    rawFetch(api.url + "/signin", {
                         method: "POST",
-                        body: e,
-                    }).then((e) => (v || (R.gApiToken = e.headers.get("Authorization")), I(e)))),
-                (n.signup = (e) =>
-                    T(n.url + "/signup", {
+                        body: credentials,
+                    }).then((response) => (cookiesEnabled || (tokenStore.gApiToken = response.headers.get("Authorization")), handleResponse(response)))),
+                (api.signup = (credentials) =>
+                    rawFetch(api.url + "/signup", {
                         method: "POST",
                         body: Object.assign(
                             {
                                 locale:
                                     navigator.language || navigator.browserLanguage || navigator.systemLanguage || navigator.userLanguage,
                             },
-                            e
+                            credentials
                         ),
-                    }).then((e) => (v || (R.gApiToken = e.headers.get("Authorization")), I(e)))),
-                (n.recaptchaKey = () => b("/recaptchakey")),
-                (n.initRecaptcha = (e, t) => {
-                    if (((t = t || window), e)) {
-                        var i = document.createElement("iframe");
-                        ((i.src = n.url + "/recaptcha"),
-                            t.document.body.appendChild(i),
-                            i.addEventListener("load", function () {
-                                t.grecaptcha = {
-                                    render: i.contentWindow.window.grecaptcha.render,
-                                    reset: i.contentWindow.window.grecaptcha.reset,
-                                    execute: i.contentWindow.window.grecaptcha.execute,
+                    }).then((response) => (cookiesEnabled || (tokenStore.gApiToken = response.headers.get("Authorization")), handleResponse(response)))),
+                (api.recaptchaKey = () => httpGet("/recaptchakey")),
+                (api.initRecaptcha = (useIframe, targetWindow) => {
+                    if (((targetWindow = targetWindow || window), useIframe)) {
+                        var iframe = document.createElement("iframe");
+                        ((iframe.src = api.url + "/recaptcha"),
+                            targetWindow.document.body.appendChild(iframe),
+                            iframe.addEventListener("load", function () {
+                                targetWindow.grecaptcha = {
+                                    render: iframe.contentWindow.window.grecaptcha.render,
+                                    reset: iframe.contentWindow.window.grecaptcha.reset,
+                                    execute: iframe.contentWindow.window.grecaptcha.execute,
                                 };
                             }));
                     } else {
-                        var r = null;
+                        var widgetElement = null;
                         Object.defineProperty(window, "grecaptchaWidget", {
                             get: () => (
-                                r && document.body.removeChild(r),
-                                (r = document.createElement("div")).setAttribute("class", "g-recaptcha"),
-                                document.body.appendChild(r),
-                                r
+                                widgetElement && document.body.removeChild(widgetElement),
+                                (widgetElement = document.createElement("div")).setAttribute("class", "g-recaptcha"),
+                                document.body.appendChild(widgetElement),
+                                widgetElement
                             ),
                         });
-                        var o = document.createElement("script");
-                        (o.setAttribute("src", "https://www.google.com/recaptcha/api.js?render=explicit"),
-                            o.setAttribute("async", ""),
-                            o.setAttribute("defer", ""));
+                        var scriptElement = document.createElement("script");
+                        (scriptElement.setAttribute("src", "https://www.google.com/recaptcha/api.js?render=explicit"),
+                            scriptElement.setAttribute("async", ""),
+                            scriptElement.setAttribute("defer", ""));
                     }
                 }),
-                (n.resetPassword = (e) =>
-                    w("/reset-password", {
+                (api.resetPassword = (email) =>
+                    fetchJSON("/reset-password", {
                         method: "POST",
-                        body: e,
+                        body: email,
                     })),
-                (n.updatePassword = (e, t) =>
-                    w("/reset-password/".concat(t), {
+                (api.updatePassword = (passwordData, resetToken) =>
+                    fetchJSON("/reset-password/".concat(resetToken), {
                         method: "POST",
-                        body: e,
+                        body: passwordData,
                     })),
-                (n.signout = n.logout = () => b("/signout")),
-                (n.formatError = (e) => {
-                    let t;
-                    if (("string" == typeof e && (t = e), !t && e && e.message && (t = e.message), !t && e && e.errors)) {
-                        const i = new Map(e.errors);
-                        t = Array.from(i.values()).join("<br>");
+                (api.signout = api.logout = () => httpGet("/signout")),
+                (api.formatError = (error) => {
+                    let message;
+                    if (("string" == typeof error && (message = error), !message && error && error.message && (message = error.message), !message && error && error.errors)) {
+                        const errorsMap = new Map(error.errors);
+                        message = Array.from(errorsMap.values()).join("<br>");
                     }
-                    return (!t && e && (t = e), t);
+                    return (!message && error && (message = error), message);
                 }),
-                (n.getLinkLearnMorePro = function () {
-                    let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
-                        t = navigator.userAgent.match(/Electron/) ? "desktop" : "web";
+                (api.getLinkLearnMorePro = function () {
+                    let options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
+                        platform = navigator.userAgent.match(/Electron/) ? "desktop" : "web";
                     return (
-                        location.origin && 0 === location.origin.indexOf("chrome") && (t = "chrome"),
-                        Object.assign(e, {
-                            platform: t,
+                        location.origin && 0 === location.origin.indexOf("chrome") && (platform = "chrome"),
+                        Object.assign(options, {
+                            platform: platform,
                         }),
-                        n.url + "/get-pro/learnmore" + buildQueryParams(e)
+                        api.url + "/get-pro/learnmore" + buildQueryParams(options)
                     );
                 }));
-            const D = (e) => {
-                let { newtab, top, left, w: r, h: o, url: a, name } = e;
-                var l;
+            const openPopupWindow = (options) => {
+                let { newtab, top, left, w: width, h: height, url: url, name } = options;
+                var windowRef;
                 return (
-                    (l = newtab
-                        ? window.open(a, name)
-                        : window.open(a, name, "scrollbars=yes, width=" + r + ", height=" + o + ", top=" + top + ", left=" + left)) &&
-                        l.focus &&
-                        l.focus(),
-                    l
+                    (windowRef = newtab
+                        ? window.open(url, name)
+                        : window.open(url, name, "scrollbars=yes, width=" + width + ", height=" + height + ", top=" + top + ", left=" + left)) &&
+                        windowRef.focus &&
+                        windowRef.focus(),
+                    windowRef
                 );
             };
-            let k = D;
-            ((n.setOAuthFactory = (e) => {
-                k = e || D;
+            let popupFactory = openPopupWindow;
+            ((api.setOAuthFactory = (factory) => {
+                popupFactory = factory || openPopupWindow;
             }),
-                (n.getPresetTemplate = (e) => b("/assets/templates/pod", e)),
-                (n.getUnsplashPhotos = (e) => b("/unsplash/featured", e)),
-                (n.searchUnsplashPhotos = (e) => b("/unsplash/search/photos", e)),
-                (n.getUnsplashPhotoUrl = (e) => b("/unsplash/download/photo", e)),
-                (n.getExampleFiles = (e) => b("/example-files", e)),
-                (n.getUserName = (e) => getUserName(e, true)),
-                (n.listAutoSaves = (e) => b("/file/".concat(e, "/autosave/versions"))),
-                (n.getAutoSave = (e, t) => b("/file/".concat(e, "/autosave").concat(t ? "/version/".concat(t) : ""))),
-                (n.getAutoSaveThumbnail = (e, t) => b("/file/".concat(e, "/autosave/thumbnail").concat(t ? "/version/".concat(t) : ""))),
-                (n.uploadAutoSave = (e, t) =>
-                    w("/file/".concat(e, "/autosave"), {
+                (api.getPresetTemplate = (options) => httpGet("/assets/templates/pod", options)),
+                (api.getUnsplashPhotos = (options) => httpGet("/unsplash/featured", options)),
+                (api.searchUnsplashPhotos = (query) => httpGet("/unsplash/search/photos", query)),
+                (api.getUnsplashPhotoUrl = (options) => httpGet("/unsplash/download/photo", options)),
+                (api.getExampleFiles = (options) => httpGet("/example-files", options)),
+                (api.getUserName = (user) => getUserName(user, true)),
+                (api.listAutoSaves = (fileId) => httpGet("/file/".concat(fileId, "/autosave/versions"))),
+                (api.getAutoSave = (fileId, version) => httpGet("/file/".concat(fileId, "/autosave").concat(version ? "/version/".concat(version) : ""))),
+                (api.getAutoSaveThumbnail = (fileId, version) => httpGet("/file/".concat(fileId, "/autosave/thumbnail").concat(version ? "/version/".concat(version) : ""))),
+                (api.uploadAutoSave = (fileId, md5) =>
+                    fetchJSON("/file/".concat(fileId, "/autosave"), {
                         method: "PUT",
                         body: {
-                            md5: t,
+                            md5: md5,
                         },
                     })),
-                (n.commitAutoSaveFileUpdate = (e) =>
-                    w("/file/".concat(e, "/autosave/commit"), {
+                (api.commitAutoSaveFileUpdate = (fileId) =>
+                    fetchJSON("/file/".concat(fileId, "/autosave/commit"), {
                         method: "POST",
                     })),
-                (n.commitManualFileUpdate = function (e) {
-                    let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [];
-                    return w("/file/".concat(e, "/manual/commit"), {
+                (api.commitManualFileUpdate = function (fileId) {
+                    let types = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [];
+                    return fetchJSON("/file/".concat(fileId, "/manual/commit"), {
                         method: "POST",
                         body: {
-                            types: t,
+                            types: types,
                         },
                     });
                 }),
-                (n.isSharePointFileId = isSharePointFileId),
-                (n.isGoogleDriveFileId = isGoogleDriveFileId),
-                (n.isSharePointFile = isSharePointFile),
-                (n.isGoogleDriveFile = isGoogleDriveFile),
-                (n.sameDomain = sameDomain),
-                (n.isExternalFileId = isExternalFileId),
-                (n.isExternalFile = isExternalFile),
-                (n.getRichTooltipVideoURL = (e) => "".concat(n.url, "/rich-tooltip-video/").concat(e)),
-                (n.fetchTranslationsURL = (e, t) => b("/i18n-url/".concat(e, "/").concat(t))),
-                (n.cloudServices = {
+                (api.isSharePointFileId = isSharePointFileId),
+                (api.isGoogleDriveFileId = isGoogleDriveFileId),
+                (api.isSharePointFile = isSharePointFile),
+                (api.isGoogleDriveFile = isGoogleDriveFile),
+                (api.sameDomain = sameDomain),
+                (api.isExternalFileId = isExternalFileId),
+                (api.isExternalFile = isExternalFile),
+                (api.getRichTooltipVideoURL = (videoId) => "".concat(api.url, "/rich-tooltip-video/").concat(videoId)),
+                (api.fetchTranslationsURL = (lang, key) => httpGet("/i18n-url/".concat(lang, "/").concat(key))),
+                (api.cloudServices = {
                     googleDrive: {
-                        getAccessToken: () => b("/cloudservices/googledrive/access"),
-                        getClientConfiguration: () => b("/cloudservices/googledrive/configuration"),
-                        openFilePicker: (e) => {
-                            const t = null != window.screenLeft ? window.screenLeft : screen.left,
-                                i = null != window.screenTop ? window.screenTop : screen.top,
-                                r =
+                        getAccessToken: () => httpGet("/cloudservices/googledrive/access"),
+                        getClientConfiguration: () => httpGet("/cloudservices/googledrive/configuration"),
+                        openFilePicker: (fileId) => {
+                            const screenLeft = null != window.screenLeft ? window.screenLeft : screen.left,
+                                screenTop = null != window.screenTop ? window.screenTop : screen.top,
+                                popupLeft =
                                     (window.innerWidth
                                         ? window.innerWidth
                                         : document.documentElement.clientWidth
@@ -915,8 +915,8 @@ module.exports = function (module, exports, require) {
                                           : screen.width) /
                                         2 -
                                     512 +
-                                    t,
-                                o =
+                                    screenLeft,
+                                popupTop =
                                     (window.innerHeight
                                         ? window.innerHeight
                                         : document.documentElement.clientHeight
@@ -924,25 +924,25 @@ module.exports = function (module, exports, require) {
                                           : screen.height) /
                                         2 -
                                     384 +
-                                    i,
-                                a = "".concat(n.url, "/googleapi/picker/").concat(encodeURIComponent(e), "?lang=").concat(n.getLanguage()),
-                                s = window.open(a, "Google Picker", "scrollbars=yes, width=1024, height=768, top=" + o + ", left=" + r);
-                            return (window.focus && s.focus(), s);
+                                    screenTop,
+                                pickerUrl = "".concat(api.url, "/googleapi/picker/").concat(encodeURIComponent(fileId), "?lang=").concat(api.getLanguage()),
+                                pickerWindow = window.open(pickerUrl, "Google Picker", "scrollbars=yes, width=1024, height=768, top=" + popupTop + ", left=" + popupLeft);
+                            return (window.focus && pickerWindow.focus(), pickerWindow);
                         },
                     },
                     googleAPI: {
-                        getToken: (e) => b("/googleapi/token?code=".concat(e)),
-                        getRefreshToken: (e) => b("/googleapi/token?refresh_token=".concat(e)),
-                        getTokenInfo: (e) =>
-                            T("https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=".concat(e), {
+                        getToken: (code) => httpGet("/googleapi/token?code=".concat(code)),
+                        getRefreshToken: (refreshToken) => httpGet("/googleapi/token?refresh_token=".concat(refreshToken)),
+                        getTokenInfo: (accessToken) =>
+                            rawFetch("https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=".concat(accessToken), {
                                 method: "GET",
-                            }).then(I),
-                        getUserInfo: (e) =>
-                            T("https://www.googleapis.com/oauth2/v3/userinfo?access_token=".concat(e), {
+                            }).then(handleResponse),
+                        getUserInfo: (accessToken) =>
+                            rawFetch("https://www.googleapis.com/oauth2/v3/userinfo?access_token=".concat(accessToken), {
                                 method: "GET",
-                            }).then(I),
-                        revokeToken: (e) =>
-                            T("https://accounts.google.com/o/oauth2/revoke?token=".concat(e), {
+                            }).then(handleResponse),
+                        revokeToken: (token) =>
+                            rawFetch("https://accounts.google.com/o/oauth2/revoke?token=".concat(token), {
                                 method: "GET",
                                 headers: {
                                     "Content-type": "application/x-www-form-urlencoded",
@@ -950,26 +950,26 @@ module.exports = function (module, exports, require) {
                             }),
                     },
                 }),
-                (n.client = {
-                    getConfiguration: () => b("/client/configuration"),
+                (api.client = {
+                    getConfiguration: () => httpGet("/client/configuration"),
                 }),
-                (n.HTTP_STATUS_CODES = require(578)),
-                (n.ERROR_CODES = s),
-                (n.COLLABORATION_EVENTS = require(953)),
-                (n.AUTHENTICATION_EVENTS = require(954)),
-                (n.PAYMENT_EVENTS = require(955)),
-                require(956)(n),
-                require(957)(n),
-                require(959)(n),
-                require(960)(n),
-                require(961)(n),
-                require(962)(n),
-                require(963)(n),
-                require(964)(n),
-                require(965)(n),
-                require(966)(n),
-                require(967)(n),
-                require(968)(n),
-                require(969)(n),
-                require(970)(n));
+                (api.HTTP_STATUS_CODES = require(578)),
+                (api.ERROR_CODES = errorCodes),
+                (api.COLLABORATION_EVENTS = require(953)),
+                (api.AUTHENTICATION_EVENTS = require(954)),
+                (api.PAYMENT_EVENTS = require(955)),
+                require(956)(api),
+                require(957)(api),
+                require(959)(api),
+                require(960)(api),
+                require(961)(api),
+                require(962)(api),
+                require(963)(api),
+                require(964)(api),
+                require(965)(api),
+                require(966)(api),
+                require(967)(api),
+                require(968)(api),
+                require(969)(api),
+                require(970)(api));
         };

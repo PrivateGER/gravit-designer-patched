@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(19), require(3), require(26));
         var GObject = require(1),
             GPlatform = require(15),
-            GSaveAction = require(40),
+            Utils = require(40),
             GCategory = require(18),
             s = require(106);
         require(811 /* GGroupAction */);
@@ -81,13 +81,13 @@ module.exports = function (module, exports, require) {
                         try {
                             l = new Set();
                             for (s = 0; s < r.length; ++s) l.add(r[s].getParent());
-                            (0, GSaveAction.blockChanges)(n, l, p, i);
+                            (0, Utils.blockChanges)(n, l, p, i);
                             for (s = 0; s < r.length; ++s) {
                                 var g;
                                 ((g = r[s]).getParent().removeChild(g), i.appendChild(g));
                             }
                         } finally {
-                            (0, GSaveAction.releaseChanges)(n, l, p, i);
+                            (0, Utils.releaseChanges)(n, l, p, i);
                         }
                     }
                 }

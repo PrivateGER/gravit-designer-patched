@@ -2,71 +2,71 @@ module.exports = function (module, exports, require) {
         "use strict";
         var _interopRequireDefault = require(16);
         (require(328 /* polyfill:Array */), require(96 /* polyfill:JSON */), require(865 /* polyfill:Number */), require(193), require(57), require(3), require(4), require(13));
-        var i = require(53),
+        var editorModule = require(53),
             GObject = require(1),
             GPlatform = require(15),
-            s = require(67),
-            l = _interopRequireDefault(require(340)),
-            c = _interopRequireDefault(require(807)),
-            d = require(1161),
-            u = _interopRequireDefault(require(565)),
-            p = require(123),
-            g = require(1263),
-            h = require(1526),
-            f = require(450);
-        const m = require(607),
+            richTooltip = require(67),
+            GTouchTool = _interopRequireDefault(require(340)),
+            SidebarEvent = _interopRequireDefault(require(807)),
+            dragDeleteIcon = require(1161),
+            DragMode = _interopRequireDefault(require(565)),
+            GProperties = require(123),
+            colorSliderStops = require(1263),
+            GEffectsPanel = require(1526),
+            ContextMenuContext = require(450);
+        const PropertyPanelIds = require(607),
             { SidebarsIds } = require(198 /* SidebarsIds */);
-        var v = null,
-            _ = null,
-            b = null,
-            w = null,
-            C = null,
-            x = null,
-            S = null;
-        function E() {
+        var mostUsedLabel = null,
+            blurLabel = null,
+            artisticLabel = null,
+            adjustLabel = null,
+            distortionLabel = null,
+            otherLabel = null,
+            shadowLabel = null;
+        function GEffectProperties() {
             ((this._elements = []),
-                (v = GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "text.most-used"))),
-                (_ = GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "text.blur"))),
-                (b = GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "text.artistic"))),
-                (w = GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "text.adjust"))),
-                (C = GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "text.distortion"))),
-                (x = GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "text.other"))),
-                (S = GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "text.shadow"))),
-                V || (V = H()));
+                (mostUsedLabel = GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "text.most-used"))),
+                (blurLabel = GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "text.blur"))),
+                (artisticLabel = GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "text.artistic"))),
+                (adjustLabel = GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "text.adjust"))),
+                (distortionLabel = GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "text.distortion"))),
+                (otherLabel = GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "text.other"))),
+                (shadowLabel = GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "text.shadow"))),
+                effectDefinitions || (effectDefinitions = buildEffectDefinitions()));
         }
-        (GObject.GObject.inherit(E, p),
-            (E.EngCat = (e) =>
-                e === v
+        (GObject.GObject.inherit(GEffectProperties, GProperties),
+            (GEffectProperties.EngCat = (e) =>
+                e === mostUsedLabel
                     ? "MostUsed"
-                    : e === _
+                    : e === blurLabel
                       ? "Blur"
-                      : e === b
+                      : e === artisticLabel
                         ? "Artistic"
-                        : e === w
+                        : e === adjustLabel
                           ? "Adjust"
-                          : e === C
+                          : e === distortionLabel
                             ? "Distortion"
-                            : e === x
+                            : e === otherLabel
                               ? "Other"
                               : "Shadow"),
-            (E.prototype._panel = null),
-            (E.prototype._toolbar = null),
-            (E.prototype._document = null),
-            (E.prototype._elements = null),
-            (E.prototype._addEffectMenu = null),
-            (E.prototype._effectsPanel = null),
-            (E.prototype._disableFx = null),
-            (E.prototype._defaultEffects = [GObject.GDropShadowEffect, GObject.GInnerShadowEffect, GObject.GBlurEffect, GObject.GGLColorAdjustEffect]),
-            (E.prototype._styleEditorChange = false),
-            (E.prototype._styleEdOn = false),
-            (E.prototype._ownChange = false),
-            (E.prototype._chooserElem = null),
-            (E.prototype.init = function (e, t) {
-                ((this._toolbar = t.addClass("list-toolbar effects-toolbar")),
+            (GEffectProperties.prototype._panel = null),
+            (GEffectProperties.prototype._toolbar = null),
+            (GEffectProperties.prototype._document = null),
+            (GEffectProperties.prototype._elements = null),
+            (GEffectProperties.prototype._addEffectMenu = null),
+            (GEffectProperties.prototype._effectsPanel = null),
+            (GEffectProperties.prototype._disableFx = null),
+            (GEffectProperties.prototype._defaultEffects = [GObject.GDropShadowEffect, GObject.GInnerShadowEffect, GObject.GBlurEffect, GObject.GGLColorAdjustEffect]),
+            (GEffectProperties.prototype._styleEditorChange = false),
+            (GEffectProperties.prototype._styleEdOn = false),
+            (GEffectProperties.prototype._ownChange = false),
+            (GEffectProperties.prototype._chooserElem = null),
+            (GEffectProperties.prototype.init = function (panelElement, toolbarElement) {
+                ((this._toolbar = toolbarElement.addClass("list-toolbar effects-toolbar")),
                     this._createAddEffectMenu(),
-                    (this._panel = e.addClass("effects-properties-panel")),
+                    (this._panel = panelElement.addClass("effects-properties-panel")),
                     this.setTouchTools([
-                        new l.default({
+                        new GTouchTool.default({
                             id: "effect",
                             icon: "gravit-icon-touch-effect-panel",
                             panel: this._panel,
@@ -86,7 +86,7 @@ module.exports = function (module, exports, require) {
                                 (gDesigner.stats("effects_open_effectsmenu", "main"), n._openEffectsMenu(this));
                             })
                             .gRichTooltip(
-                                s.GRichTooltipConfig.from({
+                                richTooltip.GRichTooltipConfig.from({
                                     title: GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "text.add-effect-tooltip-title")),
                                     description: GObject.GLocale.get(
                                         new GObject.GLocaleKey("GEffectProperties", "text.add-effect-tooltip-description")
@@ -107,7 +107,7 @@ module.exports = function (module, exports, require) {
                                     "effects_add_effectsmenu",
                                     (e && GObject.GLocale.getValue((t && t.i18n) || e, "name", "unknown", 0)) || "unkn"
                                 ),
-                                    i.GEditor.tryRunTransaction(
+                                    editorModule.GEditor.tryRunTransaction(
                                         this._elements[0],
                                         function () {
                                             for (var e = 0; e < this._elements.length; ++e) {
@@ -116,7 +116,7 @@ module.exports = function (module, exports, require) {
                                                     this._elements[e].getEffects().appendChild(t),
                                                     n._addEffectMenu.close());
                                                 const i = gDesigner.getRightSidebars().getSidebar(SidebarsIds.GInspectorSidebar);
-                                                i.trigger(new c.default(c.default.Type.ChildAdded, i));
+                                                i.trigger(new SidebarEvent.default(SidebarEvent.default.Type.ChildAdded, i));
                                             }
                                         }.bind(this),
                                         GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "action.add"))
@@ -124,23 +124,23 @@ module.exports = function (module, exports, require) {
                             }).bind(this)();
                         }.bind(this),
                         r = 0;
-                    r < V.length;
+                    r < effectDefinitions.length;
                     ++r
                 ) {
-                    var d = V[r];
+                    var d = effectDefinitions[r];
                     $.inArray(d.clazz, this._defaultEffects) > -1 && this._createDefaultEffect(false, d, o);
                 }
                 (this._createDefaultEffect(true),
                     gDesigner
                         .getWorkspace()
                         .getStyleEdManager()
-                        .addEventListener(i.GStyleEdManager.EditorEvent, this._styleEditorEventHandler, this),
+                        .addEventListener(editorModule.GStyleEdManager.EditorEvent, this._styleEditorEventHandler, this),
                     this._panel.data("contextmenu", true));
             }),
-            (E.prototype._openEffectsMenu = function (e) {
-                this._addEffectMenu.open(e);
+            (GEffectProperties.prototype._openEffectsMenu = function (anchorElement) {
+                this._addEffectMenu.open(anchorElement);
             }),
-            (E.prototype.update = function (e, t, n) {
+            (GEffectProperties.prototype.update = function (document, elements, options) {
                 if (this._styleEditorChange) return ((this._styleEditorChange = false), true);
                 if (this._ownChange) return true;
                 if (
@@ -155,54 +155,54 @@ module.exports = function (module, exports, require) {
                         (this._elements = null),
                         this._invalidateEffects()),
                     (this._elements = []),
-                    e && t && t.length)
+                    document && elements && elements.length)
                 ) {
-                    for (var o = 0; o < t.length; ++o)
-                        t[o].hasMixin(GObject.GStylable) &&
-                            t[o].getStylePropertySets().indexOf(GObject.GStylable.PropertySet.Effects) >= 0 &&
-                            this._elements.push(t[o]);
+                    for (var o = 0; o < elements.length; ++o)
+                        elements[o].hasMixin(GObject.GStylable) &&
+                            elements[o].getStylePropertySets().indexOf(GObject.GStylable.PropertySet.Effects) >= 0 &&
+                            this._elements.push(elements[o]);
                     if (this._elements.length)
                         return (
-                            (this._document = e),
+                            (this._document = document),
                             this._document.getScene().addEventListener(GObject.GNode.AfterInsertEvent, this._afterInsert, this),
                             this._document.getScene().addEventListener(GObject.GNode.BeforeRemoveEvent, this._beforeRemove, this),
                             this._document
                                 .getScene()
                                 .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
-                            this._invalidateEffects(n),
+                            this._invalidateEffects(options),
                             true
                         );
                 }
                 return false;
             }),
-            (E.prototype._styleEditorEventHandler = function (e) {
-                this._styleEdOn && e.type == i.GStyleEdManager.EditorEventType.PrepareModifiedEvent && (this._styleEditorChange = true);
+            (GEffectProperties.prototype._styleEditorEventHandler = function (event) {
+                this._styleEdOn && event.type == editorModule.GStyleEdManager.EditorEventType.PrepareModifiedEvent && (this._styleEditorChange = true);
             }),
-            (E.prototype._afterInsert = function (e) {
-                e.node instanceof GObject.GStylable.Effect &&
-                    e.node.getOwnerStylable() === this._elements[0] &&
-                    (this._insertEffect(e.node), this._updateToolbar());
+            (GEffectProperties.prototype._afterInsert = function (event) {
+                event.node instanceof GObject.GStylable.Effect &&
+                    event.node.getOwnerStylable() === this._elements[0] &&
+                    (this._insertEffect(event.node), this._updateToolbar());
             }),
-            (E.prototype._beforeRemove = function (e) {
-                e.node instanceof GObject.GStylable.Effect &&
-                    e.node.getOwnerStylable() === this._elements[0] &&
-                    (this._removeEffect(e.node), this._updateToolbar());
+            (GEffectProperties.prototype._beforeRemove = function (event) {
+                event.node instanceof GObject.GStylable.Effect &&
+                    event.node.getOwnerStylable() === this._elements[0] &&
+                    (this._removeEffect(event.node), this._updateToolbar());
             }),
-            (E.prototype._afterPropertiesChange = function (e) {
-                (!e.temporary || e.node instanceof GObject.GOverlayEffect) &&
-                    e.node instanceof GObject.GStylable.Effect &&
-                    e.node.getOwnerStylable() === this._elements[0] &&
-                    this._updateEffect(e.node);
+            (GEffectProperties.prototype._afterPropertiesChange = function (event) {
+                (!event.temporary || event.node instanceof GObject.GOverlayEffect) &&
+                    event.node instanceof GObject.GStylable.Effect &&
+                    event.node.getOwnerStylable() === this._elements[0] &&
+                    this._updateEffect(event.node);
             }),
-            (E.prototype._iterateEqualEffects = function (e, t, n) {
-                for (var o = e.getOwnerStylable(), i = e.getParent().getIndexOfChild(e), r = 0; r < this._elements.length; ++r)
-                    if (!o || this._elements[r] !== o || n)
+            (GEffectProperties.prototype._iterateEqualEffects = function (effect, callback, matchAll) {
+                for (var o = effect.getOwnerStylable(), i = effect.getParent().getIndexOfChild(effect), r = 0; r < this._elements.length; ++r)
+                    if (!o || this._elements[r] !== o || matchAll)
                         for (var s = this._elements[r].getEffects(), l = s.getFirstChild(); null !== l; l = l.getNext())
-                            (l !== e || n) &&
-                                ((GObject.GUtil.equals(l, e) && !n) || (l.constructor === e.constructor && s.getIndexOfChild(l) === i)) &&
-                                t(l);
+                            (l !== effect || matchAll) &&
+                                ((GObject.GUtil.equals(l, effect) && !matchAll) || (l.constructor === effect.constructor && s.getIndexOfChild(l) === i)) &&
+                                callback(l);
             }),
-            (E.prototype._insertEffect = function (e, t) {
+            (GEffectProperties.prototype._insertEffect = function (effect, options) {
                 var n = this,
                     o = null,
                     s = null,
@@ -211,69 +211,69 @@ module.exports = function (module, exports, require) {
                     g = 0,
                     h = null,
                     v = function () {
-                        i.GEditor.tryRunTransaction(
-                            e,
+                        editorModule.GEditor.tryRunTransaction(
+                            effect,
                             function () {
-                                (this._iterateEqualEffects(e, function (t) {
-                                    t.setProperty("cl", !e.getProperty("cl"));
+                                (this._iterateEqualEffects(effect, function (t) {
+                                    t.setProperty("cl", !effect.getProperty("cl"));
                                 }),
-                                    e.setProperty("cl", !e.getProperty("cl")));
+                                    effect.setProperty("cl", !effect.getProperty("cl")));
                             }.bind(this),
                             GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "action.toggle-collapse"))
                         );
                     }.bind(this),
                     _ = function (t) {
                         (t.stopPropagation(),
-                            i.GEditor.tryRunTransaction(
-                                e,
+                            editorModule.GEditor.tryRunTransaction(
+                                effect,
                                 function () {
-                                    (this._iterateEqualEffects(e, function (t) {
-                                        t.setProperty("vs", !e.getProperty("vs"));
+                                    (this._iterateEqualEffects(effect, function (t) {
+                                        t.setProperty("vs", !effect.getProperty("vs"));
                                     }),
-                                        e.setProperty("vs", !e.getProperty("vs")));
+                                        effect.setProperty("vs", !effect.getProperty("vs")));
                                 }.bind(this),
                                 GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "action.toggle-visibility"))
                             ));
                     }.bind(this),
                     b = function (t) {
-                        var n = V.find((t) => e instanceof t.clazz);
-                        (gDesigner.stats("effects_delete_effect", GObject.GLocale.getValue((n && n.i18n) || e, "name", e.getNodeName(), 666)),
+                        var n = effectDefinitions.find((t) => effect instanceof t.clazz);
+                        (gDesigner.stats("effects_delete_effect", GObject.GLocale.getValue((n && n.i18n) || effect, "name", effect.getNodeName(), 666)),
                             t.stopPropagation(),
-                            i.GEditor.tryRunTransaction(
-                                e,
+                            editorModule.GEditor.tryRunTransaction(
+                                effect,
                                 function () {
-                                    (this._iterateEqualEffects(e, function (e) {
+                                    (this._iterateEqualEffects(effect, function (e) {
                                         e.getParent().removeChild(e);
                                     }),
-                                        e.getParent().removeChild(e),
+                                        effect.getParent().removeChild(effect),
                                         gDesigner.setMouseOverContext(null));
                                 }.bind(this),
                                 GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "action.remove"))
                             ));
                         const o = gDesigner.getRightSidebars().getSidebar(SidebarsIds.GInspectorSidebar);
-                        o.trigger(new c.default(c.default.Type.ChildRemoved, o));
+                        o.trigger(new SidebarEvent.default(SidebarEvent.default.Type.ChildRemoved, o));
                     }.bind(this),
                     w = null,
-                    C = e.getPrevious();
+                    C = effect.getPrevious();
                 C &&
                     this._effectsPanel.find(".effect-block").each(function (e, t) {
                         var n = $(t);
                         if (n.data("effect") === C) return ((w = n), false);
                     });
-                var x = U(e),
+                var x = getEffectDefinition(effect),
                     S = $("<div/>").addClass("g-drop-indicator"),
                     E = $("<div></div>").addClass("effect-header").addClass("g-cursor-hand-open"),
                     P = $("<div></div>")
                         .addClass("effect-block")
-                        .attr("data-drag-mode", u.default.PRESS_AND_HOLD)
-                        .data("effect", e)
+                        .attr("data-drag-mode", DragMode.default.PRESS_AND_HOLD)
+                        .data("effect", effect)
                         .attr("draggable", "true")
                         .on("mousedown", function (e) {
-                            ((A =
+                            ((dragAllowed =
                                 $(e.target).hasClass("effect-title") ||
                                 $(e.target).hasClass("gravit-icon-drag-indicator") ||
                                 $(e.target).hasClass("effect-header")),
-                                $(e.target).closest(".effect-block").toggleClass("g-draggable-disabled", !A));
+                                $(e.target).closest(".effect-block").toggleClass("g-draggable-disabled", !dragAllowed));
                         })
                         .on("click", function (e) {
                             var t = $(e.target).parents(".effect-block");
@@ -284,7 +284,7 @@ module.exports = function (module, exports, require) {
                         })
                         .on("dragstart", function (e) {
                             var t = h || e.target;
-                            if (!A || (gDesigner.isTouchEnabled() && !$(t).closest(".effect-header").length))
+                            if (!dragAllowed || (gDesigner.isTouchEnabled() && !$(t).closest(".effect-header").length))
                                 return (e.preventDefault(), void e.stopPropagation());
                             var c = $(e.target).closest(".effect-block"),
                                 d = c.offset(),
@@ -295,7 +295,7 @@ module.exports = function (module, exports, require) {
                                 (p = e.clientX - d.left),
                                 (g = e.clientY - d.top),
                                 u.stopPropagation(),
-                                (T = c.data("effect")),
+                                (draggedEffect = c.data("effect")),
                                 (u.dataTransfer.effectAllowed = "move"),
                                 u.dataTransfer.setData("text/plain", "dummy_data"),
                                 n._effectsPanel.find(".effect-block").each(function (e, t) {
@@ -304,15 +304,15 @@ module.exports = function (module, exports, require) {
                                             .addClass("grid-drag-overlay")
                                             .on("dragenter", function () {
                                                 var e = $(this.parentNode).data("effect");
-                                                if (G(this.parentNode)) {
+                                                if (isValidDropTarget(this.parentNode)) {
                                                     if (
                                                         (u.preventDefault(),
                                                         u.stopPropagation(),
                                                         (u.dataTransfer.dropEffect = "move"),
-                                                        T && e && T.getParent() === e.getParent())
+                                                        draggedEffect && e && draggedEffect.getParent() === e.getParent())
                                                     ) {
-                                                        var t = T.getParent(),
-                                                            n = t.getIndexOfChild(T),
+                                                        var t = draggedEffect.getParent(),
+                                                            n = t.getIndexOfChild(draggedEffect),
                                                             o = t.getIndexOfChild(e);
                                                         n !== o &&
                                                             (n < o ? S.insertBefore(this.parentNode) : S.insertAfter(this.parentNode));
@@ -320,11 +320,11 @@ module.exports = function (module, exports, require) {
                                                 } else S.remove();
                                             })
                                             .on("dragleave", function () {
-                                                G(this.parentNode) && $(this).parent().find(".g-drop-indicator").remove();
+                                                isValidDropTarget(this.parentNode) && $(this).parent().find(".g-drop-indicator").remove();
                                             })
                                             .on("dragover", function (e) {
                                                 var t = e.originalEvent;
-                                                G(this.parentNode) &&
+                                                isValidDropTarget(this.parentNode) &&
                                                     (t.preventDefault(), t.stopPropagation(), (t.dataTransfer.dropEffect = "move"));
                                             })
                                             .on("drop", function (e) {
@@ -332,31 +332,31 @@ module.exports = function (module, exports, require) {
                                                 if (
                                                     (n._panel.find(".g-drop-indicator").remove(),
                                                     n._panel.find(".grid-drag-overlay").remove(),
-                                                    T && t && T.getParent() === t.getParent())
+                                                    draggedEffect && t && draggedEffect.getParent() === t.getParent())
                                                 ) {
-                                                    var o = T.getParent(),
-                                                        s = o.getIndexOfChild(T),
+                                                    var o = draggedEffect.getParent(),
+                                                        s = o.getIndexOfChild(draggedEffect),
                                                         l = o.getIndexOfChild(t);
-                                                    i.GEditor.tryRunTransaction(
+                                                    editorModule.GEditor.tryRunTransaction(
                                                         o,
                                                         function () {
                                                             if (GPlatform.GPlatform.modifiers.shiftKey) {
-                                                                var e = T.clone();
+                                                                var e = draggedEffect.clone();
                                                                 o.insertChild(e, s < l ? t.getNext() : t);
-                                                            } else s !== l && (o.removeChild(T), o.insertChild(T, s < l ? t.getNext() : t));
+                                                            } else s !== l && (o.removeChild(draggedEffect), o.insertChild(draggedEffect, s < l ? t.getNext() : t));
                                                         },
                                                         GPlatform.GPlatform.modifiers.shiftKey
                                                             ? GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "action.duplicate"))
                                                             : GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "action.move"))
                                                     );
                                                 }
-                                                T = null;
+                                                draggedEffect = null;
                                             })
                                     );
                                 }));
                         })
                         .on("drag", function (e) {
-                            (0, d.handleDragForDeleteIcon)(e, o, s, l, p, g);
+                            (0, dragDeleteIcon.handleDragForDeleteIcon)(e, o, s, l, p, g);
                         })
                         .on("dragend", function (e) {
                             var t = e.originalEvent;
@@ -366,13 +366,13 @@ module.exports = function (module, exports, require) {
                                 o && o.css("display", "none"),
                                 (o = null),
                                 t.stopPropagation(),
-                                T &&
-                                    i.GEditor.tryRunTransaction(
+                                draggedEffect &&
+                                    editorModule.GEditor.tryRunTransaction(
                                         n._elements[0],
                                         function () {
                                             var e = [];
                                             (n._iterateEqualEffects(
-                                                T,
+                                                draggedEffect,
                                                 function (t) {
                                                     e.push(t);
                                                 },
@@ -392,7 +392,7 @@ module.exports = function (module, exports, require) {
                                 .append(
                                     $("<div></div>")
                                         .addClass("effect-title g-cursor-hand-open")
-                                        .append($("<label></label>").append($("<span></span>").text(e.getNodeNameTranslated())))
+                                        .append($("<label></label>").append($("<span></span>").text(effect.getNodeNameTranslated())))
                                 )
                                 .append(
                                     $("<div></div>")
@@ -409,7 +409,7 @@ module.exports = function (module, exports, require) {
                                                     .addClass("gravit-icon-" + (t ? "display" : "hide")),
                                                 _(e));
                                         })
-                                        .append($("<span></span>").addClass("gravit-icon-" + (e.getProperty("vs") ? "display" : "hide")))
+                                        .append($("<span></span>").addClass("gravit-icon-" + (effect.getProperty("vs") ? "display" : "hide")))
                                 )
                                 .append(
                                     $("<div></div>")
@@ -426,7 +426,7 @@ module.exports = function (module, exports, require) {
                                         .on(
                                             "click",
                                             function (e) {
-                                                ((e.data = { context: f.EffectPropertyPanel }), P.trigger("contextmenu", [e]));
+                                                ((e.data = { context: ContextMenuContext.EffectPropertyPanel }), P.trigger("contextmenu", [e]));
                                             }.bind(this)
                                         )
                                 )
@@ -452,32 +452,32 @@ module.exports = function (module, exports, require) {
                                                     .addClass("gravit-icon-touch-" + (t ? "show" : "hide")),
                                                 _(e));
                                         })
-                                        .append($("<span></span>").addClass("gravit-icon-touch-" + (e.getProperty("vs") ? "show" : "hide")))
+                                        .append($("<span></span>").addClass("gravit-icon-touch-" + (effect.getProperty("vs") ? "show" : "hide")))
                                 )
                         );
                 if (x.createSettings) {
                     var D = function (t, n, o, i) {
                             if (o)
-                                (this._iterateEqualEffects(e, function (e) {
+                                (this._iterateEqualEffects(effect, function (e) {
                                     e.setProperties(t, n, false, false, true);
                                 }),
-                                    e.setProperties(t, n, false, false, true));
+                                    effect.setProperties(t, n, false, false, true));
                             else {
                                 if (!this._document) return;
-                                gDesigner.stats("effects_assign_effectproperty", GObject.GLocale.getValue(x.i18n, "name", e.getNodeName(), 666));
+                                gDesigner.stats("effects_assign_effectproperty", GObject.GLocale.getValue(x.i18n, "name", effect.getNodeName(), 666));
                                 var r = null;
                                 if (i) {
-                                    var s = e.getParent().getIndexOfChild(e);
+                                    var s = effect.getParent().getIndexOfChild(effect);
                                     r = $.extend({ effectIndex: s }, i);
                                 }
                                 this._ownChange = true;
                                 var l = this._document.getEditor();
                                 l.beginTransaction();
                                 try {
-                                    (this._iterateEqualEffects(e, function (e) {
+                                    (this._iterateEqualEffects(effect, function (e) {
                                         e.setProperties(t, n);
                                     }),
-                                        e.setProperties(t, n));
+                                        effect.setProperties(t, n));
                                 } finally {
                                     (l.commitTransaction(
                                         GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "action.change-properties")),
@@ -487,7 +487,7 @@ module.exports = function (module, exports, require) {
                                 }
                             }
                         }.bind(this),
-                        L = x.createSettings.call(this, e, D);
+                        L = x.createSettings.call(this, effect, D);
                     if (L) {
                         var I = $("<div></div>").addClass("effect-settings");
                         (L.addClass("content"), P.append(I.append(L)));
@@ -497,7 +497,7 @@ module.exports = function (module, exports, require) {
                     E.gAccordion("init", ".effect-settings:last", "label").on("change", function () {
                         (gDesigner.stats("effects_toggle_collapse"), v());
                     }),
-                    P.contextmenu({ context: f.EffectPropertyPanel }, function (e, t) {
+                    P.contextmenu({ context: ContextMenuContext.EffectPropertyPanel }, function (e, t) {
                         (e = t || e).preventDefault();
                         var n = $(this).data("effect");
                         $(gDesigner.getWindows().getHtmlElement()).trigger("contextmenu", {
@@ -506,9 +506,9 @@ module.exports = function (module, exports, require) {
                         });
                     }),
                     P.on("mouseenter", (t) => {
-                        (this._document && this._document.updateActiveStylesList("Effect", e),
+                        (this._document && this._document.updateActiveStylesList("Effect", effect),
                             gDesigner.setMouseOverContext(
-                                m.EffectPropertiesPanel,
+                                PropertyPanelIds.EffectPropertiesPanel,
                                 t,
                                 function (e) {
                                     var t = this._panel.find(".copy-info-overlay").eq(0),
@@ -539,54 +539,54 @@ module.exports = function (module, exports, require) {
                             this._document && this._document.updateActiveStylesList("Effect", null),
                             gDesigner.setMouseOverContext(null, null, null));
                     }),
-                    this._updateEffect(e, t));
+                    this._updateEffect(effect, options));
             }),
-            (E.prototype._updateEffect = function (e, t) {
+            (GEffectProperties.prototype._updateEffect = function (effect, options) {
                 this._effectsPanel.find(".effect-block").each(function (n, o) {
                     var r = $(o);
-                    if (r.data("effect") === e) {
-                        U(e);
+                    if (r.data("effect") === effect) {
+                        getEffectDefinition(effect);
                         if (
-                            e instanceof GObject.GOverlayEffect ||
-                            e instanceof GObject.GDropShadowEffect ||
-                            e instanceof GObject.GInnerShadowEffect ||
-                            e instanceof GObject.GCurvedShadowEffect ||
-                            e instanceof GObject.GContactShadowEffect ||
-                            e instanceof GObject.GLongShadowEffect
+                            effect instanceof GObject.GOverlayEffect ||
+                            effect instanceof GObject.GDropShadowEffect ||
+                            effect instanceof GObject.GInnerShadowEffect ||
+                            effect instanceof GObject.GCurvedShadowEffect ||
+                            effect instanceof GObject.GContactShadowEffect ||
+                            effect instanceof GObject.GLongShadowEffect
                         )
                             if (
                                 (r
                                     .find('[data-property="pat"]')
-                                    .gPatternChooser("setPattern", e.getProperty("pat", false, false, true))
-                                    .gPatternChooser("value", e.getProperty("pat", false, false, true))
-                                    .gPatternChooser("opacity", e.getProperty("opc", false, false, true)),
+                                    .gPatternChooser("setPattern", effect.getProperty("pat", false, false, true))
+                                    .gPatternChooser("value", effect.getProperty("pat", false, false, true))
+                                    .gPatternChooser("opacity", effect.getProperty("opc", false, false, true)),
                                 r
                                     .find('[data-property="opc"]')
-                                    .gInputBox("value", GObject.GUtil.formatOpacity(100 * e.getProperty("opc", false, false, true))),
-                                t &&
-                                    (t.evtType == i.GEditor.ModifiedEvent.Type.Undo || t.evtType == i.GEditor.ModifiedEvent.Type.Redo) &&
-                                    t.chooserOn &&
-                                    null != t.effectIndex)
+                                    .gInputBox("value", GObject.GUtil.formatOpacity(100 * effect.getProperty("opc", false, false, true))),
+                                options &&
+                                    (options.evtType == editorModule.GEditor.ModifiedEvent.Type.Undo || options.evtType == editorModule.GEditor.ModifiedEvent.Type.Redo) &&
+                                    options.chooserOn &&
+                                    null != options.effectIndex)
                             )
-                                e.getParent().getIndexOfChild(e) == t.effectIndex &&
+                                effect.getParent().getIndexOfChild(effect) == options.effectIndex &&
                                     r
                                         .find('[data-property="pat"]')
                                         .find(".preview")
-                                        .trigger("click", null != t.activeStopIdx ? t.activeStopIdx : null);
-                        var s = e.getProperty("vs"),
-                            l = e.getProperty("ly"),
-                            c = e.getProperty("cl");
-                        (r.toggleClass("g-selected", e.hasFlag(GObject.GNode.Flag.Selected)),
+                                        .trigger("click", null != options.activeStopIdx ? options.activeStopIdx : null);
+                        var s = effect.getProperty("vs"),
+                            l = effect.getProperty("ly"),
+                            c = effect.getProperty("cl");
+                        (r.toggleClass("g-selected", effect.hasFlag(GObject.GNode.Flag.Selected)),
                             r.find(".effect-title input[type=checkbox]").prop("checked", s),
                             r.find(".effect-header").gAccordion("toggleOpen", !c));
                         var d = r.find(".effect-settings");
                         if (
                             (d.css("display", c ? "none" : ""),
-                            e instanceof GObject.GBlurEffect &&
-                                d.find('[data-property="r"]:not(.g-input-slider)').gUnitBox("value", new GObject.GLength(e.getProperty("r"))),
-                            e instanceof GObject.GWebGLEffect)
+                            effect instanceof GObject.GBlurEffect &&
+                                d.find('[data-property="r"]:not(.g-input-slider)').gUnitBox("value", new GObject.GLength(effect.getProperty("r"))),
+                            effect instanceof GObject.GWebGLEffect)
                         ) {
-                            var u = e.getProperty("shp");
+                            var u = effect.getProperty("shp");
                             for (var p in u) {
                                 var g = u[p];
                                 if ("number" == typeof g) {
@@ -597,10 +597,10 @@ module.exports = function (module, exports, require) {
                             }
                         }
                         return (
-                            e instanceof GObject.GDropShadowEffect &&
-                                (d.find('[data-property="r"]').gUnitBox("value", new GObject.GLength(e.getProperty("r"))),
-                                d.find('[data-property="x"]').gUnitBox("value", new GObject.GLength(e.getProperty("x"))),
-                                d.find('[data-property="y"]').gUnitBox("value", new GObject.GLength(e.getProperty("y")))),
+                            effect instanceof GObject.GDropShadowEffect &&
+                                (d.find('[data-property="r"]').gUnitBox("value", new GObject.GLength(effect.getProperty("r"))),
+                                d.find('[data-property="x"]').gUnitBox("value", new GObject.GLength(effect.getProperty("x"))),
+                                d.find('[data-property="y"]').gUnitBox("value", new GObject.GLength(effect.getProperty("y")))),
                             r
                                 .find(".effect-layer")
                                 .attr(
@@ -618,20 +618,20 @@ module.exports = function (module, exports, require) {
                     }
                 });
             }),
-            (E.prototype._removeEffect = function (e) {
+            (GEffectProperties.prototype._removeEffect = function (effect) {
                 this._effectsPanel.find(".effect-block").each(function (t, n) {
                     var o = $(n);
-                    if (o.data("effect") === e) return (o.remove(), false);
+                    if (o.data("effect") === effect) return (o.remove(), false);
                 });
             }),
-            (E.prototype._invalidateEffects = function (e) {
+            (GEffectProperties.prototype._invalidateEffects = function (options) {
                 if ((this._effectsPanel.find(".effects").empty(), this._elements && this._elements.length))
                     for (var t = this._elements[0].getEffects().getFirstChild(); null !== t; t = t.getNext())
-                        t instanceof GObject.GStylable.Effect && this._insertEffect(t, e);
+                        t instanceof GObject.GStylable.Effect && this._insertEffect(t, options);
                 this._updateToolbar();
             }),
-            (E.prototype._createAddEffectMenu = function () {
-                this._addEffectMenu = new h(E.EngCat);
+            (GEffectProperties.prototype._createAddEffectMenu = function () {
+                this._addEffectMenu = new GEffectsPanel(GEffectProperties.EngCat);
                 var e = this._addEffectMenu,
                     t = e.createSelector(),
                     n = this,
@@ -643,7 +643,7 @@ module.exports = function (module, exports, require) {
                                 "effects_add_panelbutton",
                                 (e && GObject.GLocale.getValue((t && t.i18n) || e, "name", "unknown", 0)) || "unkn"
                             ),
-                                i.GEditor.tryRunTransaction(
+                                editorModule.GEditor.tryRunTransaction(
                                     this._elements[0],
                                     function () {
                                         for (var e = 0; e < this._elements.length; ++e) {
@@ -658,15 +658,15 @@ module.exports = function (module, exports, require) {
                                 $(this._toolbar).gAccordion("toggleOpen", true),
                                 $(this._toolbar).gAccordion("init", $(this._panel)));
                             const r = gDesigner.getRightSidebars().getSidebar(SidebarsIds.GInspectorSidebar);
-                            r.trigger(new c.default(c.default.Type.ChildAdded, r));
+                            r.trigger(new SidebarEvent.default(SidebarEvent.default.Type.ChildAdded, r));
                         }).bind(this)();
                     }.bind(this),
                     r = {};
-                r[v] = new Array();
-                var s = $("<option></option>").attr({ value: v }).append(v);
+                r[mostUsedLabel] = new Array();
+                var s = $("<option></option>").attr({ value: mostUsedLabel }).append(mostUsedLabel);
                 t.append(s);
-                for (var l = [], d = 0; d < V.length; ++d) {
-                    var u = V[d];
+                for (var l = [], d = 0; d < effectDefinitions.length; ++d) {
+                    var u = effectDefinitions[d];
                     if (!u.hidden) {
                         u.cb = o;
                         var p = u.mostUsed,
@@ -679,7 +679,7 @@ module.exports = function (module, exports, require) {
                             }
                             r[g].push(u);
                         }
-                        p && r[v].push(u);
+                        p && r[mostUsedLabel].push(u);
                     }
                 }
                 l.sort(function (e, t) {
@@ -693,22 +693,22 @@ module.exports = function (module, exports, require) {
                 });
                 for (d = 0; d < l.length; ++d) t.append(l[d]);
                 (t.on("change", function (t) {
-                    (gDesigner.stats("effects_choose_type", E.EngCat(this.value)), e.addItems(r[this.value]));
+                    (gDesigner.stats("effects_choose_type", GEffectProperties.EngCat(this.value)), e.addItems(r[this.value]));
                 }),
-                    e.addItems(r[v]));
+                    e.addItems(r[mostUsedLabel]));
             }),
-            (E.prototype._validateInsertation = function (e, t) {
-                if (t.isSingleton())
-                    for (var n = GObject.GObject.getTypeId(t), o = e.getFirstChild(); null !== o; o = o.getNext())
+            (GEffectProperties.prototype._validateInsertation = function (effectsNode, newEffect) {
+                if (newEffect.isSingleton())
+                    for (var n = GObject.GObject.getTypeId(newEffect), o = effectsNode.getFirstChild(); null !== o; o = o.getNext())
                         if (GObject.GObject.getTypeId(o) === n) return false;
                 return true;
             }),
-            (E.prototype._createDefaultEffect = function (e, t, n) {
+            (GEffectProperties.prototype._createDefaultEffect = function (isMoreButton, effectDef, addEffect) {
                 var o = function (o) {
-                        e ? (gDesigner.stats("effects_open_effectsmenu", "more"), this._openEffectsMenu(o)) : n(t.clazz, t);
+                        isMoreButton ? (gDesigner.stats("effects_open_effectsmenu", "more"), this._openEffectsMenu(o)) : addEffect(effectDef.clazz, effectDef);
                     }.bind(this),
                     i = $("<span></span>")
-                        .text(e ? GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "text.more")) : GObject.GLocale.getValue(t.i18n, "name"))
+                        .text(isMoreButton ? GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "text.more")) : GObject.GLocale.getValue(effectDef.i18n, "name"))
                         .addClass("effects-default-label"),
                     r = $("<span>+</span>");
                 $("<div></div>")
@@ -720,24 +720,24 @@ module.exports = function (module, exports, require) {
                     })
                     .appendTo(this._panel);
             }),
-            (E.prototype._updateToolbar = function () {
+            (GEffectProperties.prototype._updateToolbar = function () {
                 var e = this._panel.find(".effect-block").length > 0 || this._panel.find(".effects-default").length > 0;
                 this._toolbar.toggleClass("empty-list", !e);
             }),
-            (E.prototype.toString = function () {
+            (GEffectProperties.prototype.toString = function () {
                 return "[Object GEffectProperties]";
             }));
-        var A = false,
-            T = null;
-        function G(e) {
-            if (T) {
-                var t = $(e).data("effect");
-                if (t && (t !== T || GPlatform.GPlatform.modifiers.shiftKey)) return T.getParent() === t.getParent();
+        var dragAllowed = false,
+            draggedEffect = null;
+        function isValidDropTarget(blockElement) {
+            if (draggedEffect) {
+                var t = $(blockElement).data("effect");
+                if (t && (t !== draggedEffect || GPlatform.GPlatform.modifiers.shiftKey)) return draggedEffect.getParent() === t.getParent();
             }
             return false;
         }
-        function P(e, t, n) {
-            var o = n || e,
+        function createWebGLEffectSettings(effect, updateProperty, subEffect) {
+            var o = subEffect || effect,
                 i = o.getProperty.bind(o),
                 r = (this._document.getScene(), this._document.getEditor()),
                 s = i("shp"),
@@ -752,15 +752,15 @@ module.exports = function (module, exports, require) {
                     isNaN(f) || (f = GObject.GUtil.formatNumber(f, 0));
                     var m = 100 * h[0],
                         y = 100 * h[1],
-                        v = g.DefaultStops.Hue;
+                        v = colorSliderStops.DefaultStops.Hue;
                     if ("hue" === u)
                         (o instanceof GObject.GGLRecolourEffect ? ((m = 0), (y = 360)) : ((m = -180), (y = 180)),
-                            (v = g.DefaultStops.Hue),
+                            (v = colorSliderStops.DefaultStops.Hue),
                             (f = GObject.GMath.normalizeValue(p, h[0], h[1], m, y)));
-                    else if (-1 !== ["contrast", "brightness"].indexOf(u)) v = g.DefaultStops.Luminosity;
-                    else if ("saturation" === u && ((v = g.DefaultStops.Saturation(0)), o instanceof GObject.GGLRecolourEffect)) {
+                    else if (-1 !== ["contrast", "brightness"].indexOf(u)) v = colorSliderStops.DefaultStops.Luminosity;
+                    else if ("saturation" === u && ((v = colorSliderStops.DefaultStops.Saturation(0)), o instanceof GObject.GGLRecolourEffect)) {
                         var _ = GObject.GMath.normalizeValue(s.hue, h[0], h[1], 0, 360);
-                        v = g.DefaultStops.Saturation(_);
+                        v = colorSliderStops.DefaultStops.Saturation(_);
                     }
                     var b = function (e, t, n) {
                         if ("hue" === t && o instanceof GObject.GGLRecolourEffect) {
@@ -770,7 +770,7 @@ module.exports = function (module, exports, require) {
                                 .gColorSlider({
                                     min: 100 * h[0],
                                     max: 100 * h[1],
-                                    stops: g.DefaultStops.Saturation(e),
+                                    stops: colorSliderStops.DefaultStops.Saturation(e),
                                 })
                                 .gColorSlider("value", r)
                                 .trigger("input");
@@ -796,7 +796,7 @@ module.exports = function (module, exports, require) {
                                             var c = i("shp");
                                             if (c[n] !== o) {
                                                 var d = JSON.parse(JSON.stringify(c));
-                                                ((d[n] = o), t(["shp"], [d]));
+                                                ((d[n] = o), updateProperty(["shp"], [d]));
                                             }
                                             $(e.target)
                                                 .closest(".effect-settings")
@@ -825,7 +825,7 @@ module.exports = function (module, exports, require) {
                                                 d = l.gColorSlider("maxValue");
                                             if (((r = GObject.GMath.normalizeValue(r, c, d, h[0], h[1])), s && s[n] !== r)) {
                                                 var u = JSON.parse(JSON.stringify(s));
-                                                ((u[n] = r), t(["shp"], [u]));
+                                                ((u[n] = r), updateProperty(["shp"], [u]));
                                             }
                                         })
                                         .gInputBox({
@@ -870,7 +870,7 @@ module.exports = function (module, exports, require) {
                                             var c = i("shp");
                                             if (null !== l && "number" == typeof l && c[r] !== l) {
                                                 var d = JSON.parse(JSON.stringify(c));
-                                                ((d[r] = l), t(["shp"], [d], true));
+                                                ((d[r] = l), updateProperty(["shp"], [d], true));
                                             }
                                             n.closest(".effect-settings")
                                                 .find("[data-property=" + r + "]:not(.g-input-slider)")
@@ -910,7 +910,7 @@ module.exports = function (module, exports, require) {
                                                 null !== r && "number" == typeof r && l[n] !== r)
                                             ) {
                                                 var d = JSON.parse(JSON.stringify(l));
-                                                ((d[n] = r), t(["shp"], [d]));
+                                                ((d[n] = r), updateProperty(["shp"], [d]));
                                             }
                                         })
                                         .gUnitBox({
@@ -954,7 +954,7 @@ module.exports = function (module, exports, require) {
                                                         "opacity" === s.opacity.type &&
                                                         (l.opacity.value = o));
                                                 var c = null;
-                                                (r && (c = { chooserOn: true }), t(["shp"], [l], a, c));
+                                                (r && (c = { chooserOn: true }), updateProperty(["shp"], [l], a, c));
                                             }),
                                     },
                                 ],
@@ -971,7 +971,7 @@ module.exports = function (module, exports, require) {
                                         a = i("shp");
                                     if (a && (!a[n] || a[n].value !== o)) {
                                         var r = JSON.parse(JSON.stringify(a));
-                                        ((r[n].value = o), t(["shp"], [r]));
+                                        ((r[n].value = o), updateProperty(["shp"], [r]));
                                     }
                                 }),
                             S = 0;
@@ -1010,7 +1010,7 @@ module.exports = function (module, exports, require) {
                                                             a = i("shp");
                                                         if (a[n] !== o) {
                                                             var r = JSON.parse(JSON.stringify(a));
-                                                            ((r[n] = o), t(["shp"], [r]));
+                                                            ((r[n] = o), updateProperty(["shp"], [r]));
                                                         }
                                                     })
                                             )
@@ -1022,9 +1022,9 @@ module.exports = function (module, exports, require) {
             }
             return d;
         }
-        function D(e, t, n) {
+        function createShadowSettings(effect, updateProperty, subEffect) {
             this._document.getScene();
-            var o = n ? n.getProperty.bind(n) : e.getProperty.bind(e),
+            var o = subEffect ? subEffect.getProperty.bind(subEffect) : effect.getProperty.bind(effect),
                 i = o("x"),
                 r = o("y"),
                 s = new GObject.GLength(o("r"), GObject.GLength.Unit.PT),
@@ -1032,7 +1032,7 @@ module.exports = function (module, exports, require) {
                 c = o("opc"),
                 d = this,
                 u = [0, 200],
-                p = e.RANGES;
+                p = effect.RANGES;
             return (
                 p && p.r && (u = p.r),
                 $("<div></div>").append(
@@ -1051,7 +1051,7 @@ module.exports = function (module, exports, require) {
                                         .on("change", function () {
                                             var e = $(this).gUnitBox("value"),
                                                 n = e ? e.toUnit(GObject.GLength.Unit.PT) : null;
-                                            null !== n && "number" == typeof n && t(["x"], [n]);
+                                            null !== n && "number" == typeof n && updateProperty(["x"], [n]);
                                         }),
                                 },
                                 {
@@ -1065,7 +1065,7 @@ module.exports = function (module, exports, require) {
                                         .on("change", function () {
                                             var e = $(this).gUnitBox("value"),
                                                 n = e ? e.toUnit(GObject.GLength.Unit.PT) : null;
-                                            null !== n && "number" == typeof n && t(["y"], [n]);
+                                            null !== n && "number" == typeof n && updateProperty(["y"], [n]);
                                         }),
                                 },
                                 {
@@ -1083,7 +1083,7 @@ module.exports = function (module, exports, require) {
                                         .on("change", function (e) {
                                             var n = $(this).gUnitBox("value"),
                                                 o = n ? n.toUnit(GObject.GLength.Unit.PT) : null;
-                                            null !== o && t(["r"], [o]);
+                                            null !== o && updateProperty(["r"], [o]);
                                         }),
                                 },
                                 {
@@ -1094,7 +1094,7 @@ module.exports = function (module, exports, require) {
                                         .attr("data-property", "opc")
                                         .on("change", function (e) {
                                             var n = GObject.GLength.parseEquationValue($(e.target).gInputBox("value")) / 100;
-                                            (t(["opc"], [n]),
+                                            (updateProperty(["opc"], [n]),
                                                 $(e.target)
                                                     .parents(".effect-settings")
                                                     .find('[data-property="pat"]')
@@ -1134,7 +1134,7 @@ module.exports = function (module, exports, require) {
                                                         .find('[data-property="opc"]')
                                                         .gInputBox("value", GObject.GUtil.formatOpacity(100 * o))));
                                             var d = null;
-                                            (r && ((d = { chooserOn: true }), null != s && (d.activeStopIdx = s)), t(l, c, i, d));
+                                            (r && ((d = { chooserOn: true }), null != s && (d.activeStopIdx = s)), updateProperty(l, c, i, d));
                                         }),
                                 },
                             ],
@@ -1142,9 +1142,9 @@ module.exports = function (module, exports, require) {
                 )
             );
         }
-        function L(e, t, n) {
+        function createCurvedShadowSettings(effect, updateProperty, subEffect) {
             this._document.getScene();
-            var o = n ? n.getProperty.bind(n) : e.getProperty.bind(e),
+            var o = subEffect ? subEffect.getProperty.bind(subEffect) : effect.getProperty.bind(effect),
                 i = o("a"),
                 r = o("s"),
                 s = o("l"),
@@ -1168,7 +1168,7 @@ module.exports = function (module, exports, require) {
                                 .parents(".effect-settings")
                                 .find('[data-property="' + n + '"].g-input-slider');
                             (l.gInputSlider("value") != o && l.gInputSlider("value", o),
-                                null !== o && "number" == typeof o && o >= r && o <= s && t([n], [o]));
+                                null !== o && "number" == typeof o && o >= r && o <= s && updateProperty([n], [o]));
                         });
                 return (
                     i
@@ -1206,7 +1206,7 @@ module.exports = function (module, exports, require) {
                                     .on("input", function (e) {
                                         var o = $(this),
                                             i = parseFloat(o.gInputSlider("value"));
-                                        (t([n], [i], true),
+                                        (updateProperty([n], [i], true),
                                             o
                                                 .parents(".effect-settings")
                                                 .find('[data-property="' + n + '"]:not(.g-input-slider)')
@@ -1244,7 +1244,7 @@ module.exports = function (module, exports, require) {
                                     .attr("data-property", "opc")
                                     .on("change", function (e) {
                                         var n = GObject.GLength.parseEquationValue($(e.target).gInputBox("value")) / 100;
-                                        (t(["opc"], [n]),
+                                        (updateProperty(["opc"], [n]),
                                             $(e.target)
                                                 .parents(".effect-settings")
                                                 .find('[data-property="pat"]')
@@ -1284,7 +1284,7 @@ module.exports = function (module, exports, require) {
                                                     .find('[data-property="opc"]')
                                                     .gInputBox("value", GObject.GUtil.formatOpacity(100 * o))));
                                         var d = null;
-                                        (r && ((d = { chooserOn: true }), null != s && (d.activeStopIdx = s)), t(l, c, i, d));
+                                        (r && ((d = { chooserOn: true }), null != s && (d.activeStopIdx = s)), updateProperty(l, c, i, d));
                                     }),
                             },
                         ],
@@ -1293,9 +1293,9 @@ module.exports = function (module, exports, require) {
                 g
             );
         }
-        function I(e, t, n) {
+        function createContactShadowSettings(effect, updateProperty, subEffect) {
             this._document.getScene();
-            var o = n ? n.getProperty.bind(n) : e.getProperty.bind(e),
+            var o = subEffect ? subEffect.getProperty.bind(subEffect) : effect.getProperty.bind(effect),
                 i = o("a"),
                 r = new GObject.GLength(o("r"), GObject.GLength.Unit.PT),
                 s = new GObject.GLength(o("o"), GObject.GLength.Unit.PT),
@@ -1303,7 +1303,7 @@ module.exports = function (module, exports, require) {
                 c = o("opc"),
                 d = this,
                 u = [5, 200],
-                p = e.RANGES;
+                p = effect.RANGES;
             p && p.r && (u = p.r);
             var g = function (e) {
                 return "r" === e
@@ -1312,7 +1312,7 @@ module.exports = function (module, exports, require) {
                           .gUnitBox({ minValue: u[0], maxValue: u[1], source: "effects" })
                           .gUnitBox("value", r)
                           .on("change", function (e) {
-                              t(["r"], [$(this).gUnitBox("value").toUnit(GObject.GLength.Unit.PT)]);
+                              updateProperty(["r"], [$(this).gUnitBox("value").toUnit(GObject.GLength.Unit.PT)]);
                           })
                     : "a" === e
                       ? $("<input>")
@@ -1320,7 +1320,7 @@ module.exports = function (module, exports, require) {
                             .gInputBox({ minValue: 5, maxValue: 35, postfix: "°" })
                             .gInputBox("value", i)
                             .on("change", function (e) {
-                                t(["a"], [GObject.GLength.parseEquationValue($(e.target).gInputBox("value"))]);
+                                updateProperty(["a"], [GObject.GLength.parseEquationValue($(e.target).gInputBox("value"))]);
                             })
                       : "o" === e
                         ? $("<input>")
@@ -1328,7 +1328,7 @@ module.exports = function (module, exports, require) {
                               .gUnitBox({ source: "effects" })
                               .gUnitBox("value", s)
                               .on("change", function (e) {
-                                  t(["o"], [$(this).gUnitBox("value").toUnit(GObject.GLength.Unit.PT)]);
+                                  updateProperty(["o"], [$(this).gUnitBox("value").toUnit(GObject.GLength.Unit.PT)]);
                               })
                         : "opc" === e
                           ? $("<input>")
@@ -1336,7 +1336,7 @@ module.exports = function (module, exports, require) {
                                 .attr("data-property", "opc")
                                 .on("change", function (e) {
                                     var n = GObject.GLength.parseEquationValue($(e.target).gInputBox("value")) / 100;
-                                    (t(["opc"], [n]),
+                                    (updateProperty(["opc"], [n]),
                                         $(e.target)
                                             .parents(".effect-settings")
                                             .find('[data-property="pat"]')
@@ -1373,7 +1373,7 @@ module.exports = function (module, exports, require) {
                                                   .find('[data-property="opc"]')
                                                   .gInputBox("value", GObject.GUtil.formatOpacity(100 * o))));
                                       var c = null;
-                                      (r && (c = { chooserOn: true }), t(s, l, i, c));
+                                      (r && (c = { chooserOn: true }), updateProperty(s, l, i, c));
                                   })
                             : void 0;
             };
@@ -1409,9 +1409,9 @@ module.exports = function (module, exports, require) {
                 })
             );
         }
-        function k(e, t, n) {
+        function createLongShadowSettings(effect, updateProperty, subEffect) {
             this._document.getScene();
-            var o = n ? n.getProperty.bind(n) : e.getProperty.bind(e),
+            var o = subEffect ? subEffect.getProperty.bind(subEffect) : effect.getProperty.bind(effect),
                 i = o("a"),
                 r = new GObject.GLength(o("l"), GObject.GLength.Unit.PT),
                 s = o("pat"),
@@ -1426,7 +1426,7 @@ module.exports = function (module, exports, require) {
                               .gUnitBox({ minValue: 0, source: "effects" })
                               .gUnitBox("value", r)
                               .on("change", function (e) {
-                                  t(["l"], [$(this).gUnitBox("value").toUnit(GObject.GLength.Unit.PT)]);
+                                  updateProperty(["l"], [$(this).gUnitBox("value").toUnit(GObject.GLength.Unit.PT)]);
                               })
                         : "a" === e
                           ? $("<input>")
@@ -1434,7 +1434,7 @@ module.exports = function (module, exports, require) {
                                 .gInputBox({ minValue: -180, maxValue: 180, postfix: "°" })
                                 .gInputBox("value", GObject.GUtil.formatNumber(Math.round(GObject.GMath.toDegrees(i)), 1))
                                 .on("change", function (e) {
-                                    t(["a"], [GObject.GMath.toRadians(GObject.GLength.parseEquationValue($(e.target).gInputBox("value")))]);
+                                    updateProperty(["a"], [GObject.GMath.toRadians(GObject.GLength.parseEquationValue($(e.target).gInputBox("value")))]);
                                 })
                           : "opc" === e
                             ? $("<input>")
@@ -1442,7 +1442,7 @@ module.exports = function (module, exports, require) {
                                   .attr("data-property", "opc")
                                   .on("change", function (e) {
                                       var n = GObject.GLength.parseEquationValue($(e.target).gInputBox("value")) / 100;
-                                      (t(["opc"], [n]),
+                                      (updateProperty(["opc"], [n]),
                                           $(e.target)
                                               .parents(".effect-settings")
                                               .find('[data-property="pat"]')
@@ -1455,7 +1455,7 @@ module.exports = function (module, exports, require) {
                                     .attr("type", "text")
                                     .on("change", function (e) {
                                         var n = $(e.target).gInputBox("value") / 100;
-                                        t(["den"], [n]);
+                                        updateProperty(["den"], [n]);
                                     })
                                     .gInputBox({
                                         minValue: 5,
@@ -1472,7 +1472,7 @@ module.exports = function (module, exports, require) {
                                               .attr("type", "checkbox")
                                               .prop("checked", d)
                                               .on("change", function (e) {
-                                                  t(["fdm"], [$(this).is(":checked")]);
+                                                  updateProperty(["fdm"], [$(this).is(":checked")]);
                                               })
                                       )
                                       .append($("<div></div>"))
@@ -1500,7 +1500,7 @@ module.exports = function (module, exports, require) {
                                                         .find('[data-property="opc"]')
                                                         .gInputBox("value", GObject.GUtil.formatOpacity(100 * o))));
                                             var d = null;
-                                            (r && ((d = { chooserOn: true }), null != s && (d.activeStopIdx = s)), t(l, c, i, d));
+                                            (r && ((d = { chooserOn: true }), null != s && (d.activeStopIdx = s)), updateProperty(l, c, i, d));
                                         })
                                   : void 0;
                 };
@@ -1548,9 +1548,9 @@ module.exports = function (module, exports, require) {
                     })
                 );
         }
-        function O(e, t, n) {
+        function createBlurSettings(effect, updateProperty, subEffect) {
             this._document.getScene();
-            var o = n ? n.getProperty.bind(n) : e.getProperty.bind(e),
+            var o = subEffect ? subEffect.getProperty.bind(subEffect) : effect.getProperty.bind(effect),
                 i = this._document.getEditor(),
                 r = new GObject.GLength(o("r"), GObject.GLength.Unit.PT),
                 s = o("b"),
@@ -1566,7 +1566,7 @@ module.exports = function (module, exports, require) {
                                     .gInputSlider({
                                         maxDecimal: 1,
                                         min: "0",
-                                        max: new GObject.GLength(K ? 50 : 10, GObject.GLength.Unit.PT).toUnit(GObject.GLength.Unit.PX),
+                                        max: new GObject.GLength(webglContext ? 50 : 10, GObject.GLength.Unit.PT).toUnit(GObject.GLength.Unit.PX),
                                         step: "0.1",
                                     })
                                     .gInputSlider("value", o("r"))
@@ -1580,7 +1580,7 @@ module.exports = function (module, exports, require) {
                                     .on("input", function (e) {
                                         var n = $(this),
                                             o = parseFloat(n.gInputSlider("value"));
-                                        (t(["r"], [o], true),
+                                        (updateProperty(["r"], [o], true),
                                             n
                                                 .parents(".effect-settings")
                                                 .find('[data-property="r"]:not(.g-input-slider)')
@@ -1606,7 +1606,7 @@ module.exports = function (module, exports, require) {
                                             o = n ? n.toUnit(GObject.GLength.Unit.PT) : null,
                                             i = $(this).parents(".effect-settings").find('[data-property="r"].g-input-slider');
                                         (parseFloat(i.gInputSlider("value")) != o && i.gInputSlider("value", o),
-                                            null !== o && "number" == typeof o && o >= 0 && o <= 254 && t(["r"], [o]));
+                                            null !== o && "number" == typeof o && o >= 0 && o <= 254 && updateProperty(["r"], [o]));
                                     }),
                             },
                         ],
@@ -1625,7 +1625,7 @@ module.exports = function (module, exports, require) {
                                             .attr("type", "checkbox")
                                             .prop("checked", s)
                                             .on("change", function (e) {
-                                                t(["b"], [$(this).is(":checked")]);
+                                                updateProperty(["b"], [$(this).is(":checked")]);
                                             })
                                     )
                                     .append($("<div></div>")),
@@ -1636,9 +1636,9 @@ module.exports = function (module, exports, require) {
                 l
             );
         }
-        function F(e, t, n) {
+        function createOverlaySettings(effect, updateProperty, subEffect) {
             var o = this._document.getEditor(),
-                i = n ? n.getProperty.bind(n) : e.getProperty.bind(e),
+                i = subEffect ? subEffect.getProperty.bind(subEffect) : effect.getProperty.bind(effect),
                 r = i("pat"),
                 s = i("opc"),
                 l = i("alm"),
@@ -1658,7 +1658,7 @@ module.exports = function (module, exports, require) {
                                     .gPatternChooser("opacity", s)
                                     .on("chooseropen", function () {
                                         (o.hideSelection(),
-                                            gDesigner.getWorkspace().getStyleEdManager().updateEditor(e, "pat", false),
+                                            gDesigner.getWorkspace().getStyleEdManager().updateEditor(effect, "pat", false),
                                             (c._styleEdOn = true),
                                             (c._chooserElem = $(this)));
                                     })
@@ -1675,7 +1675,7 @@ module.exports = function (module, exports, require) {
                                             l = [];
                                         (void 0 !== n && (s.push("pat"), l.push(n)), "number" == typeof o && (s.push("opc"), l.push(o)));
                                         var c = null;
-                                        (a && ((c = { chooserOn: true }), null != r && (c.activeStopIdx = r)), t(s, l, i, c));
+                                        (a && ((c = { chooserOn: true }), null != r && (c.activeStopIdx = r)), updateProperty(s, l, i, c));
                                     }),
                             },
                             { width: "20%" },
@@ -1687,7 +1687,7 @@ module.exports = function (module, exports, require) {
                                     .attr("data-property", "opc")
                                     .on("change", function (e) {
                                         var n = $(e.target).gInputBox("value") / 100;
-                                        t(["opc"], [n]);
+                                        updateProperty(["opc"], [n]);
                                     })
                                     .gInputBox({
                                         minValue: 0,
@@ -1725,8 +1725,8 @@ module.exports = function (module, exports, require) {
                                                                     opacity: 0,
                                                                 },
                                                             ]);
-                                                            t(["alm", "opc", "pat"], [true, 1, n]);
-                                                        } else t(["alm"], [false]);
+                                                            updateProperty(["alm", "opc", "pat"], [true, 1, n]);
+                                                        } else updateProperty(["alm"], [false]);
                                                     })
                                             )
                                             .append($("<div></div>"))
@@ -1736,7 +1736,7 @@ module.exports = function (module, exports, require) {
                     })
             );
         }
-        function R(e, t) {
+        function createColorGradingSettings(effect, updateProperty) {
             return $("<div></div>")
                 .append(
                     $("<input>")
@@ -1750,7 +1750,7 @@ module.exports = function (module, exports, require) {
                                 var o = new FileReader();
                                 ((o.onload = function () {
                                     var e = GObject.GUtil.readACVFile(o.result);
-                                    e && t(["cp"], [e]);
+                                    e && updateProperty(["cp"], [e]);
                                 }),
                                     o.readAsArrayBuffer(n[0]));
                             }
@@ -1816,13 +1816,13 @@ module.exports = function (module, exports, require) {
                                 (o.addEventListener("load", function () {
                                     if (200 == o.status && o.response) {
                                         var e = GObject.GUtil.readACVFile(o.response);
-                                        e && t(["cp"], [e]);
+                                        e && updateProperty(["cp"], [e]);
                                     }
                                 }),
                                     o.open("GET", "assets/data/acv/" + n + ".acv"),
                                     (o.responseType = "arraybuffer"),
                                     o.send(null));
-                            } else t(["cp"], [null]);
+                            } else updateProperty(["cp"], [null]);
                         })
                 )
                 .append(
@@ -1834,22 +1834,22 @@ module.exports = function (module, exports, require) {
                         })
                 );
         }
-        function M(e, t) {
+        function createColorAdjustMultiSettings(effect, updateProperty) {
             for (
-                var n = GObject.GObject.getTypeId(e), o = (GObject.GNode.getClassFromId(n), e.getFXArray()), i = $("<div></div>"), r = 0;
+                var n = GObject.GObject.getTypeId(effect), o = (GObject.GNode.getClassFromId(n), effect.getFXArray()), i = $("<div></div>"), r = 0;
                 r < o.length;
                 r++
             )
-                for (var s = o[r], l = GObject.GNode.getClassFromId(GObject.GObject.getTypeId(o[r])), c = GObject.GNode.getName(l), d = 0; d < V.length; d++)
-                    if (V[d].clazz === l) {
-                        i.append(V[d].createSettings.call(this, e, B(c, t), s).css("margin-top", "7px"));
+                for (var s = o[r], l = GObject.GNode.getClassFromId(GObject.GObject.getTypeId(o[r])), c = GObject.GNode.getName(l), d = 0; d < effectDefinitions.length; d++)
+                    if (effectDefinitions[d].clazz === l) {
+                        i.append(effectDefinitions[d].createSettings.call(this, effect, createPrefixedUpdater(c, updateProperty), s).css("margin-top", "7px"));
                         break;
                     }
             return i;
         }
-        function N(e, t, n) {
+        function createMirrorSettings(effect, updateProperty, subEffect) {
             var o = this._document.getEditor(),
-                i = n ? n.getProperty.bind(n) : e.getProperty.bind(e),
+                i = subEffect ? subEffect.getProperty.bind(subEffect) : effect.getProperty.bind(effect),
                 r = i("opc"),
                 s = new GObject.GLength(i("pad")),
                 l = i("rfh"),
@@ -1860,7 +1860,7 @@ module.exports = function (module, exports, require) {
                               .attr("type", "text")
                               .on("change", function (n) {
                                   var o = GObject.GLength.parseEquationValue($(n.target).gInputBox("value")) / 100;
-                                  t([e], [o]);
+                                  updateProperty([e], [o]);
                               })
                               .gInputBox({
                                   minValue: 0,
@@ -1876,7 +1876,7 @@ module.exports = function (module, exports, require) {
                                 .attr("type", "text")
                                 .on("change", function (n) {
                                     var o = $(n.target).gUnitBox("value").getValue();
-                                    t([e], [o]);
+                                    updateProperty([e], [o]);
                                 })
                                 .gUnitBox({ minValue: 0, incrementValue: 1, source: "effects" })
                                 .gUnitBox("value", s)
@@ -1893,14 +1893,14 @@ module.exports = function (module, exports, require) {
                                   .on("input", function (e) {
                                       var n = $(e.target),
                                           o = parseInt(n.gInputSlider("value")) / 100;
-                                      (t(["opc"], [o]),
+                                      (updateProperty(["opc"], [o]),
                                           $(e.target)
                                               .parents(".effect-settings")
                                               .find('[type="text"][data-property="opc"]')
                                               .gInputBox("value", GObject.GUtil.formatOpacity(100 * o)));
                                   })
                                   .on("change", function (e) {
-                                      t(["opc"], [parseFloat($(this).gInputSlider("value")) / 100]);
+                                      updateProperty(["opc"], [parseFloat($(this).gInputSlider("value")) / 100]);
                                   })
                                   .gInputSlider("value", 100 * r)
                             : "opacity-input" === e
@@ -1913,7 +1913,7 @@ module.exports = function (module, exports, require) {
                                             .parents(".effect-settings")
                                             .find('[data-property="opc"].g-input-slider')
                                             .gInputSlider("value", n),
-                                            t(["opc"], [GObject.GLength.parseEquationValue($(this).gInputBox("value")) / 100]));
+                                            updateProperty(["opc"], [GObject.GLength.parseEquationValue($(this).gInputBox("value")) / 100]));
                                     })
                                     .gInputBox({
                                         minValue: 0,
@@ -1952,41 +1952,41 @@ module.exports = function (module, exports, require) {
                 ],
             });
         }
-        function B(e, t) {
+        function createPrefixedUpdater(keyPrefix, updateProperty) {
             return function (n, o, i) {
-                for (var a = n.slice(), r = o.slice(), s = 0; s < a.length; s++) ((a[s] = e + "&" + a[s]), (r[s] = o[s]));
-                t(a, r, i);
+                for (var a = n.slice(), r = o.slice(), s = 0; s < a.length; s++) ((a[s] = keyPrefix + "&" + a[s]), (r[s] = o[s]));
+                updateProperty(a, r, i);
             };
         }
-        function U(e) {
+        function getEffectDefinition(effectOrClass) {
             var t = null;
-            t = e instanceof GObject.GStylable.Effect ? e.constructor : e;
-            for (var n = 0; n < V.length; ++n) if (V[n].clazz === t) return V[n];
+            t = effectOrClass instanceof GObject.GStylable.Effect ? effectOrClass.constructor : effectOrClass;
+            for (var n = 0; n < effectDefinitions.length; ++n) if (effectDefinitions[n].clazz === t) return effectDefinitions[n];
             throw new Error("Invalid effect/class");
         }
-        var j = document.createElement("canvas"),
-            K = null;
+        var webglTestCanvas = document.createElement("canvas"),
+            webglContext = null;
         try {
-            K = j.getContext("webgl", { premultipliedAlpha: false }) || j.getContext("experimental-webgl");
+            webglContext = webglTestCanvas.getContext("webgl", { premultipliedAlpha: false }) || webglTestCanvas.getContext("experimental-webgl");
         } catch (e) {
-            K = null;
+            webglContext = null;
         }
-        var V = null,
-            H = function () {
+        var effectDefinitions = null,
+            buildEffectDefinitions = function () {
                 return [
                     {
                         clazz: GObject.GGLBlurEffect,
                         i18n: "GGLBlurEffect",
                         group: "raster",
-                        createSettings: P,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-blur-effect",
                     },
                     {
                         clazz: GObject.GBlurEffect,
                         i18n: "GBlurEffect",
                         group: "raster",
-                        category: _,
-                        createSettings: O,
+                        category: blurLabel,
+                        createSettings: createBlurSettings,
                         icon: "gravit-icon-blur-effect",
                         mostUsed: true,
                     },
@@ -1994,8 +1994,8 @@ module.exports = function (module, exports, require) {
                         clazz: GObject.GGLVignetteEffect,
                         i18n: "GGLVignetteEffect",
                         group: "webgl",
-                        category: b,
-                        createSettings: P,
+                        category: artisticLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-vignette-effect",
                         mostUsed: true,
                     },
@@ -2003,8 +2003,8 @@ module.exports = function (module, exports, require) {
                         clazz: GObject.GGLColorAdjustEffect,
                         i18n: "GGLColorAdjustEffect",
                         group: "webgl",
-                        category: w,
-                        createSettings: P,
+                        category: adjustLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-adjust-effect",
                         mostUsed: true,
                     },
@@ -2012,8 +2012,8 @@ module.exports = function (module, exports, require) {
                         clazz: GObject.GGLRecolourEffect,
                         i18n: "GGLRecolourEffect",
                         group: "webgl",
-                        category: w,
-                        createSettings: P,
+                        category: adjustLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-recolour-effect",
                         mostUsed: true,
                     },
@@ -2021,8 +2021,8 @@ module.exports = function (module, exports, require) {
                         clazz: GObject.GOverlayEffect,
                         i18n: "GOverlayEffect",
                         group: "filter",
-                        category: w,
-                        createSettings: F,
+                        category: adjustLabel,
+                        createSettings: createOverlaySettings,
                         icon: "gravit-icon-overlay-effect",
                         mostUsed: true,
                     },
@@ -2030,8 +2030,8 @@ module.exports = function (module, exports, require) {
                         clazz: GObject.GMirrorEffect,
                         i18n: "GMirrorEffect",
                         group: "mirror",
-                        category: x,
-                        createSettings: N,
+                        category: otherLabel,
+                        createSettings: createMirrorSettings,
                         icon: "gravit-icon-mirror-effect",
                         mostUsed: true,
                     },
@@ -2039,8 +2039,8 @@ module.exports = function (module, exports, require) {
                         clazz: GObject.GCurvedShadowEffect,
                         i18n: "GCurvedShadowEffect",
                         group: "raster",
-                        category: S,
-                        createSettings: L,
+                        category: shadowLabel,
+                        createSettings: createCurvedShadowSettings,
                         icon: "gravit-icon-curved-shadow-effect",
                         mostUsed: true,
                     },
@@ -2048,8 +2048,8 @@ module.exports = function (module, exports, require) {
                         clazz: GObject.GDropShadowEffect,
                         i18n: "GDropShadowEffect",
                         group: "raster",
-                        category: S,
-                        createSettings: D,
+                        category: shadowLabel,
+                        createSettings: createShadowSettings,
                         icon: "gravit-icon-drop-shadow-effect",
                         mostUsed: true,
                     },
@@ -2057,8 +2057,8 @@ module.exports = function (module, exports, require) {
                         clazz: GObject.GInnerShadowEffect,
                         i18n: "GInnerShadowEffect",
                         group: "raster",
-                        category: S,
-                        createSettings: D,
+                        category: shadowLabel,
+                        createSettings: createShadowSettings,
                         icon: "gravit-icon-inner-shadow-effect",
                         mostUsed: true,
                     },
@@ -2066,243 +2066,243 @@ module.exports = function (module, exports, require) {
                         clazz: GObject.GGLBulgePinchEffect,
                         i18n: "GGLBulgePinchEffect",
                         group: "webgl",
-                        category: C,
-                        createSettings: P,
+                        category: distortionLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-bulge-effect",
                     },
                     {
                         clazz: GObject.GGLColorHalfToneEffect,
                         i18n: "GGLColorHalfToneEffect",
                         group: "webgl",
-                        category: w,
-                        createSettings: P,
+                        category: adjustLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-half-tone-effect",
                     },
                     {
                         clazz: GObject.GGLDotScreenEffect,
                         i18n: "GGLDotScreenEffect",
                         group: "webgl",
-                        category: b,
-                        createSettings: P,
+                        category: artisticLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-dotscreen-effect",
                     },
                     {
                         clazz: GObject.GGLBrightnessContrastEffect,
                         i18n: "GGLBrightnessContrastEffect",
                         group: "webgl",
-                        category: w,
+                        category: adjustLabel,
                         hidden: true,
-                        createSettings: P,
+                        createSettings: createWebGLEffectSettings,
                     },
                     {
                         clazz: GObject.GGLFisheyeEffect,
                         i18n: "GGLFisheyeEffect",
                         group: "webgl",
-                        category: C,
-                        createSettings: P,
+                        category: distortionLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-fisheye-effect",
                     },
                     {
                         clazz: GObject.GGLBendEffect,
                         i18n: "GGLBendEffect",
                         group: "webgl",
-                        category: C,
-                        createSettings: P,
+                        category: distortionLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-bend-effect",
                     },
                     {
                         clazz: GObject.GGLDenoiseEffect,
                         i18n: "GGLDenoiseEffect",
                         group: "webgl",
-                        category: w,
-                        createSettings: P,
+                        category: adjustLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-denoise-effect",
                     },
                     {
                         clazz: GObject.GGLEdgeWorkEffect,
                         i18n: "GGLEdgeWorkEffect",
                         group: "webgl",
-                        category: b,
-                        createSettings: P,
+                        category: artisticLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-edge-work-effect",
                     },
                     {
                         clazz: GObject.GGLHexagonalEffect,
                         i18n: "GGLHexagonalEffect",
                         group: "webgl",
-                        category: b,
-                        createSettings: P,
+                        category: artisticLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-hexagonal-effect",
                     },
                     {
                         clazz: GObject.GGLHueSaturationEffect,
                         i18n: "GGLHueSaturationEffect",
                         group: "webgl",
-                        category: w,
+                        category: adjustLabel,
                         hidden: true,
-                        createSettings: P,
+                        createSettings: createWebGLEffectSettings,
                     },
                     {
                         clazz: GObject.GColorAdjustMultiEffect,
                         i18n: "GColorAdjustMultiEffect",
                         group: "webgl",
-                        category: w,
-                        createSettings: M,
+                        category: adjustLabel,
+                        createSettings: createColorAdjustMultiSettings,
                         hidden: true,
                     },
                     {
                         clazz: GObject.GGLInkEffect,
                         i18n: "GGLInkEffect",
                         group: "webgl",
-                        category: b,
-                        createSettings: P,
+                        category: artisticLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-ink-effect",
                     },
                     {
                         clazz: GObject.GGLLensBlurEffect,
                         i18n: "GGLLensBlurEffect",
                         group: "webgl",
-                        category: _,
-                        createSettings: P,
+                        category: blurLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-lens-blur-effect",
                     },
                     {
                         clazz: GObject.GGLNoiseEffect,
                         i18n: "GGLNoiseEffect",
                         group: "webgl",
-                        category: w,
-                        createSettings: P,
+                        category: adjustLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-noise-effect",
                     },
                     {
                         clazz: GObject.GGLSepiaEffect,
                         i18n: "GGLSepiaEffect",
                         group: "webgl",
-                        category: w,
-                        createSettings: P,
+                        category: adjustLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-sepia-effect",
                     },
                     {
                         clazz: GObject.GGLSwirlEffect,
                         i18n: "GGLSwirlEffect",
                         group: "webgl",
-                        category: C,
-                        createSettings: P,
+                        category: distortionLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-swirl-effect",
                     },
                     {
                         clazz: GObject.GGLTiltShiftEffect,
                         i18n: "GGLTiltShiftEffect",
                         group: "webgl",
-                        category: _,
-                        createSettings: P,
+                        category: blurLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-tilt-shift-effect",
                     },
                     {
                         clazz: GObject.GGLDrunkEffect,
                         i18n: "GGLDrunkEffect",
                         group: "webgl",
-                        category: b,
-                        createSettings: P,
+                        category: artisticLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-alcohol-effect",
                     },
                     {
                         clazz: GObject.GGLUnsharpMaskEffect,
                         i18n: "GGLUnsharpMaskEffect",
                         group: "webgl",
-                        category: w,
-                        createSettings: P,
+                        category: adjustLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-unsharp-mask-effect",
                     },
                     {
                         clazz: GObject.GGLVibranceEffect,
                         i18n: "GGLVibranceEffect",
                         group: "webgl",
-                        category: w,
-                        createSettings: P,
+                        category: adjustLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-vibrance-effect",
                     },
                     {
                         clazz: GObject.GGLBloomEffect,
                         i18n: "GGLBloomEffect",
                         group: "webgl",
-                        category: w,
-                        createSettings: P,
+                        category: adjustLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-bloom-effect",
                     },
                     {
                         clazz: GObject.GGLSketchEffect,
                         i18n: "GGLSketchEffect",
                         group: "webgl",
-                        category: b,
-                        createSettings: P,
+                        category: artisticLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-sketch-effect",
                     },
                     {
                         clazz: GObject.GGLToonEffect,
                         i18n: "GGLToonEffect",
                         group: "webgl",
-                        category: b,
-                        createSettings: P,
+                        category: artisticLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-toon-effect",
                     },
                     {
                         clazz: GObject.GGLZoomBlurEffect,
                         i18n: "GGLZoomBlurEffect",
                         group: "webgl",
-                        category: _,
-                        createSettings: P,
+                        category: blurLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-zoom-blur-effect",
                     },
                     {
                         clazz: GObject.GGLStrokeLayerEffect,
                         i18n: "GGLStrokeLayerEffect",
                         group: "raster",
-                        category: x,
-                        createSettings: P,
+                        category: otherLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-stroke-effect",
                     },
                     {
                         clazz: GObject.GGLInnerGlowEffect,
                         i18n: "GGLInnerGlowEffect",
                         group: "raster",
-                        category: x,
-                        createSettings: P,
+                        category: otherLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-inner-glow-effect",
                     },
                     {
                         clazz: GObject.GGLOuterGlowEffect,
                         i18n: "GGLOuterGlowEffect",
                         group: "raster",
-                        category: x,
-                        createSettings: P,
+                        category: otherLabel,
+                        createSettings: createWebGLEffectSettings,
                         icon: "gravit-icon-outer-glow-effect",
                     },
                     {
                         clazz: GObject.GContactShadowEffect,
                         i18n: "GContactShadowEffect",
                         group: "raster",
-                        category: S,
-                        createSettings: I,
+                        category: shadowLabel,
+                        createSettings: createContactShadowSettings,
                         icon: "gravit-icon-contact-shadow-effect",
                     },
                     {
                         clazz: GObject.GLongShadowEffect,
                         i18n: "GLongShadowEffect",
                         group: "raster",
-                        category: S,
-                        createSettings: k,
+                        category: shadowLabel,
+                        createSettings: createLongShadowSettings,
                         icon: "gravit-icon-long-shadow-effect",
                     },
                     {
                         clazz: GObject.GColorGradingEffect,
                         i18n: "GColorGradingEffect",
                         group: "filter",
-                        category: w,
-                        createSettings: R,
+                        category: adjustLabel,
+                        createSettings: createColorGradingSettings,
                         icon: "gravit-icon-color-grading-effect",
                     },
                 ];
             };
-        module.exports = E;
+        module.exports = GEffectProperties;
     };

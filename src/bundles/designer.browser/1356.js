@@ -3,20 +3,20 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(58 /* polyfill:Array */), require(19), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(71 /* polyfill:String */), require(151), require(34), require(91 /* polyfill:String */), require(4), require(41), require(13), require(32), require(38), require(33), require(26));
         var designerConfig = require(10),
-            a = require(882),
-            GAnnotationPanel = require(1353),
+            assigneeUtil = require(882),
+            GAnnotationAdditionalMentions = require(1353),
             GRegex = require(263),
-            l = require(67),
-            c = _interopRequireDefault(require(358)),
-            d = _interopRequireDefault(require(1324)),
-            u = _interopRequireDefault(require(883));
+            richTooltip = require(67),
+            ownerUtil = _interopRequireDefault(require(358)),
+            Collaborator = _interopRequireDefault(require(1324)),
+            Mention = _interopRequireDefault(require(883));
         const { GSystem, GLocale, GLocaleKey, GUtil, GComment, GAnnotation, GObject, GNode } = require(1 /* GObject */),
-            { NEW_COMMENT_READ_TIMEOUT, ANNOTATION_PERMANENT_LINK, IS_COREL } = ((0, GAnnotationPanel.createAdditionalMentions)(), require(10 /* designerConfig */)),
-            x = require(1191),
-            S = require(1166),
-            E = require(434),
-            { getAnnotationType } = require(40 /* GSaveAction */);
-        function T(e) {
+            { NEW_COMMENT_READ_TIMEOUT, ANNOTATION_PERMANENT_LINK, IS_COREL } = ((0, GAnnotationAdditionalMentions.createAdditionalMentions)(), require(10 /* designerConfig */)),
+            GPanelItem = require(1191),
+            GUserPreview = require(1166),
+            AccessKeys = require(434),
+            { getAnnotationType } = require(40 /* Utils */);
+        function AnnotationRow(options) {
             let {
                 container,
                 annotation,
@@ -39,7 +39,7 @@ module.exports = function (module, exports, require) {
                 isCommentingEditingEnable,
                 hasResolveAccess,
                 hasReopenAccess,
-            } = e;
+            } = options;
             ((this._container = container),
                 (this._annotation = annotation),
                 (this._relatedNodesCount = relatedNodesCount),
@@ -69,56 +69,56 @@ module.exports = function (module, exports, require) {
                 (this._hasReopenAccess = hasReopenAccess),
                 this._init());
         }
-        function G(e) {
-            if (13 !== e.keyCode) return false;
+        function isSubmitEnterKey(event) {
+            if (13 !== event.keyCode) return false;
             if (GSystem.operatingSystem !== GSystem.OperatingSystem.OSX_IOS) {
-                if (!e.shiftKey) return true;
+                if (!event.shiftKey) return true;
             } else {
-                if (!e.altKey) return true;
-                if ("keydown" === e.type) {
-                    let t = $(e.target).val();
-                    $(e.target).val(t + "\n");
+                if (!event.altKey) return true;
+                if ("keydown" === event.type) {
+                    let value = $(event.target).val();
+                    $(event.target).val(value + "\n");
                 }
             }
             return false;
         }
-        function P(e) {
-            return (t) => t.getFirstName() === e || t.getFullUserName() === e || t.getEmail() === e;
+        function createUserMatcher(query) {
+            return (user) => user.getFirstName() === query || user.getFullUserName() === query || user.getEmail() === query;
         }
-        function D(e) {
-            const t = (0, GAnnotationPanel.createAdditionalMentions)();
-            return Object.values(t).find((t) => t.getUID() === e);
+        function findAdditionalMention(uid) {
+            const mentions = (0, GAnnotationAdditionalMentions.createAdditionalMentions)();
+            return Object.values(mentions).find((mention) => mention.getUID() === uid);
         }
-        function L(e) {
-            return GUtil.xss(e);
+        function escapeHtml(text) {
+            return GUtil.xss(text);
         }
-        (GObject.inherit(T, x),
-            (T.prototype._isRead = false),
-            (T.prototype._isTypeResolved = false),
-            (T.prototype._isTypeReopened = false),
-            (T.prototype._isParentAnnotResolved = false),
-            (T.prototype._init = function () {
-                var e,
-                    t = this._container,
-                    n = this._annotation,
-                    o = getAnnotationType(this._annotation instanceof GComment ? this._annotation._parent : this._annotation),
-                    i = this,
-                    r = gDesigner.getSyncUser(),
-                    s = c.default.isOwner(r, n),
-                    d = gDesigner.getApplicationManager();
-                const u = this._isCommentingEditingEnable && (this._hasResolveAccess || s),
-                    f = this._isCommentingEditingEnable && (this._hasReopenAccess || s);
-                var v = $("<span></span>").addClass("annotation-title-group").appendTo(t);
-                t.on("mouseenter", this._onMouseEnter).on("mouseleave", this._onMouseLeave);
-                var b = $("<div/>").addClass("email-and-role-tooltop").appendTo(v);
+        (GObject.inherit(AnnotationRow, GPanelItem),
+            (AnnotationRow.prototype._isRead = false),
+            (AnnotationRow.prototype._isTypeResolved = false),
+            (AnnotationRow.prototype._isTypeReopened = false),
+            (AnnotationRow.prototype._isParentAnnotResolved = false),
+            (AnnotationRow.prototype._init = function () {
+                var commentContent,
+                    container = this._container,
+                    annotation = this._annotation,
+                    annotationType = getAnnotationType(this._annotation instanceof GComment ? this._annotation._parent : this._annotation),
+                    self = this,
+                    currentUser = gDesigner.getSyncUser(),
+                    isOwner = ownerUtil.default.isOwner(currentUser, annotation),
+                    applicationManager = gDesigner.getApplicationManager();
+                const canResolve = this._isCommentingEditingEnable && (this._hasResolveAccess || isOwner),
+                    canReopen = this._isCommentingEditingEnable && (this._hasReopenAccess || isOwner);
+                var titleGroup = $("<span></span>").addClass("annotation-title-group").appendTo(container);
+                container.on("mouseenter", this._onMouseEnter).on("mouseleave", this._onMouseLeave);
+                var tooltipContainer = $("<div/>").addClass("email-and-role-tooltop").appendTo(titleGroup);
                 gDesigner
                     .getShareManager()
-                    .getRoleNameByUserId(n.getProperty("uid"))
-                    .then((e) => {
-                        b.gRichTooltip(
-                            l.GRichTooltipConfig.from({
-                                title: n.getProperty("email") || r.getEmail() || " ",
-                                description: e,
+                    .getRoleNameByUserId(annotation.getProperty("uid"))
+                    .then((roleName) => {
+                        tooltipContainer.gRichTooltip(
+                            richTooltip.GRichTooltipConfig.from({
+                                title: annotation.getProperty("email") || currentUser.getEmail() || " ",
+                                description: roleName,
                                 forceShow: true,
                                 middle: false,
                                 flipHorizontal: true,
@@ -126,107 +126,107 @@ module.exports = function (module, exports, require) {
                             })
                         );
                     });
-                var x = n.getProperty("name");
-                x = x || n.getProperty("login") || n.getProperty("email").split("@")[0] || GLocale.get(new GLocaleKey("GAnnotationPanel", "text.empty"));
-                var T = $("<span></span>").html(L(x)).addClass("annotation-title").appendTo(b);
+                var displayName = annotation.getProperty("name");
+                displayName = displayName || annotation.getProperty("login") || annotation.getProperty("email").split("@")[0] || GLocale.get(new GLocaleKey("GAnnotationPanel", "text.empty"));
+                var titleElement = $("<span></span>").html(escapeHtml(displayName)).addClass("annotation-title").appendTo(tooltipContainer);
                 gDesigner
                     .getShareManager()
-                    .getCollaboratorById(n.getProperty("uid"))
-                    .then((e) => {
-                        const t = S.getUserDataFromAnnotAndUser(n, e || r);
-                        new S(t).build().addClass("g-user-comment-preview").insertBefore(T);
+                    .getCollaboratorById(annotation.getProperty("uid"))
+                    .then((collaborator) => {
+                        const userData = GUserPreview.getUserDataFromAnnotAndUser(annotation, collaborator || currentUser);
+                        new GUserPreview(userData).build().addClass("g-user-comment-preview").insertBefore(titleElement);
                     });
-                var P = new Date(n.getProperty("mtime") || n.getProperty("time")),
-                    D = GLocale.toLocaleDate(P, {
+                var modifiedDate = new Date(annotation.getProperty("mtime") || annotation.getProperty("time")),
+                    formattedDate = GLocale.toLocaleDate(modifiedDate, {
                         year: "numeric",
                         month: "numeric",
                         day: "numeric",
                         hour: "numeric",
                         minute: "numeric",
                     });
-                ($("<span>").text("·").addClass("dot").appendTo(v),
-                    $("<span></span>").text(D).addClass("annotation-date").appendTo(v),
-                    (this._annotationCommentContainer = $("<div/>").addClass("annotation-comment-container").appendTo(t)),
+                ($("<span>").text("·").addClass("dot").appendTo(titleGroup),
+                    $("<span></span>").text(formattedDate).addClass("annotation-date").appendTo(titleGroup),
+                    (this._annotationCommentContainer = $("<div/>").addClass("annotation-comment-container").appendTo(container)),
                     (this._contentEditorButtons = $("<div>")));
-                var I = $("<span></span>")
+                var commentContentElement = $("<span></span>")
                     .addClass("annotation-comment-content")
                     .css("userSelect", "text")
                     .appendTo(this._annotationCommentContainer);
-                if (n instanceof GComment)
-                    switch ((this._updateParentAnnotResolvedStatus(n.getParent()), n.getProperty("type"))) {
+                if (annotation instanceof GComment)
+                    switch ((this._updateParentAnnotResolvedStatus(annotation.getParent()), annotation.getProperty("type"))) {
                         case GComment.Type.User:
-                            ((e = this._generateCommentContentHTML(n)), I.html(e.html), this._updateReadUnreadStatus(v));
+                            ((commentContent = this._generateCommentContentHTML(annotation)), commentContentElement.html(commentContent.html), this._updateReadUnreadStatus(titleGroup));
                             break;
                         case GComment.Type.Open:
-                            (I.addClass("automatic").text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.re-opened"))),
-                                this._updateReadUnreadStatus(v),
+                            (commentContentElement.addClass("automatic").text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.re-opened"))),
+                                this._updateReadUnreadStatus(titleGroup),
                                 (this._isTypeReopened = true),
                                 (this._isTypeResolved = false));
                             break;
                         case GComment.Type.Close:
-                            (I.addClass("automatic").text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.marked-as-resolved"))),
+                            (commentContentElement.addClass("automatic").text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.marked-as-resolved"))),
                                 (this._isRead = true),
                                 (this._isTypeResolved = true),
                                 (this._isTypeReopened = false));
                     }
                 else
-                    (this._updateParentAnnotResolvedStatus(n),
-                        (e = this._generateCommentContentHTML(n)),
-                        I.html(e.html),
-                        this._updateReadUnreadStatus(v));
-                var k = (e) => {
-                        ((e = ((e = a.replaceAdditionalCollabShowTextBeforeSend.call(this, e)) || "").trim()) || n.isEmptyTextAllowed()) &&
-                            (this._onChange(e),
-                            this._shouldAssign && this._assignees && this._assignees.length && i._onAssignTo(i._assignees));
+                    (this._updateParentAnnotResolvedStatus(annotation),
+                        (commentContent = this._generateCommentContentHTML(annotation)),
+                        commentContentElement.html(commentContent.html),
+                        this._updateReadUnreadStatus(titleGroup));
+                var submitComment = (text) => {
+                        ((text = ((text = assigneeUtil.replaceAdditionalCollabShowTextBeforeSend.call(this, text)) || "").trim()) || annotation.isEmptyTextAllowed()) &&
+                            (this._onChange(text),
+                            this._shouldAssign && this._assignees && this._assignees.length && self._onAssignTo(self._assignees));
                     },
-                    O = $("<textarea></textarea>")
+                    commentEditor = $("<textarea></textarea>")
                         .appendTo(this._annotationCommentContainer)
                         .addClass("annotation-comment-editor")
                         .addClass("mention")
-                        .on("click", function (e) {
-                            i.isEditMode() && e.stopPropagation();
+                        .on("click", function (event) {
+                            self.isEditMode() && event.stopPropagation();
                         })
                         .on("blur", function () {
-                            !i.isEditMode() ||
-                                (i._mentionsCollection && i._mentionsCollection.length) ||
-                                (k(this.value), i.cancelEditMode());
+                            !self.isEditMode() ||
+                                (self._mentionsCollection && self._mentionsCollection.length) ||
+                                (submitComment(this.value), self.cancelEditMode());
                         })
-                        .on("keydown", function (e) {
-                            i.isEditMode() && G(e) && e.preventDefault();
+                        .on("keydown", function (event) {
+                            self.isEditMode() && isSubmitEnterKey(event) && event.preventDefault();
                         })
-                        .on("keypress", function (e) {
-                            i.isEditMode() &&
+                        .on("keypress", function (event) {
+                            self.isEditMode() &&
                                 GSystem.operatingSystem === GSystem.OperatingSystem.OSX_IOS &&
-                                13 === e.keyCode &&
-                                e.altKey &&
-                                e.preventDefault();
+                                13 === event.keyCode &&
+                                event.altKey &&
+                                event.preventDefault();
                         })
-                        .on("keyup", function (e) {
-                            const t = O.parent().find(".mentions-autocomplete-list").data("assign");
-                            i.isEditMode() &&
-                                (G(e) && !t
-                                    ? (k(this.value), i.cancelEditMode(), e.preventDefault())
-                                    : 27 === e.keyCode && (i.cancelEditMode(), i._onCancel()));
+                        .on("keyup", function (event) {
+                            const mentionsAutocompleteItemCount = commentEditor.parent().find(".mentions-autocomplete-list").data("assign");
+                            self.isEditMode() &&
+                                (isSubmitEnterKey(event) && !mentionsAutocompleteItemCount
+                                    ? (submitComment(this.value), self.cancelEditMode(), event.preventDefault())
+                                    : 27 === event.keyCode && (self.cancelEditMode(), self._onCancel()));
                         });
                 if (
-                    (O.mentionsInput({
+                    (commentEditor.mentionsInput({
                         elastic: false,
-                        onDataRequest: (e, t, n) => {
-                            let o = this._data.filter(
-                                (e) =>
-                                    e.getFullUserName().toLowerCase().includes(t.toLowerCase()) ||
-                                    (e.getEmail() && e.getEmail().toLowerCase().includes(t.toLowerCase()))
+                        onDataRequest: (mode, query, callback) => {
+                            let filteredCollaborators = this._data.filter(
+                                (collaborator) =>
+                                    collaborator.getFullUserName().toLowerCase().includes(query.toLowerCase()) ||
+                                    (collaborator.getEmail() && collaborator.getEmail().toLowerCase().includes(query.toLowerCase()))
                             );
-                            (o.push(...this._additionalMentions), n.call(this, o));
+                            (filteredCollaborators.push(...this._additionalMentions), callback.call(this, filteredCollaborators));
                         },
                         onSelectItem: () => {
-                            gDesigner.stats("commentdocker_mention_select-user", o);
+                            gDesigner.stats("commentdocker_mention_select-user", annotationType);
                         },
                     }).on("input", function () {
-                        (a.showAssigneeRow.call(i, O), (this.style.height = 0), (this.style.height = this.scrollHeight + "px"));
+                        (assigneeUtil.showAssigneeRow.call(self, commentEditor), (this.style.height = 0), (this.style.height = this.scrollHeight + "px"));
                     }),
                     this._annotationCommentContainer.find(".mentions-autocomplete-list").delegate("li", "mousedown", () => {
-                        a.showAssigneeRow.call(this, O);
+                        assigneeUtil.showAssigneeRow.call(this, commentEditor);
                     }),
                     this.setMentionOverlayBorderVisiblity(false),
                     (this._onlyOneAssignee = $("<span>")
@@ -237,15 +237,15 @@ module.exports = function (module, exports, require) {
                         .addClass("assignee-selector")
                         .css("display", "none")
                         .append(
-                            $("<select>").on("change", (e) => {
-                                a.updateAssignee.call(this, $(e.target).val());
+                            $("<select>").on("change", (event) => {
+                                assigneeUtil.updateAssignee.call(this, $(event.target).val());
                             })
                         )),
                     (this._assigneeCheckBox = $("<input>")
                         .attr("type", "checkbox")
                         .prop("checked", this._shouldAssign)
-                        .on("change", (e) => {
-                            ((this._shouldAssign = $(e.target).prop("checked")), gDesigner.stats("commentdocker_mention_assign-user", o));
+                        .on("change", (event) => {
+                            ((this._shouldAssign = $(event.target).prop("checked")), gDesigner.stats("commentdocker_mention_assign-user", annotationType));
                         })),
                     (this._assigneeRow = $("<div>")
                         .css("display", "none")
@@ -268,38 +268,38 @@ module.exports = function (module, exports, require) {
                             $("<button>")
                                 .addClass("annotations-cancelcomment")
                                 .text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.cancel")))
-                                .on("mousedown", (e) => {
-                                    e.preventDefault();
+                                .on("mousedown", (event) => {
+                                    event.preventDefault();
                                 })
-                                .on("click", (e) => {
-                                    (e.stopPropagation(),
-                                        gDesigner.stats("commentdocker_cancel-btn", o),
-                                        i.cancelEditMode(),
-                                        i._onCancel());
+                                .on("click", (event) => {
+                                    (event.stopPropagation(),
+                                        gDesigner.stats("commentdocker_cancel-btn", annotationType),
+                                        self.cancelEditMode(),
+                                        self._onCancel());
                                 })
                         )
                         .append(
                             $("<button>")
                                 .addClass("annotations-addcomment")
                                 .text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.fill-contents")))
-                                .on("mousedown", (e) => {
-                                    e.preventDefault();
+                                .on("mousedown", (event) => {
+                                    event.preventDefault();
                                 })
-                                .on("click", (e) => {
-                                    (e.stopPropagation(),
+                                .on("click", (event) => {
+                                    (event.stopPropagation(),
                                         gDesigner.stats(
-                                            n.getProperty("text").trim().length > 0 ? "commentdocker_edit-btn" : "commentdocker_add-btn",
-                                            o
+                                            annotation.getProperty("text").trim().length > 0 ? "commentdocker_edit-btn" : "commentdocker_add-btn",
+                                            annotationType
                                         ),
-                                        k(O.val()),
-                                        i.cancelEditMode());
+                                        submitComment(commentEditor.val()),
+                                        self.cancelEditMode());
                                 })
                         ),
-                    $(t)
-                        .toggleClass("g-active", n.hasFlag(GNode.Flag.Active))
+                    $(container)
+                        .toggleClass("g-active", annotation.hasFlag(GNode.Flag.Active))
                         .toggleClass(
                             "g-selected",
-                            n.hasFlag(GNode.Flag.Selected) || (n instanceof GComment && n.getParent().hasFlag(GNode.Flag.Selected))
+                            annotation.hasFlag(GNode.Flag.Selected) || (annotation instanceof GComment && annotation.getParent().hasFlag(GNode.Flag.Selected))
                         ),
                     this._relatedNodesCount > 1)
                 )
@@ -309,214 +309,214 @@ module.exports = function (module, exports, require) {
                               .addClass(this._mainAnnotObject.expanded ? "gravit-icon-down " : "gravit-icon-right")
                               .addClass("annotation-collapse")
                               .click(this._onExpandClick)),
-                          v.prepend(this._expandIcon))
+                          titleGroup.prepend(this._expandIcon))
                         : this._mainAnnotObject.expanded
-                          ? t.show()
-                          : t.hide();
+                          ? container.show()
+                          : container.hide();
                 else {
-                    const e = $("<div></div>").addClass("annotation-collapse-empty");
-                    v.prepend(e);
+                    const collapseEmptyIcon = $("<div></div>").addClass("annotation-collapse-empty");
+                    titleGroup.prepend(collapseEmptyIcon);
                 }
-                (n.hasFlag(GNode.Flag.Selected) || (n instanceof GComment && n.getParent().hasFlag(GNode.Flag.Selected))) &&
+                (annotation.hasFlag(GNode.Flag.Selected) || (annotation instanceof GComment && annotation.getParent().hasFlag(GNode.Flag.Selected))) &&
                     (this.setCollapseState(true), this.setVisiblity(true));
-                var F = $("<span>").addClass("annotation-action-group").appendTo(v);
-                if (this._isCommentingEditingEnable && n.hasMixin(GAnnotation)) {
-                    var R = n.getProperty("rsv"),
-                        M = false,
-                        N = "";
-                    (R
-                        ? ((M = true),
-                          (N = f
+                var actionGroup = $("<span>").addClass("annotation-action-group").appendTo(titleGroup);
+                if (this._isCommentingEditingEnable && annotation.hasMixin(GAnnotation)) {
+                    var isResolved = annotation.getProperty("rsv"),
+                        showResolvedIcon = false,
+                        resolveActionTitle = "";
+                    (isResolved
+                        ? ((showResolvedIcon = true),
+                          (resolveActionTitle = canReopen
                               ? GLocale.get(new GLocaleKey("GAnnotationPanel", "text.reopen"))
                               : GLocale.get(new GLocaleKey("GAnnotationPanel", "text.marked-as-resolved"))))
-                        : ((M = false), (N = GLocale.get(new GLocaleKey("GAnnotationPanel", "text.resolve")))),
-                        (!R && !f) ||
-                            (n.getProperty("asgn") || []).length ||
+                        : ((showResolvedIcon = false), (resolveActionTitle = GLocale.get(new GLocaleKey("GAnnotationPanel", "text.resolve")))),
+                        (!isResolved && !canReopen) ||
+                            (annotation.getProperty("asgn") || []).length ||
                             $("<span>")
-                                .addClass("icon " + (R ? "gravit-icon-resolved" : "gravit-icon-resolve"))
-                                .addClass(M ? "visible" : "")
+                                .addClass("icon " + (isResolved ? "gravit-icon-resolved" : "gravit-icon-resolve"))
+                                .addClass(showResolvedIcon ? "visible" : "")
                                 .addClass("annotation-action")
-                                .attr("data-title", N)
-                                .click((e) => {
-                                    (e.stopPropagation(),
-                                        d.hasAccess(E.RESOLVE_COMMENT_ANNOTATION).then((e) => {
-                                            e || s
-                                                ? this._onToggleState(n)
-                                                : d.hasAccess(E.REOPEN_COMMENT_ANNOTATION).then((e) => {
-                                                      (e || s) && this._onToggleState(n);
+                                .attr("data-title", resolveActionTitle)
+                                .click((event) => {
+                                    (event.stopPropagation(),
+                                        applicationManager.hasAccess(AccessKeys.RESOLVE_COMMENT_ANNOTATION).then((hasAccess) => {
+                                            hasAccess || isOwner
+                                                ? this._onToggleState(annotation)
+                                                : applicationManager.hasAccess(AccessKeys.REOPEN_COMMENT_ANNOTATION).then((hasAccess) => {
+                                                      (hasAccess || isOwner) && this._onToggleState(annotation);
                                                   });
                                         }));
                                 })
-                                .appendTo(F));
+                                .appendTo(actionGroup));
                 }
-                var B = $("<span>")
+                var menuButton = $("<span>")
                         .append($("<span></span>").addClass("gravit-annotation-icon-menu"))
                         .addClass("annotationpanel-menubutton")
                         .addClass("annotation-action"),
-                    U = $("<div></div>")
+                    menuOverlay = $("<div></div>")
                         .addClass("annotations-menu")
                         .gOverlay({
                             releaseOnClose: false,
                             closeCallback: () => {
-                                B.removeClass("g-active");
+                                menuButton.removeClass("g-active");
                             },
                         });
                 if (
-                    (t.data("annotmenu", U),
-                    n.hasMixin(GAnnotation) &&
-                        (u || f) &&
-                        !(n.getProperty("asgn") || []).length &&
-                        (n.getProperty("rsv")
-                            ? U.append(
+                    (container.data("annotmenu", menuOverlay),
+                    annotation.hasMixin(GAnnotation) &&
+                        (canResolve || canReopen) &&
+                        !(annotation.getProperty("asgn") || []).length &&
+                        (annotation.getProperty("rsv")
+                            ? menuOverlay.append(
                                   $("<label>")
                                       .append($("<span>").addClass("icon gravit-icon-reopen").addClass("annot-menu-icon"))
-                                      .on("click", (e) => {
-                                          (e.stopPropagation(),
-                                              gDesigner.stats("commentdocker_option_reopen", o),
-                                              U.gOverlay("close"),
-                                              this._onReopen(n));
+                                      .on("click", (event) => {
+                                          (event.stopPropagation(),
+                                              gDesigner.stats("commentdocker_option_reopen", annotationType),
+                                              menuOverlay.gOverlay("close"),
+                                              this._onReopen(annotation));
                                       })
                                       .append($("<span>").text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.reopen"))))
                               )
-                            : U.append(
+                            : menuOverlay.append(
                                   $("<label>")
                                       .append(
                                           $("<span>")
                                               .addClass("icon ".concat(IS_COREL ? "gravit-icon-resolved" : "gravit-icon-resolve"))
                                               .addClass("annot-menu-icon")
                                       )
-                                      .on("click", (e) => {
-                                          (e.stopPropagation(),
-                                              gDesigner.stats("commentdocker_option_resolve", o),
-                                              U.gOverlay("close"),
-                                              this._onResolve(n));
+                                      .on("click", (event) => {
+                                          (event.stopPropagation(),
+                                              gDesigner.stats("commentdocker_option_resolve", annotationType),
+                                              menuOverlay.gOverlay("close"),
+                                              this._onResolve(annotation));
                                       })
                                       .append($("<span>").text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.resolve"))))
                               )),
-                    s &&
-                        ((n.hasMixin(GAnnotation) && !n.getProperty("rsv")) || (n instanceof GComment && !n.getParent().getProperty("rsv"))) &&
-                        n.isFillingCompleted())
+                    isOwner &&
+                        ((annotation.hasMixin(GAnnotation) && !annotation.getProperty("rsv")) || (annotation instanceof GComment && !annotation.getParent().getProperty("rsv"))) &&
+                        annotation.isFillingCompleted())
                 ) {
-                    const e = n.getProperty("text").trim().length > 0;
+                    const hasText = annotation.getProperty("text").trim().length > 0;
                     this._isCommentingEditingEnable &&
-                        U.append(
+                        menuOverlay.append(
                             $("<label>")
                                 .append($("<span>").addClass("icon gravit-icon-edit").addClass("annot-menu-icon"))
                                 .on(
                                     "click",
-                                    function (t) {
-                                        t.stopPropagation();
-                                        let a = e ? "commentdocker_option_edit" : "commentdocker_option_add";
-                                        (gDesigner.stats("".concat(a), o),
-                                            i._startEditMode(
-                                                i._annotationCommentContainer,
-                                                n.getProperty("text").trim().length > 0,
-                                                n.getProperty("text"),
-                                                I.outerWidth(),
-                                                I.outerHeight(),
-                                                i._data,
-                                                i._additionalMentions
+                                    function (event) {
+                                        event.stopPropagation();
+                                        let statName = hasText ? "commentdocker_option_edit" : "commentdocker_option_add";
+                                        (gDesigner.stats("".concat(statName), annotationType),
+                                            self._startEditMode(
+                                                self._annotationCommentContainer,
+                                                annotation.getProperty("text").trim().length > 0,
+                                                annotation.getProperty("text"),
+                                                commentContentElement.outerWidth(),
+                                                commentContentElement.outerHeight(),
+                                                self._data,
+                                                self._additionalMentions
                                             ),
-                                            U.gOverlay("close"));
-                                    }.bind(I)
+                                            menuOverlay.gOverlay("close"));
+                                    }.bind(commentContentElement)
                                 )
-                                .append($("<span>").text(GLocale.get(new GLocaleKey("GAnnotationPanel", e ? "text.edit-comment" : "text.add-comment"))))
+                                .append($("<span>").text(GLocale.get(new GLocaleKey("GAnnotationPanel", hasText ? "text.edit-comment" : "text.add-comment"))))
                         );
                 }
-                s &&
+                isOwner &&
                     this._isCommentingEditingEnable &&
-                    U.append(
+                    menuOverlay.append(
                         $("<label>")
                             .append($("<span>").addClass("icon gravit-icon-trash").addClass("annot-menu-icon"))
-                            .on("click", (e) => {
-                                (e.stopPropagation(),
-                                    gDesigner.stats("commentdocker_option_delete", o),
-                                    U.gOverlay("close"),
-                                    this._onDelete(n));
+                            .on("click", (event) => {
+                                (event.stopPropagation(),
+                                    gDesigner.stats("commentdocker_option_delete", annotationType),
+                                    menuOverlay.gOverlay("close"),
+                                    this._onDelete(annotation));
                             })
                             .append($("<span>").text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.delete"))))
                     );
-                const j = gDesigner.getActiveDocument();
+                const activeDocument = gDesigner.getActiveDocument();
                 (ANNOTATION_PERMANENT_LINK &&
-                    j &&
-                    j.isShareable() &&
-                    U.append(
+                    activeDocument &&
+                    activeDocument.isShareable() &&
+                    menuOverlay.append(
                         $("<label/>")
                             .append($("<span/>").addClass("icon gravit-icon-copy-annot").addClass("annot-menu-icon"))
                             .append($("<span>").text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.copy-permalink"))))
-                            .on("click", async (e) => {
-                                (e.stopPropagation(), gDesigner.stats("commentdocker_option_copy-permalink", o));
-                                const t = $("<span/>").addClass("g-loading").appendTo($(e.target).closest("label"));
+                            .on("click", async (event) => {
+                                (event.stopPropagation(), gDesigner.stats("commentdocker_option_copy-permalink", annotationType));
+                                const loadingSpinner = $("<span/>").addClass("g-loading").appendTo($(event.target).closest("label"));
                                 try {
                                     await this._onCopyPermalinkClick(this._annotation);
                                 } finally {
-                                    (t.remove(), U.gOverlay("close"));
+                                    (loadingSpinner.remove(), menuOverlay.gOverlay("close"));
                                 }
                             })
                     ),
-                    (n.hasMixin(GAnnotation) || n.getProperty("type") === GComment.Type.User) &&
-                        U.find(".annot-menu-icon").length &&
-                        B.on("click", (e) => {
-                            (e.stopPropagation(), B.addClass("g-active"), U.gOverlay("open", $(e.target).closest("span").closest("span")));
-                        }).appendTo(F));
+                    (annotation.hasMixin(GAnnotation) || annotation.getProperty("type") === GComment.Type.User) &&
+                        menuOverlay.find(".annot-menu-icon").length &&
+                        menuButton.on("click", (event) => {
+                            (event.stopPropagation(), menuButton.addClass("g-active"), menuOverlay.gOverlay("open", $(event.target).closest("span").closest("span")));
+                        }).appendTo(actionGroup));
             }),
-            (T.prototype.isCollapsible = function () {
+            (AnnotationRow.prototype.isCollapsible = function () {
                 return this._annotation.hasMixin(GAnnotation);
             }),
-            (T.prototype.setCollapseState = function (e) {
+            (AnnotationRow.prototype.setCollapseState = function (expanded) {
                 if (this.isCollapsible())
                     return $(this._expandIcon)
-                        .removeClass(e ? "gravit-icon-right" : "gravit-icon-down")
-                        .addClass(e ? "gravit-icon-down" : "gravit-icon-right");
+                        .removeClass(expanded ? "gravit-icon-right" : "gravit-icon-down")
+                        .addClass(expanded ? "gravit-icon-down" : "gravit-icon-right");
             }),
-            (T.prototype.isEditMode = function () {
+            (AnnotationRow.prototype.isEditMode = function () {
                 return this._annotationCommentContainer.hasClass("g-edit-mode");
             }),
-            (T.prototype._clearOwnData = function () {
-                var e = this._container.data("annotmenu");
-                e && (e.empty(), this._container.data("annotmenu", null));
+            (AnnotationRow.prototype._clearOwnData = function () {
+                var menu = this._container.data("annotmenu");
+                menu && (menu.empty(), this._container.data("annotmenu", null));
             }),
-            (T.prototype.cancelEditMode = function () {
+            (AnnotationRow.prototype.cancelEditMode = function () {
                 (this._annotationCommentContainer.removeClass("g-edit-mode"),
                     this._contentEditorButtons.hide(),
                     this._assigneeRow.hide(),
                     this.setMentionOverlayBorderVisiblity(false));
             }),
-            (T.prototype.toggleHighlight = function (e) {
-                this._container.toggleClass("g-highlighted-row", e);
+            (AnnotationRow.prototype.toggleHighlight = function (highlighted) {
+                this._container.toggleClass("g-highlighted-row", highlighted);
             }),
-            (T.prototype.isRead = function () {
+            (AnnotationRow.prototype.isRead = function () {
                 return this._isRead;
             }),
-            (T.prototype.isTypeResolved = function () {
+            (AnnotationRow.prototype.isTypeResolved = function () {
                 return this._isTypeResolved;
             }),
-            (T.prototype.isTypeReopened = function () {
+            (AnnotationRow.prototype.isTypeReopened = function () {
                 return this._isTypeReopened;
             }),
-            (T.prototype.isParentAnnotationResolved = function () {
+            (AnnotationRow.prototype.isParentAnnotationResolved = function () {
                 return this._isParentAnnotResolved;
             }),
-            (T.prototype.setVisiblity = function (e) {
-                e ? this._container.show() : this._container.hide();
+            (AnnotationRow.prototype.setVisiblity = function (visible) {
+                visible ? this._container.show() : this._container.hide();
             }),
-            (T.prototype.setMentionOverlayBorderVisiblity = function (e) {
-                e
+            (AnnotationRow.prototype.setMentionOverlayBorderVisiblity = function (visible) {
+                visible
                     ? this._annotationCommentContainer.find(".mentions-input-box").css("display", "block")
                     : this._annotationCommentContainer.find(".mentions-input-box").css("display", "none");
             }),
-            (T.prototype._updateParentAnnotResolvedStatus = function (e) {
-                this._isParentAnnotResolved = !!e.getProperty("rsv");
+            (AnnotationRow.prototype._updateParentAnnotResolvedStatus = function (parentAnnotation) {
+                this._isParentAnnotResolved = !!parentAnnotation.getProperty("rsv");
             }),
-            (T.prototype._updateReadUnreadStatus = function (e) {
-                var t = this._annotation,
-                    n = gDesigner.getSyncUser(),
-                    o = c.default.isOwner(n, t);
-                if (this._isParentAnnotResolved || o || (t.getProperty("read") || []).includes(n.getUID())) this._isRead = true;
+            (AnnotationRow.prototype._updateReadUnreadStatus = function (titleGroup) {
+                var annotation = this._annotation,
+                    currentUser = gDesigner.getSyncUser(),
+                    isOwner = ownerUtil.default.isOwner(currentUser, annotation);
+                if (this._isParentAnnotResolved || isOwner || (annotation.getProperty("read") || []).includes(currentUser.getUID())) this._isRead = true;
                 else {
-                    var a = null;
+                    var unreadBadge = null;
                     (designerConfig.SHOW_SIDEBAR_BADGE &&
-                        ((a = $("<div/>")
+                        ((unreadBadge = $("<div/>")
                             .addClass("new-comment")
                             .append([
                                 $("<span/>").addClass("dot").text("·"),
@@ -524,110 +524,110 @@ module.exports = function (module, exports, require) {
                                     .addClass("text-new")
                                     .text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.unread-comment"))),
                             ])
-                            .appendTo(e)),
+                            .appendTo(titleGroup)),
                         this._container.addClass("new-element")),
                         this._sidebarActive &&
                             setTimeout(() => {
-                                let e = t.getProperty("read") || [];
-                                e.includes(n.getUID()) ||
-                                    (t.setProperty("read", e.concat(n.getUID())),
-                                    a && a.remove(),
+                                let readUsers = annotation.getProperty("read") || [];
+                                readUsers.includes(currentUser.getUID()) ||
+                                    (annotation.setProperty("read", readUsers.concat(currentUser.getUID())),
+                                    unreadBadge && unreadBadge.remove(),
                                     (this._isRead = true),
                                     this._container.addClass("new-element"));
                             }, NEW_COMMENT_READ_TIMEOUT));
                 }
             }),
-            (T.prototype.scrollIntoView = function () {
+            (AnnotationRow.prototype.scrollIntoView = function () {
                 this._scrollToElement(this._container);
             }),
-            (T.prototype._startEditMode = function (e, t, n, o, i) {
-                let a = arguments.length > 5 && void 0 !== arguments[5] ? arguments[5] : [],
-                    r = arguments.length > 6 && void 0 !== arguments[6] ? arguments[6] : [];
-                if (!e.hasClass("g-edit-mode")) {
-                    var s = e.find(".annotation-comment-editor"),
-                        l = e.find(".contenteditor-buttonrow");
-                    s.val(L(n));
-                    var c = this._generateCommentContentHTML(n);
-                    let o = c.mentioned.map((e) => e.id),
-                        i = a
-                            .concat(r)
-                            .filter((e) => o.includes(e.id))
-                            .map((e) => u.default.clone(e));
-                    (i &&
-                        i.length &&
-                        (i.forEach((e) => {
-                            const t = c.mentioned.find((t) => t.id === e.id);
-                            ((e.value = t.showText), (e.showText = t.showText));
+            (AnnotationRow.prototype._startEditMode = function (container, hasExistingText, text, width, height) {
+                let existingMentions = arguments.length > 5 && void 0 !== arguments[5] ? arguments[5] : [],
+                    additionalMentions = arguments.length > 6 && void 0 !== arguments[6] ? arguments[6] : [];
+                if (!container.hasClass("g-edit-mode")) {
+                    var commentEditor = container.find(".annotation-comment-editor"),
+                        buttonRow = container.find(".contenteditor-buttonrow");
+                    commentEditor.val(escapeHtml(text));
+                    var commentResult = this._generateCommentContentHTML(text);
+                    let mentionedIds = commentResult.mentioned.map((mention) => mention.id),
+                        mentionsToApply = existingMentions
+                            .concat(additionalMentions)
+                            .filter((mention) => mentionedIds.includes(mention.id))
+                            .map((mention) => Mention.default.clone(mention));
+                    (mentionsToApply &&
+                        mentionsToApply.length &&
+                        (mentionsToApply.forEach((mentionItem) => {
+                            const matchedMention = commentResult.mentioned.find((matchedMention) => matchedMention.id === mentionItem.id);
+                            ((mentionItem.value = matchedMention.showText), (mentionItem.showText = matchedMention.showText));
                         }),
-                        e.find(".annotation-comment-editor").mentionsInput("setMentions", i)),
+                        container.find(".annotation-comment-editor").mentionsInput("setMentions", mentionsToApply)),
                         this.setMentionOverlayBorderVisiblity(true),
-                        s.trigger("input"),
-                        s[0].setSelectionRange(s[0].textLength, s[0].textLength),
-                        l.show(),
-                        l
+                        commentEditor.trigger("input"),
+                        commentEditor[0].setSelectionRange(commentEditor[0].textLength, commentEditor[0].textLength),
+                        buttonRow.show(),
+                        buttonRow
                             .find(".annotations-addcomment")
-                            .text(GLocale.get(new GLocaleKey("GAnnotationPanel", t ? "text.edit-comment" : "text.add-comment"))),
-                        setTimeout(() => s.focus()),
-                        e.addClass("g-edit-mode"));
+                            .text(GLocale.get(new GLocaleKey("GAnnotationPanel", hasExistingText ? "text.edit-comment" : "text.add-comment"))),
+                        setTimeout(() => commentEditor.focus()),
+                        container.addClass("g-edit-mode"));
                 }
             }),
-            (T.prototype._generateCommentContentHTML = function (e) {
-                let t = "string" == typeof e ? e : L(e.getProperty("text"));
-                if (((t = t || ""), !gDesigner.getActiveDocument() || !gDesigner.getActiveDocument().getStorageItem()))
-                    return { html: t, mentioned: [] };
-                let n = t.match(GRegex.GRegex.String.USERNAME_RE);
-                if (!(n || []).length) return { html: t, mentioned: [] };
-                let o = (this._data || []).filter((e) => {
-                        let t = (e.getRole && e.getRole()) || e.role;
-                        return !t.is(designerConfig.ShareRoles.Viewer) && !t.is(designerConfig.ShareRoles.NoAccess);
+            (AnnotationRow.prototype._generateCommentContentHTML = function (source) {
+                let html = "string" == typeof source ? source : escapeHtml(source.getProperty("text"));
+                if (((html = html || ""), !gDesigner.getActiveDocument() || !gDesigner.getActiveDocument().getStorageItem()))
+                    return { html: html, mentioned: [] };
+                let usernameMatches = html.match(GRegex.GRegex.String.USERNAME_RE);
+                if (!(usernameMatches || []).length) return { html: html, mentioned: [] };
+                let eligibleCollaborators = (this._data || []).filter((collaborator) => {
+                        let role = (collaborator.getRole && collaborator.getRole()) || collaborator.role;
+                        return !role.is(designerConfig.ShareRoles.Viewer) && !role.is(designerConfig.ShareRoles.NoAccess);
                     }),
-                    a = [];
+                    matchedMentions = [];
                 if (
-                    (n.forEach((e) => {
-                        const t = e.substring(1);
-                        if (!t) return;
-                        if (D(e)) return void a.push(e);
-                        const n = o.find(P(t));
-                        n &&
-                            !a.find(
-                                (function (e) {
-                                    return (t) =>
-                                        e.getFirstName() === t.substring(1) ||
-                                        e.getFullUserName() === t.substring(1) ||
-                                        e.getEmail() === t.substring(1);
-                                })(n)
+                    (usernameMatches.forEach((match) => {
+                        const username = match.substring(1);
+                        if (!username) return;
+                        if (findAdditionalMention(match)) return void matchedMentions.push(match);
+                        const collaborator = eligibleCollaborators.find(createUserMatcher(username));
+                        collaborator &&
+                            !matchedMentions.find(
+                                (function (collaborator) {
+                                    return (mention) =>
+                                        collaborator.getFirstName() === mention.substring(1) ||
+                                        collaborator.getFullUserName() === mention.substring(1) ||
+                                        collaborator.getEmail() === mention.substring(1);
+                                })(collaborator)
                             ) &&
-                            a.push(e);
+                            matchedMentions.push(match);
                     }),
-                    !(a || []).length)
+                    !(matchedMentions || []).length)
                 )
-                    return { html: t, mentioned: [] };
-                let r = o.filter(
-                    (e) =>
-                        a.includes("@" + e.getFirstName()) ||
-                        a.includes("@" + e.getFullUserName()) ||
-                        (e.getEmail() && a.includes("@" + e.getEmail()))
+                    return { html: html, mentioned: [] };
+                let matchedCollaborators = eligibleCollaborators.filter(
+                    (collaborator) =>
+                        matchedMentions.includes("@" + collaborator.getFirstName()) ||
+                        matchedMentions.includes("@" + collaborator.getFullUserName()) ||
+                        (collaborator.getEmail() && matchedMentions.includes("@" + collaborator.getEmail()))
                 );
                 return (
-                    (r = r.map((e) => {
-                        const t = Object.assign(new d.default(), e),
-                            n = "@" + t.getEmail(),
-                            o = "@" + t.getFirstName();
-                        return (a.includes(o) ? (t.showText = "@" + t.getFullUserName()) : a.includes(n) && (t.showText = n), t);
+                    (matchedCollaborators = matchedCollaborators.map((collaborator) => {
+                        const collaboratorClone = Object.assign(new Collaborator.default(), collaborator),
+                            emailMention = "@" + collaboratorClone.getEmail(),
+                            firstNameMention = "@" + collaboratorClone.getFirstName();
+                        return (matchedMentions.includes(firstNameMention) ? (collaboratorClone.showText = "@" + collaboratorClone.getFullUserName()) : matchedMentions.includes(emailMention) && (collaboratorClone.showText = emailMention), collaboratorClone);
                     })),
-                    a.forEach((e) => {
-                        let n = e;
-                        const o = D(e);
-                        if (o) ((n = o.showText), r.push(o));
+                    matchedMentions.forEach((mention) => {
+                        let displayMention = mention;
+                        const additionalMention = findAdditionalMention(mention);
+                        if (additionalMention) ((displayMention = additionalMention.showText), matchedCollaborators.push(additionalMention));
                         else {
-                            const o = e.substring(1),
-                                i = r.find(P(o));
-                            i && ((n = i.showText), t.includes(n) && (e = n));
+                            const username = mention.substring(1),
+                                matchedCollaborator = matchedCollaborators.find(createUserMatcher(username));
+                            matchedCollaborator && ((displayMention = matchedCollaborator.showText), html.includes(displayMention) && (mention = displayMention));
                         }
-                        t = t.replace(e, "<strong><span>" + n + "</span></strong>");
+                        html = html.replace(mention, "<strong><span>" + displayMention + "</span></strong>");
                     }),
-                    { html: t, mentioned: r }
+                    { html: html, mentioned: matchedCollaborators }
                 );
             }),
-            (module.exports = T));
+            (module.exports = AnnotationRow));
     };

@@ -9,7 +9,7 @@ module.exports = function (module, exports, require) {
             l = _interopRequireDefault(require(31)),
             c = _interopRequireDefault(require(18 /* GCategory */)),
             d = _interopRequireDefault(require(44 /* GSystemDialog */)),
-            u = _interopRequireDefault(require(443 /* _interopRequireWildcard */)),
+            u = _interopRequireDefault(require(443)),
             p = _interopRequireDefault(require(1341));
         const { isExecutingOnMSTeamsSync } = u.default;
         class h extends l.default {

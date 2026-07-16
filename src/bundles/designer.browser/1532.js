@@ -6,14 +6,14 @@ module.exports = function (module, exports, require) {
             a = FILE_FORMATS.find((e) => e.default),
             { COMMAND_SAVE } = require(591 /* COMMAND_SAVE */),
             s = require(1164),
-            GGoogleDrive = require(556);
+            GGoogleDriveStorage = require(556);
         module.exports = class extends s {
             constructor(e, t) {
                 super(e, t);
             }
             async updateFileSceneAndMetadata(e, t, n, o) {
                 const i = await this._requestWorkerToSave(e, t, n, o);
-                return GGoogleDrive.convertToCloudItem(i);
+                return GGoogleDriveStorage.convertToCloudItem(i);
             }
             _requestWorkerToSave(e, t, n, i) {
                 return new Promise((s, l) => {

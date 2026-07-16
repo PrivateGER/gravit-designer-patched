@@ -5,172 +5,172 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GPlatform = require(15),
             designerConfig = require(10),
-            s = require(357),
-            l = _interopRequireDefault(require(238)),
-            c = _interopRequireDefault(require(339)),
-            d = _interopRequireDefault(require(1501)),
-            u = _interopRequireDefault(require(1502)),
-            p = _interopRequireDefault(require(603)),
-            g = _interopRequireDefault(require(78)),
-            h = _interopRequireDefault(require(217)),
-            f = _interopRequireDefault(require(86)),
-            m = _interopRequireDefault(require(119 /* GCommonNames */)),
-            y = _interopRequireDefault(require(447 /* GSaveAction */)),
-            v = _interopRequireDefault(require(448)),
-            _ = _interopRequireDefault(require(861 /* GExportAction */)),
-            b = _interopRequireDefault(require(1254 /* GOpenSharedFileAction */)),
-            w = _interopRequireDefault(require(1256 /* GVersionsHistoryAction */)),
-            C = _interopRequireDefault(require(388)),
-            x = _interopRequireDefault(require(220)),
-            S = _interopRequireDefault(require(44 /* GSystemDialog */)),
-            E = _interopRequireDefault(require(862)),
-            A = _interopRequireDefault(require(156)),
-            T = _interopRequireDefault(require(163 /* GDocument */)),
+            brandingConfig = require(357),
+            GMenu = _interopRequireDefault(require(238)),
+            GMenuItem = _interopRequireDefault(require(339)),
+            GMenuBar = _interopRequireDefault(require(1501)),
+            GPersonaBar = _interopRequireDefault(require(1502)),
+            GWindows = _interopRequireDefault(require(603)),
+            GDocumentEvent = _interopRequireDefault(require(78)),
+            GDocumentStatusEvent = _interopRequireDefault(require(217)),
+            DocumentStatus = _interopRequireDefault(require(86)),
+            GCommonNames = _interopRequireDefault(require(119 /* GCommonNames */)),
+            GSaveAction = _interopRequireDefault(require(447 /* GSaveAction */)),
+            GGravitCloudAction = _interopRequireDefault(require(448)),
+            GExportAction = _interopRequireDefault(require(861 /* GExportAction */)),
+            GOpenSharedFileAction = _interopRequireDefault(require(1254 /* GOpenSharedFileAction */)),
+            GVersionsHistoryAction = _interopRequireDefault(require(1256 /* GVersionsHistoryAction */)),
+            GExternalStorage = _interopRequireDefault(require(388)),
+            GCloudStorage = _interopRequireDefault(require(220 /* GCloudStorage */)),
+            GSystemDialog = _interopRequireDefault(require(44 /* GSystemDialog */)),
+            GCloudDriveStorage = _interopRequireDefault(require(862 /* GCloudDrive */)),
+            GDriveItem = _interopRequireDefault(require(156)),
+            GDocument = _interopRequireDefault(require(163 /* GDocument */)),
             GRegex = require(263),
-            P = require(1517);
-        const D = require(257);
-        let L = null;
-        designerConfig.LICENSE.UPGRADEABLE && (L = require(441));
-        const I = require(135),
-            k = require(392),
-            O = require(805),
+            tabsRearrangeUtil = require(1517);
+        const cssClasses = require(257);
+        let GLicenseChangeEvent = null;
+        designerConfig.LICENSE.UPGRADEABLE && (GLicenseChangeEvent = require(441));
+        const GSettingChangedEvent = require(135),
+            GApplicationStateChangedEvent = require(392),
+            GUserPropertiesChangedEvent = require(805),
             {
                 InParenthesis: { NotNegativeNumberInTheEnd },
                 NotNegativeNumber,
             } = GRegex.GRegex.String,
-            M = [
+            contextMenuItems = [
                 {
                     title: new GObject.GLocaleKey("GFilesPanel", "action.rename"),
                     shortcut: null,
-                    callback: function (e, t) {
-                        const n = this,
-                            o = e.getDocument(),
-                            a = o.getStorageItem();
-                        let s = true;
-                        if ((a && (s = !(a instanceof C.default.Item)), !s)) return false;
-                        const l = () => {
-                            const s = t.find("input"),
-                                c = e.getTitle();
-                            let d = c;
-                            (a && designerConfig.USE_EXTENSION_IN_FILENAME && (d += "." + a.getExtension().toLowerCase()),
-                                s.off("focusout"),
-                                s.off("keypress"));
-                            var u = t.find("span.cover");
-                            (u.text(d), s.css("width", u.outerWidth()), s.val(c));
-                            var p = s.val(),
-                                h = false;
-                            (s.show(), u.hide(), s.focus());
-                            var f = async function () {
+                    callback: function (win, tabElement) {
+                        const self = this,
+                            document = win.getDocument(),
+                            storageItem = document.getStorageItem();
+                        let canRename = true;
+                        if ((storageItem && (canRename = !(storageItem instanceof GExternalStorage.default.Item)), !canRename)) return false;
+                        const showRenameInput = () => {
+                            const inputElement = tabElement.find("input"),
+                                currentTitle = win.getTitle();
+                            let displayTitle = currentTitle;
+                            (storageItem && designerConfig.USE_EXTENSION_IN_FILENAME && (displayTitle += "." + storageItem.getExtension().toLowerCase()),
+                                inputElement.off("focusout"),
+                                inputElement.off("keypress"));
+                            var coverElement = tabElement.find("span.cover");
+                            (coverElement.text(displayTitle), inputElement.css("width", coverElement.outerWidth()), inputElement.val(currentTitle));
+                            var originalValue = inputElement.val(),
+                                submitted = false;
+                            (inputElement.show(), coverElement.hide(), inputElement.focus());
+                            var submitRename = async function () {
                                 try {
-                                    (s.hide(), u.show());
-                                    let d,
-                                        h = s.val().trim();
-                                    if (h && h !== c)
-                                        if (a) {
+                                    (inputElement.hide(), coverElement.show());
+                                    let finalTitle,
+                                        newTitle = inputElement.val().trim();
+                                    if (newTitle && newTitle !== currentTitle)
+                                        if (storageItem) {
                                             if (
-                                                (n._updateSyncStatus(
-                                                    t,
+                                                (self._updateSyncStatus(
+                                                    tabElement,
                                                     GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.synchronizing")) + "...",
                                                     true
                                                 ),
-                                                a instanceof x.default.Item)
+                                                storageItem instanceof GCloudStorage.default.Item)
                                             ) {
-                                                let e = a.getFile();
-                                                const c = new E.default();
+                                                let file = storageItem.getFile();
+                                                const cloudStorage = new GCloudDriveStorage.default();
                                                 try {
                                                     let o = 0;
-                                                    if (c.supportsSaveCollisionFlow()) {
+                                                    if (cloudStorage.supportsSaveCollisionFlow()) {
                                                         if (
-                                                            (e.ext || (e.ext = designerConfig.FILE_FORMATS.find((e) => e.default).ext.toUpperCase()),
-                                                            (await c.fileExists(h, e.ext, e.parent || c.getRootFolder())) &&
-                                                                !(await ((e) => {
-                                                                    let t;
+                                                            (file.ext || (file.ext = designerConfig.FILE_FORMATS.find((format) => format.default).ext.toUpperCase()),
+                                                            (await cloudStorage.fileExists(newTitle, file.ext, file.parent || cloudStorage.getRootFolder())) &&
+                                                                !(await ((filename) => {
+                                                                    let message;
                                                                     return (
-                                                                        (t = GObject.GLocale.get(
+                                                                        (message = GObject.GLocale.get(
                                                                             new GObject.GLocaleKey(
                                                                                 "GFilesPanel",
                                                                                 "text.file-already-exists-on-current-location"
                                                                             )
-                                                                        ).replace("%filename", '"'.concat(e, '"'))),
-                                                                        new Promise((e) => {
-                                                                            S.default.confirm(t, (t) => e(!!t), null, null, false, true, true);
+                                                                        ).replace("%filename", '"'.concat(filename, '"'))),
+                                                                        new Promise((resolve) => {
+                                                                            GSystemDialog.default.confirm(message, (confirmed) => resolve(!!confirmed), null, null, false, true, true);
                                                                         })
                                                                     );
-                                                                })(h)))
+                                                                })(newTitle)))
                                                         )
-                                                            return (n._updateSyncStatus(t, ""), l());
-                                                        if (c.requiresOverwriteCollisionHandling())
-                                                            for (d = h; await c.fileExists(d, e.ext, e.parent || c.getRootFolder()); )
-                                                                d = "".concat(h, " (").concat(++o, ")");
+                                                            return (self._updateSyncStatus(tabElement, ""), showRenameInput());
+                                                        if (cloudStorage.requiresOverwriteCollisionHandling())
+                                                            for (finalTitle = newTitle; await cloudStorage.fileExists(finalTitle, file.ext, file.parent || cloudStorage.getRootFolder()); )
+                                                                finalTitle = "".concat(newTitle, " (").concat(++o, ")");
                                                     }
-                                                    (d || (d = h), await c.renameItem(e, d));
+                                                    (finalTitle || (finalTitle = newTitle), await cloudStorage.renameItem(file, finalTitle));
                                                 } catch (e) {
                                                     return (
                                                         console.log(">>>.error-renaming e", e),
-                                                        s.val(p),
-                                                        n._updateSyncStatus(
-                                                            t,
+                                                        inputElement.val(originalValue),
+                                                        self._updateSyncStatus(
+                                                            tabElement,
                                                             GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.failed-to-synch")),
                                                             false,
                                                             false,
                                                             true,
-                                                            o.isCloudFile()
+                                                            document.isCloudFile()
                                                         ),
-                                                        void S.default.alert(
+                                                        void GSystemDialog.default.alert(
                                                             GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-renaming"))
                                                         )
                                                     );
                                                 }
-                                                e.name = d;
-                                            } else d = h;
-                                            (o.setTitle(d),
-                                                a.setFileName(d),
-                                                gDesigner.trigger(new g.default(g.default.Type.Modified, o)),
-                                                n._updateSyncStatus(t, ""),
-                                                u.text(d + (designerConfig.USE_EXTENSION_IN_FILENAME ? "." + a.getExtension().toLowerCase() : "")),
-                                                s.css("width", u.outerWidth()));
-                                        } else e.getDocument().setTitle(h);
-                                    else s.val(p);
+                                                file.name = finalTitle;
+                                            } else finalTitle = newTitle;
+                                            (document.setTitle(finalTitle),
+                                                storageItem.setFileName(finalTitle),
+                                                gDesigner.trigger(new GDocumentEvent.default(GDocumentEvent.default.Type.Modified, document)),
+                                                self._updateSyncStatus(tabElement, ""),
+                                                coverElement.text(finalTitle + (designerConfig.USE_EXTENSION_IN_FILENAME ? "." + storageItem.getExtension().toLowerCase() : "")),
+                                                inputElement.css("width", coverElement.outerWidth()));
+                                        } else win.getDocument().setTitle(newTitle);
+                                    else inputElement.val(originalValue);
                                 } catch (e) {
                                     throw e;
                                 }
                             };
-                            s.on("focusout", function () {
-                                h || (f(), (h = true));
-                            }).on("keypress", function (e) {
-                                13 !== e.which || h || (f(), (h = true));
+                            inputElement.on("focusout", function () {
+                                submitted || (submitRename(), (submitted = true));
+                            }).on("keypress", function (event) {
+                                13 !== event.which || submitted || (submitRename(), (submitted = true));
                             });
                         };
-                        return (l(), true);
+                        return (showRenameInput(), true);
                     },
                     stats: "header_contextmenu_rename",
                     requiresPro: false,
                     isEnabled: () => gDesigner.getApplicationManager().isEditingEnabled(),
-                    isVisible: (e) => {
-                        const t = e.getDocument().getStorageItem();
-                        return !(t && t instanceof C.default.Item);
+                    isVisible: (win) => {
+                        const storageItem = win.getDocument().getStorageItem();
+                        return !(storageItem && storageItem instanceof GExternalStorage.default.Item);
                     },
                 },
                 {
                     separator: true,
-                    isVisible: (e) => {
-                        const t = e.getDocument().getStorageItem();
-                        return !(t && t instanceof C.default.Item);
+                    isVisible: (win) => {
+                        const storageItem = win.getDocument().getStorageItem();
+                        return !(storageItem && storageItem instanceof GExternalStorage.default.Item);
                     },
                 },
                 {
-                    title: y.default.TITLE,
-                    shortcut: y.default.SHORTCUT,
-                    id: y.default.ID,
+                    title: GSaveAction.default.TITLE,
+                    shortcut: GSaveAction.default.SHORTCUT,
+                    id: GSaveAction.default.ID,
                     needsAction: true,
                     stats: "header_contextmenu_save",
-                    icon: () => gDesigner.getAction(y.default.ID).getIcon(),
+                    icon: () => gDesigner.getAction(GSaveAction.default.ID).getIcon(),
                     requiresPro: false,
                 },
                 {
                     title: new GObject.GLocaleKey("GSaveAsAction", "title"),
                     shortcut: [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "S"],
-                    id: () => "".concat(v.default.ID, ".").concat(v.default.Actions.SaveAs),
+                    id: () => "".concat(GGravitCloudAction.default.ID, ".").concat(GGravitCloudAction.default.Actions.SaveAs),
                     needsAction: true,
                     requiresPro: false,
                 },
@@ -182,16 +182,16 @@ module.exports = function (module, exports, require) {
                         gDesigner.getShareManager().share();
                     },
                     stats: "header_contextmenu_share",
-                    isEnabled: (e) => {
-                        const t = e.getDocument().getStorageItem();
-                        return gDesigner.getApplicationManager().isShareEnabled() && t instanceof x.default.Item;
+                    isEnabled: (win) => {
+                        const storageItem = win.getDocument().getStorageItem();
+                        return gDesigner.getApplicationManager().isShareEnabled() && storageItem instanceof GCloudStorage.default.Item;
                     },
                     requiresPro: false,
                 },
                 {
                     title: new GObject.GLocaleKey("GOpenSharedFileAction", "title"),
                     stats: "header_contextmenu_open-shared-file",
-                    id: () => b.default.ID,
+                    id: () => GOpenSharedFileAction.default.ID,
                     needsAction: true,
                     requiresPro: false,
                 },
@@ -199,56 +199,56 @@ module.exports = function (module, exports, require) {
                     title: new GObject.GLocaleKey("GVersionsHistoryAction", "title"),
                     shortcut: null,
                     stats: "header_contextmenu_version-history",
-                    icon: () => gDesigner.getAction(w.default.ID).getIcon(),
-                    id: w.default.ID,
+                    icon: () => gDesigner.getAction(GVersionsHistoryAction.default.ID).getIcon(),
+                    id: GVersionsHistoryAction.default.ID,
                     needsAction: true,
                     requiresPro: true,
                 },
                 {
-                    title: _.default.TITLE,
-                    shortcut: _.default.SHORTCUT,
+                    title: GExportAction.default.TITLE,
+                    shortcut: GExportAction.default.SHORTCUT,
                     stats: "header_contextmenu_advanced-export",
-                    icon: () => gDesigner.getAction(_.default.ID).getGroupIcon(),
-                    id: _.default.ID,
+                    icon: () => gDesigner.getAction(GExportAction.default.ID).getGroupIcon(),
+                    id: GExportAction.default.ID,
                     needsAction: true,
                     requiresPro: true,
                 },
                 {
                     title: new GObject.GLocaleKey("GHeader", "action.context-menu.duplicate"),
                     shortcut: null,
-                    callback: function (e) {
-                        const t = e.getDocument(),
-                            n = t.getStorageItem(),
-                            o = () => {
-                                const e = t.getScene(),
-                                    n = new T.default(e.clone(null, gDesigner.getWorkspace()));
-                                t.getFileFormatVersion() && n.setFileFormatVersion(t.getFileFormatVersion());
-                                const o = t.getTitle();
-                                let i;
-                                if (new RegExp(NotNegativeNumberInTheEnd).test(o)) {
-                                    const e = o.match(NotNegativeNumberInTheEnd),
-                                        t = parseInt(e[0].match(NotNegativeNumber)[0]);
-                                    i = o.replace(NotNegativeNumberInTheEnd, "(".concat(t + 1, ")"));
-                                } else i = "".concat(o, "(1)");
-                                const a = gDesigner.getDocuments().indexOf(t);
-                                (n.setTitle(i), gDesigner.addDocument(n, a + 1));
+                    callback: function (win) {
+                        const document = win.getDocument(),
+                            storageItem = document.getStorageItem(),
+                            duplicateLocalDocument = () => {
+                                const scene = document.getScene(),
+                                    newDocument = new GDocument.default(scene.clone(null, gDesigner.getWorkspace()));
+                                document.getFileFormatVersion() && newDocument.setFileFormatVersion(document.getFileFormatVersion());
+                                const title = document.getTitle();
+                                let newTitle;
+                                if (new RegExp(NotNegativeNumberInTheEnd).test(title)) {
+                                    const match = title.match(NotNegativeNumberInTheEnd),
+                                        number = parseInt(match[0].match(NotNegativeNumber)[0]);
+                                    newTitle = title.replace(NotNegativeNumberInTheEnd, "(".concat(number + 1, ")"));
+                                } else newTitle = "".concat(title, "(1)");
+                                const index = gDesigner.getDocuments().indexOf(document);
+                                (newDocument.setTitle(newTitle), gDesigner.addDocument(newDocument, index + 1));
                             };
-                        n && n instanceof x.default.Item
+                        storageItem && storageItem instanceof GCloudStorage.default.Item
                             ? (() => {
-                                  const e = n.getFile().parent,
-                                      o = gDesigner.getDocuments().indexOf(t),
-                                      i = new E.default();
-                                  (i.setCurrentFolder(A.default.from({ id: e })),
-                                      i.copyPaste([n.getFile()]).then(function (e) {
-                                          let [{ id }] = e;
-                                          return i.openFile(id, o + 1);
+                                  const parentFolder = storageItem.getFile().parent,
+                                      index = gDesigner.getDocuments().indexOf(document),
+                                      cloudStorage = new GCloudDriveStorage.default();
+                                  (cloudStorage.setCurrentFolder(GDriveItem.default.from({ id: parentFolder })),
+                                      cloudStorage.copyPaste([storageItem.getFile()]).then(function (results) {
+                                          let [{ id }] = results;
+                                          return cloudStorage.openFile(id, index + 1);
                                       }));
                               })()
-                            : o();
+                            : duplicateLocalDocument();
                     },
-                    isEnabled: (e) => {
+                    isEnabled: (win) => {
                         if (!gDesigner.getApplicationManager().isSavingAsEnabled()) return false;
-                        return !(e.getDocument().getStorageItem() instanceof C.default.Item);
+                        return !(win.getDocument().getStorageItem() instanceof GExternalStorage.default.Item);
                     },
                     stats: "header_contextmenu_duplicate",
                     icon: "gravit-icon-duplicate",
@@ -258,16 +258,16 @@ module.exports = function (module, exports, require) {
                 {
                     title: new GObject.GLocaleKey("GHeader", "action.context-menu.close-other"),
                     shortcut: null,
-                    callback: function (e) {
-                        const t = gDesigner
+                    callback: function (win) {
+                        const otherWindows = gDesigner
                             .getWindows()
                             .getWindows()
                             .slice()
-                            .filter((t) => t !== e);
-                        S.default.confirm(
+                            .filter((otherWindow) => otherWindow !== win);
+                        GSystemDialog.default.confirm(
                             GObject.GLocale.get(new GObject.GLocaleKey("GHeader", "text.close-other-tabs-confirmation")),
-                            (e) => {
-                                e && N(t);
+                            (confirmed) => {
+                                confirmed && closeWindows(otherWindows);
                             },
                             null,
                             null,
@@ -276,12 +276,12 @@ module.exports = function (module, exports, require) {
                             true
                         );
                     },
-                    isEnabled: (e) =>
+                    isEnabled: (win) =>
                         gDesigner
                             .getWindows()
                             .getWindows()
                             .slice()
-                            .filter((t) => t !== e).length > 0,
+                            .filter((otherWindow) => otherWindow !== win).length > 0,
                     stats: "header_contextmenu_close-other",
                     requiresPro: false,
                 },
@@ -289,10 +289,10 @@ module.exports = function (module, exports, require) {
                     title: new GObject.GLocaleKey("GHeader", "action.context-menu.close-all"),
                     shortcut: null,
                     callback: function () {
-                        S.default.confirm(
+                        GSystemDialog.default.confirm(
                             GObject.GLocale.get(new GObject.GLocaleKey("GHeader", "text.close-all-tabs-confirmation")),
-                            (e) => {
-                                e && N(gDesigner.getWindows().getWindows().slice());
+                            (confirmed) => {
+                                confirmed && closeWindows(gDesigner.getWindows().getWindows().slice());
                             },
                             null,
                             null,
@@ -306,30 +306,30 @@ module.exports = function (module, exports, require) {
                     requiresPro: false,
                 },
             ];
-        function N(e) {
-            const t = gDesigner.getWindows();
-            for (let n = 0, o = e.length; n < o; n++) {
-                const o = e[n];
-                t.removeWindow(o);
+        function closeWindows(windows) {
+            const windowManager = gDesigner.getWindows();
+            for (let n = 0, count = windows.length; n < count; n++) {
+                const windowItem = windows[n];
+                windowManager.removeWindow(windowItem);
             }
         }
-        function B(e) {
-            ((this._htmlElement = e),
-                (this._menuBar = new d.default(gDesigner.getMainMenu())),
+        function GHeader(htmlElement) {
+            ((this._htmlElement = htmlElement),
+                (this._menuBar = new GMenuBar.default(gDesigner.getMainMenu())),
                 (this._menuBar.__which = "menubar"),
-                (this._personaBar = new u.default()));
+                (this._personaBar = new GPersonaBar.default()));
         }
-        ((B.prototype._personaBar = null),
-            (B.prototype._menuBar = null),
-            (B.prototype._windows = null),
-            (B.prototype._login = null),
-            (B.prototype._busy = null),
-            (B.prototype._contextMenu = null),
-            (B.prototype.getMenuBar = function () {
+        ((GHeader.prototype._personaBar = null),
+            (GHeader.prototype._menuBar = null),
+            (GHeader.prototype._windows = null),
+            (GHeader.prototype._login = null),
+            (GHeader.prototype._busy = null),
+            (GHeader.prototype._contextMenu = null),
+            (GHeader.prototype.getMenuBar = function () {
                 return this._menuBar;
             }),
-            (B.prototype.init = function () {
-                (s.SHOW_BETA_BRANDING &&
+            (GHeader.prototype.init = function () {
+                (brandingConfig.SHOW_BETA_BRANDING &&
                     gDesigner.isBeta() &&
                     $("<div></div>")
                         .css({
@@ -361,7 +361,7 @@ module.exports = function (module, exports, require) {
                         .addClass("section windows")
                         .append(this._createWindows())
                         .appendTo(this._htmlElement)),
-                    designerConfig.ALLOW_REARRANGE_TABS && (0, P.allowRearrangeTabs)(this._htmlElement),
+                    designerConfig.ALLOW_REARRANGE_TABS && (0, tabsRearrangeUtil.allowRearrangeTabs)(this._htmlElement),
                     (this._busy = $("<div></div>")
                         .addClass("section busy")
                         .css({ display: "none", color: "$(BRAND_COLOR}" })
@@ -380,142 +380,142 @@ module.exports = function (module, exports, require) {
                     this._createLoginTab().appendTo(this._htmlElement),
                     this.updateLoginInfo(),
                     this.checkUser(),
-                    gDesigner.addEventListener(g.default, this._documentEvent, this),
-                    gDesigner.addEventListener(I, this._settingChangedEvent, this),
-                    gDesigner.getWindows().addEventListener(p.default.WindowEvent, this._windowEvent, this),
-                    gDesigner.addEventListener(O, this._userPropertiesChangedEvent, this),
-                    gDesigner.addEventListener(k, this._applicationStateChangedEvent, this),
+                    gDesigner.addEventListener(GDocumentEvent.default, this._documentEvent, this),
+                    gDesigner.addEventListener(GSettingChangedEvent, this._settingChangedEvent, this),
+                    gDesigner.getWindows().addEventListener(GWindows.default.WindowEvent, this._windowEvent, this),
+                    gDesigner.addEventListener(GUserPropertiesChangedEvent, this._userPropertiesChangedEvent, this),
+                    gDesigner.addEventListener(GApplicationStateChangedEvent, this._applicationStateChangedEvent, this),
                     $(document).on(
                         "networkAvailable",
                         function () {
                             this.checkUser();
                         }.bind(this)
                     ),
-                    designerConfig.LICENSE.UPGRADEABLE && gDesigner.addEventListener(L, this._licenseChangeEvent, this),
+                    designerConfig.LICENSE.UPGRADEABLE && gDesigner.addEventListener(GLicenseChangeEvent, this._licenseChangeEvent, this),
                     (this._documentStatusEvent = this._documentStatusEvent.bind(this)),
                     this._personaBar.init(),
                     this._updateViewBasedOnPermissions());
             }),
-            (B.prototype._updateViewBasedOnPermissions = function () {
-                const e = gDesigner.getApplicationManager().isDocumentTabManagementEnabled();
-                (this._windows.find(".tabs").css("display", e ? "" : "none"), (0, P.toggleRearrangeTabsVisibility)(this._htmlElement, e));
+            (GHeader.prototype._updateViewBasedOnPermissions = function () {
+                const tabManagementEnabled = gDesigner.getApplicationManager().isDocumentTabManagementEnabled();
+                (this._windows.find(".tabs").css("display", tabManagementEnabled ? "" : "none"), (0, tabsRearrangeUtil.toggleRearrangeTabsVisibility)(this._htmlElement, tabManagementEnabled));
             }),
-            (B.prototype.relayout = function () {
+            (GHeader.prototype.relayout = function () {
                 gDesigner.getApplicationManager().isInspectEnabled()
                     ? this._htmlElement.removeClass("lone")
                     : this._htmlElement.addClass("lone");
             }),
-            (B.prototype._licenseChangeEvent = function (e) {
-                designerConfig.LICENSE.UPGRADEABLE && (e.license.isDefault() || this._htmlElement.find(".tryout").remove());
+            (GHeader.prototype._licenseChangeEvent = function (event) {
+                designerConfig.LICENSE.UPGRADEABLE && (event.license.isDefault() || this._htmlElement.find(".tryout").remove());
             }),
-            (B.prototype._documentEvent = function (e) {
-                designerConfig.ALLOW_REARRANGE_TABS && (0, P.updateTabsInterface)();
-                var t = e.document || gDesigner.getActiveDocument(),
-                    n = this.getWindowTab(gDesigner.getWindows().getWindow(t)),
-                    o = e.type === g.default.Type.StorageItemUpdated;
-                if (o || e.type === g.default.Type.AutoSaveSynchronized || e.type === g.default.Type.Modified) {
-                    o && this.updateWindowIcon($(".windows").find(".tab.g-active"));
-                    for (var a = e.document.getWindows(), s = 0; s < a.length; ++s)
-                        this._windows.find(".tab").each(function (t, n) {
-                            var o = $(n);
-                            if (o.data("window") === a[s])
+            (GHeader.prototype._documentEvent = function (event) {
+                designerConfig.ALLOW_REARRANGE_TABS && (0, tabsRearrangeUtil.updateTabsInterface)();
+                var document = event.document || gDesigner.getActiveDocument(),
+                    tab = this.getWindowTab(gDesigner.getWindows().getWindow(document)),
+                    isStorageItemUpdated = event.type === GDocumentEvent.default.Type.StorageItemUpdated;
+                if (isStorageItemUpdated || event.type === GDocumentEvent.default.Type.AutoSaveSynchronized || event.type === GDocumentEvent.default.Type.Modified) {
+                    isStorageItemUpdated && this.updateWindowIcon($(".windows").find(".tab.g-active"));
+                    for (var windows = event.document.getWindows(), s = 0; s < windows.length; ++s)
+                        this._windows.find(".tab").each(function (index, element) {
+                            var tabElement = $(element);
+                            if (tabElement.data("window") === windows[s])
                                 return (
-                                    o
+                                    tabElement
                                         .find(".title")
                                         .find(".cover")
-                                        .html(a[s].getTitleWithExtension() + (e.document.isModified() ? "*" : "")),
-                                    o
+                                        .html(windows[s].getTitleWithExtension() + (event.document.isModified() ? "*" : "")),
+                                    tabElement
                                         .find(".title")
                                         .find("input")
-                                        .val(a[s].getTitle() + (e.document.isModified() ? "*" : "")),
+                                        .val(windows[s].getTitle() + (event.document.isModified() ? "*" : "")),
                                     false
                                 );
                         });
-                    (e.type !== g.default.Type.Modified && e.type !== g.default.Type.AutoSaveSynchronized) ||
-                        (this._updateSyncStatus(n, ""), this.updateWindowIcon(n, false, true, t));
+                    (event.type !== GDocumentEvent.default.Type.Modified && event.type !== GDocumentEvent.default.Type.AutoSaveSynchronized) ||
+                        (this._updateSyncStatus(tab, ""), this.updateWindowIcon(tab, false, true, document));
                 } else
-                    e.type === g.default.Type.SynchronismUpdated || e.type === g.default.Type.AutoSaveSynchronizing
-                        ? (t.isSynchronizing() || e.type === g.default.Type.AutoSaveSynchronizing) &&
-                          (this.updateWindowIcon(n, true, true, t),
-                          this._updateSyncStatus(n, GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.synchronizing")) + "...", true))
-                        : e.type === g.default.Type.SynchronismUpdateFailed || e.type === g.default.Type.AutoSaveSynchronizationFailed
+                    event.type === GDocumentEvent.default.Type.SynchronismUpdated || event.type === GDocumentEvent.default.Type.AutoSaveSynchronizing
+                        ? (document.isSynchronizing() || event.type === GDocumentEvent.default.Type.AutoSaveSynchronizing) &&
+                          (this.updateWindowIcon(tab, true, true, document),
+                          this._updateSyncStatus(tab, GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.synchronizing")) + "...", true))
+                        : event.type === GDocumentEvent.default.Type.SynchronismUpdateFailed || event.type === GDocumentEvent.default.Type.AutoSaveSynchronizationFailed
                           ? this._updateSyncStatus(
-                                n,
+                                tab,
                                 GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.failed-to-synch")),
                                 false,
                                 false,
                                 true,
-                                t.isCloudFile()
+                                document.isCloudFile()
                             )
-                          : e.type === g.default.Type.Activated
-                            ? e.document.addEventListener(h.default, this._documentStatusEvent)
-                            : e.type === g.default.Type.Deactivated && e.document.removeEventListener(h.default, this._documentStatusEvent);
+                          : event.type === GDocumentEvent.default.Type.Activated
+                            ? event.document.addEventListener(GDocumentStatusEvent.default, this._documentStatusEvent)
+                            : event.type === GDocumentEvent.default.Type.Deactivated && event.document.removeEventListener(GDocumentStatusEvent.default, this._documentStatusEvent);
             }),
-            (B.prototype._documentStatusEvent = function (e) {
-                e.status === f.default.Loaded && this.updateWindowIcon($(".windows").find(".tab.g-active"));
+            (GHeader.prototype._documentStatusEvent = function (event) {
+                event.status === DocumentStatus.default.Loaded && this.updateWindowIcon($(".windows").find(".tab.g-active"));
             }),
-            (B.prototype._settingChangedEvent = function (e) {
-                "touch" !== e.key || gDesigner.isTouchEnabled() || this._menuBar.setMenu(gDesigner.getMainMenu());
+            (GHeader.prototype._settingChangedEvent = function (event) {
+                "touch" !== event.key || gDesigner.isTouchEnabled() || this._menuBar.setMenu(gDesigner.getMainMenu());
             }),
-            (B.prototype._userPropertiesChangedEvent = function (e) {
-                this.updateLoginInfo(e.user);
+            (GHeader.prototype._userPropertiesChangedEvent = function (event) {
+                this.updateLoginInfo(event.user);
             }),
-            (B.prototype._applicationStateChangedEvent = function () {
+            (GHeader.prototype._applicationStateChangedEvent = function () {
                 this._updateViewBasedOnPermissions();
             }),
-            (B.prototype._windowEvent = function (e) {
-                switch (e.type) {
-                    case p.default.WindowEvent.Type.Added:
-                        this._addWindowTab(e.window, e.index);
+            (GHeader.prototype._windowEvent = function (event) {
+                switch (event.type) {
+                    case GWindows.default.WindowEvent.Type.Added:
+                        this._addWindowTab(event.window, event.index);
                         break;
-                    case p.default.WindowEvent.Type.Removed:
-                        this._removeWindowTab(e.window);
+                    case GWindows.default.WindowEvent.Type.Removed:
+                        this._removeWindowTab(event.window);
                         break;
-                    case p.default.WindowEvent.Type.Activated:
-                    case p.default.WindowEvent.Type.Deactivated:
+                    case GWindows.default.WindowEvent.Type.Activated:
+                    case GWindows.default.WindowEvent.Type.Deactivated:
                         this._updateActiveWindowTab();
                 }
             }),
-            (B.prototype._addWindowTab = function (e, t) {
-                var n = this,
-                    o = $("<div></div>").data("window", e).addClass("tab");
-                const i = this._windows.find(".tabs").find(".tab");
-                ("number" == typeof t && t !== i.length ? o.insertBefore(i.eq(t)) : o.appendTo(this._windows.find(".tabs")),
-                    o
+            (GHeader.prototype._addWindowTab = function (win, index) {
+                var self = this,
+                    tabElement = $("<div></div>").data("window", win).addClass("tab");
+                const tabs = this._windows.find(".tabs").find(".tab");
+                ("number" == typeof index && index !== tabs.length ? tabElement.insertBefore(tabs.eq(index)) : tabElement.appendTo(this._windows.find(".tabs")),
+                    tabElement
                         .append(
                             $("<div />")
                                 .addClass("title")
-                                .append($("<span />").addClass("cover").html(e.getTitleWithExtension()))
+                                .append($("<span />").addClass("cover").html(win.getTitleWithExtension()))
                                 .append(
                                     $("<input />")
                                         .attr("type", "text")
                                         .css("display", "none")
-                                        .val(e.getTitle())
-                                        .css("width", o.find(".cover").outerWidth())
+                                        .val(win.getTitle())
+                                        .css("width", tabElement.find(".cover").outerWidth())
                                 )
                         )
                         .on("click", function () {
-                            (gDesigner.stats("header_change_tab", e.getTitleWithExtension()),
+                            (gDesigner.stats("header_change_tab", win.getTitleWithExtension()),
                                 gDesigner.getWindows().activateWindow($(this).data("window"), true));
                         }),
-                    o.on("contextmenu", function (t) {
-                        (t.stopPropagation(), n.handleContextMenu(e, o));
+                    tabElement.on("contextmenu", function (event) {
+                        (event.stopPropagation(), self.handleContextMenu(win, tabElement));
                     }),
                     gDesigner.getLicense().isGuest() ||
-                        o.append(
+                        tabElement.append(
                             $("<span></span>")
                                 .addClass("close")
                                 .html("&#x2715;")
-                                .on("click", function (e) {
+                                .on("click", function (event) {
                                     (gDesigner.stats("header_remove_tab"),
-                                        e.stopPropagation(),
+                                        event.stopPropagation(),
                                         gDesigner.getWindows().removeWindow($(this).parents(".tab").data("window"), void 0, void 0, true));
                                 })
                         ),
                     this.setWindowTabEnable(gDesigner.getLicense().canAccessFreemium()));
             }),
-            (B.prototype._createLoginTab = function () {
-                var e = $("<div/>")
+            (GHeader.prototype._createLoginTab = function () {
+                var loginElement = $("<div/>")
                     .addClass("section login")
                     .append($("<div/>").addClass("avatar"))
                     .append($("<div/>").addClass("username").append($("<span/>")))
@@ -523,132 +523,132 @@ module.exports = function (module, exports, require) {
                         (gDesigner.stats("header_click_login"),
                             "yes" !== $(this).attr("has-been-clicked") &&
                                 ($(this).attr("has-been-clicked", "yes"),
-                                gDesigner.getUser().then((t) => {
-                                    (t && !gDesigner.isAnonymous() ? e.gUserLogin() : m.default.performLogin(),
+                                gDesigner.getUser().then((user) => {
+                                    (user && !gDesigner.isAnonymous() ? loginElement.gUserLogin() : GCommonNames.default.performLogin(),
                                         $(this).attr("has-been-clicked", "no"));
                                 })));
                     });
-                return e;
+                return loginElement;
             }),
-            (B.prototype.checkUser = function () {
-                return gDesigner.getUser().then((e) => {
-                    this.updateLoginInfo(e);
+            (GHeader.prototype.checkUser = function () {
+                return gDesigner.getUser().then((user) => {
+                    this.updateLoginInfo(user);
                 });
             }),
-            (B.prototype.updateLoginInfo = function (e) {
-                ($(".login").css("display", e && e.isAnonymous() ? "none" : ""),
+            (GHeader.prototype.updateLoginInfo = function (user) {
+                ($(".login").css("display", user && user.isAnonymous() ? "none" : ""),
                     $(".login .username")
                         .find("span")
-                        .text(e ? e.getFullUserName() : GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.cloud-login"))),
-                    e
-                        ? e.hasOwnPictureAvatar()
-                            ? ($(".login .avatar").css("background-image", 'url("' + e.avatar + '")'),
+                        .text(user ? user.getFullUserName() : GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.cloud-login"))),
+                    user
+                        ? user.hasOwnPictureAvatar()
+                            ? ($(".login .avatar").css("background-image", 'url("' + user.avatar + '")'),
                               $(".login .avatar").removeClass("gravit-user-bonhomme"),
                               $(".login .avatar").css({ "background-color": "transparent" }),
                               $(".login .avatar").text(""))
                             : $(".login .avatar")
                                   .addClass("gravit-user-bonhomme")
-                                  .text(e.getUserNameInitials())
-                                  .css({ "background-color": e.getUserColor() })
+                                  .text(user.getUserNameInitials())
+                                  .css({ "background-color": user.getUserColor() })
                         : $(".login .avatar").css("background-image", "none"),
-                    $(".login .avatar").removeClass(e ? "header-cloud" : "user-avatar"),
-                    $(".login .avatar").addClass(e ? "user-avatar" : "header-cloud"),
-                    e ? $(".login").addClass("user") : $(".login").removeClass("user"));
+                    $(".login .avatar").removeClass(user ? "header-cloud" : "user-avatar"),
+                    $(".login .avatar").addClass(user ? "user-avatar" : "header-cloud"),
+                    user ? $(".login").addClass("user") : $(".login").removeClass("user"));
             }),
-            (B.prototype._removeWindowTab = function (e) {
-                this._windows.find(".tab").each(function (t, n) {
-                    var o = $(n);
-                    if (o.data("window") === e) return (o.remove(), false);
+            (GHeader.prototype._removeWindowTab = function (win) {
+                this._windows.find(".tab").each(function (index, element) {
+                    var tabElement = $(element);
+                    if (tabElement.data("window") === win) return (tabElement.remove(), false);
                 });
             }),
-            (B.prototype._updateActiveWindowTab = function () {
-                this._windows.find(".tab").each(function (e, t) {
-                    var n = $(t);
-                    n.toggleClass("g-active", n.data("window") === gDesigner.getWindows().getActiveWindow());
+            (GHeader.prototype._updateActiveWindowTab = function () {
+                this._windows.find(".tab").each(function (index, element) {
+                    var tabElement = $(element);
+                    tabElement.toggleClass("g-active", tabElement.data("window") === gDesigner.getWindows().getActiveWindow());
                 });
             }),
-            (B.prototype._createWindows = function () {
+            (GHeader.prototype._createWindows = function () {
                 return $("<div></div>").addClass("tabs");
             }),
-            (B.prototype.getHeight = function () {
+            (GHeader.prototype.getHeight = function () {
                 return this._htmlElement[0].clientHeight;
             }),
-            (B.prototype.updateWindowIcon = function (e, t, n, o) {
-                var i = $(e).find(".header-cloud"),
-                    a = o || gDesigner.getActiveDocument();
-                (a && (a.isCloudFile() || a.isExternalFile())) || t
-                    ? 0 === i.length &&
-                      $("<span/>").addClass("header-cloud").addClass(this._getCloudDocumentIconClass(a)).insertBefore($(e).find(".close"))
-                    : n && i.length > 0
-                      ? i.fadeOut(2e3, function () {
-                            i.remove();
+            (GHeader.prototype.updateWindowIcon = function (tab, forceShow, animate, document) {
+                var cloudIcon = $(tab).find(".header-cloud"),
+                    targetDocument = document || gDesigner.getActiveDocument();
+                (targetDocument && (targetDocument.isCloudFile() || targetDocument.isExternalFile())) || forceShow
+                    ? 0 === cloudIcon.length &&
+                      $("<span/>").addClass("header-cloud").addClass(this._getCloudDocumentIconClass(targetDocument)).insertBefore($(tab).find(".close"))
+                    : animate && cloudIcon.length > 0
+                      ? cloudIcon.fadeOut(2e3, function () {
+                            cloudIcon.remove();
                         })
-                      : i.remove();
+                      : cloudIcon.remove();
             }),
-            (B.prototype.showBusyIcon = function (e) {
-                (this._busy.find(".txt").text(e), this._busy.css({ display: "inherit" }));
+            (GHeader.prototype.showBusyIcon = function (message) {
+                (this._busy.find(".txt").text(message), this._busy.css({ display: "inherit" }));
             }),
-            (B.prototype.hideBusyIcon = function () {
+            (GHeader.prototype.hideBusyIcon = function () {
                 this._busy.css({ display: "none" });
             }),
-            (B.prototype._updateSyncStatus = function (e, t, n, o, i, a) {
-                var r = $(e).find(".sync-status");
-                const s = "." + D["header-cloud"];
+            (GHeader.prototype._updateSyncStatus = function (tab, message, animate, forceAnimate, autoHide, keepCloudIcon) {
+                var syncStatusElement = $(tab).find(".sync-status");
+                const cloudIconSelector = "." + cssClasses["header-cloud"];
                 if (
-                    ($(e).find(s).length > 0 && (n ? $(e).find(s).addClass("animated") : $(e).find(s).removeClass("animated")),
-                    o && $(e).find(s).length > 0 && $(e).find(s).addClass("animated"),
-                    (r && 0 !== r.length) || $("<span/>").addClass("sync-status").insertAfter($(e).find(".close")),
-                    $(e).find(".sync-status").text(t),
-                    i)
+                    ($(tab).find(cloudIconSelector).length > 0 && (animate ? $(tab).find(cloudIconSelector).addClass("animated") : $(tab).find(cloudIconSelector).removeClass("animated")),
+                    forceAnimate && $(tab).find(cloudIconSelector).length > 0 && $(tab).find(cloudIconSelector).addClass("animated"),
+                    (syncStatusElement && 0 !== syncStatusElement.length) || $("<span/>").addClass("sync-status").insertAfter($(tab).find(".close")),
+                    $(tab).find(".sync-status").text(message),
+                    autoHide)
                 ) {
-                    $(e)
+                    $(tab)
                         .find(".sync-status")
                         .fadeOut(2e3, function () {
-                            $(e).find(".sync-status").remove();
+                            $(tab).find(".sync-status").remove();
                         });
-                    var l = $(e).find(s);
-                    l.length > 0 &&
-                        !a &&
-                        l.fadeOut(2e3, function () {
-                            ($(e).find(".close").css("margin-left", "0px"), l.remove());
+                    var cloudIcon = $(tab).find(cloudIconSelector);
+                    cloudIcon.length > 0 &&
+                        !keepCloudIcon &&
+                        cloudIcon.fadeOut(2e3, function () {
+                            ($(tab).find(".close").css("margin-left", "0px"), cloudIcon.remove());
                         });
                 }
             }),
-            (B.prototype.getWindowTab = function (e) {
-                for (var t = this._windows.find(".tabs").find(".tab"), n = null, o = 0; o < t.length; ++o)
-                    if ($(t[o]).data("window") === e) {
-                        n = t[o];
+            (GHeader.prototype.getWindowTab = function (win) {
+                for (var tabs = this._windows.find(".tabs").find(".tab"), result = null, o = 0; o < tabs.length; ++o)
+                    if ($(tabs[o]).data("window") === win) {
+                        result = tabs[o];
                         break;
                     }
-                return n;
+                return result;
             }),
-            (B.prototype.handleContextMenu = function (e, t) {
-                var n = t.outerWidth() - 10;
-                (t.addClass("context-pane-opened"),
+            (GHeader.prototype.handleContextMenu = function (win, tabElement) {
+                var rightOffset = tabElement.outerWidth() - 10;
+                (tabElement.addClass("context-pane-opened"),
                     gDesigner.stats("header_contextmenu_tab", "Contextmenu"),
-                    gDesigner.getWindows().activateWindow(e),
-                    (this._contextMenu = this._createContextMenu(e, t)),
+                    gDesigner.getWindows().activateWindow(win),
+                    (this._contextMenu = this._createContextMenu(win, tabElement)),
                     this._contextMenu
                         .gOverlay({
                             padding: false,
                             releaseOnClose: true,
                             clazz: "g-header-context-overlay",
                             bottomClazz: "from-bottom",
-                            customRight: n,
+                            customRight: rightOffset,
                             offsetY: -13,
                             closeCallback: () => {
-                                t.removeClass("context-pane-opened");
+                                tabElement.removeClass("context-pane-opened");
                             },
                         })
-                        .gOverlay("open", t));
+                        .gOverlay("open", tabElement));
             }),
-            (B.prototype._createContextMenu = function (e, t) {
-                const n = new l.default(),
-                    o = this;
+            (GHeader.prototype._createContextMenu = function (win, tabElement) {
+                const menu = new GMenu.default(),
+                    self = this;
                 return (
-                    M.map((a) => {
-                        let r,
-                            s,
+                    contextMenuItems.map((item) => {
+                        let actionId,
+                            menuItem,
                             {
                                 title,
                                 callback,
@@ -656,59 +656,59 @@ module.exports = function (module, exports, require) {
                                 requiresPro,
                                 separator,
                                 icon,
-                                id: f,
+                                id: id,
                                 needsAction,
                                 stats,
                                 isEnabled,
                                 isVisible,
-                            } = a;
-                        const b = title instanceof GObject.GLocaleKey ? GObject.GLocale.get(title) : title;
-                        if ((f && (r = "function" == typeof f ? f() : f), separator)) {
-                            const t = n.createAddDivider();
-                            return (isVisible instanceof Function ? t.setVisible(isVisible(e)) : "boolean" == typeof isVisible && t.setVisible(isVisible), t);
+                            } = item;
+                        const caption = title instanceof GObject.GLocaleKey ? GObject.GLocale.get(title) : title;
+                        if ((id && (actionId = "function" == typeof id ? id() : id), separator)) {
+                            const divider = menu.createAddDivider();
+                            return (isVisible instanceof Function ? divider.setVisible(isVisible(win)) : "boolean" == typeof isVisible && divider.setVisible(isVisible), divider);
                         }
                         (callback
-                            ? (s = n.createAddItem(b, () => {
-                                  callback.call(o, e, t);
+                            ? (menuItem = menu.createAddItem(caption, () => {
+                                  callback.call(self, win, tabElement);
                               }))
-                            : ((s = n.createAddItem(b)), needsAction && s.setAction(gDesigner.getAction(r))),
-                            shortcut && s.setShortcutHint(shortcut),
-                            requiresPro && s.setPro(requiresPro, r),
-                            isEnabled instanceof Function && s.setEnabled(isEnabled(e)),
-                            isVisible instanceof Function ? s.setVisible(isVisible(e)) : "boolean" == typeof isVisible && s.setVisible(isVisible),
-                            icon && ("function" == typeof icon ? s.setIcon(icon()) : s.setIcon(icon)),
-                            s.addEventListener(c.default.BeforeActivateEvent, () => {
-                                (!(function (e) {
-                                    e && gDesigner.stats(e);
-                                    (o._contextMenu.gOverlay("close"), (o._contextMenu = null), n.clearItems());
+                            : ((menuItem = menu.createAddItem(caption)), needsAction && menuItem.setAction(gDesigner.getAction(actionId))),
+                            shortcut && menuItem.setShortcutHint(shortcut),
+                            requiresPro && menuItem.setPro(requiresPro, actionId),
+                            isEnabled instanceof Function && menuItem.setEnabled(isEnabled(win)),
+                            isVisible instanceof Function ? menuItem.setVisible(isVisible(win)) : "boolean" == typeof isVisible && menuItem.setVisible(isVisible),
+                            icon && ("function" == typeof icon ? menuItem.setIcon(icon()) : menuItem.setIcon(icon)),
+                            menuItem.addEventListener(GMenuItem.default.BeforeActivateEvent, () => {
+                                (!(function (statsKey) {
+                                    statsKey && gDesigner.stats(statsKey);
+                                    (self._contextMenu.gOverlay("close"), (self._contextMenu = null), menu.clearItems());
                                 })(stats),
-                                    isEnabled && s.setEnabled(isEnabled(e)));
+                                    isEnabled && menuItem.setEnabled(isEnabled(win)));
                             }),
-                            s.setCaption(b));
+                            menuItem.setCaption(caption));
                     }),
-                    n.getHtmlElement()
+                    menu.getHtmlElement()
                 );
             }),
-            (B.prototype._getCloudDocumentIconClass = function (e) {
-                var t = "",
-                    n = e.getStorageItem();
-                switch (n ? n.toString() : null) {
+            (GHeader.prototype._getCloudDocumentIconClass = function (document) {
+                var iconClass = "",
+                    storageItem = document.getStorageItem();
+                switch (storageItem ? storageItem.toString() : null) {
                     case "[Object GGoogleDriveStorage.Item]":
-                        t = D["gravit-icon-googledrive-cloud-file"];
+                        iconClass = cssClasses["gravit-icon-googledrive-cloud-file"];
                         break;
                     case "[Object GSharePointStorage.Item]":
-                        t = D["gravit-icon-sharepoint-cloud-file"];
+                        iconClass = cssClasses["gravit-icon-sharepoint-cloud-file"];
                         break;
                     case "[Object GOneDriveBusinessStorage.Item]":
-                        t = D["gravit-icon-onedrivebusiness-cloud-file"];
+                        iconClass = cssClasses["gravit-icon-onedrivebusiness-cloud-file"];
                         break;
                     default:
-                        t = D["gravit-icon-cloud"];
+                        iconClass = cssClasses["gravit-icon-cloud"];
                 }
-                return t;
+                return iconClass;
             }),
-            (B.prototype.setWindowTabEnable = function (e) {
-                $(".tab > span").css("pointer-events", e ? "auto" : "none");
+            (GHeader.prototype.setWindowTabEnable = function (enabled) {
+                $(".tab > span").css("pointer-events", enabled ? "auto" : "none");
             }),
-            (module.exports = B));
+            (module.exports = GHeader));
     };

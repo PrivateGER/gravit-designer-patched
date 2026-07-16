@@ -3,10 +3,10 @@ module.exports = function (module, exports, require) {
         (require(58 /* polyfill:Array */), require(19), require(193), require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(20 /* polyfill:RegExp */), require(34), require(4), require(13), require(26));
         var GObject = require(1);
         const { gApi, AUTO_SAVE_ENABLED, AUTOSAVE_INTERVAL_DEFAULT, CloudIntegration, DESIGNER, EXTERNAL_APP } = require(10 /* designerConfig */),
-            { buildDialogDocumentHasUpdates } = require(40 /* GSaveAction */),
+            { buildDialogDocumentHasUpdates } = require(40 /* Utils */),
             u = require(85),
             GSystemDialog = require(44),
-            GGoogleDrive = require(556),
+            GGoogleDriveStorage = require(556),
             h = require(448),
             f = require(78),
             m = require(135),
@@ -504,7 +504,7 @@ module.exports = function (module, exports, require) {
             (E.prototype._getExternalStorageName = function (e) {
                 if (!e) return "";
                 const t = e.getStorageItem();
-                return t && t instanceof GGoogleDrive.Item ? CloudIntegration.cloudOptions.find((e) => e.type === EXTERNAL_APP.GOOGLEDRIVE).name : "";
+                return t && t instanceof GGoogleDriveStorage.Item ? CloudIntegration.cloudOptions.find((e) => e.type === EXTERNAL_APP.GOOGLEDRIVE).name : "";
             }),
             (E.prototype._shouldHideNotifications = function () {
                 return gContainer.getProperty(E.AUTO_SAVE_HIDE_NOTIFICATION_PROP_NAME);

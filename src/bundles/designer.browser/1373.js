@@ -2,10 +2,10 @@ module.exports = function (module, exports, require) {
         "use strict";
         var o,
             i,
-            GShareManager = require(1374),
+            GBrowserContainer = require(1374),
             GPointerTool = require(1483);
         function s() {
-            var e = new GShareManager();
+            var e = new GBrowserContainer();
             e.initLanguage(function () {
                 ((o = e.init(GPointerTool)),
                     i &&

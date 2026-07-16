@@ -31,7 +31,7 @@ module.exports = function (module, exports, require) {
             l = require(357),
             c = _interopRequireDefault(require(1492)),
             d = require(1246),
-            GSaveAction = require(40),
+            Utils = require(40),
             p = require(1247),
             g = (function (e, t) {
                 if ("function" == typeof WeakMap)
@@ -55,9 +55,9 @@ module.exports = function (module, exports, require) {
                                 : (r[t] = e[t]));
                     return r;
                 })(e, t);
-            })(require(1739)),
+            })(require(1739 /* lib:amplitude */)),
             h = (_interopRequireDefault(require(1249)), _interopRequireDefault(require(1155))),
-            f = _interopRequireDefault(require(556 /* GGoogleDrive */)),
+            f = _interopRequireDefault(require(556 /* GGoogleDriveStorage */)),
             m = _interopRequireDefault(require(734)),
             y = _interopRequireDefault(require(1494)),
             v = _interopRequireDefault(require(1496)),
@@ -93,9 +93,9 @@ module.exports = function (module, exports, require) {
             GUserNameConfigDialog = require(1560),
             GInstallPwaDialog = require(1562),
             GContextMenu = require(1303);
-        require(1563 /* GContextMenu */);
+        require(1563 /* GContextMenuTouch */);
         var GCommonNames = require(119),
-            J = require(220),
+            GCloudStorage = require(220),
             Z = require(85),
             GSystemDialog = require(44),
             GAutoSave = require(1276),
@@ -126,7 +126,7 @@ module.exports = function (module, exports, require) {
             Ae = require(1328),
             Te = require(808),
             Ge = require(1188),
-            Pe = require(447 /* GSaveAction */),
+            GSaveAction = require(447),
             De = require(86),
             Le = (require(18 /* GCategory */), require(442));
         const {
@@ -140,7 +140,7 @@ module.exports = function (module, exports, require) {
             Ne = require(1584);
         var Be = require(1587);
         require(607);
-        const Ue = require(40 /* GSaveAction */),
+        const Ue = require(40 /* Utils */),
             $e = require(177),
             je = require(1338),
             Ke = require(1173),
@@ -795,7 +795,7 @@ module.exports = function (module, exports, require) {
                     });
                 }
                 e &&
-                    (e instanceof J.Item
+                    (e instanceof GCloudStorage.Item
                         ? gDesigner.updateRecentDocumentsAction()
                         : gContainer.getRuntime() === Z.Runtime.Electron
                           ? t("recent_documents", (e) => e.getUniqueId())
@@ -883,7 +883,7 @@ module.exports = function (module, exports, require) {
                 var a = this._windows.getActiveWindow();
                 if (!a || !a.isPreview()) {
                     if (i.isAvailable() && i.isEnabled.apply(i, t)) {
-                        if (e === Pe.ID)
+                        if (e === GSaveAction.ID)
                             this.getPart(F.Toolbar)
                                 .find(".toolbar-button[data-action='" + e + "']")
                                 .find("button")
@@ -1023,7 +1023,7 @@ module.exports = function (module, exports, require) {
                             ).replace("%app", ke.DESIGNER.TITLE),
                             "designer.settings.dont_show_unsupported_browser_dialog"
                         ));
-                let w = (0, GSaveAction.debounce)(
+                let w = (0, Utils.debounce)(
                     function () {
                         (this.relayout(),
                             setTimeout(() => {
@@ -1270,7 +1270,7 @@ module.exports = function (module, exports, require) {
                         GCommonNames.getRecentStorageItems()
                             .then(async function (t) {
                                 if (t.length > 0)
-                                    for (var n = 0; n < t.length; ++n) e.push(await J.from(gDesigner.getDefaultStorage(), t[n]));
+                                    for (var n = 0; n < t.length; ++n) e.push(await GCloudStorage.from(gDesigner.getDefaultStorage(), t[n]));
                             })
                             .then(s)
                             .catch(s);
@@ -1906,7 +1906,7 @@ module.exports = function (module, exports, require) {
                         let t = e.getStorageItem();
                         e &&
                             t &&
-                            (t instanceof J.Item || (t.supportsShadowFile() && (await t.getCollaborativeFile()))) &&
+                            (t instanceof GCloudStorage.Item || (t.supportsShadowFile() && (await t.getCollaborativeFile()))) &&
                             (e.getStorageItem().getToken()
                                 ? e.getFocusAnnotationId()
                                     ? window.history.pushState(
@@ -1921,7 +1921,7 @@ module.exports = function (module, exports, require) {
                                       : window.history.pushState(null, "Title", "/?d=" + t.getId())));
                     }
                 }
-                ((t += n), (document.title = (0, GSaveAction.decodeHTML)(t)));
+                ((t += n), (document.title = (0, Utils.decodeHTML)(t)));
             }),
             (Je.prototype.addNotification = function (e, t) {
                 this.hasEventListeners(de) && this.trigger(new de(e, t));
@@ -2239,7 +2239,7 @@ module.exports = function (module, exports, require) {
                 return (
                     Ce.clear(),
                     new Promise(async (e, n) => {
-                        (await (0, GSaveAction._tryAndCatch)(() => gApi.signout()),
+                        (await (0, Utils._tryAndCatch)(() => gApi.signout()),
                             (this._user = null),
                             this.hasEventListeners(le) && this.trigger(new le(null)),
                             this.isEnabledSubscriptions() && (t || ((this._reloading = true), location.reload())),
@@ -2430,7 +2430,7 @@ module.exports = function (module, exports, require) {
                                                       o
                                                           ? e()
                                                           : this.executeAction(
-                                                                Pe.ID,
+                                                                GSaveAction.ID,
                                                                 [
                                                                     t,
                                                                     function () {
@@ -2459,7 +2459,7 @@ module.exports = function (module, exports, require) {
                 return new Promise((n, o) => {
                     if (!e.isModified() && !e.isSynchronizing()) return n(true);
                     (t && this.getActiveDocument() !== e && this.activateDocument(e),
-                        gDesigner.canExecuteAction(Pe.ID, [e]) || n(true),
+                        gDesigner.canExecuteAction(GSaveAction.ID, [e]) || n(true),
                         GSystemDialog.advanced({
                             title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.document-modified")).replace(
                                 "%title",

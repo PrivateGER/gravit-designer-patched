@@ -6,7 +6,7 @@ module.exports = function (module, exports, require) {
         const GSystemDialog = require(44),
             { GSystem, GLocale, GLocaleKey, GObject, GNode } = require(1 /* GObject */),
             u = require(1191),
-            { getAnnotationType } = require(40 /* GSaveAction */);
+            { getAnnotationType } = require(40 /* Utils */);
         require(85);
         function g(e) {
             let { container, annotation, onSubmit, onCancel, onAssignTo, mentionData } = e;

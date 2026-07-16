@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         require(3);
         var GObject = require(1),
-            GSaveAction = require(40);
+            Utils = require(40);
         function a(e, t, n, a, r, s, l) {
             var c = e && t && n && a && l;
             if (((this._htmlElement = $("<li></li>").addClass("g-effects-button")), c)) {
@@ -14,7 +14,7 @@ module.exports = function (module, exports, require) {
                         .append($("<span></span>").addClass("g-effects-button-caption").append(e))
                         .on(
                             "click",
-                            GSaveAction.watchDog.trap(
+                            Utils.watchDog.trap(
                                 function () {
                                     let e = (n && GObject.GLocale.getValue((s && s.i18n) || n, "name", "unknown", 0)) || "unkn";
                                     (r

@@ -26,7 +26,7 @@ module.exports = function (module, exports, require) {
                     return r;
                 })(e, t);
             })(require(10 /* designerConfig */)),
-            a = _interopRequireDefault(require(389 /* GDocument */)),
+            a = _interopRequireDefault(require(389 /* GFileTypes */)),
             GObject = require(1);
         const s = require(78),
             l = require(441),
