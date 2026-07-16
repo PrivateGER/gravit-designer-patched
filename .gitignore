@@ -3,3 +3,5 @@
 node_modules
 public/*.br
 public/*.gz
+public/*.js.map
+src/bundles/*/linemap.json

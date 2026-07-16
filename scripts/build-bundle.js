@@ -1,6 +1,13 @@
 // Reassemble bundles from src/bundles/<name>/ into public/<name>.js,
 // syntax-check the result, refresh the service-worker precache revision in
 // public/cacher.js, and regenerate the .br/.gz variants.
+//
+// Also emits per-bundle debugging aids (both gitignored, rebuilt on demand):
+//   src/bundles/<name>/linemap.json — built-bundle line ranges per module,
+//     consumed by scripts/where.js to map stack-trace lines to module files
+//   public/<name>.js.map — a real source map pointing DevTools at the split
+//     module files (served via the SourceMap response header in server.js)
+//
 // Usage: node scripts/build-bundle.js [name ...]   (default: all split bundles)
 const fs = require("fs");
 const path = require("path");
@@ -10,6 +17,50 @@ const { execFileSync } = require("child_process");
 
 const ROOT = path.join(__dirname, "..");
 const BUNDLES_DIR = path.join(ROOT, "src", "bundles");
+
+// Length of the "module.exports = " wrapper that split-bundle.js prepends to
+// each module file: line 1 of a module's bundle text starts at this column
+// of line 1 of the module file.
+const WRAPPER_PREFIX = "module.exports = ".length;
+
+const B64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+function vlq(n) {
+    let v = n < 0 ? (-n << 1) | 1 : n << 1;
+    let out = "";
+    do {
+        let digit = v & 31;
+        v >>>= 5;
+        if (v) digit |= 32;
+        out += B64[digit];
+    } while (v);
+    return out;
+}
+
+// segsByLine: sparse array (1-based line -> [[genCol, srcIdx, origLine0, origCol0], ...])
+function encodeMappings(segsByLine, totalLines) {
+    let prevSrc = 0,
+        prevOrigLine = 0,
+        prevOrigCol = 0;
+    const lines = [];
+    for (let l = 1; l <= totalLines; l++) {
+        const segs = segsByLine[l];
+        if (!segs) {
+            lines.push("");
+            continue;
+        }
+        let prevGenCol = 0;
+        lines.push(
+            segs
+                .map(([genCol, src, origLine, origCol]) => {
+                    const s = vlq(genCol - prevGenCol) + vlq(src - prevSrc) + vlq(origLine - prevOrigLine) + vlq(origCol - prevOrigCol);
+                    ((prevGenCol = genCol), (prevSrc = src), (prevOrigLine = origLine), (prevOrigCol = origCol));
+                    return s;
+                })
+                .join(",")
+        );
+    }
+    return lines.join(";");
+}
 
 const names = process.argv.slice(2).length
     ? process.argv.slice(2).map((n) => path.basename(n, ".js"))
@@ -24,19 +75,54 @@ if (!names.length) {
 for (const name of names) {
     const dir = path.join(BUNDLES_DIR, name);
     const manifest = JSON.parse(fs.readFileSync(path.join(dir, "manifest.json"), "utf8"));
-    const out = manifest.parts
-        .map((part) => {
-            if (typeof part === "string") return part;
-            const file = fs.readFileSync(path.join(dir, part.id + ".js"), "utf8");
-            const m = file.match(/^module\.exports = ([\s\S]*);\n?$/);
-            if (!m) throw new Error(`${name}/${part.id}.js: expected "module.exports = <fn>;" wrapper`);
-            return m[1];
-        })
-        .join("");
+    const pieces = manifest.parts.map((part) => {
+        if (typeof part === "string") return { text: part, id: null };
+        const file = fs.readFileSync(path.join(dir, part.id + ".js"), "utf8");
+        const m = file.match(/^module\.exports = ([\s\S]*);\n?$/);
+        if (!m) throw new Error(`${name}/${part.id}.js: expected "module.exports = <fn>;" wrapper`);
+        return { text: m[1], id: part.id };
+    });
+    const out = pieces.map((p) => p.text).join("");
+
+    // walk the pieces once to build the line map and source-map segments
+    let line = 1,
+        col = 0;
+    const linemap = [];
+    const sources = [];
+    const segsByLine = [];
+    const addSeg = (l, seg) => (segsByLine[l] || (segsByLine[l] = [])).push(seg);
+    for (const piece of pieces) {
+        if (piece.id !== null) {
+            const srcIdx = sources.push(`/src/bundles/${name}/${piece.id}.js`) - 1;
+            addSeg(line, [col, srcIdx, 0, WRAPPER_PREFIX]);
+            let localLine = 0;
+            for (let i = piece.text.indexOf("\n"); i !== -1; i = piece.text.indexOf("\n", i + 1)) {
+                localLine++;
+                if (i + 1 < piece.text.length) addSeg(line + localLine, [0, srcIdx, localLine, 0]);
+            }
+            linemap.push({ id: piece.id, startLine: line, startCol: col, endLine: line + localLine });
+        }
+        for (let i = 0; i < piece.text.length; i++) {
+            if (piece.text[i] === "\n") (line++, (col = 0));
+            else col++;
+        }
+    }
 
     const target = path.join(ROOT, "public", manifest.bundle);
     fs.writeFileSync(target, out);
     execFileSync(process.execPath, ["--check", target], { stdio: "inherit" });
+
+    fs.writeFileSync(path.join(dir, "linemap.json"), JSON.stringify({ bundle: manifest.bundle, modules: linemap }, null, 1));
+    fs.writeFileSync(
+        target + ".map",
+        JSON.stringify({
+            version: 3,
+            file: manifest.bundle,
+            sources,
+            names: [],
+            mappings: encodeMappings(segsByLine, line),
+        })
+    );
 
     // refresh the service-worker precache revision so clients refetch
     const md5 = crypto.createHash("md5").update(out).digest("hex");

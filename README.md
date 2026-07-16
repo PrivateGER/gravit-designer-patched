@@ -72,11 +72,24 @@ The two patched webpack bundles are split into one file per module under
 (756 modules), with an `INDEX.md` in each mapping module ids to class/string
 hints. This is the preferred way to modify the app:
 
-1. Find the module (grep `src/bundles/` or skim `INDEX.md`).
+1. Find the module (grep `src/bundles/`, skim `INDEX.md`, or map a
+   stack-trace line with `npm run where -- designer.browser.js:49475`).
 2. Edit the module file (each is a valid standalone `module.exports = ...`).
 3. `npm run build` — reassembles `public/<bundle>.js`, syntax-checks it,
-   bumps the service-worker precache revision in `cacher.js`, and refreshes
-   the `.br`/`.gz` variants. Commit `src/bundles/` and `public/` together.
+   syncs every service-worker precache revision in `cacher.js`
+   (`scripts/sync-cacher.js`), and refreshes the `.br`/`.gz` variants.
+   Commit `src/bundles/` and `public/` together.
+4. `npm test` — boots the server (plus a mock Unsplash API) and drives the
+   real app in headless Chromium: app boots clean, no third-party or `/null`
+   requests, dead features stay hidden, Unsplash proxy works end-to-end.
+   Needs a Chromium binary (set `CHROMIUM_PATH` if it isn't auto-found).
+
+The build also emits debugging aids (gitignored, regenerated each build):
+`src/bundles/<name>/linemap.json` maps built-bundle line ranges to module
+files (that's what `npm run where` reads), and `public/<name>.js.map` is a
+real source map — `server.js` advertises it via the `SourceMap` response
+header and serves the module files under `/src/`, so browser DevTools
+debugs the split modules instead of the 8-15MB bundles.
 
 `npm run split -- <name>` regenerates a bundle's split from
 `public/<name>.js` if you ever patch the bundle directly.
@@ -121,10 +134,12 @@ are always preserved regardless, so hand-added names are safe.
 ## Maintenance notes
 
 - **Service worker cache busting:** `public/cacher.js` precaches ~1300 files,
-  keyed by `revision` strings. `npm run build` handles this for the two split
-  bundles; if you edit any _other_ precached file, you MUST change its
-  `revision` in `cacher.js` manually, or returning browsers will keep the old
-  cached copy forever.
+  keyed by `revision` strings (the file's md5). `npm run build` (or
+  `npm run sync-cacher` standalone) recomputes every revision from the actual
+  file contents, so editing any precached file is picked up automatically —
+  no manual bumping. It also fails hard if a precached file is missing from
+  `public/`, since a single 404 during precaching aborts the whole
+  service-worker install.
 - **Pre-compression:** `scripts/precompress.js` writes `.br`/`.gz` next to the
   root JS/CSS bundles (gitignored, rebuilt in the Docker image). The server
   prefers them and falls back to on-the-fly gzip.
