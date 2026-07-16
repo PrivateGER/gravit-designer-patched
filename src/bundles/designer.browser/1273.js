@@ -23,21 +23,21 @@ module.exports = function (module, exports, require) {
             require(97),
             require(33),
             require(26));
-        var o = require(53),
+        var editors = require(53),
             GObject = require(1),
             GPlatform = require(15),
-            GSaveAction = require(40),
-            s = require(67),
-            l = require(123),
-            c = require(255),
-            d = require(590),
-            u = require(135),
+            Utils = require(40),
+            richTooltip = require(67),
+            GProperties = require(123),
+            FontsProviderManager = require(255),
+            DefaultFontsProvider = require(590),
+            GSettingChangedEvent = require(135),
             GSystemDialog = require(44);
-        const g = require(148),
-            { toCapitalize } = require(40 /* GSaveAction */),
+        const FormattingUtils = require(148),
+            { toCapitalize } = require(40 /* Utils */),
             { LISTS_FEATURE } = require(10 /* designerConfig */);
-        var m = "#2635#";
-        const y = {
+        var valueSeparator = "#2635#";
+        const markerTypeOptions = {
             None: {
                 get label() {
                     return GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.marker-none"));
@@ -70,25 +70,25 @@ module.exports = function (module, exports, require) {
                 ],
             },
         };
-        function v() {
+        function GTextProperties() {
             ((this._text = []), (this._weightsAvailable = []));
         }
-        (GObject.GObject.inherit(v, l),
-            (v.prototype._panel = null),
-            (v.prototype._document = null),
-            (v.prototype._text = null),
-            (v.prototype._ownChange = false),
-            (v.prototype._chooserElem = null),
-            (v.prototype._openingInlineEditor = false),
-            (v.prototype._weightsAvailable = null),
-            (v.prototype._advancedSettings = null),
-            (v.prototype._listTypeSettings = null),
-            (v.prototype._advancedSettingsButton = null),
-            (v.prototype._scriptBlock = null),
-            (v.prototype._sizingBlock = null),
-            (v.prototype._autoScrollBlock = null),
-            (v.prototype.init = function (e, t) {
-                ((this._panel = e.addClass("text-properties-panel")),
+        (GObject.GObject.inherit(GTextProperties, GProperties),
+            (GTextProperties.prototype._panel = null),
+            (GTextProperties.prototype._document = null),
+            (GTextProperties.prototype._text = null),
+            (GTextProperties.prototype._ownChange = false),
+            (GTextProperties.prototype._chooserElem = null),
+            (GTextProperties.prototype._openingInlineEditor = false),
+            (GTextProperties.prototype._weightsAvailable = null),
+            (GTextProperties.prototype._advancedSettings = null),
+            (GTextProperties.prototype._listTypeSettings = null),
+            (GTextProperties.prototype._advancedSettingsButton = null),
+            (GTextProperties.prototype._scriptBlock = null),
+            (GTextProperties.prototype._sizingBlock = null),
+            (GTextProperties.prototype._autoScrollBlock = null),
+            (GTextProperties.prototype.init = function (panel, toolbar) {
+                ((this._panel = panel.addClass("text-properties-panel")),
                     (this._advancedSettings = this._getAdvancedSettingsOverlayDiv()),
                     (this._listTypeSettings = $("<div></div>")
                         .addClass("list-type-settings")
@@ -96,7 +96,7 @@ module.exports = function (module, exports, require) {
                             $("<div></div>")
                                 .addClass("list-type-options")
                                 .append(
-                                    Object.values(y).map((e) => {
+                                    Object.values(markerTypeOptions).map((e) => {
                                         let { label, value, types } = e;
                                         return $("<div></div>")
                                             .addClass("list-type-group")
@@ -135,195 +135,195 @@ module.exports = function (module, exports, require) {
                             releaseOnClose: false,
                             clazz: "list-type-settings-overlay",
                         })));
-                var n = function (e) {
-                    var t = this;
-                    if ("_pm" === e)
+                var createControl = function (property) {
+                    var self = this;
+                    if ("_pm" === property)
                         return $("<div></div>")
-                            .attr("data-property", e)
+                            .attr("data-property", property)
                             .addClass("g-select")
                             .append($("<span/>"))
                             .on(
                                 "click",
-                                GSaveAction.watchDog.trap(
-                                    (e) => {
-                                        this._listTypeSettings.gOverlay("open", $(e.target));
+                                Utils.watchDog.trap(
+                                    (event) => {
+                                        this._listTypeSettings.gOverlay("open", $(event.target));
                                     },
                                     null,
-                                    (t) => gDesigner.stats("textproperties_nonprotriespro_advanced-settings", e)
+                                    (event) => gDesigner.stats("textproperties_nonprotriespro_advanced-settings", property)
                                 )
                             );
-                    if (0 === e.indexOf("typography")) {
-                        const n = e.substr("typography-".length);
+                    if (0 === property.indexOf("typography")) {
+                        const typographyKey = property.substr("typography-".length);
                         return $("<button></button>")
                             .addClass("g-button")
                             .addClass("typography-button")
-                            .attr("data-property", e)
+                            .attr("data-property", property)
                             .on(
                                 "click",
-                                GSaveAction.watchDog.trap(
-                                    (e) => {
-                                        (gDesigner.stats("textproperties_change_typography", n), t._toggleFormatting(n));
+                                Utils.watchDog.trap(
+                                    (event) => {
+                                        (gDesigner.stats("textproperties_change_typography", typographyKey), self._toggleFormatting(typographyKey));
                                     },
                                     null,
-                                    (t) => gDesigner.stats("textproperties_nonprotriespro_advanced-settings", e)
+                                    (event) => gDesigner.stats("textproperties_nonprotriespro_advanced-settings", property)
                                 )
                             )
-                            .append($("<span></span>").addClass("gravit-icon-text-typography-".concat(n)));
+                            .append($("<span></span>").addClass("gravit-icon-text-typography-".concat(typographyKey)));
                     }
-                    if (0 === e.indexOf("_ttsc")) {
-                        const n = e.substr("_ttsc-".length);
+                    if (0 === property.indexOf("_ttsc")) {
+                        const scriptType = property.substr("_ttsc-".length);
                         return $("<button></button>")
                             .addClass("g-button")
                             .addClass("script-button")
-                            .attr("data-property", e)
+                            .attr("data-property", property)
                             .on(
                                 "click",
-                                GSaveAction.watchDog.trap(
-                                    (e) => {
-                                        (gDesigner.stats("textproperties_change_typography", n),
-                                            t._assignProperty("_ttsc", $(e.target).closest("button").hasClass("g-active") ? null : n));
+                                Utils.watchDog.trap(
+                                    (event) => {
+                                        (gDesigner.stats("textproperties_change_typography", scriptType),
+                                            self._assignProperty("_ttsc", $(event.target).closest("button").hasClass("g-active") ? null : scriptType));
                                     },
                                     null,
-                                    (t) => gDesigner.stats("textproperties_nonprotriespro_advanced-settings", e)
+                                    (event) => gDesigner.stats("textproperties_nonprotriespro_advanced-settings", property)
                                 )
                             )
-                            .append($("<span></span>").addClass("gravit-icon-text-typography-".concat(n, "script")));
+                            .append($("<span></span>").addClass("gravit-icon-text-typography-".concat(scriptType, "script")));
                     }
-                    if ("_tlsc" === e) {
-                        var n = $("<select></select>").attr("data-property", "_tlsc");
+                    if ("_tlsc" === property) {
+                        var languageScriptSelect = $("<select></select>").attr("data-property", "_tlsc");
                         return (
-                            n.append(
+                            languageScriptSelect.append(
                                 $("<option></option>")
                                     .attr("value", "auto")
                                     .text(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.auto")))
                             ),
-                            n.on("change", function (e) {
-                                (gDesigner.stats("textproperties_change_language-script", $(e.target).val()),
-                                    t._assignProperty("_tlsc", $(e.target).val()));
+                            languageScriptSelect.on("change", function (event) {
+                                (gDesigner.stats("textproperties_change_language-script", $(event.target).val()),
+                                    self._assignProperty("_tlsc", $(event.target).val()));
                             }),
-                            n
+                            languageScriptSelect
                         );
                     }
-                    if ("_tv" === e)
+                    if ("_tv" === property)
                         return $("<select />")
                             .attr("data-property", "_tv")
                             .on(
                                 "change",
-                                GSaveAction.watchDog.trap(
-                                    (e) => {
-                                        var n = $(e.target).text();
-                                        (gDesigner.stats("textproperties_change_variation", n),
-                                            t._assignProperty("_tv", $(e.target).val()));
+                                Utils.watchDog.trap(
+                                    (event) => {
+                                        var variationLabel = $(event.target).text();
+                                        (gDesigner.stats("textproperties_change_variation", variationLabel),
+                                            self._assignProperty("_tv", $(event.target).val()));
                                     },
                                     null,
-                                    (t) => gDesigner.stats("textproperties_nonprotriespro_advanced-settings", e)
+                                    (event) => gDesigner.stats("textproperties_nonprotriespro_advanced-settings", property)
                                 )
                             );
-                    if (0 === e.indexOf("_ttrf-")) {
-                        var a = "",
-                            s = e.substr("_ttrf-".length);
-                        switch (s) {
+                    if (0 === property.indexOf("_ttrf-")) {
+                        var iconClass = "",
+                            transformType = property.substr("_ttrf-".length);
+                        switch (transformType) {
                             case GObject.GStylable.TextTransformation.Uppercase:
-                                a = "gravit-icon-text-transform-uppercase";
+                                iconClass = "gravit-icon-text-transform-uppercase";
                                 break;
                             case GObject.GStylable.TextTransformation.Lowercase:
-                                a = "gravit-icon-text-transform-lowercase";
+                                iconClass = "gravit-icon-text-transform-lowercase";
                                 break;
                             case GObject.GStylable.TextTransformation.Capitalize:
-                                a = "gravit-icon-text-transform-capitalize";
+                                iconClass = "gravit-icon-text-transform-capitalize";
                                 break;
                             case GObject.GStylable.TextTransformation.SmallCaps:
-                                a = "gravit-icon-text-transform-smallcaps";
+                                iconClass = "gravit-icon-text-transform-smallcaps";
                         }
-                        var l = Object.keys(GObject.GStylable.TextTransformation).find((e) => GObject.GStylable.TextTransformation[e] === s);
+                        var transformName = Object.keys(GObject.GStylable.TextTransformation).find((key) => GObject.GStylable.TextTransformation[key] === transformType);
                         return $("<button></button>")
                             .addClass("g-button")
                             .addClass("transformation-button")
-                            .attr("data-property", e)
+                            .attr("data-property", property)
                             .on(
                                 "click",
-                                GSaveAction.watchDog.trap(
-                                    (e) => {
-                                        (gDesigner.stats("textproperties_change_transformation", l ? l.toLowerCase() : ""),
-                                            t._assignProperty("_ttrf", $(e.target).closest("button").hasClass("g-active") ? null : s));
+                                Utils.watchDog.trap(
+                                    (event) => {
+                                        (gDesigner.stats("textproperties_change_transformation", transformName ? transformName.toLowerCase() : ""),
+                                            self._assignProperty("_ttrf", $(event.target).closest("button").hasClass("g-active") ? null : transformType));
                                     },
                                     null,
-                                    (t) => gDesigner.stats("textproperties_nonprotriespro_advanced-settings", e)
+                                    (event) => gDesigner.stats("textproperties_nonprotriespro_advanced-settings", property)
                                 )
                             )
-                            .append($("<span></span>").addClass(a));
+                            .append($("<span></span>").addClass(iconClass));
                     }
-                    if (0 === e.indexOf("va-")) {
-                        a = "";
-                        switch ((d = e.substr("va-".length))) {
+                    if (0 === property.indexOf("va-")) {
+                        iconClass = "";
+                        switch ((alignValue = property.substr("va-".length))) {
                             case GObject.GText.VerticalAlign.Top:
-                                a = "gravit-icon-text-align-top";
+                                iconClass = "gravit-icon-text-align-top";
                                 break;
                             case GObject.GText.VerticalAlign.Middle:
-                                a = "gravit-icon-text-align-middle";
+                                iconClass = "gravit-icon-text-align-middle";
                                 break;
                             case GObject.GText.VerticalAlign.Bottom:
-                                a = "gravit-icon-text-align-bottom";
+                                iconClass = "gravit-icon-text-align-bottom";
                         }
                         return $("<button></button>")
                             .addClass("g-button")
                             .addClass("vertical-align")
-                            .attr("data-property", e)
+                            .attr("data-property", property)
                             .on("click", function () {
                                 (gDesigner.stats(
                                     "textproperties_change_vertical-align",
-                                    d === GObject.GText.VerticalAlign.Top ? "top" : GObject.GText.VerticalAlign.Middle ? "middle" : "bottom"
+                                    alignValue === GObject.GText.VerticalAlign.Top ? "top" : GObject.GText.VerticalAlign.Middle ? "middle" : "bottom"
                                 ),
-                                    t._assignProperty("va", $(this).hasClass("g-active") ? null : d));
+                                    self._assignProperty("va", $(this).hasClass("g-active") ? null : alignValue));
                             })
-                            .append($("<span></span>").addClass(a));
+                            .append($("<span></span>").addClass(iconClass));
                     }
-                    if (0 === e.indexOf("_pal-")) {
-                        var d;
-                        a = "";
-                        switch ((d = e.substr("_pal-".length))) {
+                    if (0 === property.indexOf("_pal-")) {
+                        var alignValue;
+                        iconClass = "";
+                        switch ((alignValue = property.substr("_pal-".length))) {
                             case GObject.GStylable.ParagraphAlignment.Left:
-                                a = "gravit-icon-text-align-left";
+                                iconClass = "gravit-icon-text-align-left";
                                 break;
                             case GObject.GStylable.ParagraphAlignment.Center:
-                                a = "gravit-icon-text-align-center";
+                                iconClass = "gravit-icon-text-align-center";
                                 break;
                             case GObject.GStylable.ParagraphAlignment.Right:
-                                a = "gravit-icon-text-align-right";
+                                iconClass = "gravit-icon-text-align-right";
                                 break;
                             case GObject.GStylable.ParagraphAlignment.Justify:
-                                a = "gravit-icon-text-justify";
+                                iconClass = "gravit-icon-text-justify";
                         }
                         return $("<button></button>")
                             .addClass("g-button")
                             .addClass("alignment-button")
-                            .attr("data-property", e)
+                            .attr("data-property", property)
                             .on("click", function () {
                                 (gDesigner.stats(
                                     "textproperties_change_paragraph-align",
-                                    d === GObject.GStylable.ParagraphAlignment.Left
+                                    alignValue === GObject.GStylable.ParagraphAlignment.Left
                                         ? "left"
-                                        : d === GObject.GStylable.ParagraphAlignment.Right
+                                        : alignValue === GObject.GStylable.ParagraphAlignment.Right
                                           ? "right"
-                                          : d === GObject.GStylable.ParagraphAlignment.Justify
+                                          : alignValue === GObject.GStylable.ParagraphAlignment.Justify
                                             ? "justify"
-                                            : d === GObject.GStylable.ParagraphAlignment.Center
+                                            : alignValue === GObject.GStylable.ParagraphAlignment.Center
                                               ? "center"
                                               : "unkn"
                                 ),
-                                    t._assignProperty("_pal", $(this).hasClass("g-active") ? null : d));
+                                    self._assignProperty("_pal", $(this).hasClass("g-active") ? null : alignValue));
                             })
-                            .append($("<span></span>").addClass(a));
+                            .append($("<span></span>").addClass(iconClass));
                     }
-                    if ("aw" === e || "ah" === e)
+                    if ("aw" === property || "ah" === property)
                         return $("<div></div>")
-                            .attr("data-property", e)
+                            .attr("data-property", property)
                             .append(
                                 $("<button></button>")
                                     .addClass("sizing-button-auto")
                                     .addClass("g-group-start g-button")
                                     .on("click", () => {
-                                        (gDesigner.stats("textproperties_change_auto-widthheight", "auto"), t._assignProperty(e, true));
+                                        (gDesigner.stats("textproperties_change_auto-widthheight", "auto"), self._assignProperty(property, true));
                                     })
                                     .text(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.auto")))
                             )
@@ -332,117 +332,117 @@ module.exports = function (module, exports, require) {
                                     .addClass("sizing-button-fixed")
                                     .addClass("g-group-end g-button")
                                     .on("click", () => {
-                                        (gDesigner.stats("textproperties_change_auto-widthheight", "fixed"), t._assignProperty(e, false));
+                                        (gDesigner.stats("textproperties_change_auto-widthheight", "fixed"), self._assignProperty(property, false));
                                     })
                                     .text(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.fix")))
                             );
-                    if ("_fc" === e)
+                    if ("_fc" === property)
                         return $("<div></div>")
                             .prop("disabled", true)
                             .attr("data-property", "_fc")
                             .attr("id", "text-color")
                             .gPatternChooser({ types: [GObject.GColor], hasOpacity: false })
                             .on("chooseropen", function () {
-                                (t._document.getEditor().hideSelection(), (t._chooserElem = $(this)));
+                                (self._document.getEditor().hideSelection(), (self._chooserElem = $(this)));
                             })
-                            .on("chooserclose", function (e, n, o) {
-                                (t._document && t._document.getEditor().resetHideSelection(), (t._chooserElem = null));
+                            .on("chooserclose", function (event, cancelClose, triggerEvent) {
+                                (self._document && self._document.getEditor().resetHideSelection(), (self._chooserElem = null));
                             })
                             .on(
                                 "patternchange",
-                                function (e, n, i, a, r) {
-                                    for (var s = [], l = 0; l < this._text.length; l++) {
-                                        var c = o.GElementEditor.getEditor(this._text[l]);
-                                        s.push(c || this._text[l]);
+                                function (event, colorValue, opacity, temporary, fromChooser) {
+                                    for (var targets = [], l = 0; l < this._text.length; l++) {
+                                        var c = editors.GElementEditor.getEditor(this._text[l]);
+                                        targets.push(c || this._text[l]);
                                     }
-                                    var d = null;
-                                    r && (d = { chooserOn: true, textPattern: true });
-                                    var u = this._getProperty("_fc", s);
-                                    (u || (u = this._getFontColor(s)), t._assignProperty("_fc", n, a, d));
+                                    var chooserOptions = null;
+                                    fromChooser && (chooserOptions = { chooserOn: true, textPattern: true });
+                                    var fontColor = this._getProperty("_fc", targets);
+                                    (fontColor || (fontColor = this._getFontColor(targets)), self._assignProperty("_fc", colorValue, temporary, chooserOptions));
                                 }.bind(this)
                             );
-                    if ("_tff" === e)
+                    if ("_tff" === property)
                         return $("<input/>")
                             .addClass("g-select")
-                            .attr("data-property", e)
+                            .attr("data-property", property)
                             .attr("type", "button")
                             .gFontsButton({
                                 closeCallback: function () {
-                                    t._document && t._document.getActiveWindow().getView().focus();
+                                    self._document && self._document.getActiveWindow().getView().focus();
                                 },
-                                assignFontCallback: function (e) {
-                                    t._assignFont(e);
+                                assignFontCallback: function (fontFamily) {
+                                    self._assignFont(fontFamily);
                                 },
                             });
-                    if ("_tfi" === e)
+                    if ("_tfi" === property)
                         return $("<div></div>").append(
                             $("<input>")
                                 .attr("type", "text")
-                                .attr("data-property", e)
+                                .attr("data-property", property)
                                 .addClass("g-select")
                                 .addClass("text-size")
                                 .on("change", function () {
                                     gDesigner.stats("textproperties_change_size");
-                                    var n = $(this).gUnitBox("value"),
-                                        o = n ? n.toUnit(GObject.GLength.Unit.PT) : null;
-                                    null === o || ("number" == typeof o && o >= 0) ? t._assignProperty(e, o) : t._updateProperties();
+                                    var unitValue = $(this).gUnitBox("value"),
+                                        pointValue = unitValue ? unitValue.toUnit(GObject.GLength.Unit.PT) : null;
+                                    null === pointValue || ("number" == typeof pointValue && pointValue >= 0) ? self._assignProperty(property, pointValue) : self._updateProperties();
                                 })
                                 .gUnitBox({ source: "text" })
                         );
-                    if ("_tws" === e || "_tcs" === e)
+                    if ("_tws" === property || "_tcs" === property)
                         return $("<input>")
                             .attr("type", "text")
-                            .attr("data-property", e)
+                            .attr("data-property", property)
                             .on("change", function () {
-                                "_tws" === e
+                                "_tws" === property
                                     ? gDesigner.stats("textproperties_change_wordspacing")
                                     : gDesigner.stats("textproperties_change_charspacing");
-                                var n = t._document;
-                                if (n) {
-                                    var o = n.getScene().stringToPoint($(this).val());
-                                    null === o || "number" == typeof o ? t._assignProperty(e, o) : t._updateProperties();
+                                var document = self._document;
+                                if (document) {
+                                    var pointValue = document.getScene().stringToPoint($(this).val());
+                                    null === pointValue || "number" == typeof pointValue ? self._assignProperty(property, pointValue) : self._updateProperties();
                                 }
                             })
                             .gInputBox();
-                    if ("style" === e)
+                    if ("style" === property)
                         return $("<select></select>")
-                            .attr("data-property", e)
+                            .attr("data-property", property)
                             .on("change", function () {
                                 gDesigner.stats("textproperties_choose_fontstyle");
-                                var e = $(this).val() || null;
-                                if (e) {
-                                    var n = gDesigner.getWorkspace().getFontManager().getDefaultFont(),
-                                        o = e.split(m);
-                                    o[0] = parseInt(o[0]) || 400;
-                                    var i = [o[0], o[1]],
-                                        a = ["_tfw", "_tfs"];
-                                    (o[2] && o[2].length && o[2] !== n.getFamily() && (a.push("_tff"), i.push(o[2])),
-                                        t._assignProperties(a, i));
+                                var selectedValue = $(this).val() || null;
+                                if (selectedValue) {
+                                    var defaultFont = gDesigner.getWorkspace().getFontManager().getDefaultFont(),
+                                        parts = selectedValue.split(valueSeparator);
+                                    parts[0] = parseInt(parts[0]) || 400;
+                                    var weightStyle = [parts[0], parts[1]],
+                                        propertyKeys = ["_tfw", "_tfs"];
+                                    (parts[2] && parts[2].length && parts[2] !== defaultFont.getFamily() && (propertyKeys.push("_tff"), weightStyle.push(parts[2])),
+                                        self._assignProperties(propertyKeys, weightStyle));
                                 }
-                                t._document.getActiveWindow().getView().focus();
+                                self._document.getActiveWindow().getView().focus();
                             });
-                    if (0 !== e.indexOf("tpth")) {
-                        if ("_plh" === e)
+                    if (0 !== property.indexOf("tpth")) {
+                        if ("_plh" === property)
                             return $("<div>")
                                 .addClass("text-line-height")
                                 .append(
                                     $("<input>")
                                         .attr("type", "text")
-                                        .attr("data-property", e)
+                                        .attr("data-property", property)
                                         .addClass("value")
                                         .on("change", function () {
                                             gDesigner.stats("textproperties_change_line-height");
-                                            var n = $(this).val(),
-                                                o = t._document.getScene(),
-                                                a = t._panel.find('button[data-property="_plh_unit"]').text();
-                                            if ("%" !== a) {
-                                                let e = GObject.GLength.parseEquation(n, o.getProperty("ut"));
-                                                e && (n = e.toUnit(GObject.GLength.Unit.PX));
-                                            } else n = GObject.GUtil.parseNumber(n);
-                                            null === n || n > 0 || ("%" !== a && 0 === n)
-                                                ? ("number" == typeof n && ("%" === a ? (n /= 100) : (n = String(n))),
-                                                  t._assignProperty(e, n))
-                                                : t._updateProperties();
+                                            var lineHeightInput = $(this).val(),
+                                                scene = self._document.getScene(),
+                                                unitLabel = self._panel.find('button[data-property="_plh_unit"]').text();
+                                            if ("%" !== unitLabel) {
+                                                let parsedLength = GObject.GLength.parseEquation(lineHeightInput, scene.getProperty("ut"));
+                                                parsedLength && (lineHeightInput = parsedLength.toUnit(GObject.GLength.Unit.PX));
+                                            } else lineHeightInput = GObject.GUtil.parseNumber(lineHeightInput);
+                                            null === lineHeightInput || lineHeightInput > 0 || ("%" !== unitLabel && 0 === lineHeightInput)
+                                                ? ("number" == typeof lineHeightInput && ("%" === unitLabel ? (lineHeightInput /= 100) : (lineHeightInput = String(lineHeightInput))),
+                                                  self._assignProperty(property, lineHeightInput))
+                                                : self._updateProperties();
                                         })
                                         .gInputBox()
                                 )
@@ -454,128 +454,128 @@ module.exports = function (module, exports, require) {
                                         .text("%")
                                         .on("click", function () {
                                             gDesigner.stats("textproperties_change_size");
-                                            var n = $(this).text(),
-                                                a = t._document.getScene(),
-                                                r = t._panel.find('input[data-property="_plh"]').val(),
-                                                s = t._document.getEditor();
-                                            if ("%" !== n) {
-                                                let e = GObject.GLength.parseEquation(r, a.getProperty("ut"));
-                                                e && (r = e.toUnit(GObject.GLength.Unit.PX));
-                                            } else r = GObject.GUtil.parseNumber(r);
-                                            if (null !== r && "%" === n) {
-                                                var l = a.getProperty("ut") || "px";
-                                                if (($(this).text(l), "number" == typeof r))
+                                            var clickedUnitLabel = $(this).text(),
+                                                scene = self._document.getScene(),
+                                                lineHeightRaw = self._panel.find('input[data-property="_plh"]').val(),
+                                                editor = self._document.getEditor();
+                                            if ("%" !== clickedUnitLabel) {
+                                                let parsedLength = GObject.GLength.parseEquation(lineHeightRaw, scene.getProperty("ut"));
+                                                parsedLength && (lineHeightRaw = parsedLength.toUnit(GObject.GLength.Unit.PX));
+                                            } else lineHeightRaw = GObject.GUtil.parseNumber(lineHeightRaw);
+                                            if (null !== lineHeightRaw && "%" === clickedUnitLabel) {
+                                                var unitType = scene.getProperty("ut") || "px";
+                                                if (($(this).text(unitType), "number" == typeof lineHeightRaw))
                                                     try {
-                                                        s.beginTransaction();
-                                                        for (var c = 0; c < t._text.length; c++) {
-                                                            var d = o.GElementEditor.getEditor(t._text[c]) || t._text[c],
+                                                        editor.beginTransaction();
+                                                        for (var c = 0; c < self._text.length; c++) {
+                                                            var d = editors.GElementEditor.getEditor(self._text[c]) || self._text[c],
                                                                 u = (
-                                                                    ((r / 100) * (p = t._getProperty("_tfi", [d]) || 20) * 4) /
+                                                                    ((lineHeightRaw / 100) * (p = self._getProperty("_tfi", [d]) || 20) * 4) /
                                                                     3
                                                                 ).toString();
-                                                            d.setProperties([e], [u]);
+                                                            d.setProperties([property], [u]);
                                                         }
                                                     } finally {
-                                                        s.commitTransaction(
+                                                        editor.commitTransaction(
                                                             GObject.GLocale.get(
                                                                 new GObject.GLocaleKey("GTextProperties", "action.modify-text-properties")
                                                             )
                                                         );
                                                     }
-                                            } else if (null !== r && ($(this).text("%"), "number" == typeof r))
+                                            } else if (null !== lineHeightRaw && ($(this).text("%"), "number" == typeof lineHeightRaw))
                                                 try {
-                                                    s.beginTransaction();
-                                                    for (c = 0; c < t._text.length; c++) {
-                                                        d = o.GElementEditor.getEditor(t._text[c]) || t._text[c];
-                                                        var p = t._getProperty("_tfi", [d]) || 20;
-                                                        u = Math.round(100 * Math.max(r / ((4 * p) / 3), 0.01)) / 100;
-                                                        d.setProperties([e], [u]);
+                                                    editor.beginTransaction();
+                                                    for (c = 0; c < self._text.length; c++) {
+                                                        d = editors.GElementEditor.getEditor(self._text[c]) || self._text[c];
+                                                        var p = self._getProperty("_tfi", [d]) || 20;
+                                                        u = Math.round(100 * Math.max(lineHeightRaw / ((4 * p) / 3), 0.01)) / 100;
+                                                        d.setProperties([property], [u]);
                                                     }
                                                 } finally {
-                                                    s.commitTransaction(
+                                                    editor.commitTransaction(
                                                         GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "action.modify-text-properties"))
                                                     );
                                                 }
                                         })
                                 );
-                        if ("fontSet" === e)
+                        if ("fontSet" === property)
                             return $("<input/>")
                                 .attr("type", "checkbox")
-                                .attr("data-property", e)
-                                .on("change", function (e) {
+                                .attr("data-property", property)
+                                .on("change", function (event) {
                                     gDesigner.stats("textproperties_change_set-of-fonts");
-                                    var t = $(this).prop("checked");
-                                    gDesigner.setSetting("font-set", t);
-                                    var n = gContainer.getSystemFontsProvider();
-                                    t ? c.enableProviders([n]) : c.disableProviders([n]);
+                                    var checked = $(this).prop("checked");
+                                    gDesigner.setSetting("font-set", checked);
+                                    var systemFontsProvider = gContainer.getSystemFontsProvider();
+                                    checked ? FontsProviderManager.enableProviders([systemFontsProvider]) : FontsProviderManager.disableProviders([systemFontsProvider]);
                                 });
-                        if ("sc" === e)
+                        if ("sc" === property)
                             return $("<label></label>")
                                 .append(
                                     $("<input>")
                                         .addClass("auto-scale-checkbox")
                                         .attr("type", "checkbox")
-                                        .attr("data-property", e)
+                                        .attr("data-property", property)
                                         .on(
                                             "change",
-                                            function (e) {
+                                            function (event) {
                                                 (gDesigner.stats("textproperties_scale_content"),
-                                                    t._assignProperty("sc", $(e.target).is(":checked")));
+                                                    self._assignProperty("sc", $(event.target).is(":checked")));
                                             }.bind(this)
                                         )
                                 )
                                 .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.scale-content"))));
-                        if (0 === e.indexOf("decoration-")) {
-                            var u = e.substr("decoration-".length);
+                        if (0 === property.indexOf("decoration-")) {
+                            var decorationType = property.substr("decoration-".length);
                             return $("<button></button>")
                                 .addClass("g-button")
                                 .addClass("decoration-buttons")
-                                .attr("data-property", e)
-                                .attr("data-title", toCapitalize(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.decoration-".concat(u)))))
+                                .attr("data-property", property)
+                                .attr("data-title", toCapitalize(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.decoration-".concat(decorationType)))))
                                 .on("click", function () {
-                                    (gDesigner.stats("textproperties_change_decoration", u), t._toggleFormatting(u));
+                                    (gDesigner.stats("textproperties_change_decoration", decorationType), self._toggleFormatting(decorationType));
                                 })
-                                .append($("<span></span>").addClass("gravit-icon-text-decoration-".concat(u)));
+                                .append($("<span></span>").addClass("gravit-icon-text-decoration-".concat(decorationType)));
                         }
-                        if ("_pas" === e)
+                        if ("_pas" === property)
                             return $("<div></div>")
                                 .addClass("text-paragraph-spacing")
                                 .append(
                                     $("<input>")
                                         .attr("type", "text")
                                         .addClass("value")
-                                        .attr("data-property", e)
+                                        .attr("data-property", property)
                                         .on(
                                             "click",
-                                            GSaveAction.watchDog.trap(null, null, (t) => {
-                                                (t.stopPropagation(),
-                                                    t.preventDefault(),
-                                                    gDesigner.stats("textproperties_nonprotriespro_advanced-settings", e));
+                                            Utils.watchDog.trap(null, null, (event) => {
+                                                (event.stopPropagation(),
+                                                    event.preventDefault(),
+                                                    gDesigner.stats("textproperties_nonprotriespro_advanced-settings", property));
                                             })
                                         )
                                         .on(
                                             "change",
-                                            GSaveAction.watchDog.trap(
-                                                (n) => {
-                                                    const o = t._document;
-                                                    if (!o) return;
+                                            Utils.watchDog.trap(
+                                                (event) => {
+                                                    const document = self._document;
+                                                    if (!document) return;
                                                     gDesigner.stats("textproperties_change_paragraph-spacing");
-                                                    const a = t._advancedSettings.find('button[data-property="_pas_unit"]').text();
-                                                    let r = null;
-                                                    if ("%" !== a) {
-                                                        let e = GObject.GLength.parseEquation(
-                                                            $(n.target).closest("input").val(),
-                                                            o.getScene().getProperty("ut")
+                                                    const unitLabel = self._advancedSettings.find('button[data-property="_pas_unit"]').text();
+                                                    let parsedValue = null;
+                                                    if ("%" !== unitLabel) {
+                                                        let parsedLength = GObject.GLength.parseEquation(
+                                                            $(event.target).closest("input").val(),
+                                                            document.getScene().getProperty("ut")
                                                         );
-                                                        e && (r = e.toUnit(GObject.GLength.Unit.PX));
-                                                    } else r = GObject.GUtil.parseNumber($(n.target).closest("input").val());
-                                                    null === r || ("number" == typeof r && r >= 0)
-                                                        ? ("number" == typeof r && ("%" === a ? (r /= 100) : (r = String(r))),
-                                                          t._assignProperty(e, r))
-                                                        : t._updateProperties();
+                                                        parsedLength && (parsedValue = parsedLength.toUnit(GObject.GLength.Unit.PX));
+                                                    } else parsedValue = GObject.GUtil.parseNumber($(event.target).closest("input").val());
+                                                    null === parsedValue || ("number" == typeof parsedValue && parsedValue >= 0)
+                                                        ? ("number" == typeof parsedValue && ("%" === unitLabel ? (parsedValue /= 100) : (parsedValue = String(parsedValue))),
+                                                          self._assignProperty(property, parsedValue))
+                                                        : self._updateProperties();
                                                 },
                                                 null,
-                                                (t) => gDesigner.stats("textproperties_nonprotriespro_advanced-settings", e)
+                                                (event) => gDesigner.stats("textproperties_nonprotriespro_advanced-settings", property)
                                             )
                                         )
                                         .gInputBox({ minValue: 0, allowEmptyValue: false })
@@ -588,72 +588,72 @@ module.exports = function (module, exports, require) {
                                         .text("px")
                                         .on(
                                             "click",
-                                            GSaveAction.watchDog.trap(
-                                                (e) => {
-                                                    const n = t._document;
-                                                    if (!n) return;
-                                                    const a = n.getScene(),
-                                                        r = $(e.target).text(),
-                                                        s = "%" === r ? a.getProperty("ut") || "px" : "%";
-                                                    (gDesigner.stats("textproperties_change_paragraph-spacing-unit", s),
-                                                        $(e.target).text(s));
-                                                    let l = null;
-                                                    if ("%" !== r) {
-                                                        let e = GObject.GLength.parseEquation(
-                                                            t._advancedSettings.find('input[data-property="_pas"]').val(),
-                                                            a.getProperty("ut")
+                                            Utils.watchDog.trap(
+                                                (event) => {
+                                                    const document = self._document;
+                                                    if (!document) return;
+                                                    const scene = document.getScene(),
+                                                        unitLabel = $(event.target).text(),
+                                                        newUnit = "%" === unitLabel ? scene.getProperty("ut") || "px" : "%";
+                                                    (gDesigner.stats("textproperties_change_paragraph-spacing-unit", newUnit),
+                                                        $(event.target).text(newUnit));
+                                                    let parsedValue = null;
+                                                    if ("%" !== unitLabel) {
+                                                        let parsedLength = GObject.GLength.parseEquation(
+                                                            self._advancedSettings.find('input[data-property="_pas"]').val(),
+                                                            scene.getProperty("ut")
                                                         );
-                                                        e && (l = e.toUnit(GObject.GLength.Unit.PX));
+                                                        parsedLength && (parsedValue = parsedLength.toUnit(GObject.GLength.Unit.PX));
                                                     } else
-                                                        l = GObject.GUtil.parseNumber(
-                                                            t._advancedSettings.find('input[data-property="_pas"]').val()
+                                                        parsedValue = GObject.GUtil.parseNumber(
+                                                            self._advancedSettings.find('input[data-property="_pas"]').val()
                                                         );
-                                                    if (!isNaN(l)) {
-                                                        const e = t._text.map((e) => o.GElementEditor.getEditor(e) || e),
-                                                            n = t._getProperty("_tfi", e) || 20;
-                                                        let i;
-                                                        ((i =
-                                                            "%" === s
-                                                                ? Math.round(100 * parseFloat(l / ((4 * n) / 3))) / 100
-                                                                : String(((l / 100) * n * 4) / 3)),
-                                                            t._assignProperties(["_pas"], [i]));
+                                                    if (!isNaN(parsedValue)) {
+                                                        const targets = self._text.map((targets) => editors.GElementEditor.getEditor(targets) || targets),
+                                                            fontSize = self._getProperty("_tfi", targets) || 20;
+                                                        let spacingValue;
+                                                        ((spacingValue =
+                                                            "%" === newUnit
+                                                                ? Math.round(100 * parseFloat(parsedValue / ((4 * fontSize) / 3))) / 100
+                                                                : String(((parsedValue / 100) * fontSize * 4) / 3)),
+                                                            self._assignProperties(["_pas"], [spacingValue]));
                                                     }
                                                 },
                                                 null,
-                                                (t) => gDesigner.stats("textproperties_nonprotriespro_advanced-settings", e)
+                                                (event) => gDesigner.stats("textproperties_nonprotriespro_advanced-settings", property)
                                             )
                                         )
                                 );
-                        if ("_pai" === e)
+                        if ("_pai" === property)
                             return $("<input>")
                                 .attr("type", "text")
-                                .attr("data-property", e)
+                                .attr("data-property", property)
                                 .on(
                                     "click",
-                                    GSaveAction.watchDog.trap(null, null, (t) => {
-                                        (t.stopPropagation(),
-                                            t.preventDefault(),
-                                            gDesigner.stats("textproperties_nonprotriespro_advanced-settings", e));
+                                    Utils.watchDog.trap(null, null, (event) => {
+                                        (event.stopPropagation(),
+                                            event.preventDefault(),
+                                            gDesigner.stats("textproperties_nonprotriespro_advanced-settings", property));
                                     })
                                 )
                                 .on(
                                     "change",
-                                    GSaveAction.watchDog.trap(
-                                        (n) => {
-                                            const o = t._document;
-                                            if (!o) return;
+                                    Utils.watchDog.trap(
+                                        (event) => {
+                                            const document = self._document;
+                                            if (!document) return;
                                             gDesigner.stats("textproperties_change_paragraph-indent");
-                                            const i = o.getScene().stringToPoint($(n.target).closest("input").val());
-                                            null === i || ("number" == typeof i && i >= 0)
-                                                ? t._assignProperty(e, i)
-                                                : t._updateProperties();
+                                            const indentValue = document.getScene().stringToPoint($(event.target).closest("input").val());
+                                            null === indentValue || ("number" == typeof indentValue && indentValue >= 0)
+                                                ? self._assignProperty(property, indentValue)
+                                                : self._updateProperties();
                                         },
                                         null,
-                                        (t) => gDesigner.stats("textproperties_nonprotriespro_advanced-settings", e)
+                                        (event) => gDesigner.stats("textproperties_nonprotriespro_advanced-settings", property)
                                     )
                                 )
                                 .gInputBox({ minValue: 0, allowEmptyValue: false });
-                        if ("dir" === e)
+                        if ("dir" === property)
                             return $("<select></select>")
                                 .attr("data-property", "dir")
                                 .append(
@@ -671,39 +671,39 @@ module.exports = function (module, exports, require) {
                                         .attr("value", GObject.GTLDirectionTextTransformer.TTB)
                                         .text(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.orientation-ttb")))
                                 )
-                                .on("change", function (e) {
-                                    var n = "";
-                                    switch (parseInt($(e.target).val())) {
+                                .on("change", function (event) {
+                                    var directionCode = "";
+                                    switch (parseInt($(event.target).val())) {
                                         case GObject.GTLDirectionTextTransformer.LTR:
-                                            n = "ltr";
+                                            directionCode = "ltr";
                                             break;
                                         case GObject.GTLDirectionTextTransformer.RTL:
-                                            n = "rtl";
+                                            directionCode = "rtl";
                                             break;
                                         case GObject.GTLDirectionTextTransformer.TTB:
-                                            n = "ttb";
+                                            directionCode = "ttb";
                                             break;
                                         case GObject.GTLDirectionTextTransformer.BTT:
-                                            n = "btt";
+                                            directionCode = "btt";
                                     }
-                                    (gDesigner.stats("textproperties_change_orientation", n),
-                                        t._assignProperty("dir", parseInt($(e.target).val())));
+                                    (gDesigner.stats("textproperties_change_orientation", directionCode),
+                                        self._assignProperty("dir", parseInt($(event.target).val())));
                                 });
-                        if ("_tlocl" === e) return this._createLanguageSelector();
-                        if ("_tstyls" === e) return this._createStylisticSetSelector();
-                        throw new Error("Unknown input property: " + e);
+                        if ("_tlocl" === property) return this._createLanguageSelector();
+                        if ("_tstyls" === property) return this._createStylisticSetSelector();
+                        throw new Error("Unknown input property: " + property);
                     }
-                    return "tpthd" === e
+                    return "tpthd" === property
                         ? $("<label></label>")
                               .addClass("g-switch")
                               .append(
                                   $("<input>")
                                       .attr("type", "checkbox")
-                                      .attr("data-property", e)
+                                      .attr("data-property", property)
                                       .on("change", function () {
                                           (gDesigner.stats("textproperties_change_path-attachment", "direction"),
-                                              t._assignProperty(
-                                                  e,
+                                              self._assignProperty(
+                                                  property,
                                                   $(this).is(":checked")
                                                       ? GObject.GTLPathTextTransformer.DIRECTION_OUTWARDS
                                                       : GObject.GTLPathTextTransformer.DIRECTION_INWARDS
@@ -711,17 +711,17 @@ module.exports = function (module, exports, require) {
                                       })
                               )
                               .append($("<div></div>"))
-                        : "tpths" === e
+                        : "tpths" === property
                           ? $("<label></label>")
                                 .addClass("g-switch")
                                 .append(
                                     $("<input>")
                                         .attr("type", "checkbox")
-                                        .attr("data-property", e)
+                                        .attr("data-property", property)
                                         .on("change", function () {
                                             (gDesigner.stats("textproperties_change_path-attachment", "insideoutside"),
-                                                t._assignProperty(
-                                                    e,
+                                                self._assignProperty(
+                                                    property,
                                                     $(this).is(":checked")
                                                         ? GObject.GTLPathTextTransformer.OUTSIDE
                                                         : GObject.GTLPathTextTransformer.INSIDE
@@ -729,14 +729,14 @@ module.exports = function (module, exports, require) {
                                         })
                                 )
                                 .append($("<div></div>"))
-                          : "tptho" === e
+                          : "tptho" === property
                             ? $("<input>")
                                   .attr("type", "text")
-                                  .attr("data-property", e)
+                                  .attr("data-property", property)
                                   .on("change", function () {
                                       gDesigner.stats("textproperties_change_path-attachment", "offset");
-                                      var n = t._document.getScene().stringToPoint($(this).val());
-                                      null === n || "number" == typeof n ? t._assignProperty(e, n) : t._updateProperties();
+                                      var pointValue = self._document.getScene().stringToPoint($(this).val());
+                                      null === pointValue || "number" == typeof pointValue ? self._assignProperty(property, pointValue) : self._updateProperties();
                                   })
                                   .gInputBox()
                             : void 0;
@@ -752,7 +752,7 @@ module.exports = function (module, exports, require) {
                                 content: $("<div></div>")
                                     .addClass("typography")
                                     .append(
-                                        n("_ttsc-" + GObject.GStylable.TypographyScript.Subscript)
+                                        createControl("_ttsc-" + GObject.GStylable.TypographyScript.Subscript)
                                             .addClass("g-group-start")
                                             .attr(
                                                 "data-title",
@@ -760,7 +760,7 @@ module.exports = function (module, exports, require) {
                                             )
                                     )
                                     .append(
-                                        n("_ttsc-" + GObject.GStylable.TypographyScript.Superscript)
+                                        createControl("_ttsc-" + GObject.GStylable.TypographyScript.Superscript)
                                             .addClass("g-group-end")
                                             .attr(
                                                 "data-title",
@@ -768,13 +768,13 @@ module.exports = function (module, exports, require) {
                                             )
                                     )
                                     .append(
-                                        n("typography-ligatures").attr(
+                                        createControl("typography-ligatures").attr(
                                             "data-title",
                                             GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.typography-ligatures"))
                                         )
                                     )
                                     .append(
-                                        n("typography-fractions").attr(
+                                        createControl("typography-fractions").attr(
                                             "data-title",
                                             GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.typography-fractions"))
                                         )
@@ -793,7 +793,7 @@ module.exports = function (module, exports, require) {
                                     label: GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.transform")),
                                     content: $("<div></div>")
                                         .append(
-                                            n("_ttrf-" + GObject.GStylable.TextTransformation.Uppercase)
+                                            createControl("_ttrf-" + GObject.GStylable.TextTransformation.Uppercase)
                                                 .addClass("g-group-start")
                                                 .attr(
                                                     "data-title",
@@ -801,7 +801,7 @@ module.exports = function (module, exports, require) {
                                                 )
                                         )
                                         .append(
-                                            n("_ttrf-" + GObject.GStylable.TextTransformation.Capitalize)
+                                            createControl("_ttrf-" + GObject.GStylable.TextTransformation.Capitalize)
                                                 .addClass("g-group-element")
                                                 .attr(
                                                     "data-title",
@@ -809,7 +809,7 @@ module.exports = function (module, exports, require) {
                                                 )
                                         )
                                         .append(
-                                            n("_ttrf-" + GObject.GStylable.TextTransformation.Lowercase)
+                                            createControl("_ttrf-" + GObject.GStylable.TextTransformation.Lowercase)
                                                 .addClass("g-group-element")
                                                 .attr(
                                                     "data-title",
@@ -817,7 +817,7 @@ module.exports = function (module, exports, require) {
                                                 )
                                         )
                                         .append(
-                                            n("_ttrf-" + GObject.GStylable.TextTransformation.SmallCaps)
+                                            createControl("_ttrf-" + GObject.GStylable.TextTransformation.SmallCaps)
                                                 .addClass("g-group-end")
                                                 .attr(
                                                     "data-title",
@@ -837,7 +837,7 @@ module.exports = function (module, exports, require) {
                                     {
                                         width: "100%",
                                         label: GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.list-type")),
-                                        content: n("_pm"),
+                                        content: createControl("_pm"),
                                     },
                                 ],
                             })
@@ -851,12 +851,12 @@ module.exports = function (module, exports, require) {
                                 {
                                     width: "50%",
                                     label: GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.paragraph-indent")),
-                                    content: n("_pai"),
+                                    content: createControl("_pai"),
                                 },
                                 {
                                     width: "50%",
                                     label: GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.paragraph-spacing")),
-                                    content: n("_pas"),
+                                    content: createControl("_pas"),
                                 },
                             ],
                         })
@@ -866,7 +866,7 @@ module.exports = function (module, exports, require) {
                         .addClass("language-properties")
                         .gPropertyRow({
                             label: GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.language")),
-                            columns: [{ width: "100%", content: n("_tlocl") }],
+                            columns: [{ width: "100%", content: createControl("_tlocl") }],
                         })
                         .appendTo(this._advancedSettings),
                     $("<hr/>").appendTo(this._advancedSettings),
@@ -874,20 +874,20 @@ module.exports = function (module, exports, require) {
                         .addClass("stylistic-set-properties")
                         .gPropertyRow({
                             label: GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.stylisticset")),
-                            columns: [{ width: "100%", content: n("_tstyls") }],
+                            columns: [{ width: "100%", content: createControl("_tstyls") }],
                         })
                         .appendTo(this._advancedSettings),
-                    (this._advancedSettingsButton = this._getAdvancedSettingsButton().appendTo(t)));
-                var a = $("<div/>").addClass("color-font").appendTo(e);
+                    (this._advancedSettingsButton = this._getAdvancedSettingsButton().appendTo(toolbar)));
+                var colorFontContainer = $("<div/>").addClass("color-font").appendTo(panel);
                 ($("<div></div>")
                     .addClass("font-color-properties")
                     .gPropertyRow({
                         columns: [
-                            { clazz: "color-picker-button", padding: false, content: n("_fc") },
-                            { width: "auto", content: n("_tff") },
+                            { clazz: "color-picker-button", padding: false, content: createControl("_fc") },
+                            { width: "auto", content: createControl("_tff") },
                         ],
                     })
-                    .appendTo(a),
+                    .appendTo(colorFontContainer),
                     $("<div></div>")
                         .addClass("font-style-properties")
                         .gPropertyRow({
@@ -900,31 +900,31 @@ module.exports = function (module, exports, require) {
                                 },
                                 {
                                     width: "auto",
-                                    content: n("style"),
+                                    content: createControl("style"),
                                     label: GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.weight")),
                                 },
                                 {
                                     width: "25%",
-                                    content: n("_tfi"),
+                                    content: createControl("_tfi"),
                                     label: GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.size")),
                                 },
                             ],
                         })
-                        .appendTo(a),
-                    $("<hr/>").appendTo(e),
+                        .appendTo(colorFontContainer),
+                    $("<hr/>").appendTo(panel),
                     $("<div></div>")
                         .addClass("decoration-properties")
                         .gPropertyRow({
                             label: GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.decoration")),
                             columns: [
-                                { width: "25%", content: n("decoration-bold") },
-                                { width: "25%", content: n("decoration-italic") },
-                                { width: "25%", content: n("decoration-underline") },
-                                { width: "25%", content: n("decoration-strikeout") },
+                                { width: "25%", content: createControl("decoration-bold") },
+                                { width: "25%", content: createControl("decoration-italic") },
+                                { width: "25%", content: createControl("decoration-underline") },
+                                { width: "25%", content: createControl("decoration-strikeout") },
                             ],
                         })
-                        .appendTo(e),
-                    $("<hr/>").appendTo(e),
+                        .appendTo(panel),
+                    $("<hr/>").appendTo(panel),
                     $("<div></div>")
                         .addClass("alignment-properties")
                         .gPropertyRow({
@@ -934,29 +934,29 @@ module.exports = function (module, exports, require) {
                                     width: "100%",
                                     content: $("<div></div>")
                                         .append(
-                                            n("_pal-" + GObject.GStylable.ParagraphAlignment.Left)
+                                            createControl("_pal-" + GObject.GStylable.ParagraphAlignment.Left)
                                                 .addClass("g-group-start")
                                                 .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GAlignAction", "title.align-left")))
                                         )
                                         .append(
-                                            n("_pal-" + GObject.GStylable.ParagraphAlignment.Center)
+                                            createControl("_pal-" + GObject.GStylable.ParagraphAlignment.Center)
                                                 .addClass("g-group-element")
                                                 .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GAlignAction", "title.align-center")))
                                         )
                                         .append(
-                                            n("_pal-" + GObject.GStylable.ParagraphAlignment.Right)
+                                            createControl("_pal-" + GObject.GStylable.ParagraphAlignment.Right)
                                                 .addClass("g-group-element")
                                                 .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GAlignAction", "title.align-right")))
                                         )
                                         .append(
-                                            n("_pal-" + GObject.GStylable.ParagraphAlignment.Justify)
+                                            createControl("_pal-" + GObject.GStylable.ParagraphAlignment.Justify)
                                                 .addClass("g-group-end")
                                                 .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "action.justify")))
                                         ),
                                 },
                             ],
                         })
-                        .appendTo(e),
+                        .appendTo(panel),
                     $("<div></div>")
                         .addClass("vertical-properties")
                         .gPropertyRow({
@@ -966,24 +966,24 @@ module.exports = function (module, exports, require) {
                                     width: "auto",
                                     content: $("<div></div>")
                                         .append(
-                                            n("va-" + GObject.GText.VerticalAlign.Top)
+                                            createControl("va-" + GObject.GText.VerticalAlign.Top)
                                                 .addClass("g-group-start")
                                                 .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GAlignAction", "title.align-top")))
                                         )
                                         .append(
-                                            n("va-" + GObject.GText.VerticalAlign.Middle)
+                                            createControl("va-" + GObject.GText.VerticalAlign.Middle)
                                                 .addClass("g-group-element")
                                                 .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GAlignAction", "title.align-middle")))
                                         )
                                         .append(
-                                            n("va-" + GObject.GText.VerticalAlign.Bottom)
+                                            createControl("va-" + GObject.GText.VerticalAlign.Bottom)
                                                 .addClass("g-group-end")
                                                 .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GAlignAction", "title.align-bottom")))
                                         ),
                                 },
                             ],
                         })
-                        .appendTo(e),
+                        .appendTo(panel),
                     $("<div></div>")
                         .addClass("spacing-properties")
                         .gPropertyRow({
@@ -992,22 +992,22 @@ module.exports = function (module, exports, require) {
                                 {
                                     label: GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.char")),
                                     width: "30%",
-                                    content: n("_tcs"),
+                                    content: createControl("_tcs"),
                                 },
                                 {
                                     label: GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.word")),
                                     width: "30%",
-                                    content: n("_tws"),
+                                    content: createControl("_tws"),
                                 },
                                 {
                                     label: GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.line")),
                                     width: "40%",
-                                    content: n("_plh"),
+                                    content: createControl("_plh"),
                                 },
                             ],
                         })
-                        .appendTo(e),
-                    $("<hr/>").appendTo(e),
+                        .appendTo(panel),
+                    $("<hr/>").appendTo(panel),
                     (this._sizingBlock = $("<div></div>")
                         .addClass("sizing-properties")
                         .gPropertyRow({
@@ -1015,30 +1015,30 @@ module.exports = function (module, exports, require) {
                             columns: [
                                 {
                                     width: "50%",
-                                    content: n("aw"),
+                                    content: createControl("aw"),
                                     label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.width")),
                                 },
                                 {
                                     width: "50%",
-                                    content: n("ah"),
+                                    content: createControl("ah"),
                                     label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.height")),
                                 },
                             ],
                         })
-                        .appendTo(e)),
+                        .appendTo(panel)),
                     (this._scriptBlock = $("<div></div>")
                         .gPropertyRow({
                             label: GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.script")),
                             columns: [
-                                { width: "50%", content: n("dir") },
-                                { width: "50%", content: n("_tlsc") },
+                                { width: "50%", content: createControl("dir") },
+                                { width: "50%", content: createControl("_tlsc") },
                             ],
                         })
                         .appendTo(this._panel)),
                     (this._autoScrollBlock = $("<div></div>")
                         .addClass("auto-scale-font")
                         .attr("major-item-only", true)
-                        .gPropertyRow({ columns: [{ width: "auto", content: n("sc") }] })
+                        .gPropertyRow({ columns: [{ width: "auto", content: createControl("sc") }] })
                         .appendTo(this._panel)),
                     $("<div></div>")
                         .gPropertyRow({
@@ -1046,58 +1046,58 @@ module.exports = function (module, exports, require) {
                             columns: [
                                 {
                                     width: "30%",
-                                    content: n("tpths"),
+                                    content: createControl("tpths"),
                                     label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.outside")),
                                 },
                                 {
                                     width: "30%",
-                                    content: n("tpthd"),
+                                    content: createControl("tpthd"),
                                     label: GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.reverse")),
                                 },
                                 {
                                     width: "40%",
-                                    content: n("tptho"),
+                                    content: createControl("tptho"),
                                     label: GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.distance")),
                                 },
                             ],
                         })
-                        .appendTo(e),
-                    e.find("button").each(function (e, t) {
-                        $(t).attr("tabindex", -1);
+                        .appendTo(panel),
+                    panel.find("button").each(function (e, button) {
+                        $(button).attr("tabindex", -1);
                     }),
                     this._reInitLayout(),
-                    gDesigner.addEventListener(u, this._touchChanged, this));
+                    gDesigner.addEventListener(GSettingChangedEvent, this._touchChanged, this));
             }),
-            (v.prototype._createLanguageSelector = function () {
+            (GTextProperties.prototype._createLanguageSelector = function () {
                 return $("<select/>")
                     .attr("data-property", "_tlocl")
                     .gPro()
-                    .on("mousedown", GSaveAction.watchDog.trap())
+                    .on("mousedown", Utils.watchDog.trap())
                     .on(
                         "change",
-                        GSaveAction.watchDog.trap((e) => {
-                            const t = $(e.target).closest("select").val();
-                            (this._assignProperties(["_tlocl"], [t || null]), gDesigner.stats("textproperties_change_language"));
+                        Utils.watchDog.trap((event) => {
+                            const localeValue = $(event.target).closest("select").val();
+                            (this._assignProperties(["_tlocl"], [localeValue || null]), gDesigner.stats("textproperties_change_language"));
                         })
                     );
             }),
-            (v.prototype._createStylisticSetSelector = function () {
+            (GTextProperties.prototype._createStylisticSetSelector = function () {
                 return $("<select/>")
                     .attr("data-property", "_tstyls")
                     .gPro()
-                    .on("mousedown", GSaveAction.watchDog.trap())
+                    .on("mousedown", Utils.watchDog.trap())
                     .on(
                         "change",
-                        GSaveAction.watchDog.trap((e) => {
-                            const t = $(e.target).closest("select").val();
-                            (this._assignProperties(["_tstyls"], [t || null]), gDesigner.stats("textproperties_change_stylistic-set"));
+                        Utils.watchDog.trap((event) => {
+                            const stylisticSetValue = $(event.target).closest("select").val();
+                            (this._assignProperties(["_tstyls"], [stylisticSetValue || null]), gDesigner.stats("textproperties_change_stylistic-set"));
                         })
                     );
             }),
-            (v.prototype.openEyeDropper = function (e, t) {
-                this._panel.find('[data-property="_fc"]').gPatternChooser("openEyeDropper", e, t);
+            (GTextProperties.prototype.openEyeDropper = function (pageX, pageY) {
+                this._panel.find('[data-property="_fc"]').gPatternChooser("openEyeDropper", pageX, pageY);
             }),
-            (v.prototype._getAdvancedSettingsOverlayDiv = function () {
+            (GTextProperties.prototype._getAdvancedSettingsOverlayDiv = function () {
                 return $("<div></div>").gOverlay({
                     releaseOnClose: false,
                     clazz: gDesigner.isEnabledProFeatures()
@@ -1105,56 +1105,56 @@ module.exports = function (module, exports, require) {
                         : "dialog-expired-pro g-overlay-advanced-setting",
                 });
             }),
-            (v.prototype._getAdvancedSettingsButton = function () {
-                var e = gDesigner.getLicense();
+            (GTextProperties.prototype._getAdvancedSettingsButton = function () {
+                var license = gDesigner.getLicense();
                 return $("<button></button>")
                     .attr("data-action", "text-settings")
                     .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.advanced-text-settings")))
                     .append($("<span></span>").addClass("gravit-icon-settings"))
-                    .on("click", (e) => {
+                    .on("click", (event) => {
                         (gDesigner.stats("textproperties_open_advanced-settings"),
-                            this._advancedSettings.gOverlay("open", $(e.target).closest("button")));
+                            this._advancedSettings.gOverlay("open", $(event.target).closest("button")));
                     })
                     .gPro()
                     .gRichTooltip(
-                        s.GRichTooltipConfig.from({
+                        richTooltip.GRichTooltipConfig.from({
                             title: GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.advanced-properties-icon-tooltip-title")),
                             description: GObject.GLocale.get(
                                 new GObject.GLocaleKey("GTextProperties", "text.advanced-properties-icon-tooltip-description")
                             ),
-                            isPro: !gDesigner.isEnabledProFeatures() || !(e.isPro() && !e.isExpired()),
+                            isPro: !gDesigner.isEnabledProFeatures() || !(license.isPro() && !license.isExpired()),
                             learnMore: "/docs/working-with-text/advanced-text-properties/",
                         })
                     );
             }),
-            (v.prototype.update = function (e, t, n) {
+            (GTextProperties.prototype.update = function (document, elements, n) {
                 if (this._ownChange) return true;
                 if (
                     (this._chooserElem && this._chooserElem.gPatternChooser("close"),
                     this._document &&
                         (this._document.getScene().removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
-                        this._document.getEditor().removeEventListener(o.GEditor.InlineEditorEvent, this._inlineEditorEvent),
-                        this._document.getEditor().removeEventListener(o.GEditor.HotkeyEvent, this._hotKeyEvent, this),
-                        gDesigner.removeEventListener(u, this._settingChanged),
+                        this._document.getEditor().removeEventListener(editors.GEditor.InlineEditorEvent, this._inlineEditorEvent),
+                        this._document.getEditor().removeEventListener(editors.GEditor.HotkeyEvent, this._hotKeyEvent, this),
+                        gDesigner.removeEventListener(GSettingChangedEvent, this._settingChanged),
                         (this._document = null)),
                     (this._text = []),
-                    e)
+                    document)
                 ) {
-                    for (var a = false, r = 0; r < t.length; ++r)
-                        t[r] instanceof GObject.GText
-                            ? this._text.push(t[r])
-                            : t[r] instanceof GObject.GStyle &&
-                              t[r].getProperty("_sdf") === GObject.GObject.getTypeId(GObject.GText) &&
-                              (this._text.push(t[r]), (a = true));
-                    if ((this._text.length && this._text.length === t.length) || a)
+                    for (var hasStyleMatch = false, r = 0; r < elements.length; ++r)
+                        elements[r] instanceof GObject.GText
+                            ? this._text.push(elements[r])
+                            : elements[r] instanceof GObject.GStyle &&
+                              elements[r].getProperty("_sdf") === GObject.GObject.getTypeId(GObject.GText) &&
+                              (this._text.push(elements[r]), (hasStyleMatch = true));
+                    if ((this._text.length && this._text.length === elements.length) || hasStyleMatch)
                         return (
-                            (this._document = e),
+                            (this._document = document),
                             this._document
                                 .getScene()
                                 .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
-                            this._document.getEditor().addEventListener(o.GEditor.InlineEditorEvent, this._inlineEditorEvent, this),
-                            this._document.getEditor().addEventListener(o.GEditor.HotkeyEvent, this._hotKeyEvent, this),
-                            gDesigner.addEventListener(u, this._settingChanged, this),
+                            this._document.getEditor().addEventListener(editors.GEditor.InlineEditorEvent, this._inlineEditorEvent, this),
+                            this._document.getEditor().addEventListener(editors.GEditor.HotkeyEvent, this._hotKeyEvent, this),
+                            gDesigner.addEventListener(GSettingChangedEvent, this._settingChanged, this),
                             this._updateProperties(n),
                             this._advancedSettingsButton.css("display", ""),
                             true
@@ -1162,102 +1162,102 @@ module.exports = function (module, exports, require) {
                 }
                 return (this._advancedSettingsButton.css("display", "none"), false);
             }),
-            (v.prototype._settingChanged = function (e) {
-                if ("font-set" === e.key) {
-                    var t = this._panel.find('input[data-property="fontSet"]');
-                    t.length && t.prop("checked") !== !!e.newValue && t.prop("checked", !!e.newValue);
-                } else "decimals_num" === e.key && this._updateProperties();
+            (GTextProperties.prototype._settingChanged = function (event) {
+                if ("font-set" === event.key) {
+                    var fontSetCheckbox = this._panel.find('input[data-property="fontSet"]');
+                    fontSetCheckbox.length && fontSetCheckbox.prop("checked") !== !!event.newValue && fontSetCheckbox.prop("checked", !!event.newValue);
+                } else "decimals_num" === event.key && this._updateProperties();
             }),
-            (v.prototype._touchChanged = function (e) {
-                "touch" === e.key && this._reInitLayout();
+            (GTextProperties.prototype._touchChanged = function (event) {
+                "touch" === event.key && this._reInitLayout();
             }),
-            (v.prototype._reInitLayout = function () {
+            (GTextProperties.prototype._reInitLayout = function () {
                 gDesigner.isTouchEnabled()
                     ? (this._autoScrollBlock.insertAfter(this._sizingBlock),
                       this._autoScrollBlock.find(".auto-scale-checkbox").gCheckboxSlider())
                     : (this._autoScrollBlock.insertAfter(this._scriptBlock),
                       this._autoScrollBlock.find(".auto-scale-checkbox").gCheckboxSlider("unmount"));
             }),
-            (v.prototype._afterPropertiesChange = function (e) {
-                const t = this._text.length > 0 && this._text[this._text.length - 1];
-                !e.temporary &&
-                    t &&
-                    (t === e.node || t instanceof GObject.GStyle || (t instanceof GObject.GText && t.getContent() === e.node)) &&
+            (GTextProperties.prototype._afterPropertiesChange = function (event) {
+                const lastElement = this._text.length > 0 && this._text[this._text.length - 1];
+                !event.temporary &&
+                    lastElement &&
+                    (lastElement === event.node || lastElement instanceof GObject.GStyle || (lastElement instanceof GObject.GText && lastElement.getContent() === event.node)) &&
                     (this._updateProperties(),
-                    t instanceof GObject.GText && t.hasEmbeddedFonts() && this._document.getEditor().closeInlineEditor());
+                    lastElement instanceof GObject.GText && lastElement.hasEmbeddedFonts() && this._document.getEditor().closeInlineEditor());
             }),
-            (v.prototype._hotKeyEvent = function (e) {
-                const t = { B: "bold", I: "italic", U: "underline", S: "strikeout" },
-                    [n, o, ...i] = e.keys;
-                !n ||
-                    n !== GPlatform.GKey.Constant.CONTROL ||
-                    !(o in t) ||
-                    (i && i.length) ||
-                    gDesigner.stats("textproperties_hotkey_change-decoration", t[o]);
+            (GTextProperties.prototype._hotKeyEvent = function (event) {
+                const decorationKeyMap = { B: "bold", I: "italic", U: "underline", S: "strikeout" },
+                    [modifierKey, key, ...rest] = event.keys;
+                !modifierKey ||
+                    modifierKey !== GPlatform.GKey.Constant.CONTROL ||
+                    !(key in decorationKeyMap) ||
+                    (rest && rest.length) ||
+                    gDesigner.stats("textproperties_hotkey_change-decoration", decorationKeyMap[key]);
             }),
-            (v.prototype._inlineEditorEvent = function (e) {
-                switch (e.type) {
-                    case o.GEditor.InlineEditorEvent.Type.AfterOpen:
-                    case o.GEditor.InlineEditorEvent.Type.AfterClose:
-                    case o.GEditor.InlineEditorEvent.Type.SelectionChanged:
+            (GTextProperties.prototype._inlineEditorEvent = function (event) {
+                switch (event.type) {
+                    case editors.GEditor.InlineEditorEvent.Type.AfterOpen:
+                    case editors.GEditor.InlineEditorEvent.Type.AfterClose:
+                    case editors.GEditor.InlineEditorEvent.Type.SelectionChanged:
                         this._updateProperties();
                         break;
-                    case o.GEditor.InlineEditorEvent.Type.TryOpen:
+                    case editors.GEditor.InlineEditorEvent.Type.TryOpen:
                         this._tryOpenInlineEditor();
                         break;
-                    case o.GEditor.InlineEditorEvent.Type.BeforeClose:
-                    case o.GEditor.InlineEditorEvent.Type.TextEdited:
-                        this._tryModifyingInitialFont(e.type, e.data && e.data.wasModifiedBefore);
+                    case editors.GEditor.InlineEditorEvent.Type.BeforeClose:
+                    case editors.GEditor.InlineEditorEvent.Type.TextEdited:
+                        this._tryModifyingInitialFont(event.type, event.data && event.data.wasModifiedBefore);
                 }
             }),
-            (v.prototype._tryModifyingInitialFont = function (e, t) {
+            (GTextProperties.prototype._tryModifyingInitialFont = function (eventType, wasModifiedBefore) {
                 if (this._document && this._text && 1 === this._text.length) {
-                    var n = this._text[0];
-                    if (!n.getProperty("_we")) {
-                        var a = n instanceof GObject.GText && n.getTLCore();
+                    var textElement = this._text[0];
+                    if (!textElement.getProperty("_we")) {
+                        var tlCore = textElement instanceof GObject.GText && textElement.getTLCore();
                         if (
-                            a &&
-                            ((e === o.GEditor.InlineEditorEvent.Type.BeforeClose && a.getWasEdited()) ||
-                                (e === o.GEditor.InlineEditorEvent.Type.TextEdited && !t))
+                            tlCore &&
+                            ((eventType === editors.GEditor.InlineEditorEvent.Type.BeforeClose && tlCore.getWasEdited()) ||
+                                (eventType === editors.GEditor.InlineEditorEvent.Type.TextEdited && !wasModifiedBefore))
                         ) {
-                            var r = a.getDocumentRange().plainText(),
-                                s = c.getProviderInstance(d).getDefaultFamilyForString(r),
-                                l =
+                            var plainText = tlCore.getDocumentRange().plainText(),
+                                defaultFamily = FontsProviderManager.getProviderInstance(DefaultFontsProvider).getDefaultFamilyForString(plainText),
+                                currentDefaultFamily =
                                     gDesigner.getWorkspace() &&
                                     gDesigner.getWorkspace().getFontManager() &&
                                     gDesigner.getWorkspace().getFontManager().getDefaultFont() &&
                                     gDesigner.getWorkspace().getFontManager().getDefaultFont().getFamily();
-                            if (s && l && l !== s) {
-                                var u = GObject.GOpenTypeFont.getDirectionForString(r);
-                                u !== GObject.GTLDirectionTextTransformer.LTR
-                                    ? n.setProperties(["_tff", "dir"], [s, u])
-                                    : n.setProperty("_tff", s);
+                            if (defaultFamily && currentDefaultFamily && currentDefaultFamily !== defaultFamily) {
+                                var textDirection = GObject.GOpenTypeFont.getDirectionForString(plainText);
+                                textDirection !== GObject.GTLDirectionTextTransformer.LTR
+                                    ? textElement.setProperties(["_tff", "dir"], [defaultFamily, textDirection])
+                                    : textElement.setProperty("_tff", defaultFamily);
                             }
                         }
                     }
                 }
             }),
-            (v.prototype._tryOpenInlineEditor = function () {
+            (GTextProperties.prototype._tryOpenInlineEditor = function () {
                 if (this._document && this._text && 1 === this._text.length && !this._openingInlineEditor) {
-                    var e = this._text[0];
-                    e.isFakeText() &&
+                    var textElement = this._text[0];
+                    textElement.isFakeText() &&
                         GSystemDialog.confirm(
                             GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.edit")),
-                            (t) => {
-                                if (t) {
-                                    (o.GEditor.tryRunTransaction(
-                                        e,
+                            (confirmed) => {
+                                if (confirmed) {
+                                    (editors.GEditor.tryRunTransaction(
+                                        textElement,
                                         () => {
-                                            e.replaceFonts(
+                                            textElement.replaceFonts(
                                                 gDesigner.getWorkspace().getFontManager().getDefaultFont(),
-                                                e.hasEmbeddedFonts()
+                                                textElement.hasEmbeddedFonts()
                                             );
                                         },
                                         "Replace fonts"
                                     ),
                                         (this._openingInlineEditor = true));
                                     try {
-                                        this._document.getEditor().openInlineEditor(e, this._document.getActiveWindow().getView());
+                                        this._document.getEditor().openInlineEditor(textElement, this._document.getActiveWindow().getView());
                                     } finally {
                                         this._openingInlineEditor = false;
                                     }
@@ -1268,180 +1268,180 @@ module.exports = function (module, exports, require) {
                         );
                 }
             }),
-            (v.prototype._intersectArrays = function (e, t) {
-                return null === e
-                    ? t
-                    : null === t
-                      ? e
-                      : e.filter(function (e) {
-                            return -1 !== t.indexOf(e);
+            (GTextProperties.prototype._intersectArrays = function (arrayA, arrayB) {
+                return null === arrayA
+                    ? arrayB
+                    : null === arrayB
+                      ? arrayA
+                      : arrayA.filter(function (value) {
+                            return -1 !== arrayB.indexOf(value);
                         });
             }),
-            (v.prototype._getFormatting = function (e, t) {
-                const n = t.length;
-                if (0 === n) return null;
-                const a = function (t) {
-                    let n;
-                    if ((t instanceof o.GTextEditor ? (n = t.getElement()) : t instanceof GObject.GText && (n = t), n)) {
-                        const t = n.getTLCore();
-                        if (t) {
-                            let i;
-                            const a = o.GElementEditor.getEditor(n);
-                            if (((i = a && a.isInlineEdit() ? t.selectedRange() : t.getDocumentRange()), i)) return i.getFormatting()[e];
+            (GTextProperties.prototype._getFormatting = function (key, targets) {
+                const count = targets.length;
+                if (0 === count) return null;
+                const getValue = function (target) {
+                    let element;
+                    if ((target instanceof editors.GTextEditor ? (element = target.getElement()) : target instanceof GObject.GText && (element = target), element)) {
+                        const tlCore = element.getTLCore();
+                        if (tlCore) {
+                            let range;
+                            const elementEditor = editors.GElementEditor.getEditor(element);
+                            if (((range = elementEditor && elementEditor.isInlineEdit() ? tlCore.selectedRange() : tlCore.getDocumentRange()), range)) return range.getFormatting()[key];
                         }
                     }
                     return null;
                 };
-                let r = a(t[0]);
-                for (let e = 1; e < n; e++) if (a(t[e]) !== r) return null;
-                return r;
+                let firstValue = getValue(targets[0]);
+                for (let e = 1; e < count; e++) if (getValue(targets[e]) !== firstValue) return null;
+                return firstValue;
             }),
-            (v.prototype._getProperty = function (e, t, n) {
-                var o = t.length;
-                if (0 == o) return null;
-                for (var i = t[0].getProperty(e), a = 1; a < o; a++) if (t[a].getProperty(e) !== i) return null;
-                return i || !isNaN(i) ? i : 3 === arguments.length ? n : i;
+            (GTextProperties.prototype._getProperty = function (property, elements, defaultValue) {
+                var count = elements.length;
+                if (0 == count) return null;
+                for (var firstValue = elements[0].getProperty(property), a = 1; a < count; a++) if (elements[a].getProperty(property) !== firstValue) return null;
+                return firstValue || !isNaN(firstValue) ? firstValue : 3 === arguments.length ? defaultValue : firstValue;
             }),
-            (v.prototype._getFontColor = function (e) {
-                var t = e[0] instanceof o.GElementEditor ? e[0].getElement() : e[0];
-                if (!(t && t instanceof GObject.GText)) return null;
-                var n = t.getTLCore().getRichContent();
-                return n && n.length ? t._getGravitValue("fontColor", n[0].fontColor) : null;
+            (GTextProperties.prototype._getFontColor = function (targets) {
+                var element = targets[0] instanceof editors.GElementEditor ? targets[0].getElement() : targets[0];
+                if (!(element && element instanceof GObject.GText)) return null;
+                var richContent = element.getTLCore().getRichContent();
+                return richContent && richContent.length ? element._getGravitValue("fontColor", richContent[0].fontColor) : null;
             }),
-            (v.prototype._updateProperties = async function (e) {
-                var t,
-                    n = (ye = gDesigner.getWorkspace().getFontManager()).getDefaultFont(),
+            (GTextProperties.prototype._updateProperties = async function (e) {
+                var targets,
+                    defaultFont = (ye = gDesigner.getWorkspace().getFontManager()).getDefaultFont(),
                     a = null,
                     r = null;
-                if (!n) return;
-                t = [];
+                if (!defaultFont) return;
+                targets = [];
                 for (var s = 0; s < this._text.length; s++) {
-                    var l = o.GElementEditor.getEditor(this._text[s]);
-                    t.push(l || this._text[s]);
+                    var l = editors.GElementEditor.getEditor(this._text[s]);
+                    targets.push(l || this._text[s]);
                 }
-                var c = this._panel.find('input[data-property="fontSet"]');
-                c.length && c.prop("checked", gDesigner.getSetting("font-set"), false);
-                var d = this._getFormatting("underline", t) || null,
-                    u = this._getFormatting("strikeout", t) || null,
-                    p = this._getFormatting("fractions", t) || false,
-                    h = this._getFormatting("listMarker", t) || null,
-                    f = this._getProperty("_pai", t, GObject.GStylable.PropertySetInfo.P.geometryProperties._pai),
-                    v = this._getProperty("_pas", t, GObject.GStylable.PropertySetInfo.P.geometryProperties._pas),
-                    _ = (this._getProperty("_tv", t), this._getProperty("_tlsc", t)),
-                    b = this._getProperty("_ttsc", t),
-                    w = this._getProperty("_ttrf", t) || null,
-                    C = this._getProperty("_tfw", t) || "",
-                    x = this._getProperty("_tfs", t) || "",
-                    S = this._getProperty("aw", t) || false,
-                    E = this._getProperty("ah", t) || false,
-                    A = this._getProperty("sc", t) || false,
-                    T = this._getProperty("va", t) || "",
-                    G = this._getProperty("_tfi", t),
-                    P = this._getProperty("_fc", t),
-                    D = this._getProperty("_tws", t),
-                    L = this._getProperty("_tcs", t),
-                    I = (this._getProperty("_fop", t), this._getProperty("_pal", t)),
-                    k = this._getProperty("_plh", t),
-                    O = this._getProperty("tpthd", t),
-                    F = this._getProperty("tpths", t),
-                    R = this._getProperty("tptho", t),
-                    M = this._getProperty("dir", t),
-                    N = this._getProperty("_tlocl", t),
-                    B = this._getProperty("_tstyls", t),
-                    U = this._getFormatting("ligatures", t);
-                ((U = "auto" === U ? !L : !!U), P || (P = this._getFontColor(t)));
-                var j = this._document && this._document.getEditor(),
-                    K = j && j.isInlineEditing() && j.getCurrentInlineEditorNode() instanceof GObject.GText,
-                    V = t.every(function (e) {
-                        return e.hasPathAttached && e.hasPathAttached();
+                var fontSetCheckbox = this._panel.find('input[data-property="fontSet"]');
+                fontSetCheckbox.length && fontSetCheckbox.prop("checked", gDesigner.getSetting("font-set"), false);
+                var underline = this._getFormatting("underline", targets) || null,
+                    strikeout = this._getFormatting("strikeout", targets) || null,
+                    fractions = this._getFormatting("fractions", targets) || false,
+                    listMarker = this._getFormatting("listMarker", targets) || null,
+                    paragraphIndent = this._getProperty("_pai", targets, GObject.GStylable.PropertySetInfo.P.geometryProperties._pai),
+                    paragraphSpacing = this._getProperty("_pas", targets, GObject.GStylable.PropertySetInfo.P.geometryProperties._pas),
+                    languageScript = (this._getProperty("_tv", targets), this._getProperty("_tlsc", targets)),
+                    typographyScript = this._getProperty("_ttsc", targets),
+                    textTransform = this._getProperty("_ttrf", targets) || null,
+                    fontWeight = this._getProperty("_tfw", targets) || "",
+                    fontStyle = this._getProperty("_tfs", targets) || "",
+                    autoWidth = this._getProperty("aw", targets) || false,
+                    autoHeight = this._getProperty("ah", targets) || false,
+                    scaleContent = this._getProperty("sc", targets) || false,
+                    verticalAlign = this._getProperty("va", targets) || "",
+                    fontSize = this._getProperty("_tfi", targets),
+                    fontColor = this._getProperty("_fc", targets),
+                    wordSpacing = this._getProperty("_tws", targets),
+                    charSpacing = this._getProperty("_tcs", targets),
+                    paragraphAlign = (this._getProperty("_fop", targets), this._getProperty("_pal", targets)),
+                    lineHeight = this._getProperty("_plh", targets),
+                    pathHeadingDirection = this._getProperty("tpthd", targets),
+                    pathHeadingInsideOutside = this._getProperty("tpths", targets),
+                    pathHeadingOffset = this._getProperty("tptho", targets),
+                    textDirection = this._getProperty("dir", targets),
+                    languageLocale = this._getProperty("_tlocl", targets),
+                    stylisticSet = this._getProperty("_tstyls", targets),
+                    ligatures = this._getFormatting("ligatures", targets);
+                ((ligatures = "auto" === ligatures ? !charSpacing : !!ligatures), fontColor || (fontColor = this._getFontColor(targets)));
+                var editor = this._document && this._document.getEditor(),
+                    isInlineEditingText = editor && editor.isInlineEditing() && editor.getCurrentInlineEditorNode() instanceof GObject.GText,
+                    hasPathAttached = targets.every(function (textElement) {
+                        return textElement.hasPathAttached && textElement.hasPathAttached();
                     });
-                (this._advancedSettings.find('[data-property^="_ttsc"]').each(function (e, t) {
-                    var n = $(t),
-                        o = n.attr("data-property").substr("_ttsc-".length);
-                    n.toggleClass("g-active", b === o);
+                (this._advancedSettings.find('[data-property^="_ttsc"]').each(function (index, button) {
+                    var buttonElement = $(button),
+                        scriptType = buttonElement.attr("data-property").substr("_ttsc-".length);
+                    buttonElement.toggleClass("g-active", typographyScript === scriptType);
                 }),
-                    this._advancedSettings.find('[data-property^="_ttrf"]').each(function (e, t) {
-                        var n = $(t),
-                            o = n.attr("data-property").substr("_ttrf-".length);
-                        n.toggleClass("g-active", w === o);
+                    this._advancedSettings.find('[data-property^="_ttrf"]').each(function (index, button) {
+                        var buttonElement = $(button),
+                            transformType = buttonElement.attr("data-property").substr("_ttrf-".length);
+                        buttonElement.toggleClass("g-active", textTransform === transformType);
                     }),
                     this._advancedSettings
                         .find('[data-property="_pai"]')
                         .gInputBox(
                             "value",
-                            null !== f
-                                ? this._document.getScene().pointToString(f, this._document.getScene().getOptimalDecimalsCount())
+                            null !== paragraphIndent
+                                ? this._document.getScene().pointToString(paragraphIndent, this._document.getScene().getOptimalDecimalsCount())
                                 : ""
                         ));
-                const H = this._advancedSettings.find('button[data-property="_pas_unit"]');
-                if ("number" == typeof v)
-                    (H.text("%"),
+                const paragraphSpacingUnitButton = this._advancedSettings.find('button[data-property="_pas_unit"]');
+                if ("number" == typeof paragraphSpacing)
+                    (paragraphSpacingUnitButton.text("%"),
                         this._advancedSettings
                             .find('[data-property="_pas"]')
-                            .val(GObject.GUtil.formatNumber(100 * v, this._document.getScene().getOptimalDecimalsCount())));
-                else if ("string" == typeof v) {
-                    const e = this._document.getScene();
-                    (H.text(e.getProperty("ut") || "px"),
-                        this._advancedSettings.find('[data-property="_pas"]').val(e.pointToString(v, e.getOptimalDecimalsCount())));
+                            .val(GObject.GUtil.formatNumber(100 * paragraphSpacing, this._document.getScene().getOptimalDecimalsCount())));
+                else if ("string" == typeof paragraphSpacing) {
+                    const scene = this._document.getScene();
+                    (paragraphSpacingUnitButton.text(scene.getProperty("ut") || "px"),
+                        this._advancedSettings.find('[data-property="_pas"]').val(scene.pointToString(paragraphSpacing, scene.getOptimalDecimalsCount())));
                 } else this._advancedSettings.find('[data-property="_pas"]').val("");
-                var W = T || GObject.GText.VerticalAlign.Top,
-                    z = this._panel.find('button[data-property^="va"]');
-                (z.each(function (e, t) {
-                    var n = $(t);
-                    n.prop("disabled", K || V).toggleClass("g-active", n.attr("data-property") === "va-" + W);
+                var verticalAlignValue = verticalAlign || GObject.GText.VerticalAlign.Top,
+                    verticalAlignButtons = this._panel.find('button[data-property^="va"]');
+                (verticalAlignButtons.each(function (index, button) {
+                    var buttonElement = $(button);
+                    buttonElement.prop("disabled", isInlineEditingText || hasPathAttached).toggleClass("g-active", buttonElement.attr("data-property") === "va-" + verticalAlignValue);
                 }),
-                    z.closest(".g-property-row").css("display", V || E || K ? "none" : ""),
-                    this._panel.find('[data-property="ah"] button').each((e, t) => {
-                        var n = $(t);
-                        n.prop("disabled", K).toggleClass("g-active", n.is(":first-child") === E);
+                    verticalAlignButtons.closest(".g-property-row").css("display", hasPathAttached || autoHeight || isInlineEditingText ? "none" : ""),
+                    this._panel.find('[data-property="ah"] button').each((index, button) => {
+                        var buttonElement = $(button);
+                        buttonElement.prop("disabled", isInlineEditingText).toggleClass("g-active", buttonElement.is(":first-child") === autoHeight);
                     }));
-                var q = this._panel.find('[data-property="aw"] button');
-                q.each((e, t) => {
-                    var n = $(t);
-                    n.prop("disabled", K).toggleClass("g-active", n.is(":first-child") === S);
+                var autoWidthButtons = this._panel.find('[data-property="aw"] button');
+                autoWidthButtons.each((index, button) => {
+                    var buttonElement = $(button);
+                    buttonElement.prop("disabled", isInlineEditingText).toggleClass("g-active", buttonElement.is(":first-child") === autoWidth);
                 });
-                var Y = this._panel.find('select[data-property="dir"]');
-                (Y.prop("disabled", K),
-                    K || Y.val(M),
-                    this._panel.find('[data-property="sc"]').prop("checked", A),
-                    q.closest(".g-property-row").css("display", V ? "none" : ""),
-                    this._panel.find('input[data-property="tpthd"]').prop("checked", O === GObject.GTLPathTextTransformer.DIRECTION_OUTWARDS),
-                    this._panel.find('input[data-property="tpths"]').prop("checked", F === GObject.GTLPathTextTransformer.OUTSIDE),
+                var directionSelect = this._panel.find('select[data-property="dir"]');
+                (directionSelect.prop("disabled", isInlineEditingText),
+                    isInlineEditingText || directionSelect.val(textDirection),
+                    this._panel.find('[data-property="sc"]').prop("checked", scaleContent),
+                    autoWidthButtons.closest(".g-property-row").css("display", hasPathAttached ? "none" : ""),
+                    this._panel.find('input[data-property="tpthd"]').prop("checked", pathHeadingDirection === GObject.GTLPathTextTransformer.DIRECTION_OUTWARDS),
+                    this._panel.find('input[data-property="tpths"]').prop("checked", pathHeadingInsideOutside === GObject.GTLPathTextTransformer.OUTSIDE),
                     this._panel
                         .find('input[data-property="tptho"]')
-                        .val(R)
+                        .val(pathHeadingOffset)
                         .closest(".g-property-row")
-                        .css("display", V ? "" : "none"));
-                var X = function () {
+                        .css("display", hasPathAttached ? "" : "none"));
+                var retryUpdate = function () {
                         setTimeout(this._updateProperties.bind(this), 1);
                     }.bind(this),
-                    Q = this._panel.find('input[data-property="_tff"]'),
-                    J = Q.gFontsButton("getFontList"),
-                    Z = null,
+                    fontFamilyInput = this._panel.find('input[data-property="_tff"]'),
+                    fontList = fontFamilyInput.gFontsButton("getFontList"),
+                    pendingFontFamily = null,
                     ee = true,
                     te = true;
                 let ne, oe;
-                for (s = 0; s < t.length; s++) {
-                    const e = t[s];
-                    let a;
-                    if (((a = e instanceof o.GTextEditor ? e.getFonts() : [e.getProperty("_tff")]), 1 == t.length)) {
-                        var ie = e instanceof o.GTextEditor ? e.getElement() : e;
+                for (s = 0; s < targets.length; s++) {
+                    const target = targets[s];
+                    let targetFonts;
+                    if (((targetFonts = target instanceof editors.GTextEditor ? target.getFonts() : [target.getProperty("_tff")]), 1 == targets.length)) {
+                        var ie = target instanceof editors.GTextEditor ? target.getElement() : target;
                         if (ie instanceof GObject.GText) {
                             var ae = ie.hasFontsToResolve();
                             if (ae && ae.length && ie.isFakeText()) {
                                 var re = ae[0].getFamily();
-                                re && (Z = re);
+                                re && (pendingFontFamily = re);
                             }
                         }
                     }
-                    for (var se = 0; se < a.length; se++) {
+                    for (var se = 0; se < targetFonts.length; se++) {
                         let e,
-                            t = a[se];
+                            t = targetFonts[se];
                         if (
                             (t
-                                ? t === n.getFamily()
+                                ? t === defaultFont.getFamily()
                                     ? (e = t)
-                                    : ((e = J.gFontsPanel("fontDisplayName", t, X)), void 0 === e && ((X = null), (e = t)))
+                                    : ((e = fontList.gFontsPanel("fontDisplayName", t, retryUpdate)), void 0 === e && ((retryUpdate = null), (e = t)))
                                 : ((t = ""), (e = t)),
                             void 0 === ne)
                         )
@@ -1453,36 +1453,36 @@ module.exports = function (module, exports, require) {
                         void 0 === oe ? (oe = t) : oe !== t && ((te = false), (oe = ""));
                     }
                 }
-                for (s = 0; s < t.length; s++) {
+                for (s = 0; s < targets.length; s++) {
                     var le = null,
                         ce = null;
                     let e;
-                    e = t[s] instanceof o.GTextEditor ? t[s].getFonts() : [t[s].getProperty("_tff") || n.getFamily()];
+                    e = targets[s] instanceof editors.GTextEditor ? targets[s].getFonts() : [targets[s].getProperty("_tff") || defaultFont.getFamily()];
                     for (se = 0; se < e.length; se++) {
                         var de = e[se];
                         let t;
-                        (de === n.getFamily()
+                        (de === defaultFont.getFamily()
                             ? ((le = ye.getDefaultFontWeights()),
                               (le = GObject.GUtil.unique(le)),
                               (ce = le.map(function (e) {
                                   return {
                                       weight: e,
-                                      styles: ye.getDefaultFontStyles().map((e) => e + m + (ee ? n.getFamily() : "") + m),
+                                      styles: ye.getDefaultFontStyles().map((e) => e + valueSeparator + (ee ? defaultFont.getFamily() : "") + valueSeparator),
                                   };
                               })))
-                            : J &&
-                              (void 0 === (le = await J.gFontsPanel("weightsForFont", de, X)) && (X = null),
+                            : fontList &&
+                              (void 0 === (le = await fontList.gFontsPanel("weightsForFont", de, retryUpdate)) && (retryUpdate = null),
                               (le = le || []),
                               (le = GObject.GUtil.unique(le)),
                               (ce = le.map(function (e) {
                                   for (
-                                      var t = J.gFontsPanel("stylesForWeight", e, de),
-                                          n = J.gFontsPanel("subfamiliesForWeight", e, de),
+                                      var t = fontList.gFontsPanel("stylesForWeight", e, de),
+                                          n = fontList.gFontsPanel("subfamiliesForWeight", e, de),
                                           o = 0;
                                       o < n.length;
                                       o++
                                   )
-                                      t[o] = t[o] + m + (ee ? n[o].realName : "") + m + (n[o].subFamily || "");
+                                      t[o] = t[o] + valueSeparator + (ee ? n[o].realName : "") + valueSeparator + (n[o].subFamily || "");
                                   return { weight: e, styles: t };
                               }))),
                             (a = GObject.GUtil.unique(this._intersectArrays(a, le))),
@@ -1495,12 +1495,12 @@ module.exports = function (module, exports, require) {
                                           var n = [];
                                           if (
                                               ((e.styles = e.styles.filter((e) => {
-                                                  var o = e.split(m)[0];
+                                                  var o = e.split(valueSeparator)[0];
                                                   if (o && o.length) {
                                                       var i = t.styles.find((e) => {
                                                           if (e.startsWith(o)) return true;
                                                       });
-                                                      if (i) return i !== e ? (n.push(o + m + m), true) : (n.push(e), true);
+                                                      if (i) return i !== e ? (n.push(o + valueSeparator + valueSeparator), true) : (n.push(e), true);
                                                   }
                                               })),
                                               (e.styles = n),
@@ -1514,8 +1514,8 @@ module.exports = function (module, exports, require) {
                             (r = t));
                     }
                 }
-                (Z ? Q.val(Z) : Q.val(ne),
-                    Q[0] === document.activeElement && Q[0].select(),
+                (pendingFontFamily ? fontFamilyInput.val(pendingFontFamily) : fontFamilyInput.val(ne),
+                    fontFamilyInput[0] === document.activeElement && fontFamilyInput[0].select(),
                     this._panel
                         .find('input[data-property="_tfi"]')
                         .gUnitBox({
@@ -1526,8 +1526,8 @@ module.exports = function (module, exports, require) {
                             list: [6, 7, 8, 9, 10, 11, 12, 14, 18, 21, 24, 36, 48, 60, 72],
                             source: "text",
                         })
-                        .gUnitBox("value", null !== G ? new GObject.GLength(G, GObject.GLength.Unit.PT) : null),
-                    this._panel.find('[data-property="_fc"]').gPatternChooser("value", P));
+                        .gUnitBox("value", null !== fontSize ? new GObject.GLength(fontSize, GObject.GLength.Unit.PT) : null),
+                    this._panel.find('[data-property="_fc"]').gPatternChooser("value", fontColor));
                 var ue = this._panel.find('select[data-property="style"]');
                 (ue.empty(), (r && r.length) || (r = [{ weight: 400, styles: [GObject.GFont.Style.Normal] }]), (a && a.length) || (a = [400]));
                 for (s = 100; s <= 900; s += 100)
@@ -1539,13 +1539,13 @@ module.exports = function (module, exports, require) {
                             }
                         for (ge = 0; pe && ge < pe.length; ge++) {
                             let e;
-                            var he = pe[ge].split(m);
+                            var he = pe[ge].split(valueSeparator);
                             ((e =
                                 he[0] === GObject.GFont.Style.Italic
                                     ? GObject.GLocale.get(GObject.GFont.WeightNameItalic[s])
                                     : GObject.GLocale.get(GObject.GFont.WeightName[s])),
                                 he[2] && he[2].length && 0 != e.indexOf(he[2]) && (e = he[2] + " " + e));
-                            var fe = s.toString() + m + he[0] + m + (he[1] || "");
+                            var fe = s.toString() + valueSeparator + he[0] + valueSeparator + (he[1] || "");
                             $("<option></option>").attr("value", fe).text(e).appendTo(ue);
                         }
                     }
@@ -1553,8 +1553,8 @@ module.exports = function (module, exports, require) {
                     .find('[data-property="_ttrf-'.concat(GObject.GStylable.TextTransformation.SmallCaps, '"]'))
                     .prop("disabled", false),
                     this._advancedSettings.find('[data-property="typography-fractions"]').prop("disabled", false),
-                    this._advancedSettings.find('[data-property="typography-ligatures"]').toggleClass("g-active", true === U),
-                    this._advancedSettings.find('[data-property="typography-fractions"]').toggleClass("g-active", true === p));
+                    this._advancedSettings.find('[data-property="typography-ligatures"]').toggleClass("g-active", true === ligatures),
+                    this._advancedSettings.find('[data-property="typography-fractions"]').toggleClass("g-active", true === fractions));
                 var me = this._panel.find('select[data-property="_tlsc"]');
                 (me.empty(),
                     me.append(
@@ -1564,9 +1564,9 @@ module.exports = function (module, exports, require) {
                     ));
                 var ye,
                     ve = (ye = gDesigner.getWorkspace().getFontManager()).getFont(
-                        (te && t[0] && t[0].getProperty("_tff")) || n.getFamily(),
-                        x,
-                        C
+                        (te && targets[0] && targets[0].getProperty("_tff")) || defaultFont.getFamily(),
+                        fontStyle,
+                        fontWeight
                     );
                 if (ve.isResolved()) {
                     ve.hasFeature(GObject.GFont.Features.SmallCaps) ||
@@ -1590,13 +1590,13 @@ module.exports = function (module, exports, require) {
                 }
                 ([
                     ...new Set(
-                        t
+                        targets
                             .map((e) => {
                                 let t = [],
                                     n = e.getProperty("_tff"),
                                     a = e.getProperty("_tfs"),
                                     r = e.getProperty("_tfw");
-                                if (e instanceof o.GTextEditor && !n) {
+                                if (e instanceof editors.GTextEditor && !n) {
                                     const o = e.getElement().getContent();
                                     if (o) {
                                         const s = GObject.GText.PropertyMapping._tff,
@@ -1620,14 +1620,14 @@ module.exports = function (module, exports, require) {
                     ),
                 ].every((e) => e && e.isResolved() && e.hasFeature(GObject.GFont.Features.Fractions)) ||
                     this._advancedSettings.find('[data-property="typography-fractions"]').prop("disabled", true),
-                    me.val(_));
+                    me.val(languageScript));
                 let Ce = ue.val();
-                (ue.val(C + m + x + m + (te ? (t[0] || n).getProperty("_tff") || n.getFamily() : "")), ue.val()) ||
+                (ue.val(fontWeight + valueSeparator + fontStyle + valueSeparator + (te ? (targets[0] || defaultFont).getProperty("_tff") || defaultFont.getFamily() : "")), ue.val()) ||
                     (this._text.some(
                         (e) =>
                             e instanceof GObject.GText &&
-                            (g.multipleValues === e.getTLCore().getDocumentRange().getFormatting()[GObject.GText.PropertyMapping._tfw] ||
-                                g.multipleValues === e.getTLCore().getDocumentRange().getFormatting()[GObject.GText.PropertyMapping._tfs])
+                            (FormattingUtils.multipleValues === e.getTLCore().getDocumentRange().getFormatting()[GObject.GText.PropertyMapping._tfw] ||
+                                FormattingUtils.multipleValues === e.getTLCore().getDocumentRange().getFormatting()[GObject.GText.PropertyMapping._tfs])
                     )
                         ? ($("<option></option>")
                               .attr("value", "mixed")
@@ -1636,61 +1636,61 @@ module.exports = function (module, exports, require) {
                           ue.val("mixed"))
                         : ue.val(Ce));
                 let xe = a.indexOf(GObject.GFont.Weight.Bold) >= 0;
-                ((C && parseInt(C) === GObject.GFont.Weight.Bold) ||
-                    (x &&
-                        x === GObject.GFont.Style.Italic &&
+                ((fontWeight && parseInt(fontWeight) === GObject.GFont.Weight.Bold) ||
+                    (fontStyle &&
+                        fontStyle === GObject.GFont.Style.Italic &&
                         (xe = r.some((e) => {
                             let { weight, styles } = e;
                             return weight === GObject.GFont.Weight.Bold && styles.some((e) => 0 === e.indexOf(GObject.GFont.Style.Italic));
                         }))),
                     this._panel
                         .find('[data-property="decoration-bold"]')
-                        .toggleClass("g-active", xe && !!C && parseInt(C) === GObject.GFont.Weight.Bold)
+                        .toggleClass("g-active", xe && !!fontWeight && parseInt(fontWeight) === GObject.GFont.Weight.Bold)
                         .prop("disabled", !xe));
                 const Se = r.some((e) => {
                     let { weight: t, styles: n } = e;
-                    return t === parseInt(C || GObject.GFont.Weight.Regular) && n.some((e) => 0 === e.indexOf(GObject.GFont.Style.Italic));
+                    return t === parseInt(fontWeight || GObject.GFont.Weight.Regular) && n.some((e) => 0 === e.indexOf(GObject.GFont.Style.Italic));
                 });
                 (this._panel
                     .find('[data-property="decoration-italic"]')
-                    .toggleClass("g-active", Se && !!x && x === GObject.GFont.Style.Italic)
+                    .toggleClass("g-active", Se && !!fontStyle && fontStyle === GObject.GFont.Style.Italic)
                     .prop("disabled", !Se),
-                    this._panel.find('[data-property="decoration-underline"]').toggleClass("g-active", 1 == d),
-                    this._panel.find('[data-property="decoration-strikeout"]').toggleClass("g-active", 1 == u),
+                    this._panel.find('[data-property="decoration-underline"]').toggleClass("g-active", 1 == underline),
+                    this._panel.find('[data-property="decoration-strikeout"]').toggleClass("g-active", 1 == strikeout),
                     this._panel
                         .find('input[data-property="_tws"]')
                         .val(
-                            null !== D
-                                ? this._document.getScene().pointToString(D, this._document.getScene().getOptimalDecimalsCount())
+                            null !== wordSpacing
+                                ? this._document.getScene().pointToString(wordSpacing, this._document.getScene().getOptimalDecimalsCount())
                                 : "0"
                         ),
                     this._panel
                         .find('input[data-property="_tcs"]')
                         .val(
-                            null !== L
-                                ? this._document.getScene().pointToString(L, this._document.getScene().getOptimalDecimalsCount())
+                            null !== charSpacing
+                                ? this._document.getScene().pointToString(charSpacing, this._document.getScene().getOptimalDecimalsCount())
                                 : "0"
                         ));
-                var Ee = I || GObject.GStylable.ParagraphAlignment.Left,
-                    Ae = this._panel.find('button[data-property^="_pal"]');
-                (Ae.each(function (e, t) {
-                    var n = $(t);
-                    n.toggleClass("g-active", n.attr("data-property") === "_pal-" + Ee);
+                var paragraphAlignValue = paragraphAlign || GObject.GStylable.ParagraphAlignment.Left,
+                    paragraphAlignButtons = this._panel.find('button[data-property^="_pal"]');
+                (paragraphAlignButtons.each(function (index, button) {
+                    var buttonElement = $(button);
+                    buttonElement.toggleClass("g-active", buttonElement.attr("data-property") === "_pal-" + paragraphAlignValue);
                 }),
-                    Ae.closest(".g-property-row").css("display", V ? "none" : ""));
-                var Te = k,
-                    Ge = this._panel.find('button[data-property="_plh_unit"]');
-                if ("number" == typeof Te)
-                    (Ge.text("%"), this._panel.find('input[data-property="_plh"]').val(GObject.GUtil.formatNumber(100 * Te)));
-                else if ("string" == typeof Te || Te instanceof String) {
-                    const e = this._document.getScene();
-                    var Pe = e.getProperty("ut");
-                    (Ge.text(Pe || "px"),
-                        this._panel.find('input[data-property="_plh"]').val(e.pointToString(k, e.getOptimalDecimalsCount())));
+                    paragraphAlignButtons.closest(".g-property-row").css("display", hasPathAttached ? "none" : ""));
+                var lineHeightValue = lineHeight,
+                    lineHeightUnitButton = this._panel.find('button[data-property="_plh_unit"]');
+                if ("number" == typeof lineHeightValue)
+                    (lineHeightUnitButton.text("%"), this._panel.find('input[data-property="_plh"]').val(GObject.GUtil.formatNumber(100 * lineHeightValue)));
+                else if ("string" == typeof lineHeightValue || lineHeightValue instanceof String) {
+                    const scene = this._document.getScene();
+                    var unitType = scene.getProperty("ut");
+                    (lineHeightUnitButton.text(unitType || "px"),
+                        this._panel.find('input[data-property="_plh"]').val(scene.pointToString(lineHeight, scene.getOptimalDecimalsCount())));
                 } else this._panel.find('input[data-property="_plh"]').val("");
                 if (
                     (e &&
-                        (e.evtType == o.GEditor.ModifiedEvent.Type.Undo || e.evtType == o.GEditor.ModifiedEvent.Type.Redo) &&
+                        (e.evtType == editors.GEditor.ModifiedEvent.Type.Undo || e.evtType == editors.GEditor.ModifiedEvent.Type.Redo) &&
                         e.chooserOn &&
                         e.textPattern &&
                         this._panel.find('[data-property="_fc"]').find(".preview").trigger("click"),
@@ -1698,150 +1698,150 @@ module.exports = function (module, exports, require) {
                     this._listTypeSettings.find(".list-type-group.g-selected").removeClass("g-selected"),
                     this._listTypeSettings.find(".list-type-option.g-selected").removeClass("g-selected"),
                     this._advancedSettings.find('[data-property="_pm"] > span').text(""),
-                    "string" == typeof h)
+                    "string" == typeof listMarker)
                 ) {
-                    const e = Object.values(y).find((e) => {
-                        let { types: t = [] } = e;
-                        return t.find((e) => {
-                            let { value: t } = e;
-                            return t === h;
+                    const markerOption = Object.values(markerTypeOptions).find((markerOption) => {
+                        let { types: markerTypes = [] } = markerOption;
+                        return markerTypes.find((typeOption) => {
+                            let { value: value } = typeOption;
+                            return value === listMarker;
                         });
                     });
-                    (e && this._advancedSettings.find('[data-property="_pm"] > span').text(e.label),
+                    (markerOption && this._advancedSettings.find('[data-property="_pm"] > span').text(markerOption.label),
                         this._listTypeSettings
-                            .find('.list-type-option[value="'.concat(h, '"]'))
+                            .find('.list-type-option[value="'.concat(listMarker, '"]'))
                             .addClass("g-selected")
                             .closest(".list-type-group")
                             .addClass("g-selected"));
                 } else
-                    null == h &&
-                        (this._advancedSettings.find('[data-property="_pm"] > span').text(y.None.label),
-                        this._listTypeSettings.find('.list-type-group[value="'.concat(y.None.value, '"]')).addClass("g-selected"));
-                (this._updateLanguageSelector(ve, _, N), this._updateStylisticSetSelector(ve, _, B));
+                    null == listMarker &&
+                        (this._advancedSettings.find('[data-property="_pm"] > span').text(markerTypeOptions.None.label),
+                        this._listTypeSettings.find('.list-type-group[value="'.concat(markerTypeOptions.None.value, '"]')).addClass("g-selected"));
+                (this._updateLanguageSelector(ve, languageScript, languageLocale), this._updateStylisticSetSelector(ve, languageScript, stylisticSet));
             }),
-            (v.prototype._updateLanguageSelector = function (e, t, n) {
-                const o = this._advancedSettings.find('select[data-property="_tlocl"]').empty().attr("disabled", true).addClass("g-disabled");
-                if (!e.isResolved() || !e.hasFeature(GObject.GFont.Features.LocalizedForm)) return;
-                let a = null;
-                t && "auto" !== t && (a = GObject.GOpenTypeFont.scriptNameToOpenTypeScriptTagString(t));
-                const r = e.getAvailableLanguageSystemTags(a);
-                if (r && 0 !== r.length)
+            (GTextProperties.prototype._updateLanguageSelector = function (font, script, selectedValue) {
+                const selectElement = this._advancedSettings.find('select[data-property="_tlocl"]').empty().attr("disabled", true).addClass("g-disabled");
+                if (!font.isResolved() || !font.hasFeature(GObject.GFont.Features.LocalizedForm)) return;
+                let scriptTag = null;
+                script && "auto" !== script && (scriptTag = GObject.GOpenTypeFont.scriptNameToOpenTypeScriptTagString(script));
+                const availableTags = font.getAvailableLanguageSystemTags(scriptTag);
+                if (availableTags && 0 !== availableTags.length)
                     if (
-                        (o.attr("disabled", false).removeClass("g-disabled"),
-                        o.append(
+                        (selectElement.attr("disabled", false).removeClass("g-disabled"),
+                        selectElement.append(
                             $("<option/>")
                                 .attr("value", "")
                                 .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.default")))
                         ),
-                        o.append(
-                            r
-                                .map((e) => {
-                                    const t = GObject.GOpenTypeFont.openTypeLanguageSystemTagStringToBCP47(e);
+                        selectElement.append(
+                            availableTags
+                                .map((tag) => {
+                                    const bcp47Tag = GObject.GOpenTypeFont.openTypeLanguageSystemTagStringToBCP47(tag);
                                     return {
-                                        name: GObject.GLocale.get(new GObject.GLocaleKey("GBCP47LanguageTags", "text.lang.".concat(t))),
-                                        tag: e,
+                                        name: GObject.GLocale.get(new GObject.GLocaleKey("GBCP47LanguageTags", "text.lang.".concat(bcp47Tag))),
+                                        tag: tag,
                                     };
                                 })
-                                .sort((e, t) => e.name.localeCompare(t.name))
-                                .map((e) => {
-                                    let { name, tag } = e;
+                                .sort((optionA, optionB) => optionA.name.localeCompare(optionB.name))
+                                .map((option) => {
+                                    let { name, tag } = option;
                                     return $("<option/>").attr("value", tag).text(name);
                                 })
                         ),
-                        n)
+                        selectedValue)
                     )
-                        o.val(n);
+                        selectElement.val(selectedValue);
                     else {
                         this._hasMultipleLanguages() &&
-                            (o.append(
+                            (selectElement.append(
                                 $("<option/>")
                                     .attr("value", "mixed")
                                     .attr("hidden", true)
                                     .attr("disabled", true)
                                     .text(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.mixed")))
                             ),
-                            o.val("mixed"));
+                            selectElement.val("mixed"));
                     }
             }),
-            (v.prototype._updateStylisticSetSelector = function (e, t, n) {
-                const o = this._advancedSettings
+            (GTextProperties.prototype._updateStylisticSetSelector = function (font, script, selectedValue) {
+                const selectElement = this._advancedSettings
                     .find('select[data-property="_tstyls"]')
                     .empty()
                     .attr("disabled", true)
                     .addClass("g-disabled");
-                if (!e.isResolved() || !e.hasFeature(GObject.GFont.Features.StylisticSet)) return;
-                let a = null;
-                t && "auto" !== t && (a = GObject.GOpenTypeFont.scriptNameToOpenTypeScriptTagString(t));
-                const r = e.getAvailableStylisticSets(a);
-                if (r && 0 !== r.length)
+                if (!font.isResolved() || !font.hasFeature(GObject.GFont.Features.StylisticSet)) return;
+                let scriptTag = null;
+                script && "auto" !== script && (scriptTag = GObject.GOpenTypeFont.scriptNameToOpenTypeScriptTagString(script));
+                const availableSets = font.getAvailableStylisticSets(scriptTag);
+                if (availableSets && 0 !== availableSets.length)
                     if (
-                        (o.attr("disabled", false).removeClass("g-disabled"),
-                        o.append(
+                        (selectElement.attr("disabled", false).removeClass("g-disabled"),
+                        selectElement.append(
                             $("<option/>")
                                 .attr("value", "")
                                 .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.none")))
                         ),
-                        o.append(r.map((e) => $("<option/>").attr("value", e).text(e.toUpperCase()))),
-                        n)
+                        selectElement.append(availableSets.map((stylisticSet) => $("<option/>").attr("value", stylisticSet).text(stylisticSet.toUpperCase()))),
+                        selectedValue)
                     )
-                        o.val(n);
+                        selectElement.val(selectedValue);
                     else {
                         this._hasMultipleStylisticSets() &&
-                            (o.append(
+                            (selectElement.append(
                                 $("<option/>")
                                     .attr("value", "mixed")
                                     .attr("hidden", true)
                                     .attr("disabled", true)
                                     .text(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.mixed")))
                             ),
-                            o.val("mixed"));
+                            selectElement.val("mixed"));
                     }
             }),
-            (v.prototype._hasMultipleLanguages = function () {
+            (GTextProperties.prototype._hasMultipleLanguages = function () {
                 return this._hasMultipleValues(GObject.GText.PropertyMapping._tlocl);
             }),
-            (v.prototype._hasMultipleStylisticSets = function () {
+            (GTextProperties.prototype._hasMultipleStylisticSets = function () {
                 return this._hasMultipleValues(GObject.GText.PropertyMapping._tstyls);
             }),
-            (v.prototype._hasMultipleValues = function (e) {
-                return this._text.some((t) => {
-                    if (t instanceof GObject.GText) {
-                        const n = t.getTLCore().getDocumentRange().getFormatting()[e];
-                        return g.multipleValues === n;
+            (GTextProperties.prototype._hasMultipleValues = function (propertyKey) {
+                return this._text.some((textElement) => {
+                    if (textElement instanceof GObject.GText) {
+                        const formattingValue = textElement.getTLCore().getDocumentRange().getFormatting()[propertyKey];
+                        return FormattingUtils.multipleValues === formattingValue;
                     }
                 });
             }),
-            (v.prototype._correctStyleAndWeight = async function (e, t, n) {
-                var o = null,
-                    a = null,
-                    r = gDesigner.getWorkspace().getFontManager(),
-                    s = r.getDefaultFont(),
-                    l = this._panel.find('input[data-property="_tff"]').gFontsButton("getFontList"),
-                    c = false;
+            (GTextProperties.prototype._correctStyleAndWeight = async function (fontFamily, styleBox, weightBox) {
+                var availableWeights = null,
+                    weightStyleOptions = null,
+                    fontManager = gDesigner.getWorkspace().getFontManager(),
+                    defaultFont = fontManager.getDefaultFont(),
+                    fontList = this._panel.find('input[data-property="_tff"]').gFontsButton("getFontList"),
+                    corrected = false;
                 if (
-                    (e === s.getFamily()
-                        ? (a =
-                              (o = r.getDefaultFontWeights()) &&
-                              o.map(function (e) {
-                                  return { weight: e, styles: r.getDefaultFontStyles() };
+                    (fontFamily === defaultFont.getFamily()
+                        ? (weightStyleOptions =
+                              (availableWeights = fontManager.getDefaultFontWeights()) &&
+                              availableWeights.map(function (weight) {
+                                  return { weight: weight, styles: fontManager.getDefaultFontStyles() };
                               }))
-                        : l &&
-                          (a =
-                              (o = await l.gFontsPanel(
+                        : fontList &&
+                          (weightStyleOptions =
+                              (availableWeights = await fontList.gFontsPanel(
                                   "weightsForFont",
-                                  e,
+                                  fontFamily,
                                   function () {
                                       console.warn("textproperties: Unexpected callback");
                                   },
                                   true
                               )) &&
-                              o.map(function (t) {
+                              availableWeights.map(function (weight) {
                                   return {
-                                      weight: t,
-                                      styles: l.gFontsPanel(
+                                      weight: weight,
+                                      styles: fontList.gFontsPanel(
                                           "stylesForWeight",
-                                          t,
-                                          e,
+                                          weight,
+                                          fontFamily,
                                           function () {
                                               console.warn("textproperties: Unexpected callback");
                                           },
@@ -1849,131 +1849,131 @@ module.exports = function (module, exports, require) {
                                       ),
                                   };
                               })),
-                    o && o.indexOf(n[0]) < 0)
+                    availableWeights && availableWeights.indexOf(weightBox[0]) < 0)
                 ) {
-                    for (var d = 0, u = 0; u < o.length; u++) Math.abs(n[0] - o[u]) < Math.abs(n[0] - o[d]) && (d = u);
-                    ((n[0] = o[d]), (c = true));
+                    for (var closestIndex = 0, u = 0; u < availableWeights.length; u++) Math.abs(weightBox[0] - availableWeights[u]) < Math.abs(weightBox[0] - availableWeights[closestIndex]) && (closestIndex = u);
+                    ((weightBox[0] = availableWeights[closestIndex]), (corrected = true));
                 }
-                var p =
-                    (a || []).filter(function (e) {
-                        if (e.weight === n[0]) return true;
+                var matchingWeightStyles =
+                    (weightStyleOptions || []).filter(function (style) {
+                        if (style.weight === weightBox[0]) return true;
                     }) || [];
                 return (
-                    p.length &&
-                        p[0].styles.indexOf(t[0]) < 0 &&
-                        (t[0] === GObject.GFont.Style.Normal && p[0].styles.length
-                            ? (t[0] = GObject.GFont.Style.Italic)
-                            : (t[0] = GObject.GFont.Style.Normal),
-                        (c = true)),
-                    c
+                    matchingWeightStyles.length &&
+                        matchingWeightStyles[0].styles.indexOf(styleBox[0]) < 0 &&
+                        (styleBox[0] === GObject.GFont.Style.Normal && matchingWeightStyles[0].styles.length
+                            ? (styleBox[0] = GObject.GFont.Style.Italic)
+                            : (styleBox[0] = GObject.GFont.Style.Normal),
+                        (corrected = true)),
+                    corrected
                 );
             }),
-            (v.prototype._toggleFormatting = function (e) {
+            (GTextProperties.prototype._toggleFormatting = function (formattingKey) {
                 if (this._text && this._text.length) {
-                    const n = this._text.map((e) => o.GElementEditor.getEditor(e) || e),
-                        a = this._getFormatting("underline", n) || null,
-                        r = this._getFormatting("strikeout", n) || null;
-                    var t = this._getFormatting("ligatures", n);
-                    const s = {
-                            underline: a,
-                            strikeout: r,
-                            ligatures: (t = "auto" === t ? !this._getProperty("_tcs", n) : !!t),
-                            fractions: this._getFormatting("fractions", n),
+                    const targets = this._text.map((element) => editors.GElementEditor.getEditor(element) || element),
+                        underline = this._getFormatting("underline", targets) || null,
+                        strikeout = this._getFormatting("strikeout", targets) || null;
+                    var ligatures = this._getFormatting("ligatures", targets);
+                    const formattingState = {
+                            underline: underline,
+                            strikeout: strikeout,
+                            ligatures: (ligatures = "auto" === ligatures ? !this._getProperty("_tcs", targets) : !!ligatures),
+                            fractions: this._getFormatting("fractions", targets),
                         },
-                        l = this._getProperty("_tfw", n) || "",
-                        c = this._getProperty("_tfs", n) || "";
-                    if ("bold" === e) {
-                        let e;
-                        (parseInt(l) === GObject.GFont.Weight.Bold
-                            ? ((e =
+                        fontWeight = this._getProperty("_tfw", targets) || "",
+                        fontStyle = this._getProperty("_tfs", targets) || "";
+                    if ("bold" === formattingKey) {
+                        let weight;
+                        (parseInt(fontWeight) === GObject.GFont.Weight.Bold
+                            ? ((weight =
                                   this._weightsAvailable.indexOf(GObject.GFont.Weight.Regular) >= 0
                                       ? GObject.GFont.Weight.Regular
                                       : Math.min.apply(null, this._weightsAvailable)),
-                              (e = e || GObject.GFont.Style.Regular))
-                            : (e = GObject.GFont.Weight.Bold),
-                            this._assignProperties(["_tfw"], [e]));
-                    } else if ("italic" === e)
-                        this._assignProperties(["_tfs"], [c === GObject.GFont.Style.Italic ? GObject.GFont.Style.Normal : GObject.GFont.Style.Italic]);
+                              (weight = weight || GObject.GFont.Style.Regular))
+                            : (weight = GObject.GFont.Weight.Bold),
+                            this._assignProperties(["_tfw"], [weight]));
+                    } else if ("italic" === formattingKey)
+                        this._assignProperties(["_tfs"], [fontStyle === GObject.GFont.Style.Italic ? GObject.GFont.Style.Normal : GObject.GFont.Style.Italic]);
                     else {
-                        const t = this._document.getEditor();
+                        const editor = this._document.getEditor();
                         try {
-                            (t.beginTransaction(),
-                                this._text.forEach((t) => {
-                                    if ((t instanceof o.GTextEditor && (t = t.getElement()), t instanceof GObject.GText)) {
-                                        const n = t.getTLCore();
-                                        if (n) {
-                                            let i;
-                                            const a = o.GElementEditor.getEditor(t);
-                                            ((i = a && a.isInlineEdit() ? n.selectedRange() : n.getDocumentRange()),
-                                                i && i.setFormatting(e, 1 != s[e]));
+                            (editor.beginTransaction(),
+                                this._text.forEach((textElement) => {
+                                    if ((textElement instanceof editors.GTextEditor && (textElement = textElement.getElement()), textElement instanceof GObject.GText)) {
+                                        const tlCore = textElement.getTLCore();
+                                        if (tlCore) {
+                                            let range;
+                                            const elementEditor = editors.GElementEditor.getEditor(textElement);
+                                            ((range = elementEditor && elementEditor.isInlineEdit() ? tlCore.selectedRange() : tlCore.getDocumentRange()),
+                                                range && range.setFormatting(formattingKey, 1 != formattingState[formattingKey]));
                                         }
                                     }
                                 }));
                         } finally {
-                            t.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "action.modify-text-properties")));
+                            editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "action.modify-text-properties")));
                         }
                     }
                     this._updateProperties();
                 }
             }),
-            (v.prototype._assignFont = async function (e) {
-                if (gDesigner.getWorkspace().getFontManager().getDefaultFont().getFamily() !== e) {
-                    var t = this._panel.find('input[data-property="_tff"]').gFontsButton("getFontList");
+            (GTextProperties.prototype._assignFont = async function (fontFamily) {
+                if (gDesigner.getWorkspace().getFontManager().getDefaultFont().getFamily() !== fontFamily) {
+                    var fontList = this._panel.find('input[data-property="_tff"]').gFontsButton("getFontList");
                     if (
                         void 0 ===
-                        (await t.gFontsPanel("weightsForFont", e, () => {
-                            this._assignFontMain(e);
+                        (await fontList.gFontsPanel("weightsForFont", fontFamily, () => {
+                            this._assignFontMain(fontFamily);
                         }))
                     )
                         return;
                 }
-                this._assignFontMain(e);
+                this._assignFontMain(fontFamily);
             }),
-            (v.prototype._assignMarker = function (e) {
+            (GTextProperties.prototype._assignMarker = function (marker) {
                 if (!this._document) return;
-                const t = this._document.getEditor();
-                ((this._ownChange = true), t.beginTransaction());
+                const editor = this._document.getEditor();
+                ((this._ownChange = true), editor.beginTransaction());
                 try {
-                    this._text.forEach((t) => {
-                        if ((t instanceof o.GTextEditor && (t = t.getElement()), t instanceof GObject.GText)) {
-                            const n = t.getTLCore();
-                            if (n) {
-                                let i;
-                                const a = o.GElementEditor.getEditor(t);
-                                ((i = a && a.isInlineEdit() ? n.selectedRange() : n.getDocumentRange()), i && i.toggleList(e));
+                    this._text.forEach((textElement) => {
+                        if ((textElement instanceof editors.GTextEditor && (textElement = textElement.getElement()), textElement instanceof GObject.GText)) {
+                            const tlCore = textElement.getTLCore();
+                            if (tlCore) {
+                                let range;
+                                const elementEditor = editors.GElementEditor.getEditor(textElement);
+                                ((range = elementEditor && elementEditor.isInlineEdit() ? tlCore.selectedRange() : tlCore.getDocumentRange()), range && range.toggleList(marker));
                             }
                         }
                     });
                 } finally {
-                    (t.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "action.modify-text-properties"))),
+                    (editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "action.modify-text-properties"))),
                         (this._ownChange = false));
                 }
             }),
-            (v.prototype._assignFontMain = async function (e) {
+            (GTextProperties.prototype._assignFontMain = async function (fontFamily) {
                 var t,
                     n,
-                    a = gDesigner.getWorkspace().getFontManager();
-                a.getDefaultFont();
+                    fontManager = gDesigner.getWorkspace().getFontManager();
+                fontManager.getDefaultFont();
                 if (this._document) {
-                    var r = this._document.getEditor();
+                    var editor = this._document.getEditor();
                     if (this._text.length) {
-                        r.beginTransaction();
+                        editor.beginTransaction();
                         try {
                             for (var s = 0; s < this._text.length; ++s) {
-                                var l = o.GElementEditor.getEditor(this._text[s]);
+                                var l = editors.GElementEditor.getEditor(this._text[s]);
                                 if (this._text[s] instanceof GObject.GText && this._text[s].isFakeText()) {
                                     var c = this._text[s].getContent(),
                                         d = {};
                                     c &&
                                         c.forEach((t) => {
-                                            d[t.fontFamily] = e;
+                                            d[t.fontFamily] = fontFamily;
                                         });
                                     var u = this._text[s].getProperty("_tff");
-                                    ((d[u] = e), this._text[s].replaceFonts(d, true));
+                                    ((d[u] = fontFamily), this._text[s].replaceFonts(d, true));
                                 } else {
                                     var p = l || this._text[s],
                                         g = ["_tff"],
-                                        h = [e],
+                                        h = [fontFamily],
                                         f = this._text[s] instanceof GObject.GText && this._text[s].getTLCore();
                                     if (f) {
                                         let o;
@@ -1990,7 +1990,7 @@ module.exports = function (module, exports, require) {
                                         ) {
                                             var C = "italic" === m[w][y] ? GObject.GFont.Style.Italic : GObject.GFont.Style.Normal,
                                                 x = ~~m[w][v];
-                                            if (((t = [C]), (n = [x]), await this._correctStyleAndWeight(e, t, n))) {
+                                            if (((t = [C]), (n = [x]), await this._correctStyleAndWeight(fontFamily, t, n))) {
                                                 var S = g.indexOf("_tfs"),
                                                     E = g.indexOf("_tfw");
                                                 if (C !== t[0]) {
@@ -2013,8 +2013,8 @@ module.exports = function (module, exports, require) {
                                         if (
                                             ((t = [p.getProperty("_tfs") || GObject.GFont.Style.Normal]),
                                             (n = [p.getProperty("_tfw") || GObject.GFont.Weight.Regular]),
-                                            await this._correctStyleAndWeight(e, t, n),
-                                            !a.getFont(e, t[0], n[0]))
+                                            await this._correctStyleAndWeight(fontFamily, t, n),
+                                            !fontManager.getFont(fontFamily, t[0], n[0]))
                                         )
                                             continue;
                                         (Array.prototype.push.apply(g, ["_tfs", "_tfw"]), Array.prototype.push.apply(h, [t[0], n[0]]));
@@ -2028,41 +2028,41 @@ module.exports = function (module, exports, require) {
                                 this._text[s] instanceof GObject.GStyle && this._updateProperties();
                             }
                         } finally {
-                            r.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "action.modify-text-properties")));
+                            editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "action.modify-text-properties")));
                         }
                     }
                 }
             }),
-            (v.prototype._assignProperty = function (e, t, n, o) {
-                this._assignProperties([e], [t], n, o);
+            (GTextProperties.prototype._assignProperty = function (property, value, silent, options) {
+                this._assignProperties([property], [value], silent, options);
             }),
-            (v.prototype._assignProperties = function (e, t, n, a) {
+            (GTextProperties.prototype._assignProperties = function (properties, values, silent, options) {
                 if (this._document) {
-                    var r = this._document.getEditor();
-                    n || ((this._ownChange = true), r.beginTransaction());
+                    var editor = this._document.getEditor();
+                    silent || ((this._ownChange = true), editor.beginTransaction());
                     try {
                         for (var s = 0; s < this._text.length; ++s) {
-                            (l = o.GElementEditor.getEditor(this._text[s]))
-                                ? l.setProperties(e, t, n)
-                                : this._text[s].setProperties(e, t, false, false, n);
+                            (l = editors.GElementEditor.getEditor(this._text[s]))
+                                ? l.setProperties(properties, values, silent)
+                                : this._text[s].setProperties(properties, values, false, false, silent);
                         }
                     } finally {
-                        n ||
-                            (r.commitTransaction(
+                        silent ||
+                            (editor.commitTransaction(
                                 GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "action.modify-text-properties")),
-                                a || null
+                                options || null
                             ),
                             (this._ownChange = false));
                     }
-                    if (e.includes("sc"))
+                    if (properties.includes("sc"))
                         for (s = 0; s < this._text.length; ++s) {
                             var l;
-                            (l = o.GElementEditor.getEditor(this._text[s])) && l.requestInvalidation();
+                            (l = editors.GElementEditor.getEditor(this._text[s])) && l.requestInvalidation();
                         }
                 }
             }),
-            (v.prototype.toString = function () {
+            (GTextProperties.prototype.toString = function () {
                 return "[Object GTextProperties]";
             }),
-            (module.exports = v));
+            (module.exports = GTextProperties));
     };

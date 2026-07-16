@@ -4,375 +4,375 @@ module.exports = function (module, exports, require) {
         (require(58 /* polyfill:Array */), require(19), require(596 /* polyfill:Array */), require(328 /* polyfill:Array */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(71 /* polyfill:String */), require(34), require(4), require(41), require(13), require(32), require(38), require(97), require(33), require(26));
         var GObject = require(1),
             GPlatform = require(15),
-            r = _interopRequireDefault(require(85)),
-            s = require(858),
-            l = _interopRequireDefault(require(802)),
-            c = _interopRequireDefault(require(44 /* GSystemDialog */)),
-            GSaveAction = require(40),
-            u = _interopRequireDefault(require(177)),
+            GContainer = _interopRequireDefault(require(85)),
+            GFilesPanelConstants = require(858),
+            GDrive = _interopRequireDefault(require(802)),
+            GSystemDialog = _interopRequireDefault(require(44 /* GSystemDialog */)),
+            Utils = require(40),
+            GUser = _interopRequireDefault(require(177)),
             designerConfig = require(10),
-            g = _interopRequireDefault(require(355)),
+            AppError = _interopRequireDefault(require(355)),
             configBase = require(519);
-        const f = require(1548),
-            m = require(1166),
-            y = require(1549),
-            v = require(1174);
-        let _ = null;
-        const b = function (e, t) {
-            ((this.panel = e),
-                (this.filesPanel = t),
+        const GFolderView = require(1548),
+            GUserPreview = require(1166),
+            GFileDetailRenderer = require(1549),
+            GFileDetailEvent = require(1174);
+        let clearSelectionClickHandler = null;
+        const FilesPanelViewBase = function (panel, filesPanel) {
+            ((this.panel = panel),
+                (this.filesPanel = filesPanel),
                 (this._cloudFolders = []),
-                (this._permissions = [b.Permission.CreateFolder, b.Permission.RecentFilesShowMore]),
+                (this._permissions = [FilesPanelViewBase.Permission.CreateFolder, FilesPanelViewBase.Permission.RecentFilesShowMore]),
                 (this._bindedHandleShortcut = this.handleShortcut.bind(this)),
-                gDesigner.getUser().then((e) => {
-                    this._user = e;
+                gDesigner.getUser().then((user) => {
+                    this._user = user;
                 }),
                 (this._isLoadingFolders = false),
-                ((gContainer.getRuntime() === r.default.Runtime.Electron &&
+                ((gContainer.getRuntime() === GContainer.default.Runtime.Electron &&
                     GObject.GSystem.operatingSystem === GObject.GSystem.OperatingSystem.Windows) ||
                     GObject.GSystem.operatingSystem === GObject.GSystem.OperatingSystem.Unix) &&
                     this.panel.closest(".g-dialog-container").addClass("cross-controls"));
         };
-        ((b.prototype.filesPanel = null),
-            (b.prototype._cloudFolders = null),
-            (b.prototype._isLoadingFolders = false),
-            (b.prototype._fileInfoPanel = null),
-            (b.prototype._rightSide = null),
-            (b.prototype._user = null),
-            (b.prototype._contextMenu = null),
-            (b.prototype._downloadContextMenu = null),
-            (b.prototype._fileInfoPanelIsOpen = false),
-            (b.prototype._fileTypeFilterButton = null),
-            (b.prototype._sortButton = null),
-            (b.prototype._loadFoldersOnDemand = async function () {
+        ((FilesPanelViewBase.prototype.filesPanel = null),
+            (FilesPanelViewBase.prototype._cloudFolders = null),
+            (FilesPanelViewBase.prototype._isLoadingFolders = false),
+            (FilesPanelViewBase.prototype._fileInfoPanel = null),
+            (FilesPanelViewBase.prototype._rightSide = null),
+            (FilesPanelViewBase.prototype._user = null),
+            (FilesPanelViewBase.prototype._contextMenu = null),
+            (FilesPanelViewBase.prototype._downloadContextMenu = null),
+            (FilesPanelViewBase.prototype._fileInfoPanelIsOpen = false),
+            (FilesPanelViewBase.prototype._fileTypeFilterButton = null),
+            (FilesPanelViewBase.prototype._sortButton = null),
+            (FilesPanelViewBase.prototype._loadFoldersOnDemand = async function () {
                 if (!this._isLoadingFolders) {
                     this._isLoadingFolders = true;
                     try {
-                        const e = this._cloudFolders
-                            .filter((e) => e.isStateOpen() && !e.isDone())
-                            .map((e) =>
-                                e.loadChildrenOnDemand((t, n, o) =>
+                        const loadPromises = this._cloudFolders
+                            .filter((folderNode) => folderNode.isStateOpen() && !folderNode.isDone())
+                            .map((folderNode) =>
+                                folderNode.loadChildrenOnDemand((folder, limit, offset) =>
                                     this.filesPanel.drive
-                                        .fetchFolders(this.filesPanel.getSort(), t, n, o)
-                                        .then((t) => t.map((t) => this._factoryFolder(t, e)))
+                                        .fetchFolders(this.filesPanel.getSort(), folder, limit, offset)
+                                        .then((t) => t.map((t) => this._factoryFolder(t, folderNode)))
                                 )
                             );
-                        e.length && (await Promise.all(e));
+                        loadPromises.length && (await Promise.all(loadPromises));
                     } finally {
                         this._isLoadingFolders = false;
                     }
                 }
             }),
-            (b.prototype._factoryFolder = function (e, t) {
-                var n = this;
-                e = this.filesPanel.updateCloudItemForUserPermission(e);
-                var o = this.filesPanel.isItemSelected(e),
-                    i = this.filesPanel.isItemInClipboard(e),
-                    r = false,
-                    s = new f(e, t, this.filesPanel.drive.isRootFolder(e))
-                        .onClick((e, t) => {
+            (FilesPanelViewBase.prototype._factoryFolder = function (folder, parentNode) {
+                var self = this;
+                folder = this.filesPanel.updateCloudItemForUserPermission(folder);
+                var isSelected = this.filesPanel.isItemSelected(folder),
+                    isInClipboard = this.filesPanel.isItemInClipboard(folder),
+                    childrenRefreshed = false,
+                    folderView = new GFolderView(folder, parentNode, this.filesPanel.drive.isRootFolder(folder))
+                        .onClick((clickedFolder, element) => {
                             (GPlatform.GPlatform.modifiers.metaKey
-                                ? this.filesPanel.manageSelection(e, t)
-                                : this.filesPanel.drive.getCurrentFolder() !== e &&
-                                  (this.filesPanel.handleFolderClick(e, t),
-                                  "shared_files_with_me" === e.id ? this.hideFileTypeFilterButton() : this.displayFileTypeFilterButton()),
-                                n._closeFileInfoPanel());
+                                ? this.filesPanel.manageSelection(clickedFolder, element)
+                                : this.filesPanel.drive.getCurrentFolder() !== clickedFolder &&
+                                  (this.filesPanel.handleFolderClick(clickedFolder, element),
+                                  "shared_files_with_me" === clickedFolder.id ? this.hideFileTypeFilterButton() : this.displayFileTypeFilterButton()),
+                                self._closeFileInfoPanel());
                         })
                         .onDoubleClick(() => {
-                            s.getChildren() && s.getChildren().length ? s.toggleState() : u().then(() => s.toggleState());
+                            folderView.getChildren() && folderView.getChildren().length ? folderView.toggleState() : loadChildren().then(() => folderView.toggleState());
                         })
-                        .onContext(function (e, t, o) {
+                        .onContext(function (e, element, contextEvent) {
                             (gDesigner.stats("filespanel-view_context_cloudfolder"),
-                                n.resetSelection(),
-                                n._addToSelection(t),
-                                n._openContextMenuForEventPosition(o));
+                                self.resetSelection(),
+                                self._addToSelection(element),
+                                self._openContextMenuForEventPosition(contextEvent));
                         })
-                        .onFileDrop((e, t) => {
-                            this.filesPanel.performFileMove(e, t);
+                        .onFileDrop((droppedItem, targetFolder) => {
+                            this.filesPanel.performFileMove(droppedItem, targetFolder);
                         })
-                        .setRefreshHandler(u)
+                        .setRefreshHandler(loadChildren)
                         .onFolderStateClick(() => {
-                            u().then(() => {
-                                if ((s.toggleState(), !s.isRootFolder() && !r && s.isStateOpen())) {
-                                    var e = s.getChildren();
-                                    e && e.length && ((r = true), e.forEach((e) => e.refresh()));
+                            loadChildren().then(() => {
+                                if ((folderView.toggleState(), !folderView.isRootFolder() && !childrenRefreshed && folderView.isStateOpen())) {
+                                    var childFolders = folderView.getChildren();
+                                    childFolders && childFolders.length && ((childrenRefreshed = true), childFolders.forEach((child) => child.refresh()));
                                 }
                             });
                         });
-                this._cloudFolders.push(s);
-                const l = this.filesPanel.drive.isRootFolder(e),
-                    c = t && this.filesPanel.drive.isRootFolder(t.getFolder());
-                var d;
-                function u() {
-                    return s.isLoading() || (s.getChildren() && s.getChildren().length)
-                        ? d || Promise.resolve()
-                        : (s.setLoading(true),
-                          (d = n.filesPanel.drive
-                              .fetchFolders(n.filesPanel.getSort(), e)
-                              .then((t) => {
-                                  (s.setLoading(false), s.setChildren(t.map((e) => n._factoryFolder(e, s))), s.update());
-                                  const o = n.filesPanel.drive.getCurrentFolder();
-                                  if ((o && "id" in o && o.id === e.id) || o === e) {
-                                      n.manageOpenFolder(null, e, s);
-                                      let t = s;
+                this._cloudFolders.push(folderView);
+                const isRoot = this.filesPanel.drive.isRootFolder(folder),
+                    parentIsRoot = parentNode && this.filesPanel.drive.isRootFolder(parentNode.getFolder());
+                var loadPromise;
+                function loadChildren() {
+                    return folderView.isLoading() || (folderView.getChildren() && folderView.getChildren().length)
+                        ? loadPromise || Promise.resolve()
+                        : (folderView.setLoading(true),
+                          (loadPromise = self.filesPanel.drive
+                              .fetchFolders(self.filesPanel.getSort(), folder)
+                              .then((children) => {
+                                  (folderView.setLoading(false), folderView.setChildren(children.map((childFolder) => self._factoryFolder(childFolder, folderView))), folderView.update());
+                                  const currentFolder = self.filesPanel.drive.getCurrentFolder();
+                                  if ((currentFolder && "id" in currentFolder && currentFolder.id === folder.id) || currentFolder === folder) {
+                                      self.manageOpenFolder(null, folder, folderView);
+                                      let ancestorNode = folderView;
                                       do {
-                                          t.isStateOpen() || t.toggleState();
-                                      } while ((t = t.getParent()));
+                                          ancestorNode.isStateOpen() || ancestorNode.toggleState();
+                                      } while ((ancestorNode = ancestorNode.getParent()));
                                   }
                               })
-                              .catch((e) => (console.log(e && e.stack, e), n.toggleLoading(false), s.setLoading(false), Promise.reject(e)))));
+                              .catch((error) => (console.log(error && error.stack, error), self.toggleLoading(false), folderView.setLoading(false), Promise.reject(error)))));
                 }
                 return (
-                    (l || c || this.filesPanel.drive.containsInPreviousPath(e)) &&
-                        (l && this.filesPanel.drive.resetPreviousSelectedFolderPath(),
-                        this.filesPanel.drive.removeLoadedFolderFromPreviousPath(e),
-                        u()),
-                    l && s.toggleState(),
-                    s
+                    (isRoot || parentIsRoot || this.filesPanel.drive.containsInPreviousPath(folder)) &&
+                        (isRoot && this.filesPanel.drive.resetPreviousSelectedFolderPath(),
+                        this.filesPanel.drive.removeLoadedFolderFromPreviousPath(folder),
+                        loadChildren()),
+                    isRoot && folderView.toggleState(),
+                    folderView
                         .getHTMLElement()
-                        .addClass(o ? "selected" : "")
-                        .addClass(i ? "cut" : ""),
-                    s
+                        .addClass(isSelected ? "selected" : "")
+                        .addClass(isInClipboard ? "cut" : ""),
+                    folderView
                 );
             }),
-            (b.prototype.navigateToFolder = async function (e) {
+            (FilesPanelViewBase.prototype.navigateToFolder = async function (folder) {
                 try {
-                    const f = this.filesPanel.drive;
-                    (this.toggleLoading(true), (e = "string" == typeof e ? await f.getFolder(e) : e));
-                    var t = async (e, t) => {
-                        this.filesPanel.navigateToFolder(e);
+                    const drive = this.filesPanel.drive;
+                    (this.toggleLoading(true), (folder = "string" == typeof folder ? await drive.getFolder(folder) : folder));
+                    var revealFolderNode = async (targetFolder, revealFolderNode) => {
+                        this.filesPanel.navigateToFolder(targetFolder);
                         for (
-                            var n = this._cloudFolders.find((t) => t.getFolder().id === e.id), o = 0;
-                            !(n || (await (0, GSaveAction.sleep)(100), (n = this._cloudFolders.find((t) => t.getFolder().id === e.id)), ++o > 30));
+                            var targetNode = this._cloudFolders.find((node) => node.getFolder().id === targetFolder.id), o = 0;
+                            !(targetNode || (await (0, Utils.sleep)(100), (targetNode = this._cloudFolders.find((node) => node.getFolder().id === targetFolder.id)), ++o > 30));
 
                         );
-                        if ((this.manageOpenFolder(null, e, n), n)) {
-                            var i = n.getHTMLContainer();
-                            (0 === i[0].offsetTop && t && (i = t.getHTMLContainer()),
+                        if ((this.manageOpenFolder(null, targetFolder, targetNode), targetNode)) {
+                            var container = targetNode.getHTMLContainer();
+                            (0 === container[0].offsetTop && revealFolderNode && (container = revealFolderNode.getHTMLContainer()),
                                 setTimeout(() => {
-                                    this.panel.find(".g-left-side").animate({ scrollTop: $(i).position().top }, 150);
+                                    this.panel.find(".g-left-side").animate({ scrollTop: $(container).position().top }, 150);
                                 }));
                         }
                     };
                     if (
-                        (e.family === designerConfig.EXTERNAL_APP.ONEDRIVEBUSINESS && (f.isRootFolder(e) || f.isRootFolder(e.parent))) ||
-                        f.isRootFolder(e.relativeUrl ? e.relativeUrl : e.parent)
+                        (folder.family === designerConfig.EXTERNAL_APP.ONEDRIVEBUSINESS && (drive.isRootFolder(folder) || drive.isRootFolder(folder.parent))) ||
+                        drive.isRootFolder(folder.relativeUrl ? folder.relativeUrl : folder.parent)
                     )
-                        t(e);
+                        revealFolderNode(folder);
                     else {
-                        for (var n, o = [e], i = e, a = false; !n; )
+                        for (var reachedRoot, path = [folder], currentFolder = folder, notFoundFlag = false; !reachedRoot; )
                             if (
-                                (i = await f
-                                    .getFolder(i.parent)
-                                    .catch((t) => (t.status === designerConfig.gApi.HTTP_STATUS_CODES.NOT_FOUND && i.id === e.id && (a = true), null)))
+                                (currentFolder = await drive
+                                    .getFolder(currentFolder.parent)
+                                    .catch((error) => (error.status === designerConfig.gApi.HTTP_STATUS_CODES.NOT_FOUND && currentFolder.id === folder.id && (notFoundFlag = true), null)))
                             ) {
-                                if ((o.push(i), o.length > configBase.MAX_FOLDER_DEPTH_FOR_CLOUD))
+                                if ((path.push(currentFolder), path.length > configBase.MAX_FOLDER_DEPTH_FOR_CLOUD))
                                     return Promise.reject(designerConfig.gApi.HTTP_STATUS_CODES.NOT_FOUND);
-                                f.isRootFolder(i.parent) && (n = true);
+                                drive.isRootFolder(currentFolder.parent) && (reachedRoot = true);
                             } else {
-                                if (a) return Promise.reject(designerConfig.gApi.HTTP_STATUS_CODES.NOT_FOUND);
-                                n = true;
+                                if (notFoundFlag) return Promise.reject(designerConfig.gApi.HTTP_STATUS_CODES.NOT_FOUND);
+                                reachedRoot = true;
                             }
-                        var r = o.reverse(),
-                            s = this._cloudFolders,
-                            l = null,
-                            c = null,
-                            u = null;
-                        for (l = c = r.shift(); l; ) {
-                            u = s.find((e) => e.getFolder().id === l.id);
-                            for (var g = 0; !(u || (await (0, GSaveAction.sleep)(100), (u = s.find((e) => e.getFolder().id === l.id)), ++g > 300)); );
-                            u
-                                ? (await u.refresh(), (s = u.getChildren()), u.toggleState(), (l = r.shift()) ? (c = l) : t(c, u))
-                                : (l = null);
+                        var orderedPath = path.reverse(),
+                            levelNodes = this._cloudFolders,
+                            currentPathFolder = null,
+                            previousPathFolder = null,
+                            matchedNode = null;
+                        for (currentPathFolder = previousPathFolder = orderedPath.shift(); currentPathFolder; ) {
+                            matchedNode = levelNodes.find((node) => node.getFolder().id === currentPathFolder.id);
+                            for (var g = 0; !(matchedNode || (await (0, Utils.sleep)(100), (matchedNode = levelNodes.find((node) => node.getFolder().id === currentPathFolder.id)), ++g > 300)); );
+                            matchedNode
+                                ? (await matchedNode.refresh(), (levelNodes = matchedNode.getChildren()), matchedNode.toggleState(), (currentPathFolder = orderedPath.shift()) ? (previousPathFolder = currentPathFolder) : revealFolderNode(previousPathFolder, matchedNode))
+                                : (currentPathFolder = null);
                         }
                     }
                     this.toggleLoading(false);
-                } catch (e) {
-                    return (this.toggleLoading(false), e);
+                } catch (error) {
+                    return (this.toggleLoading(false), error);
                 }
             }),
-            (b.prototype.relayout = function () {
+            (FilesPanelViewBase.prototype.relayout = function () {
                 this.initLayout(true);
             }),
-            (b.prototype.hasPermission = function (e) {
-                return this._permissions.includes(e);
+            (FilesPanelViewBase.prototype.hasPermission = function (permission) {
+                return this._permissions.includes(permission);
             }),
-            (b.prototype._handleDriveEvent = function (e) {
-                e.type === l.default.DriveEvent.Type.FileDeleted &&
-                    this._getFileInfoPanelFileId() === e.data.id &&
+            (FilesPanelViewBase.prototype._handleDriveEvent = function (event) {
+                event.type === GDrive.default.DriveEvent.Type.FileDeleted &&
+                    this._getFileInfoPanelFileId() === event.data.id &&
                     this._closeFileInfoPanel();
             }),
-            (b.prototype._getFileInfoPanelFileId = function () {
+            (FilesPanelViewBase.prototype._getFileInfoPanelFileId = function () {
                 return $(".g-file-detail-container").data("fileId");
             }),
-            (b.prototype._registerDriveEvent = function () {
-                gDesigner.addEventListener(l.default.DriveEvent, this._handleDriveEvent, this);
+            (FilesPanelViewBase.prototype._registerDriveEvent = function () {
+                gDesigner.addEventListener(GDrive.default.DriveEvent, this._handleDriveEvent, this);
             }),
-            (b.prototype.initLayout = function (e) {
+            (FilesPanelViewBase.prototype.initLayout = function (isRelayout) {
                 (window.addEventListener("keydown", this._bindedHandleShortcut, true), this._registerDriveEvent());
-                var t = this;
+                var self = this;
                 ("native" === this.filesPanel.getCloudSettingsById(this.filesPanel.getCurrentDriveId()).type &&
                     this.panel.addClass("native-cloud"),
-                    e && (this.panel.off("click", _), this.panel.empty()),
+                    isRelayout && (this.panel.off("click", clearSelectionClickHandler), this.panel.empty()),
                     this.createTopBar(this.filesPanel.getUser()),
                     this.panel.find(".g-files-top-buttons").toggleClass("g-cdgs", !this.filesPanel.getUISettings().dialogControls),
                     this.panel.find(".g-files-top-account").toggleClass("g-cdgs", !this.filesPanel.getUISettings().dialogControls));
-                var n = $("<div />").addClass("g-items-container");
-                this.addSearchBar(n);
-                var o = $("<div />").addClass("g-main").appendTo(n);
-                const a = (0, GSaveAction.throttle)(this._loadFoldersOnDemand.bind(this), 100);
-                let r = 0;
-                var s = $("<div />")
+                var itemsContainer = $("<div />").addClass("g-items-container");
+                this.addSearchBar(itemsContainer);
+                var mainContainer = $("<div />").addClass("g-main").appendTo(itemsContainer);
+                const loadMoreOnScroll = (0, Utils.throttle)(this._loadFoldersOnDemand.bind(this), 100);
+                let lastScrollTop = 0;
+                var leftSide = $("<div />")
                     .addClass("g-left-side")
-                    .scroll((e) => {
-                        if (t.filesPanel.drive.isLoadFoldersOnDemandSupported()) {
-                            const t = $(e.target).scrollTop();
-                            (t > r && a(), (r = t));
+                    .scroll((event) => {
+                        if (self.filesPanel.drive.isLoadFoldersOnDemandSupported()) {
+                            const scrollTop = $(event.target).scrollTop();
+                            (scrollTop > lastScrollTop && loadMoreOnScroll(), (lastScrollTop = scrollTop));
                         }
                     })
-                    .appendTo(o);
+                    .appendTo(mainContainer);
                 ((this._rightSide = $("<div />")
                     .addClass("g-right-side")
-                    .on("contextmenu", (e) => {
-                        (t.resetSelection(), t._openContextMenuForEventPosition(e));
+                    .on("contextmenu", (event) => {
+                        (self.resetSelection(), self._openContextMenuForEventPosition(event));
                     })
-                    .appendTo(o)),
-                    (this._fileInfoPanel = b._createFileInfoPanel()),
-                    this._fileInfoPanel.appendTo(o));
-                var l = $("<div />").addClass("g-folders-list").addClass("main"),
-                    c = $("<div />").addClass("g-folders-list").addClass("fixed-bottom").addClass("custom-folders"),
-                    u = $("<div/>").addClass("g-files-list"),
-                    p = $("<div/>").addClass("g-empty-panel").hide();
-                const g = $("<div/>").addClass("g-example-files-list").hide(),
-                    h = $("<div/>").addClass("g-recent-files-list");
-                ((_ = function (e) {
-                    (e.stopPropagation(),
-                        t.filesPanel.getSelection().length &&
-                            (t.resetSelection(), t._updateFileInfoPanel(null), gDesigner.stats("filespanel-view_clear_selection")));
+                    .appendTo(mainContainer)),
+                    (this._fileInfoPanel = FilesPanelViewBase._createFileInfoPanel()),
+                    this._fileInfoPanel.appendTo(mainContainer));
+                var mainFoldersList = $("<div />").addClass("g-folders-list").addClass("main"),
+                    customFoldersList = $("<div />").addClass("g-folders-list").addClass("fixed-bottom").addClass("custom-folders"),
+                    filesList = $("<div/>").addClass("g-files-list"),
+                    emptyPanel = $("<div/>").addClass("g-empty-panel").hide();
+                const exampleFilesList = $("<div/>").addClass("g-example-files-list").hide(),
+                    recentFilesList = $("<div/>").addClass("g-recent-files-list");
+                ((clearSelectionClickHandler = function (event) {
+                    (event.stopPropagation(),
+                        self.filesPanel.getSelection().length &&
+                            (self.resetSelection(), self._updateFileInfoPanel(null), gDesigner.stats("filespanel-view_clear_selection")));
                 }),
-                    this.panel.on("click", _));
-                const f = (0, GSaveAction.debounce)(() => this.filesPanel.buildDepth(false, false), 100);
+                    this.panel.on("click", clearSelectionClickHandler));
+                const loadMoreFiles = (0, Utils.debounce)(() => this.filesPanel.buildDepth(false, false), 100);
                 ($(this._rightSide).scroll(
-                    function (e) {
-                        var t = $(e.currentTarget);
-                        Math.floor(t[0].scrollHeight - t.scrollTop()) === Math.floor(t.outerHeight()) && $(u).children().length > 0 && f();
+                    function (event) {
+                        var scrollTarget = $(event.currentTarget);
+                        Math.floor(scrollTarget[0].scrollHeight - scrollTarget.scrollTop()) === Math.floor(scrollTarget.outerHeight()) && $(filesList).children().length > 0 && loadMoreFiles();
                     }.bind(this)
                 ),
                     this.createHeader(this.panel),
-                    n.appendTo(this.panel),
-                    l.appendTo(s),
-                    c.appendTo(s),
+                    itemsContainer.appendTo(this.panel),
+                    mainFoldersList.appendTo(leftSide),
+                    customFoldersList.appendTo(leftSide),
                     $("<div />")
                         .addClass("g-files-top-line g-recent-files")
                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.title-recent-files")))
                         .appendTo(this._rightSide),
-                    p.appendTo(this._rightSide),
-                    g.appendTo(this._rightSide),
-                    h.appendTo(this._rightSide));
-                const m = $("<div />")
+                    emptyPanel.appendTo(this._rightSide),
+                    exampleFilesList.appendTo(this._rightSide),
+                    recentFilesList.appendTo(this._rightSide));
+                const allFilesSeparator = $("<div />")
                     .addClass("g-files-top-line g-all-files")
                     .addClass("g-recent-files-separator")
                     .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.title-all-files")))
                     .hide()
                     .appendTo(this._rightSide);
-                (this.hasPermission(b.Permission.RecentFilesShowMore) &&
-                    m.append(
+                (this.hasPermission(FilesPanelViewBase.Permission.RecentFilesShowMore) &&
+                    allFilesSeparator.append(
                         $("<div />")
                             .addClass("g-recent-files-show-more")
                             .text(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.show-more")))
                             .on("click", function () {
-                                (h.addClass("extended-list"), $(this).hide(), t.updateLayout());
+                                (recentFilesList.addClass("extended-list"), $(this).hide(), self.updateLayout());
                             })
-                            .on("mouseover", function (e) {
-                                (e.stopPropagation(), e.preventDefault());
+                            .on("mouseover", function (event) {
+                                (event.stopPropagation(), event.preventDefault());
                             })
                     ),
-                    u.appendTo(this._rightSide),
+                    filesList.appendTo(this._rightSide),
                     this.createFooter(this.filesPanel.getDefaultFilename()),
                     this._permissionChanged());
             }),
-            (b.prototype.updateLayout = function () {
-                const e = this.panel.find(".g-files-list");
-                if (e.hasClass("list-view")) {
-                    const t = (e, t) => {
+            (FilesPanelViewBase.prototype.updateLayout = function () {
+                const filesListElement = this.panel.find(".g-files-list");
+                if (filesListElement.hasClass("list-view")) {
+                    const t = (listElement, t) => {
                         let n, o, i;
-                        (({ columnsAmount: o, total: n, totalRows: i } = this._getGridData(e)), t && e.css("max-height", ""));
-                        const a = e.hasClass("extended-list");
-                        if (!n) return void e.addClass("single-row");
+                        (({ columnsAmount: o, total: n, totalRows: i } = this._getGridData(listElement)), t && listElement.css("max-height", ""));
+                        const isExtended = listElement.hasClass("extended-list");
+                        if (!n) return void listElement.addClass("single-row");
                         if (!o || isNaN(o)) return;
-                        const r = a ? 6 : 2;
-                        (t && !a && i > 2
+                        const maxRows = isExtended ? 6 : 2;
+                        (t && !isExtended && i > 2
                             ? this.panel.find(".g-recent-files-show-more").show()
                             : this.panel.find(".g-recent-files-show-more").hide(),
-                            t && i > r && (i = r),
-                            1 === i ? e.addClass("single-row") : e.removeClass("single-row"),
-                            e.find(".g-gravit-file").each(function (e) {
+                            t && i > maxRows && (i = maxRows),
+                            1 === i ? listElement.addClass("single-row") : listElement.removeClass("single-row"),
+                            listElement.find(".g-gravit-file").each(function (index) {
                                 1 !== i &&
                                     $(this).toggleClass(
                                         "last-row-file",
-                                        (function (e) {
-                                            return e >= (i - 1) * o;
-                                        })(e)
+                                        (function (index) {
+                                            return index >= (i - 1) * o;
+                                        })(index)
                                     );
                             }));
                     };
-                    (t(e), t(this.panel.find(".g-recent-files-list"), true));
+                    (t(filesListElement), t(this.panel.find(".g-recent-files-list"), true));
                 } else {
-                    const e = this.panel.find(".g-recent-files-list"),
-                        t = e.hasClass("extended-list"),
-                        { totalRows, firstHeight } = this._getGridData(e);
-                    if (totalRows > 1 && !t) {
-                        const t = firstHeight + 10;
-                        e.css("max-height", t + "px");
-                    } else e.css("max-height", "1000px");
+                    const recentFilesListElement = this.panel.find(".g-recent-files-list"),
+                        isExtended = recentFilesListElement.hasClass("extended-list"),
+                        { totalRows, firstHeight } = this._getGridData(recentFilesListElement);
+                    if (totalRows > 1 && !isExtended) {
+                        const maxHeight = firstHeight + 10;
+                        recentFilesListElement.css("max-height", maxHeight + "px");
+                    } else recentFilesListElement.css("max-height", "1000px");
                 }
                 this._updateContextMenu();
             }),
-            (b.prototype._updateContextMenu = function () {
+            (FilesPanelViewBase.prototype._updateContextMenu = function () {
                 this._setContextMenuActiveRangeSize();
             }),
-            (b.prototype._getGridData = function (e) {
-                const t = e.find(".g-gravit-file"),
-                    n = t.length,
-                    o = t.eq(0).width(),
-                    i = t.eq(0).height();
-                let a = 1;
-                o && !isNaN(o) && (a = Math.floor(e.width() / o));
+            (FilesPanelViewBase.prototype._getGridData = function (container) {
+                const items = container.find(".g-gravit-file"),
+                    total = items.length,
+                    itemWidth = items.eq(0).width(),
+                    itemHeight = items.eq(0).height();
+                let columnsAmount = 1;
+                itemWidth && !isNaN(itemWidth) && (columnsAmount = Math.floor(container.width() / itemWidth));
                 return {
-                    total: n,
-                    totalRows: n % a > 0 ? Math.floor(n / a) + 1 : Math.floor(n / a),
-                    columnsAmount: a,
-                    firstHeight: i,
+                    total: total,
+                    totalRows: total % columnsAmount > 0 ? Math.floor(total / columnsAmount) + 1 : Math.floor(total / columnsAmount),
+                    columnsAmount: columnsAmount,
+                    firstHeight: itemHeight,
                 };
             }),
-            (b.prototype.toggleLoading = function (e) {
-                e
+            (FilesPanelViewBase.prototype.toggleLoading = function (isLoading) {
+                isLoading
                     ? this.panel.closest(".g-dialog-content").find(".cloud-frame").addClass("loading")
                     : this.panel.closest(".g-dialog-content").find(".cloud-frame").removeClass("loading");
             }),
-            (b.prototype.toggleRecentFiles = function (e) {
-                const t = this.panel.find(".g-right-side");
-                t.toggleClass("g-show-recent-files", !!e);
-                const n = !t.find(".g-files-list").is(":empty") && !!e;
-                t.find(".g-all-files").toggle(n);
-                const o = !t.find(".g-recent-files-list").is(":empty") && !!e;
-                (t.find(".g-recent-files").toggle(o), this.panel.find(".g-recent-files-separator").toggle(o));
+            (FilesPanelViewBase.prototype.toggleRecentFiles = function (show) {
+                const rightSide = this.panel.find(".g-right-side");
+                rightSide.toggleClass("g-show-recent-files", !!show);
+                const showAllFiles = !rightSide.find(".g-files-list").is(":empty") && !!show;
+                rightSide.find(".g-all-files").toggle(showAllFiles);
+                const showRecentFiles = !rightSide.find(".g-recent-files-list").is(":empty") && !!show;
+                (rightSide.find(".g-recent-files").toggle(showRecentFiles), this.panel.find(".g-recent-files-separator").toggle(showRecentFiles));
             }),
-            (b.prototype.toggleFolders = function (e) {
-                this.panel.toggleClass("full-width", !!e);
-                (this.panel.find(".g-left-side").toggleClass("g-no-display", !e),
-                    this.panel.closest(".cloud-dialog").toggleClass("no-folders", !e));
+            (FilesPanelViewBase.prototype.toggleFolders = function (show) {
+                this.panel.toggleClass("full-width", !!show);
+                (this.panel.find(".g-left-side").toggleClass("g-no-display", !show),
+                    this.panel.closest(".cloud-dialog").toggleClass("no-folders", !show));
             }),
-            (b.prototype.createTopBar = function (e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] && arguments[1],
-                    n = arguments.length > 2 && void 0 !== arguments[2] && arguments[2];
-                e = new u.default(e);
-                var o = this.filesPanel.getCloudSettings(),
-                    a = this.filesPanel.getCloudSettingsById(this.filesPanel.getCurrentDriveId()),
-                    r = this,
-                    s = $("<div />")
+            (FilesPanelViewBase.prototype.createTopBar = function (user) {
+                let isUpdate = arguments.length > 1 && void 0 !== arguments[1] && arguments[1],
+                    isDefaultVariant = arguments.length > 2 && void 0 !== arguments[2] && arguments[2];
+                user = new GUser.default(user);
+                var cloudSettings = this.filesPanel.getCloudSettings(),
+                    currentCloudSettings = this.filesPanel.getCloudSettingsById(this.filesPanel.getCurrentDriveId()),
+                    self = this,
+                    topBar = $("<div />")
                         .addClass("g-files-top-bar")
-                        .addClass(n ? "default" : "")
+                        .addClass(isDefaultVariant ? "default" : "")
                         .append(
                             $("<div />")
                                 .addClass("g-files-top-buttons")
@@ -382,8 +382,8 @@ module.exports = function (module, exports, require) {
                                         .addClass("cloud-button")
                                         .addClass("maximize-button")
                                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "action.maximize-window")))
-                                        .on("click", (e) => {
-                                            (e.stopPropagation(), this.filesPanel.handleMaximizePanel());
+                                        .on("click", (event) => {
+                                            (event.stopPropagation(), this.filesPanel.handleMaximizePanel());
                                         })
                                         .append($("<span/>").addClass("icon").addClass("gravit-icon-maximize-dialog"))
                                 )
@@ -394,8 +394,8 @@ module.exports = function (module, exports, require) {
                                         .addClass("minimize-button")
                                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "action.minimize-window")))
                                         .css("display", "none")
-                                        .on("click", (e) => {
-                                            (e.stopPropagation(), this.filesPanel.handleMinimizePanel());
+                                        .on("click", (event) => {
+                                            (event.stopPropagation(), this.filesPanel.handleMinimizePanel());
                                         })
                                         .append($("<span/>").addClass("icon").addClass("gravit-icon-minimize-dialog"))
                                 )
@@ -405,8 +405,8 @@ module.exports = function (module, exports, require) {
                                         .addClass("cloud-button")
                                         .addClass("close-button")
                                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "action.close-window")))
-                                        .on("click", (e) => {
-                                            (e.stopPropagation(), this.filesPanel.handleClosePanel());
+                                        .on("click", (event) => {
+                                            (event.stopPropagation(), this.filesPanel.handleClosePanel());
                                         })
                                         .append($("<span/>").addClass("icon").addClass("gravit-icon-close"))
                                 )
@@ -414,36 +414,36 @@ module.exports = function (module, exports, require) {
                         .append(
                             $("<div />")
                                 .addClass("g-files-top-account")
-                                .append($("<div />").addClass("g-files-top-account-name").html(e.getUserReference()))
-                                .append(new m(e).build().addClass("g-files-top-avatar"))
+                                .append($("<div />").addClass("g-files-top-account-name").html(user.getUserReference()))
+                                .append(new GUserPreview(user).build().addClass("g-files-top-avatar"))
                         );
-                if ((t ? this.panel.find(".g-files-top-bar").replaceWith(s) : s.appendTo(this.panel), n))
-                    return void this._createRefreshButton(s, n);
-                var l = $("<div />")
+                if ((isUpdate ? this.panel.find(".g-files-top-bar").replaceWith(topBar) : topBar.appendTo(this.panel), isDefaultVariant))
+                    return void this._createRefreshButton(topBar, isDefaultVariant);
+                var cloudMenu = $("<div />")
                     .addClass("g-files-top-cloud-menu")
                     .append($("<div />").addClass("g-files-top-cloud-menu-icon"))
                     .on("click", function () {
-                        (r._cloudPane(this), gDesigner.stats("filespanel-view_open_cloud-pane"));
+                        (self._cloudPane(this), gDesigner.stats("filespanel-view_open_cloud-pane"));
                     })
-                    .appendTo(s);
-                switch (a.type) {
+                    .appendTo(topBar);
+                switch (currentCloudSettings.type) {
                     case "sharepoint":
                     case "sharepoint-native":
-                        l.addClass("sharepoint").append($("<div />").addClass("g-files-top-cloud-menu-name").text(a.name));
+                        cloudMenu.addClass("sharepoint").append($("<div />").addClass("g-files-top-cloud-menu-name").text(currentCloudSettings.name));
                         break;
                     case "onedrivebusiness":
                     case "onedrivebusiness-native":
-                        l.addClass("onedrivebusiness").append($("<div />").addClass("g-files-top-cloud-menu-name").text(a.name));
+                        cloudMenu.addClass("onedrivebusiness").append($("<div />").addClass("g-files-top-cloud-menu-name").text(currentCloudSettings.name));
                         break;
                     case "googledrive-native":
                     case "googledrive":
-                        l.addClass(a.className).append($("<div />").addClass("g-files-top-cloud-menu-name").text(a.name));
+                        cloudMenu.addClass(currentCloudSettings.className).append($("<div />").addClass("g-files-top-cloud-menu-name").text(currentCloudSettings.name));
                         break;
                     default:
-                        l.addClass("gravit-cloud");
+                        cloudMenu.addClass("gravit-cloud");
                 }
-                (o && 0 !== o.length) ||
-                    s.append(
+                (cloudSettings && 0 !== cloudSettings.length) ||
+                    topBar.append(
                         $("<div />")
                             .addClass("g-files-top-add-cloud-account-button")
                             .append(
@@ -463,11 +463,11 @@ module.exports = function (module, exports, require) {
                                 }.bind(this)
                             )
                     );
-                const d = this.filesPanel.drive.getActions();
-                (d &&
-                    d.length &&
-                    d.forEach((e) => {
-                        let { title, icon, execute } = e;
+                const driveActions = this.filesPanel.drive.getActions();
+                (driveActions &&
+                    driveActions.length &&
+                    driveActions.forEach((action) => {
+                        let { title, icon, execute } = action;
                         return $("<div/>")
                             .addClass("g-files-top-cloud-refresh-content")
                             .append(
@@ -476,23 +476,23 @@ module.exports = function (module, exports, require) {
                                     .append(icon ? $("<div/>").addClass("icon").addClass(icon) : "")
                                     .append($("<div/>").addClass("text").text(title))
                             )
-                            .appendTo(s)
+                            .appendTo(topBar)
                             .click(() => {
                                 (gDesigner.stats("filespanel-view_execute_action", title),
-                                    execute(this.filesPanel.getContextSource()).catch((e) => {
-                                        "string" == typeof e ? c.default.alert(e) : console.error(e);
+                                    execute(this.filesPanel.getContextSource()).catch((error) => {
+                                        "string" == typeof error ? GSystemDialog.default.alert(error) : console.error(error);
                                     }));
                             });
                     }),
-                    this._createRefreshButton(s, n));
+                    this._createRefreshButton(topBar, isDefaultVariant));
             }),
-            (b.prototype.updateTopBar = function () {
+            (FilesPanelViewBase.prototype.updateTopBar = function () {
                 this.createTopBar(this.filesPanel.getUser(), true);
             }),
-            (b.prototype._createRefreshButton = function (e, t) {
+            (FilesPanelViewBase.prototype._createRefreshButton = function (container, isDefaultVariant) {
                 $("<div/>")
                     .addClass("g-files-top-cloud-refresh-content")
-                    .addClass(t ? "default" : "")
+                    .addClass(isDefaultVariant ? "default" : "")
                     .append(
                         $("<div/>")
                             .addClass("container")
@@ -503,93 +503,93 @@ module.exports = function (module, exports, require) {
                                     .text(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.refresh-drive-content")))
                             )
                     )
-                    .appendTo(e)
+                    .appendTo(container)
                     .click(() => {
                         (gDesigner.stats("filespanel-view_refresh_file-list"), this.filesPanel.updateFilesList());
                     });
             }),
-            (b.prototype._cloudPane = async function (e) {
+            (FilesPanelViewBase.prototype._cloudPane = async function (anchorElement) {
                 try {
-                    var t = this.filesPanel.getCloudSettings(),
-                        n = $("<div/>")
+                    var cloudSettings = this.filesPanel.getCloudSettings(),
+                        pane = $("<div/>")
                             .addClass("cloud-pane")
                             .on("click", () => {
-                                (gDesigner.stats("filespanel-view_close_cloud-pane"), n.gOverlay("close"));
+                                (gDesigner.stats("filespanel-view_close_cloud-pane"), pane.gOverlay("close"));
                             }),
-                        o = this.filesPanel.getCloudSettingsById(this.filesPanel.getCurrentDriveId()),
-                        a = $("<div />")
+                        currentCloudSettings = this.filesPanel.getCloudSettingsById(this.filesPanel.getCurrentDriveId()),
+                        head = $("<div />")
                             .addClass("head")
                             .append($("<div />").addClass("cloud-pane-head-icon"))
                             .on("click", () => {
-                                (gDesigner.stats("filespanel-view_close_cloud-pane"), n.gOverlay("close"));
+                                (gDesigner.stats("filespanel-view_close_cloud-pane"), pane.gOverlay("close"));
                             })
-                            .appendTo(n);
-                    switch (o.type) {
+                            .appendTo(pane);
+                    switch (currentCloudSettings.type) {
                         case "sharepoint":
                         case "sharepoint-native":
-                            a.addClass("sharepoint").append($("<div />").addClass("cloud-pane-head-name").text(o.name));
+                            head.addClass("sharepoint").append($("<div />").addClass("cloud-pane-head-name").text(currentCloudSettings.name));
                             break;
                         case "googledrive":
                         case "googledrive-native":
-                            a.addClass("google-drive").append($("<div />").addClass("cloud-pane-head-name").text(o.name));
+                            head.addClass("google-drive").append($("<div />").addClass("cloud-pane-head-name").text(currentCloudSettings.name));
                             break;
                         default:
-                            a.addClass("native");
+                            head.addClass("native");
                     }
-                    if (t && t.length) {
-                        for (var r = $("<div />").addClass("items-container"), s = 0, l = t.length; s < l; s++)
+                    if (cloudSettings && cloudSettings.length) {
+                        for (var itemsContainer = $("<div />").addClass("items-container"), s = 0, count = cloudSettings.length; s < count; s++)
                             try {
-                                var d,
-                                    u = t[s],
+                                var supportsCorporate,
+                                    u = cloudSettings[s],
                                     p = false,
                                     h = [];
-                                if (u.id === o.id && (d = this.filesPanel.drive.supportsCorporateStorage())) {
+                                if (u.id === currentCloudSettings.id && (supportsCorporate = this.filesPanel.drive.supportsCorporateStorage())) {
                                     try {
                                         h = await this.filesPanel.drive.getCorporateStorages();
-                                    } catch (e) {
-                                        console.error(e);
+                                    } catch (error) {
+                                        console.error(error);
                                     }
                                     p = h.length > 0;
                                 }
-                                ((e) => {
-                                    const t = $("<div />")
+                                ((cloudSetting) => {
+                                    const itemElement = $("<div />")
                                         .addClass("item")
-                                        .addClass(e.id === this.filesPanel.getCurrentDriveId() ? "selected" : "")
-                                        .addClass("cloud-".concat(e.type))
+                                        .addClass(cloudSetting.id === this.filesPanel.getCurrentDriveId() ? "selected" : "")
+                                        .addClass("cloud-".concat(cloudSetting.type))
                                         .append(
                                             $("<div />")
                                                 .addClass("icon-container")
                                                 .append(
                                                     $("<span />")
                                                         .addClass("icon")
-                                                        .addClass((e.className && "".concat(e.className, "-icon")) || "")
+                                                        .addClass((cloudSetting.className && "".concat(cloudSetting.className, "-icon")) || "")
                                                 )
                                         )
-                                        .append($("<div />").addClass("name").text(e.name))
+                                        .append($("<div />").addClass("name").text(cloudSetting.name))
                                         .on(
                                             "click",
                                             async function () {
-                                                if (e.id !== this.filesPanel.getCurrentDriveId()) {
-                                                    (gDesigner.stats("filespanel-view_open_cloud-drive", e.name), this.toggleLoading(true));
+                                                if (cloudSetting.id !== this.filesPanel.getCurrentDriveId()) {
+                                                    (gDesigner.stats("filespanel-view_open_cloud-drive", cloudSetting.name), this.toggleLoading(true));
                                                     try {
-                                                        await this.filesPanel.setCloudDrive(e);
-                                                    } catch (e) {
-                                                        var t;
-                                                        (e && e instanceof g.default && (t = e),
-                                                            c.default.alert(
-                                                                t || GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed"))
+                                                        await this.filesPanel.setCloudDrive(cloudSetting);
+                                                    } catch (error) {
+                                                        var knownError;
+                                                        (error && error instanceof AppError.default && (knownError = error),
+                                                            GSystemDialog.default.alert(
+                                                                knownError || GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed"))
                                                             ),
-                                                            console.error(">>>failed to set cloud drive", e));
+                                                            console.error(">>>failed to set cloud drive", error));
                                                     }
                                                 }
-                                                n.gOverlay("close");
+                                                pane.gOverlay("close");
                                             }.bind(this)
                                         )
-                                        .appendTo(r);
+                                        .appendTo(itemsContainer);
                                     if (
-                                        (d && p && t.append($("<div />").addClass("corporate-storage-list").addClass("arrow-open-right")),
-                                        e.deletable &&
-                                            t.append(
+                                        (supportsCorporate && p && itemElement.append($("<div />").addClass("corporate-storage-list").addClass("arrow-open-right")),
+                                        cloudSetting.deletable &&
+                                            itemElement.append(
                                                 $("<div />")
                                                     .addClass("account-settings-container")
                                                     .append(
@@ -598,51 +598,51 @@ module.exports = function (module, exports, require) {
                                                             .addClass("icon")
                                                             .addClass("gravit-icon-context-icon")
                                                     )
-                                                    .on("click", (t) => {
-                                                        (t.preventDefault(),
-                                                            t.stopPropagation(),
-                                                            this._editCloudPane(e),
+                                                    .on("click", (event) => {
+                                                        (event.preventDefault(),
+                                                            event.stopPropagation(),
+                                                            this._editCloudPane(cloudSetting),
                                                             gDesigner.stats("filespanel-view_open_edit-cloud-account-dialog"),
                                                             this._closeCorporateSubMenu(),
-                                                            n.gOverlay("close"));
+                                                            pane.gOverlay("close"));
                                                     })
                                             ),
-                                        d && p)
+                                        supportsCorporate && p)
                                     ) {
-                                        var o = this.filesPanel.drive.getCorporateStorage(),
-                                            a = [
+                                        var corporateStorage = this.filesPanel.drive.getCorporateStorage(),
+                                            storageOptions = [
                                                 {
                                                     default: true,
                                                     name: GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.my-drive")),
-                                                    active: !o,
+                                                    active: !corporateStorage,
                                                     data: null,
                                                 },
                                             ];
-                                        ((a = a.concat(
-                                            h.map((e) => ({
-                                                active: o && e.id === o.id,
+                                        ((storageOptions = storageOptions.concat(
+                                            h.map((storage) => ({
+                                                active: corporateStorage && storage.id === corporateStorage.id,
                                                 default: false,
-                                                name: e.name,
-                                                data: e,
+                                                name: storage.name,
+                                                data: storage,
                                             }))
                                         )),
-                                            this._corporateStoragesPane(t, a, async (e) => {
-                                                (await this.filesPanel.drive.setCorporateStorage(e.data),
+                                            this._corporateStoragesPane(itemElement, storageOptions, async (selectedStorage) => {
+                                                (await this.filesPanel.drive.setCorporateStorage(selectedStorage.data),
                                                     this.filesPanel.drive.setCurrentFolder(null),
                                                     this.filesPanel.updateFilesList(),
-                                                    n.gOverlay("close"));
+                                                    pane.gOverlay("close"));
                                             }));
                                     } else
-                                        t.hover(() => {
+                                        itemElement.hover(() => {
                                             this._closeCorporateSubMenu();
                                         });
                                 })(u);
-                            } catch (e) {
-                                console.error(e);
+                            } catch (error) {
+                                console.error(error);
                             }
-                        r.appendTo(n);
+                        itemsContainer.appendTo(pane);
                     }
-                    (t.some((e) => ["googledrive"].includes(e.type)) ||
+                    (cloudSettings.some((cloudSetting) => ["googledrive"].includes(cloudSetting.type)) ||
                         $("<div/>")
                             .addClass("new-item")
                             .append(
@@ -662,11 +662,11 @@ module.exports = function (module, exports, require) {
                             .on(
                                 "click",
                                 function () {
-                                    (this._newCloudAccountDialog(), n.gOverlay("close"));
+                                    (this._newCloudAccountDialog(), pane.gOverlay("close"));
                                 }.bind(this)
                             )
-                            .appendTo(n),
-                        n
+                            .appendTo(pane),
+                        pane
                             .gOverlay({
                                 padding: false,
                                 releaseOnClose: true,
@@ -677,25 +677,25 @@ module.exports = function (module, exports, require) {
                                     this._closeCorporateSubMenu();
                                 },
                             })
-                            .gOverlay("open", e, this.panel));
+                            .gOverlay("open", anchorElement, this.panel));
                 } catch (e) {
-                    c.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed")));
+                    GSystemDialog.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed")));
                 }
             }),
-            (b.prototype._editCloudPane = function (e) {
-                const t = this;
-                if (e) {
-                    var n = $("<div />")
+            (FilesPanelViewBase.prototype._editCloudPane = function (cloudSetting) {
+                const self = this;
+                if (cloudSetting) {
+                    var dialogContent = $("<div />")
                         .addClass("edit-account-dialog-content")
-                        .on("keypress", function (e) {
-                            13 === e.keyCode && $(this).closest(".edit-account-dialog").find(".vendor-form-save").click();
+                        .on("keypress", function (event) {
+                            13 === event.keyCode && $(this).closest(".edit-account-dialog").find(".vendor-form-save").click();
                         })
                         .append(
                             $("<div />")
                                 .addClass("g-btn-close")
                                 .append($("<span />").addClass("gravit-icon-close"))
                                 .on("click", () => {
-                                    (gDesigner.stats("filespanel-view_close_edit-cloud-account-dialog", e.name), n.gDialog("close"));
+                                    (gDesigner.stats("filespanel-view_close_edit-cloud-account-dialog", cloudSetting.name), dialogContent.gDialog("close"));
                                 })
                         )
                         .append(
@@ -715,7 +715,7 @@ module.exports = function (module, exports, require) {
                                         .attr("type", "text")
                                         .attr("tabindex", 1)
                                         .attr("name", "name")
-                                        .val(e.name)
+                                        .val(cloudSetting.name)
                                         .attr("id", "cloud-account-name")
                                 )
                         )
@@ -727,20 +727,20 @@ module.exports = function (module, exports, require) {
                                     .addClass("cloud-button")
                                     .addClass("edit-account-disconnect-button")
                                     .attr("tabindex", 4)
-                                    .on("click", (o) => {
-                                        (o.preventDefault(),
-                                            o.stopPropagation(),
-                                            gDesigner.stats("filespanel-view_disconnect_cloud-account", e.name),
-                                            t.filesPanel.deleteCloudDrive(e).then(async () => {
+                                    .on("click", (event) => {
+                                        (event.preventDefault(),
+                                            event.stopPropagation(),
+                                            gDesigner.stats("filespanel-view_disconnect_cloud-account", cloudSetting.name),
+                                            self.filesPanel.deleteCloudDrive(cloudSetting).then(async () => {
                                                 try {
-                                                    t.filesPanel.getCurrentDriveId() === e.id &&
-                                                        (t.toggleLoading(true),
-                                                        t.filesPanel.drive instanceof l.default && (await t.filesPanel.drive.uninstall()),
-                                                        t.filesPanel.setCloudDrive(t.filesPanel.getCloudSettingsById(1)));
-                                                } catch (e) {
-                                                    console.error(">>>e", e);
+                                                    self.filesPanel.getCurrentDriveId() === cloudSetting.id &&
+                                                        (self.toggleLoading(true),
+                                                        self.filesPanel.drive instanceof GDrive.default && (await self.filesPanel.drive.uninstall()),
+                                                        self.filesPanel.setCloudDrive(self.filesPanel.getCloudSettingsById(1)));
+                                                } catch (error) {
+                                                    console.error(">>>e", error);
                                                 }
-                                                n.gDialog("close");
+                                                dialogContent.gDialog("close");
                                             }));
                                     })
                                     .text(
@@ -750,11 +750,11 @@ module.exports = function (module, exports, require) {
                                     .addClass("vendor-form-cancel")
                                     .addClass("cloud-button")
                                     .attr("tabindex", 3)
-                                    .on("click", function (t) {
-                                        (t.preventDefault(),
-                                            t.stopPropagation(),
-                                            gDesigner.stats("filespanel-view_close_edit-cloud-account-dialog", e.name),
-                                            n.gDialog("close"));
+                                    .on("click", function (event) {
+                                        (event.preventDefault(),
+                                            event.stopPropagation(),
+                                            gDesigner.stats("filespanel-view_close_edit-cloud-account-dialog", cloudSetting.name),
+                                            dialogContent.gDialog("close"));
                                     })
                                     .text(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.button-add-cloud-drive-cancel"))),
                                 $("<button />")
@@ -762,36 +762,36 @@ module.exports = function (module, exports, require) {
                                     .addClass("cloud-button")
                                     .addClass("primary")
                                     .attr("tabindex", 2)
-                                    .on("click", async function (o) {
-                                        (o.preventDefault(), o.stopPropagation());
-                                        var i = n.find("#cloud-account-name").val();
-                                        let a = [];
-                                        (i || a.push("cloud-account-name"),
-                                            a.length
-                                                ? a.forEach((e) => {
-                                                      n.find("#".concat(e)).addClass("error");
+                                    .on("click", async function (event) {
+                                        (event.preventDefault(), event.stopPropagation());
+                                        var nameValue = dialogContent.find("#cloud-account-name").val();
+                                        let errorFields = [];
+                                        (nameValue || errorFields.push("cloud-account-name"),
+                                            errorFields.length
+                                                ? errorFields.forEach((fieldId) => {
+                                                      dialogContent.find("#".concat(fieldId)).addClass("error");
                                                   })
-                                                : (gDesigner.stats("filespanel-view_save_edit-cloud-account-dialog", e.name),
-                                                  await t.filesPanel.updateCloudAccountName(e.id, i),
-                                                  n.gDialog("close")));
+                                                : (gDesigner.stats("filespanel-view_save_edit-cloud-account-dialog", cloudSetting.name),
+                                                  await self.filesPanel.updateCloudAccountName(cloudSetting.id, nameValue),
+                                                  dialogContent.gDialog("close")));
                                     })
                                     .text(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.button-add-cloud-drive-save"))),
                             ],
                         });
-                    (n.gDialog("open", true), n.find("#cloud-account-name").focus());
+                    (dialogContent.gDialog("open", true), dialogContent.find("#cloud-account-name").focus());
                 } else console.error("vendor object is missing");
             }),
-            (b.prototype._newCloudAccountDialog = async function () {
-                var e = this,
-                    t = await this.filesPanel.getCreateCloudAccountOptions();
-                if ((gDesigner.stats("filespanel-view_open_add-cloud-drive-account-dialog"), !(t.length < 1))) {
-                    var n = $("<div />")
+            (FilesPanelViewBase.prototype._newCloudAccountDialog = async function () {
+                var self = this,
+                    cloudAccountOptions = await this.filesPanel.getCreateCloudAccountOptions();
+                if ((gDesigner.stats("filespanel-view_open_add-cloud-drive-account-dialog"), !(cloudAccountOptions.length < 1))) {
+                    var dialog = $("<div />")
                             .append(
                                 $("<div></div>")
                                     .addClass("g-btn-close")
                                     .append($("<span></span>").addClass("gravit-icon-close"))
                                     .on("click", () => {
-                                        (gDesigner.stats("filespanel-view_close_new-cloud-account-dialog"), n.gDialog("close"));
+                                        (gDesigner.stats("filespanel-view_close_new-cloud-account-dialog"), dialog.gDialog("close"));
                                     })
                             )
                             .append(
@@ -799,23 +799,23 @@ module.exports = function (module, exports, require) {
                                     .addClass("title")
                                     .text(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.add-new-cloud-drive")))
                             ),
-                        o = $("<div />").addClass("vendor-options");
-                    n.gDialog({
+                        vendorOptions = $("<div />").addClass("vendor-options");
+                    dialog.gDialog({
                         releaseOnClose: true,
                         closable: true,
                         className: "g-cloud-account-options",
                     });
-                    for (var a = 0, r = t.length; a < r; a++) {
-                        !(function (t) {
-                            o.append(
+                    for (var a = 0, count = cloudAccountOptions.length; a < count; a++) {
+                        !(function (vendorOption) {
+                            vendorOptions.append(
                                 $("<div />")
                                     .addClass("vendor-option")
-                                    .addClass(t.pro && !gDesigner.isEnabledProFeatures() ? "pro" : "")
-                                    .addClass(t.type)
+                                    .addClass(vendorOption.pro && !gDesigner.isEnabledProFeatures() ? "pro" : "")
+                                    .addClass(vendorOption.type)
                                     .append(
                                         $("<div />")
                                             .addClass("icon")
-                                            .addClass((t.className && "".concat(t.className, "-icon")) || "")
+                                            .addClass((vendorOption.className && "".concat(vendorOption.className, "-icon")) || "")
                                     )
                                     .append(
                                         $("<div />")
@@ -823,39 +823,39 @@ module.exports = function (module, exports, require) {
                                             .text(
                                                 GObject.GLocale.get(
                                                     new GObject.GLocaleKey("GFilesPanelViewBase", "text.connect-cloud-drive-text")
-                                                ).replace("%name", t.name)
+                                                ).replace("%name", vendorOption.name)
                                             )
                                     )
                                     .on("click", function () {
-                                        if (t.pro && !gDesigner.isEnabledProFeatures())
+                                        if (vendorOption.pro && !gDesigner.isEnabledProFeatures())
                                             return (
-                                                gDesigner.stats("filespanel-view_nonprotriespro_clouddriver", t.type),
+                                                gDesigner.stats("filespanel-view_nonprotriespro_clouddriver", vendorOption.type),
                                                 gDesigner.handlePROFeatureInterruption()
                                             );
-                                        (n.gDialog("close"), e._addCloudDriveDialog(t));
+                                        (dialog.gDialog("close"), self._addCloudDriveDialog(vendorOption));
                                     })
                             );
-                        })(t[a]);
+                        })(cloudAccountOptions[a]);
                     }
-                    (n.append(o), n.gDialog("open"));
+                    (dialog.append(vendorOptions), dialog.gDialog("open"));
                 }
             }),
-            (b.prototype._addCloudDriveDialog = function (e) {
-                var t = this;
-                if (e) {
-                    if ((gDesigner.stats("filespanel-view_open_add-cloud-drive-account-form-dialog", e.type), "googledrive" === e.type))
-                        return (function (e) {
-                            let n = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
-                            return t.filesPanel.saveNewCloudAccount(e).then(async () => {
+            (FilesPanelViewBase.prototype._addCloudDriveDialog = function (cloudSetting) {
+                var self = this;
+                if (cloudSetting) {
+                    if ((gDesigner.stats("filespanel-view_open_add-cloud-drive-account-form-dialog", cloudSetting.type), "googledrive" === cloudSetting.type))
+                        return (function (vendorConfig) {
+                            let isRetry = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
+                            return self.filesPanel.saveNewCloudAccount(vendorConfig).then(async () => {
                                 try {
-                                    await t.filesPanel.setCloudDrive(e);
-                                } catch (o) {
+                                    await self.filesPanel.setCloudDrive(vendorConfig);
+                                } catch (error) {
                                     return (
-                                        t.filesPanel.deleteCloudDrive(e).then(() => {
-                                            if (n) throw o.message;
-                                            c.default.alert(o.message);
+                                        self.filesPanel.deleteCloudDrive(vendorConfig).then(() => {
+                                            if (isRetry) throw error.message;
+                                            GSystemDialog.default.alert(error.message);
                                         }),
-                                        Promise.reject(o)
+                                        Promise.reject(error)
                                     );
                                 }
                             });
@@ -865,78 +865,78 @@ module.exports = function (module, exports, require) {
                             className: "google-drive",
                             name: GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.personal-google-drive")),
                         }).then(() => {
-                            const e = this.filesPanel.drive;
-                            e &&
-                                e.hasEventListeners(l.default.DriveEvent) &&
-                                e.trigger(new l.default.DriveEvent(this.filesPanel.getContextSource(), l.default.DriveEvent.Type.Added));
+                            const drive = this.filesPanel.drive;
+                            drive &&
+                                drive.hasEventListeners(GDrive.default.DriveEvent) &&
+                                drive.trigger(new GDrive.default.DriveEvent(this.filesPanel.getContextSource(), GDrive.default.DriveEvent.Type.Added));
                         });
                 } else console.error("vendor object is missing");
             }),
-            (b.prototype._closeCorporateSubMenu = function () {
+            (FilesPanelViewBase.prototype._closeCorporateSubMenu = function () {
                 this._corporateSubMenu && (this._corporateSubMenu.gOverlay("close"), (this._corporateSubMenu = null));
             }),
-            (b.prototype.updateUserDetails = function (e) {
-                let t;
-                (e instanceof u.default || (e = new u.default(e)),
-                    (t = e.getUserReference()),
-                    t && this.panel.find(".g-files-top-account-name").html(t));
+            (FilesPanelViewBase.prototype.updateUserDetails = function (user) {
+                let userReference;
+                (user instanceof GUser.default || (user = new GUser.default(user)),
+                    (userReference = user.getUserReference()),
+                    userReference && this.panel.find(".g-files-top-account-name").html(userReference));
             }),
-            (b.prototype._corporateStoragesPane = async function (e, t, n) {
-                const o = () => {
+            (FilesPanelViewBase.prototype._corporateStoragesPane = async function (triggerElement, storageOptions, onSelect) {
+                const showPane = () => {
                     for (
-                        var o = $("<div/>")
+                        var storagesPane = $("<div/>")
                                 .addClass("corporate-storages-pane")
                                 .on("click", () => {
-                                    (gDesigner.stats("filespanel-view_close_corporate-storages-pane"), o.gOverlay("close"));
+                                    (gDesigner.stats("filespanel-view_close_corporate-storages-pane"), storagesPane.gOverlay("close"));
                                 }),
-                            i = $("<div />").addClass("storage-container"),
+                            storageContainer = $("<div />").addClass("storage-container"),
                             a = 0,
-                            s = t.length;
-                        a < s;
+                            count = storageOptions.length;
+                        a < count;
                         a++
                     ) {
-                        var l = t[a];
-                        (function (e) {
+                        var l = storageOptions[a];
+                        (function (storage) {
                             $("<div />")
                                 .addClass("item")
-                                .addClass(e.active ? "selected" : "")
+                                .addClass(storage.active ? "selected" : "")
                                 .append($("<div />").addClass("icon-container").append($("<span />").addClass("icon")))
-                                .append($("<div />").addClass("name").text(e.name))
-                                .appendTo(i)[0]
+                                .append($("<div />").addClass("name").text(storage.name))
+                                .appendTo(storageContainer)[0]
                                 .addEventListener(
                                     "mousedown",
                                     () => {
-                                        (o.gOverlay("close"), gDesigner.stats("filespanel-view_select_corporate-storage"), n(e));
+                                        (storagesPane.gOverlay("close"), gDesigner.stats("filespanel-view_select_corporate-storage"), onSelect(storage));
                                     },
                                     true
                                 );
                         }).call(this, l);
                     }
-                    (i.appendTo(o),
+                    (storageContainer.appendTo(storagesPane),
                         this._closeCorporateSubMenu(),
-                        e.addClass("active"),
-                        o
+                        triggerElement.addClass("active"),
+                        storagesPane
                             .gOverlay({
                                 padding: false,
                                 releaseOnClose: true,
                                 clazz: "cloud-corporate-storage-pane-overlay",
-                                offsetX: e.outerWidth() - 11,
-                                offsetY: -e.outerHeight(),
+                                offsetX: triggerElement.outerWidth() - 11,
+                                offsetY: -triggerElement.outerHeight(),
                                 closeCallback: () => {
-                                    (e.removeClass("active"), gContainer.getRuntime() === r.default.Runtime.IPad && e.gOverlay("close"));
+                                    (triggerElement.removeClass("active"), gContainer.getRuntime() === GContainer.default.Runtime.IPad && triggerElement.gOverlay("close"));
                                 },
                             })
-                            .gOverlay("open", e, this.panel),
-                        (this._corporateSubMenu = o));
+                            .gOverlay("open", triggerElement, this.panel),
+                        (this._corporateSubMenu = storagesPane));
                 };
-                gContainer.getRuntime() === r.default.Runtime.IPad
-                    ? e.click(() => {
-                          (e.gOverlay("open"), o());
+                gContainer.getRuntime() === GContainer.default.Runtime.IPad
+                    ? triggerElement.click(() => {
+                          (triggerElement.gOverlay("open"), showPane());
                       })
-                    : e.hover(o);
+                    : triggerElement.hover(showPane);
             }),
-            (b.prototype._sortPane = function (e) {
-                var t = $("<div/>").addClass("context-pane");
+            (FilesPanelViewBase.prototype._sortPane = function (anchorElement) {
+                var menu = $("<div/>").addClass("context-pane");
                 (void 0 !== this.filesPanel.drive.SORT_TYPES.UPDATED &&
                     $("<div/>")
                         .addClass("context-button")
@@ -951,13 +951,13 @@ module.exports = function (module, exports, require) {
                         .on(
                             "click",
                             function () {
-                                (gDesigner.stats("filespanel-view_sort-by_cloud", s.GFilesPanelSortTypes.UPDATED),
+                                (gDesigner.stats("filespanel-view_sort-by_cloud", GFilesPanelConstants.GFilesPanelSortTypes.UPDATED),
                                     this.filesPanel.setSortType("updated"),
                                     this.filesPanel.sort(),
-                                    t.gOverlay("close"));
+                                    menu.gOverlay("close"));
                             }.bind(this)
                         )
-                        .appendTo(t),
+                        .appendTo(menu),
                     void 0 !== this.filesPanel.drive.SORT_TYPES.NAME &&
                         $("<div/>")
                             .addClass("context-button")
@@ -972,13 +972,13 @@ module.exports = function (module, exports, require) {
                             .on(
                                 "click",
                                 function () {
-                                    (gDesigner.stats("filespanel-view_sort-by_cloud", s.GFilesPanelSortTypes.NAME),
+                                    (gDesigner.stats("filespanel-view_sort-by_cloud", GFilesPanelConstants.GFilesPanelSortTypes.NAME),
                                         this.filesPanel.setSortType("name"),
                                         this.filesPanel.sort(),
-                                        t.gOverlay("close"));
+                                        menu.gOverlay("close"));
                                 }.bind(this)
                             )
-                            .appendTo(t),
+                            .appendTo(menu),
                     void 0 !== this.filesPanel.drive.SORT_TYPES.CREATED &&
                         $("<div/>")
                             .addClass("context-button")
@@ -993,14 +993,14 @@ module.exports = function (module, exports, require) {
                             .on(
                                 "click",
                                 function () {
-                                    (gDesigner.stats("filespanel-view_sort-by_cloud", s.GFilesPanelSortTypes.CREATED),
+                                    (gDesigner.stats("filespanel-view_sort-by_cloud", GFilesPanelConstants.GFilesPanelSortTypes.CREATED),
                                         this.filesPanel.setSortType("created"),
                                         this.filesPanel.sort(),
-                                        t.gOverlay("close"));
+                                        menu.gOverlay("close"));
                                 }.bind(this)
                             )
-                            .appendTo(t),
-                    $("<hr/>").appendTo(t),
+                            .appendTo(menu),
+                    $("<hr/>").appendTo(menu),
                     $("<div/>")
                         .addClass("context-button")
                         .addClass("sort-option")
@@ -1015,12 +1015,12 @@ module.exports = function (module, exports, require) {
                             "click",
                             function () {
                                 (gDesigner.stats("filespanel-view_sort-type_cloud", "ascending"),
-                                    this.filesPanel.setSortDirection(s.GFilesPanelSortDirections.ASCEND),
+                                    this.filesPanel.setSortDirection(GFilesPanelConstants.GFilesPanelSortDirections.ASCEND),
                                     this.filesPanel.sort(),
-                                    t.gOverlay("close"));
+                                    menu.gOverlay("close"));
                             }.bind(this)
                         )
-                        .appendTo(t),
+                        .appendTo(menu),
                     $("<div/>")
                         .addClass("context-button")
                         .addClass("sort-option")
@@ -1035,13 +1035,13 @@ module.exports = function (module, exports, require) {
                             "click",
                             function () {
                                 (gDesigner.stats("filespanel-view_sort-type_cloud", "descending"),
-                                    this.filesPanel.setSortDirection(s.GFilesPanelSortDirections.DESCEND),
+                                    this.filesPanel.setSortDirection(GFilesPanelConstants.GFilesPanelSortDirections.DESCEND),
                                     this.filesPanel.sort(),
-                                    t.gOverlay("close"));
+                                    menu.gOverlay("close"));
                             }.bind(this)
                         )
-                        .appendTo(t),
-                    t
+                        .appendTo(menu),
+                    menu
                         .gOverlay({
                             padding: false,
                             releaseOnClose: true,
@@ -1049,44 +1049,44 @@ module.exports = function (module, exports, require) {
                             offsetX: -70,
                             offsetY: 8,
                         })
-                        .gOverlay("open", e, this.panel),
+                        .gOverlay("open", anchorElement, this.panel),
                     this._updateSortStates());
             }),
-            (b.prototype._handleFilterItemClick = function (e, t, n) {
-                const o = $(n);
-                (e ? this.filesPanel.addFileTypeToSelectedFilter(t) : this.filesPanel.deleteFileTypeFromSelectedFilter(t),
+            (FilesPanelViewBase.prototype._handleFilterItemClick = function (isChecked, fileType, filterButtonElement) {
+                const filterButton = $(filterButtonElement);
+                (isChecked ? this.filesPanel.addFileTypeToSelectedFilter(fileType) : this.filesPanel.deleteFileTypeFromSelectedFilter(fileType),
                     this.filesPanel.sort(),
                     0 !== this.filesPanel.getSelectedFilterForFileTypes().length
-                        ? o.hasClass("g-check") || o.addClass("g-check")
-                        : o.hasClass("g-check") && o.removeClass("g-check"));
+                        ? filterButton.hasClass("g-check") || filterButton.addClass("g-check")
+                        : filterButton.hasClass("g-check") && filterButton.removeClass("g-check"));
             }),
-            (b.prototype._createFilterFileTypeOverlay = function (e) {
-                var t = $("<div/>").addClass("context-pane");
-                const n = this.filesPanel.getAvailableFileTypesFilter();
-                if (!n || !n.length) return;
-                var o = this;
+            (FilesPanelViewBase.prototype._createFilterFileTypeOverlay = function (anchorElement) {
+                var menu = $("<div/>").addClass("context-pane");
+                const fileTypes = this.filesPanel.getAvailableFileTypesFilter();
+                if (!fileTypes || !fileTypes.length) return;
+                var self = this;
                 return (
-                    n.forEach((n) => {
-                        !(function (t, n) {
-                            const a = $('<input type="checkbox"/>').on("click", function (n) {
-                                (n.stopImmediatePropagation(), o._handleFilterItemClick(a[0].checked, t.type, e));
+                    fileTypes.forEach((fileTypeDef) => {
+                        !(function (fileTypeDef, container) {
+                            const checkbox = $('<input type="checkbox"/>').on("click", function (event) {
+                                (event.stopImmediatePropagation(), self._handleFilterItemClick(checkbox[0].checked, fileTypeDef.type, anchorElement));
                             });
                             $("<div/>")
                                 .addClass("context-button")
                                 .addClass("sort-option")
-                                .addClass(t.id)
-                                .append(a)
-                                .append($("<label/>").addClass("label").css("cursor", "pointer").text(GObject.GLocale.get(t.name)))
-                                .on("click", function (n) {
-                                    (n.preventDefault(),
-                                        n.stopImmediatePropagation(),
-                                        (a[0].checked = !a[0].checked),
-                                        o._handleFilterItemClick(a[0].checked, t.type, e));
+                                .addClass(fileTypeDef.id)
+                                .append(checkbox)
+                                .append($("<label/>").addClass("label").css("cursor", "pointer").text(GObject.GLocale.get(fileTypeDef.name)))
+                                .on("click", function (event) {
+                                    (event.preventDefault(),
+                                        event.stopImmediatePropagation(),
+                                        (checkbox[0].checked = !checkbox[0].checked),
+                                        self._handleFilterItemClick(checkbox[0].checked, fileTypeDef.type, anchorElement));
                                 })
-                                .appendTo(n);
-                        })(n, t);
+                                .appendTo(container);
+                        })(fileTypeDef, menu);
                     }),
-                    t.append($("<hr>")),
+                    menu.append($("<hr>")),
                     $("<div/>")
                         .addClass("context-button")
                         .addClass("sort-option")
@@ -1096,15 +1096,15 @@ module.exports = function (module, exports, require) {
                             "click",
                             function () {
                                 if (0 === this.filesPanel.getSelectedFilterForFileTypes().length) return;
-                                const e = t.find("input[type=checkbox]");
-                                for (let t = 0; t < e.length; t++) e[t].checked = false;
+                                const checkboxes = menu.find("input[type=checkbox]");
+                                for (let t = 0; t < checkboxes.length; t++) checkboxes[t].checked = false;
                                 (this.filesPanel.clearAllFileTypesFromSelectedFilter(),
                                     this.clearFileTypeFilterState(),
                                     this.filesPanel.sort());
                             }.bind(this)
                         )
-                        .appendTo(t),
-                    t
+                        .appendTo(menu),
+                    menu
                         .gOverlay({
                             padding: false,
                             releaseOnClose: true,
@@ -1112,152 +1112,152 @@ module.exports = function (module, exports, require) {
                             offsetX: -70,
                             offsetY: 8,
                         })
-                        .gOverlay("open", e, this.panel),
+                        .gOverlay("open", anchorElement, this.panel),
                     this._updateFilterFileTypeStates(),
-                    t
+                    menu
                 );
             }),
-            (b.prototype._updateSortStates = function () {
-                var e = this.panel.closest(".g-dialog-container");
-                (e.find(".sort-option").removeClass("sort-selected"),
-                    e.find(".sort-option." + this.filesPanel.getSortType()).addClass("sort-selected"),
+            (FilesPanelViewBase.prototype._updateSortStates = function () {
+                var dialogContainer = this.panel.closest(".g-dialog-container");
+                (dialogContainer.find(".sort-option").removeClass("sort-selected"),
+                    dialogContainer.find(".sort-option." + this.filesPanel.getSortType()).addClass("sort-selected"),
                     this.filesPanel.getSortDirection()
-                        ? e.find(".sort-option.ascending").addClass("sort-selected")
-                        : e.find(".sort-option.descending").addClass("sort-selected"));
+                        ? dialogContainer.find(".sort-option.ascending").addClass("sort-selected")
+                        : dialogContainer.find(".sort-option.descending").addClass("sort-selected"));
             }),
-            (b.prototype._updateFileTypeFilterButtonColor = function (e) {
-                0 !== this.filesPanel.getSelectedFilterForFileTypes().length && $(e).addClass("g-check");
+            (FilesPanelViewBase.prototype._updateFileTypeFilterButtonColor = function (button) {
+                0 !== this.filesPanel.getSelectedFilterForFileTypes().length && $(button).addClass("g-check");
             }),
-            (b.prototype._updateFilterFileTypeStates = function () {
-                var e = this.panel.closest(".g-dialog-container");
-                if (!e.length) return;
-                this.filesPanel.getSelectedFilterForFileTypes().forEach((t) => {
-                    const n = this.filesPanel.getAvailableFileTypesFilter().find((e) => e.type === t);
-                    e.find(".sort-option.".concat(n.id)).find("input[type=checkbox]")[0].checked = true;
+            (FilesPanelViewBase.prototype._updateFilterFileTypeStates = function () {
+                var dialogContainer = this.panel.closest(".g-dialog-container");
+                if (!dialogContainer.length) return;
+                this.filesPanel.getSelectedFilterForFileTypes().forEach((fileType) => {
+                    const typeDef = this.filesPanel.getAvailableFileTypesFilter().find((candidate) => candidate.type === fileType);
+                    dialogContainer.find(".sort-option.".concat(typeDef.id)).find("input[type=checkbox]")[0].checked = true;
                 });
             }),
-            (b.prototype._addToSelection = function (e) {
-                var t = e.data("node");
-                t && (e.addClass("selected"), this.filesPanel.addToSelection(t));
+            (FilesPanelViewBase.prototype._addToSelection = function (element) {
+                var node = element.data("node");
+                node && (element.addClass("selected"), this.filesPanel.addToSelection(node));
             }),
-            (b.prototype.resetSelection = function () {
+            (FilesPanelViewBase.prototype.resetSelection = function () {
                 (this.panel.find(".g-gravit-folder").removeClass("selected"),
                     this.panel.find(".g-gravit-file").removeClass("selected").removeClass("last-selected"),
                     this.filesPanel.resetSelection());
             }),
-            (b.prototype.manageOpenFolder = function (e, t, n) {
-                (this.panel.find(".g-gravit-folder").removeClass("opened"), e)
-                    ? $(e).addClass("opened")
-                    : t &&
-                      this.panel.find(".g-gravit-folder").each((e, n) => {
-                          const o = $(n),
-                              i = o.data("node");
-                          ((i && "id" in i && (i.id === t.id || i.id === t)) || i === t) && o.addClass("opened");
+            (FilesPanelViewBase.prototype.manageOpenFolder = function (element, targetFolder, folderNode) {
+                (this.panel.find(".g-gravit-folder").removeClass("opened"), element)
+                    ? $(element).addClass("opened")
+                    : targetFolder &&
+                      this.panel.find(".g-gravit-folder").each((e, domElement) => {
+                          const folderElement = $(domElement),
+                              node = folderElement.data("node");
+                          ((node && "id" in node && (node.id === targetFolder.id || node.id === targetFolder)) || node === targetFolder) && folderElement.addClass("opened");
                       });
-                if (n && !n.isRootFolder()) {
-                    var o = n.getChildren();
-                    o && o.length && o.forEach((e) => e.refresh());
+                if (folderNode && !folderNode.isRootFolder()) {
+                    var children = folderNode.getChildren();
+                    children && children.length && children.forEach((child) => child.refresh());
                 }
             }),
-            (b.prototype._isMultiSelectionEnabled = function () {
+            (FilesPanelViewBase.prototype._isMultiSelectionEnabled = function () {
                 return this.filesPanel.isMultiSelectionEnabled();
             }),
-            (b.prototype.manageSelection = function (e, t) {
+            (FilesPanelViewBase.prototype.manageSelection = function (element, node) {
                 if ((this.panel.find(".g-gravit-file").removeClass("last-selected"), GPlatform.GPlatform.modifiers.metaKey))
-                    e.hasClass("selected") ? (e.removeClass("selected"), this.filesPanel.removeFromSelection(t)) : this._addToSelection(e);
+                    element.hasClass("selected") ? (element.removeClass("selected"), this.filesPanel.removeFromSelection(node)) : this._addToSelection(element);
                 else if (this._isMultiSelectionEnabled() && GPlatform.GPlatform.modifiers.shiftKey) {
-                    var n = $(e),
-                        o = n.nextAll(".g-cloud-element.selected"),
-                        i = n.prevAll(".g-cloud-element.selected"),
-                        r = i.length > 0 ? i[0] : null,
-                        s = o.length > 0 ? o[0] : null;
-                    if (!r || !s) {
+                    var jqElement = $(element),
+                        nextSelected = jqElement.nextAll(".g-cloud-element.selected"),
+                        prevSelected = jqElement.prevAll(".g-cloud-element.selected"),
+                        prevAnchor = prevSelected.length > 0 ? prevSelected[0] : null,
+                        nextAnchor = nextSelected.length > 0 ? nextSelected[0] : null;
+                    if (!prevAnchor || !nextAnchor) {
                         this.resetSelection();
-                        var l = [],
-                            c = null;
-                        if ((r ? ((c = $(r)), (l = $(r).nextUntil(e))) : ((c = $(s)), (l = $(e).nextUntil(s))), l.length > 0))
-                            for (var d = 0; d < l.length; ++d) {
-                                let e = $(l[d]);
-                                this._addToSelection(e);
+                        var rangeElements = [],
+                            anchorElement = null;
+                        if ((prevAnchor ? ((anchorElement = $(prevAnchor)), (rangeElements = $(prevAnchor).nextUntil(element))) : ((anchorElement = $(nextAnchor)), (rangeElements = $(element).nextUntil(nextAnchor))), rangeElements.length > 0))
+                            for (var d = 0; d < rangeElements.length; ++d) {
+                                let rangeElement = $(rangeElements[d]);
+                                this._addToSelection(rangeElement);
                             }
-                        (this._addToSelection(e), this._addToSelection(c));
+                        (this._addToSelection(element), this._addToSelection(anchorElement));
                     }
-                } else (this.resetSelection(), this._addToSelection(e), e.addClass("last-selected"));
+                } else (this.resetSelection(), this._addToSelection(element), element.addClass("last-selected"));
             }),
-            (b.prototype.addToClipboard = function (e) {
-                let t = "";
-                ((t = this.filesPanel.isClipboardModeCopy(e) ? "copy" : "cut"),
-                    this.panel.find(".g-gravit-folder.selected").addClass(t),
-                    this.panel.find(".g-gravit-file.selected").addClass(t),
+            (FilesPanelViewBase.prototype.addToClipboard = function (source) {
+                let mode = "";
+                ((mode = this.filesPanel.isClipboardModeCopy(source) ? "copy" : "cut"),
+                    this.panel.find(".g-gravit-folder.selected").addClass(mode),
+                    this.panel.find(".g-gravit-file.selected").addClass(mode),
                     this.resetSelection());
             }),
-            (b.prototype.resetClipboard = function (e) {
-                let t = "";
-                (this.filesPanel.isClipboardModeCopy(e) ? (t = "copy") : this.filesPanel.isClipboardModeCut(e) && (t = "cut"),
-                    this.panel.find(".g-gravit-folder").removeClass(t),
-                    this.panel.find(".g-gravit-file").removeClass(t));
+            (FilesPanelViewBase.prototype.resetClipboard = function (source) {
+                let mode = "";
+                (this.filesPanel.isClipboardModeCopy(source) ? (mode = "copy") : this.filesPanel.isClipboardModeCut(source) && (mode = "cut"),
+                    this.panel.find(".g-gravit-folder").removeClass(mode),
+                    this.panel.find(".g-gravit-file").removeClass(mode));
             }),
-            (b.prototype.shouldFilesBeRequested = function () {
-                var e = this.panel.find(".g-right-side");
-                return Math.floor(e[0].scrollHeight - e.scrollTop()) === Math.floor(e.outerHeight());
+            (FilesPanelViewBase.prototype.shouldFilesBeRequested = function () {
+                var rightSide = this.panel.find(".g-right-side");
+                return Math.floor(rightSide[0].scrollHeight - rightSide.scrollTop()) === Math.floor(rightSide.outerHeight());
             }),
-            (b.prototype.clearFilesAndFolders = function () {
+            (FilesPanelViewBase.prototype.clearFilesAndFolders = function () {
                 ((this._cloudFolders = []), this.clearFiles(), this.panel.find(".g-folders-list").empty());
             }),
-            (b.prototype.clearFiles = function () {
+            (FilesPanelViewBase.prototype.clearFiles = function () {
                 (this.panel.find(".g-files-list").empty(),
                     this.panel.find(".g-recent-files-list").empty(),
                     this.panel.find(".g-search-no-results").hide(),
                     this.toggleRecentFiles(false));
             }),
-            (b.prototype._showCDRWarningUnsupportedObjects = function () {
+            (FilesPanelViewBase.prototype._showCDRWarningUnsupportedObjects = function () {
                 this.panel.find(".save-form-container").addClass("warning").find(".warning-container").css("display", "");
             }),
-            (b.prototype.minimizeWindow = function () {
+            (FilesPanelViewBase.prototype.minimizeWindow = function () {
                 (this.panel.closest(".g-dialog-container").removeClass("fullscreen"),
                     this.panel.find(".g-files-top-bar").find(".maximize-button").show(),
                     this.panel.find(".g-files-top-bar").find(".minimize-button").hide());
             }),
-            (b.prototype.maximizeWindow = function () {
+            (FilesPanelViewBase.prototype.maximizeWindow = function () {
                 (this.panel.closest(".g-dialog-container").addClass("fullscreen"),
                     this.panel.find(".g-files-top-bar").find(".maximize-button").hide(),
                     this.panel.find(".g-files-top-bar").find(".minimize-button").show());
             }),
-            (b.prototype.toListView = function () {
+            (FilesPanelViewBase.prototype.toListView = function () {
                 (this.panel.find(".g-files-list").addClass("list-view"),
                     this.panel.find(".g-recent-files-list").addClass("list-view"),
                     this.panel.find(".header").find(".g-button.list-view").addClass("g-selected"),
                     this.panel.find(".header").find(".g-button.card-view").removeClass("g-selected"),
                     this.updateLayout());
             }),
-            (b.prototype.toCardView = function () {
+            (FilesPanelViewBase.prototype.toCardView = function () {
                 (this.panel.find(".g-files-list").removeClass("list-view"),
                     this.panel.find(".g-recent-files-list").removeClass("list-view"),
                     this.panel.find(".header").find(".g-button.card-view").addClass("g-selected"),
                     this.panel.find(".header").find(".g-button.list-view").removeClass("g-selected"),
                     this.updateLayout());
             }),
-            (b.prototype.toggleEmptyPanel = function (e) {
-                if (e) {
-                    const e = this.filesPanel.drive.getDefaultEmptyMessage();
-                    e &&
+            (FilesPanelViewBase.prototype.toggleEmptyPanel = function (show) {
+                if (show) {
+                    const emptyMessage = this.filesPanel.drive.getDefaultEmptyMessage();
+                    emptyMessage &&
                         this.panel
                             .find(".g-empty-panel")
                             .empty()
                             .prepend(
                                 $("<div/>")
-                                    .append($("<span/>").html(e.title))
+                                    .append($("<span/>").html(emptyMessage.title))
                                     .append(
-                                        e.buttons
-                                            ? e.buttons.map((e) =>
+                                        emptyMessage.buttons
+                                            ? emptyMessage.buttons.map((buttonDef) =>
                                                   $("<button/>")
                                                       .addClass("g-highlight-button highlighted")
-                                                      .text(e.title)
+                                                      .text(buttonDef.title)
                                                       .on(
                                                           "click",
                                                           () => (
-                                                              gDesigner.stats("filespanel-view_execute_action", e.title),
-                                                              e.execute(this.filesPanel.getContextSource())
+                                                              gDesigner.stats("filespanel-view_execute_action", buttonDef.title),
+                                                              buttonDef.execute(this.filesPanel.getContextSource())
                                                           )
                                                       )
                                               )
@@ -1267,14 +1267,14 @@ module.exports = function (module, exports, require) {
                             .show();
                 } else this.panel.find(".g-empty-panel").hide();
             }),
-            (b.prototype.toggleExampleFiles = function (e) {
-                e ? this.panel.find(".g-example-files-list").show() : this.panel.find(".g-example-files-list").hide();
+            (FilesPanelViewBase.prototype.toggleExampleFiles = function (show) {
+                show ? this.panel.find(".g-example-files-list").show() : this.panel.find(".g-example-files-list").hide();
             }),
-            (b.prototype.removeExampleFiles = function () {
+            (FilesPanelViewBase.prototype.removeExampleFiles = function () {
                 this.panel.find(".g-gravit-example-file").remove();
             }),
-            (b.prototype.renderNewFolderButton = function (e, t) {
-                var n = $("<div/>").addClass("header-left-actions");
+            (FilesPanelViewBase.prototype.renderNewFolderButton = function (container, targetFolder) {
+                var actionsContainer = $("<div/>").addClass("header-left-actions");
                 ($("<div/>")
                     .addClass("g-button")
                     .addClass("cloud-button")
@@ -1286,57 +1286,57 @@ module.exports = function (module, exports, require) {
                             .text(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "action.new-folder")))
                     )
                     .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "action.new-folder-tooltip")))
-                    .on("click", (e) => {
-                        e.stopPropagation();
-                        const n = $(e.currentTarget).hasClass("g-disabled");
-                        this._isCreateFolderEnabled() && !n && this.filesPanel.handleNewFolder(t);
+                    .on("click", (event) => {
+                        event.stopPropagation();
+                        const isDisabled = $(event.currentTarget).hasClass("g-disabled");
+                        this._isCreateFolderEnabled() && !isDisabled && this.filesPanel.handleNewFolder(targetFolder);
                     })
-                    .appendTo(n),
-                    n.appendTo(e));
+                    .appendTo(actionsContainer),
+                    actionsContainer.appendTo(container));
             }),
-            (b.prototype._isCreateFolderEnabled = function () {
-                return !gDesigner.getApplicationManager().isOnlyFileOpenFromCloudEnabled() && this.hasPermission(b.Permission.CreateFolder);
+            (FilesPanelViewBase.prototype._isCreateFolderEnabled = function () {
+                return !gDesigner.getApplicationManager().isOnlyFileOpenFromCloudEnabled() && this.hasPermission(FilesPanelViewBase.Permission.CreateFolder);
             }),
-            (b.prototype.renderSortButton = function (e) {
-                var t = this,
-                    n = $("<div/>")
+            (FilesPanelViewBase.prototype.renderSortButton = function (container) {
+                var self = this,
+                    sortButton = $("<div/>")
                         .addClass("g-button")
                         .addClass("cloud-button")
                         .addClass("sort")
                         .css("margin-left", "5px")
                         .append($("<span/>").addClass("icon").addClass("gravit-icon-w-sort"))
                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "action.sort")))
-                        .on("click", function (e) {
-                            (e.stopPropagation(), gDesigner.stats("filespanel-view_sort_cloud"), t._sortPane(this));
+                        .on("click", function (event) {
+                            (event.stopPropagation(), gDesigner.stats("filespanel-view_sort_cloud"), self._sortPane(this));
                         });
-                ((this._sortButton = n), n.appendTo(e));
+                ((this._sortButton = sortButton), sortButton.appendTo(container));
             }),
-            (b.prototype.renderFileTypeFilterButton = function (e) {
-                var t = this,
-                    n = $("<div/>")
+            (FilesPanelViewBase.prototype.renderFileTypeFilterButton = function (container) {
+                var self = this,
+                    filterButton = $("<div/>")
                         .addClass("g-button")
                         .addClass("cloud-button")
                         .addClass("filter-button")
                         .addClass("sort")
                         .append($("<span/>").addClass("icon").addClass("gravit-icon-filter-view"))
                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "action.filter")))
-                        .on("click", function (e) {
-                            (e.stopPropagation(), t._createFilterFileTypeOverlay(this));
+                        .on("click", function (event) {
+                            (event.stopPropagation(), self._createFilterFileTypeOverlay(this));
                         });
-                (n.appendTo(e), (this._fileTypeFilterButton = n), this._updateFileTypeFilterButtonColor(n));
+                (filterButton.appendTo(container), (this._fileTypeFilterButton = filterButton), this._updateFileTypeFilterButtonColor(filterButton));
             }),
-            (b.prototype.clearFileTypeFilterState = function () {
+            (FilesPanelViewBase.prototype.clearFileTypeFilterState = function () {
                 this._fileTypeFilterButton && this._fileTypeFilterButton.removeClass("g-check");
             }),
-            (b.prototype.hideFileTypeFilterButton = function () {
+            (FilesPanelViewBase.prototype.hideFileTypeFilterButton = function () {
                 this._fileTypeFilterButton &&
                     (this._fileTypeFilterButton.css("display", "none"), this._sortButton.css("marginLeft", "15px"));
             }),
-            (b.prototype.displayFileTypeFilterButton = function () {
+            (FilesPanelViewBase.prototype.displayFileTypeFilterButton = function () {
                 this._fileTypeFilterButton &&
                     (this._fileTypeFilterButton.css("display", "block"), this._sortButton.css("marginLeft", "5px"));
             }),
-            (b.prototype.renderToParentFolderButton = function (e) {
+            (FilesPanelViewBase.prototype.renderToParentFolderButton = function (container) {
                 $("<div/>")
                     .addClass("g-button")
                     .addClass("cloud-button")
@@ -1351,13 +1351,13 @@ module.exports = function (module, exports, require) {
                     )
                     .on(
                         "click",
-                        function (e) {
-                            (e.stopPropagation(), this.filesPanel.handleBack());
+                        function (event) {
+                            (event.stopPropagation(), this.filesPanel.handleBack());
                         }.bind(this)
                     )
-                    .appendTo(e);
+                    .appendTo(container);
             }),
-            (b.prototype.renderToRootFolderButton = function (e) {
+            (FilesPanelViewBase.prototype.renderToRootFolderButton = function (container) {
                 $("<div/>")
                     .addClass("g-button")
                     .addClass("cloud-button")
@@ -1372,14 +1372,14 @@ module.exports = function (module, exports, require) {
                     )
                     .on(
                         "click",
-                        function (e) {
-                            (e.stopPropagation(), this.filesPanel.navigateToRoot());
+                        function (event) {
+                            (event.stopPropagation(), this.filesPanel.navigateToRoot());
                         }.bind(this)
                     )
-                    .appendTo(e);
+                    .appendTo(container);
             }),
-            (b.prototype.renderGridStyleButtons = function (e) {
-                var t = this;
+            (FilesPanelViewBase.prototype.renderGridStyleButtons = function (container) {
+                var self = this;
                 $("<div />")
                     .addClass("grid-styles-container")
                     .append(
@@ -1391,10 +1391,10 @@ module.exports = function (module, exports, require) {
                             .addClass("g-selected")
                             .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "action.card-view-button")))
                             .append($("<span />").addClass("icon").addClass("gravit-icon-card-view"))
-                            .on("click", function (e) {
-                                (e.stopPropagation(),
+                            .on("click", function (event) {
+                                (event.stopPropagation(),
                                     $(this).hasClass("g-selected") ||
-                                        (gDesigner.stats("filespanel-view_view-files_card"), t.filesPanel.toCardView()));
+                                        (gDesigner.stats("filespanel-view_view-files_card"), self.filesPanel.toCardView()));
                             })
                     )
                     .append(
@@ -1405,152 +1405,152 @@ module.exports = function (module, exports, require) {
                             .addClass("list-view")
                             .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "action.list-view-button")))
                             .append($("<span />").addClass("icon").addClass("gravit-icon-list-view"))
-                            .on("click", function (e) {
-                                (e.stopPropagation(),
+                            .on("click", function (event) {
+                                (event.stopPropagation(),
                                     $(this).hasClass("g-selected") ||
-                                        (gDesigner.stats("filespanel-view_view-files_list"), t.filesPanel.toListView()));
+                                        (gDesigner.stats("filespanel-view_view-files_list"), self.filesPanel.toListView()));
                             })
                     )
-                    .appendTo(e);
+                    .appendTo(container);
             }),
-            (b.prototype._getSaveOptions = function () {
+            (FilesPanelViewBase.prototype._getSaveOptions = function () {
                 return {};
             }),
-            (b.prototype.addSearchBar = function () {}),
-            (b.prototype.getSearchValue = function () {}),
-            (b.prototype.updateControls = function () {}),
-            (b.prototype.updateToolControls = function () {}),
-            (b.prototype.createHeader = function () {}),
-            (b.prototype.createFooter = function () {}),
-            (b.prototype.addFile = function () {}),
-            (b.prototype.addFolder = function () {}),
-            (b.prototype.focusFileNameInput = function () {}),
-            (b.prototype.scrollToSelectedElement = function () {}),
-            (b.Permission = {
+            (FilesPanelViewBase.prototype.addSearchBar = function () {}),
+            (FilesPanelViewBase.prototype.getSearchValue = function () {}),
+            (FilesPanelViewBase.prototype.updateControls = function () {}),
+            (FilesPanelViewBase.prototype.updateToolControls = function () {}),
+            (FilesPanelViewBase.prototype.createHeader = function () {}),
+            (FilesPanelViewBase.prototype.createFooter = function () {}),
+            (FilesPanelViewBase.prototype.addFile = function () {}),
+            (FilesPanelViewBase.prototype.addFolder = function () {}),
+            (FilesPanelViewBase.prototype.focusFileNameInput = function () {}),
+            (FilesPanelViewBase.prototype.scrollToSelectedElement = function () {}),
+            (FilesPanelViewBase.Permission = {
                 CreateFolder: "create-folder",
                 RecentFilesShowMore: "recent-files-show-more",
             }),
-            (b.prototype._permissions = []),
-            (b.prototype.hasPermission = function (e) {
-                return this._permissions.includes(e);
+            (FilesPanelViewBase.prototype._permissions = []),
+            (FilesPanelViewBase.prototype.hasPermission = function (permission) {
+                return this._permissions.includes(permission);
             }),
-            (b.prototype.setPermission = function (e) {
-                let t = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
-                if (this._permissionSupported(e)) {
-                    if (t) this.hasPermission(e) || this._permissions.push(e);
-                    else if (this.hasPermission(e)) {
-                        var n = this._permissions.indexOf(e);
-                        this._permissions.splice(n, 1);
+            (FilesPanelViewBase.prototype.setPermission = function (permission) {
+                let enable = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
+                if (this._permissionSupported(permission)) {
+                    if (enable) this.hasPermission(permission) || this._permissions.push(permission);
+                    else if (this.hasPermission(permission)) {
+                        var index = this._permissions.indexOf(permission);
+                        this._permissions.splice(index, 1);
                     }
                     this._permissionChanged();
-                } else console.warn("Permission not supported: " + e);
+                } else console.warn("Permission not supported: " + permission);
             }),
-            (b._createFileInfoPanel = function () {
+            (FilesPanelViewBase._createFileInfoPanel = function () {
                 return $("<div/>")
-                    .on("click", (e) => {
-                        (e.stopPropagation(), e.preventDefault());
+                    .on("click", (event) => {
+                        (event.stopPropagation(), event.preventDefault());
                     })
                     .addClass("g-file-info-panel");
             }),
-            (b.prototype._closeFileInfoPanel = function () {
+            (FilesPanelViewBase.prototype._closeFileInfoPanel = function () {
                 (this._rightSide.toggleClass("show-info-panel", false),
                     this._fileInfoPanel.toggleClass("g-active", false),
                     (this._fileInfoPanelIsOpen = false));
             }),
-            (b.prototype._openFileInfoPanel = function () {
+            (FilesPanelViewBase.prototype._openFileInfoPanel = function () {
                 (this._rightSide.toggleClass("show-info-panel", true),
                     this._fileInfoPanel.toggleClass("g-active", true),
                     (this._fileInfoPanelIsOpen = true));
             }),
-            (b.prototype._updateFileInfoPanel = async function (e, t, n) {
-                const o = this.filesPanel.getSelection();
-                if (!e || !this._user || (o && 1 !== o.length)) this._closeFileInfoPanel();
+            (FilesPanelViewBase.prototype._updateFileInfoPanel = async function (file, fileElement, isRecent) {
+                const selection = this.filesPanel.getSelection();
+                if (!file || !this._user || (selection && 1 !== selection.length)) this._closeFileInfoPanel();
                 else {
-                    o[0].id !== e.id && (e = o[0]);
+                    selection[0].id !== file.id && (file = selection[0]);
                     try {
                         (this._openFileInfoPanel(), this._fileInfoPanel.toggleClass("loading", true), this._fileInfoPanel.empty());
-                        const o = $("<div/>").addClass("g-file-detail-container").appendTo(this._fileInfoPanel),
-                            i = y.getRenderForFile(e);
-                        (await i.render(o, e), i.addEventListener(v, (o) => this._detailRenderEventListener(o, e, t, n)));
+                        const detailContainer = $("<div/>").addClass("g-file-detail-container").appendTo(this._fileInfoPanel),
+                            renderer = GFileDetailRenderer.getRenderForFile(file);
+                        (await renderer.render(detailContainer, file), renderer.addEventListener(GFileDetailEvent, (event) => this._detailRenderEventListener(event, file, fileElement, isRecent)));
                     } finally {
                         (this._fileInfoPanel.toggleClass("loading", false),
-                            this._scrollToTheFile(t, n),
-                            n && this._expandRecentListIfFileWasHidden(t));
+                            this._scrollToTheFile(fileElement, isRecent),
+                            isRecent && this._expandRecentListIfFileWasHidden(fileElement));
                     }
                 }
             }),
-            (b.prototype._detailRenderEventListener = function (e, t, n, o) {
-                switch (e.type) {
-                    case v.Type.DoubleClickFile:
-                        this.filesPanel.handleFileDblClick(e.data);
+            (FilesPanelViewBase.prototype._detailRenderEventListener = function (event, file, fileElement, isRecent) {
+                switch (event.type) {
+                    case GFileDetailEvent.Type.DoubleClickFile:
+                        this.filesPanel.handleFileDblClick(event.data);
                         break;
-                    case v.Type.Reload:
-                        this._updateFileInfoPanel(t, n, o);
+                    case GFileDetailEvent.Type.Reload:
+                        this._updateFileInfoPanel(file, fileElement, isRecent);
                         break;
-                    case v.Type.UnshareWithMe:
+                    case GFileDetailEvent.Type.UnshareWithMe:
                         (this._closeFileInfoPanel(), this.filesPanel.updateFilesList());
                 }
             }),
-            (b.prototype._scrollToTheFile = function (e) {
-                const t = this._rightSide.height() / 3,
-                    n = e[0],
-                    o = n.offsetTop - t > 0 ? n.offsetTop - t : 0;
-                this._rightSide.animate({ scrollTop: o + "px" }, 400);
+            (FilesPanelViewBase.prototype._scrollToTheFile = function (fileElement) {
+                const oneThirdHeight = this._rightSide.height() / 3,
+                    target = fileElement[0],
+                    scrollOffset = target.offsetTop - oneThirdHeight > 0 ? target.offsetTop - oneThirdHeight : 0;
+                this._rightSide.animate({ scrollTop: scrollOffset + "px" }, 400);
             }),
-            (b.prototype._expandRecentListIfFileWasHidden = function (e) {
-                const t = this.panel.find(".g-recent-files-list"),
-                    n = this._getGridData(t);
-                t.find(".g-gravit-file").index(e) >= n.columnsAmount &&
-                    (this.panel.find(".g-recent-files-show-more").hide(), t.css("max-height", "max-content"));
+            (FilesPanelViewBase.prototype._expandRecentListIfFileWasHidden = function (fileElement) {
+                const recentFilesListElement = this.panel.find(".g-recent-files-list"),
+                    gridData = this._getGridData(recentFilesListElement);
+                recentFilesListElement.find(".g-gravit-file").index(fileElement) >= gridData.columnsAmount &&
+                    (this.panel.find(".g-recent-files-show-more").hide(), recentFilesListElement.css("max-height", "max-content"));
             }),
-            (b.prototype._permissionSupported = function (e) {
-                return Object.values(b.Permission).includes(e);
+            (FilesPanelViewBase.prototype._permissionSupported = function (permission) {
+                return Object.values(FilesPanelViewBase.Permission).includes(permission);
             }),
-            (b.prototype.handleShortcut = function (e) {
-                switch (e.which) {
+            (FilesPanelViewBase.prototype.handleShortcut = function (event) {
+                switch (event.which) {
                     case 70:
-                        this._forceSearchInput(e);
+                        this._forceSearchInput(event);
                         break;
                     case 86:
-                        this._handlePasteShortcut(e);
+                        this._handlePasteShortcut(event);
                         break;
                     case 27:
-                        this._handleEscShortcut(e);
+                        this._handleEscShortcut(event);
                 }
             }),
-            (b.prototype._forceSearchInput = function (e) {
+            (FilesPanelViewBase.prototype._forceSearchInput = function (event) {
                 if (GPlatform.GPlatform.modifiers.metaKey || GPlatform.GPlatform.modifiers.ctrlKey) {
-                    var t = this.panel.find(".search-container > input.search-field");
-                    t.length > 0 && (e.preventDefault(), t.focus());
+                    var searchInput = this.panel.find(".search-container > input.search-field");
+                    searchInput.length > 0 && (event.preventDefault(), searchInput.focus());
                 }
             }),
-            (b.prototype._handlePasteShortcut = function (e) {
-                function t() {
-                    (e.preventDefault(), e.stopPropagation());
+            (FilesPanelViewBase.prototype._handlePasteShortcut = function (event) {
+                function stopEvent() {
+                    (event.preventDefault(), event.stopPropagation());
                 }
                 (GPlatform.GPlatform.modifiers.metaKey || GPlatform.GPlatform.modifiers.ctrlKey) &&
                     (this.filesPanel.isClipboardModeCut()
-                        ? (t(), this.filesPanel.performCutPaste())
-                        : this.filesPanel.isClipboardModeCopy() && (t(), this.filesPanel.performCopyPaste()));
+                        ? (stopEvent(), this.filesPanel.performCutPaste())
+                        : this.filesPanel.isClipboardModeCopy() && (stopEvent(), this.filesPanel.performCopyPaste()));
             }),
-            (b.prototype._handleEscShortcut = function (e) {
-                this._fileInfoPanelIsOpen && (this._closeFileInfoPanel(), e.preventDefault(), e.stopPropagation());
+            (FilesPanelViewBase.prototype._handleEscShortcut = function (event) {
+                this._fileInfoPanelIsOpen && (this._closeFileInfoPanel(), event.preventDefault(), event.stopPropagation());
             }),
-            (b.prototype.handleParentClose = function () {
+            (FilesPanelViewBase.prototype.handleParentClose = function () {
                 (window.removeEventListener("keydown", this._bindedHandleSearchShortcut, true),
-                    gDesigner.removeEventListener(l.default.DriveEvent, this._handleDriveEvent, this));
+                    gDesigner.removeEventListener(GDrive.default.DriveEvent, this._handleDriveEvent, this));
             }),
-            (b.prototype._setContextMenuActiveRangeSize = function (e) {
-                const t = e || this._contextMenu,
-                    n = $(".frame.cloud-frame"),
-                    o = n.offset();
-                o &&
-                    (t.setActiveRangeSize(o.left, o.top, n.height(), n.width()),
-                    this._downloadContextMenu && this._downloadContextMenu.setActiveRangeSize(o.left, o.top, n.height(), n.width()));
+            (FilesPanelViewBase.prototype._setContextMenuActiveRangeSize = function (contextMenu) {
+                const menu = contextMenu || this._contextMenu,
+                    frame = $(".frame.cloud-frame"),
+                    offset = frame.offset();
+                offset &&
+                    (menu.setActiveRangeSize(offset.left, offset.top, frame.height(), frame.width()),
+                    this._downloadContextMenu && this._downloadContextMenu.setActiveRangeSize(offset.left, offset.top, frame.height(), frame.width()));
             }),
-            (b.prototype._permissionChanged = function () {}),
-            (b.prototype._isContextMenuAvailableForFile = function (e) {
-                return this.filesPanel._isContextMenuAvailableForFile(e);
+            (FilesPanelViewBase.prototype._permissionChanged = function () {}),
+            (FilesPanelViewBase.prototype._isContextMenuAvailableForFile = function (file) {
+                return this.filesPanel._isContextMenuAvailableForFile(file);
             }),
-            (module.exports = b));
+            (module.exports = FilesPanelViewBase));
     };

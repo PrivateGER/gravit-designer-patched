@@ -62,6 +62,17 @@ if (!refined)
         }
     }
 
+// Names already assigned anywhere (module ids are global across chunks, so
+// pool every bundle's names.json). Vote/locale-derived candidates skip taken
+// names: those heuristics identify *usage*, not identity, and letting a name
+// label two modules is how "GCommonNames" ended up on 15 of them. Library
+// plumbing labels (polyfill:*, _interop*) are intentionally repeated.
+const takenNames = new Set();
+for (const b of fs.readdirSync(BUNDLES_DIR)) {
+    const p = path.join(BUNDLES_DIR, b, "names.json");
+    if (fs.existsSync(p)) for (const name of Object.values(JSON.parse(fs.readFileSync(p, "utf8")))) takenNames.add(name);
+}
+
 for (const bundle of bundleNames) {
     const dir = path.join(BUNDLES_DIR, bundle);
     const namesPath = path.join(dir, "names.json");
@@ -76,8 +87,13 @@ for (const bundle of bundleNames) {
         let name = null;
 
         // high-confidence library self-signatures (exact shapes from core-js /
-        // babel runtime) — these label vendor plumbing so readers can skip it
-        if (/__esModule \? [a-z] : \{ default: [a-z] \}/.test(src) && !/WeakMap|_getRequireWildcardCache/.test(src)) {
+        // babel runtime) — these label vendor plumbing so readers can skip it.
+        // Only for small modules: a large module CONTAINING an inlined helper
+        // must not be labeled as one (module 1491, 170KB, once got tagged
+        // "_interopRequireWildcard" this way).
+        if (src.length > 2000) {
+            // not plumbing-sized; skip the signature checks
+        } else if (/__esModule \? [a-z] : \{ default: [a-z] \}/.test(src) && !/WeakMap|_getRequireWildcardCache/.test(src)) {
             name = "_interopRequireDefault";
         } else if (/__esModule/.test(src) && /_getRequireWildcardCache|new WeakMap\(\)/.test(src) && /default: [a-z]/.test(src)) {
             name = "_interopRequireWildcard";
@@ -90,22 +106,24 @@ for (const bundle of bundleNames) {
         const decl = !name && src.match(/\b(?:class|function) (G[A-Z][A-Za-z0-9_]{2,})\b/);
         if (decl) name = decl[1];
 
-        // cross-module votes
+        // cross-module votes (skip names already naming another module)
         if (!name && crossVotes.has(id)) {
-            const [top] = [...crossVotes.get(id).entries()].sort((a, b) => b[1] - a[1]);
+            const [top] = [...crossVotes.get(id).entries()].sort((a, b) => b[1] - a[1]).filter(([n]) => !takenNames.has(n));
             if (top && top[1] >= 2) name = top[0];
         }
 
-        // locale-key majority inside the module
+        // locale-key majority inside the module (weakest signal — it names the
+        // strings table the module USES, which is only usually its identity)
         if (!name) {
             const counts = new Map();
             for (const m of src.matchAll(/"(G[A-Z][A-Za-z0-9]{3,})"/g)) counts.set(m[1], (counts.get(m[1]) || 0) + 1);
-            const [top] = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+            const [top] = [...counts.entries()].sort((a, b) => b[1] - a[1]).filter(([n]) => !takenNames.has(n));
             if (top && top[1] >= 3) name = top[0];
         }
 
         if (name) {
             existing[id] = name;
+            takenNames.add(name);
             derived++;
         }
     }

@@ -4,5 +4,9 @@ services:
             context: .
             dockerfile: Dockerfile
         restart: unless-stopped
+        environment:
+            # Optional: free API key from https://unsplash.com/developers
+            # enables the library panel's Unsplash Photos category.
+            - UNSPLASH_ACCESS_KEY=${UNSPLASH_ACCESS_KEY:-}
         ports:
             - "7584:3100"

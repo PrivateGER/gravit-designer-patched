@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(58 /* polyfill:Array */), require(96 /* polyfill:JSON */), require(865 /* polyfill:Number */), require(193), require(8 /* Symbol */), require(3), require(4), require(97));
         var GObject = require(1),
             designerConfig = require(10),
-            GSaveAction = require(40);
+            Utils = require(40);
         const r = require(85),
             s = require(1188),
             l = require(1349);
@@ -88,7 +88,7 @@ module.exports = function (module, exports, require) {
             }
             async installElectronUpdate() {
                 (GObject.GSystem.operatingSystem === GObject.GSystem.OperatingSystem.OSX_IOS &&
-                    (console.info(this.toString(), " - Waiting install - OSX"), await (0, GSaveAction.sleep)(5e3)),
+                    (console.info(this.toString(), " - Waiting install - OSX"), await (0, Utils.sleep)(5e3)),
                     console.info(this.toString(), " - Installing update - Call"),
                     c.installUpdate());
             }

@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(8 /* Symbol */), require(4), require(13));
         var GObject = require(1),
-            a = _interopRequireDefault(require(1239));
+            a = _interopRequireDefault(require(1239 /* GSharePointClient */));
         const r = [
             {
                 text: new GObject.GLocaleKey("GFilesPanelViewSharepoint", "text.checkin-type-minor"),

@@ -30,7 +30,7 @@ module.exports = function (module, exports, require) {
             require(1060),
             require(1061),
             require(1062),
-            require(1063),
+            require(1063 /* lib:crypto-js */),
             require(1064),
             require(1065),
             require(1066),

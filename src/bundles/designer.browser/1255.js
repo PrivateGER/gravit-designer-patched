@@ -6,7 +6,7 @@ module.exports = function (module, exports, require) {
             a = _interopRequireDefault(require(86)),
             r = _interopRequireDefault(require(449 /* GFitAllAction */)),
             s = _interopRequireDefault(require(85)),
-            l = _interopRequireDefault(require(237 /* GDocument */)),
+            l = _interopRequireDefault(require(237 /* GStorage */)),
             GObject = require(1);
         module.exports = class {
             static handleOpenFileRequest(e, t) {

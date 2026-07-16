@@ -22,18 +22,18 @@ module.exports = function (module, exports, require) {
             require(125),
             require(126 /* polyfill:URL */),
             require(114));
-        var i = require(1201),
+        var GImporters = require(1201),
             GObject = require(1),
             GPlatform = require(15),
             designerConfig = require(10),
-            l = _interopRequireDefault(require(1664)),
-            c = require(219),
+            GLibraryElements = _interopRequireDefault(require(1664 /* GLibraryElements */)),
+            GMessageDialog = require(219),
             GClipAction = require(809),
-            { debounce, stringToBase64String } = require(40 /* GSaveAction */);
-        const g = l.default.getElements();
+            { debounce, stringToBase64String } = require(40 /* Utils */);
+        const categories = GLibraryElements.default.getElements();
         module.exports = class {
-            constructor(e) {
-                ((this._parent = e),
+            constructor(container) {
+                ((this._parent = container),
                     (this._CURRENT_SKIP_COUNT = 0),
                     (this._IMAGE_PAGE_COUNT = 1),
                     (this._CURRENT_CATEGORY = null),
@@ -43,123 +43,123 @@ module.exports = function (module, exports, require) {
                     (this._wrapperWidth = 250),
                     (this._debouncedResizeHandler = debounce(
                         function () {
-                            var e = Array.from(this._parent.find(".assets-wrapper")).filter((e) => $(e).children().length),
-                                t = $(e).css("width") ? parseInt($(e).css("width").split("px")[0]) : 250;
-                            Math.abs(t - this._wrapperWidth) > 50 &&
-                                ((this._wrapperWidth = t), this._initMasonryLayoutColumns($(e), null, null, true));
+                            var visibleWrappers = Array.from(this._parent.find(".assets-wrapper")).filter((visibleWrappers) => $(visibleWrappers).children().length),
+                                width = $(visibleWrappers).css("width") ? parseInt($(visibleWrappers).css("width").split("px")[0]) : 250;
+                            Math.abs(width - this._wrapperWidth) > 50 &&
+                                ((this._wrapperWidth = width), this._initMasonryLayoutColumns($(visibleWrappers), null, null, true));
                         }.bind(this),
                         200
                     )));
-                var t = $("<div/>").addClass("g-library-panel").appendTo(e);
-                ((this._libraryPanel = t), this._createSearch(t), this._initElements(t));
+                var libraryPanel = $("<div/>").addClass("g-library-panel").appendTo(container);
+                ((this._libraryPanel = libraryPanel), this._createSearch(libraryPanel), this._initElements(libraryPanel));
             }
-            _updateUI(e, t, n, o, i) {
-                var r = this,
-                    s = i ? [] : t.children || [],
-                    l = e.find(".images");
-                if (s.length > 0 && 0 === e.find("select").length) {
-                    var c = $("<select/>")
+            _updateUI(wrapper, category, assets, o, append) {
+                var self = this,
+                    childCategories = append ? [] : category.children || [],
+                    imagesWrapper = wrapper.find(".images");
+                if (childCategories.length > 0 && 0 === wrapper.find("select").length) {
+                    var categorySelect = $("<select/>")
                         .addClass("selector")
                         .on("change", function () {
-                            var n,
-                                o = $(this).find("option:selected").data("category");
-                            ((r._CURRENT_SKIP_COUNT = 0),
-                                (r._IMAGE_PAGE_COUNT = 1),
-                                e.find(".asset-container").remove(),
-                                o
-                                    ? ((r._CURRENT_CATEGORY = o),
-                                      (n =
-                                          (r._CURRENT_ROOT_CATEGORY && (r._CURRENT_ROOT_CATEGORY.name || r._CURRENT_ROOT_CATEGORY.path)) ||
-                                          r._CURRENT_ROOT_CATEGORY ||
-                                          "") && (n += "-"),
-                                      (n +=
-                                          (r._CURRENT_CATEGORY && (r._CURRENT_CATEGORY.name || r._CURRENT_CATEGORY.path)) ||
-                                          r._CURRENT_CATEGORY ||
+                            var statsLabel,
+                                selectedCategory = $(this).find("option:selected").data("category");
+                            ((self._CURRENT_SKIP_COUNT = 0),
+                                (self._IMAGE_PAGE_COUNT = 1),
+                                wrapper.find(".asset-container").remove(),
+                                selectedCategory
+                                    ? ((self._CURRENT_CATEGORY = selectedCategory),
+                                      (statsLabel =
+                                          (self._CURRENT_ROOT_CATEGORY && (self._CURRENT_ROOT_CATEGORY.name || self._CURRENT_ROOT_CATEGORY.path)) ||
+                                          self._CURRENT_ROOT_CATEGORY ||
+                                          "") && (statsLabel += "-"),
+                                      (statsLabel +=
+                                          (self._CURRENT_CATEGORY && (self._CURRENT_CATEGORY.name || self._CURRENT_CATEGORY.path)) ||
+                                          self._CURRENT_CATEGORY ||
                                           ""))
-                                    : ((r._CURRENT_CATEGORY = t),
-                                      (r._CURRENT_ROOT_CATEGORY = t),
-                                      (n =
-                                          (r._CURRENT_CATEGORY && (r._CURRENT_CATEGORY.name || r._CURRENT_CATEGORY.path)) ||
-                                          r._CURRENT_CATEGORY ||
-                                          "") && (n += "-"),
-                                      (n += "All")),
-                                gDesigner.stats("librarypanel_change_category", n),
-                                r._loadAssets(e, r._CURRENT_CATEGORY, r._updateUI.bind(r)));
+                                    : ((self._CURRENT_CATEGORY = category),
+                                      (self._CURRENT_ROOT_CATEGORY = category),
+                                      (statsLabel =
+                                          (self._CURRENT_CATEGORY && (self._CURRENT_CATEGORY.name || self._CURRENT_CATEGORY.path)) ||
+                                          self._CURRENT_CATEGORY ||
+                                          "") && (statsLabel += "-"),
+                                      (statsLabel += "All")),
+                                gDesigner.stats("librarypanel_change_category", statsLabel),
+                                self._loadAssets(wrapper, self._CURRENT_CATEGORY, self._updateUI.bind(self)));
                         });
-                    "element.image" === t.path && c.addClass("full-width");
-                    var d = e.parent();
-                    d.find(".selector-container").remove();
-                    var u = d.find(".indicator");
-                    ($("<div/>").addClass("selector-container").append(c).insertAfter(u),
+                    "element.image" === category.path && categorySelect.addClass("full-width");
+                    var parentElement = wrapper.parent();
+                    parentElement.find(".selector-container").remove();
+                    var indicator = parentElement.find(".indicator");
+                    ($("<div/>").addClass("selector-container").append(categorySelect).insertAfter(indicator),
                         $("<option/>")
                             .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "element.all")))
-                            .appendTo(c));
-                    for (var p = 0; p < s.length; ++p) {
-                        var g = "element.child.name." + s[p].name.toLowerCase().trim().replace(/\s+/g, "-");
+                            .appendTo(categorySelect));
+                    for (var p = 0; p < childCategories.length; ++p) {
+                        var g = "element.child.name." + childCategories[p].name.toLowerCase().trim().replace(/\s+/g, "-");
                         $("<option/>")
-                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", g), s[p].name))
-                            .data("category", s[p])
-                            .appendTo(c);
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", g), childCategories[p].name))
+                            .data("category", childCategories[p])
+                            .appendTo(categorySelect);
                     }
                 }
-                !(function (t) {
-                    var n = [];
-                    i || e.find(".asset").remove();
-                    for (var o = 0; o < t.length; ++o) {
-                        let i = t[o],
-                            l = i.path && i.path.startsWith("element.image");
-                        var a = r._getPreviewURI(i);
-                        if (l) n.push(i);
+                !(function (items) {
+                    var imageAssets = [];
+                    append || wrapper.find(".asset").remove();
+                    for (var o = 0; o < items.length; ++o) {
+                        let asset = items[o],
+                            isImageAsset = asset.path && asset.path.startsWith("element.image");
+                        var a = self._getPreviewURI(asset);
+                        if (isImageAsset) imageAssets.push(asset);
                         else {
                             var s = $("<div/>")
                                     .addClass("asset-container")
-                                    .attr("data-title", i.name || ""),
+                                    .attr("data-title", asset.name || ""),
                                 c = $("<img/>")
                                     .on("dragstart", function () {
                                         return false;
                                     })
                                     .attr("draggable", false)
                                     .attr("src", a)
-                                    .on("mousedown", function (e) {
-                                        r._onItemDragStartHandler(i, e);
+                                    .on("mousedown", function (event) {
+                                        self._onItemDragStartHandler(asset, event);
                                     })
                                     .addClass("asset");
-                            (s.append(c), e.append(s));
+                            (s.append(c), wrapper.append(s));
                         }
                     }
-                    if (n) {
-                        var d = l.length ? l : e;
-                        r._initMasonryLayoutColumns(d, n, i);
+                    if (imageAssets) {
+                        var targetWrapper = imagesWrapper.length ? imagesWrapper : wrapper;
+                        self._initMasonryLayoutColumns(targetWrapper, imageAssets, append);
                     }
-                })(n);
+                })(assets);
             }
-            _initMasonryLayoutColumns(e, t, n, o) {
-                if ((o && e && (t = e.find(".column").children()).unwrap(), 0 === t.length)) return;
-                this._wrapperWidth = e.css("width") ? parseInt(e.css("width").split("px")[0]) : 250;
-                var i,
-                    a = [],
-                    r = 2,
-                    l = null;
+            _initMasonryLayoutColumns(wrapper, items, append, relayout) {
+                if ((relayout && wrapper && (items = wrapper.find(".column").children()).unwrap(), 0 === items.length)) return;
+                this._wrapperWidth = wrapper.css("width") ? parseInt(wrapper.css("width").split("px")[0]) : 250;
+                var columnWidth,
+                    columns = [],
+                    columnCount = 2,
+                    columnWidthStyle = null;
                 if (
-                    ((r = Math.max(Math.ceil(this._wrapperWidth / 200), r)),
-                    (i = this._wrapperWidth / r - 4 * (r - 1)),
-                    (l = r > 2 ? (i / this._wrapperWidth) * 100 + "%" : "calc(50% - 4px)"),
-                    n)
+                    ((columnCount = Math.max(Math.ceil(this._wrapperWidth / 200), columnCount)),
+                    (columnWidth = this._wrapperWidth / columnCount - 4 * (columnCount - 1)),
+                    (columnWidthStyle = columnCount > 2 ? (columnWidth / this._wrapperWidth) * 100 + "%" : "calc(50% - 4px)"),
+                    append)
                 )
-                    a = e.find(".column").toArray();
+                    columns = wrapper.find(".column").toArray();
                 else
-                    for (var c = 0; c < r; c++) {
-                        var d = $("<div/>").addClass("column").css("width", l);
-                        (c > 0 && d.css("margin-left", "4px"), a.push(d));
+                    for (var c = 0; c < columnCount; c++) {
+                        var d = $("<div/>").addClass("column").css("width", columnWidthStyle);
+                        (c > 0 && d.css("margin-left", "4px"), columns.push(d));
                     }
-                const u = a.map(this._getChildrenHeight.bind(this)),
-                    p = [];
-                for (var g = 0; g < t.length; g++) {
-                    var h;
-                    if (o) h = t[g];
+                const columnHeights = columns.map(this._getChildrenHeight.bind(this)),
+                    columnItems = [];
+                for (var g = 0; g < items.length; g++) {
+                    var itemElement;
+                    if (relayout) itemElement = items[g];
                     else {
-                        let e = t[g];
-                        var f = this._getPreviewURI(e),
+                        let item = items[g];
+                        var f = this._getPreviewURI(item),
                             m = $("<img/>")
                                 .addClass("asset")
                                 .attr("draggable", false)
@@ -169,187 +169,187 @@ module.exports = function (module, exports, require) {
                                 });
                         (gDesigner.isTouchDevice()
                             ? m.on("click", () => {
-                                  this._addAsset(e);
+                                  this._addAsset(item);
                               })
-                            : m.on("mousedown", (t) => {
-                                  this._onItemDragStartHandler(e, t);
+                            : m.on("mousedown", (event) => {
+                                  this._onItemDragStartHandler(item, event);
                               }),
-                            (h = $("<div/>")
+                            (itemElement = $("<div/>")
                                 .addClass("asset-container image-asset")
                                 .css("margin-bottom", "4px")
-                                .data("asset", e)
+                                .data("asset", item)
                                 .append(
                                     $("<span/>")
-                                        .text(e.user.name)
+                                        .text(item.user.name)
                                         .attr("draggable", false)
-                                        .on("click", function (t) {
-                                            t.preventDefault();
-                                            var n = new URL(e.user.profile);
-                                            (n.searchParams.append("utm_source", encodeURIComponent(designerConfig.DESIGNER.TITLE)),
-                                                n.searchParams.append("utm_medium", "referral"),
-                                                gContainer.openExternalLink(t, n));
+                                        .on("click", function (event) {
+                                            event.preventDefault();
+                                            var profileUrl = new URL(item.user.profile);
+                                            (profileUrl.searchParams.append("utm_source", encodeURIComponent(designerConfig.DESIGNER.TITLE)),
+                                                profileUrl.searchParams.append("utm_medium", "referral"),
+                                                gContainer.openExternalLink(event, profileUrl));
                                         })
                                 )).append(m));
                     }
-                    const e = this._getSmallestColumnIndex(u),
-                        n = $(h).data("asset"),
-                        i = this._getThumbnailSize(n).getHeight();
-                    u[e] = (u[e] || 0) + i;
-                    const a = p[e] || [];
-                    (a.push(h), (p[e] = a));
+                    const columnIndex = this._getSmallestColumnIndex(columnHeights),
+                        asset = $(itemElement).data("asset"),
+                        thumbnailHeight = this._getThumbnailSize(asset).getHeight();
+                    columnHeights[columnIndex] = (columnHeights[columnIndex] || 0) + thumbnailHeight;
+                    const columnEntries = columnItems[columnIndex] || [];
+                    (columnEntries.push(itemElement), (columnItems[columnIndex] = columnEntries));
                 }
-                (a.forEach((e, t) => {
-                    $(e).append(p[t]);
+                (columns.forEach((column, columnPosition) => {
+                    $(column).append(columnItems[columnPosition]);
                 }),
-                    n || e.append(a));
+                    append || wrapper.append(columns));
             }
-            _addAsset(e, t) {
-                var n = this;
+            _addAsset(asset, position) {
+                var self = this;
                 !(async function () {
-                    if (e.content)
-                        (t && (t.center = true),
+                    if (asset.content)
+                        (position && (position.center = true),
                             gDesigner
                                 .getActiveDocument()
-                                .placeOrImport(new Blob([e.content], { type: e.type || "image/svg+xml" }), t, false, true));
-                    else if (e.path.startsWith("element.ui."))
+                                .placeOrImport(new Blob([asset.content], { type: asset.type || "image/svg+xml" }), position, false, true));
+                    else if (asset.path.startsWith("element.ui."))
                         try {
-                            var o = await fetch(e.url).then((e) => {
-                                    if (!e.ok) throw new Error();
-                                    return e.text();
+                            var svgText = await fetch(asset.url).then((response) => {
+                                    if (!response.ok) throw new Error();
+                                    return response.text();
                                 }),
-                                l = $.parseXML(o);
-                            l &&
-                                "svg" === l.documentElement.nodeName &&
-                                gDesigner.getActiveDocument().placeOrImport(new Blob([o], { type: "image/svg+xml" }), t, false, true);
+                                xmlDoc = $.parseXML(svgText);
+                            xmlDoc &&
+                                "svg" === xmlDoc.documentElement.nodeName &&
+                                gDesigner.getActiveDocument().placeOrImport(new Blob([svgText], { type: "image/svg+xml" }), position, false, true);
                         } catch (e) {}
-                    else if (e.path.startsWith("element.image.")) {
-                        var u = e.id;
+                    else if (asset.path.startsWith("element.image.")) {
+                        var photoId = asset.id;
                         try {
-                            var p = GPlatform.GPlatform.modifiers.optionKey,
-                                g = await designerConfig.gApi.getUnsplashPhotoUrl({
-                                    id: u,
+                            var optionKeyPressed = GPlatform.GPlatform.modifiers.optionKey,
+                                photoUrl = await designerConfig.gApi.getUnsplashPhotoUrl({
+                                    id: photoId,
                                     size: "regular",
                                 }),
-                                h = await fetch(g).then((e) => {
-                                    if (!e.ok) throw new Error();
-                                    return e.blob();
+                                photoBlob = await fetch(photoUrl).then((response) => {
+                                    if (!response.ok) throw new Error();
+                                    return response.blob();
                                 });
-                            i.GBitmapImport.import(h, (e, o, i, r) => {
-                                if (e) new c(GObject.GLocale.get(new GObject.GLocaleKey("GDocument", "text.image-too-big"))).open();
+                            GImporters.GBitmapImport.import(photoBlob, (error, url, width, height) => {
+                                if (error) new GMessageDialog(GObject.GLocale.get(new GObject.GLocaleKey("GDocument", "text.image-too-big"))).open();
                                 else {
-                                    var s = gDesigner.getActiveDocument(),
-                                        l = s.getScene(),
-                                        u = s.getEditor(),
-                                        g = l.getActivePage(),
-                                        h = u.hasSelection() && u.getSelection()[0],
-                                        f = GObject.GLocale.get(new GObject.GLocaleKey("GImage", "name.unsplash")),
-                                        m = GObject.GLocale.get(new GObject.GLocaleKey("GEditor", "action.insert-image"));
-                                    u.beginTransaction();
+                                    var activeDocument = gDesigner.getActiveDocument(),
+                                        scene = activeDocument.getScene(),
+                                        editor = activeDocument.getEditor(),
+                                        page = scene.getActivePage(),
+                                        selectedElement = editor.hasSelection() && editor.getSelection()[0],
+                                        imageName = GObject.GLocale.get(new GObject.GLocaleKey("GImage", "name.unsplash")),
+                                        actionName = GObject.GLocale.get(new GObject.GLocaleKey("GEditor", "action.insert-image"));
+                                    editor.beginTransaction();
                                     try {
-                                        if (!h || h instanceof GObject.GImage) {
-                                            let e = new GObject.GImage();
-                                            (e.setProperties(["name", "iw", "ih", "url"], [f, i, r, o]),
-                                                n._transformNode(e, t),
-                                                g.appendChild(e),
+                                        if (!selectedElement || selectedElement instanceof GObject.GImage) {
+                                            let image = new GObject.GImage();
+                                            (image.setProperties(["name", "iw", "ih", "url"], [imageName, width, height, url]),
+                                                self._transformNode(image, position),
+                                                page.appendChild(image),
                                                 gDesigner.stats("librarypanel_download_image"));
-                                        } else if (p) {
-                                            var y = u.getSelection()[0].getTransform(),
-                                                v = y && y.getTranslation();
-                                            let e = new GObject.GImage();
-                                            (e.setProperties(["name", "iw", "ih", "url"], [f, i, r, o]),
-                                                !t && v && (t = { x: v.getX(), y: v.getY() }),
-                                                n._transformNode(e, t),
-                                                g.appendChild(e),
-                                                u.updateSelection(true, [e]),
+                                        } else if (optionKeyPressed) {
+                                            var selectionTransform = editor.getSelection()[0].getTransform(),
+                                                translation = selectionTransform && selectionTransform.getTranslation();
+                                            let image = new GObject.GImage();
+                                            (image.setProperties(["name", "iw", "ih", "url"], [imageName, width, height, url]),
+                                                !position && translation && (position = { x: translation.getX(), y: translation.getY() }),
+                                                self._transformNode(image, position),
+                                                page.appendChild(image),
+                                                editor.updateSelection(true, [image]),
                                                 gDesigner.executeAction(GClipAction.ID, void 0, void 0, true),
                                                 gDesigner.stats("librarypanel_download_image", "clip"));
                                         } else {
-                                            var _ = u.getSelection()[0].getPaintLayers();
-                                            if (_) {
-                                                var b = new GObject.GTexturePattern(o);
-                                                (b.setSizeMode(GObject.GTexturePattern.SizeMode.Cover), b.setScene(l));
-                                                var w = new GObject.GStylable.FillPaintLayer(b);
-                                                _.appendChild(w);
+                                            var paintLayers = editor.getSelection()[0].getPaintLayers();
+                                            if (paintLayers) {
+                                                var texturePattern = new GObject.GTexturePattern(url);
+                                                (texturePattern.setSizeMode(GObject.GTexturePattern.SizeMode.Cover), texturePattern.setScene(scene));
+                                                var fillPaintLayer = new GObject.GStylable.FillPaintLayer(texturePattern);
+                                                paintLayers.appendChild(fillPaintLayer);
                                             }
-                                            ((m = GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.change-properties"))),
+                                            ((actionName = GObject.GLocale.get(new GObject.GLocaleKey("GFillPaintLayerProperties", "action.change-properties"))),
                                                 gDesigner.stats("librarypanel_download_image", "fill"));
                                         }
                                     } finally {
-                                        u.commitTransaction(m);
+                                        editor.commitTransaction(actionName);
                                     }
                                 }
                             });
                         } catch (e) {}
                     } else {
-                        var f = e.url,
-                            m = gDesigner.getActiveDocument(),
-                            y = m.getEditor(),
-                            v = m.getScene().getActivePage(),
-                            _ = null,
-                            b = null,
-                            w = v.getGeometryBBox(),
-                            C = w && v.isFixedSized() ? w.getWidth() : 800,
-                            x = w && v.isFixedSized() ? w.getHeight() : 800;
-                        if (e.path.startsWith("element.line.tile")) b = (_ = 0.4 * C) / 10;
+                        var assetUrl = asset.url,
+                            targetDocument = gDesigner.getActiveDocument(),
+                            documentEditor = targetDocument.getEditor(),
+                            activePage = targetDocument.getScene().getActivePage(),
+                            svgWidth = null,
+                            svgHeight = null,
+                            pageBBox = activePage.getGeometryBBox(),
+                            pageWidth = pageBBox && activePage.isFixedSized() ? pageBBox.getWidth() : 800,
+                            pageHeight = pageBBox && activePage.isFixedSized() ? pageBBox.getHeight() : 800;
+                        if (asset.path.startsWith("element.line.tile")) svgHeight = (svgWidth = 0.4 * pageWidth) / 10;
                         else {
-                            ((_ = e.width), (b = e.height));
-                            var S = _ / b;
-                            if (((_ = C / 3) > 300 && (_ = 300), (b = _ / S), (_ = Math.round(_)), (b = Math.round(b)) > x)) {
-                                var E = b;
-                                ((b = x / 3) > 300 && (b = 300), (_ = (_ / E) * b), (_ = Math.round(_)), (b = Math.round(b)));
+                            ((svgWidth = asset.width), (svgHeight = asset.height));
+                            var aspectRatio = svgWidth / svgHeight;
+                            if (((svgWidth = pageWidth / 3) > 300 && (svgWidth = 300), (svgHeight = svgWidth / aspectRatio), (svgWidth = Math.round(svgWidth)), (svgHeight = Math.round(svgHeight)) > pageHeight)) {
+                                var prevHeight = svgHeight;
+                                ((svgHeight = pageHeight / 3) > 300 && (svgHeight = 300), (svgWidth = (svgWidth / prevHeight) * svgHeight), (svgWidth = Math.round(svgWidth)), (svgHeight = Math.round(svgHeight)));
                             }
                         }
-                        var A = new XMLHttpRequest();
-                        (A.open("GET", f),
-                            (A.onload = () => {
-                                i.GSVGImport.import(
-                                    A.responseText,
-                                    { baseWidth: _, baseHeight: b, forceBaseSize: true },
+                        var xhr = new XMLHttpRequest();
+                        (xhr.open("GET", assetUrl),
+                            (xhr.onload = () => {
+                                GImporters.GSVGImport.import(
+                                    xhr.responseText,
+                                    { baseWidth: svgWidth, baseHeight: svgHeight, forceBaseSize: true },
                                     gDesigner.getActiveDocument().getScene()._workspace.getFontManager(),
-                                    (o, i) => {
-                                        if (i) {
-                                            y.beginTransaction();
+                                    (error, importedElement) => {
+                                        if (importedElement) {
+                                            documentEditor.beginTransaction();
                                             try {
-                                                if (e.path.startsWith("element.line.tile")) {
-                                                    var r,
-                                                        s,
-                                                        l = new GObject.GTexturePattern(i, GObject.GTexturePattern.RepeatMode.Horizontal);
-                                                    (l.setPosition(GObject.GTexturePattern.PositionMode.Center),
-                                                        t ? ((r = t.x - _ / 2), (s = t.y - b / 2)) : ((r = 0.3 * C), (s = (x - b) / 2)));
-                                                    var c = new GObject.GRectangle();
-                                                    (c.setProperty("trf", new GObject.GTransform(_ / 2, 0, 0, b / 2, r + _ / 2, s + b / 2)),
-                                                        c.setProperty("isLine", true, true, false),
-                                                        v.appendChild(c),
-                                                        c.getPaintLayers().insertChild(new GObject.GStylable.FillPaintLayer(l)),
-                                                        gDesigner.getActiveDocument().getEditor().updateSelection(false, [c]));
-                                                } else (n._transformNode(i, t), m.insertElement(i, !t, true, false));
+                                                if (asset.path.startsWith("element.line.tile")) {
+                                                    var tileX,
+                                                        tileY,
+                                                        texturePattern = new GObject.GTexturePattern(importedElement, GObject.GTexturePattern.RepeatMode.Horizontal);
+                                                    (texturePattern.setPosition(GObject.GTexturePattern.PositionMode.Center),
+                                                        position ? ((tileX = position.x - svgWidth / 2), (tileY = position.y - svgHeight / 2)) : ((tileX = 0.3 * pageWidth), (tileY = (pageHeight - svgHeight) / 2)));
+                                                    var tileRectangle = new GObject.GRectangle();
+                                                    (tileRectangle.setProperty("trf", new GObject.GTransform(svgWidth / 2, 0, 0, svgHeight / 2, tileX + svgWidth / 2, tileY + svgHeight / 2)),
+                                                        tileRectangle.setProperty("isLine", true, true, false),
+                                                        activePage.appendChild(tileRectangle),
+                                                        tileRectangle.getPaintLayers().insertChild(new GObject.GStylable.FillPaintLayer(texturePattern)),
+                                                        gDesigner.getActiveDocument().getEditor().updateSelection(false, [tileRectangle]));
+                                                } else (self._transformNode(importedElement, position), targetDocument.insertElement(importedElement, !position, true, false));
                                             } finally {
-                                                y.commitTransaction("Add Element");
+                                                documentEditor.commitTransaction("Add Element");
                                             }
                                         }
                                     }
                                 );
                             }),
-                            A.send());
+                            xhr.send());
                     }
                 })();
             }
-            _transformNode(e, t) {
-                if (t && e.hasMixin(GObject.GElement.Transform)) {
-                    var n = e.getGeometryBBox(),
-                        o = n && n.getX() ? n.getX() : 0,
-                        i = n && n.getY() ? n.getY() : 0;
-                    (n && ((o += n.getWidth() / 2), (i += n.getHeight() / 2)),
-                        e.transform(new GObject.GTransform(1, 0, 0, 1, t.x - o, t.y - i), true));
+            _transformNode(element, position) {
+                if (position && element.hasMixin(GObject.GElement.Transform)) {
+                    var bbox = element.getGeometryBBox(),
+                        x = bbox && bbox.getX() ? bbox.getX() : 0,
+                        y = bbox && bbox.getY() ? bbox.getY() : 0;
+                    (bbox && ((x += bbox.getWidth() / 2), (y += bbox.getHeight() / 2)),
+                        element.transform(new GObject.GTransform(1, 0, 0, 1, position.x - x, position.y - y), true));
                 }
             }
             _createScrollEvent() {
                 ($(".library-container").unbind("scroll"),
                     $($(".library-container")).scroll(
-                        function (e) {
-                            var t = $(e.currentTarget);
-                            t.scrollTop() > 50
-                                ? 0 === $(t).find(".library-scroll-top").length &&
+                        function (event) {
+                            var scrollContainer = $(event.currentTarget);
+                            scrollContainer.scrollTop() > 50
+                                ? 0 === $(scrollContainer).find(".library-scroll-top").length &&
                                   $("<div/>")
                                       .addClass("library-scroll-top")
                                       .append(
@@ -364,61 +364,61 @@ module.exports = function (module, exports, require) {
                                           (gDesigner.stats("librarypanel_click_backtotop"),
                                               $(".library-container").animate({ scrollTop: 0 }, "slow"));
                                       })
-                                      .appendTo(t)
-                                : $(t).find(".library-scroll-top").remove();
+                                      .appendTo(scrollContainer)
+                                : $(scrollContainer).find(".library-scroll-top").remove();
                         }.bind(this)
                     ));
             }
-            _createSearch(e) {
-                var t = $("<div/>"),
-                    n = $("<div/>"),
-                    o = this,
-                    i = function (e) {
-                        (o._libraryPanel.find(".category-row").find(".category").removeClass("active"),
-                            o._libraryPanel.find(".assets").css("display", "none"),
-                            (o._CURRENT_SKIP_COUNT = 0),
-                            (o._IMAGE_PAGE_COUNT = 1),
-                            (o._CURRENT_CATEGORY = e),
-                            (o._CURRENT_ROOT_CATEGORY = null),
-                            t.find("span").toggleClass("gravit-icon-search", !e || !e.trim()),
-                            t.find("span").toggleClass("gravit-icon-close", !!e && !!e.trim()));
-                        var i = n.find(".assets-wrapper").first();
-                        (i.empty(),
-                            i.append($("<div></div>").addClass("assets-wrapper images")),
-                            e &&
-                                e.trim() &&
-                                (n.css("display", "block"),
-                                o._createScrollEvent(null, n, true),
-                                o._loadAssets(i, e, o._updateUI.bind(o), true)));
+            _createSearch(container) {
+                var searchBar = $("<div/>"),
+                    resultsPanel = $("<div/>"),
+                    self = this,
+                    performSearch = function (query) {
+                        (self._libraryPanel.find(".category-row").find(".category").removeClass("active"),
+                            self._libraryPanel.find(".assets").css("display", "none"),
+                            (self._CURRENT_SKIP_COUNT = 0),
+                            (self._IMAGE_PAGE_COUNT = 1),
+                            (self._CURRENT_CATEGORY = query),
+                            (self._CURRENT_ROOT_CATEGORY = null),
+                            searchBar.find("span").toggleClass("gravit-icon-search", !query || !query.trim()),
+                            searchBar.find("span").toggleClass("gravit-icon-close", !!query && !!query.trim()));
+                        var resultsWrapper = resultsPanel.find(".assets-wrapper").first();
+                        (resultsWrapper.empty(),
+                            resultsWrapper.append($("<div></div>").addClass("assets-wrapper images")),
+                            query &&
+                                query.trim() &&
+                                (resultsPanel.css("display", "block"),
+                                self._createScrollEvent(null, resultsPanel, true),
+                                self._loadAssets(resultsWrapper, query, self._updateUI.bind(self), true)));
                     };
-                (t
+                (searchBar
                     .addClass("library-search")
                     .append(
                         $("<input/>")
                             .attr("type", "text")
                             .addClass("g-input")
                             .attr("placeholder", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "element.search")) + "...")
-                            .on("keypress", function (e) {
-                                13 === e.keyCode && i($(this).val());
+                            .on("keypress", function (event) {
+                                13 === event.keyCode && performSearch($(this).val());
                             })
                     )
                     .append(
                         $("<span/>")
                             .addClass("gravit-icon-search")
                             .on("click", function () {
-                                var e = $(this);
-                                (gDesigner.stats("librarypanel_click_search", e.prev("input").val()),
-                                    $(n).is(":visible")
-                                        ? (n.find(".assets-wrapper").empty(),
-                                          n.css("display", "none"),
-                                          e.prev("input").val(""),
-                                          e.removeClass("gravit-icon-close"),
-                                          e.addClass("gravit-icon-search"))
-                                        : i(e.prev("input").val()));
+                                var searchIcon = $(this);
+                                (gDesigner.stats("librarypanel_click_search", searchIcon.prev("input").val()),
+                                    $(resultsPanel).is(":visible")
+                                        ? (resultsPanel.find(".assets-wrapper").empty(),
+                                          resultsPanel.css("display", "none"),
+                                          searchIcon.prev("input").val(""),
+                                          searchIcon.removeClass("gravit-icon-close"),
+                                          searchIcon.addClass("gravit-icon-search"))
+                                        : performSearch(searchIcon.prev("input").val()));
                             })
                     )
-                    .appendTo(e),
-                    n
+                    .appendTo(container),
+                    resultsPanel
                         .addClass("assets")
                         .css("display", "none")
                         .append(
@@ -429,10 +429,10 @@ module.exports = function (module, exports, require) {
                                     $("<div/>").addClass("assets-wrapper").append($("<div/>").addClass("assets-wrapper images")),
                                 ])
                         )
-                        .append(this._loadMoreButton(n, true))
-                        .appendTo(e));
+                        .append(this._loadMoreButton(resultsPanel, true))
+                        .appendTo(container));
             }
-            _loadMoreButton(e, t) {
+            _loadMoreButton(panel, isSearch) {
                 return $("<div/>")
                     .addClass("button-wrapper")
                     .addClass("hidden")
@@ -442,21 +442,21 @@ module.exports = function (module, exports, require) {
                             .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.library-load-more")))
                             .on("click", () => {
                                 (this._loadAssets(
-                                    e.find(".assets-wrapper").first(),
+                                    panel.find(".assets-wrapper").first(),
                                     this._CURRENT_CATEGORY,
                                     this._updateUI.bind(this),
-                                    t,
+                                    isSearch,
                                     true
                                 ),
                                     this._toggleShowMoreButton(true, true));
                             })
                     );
             }
-            _initElements(e) {
-                for (var t = this, n = 0; n < g.length; ++n) {
-                    let r = g[n];
+            _initElements(container) {
+                for (var self = this, n = 0; n < categories.length; ++n) {
+                    let category = categories[n];
                     if (n > 0 && n % 3 == 0) {
-                        let t = $("<div/>")
+                        let assetsPanel = $("<div/>")
                             .addClass("assets")
                             .css("display", "none")
                             .append(
@@ -464,61 +464,61 @@ module.exports = function (module, exports, require) {
                                     .addClass("assets-content")
                                     .append([$("<div/>").addClass("indicator"), $("<div/>").addClass("assets-wrapper")])
                             )
-                            .appendTo(e);
-                        t.append(this._loadMoreButton(t, false));
+                            .appendTo(container);
+                        assetsPanel.append(this._loadMoreButton(assetsPanel, false));
                     }
                     var o = this._libraryPanel.find(".category-row:last-child");
-                    (0 !== o.length && 3 !== o.children().length) || (o = $("<div/>").addClass("category-row")).appendTo(e);
-                    let s = $("<div/>")
+                    (0 !== o.length && 3 !== o.children().length) || (o = $("<div/>").addClass("category-row")).appendTo(container);
+                    let categoryButton = $("<div/>")
                         .addClass("category")
                         .on("click", function () {
-                            var e = r.name || r.path || r || "";
-                            (e && (e += "-"), (e += "All"), gDesigner.stats("librarypanel_search_category", e));
-                            var n = $(this),
-                                o = n.closest(".category-row"),
-                                i = o.children().index(this),
-                                a = o.next(".assets"),
-                                l = n.hasClass("category") && n.hasClass("active");
-                            (o.closest(".g-library-panel").find(".category").removeClass("active"), n.addClass("active"));
-                            var c = o.closest(".g-library-panel").find(".assets").not(o.next(".assets"));
-                            (c.removeClass("first second third"),
+                            var statsLabel = category.name || category.path || category || "";
+                            (statsLabel && (statsLabel += "-"), (statsLabel += "All"), gDesigner.stats("librarypanel_search_category", statsLabel));
+                            var clickedButton = $(this),
+                                o = clickedButton.closest(".category-row"),
+                                buttonIndex = o.children().index(this),
+                                assetsPanel = o.next(".assets"),
+                                wasActive = clickedButton.hasClass("category") && clickedButton.hasClass("active");
+                            (o.closest(".g-library-panel").find(".category").removeClass("active"), clickedButton.addClass("active"));
+                            var otherPanels = o.closest(".g-library-panel").find(".assets").not(o.next(".assets"));
+                            (otherPanels.removeClass("first second third"),
                                 $(".library-search").find("span").removeClass("gravit-icon-close"),
                                 $(".library-search").find("span").addClass("gravit-icon-search"),
-                                c.css("display", "none"));
-                            var d = a.find(".assets-wrapper");
-                            ("auto" !== d.css("height") && d.css("height", "auto"),
-                                a.find(".selector-container").remove(),
-                                d.empty(),
-                                c.find(".assets-wrapper").empty());
-                            var u = function (e) {
-                                let t = a.hasClass(e);
-                                (a.removeClass("first second third"),
-                                    t
-                                        ? (a.css("display", "none"), n.removeClass("active"))
-                                        : (a.addClass(e), a.css("display", ""), n.addClass("active")));
+                                otherPanels.css("display", "none"));
+                            var wrapperElement = assetsPanel.find(".assets-wrapper");
+                            ("auto" !== wrapperElement.css("height") && wrapperElement.css("height", "auto"),
+                                assetsPanel.find(".selector-container").remove(),
+                                wrapperElement.empty(),
+                                otherPanels.find(".assets-wrapper").empty());
+                            var togglePanelPosition = function (positionClass) {
+                                let wasOpen = assetsPanel.hasClass(positionClass);
+                                (assetsPanel.removeClass("first second third"),
+                                    wasOpen
+                                        ? (assetsPanel.css("display", "none"), clickedButton.removeClass("active"))
+                                        : (assetsPanel.addClass(positionClass), assetsPanel.css("display", ""), clickedButton.addClass("active")));
                             };
-                            u(0 === i ? "first" : 1 === i ? "second" : "third");
-                            var p = a.find(".assets-content");
-                            ((d = a.find(".assets-wrapper")),
-                                p.removeClass(),
-                                p.addClass("assets-content"),
-                                p.addClass("asset-" + r.path.slice(8).replace(/\./g, "-")),
-                                t._createScrollEvent(s, a),
-                                (t._CURRENT_SKIP_COUNT = 0),
-                                (t._IMAGE_PAGE_COUNT = 1),
-                                (t._CURRENT_CATEGORY = r),
-                                (t._CURRENT_ROOT_CATEGORY = r),
-                                l || t._loadAssets(d, r, t._updateUI));
+                            togglePanelPosition(0 === buttonIndex ? "first" : 1 === buttonIndex ? "second" : "third");
+                            var assetsContent = assetsPanel.find(".assets-content");
+                            ((wrapperElement = assetsPanel.find(".assets-wrapper")),
+                                assetsContent.removeClass(),
+                                assetsContent.addClass("assets-content"),
+                                assetsContent.addClass("asset-" + category.path.slice(8).replace(/\./g, "-")),
+                                self._createScrollEvent(categoryButton, assetsPanel),
+                                (self._CURRENT_SKIP_COUNT = 0),
+                                (self._IMAGE_PAGE_COUNT = 1),
+                                (self._CURRENT_CATEGORY = category),
+                                (self._CURRENT_ROOT_CATEGORY = category),
+                                wasActive || self._loadAssets(wrapperElement, category, self._updateUI));
                         })
                         .appendTo(o);
-                    var i = $("<div/>").addClass("content").appendTo(s);
-                    ($("<img/>").addClass("icon").attr("src", r.url).appendTo(i),
+                    var i = $("<div/>").addClass("content").appendTo(categoryButton);
+                    ($("<img/>").addClass("icon").attr("src", category.url).appendTo(i),
                         $("<span/>")
                             .addClass("title")
-                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", r.path.replace(/\.$/, "")), r.name))
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", category.path.replace(/\.$/, "")), category.name))
                             .appendTo(i));
                 }
-                let r = $("<div/>")
+                let trailingPanel = $("<div/>")
                     .addClass("assets")
                     .css("display", "none")
                     .append(
@@ -526,142 +526,142 @@ module.exports = function (module, exports, require) {
                             .addClass("assets-content")
                             .append([$("<div/>").addClass("indicator"), $("<div/>").addClass("assets-wrapper")])
                     )
-                    .appendTo(e);
-                r.append(this._loadMoreButton(r, false));
+                    .appendTo(container);
+                trailingPanel.append(this._loadMoreButton(trailingPanel, false));
             }
-            _loadAssets(e, t, n, o, i) {
-                (this._toggleShowMoreButton(false, false), this._toggleLoading(true), this._doLoadAssets(e, t, n, o, i));
+            _loadAssets(wrapper, category, callback, isSearch, append) {
+                (this._toggleShowMoreButton(false, false), this._toggleLoading(true), this._doLoadAssets(wrapper, category, callback, isSearch, append));
             }
-            async _doLoadAssets(e, t, n, o, i) {
-                let a = [],
-                    r = 0,
-                    c = 0;
+            async _doLoadAssets(wrapper, category, callback, isSearch, append) {
+                let fetchedAssets = [],
+                    marketCount = 0,
+                    unsplashCount = 0;
                 try {
-                    if (o) {
-                        let e = [];
-                        if (l.default.isUnsplashIntegrationEnabled()) {
+                    if (isSearch) {
+                        let unsplashResults = [];
+                        if (GLibraryElements.default.isUnsplashIntegrationEnabled()) {
                             if (!this._IMAGE_ASSET_DRAINED)
                                 try {
-                                    e = await designerConfig.gApi.searchUnsplashPhotos({
-                                        query: t,
+                                    unsplashResults = await designerConfig.gApi.searchUnsplashPhotos({
+                                        query: category,
                                         page: this._IMAGE_PAGE_COUNT,
                                     });
-                                } catch (e) {
-                                    console.warn("Unsplash search failed", e);
+                                } catch (error) {
+                                    console.warn("Unsplash search failed", error);
                                 }
-                            ((c = (e || []).length), c || (this._IMAGE_ASSET_DRAINED = true));
+                            ((unsplashCount = (unsplashResults || []).length), unsplashCount || (this._IMAGE_ASSET_DRAINED = true));
                         }
-                        ((a = []),
+                        ((fetchedAssets = []),
                             -1 !== this._CURRENT_SKIP_COUNT &&
-                                (a = await designerConfig.gApi.listMarket({
-                                    q: t,
+                                (fetchedAssets = await designerConfig.gApi.listMarket({
+                                    q: category,
                                     path: "element.",
                                     limit: "90",
                                     skip: this._CURRENT_SKIP_COUNT + "",
                                     sort: "name",
                                 })),
-                            (r = (a || []).length),
-                            (a = a.concat(e)));
-                    } else if (t.path && t.path.startsWith("element.image"))
-                        l.default.isUnsplashIntegrationEnabled() &&
-                            ((a = t.tag
+                            (marketCount = (fetchedAssets || []).length),
+                            (fetchedAssets = fetchedAssets.concat(unsplashResults)));
+                    } else if (category.path && category.path.startsWith("element.image"))
+                        GLibraryElements.default.isUnsplashIntegrationEnabled() &&
+                            ((fetchedAssets = category.tag
                                 ? await designerConfig.gApi.searchUnsplashPhotos({
-                                      query: t.tag,
+                                      query: category.tag,
                                       page: this._IMAGE_PAGE_COUNT,
                                   })
                                 : await designerConfig.gApi.getUnsplashPhotos({
                                       page: this._IMAGE_PAGE_COUNT,
                                   })),
-                            (c = (a || []).length));
+                            (unsplashCount = (fetchedAssets || []).length));
                     else {
-                        var d = t.path;
-                        ((a = await designerConfig.gApi.listMarket({
-                            path: "element.line" === d ? "element.line.tile" : d,
-                            tag: t.tag,
+                        var categoryPath = category.path;
+                        ((fetchedAssets = await designerConfig.gApi.listMarket({
+                            path: "element.line" === categoryPath ? "element.line.tile" : categoryPath,
+                            tag: category.tag,
                             limit: "90",
                             skip: this._CURRENT_SKIP_COUNT + "",
                             sort: "name",
                         })),
-                            (r = (a || []).length));
+                            (marketCount = (fetchedAssets || []).length));
                     }
-                    (r < 90 && 0 === c ? this._toggleShowMoreButton(false, false) : this._toggleShowMoreButton(true, false),
-                        a.length < 90
+                    (marketCount < 90 && 0 === unsplashCount ? this._toggleShowMoreButton(false, false) : this._toggleShowMoreButton(true, false),
+                        fetchedAssets.length < 90
                             ? ((this._CURRENT_SKIP_COUNT = -1), this._IMAGE_PAGE_COUNT++)
                             : ((this._CURRENT_SKIP_COUNT += 90), this._IMAGE_PAGE_COUNT++));
                 } catch (e) {}
-                (this._toggleLoading(false), n.call(this, e, t, a, o, i));
+                (this._toggleLoading(false), callback.call(this, wrapper, category, fetchedAssets, isSearch, append));
             }
-            _toggleLoading(e) {
-                e ? this._libraryPanel.find(".assets").addClass("loading") : this._libraryPanel.find(".assets").removeClass("loading");
+            _toggleLoading(isLoading) {
+                isLoading ? this._libraryPanel.find(".assets").addClass("loading") : this._libraryPanel.find(".assets").removeClass("loading");
             }
-            _toggleShowMoreButton(e, t) {
-                let n = this._libraryPanel.find(".assets").find(".button-wrapper");
-                (n.find(".load-more")[t ? "addClass" : "removeClass"]("hidden"),
-                    n[t ? "addClass" : "removeClass"]("loading"),
-                    n[e ? "removeClass" : "addClass"]("hidden"));
+            _toggleShowMoreButton(hasMore, loading) {
+                let buttonWrapper = this._libraryPanel.find(".assets").find(".button-wrapper");
+                (buttonWrapper.find(".load-more")[loading ? "addClass" : "removeClass"]("hidden"),
+                    buttonWrapper[loading ? "addClass" : "removeClass"]("loading"),
+                    buttonWrapper[hasMore ? "removeClass" : "addClass"]("hidden"));
             }
-            _getPreviewURI(e) {
-                return e.content && !e.url_t
-                    ? "data:".concat(e.type || "image/svg+xml", ";base64,").concat(stringToBase64String(e.content))
-                    : e.url_t || e.url || e.image.thumb;
+            _getPreviewURI(asset) {
+                return asset.content && !asset.url_t
+                    ? "data:".concat(asset.type || "image/svg+xml", ";base64,").concat(stringToBase64String(asset.content))
+                    : asset.url_t || asset.url || asset.image.thumb;
             }
-            _onItemDragStartHandler(e, t, n) {
-                var o;
-                ((this._clickCheckTime = Date.now()), (o = n ? n.get(0).getBoundingClientRect() : t.target.getBoundingClientRect()));
-                var i = e.width || o.width || 50,
-                    a = e.height || o.height || 50,
-                    r = gDesigner.getActiveDocument().getScene().getActivePage();
-                if (e.path.startsWith("element.line.tile"))
-                    a = (i = r.getGeometryBBox() && r.isFixedSized() ? 0.4 * r.getGeometryBBox().getWidth() : 320) / 10;
+            _onItemDragStartHandler(asset, event, targetElement) {
+                var rect;
+                ((this._clickCheckTime = Date.now()), (rect = targetElement ? targetElement.get(0).getBoundingClientRect() : event.target.getBoundingClientRect()));
+                var width = asset.width || rect.width || 50,
+                    height = asset.height || rect.height || 50,
+                    page = gDesigner.getActiveDocument().getScene().getActivePage();
+                if (asset.path.startsWith("element.line.tile"))
+                    height = (width = page.getGeometryBBox() && page.isFixedSized() ? 0.4 * page.getGeometryBBox().getWidth() : 320) / 10;
                 else {
-                    var s = r.getGeometryBBox(),
-                        l = s && r.isFixedSized() ? s.getWidth() : 800,
-                        c = s && r.isFixedSized() ? s.getHeight() : 800;
-                    if (!e.path.startsWith("element.ui") && !e.path.startsWith("element.icons")) {
-                        var d = i / a;
-                        if (((i = l / 3) > 300 && (i = 300), (a = i / d), (i = Math.round(i)), (a = Math.round(a)) > c)) {
-                            var u = a;
-                            ((a = c / 3) > 300 && (a = 300), (i = (i / e.height) * u), (i = Math.round(i)), (a = Math.round(a)));
+                    var pageBBox = page.getGeometryBBox(),
+                        pageWidth = pageBBox && page.isFixedSized() ? pageBBox.getWidth() : 800,
+                        pageHeight = pageBBox && page.isFixedSized() ? pageBBox.getHeight() : 800;
+                    if (!asset.path.startsWith("element.ui") && !asset.path.startsWith("element.icons")) {
+                        var aspectRatio = width / height;
+                        if (((width = pageWidth / 3) > 300 && (width = 300), (height = width / aspectRatio), (width = Math.round(width)), (height = Math.round(height)) > pageHeight)) {
+                            var prevHeight = height;
+                            ((height = pageHeight / 3) > 300 && (height = 300), (width = (width / asset.height) * prevHeight), (width = Math.round(width)), (height = Math.round(height)));
                         }
                     }
-                    ((a *= gDesigner.getWindows().getActiveWindow().getView().getZoom()),
-                        (i *= gDesigner.getWindows().getActiveWindow().getView().getZoom()));
+                    ((height *= gDesigner.getWindows().getActiveWindow().getView().getZoom()),
+                        (width *= gDesigner.getWindows().getActiveWindow().getView().getZoom()));
                 }
                 if (!this._dragging) {
-                    var p = o.left + o.width / 2,
-                        g = o.top + o.height / 2;
-                    ((this._dragOffset = { x: p - t.clientX, y: g - t.clientY }),
+                    var centerX = rect.left + rect.width / 2,
+                        centerY = rect.top + rect.height / 2;
+                    ((this._dragOffset = { x: centerX - event.clientX, y: centerY - event.clientY }),
                         (this._dragging = true),
-                        (this._currentElement = t.target),
-                        (this._currentItem = e),
-                        (this._previewSize = { w: i, h: a }),
-                        e.path.startsWith("element.line.tile")
+                        (this._currentElement = event.target),
+                        (this._currentItem = asset),
+                        (this._previewSize = { w: width, h: height }),
+                        asset.path.startsWith("element.line.tile")
                             ? (this.dragPreview = $("<div/>")
-                                  .css("background", 'url("' + e.url + '")')
+                                  .css("background", 'url("' + asset.url + '")')
                                   .css("background-repeat", "repeat-x")
-                                  .css("background-position", Math.round(a / 2) + "px 0px")
+                                  .css("background-position", Math.round(height / 2) + "px 0px")
                                   .css("position", "absolute")
-                                  .css("height", a / 2 + "px")
-                                  .css("width", i / 2 + "px")
+                                  .css("height", height / 2 + "px")
+                                  .css("width", width / 2 + "px")
                                   .css("display", "none")
                                   .appendTo("body"))
-                            : (e.content && !e.url
-                                  ? (this.dragPreview = $(e.content))
-                                  : (this.dragPreview = $("<img/>").attr("src", e.url || (e.image && e.image.thumb))),
+                            : (asset.content && !asset.url
+                                  ? (this.dragPreview = $(asset.content))
+                                  : (this.dragPreview = $("<img/>").attr("src", asset.url || (asset.image && asset.image.thumb))),
                               this.dragPreview
                                   .css("position", "absolute")
-                                  .css("height", a + "px")
-                                  .css("width", i + "px")
+                                  .css("height", height + "px")
+                                  .css("width", width + "px")
                                   .css("display", "none")
                                   .on("dragstart", function () {
                                       return false;
                                   })
                                   .attr("draggable", false)
                                   .appendTo("body")));
-                    var h = t.clientX,
-                        f = t.clientY;
-                    ($(this.dragPreview).css("left", h + "px"),
-                        $(this.dragPreview).css("top", f + "px"),
+                    var clientX = event.clientX,
+                        clientY = event.clientY;
+                    ($(this.dragPreview).css("left", clientX + "px"),
+                        $(this.dragPreview).css("top", clientY + "px"),
                         (this._itemDragListener = this._onItemDrag.bind(this)),
                         (this._itemDragEndListener = this._onItemDragEndHandler.bind(this)),
                         document.addEventListener("mousemove", this._itemDragListener),
@@ -670,7 +670,7 @@ module.exports = function (module, exports, require) {
                         document.addEventListener("touchend", this._itemDragEndListener));
                 }
             }
-            _onItemDragEndHandler(e) {
+            _onItemDragEndHandler(event) {
                 if (($(this.dragPreview).remove(), Date.now() - this._clickCheckTime <= 200 || !this._dragMoved))
                     return (
                         (this._dragMoved = false),
@@ -683,56 +683,56 @@ module.exports = function (module, exports, require) {
                         void this._addAsset(this._currentItem)
                     );
                 if (((this._dragMoved = false), this._dragging)) {
-                    var t = gDesigner.getActiveDocument();
+                    var activeDocument = gDesigner.getActiveDocument();
                     (document.removeEventListener("mousemove", this._itemDragListener),
                         document.removeEventListener("touchmove", this._itemDragListener),
                         document.removeEventListener("mouseup", this._itemDragEndListener),
                         document.removeEventListener("touchend", this._itemDragEndListener));
-                    var n = e.clientX,
-                        o = e.clientY;
-                    if (gDesigner.positionIsOnCanvas(n, o)) {
-                        var i = t.getActiveWindow().getView(),
-                            a = {};
-                        (Object.assign(a, e),
-                            (a.clientX = n),
-                            (a.clientY = o),
-                            (a.offsetX = e.offsetX + (this._dragOffset && this._dragOffset.x)),
-                            (a.offsetY = e.offsetY + (this._dragOffset && this._dragOffset.y)),
-                            (a.pageX = e.pageX + (this._dragOffset && this._dragOffset.x)),
-                            (a.pageY = e.pageY + (this._dragOffset && this._dragOffset.y)));
-                        var r = i._convertClientPositionFromMousePosition(a),
-                            s = i.getViewTransform(t.scene).mapPoint(r);
-                        ((r = { x: s._x, y: s._y }), this._addAsset(this._currentItem, r));
+                    var clientX = event.clientX,
+                        clientY = event.clientY;
+                    if (gDesigner.positionIsOnCanvas(clientX, clientY)) {
+                        var view = activeDocument.getActiveWindow().getView(),
+                            dragEvent = {};
+                        (Object.assign(dragEvent, event),
+                            (dragEvent.clientX = clientX),
+                            (dragEvent.clientY = clientY),
+                            (dragEvent.offsetX = event.offsetX + (this._dragOffset && this._dragOffset.x)),
+                            (dragEvent.offsetY = event.offsetY + (this._dragOffset && this._dragOffset.y)),
+                            (dragEvent.pageX = event.pageX + (this._dragOffset && this._dragOffset.x)),
+                            (dragEvent.pageY = event.pageY + (this._dragOffset && this._dragOffset.y)));
+                        var dropPosition = view._convertClientPositionFromMousePosition(dragEvent),
+                            scenePosition = view.getViewTransform(activeDocument.scene).mapPoint(dropPosition);
+                        ((dropPosition = { x: scenePosition._x, y: scenePosition._y }), this._addAsset(this._currentItem, dropPosition));
                     }
                     ((this._dragging = false), (this._currentElement.style.visibility = "visible"));
                 }
             }
-            _onItemDrag(e) {
+            _onItemDrag(event) {
                 ((this._dragMoved = true), (this._currentElement.style.visibility = "hidden"));
-                var t = e.clientX + (this._dragOffset ? this._dragOffset.x : 0),
-                    n = e.clientY + (this._dragOffset ? this._dragOffset.y : 0);
-                ((t -= this._previewSize.w / 2),
-                    (n -= this._previewSize.h / 2),
-                    $(this.dragPreview).css("left", t + "px"),
-                    $(this.dragPreview).css("top", n + "px"),
+                var left = event.clientX + (this._dragOffset ? this._dragOffset.x : 0),
+                    top = event.clientY + (this._dragOffset ? this._dragOffset.y : 0);
+                ((left -= this._previewSize.w / 2),
+                    (top -= this._previewSize.h / 2),
+                    $(this.dragPreview).css("left", left + "px"),
+                    $(this.dragPreview).css("top", top + "px"),
                     $(this.dragPreview).css("display", ""));
             }
             resize() {
                 this._debouncedResizeHandler();
             }
-            _getSmallestColumnIndex(e) {
-                return e.indexOf(Math.min.apply(null, e)) || 0;
+            _getSmallestColumnIndex(heights) {
+                return heights.indexOf(Math.min.apply(null, heights)) || 0;
             }
-            _getThumbnailSize(e) {
-                const t = 200 / e.image.width,
-                    n = parseInt(e.image.height * t) + 4;
-                return new GObject.GRect(0, 0, 200, n);
+            _getThumbnailSize(asset) {
+                const scale = 200 / asset.image.width,
+                    height = parseInt(asset.image.height * scale) + 4;
+                return new GObject.GRect(0, 0, 200, height);
             }
-            _getChildrenHeight(e) {
-                return $(e)
+            _getChildrenHeight(column) {
+                return $(column)
                     .children()
                     .toArray()
-                    .reduce((e, t) => e + $(t).height(), 0);
+                    .reduce((sum, child) => sum + $(child).height(), 0);
             }
         };
     };

@@ -3,9 +3,9 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(58 /* polyfill:Array */), require(30 /* polyfill:Object */), require(57), require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(356), require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(41), require(13), require(97));
         var GObject = require(1),
-            GSaveAction = require(40),
+            Utils = require(40),
             r = _interopRequireDefault(require(847)),
-            s = _interopRequireDefault(require(848 /* GGoogleDrive */)),
+            s = _interopRequireDefault(require(848 /* GGoogleDriveClient */)),
             l = _interopRequireDefault(require(44 /* GSystemDialog */)),
             designerConfig = require(10),
             d = _interopRequireDefault(require(787)),
@@ -18,7 +18,7 @@ module.exports = function (module, exports, require) {
             y = require(436),
             v = require(78),
             _ = require(156),
-            GDocument = require(389),
+            GFileTypes = require(389),
             w = require(86),
             C = require(790),
             x = require(554),
@@ -31,7 +31,7 @@ module.exports = function (module, exports, require) {
         function D() {}
         (GObject.GObject.inherit(D, g),
             (D.getSupportedFileFormats = function () {
-                return GDocument.getFileTypesArray().filter((e) => e.load);
+                return GFileTypes.getFileTypesArray().filter((e) => e.load);
             }),
             (D.convertToCloudItem = function (e) {
                 var t = _.from(e);
@@ -415,7 +415,7 @@ module.exports = function (module, exports, require) {
                     ((o.onload = (e) => {
                         const n = e.target.result,
                             o = n.substr(n.indexOf(",") + 1),
-                            i = (0, GSaveAction.base64URLSafeEncode)(o);
+                            i = (0, Utils.base64URLSafeEncode)(o);
                         t(i);
                     }),
                         (o.onerror = function () {

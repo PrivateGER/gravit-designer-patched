@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(19), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(851), require(4), require(41), require(13), require(26));
         var GObject = require(1),
-            GSaveAction = require(40),
+            Utils = require(40),
             a = require(1200),
             r = require(255);
         function s(e, t) {
@@ -60,7 +60,7 @@ module.exports = function (module, exports, require) {
                             break;
                         }
                     }
-                ((0, GSaveAction.iterateAroundIndex)(g, f, (e) => {
+                ((0, Utils.iterateAroundIndex)(g, f, (e) => {
                     e.addPreviewCallback.call(
                         e,
                         function (e) {

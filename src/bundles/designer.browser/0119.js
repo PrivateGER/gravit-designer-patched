@@ -24,167 +24,167 @@ module.exports = function (module, exports, require) {
         var designerConfig = require(10),
             GObject = require(1),
             GPlatform = require(15),
-            GSaveAction = require(40),
-            s = require(845);
-        const l = require(1092);
-        var c = require(78),
+            Utils = require(40),
+            GCloudFileSync = require(845);
+        const GCloudItem = require(1092);
+        var GDocumentEvent = require(78),
             GSystemDialog = require(44);
         const GLoginDialog = require(1093);
-        var p = require(85),
-            g = require(219),
-            h = require(358);
-        const f = require(86),
-            m = (require(156), require(256 /* GOfflineDialog */)),
-            y = require(337),
-            v = require(435),
-            PDFNodeStream = require(165);
-        var b = designerConfig.FILE_FORMATS.find((e) => e.default),
-            w = designerConfig.FILE_FORMATS.filter((e) => e.secondary),
-            C = designerConfig.FOLDER_FORMAT;
-        const x = require(555),
-            S = 10,
-            E = 80,
-            A = 90,
-            T = 100;
-        class G {
-            static convertToCloudItem(e) {
-                const t = (e) => l.createFrom(e);
-                return e instanceof Array ? e.map(t) : t(e);
+        var GRuntime = require(85),
+            GNoticeDialog = require(219),
+            GAnnotationsApi = require(358);
+        const DocumentStatus = require(86),
+            GOfflineDialog = (require(156), require(256 /* GOfflineDialog */)),
+            GLicenseApi = require(337),
+            md5 = require(435),
+            pako = require(165 /* PDFNodeStream */);
+        var defaultFileFormat = designerConfig.FILE_FORMATS.find((format) => format.default),
+            secondaryFileFormats = designerConfig.FILE_FORMATS.filter((format) => format.secondary),
+            folderFormat = designerConfig.FOLDER_FORMAT;
+        const GProgressUtil = require(555),
+            SAVE_PROGRESS_START = 10,
+            SAVE_PROGRESS_UPLOAD_END = 80,
+            SAVE_PROGRESS_SAVED = 90,
+            SAVE_PROGRESS_DONE = 100;
+        class GCloudUtil {
+            static convertToCloudItem(input) {
+                const convert = (item) => GCloudItem.createFrom(item);
+                return input instanceof Array ? input.map(convert) : convert(input);
             }
             static _getAuthorizationToken() {
                 return null;
             }
-            static syncCloudImages(e, t, n, a) {
-                return new Promise((l, c) => {
+            static syncCloudImages(document, t, saveOptions, a) {
+                return new Promise((resolve, reject) => {
                     try {
-                        var d = e.getScene(),
-                            u = d.getDictionary().getEntries(),
-                            p = [];
-                        d.acceptChildren((e) => {
-                            e instanceof GObject.GImage &&
-                                p.push({
-                                    name: e.getProperty("name"),
-                                    url: e.getProperty("url"),
+                        var scene = document.getScene(),
+                            dictionaryEntries = scene.getDictionary().getEntries(),
+                            imageEntries = [];
+                        scene.acceptChildren((node) => {
+                            node instanceof GObject.GImage &&
+                                imageEntries.push({
+                                    name: node.getProperty("name"),
+                                    url: node.getProperty("url"),
                                 });
                         });
-                        const h = G._getAuthorizationToken();
-                        var g = designerConfig.gApi.url;
-                        (0, s.syncImagesToCloud)(
-                            (e) => (0, s.listFilesFn)(e, h, g),
+                        const authToken = GCloudUtil._getAuthorizationToken();
+                        var apiUrl = designerConfig.gApi.url;
+                        (0, GCloudFileSync.syncImagesToCloud)(
+                            (e) => (0, GCloudFileSync.listFilesFn)(e, authToken, apiUrl),
                             GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.untitled-image")),
-                            p,
-                            u,
-                            async (e, t) => (0, s.createFileAndGetSignedPutUrlsFn)(e, t, g, h),
-                            async (e, t, n) => (0, s.updateFileFn)(e, t, n, g, h, designerConfig.COMPUTE_SHA256_FOR_FILES, GSaveAction.getFileSHA256Digest),
-                            (e) => {
+                            imageEntries,
+                            dictionaryEntries,
+                            async (e, t) => (0, GCloudFileSync.createFileAndGetSignedPutUrlsFn)(e, t, apiUrl, authToken),
+                            async (e, t, n) => (0, GCloudFileSync.updateFileFn)(e, t, n, apiUrl, authToken, designerConfig.COMPUTE_SHA256_FOR_FILES, Utils.getFileSHA256Digest),
+                            (mergedEntries) => {
                                 try {
-                                    var t = d.getDictionary().merge(e);
+                                    var previousEntries = scene.getDictionary().merge(mergedEntries);
                                     try {
-                                        var o = GObject.GNode.serialize(d, GObject.GUtil.extend({ save: true }, n));
+                                        var serializedData = GObject.GNode.serialize(scene, GObject.GUtil.extend({ save: true }, saveOptions));
                                     } finally {
-                                        d.getDictionary().merge(t);
+                                        scene.getDictionary().merge(previousEntries);
                                     }
-                                    l([o]);
+                                    resolve([serializedData]);
                                 } catch (e) {
-                                    c(e);
+                                    reject(e);
                                 }
                             },
                             t,
                             a
                         );
                     } catch (e) {
-                        c(e);
+                        reject(e);
                     }
                 });
             }
-            static resolveImage(e, t) {
-                function n(e, t) {
-                    let n = e.url,
-                        o = e.scene;
-                    if (o && o.isReleased()) return false;
-                    let r = o && o.getDictionary() && o.getDictionary().getEntry(n);
+            static resolveImage(imageRequest, targetDocument) {
+                function shouldResolve(imageRequest, t) {
+                    let url = imageRequest.url,
+                        scene = imageRequest.scene;
+                    if (scene && scene.isReleased()) return false;
+                    let cachedEntry = scene && scene.getDictionary() && scene.getDictionary().getEntry(url);
                     return (
-                        !r ||
-                        !/^data:.{0,255};base64,/i.exec(r.value) ||
-                        (r.value.length > GPlatform.GPlatform.maxImgDataUrlLength &&
-                            new g(GObject.GLocale.get(new GObject.GLocaleKey("GDocument", "text.image-in-design-too-big"))).open(),
-                        e.resolved(r.value),
+                        !cachedEntry ||
+                        !/^data:.{0,255};base64,/i.exec(cachedEntry.value) ||
+                        (cachedEntry.value.length > GPlatform.GPlatform.maxImgDataUrlLength &&
+                            new GNoticeDialog(GObject.GLocale.get(new GObject.GLocaleKey("GDocument", "text.image-in-design-too-big"))).open(),
+                        imageRequest.resolved(cachedEntry.value),
                         false)
                     );
                 }
                 !(async function () {
-                    let r = e.url,
-                        s = e.scene && e.scene.getDictionary() && e.scene.getDictionary().getEntry(r);
-                    if (n(e))
-                        if ("string" == typeof r && r.startsWith("123rf://")) {
-                            var l = r.slice(8),
-                                c = "ec23d185aa5ffb6495e02635803bb081";
-                            (function (e) {
-                                var t = "https://www.123rfapis.com/?method=download&id=" + e;
-                                t += "&dl_type=png";
-                                const n = Math.floor(Date.now() / 1e3);
-                                t += "&current_time=" + n;
-                                var o = (function (e, t, n) {
-                                    return v(c + "759561ac90761219f6415da66f18a154" + e + t + n);
-                                })(e, "png", n);
+                    let url = imageRequest.url,
+                        cachedEntry = imageRequest.scene && imageRequest.scene.getDictionary() && imageRequest.scene.getDictionary().getEntry(url);
+                    if (shouldResolve(imageRequest))
+                        if ("string" == typeof url && url.startsWith("123rf://")) {
+                            var itemId = url.slice(8),
+                                apiKey = "ec23d185aa5ffb6495e02635803bb081";
+                            (function (resourceId) {
+                                var requestUrl = "https://www.123rfapis.com/?method=download&id=" + resourceId;
+                                requestUrl += "&dl_type=png";
+                                const timestamp = Math.floor(Date.now() / 1e3);
+                                requestUrl += "&current_time=" + timestamp;
+                                var signature = (function (id, mediaType, ts) {
+                                    return md5(apiKey + "759561ac90761219f6415da66f18a154" + id + mediaType + ts);
+                                })(resourceId, "png", timestamp);
                                 return (
-                                    (t += "&sign=" + o),
-                                    (t += "&api_key=" + c),
-                                    new Promise((e, n) => {
-                                        var o = new XMLHttpRequest();
-                                        (o.open("GET", t),
-                                            (o.onload = function () {
+                                    (requestUrl += "&sign=" + signature),
+                                    (requestUrl += "&api_key=" + apiKey),
+                                    new Promise((resolve, reject) => {
+                                        var xhr = new XMLHttpRequest();
+                                        (xhr.open("GET", requestUrl),
+                                            (xhr.onload = function () {
                                                 if (this.status >= 200 && this.status < 300) {
-                                                    var t = JSON.parse(this.response);
-                                                    e(t.download_url);
-                                                } else n();
+                                                    var responseData = JSON.parse(this.response);
+                                                    resolve(responseData.download_url);
+                                                } else reject();
                                             }),
-                                            o.send());
+                                            xhr.send());
                                     })
                                 );
-                            })(l).then(
-                                (n) => {
-                                    if (n) {
-                                        var o = new XMLHttpRequest();
-                                        (o.open("GET", n),
-                                            (o.responseType = "arraybuffer"),
-                                            (o.onload = function () {
+                            })(itemId).then(
+                                (downloadUrl) => {
+                                    if (downloadUrl) {
+                                        var xhr = new XMLHttpRequest();
+                                        (xhr.open("GET", downloadUrl),
+                                            (xhr.responseType = "arraybuffer"),
+                                            (xhr.onload = function () {
                                                 if (this.status < 200 || this.status >= 400)
                                                     alert("There was a problem downloading requested image");
                                                 else {
-                                                    var n = new Blob([this.response], { type: "image" });
-                                                    if (n.size > GPlatform.GPlatform.maxPngDataSize)
-                                                        new g(
+                                                    var blob = new Blob([this.response], { type: "image" });
+                                                    if (blob.size > GPlatform.GPlatform.maxPngDataSize)
+                                                        new GNoticeDialog(
                                                             GObject.GLocale.get(new GObject.GLocaleKey("GDocument", "text.image-in-design-too-big"))
                                                         ).open();
                                                     else {
-                                                        var o = new FileReader();
-                                                        ((o.onload = function () {
+                                                        var reader = new FileReader();
+                                                        ((reader.onload = function () {
                                                             if (this.result.length > GPlatform.GPlatform.maxImgDataUrlLength)
-                                                                return void new g(
+                                                                return void new GNoticeDialog(
                                                                     GObject.GLocale.get(
                                                                         new GObject.GLocaleKey("GDocument", "text.image-in-design-too-big")
                                                                     )
                                                                 ).open();
-                                                            let n =
-                                                                e.scene &&
-                                                                e.scene.getDictionary() &&
-                                                                e.scene.getDictionary().getEntry(e.url);
-                                                            (n && t && ((n.cloud = n.value), (n.value = this.result)),
-                                                                e.resolved(this.result));
+                                                            let existingEntry =
+                                                                imageRequest.scene &&
+                                                                imageRequest.scene.getDictionary() &&
+                                                                imageRequest.scene.getDictionary().getEntry(imageRequest.url);
+                                                            (existingEntry && targetDocument && ((existingEntry.cloud = existingEntry.value), (existingEntry.value = this.result)),
+                                                                imageRequest.resolved(this.result));
                                                         }),
-                                                            (o.onerror = function () {
-                                                                new g(
+                                                            (reader.onerror = function () {
+                                                                new GNoticeDialog(
                                                                     GObject.GLocale.get(
                                                                         new GObject.GLocaleKey("GDocument", "text.image-in-design-too-big")
                                                                     )
                                                                 ).open();
                                                             }),
-                                                            o.readAsDataURL(n));
+                                                            reader.readAsDataURL(blob));
                                                     }
                                                 }
                                             }),
-                                            o.send());
+                                            xhr.send());
                                     } else alert("There was a problem downloading the image selected");
                                 },
                                 () => {
@@ -192,137 +192,137 @@ module.exports = function (module, exports, require) {
                                 }
                             );
                         } else if (
-                            /^(dictionary|gravit|document|asset|magenta)/.test(r) &&
-                            (r.startsWith(GObject.GDictionary.PROTOCOL) &&
-                                ((r = e.scene && e.scene.getDictionary() ? e.scene.getDictionary().getValue(e.url) : null),
-                                "string" == typeof r &&
-                                    r.startsWith(GObject.GDictionary.CLOUD_PROTOCOL) &&
-                                    (s = e.scene && e.scene.getDictionary() && e.scene.getDictionary().getEntry(e.url))),
-                            "string" == typeof r)
+                            /^(dictionary|gravit|document|asset|magenta)/.test(url) &&
+                            (url.startsWith(GObject.GDictionary.PROTOCOL) &&
+                                ((url = imageRequest.scene && imageRequest.scene.getDictionary() ? imageRequest.scene.getDictionary().getValue(imageRequest.url) : null),
+                                "string" == typeof url &&
+                                    url.startsWith(GObject.GDictionary.CLOUD_PROTOCOL) &&
+                                    (cachedEntry = imageRequest.scene && imageRequest.scene.getDictionary() && imageRequest.scene.getDictionary().getEntry(imageRequest.url))),
+                            "string" == typeof url)
                         ) {
-                            const n = await gDesigner.getUser(),
-                                i = r.startsWith("magenta"),
-                                a = e.scene && t.getScene() !== e.scene ? t.getTempCloudStorageItem() : t.getStorageItem();
-                            var d = a && a.getId();
-                            if (!n.isAnonymous() && !d && t) {
-                                ((d = (await designerConfig.gApi.createFile({ trashed: null })).id), t.setReservedId(d));
+                            const user = await gDesigner.getUser(),
+                                isMagenta = url.startsWith("magenta"),
+                                storageItem = imageRequest.scene && targetDocument.getScene() !== imageRequest.scene ? targetDocument.getTempCloudStorageItem() : targetDocument.getStorageItem();
+                            var storageItemId = storageItem && storageItem.getId();
+                            if (!user.isAnonymous() && !storageItemId && targetDocument) {
+                                ((storageItemId = (await designerConfig.gApi.createFile({ trashed: null })).id), targetDocument.setReservedId(storageItemId));
                             }
-                            const l = r.slice(r.indexOf("://") + 3),
-                                c = new URLSearchParams(l);
-                            let p,
-                                g,
-                                h = l;
-                            if (c.has("id")) ((h = c.get("id")), (p = c.get("width")), (g = c.get("height")));
-                            else if (c.has("url")) {
-                                const e = new URL(c.get("url")).pathname.slice(1).split("/");
-                                h = "public" == e[0] ? e[2] : e[1];
-                            } else h = r.slice(r.indexOf("://") + 3);
-                            return gDesigner.isAnonymous() && i
-                                ? designerConfig.gApi.getFile(h).then((n) => {
-                                      u(
-                                          n.url,
-                                          p,
-                                          g,
-                                          (n) => {
-                                              (s && t && ((s.cloud = s.value), (s.value = n)), e.resolved(n));
+                            const pathPart = url.slice(url.indexOf("://") + 3),
+                                params = new URLSearchParams(pathPart);
+                            let width,
+                                height,
+                                fileId = pathPart;
+                            if (params.has("id")) ((fileId = params.get("id")), (width = params.get("width")), (height = params.get("height")));
+                            else if (params.has("url")) {
+                                const pathSegments = new URL(params.get("url")).pathname.slice(1).split("/");
+                                fileId = "public" == pathSegments[0] ? pathSegments[2] : pathSegments[1];
+                            } else fileId = url.slice(url.indexOf("://") + 3);
+                            return gDesigner.isAnonymous() && isMagenta
+                                ? designerConfig.gApi.getFile(fileId).then((fileInfo) => {
+                                      loadImage(
+                                          fileInfo.url,
+                                          width,
+                                          height,
+                                          (dataUrl) => {
+                                              (cachedEntry && targetDocument && ((cachedEntry.cloud = cachedEntry.value), (cachedEntry.value = dataUrl)), imageRequest.resolved(dataUrl));
                                           },
                                           true
                                       );
                                   })
-                                : designerConfig.gApi.resolveUrls(d, h).then((n) => {
-                                      u(
-                                          n[0][1],
-                                          p,
-                                          g,
-                                          (n) => {
-                                              (s && t && ((s.cloud = s.value), (s.value = n)), e.resolved(n));
+                                : designerConfig.gApi.resolveUrls(storageItemId, fileId).then((resolvedUrls) => {
+                                      loadImage(
+                                          resolvedUrls[0][1],
+                                          width,
+                                          height,
+                                          (dataUrl) => {
+                                              (cachedEntry && targetDocument && ((cachedEntry.cloud = cachedEntry.value), (cachedEntry.value = dataUrl)), imageRequest.resolved(dataUrl));
                                           },
-                                          i
+                                          isMagenta
                                       );
                                   });
                         }
-                    function u(t, o, r, s, l) {
-                        if (!n(e)) return;
-                        const c = new Image();
-                        c.crossOrigin = "Anonymous";
-                        (o && (c.width = o),
-                            r && (c.height = r),
-                            (c.onload = function () {
-                                if (!n(e)) return void (c.onload = null);
-                                const t = document.createElement("CANVAS"),
-                                    d = t.getContext("2d");
-                                l &&
-                                    ([c.width, c.height] = (function (e, t, n) {
-                                        const o = e.width / t,
-                                            i = e.height / n;
-                                        return o < 1 || i < 1
-                                            ? [e.width, e.height]
-                                            : o > i
-                                              ? [t, (t * e.height) / e.width]
-                                              : [(n * e.width) / e.height, n];
-                                    })(c, o || 1080, r || 1080));
-                                let u = false;
-                                ((c.width > GPlatform.GPlatform.maxImgLinearDimension ||
-                                    c.height > GPlatform.GPlatform.maxImgLinearDimension ||
-                                    c.width * c.height > GPlatform.GPlatform.maxImgAreaDots) &&
-                                    (new g(GObject.GLocale.get(new GObject.GLocaleKey("GDocument", "text.image-in-design-too-big"))).open(), (u = true)),
-                                    (t.width = c.width),
-                                    (t.height = c.height),
-                                    d.drawImage(c, 0, 0, c.width, c.height));
-                                var p = t.toDataURL();
-                                (p.length > GPlatform.GPlatform.maxImgDataUrlLength &&
-                                    !u &&
-                                    (new g(GObject.GLocale.get(new GObject.GLocaleKey("GDocument", "text.image-in-design-too-big"))).open(), (u = true)),
-                                    (c.onload = null),
-                                    s(p));
+                    function loadImage(url, maxWidth, maxHeight, onResolved, shouldResize) {
+                        if (!shouldResolve(imageRequest)) return;
+                        const img = new Image();
+                        img.crossOrigin = "Anonymous";
+                        (maxWidth && (img.width = maxWidth),
+                            maxHeight && (img.height = maxHeight),
+                            (img.onload = function () {
+                                if (!shouldResolve(imageRequest)) return void (img.onload = null);
+                                const canvas = document.createElement("CANVAS"),
+                                    ctx = canvas.getContext("2d");
+                                shouldResize &&
+                                    ([img.width, img.height] = (function (img, maxWidth, maxHeight) {
+                                        const widthRatio = img.width / maxWidth,
+                                            heightRatio = img.height / maxHeight;
+                                        return widthRatio < 1 || heightRatio < 1
+                                            ? [img.width, img.height]
+                                            : widthRatio > heightRatio
+                                              ? [maxWidth, (maxWidth * img.height) / img.width]
+                                              : [(maxHeight * img.width) / img.height, maxHeight];
+                                    })(img, maxWidth || 1080, maxHeight || 1080));
+                                let tooLarge = false;
+                                ((img.width > GPlatform.GPlatform.maxImgLinearDimension ||
+                                    img.height > GPlatform.GPlatform.maxImgLinearDimension ||
+                                    img.width * img.height > GPlatform.GPlatform.maxImgAreaDots) &&
+                                    (new GNoticeDialog(GObject.GLocale.get(new GObject.GLocaleKey("GDocument", "text.image-in-design-too-big"))).open(), (tooLarge = true)),
+                                    (canvas.width = img.width),
+                                    (canvas.height = img.height),
+                                    ctx.drawImage(img, 0, 0, img.width, img.height));
+                                var dataUrl = canvas.toDataURL();
+                                (dataUrl.length > GPlatform.GPlatform.maxImgDataUrlLength &&
+                                    !tooLarge &&
+                                    (new GNoticeDialog(GObject.GLocale.get(new GObject.GLocaleKey("GDocument", "text.image-in-design-too-big"))).open(), (tooLarge = true)),
+                                    (img.onload = null),
+                                    onResolved(dataUrl));
                             }),
-                            (c.src = t));
+                            (img.src = url));
                     }
                 })();
             }
-            static createFolder(e, t) {
-                return new Promise((n, i) => {
-                    var a = this;
+            static createFolder(name, parent) {
+                return new Promise((resolve, reject) => {
+                    var self = this;
                     !(async function () {
                         try {
-                            var r = a.definePath(t);
+                            var parentPath = self.definePath(parent);
                             (await designerConfig.gApi.createFile({
-                                name: e,
-                                type: C,
-                                parent: r,
+                                name: name,
+                                type: folderFormat,
+                                parent: parentPath,
                                 trashed: false,
                             }),
-                                n());
+                                resolve());
                         } catch (e) {
-                            i(e);
+                            reject(e);
                         }
                     })();
                 });
             }
-            static definePath(e) {
-                return e ? e.id : null;
+            static definePath(parent) {
+                return parent ? parent.id : null;
             }
-            static fileExists(e) {
+            static fileExists(fileId) {
                 return designerConfig.gApi
-                    .getFile(e)
+                    .getFile(fileId)
                     .then(() => true)
                     .catch((e) => {
                         if (e.status === designerConfig.HTTP_STATUS_CODES.NOT_FOUND) return false;
                         throw e;
                     });
             }
-            static changePathTree(e, t) {
-                return new Promise((n, i) => {
+            static changePathTree(items, targetParent) {
+                return new Promise((resolve, reject) => {
                     !(async function () {
                         try {
-                            for (var a = 0; a < e.length; ++a) {
-                                var r = e[a],
+                            for (var a = 0; a < items.length; ++a) {
+                                var r = items[a],
                                     s = r.parent;
-                                t !== s && r.id !== t && (await designerConfig.gApi.updateFile(r.id, { parent: t }));
+                                targetParent !== s && r.id !== targetParent && (await designerConfig.gApi.updateFile(r.id, { parent: targetParent }));
                             }
-                            n();
+                            resolve();
                         } catch (e) {
-                            i(e);
+                            reject(e);
                         }
                     })();
                 });
@@ -330,267 +330,267 @@ module.exports = function (module, exports, require) {
             static performSignup() {
                 return this.performLogin(GLoginDialog.Forms.SignUp);
             }
-            static performLogin(e) {
-                return new Promise((t, n) => {
+            static performLogin(form) {
+                return new Promise((resolve, reject) => {
                     try {
-                        const n = () => {
-                            new GLoginDialog((e) => {
-                                (gDesigner.getUser(), t(e));
-                            }, e).open();
+                        const openLoginDialog = () => {
+                            new GLoginDialog((user) => {
+                                (gDesigner.getUser(), resolve(user));
+                            }, form).open();
                         };
                         gDesigner
                             .getUser()
-                            .then((e) => {
-                                !e || gDesigner.isAnonymous() ? n() : t(e);
+                            .then((user) => {
+                                !user || gDesigner.isAnonymous() ? openLoginDialog() : resolve(user);
                             })
                             .catch(() => {
-                                n();
+                                openLoginDialog();
                             });
                     } catch (e) {
-                        n(e);
+                        reject(e);
                     }
                 });
             }
-            static createFile(e, t) {
+            static createFile(document, callback) {
                 !(async function () {
-                    var n = null;
-                    let i = e.getScene().getActivePage().getGeometryBBox(),
-                        a = 0,
-                        r = 0;
-                    i && ((a = i.getWidth()), (r = i.getHeight()));
-                    const s = {
-                        name: e.getTitle(),
+                    var fileOrId = null;
+                    let bbox = document.getScene().getActivePage().getGeometryBBox(),
+                        width = 0,
+                        height = 0;
+                    bbox && ((width = bbox.getWidth()), (height = bbox.getHeight()));
+                    const fileData = {
+                        name: document.getTitle(),
                         parent: null,
-                        type: b.type,
+                        type: defaultFileFormat.type,
                         app: "designer",
-                        unit: e.getScene().getProperty("ut"),
-                        width: a,
-                        height: r,
+                        unit: document.getScene().getProperty("ut"),
+                        width: width,
+                        height: height,
                         trashed: null,
                     };
-                    (e.getReservedId()
-                        ? (await designerConfig.gApi.updateFile(e.getReservedId(), s), (n = e.getReservedId()))
-                        : (n = await designerConfig.gApi.createFile(s)),
-                        t(n));
+                    (document.getReservedId()
+                        ? (await designerConfig.gApi.updateFile(document.getReservedId(), fileData), (fileOrId = document.getReservedId()))
+                        : (fileOrId = await designerConfig.gApi.createFile(fileData)),
+                        callback(fileOrId));
                 })();
             }
-            static loadDesignData(e, t, n, i, a, r) {
-                return new Promise(async (s, l) => {
+            static loadDesignData(fileId, forEdit, version, shareId, file, checkAutoSave) {
+                return new Promise(async (resolve, reject) => {
                     try {
-                        let p;
-                        if (e && r) {
-                            let t = (a = await designerConfig.gApi.getFile(e)).url;
-                            if (n) {
-                                t = (await designerConfig.gApi.getAutoSave(e, n)).url;
-                            } else a.autosave && (t = a.autosave_url);
-                            ((p = a.url), (a.url = t));
-                        } else if (e && !a)
-                            if (i) a = await designerConfig.gApi.getShare(i);
+                        let originalUrl;
+                        if (fileId && checkAutoSave) {
+                            let url = (file = await designerConfig.gApi.getFile(fileId)).url;
+                            if (version) {
+                                url = (await designerConfig.gApi.getAutoSave(fileId, version)).url;
+                            } else file.autosave && (url = file.autosave_url);
+                            ((originalUrl = file.url), (file.url = url));
+                        } else if (fileId && !file)
+                            if (shareId) file = await designerConfig.gApi.getShare(shareId);
                             else {
-                                var c = n ? "/version/" + n : "";
-                                a = t ? await designerConfig.gApi.getFile(e + c + "?edit") : await designerConfig.gApi.getFile(e + c);
+                                var versionSuffix = version ? "/version/" + version : "";
+                                file = forEdit ? await designerConfig.gApi.getFile(fileId + versionSuffix + "?edit") : await designerConfig.gApi.getFile(fileId + versionSuffix);
                             }
-                        else if (t) {
-                            const t = a ? a.id : e;
-                            t &&
-                                (await designerConfig.gApi.file.registerAccess(t).catch((e) => {
+                        else if (forEdit) {
+                            const targetFileId = file ? file.id : fileId;
+                            targetFileId &&
+                                (await designerConfig.gApi.file.registerAccess(targetFileId).catch((e) => {
                                     console.error("Could not register access", e);
                                 }));
                         }
-                        const g = (e) =>
-                            fetch(e).then(function (e) {
-                                if (!e.ok) throw new Error("failed to download, status = " + e.status);
-                                return e.blob();
+                        const fetchBlob = (url) =>
+                            fetch(url).then(function (response) {
+                                if (!response.ok) throw new Error("failed to download, status = " + response.status);
+                                return response.blob();
                             });
-                        var d = await g(a.url).catch((e) => {
-                                if (!p) throw e;
-                                return g(p);
+                        var blob = await fetchBlob(file.url).catch((e) => {
+                                if (!originalUrl) throw e;
+                                return fetchBlob(originalUrl);
                             }),
-                            u = new FileReader();
-                        ((u.onload = function () {
-                            s({ data: new Uint8Array(this.result), file: a });
+                            reader = new FileReader();
+                        ((reader.onload = function () {
+                            resolve({ data: new Uint8Array(this.result), file: file });
                         }),
-                            (u.onerror = l),
-                            u.readAsArrayBuffer(new Blob([d], { type: "application/octet-stream" })));
+                            (reader.onerror = reject),
+                            reader.readAsArrayBuffer(new Blob([blob], { type: "application/octet-stream" })));
                     } catch (e) {
-                        l(e);
+                        reject(e);
                     }
                 });
             }
-            static getDesigneDataSize(e) {
-                return new Promise(async (t, n) => {
+            static getDesigneDataSize(fileId) {
+                return new Promise(async (resolve, reject) => {
                     try {
-                        var i = await designerConfig.gApi.getFile(e);
-                        return await fetch(i.url, { method: "HEAD" }).then(function (e) {
-                            var n = e.headers.get("Content-Length");
-                            t(n);
+                        var file = await designerConfig.gApi.getFile(fileId);
+                        return await fetch(file.url, { method: "HEAD" }).then(function (response) {
+                            var contentLength = response.headers.get("Content-Length");
+                            resolve(contentLength);
                         });
                     } catch (e) {
-                        n(e);
+                        reject(e);
                     }
                 });
             }
-            static renameFile(e, t, n) {
+            static renameFile(file, newName, callback) {
                 !(async function () {
                     try {
-                        (await designerConfig.gApi.updateFile(e.id, { name: t }), n(true));
+                        (await designerConfig.gApi.updateFile(file.id, { name: newName }), callback(true));
                     } catch (e) {
-                        (console.error(e), n(false));
+                        (console.error(e), callback(false));
                     }
                 })();
             }
             static _checkSecondaryFormatSanity() {
                 return true;
             }
-            static performSave(e, t, n, a, r) {
-                let s = arguments.length > 5 && void 0 !== arguments[5] && arguments[5];
-                if (e.hasPagesWithInfiniteEmptyCanvas())
-                    return void (n
-                        ? n({
+            static performSave(document, callback, onFail, initialSaveOptions, targetStorageItem) {
+                let silent = arguments.length > 5 && void 0 !== arguments[5] && arguments[5];
+                if (document.hasPagesWithInfiniteEmptyCanvas())
+                    return void (onFail
+                        ? onFail({
                               code: 507,
                               message: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.error-emtpy-infinite-canvas")),
                               noFailCall: true,
                           })
                         : GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.error-emtpy-infinite-canvas"))));
-                var l = a;
-                function u() {
-                    let a = false;
-                    if (e.isCommercialProductFile()) return void e.openPaywall();
-                    var u = r || e.getStorageItem();
-                    const p = u && w.length && w.find((e) => e.ext.toUpperCase() === u.getExtension());
-                    if (p && !G._checkSecondaryFormatSanity(e)) return void (n && n());
-                    const g = e.getEditor().markSavePoint();
-                    var m = function (o) {
-                        (g.rollback(),
-                            s ||
-                                (o && 507 === o.code
-                                    ? GSystemDialog.alert(o.message)
+                var saveOptions = initialSaveOptions;
+                function trySave() {
+                    let failCalled = false;
+                    if (document.isCommercialProductFile()) return void document.openPaywall();
+                    var storageItem = targetStorageItem || document.getStorageItem();
+                    const secondaryFormat = storageItem && secondaryFileFormats.length && secondaryFileFormats.find((format) => format.ext.toUpperCase() === storageItem.getExtension());
+                    if (secondaryFormat && !GCloudUtil._checkSecondaryFormatSanity(document)) return void (onFail && onFail());
+                    const savePoint = document.getEditor().markSavePoint();
+                    var handleSaveFailure = function (error) {
+                        (savePoint.rollback(),
+                            silent ||
+                                (error && 507 === error.code
+                                    ? GSystemDialog.alert(error.message)
                                     : GSystemDialog.confirm(
                                           GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.save-to-cloud-failed")),
-                                          function (o) {
-                                              o
+                                          function (confirmed) {
+                                              confirmed
                                                   ? (gDesigner.stats("savealert_save-failed_click-save-local"),
-                                                    gDesigner.executeAction("file.save-as.".concat(b.ext), [null, e], void 0, true))
+                                                    gDesigner.executeAction("file.save-as.".concat(defaultFileFormat.ext), [null, document], void 0, true))
                                                   : (gDesigner.stats("savealert_save-failed_dont-save-local"),
-                                                    "function" != typeof n || a ? "function" == typeof t && t(false) : ((a = true), n()));
+                                                    "function" != typeof onFail || failCalled ? "function" == typeof callback && callback(false) : ((failCalled = true), onFail()));
                                           },
                                           GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "no")),
                                           GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "yes"))
                                       )),
-                            o && console.log(o),
-                            e.updateStatus(f.SaveFailed),
-                            e.setSynchronizing(false),
-                            e.setErrored(true),
-                            gDesigner.trigger(new c(c.Type.SynchronismUpdateFailed, e)),
-                            n && !a && ((a = true), n()));
+                            error && console.log(error),
+                            document.updateStatus(DocumentStatus.SaveFailed),
+                            document.setSynchronizing(false),
+                            document.setErrored(true),
+                            gDesigner.trigger(new GDocumentEvent(GDocumentEvent.Type.SynchronismUpdateFailed, document)),
+                            onFail && !failCalled && ((failCalled = true), onFail()));
                     };
                     try {
-                        const n = {};
-                        (e.setSynchronizing(true), e.updateStatus(f.Saving, n));
-                        const { progress } = n,
-                            r = (e) => {
-                                progress && progress(e);
+                        const statusOptions = {};
+                        (document.setSynchronizing(true), document.updateStatus(DocumentStatus.Saving, statusOptions));
+                        const { progress } = statusOptions,
+                            reportProgress = (percent) => {
+                                progress && progress(percent);
                             };
-                        !(async function (t) {
-                            var n = null;
+                        !(async function (done) {
+                            var error = null;
                             try {
-                                let t = {
-                                    unit: e.getScene().getProperty("ut"),
+                                let fileData = {
+                                    unit: document.getScene().getProperty("ut"),
                                     width: 0,
                                     height: 0,
                                 };
                                 if (designerConfig.HAS_ANNOTATIONS)
-                                    if (p) {
+                                    if (secondaryFormat) {
                                         let t = true;
-                                        await h.saveDocumentAnnotations(e, t);
-                                        l = e.updateSaveOptionsLastModifiedDate(l);
+                                        await GAnnotationsApi.saveDocumentAnnotations(document, t);
+                                        saveOptions = document.updateSaveOptionsLastModifiedDate(saveOptions);
                                     } else
                                         try {
-                                            let n = (await h.getCloudAnnotationsForDocument(e)).annotationsCollection;
-                                            (e.getScene().iteratePages((e) => {
-                                                !!h.findAnnotationsListForPage(e, n) || n.push(GObject.GNode.store(e.getAnnotations()));
+                                            let annotationsCollection = (await GAnnotationsApi.getCloudAnnotationsForDocument(document)).annotationsCollection;
+                                            (document.getScene().iteratePages((page) => {
+                                                !!GAnnotationsApi.findAnnotationsListForPage(page, annotationsCollection) || annotationsCollection.push(GObject.GNode.store(page.getAnnotations()));
                                             }, true),
-                                                (t.annotations = n));
+                                                (fileData.annotations = annotationsCollection));
                                         } catch (e) {
                                             console.warn("Annotations couldn't be updated on server");
                                         }
-                                let n = e.getScene().getActivePage().getGeometryBBox();
-                                (n && ((t.width = n.getWidth()), (t.height = n.getHeight())), await designerConfig.gApi.updateFile(u._id, t));
+                                let bbox = document.getScene().getActivePage().getGeometryBBox();
+                                (bbox && ((fileData.width = bbox.getWidth()), (fileData.height = bbox.getHeight())), await designerConfig.gApi.updateFile(storageItem._id, fileData));
                             } catch (e) {
-                                n = e;
+                                error = e;
                             }
-                            t(n);
-                        })(function (n) {
-                            (r(S),
-                                n
-                                    ? m(n)
-                                    : u.write(
-                                          e,
+                            done(error);
+                        })(function (updateError) {
+                            (reportProgress(SAVE_PROGRESS_START),
+                                updateError
+                                    ? handleSaveFailure(updateError)
+                                    : storageItem.write(
+                                          document,
                                           function () {
-                                              (r(A),
-                                                  e.setSynchronizing(false),
-                                                  e.setErrored(false),
-                                                  gDesigner.hasEventListeners(c) && gDesigner.trigger(new c(c.Type.Modified, e)));
-                                              var n = (n, o) => {
+                                              (reportProgress(SAVE_PROGRESS_SAVED),
+                                                  document.setSynchronizing(false),
+                                                  document.setErrored(false),
+                                                  gDesigner.hasEventListeners(GDocumentEvent) && gDesigner.trigger(new GDocumentEvent(GDocumentEvent.Type.Modified, document)));
+                                              var result = (result, fileData) => {
                                                   try {
-                                                      n &&
-                                                          (e.updateStatus(f.Saved, l),
+                                                      result &&
+                                                          (document.updateStatus(DocumentStatus.Saved, saveOptions),
                                                           gDesigner.updateRecentDocumentsAction(),
-                                                          e.getStorageItem().setFileAutoSaveLastModifiedDate(new Date(o.autosave_updated)),
-                                                          e.getStorageItem().setFileLastModifiedDate(new Date(o.updated)));
+                                                          document.getStorageItem().setFileAutoSaveLastModifiedDate(new Date(fileData.autosave_updated)),
+                                                          document.getStorageItem().setFileLastModifiedDate(new Date(fileData.updated)));
                                                   } finally {
-                                                      (r(T), t && t());
+                                                      (reportProgress(SAVE_PROGRESS_DONE), callback && callback());
                                                   }
                                               };
                                               designerConfig.gApi
-                                                  .getFile(u._id + "?edit")
-                                                  .then((e) => n(true, e))
-                                                  .catch(n);
+                                                  .getFile(storageItem._id + "?edit")
+                                                  .then((fileData) => result(true, fileData))
+                                                  .catch(result);
                                           },
-                                          function (e) {
-                                              m(e);
+                                          function (error) {
+                                              handleSaveFailure(error);
                                           },
-                                          (e) => {
-                                              r(x.calculateProgress(S, E, e / 100));
+                                          (percent) => {
+                                              reportProgress(GProgressUtil.calculateProgress(SAVE_PROGRESS_START, SAVE_PROGRESS_UPLOAD_END, percent / 100));
                                           },
-                                          l
+                                          saveOptions
                                       ));
                         });
                     } catch (e) {
-                        m(e);
+                        handleSaveFailure(e);
                     }
                 }
-                const p = () => {
-                    gDesigner.getUser().then((e) => {
-                        !e || gDesigner.isAnonymous() ? G.performLogin().then(u) : u();
+                const ensureLoginThenSave = () => {
+                    gDesigner.getUser().then((user) => {
+                        !user || gDesigner.isAnonymous() ? GCloudUtil.performLogin().then(trySave) : trySave();
                     });
                 };
-                gDesigner.isOffline() ? m.openUnavailableFeature(p) : p();
+                gDesigner.isOffline() ? GOfflineDialog.openUnavailableFeature(ensureLoginThenSave) : ensureLoginThenSave();
             }
-            static async updateFileThumbnail(e, t, n, i) {
-                var a = await designerConfig.gApi.signedPutUrls(e, { type_t: n, commit: i }),
-                    r = new XMLHttpRequest();
-                r.open("PUT", a.url_t);
-                var s = {
-                    "Content-Type": n,
+            static async updateFileThumbnail(fileId, data, contentType, commit) {
+                var signedUrls = await designerConfig.gApi.signedPutUrls(fileId, { type_t: contentType, commit: commit }),
+                    xhr = new XMLHttpRequest();
+                xhr.open("PUT", signedUrls.url_t);
+                var headers = {
+                    "Content-Type": contentType,
                     "Cache-Control": "public,max-age=31600000",
                 };
-                for (var l in s) r.setRequestHeader(l, s[l]);
-                r.send(t);
+                for (var l in headers) xhr.setRequestHeader(l, headers[l]);
+                xhr.send(data);
             }
-            static async saveDocumentAnnotations(e, t, n) {
+            static async saveDocumentAnnotations(document, t, n) {
                 return (
                     !!designerConfig.HAS_ANNOTATIONS &&
                     (gDesigner.isOffline()
                         ? (console.warn("Failed to record annotations"), false)
-                        : gDesigner.getUser().then((o) => !(!o || gDesigner.isAnonymous()) && h.saveDocumentAnnotations(e, t, void 0, n)))
+                        : gDesigner.getUser().then((user) => !(!user || gDesigner.isAnonymous()) && GAnnotationsApi.saveDocumentAnnotations(document, t, void 0, n)))
                 );
             }
             static async getCloudAnnotations(e) {
                 if (designerConfig.HAS_ANNOTATIONS) {
                     if (!gDesigner.isOffline())
-                        return gDesigner.getUser().then((e) => {
-                            e && gDesigner.isAnonymous();
+                        return gDesigner.getUser().then((user) => {
+                            user && gDesigner.isAnonymous();
                         });
                     console.warn("Failed to get annotations");
                 }
@@ -599,71 +599,71 @@ module.exports = function (module, exports, require) {
                 return "undefined" != typeof window && void 0 !== window.gApi && window.gApi.url;
             }
             static getRecentStorageItems() {
-                let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : designerConfig.FILE_FORMATS;
-                var t = this;
-                return new Promise((n, i) => {
+                let fileFormats = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : designerConfig.FILE_FORMATS;
+                var self = this;
+                return new Promise((resolve, reject) => {
                     !(async function () {
-                        const a = e.map((e) => e.type).join("|");
+                        const typesQuery = fileFormats.map((format) => format.type).join("|");
                         try {
-                            if (t.isOnline()) {
-                                var r = await designerConfig.gApi.listFiles({
-                                    type: a,
+                            if (self.isOnline()) {
+                                var files = await designerConfig.gApi.listFiles({
+                                    type: typesQuery,
                                     accessed: "true",
                                     sort: "-accessed",
                                     parent: "*",
                                     limit: "10",
                                 });
-                                n(r);
+                                resolve(files);
                             }
                         } catch (e) {}
-                        i([]);
+                        reject([]);
                     })();
                 });
             }
-            static unzipData(e) {
-                var t = null;
+            static unzipData(data) {
+                var result = null;
                 try {
-                    t = PDFNodeStream.ungzip(e, { to: "string" });
+                    result = pako.ungzip(data, { to: "string" });
                 } catch (a) {
-                    if ("undefined" == typeof TextDecoder && e.length > 1e7) {
-                        for (var n = [], o = e.length, i = 0; i < o; i += 32768)
-                            n.push(String.fromCharCode.apply(null, e.subarray(i, i + 32768)));
-                        t = n.join("");
+                    if ("undefined" == typeof TextDecoder && data.length > 1e7) {
+                        for (var chunks = [], length = data.length, i = 0; i < length; i += 32768)
+                            chunks.push(String.fromCharCode.apply(null, data.subarray(i, i + 32768)));
+                        result = chunks.join("");
                     } else
                         try {
-                            t =
+                            result =
                                 "undefined" == typeof TextDecoder
-                                    ? new FakeTextEncoding.TextDecoder("utf-8").decode(e)
-                                    : new TextDecoder("utf-8").decode(e);
+                                    ? new FakeTextEncoding.TextDecoder("utf-8").decode(data)
+                                    : new TextDecoder("utf-8").decode(data);
                         } catch (e) {
                             console.warn("Couldn't unzip data. Data corrupted?");
                         }
                 }
-                return t;
+                return result;
             }
-            static resendEmailConfirmation(e) {
-                let t, n;
-                if (gContainer.getRuntime() === p.Runtime.Electron) {
-                    const e = gContainer.getPlatform();
-                    (("darwin" !== e && "win32" !== e) || (t = "designer://"), (n = gDesigner.getAssetsURL()));
-                } else n = location.origin;
+            static resendEmailConfirmation(user) {
+                let appUrl, webUrl;
+                if (gContainer.getRuntime() === GRuntime.Runtime.Electron) {
+                    const platform = gContainer.getPlatform();
+                    (("darwin" !== platform && "win32" !== platform) || (appUrl = "designer://"), (webUrl = gDesigner.getAssetsURL()));
+                } else webUrl = location.origin;
                 return designerConfig.gApi
                     .resendEmailConfirmation({
-                        appUrl: t,
-                        webUrl: n,
-                        email: e.getEmail(),
+                        appUrl: appUrl,
+                        webUrl: webUrl,
+                        email: user.getEmail(),
                         force: true,
                         origin: location.origin,
                     })
                     .then(() => {
-                        let e = {},
-                            t = new Promise((t) => (e.resolve = t));
+                        let deferred = {},
+                            t = new Promise((t) => (deferred.resolve = t));
                         return (
                             GSystemDialog.custom({
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.email-sent-title")),
                                 subtitle: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.email-sent-info")),
                                 icon: "ok",
-                                closeCallback: () => e.resolve(),
+                                closeCallback: () => deferred.resolve(),
                             }),
                             t
                         );
@@ -675,40 +675,40 @@ module.exports = function (module, exports, require) {
                         })
                     );
             }
-            static createUint8ArrayFromBlob(e) {
-                return new Promise((t, n) => {
-                    const o = new FileReader();
-                    ((o.onload = function () {
-                        t(new Uint8Array(this.result));
+            static createUint8ArrayFromBlob(blob) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    ((reader.onload = function () {
+                        resolve(new Uint8Array(this.result));
                     }),
-                        (o.onerror = n),
-                        o.readAsArrayBuffer(e));
+                        (reader.onerror = reject),
+                        reader.readAsArrayBuffer(blob));
                 });
             }
-            static getFileDataForVersionOrAutoSave(e, t, n) {
-                return t && !n ? designerConfig.gApi.getFile(e, false, t) : designerConfig.gApi.getFile(e);
+            static getFileDataForVersionOrAutoSave(fileId, version, isAutoSave) {
+                return version && !isAutoSave ? designerConfig.gApi.getFile(fileId, false, version) : designerConfig.gApi.getFile(fileId);
             }
-            static async activateCoupon(e) {
+            static async activateCoupon(couponCode) {
                 try {
-                    const t = await designerConfig.gApi.coupon.activate(e);
-                    (await y.checkLicense(), gDesigner.addNotification({ message: t.message }));
-                } catch (e) {
-                    if (!e.ok && e.code)
-                        switch (e.code) {
+                    const result = await designerConfig.gApi.coupon.activate(couponCode);
+                    (await GLicenseApi.checkLicense(), gDesigner.addNotification({ message: result.message }));
+                } catch (error) {
+                    if (!error.ok && error.code)
+                        switch (error.code) {
                             case designerConfig.gApi.ERROR_CODES.ERR_SUBSCRIPTION_COULD_NOT_BE_DEACTIVATED:
-                                const e = $(
+                                const linkElement = $(
                                     "<div>".concat(
                                         GObject.GLocale.get(new GObject.GLocaleKey("GCloudUtil", "text.err-subscription-could-not-be-deactivated")),
                                         "</div>"
                                     )
                                 );
                                 return (
-                                    e
+                                    linkElement
                                         .find("a")
                                         .addClass("link")
                                         .attr("href", "javascript:void(0)")
-                                        .on("click", (e) => (e.preventDefault(), gDesigner.runDeepLink("purchases"), false)),
-                                    GSystemDialog.alert(e)
+                                        .on("click", (event) => (event.preventDefault(), gDesigner.runDeepLink("purchases"), false)),
+                                    GSystemDialog.alert(linkElement)
                                 );
                             case designerConfig.gApi.ERROR_CODES.ERR_SUBSCRIPTION_IS_ACTIVE:
                                 const { nextBillingDate } = await designerConfig.gApi.subscription.getNextBillingDate();
@@ -728,9 +728,9 @@ module.exports = function (module, exports, require) {
                             case designerConfig.gApi.ERROR_CODES.ERR_SUBSCRIPTION_IS_LIFETIME:
                                 return GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GCloudUtil", "text.err-subscription-is-lifetime")));
                         }
-                    gDesigner.addNotification({ message: designerConfig.gApi.formatError(e) });
+                    gDesigner.addNotification({ message: designerConfig.gApi.formatError(error) });
                 }
             }
         }
-        module.exports = G;
+        module.exports = GCloudUtil;
     };

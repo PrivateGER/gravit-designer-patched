@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
         var o = require(176),
             IsFiniteNonNegativeNumber = require(0);
         require(10 /* designerConfig */);
-        var GDocument = require(237),
+        var GStorage = require(237),
             r = require(1117).saveAs,
             s = null,
             l = null;
@@ -19,11 +19,11 @@ module.exports = function (module, exports, require) {
                     if ("granted" !== e) throw new Error("Cannot get write access");
                 });
         }
-        (IsFiniteNonNegativeNumber.inherit(c, GDocument),
+        (IsFiniteNonNegativeNumber.inherit(c, GStorage),
             (c.Directory = function (e, t) {
-                (GDocument.Directory.call(this, e), (this._dirHandle = t), (this._id = null));
+                (GStorage.Directory.call(this, e), (this._dirHandle = t), (this._id = null));
             }),
-            IsFiniteNonNegativeNumber.inherit(c.Directory, GDocument.Directory),
+            IsFiniteNonNegativeNumber.inherit(c.Directory, GStorage.Directory),
             (c.Directory.prototype._dirHandle = null),
             (c.Directory.prototype._id = null),
             (c.Directory.prototype.getUniqueId = function () {
@@ -46,9 +46,9 @@ module.exports = function (module, exports, require) {
                 }
             }),
             (c.Item = function (e, t, n, o) {
-                (GDocument.Item.call(this, e), (this._data = t), (this._filename = n), (this._fileHandle = o));
+                (GStorage.Item.call(this, e), (this._data = t), (this._filename = n), (this._fileHandle = o));
             }),
-            IsFiniteNonNegativeNumber.inherit(c.Item, GDocument.Item),
+            IsFiniteNonNegativeNumber.inherit(c.Item, GStorage.Item),
             (c.Item.prototype._data = null),
             (c.Item.prototype._filename = null),
             (c.Item.prototype._fileHandle = null),

@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(3), require(4), require(13));
         var GObject = require(1),
-            GSaveAction = require(40),
+            Utils = require(40),
             a = require(1156),
             r = require(444),
             s = require(339),
@@ -17,7 +17,7 @@ module.exports = function (module, exports, require) {
             const n = (e) => {
                     e.cancelable || (e.stopImmediatePropagation(), "touchmove" === e.type && this.closeMenus(true));
                 },
-                o = !!(0, GSaveAction.isPassiveSupported)() && { capture: false, passive: true };
+                o = !!(0, Utils.isPassiveSupported)() && { capture: false, passive: true };
             (this._htmlElement[0].addEventListener("touchstart", n, o),
                 this._htmlElement[0].addEventListener("touchmove", n, o),
                 this._htmlElement[0].addEventListener("touchend", n, o),

@@ -5,8 +5,8 @@ module.exports = function (module, exports, require) {
             { GPlatform } = require(15 /* GPlatform */),
             a = require(1355),
             r = require(1191),
-            GAnnotationPanel = require(1356),
-            l = require(1357 /* GAnnotationPanel */),
+            GAnnotationRow = require(1356),
+            GAnnotationReplyDocker = require(1357),
             { handleCollabsData } = (require(536), require(882)),
             d = require(1354),
             u = require(434);
@@ -27,10 +27,10 @@ module.exports = function (module, exports, require) {
             (p.prototype.isEditingOrAddingContent = function () {
                 return (
                     !!this.getChildren()
-                        .filter((e) => e instanceof l)
+                        .filter((e) => e instanceof GAnnotationReplyDocker)
                         .some((e) => e.isVisible()) ||
                     !!this.getChildren()
-                        .filter((e) => e instanceof GAnnotationPanel)
+                        .filter((e) => e instanceof GAnnotationRow)
                         .some((e) => e.isEditMode())
                 );
             }),
@@ -75,7 +75,7 @@ module.exports = function (module, exports, require) {
                     i = o && o.options;
                 (n &&
                     n.forEach((n) => {
-                        n instanceof GAnnotationPanel && !n.isParentAnnotationResolved() && (n.isRead() || t++, e++);
+                        n instanceof GAnnotationRow && !n.isParentAnnotationResolved() && (n.isRead() || t++, e++);
                     }),
                     i && i.updateCommentCount && i.updateCommentCount(e, t));
             }),

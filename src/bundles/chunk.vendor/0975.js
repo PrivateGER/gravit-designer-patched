@@ -1,8 +1,8 @@
 module.exports = function (module, exports, require) {
             "use strict";
             (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34));
-            const n = require(706),
-                GPaywallDialog = require(707),
+            const GReminderDialog = require(706),
+                GCloudUiPaywallDialog = require(707),
                 o = require(417 /* gApi */).self(),
                 a = require(354),
                 s = require(170),
@@ -14,7 +14,7 @@ module.exports = function (module, exports, require) {
                 }
                 static async newProExpireSoon(e) {
                     let { impl, now } = e;
-                    return new GPaywallDialog({
+                    return new GCloudUiPaywallDialog({
                         type: "reminder/accessending",
                         impl: impl,
                         gApi: o,
@@ -26,7 +26,7 @@ module.exports = function (module, exports, require) {
                     let { impl: t, now: i } = e;
                     return (
                         s.setLanguage(t.getLanguage()),
-                        new n({
+                        new GReminderDialog({
                             page: "reminder/proexpired",
                             title: s.getValue("GReminderDialog", "text.subscription-expired"),
                             dismiss: false,
@@ -40,7 +40,7 @@ module.exports = function (module, exports, require) {
                     let { impl: t, now: i } = e;
                     return (
                         s.setLanguage(t.getLanguage()),
-                        new n({
+                        new GReminderDialog({
                             page: "reminder/trialexpired",
                             title: s.getValue("GReminderDialog", "text.upgrade-screen"),
                             closeable: true,
@@ -55,7 +55,7 @@ module.exports = function (module, exports, require) {
                     s.setLanguage(t.getLanguage());
                     const r = await t.getLicense().catch((e) => null),
                         o = this._getNewTrialMessageTitle(r, i);
-                    return new n({
+                    return new GReminderDialog({
                         impl: t,
                         page: "reminder/trialmessage",
                         title: o,
@@ -63,7 +63,7 @@ module.exports = function (module, exports, require) {
                         withFooter: false,
                         dismiss: false,
                         content: {
-                            type: n.ContentType.Web,
+                            type: GReminderDialog.ContentType.Web,
                             data: TRIAL_MESSAGE_WEB_CONTENT_URL_TEMPLATE.replace("%lang", s.getLocaleTagISO6391()),
                         },
                     });
@@ -72,14 +72,14 @@ module.exports = function (module, exports, require) {
                     let { impl: t, now: i } = e;
                     return (
                         s.setLanguage(t.getLanguage()),
-                        new n({
+                        new GReminderDialog({
                             page: "reminder/upgrade",
                             title: s.getValue("GReminderDialog", "text.upgrade-screen"),
                             closeable: true,
                             dismiss: false,
                             withFooter: false,
                             content: {
-                                type: n.ContentType.Web,
+                                type: GReminderDialog.ContentType.Web,
                                 data: UPGRADE_SCREEN_WEB_CONTENT_URL_TEMPLATE.replace("%lang", s.getLocaleTagISO6391()),
                             },
                             impl: t,

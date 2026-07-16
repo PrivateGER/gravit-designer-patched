@@ -9,14 +9,19 @@
         "@babel/parser": "^7.29.7",
         "@babel/traverse": "^7.29.7",
         "acorn": "^8.17.0",
+        "playwright-core": "^1.61.1",
         "prettier": "^3.6.2"
     },
     "scripts": {
         "start": "node server.js",
-        "build": "node scripts/build-bundle.js",
+        "build": "node scripts/build-bundle.js && node scripts/sync-cacher.js",
         "split": "node scripts/split-bundle.js",
         "name": "node scripts/name-modules.js",
         "refine": "node scripts/refine-bundle.js",
-        "verify-refine": "node scripts/verify-refine.js"
+        "verify-refine": "node scripts/verify-refine.js",
+        "sync-cacher": "node scripts/sync-cacher.js",
+        "where": "node scripts/where.js",
+        "rename": "node scripts/rename-module.js",
+        "test": "node test/smoke.js"
     }
 }

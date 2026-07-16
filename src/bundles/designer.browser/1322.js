@@ -3,17 +3,17 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(19), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(13), require(32), require(38), require(97), require(33), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1),
-            a = _interopRequireDefault(require(256 /* GOfflineDialog */)),
-            r = _interopRequireDefault(require(355)),
-            GSaveAction = require(40);
+            GOfflineDialog = _interopRequireDefault(require(256 /* GOfflineDialog */)),
+            AppError = _interopRequireDefault(require(355)),
+            Utils = require(40);
         const GSystemDialog = require(44),
-            c = require(292),
-            d = require(78),
-            u = require(217),
-            GCommonNames = require(220),
-            g = require(393),
-            h = require(1323),
-            f = require(86),
+            GUserLoggedEvent = require(292),
+            GDocumentEvent = require(78),
+            GDocumentStatusEvent = require(217),
+            GCloudStorage = require(220),
+            GCollaborationEvent = require(393),
+            GShareStateChangedEvent = require(1323),
+            DocumentStatus = require(86),
             {
                 DESIGNER,
                 SHARE_ENGINE,
@@ -25,297 +25,297 @@ module.exports = function (module, exports, require) {
                 LEGACY_SHARE_DIALOG,
                 ENABLE_REQUEST_ACCESS,
             } = require(10 /* designerConfig */),
-            E = require(433),
-            A = require(1324),
-            T = require(177),
-            G = require(1565),
-            P = require(868),
-            D = require(536),
-            GDocument = require(237),
-            I = require(LEGACY_SHARE_DIALOG ? 1566 : 1567);
-        function k() {
-            (SHARE_ENGINE && (gDesigner.addEventListener(c, this._userEvent, this), gDesigner.addEventListener(d, this._documentEvent, this)),
+            GShareRole = require(433),
+            Collaborator = require(1324),
+            GUser = require(177),
+            ShareState = require(1565),
+            GShareEvent = require(868),
+            AsyncCache = require(536),
+            GStorage = require(237),
+            ShareDialog = require(LEGACY_SHARE_DIALOG ? 1566 : 1567);
+        function GShareManager() {
+            (SHARE_ENGINE && (gDesigner.addEventListener(GUserLoggedEvent, this._userEvent, this), gDesigner.addEventListener(GDocumentEvent, this._documentEvent, this)),
                 (this._states = new Map()),
                 (this._isDefaulNotificationAlreadyShown = new Map()));
         }
-        ((k.prototype._states = null),
-            (k.prototype._requestAccessDialog = null),
-            (k.prototype._requestPermissionDialog = null),
-            (k.prototype._requestEmailHasBeenSent = false),
-            (k.prototype._collaboratorsCached = {}),
-            (k.prototype.share = function (e, t) {
-                const n = this,
-                    o = e instanceof GDocument.Item,
-                    i = async function () {
-                        let i = null;
-                        if (o) i = e;
+        ((GShareManager.prototype._states = null),
+            (GShareManager.prototype._requestAccessDialog = null),
+            (GShareManager.prototype._requestPermissionDialog = null),
+            (GShareManager.prototype._requestEmailHasBeenSent = false),
+            (GShareManager.prototype._collaboratorsCached = {}),
+            (GShareManager.prototype.share = function (documentOrItem, callback) {
+                const self = this,
+                    isItem = documentOrItem instanceof GStorage.Item,
+                    performShare = async function () {
+                        let item = null;
+                        if (isItem) item = documentOrItem;
                         else {
-                            const t = e || gDesigner.getActiveDocument();
-                            i = t && t.getStorageItem();
+                            const doc = documentOrItem || gDesigner.getActiveDocument();
+                            item = doc && doc.getStorageItem();
                         }
-                        (i.supportsExternalSharing() && (await n._syncExternalPermissions(i)),
-                            n._openShareDialog(await gDesigner.getUser(), i, t));
+                        (item.supportsExternalSharing() && (await self._syncExternalPermissions(item)),
+                            self._openShareDialog(await gDesigner.getUser(), item, callback));
                     };
                 gDesigner.isOffline()
-                    ? a.default.openUnavailableFeature(i)
+                    ? GOfflineDialog.default.openUnavailableFeature(performShare)
                     : this.isShareProRestricted()
                       ? gDesigner.handlePROFeatureInterruption()
-                      : i();
+                      : performShare();
             }),
-            (k.prototype._openShareDialog = async function (e, t, n) {
-                const o = new I(e, t, n);
-                await o.open();
+            (GShareManager.prototype._openShareDialog = async function (user, item, callback) {
+                const dialog = new ShareDialog(user, item, callback);
+                await dialog.open();
             }),
-            (k.prototype._documentEvent = async function (e) {
-                const t = e.document;
-                if (!t || !t.isLockedByVersionHistory())
-                    switch (e.type) {
-                        case d.Type.Activated:
-                            (await this._checkAccessAndUpdateState(t)) &&
-                                (this._showDefaultNotification(t),
-                                t.removeEventListener(g, this._collaborationEvent, this),
-                                t.addEventListener(g, this._collaborationEvent, this));
+            (GShareManager.prototype._documentEvent = async function (event) {
+                const document = event.document;
+                if (!document || !document.isLockedByVersionHistory())
+                    switch (event.type) {
+                        case GDocumentEvent.Type.Activated:
+                            (await this._checkAccessAndUpdateState(document)) &&
+                                (this._showDefaultNotification(document),
+                                document.removeEventListener(GCollaborationEvent, this._collaborationEvent, this),
+                                document.addEventListener(GCollaborationEvent, this._collaborationEvent, this));
                             break;
-                        case d.Type.Deactivated:
-                            t.removeEventListener(g, this._collaborationEvent, this);
+                        case GDocumentEvent.Type.Deactivated:
+                            document.removeEventListener(GCollaborationEvent, this._collaborationEvent, this);
                             break;
-                        case d.Type.Removed:
-                            (t.getId() && delete this._collaboratorsCached[t.getId()], this._states.delete(t));
+                        case GDocumentEvent.Type.Removed:
+                            (document.getId() && delete this._collaboratorsCached[document.getId()], this._states.delete(document));
                             break;
-                        case d.Type.StorageItemUpdated: {
-                            t.isShareable() && t.lock();
-                            const e = async (n) => {
-                                if (n.status !== f.Loading)
+                        case GDocumentEvent.Type.StorageItemUpdated: {
+                            document.isShareable() && document.lock();
+                            const onStorageStatusChange = async (statusEvent) => {
+                                if (statusEvent.status !== DocumentStatus.Loading)
                                     try {
-                                        (t.removeEventListener(u, e),
-                                            (await this._checkAccessAndUpdateState(t)) && this._showDefaultNotification(t));
+                                        (document.removeEventListener(GDocumentStatusEvent, onStorageStatusChange),
+                                            (await this._checkAccessAndUpdateState(document)) && this._showDefaultNotification(document));
                                     } finally {
-                                        t.unlock();
+                                        document.unlock();
                                     }
                             };
-                            t.addEventListener(u, e);
+                            document.addEventListener(GDocumentStatusEvent, onStorageStatusChange);
                             break;
                         }
                     }
             }),
-            (k.prototype.isPermissionRequestEnabled = function () {
+            (GShareManager.prototype.isPermissionRequestEnabled = function () {
                 return ENABLE_REQUEST_ACCESS && !gDesigner.getLicense().isGuest();
             }),
-            (k.prototype.getRole = function (e) {
-                e = e || gDesigner.getActiveDocument();
-                const { role } = this._getState(e);
-                return role || E.ROLES.NO_ACCESS_ROLE;
+            (GShareManager.prototype.getRole = function (document) {
+                document = document || gDesigner.getActiveDocument();
+                const { role } = this._getState(document);
+                return role || GShareRole.ROLES.NO_ACCESS_ROLE;
             }),
-            (k.prototype._collaborationEvent = async function (e) {
-                const { sender, type } = e;
+            (GShareManager.prototype._collaborationEvent = async function (event) {
+                const { sender, type } = event;
                 if (sender === gDesigner.getActiveDocument())
                     switch (type) {
-                        case g.Type.ShareUpdate:
+                        case GCollaborationEvent.Type.ShareUpdate:
                             (this.resetCollaboratorsCached(sender), this._getState(sender).sharing || (await this._updateState(sender)));
-                            const e = this.getRole(sender);
+                            const previousRole = this.getRole(sender);
                             if (await this._checkAccessAndUpdateState(sender)) {
-                                const n = this.getRole(sender);
-                                e.equals(n) || (sender.getStatus() !== f.Loading && this._showRoleNotification(sender));
+                                const newRole = this.getRole(sender);
+                                previousRole.equals(newRole) || (sender.getStatus() !== DocumentStatus.Loading && this._showRoleNotification(sender));
                             }
                             break;
-                        case g.Type.UserUpdate:
+                        case GCollaborationEvent.Type.UserUpdate:
                             this._updateRealtimeCollaborators(sender);
                     }
             }),
-            (k.prototype._userEvent = async function () {
-                const e = gDesigner.getActiveDocument();
-                e && (await this._updateState(e), this._showDefaultNotification(e));
+            (GShareManager.prototype._userEvent = async function () {
+                const document = gDesigner.getActiveDocument();
+                document && (await this._updateState(document), this._showDefaultNotification(document));
             }),
-            (k.prototype._showRoleNotification = function (e) {
-                if (!e) return;
-                const t = this.getRole(e);
-                if (!t) return;
-                const n = GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.new-role-is-".concat(t.getId())));
-                n &&
+            (GShareManager.prototype._showRoleNotification = function (document) {
+                if (!document) return;
+                const role = this.getRole(document);
+                if (!role) return;
+                const message = GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.new-role-is-".concat(role.getId())));
+                message &&
                     gDesigner.addNotification({
-                        document: e,
-                        message: n,
+                        document: document,
+                        message: message,
                         anonymous: gDesigner.isAnonymous(),
                         popup: true,
                     });
             }),
-            (k.prototype._showDefaultNotification = async function (e) {
-                if (!e) return;
+            (GShareManager.prototype._showDefaultNotification = async function (document) {
+                if (!document) return;
                 if (
-                    (void 0 === this._isDefaulNotificationAlreadyShown.get(e.sessionId) &&
-                        this._isDefaulNotificationAlreadyShown.set(e.sessionId, false),
-                    this._isDefaulNotificationAlreadyShown.get(e.sessionId))
+                    (void 0 === this._isDefaulNotificationAlreadyShown.get(document.sessionId) &&
+                        this._isDefaulNotificationAlreadyShown.set(document.sessionId, false),
+                    this._isDefaulNotificationAlreadyShown.get(document.sessionId))
                 )
                     return;
-                const t = e.isDocumentFromTemplate() && e.isShared();
-                let n;
-                if (t) n = { name: DESIGNER.TITLE };
+                const isSharedTemplate = document.isDocumentFromTemplate() && document.isShared();
+                let owner;
+                if (isSharedTemplate) owner = { name: DESIGNER.TITLE };
                 else {
-                    const t = await gDesigner.getUser(),
-                        o = await this._getFileExtended(e);
-                    if (t && o) {
-                        o.getPrivateShareList().some((e) => {
-                            if (e.owner && e.id !== t.getUID()) return ((n = { name: e.name || e.email, id: e.id }), true);
+                    const currentUser = await gDesigner.getUser(),
+                        fileExtended = await this._getFileExtended(document);
+                    if (currentUser && fileExtended) {
+                        fileExtended.getPrivateShareList().some((share) => {
+                            if (share.owner && share.id !== currentUser.getUID()) return ((owner = { name: share.name || share.email, id: share.id }), true);
                         });
-                        const e = new URL(location.href).searchParams.get("token");
-                        if (e) {
-                            const i = o.getPublicShare();
-                            if (i && i.token === e) {
-                                const e = i.shared_by;
-                                e && e.id && e.id !== t.getUID() && (n = e);
+                        const token = new URL(location.href).searchParams.get("token");
+                        if (token) {
+                            const publicShare = fileExtended.getPublicShare();
+                            if (publicShare && publicShare.token === token) {
+                                const sharedBy = publicShare.shared_by;
+                                sharedBy && sharedBy.id && sharedBy.id !== currentUser.getUID() && (owner = sharedBy);
                             }
                         }
                     }
                 }
-                if (n) {
-                    e.setOwner(n);
-                    const o = [];
-                    if (t) o.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.template-shared-by")).replace("%name", n.name));
-                    else if ((o.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.shared-by")).replace("%name", n.name)), !LEGACY_SHARE_DIALOG)) {
-                        const t = this.getRole(e);
-                        t && t.getStatus() && o.push(t.getStatus());
+                if (owner) {
+                    document.setOwner(owner);
+                    const messages = [];
+                    if (isSharedTemplate) messages.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.template-shared-by")).replace("%name", owner.name));
+                    else if ((messages.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.shared-by")).replace("%name", owner.name)), !LEGACY_SHARE_DIALOG)) {
+                        const role = this.getRole(document);
+                        role && role.getStatus() && messages.push(role.getStatus());
                     }
                     if (LEGACY_SHARE_DIALOG) {
-                        const t = this._getState(e);
-                        t.copy || t.inspect
-                            ? (t.copy || o.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.save-warning"))),
-                              t.inspect || o.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.inspect-warning"))))
-                            : o.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.combined-warnings")));
+                        const state = this._getState(document);
+                        state.copy || state.inspect
+                            ? (state.copy || messages.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.save-warning"))),
+                              state.inspect || messages.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.inspect-warning"))))
+                            : messages.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.combined-warnings")));
                     }
-                    o.length &&
+                    messages.length &&
                         gDesigner.addNotification({
-                            document: e,
-                            message: o.join(" "),
+                            document: document,
+                            message: messages.join(" "),
                             anonymous: gDesigner.isAnonymous(),
                             popup: true,
                             closeCallback: () => {
-                                this._isDefaulNotificationAlreadyShown.set(e.sessionId, true);
+                                this._isDefaulNotificationAlreadyShown.set(document.sessionId, true);
                             },
                         });
                 }
             }),
-            (k.prototype._canAccess = async function (e) {
-                return !!(await this._getFileExtended(e).catch(() => false));
+            (GShareManager.prototype._canAccess = async function (document) {
+                return !!(await this._getFileExtended(document).catch(() => false));
             }),
-            (k.prototype.getRealtimeCollaborators = async function (e) {
+            (GShareManager.prototype.getRealtimeCollaborators = async function (file) {
                 return gApi.realtime
-                    .getCollaborators(e.id, { anonymous: false })
-                    .then((t) =>
-                        t.map((t) => {
-                            const n = ((t) => {
-                                const n = e.getPrivateShare(t.access_id);
-                                if (n) return E.makeFromShare(n);
-                                const o = e.getPublicShare();
-                                return o ? E.makeFromShare(o) : E.makeFromShareRole(ShareRoles.NoAccess);
-                            })(t);
-                            return new A(Object.assign(t, { role: n }));
+                    .getCollaborators(file.id, { anonymous: false })
+                    .then((collaborators) =>
+                        collaborators.map((record) => {
+                            const role = ((record) => {
+                                const privateShare = file.getPrivateShare(record.access_id);
+                                if (privateShare) return GShareRole.makeFromShare(privateShare);
+                                const publicShare = file.getPublicShare();
+                                return publicShare ? GShareRole.makeFromShare(publicShare) : GShareRole.makeFromShareRole(ShareRoles.NoAccess);
+                            })(record);
+                            return new Collaborator(Object.assign(record, { role: role }));
                         })
                     )
                     .catch(() => []);
             }),
-            (k.prototype._getFileExtended = function (e) {
-                return gDesigner.getCloudCommunicationManager().getFileExtendedCached(e);
+            (GShareManager.prototype._getFileExtended = function (document) {
+                return gDesigner.getCloudCommunicationManager().getFileExtendedCached(document);
             }),
-            (k.prototype._getCollaborators = async function (e) {
-                const t = await this._getFileExtended(e);
-                if (!t) return null;
-                let n = [];
+            (GShareManager.prototype._getCollaborators = async function (document) {
+                const file = await this._getFileExtended(document);
+                if (!file) return null;
+                let collaborators = [];
                 return (
-                    (n = n.concat(await this._getFileCollaboratorsAsUsers(t))),
-                    (n = n.concat(this._getInvitedCollaboratorsAsUsers(t))),
-                    n
+                    (collaborators = collaborators.concat(await this._getFileCollaboratorsAsUsers(file))),
+                    (collaborators = collaborators.concat(this._getInvitedCollaboratorsAsUsers(file))),
+                    collaborators
                 );
             }),
-            (k.prototype._getInvitedCollaboratorsAsUsers = function (e) {
-                return e.getInvitedShareList().map((e) => {
-                    const t = E.makeFromShare(e),
-                        n = new T({ id: e.email });
-                    return (n.setRole(t), n);
+            (GShareManager.prototype._getInvitedCollaboratorsAsUsers = function (file) {
+                return file.getInvitedShareList().map((share) => {
+                    const role = GShareRole.makeFromShare(share),
+                        user = new GUser({ id: share.email });
+                    return (user.setRole(role), user);
                 });
             }),
-            (k.prototype._getFileCollaboratorsAsUsers = function (e) {
+            (GShareManager.prototype._getFileCollaboratorsAsUsers = function (file) {
                 return gDesigner
                     .getCloudCommunicationManager()
-                    .getCollaborators(e.id)
-                    .then((t) =>
-                        t.map((t) => {
-                            const n = new T(t),
-                                o = ((t) => {
-                                    const n = e.getPrivateShare(t.getUID());
-                                    if (n) return E.makeFromShare(n);
-                                    const o = e.getPublicShare();
-                                    return o ? E.makeFromShare(o) : E.makeFromShareRole(ShareRoles.NoAccess);
-                                })(n);
-                            return (n.setRole(o), n);
+                    .getCollaborators(file.id)
+                    .then((collaborators) =>
+                        collaborators.map((record) => {
+                            const user = new GUser(record),
+                                role = ((user) => {
+                                    const privateShare = file.getPrivateShare(user.getUID());
+                                    if (privateShare) return GShareRole.makeFromShare(privateShare);
+                                    const publicShare = file.getPublicShare();
+                                    return publicShare ? GShareRole.makeFromShare(publicShare) : GShareRole.makeFromShareRole(ShareRoles.NoAccess);
+                                })(user);
+                            return (user.setRole(role), user);
                         })
                     )
                     .catch(() => []);
             }),
-            (k.prototype.resetCollaboratorsCached = function (e) {
-                if ((e = e || gDesigner.getActiveDocument()) && e.getId()) {
-                    const t = this._collaboratorsCached[e.getId()];
-                    t && t.reset();
+            (GShareManager.prototype.resetCollaboratorsCached = function (document) {
+                if ((document = document || gDesigner.getActiveDocument()) && document.getId()) {
+                    const cache = this._collaboratorsCached[document.getId()];
+                    cache && cache.reset();
                 }
             }),
-            (k.prototype.getCollaboratorsCached = async function (e) {
-                return (e = e || gDesigner.getActiveDocument()) && e.getId()
-                    ? (this._collaboratorsCached[e.getId()] ||
-                          (this._collaboratorsCached[e.getId()] = new D(() => this._getCollaborators(e))),
-                      this._collaboratorsCached[e.getId()].get())
+            (GShareManager.prototype.getCollaboratorsCached = async function (document) {
+                return (document = document || gDesigner.getActiveDocument()) && document.getId()
+                    ? (this._collaboratorsCached[document.getId()] ||
+                          (this._collaboratorsCached[document.getId()] = new AsyncCache(() => this._getCollaborators(document))),
+                      this._collaboratorsCached[document.getId()].get())
                     : [];
             }),
-            (k.prototype.getPrivateInvitedShareList = async function (e) {
-                const t = await this._getFileExtended(e);
-                return this._getPrivateInvitedShareListForFile(t);
+            (GShareManager.prototype.getPrivateInvitedShareList = async function (document) {
+                const file = await this._getFileExtended(document);
+                return this._getPrivateInvitedShareListForFile(file);
             }),
-            (k.prototype.getRoleNameByUserId = async function (e) {
-                const t = gDesigner.getActiveDocument();
-                if (!t.isCloudFile() && !t.isExternalFile()) return E.ROLES.OWNER_ROLE.getName();
-                const n = await this.getCollaboratorById(e);
-                return ((n && n.getRole()) || E.ROLES.NO_ACCESS_ROLE).getName();
+            (GShareManager.prototype.getRoleNameByUserId = async function (userId) {
+                const document = gDesigner.getActiveDocument();
+                if (!document.isCloudFile() && !document.isExternalFile()) return GShareRole.ROLES.OWNER_ROLE.getName();
+                const collaborator = await this.getCollaboratorById(userId);
+                return ((collaborator && collaborator.getRole()) || GShareRole.ROLES.NO_ACCESS_ROLE).getName();
             }),
-            (k.prototype.getCollaboratorById = async function (e) {
-                let t = null;
-                const n = await this.getCollaboratorsCached();
-                return (n && (t = n.find((t) => t.getUID() === e)), t);
+            (GShareManager.prototype.getCollaboratorById = async function (userId) {
+                let found = null;
+                const collaborators = await this.getCollaboratorsCached();
+                return (collaborators && (found = collaborators.find((collaborator) => collaborator.getUID() === userId)), found);
             }),
-            (k.prototype._getPrivateInvitedShareListForFile = function (e) {
-                if (!e) return null;
-                const t = e.getPrivateShareList(),
-                    n = (e.getInvitedShareList && e.getInvitedShareList()) || [];
-                return t.concat(n);
+            (GShareManager.prototype._getPrivateInvitedShareListForFile = function (file) {
+                if (!file) return null;
+                const privateShares = file.getPrivateShareList(),
+                    invitedShares = (file.getInvitedShareList && file.getInvitedShareList()) || [];
+                return privateShares.concat(invitedShares);
             }),
-            (k.prototype.updateStateForDocument = function (e) {
-                this._updateState(e);
+            (GShareManager.prototype.updateStateForDocument = function (document) {
+                this._updateState(document);
             }),
-            (k.prototype._updateState = async function (e) {
-                const t = this._createDefaultShareStateForDoc(e),
-                    n = e && e.getStorageItem(),
-                    o = await gDesigner.getUser();
-                if (!o) return this._setState(e, t);
-                if (e && e.isDocumentFromTemplate() && e.isShared()) this._applyStateFromTemplate(t);
-                else if (n instanceof GCommonNames.Item) {
-                    const n = await this._getFileExtended(e);
-                    n && (await this._applyStateFromFile(o, n, t));
-                } else if (n && n.getId() && n.supportsSharing() && n.supportsShadowFile()) {
-                    const n = await this._getFileExtended(e);
-                    n && ((t.share = true), await this._applyStateFromFile(o, n, t));
-                } else await this._getFileExtended(e);
-                (this._setState(e, t), gDesigner.hasEventListeners(P) && gDesigner.trigger(new P(P.Type.Updated)));
+            (GShareManager.prototype._updateState = async function (document) {
+                const state = this._createDefaultShareStateForDoc(document),
+                    storageItem = document && document.getStorageItem(),
+                    user = await gDesigner.getUser();
+                if (!user) return this._setState(document, state);
+                if (document && document.isDocumentFromTemplate() && document.isShared()) this._applyStateFromTemplate(state);
+                else if (storageItem instanceof GCloudStorage.Item) {
+                    const file = await this._getFileExtended(document);
+                    file && (await this._applyStateFromFile(user, file, state));
+                } else if (storageItem && storageItem.getId() && storageItem.supportsSharing() && storageItem.supportsShadowFile()) {
+                    const file = await this._getFileExtended(document);
+                    file && ((state.share = true), await this._applyStateFromFile(user, file, state));
+                } else await this._getFileExtended(document);
+                (this._setState(document, state), gDesigner.hasEventListeners(GShareEvent) && gDesigner.trigger(new GShareEvent(GShareEvent.Type.Updated)));
             }),
-            (k.prototype._createDefaultShareStateForDoc = function (e) {
-                return new G(
-                    Object.assign({}, this._getState(e), {
+            (GShareManager.prototype._createDefaultShareStateForDoc = function (document) {
+                return new ShareState(
+                    Object.assign({}, this._getState(document), {
                         owner: true,
                         share: false,
                         sharing: false,
-                        role: E.ROLES.OWNER_ROLE,
+                        role: GShareRole.ROLES.OWNER_ROLE,
                         isPrivate: true,
                     })
                 );
             }),
-            (k.prototype._applyStateFromTemplate = function (e) {
-                return Object.assign(e, {
+            (GShareManager.prototype._applyStateFromTemplate = function (state) {
+                return Object.assign(state, {
                     edit: true,
                     inspect: true,
                     copy: true,
@@ -326,16 +326,16 @@ module.exports = function (module, exports, require) {
                     realtimeCollaborators: [],
                 });
             }),
-            (k.prototype._applyStateFromFile = async function (e, t, n) {
-                if (!t) throw new r.default("File object is required");
-                const o = (0, GSaveAction.getFileStateAndRole)(e, t, n);
-                let i = o.role;
-                const { state } = o;
-                if (!i) {
-                    const e = t.getPublicShare();
-                    if (e) {
-                        const { copy, inspect, comment, edit } = e;
-                        ((i = E.makeFromShare(e)),
+            (GShareManager.prototype._applyStateFromFile = async function (user, file, baseState) {
+                if (!file) throw new AppError.default("File object is required");
+                const result = (0, Utils.getFileStateAndRole)(user, file, baseState);
+                let role = result.role;
+                const { state } = result;
+                if (!role) {
+                    const publicShare = file.getPublicShare();
+                    if (publicShare) {
+                        const { copy, inspect, comment, edit } = publicShare;
+                        ((role = GShareRole.makeFromShare(publicShare)),
                             Object.assign(state, {
                                 owner: false,
                                 edit: edit,
@@ -345,68 +345,68 @@ module.exports = function (module, exports, require) {
                             }));
                     }
                 }
-                state.role = i || E.ROLES.NO_ACCESS_ROLE;
-                const l = await this.getRealtimeCollaborators(t);
-                Object.assign(state, { realtimeCollaborators: l });
+                state.role = role || GShareRole.ROLES.NO_ACCESS_ROLE;
+                const realtimeCollaborators = await this.getRealtimeCollaborators(file);
+                Object.assign(state, { realtimeCollaborators: realtimeCollaborators });
             }),
-            (k.prototype._updateRealtimeCollaborators = async function (e) {
-                const t = await this._getFileExtended(e);
-                if (t) {
-                    const n = await this.getRealtimeCollaborators(t);
-                    this._setState(e, new G(Object.assign({}, this._getState(e), { realtimeCollaborators: n })));
+            (GShareManager.prototype._updateRealtimeCollaborators = async function (document) {
+                const file = await this._getFileExtended(document);
+                if (file) {
+                    const realtimeCollaborators = await this.getRealtimeCollaborators(file);
+                    this._setState(document, new ShareState(Object.assign({}, this._getState(document), { realtimeCollaborators: realtimeCollaborators })));
                 }
             }),
-            (k.prototype._setState = function (e, t) {
-                (this._states.set(e, t), gDesigner.hasEventListeners(h) && gDesigner.trigger(new h(e, t)));
+            (GShareManager.prototype._setState = function (document, state) {
+                (this._states.set(document, state), gDesigner.hasEventListeners(GShareStateChangedEvent) && gDesigner.trigger(new GShareStateChangedEvent(document, state)));
             }),
-            (k.prototype._getState = function (e) {
-                return this._states.get(e) || new G();
+            (GShareManager.prototype._getState = function (document) {
+                return this._states.get(document) || new ShareState();
             }),
-            (k.prototype._checkAccessAndUpdateState = async function (e) {
-                if (!(await this._requestAccessIfAbsent(e))) return false;
+            (GShareManager.prototype._checkAccessAndUpdateState = async function (document) {
+                if (!(await this._requestAccessIfAbsent(document))) return false;
                 this._closeRequestAccessDialog();
-                const t = this.getRole(e);
-                await this._updateState(e);
-                const n = this.getRole(e);
+                const previousRole = this.getRole(document);
+                await this._updateState(document);
+                const newRole = this.getRole(document);
                 return (
-                    (t && t.equals(n)) || this._requestPermissionToCommentIfAbsent(e),
-                    (await this._isUserUnableToOperateSystem(e)) && this._openRequestAccessDialog(e),
+                    (previousRole && previousRole.equals(newRole)) || this._requestPermissionToCommentIfAbsent(document),
+                    (await this._isUserUnableToOperateSystem(document)) && this._openRequestAccessDialog(document),
                     true
                 );
             }),
-            (k.prototype._isUserUnableToOperateSystem = async function (e) {
-                if (!e.getId()) return false;
-                var t = await this._getShareLevelForCurrentUser(e);
-                return !!(gDesigner.getLicense().isGuest() && t < 1);
+            (GShareManager.prototype._isUserUnableToOperateSystem = async function (document) {
+                if (!document.getId()) return false;
+                var shareLevel = await this._getShareLevelForCurrentUser(document);
+                return !!(gDesigner.getLicense().isGuest() && shareLevel < 1);
             }),
-            (k.prototype._getShareLevelForCurrentUser = async function (e) {
-                const t = await gDesigner.getUser(),
-                    n = await this._getFileExtended(e);
-                if (t && n) {
-                    var o = n.getPrivateShareList().find((e) => {
-                        if (e.id === t.getUID()) return true;
+            (GShareManager.prototype._getShareLevelForCurrentUser = async function (document) {
+                const currentUser = await gDesigner.getUser(),
+                    file = await this._getFileExtended(document);
+                if (currentUser && file) {
+                    var privateShare = file.getPrivateShareList().find((share) => {
+                        if (share.id === currentUser.getUID()) return true;
                     });
-                    if (o) return o.getRole().level;
-                    const e = n.getPublicShare();
-                    return e ? e.getRole().level : new E.makeFromShareRole(ShareRoles.NoAccess);
+                    if (privateShare) return privateShare.getRole().level;
+                    const publicShare = file.getPublicShare();
+                    return publicShare ? publicShare.getRole().level : new GShareRole.makeFromShareRole(ShareRoles.NoAccess);
                 }
-                return new E.makeFromShareRole(ShareRoles.NoAccess).level;
+                return new GShareRole.makeFromShareRole(ShareRoles.NoAccess).level;
             }),
-            (k.prototype._requestAccessIfAbsent = async function (e) {
-                return !e.isShareable() || !!(await this._canAccess(e)) || (this._openRequestAccessDialog(e), false);
+            (GShareManager.prototype._requestAccessIfAbsent = async function (document) {
+                return !document.isShareable() || !!(await this._canAccess(document)) || (this._openRequestAccessDialog(document), false);
             }),
-            (k.prototype._requestPermissionToCommentIfAbsent = function (e) {
-                if (!e.isShareable()) return;
-                if (!e.getFocusAnnotationId()) return;
-                const t = this.getRole(e);
-                (t && t.is(ShareRoles.Owner)) || t.hasPermission(SharePermissions.COMMENT) || this._requestPermissionToComment(e);
+            (GShareManager.prototype._requestPermissionToCommentIfAbsent = function (document) {
+                if (!document.isShareable()) return;
+                if (!document.getFocusAnnotationId()) return;
+                const role = this.getRole(document);
+                (role && role.is(ShareRoles.Owner)) || role.hasPermission(SharePermissions.COMMENT) || this._requestPermissionToComment(document);
             }),
-            (k.prototype._requestPermissionToComment = function (e) {
+            (GShareManager.prototype._requestPermissionToComment = function (document) {
                 if (this._requestPermissionDialog) return;
-                const t = this.getRole(e);
-                t &&
-                    !t.is(ShareRoles.NoAccess) &&
-                    (this._requestPermissionDialog = this._createRequestDialog(e, {
+                const role = this.getRole(document);
+                role &&
+                    !role.is(ShareRoles.NoAccess) &&
+                    (this._requestPermissionDialog = this._createRequestDialog(document, {
                         className: "g-request-permission-dialog",
                         openCallback: () => {
                             gDesigner.stats("permission-dialog_comment-access_open");
@@ -416,7 +416,7 @@ module.exports = function (module, exports, require) {
                         },
                         title: GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.file-can-not-be-commented-title")).replace(
                             "%role",
-                            t.getName()
+                            role.getName()
                         ),
                         subtitle: GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.file-can-not-be-commented-info")),
                         requestButton: {
@@ -426,17 +426,17 @@ module.exports = function (module, exports, require) {
                         statType: "comment-access",
                     }));
             }),
-            (k.prototype._openRequestAccessDialog = function (e) {
+            (GShareManager.prototype._openRequestAccessDialog = function (document) {
                 this._requestAccessDialog ||
-                    (this._requestAccessDialog = this._createRequestDialog(e, {
+                    (this._requestAccessDialog = this._createRequestDialog(document, {
                         className: "g-request-access-dialog",
                         openCallback: () => {
                             gDesigner.stats("permission-dialog_no-access_open");
                         },
                         closeCallback: async () => {
                             ((this._requestAccessDialog = null),
-                                (await this._canAccess(e)) ||
-                                    (gDesigner.removeDocument(e, null, true),
+                                (await this._canAccess(document)) ||
+                                    (gDesigner.removeDocument(document, null, true),
                                     this._requestEmailHasBeenSent &&
                                         (GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.sent-request-email"))),
                                         (this._requestEmailHasBeenSent = false))));
@@ -450,130 +450,130 @@ module.exports = function (module, exports, require) {
                         statType: "no-access",
                     }));
             }),
-            (k.prototype._closeRequestAccessDialog = function () {
+            (GShareManager.prototype._closeRequestAccessDialog = function () {
                 this._requestAccessDialog && (this._requestAccessDialog.gDialog("close"), (this._requestAccessDialog = null));
             }),
-            (k.prototype._createRequestDialog = function (e) {
+            (GShareManager.prototype._createRequestDialog = function (document) {
                 let {
-                    className: t = "",
+                    className: className = "",
                     title,
                     subtitle,
                     closeCallback,
-                    requestButton: { label, permissions: s = {} } = {},
+                    requestButton: { label, permissions: permissions = {} } = {},
                     statType,
                 } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                var d = [];
+                var buttons = [];
                 return (
                     this.isPermissionRequestEnabled() &&
-                        d.push({
+                        buttons.push({
                             label: label,
-                            onclick: (t) => {
+                            onclick: (dialogElement) => {
                                 gDesigner.stats("permission-dialog_".concat(statType, "_request-access"));
-                                const n = Object.assign(s, { isToken: !e.getId() });
-                                gApi.requestPermission(e.getId() || e.getFailedDocumentIdOrToken(), n)
+                                const requestPayload = Object.assign(permissions, { isToken: !document.getId() });
+                                gApi.requestPermission(document.getId() || document.getFailedDocumentIdOrToken(), requestPayload)
                                     .then(() => {
-                                        (t.gDialog("close"), (this._requestEmailHasBeenSent = true));
+                                        (dialogElement.gDialog("close"), (this._requestEmailHasBeenSent = true));
                                     })
                                     .catch(() => {
                                         GSystemDialog.error(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.cannot-request-access")));
                                     });
                             },
                         }),
-                    d.push({
+                    buttons.push({
                         label: GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")),
-                        onclick: async (t) => {
+                        onclick: async (dialogElement) => {
                             (gDesigner.stats("permission-dialog_".concat(statType, "_click-ok")),
-                                t.gDialog("close"),
-                                (await this._isUserUnableToOperateSystem(e)) && gDesigner.signout(true));
+                                dialogElement.gDialog("close"),
+                                (await this._isUserUnableToOperateSystem(document)) && gDesigner.signout(true));
                         },
                         highlighted: true,
                     }),
                     GSystemDialog.custom({
                         icon: "error",
                         closeable: false,
-                        className: t,
+                        className: className,
                         closeCallback: closeCallback,
                         title: title,
                         subtitle: subtitle,
-                        buttons: d,
+                        buttons: buttons,
                     })
                 );
             }),
-            (k.prototype._syncExternalPermissions = async function (e) {
-                const t = await e.getPermissionsList(),
-                    n = await async function t() {
+            (GShareManager.prototype._syncExternalPermissions = async function (storageItem) {
+                const externalPermissions = await storageItem.getPermissionsList(),
+                    externalFile = await async function fetchExternalFile() {
                         return gDesigner
                             .getCloudCommunicationManager()
-                            .getExternalFile(e.getId())
-                            .catch((n) => {
-                                if (n && 404 === n.status && e.supportsShadowFile()) return e.createShadowFile().then(() => t.call(this));
-                                throw n;
+                            .getExternalFile(storageItem.getId())
+                            .catch((error) => {
+                                if (error && 404 === error.status && storageItem.supportsShadowFile()) return storageItem.createShadowFile().then(() => fetchExternalFile.call(this));
+                                throw error;
                             });
                     }.call(this),
-                    o = this._getPrivateInvitedShareListForFile(n),
-                    i = await gDesigner.getUser();
+                    invitedShares = this._getPrivateInvitedShareListForFile(externalFile),
+                    currentUser = await gDesigner.getUser();
                 return function () {
-                    const n = [],
-                        a = [],
-                        r = [];
-                    (t.forEach((t) => {
-                        let { email, role: a, externalRole } = t;
+                    const toAdd = [],
+                        toRevoke = [],
+                        results = [];
+                    (externalPermissions.forEach((permission) => {
+                        let { email, role: role, externalRole } = permission;
                         if (email) {
-                            let t = false;
-                            (o.some((n) => {
-                                let { email: o, role: a } = n;
-                                if (email && email === o && e.rolesMatch(externalRole, a)) return ((t = true), t);
+                            let matched = false;
+                            (invitedShares.some((invited) => {
+                                let { email: invitedEmail, role: invitedRole } = invited;
+                                if (email && email === invitedEmail && storageItem.rolesMatch(externalRole, invitedRole)) return ((matched = true), matched);
                             }),
-                                t || n.push({ email: email, role: a }));
+                                matched || toAdd.push({ email: email, role: role }));
                         }
                     }),
-                        o.forEach((e) => {
-                            let n = false;
-                            (t.some((t) => {
-                                let { email: o } = t;
-                                if (e.email === o) return ((n = true), n);
+                        invitedShares.forEach((invitedShare) => {
+                            let matched = false;
+                            (externalPermissions.some((permission) => {
+                                let { email: email } = permission;
+                                if (invitedShare.email === email) return ((matched = true), matched);
                             }),
-                                n || E.makeFromShare(e).is(ShareRoles.NoAccess) || a.push({ email: e.email }));
+                                matched || GShareRole.makeFromShare(invitedShare).is(ShareRoles.NoAccess) || toRevoke.push({ email: invitedShare.email }));
                         }),
-                        n.length &&
-                            r.concat(
-                                n.map(async (t) => {
-                                    let { email: n, role: o } = t;
-                                    if (i.getEmail() === n) return null;
-                                    const a = Object.values(ShareRoles).find((e) => {
-                                            let { id } = e;
-                                            return id === o;
+                        toAdd.length &&
+                            results.concat(
+                                toAdd.map(async (entry) => {
+                                    let { email: email, role: roleId } = entry;
+                                    if (currentUser.getEmail() === email) return null;
+                                    const matchedRole = Object.values(ShareRoles).find((role) => {
+                                            let { id } = role;
+                                            return id === roleId;
                                         }),
-                                        r = o && a ? a : ShareRoles.NoAccess,
-                                        s = new Share().assignRole(r);
+                                        resolvedRole = roleId && matchedRole ? matchedRole : ShareRoles.NoAccess,
+                                        share = new Share().assignRole(resolvedRole);
                                     try {
-                                        return await gApi.shareWithUser(e.getId(), n, s);
+                                        return await gApi.shareWithUser(storageItem.getId(), email, share);
                                     } catch (e) {
                                         return null;
                                     }
                                 })
                             ));
-                    a.length &&
-                        r.concat(
-                            a.map(async (t) => {
-                                let { email: n } = t;
-                                return gApi.shareWithUser(e.getId(), n, new Share().assignRole(ShareRoles.NoAccess));
+                    toRevoke.length &&
+                        results.concat(
+                            toRevoke.map(async (entry) => {
+                                let { email: email } = entry;
+                                return gApi.shareWithUser(storageItem.getId(), email, new Share().assignRole(ShareRoles.NoAccess));
                             })
                         );
-                    return Promise.all(r);
+                    return Promise.all(results);
                 }.call(this);
             }),
-            (k.prototype.getPermalink = async function (e, t) {
-                const n = await this._getFileExtended(e);
-                if (n) {
-                    const e = gDesigner.getAppBaseUrl(true),
-                        o = new URL(n.getShareLink(e));
-                    return (o.searchParams.set("annot", t.getId()), o.toString());
+            (GShareManager.prototype.getPermalink = async function (document, annotation) {
+                const file = await this._getFileExtended(document);
+                if (file) {
+                    const baseUrl = gDesigner.getAppBaseUrl(true),
+                        url = new URL(file.getShareLink(baseUrl));
+                    return (url.searchParams.set("annot", annotation.getId()), url.toString());
                 }
                 return null;
             }),
-            (k.prototype.isShareProRestricted = function () {
+            (GShareManager.prototype.isShareProRestricted = function () {
                 return Share.isPro() && !gDesigner.isEnabledProFeatures();
             }),
-            (module.exports = k));
+            (module.exports = GShareManager));
     };

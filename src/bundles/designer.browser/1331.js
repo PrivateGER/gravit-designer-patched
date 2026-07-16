@@ -5,7 +5,7 @@ module.exports = function (module, exports, require) {
             i = require(53),
             GPlatform = require(15),
             designerConfig = require(10),
-            GSaveAction = require(40);
+            Utils = require(40);
         const GCategory = require(18),
             c = require(31),
             d = require(607),
@@ -189,7 +189,7 @@ module.exports = function (module, exports, require) {
                             : i.context === d.BorderPropertiesPanel
                               ? ((t = a.Border), (r = "border"))
                               : i.context === d.EffectPropertiesPanel && ((t = a.Effect), (r = "effect")),
-                            (0, GSaveAction.iterateEqualStyleLayers)(r, t, l, function (e) {
+                            (0, Utils.iterateEqualStyleLayers)(r, t, l, function (e) {
                                 e.getParent().removeChild(e);
                             }),
                             (e = GObject.GLocale.get(this.getTitle())));

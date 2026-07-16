@@ -2,14 +2,14 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(8 /* Symbol */), require(3));
         var GObject = require(1);
-        const GDocument = require(237),
+        const GStorage = require(237),
             a = require(156);
         function r() {}
-        (GObject.GObject.inherit(r, GDocument),
+        (GObject.GObject.inherit(r, GStorage),
             (r.Item = function (e, t) {
-                (GDocument.Item.call(this, e), this.setFile(t));
+                (GStorage.Item.call(this, e), this.setFile(t));
             }),
-            GObject.GObject.inherit(r.Item, GDocument.Item),
+            GObject.GObject.inherit(r.Item, GStorage.Item),
             (r.Item.prototype._app = null),
             (r.Item.prototype._filename = null),
             (r.Item.prototype._ext = null),

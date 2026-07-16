@@ -31,87 +31,87 @@ module.exports = function (module, exports, require) {
             require(33),
             require(26));
         var GObject = require(1),
-            a = require(1546),
-            GSaveAction = require(40),
-            s = require(1154),
-            l = require(1552),
-            GCommonNames = require(862),
-            d = require(858),
-            u = _interopRequireDefault(require(1556)),
-            p = _interopRequireDefault(require(86)),
-            g = _interopRequireDefault(require(119 /* GCommonNames */)),
-            h = _interopRequireDefault(require(802)),
-            f = _interopRequireDefault(require(1240)),
-            m = _interopRequireDefault(require(445 /* GSaveAsAction */)),
-            y = _interopRequireDefault(require(44 /* GSystemDialog */)),
-            v = _interopRequireDefault(require(355)),
+            filesPanelView = require(1546),
+            Utils = require(40),
+            downloadUtils = require(1154),
+            cloudDrives = require(1552),
+            GCloudDrive = require(862),
+            filePanelConstants = require(858),
+            GNewFilePrompt = _interopRequireDefault(require(1556)),
+            GDocumentStatus = _interopRequireDefault(require(86)),
+            GCloudUtils = _interopRequireDefault(require(119 /* GCommonNames */)),
+            GDrive = _interopRequireDefault(require(802)),
+            GDriveSettings = _interopRequireDefault(require(1240)),
+            GSaveAsAction = _interopRequireDefault(require(445 /* GSaveAsAction */)),
+            GSystemDialog = _interopRequireDefault(require(44 /* GSystemDialog */)),
+            AppError = _interopRequireDefault(require(355)),
             designerConfig = require(10),
             configBase = require(519),
-            w = _interopRequireDefault(require(1557));
-        const C = require(156),
-            x = require(78);
-        var S = designerConfig.CloudIntegration.cloudOptions,
-            E = designerConfig.CloudIntegration.nativeOption,
-            A = [...designerConfig.CloudIntegration.cloudOptions, designerConfig.CloudIntegration.nativeOption];
-        function T(e) {
-            (this._initializeDefaultValues(e), (this._initializingPromise = this._init(e)));
+            GRepeatActionError = _interopRequireDefault(require(1557));
+        const GDriveItem = require(156),
+            GDocumentEvent = require(78);
+        var cloudOptions = designerConfig.CloudIntegration.cloudOptions,
+            nativeCloudOption = designerConfig.CloudIntegration.nativeOption,
+            allCloudOptions = [...designerConfig.CloudIntegration.cloudOptions, designerConfig.CloudIntegration.nativeOption];
+        function GFilesPanel(options) {
+            (this._initializeDefaultValues(options), (this._initializingPromise = this._init(options)));
         }
-        ((T.prototype._initializingPromise = null),
-            (T.prototype._GUISettings = null),
-            (T.prototype._cloudSettings = null),
-            (T.prototype.view = null),
-            (T.prototype.drive = null),
-            (T.prototype.MODE = null),
-            (T.IMAGES_WAIT_TIMEOUT = 2e4),
-            (T.DriveAccountsSettingName = "designer.filespanel.cloud-accounts"),
-            (T.DriveAccountsActiveSettingsName = "designer.filespanel.cloud-accounts.active"),
-            GObject.GObject.inherit(T, GObject.GObject),
-            (T.prototype._showEmptyPanel = false),
-            (T.prototype._hasFolders = false),
-            (T.prototype._showRecentFiles = false),
-            (T.prototype._isSaveMode = false),
-            (T.prototype._documentToSave = null),
-            (T.prototype._initializeDefaultValues = function (e) {
-                var t = this;
+        ((GFilesPanel.prototype._initializingPromise = null),
+            (GFilesPanel.prototype._GUISettings = null),
+            (GFilesPanel.prototype._cloudSettings = null),
+            (GFilesPanel.prototype.view = null),
+            (GFilesPanel.prototype.drive = null),
+            (GFilesPanel.prototype.MODE = null),
+            (GFilesPanel.IMAGES_WAIT_TIMEOUT = 2e4),
+            (GFilesPanel.DriveAccountsSettingName = "designer.filespanel.cloud-accounts"),
+            (GFilesPanel.DriveAccountsActiveSettingsName = "designer.filespanel.cloud-accounts.active"),
+            GObject.GObject.inherit(GFilesPanel, GObject.GObject),
+            (GFilesPanel.prototype._showEmptyPanel = false),
+            (GFilesPanel.prototype._hasFolders = false),
+            (GFilesPanel.prototype._showRecentFiles = false),
+            (GFilesPanel.prototype._isSaveMode = false),
+            (GFilesPanel.prototype._documentToSave = null),
+            (GFilesPanel.prototype._initializeDefaultValues = function (options) {
+                var self = this;
                 let {
-                    closeCallback: n = GSaveAction.fakeFunction,
+                    closeCallback: closeCallback = Utils.fakeFunction,
                     documentToSave,
-                    cancelSave: i = GSaveAction.fakeFunction,
+                    cancelSave: cancelSave = Utils.fakeFunction,
                     defaultFilename,
                     readyStateChange,
                     showExampleFiles,
                     GUISettings,
                     saveMode,
-                    driveSettings: p = null,
+                    driveSettings: driveSettings = null,
                     isDashboard,
-                    isCorporateStoragesEnabled: h = true,
-                } = e;
-                ((this._GUISettings = GUISettings || new T.GUISettings()),
-                    (this._driveSettings = p || new f.default()),
+                    isCorporateStoragesEnabled: isCorporateStoragesEnabled = true,
+                } = options;
+                ((this._GUISettings = GUISettings || new GFilesPanel.GUISettings()),
+                    (this._driveSettings = driveSettings || new GDriveSettings.default()),
                     (this.SELECTION = []),
                     (this.TEMP_SELECTION = []),
                     (this.CURRENT_FILE_LOAD = 0),
                     (this.CURRENT_UPDATE_OPERATION_ID = -1),
-                    (this.MODE = d.GFilesPanelClipboardModes.DEFAULT),
+                    (this.MODE = filePanelConstants.GFilesPanelClipboardModes.DEFAULT),
                     (this.BUILD_IN_PROGRESS = false),
                     (this.DEFAULT_FILENAME = defaultFilename),
                     (this._newClipBoard = false),
                     (this._showExampleFiles = showExampleFiles),
                     (this._isDashboard = isDashboard),
-                    (this._isCorporateStoragesEnabled = h),
+                    (this._isCorporateStoragesEnabled = isCorporateStoragesEnabled),
                     (this.readyStateChange = readyStateChange),
-                    (this.search = (0, GSaveAction.debounce)(this.search, 200)));
-                var m = (e) =>
+                    (this.search = (0, Utils.debounce)(this.search, 200)));
+                var wrapCallback = (callback) =>
                     function () {
-                        (t._removeEventListeners(), e(...arguments));
+                        (self._removeEventListeners(), callback(...arguments));
                     };
-                ((this._onCancelSaveCallback = i && m(i)),
-                    (this._onCloseCallback = n && m(n)),
+                ((this._onCancelSaveCallback = cancelSave && wrapCallback(cancelSave)),
+                    (this._onCloseCallback = closeCallback && wrapCallback(closeCallback)),
                     (this._documentToSave = documentToSave),
                     (this._isSaveMode = saveMode || this._documentToSave));
             }),
-            (T.prototype._init = async function (e) {
-                let { parentComponent, nativeCloud, initCallback } = e;
+            (GFilesPanel.prototype._init = async function (options) {
+                let { parentComponent, nativeCloud, initCallback } = options;
                 return (
                     (this.USER = await gDesigner.getUser()),
                     (this.panel = $("<div/>").addClass("g-files-panel").appendTo(parentComponent)),
@@ -119,146 +119,146 @@ module.exports = function (module, exports, require) {
                         .then(() => {
                             initCallback && initCallback();
                         })
-                        .catch((e) => {
-                            initCallback && initCallback(e);
+                        .catch((error) => {
+                            initCallback && initCallback(error);
                         })
                 );
             }),
-            (T.GUISettings = function () {
-                let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                return Object.assign({ dialogControls: true, downloadSourceFile: false }, e);
+            (GFilesPanel.GUISettings = function () {
+                let options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                return Object.assign({ dialogControls: true, downloadSourceFile: false }, options);
             }),
-            (T.prototype.unmount = function () {
-                function e() {
+            (GFilesPanel.prototype.unmount = function () {
+                function removePanel() {
                     this.panel && $(this.panel).remove();
                 }
-                this._initializingPromise ? this._initializingPromise.then(() => e.call(this)) : e.call(this);
+                this._initializingPromise ? this._initializingPromise.then(() => removePanel.call(this)) : removePanel.call(this);
             }),
-            (T.isMaximized = () => gContainer.getProperty("GFilesPanel.maximized")),
-            (T.isFilesGridListStyle = () => gContainer.getProperty("GFilesPanel.isFilesListStyle")),
-            (T.prototype.getContextSource = function () {
+            (GFilesPanel.isMaximized = () => gContainer.getProperty("GFilesPanel.maximized")),
+            (GFilesPanel.isFilesGridListStyle = () => gContainer.getProperty("GFilesPanel.isFilesListStyle")),
+            (GFilesPanel.prototype.getContextSource = function () {
                 return {
-                    toggleLoading: (e) => this.view.toggleLoading(e),
+                    toggleLoading: (isLoading) => this.view.toggleLoading(isLoading),
                     update: () => this.updateFilesList(),
                     close: () => {
                         (this.view.toggleLoading(true), this._onCloseCallback());
                     },
                 };
             }),
-            (T.prototype.initLayout = async function (e) {
-                ((this.drive = l.GCloudDrive.getInstance()),
+            (GFilesPanel.prototype.initLayout = async function (nativeCloud) {
+                ((this.drive = cloudDrives.GCloudDrive.getInstance()),
                     this.drive.setQueryLimit(20),
-                    (this.view = new a.GFilesPanelViewNative(this.panel, this)),
-                    (this.accountSettingsKey = "".concat(T.DriveAccountsSettingName, ".").concat(this.USER.id)));
-                var t = this;
-                let n = await gContainer.getProperty(T.DriveAccountsActiveSettingsName);
-                return (async function (n) {
-                    let o,
-                        i = true;
-                    (await t.updateCloudSettings(), e ? ((i = false), (o = E)) : (n && (o = t.getCloudSettingsById(n)), o || (o = E)));
+                    (this.view = new filesPanelView.GFilesPanelViewNative(this.panel, this)),
+                    (this.accountSettingsKey = "".concat(GFilesPanel.DriveAccountsSettingName, ".").concat(this.USER.id)));
+                var self = this;
+                let activeSettings = await gContainer.getProperty(GFilesPanel.DriveAccountsActiveSettingsName);
+                return (async function (activeSettingsId) {
+                    let cloudSetting,
+                        persist = true;
+                    (await self.updateCloudSettings(), nativeCloud ? ((persist = false), (cloudSetting = nativeCloudOption)) : (activeSettingsId && (cloudSetting = self.getCloudSettingsById(activeSettingsId)), cloudSetting || (cloudSetting = nativeCloudOption)));
                     try {
-                        await t.setCloudDrive(o, i);
+                        await self.setCloudDrive(cloudSetting, persist);
                     } catch (e) {
-                        await t.setCloudDrive(E);
+                        await self.setCloudDrive(nativeCloudOption);
                     }
-                    ((await T.isFilesGridListStyle()) && t.toListView(),
-                        (await T.isMaximized()) && t._maximizeWindow(true),
-                        window.addEventListener("resize", t._minimizeWindow.bind(t)));
-                })(n && n.activeSettingsId);
+                    ((await GFilesPanel.isFilesGridListStyle()) && self.toListView(),
+                        (await GFilesPanel.isMaximized()) && self._maximizeWindow(true),
+                        window.addEventListener("resize", self._minimizeWindow.bind(self)));
+                })(activeSettings && activeSettings.activeSettingsId);
             }),
-            (T.prototype.updateCloudAccountName = function (e, t) {
-                var n = this;
+            (GFilesPanel.prototype.updateCloudAccountName = function (driveId, newName) {
+                var self = this;
                 return gContainer
-                    .getProperty(n.accountSettingsKey)
-                    .then(async function (o) {
-                        let i,
-                            a = o ? n._stringToSettings(o) : [];
-                        a instanceof Array || (a = []);
-                        for (let t = 0, n = a.length; t < n; t++)
-                            if (a[t].id === e) {
-                                i = t;
+                    .getProperty(self.accountSettingsKey)
+                    .then(async function (settingsString) {
+                        let index,
+                            accounts = settingsString ? self._stringToSettings(settingsString) : [];
+                        accounts instanceof Array || (accounts = []);
+                        for (let t = 0, count = accounts.length; t < count; t++)
+                            if (accounts[t].id === driveId) {
+                                index = t;
                                 break;
                             }
-                        (i > -1 && (a[i].name = t),
-                            gContainer.setProperty(n.accountSettingsKey, n._settingsToString(a)),
-                            await n.updateCloudSettings(),
-                            e === n.getCurrentDriveId() && n.view.updateTopBar());
+                        (index > -1 && (accounts[index].name = newName),
+                            gContainer.setProperty(self.accountSettingsKey, self._settingsToString(accounts)),
+                            await self.updateCloudSettings(),
+                            driveId === self.getCurrentDriveId() && self.view.updateTopBar());
                     })
-                    .catch((e) => Promise.reject(e));
+                    .catch((error) => Promise.reject(error));
             }),
-            (T.prototype.saveNewCloudAccount = function (e) {
-                var t = this;
+            (GFilesPanel.prototype.saveNewCloudAccount = function (account) {
+                var self = this;
                 return gContainer
-                    .getProperty(t.accountSettingsKey)
-                    .then(function (n) {
-                        let o = n ? t._stringToSettings(n) : [];
+                    .getProperty(self.accountSettingsKey)
+                    .then(function (settingsString) {
+                        let accounts = settingsString ? self._stringToSettings(settingsString) : [];
                         return (
-                            o instanceof Array || (o = []),
-                            (e.id = new Date().getTime()),
-                            (e.deletable = true),
-                            o.push(e),
-                            gContainer.setProperty(t.accountSettingsKey, t._settingsToString(o)),
-                            t.updateCloudSettings()
+                            accounts instanceof Array || (accounts = []),
+                            (account.id = new Date().getTime()),
+                            (account.deletable = true),
+                            accounts.push(account),
+                            gContainer.setProperty(self.accountSettingsKey, self._settingsToString(accounts)),
+                            self.updateCloudSettings()
                         );
                     })
-                    .catch((e) => Promise.reject(e));
+                    .catch((error) => Promise.reject(error));
             }),
-            (T.prototype.deleteCloudDrive = function (e) {
-                var t = this;
+            (GFilesPanel.prototype.deleteCloudDrive = function (drive) {
+                var self = this;
                 return gContainer
-                    .getProperty(t.accountSettingsKey)
-                    .then(async function (n) {
-                        let o,
-                            i = n ? t._stringToSettings(n) : [];
-                        i instanceof Array || (i = []);
-                        for (let t = 0, n = i.length; t < n; t++)
-                            if (i[t].id === e.id) {
-                                o = t;
+                    .getProperty(self.accountSettingsKey)
+                    .then(async function (settingsString) {
+                        let index,
+                            accounts = settingsString ? self._stringToSettings(settingsString) : [];
+                        accounts instanceof Array || (accounts = []);
+                        for (let t = 0, count = accounts.length; t < count; t++)
+                            if (accounts[t].id === drive.id) {
+                                index = t;
                                 break;
                             }
-                        (o > -1 && i.splice(o, 1),
-                            i.length > 0
-                                ? gContainer.setProperty(t.accountSettingsKey, t._settingsToString(i))
-                                : gContainer.removeProperty(t.accountSettingsKey));
+                        (index > -1 && accounts.splice(index, 1),
+                            accounts.length > 0
+                                ? gContainer.setProperty(self.accountSettingsKey, self._settingsToString(accounts))
+                                : gContainer.removeProperty(self.accountSettingsKey));
                         try {
-                            if ("googledrive" === e.type) {
-                                var a = new l.GGoogleDrive();
-                                (await a.install(), await a.uninstall());
+                            if ("googledrive" === drive.type) {
+                                var googleDrive = new cloudDrives.GGoogleDrive();
+                                (await googleDrive.install(), await googleDrive.uninstall());
                             }
-                            gDesigner.removeExternalRecentFiles(e.type, e.id);
-                        } catch (e) {
-                            console.log(e);
+                            gDesigner.removeExternalRecentFiles(drive.type, drive.id);
+                        } catch (error) {
+                            console.log(error);
                         }
-                        return t.updateCloudSettings();
+                        return self.updateCloudSettings();
                     })
-                    .catch((e) => Promise.reject(e));
+                    .catch((error) => Promise.reject(error));
             }),
-            (T.prototype.handleNewFolder = function (e) {
-                var t = this;
-                let n = false;
+            (GFilesPanel.prototype.handleNewFolder = function (callback) {
+                var self = this;
+                let submitting = false;
                 (gDesigner.stats("filespanel_create_cloudfolder"), this.view.toggleLoading(true));
                 let o = 0;
-                const a = (r) => {
+                const promptCreateFolder = (initialName) => {
                     if ((o++, o > configBase.MAX_FOLDER_DEPTH_FOR_CLOUD))
                         return (
-                            (n = false),
-                            t.view.toggleLoading(false),
-                            void y.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-creating-folder")))
+                            (submitting = false),
+                            self.view.toggleLoading(false),
+                            void GSystemDialog.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-creating-folder")))
                         );
-                    let s = {};
-                    (t.drive.hasTitleValidation() && (s = t.drive.getTitleValidator()),
-                        new u.default(
-                            async function (o) {
-                                if (((o = o.trim()), t.view.toggleLoading(true), t.drive.supportsSaveCollisionFlow())) {
+                    let validator = {};
+                    (self.drive.hasTitleValidation() && (validator = self.drive.getTitleValidator()),
+                        new GNewFilePrompt.default(
+                            async function (folderName) {
+                                if (((folderName = folderName.trim()), self.view.toggleLoading(true), self.drive.supportsSaveCollisionFlow())) {
                                     if (
-                                        (await t.drive.folderExists(o, t.drive.getCurrentFolder())) &&
-                                        !(await ((l = o),
-                                        new Promise((e) => {
-                                            y.default.confirm(
+                                        (await self.drive.folderExists(folderName, self.drive.getCurrentFolder())) &&
+                                        !(await ((confirmName = folderName),
+                                        new Promise((resolve) => {
+                                            GSystemDialog.default.confirm(
                                                 GObject.GLocale.get(
                                                     new GObject.GLocaleKey("GFilesPanel", "text.folder-already-exists-on-current-location")
-                                                ).replace("%foldername", '"'.concat(l, '"')),
-                                                (t) => e(!!t),
+                                                ).replace("%foldername", '"'.concat(confirmName, '"')),
+                                                (confirmed) => resolve(!!confirmed),
                                                 null,
                                                 null,
                                                 true,
@@ -267,52 +267,52 @@ module.exports = function (module, exports, require) {
                                             );
                                         })))
                                     )
-                                        return a(o);
-                                    if (t.drive.requiresOverwriteCollisionHandling()) {
-                                        for (var r = 0, s = o; await t.drive.folderExists(s, t.drive.getCurrentFolder()); )
-                                            s = "".concat(o, " (").concat(++r, ")");
-                                        o = s;
+                                        return promptCreateFolder(folderName);
+                                    if (self.drive.requiresOverwriteCollisionHandling()) {
+                                        for (var r = 0, candidateName = folderName; await self.drive.folderExists(candidateName, self.drive.getCurrentFolder()); )
+                                            candidateName = "".concat(folderName, " (").concat(++r, ")");
+                                        folderName = candidateName;
                                     }
                                 }
-                                var l;
-                                ((n = true),
-                                    t.drive
-                                        .createFolder(o)
+                                var confirmName;
+                                ((submitting = true),
+                                    self.drive
+                                        .createFolder(folderName)
                                         .then(() => {
-                                            (t.view.toggleLoading(false), e ? e() : t.updateFilesList());
+                                            (self.view.toggleLoading(false), callback ? callback() : self.updateFilesList());
                                         })
-                                        .catch((e) => {
-                                            if ((t.view.toggleLoading(false), e && e.badName))
+                                        .catch((error) => {
+                                            if ((self.view.toggleLoading(false), error && error.badName))
                                                 return (
-                                                    y.default.alert(e.message),
+                                                    GSystemDialog.default.alert(error.message),
                                                     setTimeout(() => {
-                                                        a(o);
+                                                        promptCreateFolder(folderName);
                                                     })
                                                 );
-                                            ((n = false),
-                                                console.error(e),
-                                                y.default.alert(
+                                            ((submitting = false),
+                                                console.error(error),
+                                                GSystemDialog.default.alert(
                                                     GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-creating-folder"))
                                                 ));
                                         }));
                             },
                             function () {
-                                n || t.view.toggleLoading(false);
+                                submitting || self.view.toggleLoading(false);
                             },
                             "primary",
-                            r,
-                            s
+                            initialName,
+                            validator
                         ).open());
                 };
-                return (a(), this);
+                return (promptCreateFolder(), this);
             }),
-            (T.prototype.handleMaximizePanel = function () {
+            (GFilesPanel.prototype.handleMaximizePanel = function () {
                 return (this._maximizeWindow(), gDesigner.stats("filespanel_maximize_cloudfile"), this);
             }),
-            (T.prototype.handleMinimizePanel = function () {
+            (GFilesPanel.prototype.handleMinimizePanel = function () {
                 return (this._minimizeWindow(), gDesigner.stats("filespanel_minimize_cloudfile"), this);
             }),
-            (T.prototype.handleClosePanel = function () {
+            (GFilesPanel.prototype.handleClosePanel = function () {
                 return (
                     this.panel.closest(".g-dialog-container").mousedown(),
                     this._removeEventListeners(),
@@ -320,14 +320,14 @@ module.exports = function (module, exports, require) {
                     this
                 );
             }),
-            (T.prototype.handleDelete = function () {
+            (GFilesPanel.prototype.handleDelete = function () {
                 this.logStatsForCurrentFilesSelection("filespanel_delete_cloud", "filespanel_delete_cloud-multiple");
-                var e = this;
+                var self = this;
                 return (
-                    y.default.confirm(
+                    GSystemDialog.default.confirm(
                         GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.delete-confirm")),
-                        function (t) {
-                            t && e.deleteSelection();
+                        function (confirmed) {
+                            confirmed && self.deleteSelection();
                         }.bind(this),
                         null,
                         GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "action.delete-button")),
@@ -338,20 +338,20 @@ module.exports = function (module, exports, require) {
                     this
                 );
             }),
-            (T.prototype.handleCancelSave = function () {
+            (GFilesPanel.prototype.handleCancelSave = function () {
                 return (gDesigner.stats("filespanel_cancelsave_cloud"), this._onCancelSaveCallback(), this);
             }),
-            (T.prototype.handleSave = async function (e, t) {
-                let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-                t || (t = this.getDefaultExtensionForSave());
-                const o = (e) =>
-                    new Promise((t) => {
-                        y.default.confirm(
+            (GFilesPanel.prototype.handleSave = async function (fileName, extension) {
+                let options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
+                extension || (extension = this.getDefaultExtensionForSave());
+                const confirmOverwrite = (fileName) =>
+                    new Promise((resolve) => {
+                        GSystemDialog.default.confirm(
                             GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.file-already-exists-on-current-location")).replace(
                                 "%filename",
-                                '"'.concat(e, '"')
+                                '"'.concat(fileName, '"')
                             ),
-                            (e) => t(!!e),
+                            (confirmed) => resolve(!!confirmed),
                             null,
                             null,
                             false,
@@ -361,35 +361,35 @@ module.exports = function (module, exports, require) {
                     });
                 if (
                     (this.view.toggleLoading(true),
-                    gDesigner.stats("filespanel_save_cloudfile", t),
-                    (e = (0, GSaveAction.removeAllSuffixWhichLikeExtension)(e, t)).trim())
+                    gDesigner.stats("filespanel_save_cloudfile", extension),
+                    (fileName = (0, Utils.removeAllSuffixWhichLikeExtension)(fileName, extension)).trim())
                 ) {
                     try {
                         if (this.drive.supportsSaveCollisionFlow()) {
-                            if ((await this.drive.fileExists(e, t, this.drive.getCurrentFolder())) && !(await o(e)))
-                                return (this.view.toggleLoading(false), void this.view.focusFileNameInput({ name: e }));
+                            if ((await this.drive.fileExists(fileName, extension, this.drive.getCurrentFolder())) && !(await confirmOverwrite(fileName)))
+                                return (this.view.toggleLoading(false), void this.view.focusFileNameInput({ name: fileName }));
                             if (this.drive.requiresOverwriteCollisionHandling()) {
-                                for (var a = 0, s = e; await this.drive.fileExists(s, t, this.drive.getCurrentFolder()); )
-                                    s = "".concat(e, " (").concat(++a, ")");
-                                e = s;
+                                for (var a = 0, candidateName = fileName; await this.drive.fileExists(candidateName, extension, this.drive.getCurrentFolder()); )
+                                    candidateName = "".concat(fileName, " (").concat(++a, ")");
+                                fileName = candidateName;
                             }
                         }
-                        await this._triggerNewFileSave(e, t, n);
-                    } catch (e) {
-                        if (e && e.badName) return (this.view.toggleLoading(false), void y.default.alert(e.message));
-                        this.getDocumentToSave() && gDesigner.trigger(new x(x.Type.SynchronismUpdateFailed, this.getDocumentToSave()));
-                        let t = GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-saving-file"));
-                        (e && e.message && e.dontExtend
-                            ? (t = e.message)
-                            : e && e.message
-                              ? (t = "".concat(t, "<br />").concat(e.message))
-                              : e && (t = "".concat(t, "<br />").concat(e)),
-                            y.default.alert(t),
-                            console.error(e));
+                        await this._triggerNewFileSave(fileName, extension, options);
+                    } catch (error) {
+                        if (error && error.badName) return (this.view.toggleLoading(false), void GSystemDialog.default.alert(error.message));
+                        this.getDocumentToSave() && gDesigner.trigger(new GDocumentEvent(GDocumentEvent.Type.SynchronismUpdateFailed, this.getDocumentToSave()));
+                        let errorMessage = GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-saving-file"));
+                        (error && error.message && error.dontExtend
+                            ? (errorMessage = error.message)
+                            : error && error.message
+                              ? (errorMessage = "".concat(errorMessage, "<br />").concat(error.message))
+                              : error && (errorMessage = "".concat(errorMessage, "<br />").concat(error)),
+                            GSystemDialog.default.alert(errorMessage),
+                            console.error(error));
                     }
                     this._onCloseCallback(true);
                 } else
-                    y.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.please-inform-valid-file-name")), () => {
+                    GSystemDialog.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.please-inform-valid-file-name")), () => {
                         (this.view.toggleLoading(false),
                             this.view.focusFileNameInput({
                                 name: GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.untitled")),
@@ -397,271 +397,271 @@ module.exports = function (module, exports, require) {
                     });
                 return this;
             }),
-            (T.prototype._setFileNameInputValue = function (e) {
-                this.view.setFileNameInputValue(e);
+            (GFilesPanel.prototype._setFileNameInputValue = function (fileName) {
+                this.view.setFileNameInputValue(fileName);
             }),
-            (T.prototype._triggerNewFileSave = async function (e, t, n) {
-                await this.drive.saveNewFile(this.getDocumentToSave(), e, t, n, this.readyStateChange);
+            (GFilesPanel.prototype._triggerNewFileSave = async function (fileName, extension, options) {
+                await this.drive.saveNewFile(this.getDocumentToSave(), fileName, extension, options, this.readyStateChange);
             }),
-            (T.prototype._triggerFileOpen = async function (e) {
-                await this.drive.openFile(e);
+            (GFilesPanel.prototype._triggerFileOpen = async function (file) {
+                await this.drive.openFile(file);
             }),
-            (T.prototype._triggerFileDeleted = async function (e) {}),
-            (T.prototype._triggerFileRenamed = async function (e) {}),
-            (T.prototype.setKeyListener = function (e) {
+            (GFilesPanel.prototype._triggerFileDeleted = async function (file) {}),
+            (GFilesPanel.prototype._triggerFileRenamed = async function (file) {}),
+            (GFilesPanel.prototype.setKeyListener = function (callback) {
                 return (
                     this._handleKeyPress && document.removeEventListener("keypress", this._handleKeyPress),
-                    (this._handleKeyPress = (t) => {
-                        var n = t.which || t.keyCode;
-                        e(n, t);
+                    (this._handleKeyPress = (event) => {
+                        var keyCode = event.which || event.keyCode;
+                        callback(keyCode, event);
                     }),
                     document.addEventListener("keypress", this._handleKeyPress),
                     this
                 );
             }),
-            (T.prototype.getDefaultSaveFormat = function () {
+            (GFilesPanel.prototype.getDefaultSaveFormat = function () {
                 return this.drive.getDefaultFileFormat();
             }),
-            (T.prototype.handleBack = function () {
+            (GFilesPanel.prototype.handleBack = function () {
                 if ((gDesigner.stats("filespanel_go-to-parent_cloudfolder"), this.drive.getCurrentFolder())) {
                     (this.view.toggleLoading(true), this.drive.navigateToParentFolder());
-                    var e = this.drive.getCurrentFolder();
-                    (this.view.manageOpenFolder(null, e), this.view.resetSelection());
+                    var folder = this.drive.getCurrentFolder();
+                    (this.view.manageOpenFolder(null, folder), this.view.resetSelection());
                 }
                 return (this.updateFilesList(true, false), this);
             }),
-            (T.prototype.navigateToRoot = function () {
-                let e = !(arguments.length > 0 && void 0 !== arguments[0]) || arguments[0];
+            (GFilesPanel.prototype.navigateToRoot = function () {
+                let updateList = !(arguments.length > 0 && void 0 !== arguments[0]) || arguments[0];
                 return (
                     gDesigner.stats("filespanel_go-to-root_cloudfolder"),
                     this.drive.isRootFolder() ||
                         (this.view.toggleLoading(true),
                         this.drive.setCurrentFolder(this.drive.getRootFolder()),
-                        this.navigateToFolder(this.drive.getRootFolder(), e),
+                        this.navigateToFolder(this.drive.getRootFolder(), updateList),
                         this.view.manageOpenFolder(null, this.drive.getRootFolder()),
                         this.view.resetSelection()),
                     this
                 );
             }),
-            (T.prototype.handleSaveAs = function (e, t, n) {
-                (gDesigner.stats("filespanel_download_file", e),
+            (GFilesPanel.prototype.handleSaveAs = function (extension, saveOptions, version) {
+                (gDesigner.stats("filespanel_download_file", extension),
                     this._onCancelSaveCallback(),
-                    gDesigner.executeAction("".concat(m.default.ID, ".").concat(e.toLowerCase()), [null, null, null, t, n], void 0, true));
+                    gDesigner.executeAction("".concat(GSaveAsAction.default.ID, ".").concat(extension.toLowerCase()), [null, null, null, saveOptions, version], void 0, true));
             }),
-            (T.prototype.handleDownload = function () {
-                return (gDesigner.stats("filespanel_download_multiple-files"), this.downloadSelectedFiles(GCommonNames.DEFAULT_TYPE), this);
+            (GFilesPanel.prototype.handleDownload = function () {
+                return (gDesigner.stats("filespanel_download_multiple-files"), this.downloadSelectedFiles(GCloudDrive.DEFAULT_TYPE), this);
             }),
-            (T.prototype.handleFileDblClick = function (e) {
+            (GFilesPanel.prototype.handleFileDblClick = function (file) {
                 return (
-                    e.hasPermission(C.Permission.Open) && !this.isSaveMode()
-                        ? (gDesigner.stats("filespanel_open_cloudfile"), this.openFile(e))
-                        : e.hasPermission(C.Permission.Rename) &&
-                          (gDesigner.stats("filespanel_focus_filename-input"), this.view.focusFileNameInput(e)),
+                    file.hasPermission(GDriveItem.Permission.Open) && !this.isSaveMode()
+                        ? (gDesigner.stats("filespanel_open_cloudfile"), this.openFile(file))
+                        : file.hasPermission(GDriveItem.Permission.Rename) &&
+                          (gDesigner.stats("filespanel_focus_filename-input"), this.view.focusFileNameInput(file)),
                     this
                 );
             }),
-            (T.prototype.handleFileClick = function (e, t) {
-                return (gDesigner.stats("filespanel_select_cloudfile"), this.view.manageSelection(t, e), this);
+            (GFilesPanel.prototype.handleFileClick = function (item, element) {
+                return (gDesigner.stats("filespanel_select_cloudfile"), this.view.manageSelection(element, item), this);
             }),
-            (T.prototype.handleParentClose = function () {
+            (GFilesPanel.prototype.handleParentClose = function () {
                 return (this._removeEventListeners(), this.view && this.view.handleParentClose(), this);
             }),
-            (T.prototype.openFile = async function (e) {
-                e.example && gDesigner.stats("filespanel_open_examplefile", e.name);
-                if (await this.drive.canAccessFile(e).catch((e) => false))
+            (GFilesPanel.prototype.openFile = async function (file) {
+                file.example && gDesigner.stats("filespanel_open_examplefile", file.name);
+                if (await this.drive.canAccessFile(file).catch((e) => false))
                     try {
-                        (this._triggerFileOpen(e), this._onCloseCallback());
-                    } catch (e) {
-                        (console.log(e.stack), y.default.alert(e.message), this.updateFilesList());
+                        (this._triggerFileOpen(file), this._onCloseCallback());
+                    } catch (error) {
+                        (console.log(error.stack), GSystemDialog.default.alert(error.message), this.updateFilesList());
                     }
-                else y.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.file-can-not-be-accessed-missing-permissions")));
+                else GSystemDialog.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.file-can-not-be-accessed-missing-permissions")));
             }),
-            (T.prototype.handleFolderClick = function (e, t) {
+            (GFilesPanel.prototype.handleFolderClick = function (folder, element) {
                 return (
                     gDesigner.stats("filespanel_open_cloudfolder"),
                     this.view.resetSelection(),
-                    this.navigateToFolder(e),
-                    this.view.manageOpenFolder(t, e),
+                    this.navigateToFolder(folder),
+                    this.view.manageOpenFolder(element, folder),
                     this
                 );
             }),
-            (T.prototype.manageSelection = function (e, t) {
-                return (gDesigner.stats("filespanel_select_cloudfolder"), this.view.manageSelection(t, e), this);
+            (GFilesPanel.prototype.manageSelection = function (item, element) {
+                return (gDesigner.stats("filespanel_select_cloudfolder"), this.view.manageSelection(element, item), this);
             }),
-            (T.prototype.renameItem = async function (e, t) {
-                return this.drive.renameItem(e, t);
+            (GFilesPanel.prototype.renameItem = async function (item, newName) {
+                return this.drive.renameItem(item, newName);
             }),
-            (T.prototype._removeEventListeners = function () {
+            (GFilesPanel.prototype._removeEventListeners = function () {
                 (document.removeEventListener("keypress", this._handleKeyPress),
                     window.removeEventListener("resize", this._minimizeWindow.bind(this)));
             }),
-            (T.prototype._getFullPathNames = function (e) {
-                var t = this.drive.getFolders(),
-                    n = [e.name];
-                let o, i;
-                if (!t) return n;
-                for (; e.parent && ((i = t[e.parent]), i) && ((o = i.folder), o.name); ) (n.unshift(o.name), (e = o));
-                return n;
+            (GFilesPanel.prototype._getFullPathNames = function (item) {
+                var folders = this.drive.getFolders(),
+                    pathNames = [item.name];
+                let folder, folderEntry;
+                if (!folders) return pathNames;
+                for (; item.parent && ((folderEntry = folders[item.parent]), folderEntry) && ((folder = folderEntry.folder), folder.name); ) (pathNames.unshift(folder.name), (item = folder));
+                return pathNames;
             }),
-            (T.prototype.addFile = function (e, t, n, o) {
-                this.view.addFile(this.updateCloudItemForUserPermission(e), t, n, o);
+            (GFilesPanel.prototype.addFile = function (item, isRecent, isExample, isLazyUpdate) {
+                this.view.addFile(this.updateCloudItemForUserPermission(item), isRecent, isExample, isLazyUpdate);
             }),
-            (T.prototype._convertBlob = function (e, t, n) {
-                return Promise.resolve(e);
+            (GFilesPanel.prototype._convertBlob = function (blob, formatInfo, downloadOptions) {
+                return Promise.resolve(blob);
             }),
-            (T.prototype.downloadFile = function (e, t) {
-                let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {},
-                    o = arguments.length > 3 && void 0 !== arguments[3] && arguments[3];
-                if (o) {
-                    if (!(t = this.drive.getFileFormat(e)))
-                        return u(Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.file-not-supported"))));
-                } else t || (t = this.drive.getFileFormat(e) || GCommonNames.DEFAULT_TYPE);
-                var { ext, type, mime, version } = t;
+            (GFilesPanel.prototype.downloadFile = function (file, format) {
+                let downloadOptions = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {},
+                    downloadSource = arguments.length > 3 && void 0 !== arguments[3] && arguments[3];
+                if (downloadSource) {
+                    if (!(format = this.drive.getFileFormat(file)))
+                        return wrapDownload(Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.file-not-supported"))));
+                } else format || (format = this.drive.getFileFormat(file) || GCloudDrive.DEFAULT_TYPE);
+                var { ext, type, mime, version } = format;
                 type = type || mime;
-                const d = this._triggerFileDownload(e, n, ext, type, version);
-                function u(t) {
-                    return { promise: t, file: e, cancel: () => n.cancel && n.cancel() };
+                const downloadPromise = this._triggerFileDownload(file, downloadOptions, ext, type, version);
+                function wrapDownload(promise) {
+                    return { promise: promise, file: file, cancel: () => downloadOptions.cancel && downloadOptions.cancel() };
                 }
-                return u(d);
+                return wrapDownload(downloadPromise);
             }),
-            (T.prototype._triggerFileDownload = function (e, t, n, o, i) {
-                const a = new AbortController(),
-                    l = a.signal;
+            (GFilesPanel.prototype._triggerFileDownload = function (file, downloadOptions, ext, type, version) {
+                const abortController = new AbortController(),
+                    signal = abortController.signal;
                 return (
-                    (t.progress = t.progress || (() => {})),
+                    (downloadOptions.progress = downloadOptions.progress || (() => {})),
                     this.drive
-                        .getRawFile(e, l, t)
-                        .then(async (l) => {
-                            let d,
-                                u = l;
+                        .getRawFile(file, signal, downloadOptions)
+                        .then(async (rawFile) => {
+                            let downloadError,
+                                blob = rawFile;
                             if (
-                                ((t.cancel = (0, GSaveAction.chaining)(t.cancel, () => a.abort())),
-                                e.type !== o
-                                    ? ((u = await this._convertBlob(u, { ext: n, type: o, version: i }, t).catch((e) => (d = e || true))),
-                                      u || (d = new Error("Unsupported mime type: #".concat(e.type))))
-                                    : o === GCommonNames.DEFAULT_TYPE.type &&
-                                      ((u = await this._repackNativeBlob(u, t).catch((e) => (d = e || true))),
-                                      u || d || (d = new Error("Error fetching file contents for download"))),
-                                d)
+                                ((downloadOptions.cancel = (0, Utils.chaining)(downloadOptions.cancel, () => abortController.abort())),
+                                file.type !== type
+                                    ? ((blob = await this._convertBlob(blob, { ext: ext, type: type, version: version }, downloadOptions).catch((error) => (downloadError = error || true))),
+                                      blob || (downloadError = new Error("Unsupported mime type: #".concat(file.type))))
+                                    : type === GCloudDrive.DEFAULT_TYPE.type &&
+                                      ((blob = await this._repackNativeBlob(blob, downloadOptions).catch((error) => (downloadError = error || true))),
+                                      blob || downloadError || (downloadError = new Error("Error fetching file contents for download"))),
+                                downloadError)
                             ) {
-                                if (d instanceof Error) throw d;
+                                if (downloadError instanceof Error) throw downloadError;
                                 throw new Error("Error fetching file contents for download");
                             }
                             {
-                                t.done && t.done();
-                                let i = e.name || l.name;
-                                (i.endsWith(".".concat(n)) && (i = i.replace(new RegExp(".".concat(n, "$")), "")),
-                                    (0, s.downloadDataURI)(u, i, n, { type: o }));
+                                downloadOptions.done && downloadOptions.done();
+                                let fileName = file.name || rawFile.name;
+                                (fileName.endsWith(".".concat(ext)) && (fileName = fileName.replace(new RegExp(".".concat(ext, "$")), "")),
+                                    (0, downloadUtils.downloadDataURI)(blob, fileName, ext, { type: type }));
                             }
                         })
-                        .catch((e) => {
-                            if ((t.failed && t.failed(), e)) {
-                                if ((console.error(e), e instanceof Error)) throw e;
+                        .catch((error) => {
+                            if ((downloadOptions.failed && downloadOptions.failed(), error)) {
+                                if ((console.error(error), error instanceof Error)) throw error;
                                 throw new Error("Error fetching file contents for download");
                             }
                         })
                 );
             }),
-            (T.prototype._repackNativeBlob = function (e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                return new Promise(async (n, o) => {
-                    const a = new FileReader();
-                    ((a.onload = async function () {
-                        const e = new Uint8Array(this.result),
-                            a = GObject.GNode.deserialize(g.default.unzipData(e), gDesigner.getWorkspace());
-                        var s = { cancelled: false };
-                        ((t.cancel = (0, GSaveAction.chaining)(t.cancel, () => (s.cancelled = true))),
-                            await (0, GSaveAction.resolveDocumentImages)(a, T.IMAGES_WAIT_TIMEOUT, s).catch(() => {
-                                s.cancelled
-                                    ? o()
-                                    : o(
+            (GFilesPanel.prototype._repackNativeBlob = function (blob) {
+                let downloadOptions = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                return new Promise(async (resolve, reject) => {
+                    const fileReader = new FileReader();
+                    ((fileReader.onload = async function () {
+                        const bytes = new Uint8Array(this.result),
+                            node = GObject.GNode.deserialize(GCloudUtils.default.unzipData(bytes), gDesigner.getWorkspace());
+                        var cancelState = { cancelled: false };
+                        ((downloadOptions.cancel = (0, Utils.chaining)(downloadOptions.cancel, () => (cancelState.cancelled = true))),
+                            await (0, Utils.resolveDocumentImages)(node, GFilesPanel.IMAGES_WAIT_TIMEOUT, cancelState).catch(() => {
+                                cancelState.cancelled
+                                    ? reject()
+                                    : reject(
                                           new Error(
                                               GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.file-no-images-cannot-be-processed"))
                                           )
                                       );
                             }));
-                        var l = GObject.GNode.serialize(a, { save: true });
-                        (null === l || "" === l || l.length < 1 || s.cancelled) && o();
-                        var c = new Uint8Array(pako.gzip(l, { level: 9 }).buffer);
-                        c.byteLength > 20 ? n(c) : o();
+                        var serialized = GObject.GNode.serialize(node, { save: true });
+                        (null === serialized || "" === serialized || serialized.length < 1 || cancelState.cancelled) && reject();
+                        var gzipped = new Uint8Array(pako.gzip(serialized, { level: 9 }).buffer);
+                        gzipped.byteLength > 20 ? resolve(gzipped) : reject();
                     }),
-                        (a.onerror = o),
-                        a.readAsArrayBuffer(e));
+                        (fileReader.onerror = reject),
+                        fileReader.readAsArrayBuffer(blob));
                 });
             }),
-            (T.prototype.downloadSelectedFiles = async function () {
-                let { ext: e, type: t } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : GCommonNames.DEFAULT_TYPE,
-                    n = arguments.length > 1 && void 0 !== arguments[1] && arguments[1],
-                    o = arguments.length > 2 ? arguments[2] : void 0;
+            (GFilesPanel.prototype.downloadSelectedFiles = async function () {
+                let { ext: ext, type: type } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : GCloudDrive.DEFAULT_TYPE,
+                    downloadSource = arguments.length > 1 && void 0 !== arguments[1] && arguments[1],
+                    version = arguments.length > 2 ? arguments[2] : void 0;
                 if (this.SELECTION.length < 1) return;
-                const i = await Promise.all(
+                const accessResults = await Promise.all(
                         this.SELECTION.map(
-                            async (e) =>
-                                this.drive.isFileSupported(e) &&
-                                (await this.drive.canAccessFile(e).catch((e) => (console.error("drive.canAccessFile error", e), false)))
+                            async (file) =>
+                                this.drive.isFileSupported(file) &&
+                                (await this.drive.canAccessFile(file).catch((error) => (console.error("drive.canAccessFile error", error), false)))
                         )
                     ),
-                    a = this.SELECTION.filter((e, t) => !!i[t]);
-                await this._triggerSelectedFilesDownload(a, e, t, n, o);
+                    accessibleFiles = this.SELECTION.filter((e, index) => !!accessResults[index]);
+                await this._triggerSelectedFilesDownload(accessibleFiles, ext, type, downloadSource, version);
             }),
-            (T.prototype._triggerSelectedFilesDownload = async function (e, t, n, o, a) {
-                const r = e.map(() => 0),
-                    s = e.length,
-                    l = 100 / s,
-                    c = {};
-                let d = gDesigner.getActiveDocument();
-                (d || (d = gDesigner.newInfiniteDocument()),
-                    d.updateStatus(p.default.Downloading, c),
-                    c.text(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.downloading-files")), true),
-                    c.progressInfo("0/".concat(s)));
+            (GFilesPanel.prototype._triggerSelectedFilesDownload = async function (files, ext, type, downloadSource, version) {
+                const progressList = files.map(() => 0),
+                    fileCount = files.length,
+                    percentPerFile = 100 / fileCount,
+                    statusInfo = {};
+                let document = gDesigner.getActiveDocument();
+                (document || (document = gDesigner.newInfiniteDocument()),
+                    document.updateStatus(GDocumentStatus.default.Downloading, statusInfo),
+                    statusInfo.text(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.downloading-files")), true),
+                    statusInfo.progressInfo("0/".concat(fileCount)));
                 let u = 0,
-                    g = false;
-                const h = () => c.progressInfo("".concat(++u, "/").concat(s)),
-                    f = () => c.progressInfo("".concat(++u, "/").concat(s)),
-                    m = () => (g = true),
-                    v = e.map((e, i) => {
-                        var s = o;
-                        !s && this.fileRequiresSourceDownload(e) && (s = true);
-                        var d = {
-                            ext: ((s && (e.extension || e.ext)) || t).toLowerCase(),
-                            type: (s && ((e instanceof C && e.getMimeType()) || e.type)) || n,
-                            version: a,
+                    cancelled = false;
+                const onDone = () => statusInfo.progressInfo("".concat(++u, "/").concat(fileCount)),
+                    onFailed = () => statusInfo.progressInfo("".concat(++u, "/").concat(fileCount)),
+                    onCancel = () => (cancelled = true),
+                    downloads = files.map((file, index) => {
+                        var useSource = downloadSource;
+                        !useSource && this.fileRequiresSourceDownload(file) && (useSource = true);
+                        var fileFormat = {
+                            ext: ((useSource && (file.extension || file.ext)) || ext).toLowerCase(),
+                            type: (useSource && ((file instanceof GDriveItem && file.getMimeType()) || file.type)) || type,
+                            version: version,
                         };
                         return this.downloadFile(
-                            e,
-                            d,
+                            file,
+                            fileFormat,
                             {
-                                progress(e) {
-                                    r[i] = e;
-                                    const t = r.reduce((e, t) => e + Math.min(t / 100, 1) * l, 0);
-                                    c.progress(t);
+                                progress(percent) {
+                                    progressList[index] = percent;
+                                    const t = progressList.reduce((e, t) => e + Math.min(t / 100, 1) * percentPerFile, 0);
+                                    statusInfo.progress(t);
                                 },
-                                done: h,
-                                failed: f,
-                                cancel: m,
+                                done: onDone,
+                                failed: onFailed,
+                                cancel: onCancel,
                             },
-                            o
+                            downloadSource
                         );
                     });
-                (v.length && (this._onCancelSaveCallback(), gDesigner.closeNewDocumentDialog()),
-                    d.initCancelHandler(() => {
+                (downloads.length && (this._onCancelSaveCallback(), gDesigner.closeNewDocumentDialog()),
+                    document.initCancelHandler(() => {
                         try {
-                            v.forEach((e) => e.cancel());
+                            downloads.forEach((download) => download.cancel());
                         } finally {
-                            d.updateStatus(p.default.DownloadCancelled);
+                            document.updateStatus(GDocumentStatus.default.DownloadCancelled);
                         }
                     }));
-                const _ = await Promise.all(
-                    v.map((e) => {
-                        let { file, promise } = e;
-                        return promise.catch((e) => Object.create({ file: file, status: "rejected", error: e }));
+                const results = await Promise.all(
+                    downloads.map((download) => {
+                        let { file, promise } = download;
+                        return promise.catch((error) => Object.create({ file: file, status: "rejected", error: error }));
                     })
                 );
-                if (g) return void d.updateStatus(p.default.DownloadCancelled);
-                const b = _.filter((e) => e && "rejected" === e.status);
-                b.length
-                    ? (d.updateStatus(p.default.DownloadFailed),
-                      y.default.alert(
+                if (cancelled) return void document.updateStatus(GDocumentStatus.default.DownloadCancelled);
+                const failedResults = results.filter((result) => result && "rejected" === result.status);
+                failedResults.length
+                    ? (document.updateStatus(GDocumentStatus.default.DownloadFailed),
+                      GSystemDialog.default.alert(
                           $("<div/>")
                               .addClass("error-download-multiple-files")
                               .append(
@@ -669,206 +669,206 @@ module.exports = function (module, exports, require) {
                               )
                               .append(
                                   $("<ul/>").append(
-                                      b.map((e) => {
-                                          let { file: t, error: { message: n = "" } = {} } = e;
-                                          return $("<li/>").html("".concat(t.name).concat(n ? ": " + n : ""));
+                                      failedResults.map((result) => {
+                                          let { file: file, error: { message: message = "" } = {} } = result;
+                                          return $("<li/>").html("".concat(file.name).concat(message ? ": " + message : ""));
                                       })
                                   )
                               )
                       ))
-                    : d.updateStatus(p.default.Downloaded);
+                    : document.updateStatus(GDocumentStatus.default.Downloaded);
             }),
-            (T.prototype.navigateToFolder = function (e) {
-                let t = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
-                const n = this.getAvailableFileTypesFilter();
-                this._navigateDriveToUserFolderOrRoot(e);
-                const o = this.getAvailableFileTypesFilter();
-                (this._clearFileFiltersInCaseAvailableFiltersDoesNotMatch(n, o), t && this.updateFilesList(true, false));
-                var i = this.SELECTION.indexOf(e);
-                i > -1 && this.SELECTION.splice(i, 1);
-                var a = this.TEMP_SELECTION.indexOf(e);
-                (a > -1 && this.TEMP_SELECTION.splice(a, 1), this.SELECTION.length < 1 && this.view.resetSelection());
+            (GFilesPanel.prototype.navigateToFolder = function (folder) {
+                let updateList = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
+                const beforeFilter = this.getAvailableFileTypesFilter();
+                this._navigateDriveToUserFolderOrRoot(folder);
+                const afterFilter = this.getAvailableFileTypesFilter();
+                (this._clearFileFiltersInCaseAvailableFiltersDoesNotMatch(beforeFilter, afterFilter), updateList && this.updateFilesList(true, false));
+                var selectionIndex = this.SELECTION.indexOf(folder);
+                selectionIndex > -1 && this.SELECTION.splice(selectionIndex, 1);
+                var tempSelectionIndex = this.TEMP_SELECTION.indexOf(folder);
+                (tempSelectionIndex > -1 && this.TEMP_SELECTION.splice(tempSelectionIndex, 1), this.SELECTION.length < 1 && this.view.resetSelection());
             }),
-            (T.prototype._clearFileFiltersInCaseAvailableFiltersDoesNotMatch = function (e, t) {
-                GObject.GUtil.equals(e, t, true) || this.clearAllFileTypesFromSelectedFilter();
+            (GFilesPanel.prototype._clearFileFiltersInCaseAvailableFiltersDoesNotMatch = function (beforeFilter, afterFilter) {
+                GObject.GUtil.equals(beforeFilter, afterFilter, true) || this.clearAllFileTypesFromSelectedFilter();
             }),
-            (T.prototype._navigateDriveToUserFolderOrRoot = function (e) {
-                (this._isUserAllowedToOpenTheFolder(e) || (e = this.drive.getRootFolder()), this.drive.setCurrentFolder(e));
+            (GFilesPanel.prototype._navigateDriveToUserFolderOrRoot = function (folder) {
+                (this._isUserAllowedToOpenTheFolder(folder) || (folder = this.drive.getRootFolder()), this.drive.setCurrentFolder(folder));
             }),
-            (T.prototype._isUserAllowedToOpenTheFolder = function (e) {
+            (GFilesPanel.prototype._isUserAllowedToOpenTheFolder = function (folder) {
                 return true;
             }),
-            (T.prototype.addFolder = function (e) {
+            (GFilesPanel.prototype.addFolder = function (folder) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
-                this.view.addFolder(this.updateCloudItemForUserPermission(e), t);
+                this.view.addFolder(this.updateCloudItemForUserPermission(folder), t);
             }),
-            (T.prototype.addCustomFolder = function (e) {
+            (GFilesPanel.prototype.addCustomFolder = function (folder) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
-                this.view.addCustomFolder(this.updateCloudItemForUserPermission(e), t);
+                this.view.addCustomFolder(this.updateCloudItemForUserPermission(folder), t);
             }),
-            (T.prototype.getSort = function () {
-                let e = this.getCurrentAscend() ? "" : "-";
-                return ((e += this.getCurrentSortType()), e);
+            (GFilesPanel.prototype.getSort = function () {
+                let sort = this.getCurrentAscend() ? "" : "-";
+                return ((sort += this.getCurrentSortType()), sort);
             }),
-            (T.prototype.hasMoreItemsToLoad = function () {
+            (GFilesPanel.prototype.hasMoreItemsToLoad = function () {
                 return -1 !== this.CURRENT_FILE_LOAD || this.drive.hasMoreItemsToLoad();
             }),
-            (T.prototype._sortFilesByMimeType = function (e) {
-                if (0 === this.drive.getSelectedFilterForFileTypes().length) return e;
-                return (function (e) {
-                    let t = {};
-                    e.forEach((e) => {
-                        let n = e.getMimeType();
-                        ((t[n] = t[n] || []), t[n].push(e));
+            (GFilesPanel.prototype._sortFilesByMimeType = function (files) {
+                if (0 === this.drive.getSelectedFilterForFileTypes().length) return files;
+                return (function (files) {
+                    let groups = {};
+                    files.forEach((file) => {
+                        let mimeType = file.getMimeType();
+                        ((groups[mimeType] = groups[mimeType] || []), groups[mimeType].push(file));
                     });
-                    let n = [];
+                    let sorted = [];
                     return (
-                        Object.values(t).forEach((e) => {
-                            n = n.concat(e);
+                        Object.values(groups).forEach((group) => {
+                            sorted = sorted.concat(group);
                         }),
-                        n
+                        sorted
                     );
-                })(e);
+                })(files);
             }),
-            (T.prototype._displayRecentFiles = async function () {
-                let e;
+            (GFilesPanel.prototype._displayRecentFiles = async function () {
+                let recentFiles;
                 if (this.isRootFolder() && !this._showExampleFiles)
                     try {
-                        ((e = await this.drive.fetchRecentFiles()),
-                            (e = this._sortFilesByMimeType(e)),
-                            e &&
-                                (this.view.toggleRecentFiles(!!e && e.length > 0),
-                                e.forEach((e) => {
-                                    (this.drive.isItemAllowedToBeRendered(e, true) && this.addFile(e, true),
-                                        this.drive.itemRequiresLazyUpdate(e).then((t) => {
-                                            t &&
-                                                this.drive.getItemLazyUpdate(e).then((e) => {
-                                                    this.addFile(e, true, false, true);
+                        ((recentFiles = await this.drive.fetchRecentFiles()),
+                            (recentFiles = this._sortFilesByMimeType(recentFiles)),
+                            recentFiles &&
+                                (this.view.toggleRecentFiles(!!recentFiles && recentFiles.length > 0),
+                                recentFiles.forEach((file) => {
+                                    (this.drive.isItemAllowedToBeRendered(file, true) && this.addFile(file, true),
+                                        this.drive.itemRequiresLazyUpdate(file).then((needsUpdate) => {
+                                            needsUpdate &&
+                                                this.drive.getItemLazyUpdate(file).then((updatedFile) => {
+                                                    this.addFile(updatedFile, true, false, true);
                                                 });
                                         }));
                                 })));
                     } catch (e) {
                         throw new Error(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-fetching-files")));
                     } finally {
-                        this._showRecentFiles = !!e && e.length > 0;
+                        this._showRecentFiles = !!recentFiles && recentFiles.length > 0;
                     }
                 else this._showRecentFiles = false;
             }),
-            (T.prototype.buildDepth = async function (e) {
-                let t = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
+            (GFilesPanel.prototype.buildDepth = async function (full) {
+                let includeFolders = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
                 if (!gDesigner.getApplicationManager().isOpenFromCloudEnabled()) return (this.view.toggleLoading(false), Promise.reject());
-                var n = this;
-                if (this.BUILD_IN_PROGRESS) return Promise.reject(new w.default());
-                async function o(e) {
-                    let a = true;
+                var self = this;
+                if (this.BUILD_IN_PROGRESS) return Promise.reject(new GRepeatActionError.default());
+                async function loadPage(full) {
+                    let success = true;
                     try {
-                        var r,
-                            s = [];
-                        let o = n.getSort();
-                        var l = n.view.getSearchValue();
-                        if (l) {
-                            if (n.hasMoreItemsToLoad()) {
+                        var loadedCount,
+                            items = [];
+                        let sortValue = self.getSort();
+                        var searchValue = self.view.getSearchValue();
+                        if (searchValue) {
+                            if (self.hasMoreItemsToLoad()) {
                                 try {
-                                    s = await n.drive.fetchFiles(l, n.CURRENT_FILE_LOAD, o);
+                                    items = await self.drive.fetchFiles(searchValue, self.CURRENT_FILE_LOAD, sortValue);
                                 } catch (e) {
                                     throw new Error(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-fetching-files")));
                                 }
-                                ((r = (s = n._sortFilesByMimeType(s)).length), n._updateCurrentFileLoad(r));
+                                ((loadedCount = (items = self._sortFilesByMimeType(items)).length), self._updateCurrentFileLoad(loadedCount));
                             }
-                            (s.forEach((e) => {
-                                ((e._rootPath = "/ ".concat(n._getFullPathNames(e).join(" / "))),
-                                    n.addFile(e),
-                                    n.drive.itemRequiresLazyUpdate(e).then((t) => {
-                                        t &&
-                                            n.drive.getItemLazyUpdate(e).then((e) => {
-                                                n.addFile(e, false, false, true);
+                            (items.forEach((item) => {
+                                ((item._rootPath = "/ ".concat(self._getFullPathNames(item).join(" / "))),
+                                    self.addFile(item),
+                                    self.drive.itemRequiresLazyUpdate(item).then((needsUpdate) => {
+                                        needsUpdate &&
+                                            self.drive.getItemLazyUpdate(item).then((updatedItem) => {
+                                                self.addFile(updatedItem, false, false, true);
                                             });
                                     }));
                             }),
-                                e && n._buildFolder(t));
+                                full && self._buildFolder(includeFolders));
                         } else {
-                            if (n.hasMoreItemsToLoad() && !n._showExampleFiles) {
+                            if (self.hasMoreItemsToLoad() && !self._showExampleFiles) {
                                 try {
-                                    ((await n.drive.getPreviousSelectedFolder()) || (a = false),
-                                        (r = (s = await n.drive.fetchFiles(null, n.CURRENT_FILE_LOAD, o)).length),
-                                        n.isSaveMode() || n._isDashboard || (s = s.concat(await n.drive.loadExampleFiles())),
-                                        (s = n._sortFilesByMimeType(s)));
+                                    ((await self.drive.getPreviousSelectedFolder()) || (success = false),
+                                        (loadedCount = (items = await self.drive.fetchFiles(null, self.CURRENT_FILE_LOAD, sortValue)).length),
+                                        self.isSaveMode() || self._isDashboard || (items = items.concat(await self.drive.loadExampleFiles())),
+                                        (items = self._sortFilesByMimeType(items)));
                                 } catch (e) {
                                     if (
                                         (console.error(e),
-                                        !(e instanceof h.default.CloudException && e.code === h.default.ExceptionCode.InvalidCredentials))
+                                        !(e instanceof GDrive.default.CloudException && e.code === GDrive.default.ExceptionCode.InvalidCredentials))
                                     ) {
-                                        const t =
+                                        const errorMessage =
                                             e && e.message
                                                 ? e.message
                                                 : GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-fetching-files"));
-                                        throw new v.default(t);
+                                        throw new AppError.default(errorMessage);
                                     }
-                                    (await n.setCloudDrive(E),
-                                        (r = (s = await n.drive.fetchFiles(null, n.CURRENT_FILE_LOAD, o)).length),
-                                        n.isSaveMode() || n._isDashboard || (s = s.concat(await n.drive.loadExampleFiles())),
-                                        (s = n._sortFilesByMimeType(s)));
+                                    (await self.setCloudDrive(nativeCloudOption),
+                                        (loadedCount = (items = await self.drive.fetchFiles(null, self.CURRENT_FILE_LOAD, sortValue)).length),
+                                        self.isSaveMode() || self._isDashboard || (items = items.concat(await self.drive.loadExampleFiles())),
+                                        (items = self._sortFilesByMimeType(items)));
                                 }
-                                n._updateCurrentFileLoad(r);
+                                self._updateCurrentFileLoad(loadedCount);
                             }
                             if (
-                                (await n._displayRecentFiles(),
-                                e &&
-                                    ((n._showEmptyPanel =
-                                        !n._showExampleFiles &&
-                                        !!n.drive.getDefaultEmptyMessage() &&
-                                        n.isRootFolder() &&
-                                        !n._showRecentFiles &&
-                                        0 === r &&
-                                        !((await n.drive.hasFolders()) && !n.isRootFolder())),
-                                    n._showExampleFiles && (s = await n.drive.loadExampleFiles()),
-                                    0 === s.length && (n._showEmptyPanel = false),
-                                    n._buildFolder(t)),
-                                n.view.removeExampleFiles(),
-                                s.forEach((e) => {
-                                    ((n.drive.isItemAllowedToBeRendered(e) || n._showExampleFiles) &&
-                                        n.addFile(e, false, n._showExampleFiles || n._showEmptyPanel),
-                                        n.drive.itemRequiresLazyUpdate(e).then((t) => {
-                                            t &&
-                                                n.drive.getItemLazyUpdate(e).then((e) => {
-                                                    n.addFile(e, false, n._showExampleFiles, true);
+                                (await self._displayRecentFiles(),
+                                full &&
+                                    ((self._showEmptyPanel =
+                                        !self._showExampleFiles &&
+                                        !!self.drive.getDefaultEmptyMessage() &&
+                                        self.isRootFolder() &&
+                                        !self._showRecentFiles &&
+                                        0 === loadedCount &&
+                                        !((await self.drive.hasFolders()) && !self.isRootFolder())),
+                                    self._showExampleFiles && (items = await self.drive.loadExampleFiles()),
+                                    0 === items.length && (self._showEmptyPanel = false),
+                                    self._buildFolder(includeFolders)),
+                                self.view.removeExampleFiles(),
+                                items.forEach((item) => {
+                                    ((self.drive.isItemAllowedToBeRendered(item) || self._showExampleFiles) &&
+                                        self.addFile(item, false, self._showExampleFiles || self._showEmptyPanel),
+                                        self.drive.itemRequiresLazyUpdate(item).then((needsUpdate) => {
+                                            needsUpdate &&
+                                                self.drive.getItemLazyUpdate(item).then((updatedItem) => {
+                                                    self.addFile(updatedItem, false, self._showExampleFiles, true);
                                                 });
                                         }));
                                 }),
-                                n.view.toggleRecentFiles(n._showRecentFiles),
-                                n.view.toggleExampleFiles(n._showExampleFiles),
-                                1 === n.SELECTION.length && e)
+                                self.view.toggleRecentFiles(self._showRecentFiles),
+                                self.view.toggleExampleFiles(self._showExampleFiles),
+                                1 === self.SELECTION.length && full)
                             )
-                                n.view.scrollToSelectedElement(n.SELECTION[0]) || n.view.resetSelection();
+                                self.view.scrollToSelectedElement(self.SELECTION[0]) || self.view.resetSelection();
                         }
-                        n.view.updateControls(e);
+                        self.view.updateControls(full);
                     } catch (e) {
                         return (
                             console.error(e),
-                            y.default.alert(
+                            GSystemDialog.default.alert(
                                 ""
                                     .concat(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed")), ":<br />")
                                     .concat((e && e.message) || e || "")
                             ),
-                            n.view.toggleLoading(false),
+                            self.view.toggleLoading(false),
                             Promise.reject()
                         );
                     }
                     return (
-                        n.view.toggleLoading(false),
-                        n.view.shouldFilesBeRequested() && n.hasMoreItemsToLoad() && (await o(false)),
-                        Promise.resolve(a)
+                        self.view.toggleLoading(false),
+                        self.view.shouldFilesBeRequested() && self.hasMoreItemsToLoad() && (await loadPage(false)),
+                        Promise.resolve(success)
                     );
                 }
                 if ((this.view.toggleLoading(true), this.hasMoreItemsToLoad())) {
                     this.BUILD_IN_PROGRESS = true;
                     try {
-                        const i = await o(e);
-                        if ((n.view.toggleFolders(n._hasFolders && !n._showExampleFiles), t && i)) {
-                            var a = await n.drive.getPreviousSelectedFolder();
-                            a &&
-                                !n.drive.isRootFolder(a) &&
-                                (await n.view.navigateToFolder(a).catch(() => n.view.navigateToFolder(n.drive.getRootFolder())));
+                        const success = await loadPage(full);
+                        if ((self.view.toggleFolders(self._hasFolders && !self._showExampleFiles), includeFolders && success)) {
+                            var previousFolder = await self.drive.getPreviousSelectedFolder();
+                            previousFolder &&
+                                !self.drive.isRootFolder(previousFolder) &&
+                                (await self.view.navigateToFolder(previousFolder).catch(() => self.view.navigateToFolder(self.drive.getRootFolder())));
                         }
                     } finally {
                         this.BUILD_IN_PROGRESS = false;
@@ -876,465 +876,465 @@ module.exports = function (module, exports, require) {
                 }
                 this.view.toggleLoading(false);
             }),
-            (T.prototype._buildFolder = function (e) {
-                if (!e) return;
+            (GFilesPanel.prototype._buildFolder = function (includeFolders) {
+                if (!includeFolders) return;
                 if (this._showExampleFiles) return;
                 this.addFolder(this.drive.getRootFolder(), null);
-                const t = [this.drive.getRootFolder()];
+                const folders = [this.drive.getRootFolder()];
                 if (!this.isSaveMode()) {
-                    const e = this._getSharedWithMeFolder();
-                    e && this.addCustomFolder(e, null);
+                    const sharedFolder = this._getSharedWithMeFolder();
+                    sharedFolder && this.addCustomFolder(sharedFolder, null);
                 }
-                this._hasFolders = !!t && t.length > 0;
+                this._hasFolders = !!folders && folders.length > 0;
             }),
-            (T.prototype._getSharedWithMeFolder = function () {
+            (GFilesPanel.prototype._getSharedWithMeFolder = function () {
                 return null;
             }),
-            (T.prototype._updateCurrentFileLoad = function (e) {
-                let t;
-                ((t = e > 0 ? (e < this.getQueryLimit() ? -1 : this.CURRENT_FILE_LOAD + e) : -1), (this.CURRENT_FILE_LOAD = t));
+            (GFilesPanel.prototype._updateCurrentFileLoad = function (count) {
+                let newValue;
+                ((newValue = count > 0 ? (count < this.getQueryLimit() ? -1 : this.CURRENT_FILE_LOAD + count) : -1), (this.CURRENT_FILE_LOAD = newValue));
             }),
-            (T.prototype.getCloudSettingsById = function (e) {
-                return this.CLOUD_SETTINGS.find((t) => {
-                    let { id } = t;
-                    return id === e;
+            (GFilesPanel.prototype.getCloudSettingsById = function (settingId) {
+                return this.CLOUD_SETTINGS.find((setting) => {
+                    let { id } = setting;
+                    return id === settingId;
                 });
             }),
-            (T.prototype.updateCloudItemForUserPermission = function (e) {
-                return gDesigner.getApplicationManager().isOnlyFileOpenFromCloudEnabled() && e && e instanceof C
-                    ? (e.setPermissions(Object.values(C.Permission), false), e.setPermission(C.Permission.Open), e)
-                    : e;
+            (GFilesPanel.prototype.updateCloudItemForUserPermission = function (item) {
+                return gDesigner.getApplicationManager().isOnlyFileOpenFromCloudEnabled() && item && item instanceof GDriveItem
+                    ? (item.setPermissions(Object.values(GDriveItem.Permission), false), item.setPermission(GDriveItem.Permission.Open), item)
+                    : item;
             }),
-            (T.prototype.getDefaultCloudSettings = function () {
-                return this.CLOUD_SETTINGS.find((e) => !!e.default);
+            (GFilesPanel.prototype.getDefaultCloudSettings = function () {
+                return this.CLOUD_SETTINGS.find((setting) => !!setting.default);
             }),
-            (T.prototype.getCloudSettings = function () {
+            (GFilesPanel.prototype.getCloudSettings = function () {
                 return this.CLOUD_SETTINGS;
             }),
-            (T.prototype.getCurrentDriveId = function () {
+            (GFilesPanel.prototype.getCurrentDriveId = function () {
                 return this._currentDriveId;
             }),
-            (T.prototype.getCurrentDriveSettings = function () {
+            (GFilesPanel.prototype.getCurrentDriveSettings = function () {
                 return this.getCloudSettingsById(this.getCurrentDriveId());
             }),
-            (T.prototype.setCloudDrive = async function (e) {
-                let t = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
-                if (!e) throw new Error(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-incorrect-cloud-drive-settings")));
+            (GFilesPanel.prototype.setCloudDrive = async function (cloudSetting) {
+                let persist = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
+                if (!cloudSetting) throw new Error(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-incorrect-cloud-drive-settings")));
                 this.view && this.view.toggleLoading(true);
-                const n = A.find((t) => t.type === e.type);
-                if (n.pro && !gDesigner.isEnabledProFeatures()) return void gDesigner.handlePROFeatureInterruption();
-                const o = this.drive,
-                    r = this.getCurrentDriveId() ? this.getCloudSettingsById(this.getCurrentDriveId()) : null;
+                const optionConfig = allCloudOptions.find((option) => option.type === cloudSetting.type);
+                if (optionConfig.pro && !gDesigner.isEnabledProFeatures()) return void gDesigner.handlePROFeatureInterruption();
+                const previousDrive = this.drive,
+                    previousSetting = this.getCurrentDriveId() ? this.getCloudSettingsById(this.getCurrentDriveId()) : null;
                 try {
-                    switch (e.type) {
+                    switch (cloudSetting.type) {
                         case "googledrive":
-                            ((this.drive = new l.GGoogleDrive(void 0, e.id)),
+                            ((this.drive = new cloudDrives.GGoogleDrive(void 0, cloudSetting.id)),
                                 await this.drive.install(),
                                 await this.drive.signIn(),
-                                (this.view = new a.GFilesPanelViewNative(this.panel, this)),
-                                this.view.setPermission(a.GFilesPanelViewBase.Permission.CreateFolder, false));
+                                (this.view = new filesPanelView.GFilesPanelViewNative(this.panel, this)),
+                                this.view.setPermission(filesPanelView.GFilesPanelViewBase.Permission.CreateFolder, false));
                             break;
                         default:
-                            ((this.drive = l.GCloudDrive.getInstance()), (this.view = new a.GFilesPanelViewNative(this.panel, this)));
+                            ((this.drive = cloudDrives.GCloudDrive.getInstance()), (this.view = new filesPanelView.GFilesPanelViewNative(this.panel, this)));
                     }
-                    this._currentDriveId = e.id;
-                    const n = { activeSettingsId: e.id };
+                    this._currentDriveId = cloudSetting.id;
+                    const activeSettings = { activeSettingsId: cloudSetting.id };
                     if (
-                        (t && gContainer.setProperty(T.DriveAccountsActiveSettingsName, n),
+                        (persist && gContainer.setProperty(GFilesPanel.DriveAccountsActiveSettingsName, activeSettings),
                         this.drive.setQueryLimit(this.getQueryLimit()),
                         this.drive.setDriveSettings(this._driveSettings),
                         this.view.relayout(),
                         this.updateFilesList(),
                         this.drive.hasUserProfile())
                     ) {
-                        var s = await this.drive.getUser();
-                        s && this.view.updateUserDetails(s);
+                        var user = await this.drive.getUser();
+                        user && this.view.updateUserDetails(user);
                     }
-                    (o && o.removeEventListener(h.default.DriveEvent, this._handleDriveEvent, this),
-                        this.drive.addEventListener(h.default.DriveEvent, this._handleDriveEvent, this));
-                } catch (e) {
-                    var c;
+                    (previousDrive && previousDrive.removeEventListener(GDrive.default.DriveEvent, this._handleDriveEvent, this),
+                        this.drive.addEventListener(GDrive.default.DriveEvent, this._handleDriveEvent, this));
+                } catch (error) {
+                    var appError;
                     throw (
-                        e && e instanceof v.default && (c = e),
-                        await this._setCorrectCloud(o, r),
+                        error && error instanceof AppError.default && (appError = error),
+                        await this._setCorrectCloud(previousDrive, previousSetting),
                         this.view && this.view.toggleLoading(false),
-                        c || Error(e.message || GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed")))
+                        appError || Error(error.message || GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed")))
                     );
                 }
             }),
-            (T.prototype._setCorrectCloud = async function (e, t) {
-                e ? await this.setCloudDrive(t) : await this.setCloudDrive(E);
+            (GFilesPanel.prototype._setCorrectCloud = async function (previousDrive, previousSetting) {
+                previousDrive ? await this.setCloudDrive(previousSetting) : await this.setCloudDrive(nativeCloudOption);
             }),
-            (T.prototype._handleDriveEvent = async function (e) {
-                if (e.type === h.default.DriveEvent.Type.UserUpdated) {
+            (GFilesPanel.prototype._handleDriveEvent = async function (event) {
+                if (event.type === GDrive.default.DriveEvent.Type.UserUpdated) {
                     if (this.drive.hasUserProfile()) {
-                        var t = await this.drive.getUser();
-                        t && this.view.updateUserDetails(t);
+                        var user = await this.drive.getUser();
+                        user && this.view.updateUserDetails(user);
                     }
-                } else if (e.type === h.default.DriveEvent.Type.FolderSwitchRequired) {
-                    const { folder } = e.data;
+                } else if (event.type === GDrive.default.DriveEvent.Type.FolderSwitchRequired) {
+                    const { folder } = event.data;
                     this.drive.isRootFolder(folder)
                         ? (this.isRootFolder() || this.navigateToRoot(false), this.updateFilesList(true, true))
                         : (this.drive.setCurrentFolder(folder), this.updateFilesList(true, true), this.view.navigateToFolder(folder));
                 }
             }),
-            (T.prototype.getCreateCloudAccountOptions = async function () {
+            (GFilesPanel.prototype.getCreateCloudAccountOptions = async function () {
                 await this.updateCloudSettings();
-                return this.getCloudSettings().some((e) => "googledrive" === e.type) ? S.filter((e) => "googledrive" !== e.type) : S;
+                return this.getCloudSettings().some((setting) => "googledrive" === setting.type) ? cloudOptions.filter((setting) => "googledrive" !== setting.type) : cloudOptions;
             }),
-            (T.prototype.updateCloudSettings = function () {
-                var e = this;
-                return gContainer.getProperty(e.accountSettingsKey).then(function (t) {
-                    let n = t ? e._stringToSettings(t) : [];
+            (GFilesPanel.prototype.updateCloudSettings = function () {
+                var self = this;
+                return gContainer.getProperty(self.accountSettingsKey).then(function (settingsString) {
+                    let accounts = settingsString ? self._stringToSettings(settingsString) : [];
                     return (
-                        n instanceof Array || (n = []),
-                        (n = n.filter((e) => {
-                            var t = A.find((t) => e.type === t.type);
-                            return (t.pro && gDesigner.isEnabledProFeatures()) || !t.pro;
+                        accounts instanceof Array || (accounts = []),
+                        (accounts = accounts.filter((account) => {
+                            var option = allCloudOptions.find((option) => account.type === option.type);
+                            return (option.pro && gDesigner.isEnabledProFeatures()) || !option.pro;
                         })),
-                        (e.CLOUD_SETTINGS = n.concat([E])),
+                        (self.CLOUD_SETTINGS = accounts.concat([nativeCloudOption])),
                         true
                     );
                 });
             }),
-            (T.prototype.getDefaultExtensionForSave = function () {
+            (GFilesPanel.prototype.getDefaultExtensionForSave = function () {
                 return this.drive.getDefaultFileFormat().ext.toUpperCase();
             }),
-            (T.prototype.updateFilesList = async function () {
-                let e = !(arguments.length > 0 && void 0 !== arguments[0]) || arguments[0],
-                    t = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
-                const n = Math.random();
-                this.CURRENT_UPDATE_OPERATION_ID = n;
-                const o = this.view.getSearchValue();
-                if ((await this._waitForBuildToFinish(), n === this.CURRENT_UPDATE_OPERATION_ID && o === this.view.getSearchValue())) {
-                    (e && t ? this.view.clearFilesAndFolders() : this.view.clearFiles(),
+            (GFilesPanel.prototype.updateFilesList = async function () {
+                let full = !(arguments.length > 0 && void 0 !== arguments[0]) || arguments[0],
+                    includeFolders = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
+                const operationId = Math.random();
+                this.CURRENT_UPDATE_OPERATION_ID = operationId;
+                const searchValue = this.view.getSearchValue();
+                if ((await this._waitForBuildToFinish(), operationId === this.CURRENT_UPDATE_OPERATION_ID && searchValue === this.view.getSearchValue())) {
+                    (full && includeFolders ? this.view.clearFilesAndFolders() : this.view.clearFiles(),
                         (this.CURRENT_FILE_LOAD = 0),
                         this.view.toggleEmptyPanel(false));
                     try {
-                        await this.buildDepth(e, t);
-                    } catch (e) {
-                        return void console.warn(e);
+                        await this.buildDepth(full, includeFolders);
+                    } catch (error) {
+                        return void console.warn(error);
                     }
                     (this.view.toggleEmptyPanel(this._showEmptyPanel),
                         this.view.toggleExampleFiles(this._showExampleFiles || this._showEmptyPanel),
                         this.view.toggleRecentFiles(this._showRecentFiles),
-                        e && this.view.updateLayout());
-                } else e && this.view.updateLayout();
+                        full && this.view.updateLayout());
+                } else full && this.view.updateLayout();
             }),
-            (T.prototype._waitForBuildToFinish = async function () {
-                for (; this.BUILD_IN_PROGRESS; ) await (0, GSaveAction.sleep)(200);
+            (GFilesPanel.prototype._waitForBuildToFinish = async function () {
+                for (; this.BUILD_IN_PROGRESS; ) await (0, Utils.sleep)(200);
             }),
-            (T.prototype.search = function () {
+            (GFilesPanel.prototype.search = function () {
                 this.updateFilesList(false, false);
             }),
-            (T.prototype.addToSelection = function (e) {
+            (GFilesPanel.prototype.addToSelection = function (item) {
                 if (
                     (0 === this.SELECTION.length && this.TEMP_SELECTION.length > 0 && (this._newClipBoard = true),
-                    this.SELECTION.indexOf(e) < 0)
+                    this.SELECTION.indexOf(item) < 0)
                 ) {
                     if (this.SELECTION.length)
                         for (var t = 0; t < this.SELECTION.length; t++)
-                            this.SELECTION[t].getId() === e.getId() && this.SELECTION.splice(t, 1);
-                    this.SELECTION.push(e);
+                            this.SELECTION[t].getId() === item.getId() && this.SELECTION.splice(t, 1);
+                    this.SELECTION.push(item);
                 }
             }),
-            (T.prototype.selectionHasFiles = function () {
+            (GFilesPanel.prototype.selectionHasFiles = function () {
                 for (var e = 0, t = this.SELECTION.length; e < t; e++) if (this.drive.isFileSupported(this.SELECTION[e])) return true;
                 return false;
             }),
-            (T.prototype.removeFromSelection = function (e) {
-                var t = this.SELECTION.indexOf(e);
-                (t > -1 && this.SELECTION.splice(t, 1), 0 === this.SELECTION.length && this._newClipBoard && (this._newClipBoard = false));
+            (GFilesPanel.prototype.removeFromSelection = function (item) {
+                var index = this.SELECTION.indexOf(item);
+                (index > -1 && this.SELECTION.splice(index, 1), 0 === this.SELECTION.length && this._newClipBoard && (this._newClipBoard = false));
             }),
-            (T.prototype.resetSelection = function () {
+            (GFilesPanel.prototype.resetSelection = function () {
                 ((this.SELECTION = []), (this._newClipBoard = false));
             }),
-            (T.prototype._resetViewSelection = function () {
+            (GFilesPanel.prototype._resetViewSelection = function () {
                 this.view.resetSelection();
             }),
-            (T.prototype.isMultiSelectionEnabled = function () {
+            (GFilesPanel.prototype.isMultiSelectionEnabled = function () {
                 return true;
             }),
-            (T.prototype._addToClipboard = function () {
+            (GFilesPanel.prototype._addToClipboard = function () {
                 (this._newClipBoard &&
-                    (this.resetClipboard(d.GFilesPanelClipboardModes.COPY),
-                    this.resetClipboard(d.GFilesPanelClipboardModes.CUT),
+                    (this.resetClipboard(filePanelConstants.GFilesPanelClipboardModes.COPY),
+                    this.resetClipboard(filePanelConstants.GFilesPanelClipboardModes.CUT),
                     (this._newClipBoard = false)),
                     (this.TEMP_SELECTION = this.TEMP_SELECTION.concat(this.SELECTION)),
                     this.view.addToClipboard(this.MODE));
             }),
-            (T.prototype.resetClipboard = function (e) {
-                ((this.TEMP_SELECTION = []), (this._newClipBoard = false), this.view.resetClipboard(e || this.MODE));
+            (GFilesPanel.prototype.resetClipboard = function (mode) {
+                ((this.TEMP_SELECTION = []), (this._newClipBoard = false), this.view.resetClipboard(mode || this.MODE));
             }),
-            (T.prototype.performCopyPaste = function (e) {
-                var t = this;
-                this.isClipboardModeCopy(e)
+            (GFilesPanel.prototype.performCopyPaste = function (mode) {
+                var self = this;
+                this.isClipboardModeCopy(mode)
                     ? (gDesigner.stats("filespanel_paste-from-copy_cloud"),
                       this.view.toggleLoading(true),
                       this.SELECTION[0] && this.drive.setCurrentFolder(this.SELECTION[0]),
                       this.drive
                           .copyPaste(this.TEMP_SELECTION)
                           .then(() => {
-                              const e = this.MODE;
-                              ((this.MODE = d.GFilesPanelClipboardModes.DEFAULT),
-                                  t.view.resetSelection(),
-                                  t.resetClipboard(e),
-                                  t.updateFilesList());
+                              const previousMode = this.MODE;
+                              ((this.MODE = filePanelConstants.GFilesPanelClipboardModes.DEFAULT),
+                                  self.view.resetSelection(),
+                                  self.resetClipboard(previousMode),
+                                  self.updateFilesList());
                           })
-                          .catch((e) => {
-                              let t = GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-moving"));
-                              (e && e.cloud && e.message && e.message.trim() && (t = e.message),
-                                  y.default.alert(t),
+                          .catch((error) => {
+                              let errorMessage = GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-moving"));
+                              (error && error.cloud && error.message && error.message.trim() && (errorMessage = error.message),
+                                  GSystemDialog.default.alert(errorMessage),
                                   this.view.toggleLoading(false),
-                                  console.error(e));
+                                  console.error(error));
                           }))
                     : (this.logStatsForCurrentFilesSelection("filespanel_copy_cloud", "filespanel_copy_cloud-multiple"),
-                      (this.MODE = d.GFilesPanelClipboardModes.COPY),
+                      (this.MODE = filePanelConstants.GFilesPanelClipboardModes.COPY),
                       this._addToClipboard());
             }),
-            (T.prototype.performCutPaste = function (e) {
-                var t = this;
-                this.isClipboardModeCut(e)
+            (GFilesPanel.prototype.performCutPaste = function (mode) {
+                var self = this;
+                this.isClipboardModeCut(mode)
                     ? (gDesigner.stats("filespanel_paste-from-cut_cloud"),
                       this.view.toggleLoading(true),
                       this.SELECTION[0] && this.drive.setCurrentFolder(this.SELECTION[0]),
                       this.drive
                           .cutPaste(this.TEMP_SELECTION)
                           .then(() => {
-                              const e = this.MODE;
-                              ((this.MODE = d.GFilesPanelClipboardModes.DEFAULT),
-                                  t.view.resetSelection(),
-                                  t.resetClipboard(e),
-                                  t.updateFilesList());
+                              const previousMode = this.MODE;
+                              ((this.MODE = filePanelConstants.GFilesPanelClipboardModes.DEFAULT),
+                                  self.view.resetSelection(),
+                                  self.resetClipboard(previousMode),
+                                  self.updateFilesList());
                           })
-                          .catch((e) => {
-                              let t = GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-moving"));
-                              (e && e.cloud && e.message && e.message.trim() && (t = e.message),
-                                  y.default.alert(t),
+                          .catch((error) => {
+                              let errorMessage = GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-moving"));
+                              (error && error.cloud && error.message && error.message.trim() && (errorMessage = error.message),
+                                  GSystemDialog.default.alert(errorMessage),
                                   this.view.toggleLoading(false),
-                                  console.error(e));
+                                  console.error(error));
                           }))
                     : (this.logStatsForCurrentFilesSelection("filespanel_cut_cloud", "filespanel_cut_cloud-multiple"),
-                      (this.MODE = d.GFilesPanelClipboardModes.CUT),
+                      (this.MODE = filePanelConstants.GFilesPanelClipboardModes.CUT),
                       this._addToClipboard());
             }),
-            (T.prototype.performFileMove = function (e, t) {
+            (GFilesPanel.prototype.performFileMove = function (item, targetFolder) {
                 (this.view.toggleLoading(true),
                     gDesigner.stats("filespanel_move"),
                     this.drive
-                        .fileMove(e, t)
+                        .fileMove(item, targetFolder)
                         .then(() => {
                             (this.view.toggleLoading(false), this.view.resetSelection(), this.updateFilesList());
                         })
-                        .catch((e) => {
-                            let t = GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-moving"));
-                            (e && e.cloud && e.message && e.message.trim() && (t = e.message),
-                                y.default.alert(t),
+                        .catch((error) => {
+                            let errorMessage = GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-moving"));
+                            (error && error.cloud && error.message && error.message.trim() && (errorMessage = error.message),
+                                GSystemDialog.default.alert(errorMessage),
                                 this.view.toggleLoading(false),
-                                console.error(e));
+                                console.error(error));
                         }));
             }),
-            (T.prototype.deleteSelection = function () {
-                var e = this;
+            (GFilesPanel.prototype.deleteSelection = function () {
+                var self = this;
                 return (
                     this.view.toggleLoading(true),
                     (async function () {
                         try {
-                            for (var t = 0; t < e.SELECTION.length; ++t) {
-                                var n = e.SELECTION[t];
-                                (await e.drive.deleteItem(n),
-                                    gDesigner.hasEventListeners(h.default.DriveEvent) &&
-                                        gDesigner.trigger(new h.default.DriveEvent(null, h.default.DriveEvent.Type.FileDeleted, n)));
+                            for (var t = 0; t < self.SELECTION.length; ++t) {
+                                var n = self.SELECTION[t];
+                                (await self.drive.deleteItem(n),
+                                    gDesigner.hasEventListeners(GDrive.default.DriveEvent) &&
+                                        gDesigner.trigger(new GDrive.default.DriveEvent(null, GDrive.default.DriveEvent.Type.FileDeleted, n)));
                             }
-                        } catch (t) {
+                        } catch (error) {
                             return (
-                                y.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-deleting"))),
-                                e.view.toggleLoading(false),
-                                void console.error(t)
+                                GSystemDialog.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.error-deleting"))),
+                                self.view.toggleLoading(false),
+                                void console.error(error)
                             );
                         }
-                        if (e.SELECTION[0].getType && e.SELECTION[0].getType() === C.Type.Folder) {
-                            let t = null;
+                        if (self.SELECTION[0].getType && self.SELECTION[0].getType() === GDriveItem.Type.Folder) {
+                            let parentFolderNode = null;
                             if (
-                                (e.SELECTION[0].getParentId() &&
-                                    e.panel.find(".g-gravit-folder").each((n, o) => {
-                                        const i = $(o).data("node");
-                                        i.id === e.SELECTION[0].getParentId() && (t = i);
+                                (self.SELECTION[0].getParentId() &&
+                                    self.panel.find(".g-gravit-folder").each((n, element) => {
+                                        const node = $(element).data("node");
+                                        node.id === self.SELECTION[0].getParentId() && (parentFolderNode = node);
                                     }),
-                                !t)
+                                !parentFolderNode)
                             ) {
-                                let n = $(e.panel.find(".g-gravit-folder")[0]);
-                                t = n && n.data("node");
+                                let firstFolderElement = $(self.panel.find(".g-gravit-folder")[0]);
+                                parentFolderNode = firstFolderElement && firstFolderElement.data("node");
                             }
-                            t && e.drive.setCurrentFolder(t);
+                            parentFolderNode && self.drive.setCurrentFolder(parentFolderNode);
                         }
-                        (e._triggerFileDeleted(e.SELECTION), e.view.toggleLoading(false), e.view.resetSelection(), e.updateFilesList());
+                        (self._triggerFileDeleted(self.SELECTION), self.view.toggleLoading(false), self.view.resetSelection(), self.updateFilesList());
                     })()
                 );
             }),
-            (T.prototype.sort = function () {
+            (GFilesPanel.prototype.sort = function () {
                 this.updateFilesList();
             }),
-            (T.prototype._minimizeWindow = function () {
+            (GFilesPanel.prototype._minimizeWindow = function () {
                 (this.view.minimizeWindow(), gContainer && gContainer.setProperty("GFilesPanel.maximized", false), this.view.updateLayout());
             }),
-            (T.prototype._maximizeWindow = function (e) {
+            (GFilesPanel.prototype._maximizeWindow = function (full) {
                 (this.view.maximizeWindow(),
                     gContainer && gContainer.setProperty("GFilesPanel.maximized", true),
                     this.hasMoreItemsToLoad() && this.view.shouldFilesBeRequested()
-                        ? this.buildDepth(e, false).catch((e) => {})
+                        ? this.buildDepth(full, false).catch((e) => {})
                         : this.view.updateLayout());
             }),
-            (T.prototype.toCardView = function () {
+            (GFilesPanel.prototype.toCardView = function () {
                 (this.view.toCardView(), gContainer && gContainer.setProperty("GFilesPanel.isFilesListStyle", false));
             }),
-            (T.prototype.toListView = function () {
+            (GFilesPanel.prototype.toListView = function () {
                 (this.view.toListView(), gContainer && gContainer.setProperty("GFilesPanel.isFilesListStyle", true));
             }),
-            (T.prototype.getCurrentFolder = function () {
+            (GFilesPanel.prototype.getCurrentFolder = function () {
                 return this.drive.getCurrentFolder();
             }),
-            (T.prototype.isRootFolder = function () {
+            (GFilesPanel.prototype.isRootFolder = function () {
                 return this.drive.isRootFolder();
             }),
-            (T.prototype.getFolders = function () {
+            (GFilesPanel.prototype.getFolders = function () {
                 return this.drive.getFolders();
             }),
-            (T.prototype.isItemSelected = function (e) {
+            (GFilesPanel.prototype.isItemSelected = function (item) {
                 if (this.SELECTION.length < 1) return false;
-                for (let t = 0, n = this.SELECTION.length; t < n; ++t) {
-                    if (this.SELECTION[t].id === e.id) return true;
+                for (let t = 0, count = this.SELECTION.length; t < count; ++t) {
+                    if (this.SELECTION[t].id === item.id) return true;
                 }
                 return false;
             }),
-            (T.prototype.isItemInClipboard = function (e) {
+            (GFilesPanel.prototype.isItemInClipboard = function (item) {
                 if (this.TEMP_SELECTION.length < 1) return false;
-                for (let t = 0, n = this.TEMP_SELECTION.length; t < n; ++t) {
-                    if (this.TEMP_SELECTION[t].id === e.id) return true;
+                for (let t = 0, count = this.TEMP_SELECTION.length; t < count; ++t) {
+                    if (this.TEMP_SELECTION[t].id === item.id) return true;
                 }
                 return false;
             }),
-            (T.prototype.isSaveMode = function () {
+            (GFilesPanel.prototype.isSaveMode = function () {
                 return this._isSaveMode;
             }),
-            (T.prototype.getSelection = function () {
+            (GFilesPanel.prototype.getSelection = function () {
                 return this.SELECTION;
             }),
-            (T.prototype.getTempSelection = function () {
+            (GFilesPanel.prototype.getTempSelection = function () {
                 return this.TEMP_SELECTION;
             }),
-            (T.prototype.getDocumentToSave = function () {
+            (GFilesPanel.prototype.getDocumentToSave = function () {
                 return this._documentToSave;
             }),
-            (T.prototype.getSortType = function () {
+            (GFilesPanel.prototype.getSortType = function () {
                 return this.drive.getSortType();
             }),
-            (T.prototype.setSortType = function (e) {
-                return (this.drive.setSortType(e), this);
+            (GFilesPanel.prototype.setSortType = function (sortType) {
+                return (this.drive.setSortType(sortType), this);
             }),
-            (T.prototype.getSelectedFilterForFileTypes = function () {
+            (GFilesPanel.prototype.getSelectedFilterForFileTypes = function () {
                 return this.drive.getSelectedFilterForFileTypes();
             }),
-            (T.prototype.addFileTypeToSelectedFilter = function (e) {
-                const t = this.drive.getAvailableFileTypesFilter().find((t) => t.type === e);
-                (gDesigner.stats("filespanel_format-filter_on", t.id), this.drive.addFileTypeToSelectedFilter(e));
+            (GFilesPanel.prototype.addFileTypeToSelectedFilter = function (filterType) {
+                const t = this.drive.getAvailableFileTypesFilter().find((t) => t.type === filterType);
+                (gDesigner.stats("filespanel_format-filter_on", t.id), this.drive.addFileTypeToSelectedFilter(filterType));
             }),
-            (T.prototype.clearAllFileTypesFromSelectedFilter = function () {
+            (GFilesPanel.prototype.clearAllFileTypesFromSelectedFilter = function () {
                 (gDesigner.stats("filespanel_format-filter_clear"),
                     this.view.clearFileTypeFilterState(),
                     this.drive.clearAllFileTypesFromSelectedFilter());
             }),
-            (T.prototype.deleteFileTypeFromSelectedFilter = function (e) {
-                const t = this.drive.getAvailableFileTypesFilter().find((t) => t.type === e);
-                (gDesigner.stats("filespanel_format-filter_off", t.id), this.drive.deleteFileTypeFromSelectedFilter(e));
+            (GFilesPanel.prototype.deleteFileTypeFromSelectedFilter = function (filterType) {
+                const t = this.drive.getAvailableFileTypesFilter().find((t) => t.type === filterType);
+                (gDesigner.stats("filespanel_format-filter_off", t.id), this.drive.deleteFileTypeFromSelectedFilter(filterType));
             }),
-            (T.prototype.getAvailableFileTypesFilter = function () {
+            (GFilesPanel.prototype.getAvailableFileTypesFilter = function () {
                 return this.drive.getAvailableFileTypesFilter();
             }),
-            (T.prototype.getSortDirection = function () {
+            (GFilesPanel.prototype.getSortDirection = function () {
                 return this.drive.getSortDirection();
             }),
-            (T.prototype.setSortDirection = function (e) {
-                return (this.drive.setSortDirection(e), this);
+            (GFilesPanel.prototype.setSortDirection = function (direction) {
+                return (this.drive.setSortDirection(direction), this);
             }),
-            (T.prototype.getClipboardMode = function () {
+            (GFilesPanel.prototype.getClipboardMode = function () {
                 return this.MODE;
             }),
-            (T.prototype.isClipboardModeCopy = function (e) {
-                return e ? e === d.GFilesPanelClipboardModes.COPY : this.MODE === d.GFilesPanelClipboardModes.COPY;
+            (GFilesPanel.prototype.isClipboardModeCopy = function (mode) {
+                return mode ? mode === filePanelConstants.GFilesPanelClipboardModes.COPY : this.MODE === filePanelConstants.GFilesPanelClipboardModes.COPY;
             }),
-            (T.prototype.isClipboardModeCut = function (e) {
-                return e ? e === d.GFilesPanelClipboardModes.CUT : this.MODE === d.GFilesPanelClipboardModes.CUT;
+            (GFilesPanel.prototype.isClipboardModeCut = function (mode) {
+                return mode ? mode === filePanelConstants.GFilesPanelClipboardModes.CUT : this.MODE === filePanelConstants.GFilesPanelClipboardModes.CUT;
             }),
-            (T.prototype.setDefaultClipboardMode = function () {
-                return ((this.MODE = d.GFilesPanelClipboardModes.DEFAULT), this);
+            (GFilesPanel.prototype.setDefaultClipboardMode = function () {
+                return ((this.MODE = filePanelConstants.GFilesPanelClipboardModes.DEFAULT), this);
             }),
-            (T.prototype.getUser = function () {
+            (GFilesPanel.prototype.getUser = function () {
                 return this.USER;
             }),
-            (T.prototype.getDefaultFilename = function () {
+            (GFilesPanel.prototype.getDefaultFilename = function () {
                 return this.DEFAULT_FILENAME;
             }),
-            (T.prototype.getPossibleExtensions = function () {
-                return this.drive.getSupportedExtensions().map((e) => e.toUpperCase());
+            (GFilesPanel.prototype.getPossibleExtensions = function () {
+                return this.drive.getSupportedExtensions().map((ext) => ext.toUpperCase());
             }),
-            (T.prototype.getAvailableExtensions = function () {
-                for (var e = false, t = null, n = 0; n < this.SELECTION.length && !e; ++n) {
+            (GFilesPanel.prototype.getAvailableExtensions = function () {
+                for (var mixedFormats = false, matchedFormat = null, n = 0; n < this.SELECTION.length && !mixedFormats; ++n) {
                     var o = this.SELECTION[n],
-                        i = this.drive.getSupportedFileFormats().find((e) => o.type === e.type);
-                    i && i.secondary && (t ? (e = t.type !== i.type) : (t = i));
+                        i = this.drive.getSupportedFileFormats().find((formatEntry) => o.type === formatEntry.type);
+                    i && i.secondary && (matchedFormat ? (mixedFormats = matchedFormat.type !== i.type) : (matchedFormat = i));
                 }
-                return t
-                    ? e
-                        ? [GCommonNames.DEFAULT_TYPE.ext.toUpperCase()]
-                        : [GCommonNames.DEFAULT_TYPE.ext.toUpperCase(), t.ext.toUpperCase()]
+                return matchedFormat
+                    ? mixedFormats
+                        ? [GCloudDrive.DEFAULT_TYPE.ext.toUpperCase()]
+                        : [GCloudDrive.DEFAULT_TYPE.ext.toUpperCase(), matchedFormat.ext.toUpperCase()]
                     : this.SELECTION.length
-                      ? GCommonNames.FILE_EXTENSIONS
+                      ? GCloudDrive.FILE_EXTENSIONS
                       : [];
             }),
-            (T.prototype.fileRequiresSourceDownload = function (e) {
-                return !this.drive.getSupportedFileFormats().some((t) => {
-                    var n = e instanceof C ? e.getMimeType() : e.type;
-                    const o = e.extension || e.ext || null;
-                    return t.type === n || (o && t.ext.toLowerCase() === o.toLowerCase());
+            (GFilesPanel.prototype.fileRequiresSourceDownload = function (file) {
+                return !this.drive.getSupportedFileFormats().some((format) => {
+                    var mimeType = file instanceof GDriveItem ? file.getMimeType() : file.type;
+                    const extension = file.extension || file.ext || null;
+                    return format.type === mimeType || (extension && format.ext.toLowerCase() === extension.toLowerCase());
                 });
             }),
-            (T.prototype.getUISettings = function () {
+            (GFilesPanel.prototype.getUISettings = function () {
                 return this._GUISettings;
             }),
-            (T.prototype._canDownload = function () {
+            (GFilesPanel.prototype._canDownload = function () {
                 return true;
             }),
-            (T.prototype._isContextMenuAvailableForFile = function (e) {
+            (GFilesPanel.prototype._isContextMenuAvailableForFile = function (file) {
                 return true;
             }),
-            (T.prototype.logStatsForCurrentFilesSelection = function (e, t, n) {
-                gDesigner.stats(1 === this.getSelection().length ? e : t, n);
+            (GFilesPanel.prototype.logStatsForCurrentFilesSelection = function (singleStatName, multipleStatName, statParam) {
+                gDesigner.stats(1 === this.getSelection().length ? singleStatName : multipleStatName, statParam);
             }),
-            (T.prototype.getCurrentAscend = function () {
+            (GFilesPanel.prototype.getCurrentAscend = function () {
                 return this.drive.getSortDirection();
             }),
-            (T.prototype.getCurrentSortType = function () {
+            (GFilesPanel.prototype.getCurrentSortType = function () {
                 return this.drive.getSortType();
             }),
-            (T.prototype.getQueryLimit = () => 20),
-            (T.prototype.getSupportedVersions = function () {
+            (GFilesPanel.prototype.getQueryLimit = () => 20),
+            (GFilesPanel.prototype.getSupportedVersions = function () {
                 return [];
             }),
-            (T.prototype.getFooterSaveDescriptionForFileExtension = function (e) {
-                return GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.info-".concat(e.toLowerCase())));
+            (GFilesPanel.prototype.getFooterSaveDescriptionForFileExtension = function (extension) {
+                return GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.info-".concat(extension.toLowerCase())));
             }),
-            (T.prototype.toString = function () {
+            (GFilesPanel.prototype.toString = function () {
                 return "[Object GFilesPanel]";
             }),
-            (T.prototype._stringToSettings = function (e) {
-                return JSON.parse((0, GSaveAction.base64StringToString)(e));
+            (GFilesPanel.prototype._stringToSettings = function (encoded) {
+                return JSON.parse((0, Utils.base64StringToString)(encoded));
             }),
-            (T.prototype._settingsToString = function (e) {
-                return (0, GSaveAction.stringToBase64String)(JSON.stringify(e));
+            (GFilesPanel.prototype._settingsToString = function (settings) {
+                return (0, Utils.stringToBase64String)(JSON.stringify(settings));
             }),
-            (T.prototype.manageOpenFolder = function (e, t, n) {
-                this.view.manageOpenFolder(e, t, n);
+            (GFilesPanel.prototype.manageOpenFolder = function (element, folder, n) {
+                this.view.manageOpenFolder(element, folder, n);
             }),
-            (module.exports = T));
+            (module.exports = GFilesPanel));
     };

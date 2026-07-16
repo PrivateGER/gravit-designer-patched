@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
             (require(19), require(193), require(3), require(91 /* polyfill:String */), require(4), require(13), require(26));
             var n = require(686),
                 r = require(269),
-                o = require(701),
+                GLocaleLanguage = require(701),
                 a = require(703),
                 s = require(699),
                 l = require(524),
@@ -54,7 +54,7 @@ module.exports = function (module, exports, require) {
                     var a = this._getClassIdentifier(e);
                     void 0 === n && (n = this._language);
                     var s = this._getValue(n, a, t);
-                    if ((s || n == o.Default || (s = this._getValue(o.Default, a, t)), s || void 0 !== i)) {
+                    if ((s || n == GLocaleLanguage.Default || (s = this._getValue(GLocaleLanguage.Default, a, t)), s || void 0 !== i)) {
                         if (!s) return i;
                     } else {
                         if (this._checkStrict) throw new Error("No value found for " + r.getName(e) + " and key " + t);
@@ -139,13 +139,13 @@ module.exports = function (module, exports, require) {
                 (d.prototype.getFunction = function (e) {
                     var t;
                     if ((t = this._functions[this._language]) && t.hasOwnProperty(e)) return t[e];
-                    if (this._language != o.Default && (t = this._functions[o.Default]) && t.hasOwnProperty(e)) return t[e];
+                    if (this._language != GLocaleLanguage.Default && (t = this._functions[GLocaleLanguage.Default]) && t.hasOwnProperty(e)) return t[e];
                     return null;
                 }),
                 (d.prototype.getLocaleLanguage = function (e) {
-                    if (o[e]) return o[e];
-                    var t = Object.keys(o).length - 1;
-                    return ((o[e] = t), t);
+                    if (GLocaleLanguage[e]) return GLocaleLanguage[e];
+                    var t = Object.keys(GLocaleLanguage).length - 1;
+                    return ((GLocaleLanguage[e] = t), t);
                 }),
                 (d.prototype.lookupLocale = function (e) {
                     if (e && this._project) {
@@ -155,33 +155,33 @@ module.exports = function (module, exports, require) {
                         if (t && t.abbreviation) return t.abbreviation.toLowerCase();
                     }
                     switch (e) {
-                        case o.English:
+                        case GLocaleLanguage.English:
                             return "en";
-                        case o.German:
+                        case GLocaleLanguage.German:
                             return "de";
-                        case o.Chinese:
+                        case GLocaleLanguage.Chinese:
                             return "zh";
-                        case o.Portuguese:
+                        case GLocaleLanguage.Portuguese:
                             return "pt";
-                        case o.Spanish:
+                        case GLocaleLanguage.Spanish:
                             return "es";
-                        case o.French:
+                        case GLocaleLanguage.French:
                             return "fr";
-                        case o.Polish:
+                        case GLocaleLanguage.Polish:
                             return "pl";
-                        case o.Russian:
+                        case GLocaleLanguage.Russian:
                             return "ru";
-                        case o.Turkish:
+                        case GLocaleLanguage.Turkish:
                             return "tr";
-                        case o.Czech:
+                        case GLocaleLanguage.Czech:
                             return "cs";
-                        case o.Italian:
+                        case GLocaleLanguage.Italian:
                             return "it";
-                        case o.Japanese:
+                        case GLocaleLanguage.Japanese:
                             return "ja";
-                        case o.Dutch:
+                        case GLocaleLanguage.Dutch:
                             return "nl";
-                        case o.Swedish:
+                        case GLocaleLanguage.Swedish:
                             return "sv";
                     }
                 }),
@@ -208,22 +208,22 @@ module.exports = function (module, exports, require) {
                             )
                                 return r.keyValue;
                         }
-                        if ("en" === n.language) return o.English;
-                        if ("de" === n.language) return o.German;
-                        if ("zh" === n.language || "so" === n.language) return o.Chinese;
-                        if ("pt" === n.language) return o.Portuguese;
-                        if ("es" === n.language) return o.Spanish;
-                        if ("fr" === n.language) return o.French;
-                        if ("pl" === n.language) return o.Polish;
-                        if ("ru" === n.language) return o.Russian;
-                        if ("tr" === n.language) return o.Turkish;
-                        if ("cs" === n.language) return o.Czech;
-                        if ("it" === n.language) return o.Italian;
-                        if ("ja" === n.language) return o.Japanese;
-                        if ("nl" === n.language) return o.Dutch;
-                        if ("sv" === n.language) return o.Swedish;
+                        if ("en" === n.language) return GLocaleLanguage.English;
+                        if ("de" === n.language) return GLocaleLanguage.German;
+                        if ("zh" === n.language || "so" === n.language) return GLocaleLanguage.Chinese;
+                        if ("pt" === n.language) return GLocaleLanguage.Portuguese;
+                        if ("es" === n.language) return GLocaleLanguage.Spanish;
+                        if ("fr" === n.language) return GLocaleLanguage.French;
+                        if ("pl" === n.language) return GLocaleLanguage.Polish;
+                        if ("ru" === n.language) return GLocaleLanguage.Russian;
+                        if ("tr" === n.language) return GLocaleLanguage.Turkish;
+                        if ("cs" === n.language) return GLocaleLanguage.Czech;
+                        if ("it" === n.language) return GLocaleLanguage.Italian;
+                        if ("ja" === n.language) return GLocaleLanguage.Japanese;
+                        if ("nl" === n.language) return GLocaleLanguage.Dutch;
+                        if ("sv" === n.language) return GLocaleLanguage.Swedish;
                     }
-                    return o.English;
+                    return GLocaleLanguage.English;
                 }),
                 (d.prototype.toLocaleCurrency = function (e, t) {
                     if (((e = ("number" == typeof e && e) || parseFloat(e)), isNaN(e) || !t))
@@ -237,7 +237,7 @@ module.exports = function (module, exports, require) {
                     var t = this;
                     e = e || "en-US";
                     var i = this._translationInstance.getByProject(this._project).find(function (e) {
-                        return e.keyValue === (t._language || o.English);
+                        return e.keyValue === (t._language || GLocaleLanguage.English);
                     });
                     return (i && i.abbreviation) || e;
                 }),

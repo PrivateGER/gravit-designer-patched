@@ -14,7 +14,7 @@ module.exports = function (module, exports, require) {
                 prodURL,
                 HAS_ANNOTATIONS,
             } = require(10 /* designerConfig */),
-            { sleep, watchDog } = require(40 /* GSaveAction */),
+            { sleep, watchDog } = require(40 /* Utils */),
             GSystemDialog = require(44),
             y = require(85),
             v = [

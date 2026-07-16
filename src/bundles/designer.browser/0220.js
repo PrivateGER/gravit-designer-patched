@@ -6,10 +6,10 @@ module.exports = function (module, exports, require) {
             designerConfig = require(10),
             r = _interopRequireDefault(require(336)),
             s = _interopRequireDefault(require(44 /* GSystemDialog */)),
-            GSaveAction = require(40),
+            Utils = require(40),
             c = _interopRequireDefault(require(554)),
             d = _interopRequireDefault(require(555)),
-            GDocument = require(237),
+            GStorage = require(237),
             GCommonNames = require(119);
         const g = require(436),
             h = require(86);
@@ -25,7 +25,7 @@ module.exports = function (module, exports, require) {
             });
         }
         function b() {}
-        (GObject.GObject.inherit(b, GDocument),
+        (GObject.GObject.inherit(b, GStorage),
             (b.ProgressStages = {
                 Preparing: 0,
                 SyncingImages: 50,
@@ -40,7 +40,7 @@ module.exports = function (module, exports, require) {
             }),
             (b.Item = function (e, t, n, o, i, a, r) {
                 if (
-                    (GDocument.Item.call(this, e),
+                    (GStorage.Item.call(this, e),
                     (this._filename = n),
                     (this._id = t),
                     (this._file = o && GCommonNames.convertToCloudItem(o)),
@@ -58,7 +58,7 @@ module.exports = function (module, exports, require) {
                         s && ((this._ext = s.ext.toUpperCase()), (this._type = s.type)));
                 }
             }),
-            GObject.GObject.inheritAndMix(b.Item, GDocument.Item, [g]),
+            GObject.GObject.inheritAndMix(b.Item, GStorage.Item, [g]),
             (b.Item.prototype._filename = null),
             (b.Item.prototype._ext = null),
             (b.Item.prototype._type = null),
@@ -252,7 +252,7 @@ module.exports = function (module, exports, require) {
                                             : n && n("Invalid response status: " + C.status)
                                     );
                                 await this._syncPreviewThumbnailWithCloud(m);
-                                const x = designerConfig.COMPUTE_SHA256_FOR_FILES ? await (0, GSaveAction.getFileSHA256Digest)(u) : null;
+                                const x = designerConfig.COMPUTE_SHA256_FOR_FILES ? await (0, Utils.getFileSHA256Digest)(u) : null;
                                 (await designerConfig.gApi.commitManualFileUpdate(this._id, [designerConfig.FileTypes.MainFile, designerConfig.FileTypes.ThumbnailPreview]),
                                     await designerConfig.gApi.updateFile(this._id, { trashed: false, sha256: x }),
                                     this.setVersionId(null),
@@ -308,7 +308,7 @@ module.exports = function (module, exports, require) {
                 }
             }),
             (b.Item.prototype._makeFileVisibleUpdateInternalVersionAndHash = async function (e) {
-                const t = designerConfig.COMPUTE_SHA256_FOR_FILES ? await (0, GSaveAction.getFileSHA256Digest)(e) : null,
+                const t = designerConfig.COMPUTE_SHA256_FOR_FILES ? await (0, Utils.getFileSHA256Digest)(e) : null,
                     n = { trashed: false };
                 t && (n.sha256 = t);
                 const o = await designerConfig.gApi.updateFile(this.getId(), n);

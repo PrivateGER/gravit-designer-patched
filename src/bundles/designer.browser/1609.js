@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GPlatform = require(15),
             a = require(797),
-            GSaveAction = require(40),
+            Utils = require(40),
             GCategory = require(18),
             l = require(31),
             GLoginPanel = require(446),
@@ -84,7 +84,7 @@ module.exports = function (module, exports, require) {
                                 if ((o.push(c), n.shift(), n.length)) return void a.GSVGExport.export(n[0], i, l);
                                 let d = "";
                                 for (var u = 0; u < o.length; u++) {
-                                    let e = "data:image/svg+xml;base64," + (0, GSaveAction.stringToBase64String)(o[u]);
+                                    let e = "data:image/svg+xml;base64," + (0, Utils.stringToBase64String)(o[u]);
                                     d = d.concat("<img style='height:100%;width:auto;max-width:100%;display:block;' src='" + e + "'/>");
                                 }
                                 var p = h.contentDocument;

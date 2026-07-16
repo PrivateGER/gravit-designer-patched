@@ -5,7 +5,7 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             i = (require(15 /* GPlatform */), require(1267)),
             a = require(123),
-            { replaceImage, setOriginSize, cropImage } = (require(173), require(219), require(1268 /* GDocument */));
+            { replaceImage, setOriginSize, cropImage } = (require(173), require(219), require(1268 /* imageActions */));
         function c() {}
         (GObject.GObject.inherit(c, a),
             (c.prototype._panel = null),

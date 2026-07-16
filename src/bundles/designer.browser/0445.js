@@ -42,7 +42,7 @@ module.exports = function (module, exports, require) {
             GLoginPanel = require(446),
             m = require(86);
         const GSystemDialog = require(44),
-            v = require(389 /* GDocument */);
+            GFileTypes = require(389);
         var _ = designerConfig.FILE_FORMATS.map((e) => e.ext);
         const b = designerConfig.FILE_FORMATS.find((e) => e.default).ext;
         function w(e) {
@@ -152,7 +152,7 @@ module.exports = function (module, exports, require) {
                 )
                     return;
                 o.referer = this.getId();
-                const s = !e.canDownload() || this._fileExt !== v.PDF.ext;
+                const s = !e.canDownload() || this._fileExt !== GFileTypes.PDF.ext;
                 if (e.canPromptSave() && s) {
                     const i = t.getStorageItem();
                     (!r && i && (r = i.getName()),

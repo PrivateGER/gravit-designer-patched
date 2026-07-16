@@ -4,10 +4,15 @@ module.exports = function (module, exports, require) {
         var designerConfig = require(10);
         class i {
             static getElements() {
-                return i.isUnsplashIntegrationEnabled() ? designerConfig.ELEMENTS : designerConfig.ELEMENTS.filter((e) => "element.image" !== e.path);
+                // Only the Unsplash Photos category has a living backend (the
+                // local server proxies it when UNSPLASH_ACCESS_KEY is set). The
+                // elements market (shapes/stickers/icons/...) was never archived,
+                // so its categories are hidden rather than shown empty.
+                return i.isUnsplashIntegrationEnabled() ? designerConfig.ELEMENTS.filter((e) => "element.image" === e.path) : [];
             }
             static isUnsplashIntegrationEnabled() {
-                return designerConfig.ENABLE_UNSPLASH_INTEGRATION;
+                // Set by /config.js (served by server.js) before the bundles load.
+                return true === window.UNSPLASH_ENABLED;
             }
         }
         module.exports = i;

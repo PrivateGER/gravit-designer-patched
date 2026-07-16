@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         require(8 /* Symbol */);
         var GObject = require(1),
-            GSaveAction = require(40),
+            Utils = require(40),
             a = require(257);
         class r {
             constructor(e) {
@@ -56,7 +56,7 @@ module.exports = function (module, exports, require) {
                 this._dialog.gDialog("open", true);
             }
             close() {
-                return (this._dialog.gDialog("close", false), (0, GSaveAction.sleep)(0));
+                return (this._dialog.gDialog("close", false), (0, Utils.sleep)(0));
             }
             static file() {
                 return "file";

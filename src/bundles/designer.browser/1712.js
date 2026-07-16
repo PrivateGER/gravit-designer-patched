@@ -2,230 +2,230 @@ module.exports = function (module, exports, require) {
         "use strict";
         var _interopRequireDefault = require(16);
         (require(58 /* polyfill:Array */), require(19), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(71 /* polyfill:String */), require(4), require(41), require(13), require(32), require(38), require(97), require(1175), require(33), require(26));
-        var i = require(53),
+        var editorLib = require(53),
             GObject = require(1),
-            r = require(882),
+            collabApi = require(882),
             designerConfig = require(10),
-            l = _interopRequireDefault(require(1354));
+            GInvalidationOptions = _interopRequireDefault(require(1354));
         const GSystemDialog = require(44),
-            d = require(358),
-            u = require(1355),
-            p = require(1713),
-            GAnnotationPanel = require(1357),
-            h = require(1356 /* GAnnotationPanel */),
-            f = require(1279),
-            m = require(177),
-            y = ["text"];
-        function v() {}
-        function _(e) {
-            var t = $(this).data("gannotationpanel");
-            if (t.options.clickCallback) {
-                var n = x.call(this, e.id);
-                t.options.clickCallback(n);
+            annotationService = require(358),
+            GSimpleTree = require(1355),
+            AnnotationsVTree = require(1713),
+            GAnnotationReplyDocker = require(1357),
+            GAnnotationRow = require(1356),
+            UpdateResult = require(1279),
+            CollabUser = require(177),
+            watchedProperties = ["text"];
+        function GAnnotationPanelWidget() {}
+        function onNodeClick(nodeInfo) {
+            var panelData = $(this).data("gannotationpanel");
+            if (panelData.options.clickCallback) {
+                var annot = getAnnotById.call(this, nodeInfo.id);
+                panelData.options.clickCallback(annot);
             }
         }
-        function b(e) {
-            x.call(this, e.id) && e.expanded;
+        function onNodeExpand(nodeInfo) {
+            getAnnotById.call(this, nodeInfo.id) && nodeInfo.expanded;
         }
-        function w(e, t) {
-            var n = $(this).data("gannotationpanel");
-            if (n.options.renderer) return n.options.renderer(e.id, e.virtualNode, t);
+        function renderTreeNode(nodeInfo, container) {
+            var panelData = $(this).data("gannotationpanel");
+            if (panelData.options.renderer) return panelData.options.renderer(nodeInfo.id, nodeInfo.virtualNode, container);
         }
-        function C(e) {
-            var t = $(this);
-            e.id === u.COLLAPSE_ID
-                ? $(e).addClass(t.data("gannotationpanel").options.collapseStyle)
-                : e.id === u.EXPAND_ID && $(e).addClass(t.data("gannotationpanel").options.expandStyle);
+        function renderExpandToggle(iconElement) {
+            var panelElement = $(this);
+            iconElement.id === GSimpleTree.COLLAPSE_ID
+                ? $(iconElement).addClass(panelElement.data("gannotationpanel").options.collapseStyle)
+                : iconElement.id === GSimpleTree.EXPAND_ID && $(iconElement).addClass(panelElement.data("gannotationpanel").options.expandStyle);
         }
-        function x(e) {
-            var t = $(this).data("gannotationpanel").annotTreeNodeMap[e];
-            return t ? t.annot : null;
+        function getAnnotById(treeId) {
+            var entry = $(this).data("gannotationpanel").annotTreeNodeMap[treeId];
+            return entry ? entry.annot : null;
         }
-        function S(e) {
-            return $(this).data("gannotationpanel").annotTreeNodeMap[e];
+        function getEntryById(treeId) {
+            return $(this).data("gannotationpanel").annotTreeNodeMap[treeId];
         }
-        function E(e) {
-            var t = $(this).data("gannotationpanel").annotTreeNodeMapByNodes.get(e);
-            return t ? t.treeId : null;
+        function getTreeIdForNode(node) {
+            var entry = $(this).data("gannotationpanel").annotTreeNodeMapByNodes.get(node);
+            return entry ? entry.treeId : null;
         }
-        function A(e) {
-            var t = $(this).data("gannotationpanel").annotTreeNodeMapByNodes.get(e);
-            return t ? t.treeNode : null;
+        function getTreeNodeForNode(node) {
+            var entry = $(this).data("gannotationpanel").annotTreeNodeMapByNodes.get(node);
+            return entry ? entry.treeNode : null;
         }
-        function T(e) {
-            var t = $(this).data("gannotationpanel").annotTreeNodeMap,
-                n = $(this).data("gannotationpanel").annotTreeNodeMapByNodes;
-            e.accept(
-                function (e) {
-                    var o = n.get(e);
-                    o && (n.delete(e), (t[o.treeId] = null));
+        function removeNodeMappings(node) {
+            var treeIdMap = $(this).data("gannotationpanel").annotTreeNodeMap,
+                nodeMap = $(this).data("gannotationpanel").annotTreeNodeMapByNodes;
+            node.accept(
+                function (visitedNode) {
+                    var entry = nodeMap.get(visitedNode);
+                    entry && (nodeMap.delete(visitedNode), (treeIdMap[entry.treeId] = null));
                 }.bind(this)
             );
         }
-        function G(e) {
-            var t = $(this).data("gannotationpanel"),
-                n = [];
-            if (t.annotTreeNodeMap)
-                for (var o in (e instanceof GObject.GComment && n.push(E.call(this, e.getParent())), t.annotTreeNodeMap))
-                    t.annotTreeNodeMap[o] &&
-                        t.annotTreeNodeMap[o].annot &&
-                        (t.annotTreeNodeMap[o].annot === e ||
-                            (t.annotTreeNodeMap[o].annot instanceof GObject.GComment && t.annotTreeNodeMap[o].annot.getParent() === e)) &&
-                        n.push(o);
-            return n;
+        function getRelatedTreeIds(node) {
+            var panelData = $(this).data("gannotationpanel"),
+                treeIds = [];
+            if (panelData.annotTreeNodeMap)
+                for (var o in (node instanceof GObject.GComment && treeIds.push(getTreeIdForNode.call(this, node.getParent())), panelData.annotTreeNodeMap))
+                    panelData.annotTreeNodeMap[o] &&
+                        panelData.annotTreeNodeMap[o].annot &&
+                        (panelData.annotTreeNodeMap[o].annot === node ||
+                            (panelData.annotTreeNodeMap[o].annot instanceof GObject.GComment && panelData.annotTreeNodeMap[o].annot.getParent() === node)) &&
+                        treeIds.push(o);
+            return treeIds;
         }
-        function P() {
+        function canEditComments() {
             return (
                 !!gDesigner.getApplicationManager().isCommentingEditingEnabled() ||
                 (GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.document-approved-no-annotations-update"))), false)
             );
         }
-        function D() {
-            const e = $(this).data("gannotationpanel");
-            if (e && e.syncCallback)
+        function runSyncCallback() {
+            const panelData = $(this).data("gannotationpanel");
+            if (panelData && panelData.syncCallback)
                 try {
-                    e.syncCallback();
+                    panelData.syncCallback();
                 } finally {
-                    e.syncCallback = null;
+                    panelData.syncCallback = null;
                 }
         }
-        function L(e, t, n) {
-            const o = gDesigner.getApplicationManager().isCommentingEditingEnabled();
-            var r = $(this).data("gannotationpanel"),
-                s = S.call(this, e),
-                l = s ? s.annot : null,
-                u = null;
-            if (l) {
-                var p = false,
-                    f = $(n);
+        function renderAnnotationRow(treeId, virtualNode, container) {
+            const isCommentingEditingEnabled = gDesigner.getApplicationManager().isCommentingEditingEnabled();
+            var panelData = $(this).data("gannotationpanel"),
+                entry = getEntryById.call(this, treeId),
+                annot = entry ? entry.annot : null,
+                assignedUserRow = null;
+            if (annot) {
+                var isLastRow = false,
+                    row = $(container);
                 if (
-                    (f.attr("draggable", false),
-                    l.hasMixin(GObject.GAnnotation) ? f.addClass("parent") : f.addClass("child"),
-                    !r.showResolved &&
-                        ((l.hasMixin(GObject.GAnnotation) && l.getProperty("rsv")) ||
-                            (l instanceof GObject.GComment && l.getParent().getProperty("rsv"))))
+                    (row.attr("draggable", false),
+                    annot.hasMixin(GObject.GAnnotation) ? row.addClass("parent") : row.addClass("child"),
+                    !panelData.showResolved &&
+                        ((annot.hasMixin(GObject.GAnnotation) && annot.getProperty("rsv")) ||
+                            (annot instanceof GObject.GComment && annot.getParent().getProperty("rsv"))))
                 )
-                    return void f.css("display", "none");
+                    return void row.css("display", "none");
                 if (
-                    (f.hover(
-                        () => G.call(this, l).forEach((e) => $("#".concat(e)).addClass("on-hover")),
-                        () => G.call(this, l).forEach((e) => $("#".concat(e)).removeClass("on-hover"))
+                    (row.hover(
+                        () => getRelatedTreeIds.call(this, annot).forEach((relatedId) => $("#".concat(relatedId)).addClass("on-hover")),
+                        () => getRelatedTreeIds.call(this, annot).forEach((relatedId) => $("#".concat(relatedId)).removeClass("on-hover"))
                     ),
-                    !(l.hasMixin(GObject.GAnnotation) ? l : l.getParent()).hasFlag(GObject.GNode.Flag.Selected) &&
-                        ((l.hasMixin(GObject.GAnnotation) && !B(l).length) || U(l)) &&
-                        (p = true),
-                    !r.blockHighlight)
+                    !(annot.hasMixin(GObject.GAnnotation) ? annot : annot.getParent()).hasFlag(GObject.GNode.Flag.Selected) &&
+                        ((annot.hasMixin(GObject.GAnnotation) && !getActiveComments(annot).length) || isLastComment(annot)) &&
+                        (isLastRow = true),
+                    !panelData.blockHighlight)
                 ) {
-                    var m = l.hasFlag(GObject.GNode.Flag.Highlighted);
-                    (!m &&
-                        l.hasMixin(GObject.GNode.Container) &&
-                        (m = l.acceptChildren(
-                            function (e) {
-                                return e.hasFlag(GObject.GNode.Flag.Highlighted);
+                    var isHighlighted = annot.hasFlag(GObject.GNode.Flag.Highlighted);
+                    (!isHighlighted &&
+                        annot.hasMixin(GObject.GNode.Container) &&
+                        (isHighlighted = annot.acceptChildren(
+                            function (child) {
+                                return child.hasFlag(GObject.GNode.Flag.Highlighted);
                             },
                             false,
                             true
                         )),
-                        $(f).toggleClass("g-highlighted-row", m));
+                        $(row).toggleClass("g-highlighted-row", isHighlighted));
                 }
-                var y = k.call(this, l),
-                    v = S.call(this, y);
-                void 0 === v.expanded && (v.expanded = true);
-                var _ = gDesigner.getActiveDocument();
-                _ &&
-                    l.getId() === _.getFocusAnnotationId() &&
-                    !_.isAnnotationFocused() &&
-                    (_.getScene().updateActivePageForElem(v.annot),
-                    _.getScene().updateActiveLayerForElem(v.annot),
-                    _.setAnnotationFocused(),
-                    (v.expanded = true),
-                    v.annot.setFlag(GObject.GNode.Flag.Selected));
-                var b = O.call(this, l);
-                l.hasMixin(GObject.GAnnotation) && (u = I.call(this, l, r.showResolved));
-                var w = new h({
-                    isCommentingEditingEnable: o,
-                    container: f,
-                    annotation: l,
-                    relatedNodesCount: b,
-                    sidebarActive: r.sidebarActive,
-                    isLastRow: p,
-                    hasResolveAccess: r.vtree.hasResolveAccess(),
-                    hasReopenAccess: r.vtree.hasReopenAccess(),
-                    mentionData: r.vtree.getMentionData(),
+                var primaryTreeId = getPrimaryTreeId.call(this, annot),
+                    primaryEntry = getEntryById.call(this, primaryTreeId);
+                void 0 === primaryEntry.expanded && (primaryEntry.expanded = true);
+                var activeDocument = gDesigner.getActiveDocument();
+                activeDocument &&
+                    annot.getId() === activeDocument.getFocusAnnotationId() &&
+                    !activeDocument.isAnnotationFocused() &&
+                    (activeDocument.getScene().updateActivePageForElem(primaryEntry.annot),
+                    activeDocument.getScene().updateActiveLayerForElem(primaryEntry.annot),
+                    activeDocument.setAnnotationFocused(),
+                    (primaryEntry.expanded = true),
+                    primaryEntry.annot.setFlag(GObject.GNode.Flag.Selected));
+                var relatedCount = countRelatedTreeIds.call(this, annot);
+                annot.hasMixin(GObject.GAnnotation) && (assignedUserRow = renderAssignedUser.call(this, annot, panelData.showResolved));
+                var rowComponent = new GAnnotationRow({
+                    isCommentingEditingEnable: isCommentingEditingEnabled,
+                    container: row,
+                    annotation: annot,
+                    relatedNodesCount: relatedCount,
+                    sidebarActive: panelData.sidebarActive,
+                    isLastRow: isLastRow,
+                    hasResolveAccess: panelData.vtree.hasResolveAccess(),
+                    hasReopenAccess: panelData.vtree.hasReopenAccess(),
+                    mentionData: panelData.vtree.getMentionData(),
                     onMouseEnter: () => {
-                        l.hasMixin(GObject.GAnnotation) && !l.hasFlag(GObject.GAnnotation.Flag.Hidden) && l.setFlag(GObject.GNode.Flag.Highlighted);
+                        annot.hasMixin(GObject.GAnnotation) && !annot.hasFlag(GObject.GAnnotation.Flag.Hidden) && annot.setFlag(GObject.GNode.Flag.Highlighted);
                     },
                     onMouseLeave: () => {
-                        l.hasMixin(GObject.GAnnotation) && !l.hasFlag(GObject.GAnnotation.Flag.Hidden) && l.removeFlag(GObject.GNode.Flag.Highlighted);
+                        annot.hasMixin(GObject.GAnnotation) && !annot.hasFlag(GObject.GAnnotation.Flag.Hidden) && annot.removeFlag(GObject.GNode.Flag.Highlighted);
                     },
-                    onChange: (e) => {
-                        P() &&
-                            (l.getProperty("text") === e
-                                ? D.call(this)
-                                : i.GEditor.tryRunTransaction(
-                                      l,
+                    onChange: (text) => {
+                        canEditComments() &&
+                            (annot.getProperty("text") === text
+                                ? runSyncCallback.call(this)
+                                : editorLib.GEditor.tryRunTransaction(
+                                      annot,
                                       function () {
-                                          l.setProperty("text", e);
+                                          annot.setProperty("text", text);
                                       },
                                       GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.edit-comment"))
                                   ));
                     },
                     onToggleState: () => {
-                        P() &&
-                            (i.GEditor.tryRunTransaction(
-                                l,
+                        canEditComments() &&
+                            (editorLib.GEditor.tryRunTransaction(
+                                annot,
                                 function () {
-                                    (r.showResolved ||
-                                        l.getProperty("rsv") ||
-                                        !l.hasFlag(GObject.GNode.Flag.Selected) ||
-                                        l.removeFlag(GObject.GNode.Flag.Selected),
-                                        l.setProperty("rsv", !l.getProperty("rsv")));
+                                    (panelData.showResolved ||
+                                        annot.getProperty("rsv") ||
+                                        !annot.hasFlag(GObject.GNode.Flag.Selected) ||
+                                        annot.removeFlag(GObject.GNode.Flag.Selected),
+                                        annot.setProperty("rsv", !annot.getProperty("rsv")));
                                 },
-                                l.getProperty("rsv")
+                                annot.getProperty("rsv")
                                     ? GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.reopen"))
                                     : GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.resolve"))
                             ),
-                            ne.call(this),
-                            te.call(this));
+                            resetState.call(this),
+                            rebuildTree.call(this));
                     },
                     onResolve: () => {
-                        P() &&
-                            (i.GEditor.tryRunTransaction(
-                                l,
+                        canEditComments() &&
+                            (editorLib.GEditor.tryRunTransaction(
+                                annot,
                                 function () {
-                                    (!r.showResolved && l.hasFlag(GObject.GNode.Flag.Selected) && l.removeFlag(GObject.GNode.Flag.Selected),
-                                        l.setProperty("rsv", true));
+                                    (!panelData.showResolved && annot.hasFlag(GObject.GNode.Flag.Selected) && annot.removeFlag(GObject.GNode.Flag.Selected),
+                                        annot.setProperty("rsv", true));
                                 },
                                 GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.resolve"))
                             ),
-                            ne.call(this),
-                            te.call(this));
+                            resetState.call(this),
+                            rebuildTree.call(this));
                     },
                     onReopen: () => {
-                        P() &&
-                            (i.GEditor.tryRunTransaction(
-                                l,
+                        canEditComments() &&
+                            (editorLib.GEditor.tryRunTransaction(
+                                annot,
                                 function () {
-                                    l.setProperty("rsv", false);
+                                    annot.setProperty("rsv", false);
                                 },
                                 GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.reopen"))
                             ),
-                            ne.call(this),
-                            te.call(this));
+                            resetState.call(this),
+                            rebuildTree.call(this));
                     },
                     onDelete: () => {
-                        P() &&
+                        canEditComments() &&
                             GSystemDialog.confirm(
                                 GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.confirm-remove")),
-                                (e) => {
-                                    e &&
-                                        d.removeAnnotations(
-                                            [l],
-                                            l.getParent(),
+                                (confirmed) => {
+                                    confirmed &&
+                                        annotationService.removeAnnotations(
+                                            [annot],
+                                            annot.getParent(),
                                             GObject.GLocale.get(
                                                 new GObject.GLocaleKey(
                                                     "GAnnotationPanel",
-                                                    "text.remove-".concat(l.hasMixin(GObject.GAnnotation) ? "annotation" : "comment")
+                                                    "text.remove-".concat(annot.hasMixin(GObject.GAnnotation) ? "annotation" : "comment")
                                                 )
                                             )
                                         );
@@ -238,530 +238,530 @@ module.exports = function (module, exports, require) {
                             );
                     },
                     onCancel: () => {
-                        D.call(this);
+                        runSyncCallback.call(this);
                     },
-                    onExpandClick: (t) => {
-                        (t.stopPropagation(), (v.expanded = !v.expanded));
-                        var n = S.call(this, e);
+                    onExpandClick: (event) => {
+                        (event.stopPropagation(), (primaryEntry.expanded = !primaryEntry.expanded));
+                        var entry = getEntryById.call(this, treeId);
                         try {
-                            n.component.setCollapseState(v.expanded);
+                            entry.component.setCollapseState(primaryEntry.expanded);
                         } catch (e) {
                             "function" == typeof gdb_showScene && console.error("REPAIR THIS! component is NULL!");
                         }
-                        var o = n.annot;
-                        G.call(this, o).forEach((e, t) => {
-                            if (t > 0) {
-                                var n = S.call(this, e);
+                        var rowAnnot = entry.annot;
+                        getRelatedTreeIds.call(this, rowAnnot).forEach((relatedId, index) => {
+                            if (index > 0) {
+                                var relatedEntry = getEntryById.call(this, relatedId);
                                 try {
-                                    n.component.setVisiblity(v.expanded);
+                                    relatedEntry.component.setVisiblity(primaryEntry.expanded);
                                 } catch (e) {
                                     "function" == typeof gdb_showScene && console.error("REPAIR THIS! component is NULL!");
                                 }
                             }
                         });
                     },
-                    onCopyPermalinkClick: async (e) => {
-                        const t = gDesigner.getActiveDocument();
-                        if (t) {
-                            const n = await gDesigner.getShareManager().getPermalink(t, e);
-                            n && gContainer.copyToClipboard(n);
+                    onCopyPermalinkClick: async (annotationId) => {
+                        const activeDocument = gDesigner.getActiveDocument();
+                        if (activeDocument) {
+                            const permalink = await gDesigner.getShareManager().getPermalink(activeDocument, annotationId);
+                            permalink && gContainer.copyToClipboard(permalink);
                         }
                     },
-                    onAssignTo: (e) => {
-                        l.hasMixin(GObject.GAnnotation)
-                            ? l.setProperty("asgn", e)
-                            : l.getParent() && l.getParent().hasMixin(GObject.GAnnotation) && l.getParent().setProperty("asgn", e);
+                    onAssignTo: (assigneeId) => {
+                        annot.hasMixin(GObject.GAnnotation)
+                            ? annot.setProperty("asgn", assigneeId)
+                            : annot.getParent() && annot.getParent().hasMixin(GObject.GAnnotation) && annot.getParent().setProperty("asgn", assigneeId);
                     },
-                    mainAnnotObject: v,
+                    mainAnnotObject: primaryEntry,
                 });
-                ((s.element = f), (s.component = w), r.vtree.addChild(w));
-            } else if (s && s.replyAnnot) {
-                let e = $(n);
+                ((entry.element = row), (entry.component = rowComponent), panelData.vtree.addChild(rowComponent));
+            } else if (entry && entry.replyAnnot) {
+                let replyRow = $(container);
                 if (
-                    (e.addClass("last-row"),
-                    !o ||
-                        !s.replyAnnot.hasFlag(GObject.GNode.Flag.Selected) ||
-                        s.replyAnnot.getProperty("rsv") ||
-                        (!r.showResolved && s.replyAnnot.getProperty("rsv")))
+                    (replyRow.addClass("last-row"),
+                    !isCommentingEditingEnabled ||
+                        !entry.replyAnnot.hasFlag(GObject.GNode.Flag.Selected) ||
+                        entry.replyAnnot.getProperty("rsv") ||
+                        (!panelData.showResolved && entry.replyAnnot.getProperty("rsv")))
                 )
-                    return void e.hide();
-                const t = !s.replyAnnot.isFillingCompleted(),
-                    l = (e) => {
-                        if (P() && (e.length || (t && s.replyAnnot.isEmptyTextAllowed()))) {
-                            let c = gDesigner.getSyncUser();
-                            if (d.canUpdate(c)) {
-                                const d = s.replyAnnot.getScene(),
-                                    u = d && i.GEditor.getEditor(d);
-                                let p, g;
-                                ((p = t
+                    return void replyRow.hide();
+                const isNewAnnotation = !entry.replyAnnot.isFillingCompleted(),
+                    onSubmit = (text) => {
+                        if (canEditComments() && (text.length || (isNewAnnotation && entry.replyAnnot.isEmptyTextAllowed()))) {
+                            let syncUser = gDesigner.getSyncUser();
+                            if (annotationService.canUpdate(syncUser)) {
+                                const scene = entry.replyAnnot.getScene(),
+                                    editor = scene && editorLib.GEditor.getEditor(scene);
+                                let transactionLabel, transactionData;
+                                ((transactionLabel = isNewAnnotation
                                     ? GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.set-annotation-text"))
                                     : GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.add-comment"))),
-                                    u && u.beginTransaction());
+                                    editor && editor.beginTransaction());
                                 try {
-                                    if (t) {
-                                        (s.replyAnnot.setProperty("text", e),
-                                            s.replyAnnot.setProperty("email", c.getAccountName()),
-                                            V.call(this, s.replyAnnot));
-                                        var n = GObject.GUtil.uuid(),
-                                            o = A.call(this, s.replyAnnot),
-                                            l = {
+                                    if (isNewAnnotation) {
+                                        (entry.replyAnnot.setProperty("text", text),
+                                            entry.replyAnnot.setProperty("email", syncUser.getAccountName()),
+                                            removeReplyNode.call(this, entry.replyAnnot));
+                                        var newTreeId = GObject.GUtil.uuid(),
+                                            parentTreeNode = getTreeNodeForNode.call(this, entry.replyAnnot),
+                                            replyEntry = {
                                                 element: null,
                                                 annot: null,
-                                                treeNode: M.call(this, n, o, true, true),
-                                                replyAnnot: s.replyAnnot,
-                                                treeId: n,
+                                                treeNode: appendTreeNode.call(this, newTreeId, parentTreeNode, true, true),
+                                                replyAnnot: entry.replyAnnot,
+                                                treeId: newTreeId,
                                             };
-                                        ((r.annotTreeNodeMap[n] = l), r.replyNodes.set(s.replyAnnot, l));
+                                        ((panelData.annotTreeNodeMap[newTreeId] = replyEntry), panelData.replyNodes.set(entry.replyAnnot, replyEntry));
                                     } else {
-                                        V.call(this, s.replyAnnot);
-                                        const t = s.replyAnnot.addComment(
-                                            e,
-                                            c.getUID(),
-                                            i.GEditorOptions.userConfig.userName,
-                                            c.avatar,
-                                            c.getAccountName()
+                                        removeReplyNode.call(this, entry.replyAnnot);
+                                        const comment = entry.replyAnnot.addComment(
+                                            text,
+                                            syncUser.getUID(),
+                                            editorLib.GEditorOptions.userConfig.userName,
+                                            syncUser.avatar,
+                                            syncUser.getAccountName()
                                         );
-                                        g = i.GAnnotationEditor.createAddAnnotationTransactionData([t], s.replyAnnot);
+                                        transactionData = editorLib.GAnnotationEditor.createAddAnnotationTransactionData([comment], entry.replyAnnot);
                                     }
-                                    (ne.call(this), te.call(this));
+                                    (resetState.call(this), rebuildTree.call(this));
                                 } catch (e) {
                                     console.log(e);
                                 } finally {
-                                    u && u.commitTransaction(p, g);
+                                    editor && editor.commitTransaction(transactionLabel, transactionData);
                                 }
                             }
-                            H(this, s.replyAnnot);
+                            removeEmptyAnnotation(this, entry.replyAnnot);
                         }
                     },
-                    c = () => {
-                        (H(this, s.replyAnnot), D.call(this));
+                    onCancel = () => {
+                        (removeEmptyAnnotation(this, entry.replyAnnot), runSyncCallback.call(this));
                     },
-                    u = (e) => {
-                        s.replyAnnot.setProperty("asgn", e);
+                    onAssignTo = (assigneeId) => {
+                        entry.replyAnnot.setProperty("asgn", assigneeId);
                     };
-                var C = new GAnnotationPanel({
-                        container: e,
-                        annotation: s.replyAnnot,
-                        onSubmit: l,
-                        onCancel: c,
-                        onAssignTo: u,
-                        mentionData: r.vtree.getMentionData(),
+                var replyPanel = new GAnnotationReplyDocker({
+                        container: replyRow,
+                        annotation: entry.replyAnnot,
+                        onSubmit: onSubmit,
+                        onCancel: onCancel,
+                        onAssignTo: onAssignTo,
+                        mentionData: panelData.vtree.getMentionData(),
                     }),
-                    x = r.annotTreeNodeMapByNodes.get(s.replyAnnot);
-                ((s.reply = C), r.vtree.addChild(C), x && (x.reply = C));
+                    replyAnnotEntry = panelData.annotTreeNodeMapByNodes.get(entry.replyAnnot);
+                ((entry.reply = replyPanel), panelData.vtree.addChild(replyPanel), replyAnnotEntry && (replyAnnotEntry.reply = replyPanel));
             }
-            return u;
+            return assignedUserRow;
         }
-        function I(e, t) {
-            let n = e.getProperty("asgn");
-            if (!(n || []).length) return;
-            var o = e.getProperty("rsv");
-            let s = $("<div/>").addClass("already-assigned-user-row").appendTo($(this)),
-                l = $("<span/>").addClass("assigned-content-group").appendTo(s);
+        function renderAssignedUser(annot, showResolved) {
+            let assigneeIds = annot.getProperty("asgn");
+            if (!(assigneeIds || []).length) return;
+            var isResolved = annot.getProperty("rsv");
+            let rowElement = $("<div/>").addClass("already-assigned-user-row").appendTo($(this)),
+                contentGroup = $("<span/>").addClass("assigned-content-group").appendTo(rowElement);
             return (
-                (0, r.getCollabInfo)(n[0]).then(async (n) => {
-                    let r = new m(n).getFullUserName();
+                (0, collabApi.getCollabInfo)(assigneeIds[0]).then(async (collabInfo) => {
+                    let fullUserName = new CollabUser(collabInfo).getFullUserName();
                     $("<span/>")
                         .addClass("assign-to-text")
                         .html(
                             GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.assigned-to")) +
-                                (n && n.name ? r : GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.unknown-user")))
+                                (collabInfo && collabInfo.name ? fullUserName : GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.unknown-user")))
                         )
-                        .appendTo(l);
-                    const s = !o;
-                    ((await s) ? d.canResolveAnnotation(e) : d.canReopenAnnotation(e)) &&
+                        .appendTo(contentGroup);
+                    const isResolveAction = !isResolved;
+                    ((await isResolveAction) ? annotationService.canResolveAnnotation(annot) : annotationService.canReopenAnnotation(annot)) &&
                         $("<span/>")
                             .addClass("assigned-action-group")
                             .append(
                                 $("<span/>")
-                                    .addClass("icon " + (s ? "gravit-icon-resolve" : "gravit-icon-resolved"))
+                                    .addClass("icon " + (isResolveAction ? "gravit-icon-resolve" : "gravit-icon-resolved"))
                                     .addClass("assigned-icon-resolve")
                                     .addClass("assigned-resolve-action")
                                     .attr(
                                         "data-title",
-                                        s
+                                        isResolveAction
                                             ? GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.assign-resolve"))
                                             : GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.reopen"))
                                     )
                                     .on("click", () => {
-                                        P() &&
-                                            (s
-                                                ? i.GEditor.tryRunTransaction(
-                                                      e,
+                                        canEditComments() &&
+                                            (isResolveAction
+                                                ? editorLib.GEditor.tryRunTransaction(
+                                                      annot,
                                                       function () {
-                                                          (!t && e.hasFlag(GObject.GNode.Flag.Selected) && e.removeFlag(GObject.GNode.Flag.Selected),
-                                                              e.setProperty("rsv", true));
+                                                          (!showResolved && annot.hasFlag(GObject.GNode.Flag.Selected) && annot.removeFlag(GObject.GNode.Flag.Selected),
+                                                              annot.setProperty("rsv", true));
                                                       },
                                                       GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.resolve"))
                                                   )
-                                                : i.GEditor.tryRunTransaction(
-                                                      e,
+                                                : editorLib.GEditor.tryRunTransaction(
+                                                      annot,
                                                       function () {
-                                                          e.setProperty("rsv", false);
+                                                          annot.setProperty("rsv", false);
                                                       },
                                                       GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.reopen"))
                                                   ),
-                                            ne.call(this),
-                                            te.call(this));
+                                            resetState.call(this),
+                                            rebuildTree.call(this));
                                     })
                             )
-                            .appendTo(l);
+                            .appendTo(contentGroup);
                 }),
-                s
+                rowElement
             );
         }
-        function k(e) {
-            return G.call($(this), e)[0];
+        function getPrimaryTreeId(node) {
+            return getRelatedTreeIds.call($(this), node)[0];
         }
-        function O(e) {
-            return G.call($(this), e).length;
+        function countRelatedTreeIds(node) {
+            return getRelatedTreeIds.call($(this), node).length;
         }
-        function F(e, t, n) {
-            var o = new u.GSimpleTreeNodeNamed(e);
-            return (n && (o.virtualNode = true), $(this).data("gannotationpanel").vtree.insertNodeAfter(t, o), o);
+        function insertTreeNodeAfter(treeId, afterNode, isVirtual) {
+            var treeNode = new GSimpleTree.GSimpleTreeNodeNamed(treeId);
+            return (isVirtual && (treeNode.virtualNode = true), $(this).data("gannotationpanel").vtree.insertNodeAfter(afterNode, treeNode), treeNode);
         }
-        function R(e, t, n) {
-            var o = new u.GSimpleTreeNodeNamed(e);
-            return (n && (o.virtualNode = true), $(this).data("gannotationpanel").vtree.insertNodeBefore(t, o), o);
+        function insertTreeNodeBefore(treeId, beforeNode, isVirtual) {
+            var treeNode = new GSimpleTree.GSimpleTreeNodeNamed(treeId);
+            return (isVirtual && (treeNode.virtualNode = true), $(this).data("gannotationpanel").vtree.insertNodeBefore(beforeNode, treeNode), treeNode);
         }
-        function M(e, t, n, o) {
-            var i = new u.GSimpleTreeNodeNamed(e);
-            return (n && (i.virtualNode = true), $(this).data("gannotationpanel").vtree.appendNode(t, i, o), i);
+        function appendTreeNode(treeId, parentNode, isVirtual, asLastChild) {
+            var treeNode = new GSimpleTree.GSimpleTreeNodeNamed(treeId);
+            return (isVirtual && (treeNode.virtualNode = true), $(this).data("gannotationpanel").vtree.appendNode(parentNode, treeNode, asLastChild), treeNode);
         }
-        function N(e) {
-            $(this).data("gannotationpanel").vtree.removeNode(e);
+        function removeTreeNode(treeNode) {
+            $(this).data("gannotationpanel").vtree.removeNode(treeNode);
         }
-        function B(e) {
-            return e.getChildren().filter((e) => e instanceof GObject.GComment && !e.getProperty("rmd"));
+        function getActiveComments(node) {
+            return node.getChildren().filter((child) => child instanceof GObject.GComment && !child.getProperty("rmd"));
         }
-        function U(e) {
-            if (!(e instanceof GObject.GComment)) return false;
-            for (var t = true, n = e.getNext(); n; ) {
-                if (n instanceof GObject.GComment && !n.getProperty("rmd")) {
-                    t = false;
+        function isLastComment(comment) {
+            if (!(comment instanceof GObject.GComment)) return false;
+            for (var isLast = true, nextNode = comment.getNext(); nextNode; ) {
+                if (nextNode instanceof GObject.GComment && !nextNode.getProperty("rmd")) {
+                    isLast = false;
                     break;
                 }
-                n = n.getNext();
+                nextNode = nextNode.getNext();
             }
-            return t;
+            return isLast;
         }
-        function j(e) {
-            var t = gDesigner.getSyncUser();
-            t && e.getProperty("uid") && d.isOwner(t, e)
-                ? (e.$plkt = null)
-                : (e.$plkt = GObject.GBlock.ProgramLck.NoSizeChanges | GObject.GBlock.ProgramLck.NoMove | GObject.GBlock.ProgramLck.NoDelete);
+        function updateLockFlags(node) {
+            var syncUser = gDesigner.getSyncUser();
+            syncUser && node.getProperty("uid") && annotationService.isOwner(syncUser, node)
+                ? (node.$plkt = null)
+                : (node.$plkt = GObject.GBlock.ProgramLck.NoSizeChanges | GObject.GBlock.ProgramLck.NoMove | GObject.GBlock.ProgramLck.NoDelete);
         }
-        function K(e, t, n) {
-            var o = GObject.GUtil.uuid(),
-                i = $(this).data("gannotationpanel"),
-                r = i.vtree;
-            if (t || !e.getParent() || e.getParent() instanceof GObject.GAnnotationsList || E.call(this, e.getParent())) {
-                var s;
-                if ((r.beginUpdate(), e.hasMixin(GObject.GAnnotation))) {
-                    V.call(this, e);
-                    var l = (function (e) {
-                            for (var t = null, n = e; !t && n.getPrevious(); )
-                                n.getPrevious().getProperty("rmd") ? (n = n.getPrevious()) : (t = n.getPrevious());
-                            return t;
-                        })(e),
-                        c = l ? A.call(this, l) : null;
-                    s = c ? R.call(this, o, c, false) : M.call(this, o, null, false);
+        function addAnnotationNode(node, force, invalidationOptions) {
+            var newTreeId = GObject.GUtil.uuid(),
+                panelData = $(this).data("gannotationpanel"),
+                vtree = panelData.vtree;
+            if (force || !node.getParent() || node.getParent() instanceof GObject.GAnnotationsList || getTreeIdForNode.call(this, node.getParent())) {
+                var treeNode;
+                if ((vtree.beginUpdate(), node.hasMixin(GObject.GAnnotation))) {
+                    removeReplyNode.call(this, node);
+                    var prevActiveSibling = (function (node) {
+                            for (var found = null, cursor = node; !found && cursor.getPrevious(); )
+                                cursor.getPrevious().getProperty("rmd") ? (cursor = cursor.getPrevious()) : (found = cursor.getPrevious());
+                            return found;
+                        })(node),
+                        prevSiblingTreeNode = prevActiveSibling ? getTreeNodeForNode.call(this, prevActiveSibling) : null;
+                    treeNode = prevSiblingTreeNode ? insertTreeNodeBefore.call(this, newTreeId, prevSiblingTreeNode, false) : appendTreeNode.call(this, newTreeId, null, false);
                 } else {
-                    var d = e.getParent();
-                    V.call(this, d);
-                    var u = A.call(this, d);
-                    s = M.call(this, o, u, false, true);
+                    var parentNode = node.getParent();
+                    removeReplyNode.call(this, parentNode);
+                    var parentTreeNode = getTreeNodeForNode.call(this, parentNode);
+                    treeNode = appendTreeNode.call(this, newTreeId, parentTreeNode, false, true);
                 }
-                var p = { element: null, annot: e, treeNode: s, treeId: o };
-                if (((i.annotTreeNodeMap[o] = p), i.annotTreeNodeMapByNodes.set(e, p), e.hasMixin(GObject.GAnnotation))) {
-                    for (var g = e.getFirstChild(); null !== g; g = g.getNext())
-                        g instanceof GObject.GComment && !g.getProperty("rmd") && K.call(this, g, t);
-                    if (!B(e).length) {
-                        var h = GObject.GUtil.uuid(),
-                            f = {
+                var entry = { element: null, annot: node, treeNode: treeNode, treeId: newTreeId };
+                if (((panelData.annotTreeNodeMap[newTreeId] = entry), panelData.annotTreeNodeMapByNodes.set(node, entry), node.hasMixin(GObject.GAnnotation))) {
+                    for (var child = node.getFirstChild(); null !== child; child = child.getNext())
+                        child instanceof GObject.GComment && !child.getProperty("rmd") && addAnnotationNode.call(this, child, force);
+                    if (!getActiveComments(node).length) {
+                        var replyTreeId = GObject.GUtil.uuid(),
+                            annotReplyEntry = {
                                 element: null,
                                 annot: null,
-                                treeNode: e.isFillingCompleted() ? M.call(this, h, s, true, true) : F.call(this, h, s, true),
-                                replyAnnot: e,
-                                treeId: h,
+                                treeNode: node.isFillingCompleted() ? appendTreeNode.call(this, replyTreeId, treeNode, true, true) : insertTreeNodeAfter.call(this, replyTreeId, treeNode, true),
+                                replyAnnot: node,
+                                treeId: replyTreeId,
                             };
-                        ((i.annotTreeNodeMap[h] = f), i.replyNodes.set(e, f));
+                        ((panelData.annotTreeNodeMap[replyTreeId] = annotReplyEntry), panelData.replyNodes.set(node, annotReplyEntry));
                     }
-                    j(e);
-                } else if (e instanceof GObject.GComment && U(e)) {
-                    let t,
-                        n = GObject.GUtil.uuid();
-                    t = F.call(this, n, s, true);
-                    var m = e.getParent();
-                    let o = {
+                    updateLockFlags(node);
+                } else if (node instanceof GObject.GComment && isLastComment(node)) {
+                    let replyTreeNode,
+                        replyTreeId = GObject.GUtil.uuid();
+                    replyTreeNode = insertTreeNodeAfter.call(this, replyTreeId, treeNode, true);
+                    var parentAnnot = node.getParent();
+                    let commentReplyEntry = {
                         element: null,
                         annot: null,
-                        treeNode: t,
-                        replyAnnot: m,
-                        treeId: n,
+                        treeNode: replyTreeNode,
+                        replyAnnot: parentAnnot,
+                        treeId: replyTreeId,
                     };
-                    ((i.annotTreeNodeMap[n] = o), i.replyNodes.set(m, o));
+                    ((panelData.annotTreeNodeMap[replyTreeId] = commentReplyEntry), panelData.replyNodes.set(parentAnnot, commentReplyEntry));
                 }
-                r.endUpdate(n);
+                vtree.endUpdate(invalidationOptions);
             }
         }
-        function V(e) {
-            var t = $(this).data("gannotationpanel").replyNodes,
-                n = t.get(e);
+        function removeReplyNode(node) {
+            var replyNodesMap = $(this).data("gannotationpanel").replyNodes,
+                replyEntry = replyNodesMap.get(node);
             return (
-                n && (N.call(this, n.treeNode), t.delete(e), ($(this).data("gannotationpanel").annotTreeNodeMap[n.treeNode.id] = null)),
-                n
+                replyEntry && (removeTreeNode.call(this, replyEntry.treeNode), replyNodesMap.delete(node), ($(this).data("gannotationpanel").annotTreeNodeMap[replyEntry.treeNode.id] = null)),
+                replyEntry
             );
         }
-        function H(e, t) {
-            if (t)
-                !t.getParent() ||
-                    t.getProperty("rmd") ||
-                    t.isFillingCompleted() ||
-                    d.removeAnnotations(
-                        [t],
-                        t.getParent(),
+        function removeEmptyAnnotation(context, annot) {
+            if (annot)
+                !annot.getParent() ||
+                    annot.getProperty("rmd") ||
+                    annot.isFillingCompleted() ||
+                    annotationService.removeAnnotations(
+                        [annot],
+                        annot.getParent(),
                         GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.remove-empty-annotation"))
                     );
             else {
-                var n = gDesigner.getActiveDocument();
-                if (n) {
-                    var o = n.getEditor().getSelection();
-                    o &&
-                        o.map((t) => {
-                            t.hasMixin(GObject.GAnnotation) && H(e, t);
+                var activeDocument = gDesigner.getActiveDocument();
+                if (activeDocument) {
+                    var selection = activeDocument.getEditor().getSelection();
+                    selection &&
+                        selection.map((selectedNode) => {
+                            selectedNode.hasMixin(GObject.GAnnotation) && removeEmptyAnnotation(context, selectedNode);
                         });
                 }
             }
         }
-        function W(e, t) {
-            var n = e.data("gannotationpanel").annotTreeNodeMapByNodes.get(t);
-            n && n.component && (n.component.cancelEditMode(), n.reply && n.reply.hide());
+        function cancelEditMode(panelElement, node) {
+            var entry = panelElement.data("gannotationpanel").annotTreeNodeMapByNodes.get(node);
+            entry && entry.component && (entry.component.cancelEditMode(), entry.reply && entry.reply.hide());
         }
-        function z(e) {
-            var t = A.call(this, e);
-            t && (N.call(this, t), T.call(this, e), V.call(this, e), oe.requestInvalidation.call(this));
+        function removeAnnotationNode(node) {
+            var treeNode = getTreeNodeForNode.call(this, node);
+            treeNode && (removeTreeNode.call(this, treeNode), removeNodeMappings.call(this, node), removeReplyNode.call(this, node), pluginMethods.requestInvalidation.call(this));
         }
-        function q(e, t) {
-            return !e.blockHandlers || !(!e.ignoreBlock || e.ignoreBlock !== t);
+        function shouldHandleEvent(panelData, node) {
+            return !panelData.blockHandlers || !(!panelData.ignoreBlock || panelData.ignoreBlock !== node);
         }
-        function Y() {
+        function isUserInteracting() {
             return !(
                 !$(this)
                     .find(".annotations-buttonrow")
                     .toArray()
-                    .some((e) => "none" !== $(e).css("display")) && !$(this).find(".g-edit-mode").length
+                    .some((row) => "none" !== $(row).css("display")) && !$(this).find(".g-edit-mode").length
             );
         }
-        function X(e, t) {
-            let n = $(this).data("gannotationpanel"),
-                o = false;
-            const i = {};
-            if (!n) return;
-            if (n.blockAnnotationsUpdate) return;
-            if (null !== n.scheduledUpdate) return void (n.updateInProgress && (n.scheduleNextUpdate = true));
+        function scheduleAnnotationsUpdate(changeEvent, invalidationOptions) {
+            let panelData = $(this).data("gannotationpanel"),
+                hasRecordedTransaction = false;
+            const recordedProperties = {};
+            if (!panelData) return;
+            if (panelData.blockAnnotationsUpdate) return;
+            if (null !== panelData.scheduledUpdate) return void (panelData.updateInProgress && (panelData.scheduleNextUpdate = true));
             if (
-                e &&
-                e.node &&
-                e.node.recordedTransaction &&
-                ((o = true), e.properties && e.values && e.properties.length === e.values.length)
+                changeEvent &&
+                changeEvent.node &&
+                changeEvent.node.recordedTransaction &&
+                ((hasRecordedTransaction = true), changeEvent.properties && changeEvent.values && changeEvent.properties.length === changeEvent.values.length)
             )
-                for (var r = 0, s = e.values.length; r < s; r++) i[e.properties[r]] = e.values[r];
-            if (e && e.node) {
-                if (e.custom) return;
-                if (e.node.hasMixin(GObject.GAnnotation) && e.node.isPropertiesIgnorable(e.properties)) return;
+                for (var r = 0, count = changeEvent.values.length; r < count; r++) recordedProperties[changeEvent.properties[r]] = changeEvent.values[r];
+            if (changeEvent && changeEvent.node) {
+                if (changeEvent.custom) return;
+                if (changeEvent.node.hasMixin(GObject.GAnnotation) && changeEvent.node.isPropertiesIgnorable(changeEvent.properties)) return;
             }
-            let l = gDesigner.getActiveDocument();
-            l &&
-                l.getAnnotationsId() &&
-                (n.scheduledUpdate = setTimeout(() => {
-                    let e = $(this).data("gannotationpanel");
-                    if (!e) return;
-                    if (Y.call(this) || e.vtree.isPendingInvalidation()) return ((e.scheduledUpdate = null), void X.call(this));
-                    (console.log("updating annotations"), (e.updateInProgress = true));
-                    let n = e.page.getAnnotations();
-                    d.updateAndReturnCloudAnnotationsForDocument(l, GObject.GNode.store(n, { recordedTransaction: o, recordedProperties: i }))
-                        .then((e) => {
-                            let n = e.annotationsCollection,
-                                r = false,
-                                s = $(this).data("gannotationpanel");
-                            if (!s) return r;
-                            if (!s.updateInProgress) return r;
-                            if ((Y.call(this) && (s.scheduleNextUpdate = true), (s.updateInProgress = false), !s.scheduleNextUpdate)) {
-                                let e = d.findAnnotationsListForPage(s.page, n);
-                                if (e) {
-                                    let n = GObject.GNode.restore(e),
-                                        l = n.getChildren();
-                                    (n.clearChildren(), s.vtree.beginUpdate());
-                                    let c = d.mergeAnnotations(
-                                        s.page.getAnnotations(),
-                                        s.page.getAnnotations().getChildren(),
-                                        n,
-                                        l,
-                                        o ? i : void 0
+            let activeDocument = gDesigner.getActiveDocument();
+            activeDocument &&
+                activeDocument.getAnnotationsId() &&
+                (panelData.scheduledUpdate = setTimeout(() => {
+                    let panelData = $(this).data("gannotationpanel");
+                    if (!panelData) return;
+                    if (isUserInteracting.call(this) || panelData.vtree.isPendingInvalidation()) return ((panelData.scheduledUpdate = null), void scheduleAnnotationsUpdate.call(this));
+                    (console.log("updating annotations"), (panelData.updateInProgress = true));
+                    let annotationsNode = panelData.page.getAnnotations();
+                    annotationService.updateAndReturnCloudAnnotationsForDocument(activeDocument, GObject.GNode.store(annotationsNode, { recordedTransaction: hasRecordedTransaction, recordedProperties: recordedProperties }))
+                        .then((response) => {
+                            let annotationsCollection = response.annotationsCollection,
+                                didChange = false,
+                                panelData = $(this).data("gannotationpanel");
+                            if (!panelData) return didChange;
+                            if (!panelData.updateInProgress) return didChange;
+                            if ((isUserInteracting.call(this) && (panelData.scheduleNextUpdate = true), (panelData.updateInProgress = false), !panelData.scheduleNextUpdate)) {
+                                let annotationsList = annotationService.findAnnotationsListForPage(panelData.page, annotationsCollection);
+                                if (annotationsList) {
+                                    let restoredNode = GObject.GNode.restore(annotationsList),
+                                        restoredChildren = restoredNode.getChildren();
+                                    (restoredNode.clearChildren(), panelData.vtree.beginUpdate());
+                                    let mergeChanged = annotationService.mergeAnnotations(
+                                        panelData.page.getAnnotations(),
+                                        panelData.page.getAnnotations().getChildren(),
+                                        restoredNode,
+                                        restoredChildren,
+                                        hasRecordedTransaction ? recordedProperties : void 0
                                     );
-                                    ((r = r || c), s.vtree.endUpdate(t), ne.call(this), te.call(this));
+                                    ((didChange = didChange || mergeChanged), panelData.vtree.endUpdate(invalidationOptions), resetState.call(this), rebuildTree.call(this));
                                 }
-                                (e || (s.vtree.beginUpdate(), s.page.getAnnotations().clearChildren(), s.vtree.endUpdate(t), ne.call(this)),
-                                    s.options.updateAnnotationCache(n));
+                                (annotationsList || (panelData.vtree.beginUpdate(), panelData.page.getAnnotations().clearChildren(), panelData.vtree.endUpdate(invalidationOptions), resetState.call(this)),
+                                    panelData.options.updateAnnotationCache(annotationsCollection));
                             }
-                            if (((s.scheduledUpdate = null), s.scheduleNextUpdate && ((s.scheduleNextUpdate = false), X.call(this)), r)) {
-                                let t = s.page.getScene();
-                                (t &&
-                                    t.getLastTimeAnnotationsFromCloudModified() < e.lastUpdateTime &&
-                                    t.setLastTimeAnnotationsFromCloudModified(e.lastUpdateTime),
-                                    gDesigner.notifyDocumentModified(l));
+                            if (((panelData.scheduledUpdate = null), panelData.scheduleNextUpdate && ((panelData.scheduleNextUpdate = false), scheduleAnnotationsUpdate.call(this)), didChange)) {
+                                let scene = panelData.page.getScene();
+                                (scene &&
+                                    scene.getLastTimeAnnotationsFromCloudModified() < response.lastUpdateTime &&
+                                    scene.setLastTimeAnnotationsFromCloudModified(response.lastUpdateTime),
+                                    gDesigner.notifyDocumentModified(activeDocument));
                             }
-                            return r;
+                            return didChange;
                         })
-                        .catch((t) => {
-                            (console.warn("error during annotations list update: " + t),
-                                (e.scheduledUpdate = null),
-                                (e.updateInProgress = false),
-                                e.scheduleNextUpdate && ((e.scheduleNextUpdate = false), X.call(this)));
+                        .catch((error) => {
+                            (console.warn("error during annotations list update: " + error),
+                                (panelData.scheduledUpdate = null),
+                                (panelData.updateInProgress = false),
+                                panelData.scheduleNextUpdate && ((panelData.scheduleNextUpdate = false), scheduleAnnotationsUpdate.call(this)));
                         });
                 }, 500));
         }
-        function Q(e) {
-            var t = $(this).data("gannotationpanel");
-            if (q(t, e.node)) {
-                const n = e.node.findParent((e) => e instanceof GObject.GAnnotationsList),
-                    o = () => {
-                        const t = new l.default();
-                        if (e.node instanceof GObject.GComment) {
-                            const n = e.node.getProperty("text");
-                            (n && designerConfig.NOTIFICATION_USER_MENTION_REGEX.test(n)) || (t.collaboratorsCache = false);
+        function handleNodeInserted(event) {
+            var panelData = $(this).data("gannotationpanel");
+            if (shouldHandleEvent(panelData, event.node)) {
+                const annotationsList = event.node.findParent((ancestor) => ancestor instanceof GObject.GAnnotationsList),
+                    createInvalidationOptions = () => {
+                        const options = new GInvalidationOptions.default();
+                        if (event.node instanceof GObject.GComment) {
+                            const text = event.node.getProperty("text");
+                            (text && designerConfig.NOTIFICATION_USER_MENTION_REGEX.test(text)) || (options.collaboratorsCache = false);
                         }
-                        return t;
+                        return options;
                     };
-                let i = false;
-                const r = () => {
-                        if (!e.node.getProperty("rmd")) {
-                            const t = n ? l.default.NO_CACHE_INVALIDATION : o();
-                            K.call(this, e.node, null, t);
+                let isRemoved = false;
+                const addNode = () => {
+                        if (!event.node.getProperty("rmd")) {
+                            const invalidationOptions = annotationsList ? GInvalidationOptions.default.NO_CACHE_INVALIDATION : createInvalidationOptions();
+                            addAnnotationNode.call(this, event.node, null, invalidationOptions);
                         }
                     },
-                    c = () => {
-                        n && X.call(this, null, o());
+                    scheduleUpdate = () => {
+                        annotationsList && scheduleAnnotationsUpdate.call(this, null, createInvalidationOptions());
                     };
-                ((e.node.hasMixin(GObject.GAnnotation) || e.node instanceof GObject.GComment || e.node instanceof GObject.GAnnotationsList) &&
-                    (e.node.getProperty("rmd") ? (i = true) : r()),
-                    i
-                        ? "number" != typeof t.delayedUpdate &&
-                          (t.delayedUpdate = setTimeout(() => {
-                              (r(), c(), (t.delayedUpdate = null));
+                ((event.node.hasMixin(GObject.GAnnotation) || event.node instanceof GObject.GComment || event.node instanceof GObject.GAnnotationsList) &&
+                    (event.node.getProperty("rmd") ? (isRemoved = true) : addNode()),
+                    isRemoved
+                        ? "number" != typeof panelData.delayedUpdate &&
+                          (panelData.delayedUpdate = setTimeout(() => {
+                              (addNode(), scheduleUpdate(), (panelData.delayedUpdate = null));
                           }))
-                        : c());
+                        : scheduleUpdate());
             }
         }
-        function J(e) {
-            q($(this).data("gannotationpanel"), e.node) &&
-                (z.call(this, e.node), e.node.findParent((e) => e instanceof GObject.GAnnotationsList) && X.call(this));
+        function handleBeforeNodeRemove(event) {
+            shouldHandleEvent($(this).data("gannotationpanel"), event.node) &&
+                (removeAnnotationNode.call(this, event.node), event.node.findParent((ancestor) => ancestor instanceof GObject.GAnnotationsList) && scheduleAnnotationsUpdate.call(this));
         }
-        function Z(e) {
-            if (!e.temporary && !$(this).data("gannotationpanel").blockHandlers) {
-                e.properties.some((e) => y.indexOf(e) >= 0) && oe.requestInvalidation.call(this);
-                let t = gDesigner.getSyncUser();
-                (d.canUpdate(t) &&
-                    e.node.hasMixin(GObject.GAnnotation) &&
-                    e.properties.includes("rsv") &&
+        function handlePropertiesChange(event) {
+            if (!event.temporary && !$(this).data("gannotationpanel").blockHandlers) {
+                event.properties.some((prop) => watchedProperties.indexOf(prop) >= 0) && pluginMethods.requestInvalidation.call(this);
+                let syncUser = gDesigner.getSyncUser();
+                (annotationService.canUpdate(syncUser) &&
+                    event.node.hasMixin(GObject.GAnnotation) &&
+                    event.properties.includes("rsv") &&
                     setTimeout(() => {
-                        let n = e.values[e.properties.indexOf("rsv")];
-                        (void 0 !== n && false !== n) !== e.node.getProperty("rsv") &&
-                            (V.call(this, e.node),
-                            e.node.addComment(
+                        let rsvValue = event.values[event.properties.indexOf("rsv")];
+                        (void 0 !== rsvValue && false !== rsvValue) !== event.node.getProperty("rsv") &&
+                            (removeReplyNode.call(this, event.node),
+                            event.node.addComment(
                                 "",
-                                t.getUID(),
-                                i.GEditorOptions.userConfig.userName,
-                                t.avatar,
-                                t.getAccountName(),
-                                e.node.getProperty("rsv") ? GObject.GComment.Type.Close : GObject.GComment.Type.Open
+                                syncUser.getUID(),
+                                editorLib.GEditorOptions.userConfig.userName,
+                                syncUser.avatar,
+                                syncUser.getAccountName(),
+                                event.node.getProperty("rsv") ? GObject.GComment.Type.Close : GObject.GComment.Type.Open
                             ));
                     }),
-                    (e.node instanceof GObject.GAnnotationsList || e.node.findParent((e) => e instanceof GObject.GAnnotationsList)) &&
-                        (e.node.hasMixin(GObject.GAnnotation) && e.properties.indexOf("uid") >= 0 && j(e.node), X.call(this, e)),
-                    e.properties.includes("rmd") && e.node.getProperty("rmd")
-                        ? (e.node.hasMixin(GObject.GAnnotation) && W(this, e.node), ne.call(this), te.call(this))
-                        : e.properties.includes("text") &&
-                          e.node.isFillingCompleted() &&
-                          e.node.hasMixin(GObject.GAnnotation) &&
-                          W(this, e.node));
+                    (event.node instanceof GObject.GAnnotationsList || event.node.findParent((ancestor) => ancestor instanceof GObject.GAnnotationsList)) &&
+                        (event.node.hasMixin(GObject.GAnnotation) && event.properties.indexOf("uid") >= 0 && updateLockFlags(event.node), scheduleAnnotationsUpdate.call(this, event)),
+                    event.properties.includes("rmd") && event.node.getProperty("rmd")
+                        ? (event.node.hasMixin(GObject.GAnnotation) && cancelEditMode(this, event.node), resetState.call(this), rebuildTree.call(this))
+                        : event.properties.includes("text") &&
+                          event.node.isFillingCompleted() &&
+                          event.node.hasMixin(GObject.GAnnotation) &&
+                          cancelEditMode(this, event.node));
             }
         }
-        function ee(e) {
-            var t,
-                n = $(this).data("gannotationpanel");
-            if (q(n, e.node)) {
-                var o = false;
-                if (e.node instanceof GObject.GComment || e.node.hasMixin(GObject.GAnnotation))
-                    if (e.flag === GObject.GAnnotation.Flag.Hidden || e.flag === GObject.GNode.Flag.Selected || e.flag === GObject.GNode.Flag.Active) {
-                        var r = e.node.getPage(),
-                            s = e.node.getScene(),
-                            d = s && s.getActivePage();
+        function handleFlagChange(event) {
+            var targetNode,
+                panelData = $(this).data("gannotationpanel");
+            if (shouldHandleEvent(panelData, event.node)) {
+                var needsInvalidation = false;
+                if (event.node instanceof GObject.GComment || event.node.hasMixin(GObject.GAnnotation))
+                    if (event.flag === GObject.GAnnotation.Flag.Hidden || event.flag === GObject.GNode.Flag.Selected || event.flag === GObject.GNode.Flag.Active) {
+                        var nodePage = event.node.getPage(),
+                            nodeScene = event.node.getScene(),
+                            activePage = nodeScene && nodeScene.getActivePage();
                         if (
-                            ((d && r && d !== r) || (o = true),
-                            e.node.hasMixin(GObject.GAnnotation) &&
-                                e.flag === GObject.GNode.Flag.Selected &&
-                                false === e.set &&
-                                !e.node.isFillingCompleted() &&
-                                !(t = e.node).getProperty("rmd") &&
-                                t.getParent())
+                            ((activePage && nodePage && activePage !== nodePage) || (needsInvalidation = true),
+                            event.node.hasMixin(GObject.GAnnotation) &&
+                                event.flag === GObject.GNode.Flag.Selected &&
+                                false === event.set &&
+                                !event.node.isFillingCompleted() &&
+                                !(targetNode = event.node).getProperty("rmd") &&
+                                targetNode.getParent())
                         )
-                            if (e.node.isEmptyTextAllowed()) {
-                                let t = n.annotTreeNodeMapByNodes.get(e.node);
-                                t && t.reply && t.reply.isVisible() && setTimeout(() => t.reply.forceSubmit());
+                            if (event.node.isEmptyTextAllowed()) {
+                                let entry = panelData.annotTreeNodeMapByNodes.get(event.node);
+                                entry && entry.reply && entry.reply.isVisible() && setTimeout(() => entry.reply.forceSubmit());
                             } else
-                                GSystemDialog.confirm(GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.confirm-discard-annotation")), (t) => {
-                                    if (t)
+                                GSystemDialog.confirm(GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.confirm-discard-annotation")), (confirmed) => {
+                                    if (confirmed)
                                         setTimeout(() => {
-                                            H(this, e.node);
+                                            removeEmptyAnnotation(this, event.node);
                                         });
                                     else {
-                                        (gDesigner.getActiveDocument().getEditor().updateSelection(false, [e.node]),
-                                            gDesigner.getToolManager().activateTool(i.GPointerTool, null, true));
-                                        var o = n.annotTreeNodeMapByNodes.get(e.node);
-                                        o &&
-                                            o.reply &&
+                                        (gDesigner.getActiveDocument().getEditor().updateSelection(false, [event.node]),
+                                            gDesigner.getToolManager().activateTool(editorLib.GPointerTool, null, true));
+                                        var entry = panelData.annotTreeNodeMapByNodes.get(event.node);
+                                        entry &&
+                                            entry.reply &&
                                             setTimeout(() => {
-                                                o.reply.requestFocus();
+                                                entry.reply.requestFocus();
                                             });
                                     }
                                 });
-                    } else if (!n.blockHighlight && e.flag === GObject.GNode.Flag.Highlighted) {
-                        var u = e.node,
-                            p = function (e) {
-                                var t = A.call(this, e);
-                                return t && t.isVisible();
+                    } else if (!panelData.blockHighlight && event.flag === GObject.GNode.Flag.Highlighted) {
+                        var highlightNode = event.node,
+                            isTreeNodeVisible = function (node) {
+                                var treeNode = getTreeNodeForNode.call(this, node);
+                                return treeNode && treeNode.isVisible();
                             }.bind(this);
-                        if (p(u) || u.findParent(p)) {
-                            var g = n.annotTreeNodeMapByNodes.get(u).component;
-                            g ? g.toggleHighlight(e.set) : console.warn("element parent was null");
+                        if (isTreeNodeVisible(highlightNode) || highlightNode.findParent(isTreeNodeVisible)) {
+                            var component = panelData.annotTreeNodeMapByNodes.get(highlightNode).component;
+                            component ? component.toggleHighlight(event.set) : console.warn("element parent was null");
                         }
                     }
-                o && oe.requestInvalidation.call(this, l.default.NO_CACHE_INVALIDATION);
+                needsInvalidation && pluginMethods.requestInvalidation.call(this, GInvalidationOptions.default.NO_CACHE_INVALIDATION);
             }
         }
-        function te() {
-            var e = $(this).data("gannotationpanel");
-            if ((e.vtree.beginUpdate(), e.page))
-                for (var t = e.page.getAnnotations().getFirstChild(); null !== t; t = t.getNext())
-                    t.getProperty("rmd") || K.call(this, t, true);
-            e.vtree.endUpdate();
+        function rebuildTree() {
+            var panelData = $(this).data("gannotationpanel");
+            if ((panelData.vtree.beginUpdate(), panelData.page))
+                for (var node = panelData.page.getAnnotations().getFirstChild(); null !== node; node = node.getNext())
+                    node.getProperty("rmd") || addAnnotationNode.call(this, node, true);
+            panelData.vtree.endUpdate();
         }
-        function ne(e) {
-            var t = $(this).data("gannotationpanel");
-            (t.vtree.clean(),
-                (t.annotTreeNodeMap = {}),
-                (t.replyNodes = new Map()),
-                (t.annotTreeNodeMapByNodes = new Map()),
-                void 0 !== e && (t.page = e),
-                "number" == typeof t.delayedUpdate && (clearTimeout(t.delayedUpdate), (t.delayedUpdate = null)));
+        function resetState(page) {
+            var panelData = $(this).data("gannotationpanel");
+            (panelData.vtree.clean(),
+                (panelData.annotTreeNodeMap = {}),
+                (panelData.replyNodes = new Map()),
+                (panelData.annotTreeNodeMapByNodes = new Map()),
+                void 0 !== page && (panelData.page = page),
+                "number" == typeof panelData.delayedUpdate && (clearTimeout(panelData.delayedUpdate), (panelData.delayedUpdate = null)));
         }
-        GObject.GObject.inheritAndMix(v, GObject.GObject);
-        var oe = {
-            init: function (e) {
+        GObject.GObject.inheritAndMix(GAnnotationPanelWidget, GObject.GObject);
+        var pluginMethods = {
+            init: function (options) {
                 return (
-                    (e = $.extend(
+                    (options = $.extend(
                         {
                             nodeStyle: "annotation-row",
                             expandStyle: "annotation-arrow gravit-icon-right",
@@ -772,33 +772,33 @@ module.exports = function (module, exports, require) {
                             upSeparatorSpan2Style: "g-up-separator-span2",
                             downSeparatorSpan1Style: "g-down-separator-span1",
                             downSeparatorSpan2Style: "g-down-separator-span2",
-                            renderer: L.bind(this),
-                            expandRenderer: C.bind(this),
+                            renderer: renderAnnotationRow.bind(this),
+                            expandRenderer: renderExpandToggle.bind(this),
                             separatorRenderer: null,
                             moveCallback: null,
                             clickCallback: null,
                             startDraggingCallback: null,
                             updateCommentCount: null,
                         },
-                        e
+                        options
                     )),
                     this.each(function () {
                         $(this)
                             .addClass("g-annotation-panel")
                             .data("gannotationpanel", {
-                                vtree: new p(
+                                vtree: new AnnotationsVTree(
                                     this,
-                                    w.bind(this),
-                                    e.nodeStyle,
-                                    e.expandStyle === e.collapseStyle ? e.expandStyle : null,
-                                    _.bind(this),
-                                    b.bind(this),
-                                    e.upSeparatorSpan1Style,
-                                    e.upSeparatorSpan2Style,
-                                    e.downSeparatorSpan1Style,
-                                    e.downSeparatorSpan2Style
+                                    renderTreeNode.bind(this),
+                                    options.nodeStyle,
+                                    options.expandStyle === options.collapseStyle ? options.expandStyle : null,
+                                    onNodeClick.bind(this),
+                                    onNodeExpand.bind(this),
+                                    options.upSeparatorSpan1Style,
+                                    options.upSeparatorSpan2Style,
+                                    options.downSeparatorSpan1Style,
+                                    options.downSeparatorSpan2Style
                                 ),
-                                options: e,
+                                options: options,
                                 annotTreeNodeMap: {},
                                 annotTreeNodeMapByNodes: new Map(),
                                 replyNodes: new Map(),
@@ -807,118 +807,118 @@ module.exports = function (module, exports, require) {
                                 scheduleNextUpdate: false,
                                 blockAnnotationsUpdate: false,
                                 updateInProgress: false,
-                                showResolved: "boolean" == typeof e.showResolved && e.showResolved,
+                                showResolved: "boolean" == typeof options.showResolved && options.showResolved,
                                 currentFocus: null,
-                                sidebarActive: e.sidebarActive,
+                                sidebarActive: options.sidebarActive,
                                 syncCallback: null,
                                 delayedUpdate: null,
                             });
                     })
                 );
             },
-            requestInvalidation: function (e) {
-                $(this).data("gannotationpanel").vtree.requestInvalidation(0, e);
+            requestInvalidation: function (invalidationOptions) {
+                $(this).data("gannotationpanel").vtree.requestInvalidation(0, invalidationOptions);
             },
             refresh: function () {
                 $(this).data("gannotationpanel").vtree.refresh();
             },
-            relayout: function (e) {
-                var t = $(this).data("gannotationpanel"),
-                    n = t.vtree,
-                    o = t.currentFocus;
-                (o && n.expandAndFocus(o),
-                    e ? (ne.call(this), te.call(this)) : oe.requestInvalidation.call(this, l.default.NO_CACHE_INVALIDATION));
+            relayout: function (forceRebuild) {
+                var panelData = $(this).data("gannotationpanel"),
+                    vtree = panelData.vtree,
+                    currentFocus = panelData.currentFocus;
+                (currentFocus && vtree.expandAndFocus(currentFocus),
+                    forceRebuild ? (resetState.call(this), rebuildTree.call(this)) : pluginMethods.requestInvalidation.call(this, GInvalidationOptions.default.NO_CACHE_INVALIDATION));
             },
             cleanEmptyAnnotations: function () {
-                H(this);
+                removeEmptyAnnotation(this);
             },
             isEditingOrAddingContent: function () {
                 return $(this).data("gannotationpanel").vtree.isEditingOrAddingContent();
             },
-            showResolved: function (e) {
-                var t = $(this).data("gannotationpanel");
-                t.showResolved !== e && ((t.showResolved = e), ne.call(this), te.call(this));
+            showResolved: function (showResolved) {
+                var panelData = $(this).data("gannotationpanel");
+                panelData.showResolved !== showResolved && ((panelData.showResolved = showResolved), resetState.call(this), rebuildTree.call(this));
             },
-            page: function (e) {
-                var t = $(this),
-                    n = t.data("gannotationpanel") || {};
+            page: function (page) {
+                var panelElement = $(this),
+                    panelData = panelElement.data("gannotationpanel") || {};
                 return arguments.length
-                    ? (e !== n.page &&
-                          (n.page &&
-                              n.page.hasMixin(GObject.GEventTarget) &&
-                              (n.page.removeEventListener(GObject.GNode.AfterInsertEvent, n.afterNodeInsertHandler, this),
-                              n.page.removeEventListener(GObject.GNode.BeforeRemoveEvent, n.beforeNodeRemoveHandler, this),
-                              n.page.removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
-                              n.page.removeEventListener(GObject.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this),
-                              null !== n.scheduledUpdate && (clearTimeout(n.scheduledUpdate), (n.scheduledUpdate = null)),
-                              (n.updateInProgress = false)),
-                          ne.call(this, e),
-                          (n.page = e),
-                          n.page &&
-                              (n.page.hasMixin(GObject.GEventTarget) &&
-                                  ((n.beforeNodeRemoveHandler = J.bind(this)),
-                                  (n.afterPropertiesChangeHandler = Z.bind(this)),
-                                  (n.afterFlagChangeHandler = ee.bind(this)),
-                                  (n.afterNodeInsertHandler = Q.bind(this)),
-                                  n.page.addEventListener(GObject.GNode.AfterInsertEvent, n.afterNodeInsertHandler, this),
-                                  n.page.addEventListener(GObject.GNode.BeforeRemoveEvent, n.beforeNodeRemoveHandler, this),
-                                  n.page.addEventListener(GObject.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
-                                  n.page.addEventListener(GObject.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this)),
-                              te.call(this))),
+                    ? (page !== panelData.page &&
+                          (panelData.page &&
+                              panelData.page.hasMixin(GObject.GEventTarget) &&
+                              (panelData.page.removeEventListener(GObject.GNode.AfterInsertEvent, panelData.afterNodeInsertHandler, this),
+                              panelData.page.removeEventListener(GObject.GNode.BeforeRemoveEvent, panelData.beforeNodeRemoveHandler, this),
+                              panelData.page.removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, panelData.afterPropertiesChangeHandler, this),
+                              panelData.page.removeEventListener(GObject.GNode.AfterFlagChangeEvent, panelData.afterFlagChangeHandler, this),
+                              null !== panelData.scheduledUpdate && (clearTimeout(panelData.scheduledUpdate), (panelData.scheduledUpdate = null)),
+                              (panelData.updateInProgress = false)),
+                          resetState.call(this, page),
+                          (panelData.page = page),
+                          panelData.page &&
+                              (panelData.page.hasMixin(GObject.GEventTarget) &&
+                                  ((panelData.beforeNodeRemoveHandler = handleBeforeNodeRemove.bind(this)),
+                                  (panelData.afterPropertiesChangeHandler = handlePropertiesChange.bind(this)),
+                                  (panelData.afterFlagChangeHandler = handleFlagChange.bind(this)),
+                                  (panelData.afterNodeInsertHandler = handleNodeInserted.bind(this)),
+                                  panelData.page.addEventListener(GObject.GNode.AfterInsertEvent, panelData.afterNodeInsertHandler, this),
+                                  panelData.page.addEventListener(GObject.GNode.BeforeRemoveEvent, panelData.beforeNodeRemoveHandler, this),
+                                  panelData.page.addEventListener(GObject.GNode.AfterPropertiesChangeEvent, panelData.afterPropertiesChangeHandler, this),
+                                  panelData.page.addEventListener(GObject.GNode.AfterFlagChangeEvent, panelData.afterFlagChangeHandler, this)),
+                              rebuildTree.call(this))),
                       this)
-                    : n.page;
+                    : panelData.page;
             },
-            setDelayedSyncCallback: function (e) {
-                $(this).data("gannotationpanel").syncCallback = e;
+            setDelayedSyncCallback: function (callback) {
+                $(this).data("gannotationpanel").syncCallback = callback;
             },
-            annotations: function (e) {
-                let t = false;
-                if (Y.call(this)) return f.DELAYED;
-                let n = $(this).data("gannotationpanel"),
-                    o = GObject.GNode.restore(e),
-                    i = o.getChildren();
+            annotations: function (annotationsData) {
+                let didChange = false;
+                if (isUserInteracting.call(this)) return UpdateResult.DELAYED;
+                let panelData = $(this).data("gannotationpanel"),
+                    restoredNode = GObject.GNode.restore(annotationsData),
+                    restoredChildren = restoredNode.getChildren();
                 return (
-                    o.clearChildren(),
-                    (n.blockAnnotationsUpdate = true),
-                    n.vtree.beginUpdate(),
-                    (t = d.mergeAnnotations(n.page.getAnnotations(), n.page.getAnnotations().getChildren(), o, i)),
-                    n.vtree.endUpdate(),
-                    (n.blockAnnotationsUpdate = false),
-                    ne.call(this),
-                    te.call(this),
-                    t ? f.UPDATED : f.SKIPPED
+                    restoredNode.clearChildren(),
+                    (panelData.blockAnnotationsUpdate = true),
+                    panelData.vtree.beginUpdate(),
+                    (didChange = annotationService.mergeAnnotations(panelData.page.getAnnotations(), panelData.page.getAnnotations().getChildren(), restoredNode, restoredChildren)),
+                    panelData.vtree.endUpdate(),
+                    (panelData.blockAnnotationsUpdate = false),
+                    resetState.call(this),
+                    rebuildTree.call(this),
+                    didChange ? UpdateResult.UPDATED : UpdateResult.SKIPPED
                 );
             },
-            blockHandlers: function (e) {
-                $(this).data("gannotationpanel").blockHandlers = !!e;
+            blockHandlers: function (shouldBlock) {
+                $(this).data("gannotationpanel").blockHandlers = !!shouldBlock;
             },
-            ignoreBlock: function (e) {
-                $(this).data("gannotationpanel").ignoreBlock = e;
+            ignoreBlock: function (node) {
+                $(this).data("gannotationpanel").ignoreBlock = node;
             },
-            setBlockHighlight: function (e) {
-                $(this).data("gannotationpanel").blockHighlight = !!e;
+            setBlockHighlight: function (shouldBlock) {
+                $(this).data("gannotationpanel").blockHighlight = !!shouldBlock;
             },
-            getTreeNode: function (e) {
-                var t = null;
-                return ($(this).data("gannotationpanel") && (t = A.call(this, e)), t);
+            getTreeNode: function (node) {
+                var treeNode = null;
+                return ($(this).data("gannotationpanel") && (treeNode = getTreeNodeForNode.call(this, node)), treeNode);
             },
             scrollIntoView: function () {
-                const e = $(this).find(".annotation-row.g-selected").attr("id");
-                if (e) {
-                    const t = S.call(this, e);
-                    t && (t.reply ? t.reply.scrollIntoView() : t.component && t.component.scrollIntoView());
+                const selectedId = $(this).find(".annotation-row.g-selected").attr("id");
+                if (selectedId) {
+                    const entry = getEntryById.call(this, selectedId);
+                    entry && (entry.reply ? entry.reply.scrollIntoView() : entry.component && entry.component.scrollIntoView());
                 }
             },
-            getItem: function (e) {
-                return x.call(this, e.id);
+            getItem: function (nodeInfo) {
+                return getAnnotById.call(this, nodeInfo.id);
             },
         };
-        ((module.exports = v),
-            ($.fn.gAnnotationPanel = function (e) {
-                return oe[e]
-                    ? oe[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                    : "object" != typeof e && e
-                      ? void $.error("Method " + e + " does not exist on jQuery.myPlugin")
-                      : oe.init.apply(this, arguments);
+        ((module.exports = GAnnotationPanelWidget),
+            ($.fn.gAnnotationPanel = function (method) {
+                return pluginMethods[method]
+                    ? pluginMethods[method].apply(this, Array.prototype.slice.call(arguments, 1))
+                    : "object" != typeof method && method
+                      ? void $.error("Method " + method + " does not exist on jQuery.myPlugin")
+                      : pluginMethods.init.apply(this, arguments);
             }));
     };

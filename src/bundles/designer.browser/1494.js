@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(271 /* polyfill:String */), require(34), require(134 /* polyfill:String */), require(38));
         const { isBeta } = require(803);
-        var i = require(1495);
+        var gaEventPaths = require(1495);
         let a = 0,
             r = 0;
         const s = {
@@ -53,12 +53,12 @@ module.exports = function (module, exports, require) {
                                         d = r[1] || "";
                                     if (!s) return null;
                                     var u = "";
-                                    if (o(i[s])) u = i[s];
-                                    else if (l && o(i[s][l])) u = i[s][l];
-                                    else if (l && c && o(i[s][l][c])) u = i[s][l][c];
+                                    if (o(gaEventPaths[s])) u = gaEventPaths[s];
+                                    else if (l && o(gaEventPaths[s][l])) u = gaEventPaths[s][l];
+                                    else if (l && c && o(gaEventPaths[s][l][c])) u = gaEventPaths[s][l][c];
                                     else {
-                                        if (!(l && c && d && o(i[s][l][c][d]))) return null;
-                                        u = i[s][l][c][d];
+                                        if (!(l && c && d && o(gaEventPaths[s][l][c][d]))) return null;
+                                        u = gaEventPaths[s][l][c][d];
                                     }
                                     return (
                                         (u = (u = (u = (u = u.replace("$EVENTNAME", a(s))).replace("$CATEGORY", a(l))).replace(

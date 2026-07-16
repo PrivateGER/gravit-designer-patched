@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         require(53);
         var GObject = require(1),
-            i = (require(15 /* GPlatform */), require(40 /* GSaveAction */)),
+            i = (require(15 /* GPlatform */), require(40 /* Utils */)),
             a = (require(67), require(238)),
             r = (require(1151), require(857), require(173), require(877), require(44 /* GSystemDialog */)),
             GPatternChooser = require(1150);

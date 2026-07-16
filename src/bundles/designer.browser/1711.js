@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(19), require(26));
         require(53);
         var GObject = require(1),
-            i = (require(15 /* GPlatform */), require(40 /* GSaveAction */), require(67), require(1351)),
+            i = (require(15 /* GPlatform */), require(40 /* Utils */), require(67), require(1351)),
             a = require(451 /* GVirtualTree */).GVirtualTree,
             r = (require(451 /* GVirtualTree */).GVirtualTreeNode, require(451 /* GVirtualTree */).GVirtualTreeNodeNamed),
             { VTREE_FREE_HEIGHT } = require(10 /* designerConfig */);

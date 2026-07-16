@@ -3,15 +3,15 @@ module.exports = function (module, exports, require) {
         (require(19), require(180), require(181 /* polyfill:ArrayBuffer */), require(8 /* Symbol */), require(91 /* polyfill:String */), require(218), require(189), require(190), require(191), require(192), require(4), require(41), require(13), require(38));
         var GObject = require(1),
             i = require(797),
-            GSaveAction = require(40),
+            Utils = require(40),
             designerConfig = require(10),
-            GDocument = require(237),
-            l = require(163 /* GDocument */),
+            GStorage = require(237),
+            GDocument = require(163),
             c = require(442);
-        const d = require(389 /* GDocument */);
+        const GFileTypes = require(389);
         function u() {}
         ((window.pako = require(165 /* PDFNodeStream */)),
-            require(1514),
+            require(1514 /* lib:zip.js */),
             require(1515),
             require(1516),
             (zip.useWebWorkers = false),
@@ -92,19 +92,19 @@ module.exports = function (module, exports, require) {
                             l,
                             {
                                 convertTextToPath: e.convertTextToPath,
-                                decimalPlacesPrecision: GSaveAction.watchDog.check(e.decimalPlacesPrecision, 3),
-                                preserveEditingCapabilities: GSaveAction.watchDog.check(e.preserveEditingCapabilities, false),
+                                decimalPlacesPrecision: Utils.watchDog.check(e.decimalPlacesPrecision, 3),
+                                preserveEditingCapabilities: Utils.watchDog.check(e.preserveEditingCapabilities, false),
                                 backgroundColor: e.backgroundColor,
                                 backgroundOpacity: e.backgroundOpacity,
                                 sceneBackground: !e.configuration || e.configuration.sceneBackground || !!e.backgroundColor,
-                                layerNamesAsId: GSaveAction.watchDog.check(e.layerNamesAsId, false),
+                                layerNamesAsId: Utils.watchDog.check(e.layerNamesAsId, false),
                             },
                             function (e, n) {
                                 !e && n && t(new Blob([n], { type: "image/svg+xml" }));
                             }
                         );
                     else {
-                        if (c !== d.PDF.ext) throw new Error("Unknown format.");
+                        if (c !== GFileTypes.PDF.ext) throw new Error("Unknown format.");
                         gDesigner.getUser().then(function (c) {
                             var u;
                             u =
@@ -112,7 +112,7 @@ module.exports = function (module, exports, require) {
                                     ? c.getFullUserName()
                                     : GObject.GLocale.get(new GObject.GLocaleKey("GDocument", "text.default-export-author"));
                             var p = {
-                                    dpi: GSaveAction.watchDog.check(GObject.GUtil.parseNumber(e.size), GObject.GUtil.parseNumber("72dpi")),
+                                    dpi: Utils.watchDog.check(GObject.GUtil.parseNumber(e.size), GObject.GUtil.parseNumber("72dpi")),
                                     colorSpace: e.colorSpace,
                                     jpegQuality: e.jpegQuality || designerConfig.JPEG_EXPORT_QUALITY_DEFAULT,
                                     configuration: e.configuration,
@@ -128,7 +128,7 @@ module.exports = function (module, exports, require) {
                                     l,
                                     p,
                                     function (e, n) {
-                                        (!e && n && t(new Blob([n], { type: d.PDF.mime })),
+                                        (!e && n && t(new Blob([n], { type: GFileTypes.PDF.mime })),
                                             s && (g.isAbort() ? s.close && s.close() : e && s.error && s.error(e)));
                                     },
                                     null,
@@ -221,9 +221,9 @@ module.exports = function (module, exports, require) {
                                 o.readAsArrayBuffer(e));
                         },
                         m = (e, n, o, i, r, l) => {
-                            t instanceof GDocument.Item
+                            t instanceof GStorage.Item
                                 ? f(e, t, o)
-                                : t instanceof GDocument &&
+                                : t instanceof GStorage &&
                                   (!r && t.canPromptSave()
                                       ? t.savePrompt(
                                             n,
@@ -245,15 +245,15 @@ module.exports = function (module, exports, require) {
                         },
                         y = e[0],
                         v = e.length > 1,
-                        _ = l.FileTypes.find((e) => e.ext === y.format);
+                        _ = GDocument.FileTypes.find((e) => e.ext === y.format);
                     if (
                         (v &&
-                            (y.format !== d.PDF.ext ||
+                            (y.format !== GFileTypes.PDF.ext ||
                                 r ||
                                 ((v = false), ((y = GObject.GUtil.extend({}, y)).name = n), (y.element = e.map((e) => e.element)))),
                         v)
                     )
-                        if (t instanceof GDocument && t.canChooseDirectory())
+                        if (t instanceof GStorage && t.canChooseDirectory())
                             t.chooseDirectory(
                                 (t) => {
                                     u.exportToDirectory(e, t, i, c);
@@ -290,7 +290,7 @@ module.exports = function (module, exports, require) {
                         u.exportExportable(
                             y,
                             function (e) {
-                                const n = t instanceof GDocument && t.canDownload() && _ && _.ext === d.PDF.ext;
+                                const n = t instanceof GStorage && t.canDownload() && _ && _.ext === GFileTypes.PDF.ext;
                                 m(e, u.generateExportName(y), i, _, n, h);
                             },
                             c,
@@ -299,9 +299,9 @@ module.exports = function (module, exports, require) {
                 }
             }),
             (u.ZipDirectory = function (e, t) {
-                (GDocument.Directory.call(this, e), (this._zipRoot = t ? null : new zip.fs.FS()), (this._zipDirectory = t || this._zipRoot.root));
+                (GStorage.Directory.call(this, e), (this._zipRoot = t ? null : new zip.fs.FS()), (this._zipDirectory = t || this._zipRoot.root));
             }),
-            GObject.GObject.inherit(u.ZipDirectory, GDocument.Directory),
+            GObject.GObject.inherit(u.ZipDirectory, GStorage.Directory),
             (u.ZipDirectory.prototype.addDirectory = async function (e) {
                 return new u.ZipDirectory(this._storage, this._zipDirectory.addDirectory(e));
             }),

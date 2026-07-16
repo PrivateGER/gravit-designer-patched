@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
         (require(58 /* polyfill:Array */), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(3));
         var GObject = require(1),
             a = require(847),
-            r = _interopRequireDefault(require(1239)),
+            r = _interopRequireDefault(require(1239 /* GSharePointClient */)),
             s = _interopRequireDefault(require(388)),
             l = _interopRequireDefault(require(1481)),
             designerConfig = require(10),

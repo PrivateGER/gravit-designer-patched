@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GPlatform = require(15),
             designerConfig = require(10),
-            GSaveAction = require(40);
+            Utils = require(40);
         function s() {}
         (GObject.GObject.inherit(s, GObject.GEvent),
             (s.prototype._startX = 0),
@@ -109,7 +109,7 @@ module.exports = function (module, exports, require) {
                     document.addEventListener(this._mouseDown, this._mouseDownHandler.bind(this)),
                     this._isTouchDevice && GPlatform.GPlatform.webBrowser === GPlatform.GPlatform.constructor.WebBrowser.Safari)
                 ) {
-                    const e = !(0, GSaveAction.isPassiveSupported)() || {
+                    const e = !(0, Utils.isPassiveSupported)() || {
                         passive: true,
                         capture: true,
                     };

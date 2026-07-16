@@ -6,7 +6,7 @@ module.exports = function (module, exports, require) {
             GPlatform = require(15),
             r = _interopRequireDefault(require(18 /* GCategory */)),
             s = _interopRequireDefault(require(1168)),
-            GSaveAction = require(40),
+            Utils = require(40),
             c = require(67),
             d = _interopRequireDefault(require(812)),
             designerConfig = require(10);
@@ -122,7 +122,7 @@ module.exports = function (module, exports, require) {
                             }),
                             (a = t.concat(r)));
                         const c = s || a[0];
-                        if (((0, GSaveAction.blockChanges)(e, o, null, n), n.assignStyleFrom(c), c instanceof GObject.GText)) {
+                        if (((0, Utils.blockChanges)(e, o, null, n), n.assignStyleFrom(c), c instanceof GObject.GText)) {
                             const e = c;
                             if (!e.getPaintLayers().getFillLayers(true).length && e.getProperty("_fc")) {
                                 n.getPaintLayers().clearFillLayers();
@@ -147,7 +147,7 @@ module.exports = function (module, exports, require) {
                             n.appendChild(e);
                         });
                     } finally {
-                        (0, GSaveAction.releaseChanges)(e, o, null, n);
+                        (0, Utils.releaseChanges)(e, o, null, n);
                     }
                     e.updateSelection(false, [n]);
                 }

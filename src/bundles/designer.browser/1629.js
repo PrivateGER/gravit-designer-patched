@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(8 /* Symbol */), require(3));
         var GObject = require(1),
-            a = _interopRequireDefault(require(443 /* _interopRequireWildcard */));
+            a = _interopRequireDefault(require(443));
         const { isExecutingOnMSTeamsSync } = a.default;
         var GCategory = require(18),
             l = require(31);

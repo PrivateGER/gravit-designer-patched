@@ -47,7 +47,7 @@ module.exports = function (module, exports, require) {
             require(4),
             require(13),
             require(38),
-            require(1518));
+            require(1518 /* lib:jquery-ui-sortable */));
         const o = (exports.REARRANGE_TAB_CLASS = "more-button"),
             i = (exports.REARRANGE_TAB_SELECTOR = ".".concat(o));
         function a() {

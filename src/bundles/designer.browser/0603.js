@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         require(3);
         var GObject = require(1),
-            GCommonNames = require(1503),
+            GWindow = require(1503),
             GSystemDialog = require(44),
             GSaveAction = require(447),
             s = require(86);
@@ -55,9 +55,9 @@ module.exports = function (module, exports, require) {
                 }
             }),
             (l.prototype.addWindow = function (e, t, n) {
-                var o = e instanceof GCommonNames ? e.getDocument() : e,
+                var o = e instanceof GWindow ? e.getDocument() : e,
                     a = this._addWindow(o, t, n);
-                if (e instanceof GCommonNames) {
+                if (e instanceof GWindow) {
                     var r = e.getView();
                     a.getView() && a.getView().transform(r.getScrollX(), r.getScrollY(), r.getZoom());
                 }
@@ -111,7 +111,7 @@ module.exports = function (module, exports, require) {
                 e.relayout(this._htmlElement.width(), this._htmlElement.height(), this._viewOffset, t);
             }),
             (l.prototype._addWindow = function (e, t, n) {
-                var o = new GCommonNames(e, t);
+                var o = new GWindow(e, t);
                 return (
                     e._windows.push(o),
                     "number" == typeof n ? this._windows.splice(n, 0, o) : this._windows.push(o),

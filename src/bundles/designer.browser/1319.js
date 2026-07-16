@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(19), require(3), require(26));
         var o = require(53),
             GObject = require(1),
-            GSaveAction = require(40),
+            Utils = require(40),
             GCategory = require(18),
             s = require(106);
         function l() {}
@@ -50,7 +50,7 @@ module.exports = function (module, exports, require) {
                         l = new Set();
                         for (r = 0; r < o.length; ++r) l.add(o[r].getParent());
                         try {
-                            (0, GSaveAction.blockChanges)(t, l);
+                            (0, Utils.blockChanges)(t, l);
                             for (r = 0; r < o.length; ++r) {
                                 var d,
                                     u = o[r],
@@ -92,7 +92,7 @@ module.exports = function (module, exports, require) {
                                 p.removeChild(u);
                             }
                         } finally {
-                            ((0, GSaveAction.releaseChanges)(t, l), c.length && t.updateSelection(false, c.slice(-1)));
+                            ((0, Utils.releaseChanges)(t, l), c.length && t.updateSelection(false, c.slice(-1)));
                         }
                     } finally {
                         t.commitTransaction(GObject.GLocale.get(this.getTitle()));

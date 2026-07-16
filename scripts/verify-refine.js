@@ -11,8 +11,7 @@
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
-const parser = require("@babel/parser");
-const traverse = require("@babel/traverse").default;
+const { canonical } = require("./canonical");
 
 const ROOT = path.join(__dirname, "..");
 const BUNDLES_DIR = path.join(ROOT, "src", "bundles");
@@ -25,61 +24,6 @@ if (bi !== -1) {
     argv.splice(bi, 2);
 }
 const bundles = argv.length ? argv : fs.readdirSync(BUNDLES_DIR);
-
-// Canonicalize: parse, then walk and emit a structural token stream that is
-// invariant under the allowed transforms.
-function canonical(src) {
-    const ast = parser.parse(src, { sourceType: "script", attachComment: false });
-    const toks = [];
-    traverse(ast, {
-        enter(p) {
-            const n = p.node;
-            switch (n.type) {
-                case "Identifier": {
-                    // A name is a fixed property label (not a renameable variable)
-                    // only when it's an object-property key or a NON-computed member
-                    // access (`x.foo`). In `x[foo]` foo is a real variable reference.
-                    const isMemberProp = p.parentPath.isMemberExpression() && p.key === "property" && !p.parent.computed;
-                    const isPropKey = p.parentPath.isObjectProperty() && p.key === "key" && !p.parent.computed;
-                    if (isPropKey || isMemberProp) {
-                        toks.push("P:" + n.name);
-                    } else if (n.name === "undefined") {
-                        toks.push("UNDEF");
-                    } else {
-                        toks.push("ID");
-                    }
-                    return;
-                }
-                case "NumericLiteral":
-                    toks.push("N:" + n.value);
-                    return;
-                case "BooleanLiteral":
-                    toks.push("BOOL:" + n.value);
-                    return;
-                case "UnaryExpression":
-                    // !0 / !1 normalize to booleans; void 0 to undefined
-                    if (n.operator === "!" && n.argument.type === "NumericLiteral" && (n.argument.value === 0 || n.argument.value === 1)) {
-                        toks.push("BOOL:" + (n.argument.value === 0));
-                        p.skip();
-                        return;
-                    }
-                    if (n.operator === "void" && n.argument.type === "NumericLiteral" && n.argument.value === 0) {
-                        toks.push("UNDEF");
-                        p.skip();
-                        return;
-                    }
-                    toks.push("U:" + n.operator);
-                    return;
-                case "StringLiteral":
-                    toks.push("S:" + n.value);
-                    return;
-                default:
-                    toks.push(n.type);
-            }
-        },
-    });
-    return toks.join("|");
-}
 
 function readBaseline(bundle, file) {
     if (baselineDir) {

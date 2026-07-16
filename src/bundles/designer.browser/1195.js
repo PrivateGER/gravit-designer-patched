@@ -20,7 +20,7 @@ module.exports = function (module, exports, require) {
             require(33));
         var o = require(176),
             IsFiniteNonNegativeNumber = require(0),
-            GDocument = require(237);
+            GStorage = require(237);
         const { GRegex } = require(263 /* GRegex */);
         var s = require(1117).saveAs,
             l = false,
@@ -37,11 +37,11 @@ module.exports = function (module, exports, require) {
                     if ("granted" !== e) throw new Error("Cannot get write access");
                 });
         }
-        (IsFiniteNonNegativeNumber.inherit(u, GDocument),
+        (IsFiniteNonNegativeNumber.inherit(u, GStorage),
             (u.Directory = function (e, t) {
-                (GDocument.Directory.call(this, e), (this._dirHandle = t), (this._id = null));
+                (GStorage.Directory.call(this, e), (this._dirHandle = t), (this._id = null));
             }),
-            IsFiniteNonNegativeNumber.inherit(u.Directory, GDocument.Directory),
+            IsFiniteNonNegativeNumber.inherit(u.Directory, GStorage.Directory),
             (u.Directory.prototype._dirHandle = null),
             (u.Directory.prototype._id = null),
             (u.Directory.prototype.getUniqueId = function () {
@@ -64,9 +64,9 @@ module.exports = function (module, exports, require) {
                 }
             }),
             (u.Item = function (e, t, n, o) {
-                (GDocument.Item.call(this, e), (this._data = t), (this._filename = n), (this._fileHandle = o));
+                (GStorage.Item.call(this, e), (this._data = t), (this._filename = n), (this._fileHandle = o));
             }),
-            IsFiniteNonNegativeNumber.inherit(u.Item, GDocument.Item),
+            IsFiniteNonNegativeNumber.inherit(u.Item, GStorage.Item),
             (u.Item.prototype._data = null),
             (u.Item.prototype._filename = null),
             (u.Item.prototype._fileHandle = null),

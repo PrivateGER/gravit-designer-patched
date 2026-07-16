@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(19), require(328 /* polyfill:Array */), require(3), require(26));
         var GObject = require(1),
-            GSaveAction = require(40),
+            Utils = require(40),
             GCategory = require(18),
             r = require(106);
         function s() {}
@@ -44,7 +44,7 @@ module.exports = function (module, exports, require) {
                             c && s.add(c);
                         }
                         try {
-                            (0, GSaveAction.blockChanges)(t, s);
+                            (0, Utils.blockChanges)(t, s);
                             for (r = 0; r < a.length; ++r) {
                                 var d = a[r],
                                     u = d.getParent(),
@@ -53,7 +53,7 @@ module.exports = function (module, exports, require) {
                                 (g && (u.insertChild(g, p), l.push(g)), u.removeChild(d));
                             }
                         } finally {
-                            ((0, GSaveAction.releaseChanges)(t, s), l.length && t.updateSelection(false, l));
+                            ((0, Utils.releaseChanges)(t, s), l.length && t.updateSelection(false, l));
                         }
                     } finally {
                         t.commitTransaction(GObject.GLocale.get(this.getTitle()));

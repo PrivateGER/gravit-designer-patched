@@ -1,8 +1,8 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var GSaveAction = require(40);
+        var Utils = require(40);
         function i(e, t, n) {
-            ((this.element = e), (this.mouseMoveCallback = t || GSaveAction.fakeFunction), (this.mouseUpCallback = n || GSaveAction.fakeFunction), this.init());
+            ((this.element = e), (this.mouseMoveCallback = t || Utils.fakeFunction), (this.mouseUpCallback = n || Utils.fakeFunction), this.init());
         }
         ((i.prototype.init = function () {
             ((this._handleMouseDown = this._handleMouseDown.bind(this)),

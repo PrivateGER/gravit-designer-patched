@@ -3,10 +3,10 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(58 /* polyfill:Array */), require(19), require(168 /* PDFFetchStream */), require(96 /* polyfill:JSON */), require(8 /* Symbol */), require(3), require(71 /* polyfill:String */), require(4), require(13), require(169 /* PDFNetworkStream */), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1),
-            GCommonNames = require(1036),
+            GGoogleAPI = require(1036),
             designerConfig = require(10),
             s = _interopRequireDefault(require(734)),
-            l = (_interopRequireDefault(require(355)), _interopRequireDefault(require(1037))),
+            l = (_interopRequireDefault(require(355)), _interopRequireDefault(require(1037 /* GTranslationLoader */))),
             c = require(255),
             d = require(590),
             GCategory = require(18),
@@ -247,7 +247,7 @@ module.exports = function (module, exports, require) {
             }),
             (y.prototype.triggerClose = function () {}),
             (y.prototype.getGoogleAPI = function () {
-                return GCommonNames.GDefaultGoogleAPI;
+                return GGoogleAPI.GDefaultGoogleAPI;
             }),
             (y.prototype.signWithOAuth = function (e) {
                 return new Promise((t, n) => {

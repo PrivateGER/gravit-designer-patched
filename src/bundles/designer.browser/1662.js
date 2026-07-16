@@ -6,8 +6,8 @@ module.exports = function (module, exports, require) {
             a = _interopRequireDefault(require(340)),
             r = require(806),
             s = require(395),
-            GCommonNames = require(1663),
-            c = require(119 /* GCommonNames */);
+            GLibraryPanel = require(1663),
+            GCommonNames = require(119);
         const d = require(291);
         function u() {
             r.call(this);
@@ -26,10 +26,13 @@ module.exports = function (module, exports, require) {
                 return u.TITLE;
             }),
             (u.prototype.isEnabled = function () {
-                return c.isOnline();
+                return GCommonNames.isOnline();
             }),
             (u.prototype.isVisible = function () {
-                return !!gDesigner.getApplicationManager().isEditingEnabled();
+                // The panel's only living content source is the Unsplash proxy
+                // (window.UNSPLASH_ENABLED via /config.js); without it every
+                // category is dead, so hide the whole LIBRARIES tab.
+                return true === window.UNSPLASH_ENABLED && !!gDesigner.getApplicationManager().isEditingEnabled();
             }),
             (u.prototype.getOrientation = function () {
                 return s.Orientation.Left;
@@ -93,10 +96,10 @@ module.exports = function (module, exports, require) {
                         .css("overflow", "auto")
                         .appendTo(e))),
                     this._libraryPanel.toggleClass("offline", gDesigner.isOffline()),
-                    c.isOnline()
+                    GCommonNames.isOnline()
                         ? (this._libraryPanel.hasClass("unavailable") &&
                               (this._libraryPanel.removeClass("unavailable"), this._libraryPanel.empty()),
-                          gDesigner.isOffline() || ((this._libraryPanelInstance = new GCommonNames(this._libraryPanel)), (this._initialized = true)))
+                          gDesigner.isOffline() || ((this._libraryPanelInstance = new GLibraryPanel(this._libraryPanel)), (this._initialized = true)))
                         : (this._libraryPanel.addClass("unavailable"),
                           $("<span/>")
                               .addClass("span-unavailable")

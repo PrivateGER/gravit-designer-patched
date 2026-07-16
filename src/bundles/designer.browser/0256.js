@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(38));
         var GObject = require(1),
             GPlatform = require(15),
-            GSaveAction = require(40),
+            Utils = require(40),
             designerConfig = require(10),
             s = require(357);
         function l(e, t, n) {
@@ -87,7 +87,7 @@ module.exports = function (module, exports, require) {
                             onclick: async (t) => {
                                 (gDesigner.stats("offline-dialog_retry"),
                                     t._dialog.addClass("g-loading"),
-                                    await (0, GSaveAction.sleep)(500),
+                                    await (0, Utils.sleep)(500),
                                     t._dialog.removeClass("g-loading"),
                                     (await gDesigner.isOfflineAsync()) || (e && e(), t.close()));
                             },

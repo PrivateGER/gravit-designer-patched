@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
         require(3);
         var GObject = require(1),
             GPlatform = require(15),
-            r = _interopRequireDefault(require(443 /* _interopRequireWildcard */)),
+            r = _interopRequireDefault(require(443)),
             s = _interopRequireDefault(require(1330));
         const { isExecutingOnMSTeamsSync } = r.default;
         var c = require(863),

@@ -17,27 +17,27 @@ module.exports = function (module, exports, require) {
                 REMOVE_GUEST_USER_WHEN_ROLE_IS_NO_ACCESS,
                 ENABLE_GUEST_ACCESS,
                 defaultUserSettings: {
-                    share: { defaults: { private: { pro: y = true } = {} } = {}, quotas: { free: { private: v = 0 } = {} } = {} } = {},
+                    share: { defaults: { private: { pro: proByDefault = true } = {} } = {}, quotas: { free: { private: freePrivateQuota = 0 } = {} } = {} } = {},
                 } = {},
             } = require(10 /* designerConfig */),
             { IS_TRUNK, IS_BETA, IS_RC, IS_LTS } = require(231 /* IS_TRUNK */),
-            { sleep } = require(40 /* GSaveAction */),
-            S = require(177),
+            { sleep } = require(40 /* Utils */),
+            GUser = require(177),
             GSystemDialog = require(44),
-            A = require(85),
-            T = require(388),
-            G = require(433),
-            P = require(257),
-            D = require(436),
-            L = require(336);
-        class I {
-            constructor(e, t, n) {
-                ((this._user = e),
+            GContainer = require(85),
+            GExternalStorage = require(388),
+            GShareRole = require(433),
+            iconClasses = require(257),
+            GCollaborativeFileMixin = require(436),
+            GStorageItemEvent = require(336);
+        class GShareDialog {
+            constructor(user, storageItem, closeCallback) {
+                ((this._user = user),
                     (this._sharedFile = new FileExtended()),
                     (this._initialSharedFile = null),
                     (this._statistics = null),
-                    (this._storageItem = t),
-                    (this._closeCallback = n));
+                    (this._storageItem = storageItem),
+                    (this._closeCallback = closeCallback));
             }
             _initialize() {
                 if (!this._isInitialized)
@@ -50,21 +50,21 @@ module.exports = function (module, exports, require) {
                             .then(() => {
                                 this._isInitialized = true;
                             })
-                            .catch((e) => this._handleException(e))
+                            .catch((error) => this._handleException(error))
                             .finally(() => this._toggleLoading(false))
                     );
             }
             async _loadShareInit() {
                 if (!this._sharedFile.getPublicShare()) {
-                    const t = G.ROLES.DEFAULT_PUBLIC_ROLE;
-                    if (t) {
-                        const n = new Share().assignRole(t);
+                    const role = GShareRole.ROLES.DEFAULT_PUBLIC_ROLE;
+                    if (role) {
+                        const share = new Share().assignRole(role);
                         return this._storageItem.supportsExternalSharing()
                             ? this._storageItem
-                                  .requestExternalShare(null, n)
-                                  .then(() => e.call(this, n))
-                                  .catch((e) => this._handleException(e))
-                            : e.call(this, n);
+                                  .requestExternalShare(null, share)
+                                  .then(() => e.call(this, share))
+                                  .catch((error) => this._handleException(error))
+                            : e.call(this, share);
                     }
                 }
                 function e(e) {
@@ -72,7 +72,7 @@ module.exports = function (module, exports, require) {
                         .createShare(this._storageItem.getId(), e)
                         .then(
                             () => (
-                                gDesigner.hasEventListeners(L) && gDesigner.trigger(new L(L.Type.ShareCreated, this._storageItem)),
+                                gDesigner.hasEventListeners(GStorageItemEvent) && gDesigner.trigger(new GStorageItemEvent(GStorageItemEvent.Type.ShareCreated, this._storageItem)),
                                 this._loadShare()
                             )
                         );
@@ -112,23 +112,23 @@ module.exports = function (module, exports, require) {
                                         .addClass("share-copy")
                                         .addClass("g-highlight-button")
                                         .addClass("highlighted")
-                                        .append($("<span/>").addClass("icon").addClass(P["gravit-icon-share-copy"]))
+                                        .append($("<span/>").addClass("icon").addClass(iconClasses["gravit-icon-share-copy"]))
                                         .append($("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.copy"))))
-                                        .on("click", async (e) => {
-                                            const t = $(e.target).closest(".share-link"),
-                                                n = t.find("input").val();
-                                            if (n && n.trim().length)
+                                        .on("click", async (event) => {
+                                            const shareLink = $(event.target).closest(".share-link"),
+                                                url = shareLink.find("input").val();
+                                            if (url && url.trim().length)
                                                 return (
                                                     gDesigner.stats("sharedialog_click_copy"),
                                                     gContainer
-                                                        .copyToClipboard(n.trim())
+                                                        .copyToClipboard(url.trim())
                                                         .then(async () => {
-                                                            const e = t.find(".share-copied");
-                                                            (e.addClass("visible"), await sleep(2e3), e.removeClass("visible"));
+                                                            const copiedIndicator = shareLink.find(".share-copied");
+                                                            (copiedIndicator.addClass("visible"), await sleep(2e3), copiedIndicator.removeClass("visible"));
                                                         })
-                                                        .catch((e) => {
+                                                        .catch((error) => {
                                                             GSystemDialog.alert(
-                                                                (e && e.message) ||
+                                                                (error && error.message) ||
                                                                     GObject.GLocale.get(
                                                                         new GObject.GLocaleKey("GShareDialog", "text.failed-copying-to-clipboard")
                                                                     )
@@ -157,71 +157,71 @@ module.exports = function (module, exports, require) {
             }
             _buildNativeShareButton() {
                 if (!gContainer.isNativeShareLinkSupported()) return null;
-                const e = $("<div/>")
+                const button = $("<div/>")
                     .addClass("share-native")
                     .addClass("g-highlight-button")
                     .addClass("highlighted")
                     .append($("<span/>").addClass("icon").addClass("gravit-icon-share-link-native"));
                 return (
-                    e.on("click", (e) => {
+                    button.on("click", (event) => {
                         gDesigner.stats("sharedialog_click_native-sharing");
-                        const t = this._dialog.find(".share-link").find("input").val();
-                        if (t && t.trim().length) {
-                            const e = this._user.getFullUserName(),
-                                n = this._sharedFile.name,
-                                i = GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.native-link-share-title")).replace("%filename", n),
-                                a = GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.native-link-share-description")).replace(
+                        const url = this._dialog.find(".share-link").find("input").val();
+                        if (url && url.trim().length) {
+                            const userName = this._user.getFullUserName(),
+                                fileName = this._sharedFile.name,
+                                title = GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.native-link-share-title")).replace("%filename", fileName),
+                                description = GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.native-link-share-description")).replace(
                                     "%username",
-                                    e
+                                    userName
                                 );
-                            gContainer.nativeShareLink(i, a, t).catch((e) => console.error(e));
+                            gContainer.nativeShareLink(title, description, url).catch((error) => console.error(error));
                         }
                     }),
-                    e
+                    button
                 );
             }
-            _getRole(e) {
-                return G.makeFromShare(e);
+            _getRole(share) {
+                return GShareRole.makeFromShare(share);
             }
             _loadShare() {
-                if (!this._storageItem.hasMixin(D)) throw (console.log("Storage item not supported"), "Storage not supported");
+                if (!this._storageItem.hasMixin(GCollaborativeFileMixin)) throw (console.log("Storage item not supported"), "Storage not supported");
                 return this._storageItem
                     .getOrCreateCollaborativeFile()
-                    .then((e) => {
-                        ((this._sharedFile = e), this._initialSharedFile || (this._initialSharedFile = this._sharedFile.clone()));
+                    .then((sharedFile) => {
+                        ((this._sharedFile = sharedFile), this._initialSharedFile || (this._initialSharedFile = this._sharedFile.clone()));
                     })
                     .then(async () => {
                         this._statistics = await gApi.getSharingStatistics();
                     });
             }
-            _setSelectedPrivateShare(e) {
-                if ((this._dialog.find(".share-by-user > .share-settings > .share-setting.g-selected").removeClass("g-selected"), e)) {
-                    const t = this._dialog
-                        .find('.share-by-user > .share-settings > .share-setting[user_id="'.concat(e, '"]'))
+            _setSelectedPrivateShare(userId) {
+                if ((this._dialog.find(".share-by-user > .share-settings > .share-setting.g-selected").removeClass("g-selected"), userId)) {
+                    const element = this._dialog
+                        .find('.share-by-user > .share-settings > .share-setting[user_id="'.concat(userId, '"]'))
                         .addClass("g-selected")[0];
-                    t && t.scrollIntoView({ behavior: "smooth" });
+                    element && element.scrollIntoView({ behavior: "smooth" });
                 }
             }
-            _handleException(e) {
-                (console.error(e.stack ? e.stack : e), GSystemDialog.alert(gApi.formatError(e)), this._toggleLoading(false));
+            _handleException(error) {
+                (console.error(error.stack ? error.stack : error), GSystemDialog.alert(gApi.formatError(error)), this._toggleLoading(false));
             }
             _getPrivateAndInvitedShareList() {
-                const e = this._sharedFile.getPrivateShareList().filter((e) => !e.owner || e.id !== this._user.getUID()),
-                    t = (this._sharedFile.getInvitedShareList && this._sharedFile.getInvitedShareList()) || [];
-                return e.concat(t);
+                const privateShares = this._sharedFile.getPrivateShareList().filter((privateShares) => !privateShares.owner || privateShares.id !== this._user.getUID()),
+                    invitedShares = (this._sharedFile.getInvitedShareList && this._sharedFile.getInvitedShareList()) || [];
+                return privateShares.concat(invitedShares);
             }
-            _getShareListLayout(e) {
-                return GObject.GUtil.bubbleSort(e, (e, t) => {
-                    let { created } = e,
-                        { created: o } = t;
-                    return DateAPI.gt(created, o, false) ? 1 : DateAPI.lt(created, o, false) ? -1 : 0;
-                }).map((e) => {
-                    const t = new S(e),
-                        n = t.getUID(),
-                        i = t.getEmail(),
-                        { guest: a = false } = e,
-                        s = this._getRole(e),
-                        l = this._canResendInvitationEmail(e)
+            _getShareListLayout(shares) {
+                return GObject.GUtil.bubbleSort(shares, (shareA, shareB) => {
+                    let { created } = shareA,
+                        { created: otherCreated } = shareB;
+                    return DateAPI.gt(created, otherCreated, false) ? 1 : DateAPI.lt(created, otherCreated, false) ? -1 : 0;
+                }).map((share) => {
+                    const user = new GUser(share),
+                        uid = user.getUID(),
+                        email = user.getEmail(),
+                        { guest: isGuest = false } = share,
+                        role = this._getRole(share),
+                        resendButtons = this._canResendInvitationEmail(share)
                             ? [
                                   {
                                       icon: "gravit-icon-resend-invitation-email",
@@ -230,91 +230,91 @@ module.exports = function (module, exports, require) {
                                           (gDesigner.stats("sharedialog_private-share_resend"),
                                               this._toggleLoading(true),
                                               gApi.share
-                                                  .sendInvitationEmails(this._storageItem.getId(), [i])
+                                                  .sendInvitationEmails(this._storageItem.getId(), [email])
                                                   .then(() => {
                                                       GSystemDialog.alert(
                                                           GObject.GLocale.get(
                                                               new GObject.GLocaleKey("GShareDialog", "text.resent-invitation-email")
-                                                          ).replace("%email", i)
+                                                          ).replace("%email", email)
                                                       );
                                                   })
-                                                  .catch((e) => this._handleException(e))
+                                                  .catch((error) => this._handleException(error))
                                                   .finally(() => this._toggleLoading(false)));
                                       },
                                   },
                               ]
                             : [],
-                        c = this._createShareSetting({
-                            label: i,
-                            icon: this._getAvatar(t),
-                            defaultRole: G.ROLES.DEFAULT_PRIVATE_ROLE,
+                        row = this._createShareSetting({
+                            label: email,
+                            icon: this._getAvatar(user),
+                            defaultRole: GShareRole.ROLES.DEFAULT_PRIVATE_ROLE,
                             removeCallback: () => {
-                                this._unshareWithUser({ id: n, email: i, role: s });
+                                this._unshareWithUser({ id: uid, email: email, role: role });
                             },
-                            buttons: l,
+                            buttons: resendButtons,
                         })
-                            .attr("user_id", n)
+                            .attr("user_id", uid)
                             .on("click", () => {
-                                this._setSelectedPrivateShare(n);
+                                this._setSelectedPrivateShare(uid);
                             });
                     return (
-                        c
+                        row
                             .find(".g-role-selector")
-                            .gRoleSelector("role", s)
-                            .on("rolechange", (t) => {
-                                const r = $(t.target).closest(".g-role-selector").gRoleSelector("role");
-                                r
-                                    ? REMOVE_GUEST_USER_WHEN_ROLE_IS_NO_ACCESS && a && r.is(ShareRoles.NoAccess)
-                                        ? this._unshareWithUser({ id: n, email: i, role: r })
-                                        : this._shareWithUser({ id: n, email: i, role: r }, e.assignRole(r)).catch(() => {
-                                              $(t.target).closest(".g-role-selector").gRoleSelector("restoreRole");
+                            .gRoleSelector("role", role)
+                            .on("rolechange", (event) => {
+                                const newRole = $(event.target).closest(".g-role-selector").gRoleSelector("role");
+                                newRole
+                                    ? REMOVE_GUEST_USER_WHEN_ROLE_IS_NO_ACCESS && isGuest && newRole.is(ShareRoles.NoAccess)
+                                        ? this._unshareWithUser({ id: uid, email: email, role: newRole })
+                                        : this._shareWithUser({ id: uid, email: email, role: newRole }, share.assignRole(newRole)).catch(() => {
+                                              $(event.target).closest(".g-role-selector").gRoleSelector("restoreRole");
                                           })
                                     : GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.role-required")));
                             }),
-                        c
+                        row
                     );
                 });
             }
             _updateProperties() {
                 if (this._sharedFile.getPublicShare()) {
-                    const e = this._getRole(this._sharedFile.getPublicShare());
-                    this._dialog.find(".share-by-link .g-role-selector").gRoleSelector("role", e);
+                    const publicShareRole = this._getRole(this._sharedFile.getPublicShare());
+                    this._dialog.find(".share-by-link .g-role-selector").gRoleSelector("role", publicShareRole);
                 }
                 this._infoSection.css("display", this._hasNewInvitationEmails() ? "" : "none");
-                const e = this._getPrivateAndInvitedShareList(),
-                    t = gDesigner.getLicense();
-                if (0 === t.getPrivateShareQuota())
+                const shares = this._getPrivateAndInvitedShareList(),
+                    license = gDesigner.getLicense();
+                if (0 === license.getPrivateShareQuota())
                     this._dialog
                         .find(".share-by-user")
                         .addClass("g-disabled")
-                        .on("click", (e) => {
-                            $(e.target).hasClass("share-by-user") && gDesigner.handlePROFeatureInterruption();
+                        .on("click", (event) => {
+                            $(event.target).hasClass("share-by-user") && gDesigner.handlePROFeatureInterruption();
                         });
-                else if (t.getPrivateShareQuota() > 0) {
-                    const n = this._statistics ? this._statistics.getPrivateShareQuota() : 0,
-                        i = t.getPrivateShareQuota() - n;
+                else if (license.getPrivateShareQuota() > 0) {
+                    const usedQuota = this._statistics ? this._statistics.getPrivateShareQuota() : 0,
+                        remainingQuota = license.getPrivateShareQuota() - usedQuota;
                     this._dialog
                         .find(".share-by-user .subtitle")
                         .css("display", "")
-                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.projects-left")).replace("%number", i));
-                    const a = i <= 0 && !(e && e.length);
-                    this._dialog.find(".share-by-user .add-button").prop("disabled", a);
+                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.projects-left")).replace("%number", remainingQuota));
+                    const addDisabled = remainingQuota <= 0 && !(shares && shares.length);
+                    this._dialog.find(".share-by-user .add-button").prop("disabled", addDisabled);
                 } else
                     (this._dialog.find(".share-by-user .subtitle").css("display", "none"),
                         this._dialog.find(".share-by-user .add-button").prop("disabled", false));
                 (this._dialog.find(".share-by-user > .share-settings").empty(),
-                    e && e.length && this._dialog.find(".share-by-user > .share-settings").append(this._getShareListLayout(e)));
-                let n = "";
-                const i = new URL(this._getOrigin()),
-                    a = i.searchParams;
+                    shares && shares.length && this._dialog.find(".share-by-user > .share-settings").append(this._getShareListLayout(shares)));
+                let urlString = "";
+                const urlObj = new URL(this._getOrigin()),
+                    searchParams = urlObj.searchParams;
                 (this._sharedFile.getPublicShare()
-                    ? a.set("token", this._sharedFile.getPublicShare().token)
-                    : a.set("d", this._storageItem.getId()),
-                    (n = i.toString()),
-                    this._dialog.find(".share-link > .share-input > input").val(n));
+                    ? searchParams.set("token", this._sharedFile.getPublicShare().token)
+                    : searchParams.set("d", this._storageItem.getId()),
+                    (urlString = urlObj.toString()),
+                    this._dialog.find(".share-link > .share-input > input").val(urlString));
             }
             _getOrigin() {
-                return gContainer.getRuntime() === A.Runtime.Browser || gContainer.getRuntime() === A.Runtime.PWA
+                return gContainer.getRuntime() === GContainer.Runtime.Browser || gContainer.getRuntime() === GContainer.Runtime.PWA
                     ? location.origin
                     : IS_TRUNK
                       ? trunkURL
@@ -327,40 +327,40 @@ module.exports = function (module, exports, require) {
                             : prodURL;
             }
             _buildShareByLink() {
-                const e = this._createShareSetting({
+                const row = this._createShareSetting({
                         icon: $("<span/>").addClass("gravit-icon-public-share-link").addClass("icon"),
                         label: GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.public-share-link")),
-                        defaultRole: G.ROLES.DEFAULT_PUBLIC_ROLE,
+                        defaultRole: GShareRole.ROLES.DEFAULT_PUBLIC_ROLE,
                     }),
-                    t = e.find(".g-role-selector");
+                    roleSelector = row.find(".g-role-selector");
                 return (
-                    e.find(".g-role-selector").on("rolechange", () => {
-                        const n = t.gRoleSelector("role");
-                        if (!n) return void GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.role-required")));
-                        gDesigner.stats("sharedialog_public-share_role", n.name);
-                        const i = this._sharedFile.getPublicShare();
-                        if (i)
+                    row.find(".g-role-selector").on("rolechange", () => {
+                        const newRole = roleSelector.gRoleSelector("role");
+                        if (!newRole) return void GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.role-required")));
+                        gDesigner.stats("sharedialog_public-share_role", newRole.name);
+                        const publicShare = this._sharedFile.getPublicShare();
+                        if (publicShare)
                             return (
                                 this._toggleLoading(true),
                                 this._storageItem.supportsExternalSharingByLink()
                                     ? this._storageItem
-                                          .updateDomainShare(n)
+                                          .updateDomainShare(newRole)
                                           .then(() => {
-                                              a.call(this);
+                                              updateShareRole.call(this);
                                           })
-                                          .catch((t) => {
+                                          .catch((error) => {
                                               (GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.error-change-role-failed"))),
-                                                  e.find(".g-role-selector").gRoleSelector("restoreRole"),
+                                                  row.find(".g-role-selector").gRoleSelector("restoreRole"),
                                                   this._toggleLoading(false),
-                                                  console.error("updateDomainShare error: ", t));
+                                                  console.error("updateDomainShare error: ", error));
                                           })
-                                    : a.call(this)
+                                    : updateShareRole.call(this)
                             );
-                        function a() {
-                            gApi.updateShare(i.token, i.assignRole(n))
+                        function updateShareRole() {
+                            gApi.updateShare(publicShare.token, publicShare.assignRole(newRole))
                                 .then(() => this._loadShare())
                                 .then(() => this._updateProperties())
-                                .catch((e) => this._handleException(e))
+                                .catch((error) => this._handleException(error))
                                 .finally(() => this._toggleLoading(false));
                         }
                     }),
@@ -370,32 +370,32 @@ module.exports = function (module, exports, require) {
                             $("<div/>")
                                 .addClass("share-settings-container")
                                 .addClass("share-by-link")
-                                .append($("<div/>").addClass("share-settings").append(e))
+                                .append($("<div/>").addClass("share-settings").append(row))
                         )
                 );
             }
             _buildShareByUser() {
-                const e = $("<input/>")
+                const emailInput = $("<input/>")
                         .addClass("private-share-email-input")
                         .attr("placeholder", GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.private-share-placeholder")))
                         .attr("type", "email")
-                        .on("keypress", (e) => {
-                            const t = e.which || e.charCode || e.keyCode;
-                            if (GPlatform.GKey.translateKey(t) === GPlatform.GKey.Constant.ENTER)
+                        .on("keypress", (event) => {
+                            const keyCode = event.which || event.charCode || event.keyCode;
+                            if (GPlatform.GKey.translateKey(keyCode) === GPlatform.GKey.Constant.ENTER)
                                 return (
-                                    e.preventDefault(),
-                                    e.stopPropagation(),
-                                    $(e.target).closest(".share-by-user").find(".add-button").trigger("click"),
+                                    event.preventDefault(),
+                                    event.stopPropagation(),
+                                    $(event.target).closest(".share-by-user").find(".add-button").trigger("click"),
                                     false
                                 );
                         }),
-                    t = $("<div/>").gRoleSelector({
-                        defaultRole: G.ROLES.DEFAULT_PRIVATE_ROLE,
+                    roleSelector = $("<div/>").gRoleSelector({
+                        defaultRole: GShareRole.ROLES.DEFAULT_PRIVATE_ROLE,
                     });
                 return (
-                    t.on("rolechange", () => {
-                        const e = t.gRoleSelector("role");
-                        gDesigner.stats("sharedialog_private-share_role", e.name);
+                    roleSelector.on("rolechange", () => {
+                        const role = roleSelector.gRoleSelector("role");
+                        gDesigner.stats("sharedialog_private-share_role", role.name);
                     }),
                     $("<div/>")
                         .addClass("share-settings-section")
@@ -414,7 +414,7 @@ module.exports = function (module, exports, require) {
                                                         .addClass("title")
                                                         .text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.private-sharing")))
                                                         .gPro({
-                                                            pro: y || -1 !== v,
+                                                            pro: proByDefault || -1 !== freePrivateQuota,
                                                             badgeAlwaysVisible: true,
                                                         })
                                                 )
@@ -423,16 +423,16 @@ module.exports = function (module, exports, require) {
                                         .append(
                                             $("<div/>")
                                                 .addClass("share-settings-header-input")
-                                                .append($("<div/>").addClass("input-section").append(e).append(t))
+                                                .append($("<div/>").addClass("input-section").append(emailInput).append(roleSelector))
                                                 .append(
                                                     $("<button/>")
                                                         .addClass("add-button")
                                                         .addClass("g-highlight-button highlighted")
                                                         .text(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.private-sharing-add")))
-                                                        .on("click", (n) => {
-                                                            const o = (e.val() || "").trim(),
-                                                                i = t.gRoleSelector("role");
-                                                            this._tryPrivateShareWithUser(o, i, n);
+                                                        .on("click", (event) => {
+                                                            const email = (emailInput.val() || "").trim(),
+                                                                role = roleSelector.gRoleSelector("role");
+                                                            this._tryPrivateShareWithUser(email, role, event);
                                                         })
                                                 )
                                         )
@@ -441,13 +441,13 @@ module.exports = function (module, exports, require) {
                         )
                 );
             }
-            async _tryPrivateShareWithUser(e, t, n) {
-                if ((gDesigner.stats("sharedialog_private-share_add"), !e))
+            async _tryPrivateShareWithUser(email, role, event) {
+                if ((gDesigner.stats("sharedialog_private-share_add"), !email))
                     return void GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.empty-email")));
-                if (!t) return void GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.role-required")));
+                if (!role) return void GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.role-required")));
                 this._toggleLoading(true);
                 try {
-                    if (this._storageItem instanceof T.Item && !(await this._storageItem.isEmailFromCorporateDomain(e)))
+                    if (this._storageItem instanceof GExternalStorage.Item && !(await this._storageItem.isEmailFromCorporateDomain(email)))
                         return (
                             this._handleException(
                                 GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.you-can-not-invite-user-from-another-domain"))
@@ -455,67 +455,67 @@ module.exports = function (module, exports, require) {
                             void this._toggleLoading(false)
                         );
                 } catch (e) {}
-                const i = (e) => {
+                const doShare = (user) => {
                     this._toggleLoading(true);
-                    const n = new Share().assignRole(t),
-                        o = this._dialog.find(".share-settings-header-input"),
-                        i = o.find(".g-role-selector"),
-                        a = o.find(".private-share-email-input");
-                    this._shareWithUser(e, n, false)
-                        .then((e) => {
-                            e ? a.val(null) : gDesigner.stats("sharedialog_invalid-email");
+                    const share = new Share().assignRole(role),
+                        headerInput = this._dialog.find(".share-settings-header-input"),
+                        roleSelector = headerInput.find(".g-role-selector"),
+                        emailInput = headerInput.find(".private-share-email-input");
+                    this._shareWithUser(user, share, false)
+                        .then((success) => {
+                            success ? emailInput.val(null) : gDesigner.stats("sharedialog_invalid-email");
                         })
                         .catch(() => {
-                            i.gRoleSelector("restoreRole");
+                            roleSelector.gRoleSelector("restoreRole");
                         })
                         .finally(() => {
                             this._toggleLoading(false);
                         });
                 };
                 try {
-                    let t = await gApi
-                        .listUsers({ q: e, all: true })
-                        .then((e) => e.filter((e) => e.id !== this._user.getUID()).map((e) => new S(e)));
-                    const a = t && t.length > 0;
-                    let s = true;
-                    if (a) {
-                        this._storageItem instanceof T.Item &&
+                    let users = await gApi
+                        .listUsers({ q: email, all: true })
+                        .then((e) => e.filter((e) => e.id !== this._user.getUID()).map((e) => new GUser(e)));
+                    const hasMatchedUsers = users && users.length > 0;
+                    let canInviteByEmail = true;
+                    if (hasMatchedUsers) {
+                        this._storageItem instanceof GExternalStorage.Item &&
                             this._storageItem.getCloudClient().isCorporate() &&
-                            (t = t.filter(
-                                (e) =>
-                                    e.corporate_provider &&
-                                    e.corporate_provider === this._storageItem.getCloudClient().getCorporateProviderName()
+                            (users = users.filter(
+                                (user) =>
+                                    user.corporate_provider &&
+                                    user.corporate_provider === this._storageItem.getCloudClient().getCorporateProviderName()
                             ));
                         const e = (this._sharedFile.getPrivateShareList() || []).filter((e) => e.role !== ShareRoles.Owner.id).map((e) => e.id);
                         e &&
                             e.length &&
-                            ((t = t.filter((t) => {
-                                let { id } = t;
+                            ((users = users.filter((matchedUser) => {
+                                let { id } = matchedUser;
                                 return !e.includes(id);
                             })),
-                            (s = false));
+                            (canInviteByEmail = false));
                     }
-                    if (t && t.length > 0)
-                        if ((this._toggleLoading(false), t.length > 1)) {
-                            const o = $(n.target).closest(".share-settings-header-input");
-                            this._pickUser(e, t, o)
-                                .then((t) => {
-                                    t && i(Object.assign(t, { email: e }));
+                    if (users && users.length > 0)
+                        if ((this._toggleLoading(false), users.length > 1)) {
+                            const headerInput = $(event.target).closest(".share-settings-header-input");
+                            this._pickUser(email, users, headerInput)
+                                .then((pickedUser) => {
+                                    pickedUser && doShare(Object.assign(pickedUser, { email: email }));
                                 })
                                 .catch(this._handleException);
-                        } else i(Object.assign(t[0], { email: e }));
+                        } else doShare(Object.assign(users[0], { email: email }));
                     else
-                        s
-                            ? i({ id: e, email: e })
+                        canInviteByEmail
+                            ? doShare({ id: email, email: email })
                             : this._handleException(
-                                  GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.private-share-no-options-left")).replace("%email", e)
+                                  GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.private-share-no-options-left")).replace("%email", email)
                               );
                 } catch (e) {
                     this._handleException(e);
                 }
             }
-            _createShareSetting(e) {
-                let { icon, label, defaultRole, removeCallback, buttons } = e;
+            _createShareSetting(options) {
+                let { icon, label, defaultRole, removeCallback, buttons } = options;
                 return $("<div/>")
                     .addClass("share-setting")
                     .append(icon || "")
@@ -523,125 +523,125 @@ module.exports = function (module, exports, require) {
                     .append($("<div/>").gRoleSelector({ defaultRole: defaultRole, buttons: buttons }))
                     .append(removeCallback ? $("<div/>").addClass("gravit-icon-x-delete").on("click", removeCallback) : "");
             }
-            _getAvatar(e) {
-                const t = e.getUserColor(),
-                    { avatar } = e,
-                    o = $("<div/>").addClass("avatar");
+            _getAvatar(user) {
+                const color = user.getUserColor(),
+                    { avatar } = user,
+                    avatarElement = $("<div/>").addClass("avatar");
                 return (
-                    this._shouldShowAvatar(e)
+                    this._shouldShowAvatar(user)
                         ? this._isSVGAvatar(avatar)
-                            ? $(avatar).appendTo(o)
-                            : o.css({ backgroundImage: 'url("'.concat(avatar, '")') })
-                        : ((e.getFirstName() && !e.guest) || (e.name = e.getFullUserName()),
-                          o.css("border-color", t).css("background-color", t).append($("<span/>").text(e.getUserNameInitials()))),
-                    o
+                            ? $(avatar).appendTo(avatarElement)
+                            : avatarElement.css({ backgroundImage: 'url("'.concat(avatar, '")') })
+                        : ((user.getFirstName() && !user.guest) || (user.name = user.getFullUserName()),
+                          avatarElement.css("border-color", color).css("background-color", color).append($("<span/>").text(user.getUserNameInitials()))),
+                    avatarElement
                 );
             }
-            _getAvatarForPicker(e) {
-                const t = e.getUserColor(),
-                    { avatar: n } = e,
-                    o = $("<div/>")
+            _getAvatarForPicker(user) {
+                const color = user.getUserColor(),
+                    { avatar: avatar } = user,
+                    container = $("<div/>")
                         .append(
                             $("<div/>")
                                 .addClass("g-user-selector-avatar")
-                                .css("border-color", t)
-                                .css("background-color", t)
-                                .append($("<span/>").text(e.getUserNameInitials()))
+                                .css("border-color", color)
+                                .css("background-color", color)
+                                .append($("<span/>").text(user.getUserNameInitials()))
                         )
                         .addClass("g-user-selector-all-avatar");
                 return (
-                    this._shouldShowAvatar(e) &&
-                        (this._isSVGAvatar(n)
-                            ? $(n).appendTo(o)
-                            : o.append(
+                    this._shouldShowAvatar(user) &&
+                        (this._isSVGAvatar(avatar)
+                            ? $(avatar).appendTo(container)
+                            : container.append(
                                   $("<div/>")
                                       .addClass("avatar")
                                       .append(
                                           $("<div/>")
                                               .addClass("gravatar-avatar")
-                                              .css({ backgroundImage: 'url("'.concat(n, '")') })
+                                              .css({ backgroundImage: 'url("'.concat(avatar, '")') })
                                       )
                               )),
-                    o
+                    container
                 );
             }
-            _isSVGAvatar(e) {
-                return "<svg>" === e.substr(0, "<svg>".length);
+            _isSVGAvatar(avatar) {
+                return "<svg>" === avatar.substr(0, "<svg>".length);
             }
-            _shouldShowAvatar(e) {
-                return !!e.hasOwnPictureAvatar() || !(!e.avatar || -1 === e.avatar.indexOf("static/assets"));
+            _shouldShowAvatar(user) {
+                return !!user.hasOwnPictureAvatar() || !(!user.avatar || -1 === user.avatar.indexOf("static/assets"));
             }
-            _isSameUser(e, t) {
-                let n = Object.assign({}, e),
-                    o = Object.assign({}, t);
+            _isSameUser(userA, userB) {
+                let normalizedA = Object.assign({}, userA),
+                    normalizedB = Object.assign({}, userB);
                 return (
-                    n.id || (n.id = n.email),
-                    o.id || (o.id = o.email),
-                    e.id === t.id || e.id === t.email || e.id === t.login || e.email === t.email || e.login === t.email
+                    normalizedA.id || (normalizedA.id = normalizedA.email),
+                    normalizedB.id || (normalizedB.id = normalizedB.email),
+                    userA.id === userB.id || userA.id === userB.email || userA.id === userB.login || userA.email === userB.email || userA.login === userB.email
                 );
             }
-            _shareWithUser(e, t) {
+            _shareWithUser(invitee, share) {
                 let n,
                     i,
-                    a = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
-                if ("object" != typeof e || !e.email) throw Error("Invalid args");
-                (({ email: i, id: n } = e), n || (n = i));
-                const r = this._user;
-                return n === r.id || n === r.email || n === r.login
+                    sendEmail = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
+                if ("object" != typeof invitee || !invitee.email) throw Error("Invalid args");
+                (({ email: i, id: n } = invitee), n || (n = i));
+                const currentUser = this._user;
+                return n === currentUser.id || n === currentUser.email || n === currentUser.login
                     ? (GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.you-can-not-invite-yourself"))), Promise.reject())
                     : (this._toggleLoading(true),
-                      this._storageItem instanceof T.Item
+                      this._storageItem instanceof GExternalStorage.Item
                           ? this._storageItem
                                 .isEmailFromCorporateDomain(i)
-                                .then((e) => {
-                                    if (e) return this._prepareShare(i, t, n, a);
+                                .then((isCorporateEmail) => {
+                                    if (isCorporateEmail) return this._prepareShare(i, share, n, sendEmail);
                                     throw GObject.GLocale.get(
                                         new GObject.GLocaleKey("GShareDialog", "text.you-can-not-invite-user-from-another-domain")
                                     );
                                 })
-                                .catch((e) => {
-                                    throw (this._handleException(e), e);
+                                .catch((error) => {
+                                    throw (this._handleException(error), error);
                                 })
-                          : this._prepareShare(i, t, n, a));
+                          : this._prepareShare(i, share, n, sendEmail));
             }
-            _prepareShare(e, t, n, o) {
+            _prepareShare(email, share, userId, sendEmail) {
                 return this._storageItem.supportsExternalSharing()
                     ? this._storageItem
-                          .requestExternalShare(e, t)
-                          .then(() => this._processShare(e, t, n, o))
-                          .catch((e) => {
-                              throw (this._handleException(e), e);
+                          .requestExternalShare(email, share)
+                          .then(() => this._processShare(email, share, userId, sendEmail))
+                          .catch((error) => {
+                              throw (this._handleException(error), error);
                           })
-                    : this._processShare(e, t, n, o);
+                    : this._processShare(email, share, userId, sendEmail);
             }
-            _processShare(e, t, n, i) {
-                const a = i ? t : Object.assign(t, { sendEmail: i, validated: true }),
-                    s = this._storageItem.toString();
-                let l = false;
+            _processShare(email, share, userId, sendEmail) {
+                const shareData = sendEmail ? share : Object.assign(share, { sendEmail: sendEmail, validated: true }),
+                    storageItemString = this._storageItem.toString();
+                let isCorporate = false;
                 return (
-                    this._storageItem instanceof T.Item && (l = this._storageItem.getCloudClient().isCorporate()),
-                    s.indexOf("GCloudStorage") >= 0
+                    this._storageItem instanceof GExternalStorage.Item && (isCorporate = this._storageItem.getCloudClient().isCorporate()),
+                    storageItemString.indexOf("GCloudStorage") >= 0
                         ? gDesigner.stats("sharedialog_private-share_cloud")
-                        : s.indexOf("GGoogleDriveStorage") >= 0
-                          ? gDesigner.stats("sharedialog_private-share_".concat(l ? "corporate-" : "", "googledrive"))
-                          : s.indexOf("GSharePointStorage") >= 0 &&
-                            gDesigner.stats("sharedialog_private-share_".concat(l ? "corporate-" : "", "sharepoint")),
+                        : storageItemString.indexOf("GGoogleDriveStorage") >= 0
+                          ? gDesigner.stats("sharedialog_private-share_".concat(isCorporate ? "corporate-" : "", "googledrive"))
+                          : storageItemString.indexOf("GSharePointStorage") >= 0 &&
+                            gDesigner.stats("sharedialog_private-share_".concat(isCorporate ? "corporate-" : "", "sharepoint")),
                     gApi
-                        .shareWithUser(this._storageItem.getId(), n, a)
-                        .then(async (e) => (await this._loadShare(), this._updateProperties(), this._setSelectedPrivateShare(e.user_id), e))
-                        .catch((t) => {
-                            if (t.status)
-                                switch (t.status) {
+                        .shareWithUser(this._storageItem.getId(), userId, shareData)
+                        .then(async (response) => (await this._loadShare(), this._updateProperties(), this._setSelectedPrivateShare(response.user_id), response))
+                        .catch((error) => {
+                            if (error.status)
+                                switch (error.status) {
                                     case gApi.HTTP_STATUS_CODES.CONFLICT:
                                         return void GSystemDialog.alert(
                                             GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.you-can-not-invite-yourself"))
                                         );
                                     case gApi.HTTP_STATUS_CODES.NOT_FOUND:
                                         return void GSystemDialog.alert(
-                                            GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.invalid-email")).replace("%email", e)
+                                            GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.invalid-email")).replace("%email", email)
                                         );
                                     case gApi.HTTP_STATUS_CODES.FORBIDDEN:
-                                        return void ("only same domain users allowed" === t.message
+                                        return void ("only same domain users allowed" === error.message
                                             ? GSystemDialog.alert(
                                                   GObject.GLocale.get(
                                                       new GObject.GLocaleKey("GShareDialog", "text.you-can-not-invite-user-from-another-domain")
@@ -649,37 +649,37 @@ module.exports = function (module, exports, require) {
                                               )
                                             : GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "error.http.forbidden"))));
                                 }
-                            this._handleException(t);
+                            this._handleException(error);
                         })
                         .finally(() => this._toggleLoading(false))
                 );
             }
-            _unshareWithUser(e) {
-                const { email, role } = e,
-                    { id: o = email } = e;
+            _unshareWithUser(share) {
+                const { email, role } = share,
+                    { id: userId = email } = share;
                 return (
                     this._toggleLoading(true),
                     this._storageItem.supportsExternalSharing()
                         ? this._storageItem
                               .requestExternalUnShare(email, role)
-                              .then(() => i.call(this))
-                              .catch((e) => {
-                                  this._handleException(e);
+                              .then(() => unshare.call(this))
+                              .catch((error) => {
+                                  this._handleException(error);
                               })
-                        : i.call(this)
+                        : unshare.call(this)
                 );
-                function i() {
+                function unshare() {
                     return gApi
-                        .unshareWithUser(this._storageItem.getId(), o)
+                        .unshareWithUser(this._storageItem.getId(), userId)
                         .then(() => this._setSelectedPrivateShare(null))
                         .then(() => this._loadShare())
                         .then(() => this._updateProperties())
-                        .catch((e) => this._handleException(e))
+                        .catch((error) => this._handleException(error))
                         .finally(() => this._toggleLoading(false));
                 }
             }
-            _toggleLoading(e) {
-                ((this._isLoading = !!e), ($(this._dialog).data("gdialog").closable = !e), this._dialog.toggleClass("g-loading", !!e));
+            _toggleLoading(loading) {
+                ((this._isLoading = !!loading), ($(this._dialog).data("gdialog").closable = !loading), this._dialog.toggleClass("g-loading", !!loading));
             }
             async open() {
                 (await this._initialize(), this._dialog.gDialog("open", true));
@@ -687,17 +687,17 @@ module.exports = function (module, exports, require) {
             close() {
                 this._isLoading || this._dialog.gDialog("close");
             }
-            _canResendInvitationEmail(e) {
-                const t = G.makeFromShare(e);
-                if (t && !t.is(ShareRoles.NoAccess)) {
+            _canResendInvitationEmail(share) {
+                const role = GShareRole.makeFromShare(share);
+                if (role && !role.is(ShareRoles.NoAccess)) {
                     return (
                         (this._initialSharedFile &&
                             this._initialSharedFile
                                 .getPrivateShareList()
-                                .map((e) => e.id)
-                                .concat(this._initialSharedFile.getInvitedShareList().map((e) => e.id))) ||
+                                .map((share) => share.id)
+                                .concat(this._initialSharedFile.getInvitedShareList().map((share) => share.id))) ||
                         []
-                    ).includes(e.id);
+                    ).includes(share.id);
                 }
                 return false;
             }
@@ -705,62 +705,62 @@ module.exports = function (module, exports, require) {
                 return this._getNewAddedShareEmails().length > 0;
             }
             async _sendInvitationEmails() {
-                const e = this._getNewAddedShareEmails();
-                if (e && e.length > 0) return ENABLE_GUEST_ACCESS ? this._sendGuestInvitation(e) : this._sendUserInvitation(e);
+                const emails = this._getNewAddedShareEmails();
+                if (emails && emails.length > 0) return ENABLE_GUEST_ACCESS ? this._sendGuestInvitation(emails) : this._sendUserInvitation(emails);
             }
-            _sendUserInvitation(e) {
+            _sendUserInvitation(emails) {
                 return (
                     gDesigner.stats("sharedialog_private-share_invite"),
-                    gApi.share.sendInvitationEmails(this._storageItem.getId(), e).then(() => {
-                        this._showSentInvitationEmailAlert(e);
+                    gApi.share.sendInvitationEmails(this._storageItem.getId(), emails).then(() => {
+                        this._showSentInvitationEmailAlert(emails);
                     })
                 );
             }
-            _sendGuestInvitation(e) {
-                let t = [],
-                    n = e.slice();
+            _sendGuestInvitation(emails) {
+                let failedEmails = [],
+                    remainingEmails = emails.slice();
                 return Promise.all(
-                    n.map((e) =>
-                        gApi.signupGuestUser({ email: e, file_id: this._storageItem.getId() }).catch(() => {
-                            t.push(e);
+                    remainingEmails.map((email) =>
+                        gApi.signupGuestUser({ email: email, file_id: this._storageItem.getId() }).catch(() => {
+                            failedEmails.push(email);
                         })
                     )
                 )
                     .then(() => {
-                        if (t.length) return gApi.share.sendInvitationEmails(this._storageItem.getId(), t).catch(() => {});
+                        if (failedEmails.length) return gApi.share.sendInvitationEmails(this._storageItem.getId(), failedEmails).catch(() => {});
                     })
                     .then(() => {
-                        this._showSentInvitationEmailAlert(e);
+                        this._showSentInvitationEmailAlert(emails);
                     });
             }
-            _showSentInvitationEmailAlert(e) {
+            _showSentInvitationEmailAlert(emails) {
                 GSystemDialog.alert(
-                    GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.sent-invitation-email")).replace("%emails", e.join(", ")),
+                    GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.sent-invitation-email")).replace("%emails", emails.join(", ")),
                     null,
                     { className: "g-sent-invitation-email-dialog" }
                 );
             }
-            _pickUser(e, t, n) {
-                return new Promise((o) => {
-                    let i;
-                    const a = $("<div/>")
+            _pickUser(email, users, anchorElement) {
+                return new Promise((resolve) => {
+                    let selectedUser;
+                    const overlay = $("<div/>")
                         .addClass("g-user-selector")
                         .append(
                             $("<div/>")
                                 .addClass("g-user-selector-container")
                                 .append(
-                                    t.map((t) =>
+                                    users.map((candidate) =>
                                         $("<div/>")
                                             .addClass("g-user-selector-content")
-                                            .append(this._getAvatarForPicker(t))
+                                            .append(this._getAvatarForPicker(candidate))
                                             .append(
                                                 $("<div/>")
                                                     .addClass("g-user-selector-info")
-                                                    .append($("<span/>").text(t.getFullUserName()))
-                                                    .append($("<span/>").text(e))
+                                                    .append($("<span/>").text(candidate.getFullUserName()))
+                                                    .append($("<span/>").text(email))
                                             )
                                             .on("click", () => {
-                                                ((i = t), a.gOverlay("close"));
+                                                ((selectedUser = candidate), overlay.gOverlay("close"));
                                             })
                                     )
                                 )
@@ -769,26 +769,26 @@ module.exports = function (module, exports, require) {
                             clazz: "g-share-dialog-user-selector",
                             releaseOnClose: true,
                             padding: false,
-                            closeCallback: () => o(i),
+                            closeCallback: () => resolve(selectedUser),
                         })
-                        .gOverlay("open", n);
+                        .gOverlay("open", anchorElement);
                 });
             }
             _getNewAddedShareEmails() {
                 const e = (this._initialSharedFile && this._initialSharedFile.getPrivateShareList().map((e) => e.id)) || [],
-                    t = (this._initialSharedFile && this._initialSharedFile.getInvitedShareList().map((e) => e.email)) || [];
+                    initialInvitedEmails = (this._initialSharedFile && this._initialSharedFile.getInvitedShareList().map((share) => share.email)) || [];
                 return this._sharedFile
                     .getPrivateShareList()
-                    .filter((t) => !e.includes(t.id))
-                    .filter((e) => !t.includes(e.email))
-                    .map((e) => e.email)
+                    .filter((share) => !e.includes(share.id))
+                    .filter((share) => !initialInvitedEmails.includes(share.email))
+                    .map((share) => share.email)
                     .concat(
                         this._sharedFile
                             .getInvitedShareList()
-                            .filter((e) => !t.includes(e.email))
-                            .map((e) => e.email)
+                            .filter((share) => !initialInvitedEmails.includes(share.email))
+                            .map((share) => share.email)
                     );
             }
         }
-        ((I.prototype._isInitialized = false), (I.prototype._sharedFile = null), (I.prototype._isLoading = false), (module.exports = I));
+        ((GShareDialog.prototype._isInitialized = false), (GShareDialog.prototype._sharedFile = null), (GShareDialog.prototype._isLoading = false), (module.exports = GShareDialog));
     };

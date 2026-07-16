@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(19), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(13), require(32), require(33), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1),
             GRegex = require(263),
-            GSaveAction = require(40);
+            Utils = require(40);
         const { gApi, GLoginDialog, DESIGNER: { TITLE } = {} } = require(10 /* designerConfig */),
             c = require(85),
             d = require(1252),
@@ -139,8 +139,8 @@ module.exports = function (module, exports, require) {
                 if (gContainer.getRuntime() === c.Runtime.Electron) {
                     const e = gContainer.getPlatform();
                     (("darwin" !== e && "win32" !== e) || (p = window.btoa("designer://")),
-                        (g = (0, GSaveAction.stringToBase64String)(gDesigner.getAssetsURL())));
-                } else g = (0, GSaveAction.stringToBase64String)(location.origin);
+                        (g = (0, Utils.stringToBase64String)(gDesigner.getAssetsURL())));
+                } else g = (0, Utils.stringToBase64String)(location.origin);
                 const m = new URL("".concat(gApi.url, "/pro/login")),
                     y = m.searchParams,
                     v = gDesigner.getSignupOptions();

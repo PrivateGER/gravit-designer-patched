@@ -6,7 +6,7 @@ module.exports = function (module, exports, require) {
             a = require(1163),
             r = _interopRequireDefault(require(1090)),
             s = _interopRequireDefault(require(358)),
-            GSaveAction = require(40),
+            Utils = require(40),
             designerConfig = require(10);
         const IsFiniteNonNegativeNumber = require(0),
             u = require(1551),
@@ -100,7 +100,7 @@ module.exports = function (module, exports, require) {
                     const e = gDesigner.getSyncUser();
                     (({
                         state: { isPrivate: b, sharing: w, owner: C },
-                    } = (0, GSaveAction.getFileStateAndRole)(e, v, {})),
+                    } = (0, Utils.getFileStateAndRole)(e, v, {})),
                         !gDesigner.getApplicationManager().isShareEngineEnabled() || (w && !C) || n.show(),
                         h.show());
                 }

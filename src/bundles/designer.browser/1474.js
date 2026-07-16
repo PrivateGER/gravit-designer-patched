@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(58 /* polyfill:Array */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(71 /* polyfill:String */), require(34));
         var GObject = require(1),
-            GSaveAction = require(40);
+            Utils = require(40);
         function a(e, t) {
             let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : "file.save";
             ((this._document = e), (this._user = t), (this._action = n), this._init());
@@ -50,7 +50,7 @@ module.exports = function (module, exports, require) {
                         .appendTo(this._dialog));
             }),
             (a.prototype.open = async function () {
-                (this._dialog.gDialog("open", true), await (0, GSaveAction.sleep)(100), this._dialog.closest(".g-dialog").addClass("slide-up"));
+                (this._dialog.gDialog("open", true), await (0, Utils.sleep)(100), this._dialog.closest(".g-dialog").addClass("slide-up"));
             }),
             (a.prototype.close = function () {
                 (this._dialog.gDialog("close"), this._dialog.closest(".g-dialog").removeClass("slide-up"));

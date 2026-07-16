@@ -129,20 +129,32 @@ function refine(src, names) {
                 if (!arg || arg.type !== "NumericLiteral" || callPath.node.arguments.length !== 1) return;
                 const name = names[String(arg.value)];
 
-                // 2. rename `var x = require(15)` when x is a mangled 1-2 char name
+                // 2. rename `var x = require(15)` when x is a mangled 1-2 char
+                // name — or resync a previously applied name after names.json
+                // was corrected (only G-style/uppercase names, so deliberate
+                // lowercase hand-aliases like `configBase` are never touched)
                 const parent = callPath.parentPath;
-                if (name && parent.isVariableDeclarator() && parent.node.id.type === "Identifier" && parent.node.id.name.length <= 2) {
-                    const binding = parent.scope.getBinding(parent.node.id.name);
-                    if (renameBinding(binding, name)) {
+                const isDeclarator = parent.isVariableDeclarator() && parent.node.id.type === "Identifier";
+                let carriesName = Boolean(name) && isDeclarator && parent.node.id.name === name;
+                if (name && isDeclarator && !carriesName) {
+                    const varName = parent.node.id.name;
+                    const mangled = varName.length <= 2;
+                    const staleName = /^[A-Z_]/.test(varName) && varName.length > 2;
+                    if ((mangled || staleName) && renameBinding(parent.scope.getBinding(varName), name)) {
                         stats.requireVars++;
-                        return;
+                        carriesName = true;
                     }
                 }
-                // 3. annotate the call — unless a comment is already there, or the
-                // result is bound to a variable that already carries the name
-                const boundToName = parent.isVariableDeclarator() && parent.node.id.type === "Identifier" && parent.node.id.name === name;
-                if (name && !boundToName && src.slice(arg.end, arg.end + 4) !== " /* ") {
-                    edits.push({ start: arg.end, end: arg.end, text: ` /* ${name} */` });
+                // 3. keep the inline annotation in sync: add it when missing,
+                // refresh it when names.json changed, remove it when the module
+                // lost its name or the variable now carries it
+                const existingAnn = src.slice(arg.end).match(/^ \/\* ([^*]*) \*\//);
+                const wanted = name && !carriesName ? name : null;
+                if (wanted && (!existingAnn || existingAnn[1] !== wanted)) {
+                    edits.push({ start: arg.end, end: arg.end + (existingAnn ? existingAnn[0].length : 0), text: ` /* ${wanted} */` });
+                    stats.annotations++;
+                } else if (!wanted && existingAnn) {
+                    edits.push({ start: arg.end, end: arg.end + existingAnn[0].length, text: "" });
                     stats.annotations++;
                 }
             },

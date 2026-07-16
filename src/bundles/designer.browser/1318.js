@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(19), require(865 /* polyfill:Number */), require(193), require(3), require(4), require(13), require(26));
         var GObject = require(1),
             GPlatform = require(15),
-            GSaveAction = require(40),
+            Utils = require(40),
             GCategory = require(18),
             s = require(106),
             GSystemDialog = require(44);
@@ -92,7 +92,7 @@ module.exports = function (module, exports, require) {
                                             u && s.add(u);
                                         }
                                         try {
-                                            (0, GSaveAction.blockChanges)(t, s);
+                                            (0, Utils.blockChanges)(t, s);
                                             for (c = 0; c < r.length; ++c) {
                                                 var p = r[c],
                                                     g = p.getParent(),
@@ -103,7 +103,7 @@ module.exports = function (module, exports, require) {
                                                     g.removeChild(p));
                                             }
                                         } finally {
-                                            ((0, GSaveAction.releaseChanges)(t, s), i.length && t.updateSelection(false, i));
+                                            ((0, Utils.releaseChanges)(t, s), i.length && t.updateSelection(false, i));
                                         }
                                     } finally {
                                         t.commitTransaction(GObject.GLocale.get(this.getTitle()));

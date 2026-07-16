@@ -8,7 +8,7 @@ module.exports = function (module, exports, require) {
                 (i.push({ version: "3.15.0" }),
                     i.push({ gtmLocation: s }),
                     i.push({ hardware: u() }),
-                    await (0, GSaveAction._tryAndCatch)(async () => {
+                    await (0, Utils._tryAndCatch)(async () => {
                         if (o && !o.isAnonymous()) {
                             customDimensions && customDimensions.forEach((e) => dataLayer.push({ [e]: void 0 }));
                             const { type: e = "EWOSU", token } = o;
@@ -24,7 +24,7 @@ module.exports = function (module, exports, require) {
             require(33));
         var GObject = require(1),
             a = _interopRequireDefault(require(859)),
-            GSaveAction = require(40),
+            Utils = require(40),
             s = require(803);
         const { GA: { customDimensions } = {}, GoogleTagManagerSettings } = require(10 /* designerConfig */);
         window.dataLayer = [];

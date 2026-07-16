@@ -5,7 +5,7 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             a = _interopRequireDefault(require(1343)),
             r = _interopRequireDefault(require(44 /* GSystemDialog */)),
-            GSaveAction = require(40);
+            Utils = require(40);
         function l() {}
         (GObject.GObject.inherit(l, GObject.GObject),
             (l.prototype._translationManager = null),
@@ -275,7 +275,7 @@ module.exports = function (module, exports, require) {
                             (e) => {
                                 e &&
                                     e.read((e) => {
-                                        var t = (0, GSaveAction.decodeFromUTF8)(e);
+                                        var t = (0, Utils.decodeFromUTF8)(e);
                                         this._translationManager
                                             .import(t)
                                             .then(() => this._handleLanguageChange(this._currentLanguage, true))

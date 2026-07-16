@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         require(3);
         var GObject = require(1),
-            GSaveAction = require(40),
+            Utils = require(40),
             GCategory = require(18),
             r = require(106);
         function s() {}
@@ -44,7 +44,7 @@ module.exports = function (module, exports, require) {
                         if (1 == a.length) a[0].setProperty("closed", true);
                         else
                             try {
-                                (0, GSaveAction.blockChanges)(t, null, null, r);
+                                (0, Utils.blockChanges)(t, null, null, r);
                                 var c,
                                     d = (a = GObject.GNode.order(a))[a.length - 1],
                                     u = d.getProperty("trf"),
@@ -61,7 +61,7 @@ module.exports = function (module, exports, require) {
                                 var f = new GObject.GPath();
                                 (f.getAnchorPoints().deserialize(h), f.assignFrom(d), r.insertChild(f, g));
                             } finally {
-                                ((0, GSaveAction.releaseChanges)(t, null, null, r), t.updateSelection(false, [f]));
+                                ((0, Utils.releaseChanges)(t, null, null, r), t.updateSelection(false, [f]));
                             }
                     } finally {
                         t.commitTransaction(GObject.GLocale.get(this.getTitle()));

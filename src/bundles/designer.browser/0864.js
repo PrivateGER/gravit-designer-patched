@@ -15,9 +15,9 @@ module.exports = function (module, exports, require) {
             GEllipseProperties = require(1265),
             GImageProperties = require(1266),
             GPathProperties = require(1269),
-            GCommonNames = require(1270),
-            v = require(1271 /* GCommonNames */),
-            _ = require(1272 /* GCommonNames */),
+            GPolygonProperties = require(1270),
+            GRectangleProperties = require(1271),
+            GSliceProperties = require(1272),
             GTextProperties = require(1273),
             w = require(1274),
             GVersionHistoryProperties = require(1528),
@@ -32,13 +32,13 @@ module.exports = function (module, exports, require) {
             (T.ACCORDIONS = [GAppearanceProperties.prototype.toString(), GFillPaintLayerProperties.prototype.toString(), GBorderPaintLayerProperties.prototype.toString(), GEffectProperties.prototype.toString()]),
             (T.APPEARANCE_PROPERTIES = [
                 w.prototype.toString(),
-                GCommonNames.prototype.toString(),
+                GPolygonProperties.prototype.toString(),
                 GPathProperties.prototype.toString(),
                 GEllipseProperties.prototype.toString(),
                 GTextProperties.prototype.toString(),
                 GImageProperties.prototype.toString(),
-                v.prototype.toString(),
-                _.prototype.toString(),
+                GRectangleProperties.prototype.toString(),
+                GSliceProperties.prototype.toString(),
                 GBoolOpProperties.prototype.toString(),
                 GAppearanceProperties.prototype.toString(),
             ]),
@@ -292,7 +292,7 @@ module.exports = function (module, exports, require) {
                     (r.panel.css("display", l ? "" : "none"),
                         r.toolbar &&
                             (r.toolbar.css("display", l ? "" : "none"),
-                            s instanceof _ && l && (i = r.toolbar),
+                            s instanceof GSliceProperties && l && (i = r.toolbar),
                             $.inArray(r.properties.toString(), T.ACCORDIONS) > -1 &&
                                 l &&
                                 (r.toolbar.addClass("appearance-panel-toggle-btn").gAccordion("init", ".properties-panel", "label"),
