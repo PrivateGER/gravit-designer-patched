@@ -1,0 +1,211 @@
+module.exports = function (module, exports, require) {
+        "use strict";
+        (require(30 /* polyfill:Object */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(527), require(107 /* polyfill:RegExp */), require(4), require(32), require(33));
+        var designerConfig = require(10);
+        const i = require(1326),
+            a = require(1578),
+            GOfflineDialog = require(256),
+            s = require(441),
+            l = {
+                offlineWarning: () => GOfflineDialog.openOfflineWarning(),
+                trialExpired: () => a.openTrialExpired(),
+                proExpireSoon: () => a.openProExpireSoon(),
+                proExpireToday: () => a.openProExpireSoon(),
+                proExpired: () => a.openProExpired(),
+                upgradeScreen: () => a.openUpgradeScreen(),
+                proOfferInTrial: () => a.openTrialMessage(),
+                proOfferInTrialExpired: () => i.openOfferReminder(),
+                proOfferInTrialExpireSoon: () => a.openTrialMessage(),
+                proOfferInTrialLastWarning: () => a.openTrialMessage(),
+                proOfferSpecialPrice: () => i.openOfferReminder(),
+                proOfferInFree: () => i.openOfferReminder(),
+            };
+        module.exports = new (class {
+            constructor() {
+                ((this._settings = Object.assign({}, designerConfig.defaultUserSettings.defaultUserSettings)),
+                    (this._intervalId = null),
+                    (this._flags = {
+                        proOfferInTrialLastWarning: true,
+                        proOfferInTrialExpireSoon: true,
+                    }));
+            }
+            async start() {
+                try {
+                    let e = await designerConfig.gApi.getUserSettings().catch(() => null);
+                    e && (this._settings = Object.assign(this._settings, e));
+                } catch (e) {
+                    console.info("GReminderManager", "exception", e);
+                }
+                (this._settings &&
+                    this._settings.reminders &&
+                    (this._settings.reminders.proOfferInTrialExpireSoon = designerConfig.DateAPI.daysToMilliseconds(1)),
+                    setInterval(this.checkReminders.bind(this), designerConfig.DateAPI.daysToMilliseconds(1)),
+                    await this.checkReminders(),
+                    gDesigner.addEventListener(s, this.checkReminders, this));
+            }
+            async checkReminders() {
+                if (!gDesigner.isEnabledSubscriptions()) return;
+                let e = gDesigner.getSyncUser();
+                if (!e || e.deactivated) return;
+                if (!this._isAllowedToShowReminders()) return;
+                const t = gDesigner.getLicense(),
+                    n = gDesigner.now();
+                if (t.canAccessFreemium(n)) {
+                    if (t.isExpired(n)) {
+                        if (t.isTrial() && this.once("trialExpired")) return void this._checkPoint("proOfferInTrialExpired", n);
+                        if (t.isPro()) return void this.once("proExpired");
+                        this.execute("proOfferInTrialExpired");
+                    } else if (t.isPro())
+                        t.getExpirationDate() &&
+                            (this.once("proExpireSoon", t.getExpirationDate()) || this.once("proExpireToday", t.getExpirationDate()));
+                    else if (t.isTrial())
+                        (await this._getShowTrialMessage()) &&
+                            this._waitUntilUserIsInactive() &&
+                            (this.execute("proOfferInTrial") ||
+                                this.once("proOfferInTrialExpireSoon", t.getExpirationDate()) ||
+                                this.once("proOfferInTrialLastWarning", t.getExpirationDate()));
+                    else if (t.isFree()) {
+                        const { reminders: { proOfferInFree: e = 15 } = {} } = this._settings;
+                        if (t.getCreationDate()) {
+                            const i = designerConfig.DateAPI.addTime(t.getCreationDate(), e);
+                            designerConfig.DateAPI.gte(n, i) && this.execute("proOfferInFree") && this.reset("proOfferInTrial", n);
+                        }
+                    }
+                    (t.isPro() ||
+                        (t.isLegacy() && t.getSpecialPriceDate() && this.once("proOfferSpecialPrice", t.getSpecialPriceDate(), true)),
+                        t.isOffline() &&
+                            !t.isOfflinePeriodExpired() &&
+                            (t.isPro() || t.isTrial()) &&
+                            this.execute("offlineWarning", t.getOfflineWarningDate()),
+                        t.isPro() && !t.isExpired(n) && (this.reset("proExpired"), this.reset("proExpireToday")));
+                } else (await this._getShowTrialMessage()) && this._executeReminder("upgradeScreen");
+            }
+            _isAllowedToShowReminders() {
+                const e = new Date(gDesigner.now()).getTime(),
+                    t = gDesigner.getLicense();
+                return !t.isTrial() || !designerConfig.DateAPI.lte(e, t.getCreationDate());
+            }
+            execute(e, t) {
+                const n = gDesigner.now();
+                t && (t = designerConfig.DateAPI.addTime(t, -this._settings.reminders[e] || 0));
+                const i = gDesigner.getSetting(e);
+                return (
+                    !(i && !designerConfig.DateAPI.isExpired(n, new Date(i), this._settings.reminders[e])) &&
+                    !(t && !designerConfig.DateAPI.isExpired(n, t)) &&
+                    this._executeReminder(e)
+                );
+            }
+            once(e, t) {
+                let n = arguments.length > 2 && void 0 !== arguments[2] && arguments[2];
+                if (gDesigner.getSetting(e)) return false;
+                const i = gDesigner.now();
+                return (
+                    t && (t = designerConfig.DateAPI.addTime(t, -this._settings.reminders[e] || 0)),
+                    !t || (!n && designerConfig.DateAPI.isExpired(i, t)) || (n && designerConfig.DateAPI.eq(i, t)) ? this._executeReminder(e) : void 0
+                );
+            }
+            _checkPoint(e, t) {
+                gDesigner.setSetting(e, t);
+            }
+            _executeReminder(e) {
+                return (
+                    !!this._checkFlag(e) &&
+                    (/^prod/.test("production") || console.info("ReminderManager", e),
+                    this._checkPoint(e, gDesigner.now()),
+                    this._handleStats(e),
+                    l[e].call(null),
+                    true)
+                );
+            }
+            _checkFlag(e) {
+                return this._flags.hasOwnProperty(e) ? this._flags[e] : false !== this._settings.flags[e];
+            }
+            _handleStats(e) {
+                let t, n;
+                switch (e) {
+                    case "offlineWarning":
+                        gDesigner.pageTracking("/ProOfflineWarning");
+                        break;
+                    case "trialExpired":
+                        gDesigner.pageTracking("/ProTrialExpired");
+                        break;
+                    case "upgradeScreen":
+                        (gDesigner.pageTracking("/Upgrade"),
+                            gDesigner
+                                .getUser()
+                                .then(async (e) => {
+                                    gDesigner.getAmplitudeHelper().logEvent(designerConfig.AmplitudeData.Events.ACCOUNT_TRIAL_EXPIRED_SCREEN, {
+                                        ACCOUNT_TOTAL_TRIAL_DAYS_GIVEN: e.trial_created
+                                            ? designerConfig.DateAPI.millisecondsToDays(
+                                                  designerConfig.DateAPI.diff(new Date(e.trial_created), new Date(e.trial_expire))
+                                              )
+                                            : null,
+                                        ACCOUNT_TOTAL_SUBSCRIPTION_DAYS_GIVEN: await designerConfig.gApi.license.totalSubscriptionDays(e),
+                                        ACCOUNT_EVER_SUBSCRIBED: await designerConfig.gApi.license.everSubscribed(),
+                                    });
+                                })
+                                .catch(() => null));
+                        break;
+                    case "proExpireSoon":
+                        ((t = gDesigner.getLicense()),
+                            (n = designerConfig.DateAPI.millisecondsToDays(designerConfig.DateAPI.diff(designerConfig.DateAPI.toUTCZone(gDesigner.now()), t.getExpirationDate()))),
+                            gDesigner.pageTracking("/ProReminders" + n));
+                        break;
+                    case "proExpireToday":
+                        gDesigner.pageTracking("/ProReminders1");
+                        break;
+                    case "proExpired":
+                        gDesigner.pageTracking("/ProSubExpired");
+                        break;
+                    case "proOfferInTrial":
+                        gDesigner.pageTracking("/ProTrial");
+                        break;
+                    case "proOfferInTrialExpired":
+                        gDesigner.pageTracking("/ProTrialExpired");
+                        break;
+                    case "proOfferInTrialExpireSoon":
+                        ((t = gDesigner.getLicense()),
+                            (n = designerConfig.DateAPI.millisecondsToDays(designerConfig.DateAPI.diff(designerConfig.DateAPI.toUTCZone(gDesigner.now()), t.getExpirationDate()))),
+                            gDesigner.pageTracking("/ProTrialExpireSoon" + n));
+                        break;
+                    case "proOfferInTrialLastWarning":
+                        gDesigner.pageTracking("/ProTrialExpireToday");
+                        break;
+                    case "proOfferSpecialPrice":
+                        gDesigner.pageTracking("/ProTrialSpecialPrice");
+                        break;
+                    case "proOfferInFree":
+                        gDesigner.pageTracking("/ProFree");
+                        break;
+                    case "upgrade":
+                        gDesigner.pageTracking("/Upgrade");
+                }
+            }
+            reset(e, t) {
+                gDesigner.setSetting(e, t);
+            }
+            resetAll() {
+                Object.keys(l).forEach((e) => this.reset(e));
+            }
+            _waitUntilUserIsInactive() {
+                return (
+                    !gDesigner.isUserActivelyUsingApp() ||
+                    (this._intervalId ||
+                        (this._intervalId = setInterval(() => {
+                            gDesigner.isUserActivelyUsingApp() ||
+                                (clearInterval(this._intervalId), (this._intervalId = null), this.checkReminders());
+                        }, designerConfig.ACTIVE_USAGE_IDLE_TIME)),
+                    false)
+                );
+            }
+            async _getShowTrialMessage() {
+                try {
+                    const { showTrialMessage } = (await designerConfig.gApi.client.getConfiguration()) || {};
+                    return !!showTrialMessage;
+                } catch (e) {
+                    console.error("Failed to load client configuration. Skipping trial reminders");
+                }
+                return false;
+            }
+        })();
+    };

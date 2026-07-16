@@ -1,0 +1,178 @@
+module.exports = function (module, exports, require) {
+        "use strict";
+        (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(13));
+        var GObject = require(1);
+        const {
+                DESIGNER: { TITLE },
+            } = require(10 /* designerConfig */),
+            a = require(606),
+            r = require(394),
+            s = require(1321),
+            l = require(78),
+            c = require(860),
+            d = require(1667);
+        function u() {}
+        (GObject.GObject.inherit(u, a),
+            (u.ID = "notification-panel"),
+            (u.prototype._htmlElement = null),
+            (u.prototype._lastNotification = null),
+            (u.prototype._closeCallback = null),
+            (u.prototype.init = function (e) {
+                ((this._htmlElement = e),
+                    this._htmlElement
+                        .addClass("g-hide")
+                        .addClass("g-notification-panel")
+                        .on("click", function () {
+                            ($(this).toggleClass("bring-to-front", true), gDesigner.sendSideBarAndAssistBarToBack());
+                        }),
+                    $("<div></div>")
+                        .addClass("g-btn-close")
+                        .append($("<span></span>").addClass("gravit-icon-close"))
+                        .on("click", () => {
+                            this._close(true);
+                        })
+                        .appendTo(this._htmlElement),
+                    gDesigner.addEventListener(s, this._notificationEvent, this),
+                    gDesigner.addEventListener(l, this._documentEvent, this));
+            }),
+            (u.prototype.isEnabled = function () {
+                return !this._htmlElement.hasClass("g-hide");
+            }),
+            (u.prototype._documentEvent = function (e) {
+                if (!e.document.isLockedByVersionHistory() && this._lastNotification && this._lastNotification.document)
+                    switch (e.type) {
+                        case l.Type.Activated: {
+                            let t = e.document !== this._lastNotification.document;
+                            (this._htmlElement.toggleClass("g-hide", t),
+                                this._htmlElement.toggleClass("bring-to-front", t),
+                                t && gDesigner.sendSideBarAndAssistBarToBack());
+                            break;
+                        }
+                        case l.Type.Removed:
+                            e.document === this._lastNotification.document && this._close();
+                    }
+            }),
+            (u.prototype._notificationEvent = async function (e) {
+                if (
+                    ((this._lastNotification = e.notification),
+                    (this._closeCallback = e.notification.closeCallback),
+                    this._htmlElement.removeClass("g-hide"),
+                    this._htmlElement.toggleClass("bring-to-front", true),
+                    gDesigner.sendSideBarAndAssistBarToBack(),
+                    this._htmlElement.toggleClass("popup", !!e.notification.popup && !e.notification.anonymous),
+                    e.notification.anonymous)
+                ) {
+                    const t = gDesigner.getActiveDocument(),
+                        n = t && t.isDocumentFromTemplate() && t.isShared(),
+                        a = (e) => {
+                            e && !e.isAnonymous() && ((this._lastNotification = null), this._htmlElement.addClass("g-hide"));
+                        };
+                    let r = n
+                        ? GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.create-account-template"))
+                        : GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.create-account"));
+                    const s = $("<div/>")
+                        .addClass("anonymous")
+                        .append($("<div/>").addClass("logo"))
+                        .append(
+                            $("<div/>")
+                                .addClass("content")
+                                .append(
+                                    $("<span/>")
+                                        .addClass("title")
+                                        .text(
+                                            GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.title-welcome")).replace("%app", TITLE)
+                                        )
+                                )
+                                .append(
+                                    $("<span/>")
+                                        .text(e.notification.message)
+                                        .css("display", e.notification.message && !n ? "" : "none")
+                                )
+                                .append(
+                                    $("<span/>").html(
+                                        r
+                                            .replace("%signup", () =>
+                                                $("<span/>")
+                                                    .attr("id", "signup-link")
+                                                    .addClass("link")
+                                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.sign-up")))
+                                                    .prop("outerHTML")
+                                            )
+                                            .replace("%signin", () =>
+                                                $("<span/>")
+                                                    .attr("id", "signin-link")
+                                                    .addClass("link")
+                                                    .text(GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.sign-in")))
+                                                    .prop("outerHTML")
+                                            )
+                                    )
+                                )
+                                .append(
+                                    $("<span/>")
+                                        .addClass("footer")
+                                        .html(
+                                            GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.footer")).replace("%app", () =>
+                                                $("<span/>").attr("id", "learnmore-link").addClass("link").text(TITLE).prop("outerHTML")
+                                            )
+                                        )
+                                )
+                        );
+                    (s.find("#signup-link").on("click", () => {
+                        (gDesigner.stats("open-shared_click_create-account"), new c(a).open({ anonymous: true, signup: true, animate: true }));
+                    }),
+                        s.find("#signin-link").on("click", () => {
+                            (gDesigner.stats("open-shared_click_login"), new c(a).open({ anonymous: true, animate: true }));
+                        }),
+                        s.find("#learnmore-link").on("click", (e) => {
+                            (gDesigner.stats("open-shared_click_learn-more"),
+                                gContainer.openExternalLink(e, "https://gravit.linusrath.de/?utm_campaign=gdsharedfile"));
+                        }),
+                        this._updateContent(s));
+                } else if (e.notification.custom) {
+                    if (
+                        ((this._closeCallback = e.notification.closeCallback),
+                        this._htmlElement.addClass([e.notification.class, e.notification.enter]),
+                        this._updateContent(e.notification.content),
+                        e.notification.timeout)
+                    ) {
+                        let t = this;
+                        new Promise(function (n) {
+                            setTimeout(function () {
+                                (t._htmlElement.removeClass(e.notification.enter), t._htmlElement.addClass(e.notification.exit), n(true));
+                            }, e.notification.timeout);
+                        }).then(function () {
+                            setTimeout(function () {
+                                (t._htmlElement.removeClass(e.notification.exit), t._close(false));
+                            }, 600);
+                        });
+                    }
+                } else
+                    e.builder instanceof d
+                        ? (e.builder.addEventListener(d.Event, (e) => {
+                              e.type === d.Event.Type.Close && this._close();
+                          }),
+                          this._updateContent(
+                              $("<div></div>")
+                                  .addClass("message")
+                                  .append(await e.builder.build())
+                          ))
+                        : this._updateContent($("<div></div>").addClass("message").append(e.notification.message));
+                this.trigger(r.UPDATE_EVENT);
+            }),
+            (u.prototype._updateContent = function (e) {
+                (this._htmlElement.find(".content").remove(), this._htmlElement.append($("<div></div>").addClass("content").append(e)));
+            }),
+            (u.prototype._close = function (e) {
+                ((this._lastNotification = null),
+                    this._htmlElement.addClass("g-hide"),
+                    this._closeCallback && e && this._closeCallback(),
+                    this.trigger(r.UPDATE_EVENT));
+            }),
+            (u.prototype.toString = function () {
+                return "[Object GNotificationPanel]";
+            }),
+            (u.prototype.getId = function () {
+                return u.ID;
+            }),
+            (module.exports = u));
+    };

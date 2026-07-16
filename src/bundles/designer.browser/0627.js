@@ -1,0 +1,36 @@
+module.exports = function (module, exports, require) {
+        "use strict";
+        var o = require(25),
+            i = require(29),
+            a = require(65),
+            r = require(202),
+            s = require(304),
+            l = require(121);
+        o(
+            { target: "Promise", stat: true, forced: require(413) },
+            {
+                all: function (e) {
+                    var t = this,
+                        n = r.f(t),
+                        o = n.resolve,
+                        c = n.reject,
+                        d = s(function () {
+                            var n = a(t.resolve),
+                                r = [],
+                                s = 0,
+                                d = 1;
+                            (l(e, function (e) {
+                                var a = s++,
+                                    l = false;
+                                (d++,
+                                    i(n, t, e).then(function (e) {
+                                        l || ((l = true), (r[a] = e), --d || o(r));
+                                    }, c));
+                            }),
+                                --d || o(r));
+                        });
+                    return (d.error && c(d.value), n.promise);
+                },
+            }
+        );
+    };

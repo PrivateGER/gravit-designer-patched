@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <!-- TODO: GoogleAnalytics, Cookie consent, GDPR -->
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+        
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-62755463-9');
+</script>
+
+	<link rel='stylesheet' href='/docs/wp-content/themes/gravit-documentation/assets/css/main.css' type='text/css' media='screen' />
+	<link rel="icon" href="/docs/wp-content/themes/gravit-documentation/assets/favicon.ico" type="image/x-icon" />
+    <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+
+	<!-- This site is optimized with the Yoast SEO plugin v19.4 - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>Blending modes - Corel Vector Help</title>
+	<link rel="canonical" href="/docs/colors-gradients-textures/blending-modes/" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="Blending modes - Corel Vector Help" />
+	<meta property="og:description" content="Blending modes in Corel Vector let you achieve many effects, such as making an image darker or brighter, adding textures,…" />
+	<meta property="og:url" content="/docs/colors-gradients-textures/blending-modes/" />
+	<meta property="og:site_name" content="Corel Vector Help" />
+	<meta property="article:publisher" content="https://www.facebook.com/Corel VectorDesigner" />
+	<meta property="article:modified_time" content="2022-08-05T19:50:51+00:00" />
+	<meta property="og:image" content="/docs/wp-content/uploads/2019/02/01_Blending_modes_dropdowns-in-Gravit-Designer.png" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:site" content="@VectorDesigner" />
+	<meta name="twitter:label1" content="Est. reading time" />
+	<meta name="twitter:data1" content="20 minutes" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"/docs/#website","url":"/docs/","name":"Corel Vector Help","description":"An online guide for Corel Vector","potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"/docs/?s={search_term_string}"},"query-input":"required name=search_term_string"}],"inLanguage":"en-US"},{"@type":"ImageObject","inLanguage":"en-US","@id":"/docs/colors-gradients-textures/blending-modes/#primaryimage","url":"/docs/wp-content/uploads/2019/02/01_Blending_modes_dropdowns-in-Gravit-Designer.png","contentUrl":"/docs/wp-content/uploads/2019/02/01_Blending_modes_dropdowns-in-Gravit-Designer.png"},{"@type":"WebPage","@id":"/docs/colors-gradients-textures/blending-modes/","url":"/docs/colors-gradients-textures/blending-modes/","name":"Blending modes - Corel Vector Help","isPartOf":{"@id":"/docs/#website"},"primaryImageOfPage":{"@id":"/docs/colors-gradients-textures/blending-modes/#primaryimage"},"image":{"@id":"/docs/colors-gradients-textures/blending-modes/#primaryimage"},"thumbnailUrl":"/docs/wp-content/uploads/2019/02/01_Blending_modes_dropdowns-in-Gravit-Designer.png","datePublished":"2019-01-19T17:51:29+00:00","dateModified":"2022-08-05T19:50:51+00:00","breadcrumb":{"@id":"/docs/colors-gradients-textures/blending-modes/#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["/docs/colors-gradients-textures/blending-modes/"]}]},{"@type":"BreadcrumbList","@id":"/docs/colors-gradients-textures/blending-modes/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"/docs/"},{"@type":"ListItem","position":2,"name":"Colors, gradients, and textures","item":"/docs/colors-gradients-textures/"},{"@type":"ListItem","position":3,"name":"Blending modes"}]}]}</script>
+	<!-- / Yoast SEO plugin. -->
+
+
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel='stylesheet' id='wp-block-library-css'  href='/docs/wp-includes/css/dist/block-library/style.min.css?ver=6.0.1' type='text/css' media='all' />
+<style id='global-styles-inline-css' type='text/css'>
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');--wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');--wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');--wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');--wp--preset--duotone--midnight: url('#wp-duotone-midnight');--wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');--wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');--wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+</style>
+<link rel='stylesheet' id='gravit-style-css'  href='/docs/wp-content/themes/gravit-documentation/style.css?ver=1657231389' type='text/css' media='all' />
+<link rel='stylesheet' id='prism-theme-css'  href='/docs/wp-content/plugins/ank-prism-for-wp/out/prism-css.min.css?ver=1657231398' type='text/css' media='all' />
+<script type='text/javascript' src='/docs/wp-content/plugins/jquery-updater/js/jquery-3.6.0.min.js?ver=3.6.0' id='jquery-core-js'></script>
+<script type='text/javascript' src='/docs/wp-content/plugins/jquery-updater/js/jquery-migrate-3.4.0.min.js?ver=3.4.0' id='jquery-migrate-js'></script>
+<!--[if lt IE 8]>
+<script type='text/javascript' src='/docs/wp-includes/js/json2.min.js?ver=2015-05-03' id='json2-js'></script>
+<![endif]-->
+<link rel="https://api.w.org/" href="/docs/wp-json/" /><link rel="alternate" type="application/json" href="/docs/wp-json/wp/v2/pages/756" /><link rel='shortlink' href='/docs/?p=756' />
+<link rel="alternate" type="application/json+oembed" href="/docs/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fdocumentation.corelvector.com%2Fcolors-gradients-textures%2Fblending-modes%2F" />
+<link rel="alternate" type="text/xml+oembed" href="/docs/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fdocumentation.corelvector.com%2Fcolors-gradients-textures%2Fblending-modes%2F&#038;format=xml" />
+	<script	type='text/javascript'><!--
+	function reaction_buttons_increment_button_ajax(post_id, button){
+		var already_voted_text = '';
+		var only_one_vote = true;
+		var show_after_votes = false;
+		var use_as_counter = false;
+		var use_percentages = true;
+		var buttons = [0,1,2];
+
+		if(!use_as_counter && jQuery("#reaction_buttons_post" + post_id + " .reaction_button_" + button).hasClass('voted')){
+			return;
+		}
+
+		if(!use_as_counter){
+			// remove the href attribute before sending the request to make
+			// sure no one votes more than once by clicking ten times fast
+			if(only_one_vote){
+				// remove all the onclicks from the posts and replace it by the
+				// alert not to vote twice if set
+				if(already_voted_text){
+					jQuery("#reaction_buttons_post" + post_id + " .reaction_button").attr('onclick', 'javascript:alert(\'' + already_voted_text + '\');');
+				}
+				else{
+					jQuery("#reaction_buttons_post" + post_id + " .reaction_button").removeAttr('onclick');
+				}
+			}
+			else{
+				// remove/replace only on the clicked button
+				if(already_voted_text){
+					jQuery("#reaction_buttons_post" + post_id + " .reaction_button_" + button).attr('onclick', 'javascript:alert(\'' + already_voted_text + '\');');
+				}
+				else{
+					jQuery("#reaction_buttons_post" + post_id + " .reaction_button_" + button).removeAttr('onclick');
+				}
+			}
+		}
+		jQuery.ajax({
+				type: "post",url: "/docs/wp-admin/admin-ajax.php", dataType: 'json',
+					data: { action: 'reaction_buttons_increment_button_php', post_id: post_id, button: button, _ajax_nonce: 'd53c67a81e' },
+					success: function(data){
+						if(use_percentages){
+							var i;
+							var b;
+							for(i = 0; i < buttons.length; ++i){
+								b = buttons[i];
+								jQuery("#reaction_buttons_post" + post_id + " .reaction_button_" + b + " .count_number").html(data['percentage'][b]);
+							}
+						}
+                        else if(show_after_votes){
+							var i;
+							var b;
+							for(i = 0; i < buttons.length; ++i){
+								b = buttons[i];
+								jQuery("#reaction_buttons_post" + post_id + " .reaction_button_" + b + " .count_number").html(data['counts'][b]);
+							}
+						}
+						else{
+							jQuery("#reaction_buttons_post" + post_id + " .reaction_button_" + button + " .count_number").html(data['count']);
+						}
+						if(only_one_vote){
+							jQuery("#reaction_buttons_post" + post_id + " .reaction_button").addClass('voted');
+							jQuery("#reaction_buttons_post" + post_id + " .reaction_button_" + button).addClass('rb_chosen');
+						}
+						else{
+							jQuery("#reaction_buttons_post" + post_id + " .reaction_button_" + button).addClass('voted');
+						}
+                        if(show_after_votes){
+							jQuery("#reaction_buttons_post" + post_id + " .reaction_button .braces").removeAttr('style');
+						}
+					}
+			});
+		}
+	--></script>
+	</head>
+
+<body class="page-template-default page page-id-756 page-child parent-pageid-176">
+<div class="full-wrapper"><section class="sidebar">
+            <header>
+            <a href="javascript:void(0);" id="menu-trigger"></a>
+                <a href="/docs/docs" title="Home" class="site-title">Corel <br>
+                Vector <br>
+                Help</a>
+            </header>
+            <div class="search-box">
+            <form role="search" method="get" action="/docs/">
+                
+                <div class="search-wrapper">
+                    <input type="search" id="search" placeholder="Search docs" value="" name="s" />
+                    <button type="submit"></button>
+                </div>
+            </form>
+                <!-- menu here -->
+                <div class="menu-nested-pages-container"><ul id="menu-nested-pages" class="menu"><li id="menu-item-23" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-23"><a href="/docs/">Welcome</a></li>
+<li id="menu-item-65" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-65"><a href="/docs/introduction/">Introduction</a>
+<ul class="sub-menu">
+	<li id="menu-item-67" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-67"><a href="/docs/introduction/quickstart/">Quickstart</a></li>
+</ul>
+</li>
+<li id="menu-item-498" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-498"><a href="/docs/tools/">Tools and menus</a>
+<ul class="sub-menu">
+	<li id="menu-item-626" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-626"><a href="/docs/tools/modify-menu/">Modify menu</a></li>
+	<li id="menu-item-616" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-616"><a href="/docs/tools/menu-bar/">Menu bar</a></li>
+	<li id="menu-item-624" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-624"><a href="/docs/tools/file-menu/">File menu</a></li>
+	<li id="menu-item-625" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-625"><a href="/docs/tools/edit-menu/">Edit menu</a></li>
+	<li id="menu-item-781" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-781"><a href="/docs/tools/view-menu/">View menu</a></li>
+	<li id="menu-item-628" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-628"><a href="/docs/tools/help-menu/">Help menu</a></li>
+	<li id="menu-item-502" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-502"><a href="/docs/tools/shape-tools/">Shape tools</a></li>
+	<li id="menu-item-503" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-503"><a href="/docs/tools/selection-tools/">Selection tools</a></li>
+	<li id="menu-item-504" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-504"><a href="/docs/tools/drawing-tools/">Drawing tools</a></li>
+	<li id="menu-item-537" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-537"><a href="/docs/tools/other-tools/">Other tools</a></li>
+</ul>
+</li>
+<li id="menu-item-72" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-72"><a href="/docs/basics/">Basics</a>
+<ul class="sub-menu">
+	<li id="menu-item-120" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-120"><a href="/docs/basics/shapes-paths/">Shapes and paths</a></li>
+	<li id="menu-item-74" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-74"><a href="/docs/basics/working-with-files/">Working with files</a>
+	<ul class="sub-menu">
+		<li id="menu-item-1444" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1444"><a href="/docs/basics/working-with-files/new-document/">Starting a new document</a></li>
+		<li id="menu-item-1445" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1445"><a href="/docs/basics/working-with-files/starting-new-document-with-a-template/">Starting a new document with a template</a></li>
+		<li id="menu-item-1446" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1446"><a href="/docs/basics/working-with-files/save-and-open-files/">Saving and opening files</a></li>
+		<li id="menu-item-1447" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1447"><a href="/docs/basics/working-with-files/working-with-corel-vector-cloud/">Working with Corel Vector Cloud</a></li>
+	</ul>
+</li>
+	<li id="menu-item-1488" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1488"><a href="/docs/basics/file-tabs/">File tabs</a></li>
+	<li id="menu-item-92" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-92"><a href="/docs/basics/creating-basic-shapes/">Creating basic shapes</a></li>
+	<li id="menu-item-93" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-93"><a href="/docs/basics/selecting-objects/">Selecting objects</a></li>
+	<li id="menu-item-94" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-94"><a href="/docs/basics/moving-transforming-and-arranging-objects/">Moving, transforming, and arranging objects</a></li>
+	<li id="menu-item-95" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-95"><a href="/docs/basics/tools-toolbar/">Tools on the toolbar</a></li>
+	<li id="menu-item-119" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-119"><a href="/docs/basics/objects/">Objects</a></li>
+	<li id="menu-item-121" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-121"><a href="/docs/basics/vector-anatomy/">Vector anatomy</a></li>
+	<li id="menu-item-122" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-122"><a href="/docs/basics/anchor-points/">Anchor points</a></li>
+	<li id="menu-item-124" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-124"><a href="/docs/basics/modify-paths/">Modify paths</a></li>
+	<li id="menu-item-174" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-174"><a href="/docs/basics/property-panel/">Property panel</a></li>
+	<li id="menu-item-175" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-175"><a href="/docs/basics/transform-panel/">Transform panel</a></li>
+	<li id="menu-item-123" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-123"><a href="/docs/basics/compound-shapes-boolean-operations/">Compound shapes / Boolean operations</a></li>
+</ul>
+</li>
+<li id="menu-item-177" class="menu-item menu-item-type-post_type menu-item-object-page current-page-ancestor current-menu-ancestor current-menu-parent current-page-parent current_page_parent current_page_ancestor menu-item-has-children menu-item-177"><a href="/docs/colors-gradients-textures/">Colors, gradients, and textures</a>
+<ul class="sub-menu">
+	<li id="menu-item-221" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-221"><a href="/docs/colors-gradients-textures/color-picker-fill-types/">Color picker and fill types</a></li>
+	<li id="menu-item-757" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-756 current_page_item menu-item-757"><a href="/docs/colors-gradients-textures/blending-modes/" aria-current="page">Blending modes</a></li>
+	<li id="menu-item-225" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-225"><a href="/docs/colors-gradients-textures/color-palettes/">Color palettes</a></li>
+	<li id="menu-item-226" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-226"><a href="/docs/colors-gradients-textures/fills/">Fills</a></li>
+	<li id="menu-item-227" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-227"><a href="/docs/colors-gradients-textures/borders/">Borders</a></li>
+</ul>
+</li>
+<li id="menu-item-351" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-351"><a href="/docs/working-with-images/">Working with images</a>
+<ul class="sub-menu">
+	<li id="menu-item-357" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-357"><a href="/docs/working-with-images/vector-vs-bitmap/">Vector images vs bitmap images</a></li>
+	<li id="menu-item-358" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-358"><a href="/docs/working-with-images/insert-images/">Inserting images</a></li>
+	<li id="menu-item-359" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-359"><a href="/docs/working-with-images/images-toolbox/">Images toolbox</a></li>
+	<li id="menu-item-360" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-360"><a href="/docs/working-with-images/removing-parts-of-the-image/">Removing parts of the image</a></li>
+	<li id="menu-item-361" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-361"><a href="/docs/working-with-images/image-manipulation/">Image manipulation</a></li>
+</ul>
+</li>
+<li id="menu-item-1013" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1013"><a href="/docs/effects/">Effects</a>
+<ul class="sub-menu">
+	<li id="menu-item-1014" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1014"><a href="/docs/effects/adjust-effects/">Adjust effects</a></li>
+	<li id="menu-item-1015" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1015"><a href="/docs/effects/artistic-group-of-effects/">Artistic effects</a></li>
+	<li id="menu-item-1016" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1016"><a href="/docs/effects/blur-group-of-effects/">Blur effects</a></li>
+	<li id="menu-item-1017" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1017"><a href="/docs/effects/distort-group-of-effects/">Distortion effects</a></li>
+	<li id="menu-item-1018" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1018"><a href="/docs/effects/shadow-group-of-effects/">Shadow effects</a></li>
+	<li id="menu-item-1206" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1206"><a href="/docs/effects/other-effects/">Other effects</a></li>
+</ul>
+</li>
+<li id="menu-item-392" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-392"><a href="/docs/working-with-text/">Working with text</a>
+<ul class="sub-menu">
+	<li id="menu-item-897" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-897"><a href="/docs/working-with-text/text-properties-and-text-appearance-panel/">Text properties</a></li>
+	<li id="menu-item-763" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-763"><a href="/docs/working-with-text/advanced-text-properties/">Advanced text properties</a></li>
+	<li id="menu-item-764" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-764"><a href="/docs/working-with-text/text-on-path-2/">Text on paths</a></li>
+</ul>
+</li>
+<li id="menu-item-287" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-287"><a href="/docs/organizing-your-designs/">Organizing your designs</a>
+<ul class="sub-menu">
+	<li id="menu-item-297" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-297"><a href="/docs/organizing-your-designs/documents/">Documents</a></li>
+	<li id="menu-item-298" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-298"><a href="/docs/organizing-your-designs/pages/">Pages</a></li>
+	<li id="menu-item-299" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-299"><a href="/docs/organizing-your-designs/layer-groups/">Layer groups</a></li>
+	<li id="menu-item-300" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-300"><a href="/docs/organizing-your-designs/objects/">Objects</a></li>
+	<li id="menu-item-301" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-301"><a href="/docs/organizing-your-designs/groups/">Groups</a></li>
+	<li id="menu-item-302" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-302"><a href="/docs/organizing-your-designs/symbols/">Symbols</a></li>
+	<li id="menu-item-303" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-303"><a href="/docs/organizing-your-designs/clipping-masking/">Clipping and masking</a></li>
+	<li id="menu-item-304" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-304"><a href="/docs/organizing-your-designs/shared-styles/">Shared Styles</a></li>
+	<li id="menu-item-305" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-305"><a href="/docs/organizing-your-designs/swatches/">Swatches</a></li>
+</ul>
+</li>
+<li id="menu-item-410" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-410"><a href="/docs/arrange-objects/">Arranging objects</a>
+<ul class="sub-menu">
+	<li id="menu-item-414" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-414"><a href="/docs/arrange-objects/align/">Aligning</a></li>
+	<li id="menu-item-415" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-415"><a href="/docs/arrange-objects/distribute/">Distributing</a></li>
+	<li id="menu-item-416" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-416"><a href="/docs/arrange-objects/stacking-order/">Stacking order</a></li>
+</ul>
+</li>
+<li id="menu-item-435" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-435"><a href="/docs/design-aids/">Design aids</a>
+<ul class="sub-menu">
+	<li id="menu-item-443" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-443"><a href="/docs/design-aids/grid/">Grid</a></li>
+	<li id="menu-item-444" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-444"><a href="/docs/design-aids/rulers/">Rulers</a></li>
+	<li id="menu-item-445" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-445"><a href="/docs/design-aids/guides/">Guides</a></li>
+	<li id="menu-item-446" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-446"><a href="/docs/design-aids/distance-guides/">Distance guides</a></li>
+	<li id="menu-item-447" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-447"><a href="/docs/design-aids/smart-guides/">Smart guides</a></li>
+	<li id="menu-item-448" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-448"><a href="/docs/design-aids/snaping/">Snapping</a></li>
+	<li id="menu-item-449" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-449"><a href="/docs/design-aids/view-aids/">View aids</a></li>
+	<li id="menu-item-475" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-475"><a href="/docs/design-aids/anchoring/">Anchoring</a></li>
+</ul>
+</li>
+<li id="menu-item-580" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-580"><a href="/docs/import-export/">Importing and exporting</a>
+<ul class="sub-menu">
+	<li id="menu-item-587" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-587"><a href="/docs/import-export/import/">Importing</a></li>
+	<li id="menu-item-588" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-588"><a href="/docs/import-export/export/">Exporting</a></li>
+</ul>
+</li>
+<li id="menu-item-1718" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1718"><a href="/docs/touch-interface/">Touch interface</a>
+<ul class="sub-menu">
+	<li id="menu-item-1722" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1722"><a href="/docs/touch-interface/menus-and-toolbar/">Menus and toolbar</a></li>
+	<li id="menu-item-1719" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1719"><a href="/docs/touch-interface/panels/">Panels</a></li>
+	<li id="menu-item-1720" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1720"><a href="/docs/touch-interface/assistant-bar/">Assistant bar</a></li>
+	<li id="menu-item-1721" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1721"><a href="/docs/touch-interface/main-differences-between-touch-and-normal-version/">Touch and standard version differences</a></li>
+</ul>
+</li>
+<li id="menu-item-1712" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1712"><a href="/docs/collaboration/">Collaboration</a>
+<ul class="sub-menu">
+	<li id="menu-item-1713" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1713"><a href="/docs/collaboration/share-dialog/">Share dialog box</a></li>
+	<li id="menu-item-1716" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1716"><a href="/docs/collaboration/comments-panel/">Comments panel</a></li>
+	<li id="menu-item-1715" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1715"><a href="/docs/collaboration/collaborator-roles/">Collaborator roles</a></li>
+	<li id="menu-item-1714" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1714"><a href="/docs/collaboration/design-review-and-approval-flow/">Review and approval flow</a></li>
+</ul>
+</li>
+<li id="menu-item-581" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-581"><a href="/docs/account/">Account</a></li>
+<li id="menu-item-582" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-582"><a href="/docs/resources/">Resources</a></li>
+<li id="menu-item-579" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-579"><a href="/docs/library/">Library</a></li>
+<li id="menu-item-1521" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1521"><a href="https://kb.corel.com/?q=Corel%20Vector%20">Knowledge Base</a></li>
+</ul></div>            </div>
+</section><!-- The Loop -->
+<div class="content-wrapper">
+    <header>
+        <span class="update">updated on 05 August 2022 | reading time: 13 minutes</span>
+        <div class="headings-socials">
+            <div class="headings">
+                                                <h1>Colors, gradients, and textures</h1> 
+                                <h2>Blending modes</h2> 
+                                        </div>
+            <div class="socials">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=/docs/colors-gradients-textures/blending-modes/"  title="Share Blending modes on Facebook" target="_blank" class="facebook"></a>
+                        <a href="https://twitter.com/home?status=Check%20this%20out%20/docs/colors-gradients-textures/blending-modes/" title="Tweet Blending modes" target="_blank" class="twitter"></a>
+            </div><!-- .socials -->
+        </div>
+    </header>
+    <article class="content">
+        <p>Blending modes in Corel Vector let you achieve many effects, such as making an image darker or brighter, adding textures, removing colors, or bringing an underlying image forward.</p>
+<h3 id="the-basics-of-blending-modes">The basics of blending modes</h3>
+<p>In Corel Vector, you can choose a blending mode for an entire <strong>object (1)</strong>, a <strong>Fill(2)</strong>, and a <strong>Border(3)</strong>. Conveniently, you can access blending modes from various places in the Corel Vector interface.<img class=" size-full wp-image-906 aligncenter" src="/docs/wp-content/uploads/2019/02/01_Blending_modes_dropdowns-in-Gravit-Designer.png" data-lazy-type="image" alt="Blending modes options in Corel Vector" /><noscript><img class="size-full wp-image-906 aligncenter" src="/docs/wp-content/uploads/2019/02/01_Blending_modes_dropdowns-in-Gravit-Designer.png" alt="Blending modes options in Corel Vector" /></noscript><br />
+There are an infinite number of possible blending variations available for each fill or stroke that you apply to an object.<br />
+<img loading="lazy" width="400" height="347" class=" size-full wp-image-907 aligncenter" src="/docs/wp-content/uploads/2019/02/02_Multiple-Blending-Modes-for_multiple-fields.png" data-lazy-type="image" alt="Multiple blending modes for multiple fields" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-907 aligncenter" src="/docs/wp-content/uploads/2019/02/02_Multiple-Blending-Modes-for_multiple-fields.png" alt="Multiple blending modes for multiple fields" /></noscript></p>
+<p>Blending modes are non-destructive, so you can reverse them at any time by using the <em><strong>Blending</strong></em> drop-down.<br />
+<img loading="lazy" width="400" height="340" class=" size-full wp-image-908 aligncenter" src="/docs/wp-content/uploads/2019/02/03_Non-Destructive-Blending-Modes.gif" data-lazy-type="image" alt="Blending modes are non-destructive" /><noscript><img loading="lazy" width="400" height="340" class="size-full wp-image-908 aligncenter" src="/docs/wp-content/uploads/2019/02/03_Non-Destructive-Blending-Modes.gif" alt="Blending modes are non-destructive" /></noscript></p>
+<p>Blending modes are based on mathematical equations and calculate the color levels of both objects.</p>
+<ol>
+<li>The first object with the original color that you want to change is a <strong>base color</strong>.</li>
+<li>The second object with the blend mode applied is called a <strong>blend color</strong>.</li>
+<li>The <strong>result color</strong> is the effect of the objects blending.<br />
+<img class=" size-full wp-image-911 aligncenter" src="/docs/wp-content/uploads/2019/02/04_Blend_Color-Base-Color-Result-Color_Gravit.png" data-lazy-type="image" alt="Blend Color Base Color Result Color Corel Vector" /><noscript><img class="size-full wp-image-911 aligncenter" src="/docs/wp-content/uploads/2019/02/04_Blend_Color-Base-Color-Result-Color_Gravit.png" alt="Blend Color Base Color Result Color Corel Vector" /></noscript></li>
+</ol>
+<div class="note"><strong><em>Note: </em></strong>For all examples in this section, we are using an eye image as the<strong> base color</strong>, a circle with a gradient fill as the <strong>blend color</strong>, and the intersection both objects is the<strong> result color</strong>.<strong><br />
+<img loading="lazy" width="400" height="479" class=" size-full wp-image-919 aligncenter" src="/docs/wp-content/uploads/2019/02/07_Blend_Modes_Examples.png" data-lazy-type="image" alt="Blend mode Examples" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="479" class="size-full wp-image-919 aligncenter" src="/docs/wp-content/uploads/2019/02/07_Blend_Modes_Examples.png" alt="Blend mode Examples" /></noscript><br />
+</strong></div>
+<p>Most of the blending options have a <strong>neutral color</strong>, which has no effect on the base color. For example, applying the <em><strong>Multiply</strong></em> blending mode with a white blend color produces no result because white is the neutral color for the <em><strong>Multiply</strong></em> blending mode.<br />
+<img loading="lazy" width="400" height="276" class=" size-full wp-image-912 aligncenter" src="/docs/wp-content/uploads/2019/02/05_Multiply-Blend-Mode-White-is-Neutral.gif" data-lazy-type="image" alt="White is neutral for multiply blending mode" /><noscript><img loading="lazy" width="400" height="276" class="size-full wp-image-912 aligncenter" src="/docs/wp-content/uploads/2019/02/05_Multiply-Blend-Mode-White-is-Neutral.gif" alt="White is neutral for multiply blending mode" /></noscript></p>
+<h3 id="neutral-colors-and-blend-mode-groups">Neutral colors and blend mode groups</h3>
+<p>It&#8217;s easy to determine the neutral color for a blend mode because Corel Vector combines blend modes with the same neutral color intro groups.</p>
+<p><img loading="lazy" width="400" height="1412" class=" aligncenter size-full wp-image-1830" src="/docs/wp-content/uploads/2021/07/Blending-modes-1.png" data-lazy-type="image" alt="" /><noscript><img loading="lazy" width="400" height="1412" class="aligncenter size-full wp-image-1830" src="/docs/wp-content/uploads/2021/07/Blending-modes-1.png" alt="" /></noscript></p>
+<ul>
+<li>The <strong>Darken image</strong> group has a neutral color of white. This group includes the Multiply, Darken, Color Burn, Linear Burn, and Subtract blend modes. The darker the blend color, the stronger the effect of the blend.</li>
+<li>The <strong>Lighten image </strong>group has a neutral color of black. This group includes the Lighten, Screen, Color Dodge, Linear Dodge, and Add blend modes. The lighter the blend color, the stronger the effect of the blend.</li>
+<li>The <strong>Boost contrast</strong> group has a neutral color of 50% grey. This group includes the Linear Light, Overlay, Soft Light, Hard Light, Vivid Light, Pin Light, and Hard Mix. These blend modes compare pixels with the mid-tone and then darken the darker pixels while lightening the lighter pixels.</li>
+<li>The <strong>Adjust colors</strong> group has no neutral color. This group includes the Hue, Saturation, Color, and Luminosity blend modes.</li>
+<li>The <strong>Invert colors</strong> group looks for variations between the base and blend layers to create the final blend. This group includes the Difference, Exclusion, Divide, Power, Harmonic, and Sine modes.</li>
+<li>The <strong>Masking</strong> group transforms a normal layer into something similar to a clipping mask but without actually placing one layer inside the other.</li>
+</ul>
+<p>&nbsp;</p>
+<div class="note"><strong><em>Note: </em></strong>Blending modes marked with an asterisk (*) are not compatible with CSS/SVG/PDF.</div>
+<p>&nbsp;</p>
+<h3 id="multiply">Multiply</h3>
+<p><strong>Formula:</strong> Base x Blend</p>
+<p>The <strong>Multiply </strong>blend mode multiplies the luminance levels of the blend color and the base color pixels. The resulting color is always darker.</p>
+<p><img loading="lazy" width="400" height="299" class=" size-full wp-image-921 aligncenter" src="/docs/wp-content/uploads/2019/02/10_Multiply-dlending-Mode.png" data-lazy-type="image" alt="Multiply blending mode" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="299" class="size-full wp-image-921 aligncenter" src="/docs/wp-content/uploads/2019/02/10_Multiply-dlending-Mode.png" alt="Multiply blending mode" /></noscript></p>
+<p>Because white has a luminosity of 1, it has no effect on the pixels of the base color. Black has a luminosity of 0, so the result color would always be 0.</p>
+<p><img loading="lazy" width="400" height="257" class=" size-full wp-image-922 aligncenter" src="/docs/wp-content/uploads/2019/02/11_Multiply-By-White-Black.png" data-lazy-type="image" alt="Multiply by black and white colors" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="257" class="size-full wp-image-922 aligncenter" src="/docs/wp-content/uploads/2019/02/11_Multiply-By-White-Black.png" alt="Multiply by black and white colors" /></noscript></p>
+<div class="note"><strong>Tip</strong>: The Multiply blend mode is useful for creating shadows.<strong><em><br />
+</em></strong></div>
+<h3 id="screen">Screen</h3>
+<p><strong>Formula:</strong> 1 &#8211; ( 1-Base ) x ( 1-Blend )</p>
+<p>The <strong>Screen</strong> blend mode multiplies the reverse values of the luminosity of the blend color and the base color. Then it subtracts that value from the luminosity of white (1). The result is the opposite of the Multiply mode, so the brighter the blend color, the brighter the result color.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-924 aligncenter" src="/docs/wp-content/uploads/2019/02/12-Screen-Blend-Mode-Example.png" data-lazy-type="image" alt="Screen blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-924 aligncenter" src="/docs/wp-content/uploads/2019/02/12-Screen-Blend-Mode-Example.png" alt="Screen blend mode example" /></noscript></p>
+<p>Black has no effect on the base color.</p>
+<div class="note"><strong><em>Tip: </em></strong>Along with the Multiply Blend mode, the <em><strong>Screen mode</strong></em> is one of the most popular blend modes in graphic design and photo manipulations. It is a perfect choice for highlights.</div>
+<div>
+<h3 id="overlay">Overlay</h3>
+<p>The <strong>Overlay</strong> blend mode boosts the contrast of the base image. It uses 50% of gray as the threshold. If the pixels are brighter than 50%, it will brighten them even more and it would multiply the darker pixels.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-937 aligncenter" src="/docs/wp-content/uploads/2019/02/19_Overlay-Blend-Mode-Example.png" data-lazy-type="image" alt="Overlay blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-937 aligncenter" src="/docs/wp-content/uploads/2019/02/19_Overlay-Blend-Mode-Example.png" alt="Overlay blend mode example" /></noscript></p>
+</div>
+<h3 id="darken">Darken</h3>
+<p>The <strong>Darken</strong> blend mode doesn&#8217;t blend colors. It makes a selection of the darkest pixels from both images, choosing either the base color or the blend color.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-925 aligncenter" src="/docs/wp-content/uploads/2019/02/13_Darken-Blend-Mode-Example.png" data-lazy-type="image" alt="Darken blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-925 aligncenter" src="/docs/wp-content/uploads/2019/02/13_Darken-Blend-Mode-Example.png" alt="Darken blend mode example" /></noscript></p>
+<h3 id="lighten">Lighten</h3>
+<p>The <strong>Lighten </strong>blend mode compares the brighter pixels in both colors. If the pixels of the base color are darker than those in the blend color, they would be replaced. Thus, it would remove the darker pixels.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-938 aligncenter" src="/docs/wp-content/uploads/2019/02/14_Lighten-Blend-Mode-Example-1.png" data-lazy-type="image" alt="Lighten blend modes" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-938 aligncenter" src="/docs/wp-content/uploads/2019/02/14_Lighten-Blend-Mode-Example-1.png" alt="Lighten blend modes" /></noscript></p>
+<p>The result color is always lighter, but the selection and comparison of the pixels happens for each RGB channel separately.</p>
+<h3 id="color-dodge">Color Dodge</h3>
+<p><strong>Formula:</strong> Blend / ( 1 &#8211; Base )</p>
+<p>The <strong>Color Dodge</strong> blend mode lightens the bright pixels of the base color while for the dark pixels the result would be very moderate. The end result would be higher contrast.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-929 aligncenter" src="/docs/wp-content/uploads/2019/02/15_Color-Dodge-Example.png" data-lazy-type="image" alt="Color dodge example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-929 aligncenter" src="/docs/wp-content/uploads/2019/02/15_Color-Dodge-Example.png" alt="Color dodge example" /></noscript></p>
+<h3 id="color-burn">Color Burn</h3>
+<p><strong>Formula:</strong> 1 &#8211; ( 1 &#8211; Blend ) / Base</p>
+<p>The <strong>Color Burn</strong> blend mode divides the inverted blend color luminosity by the luminosity of the base color. Then it inverts the result. The darker the base color, the more it is used in the result color.</p>
+<p>The result color is always darker with more contrast between light and dark pixels.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-931 aligncenter" src="/docs/wp-content/uploads/2019/02/16-Color-Burn-Blend-Example-1.png" data-lazy-type="image" alt="Color Burn Example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-931 aligncenter" src="/docs/wp-content/uploads/2019/02/16-Color-Burn-Blend-Example-1.png" alt="Color Burn Example" /></noscript></p>
+<h3 id="hard-light">Hard Light</h3>
+<p>The <strong>Hard Light</strong> blend mode uses the color dodge formula for bright pixels and the color burn formula for darker pixels, boosting the contrast between them. Both formulas are at half strength.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-934 aligncenter" src="/docs/wp-content/uploads/2019/02/17-Hard-Light-blend-mode-example.png" data-lazy-type="image" alt="Hard light blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-934 aligncenter" src="/docs/wp-content/uploads/2019/02/17-Hard-Light-blend-mode-example.png" alt="Hard light blend mode example" /></noscript></p>
+<h3 id="soft-light">Soft Light</h3>
+<p>The <strong>Soft Light</strong> blend mode applies the screen blend mode formula for pixels that are brighter than 50% gray and multiplies the pixels that are darker.</p>
+<p>Both formulas are used in the half strength, resulting in more soft and organic fusion.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-935 aligncenter" src="/docs/wp-content/uploads/2019/02/18_Soft-Light-Blend-mode.png" data-lazy-type="image" alt="Soft light blend mode" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-935 aligncenter" src="/docs/wp-content/uploads/2019/02/18_Soft-Light-Blend-mode.png" alt="Soft light blend mode" /></noscript></p>
+<div class="note"><strong><em>Tip: </em></strong>Use the soft light blend mode to introduce a diffused spotlight to the image.</div>
+<h3 id="difference">Difference</h3>
+<p><strong>Formula:</strong> Brightest pixels &#8211; Darkest pixels</p>
+<p>The<strong> Difference</strong> blend mode subtracts the darker pixels from the lighter pixels.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-939 aligncenter" src="/docs/wp-content/uploads/2019/02/20_Differrence-Blend-Mode-Example.png" data-lazy-type="image" alt="Difference blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-939 aligncenter" src="/docs/wp-content/uploads/2019/02/20_Differrence-Blend-Mode-Example.png" alt="Difference blend mode example" /></noscript></p>
+<p>Black doesn&#8217;t have any impact on the color: <strong>Color &#8211; 0</strong>.</p>
+<p>White makes 100% inversion of the color: <strong>1 &#8211; Color</strong>.</p>
+<h3 id="exclusion">Exclusion</h3>
+<p><strong>Formula:</strong> Brightest pixels &#8211; Darkest pixels</p>
+<p>The <strong>Exclusion</strong> blend mode uses the difference blend mode formula, but ignores the results close to zero, rendering them into the mid tones as if the result is 0.5. For similar colors, it produces gray instead of black, so the result in color is similar to those in the difference blend mode but less saturated.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-941 aligncenter" src="/docs/wp-content/uploads/2019/02/21_Exclusion-Blend-Mode-Example.png" data-lazy-type="image" alt="Exclusion blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-941 aligncenter" src="/docs/wp-content/uploads/2019/02/21_Exclusion-Blend-Mode-Example.png" alt="Exclusion blend mode example" /></noscript></p>
+<div class="note"><strong><em>Note: </em></strong>Here are examples of the math behind the Difference and Exclusion blend modes.<br />
+Luminosity: base color = 0.451, blend color = 0.450<br />
+<strong><em>Difference</em></strong> blend mode: 0.451 &#8211; 0.450 = 0.001. The result color is black<br />
+<strong><em>Exclusion</em></strong> blend mode: 0.451 &#8211; 0.450=0.001 =~ 0.5. The result is gray.</div>
+<h3 id="hue">Hue</h3>
+<p>The <strong>Hue </strong>blend mode creates a result color with a hue of the blend layer combined with the luminance and saturation of the base color.</p>
+<p>This is what we call &#8220;true recoloring&#8221; since the only hue is changed.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-943 aligncenter" src="/docs/wp-content/uploads/2019/02/22_Hue-Blend-Mode-Example.png" data-lazy-type="image" alt="Hue blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-943 aligncenter" src="/docs/wp-content/uploads/2019/02/22_Hue-Blend-Mode-Example.png" alt="Hue blend mode example" /></noscript></p>
+<h3 id="saturation">Saturation</h3>
+<p>The <strong>Saturation</strong> blend mode combines the saturation from the blend color with the hue and luminosity from the base color.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-945 aligncenter" src="/docs/wp-content/uploads/2019/02/22_Saturation-Blend-Mode-Example.png" data-lazy-type="image" alt="Saturation blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-945 aligncenter" src="/docs/wp-content/uploads/2019/02/22_Saturation-Blend-Mode-Example.png" alt="Saturation blend mode example" /></noscript></p>
+<p>&nbsp;</p>
+<div class="note"><strong><em>Tip: </em></strong>The Saturation blend mode produces a grayscale effect when the blend color, black or white, has a saturation value of 0.</div>
+<h3 id="color">Color</h3>
+<p>The <strong>Color</strong> blend mode combines the hue and saturation from the blend color with the luminosity from the base color.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-947 aligncenter" src="/docs/wp-content/uploads/2019/02/23_Color-Blend-Mode-Example.png" data-lazy-type="image" alt="Color blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-947 aligncenter" src="/docs/wp-content/uploads/2019/02/23_Color-Blend-Mode-Example.png" alt="Color blend mode example" /></noscript></p>
+<p>&nbsp;</p>
+<div class="note"><strong><em>Tip: </em></strong>The Color blend mode is an excellent choice for coloring monochromatic images or for tinting color images.</div>
+<h3 id="luminosity">Luminosity</h3>
+<p>The<strong> Luminosity</strong> blend mode combines the luminosity from the blend color with the hue and saturation from the base color.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-948 aligncenter" src="/docs/wp-content/uploads/2019/02/24_Luminosity-Blend-Mode-Example.png" data-lazy-type="image" alt="Luminosity blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-948 aligncenter" src="/docs/wp-content/uploads/2019/02/24_Luminosity-Blend-Mode-Example.png" alt="Luminosity blend mode example" /></noscript></p>
+<h3 id="linear-burn">Linear Burn</h3>
+<p><strong>Formula:</strong> Base + Blend &#8211; 1</p>
+<p>The<strong> Linear Burn</strong> blend mode subtracts the luminosity of white from the sum of the luminosity of the base color and the luminosity of the blend color.</p>
+<p>The result color is always darker than the base color, except if you are using white for the blend color.</p>
+<p>The linear burn is darker than the color burn and multiply blend modes with low contrast and saturation because most of the negative and low values are rendered black.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-949 aligncenter" src="/docs/wp-content/uploads/2019/02/25_Linear_Burn-Blend-mode-Example.png" data-lazy-type="image" alt="Linear burn blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-949 aligncenter" src="/docs/wp-content/uploads/2019/02/25_Linear_Burn-Blend-mode-Example.png" alt="Linear burn blend mode example" /></noscript></p>
+<h3 id="linear-dodge">Linear Dodge</h3>
+<p><strong>Formula:</strong> Base + Blend</p>
+<p>The <strong>Linear Dodge</strong> blend mode adds of the luminosity of both colors. For bright colors, the sum might exceed 1, so it would be rendered into white.</p>
+<p>The result color is usually very bright with low saturation and contrast.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-951 aligncenter" src="/docs/wp-content/uploads/2019/02/26_Linear_Dodge-Blend-mode-Example.png" data-lazy-type="image" alt="Liner dodge blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-951 aligncenter" src="/docs/wp-content/uploads/2019/02/26_Linear_Dodge-Blend-mode-Example.png" alt="Liner dodge blend mode example" /></noscript></p>
+<h3 id="linear-light">Linear Light</h3>
+<p>The<strong> Linear Light</strong> blend mode uses the linear dodge formula for pixels that are brighter than 50% gray, and the linear burn formula for darker pixels. Both equations are used in half strength.</p>
+<p>The selections and calculations are based on the luminosity of the blend color.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-952 aligncenter" src="/docs/wp-content/uploads/2019/02/27_Linear-Light-Blend-Mode-Example.png" data-lazy-type="image" alt="Linear light blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-952 aligncenter" src="/docs/wp-content/uploads/2019/02/27_Linear-Light-Blend-Mode-Example.png" alt="Linear light blend mode example" /></noscript></p>
+<h3 id="vivid-light">Vivid Light</h3>
+<p>The<strong> Vivid Light</strong> blend mode uses a combination of the color burn for darker pixels and color dodge for lighter pixels.</p>
+<p>It selects pixels to burn or dodge based on the luminosity of pixels of the blend color. If pixels are lighter than 50% gray, it dodges them; if they are darker, it burns them. Both equations are applied in the half of the strength.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-953 aligncenter" src="/docs/wp-content/uploads/2019/02/28_Vivid-Light-Blend-Mode-Example.png" data-lazy-type="image" alt="Vivid light blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-953 aligncenter" src="/docs/wp-content/uploads/2019/02/28_Vivid-Light-Blend-Mode-Example.png" alt="Vivid light blend mode example" /></noscript></p>
+<h3 id="pin-light">Pin Light</h3>
+<p>The <strong>Pin Light</strong> blend mode can darken or lighten images depending on the luminosity of the blend color.</p>
+<p>If the luminosity of the blend color is more than 50% gray, it applies the algorithm of the lighten blend mode, and then replaces all the darker pixels of the base color with corresponding pixels of the blend color.</p>
+<p>If the luminosity of the blend color is less than 50%, it applies the algorithm of the darken blend mode, replacing light pixels of the base color with the corresponding pixels of the blend color.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-955 aligncenter" src="/docs/wp-content/uploads/2019/02/29_Pin-Light-Blend-Mode-Example.png" data-lazy-type="image" alt="Pin light blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-955 aligncenter" src="/docs/wp-content/uploads/2019/02/29_Pin-Light-Blend-Mode-Example.png" alt="Pin light blend mode example" /></noscript></p>
+<div class="note"><strong><em>Note:</em></strong> The Pin Light blend mode is a good choice for textures and special effects. Since you are in control of the luminosity of the blend color, you can choose what is going to happen with the base color.<strong><em><br />
+</em></strong></div>
+<div><img loading="lazy" width="400" height="298" class=" size-full wp-image-961 aligncenter" src="/docs/wp-content/uploads/2019/02/34_Pin-Light-Special-Effects.png" data-lazy-type="image" alt="Pin light special effects" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="298" class="size-full wp-image-961 aligncenter" src="/docs/wp-content/uploads/2019/02/34_Pin-Light-Special-Effects.png" alt="Pin light special effects" /></noscript></div>
+<div>
+<h3 id="divide">Divide</h3>
+<p><em><strong>Formula:</strong></em> Blend / Base</p>
+<p>The <strong>Divide</strong> blend mode divides the luminosity of the pixels of the blend color by the luminosity of the corresponding pixels of the base color.</p>
+<p>It produces an extreme spotlight effect, lightening the blend color dramatically and producing a nearly white result color.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-957 aligncenter" src="/docs/wp-content/uploads/2019/02/30_Divide-Blend-Mode-Example.png" data-lazy-type="image" alt="Divide blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-957 aligncenter" src="/docs/wp-content/uploads/2019/02/30_Divide-Blend-Mode-Example.png" alt="Divide blend mode example" /></noscript></p>
+<h3 id="add">Add</h3>
+<p><strong>Formula:</strong> Base + Blend</p>
+<p>The <strong>Add</strong> blend mode sums up the luminosity values of both colors, resulting in the lighter color. Because the result color is always brighter, add blend mode is usually referred to as &#8220;plus light&#8221; mode.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-958 aligncenter" src="/docs/wp-content/uploads/2019/02/31_Add-Blend-Mode-Example.png" data-lazy-type="image" alt="Add blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-958 aligncenter" src="/docs/wp-content/uploads/2019/02/31_Add-Blend-Mode-Example.png" alt="Add blend mode example" /></noscript></p>
+<h3 id="subtract">Subtract</h3>
+<p><strong>Formula:</strong> Blend &#8211; Base</p>
+<p>The <strong>Subtract</strong> blend mode subtracts pixel values of the base color from the corresponding values of the blend color. if the values are negative, black is displayed. Resulting color is always darker.</p>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-959 aligncenter" src="/docs/wp-content/uploads/2019/02/32_Subtract-Blend-Mode-Example.png" data-lazy-type="image" alt="Subtract blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-959 aligncenter" src="/docs/wp-content/uploads/2019/02/32_Subtract-Blend-Mode-Example.png" alt="Subtract blend mode example" /></noscript></p>
+<h3 id="hard-mix">Hard Mix</h3>
+<p>The <strong>Hard Mix</strong> blend mode uses only eight colors to render a result color: red, green, magenta, blue, cyan, black, and white.</p>
+<p>It goes through all RGB channels of the blend color and the base color, rounding the values of the luminosity either to 1 or 0:</p>
+<ul>
+<li>lightens the light pixels to white</li>
+<li>darkens the dark pixels to black</li>
+</ul>
+<p>Then, it turns all 8 channels into the composite channel and scatters eight colors according to the composite channel luminosity values.</p>
+</div>
+<p><img loading="lazy" width="400" height="347" class=" size-full wp-image-960 aligncenter" src="/docs/wp-content/uploads/2019/02/33_Hard-Mix-Blend-Mode-Example.png" data-lazy-type="image" alt="Hard mix blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="347" class="size-full wp-image-960 aligncenter" src="/docs/wp-content/uploads/2019/02/33_Hard-Mix-Blend-Mode-Example.png" alt="Hard mix blend mode example" /></noscript></p>
+<div class="note"><strong><em>Note: </em></strong>Lowering the fill opacity of the blend color brings up more colors and eliminates the posterization.<strong><em><br />
+</em></strong></div>
+<div><img loading="lazy" width="400" height="990" class=" size-full wp-image-963 aligncenter" src="/docs/wp-content/uploads/2019/02/35_Hard-Mix-Fill-Opacity.png" data-lazy-type="image" alt="Hard mix fill opacity example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="990" class="size-full wp-image-963 aligncenter" src="/docs/wp-content/uploads/2019/02/35_Hard-Mix-Fill-Opacity.png" alt="Hard mix fill opacity example" /></noscript></div>
+<div>
+<h3 id="unique-blend-modes">Unique blend modes</h3>
+<p>The following blend modes are unique to Corel Vector. They are distinguished from conventional blend modes because they are based on more eloquent math equations, such as quadratic or harmonic mean.</p>
+<h3 id="power">Power <img loading="lazy" width="400" height="362" class=" size-full wp-image-966 aligncenter" src="/docs/wp-content/uploads/2019/02/36_Power-Blend-Mode-Example-1.png" data-lazy-type="image" alt="" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="362" class="size-full wp-image-966 aligncenter" src="/docs/wp-content/uploads/2019/02/36_Power-Blend-Mode-Example-1.png" alt="" /></noscript></h3>
+<p><strong>Formula:</strong> √ ( Base² + Blend² ) / 2</p>
+<p>The <strong>Power</strong> blend mode uses a quadratic mean to blend colors. It is useful if you want the result color to be equidistant from the base and the blend colors.</p>
+<p>It doesn&#8217;t have neutral colors. The black color makes the image darker, while white makes the image brighter.</p>
+<h3 id="harmonic">Harmonic</h3>
+<p><img loading="lazy" width="400" height="362" class=" size-full wp-image-967 aligncenter" src="/docs/wp-content/uploads/2019/02/37_Harmonic-Blend-Modes-Example.png" data-lazy-type="image" alt="Harmonic blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="362" class="size-full wp-image-967 aligncenter" src="/docs/wp-content/uploads/2019/02/37_Harmonic-Blend-Modes-Example.png" alt="Harmonic blend mode example" /></noscript></p>
+<p><strong>Formula:</strong> 2 / ( 1/Base + 1/Blend )</p>
+<p>The <strong>Harmonic</strong> blend mode uses harmonic mean to blend colors. In this equation, two is divided by the sum of the reciprocal values of the blend color and the base color.</p>
+<p>This blend mode doesn&#8217;t have neutral colors. White makes things whiter, while black doesn&#8217;t produce a result because you cannot divide by zero.</p>
+<p>Less aggressive than the power blend mode, it can be used to add a subtle accent of one color over the other.</p>
+<h3 id="sine">Sine</h3>
+<p><strong>Formula:</strong> sin( Blend + Base ) x π/2</p>
+<p><img loading="lazy" width="400" height="362" class=" size-full wp-image-968 aligncenter" src="/docs/wp-content/uploads/2019/02/38_Sine-Blend-Mode-Example.png" data-lazy-type="image" alt="Sine blend mode example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="362" class="size-full wp-image-968 aligncenter" src="/docs/wp-content/uploads/2019/02/38_Sine-Blend-Mode-Example.png" alt="Sine blend mode example" /></noscript></p>
+<p>The first blend mode uses the trigonometric function for blending colors. The <em><strong>Sine</strong></em> blend mode is a sine of the sum of the blend and base colors, divided by two and multiplied by π (3.141828&#8230;.).</p>
+<p>The result color is very unique and can be used for special effects.</p>
+<p>Black makes the base color appear brighter, while white inverts the base color.</p>
+<p><img loading="lazy" width="400" height="703" class=" size-full wp-image-970 aligncenter" src="/docs/wp-content/uploads/2019/02/40_Sine-blend-mode-Black-and-White-1.png" data-lazy-type="image" alt="Sine black and white colors example" data-lazy- data-lazy- /><noscript><img loading="lazy" width="400" height="703" class="size-full wp-image-970 aligncenter" src="/docs/wp-content/uploads/2019/02/40_Sine-blend-mode-Black-and-White-1.png" alt="Sine black and white colors example" /></noscript></p>
+<h3 id="the-special-8-blend-modes">The “<em>Special 8</em>” blend modes</h3>
+<p>There are eight blend modes that would respond differently to 40% of the <strong>Opacity</strong> and 40% of the <strong>Fill Opacity</strong>. This special group of blending modes gives you more options to explore creative effects. The &#8220;Special 8&#8221; blending modes includes:</p>
+<ul>
+<li>Color Burn</li>
+<li>Linear Burn</li>
+<li>Color Dodge</li>
+<li>Linear Dodge (Add)</li>
+<li>Vivid Light</li>
+<li>Linear Light</li>
+<li>Hard Mix</li>
+<li>Difference</li>
+</ul>
+<p>For these blend modes, you can experiment with the <strong>Fill Opacity</strong> of the blend color and see how it changes the result color.</p>
+<h3 id="mask-blend-modes">Mask blend modes</h3>
+<p>The mask blend modes transform a normal layer into something similar to a clipping mask but without actually placing one layer inside the other. The element itself is transformed into a mask.</p>
+<h3 id="mask">Mask</h3>
+<p class="p1">The <strong>Mask</strong> mode clips everything under the selected element inside the boundaries of this element, including the whole background.</p>
+<div style="width: 900px;" class="wp-video"><!--[if lt IE 9]><script>document.createElement('video');</script><![endif]-->
+<video class="wp-video-shortcode" id="video-756-1" width="900" height="794" loop="1" autoplay="1" preload="metadata" controls="controls"><source type="video/mp4" src="/docs/wp-content/uploads/2021/02/Mask-ex.mp4?_=1" /><a href="/docs/wp-content/uploads/2021/02/Mask-ex.mp4">/docs/wp-content/uploads/2021/02/Mask-ex.mp4</a></video></div>
+<h3 id="inverse-mask">Inverse Mask</h3>
+<p class="p1">The <strong>Inverse Mask</strong> blend mode clips everything under the selected element outside the boundaries of this element, leaving the inner shape empty.</p>
+<div style="width: 900px;" class="wp-video"><video class="wp-video-shortcode" id="video-756-2" width="900" height="794" loop="1" autoplay="1" preload="metadata" controls="controls"><source type="video/mp4" src="/docs/wp-content/uploads/2021/02/Inverse-mask-ex.mp4?_=2" /><a href="/docs/wp-content/uploads/2021/02/Inverse-mask-ex.mp4">/docs/wp-content/uploads/2021/02/Inverse-mask-ex.mp4</a></video></div>
+<p class="p1">A very common use case of the mask and inverse mask blend modes is using a transparent PNG texture, with a few dots or scratches, and applying it over a design to produce a distressed look. This technique is often used Print On Demand T-shirt services.</p>
+<p class="p1">Let’s take this design and combine it with a distressed texture:</p>
+<p class="p1"><img loading="lazy" width="900" height="457" class=" aligncenter size-full wp-image-1729" src="/docs/wp-content/uploads/2021/02/Ex1.png" data-lazy-type="image" alt="" data-lazy- data-lazy- /><noscript><img loading="lazy" width="900" height="457" class="aligncenter size-full wp-image-1729" src="/docs/wp-content/uploads/2021/02/Ex1.png" alt="" /></noscript></p>
+<p class="p1">By placing the texture layer above the design and choosing the Mask blend mode, we get a much more interesting look to our design.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><img loading="lazy" width="900" height="771" class=" aligncenter size-full wp-image-1730" src="/docs/wp-content/uploads/2021/02/Ex2.png" data-lazy-type="image" alt="" data-lazy- data-lazy- /><noscript><img loading="lazy" width="900" height="771" class="aligncenter size-full wp-image-1730" src="/docs/wp-content/uploads/2021/02/Ex2.png" alt="" /></noscript></p>
+<p class="p1">The same thing can be done by combining the same design with another kind of texture, this one with much less negative space, and then choosing the Inverse Mask blend mode:</p>
+<p class="p1"><img loading="lazy" width="900" height="457" class=" aligncenter size-full wp-image-1731" src="/docs/wp-content/uploads/2021/02/Ex3.png" data-lazy-type="image" alt="" data-lazy- data-lazy- /><noscript><img loading="lazy" width="900" height="457" class="aligncenter size-full wp-image-1731" src="/docs/wp-content/uploads/2021/02/Ex3.png" alt="" /></noscript></p>
+<p class="p1">Place the texture layer above the design as well, but this time apply Inverse Mask:</p>
+<p class="p1"><img loading="lazy" width="900" height="771" class=" aligncenter size-full wp-image-1732" src="/docs/wp-content/uploads/2021/02/ex4.png" data-lazy-type="image" alt="" data-lazy- data-lazy- /><noscript><img loading="lazy" width="900" height="771" class="aligncenter size-full wp-image-1732" src="/docs/wp-content/uploads/2021/02/ex4.png" alt="" /></noscript></p>
+<div class="note"><strong><em>Note: </em></strong><em>The PNG image used as a texture must be transparent for this technique to work, just as your design needs to have 0% opacity behind it before you apply this as a print on top of another colored layer.</em></div>
+<p class="p1">You can place the finished design, exported as a PNG image, over one of Corel Vector’s Print on Demand templates to preview the finished product.</p>
+<p><img loading="lazy" class=" aligncenter wp-image-1733 size-large" src="/docs/wp-content/uploads/2021/02/Final-ex-900x645.png" data-lazy-type="image" alt="" width="900" height="645" data-lazy- data-lazy- /><noscript><img loading="lazy" class="aligncenter wp-image-1733 size-large" src="/docs/wp-content/uploads/2021/02/Final-ex-2048x1467.png" alt="" width="900" height="645" /></noscript></p>
+<p class="p1">
+</div>
+
+        <div class="article-footer">
+        
+<div id='reaction_buttons_post756' class='reaction_buttons'>
+<div class="reaction_buttons_tagline">What do you think?</div><ul><li class='reaction_button reaction_button_0' onclick="reaction_buttons_increment_button_ajax('756', '0');"><div><span class='button_name'>Awful</span>&nbsp;<span class='braces'>(</span><span class='count_number'>10%</span><span class='braces'>)</span></div></li><li class='reaction_button reaction_button_1' onclick="reaction_buttons_increment_button_ajax('756', '1');"><div><span class='button_name'>Average</span>&nbsp;<span class='braces'>(</span><span class='count_number'>17%</span><span class='braces'>)</span></div></li><li class='reaction_button reaction_button_2' onclick="reaction_buttons_increment_button_ajax('756', '2');"><div><span class='button_name'>Awesome</span>&nbsp;<span class='braces'>(</span><span class='count_number'>73%</span><span class='braces'>)</span></div></li></ul></div>
+            
+            <div class="socials">
+                <span>Share this chapter</span>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=/docs/colors-gradients-textures/blending-modes/"  title="Share Blending modes on Facebook" target="_blank" class="facebook"></a>
+                <a href="https://twitter.com/home?status=Check%20this%20out%20/docs/colors-gradients-textures/blending-modes/" title="Tweet Blending modes" target="_blank" class="twitter"></a>
+            </div><!-- .socials -->
+
+            <div class="next-chapter">
+                            <a href="/docs/colors-gradients-textures/color-palettes/" title="Color palettes">
+                    <span>Next Chapter ›</span>
+                    Color palettes                </a>
+                        </div><!-- .navigation -->
+            
+        </div><!-- .article-footer -->
+        <!-- <div class="feedback-link"><a href="mailto:docs@gravit.io?subject=Feedback%20about%20/docs/colors-gradients-textures/blending-modes/&body=Hi%2C%20I%20was%20browsing%20/docs/colors-gradients-textures/blending-modes/%20and%20I%20found%20that%3A%20">Have a feedback about this page? Drop us a line.</a></div> -->
+    </article>
+    <div class="tags"></div>
+
+</div>    </div><!-- .full-wrapper begins in the header -->
+    <footer>
+        <p>Copyright © 2018 - 2022 Corel Corporation. All rights reserved.</p>
+        <!-- Footer menu here -->
+    <div class="menu-footer-menu-container"><ul id="menu-footer-menu" class="menu"><li id="menu-item-1509" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1509"><a target="_blank" rel="noopener" href="https://www.coreldraw.com/vector/">Corel Vector Website</a></li>
+<li id="menu-item-1510" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1510"><a target="_blank" rel="noopener" href="https://www.coreldraw.com/vector/">Sign In</a></li>
+<li id="menu-item-14" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14"><a href="https://corelvector.com/blog/">Blog</a></li>
+<li id="menu-item-15" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15"><a href="https://discuss.corelvector.com">Community</a></li>
+<li id="menu-item-16" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-16"><a href="https://www.facebook.com/GravitDesigner">Facebook</a></li>
+<li id="menu-item-17" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-17"><a href="https://twitter.com/GravitDesigner">Twitter</a></li>
+<li id="menu-item-18" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-18"><a href="https://www.youtube.com/c/GravitDesigner">YouTube</a></li>
+<li id="menu-item-19" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19"><a href="https://www.corel.com/en/cookies">Cookies</a></li>
+<li id="menu-item-20" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-20"><a href="https://www.corel.com/en/terms-of-use">Terms of Use</a></li>
+<li id="menu-item-21" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-21"><a href="https://www.corel.com/en/corel-privacy-policy">Privacy Policy</a></li>
+</ul></div>    </footer>
+
+    
+
+    <link rel='stylesheet' id='mediaelement-css'  href='/docs/wp-includes/js/mediaelement/mediaelementplayer-legacy.min.css?ver=4.2.16' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-mediaelement-css'  href='/docs/wp-includes/js/mediaelement/wp-mediaelement.min.css?ver=6.0.1' type='text/css' media='all' />
+<script type='text/javascript' id='flying-pages-js-before'>
+window.FPConfig= {
+	delay: 0,
+	ignoreKeywords: ["\/wp-admin","\/wp-login.php","\/cart","\/checkout","add-to-cart","logout","#","?",".png",".jpeg",".jpg",".gif",".svg",".webp"],
+	maxRPS: 3,
+    hoverDelay: 50
+};
+</script>
+<script type='text/javascript' src='/docs/wp-content/plugins/flying-pages/flying-pages.min.js?ver=2.4.3' id='flying-pages-js' defer></script>
+<script type='text/javascript' src='/docs/wp-content/themes/gravit-documentation/assets/js/main.min.js?ver=20180709' id='gravit-carousel-sctipts-js'></script>
+<script type='text/javascript' src='/docs/wp-content/plugins/bj-lazy-load/js/bj-lazy-load.min.js?ver=2' id='BJLL-js'></script>
+<script type='text/javascript' src='/docs/wp-content/plugins/ank-prism-for-wp/out/prism-js.min.js?ver=1657231398' id='prism-script-js'></script>
+<script type='text/javascript' id='mediaelement-core-js-before'>
+var mejsL10n = {"language":"en","strings":{"mejs.download-file":"Download File","mejs.install-flash":"You are using a browser that does not have Flash player enabled or installed. Please turn on your Flash player plugin or download the latest version from https:\/\/get.adobe.com\/flashplayer\/","mejs.fullscreen":"Fullscreen","mejs.play":"Play","mejs.pause":"Pause","mejs.time-slider":"Time Slider","mejs.time-help-text":"Use Left\/Right Arrow keys to advance one second, Up\/Down arrows to advance ten seconds.","mejs.live-broadcast":"Live Broadcast","mejs.volume-help-text":"Use Up\/Down Arrow keys to increase or decrease volume.","mejs.unmute":"Unmute","mejs.mute":"Mute","mejs.volume-slider":"Volume Slider","mejs.video-player":"Video Player","mejs.audio-player":"Audio Player","mejs.captions-subtitles":"Captions\/Subtitles","mejs.captions-chapters":"Chapters","mejs.none":"None","mejs.afrikaans":"Afrikaans","mejs.albanian":"Albanian","mejs.arabic":"Arabic","mejs.belarusian":"Belarusian","mejs.bulgarian":"Bulgarian","mejs.catalan":"Catalan","mejs.chinese":"Chinese","mejs.chinese-simplified":"Chinese (Simplified)","mejs.chinese-traditional":"Chinese (Traditional)","mejs.croatian":"Croatian","mejs.czech":"Czech","mejs.danish":"Danish","mejs.dutch":"Dutch","mejs.english":"English","mejs.estonian":"Estonian","mejs.filipino":"Filipino","mejs.finnish":"Finnish","mejs.french":"French","mejs.galician":"Galician","mejs.german":"German","mejs.greek":"Greek","mejs.haitian-creole":"Haitian Creole","mejs.hebrew":"Hebrew","mejs.hindi":"Hindi","mejs.hungarian":"Hungarian","mejs.icelandic":"Icelandic","mejs.indonesian":"Indonesian","mejs.irish":"Irish","mejs.italian":"Italian","mejs.japanese":"Japanese","mejs.korean":"Korean","mejs.latvian":"Latvian","mejs.lithuanian":"Lithuanian","mejs.macedonian":"Macedonian","mejs.malay":"Malay","mejs.maltese":"Maltese","mejs.norwegian":"Norwegian","mejs.persian":"Persian","mejs.polish":"Polish","mejs.portuguese":"Portuguese","mejs.romanian":"Romanian","mejs.russian":"Russian","mejs.serbian":"Serbian","mejs.slovak":"Slovak","mejs.slovenian":"Slovenian","mejs.spanish":"Spanish","mejs.swahili":"Swahili","mejs.swedish":"Swedish","mejs.tagalog":"Tagalog","mejs.thai":"Thai","mejs.turkish":"Turkish","mejs.ukrainian":"Ukrainian","mejs.vietnamese":"Vietnamese","mejs.welsh":"Welsh","mejs.yiddish":"Yiddish"}};
+</script>
+<script type='text/javascript' src='/docs/wp-includes/js/mediaelement/mediaelement-and-player.min.js?ver=4.2.16' id='mediaelement-core-js'></script>
+<script type='text/javascript' src='/docs/wp-includes/js/mediaelement/mediaelement-migrate.min.js?ver=6.0.1' id='mediaelement-migrate-js'></script>
+<script type='text/javascript' id='mediaelement-js-extra'>
+/* <![CDATA[ */
+var _wpmejsSettings = {"pluginPath":"\/wp-includes\/js\/mediaelement\/","classPrefix":"mejs-","stretching":"responsive"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='/docs/wp-includes/js/mediaelement/wp-mediaelement.min.js?ver=6.0.1' id='wp-mediaelement-js'></script>
+<script type='text/javascript' src='/docs/wp-includes/js/mediaelement/renderers/vimeo.min.js?ver=4.2.16' id='mediaelement-vimeo-js'></script>
+</body>
+</html>

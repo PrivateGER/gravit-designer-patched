@@ -1,0 +1,83 @@
+module.exports = function (module, exports, require) {
+            var n = require(931),
+                r = require(2),
+                GStylable = require(28),
+                a = require(282),
+                s = require(226),
+                l = require(14),
+                String = require(9);
+
+            function A() {
+                (GStylable.Effect.call(this), this._setDefaultProperties(A.GeometryProperties), s.getGLContext() && (this._glblur = new a()));
+            }
+            (r.inherit("blurEffect", A, GStylable.Effect),
+                (A.prototype._glblur = null),
+                (A.equals = function (e, t) {
+                    return e instanceof A && t instanceof A && e.arePropertiesEqual(t, Object.keys(A.GeometryProperties));
+                }),
+                (A.GeometryProperties = {
+                    r: 5,
+                    b: false,
+                }),
+                (A.prototype.getEffectType = function () {
+                    return GStylable.Effect.Type.Filter;
+                }),
+                (A.prototype.getNodeNameTranslated = function () {
+                    return String.getValue("GBlurEffect", "name", this.getNodeName());
+                }),
+                (A.prototype.getEffectPadding = function () {
+                    return this.$b ? (this._glblur ? 0 : -1) : this.$r;
+                }),
+                (A.prototype.getAbsoluteEffectPadding = function () {
+                    return this.$r;
+                }),
+                (A.prototype.propertyTransform = function (e, t) {
+                    return this._glblur ? this._glblur.propertyTransform(e, t) : t;
+                }),
+                (A.prototype.propertyInverseTransform = function (e, t) {
+                    return this._glblur ? this._glblur.propertyInverseTransform(e, t) : t;
+                }),
+                (A.prototype.canApplyNativeEffect = function () {
+                    return l.hasFilters() && !this.$b;
+                }),
+                (A.prototype.applyNativeEffect = function (e, t, i, n) {
+                    e.setFilter(l.Filter.Blur, this.$r * n);
+                }),
+                (A.prototype.removeNativeEffect = function (e, t, i) {
+                    e.setFilter(l.Filter.Blur, null);
+                }),
+                (A.prototype.render = function (e, t, i, r, o, a) {
+                    return (
+                        this.$r &&
+                            (this.canApplyNativeEffect()
+                                ? (this.applyNativeEffect(e, t, i, r),
+                                  e.drawCanvas(e, 0, 0, 1, l.CompositeOperator.Copy),
+                                  this.removeNativeEffect(e))
+                                : this._glblur
+                                  ? ((this._glblur.$shp = {
+                                        radius: this.$r,
+                                        clip: this.$b,
+                                    }),
+                                    this._glblur.render(e, t, i, r, o, a))
+                                  : e.getBitmap().applyFilter(n, this.$r * r)),
+                        e
+                    );
+                }),
+                (A.prototype._handleChange = function (e, t) {
+                    (e === r._Change.Store
+                        ? this.storeProperties(t.blob, A.GeometryProperties)
+                        : e === r._Change.Restore && this.restoreProperties(t.blob, A.GeometryProperties),
+                        this._handleGeometryChangeForProperties(e, t, A.GeometryProperties),
+                        GStylable.Effect.prototype._handleChange.call(this, e, t));
+                }),
+                (A.prototype.setAffectedByGLBug = function (e) {
+                    this._glblur && this._glblur.setAffectedByGLBug(e);
+                }),
+                (A.prototype.toString = function () {
+                    return "[Object GBlurEffect]";
+                }),
+                (A.prototype.destroy = function () {
+                    this._glblur && this._glblur.destroy();
+                }),
+                (module.exports = A));
+        };

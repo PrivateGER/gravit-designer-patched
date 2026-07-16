@@ -1,0 +1,99 @@
+module.exports = function (module, exports, require) {
+        "use strict";
+        var _interopRequireDefault = require(16);
+        require(3);
+        var GObject = require(1),
+            GPlatform = require(15),
+            r = _interopRequireDefault(require(844));
+        function s() {}
+        (GObject.GObject.inherit(s, GObject.GObject),
+            (s.SHORTCUT_DELAY = 500),
+            (s.getActionShortcutHint = function (e, t) {
+                return e ? GPlatform.GKey.shortcutToString(e, t) : null;
+            }),
+            (s.prototype.getId = function () {
+                throw new Error("Not Supported");
+            }),
+            (s.prototype.getTitle = function () {
+                throw new Error("Not Supported");
+            }),
+            (s.prototype.getFullTitle = function () {
+                return this.getTitle();
+            }),
+            (s.prototype.getInfo = function () {
+                return null;
+            }),
+            (s.prototype.getIcon = function () {
+                return r.default[this.getId()] || null;
+            }),
+            (s.prototype.getCategory = function () {
+                return null;
+            }),
+            (s.prototype.getGroup = function () {
+                return null;
+            }),
+            (s.prototype.getGroupIcon = function () {
+                return null;
+            }),
+            (s.prototype.getShortcut = function () {
+                return null;
+            }),
+            (s.prototype.getShortcutHint = function (e) {
+                return s.getActionShortcutHint(this.getShortcut(), e);
+            }),
+            (s.prototype.isShortcutGlobal = function () {
+                return false;
+            }),
+            (s.prototype.isRegisterShortcut = function () {
+                return null;
+            }),
+            (s.prototype.getAdditionalShortcuts = function () {
+                return null;
+            }),
+            (s.prototype.isEnabled = function () {
+                return true;
+            }),
+            (s.prototype.isKeyBoardEventRequiredToExecute = function () {
+                return false;
+            }),
+            (s.prototype.isCheckable = function () {
+                return false;
+            }),
+            (s.prototype.isChecked = function () {
+                return false;
+            }),
+            (s.prototype.isAvailable = function (e) {
+                return true;
+            }),
+            (s.prototype.execute = function () {
+                throw new Error("Not Supported");
+            }),
+            (s.prototype.executeFromShortcut = function (e) {
+                return this.execute.apply(this, arguments);
+            }),
+            (s.prototype.isPro = function () {
+                return false;
+            }),
+            (s.prototype.getTooltipArea = function () {
+                return null;
+            }),
+            (s.prototype.getTooltipConfig = function (e) {
+                return null;
+            }),
+            (s.prototype.isVisible = function () {
+                return true;
+            }),
+            (s.prototype.noHover = function () {
+                return false;
+            }),
+            (s.prototype.getStyleClass = function () {
+                return null;
+            }),
+            (s.prototype.statsValue = function () {
+                return null;
+            }),
+            (s.prototype.toString = function () {
+                return "[Object GAction]";
+            }),
+            (module.exports = s));
+    };

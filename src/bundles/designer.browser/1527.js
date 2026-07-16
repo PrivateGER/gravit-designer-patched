@@ -1,0 +1,52 @@
+module.exports = function (module, exports, require) {
+        "use strict";
+        require(3);
+        var GObject = require(1),
+            GSaveAction = require(40);
+        function a(e, t, n, a, r, s, l) {
+            var c = e && t && n && a && l;
+            if (((this._htmlElement = $("<li></li>").addClass("g-effects-button")), c)) {
+                let c = "";
+                (s && s.category && (c = l(s.category) + "/"),
+                    this._htmlElement
+                        .gPro({ pro: r })
+                        .append($("<span></span>").addClass("g-effects-button-icon").append($("<i></i>").addClass(t)))
+                        .append($("<span></span>").addClass("g-effects-button-caption").append(e))
+                        .on(
+                            "click",
+                            GSaveAction.watchDog.trap(
+                                function () {
+                                    let e = (n && GObject.GLocale.getValue((s && s.i18n) || n, "name", "unknown", 0)) || "unkn";
+                                    (r
+                                        ? gDesigner.stats("effects_add_proeffectdefault", c + e)
+                                        : gDesigner.stats("effects_add_effectdefault", c + e),
+                                        a(n, s));
+                                },
+                                () => !r,
+                                () =>
+                                    gDesigner.stats(
+                                        "effects_nonprotriespro_proeffectdefault",
+                                        c + ((n && GObject.GLocale.getValue((s && s.i18n) || n, "name", "unknown", 0)) || "unkn")
+                                    )
+                            )
+                        )
+                        .on(
+                            "mouseover",
+                            function () {
+                                this._htmlElement.addClass("active");
+                            }.bind(this)
+                        )
+                        .on(
+                            "mouseout",
+                            function () {
+                                this._htmlElement.removeClass("active");
+                            }.bind(this)
+                        ));
+            }
+        }
+        ((a.prototype._htmlElement = null),
+            (a.prototype.toString = function () {
+                return "[Object GEffectsButton]";
+            }),
+            (module.exports = a));
+    };

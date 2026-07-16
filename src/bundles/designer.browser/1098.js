@@ -1,0 +1,60 @@
+module.exports = function (module, exports, require) {
+        "use strict";
+        require(8 /* Symbol */);
+        var designerConfig = require(10);
+        const i = require(292),
+            a = require(846);
+        module.exports = class {
+            constructor() {
+                this._isListening = false;
+            }
+            async checkLicense() {
+                let e;
+                if (gDesigner.isOffline()) e = a.newOfflineLicense();
+                else
+                    try {
+                        e = a.newLicense(await designerConfig.gApi.license.get());
+                    } catch (t) {
+                        ((e = a.newDefaultLicense()), console.info("CheckLicense", "exception", t));
+                    }
+                this._setApplicationLicense(e);
+            }
+            async _listenLicense() {
+                if (!this._isListening)
+                    try {
+                        if (!gDesigner.isOffline()) {
+                            (await gDesigner.getUser()) &&
+                                !gDesigner.isAnonymous() &&
+                                (designerConfig.gApi.license.listen((e) => {
+                                    this._setApplicationLicense(a.newLicense(e));
+                                }),
+                                (this._isListening = true));
+                        }
+                    } catch (e) {
+                        console.info("LicenseChanged", "exception", e);
+                    }
+            }
+            _setApplicationLicense(e) {
+                gDesigner.setLicense(e);
+            }
+            async start() {
+                (gDesigner.addEventListener(i, this._userLoggedEvent, this),
+                    $(window).on("online", this.checkLicense.bind(this)),
+                    $(window).on("offline", this.checkLicense.bind(this)));
+                try {
+                    await this.checkLicense();
+                } catch (e) {
+                    console.error(e);
+                }
+                try {
+                    this._listenLicense();
+                } catch (e) {
+                    console.error(e);
+                }
+                setInterval(this.checkLicense.bind(this), designerConfig.DateAPI.daysToMilliseconds(1));
+            }
+            _userLoggedEvent() {
+                (this.checkLicense(), this._listenLicense());
+            }
+        };
+    };

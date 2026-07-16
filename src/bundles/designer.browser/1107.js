@@ -1,0 +1,103 @@
+module.exports = function (module, exports, require) {
+        "use strict";
+        var o = require(27),
+            i = require(232),
+            a = require(558 /* polyfill:Object */).getWeakData,
+            r = require(146),
+            s = require(37),
+            l = require(194),
+            c = require(46),
+            d = require(121),
+            u = require(349),
+            p = require(61),
+            g = require(80),
+            h = g.set,
+            f = g.getterFor,
+            m = u.find,
+            y = u.findIndex,
+            v = o([].splice),
+            _ = 0,
+            b = function (e) {
+                return e.frozen || (e.frozen = new w());
+            },
+            w = function () {
+                this.entries = [];
+            },
+            C = function (e, t) {
+                return m(e.entries, function (e) {
+                    return e[0] === t;
+                });
+            };
+        ((w.prototype = {
+            get: function (e) {
+                var t = C(this, e);
+                if (t) return t[1];
+            },
+            has: function (e) {
+                return !!C(this, e);
+            },
+            set: function (e, t) {
+                var n = C(this, e);
+                n ? (n[1] = t) : this.entries.push([e, t]);
+            },
+            delete: function (e) {
+                var t = y(this.entries, function (t) {
+                    return t[0] === e;
+                });
+                return (~t && v(this.entries, t, 1), !!~t);
+            },
+        }),
+            (module.exports = {
+                getConstructor: function (e, t, n, o) {
+                    var u = e(function (e, i) {
+                            (r(e, g), h(e, { type: t, id: _++, frozen: null }), l(i) || d(i, e[o], { that: e, AS_ENTRIES: n }));
+                        }),
+                        g = u.prototype,
+                        m = f(t),
+                        y = function (e, t, n) {
+                            var o = m(e),
+                                i = a(s(t), true);
+                            return (true === i ? b(o).set(t, n) : (i[o.id] = n), e);
+                        };
+                    return (
+                        i(g, {
+                            delete: function (e) {
+                                var t = m(this);
+                                if (!c(e)) return false;
+                                var n = a(e);
+                                return true === n ? b(t).delete(e) : n && p(n, t.id) && delete n[t.id];
+                            },
+                            has: function (e) {
+                                var t = m(this);
+                                if (!c(e)) return false;
+                                var n = a(e);
+                                return true === n ? b(t).has(e) : n && p(n, t.id);
+                            },
+                        }),
+                        i(
+                            g,
+                            n
+                                ? {
+                                      get: function (e) {
+                                          var t = m(this);
+                                          if (c(e)) {
+                                              var n = a(e);
+                                              if (true === n) return b(t).get(e);
+                                              if (n) return n[t.id];
+                                          }
+                                      },
+                                      set: function (e, t) {
+                                          return y(this, e, t);
+                                      },
+                                  }
+                                : {
+                                      add: function (e) {
+                                          return y(this, e, true);
+                                      },
+                                  }
+                        ),
+                        u
+                    );
+                },
+            }));
+    };

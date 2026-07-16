@@ -1,0 +1,12 @@
+module.exports = function (module, exports, require) {
+        "use strict";
+        require(3);
+        var GObject = require(1);
+        function i() {}
+        (GObject.GObject.inherit(i, GObject.GEvent),
+            (i.prototype.toString = function () {
+                return "[Object GMenuCloseEvent]";
+            }),
+            (i.EVENT = new i()),
+            (module.exports = i));
+    };

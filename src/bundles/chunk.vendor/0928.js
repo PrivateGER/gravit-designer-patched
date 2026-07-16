@@ -1,0 +1,25 @@
+module.exports = function (module, exports, require) {
+            var n = require(161),
+                r = require(508);
+
+            function o(e, t) {
+                var i = new r(),
+                    a = n.cssProperty(t, "font"),
+                    s = n.parseFont(a),
+                    l = o.fontManager.getDefaultFont();
+                if (!l.isResolved()) return i;
+                for (var h = s.fontSize, A = (1 / l._openTypeFont.unitsPerEm) * h, c = 0, p = e.length, u = 0, d = 0; d < p; d++) {
+                    c += l.getAdvance(h, e.charAt(d), d > 0 ? e.charAt(d - 1) : null);
+                    var g = l.getGlyphBoundingRect(h, e.charAt(d));
+                    u = Math.max(u, g.getHeight());
+                }
+                return (
+                    (i.width = c),
+                    (i.ascent = l._openTypeFont.ascender * A),
+                    (i.height = l.getMaxFontHeight(h)),
+                    (i.descent = -l._openTypeFont.descender * A),
+                    i
+                );
+            }
+            ((o.fontManager = null), (module.exports = o));
+        };

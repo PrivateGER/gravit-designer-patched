@@ -1,7 +1,7 @@
-importScripts("https://storage.googleapis.com/workbox-cdn/releases/5.1.4/workbox-sw.js");
+importScripts("workbox/workbox-sw.js");
 
 if (workbox) {
-    workbox.setConfig({ debug: false });
+    workbox.setConfig({ debug: false, modulePathPrefix: "workbox/" });
     workbox.core.setCacheNameDetails({
         prefix: "gravit-designer",
         precache: "precache",
@@ -1261,11 +1261,11 @@ if (workbox) {
             { revision: "04e3d8a9cd90b5824cee9cbaddf9f9b8_8795", url: "assets/static/maintenance/index.html" },
             { revision: "d2a92928bcfed646e387a6690f92979e_8795", url: "assets/static/maintenance/logo.svg" },
             { revision: "5e8a53dc5cc5fe70b07b667bc415df5f_8795", url: "autosave.worker.js" },
-            { revision: "7cb88ae15681e925b9825a7c19295eaf_8795", url: "chunk.vendor.js" },
+            { revision: "509b4d99b0d6c9d5514160ca80ec44ca_src", url: "chunk.vendor.js" },
             { revision: "7341cf1185659c5b6b460d33e7a12dde_8795", url: "chunk.vendors~heic2any.js" },
             { revision: "6de6a207c3433ddd1c022e57a4ee724b_8795", url: "chunk.vendors~pdfjsWorker.js" },
             { revision: "7a1bcf750f1e20a28f0d64980a65a8a0_8795", url: "designer.browser.dark.css" },
-            { revision: "baf096a18f3169da2e2c91bd59a3474f_8795", url: "designer.browser.js" },
+            { revision: "146d7cc436a0cc07a86dda32bf61c055_src", url: "designer.browser.js" },
             { revision: "dff101132147349edd900a10cd3b972d_8795", url: "designer.browser.light.css" },
             { revision: "641dd14370106e992d352166f5a07e99_8795", url: "jquery.js" },
             { revision: "78a43883339729b01a5168ee05224d72_8795", url: "pdf.worker.js" },
@@ -1281,7 +1281,6 @@ if (workbox) {
             { revision: "d81e8fe30de861acb21a782321f14fe1_8795", url: "index.html" },
             { revision: "e29764b039e88805ad3a4fcf5590e36d_8795", url: "manifest.json" },
             { revision: "7d1a58a18fe9f6a49e0438a4fe5bdbdb_8795", url: "proxy.html" },
-            { revision: "29d91793715bb3d1d7916f1b4a346ba0_8795", url: ".well-known/assetlinks.json" },
         ],
         {
             // Ignore all URL parameters.

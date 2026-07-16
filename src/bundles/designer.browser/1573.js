@@ -1,0 +1,35 @@
+module.exports = function (module, exports, require) {
+        "use strict";
+        (require(8 /* Symbol */), require(196 /* polyfill:Promise */));
+        module.exports = class {
+            constructor() {
+                this._promiseQueue = [];
+            }
+            pushPromise(e) {
+                if (0 === this._promiseQueue.length) {
+                    const t = e();
+                    return (
+                        t.finally(() => {
+                            this._promiseQueue.shift();
+                        }),
+                        this._promiseQueue.push(t),
+                        t
+                    );
+                }
+                const t = this._promiseQueue.length,
+                    n = this._promiseQueue[t - 1],
+                    o = new Promise((t) => {
+                        n.then(() => {
+                            e().then(t);
+                        });
+                    });
+                return (
+                    o.finally(() => {
+                        this._promiseQueue.shift();
+                    }),
+                    this._promiseQueue.push(o),
+                    o
+                );
+            }
+        };
+    };

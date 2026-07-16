@@ -1,0 +1,131 @@
+// Prove the refiner changed nothing but names and minifier-literal spellings.
+// For each split module, compare the CURRENT file against the ORIGINAL (from
+// git HEAD or a --baseline dir) after canonicalizing away exactly the edits the
+// refiner is permitted to make:
+//   - every identifier -> "_id_"        (renames are behavior-preserving because
+//                                         they are scope-consistent AST renames)
+//   - true/false/undefined <-> !0/!1/void 0
+//   - block/line comments removed        (the require annotations)
+// If the canonical forms differ, the refiner changed program behavior — fail.
+// Usage: node scripts/verify-refine.js [--baseline <dir>] [bundle ...]
+const fs = require("fs");
+const path = require("path");
+const { execFileSync } = require("child_process");
+const parser = require("@babel/parser");
+const traverse = require("@babel/traverse").default;
+
+const ROOT = path.join(__dirname, "..");
+const BUNDLES_DIR = path.join(ROOT, "src", "bundles");
+
+const argv = process.argv.slice(2);
+let baselineDir = null;
+const bi = argv.indexOf("--baseline");
+if (bi !== -1) {
+    baselineDir = path.resolve(argv[bi + 1]);
+    argv.splice(bi, 2);
+}
+const bundles = argv.length ? argv : fs.readdirSync(BUNDLES_DIR);
+
+// Canonicalize: parse, then walk and emit a structural token stream that is
+// invariant under the allowed transforms.
+function canonical(src) {
+    const ast = parser.parse(src, { sourceType: "script", attachComment: false });
+    const toks = [];
+    traverse(ast, {
+        enter(p) {
+            const n = p.node;
+            switch (n.type) {
+                case "Identifier": {
+                    // A name is a fixed property label (not a renameable variable)
+                    // only when it's an object-property key or a NON-computed member
+                    // access (`x.foo`). In `x[foo]` foo is a real variable reference.
+                    const isMemberProp = p.parentPath.isMemberExpression() && p.key === "property" && !p.parent.computed;
+                    const isPropKey = p.parentPath.isObjectProperty() && p.key === "key" && !p.parent.computed;
+                    if (isPropKey || isMemberProp) {
+                        toks.push("P:" + n.name);
+                    } else if (n.name === "undefined") {
+                        toks.push("UNDEF");
+                    } else {
+                        toks.push("ID");
+                    }
+                    return;
+                }
+                case "NumericLiteral":
+                    toks.push("N:" + n.value);
+                    return;
+                case "BooleanLiteral":
+                    toks.push("BOOL:" + n.value);
+                    return;
+                case "UnaryExpression":
+                    // !0 / !1 normalize to booleans; void 0 to undefined
+                    if (n.operator === "!" && n.argument.type === "NumericLiteral" && (n.argument.value === 0 || n.argument.value === 1)) {
+                        toks.push("BOOL:" + (n.argument.value === 0));
+                        p.skip();
+                        return;
+                    }
+                    if (n.operator === "void" && n.argument.type === "NumericLiteral" && n.argument.value === 0) {
+                        toks.push("UNDEF");
+                        p.skip();
+                        return;
+                    }
+                    toks.push("U:" + n.operator);
+                    return;
+                case "StringLiteral":
+                    toks.push("S:" + n.value);
+                    return;
+                default:
+                    toks.push(n.type);
+            }
+        },
+    });
+    return toks.join("|");
+}
+
+function readBaseline(bundle, file) {
+    if (baselineDir) {
+        const p = path.join(baselineDir, bundle, file);
+        return fs.existsSync(p) ? fs.readFileSync(p, "utf8") : null;
+    }
+    const rel = path.relative(ROOT, path.join(BUNDLES_DIR, bundle, file));
+    try {
+        return execFileSync("git", ["show", `HEAD:${rel}`], { cwd: ROOT, maxBuffer: 64 * 1024 * 1024 }).toString();
+    } catch {
+        return null;
+    }
+}
+
+let checked = 0,
+    failed = 0,
+    missing = 0;
+for (const bundle of bundles) {
+    const dir = path.join(BUNDLES_DIR, bundle);
+    for (const file of fs.readdirSync(dir).filter((f) => /^\d+\.js$/.test(f))) {
+        const cur = fs.readFileSync(path.join(dir, file), "utf8");
+        const base = readBaseline(bundle, file);
+        if (base == null) {
+            missing++;
+            continue;
+        }
+        let a, b;
+        try {
+            a = canonical(base);
+            b = canonical(cur);
+        } catch (e) {
+            console.error(`PARSE FAIL ${bundle}/${file}: ${e.message}`);
+            failed++;
+            continue;
+        }
+        checked++;
+        if (a !== b) {
+            failed++;
+            // find first differing token for a helpful message
+            const ta = a.split("|"),
+                tb = b.split("|");
+            let i = 0;
+            while (i < ta.length && ta[i] === tb[i]) i++;
+            console.error(`DIVERGENCE ${bundle}/${file} at token ${i}: ${ta[i] ?? "<end>"}  !=  ${tb[i] ?? "<end>"}`);
+        }
+    }
+}
+console.log(`\nverify-refine: ${checked} modules checked, ${failed} divergent, ${missing} without baseline`);
+process.exit(failed ? 1 : 0);

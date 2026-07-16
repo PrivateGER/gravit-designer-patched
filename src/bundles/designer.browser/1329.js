@@ -1,0 +1,34 @@
+module.exports = function (module, exports, require) {
+        "use strict";
+        var _interopRequireDefault = require(16),
+            i = _interopRequireDefault(require(880)),
+            a = _interopRequireDefault(require(1189));
+        class r extends i.default {
+            canActivate() {
+                return true;
+            }
+            activate(e, t) {
+                (super.activate(e, t), (this._panState = new a.default()));
+            }
+            deactivate(e, t) {
+                (super.deactivate(e, t), (this._panState = null));
+            }
+            start(e, t) {
+                this._panState && this._panState.update(e.getOriginalEvent());
+            }
+            move(e, t) {
+                this._panState &&
+                    e.isCancelable() &&
+                    e.iterateChangedTouches((e) => {
+                        this._panState.hasActiveIdentifier(e) && this._dispatchEventFromTouch("mousemove", e);
+                    });
+            }
+            end(e, t) {
+                (super.end(e, t), (this._panState = null));
+            }
+            cancel(e, t) {
+                (super.cancel(e, t), (this._panState = null));
+            }
+        }
+        module.exports = r;
+    };
