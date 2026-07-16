@@ -163,12 +163,15 @@ for (const { oldName, line, newName } of specs) {
             } else {
                 edits.push({ start: node.start, end: node.end, text: newName });
             }
+            // Register the new name at the exact position it will occupy, so a
+            // later spec in this invocation whose scope contains this reference
+            // is refused. (A single marker at scope start once let a nested-
+            // scope spec merge into an outer rename: the module-1339 bug.)
+            varIdents.push({ name: newName, start: node.start });
             renamedRefs++;
         }
         edits.push({ start: binding.identifier.start, end: binding.identifier.end, text: newName });
-        // Make the new name visible to collision checks of later specs that
-        // target the same subtree.
-        varIdents.push({ name: newName, start: scopeNode.start });
+        varIdents.push({ name: newName, start: binding.identifier.start });
     }
 }
 

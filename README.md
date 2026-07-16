@@ -118,11 +118,15 @@ so they're no longer raw minifier output:
   `void 0` → `true`/`false`/`undefined`. It skips any module using `eval` and
   never renames across a free `module`/`exports`/`require` reference. It is
   idempotent — safe to re-run after adding names.
-- **`npm run verify-refine`** (`scripts/verify-refine.js`) proves the refiner
+- **`npm run verify-refine`** (`scripts/verify-refine.js`) proves the tools
   changed nothing but names and literal spellings: it canonicalizes every
-  module (all identifiers → one placeholder, `!0`↔`true`, comments stripped)
-  and diffs the token stream against `git HEAD`. A non-zero exit means a
-  refinement altered behavior. All 1721 modules currently verify clean.
+  module (each identifier → its scope-resolved binding ordinal, free names
+  kept, `!0`↔`true`, comments stripped) and diffs the token stream against
+  `git HEAD`. Because identifiers resolve to bindings rather than one flat
+  placeholder, a rename that *merges* two bindings (`var o = e` →
+  `var x = x`) or captures a reference diverges and fails the check. A
+  non-zero exit means an edit altered behavior. All 1721 modules currently
+  verify clean.
 
 - **`npm run rename`** (`scripts/rename-module.js`) is the ergonomic way to
   improve a module's body further — scope-aware variable renames applied as
