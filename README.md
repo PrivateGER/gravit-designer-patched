@@ -103,7 +103,13 @@ so they're no longer raw minifier output:
   module id from how the bundle uses it (`n(123).GFoo` votes to name module
   123 `GFoo`), storing them in each bundle's `names.json`. Edit that file to
   add or correct names; manual entries are always kept. It also regenerates
-  `INDEX.md` keyed on those names.
+  `INDEX.md` keyed on those names. Auto-derived names are unique across both
+  bundles (module ids are global across chunks): the heuristics identify
+  *usage*, not identity, and an unchecked run once labeled 15 different
+  modules "GCommonNames" after the shared strings table they all use. When
+  you correct a name in `names.json`, `npm run refine` re-syncs the
+  already-refined modules — it renames stale G-style require variables and
+  adds/refreshes/removes the inline `require(N /* Name */)` annotations.
 - **`npm run refine`** (`scripts/refine-bundle.js`) rewrites the modules using
   scope-aware AST renames applied as text splices (no code generation):
   webpack params `(e, t, n)` → `(module, exports, require)`; `var o = n(15)` →
@@ -118,9 +124,21 @@ so they're no longer raw minifier output:
   and diffs the token stream against `git HEAD`. A non-zero exit means a
   refinement altered behavior. All 1721 modules currently verify clean.
 
-To improve a module further, just rename its variables by hand and
-`npm run build`; the identifiers are already scoped correctly by the tools
-above.
+- **`npm run rename`** (`scripts/rename-module.js`) is the ergonomic way to
+  improve a module's body further — scope-aware variable renames applied as
+  text splices:
+
+  ```sh
+  npm run rename -- designer.browser/1037 e:project t:translation
+  ```
+
+  When several distinct bindings share a minified name, it lists them with
+  declaration lines and you disambiguate with `e@25:project`. A rename is
+  refused if the new name already occurs in that binding's scope subtree
+  (no reference can be captured), and the result is canonical-token-compared
+  against the original before writing — the same proof `verify-refine` uses —
+  so a behavior-changing rename cannot be saved. Sibling scopes can safely
+  reuse the same new name.
 
 **Pipeline ordering matters.** The vote-based naming in `npm run name` reads
 the mangled shapes (`n(123).GFoo`, single-letter require vars) that

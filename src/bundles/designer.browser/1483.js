@@ -40,7 +40,7 @@ module.exports = function (module, exports, require) {
         require(1488);
         require(1489);
         const S = require(1490);
-        var GCommonNames = require(1491),
+        var _interopRequireWildcard = require(1491),
             GDocument = require(163),
             GAlignAction = require(866),
             GArrangeAction = require(869),
@@ -139,7 +139,7 @@ module.exports = function (module, exports, require) {
             ht = require(1620),
             ft = require(1621),
             mt = require(1336),
-            yt = require(1623),
+            GNewFromTemplateAction = require(1623),
             vt = require(843),
             _t = require(1181),
             bt = require(1624),
@@ -193,12 +193,12 @@ module.exports = function (module, exports, require) {
             GPathProperties = require(1269),
             GPatternChooser = require(1150),
             fn = require(1657 /* GPatternChooser */),
-            mn = require(1270 /* GCommonNames */),
-            yn = require(1271 /* GCommonNames */),
+            GPolygonProperties = require(1270),
+            GRectangleProperties = require(1271),
             GPageProperties = require(1339),
             GSymbolProperties = require(1658),
             GSceneProperties = require(1659),
-            wn = require(1272 /* GCommonNames */),
+            wn = require(1272),
             GTextProperties = require(1273),
             GDimensionProperties = require(1294),
             GTransformProperties = require(1660),
@@ -213,7 +213,7 @@ module.exports = function (module, exports, require) {
             kn = require(85),
             On = require(1672),
             Fn = (require(237 /* GDocument */), require(1673)),
-            Rn = require(119 /* GCommonNames */),
+            GCommonNames = require(119),
             Mn = require(1674),
             GSystemDialog = require(44),
             Bn = require(860),
@@ -264,7 +264,7 @@ module.exports = function (module, exports, require) {
             w.IS_PRODUCTION && (designerConfig.cloudURL && (ao.gApi.url = designerConfig.cloudURL), designerConfig.websocketURL && (ao.gApi.websocketURL = designerConfig.websocketURL)),
             (ao.gApi.lang = GObject.GLocale.getLanguage()));
         let lo = null;
-        ((ao.gravit = null), require(1738), (ao.gDesigner = new GCommonNames()), ao.gDesigner.getUser(), (ao.gQA = h.default));
+        ((ao.gravit = null), require(1738), (ao.gDesigner = new _interopRequireWildcard()), ao.gDesigner.getUser(), (ao.gQA = h.default));
         const co = ao.gDesigner.isOfflineAsync();
         ao.gInAppPurchase = Yn.newInAppPurchase(storeVendor);
         const { GA: { customDimensions } = {} } = require(10 /* designerConfig */);
@@ -291,7 +291,7 @@ module.exports = function (module, exports, require) {
                 (window.onerror = function (e, t, n, o, i) {
                     Mn.isPluginError(i)
                         ? GSystemDialog.alert(i.message)
-                        : ("production" === nodeEnv || "trunk" === nodeEnv || "lts" === nodeEnv || "rc" === nodeEnv) && Rn.isOnline();
+                        : ("production" === nodeEnv || "trunk" === nodeEnv || "lts" === nodeEnv || "rc" === nodeEnv) && GCommonNames.isOnline();
                 }),
                 x.getRuntimeCode() === designerConfig.Runtime.WindowsStore.code && new Qn().init(),
                 isBeta && !isCorel && new GBetaFlow().init(),
@@ -436,7 +436,7 @@ module.exports = function (module, exports, require) {
                     gDesigner.setIsBeta(isBeta),
                     (gravit = {
                         plugins: [],
-                        actions: [new ae(), new yt(), new re(), new xe(), new Se()]
+                        actions: [new ae(), new GNewFromTemplateAction(), new re(), new xe(), new Se()]
                             .concat([
                                 new pt(pt.Actions.Open),
                                 new vt(),
@@ -946,12 +946,12 @@ module.exports = function (module, exports, require) {
                             new GGroupFrameProperties(),
                             new GFrameProperties(),
                             new cn(),
-                            new mn(),
+                            new GPolygonProperties(),
                             new GPathProperties(),
                             new GEllipseProperties(),
                             new GTextProperties(),
                             new GImageProperties(),
-                            new yn(),
+                            new GRectangleProperties(),
                             new wn(),
                             new GBoolOpProperties(),
                             new GSymbolProperties(),
@@ -1018,7 +1018,7 @@ module.exports = function (module, exports, require) {
                     gDesigner.getUser().then((e) => {
                         e ||
                             co.then((e) => {
-                                e || Rn.performLogin();
+                                e || GCommonNames.performLogin();
                             });
                     }),
                     gDesigner.updateRecentDocumentsAction(),

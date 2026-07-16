@@ -21,6 +21,7 @@
         "verify-refine": "node scripts/verify-refine.js",
         "sync-cacher": "node scripts/sync-cacher.js",
         "where": "node scripts/where.js",
+        "rename": "node scripts/rename-module.js",
         "test": "node test/smoke.js"
     }
 }

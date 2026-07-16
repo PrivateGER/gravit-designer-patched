@@ -67,7 +67,7 @@ module.exports = function (module, exports, require) {
             C = require(238),
             x = require(339),
             S = require(804),
-            GCommonNames = require(1500),
+            GHeader = require(1500),
             A = require(1521),
             GInfo = require(1522),
             GOutlineSidebar = require(1260),
@@ -94,8 +94,8 @@ module.exports = function (module, exports, require) {
             GInstallPwaDialog = require(1562),
             GContextMenu = require(1303);
         require(1563 /* GContextMenu */);
-        var Q = require(119 /* GCommonNames */),
-            J = require(220 /* GCommonNames */),
+        var GCommonNames = require(119),
+            J = require(220),
             Z = require(85),
             GSystemDialog = require(44),
             GAutoSave = require(1276),
@@ -985,7 +985,7 @@ module.exports = function (module, exports, require) {
                 var c = $("<div></div>").attr("id", F.Info.id).appendTo(n);
                 this._info = new GInfo(c);
                 var d = $("<div></div>").attr("id", F.Header.id).appendTo(n);
-                this._header = new GCommonNames(d);
+                this._header = new GHeader(d);
                 var p = $("<div></div>").attr("id", F.Toolbar.id).appendTo(n);
                 this._toolbar = new GToolbar(p);
                 var g = $("<div></div>").attr("id", F.Banner.id).appendTo(n);
@@ -1267,7 +1267,7 @@ module.exports = function (module, exports, require) {
                         var s = function () {
                             gContainer.updateRecentDocumentsAction(e);
                         };
-                        Q.getRecentStorageItems()
+                        GCommonNames.getRecentStorageItems()
                             .then(async function (t) {
                                 if (t.length > 0)
                                     for (var n = 0; n < t.length; ++n) e.push(await J.from(gDesigner.getDefaultStorage(), t[n]));
@@ -1544,7 +1544,7 @@ module.exports = function (module, exports, require) {
                 this._mainMenu.update();
             }),
             (Je.prototype._workspaceResolveUrlEvent = function (e) {
-                Q.resolveImage(e, this.getActiveDocument());
+                GCommonNames.resolveImage(e, this.getActiveDocument());
             }),
             (Je.prototype._shareEvent = function (e) {
                 e.type === pe.Type.Updated && this._updateSidebars();
@@ -2303,7 +2303,7 @@ module.exports = function (module, exports, require) {
                 (t.find("a").on("click", (t) => {
                     t.preventDefault();
                     let n = $(t.target).closest(".g-dialog-content");
-                    return (Q.resendEmailConfirmation(e).then(() => n.gDialog("close")), false);
+                    return (GCommonNames.resendEmailConfirmation(e).then(() => n.gDialog("close")), false);
                 }),
                     GSystemDialog.custom({
                         className: "g-deactivated-user-dialog",
@@ -2737,7 +2737,7 @@ module.exports = function (module, exports, require) {
                                 this.openPaymentDialog(null, Object.assign(t, { flow: e }))
                             );
                         }
-                        if ("login_dialog" === e) this._user || Q.performLogin();
+                        if ("login_dialog" === e) this._user || GCommonNames.performLogin();
                         else {
                             if ("confirm_email" === e) {
                                 const { confirm_email, flow } = t;
@@ -2792,7 +2792,7 @@ module.exports = function (module, exports, require) {
                                           .do(e);
                             } else if ("procoupon" === e)
                                 this.executeWhenReady(() => {
-                                    Q.activateCoupon(t.procoupon);
+                                    GCommonNames.activateCoupon(t.procoupon);
                                 });
                             else if ("annot" === e)
                                 designerConfig.HAS_ANNOTATIONS &&

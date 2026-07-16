@@ -3,11 +3,11 @@ module.exports = function (module, exports, require) {
         var o,
             i,
             GShareManager = require(1374),
-            GCommonNames = require(1483);
+            GPointerTool = require(1483);
         function s() {
             var e = new GShareManager();
             e.initLanguage(function () {
-                ((o = e.init(GCommonNames)),
+                ((o = e.init(GPointerTool)),
                     i &&
                         o.then(() => {
                             l(i);

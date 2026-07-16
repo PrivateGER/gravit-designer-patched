@@ -14,11 +14,11 @@ module.exports = function (module, exports, require) {
             g = require(1299),
             GCommonNames = require(119),
             GFilesPanel = require(1545),
-            m = require(1558 /* GCommonNames */),
+            GTemplatesPanel = require(1558),
             GPresets = require(1153),
             { youtubePlaylist } = require(1302),
             GLoginPanel = require(446);
-        require(220 /* GCommonNames */);
+        require(220);
         const b = require(859),
             w = require(441);
         function C() {
@@ -539,7 +539,7 @@ module.exports = function (module, exports, require) {
                 this._closeCallbackListeners.push(s);
             }),
             (C.prototype._loadTemplates = function () {
-                new m(
+                new GTemplatesPanel(
                     function () {
                         this.close();
                     }.bind(this)

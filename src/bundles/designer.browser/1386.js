@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             designerConfig = require(10),
             GDocument = require(237),
-            r = (require(220 /* GCommonNames */), require(40 /* GSaveAction */).decrypt);
+            r = (require(220), require(40 /* GSaveAction */).decrypt);
         require(173);
         function s() {}
         (GObject.GObject.inherit(s, GDocument),

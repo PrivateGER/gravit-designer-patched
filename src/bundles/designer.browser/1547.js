@@ -32,7 +32,7 @@ module.exports = function (module, exports, require) {
                                 : (r[t] = e[t]));
                     return r;
                 })(e, t);
-            })(require(862 /* GCommonNames */)),
+            })(require(862)),
             p = require(858);
         const g = require(156),
             { CLOUD_DIALOG } = require(10 /* designerConfig */),

@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GSaveAction = require(40);
         require(10 /* designerConfig */);
-        (require(1474 /* GConfirmationDialog */), require(220 /* GCommonNames */), require(44 /* GSystemDialog */), require(119 /* GCommonNames */));
+        (require(1474 /* GConfirmationDialog */), require(220), require(44 /* GSystemDialog */), require(119 /* GCommonNames */));
         function a(e, t, n) {
             ((this._document = e), (this._storageItem = t), (this._file = t.getFile()), (this._action = n), this._init());
         }

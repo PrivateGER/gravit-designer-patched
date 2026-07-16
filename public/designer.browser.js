@@ -229,7 +229,7 @@ var GravitDesigner = (function (e) {
                 (configBase.GPaywallDialog = require(270 /* GLoginDialog */).GPaywallDialog)),
             (configBase.PRESET_LIMIT = 20),
             (configBase.CATEGORIES = require(831)),
-            (configBase.ELEMENTS = require(832)),
+            (configBase.ELEMENTS = require(832 /* ELEMENTS */)),
             (configBase.GooglePickerBuilder = require(833)),
             (configBase.HAS_ANNOTATIONS = true),
             (configBase.ANNOTATION_PERMANENT_LINK = true),
@@ -2606,7 +2606,7 @@ var GravitDesigner = (function (e) {
             GCommonNames = require(1036),
             designerConfig = require(10),
             s = _interopRequireDefault(require(734)),
-            l = (_interopRequireDefault(require(355)), _interopRequireDefault(require(1037))),
+            l = (_interopRequireDefault(require(355)), _interopRequireDefault(require(1037 /* GTranslationLoader */))),
             c = require(255),
             d = require(590),
             GCategory = require(18),
@@ -5061,7 +5061,7 @@ var GravitDesigner = (function (e) {
             GDocumentChooser = require(1475),
             G = require(255),
             GCommonNames = require(119),
-            D = require(220 /* GCommonNames */),
+            D = require(220),
             L = require(85);
         const I = require(441),
             k = require(392),
@@ -46594,7 +46594,7 @@ var GravitDesigner = (function (e) {
         var GObject = require(1),
             designerConfig = require(10),
             r = _interopRequireDefault(require(119 /* GCommonNames */)),
-            s = _interopRequireDefault(require(220 /* GCommonNames */)),
+            s = _interopRequireDefault(require(220)),
             l = _interopRequireDefault(require(163 /* GDocument */)),
             c = _interopRequireDefault(require(86)),
             d = _interopRequireDefault(require(802)),
@@ -47000,9 +47000,9 @@ var GravitDesigner = (function (e) {
             GEllipseProperties = require(1265),
             GImageProperties = require(1266),
             GPathProperties = require(1269),
-            GCommonNames = require(1270),
-            v = require(1271 /* GCommonNames */),
-            _ = require(1272 /* GCommonNames */),
+            GPolygonProperties = require(1270),
+            GRectangleProperties = require(1271),
+            _ = require(1272),
             GTextProperties = require(1273),
             w = require(1274),
             GVersionHistoryProperties = require(1528),
@@ -47017,12 +47017,12 @@ var GravitDesigner = (function (e) {
             (T.ACCORDIONS = [GAppearanceProperties.prototype.toString(), GFillPaintLayerProperties.prototype.toString(), GBorderPaintLayerProperties.prototype.toString(), GEffectProperties.prototype.toString()]),
             (T.APPEARANCE_PROPERTIES = [
                 w.prototype.toString(),
-                GCommonNames.prototype.toString(),
+                GPolygonProperties.prototype.toString(),
                 GPathProperties.prototype.toString(),
                 GEllipseProperties.prototype.toString(),
                 GTextProperties.prototype.toString(),
                 GImageProperties.prototype.toString(),
-                v.prototype.toString(),
+                GRectangleProperties.prototype.toString(),
                 _.prototype.toString(),
                 GBoolOpProperties.prototype.toString(),
                 GAppearanceProperties.prototype.toString(),
@@ -49438,73 +49438,73 @@ var GravitDesigner = (function (e) {
         var GObject = require(1),
             designerConfig = require(10),
             r = _interopRequireDefault(require(536));
-        class s {
-            static async setLanguage(e) {
+        class GTranslationLoader {
+            static async setLanguage(languageKey) {
                 try {
-                    const t = GObject.GLocale.getTranslations(),
-                        n = GObject.GTranslation.Projects.Cloud,
-                        o = GObject.GTranslation.Projects.Designer,
-                        r = t.find((t) => t.keyValue === e);
-                    if (!r) return;
-                    const s = await this._fetchTranslation(o, r),
-                        l = await this._fetchTranslation(n, r);
-                    (GObject.GLocale.replaceValues(o, e, s.translations),
-                        GObject.GLocale.replaceValues(n, e, l.translations),
-                        GObject.GLocale.setLanguage(e),
-                        designerConfig.GLocaleFactory.setLanguage(e),
-                        designerConfig.gApi.setLanguage(e));
+                    const translations = GObject.GLocale.getTranslations(),
+                        cloudProject = GObject.GTranslation.Projects.Cloud,
+                        designerProject = GObject.GTranslation.Projects.Designer,
+                        translation = translations.find((entry) => entry.keyValue === languageKey);
+                    if (!translation) return;
+                    const designerTranslation = await this._fetchTranslation(designerProject, translation),
+                        cloudTranslation = await this._fetchTranslation(cloudProject, translation);
+                    (GObject.GLocale.replaceValues(designerProject, languageKey, designerTranslation.translations),
+                        GObject.GLocale.replaceValues(cloudProject, languageKey, cloudTranslation.translations),
+                        GObject.GLocale.setLanguage(languageKey),
+                        designerConfig.GLocaleFactory.setLanguage(languageKey),
+                        designerConfig.gApi.setLanguage(languageKey));
                 } catch (e) {}
             }
-            static async _shouldFetchTranslation(e, t) {
-                if (t.keyValue === GObject.GLocale.getLanguage())
+            static async _shouldFetchTranslation(project, translation) {
+                if (translation.keyValue === GObject.GLocale.getLanguage())
                     try {
                         // The translation CDN is gone; _getCDNURL resolves null. Skip
                         // the HEAD probe instead of requesting the literal URL "null".
-                        const i = await this._getCDNURL(e, t);
-                        if (!i) return false;
-                        const n = await fetch(i, {
+                        const url = await this._getCDNURL(project, translation);
+                        if (!url) return false;
+                        const etag = await fetch(url, {
                             method: "HEAD",
-                        }).then((e) => {
-                            if (e.ok) return e.headers.get("etag");
+                        }).then((response) => {
+                            if (response.ok) return response.headers.get("etag");
                         });
-                        if (this._isEtagsEqual(n, t.etag)) return false;
+                        if (this._isEtagsEqual(etag, translation.etag)) return false;
                     } catch (e) {}
                 return true;
             }
-            static _isEtagsEqual(e, t) {
-                return (e.startsWith("W/") && (e = e.substring(3, e.length - 1)), e === t);
+            static _isEtagsEqual(etag, expectedEtag) {
+                return (etag.startsWith("W/") && (etag = etag.substring(3, etag.length - 1)), etag === expectedEtag);
             }
-            static async _fetchTranslation(e, t) {
+            static async _fetchTranslation(project, translation) {
                 // No URL means the locale pack is unavailable (dead CDN): return
                 // undefined so setLanguage takes its existing English-fallback path
                 // without a network round-trip to "/null".
-                const n = await this._getCDNURL(e, t);
-                if (!n || !(await this._shouldFetchTranslation(e, t))) return;
-                return await fetch(n).then((e) => e.json());
+                const url = await this._getCDNURL(project, translation);
+                if (!url || !(await this._shouldFetchTranslation(project, translation))) return;
+                return await fetch(url).then((response) => response.json());
             }
-            static async _getCDNURL(e, t) {
-                const n = t.abbreviation,
-                    o = e.toLowerCase(),
-                    i = "".concat(n, "/").concat(o);
-                let s = this.translationsCacheMap.get(i);
+            static async _getCDNURL(project, translation) {
+                const abbreviation = translation.abbreviation,
+                    projectKey = project.toLowerCase(),
+                    cacheKey = "".concat(abbreviation, "/").concat(projectKey);
+                let cached = this.translationsCacheMap.get(cacheKey);
                 return (
-                    s ||
-                        (s = this.translationsCacheMap
+                    cached ||
+                        (cached = this.translationsCacheMap
                             .set(
-                                i,
+                                cacheKey,
                                 new r.default(() =>
                                     designerConfig.gApi
-                                        .fetchTranslationsURL(n, o)
-                                        .then((e) => e.url)
+                                        .fetchTranslationsURL(abbreviation, projectKey)
+                                        .then((result) => result.url)
                                         .catch(() => null)
                                 )
                             )
-                            .get(i)),
-                    await s.get()
+                            .get(cacheKey)),
+                    await cached.get()
                 );
             }
         }
-        ((s.translationsCacheMap = new Map()), (module.exports = s));
+        ((GTranslationLoader.translationsCacheMap = new Map()), (module.exports = GTranslationLoader));
     },
     function (module, exports, require) {
         "use strict";
@@ -89011,11 +89011,11 @@ var GravitDesigner = (function (e) {
         var o,
             i,
             GShareManager = require(1374),
-            GCommonNames = require(1483);
+            GPointerTool = require(1483);
         function s() {
             var e = new GShareManager();
             e.initLanguage(function () {
-                ((o = e.init(GCommonNames)),
+                ((o = e.init(GPointerTool)),
                     i &&
                         o.then(() => {
                             l(i);
@@ -90081,7 +90081,7 @@ var GravitDesigner = (function (e) {
         var GObject = require(1),
             designerConfig = require(10),
             GDocument = require(237),
-            r = (require(220 /* GCommonNames */), require(40 /* GSaveAction */).decrypt);
+            r = (require(220), require(40 /* GSaveAction */).decrypt);
         require(173);
         function s() {}
         (GObject.GObject.inherit(s, GDocument),
@@ -92470,7 +92470,7 @@ var GravitDesigner = (function (e) {
         var GObject = require(1),
             GSaveAction = require(40);
         require(10 /* designerConfig */);
-        (require(1474 /* GConfirmationDialog */), require(220 /* GCommonNames */), require(44 /* GSystemDialog */), require(119 /* GCommonNames */));
+        (require(1474 /* GConfirmationDialog */), require(220), require(44 /* GSystemDialog */), require(119 /* GCommonNames */));
         function a(e, t, n) {
             ((this._document = e), (this._storageItem = t), (this._file = t.getFile()), (this._action = n), this._init());
         }
@@ -96854,7 +96854,7 @@ var GravitDesigner = (function (e) {
         require(1488);
         require(1489);
         const S = require(1490);
-        var GCommonNames = require(1491),
+        var _interopRequireWildcard = require(1491),
             GDocument = require(163),
             GAlignAction = require(866),
             GArrangeAction = require(869),
@@ -96953,7 +96953,7 @@ var GravitDesigner = (function (e) {
             ht = require(1620),
             ft = require(1621),
             mt = require(1336),
-            yt = require(1623),
+            GNewFromTemplateAction = require(1623),
             vt = require(843),
             _t = require(1181),
             bt = require(1624),
@@ -97007,12 +97007,12 @@ var GravitDesigner = (function (e) {
             GPathProperties = require(1269),
             GPatternChooser = require(1150),
             fn = require(1657 /* GPatternChooser */),
-            mn = require(1270 /* GCommonNames */),
-            yn = require(1271 /* GCommonNames */),
+            GPolygonProperties = require(1270),
+            GRectangleProperties = require(1271),
             GPageProperties = require(1339),
             GSymbolProperties = require(1658),
             GSceneProperties = require(1659),
-            wn = require(1272 /* GCommonNames */),
+            wn = require(1272),
             GTextProperties = require(1273),
             GDimensionProperties = require(1294),
             GTransformProperties = require(1660),
@@ -97027,7 +97027,7 @@ var GravitDesigner = (function (e) {
             kn = require(85),
             On = require(1672),
             Fn = (require(237 /* GDocument */), require(1673)),
-            Rn = require(119 /* GCommonNames */),
+            GCommonNames = require(119),
             Mn = require(1674),
             GSystemDialog = require(44),
             Bn = require(860),
@@ -97078,7 +97078,7 @@ var GravitDesigner = (function (e) {
             w.IS_PRODUCTION && (designerConfig.cloudURL && (ao.gApi.url = designerConfig.cloudURL), designerConfig.websocketURL && (ao.gApi.websocketURL = designerConfig.websocketURL)),
             (ao.gApi.lang = GObject.GLocale.getLanguage()));
         let lo = null;
-        ((ao.gravit = null), require(1738), (ao.gDesigner = new GCommonNames()), ao.gDesigner.getUser(), (ao.gQA = h.default));
+        ((ao.gravit = null), require(1738), (ao.gDesigner = new _interopRequireWildcard()), ao.gDesigner.getUser(), (ao.gQA = h.default));
         const co = ao.gDesigner.isOfflineAsync();
         ao.gInAppPurchase = Yn.newInAppPurchase(storeVendor);
         const { GA: { customDimensions } = {} } = require(10 /* designerConfig */);
@@ -97105,7 +97105,7 @@ var GravitDesigner = (function (e) {
                 (window.onerror = function (e, t, n, o, i) {
                     Mn.isPluginError(i)
                         ? GSystemDialog.alert(i.message)
-                        : ("production" === nodeEnv || "trunk" === nodeEnv || "lts" === nodeEnv || "rc" === nodeEnv) && Rn.isOnline();
+                        : ("production" === nodeEnv || "trunk" === nodeEnv || "lts" === nodeEnv || "rc" === nodeEnv) && GCommonNames.isOnline();
                 }),
                 x.getRuntimeCode() === designerConfig.Runtime.WindowsStore.code && new Qn().init(),
                 isBeta && !isCorel && new GBetaFlow().init(),
@@ -97250,7 +97250,7 @@ var GravitDesigner = (function (e) {
                     gDesigner.setIsBeta(isBeta),
                     (gravit = {
                         plugins: [],
-                        actions: [new ae(), new yt(), new re(), new xe(), new Se()]
+                        actions: [new ae(), new GNewFromTemplateAction(), new re(), new xe(), new Se()]
                             .concat([
                                 new pt(pt.Actions.Open),
                                 new vt(),
@@ -97760,12 +97760,12 @@ var GravitDesigner = (function (e) {
                             new GGroupFrameProperties(),
                             new GFrameProperties(),
                             new cn(),
-                            new mn(),
+                            new GPolygonProperties(),
                             new GPathProperties(),
                             new GEllipseProperties(),
                             new GTextProperties(),
                             new GImageProperties(),
-                            new yn(),
+                            new GRectangleProperties(),
                             new wn(),
                             new GBoolOpProperties(),
                             new GSymbolProperties(),
@@ -97832,7 +97832,7 @@ var GravitDesigner = (function (e) {
                     gDesigner.getUser().then((e) => {
                         e ||
                             co.then((e) => {
-                                e || Rn.performLogin();
+                                e || GCommonNames.performLogin();
                             });
                     }),
                     gDesigner.updateRecentDocumentsAction(),
@@ -99031,7 +99031,7 @@ var GravitDesigner = (function (e) {
             C = require(238),
             x = require(339),
             S = require(804),
-            GCommonNames = require(1500),
+            GHeader = require(1500),
             A = require(1521),
             GInfo = require(1522),
             GOutlineSidebar = require(1260),
@@ -99058,8 +99058,8 @@ var GravitDesigner = (function (e) {
             GInstallPwaDialog = require(1562),
             GContextMenu = require(1303);
         require(1563 /* GContextMenu */);
-        var Q = require(119 /* GCommonNames */),
-            J = require(220 /* GCommonNames */),
+        var GCommonNames = require(119),
+            J = require(220),
             Z = require(85),
             GSystemDialog = require(44),
             GAutoSave = require(1276),
@@ -99949,7 +99949,7 @@ var GravitDesigner = (function (e) {
                 var c = $("<div></div>").attr("id", F.Info.id).appendTo(n);
                 this._info = new GInfo(c);
                 var d = $("<div></div>").attr("id", F.Header.id).appendTo(n);
-                this._header = new GCommonNames(d);
+                this._header = new GHeader(d);
                 var p = $("<div></div>").attr("id", F.Toolbar.id).appendTo(n);
                 this._toolbar = new GToolbar(p);
                 var g = $("<div></div>").attr("id", F.Banner.id).appendTo(n);
@@ -100231,7 +100231,7 @@ var GravitDesigner = (function (e) {
                         var s = function () {
                             gContainer.updateRecentDocumentsAction(e);
                         };
-                        Q.getRecentStorageItems()
+                        GCommonNames.getRecentStorageItems()
                             .then(async function (t) {
                                 if (t.length > 0)
                                     for (var n = 0; n < t.length; ++n) e.push(await J.from(gDesigner.getDefaultStorage(), t[n]));
@@ -100508,7 +100508,7 @@ var GravitDesigner = (function (e) {
                 this._mainMenu.update();
             }),
             (Je.prototype._workspaceResolveUrlEvent = function (e) {
-                Q.resolveImage(e, this.getActiveDocument());
+                GCommonNames.resolveImage(e, this.getActiveDocument());
             }),
             (Je.prototype._shareEvent = function (e) {
                 e.type === pe.Type.Updated && this._updateSidebars();
@@ -101267,7 +101267,7 @@ var GravitDesigner = (function (e) {
                 (t.find("a").on("click", (t) => {
                     t.preventDefault();
                     let n = $(t.target).closest(".g-dialog-content");
-                    return (Q.resendEmailConfirmation(e).then(() => n.gDialog("close")), false);
+                    return (GCommonNames.resendEmailConfirmation(e).then(() => n.gDialog("close")), false);
                 }),
                     GSystemDialog.custom({
                         className: "g-deactivated-user-dialog",
@@ -101701,7 +101701,7 @@ var GravitDesigner = (function (e) {
                                 this.openPaymentDialog(null, Object.assign(t, { flow: e }))
                             );
                         }
-                        if ("login_dialog" === e) this._user || Q.performLogin();
+                        if ("login_dialog" === e) this._user || GCommonNames.performLogin();
                         else {
                             if ("confirm_email" === e) {
                                 const { confirm_email, flow } = t;
@@ -101756,7 +101756,7 @@ var GravitDesigner = (function (e) {
                                           .do(e);
                             } else if ("procoupon" === e)
                                 this.executeWhenReady(() => {
-                                    Q.activateCoupon(t.procoupon);
+                                    GCommonNames.activateCoupon(t.procoupon);
                                 });
                             else if ("annot" === e)
                                 designerConfig.HAS_ANNOTATIONS &&
@@ -104492,9 +104492,9 @@ var GravitDesigner = (function (e) {
             b = _interopRequireDefault(require(1254 /* GOpenSharedFileAction */)),
             w = _interopRequireDefault(require(1256 /* GVersionsHistoryAction */)),
             C = _interopRequireDefault(require(388)),
-            x = _interopRequireDefault(require(220 /* GCommonNames */)),
+            x = _interopRequireDefault(require(220)),
             S = _interopRequireDefault(require(44 /* GSystemDialog */)),
-            E = _interopRequireDefault(require(862 /* GCommonNames */)),
+            E = _interopRequireDefault(require(862)),
             A = _interopRequireDefault(require(156)),
             T = _interopRequireDefault(require(163 /* GDocument */)),
             GRegex = require(263),
@@ -111153,7 +111153,7 @@ var GravitDesigner = (function (e) {
             r = require(1163),
             s = _interopRequireDefault(require(123)),
             l = _interopRequireDefault(require(1159)),
-            c = _interopRequireDefault(require(220 /* GCommonNames */)),
+            c = _interopRequireDefault(require(220)),
             d = _interopRequireDefault(require(163 /* GDocument */)),
             u = _interopRequireDefault(require(219)),
             p = _interopRequireDefault(require(78)),
@@ -116150,11 +116150,11 @@ var GravitDesigner = (function (e) {
             g = require(1299),
             GCommonNames = require(119),
             GFilesPanel = require(1545),
-            m = require(1558 /* GCommonNames */),
+            GTemplatesPanel = require(1558),
             GPresets = require(1153),
             { youtubePlaylist } = require(1302),
             GLoginPanel = require(446);
-        require(220 /* GCommonNames */);
+        require(220);
         const b = require(859),
             w = require(441);
         function C() {
@@ -116675,7 +116675,7 @@ var GravitDesigner = (function (e) {
                 this._closeCallbackListeners.push(s);
             }),
             (C.prototype._loadTemplates = function () {
-                new m(
+                new GTemplatesPanel(
                     function () {
                         this.close();
                     }.bind(this)
@@ -118253,7 +118253,7 @@ var GravitDesigner = (function (e) {
                                 : (r[t] = e[t]));
                     return r;
                 })(e, t);
-            })(require(862 /* GCommonNames */)),
+            })(require(862)),
             p = require(858);
         const g = require(156),
             { CLOUD_DIALOG } = require(10 /* designerConfig */),
@@ -119400,7 +119400,7 @@ var GravitDesigner = (function (e) {
         "use strict";
         var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = exports.GGoogleDrive = exports.GCloudDrive = void 0));
-        var i = _interopRequireDefault(require(862 /* GCommonNames */));
+        var i = _interopRequireDefault(require(862));
         const a = (exports.GCloudDrive = i.default);
         var GGoogleDrive = require(1553);
         exports.GGoogleDrive = GGoogleDrive;
@@ -131428,8 +131428,8 @@ var GravitDesigner = (function (e) {
             a = _interopRequireDefault(require(340)),
             r = require(806),
             s = require(395),
-            GCommonNames = require(1663),
-            c = require(119 /* GCommonNames */);
+            GLibraryPanel = require(1663),
+            GCommonNames = require(119);
         const d = require(291);
         function u() {
             r.call(this);
@@ -131448,7 +131448,7 @@ var GravitDesigner = (function (e) {
                 return u.TITLE;
             }),
             (u.prototype.isEnabled = function () {
-                return c.isOnline();
+                return GCommonNames.isOnline();
             }),
             (u.prototype.isVisible = function () {
                 // The panel's only living content source is the Unsplash proxy
@@ -131518,10 +131518,10 @@ var GravitDesigner = (function (e) {
                         .css("overflow", "auto")
                         .appendTo(e))),
                     this._libraryPanel.toggleClass("offline", gDesigner.isOffline()),
-                    c.isOnline()
+                    GCommonNames.isOnline()
                         ? (this._libraryPanel.hasClass("unavailable") &&
                               (this._libraryPanel.removeClass("unavailable"), this._libraryPanel.empty()),
-                          gDesigner.isOffline() || ((this._libraryPanelInstance = new GCommonNames(this._libraryPanel)), (this._initialized = true)))
+                          gDesigner.isOffline() || ((this._libraryPanelInstance = new GLibraryPanel(this._libraryPanel)), (this._initialized = true)))
                         : (this._libraryPanel.addClass("unavailable"),
                           $("<span/>")
                               .addClass("span-unavailable")
@@ -131571,7 +131571,7 @@ var GravitDesigner = (function (e) {
             GObject = require(1),
             GPlatform = require(15),
             designerConfig = require(10),
-            l = _interopRequireDefault(require(1664)),
+            l = _interopRequireDefault(require(1664 /* GLibraryElements */)),
             c = require(219),
             GClipAction = require(809),
             { debounce, stringToBase64String } = require(40 /* GSaveAction */);
@@ -134584,13 +134584,13 @@ var GravitDesigner = (function (e) {
             require(1703),
             require(1704),
             require(1705),
-            require(1706 /* GCommonNames */),
+            require(1706 /* GLayerPanel */),
             require(1711),
             require(1712 /* GAnnotationPanel */),
             require(1714),
             require(1715),
             require(1716),
-            require(1717 /* GCommonNames */),
+            require(1717),
             require(1718),
             require(1719 /* GToolbar */),
             require(1720),

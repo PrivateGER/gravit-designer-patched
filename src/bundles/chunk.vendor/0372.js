@@ -6,7 +6,7 @@ module.exports = function (module, exports, require) {
                     r = require(686),
                     o = require(699),
                     a = require(700),
-                    s = require(701),
+                    GLocaleLanguage = require(701),
                     l = require(945),
                     h = require(703),
                     A = require(704),
@@ -36,7 +36,7 @@ module.exports = function (module, exports, require) {
                         for (var v = 0; v < _.length; v++) {
                             var b = _[v];
                             if (b.translations) {
-                                s.hasOwnProperty(b.language) || (s[b.language] = b.keyValue);
+                                GLocaleLanguage.hasOwnProperty(b.language) || (GLocaleLanguage[b.language] = b.keyValue);
                                 for (var C = Object.keys(b.translations), w = 0; w < C.length; w++) {
                                     var E = C[w],
                                         B = Object.assign({}, b.translations[E]);
@@ -44,14 +44,14 @@ module.exports = function (module, exports, require) {
                                         (Object.keys(B).forEach(function (e) {
                                             B[e] || delete B[e];
                                         }),
-                                        u.setValues(new a(E), s[b.language], Object.keys(B), Object.values(B), true),
+                                        u.setValues(new a(E), GLocaleLanguage[b.language], Object.keys(B), Object.values(B), true),
                                         b.translationsExtended && b.translationsExtended[E])
                                     ) {
                                         var x = n.extend({}, B, b.translationsExtended[E]);
                                         (Object.keys(x).forEach(function (e) {
                                             x[e] || delete x[e];
                                         }),
-                                            u.setValues(new a(E), s[b.language], Object.keys(x), Object.values(x), true, true));
+                                            u.setValues(new a(E), GLocaleLanguage[b.language], Object.keys(x), Object.values(x), true, true));
                                     }
                                 }
                             }
@@ -69,7 +69,7 @@ module.exports = function (module, exports, require) {
             }
             module.exports = {
                 GLocale: u,
-                GLocaleLanguage: s,
+                GLocaleLanguage: GLocaleLanguage,
                 ClassReference: a,
                 GTranslation: o,
                 GLocaleKey: h,
