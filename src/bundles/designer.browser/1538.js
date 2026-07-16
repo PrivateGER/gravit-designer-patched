@@ -1,14 +1,14 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(8 /* Symbol */), require(20), require(34), require(4), require(13), require(38));
-        const { GLocale: o, GLocaleKey: i } = require(1 /* GObject */),
+        const { GLocale, GLocaleKey } = require(1 /* GObject */),
             a = require(1166),
             r = require(177),
             {
-                gApi: s,
-                Notification: l,
+                gApi,
+                Notification,
                 NotificationConstants: {
-                    ACTIONS: { ACTION_APPROVE: c, ACTION_REQUEST_APPROVE: d, ACTION_REOPEN: u, ACTION_IN_REVIEW: p } = {},
+                    ACTIONS: { ACTION_APPROVE, ACTION_REQUEST_APPROVE, ACTION_REOPEN, ACTION_IN_REVIEW } = {},
                 },
             } = require(10 /* designerConfig */);
         function g() {
@@ -17,23 +17,23 @@ module.exports = function (module, exports, require) {
         ((g.prototype._updateHistoryList = async function () {
             const e = this._container.find(".list");
             (e.empty(), e.addClass("loading"));
-            var t = await s.annotations.getDesignHistory(gDesigner.getActiveDocument().getId()).catch((e) => []);
+            var t = await gApi.annotations.getDesignHistory(gDesigner.getActiveDocument().getId()).catch((e) => []);
             (e.append(
                 t.map((e) => {
-                    const t = l.from(e);
+                    const t = Notification.from(e);
                     var n;
                     switch (t.getAction()) {
-                        case c:
-                            n = o.get(new i("GFileStatusHistoryDialog", "text.action-approved"));
+                        case ACTION_APPROVE:
+                            n = GLocale.get(new GLocaleKey("GFileStatusHistoryDialog", "text.action-approved"));
                             break;
-                        case d:
-                            n = o.get(new i("GFileStatusHistoryDialog", "text.action-request-approval"));
+                        case ACTION_REQUEST_APPROVE:
+                            n = GLocale.get(new GLocaleKey("GFileStatusHistoryDialog", "text.action-request-approval"));
                             break;
-                        case u:
-                            n = o.get(new i("GFileStatusHistoryDialog", "text.action-reopened"));
+                        case ACTION_REOPEN:
+                            n = GLocale.get(new GLocaleKey("GFileStatusHistoryDialog", "text.action-reopened"));
                             break;
-                        case p:
-                            n = o.get(new i("GFileStatusHistoryDialog", "text.action-in-review"));
+                        case ACTION_IN_REVIEW:
+                            n = GLocale.get(new GLocaleKey("GFileStatusHistoryDialog", "text.action-in-review"));
                     }
                     if (n) {
                         var r = $("<span></span>").addClass("annotation-title-group"),
@@ -41,7 +41,7 @@ module.exports = function (module, exports, require) {
                                 .html(n.replace("%name", this._getUserNameFromNotification(t)))
                                 .addClass("annotation-title")
                                 .appendTo(r),
-                            g = o.toLocaleDate(t.created, {
+                            g = GLocale.toLocaleDate(t.created, {
                                 year: "numeric",
                                 month: "numeric",
                                 day: "numeric",
@@ -72,7 +72,7 @@ module.exports = function (module, exports, require) {
                 let e = $("<div/>").addClass("row").addClass("header").appendTo(this._container);
                 ($("<div/>")
                     .addClass("title")
-                    .text(o.get(new i("GFileStatusHistoryDialog", "text.status-history")))
+                    .text(GLocale.get(new GLocaleKey("GFileStatusHistoryDialog", "text.status-history")))
                     .appendTo(e),
                     $("<div></div>")
                         .addClass("btn-close")

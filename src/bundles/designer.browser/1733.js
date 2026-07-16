@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         const o = {
             init: function () {
                 let {
-                    feature: e,
+                    feature,
                     pro: t = true,
                     badgeAlwaysVisible: n = false,
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -11,7 +11,7 @@ module.exports = function (module, exports, require) {
                     var o = $(this);
                     if ((o.toggleClass("pro", !!t), o.toggleClass("badge-always-visible", !!n), t)) {
                         const t = gDesigner.getLicense(),
-                            n = t.isLegacy() && gDesigner.isLegacyFeature(e),
+                            n = t.isLegacy() && gDesigner.isLegacyFeature(feature),
                             i = t.isTrial() && !n;
                         if ((o.toggleClass("trial", i), "option" === o.prop("tagName").toLowerCase())) {
                             const e = o.closest("select");
@@ -19,7 +19,7 @@ module.exports = function (module, exports, require) {
                                 i && !e.hasClass("has-trial-option") && e.addClass("has-trial-option"));
                         }
                     }
-                    o.toggleClass("legacy-feature", gDesigner.isLegacyFeature(e));
+                    o.toggleClass("legacy-feature", gDesigner.isLegacyFeature(feature));
                 });
             },
         };

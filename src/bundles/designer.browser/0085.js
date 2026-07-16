@@ -104,10 +104,10 @@ module.exports = function (module, exports, require) {
                 return window.localStorage.length;
             }),
             (y.prototype.setCookie = function (e) {
-                let { name: t, value: n } = e;
+                let { name, value } = e;
                 return navigator.cookieEnabled
-                    ? ((document.cookie = "".concat(t, "=").concat(n, "; path=/")),
-                      (document.cookie = "".concat(t, "=").concat(n, "; path=/; domain=").concat(designerConfig.DOMAIN)),
+                    ? ((document.cookie = "".concat(name, "=").concat(value, "; path=/")),
+                      (document.cookie = "".concat(name, "=").concat(value, "; path=/; domain=").concat(designerConfig.DOMAIN)),
                       Promise.resolve())
                     : Promise.reject();
             }),

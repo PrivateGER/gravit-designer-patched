@@ -97,32 +97,32 @@ module.exports = function (module, exports, require) {
                             k("keydown", L[e]));
                     },
                     o = (e) => {
-                        let { key: o, icon: a, dblclick: r, actionClass: l } = e;
+                        let { key, icon, dblclick, actionClass } = e;
                         const c = s({
-                            name: a ? null : GPlatform.GKey.toLocalizedShort(o, true),
-                            icon: a,
-                            actionClass: "g-virtual-key" + (l ? " " + l : ""),
+                            name: icon ? null : GPlatform.GKey.toLocalizedShort(key, true),
+                            icon: icon,
+                            actionClass: "g-virtual-key" + (actionClass ? " " + actionClass : ""),
                             mousedown: (e) => {
-                                (e.stopImmediatePropagation(), this._isHoldingKey(o) || n(o));
+                                (e.stopImmediatePropagation(), this._isHoldingKey(key) || n(key));
                             },
                             click: (e) => {
                                 (e.stopImmediatePropagation(),
-                                    this._isHoldingKey(o) || (t(o), gDesigner.stats("virtualkey_assistantbar_click", o)));
+                                    this._isHoldingKey(key) || (t(key), gDesigner.stats("virtualkey_assistantbar_click", key)));
                             },
-                            dblclick: r,
+                            dblclick: dblclick,
                             mouseup: (e) => {
-                                (e.stopImmediatePropagation(), this._isHoldingKey(o) || t(o));
+                                (e.stopImmediatePropagation(), this._isHoldingKey(key) || t(key));
                             },
                             touchstart: () => {
-                                this._isHoldingKey(o) || n(o);
+                                this._isHoldingKey(key) || n(key);
                             },
                             touchend: () => {
-                                this._isHoldingKey(o) || t(o);
+                                this._isHoldingKey(key) || t(key);
                             },
                             touchcancel: () => {
-                                this._isHoldingKey(o) || t(o);
+                                this._isHoldingKey(key) || t(key);
                             },
-                            active: () => !!this._keyState[L[o]] || this._isHoldingKey(o),
+                            active: () => !!this._keyState[L[key]] || this._isHoldingKey(key),
                         });
                         return (new D(c[0]), c);
                     },
@@ -130,13 +130,13 @@ module.exports = function (module, exports, require) {
                         let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "";
                         return e.reduce(
                             (e, t) => {
-                                let { icon: n, action: o, isEnabled: i } = t;
-                                const a = e.createAddItem(o);
+                                let { icon: n, action, isEnabled } = t;
+                                const a = e.createAddItem(action);
                                 return (
                                     n && a.setIcon(n),
-                                    i &&
+                                    isEnabled &&
                                         a.addEventListener(d.default.UpdateEvent, () => {
-                                            a.setEnabled(i());
+                                            a.setEnabled(isEnabled());
                                         }),
                                     e
                                 );
@@ -147,51 +147,51 @@ module.exports = function (module, exports, require) {
                     s = (e) => {
                         let {
                             action: t,
-                            name: n,
-                            menu: o,
+                            name,
+                            menu,
                             icon: i,
-                            click: a,
+                            click,
                             dblclick: r,
-                            mousedown: s,
-                            mouseup: l,
-                            touchstart: c,
-                            touchmove: d,
-                            touchend: u,
-                            touchcancel: p,
+                            mousedown,
+                            mouseup,
+                            touchstart,
+                            touchmove,
+                            touchend,
+                            touchcancel,
                             split: g = false,
-                            active: h,
+                            active,
                             actionClass: f,
                         } = e;
                         const m = $("<div/>").addClass("toolbar-button").toggleClass("split", !!g),
                             y = $("<button/>").addClass("action-button").appendTo(m);
                         if (
                             (f && y.addClass(f),
-                            h && (m.data("active", h), m.toggleClass("g-active", !!h())),
+                            active && (m.data("active", active), m.toggleClass("g-active", !!active())),
                             t &&
                                 (m.data("action", t),
                                 i || (i = t.getIcon()),
-                                a || (a = () => gDesigner.executeAction(t.getId(), void 0, "assistantbar"))),
-                            n && $("<span/>").text(n).appendTo(y),
+                                click || (click = () => gDesigner.executeAction(t.getId(), void 0, "assistantbar"))),
+                            name && $("<span/>").text(name).appendTo(y),
                             i && $("<span/>").addClass(i).appendTo(y),
-                            a && y.on("click", a),
+                            click && y.on("click", click),
                             r && y.on("dblclick", r),
-                            s && m.on("mousedown", s),
-                            l && m.on("mouseup", l),
-                            c && m.on("touchstart", c),
-                            d && m.on("touchmove", d),
-                            u && m.on("touchend", u),
-                            p && m.on("touchcancel", p),
-                            o)
+                            mousedown && m.on("mousedown", mousedown),
+                            mouseup && m.on("mouseup", mouseup),
+                            touchstart && m.on("touchstart", touchstart),
+                            touchmove && m.on("touchmove", touchmove),
+                            touchend && m.on("touchend", touchend),
+                            touchcancel && m.on("touchcancel", touchcancel),
+                            menu)
                         ) {
                             let e;
-                            ((o.__which = "assistantbar"),
+                            ((menu.__which = "assistantbar"),
                                 (e = g
                                     ? $("<button/>")
                                           .addClass("dropdown-button")
                                           .append($("<span></span>").addClass("gravit-icon-touch-arrow-up"))
                                           .appendTo(m)
                                     : y.append($("<span></span>").addClass("gravit-icon-touch-arrow-up"))),
-                                e.gMenuButton({ menu: o, touch: true }));
+                                e.gMenuButton({ menu: menu, touch: true }));
                         }
                         return m;
                     },

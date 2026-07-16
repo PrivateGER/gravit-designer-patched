@@ -1,12 +1,12 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(19), require(8 /* Symbol */), require(4), require(322), require(32), require(38), require(97), require(33), require(26));
-        const { GObject: o } = require(1 /* GObject */),
+        const { GObject } = require(1 /* GObject */),
             i = require(1069);
         function a() {
             ((this._resourceMap = new i()), (this._controlSubjectState = { locked: false }));
         }
-        (o.inherit(a, o),
+        (GObject.inherit(a, GObject),
             (a.prototype._controlSubjectState = null),
             (a.prototype.lockPermissions = function () {
                 ((this._controlSubjectState.locked = true), Object.freeze(this._controlSubjectState), Object.freeze(this._resourceMap));

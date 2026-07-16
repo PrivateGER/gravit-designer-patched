@@ -9,7 +9,7 @@ module.exports = function (module, exports, require) {
             l = require(123);
         const c = require(358),
             d = require(86),
-            { SHOW_SIDEBAR_BADGE: u } = require(10 /* designerConfig */);
+            { SHOW_SIDEBAR_BADGE } = require(10 /* designerConfig */);
         function p() {
             this._elements = [];
         }
@@ -100,7 +100,7 @@ module.exports = function (module, exports, require) {
             }),
             (p.prototype._updateCommentCount = function (e, t) {
                 var n = this._toolbar.find(".g-badge");
-                u && e > 0
+                SHOW_SIDEBAR_BADGE && e > 0
                     ? (0 === n.length && ((n = $("<span/>").addClass("g-badge comment-count")), this._toolbar.append(n)),
                       t > 0 ? n.addClass("unread") : n.removeClass("unread"),
                       n.text(e))

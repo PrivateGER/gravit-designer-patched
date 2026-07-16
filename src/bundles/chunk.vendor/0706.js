@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
             const n = require(171),
                 r = require(375),
                 GOfferDialogV1 = require(526),
-                { learnmore: a } = require(253),
+                { learnmore } = require(253),
                 s = require(170),
                 l = require(325);
             require(417 /* gApi */).self();
@@ -41,50 +41,50 @@ module.exports = function (module, exports, require) {
                 }
                 constructor(e) {
                     let {
-                        title: t,
-                        product: i,
-                        dismiss: h,
-                        impl: A,
-                        closeable: c,
-                        page: p,
-                        campaign: u,
-                        withFooter: d,
+                        title,
+                        product,
+                        dismiss,
+                        impl,
+                        closeable,
+                        page,
+                        campaign,
+                        withFooter,
                         content: g = GOfferDialogV1.DEFAULT_CONTENT,
                     } = e;
-                    ((this._impl = A), s.setLanguage(this._impl.getLanguage()));
+                    ((this._impl = impl), s.setLanguage(this._impl.getLanguage()));
                     let f = null;
-                    h &&
+                    dismiss &&
                         (f = {
                             title: s.get(new l("GReminderDialog", "text.continue-as-free")),
                             execute: () => {
-                                (r("".concat(p, "_click_continuebutton")), this.close());
+                                (r("".concat(page, "_click_continuebutton")), this.close());
                             },
                         });
                     const m = new GOfferDialogV1({
-                        page: p,
-                        title: t,
+                        page: page,
+                        title: title,
                         content: g,
                         action: f,
-                        product: i,
+                        product: product,
                         cmd: {
                             close: this.close.bind(this),
                             openPurchaseFlow: () => {
                                 (this._impl.openPurchaseFlow({
                                     dialog: this,
                                     options: {
-                                        closeable: c,
+                                        closeable: closeable,
                                     },
                                 }),
-                                    c && this.close());
+                                    closeable && this.close());
                             },
                         },
-                        closeable: c,
-                        withFooter: d,
+                        closeable: closeable,
+                        withFooter: withFooter,
                     }).getHTMLElement();
                     ((this._htmlElement = n("<div></div>")
                         .addClass("g-cloud-ui-reminder-dialog g-dialog")
                         .append(n("<div></div>").addClass("g-cloud-ui-reminder-dialog-content g-dialog-content").append(m))),
-                        a || this._htmlElement.addClass("g-cloud-ui-no-learn-more"));
+                        learnmore || this._htmlElement.addClass("g-cloud-ui-no-learn-more"));
                 }
                 open() {
                     n(".g-cloud-ui-reminder-dialog").length ||

@@ -12,8 +12,8 @@ module.exports = function (module, exports, require) {
                 return this._fetch({ id: e, data: t, shareToken: n });
             }
             _fetch(e) {
-                let { id: t, data: n, shareToken: o } = e;
-                const i = n ? () => gApi.updateAnnotations(t, n, o) : () => gApi.getAnnotations(t, o);
+                let { id, data, shareToken } = e;
+                const i = data ? () => gApi.updateAnnotations(id, data, shareToken) : () => gApi.getAnnotations(id, shareToken);
                 return this._promiseManager.pushPromise(i);
             }
         };

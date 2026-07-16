@@ -11,13 +11,13 @@ module.exports = function (module, exports, require) {
                 (this._touchToolbar.empty(),
                     this.removeClassName("align-active"),
                     this._sidebars.forEach((o) => {
-                        let { sidebar: i, container: a } = o;
-                        const r = i.getTouchTools(e);
-                        i &&
-                            i.isVisible() &&
+                        let { sidebar, container } = o;
+                        const r = sidebar.getTouchTools(e);
+                        sidebar &&
+                            sidebar.isVisible() &&
                             r &&
                             r.forEach((e) => {
-                                e.sidebar = i.getId();
+                                e.sidebar = sidebar.getId();
                                 const o = !!this._activeTouchTool && e.id == this._activeTouchTool.id;
                                 o && (n = e);
                                 let r = e.panel;
@@ -26,7 +26,7 @@ module.exports = function (module, exports, require) {
                                     "dimension.align" === e.id && o && this.addClassName("align-active"),
                                     r.forEach((t) => {
                                         let n;
-                                        ((n = "string" == typeof t ? a.find(t) : $(t)),
+                                        ((n = "string" == typeof t ? container.find(t) : $(t)),
                                             n.attr("g-touch-tool", e.id).toggleClass("g-active", o).addClass("g-touch-toolbar-panel"));
                                     }),
                                     e.toolbar)
@@ -35,7 +35,7 @@ module.exports = function (module, exports, require) {
                                     (Array.isArray(e.toolbar) || (t = [e.toolbar]),
                                         t.forEach((t) => {
                                             let n;
-                                            ((n = "string" == typeof t ? a.find(t) : $(t)),
+                                            ((n = "string" == typeof t ? container.find(t) : $(t)),
                                                 n.attr("g-touch-tool", e.id).toggleClass("g-active", o).addClass("g-touch-toolbar-label"));
                                         }));
                                 }
@@ -56,12 +56,12 @@ module.exports = function (module, exports, require) {
                                             this._activeTouchTool && this._activeTouchTool.id == e.id
                                                 ? this._isActiveSidebarDeactivatable() &&
                                                   (this.setActiveTouchTool(null),
-                                                  this._htmlElement.css("width", i.getDefaultWidth() + "px"))
-                                                : this._tryActivateSidebar(i) &&
+                                                  this._htmlElement.css("width", sidebar.getDefaultWidth() + "px"))
+                                                : this._tryActivateSidebar(sidebar) &&
                                                   (this.setActiveTouchTool(e),
                                                   e.panelWidth
                                                       ? this._htmlElement.css("width", e.panelWidth)
-                                                      : this._htmlElement.css("width", i.getDefaultWidth() + "px"),
+                                                      : this._htmlElement.css("width", sidebar.getDefaultWidth() + "px"),
                                                   ".appearance-toolbar" !== e.toolbar
                                                       ? this._htmlElement.find(".appearance-properties-panel").addClass("display-none")
                                                       : this._htmlElement

@@ -26,9 +26,9 @@ module.exports = function (module, exports, require) {
                 const e = gDesigner.getLeftSidebars().getActiveSidebar(),
                     t = gDesigner.getLeftSidebars().getSidebar(SidebarsIds.SidebarsIds.GOutlineSidebar),
                     n = t.getLayerPanel(),
-                    { currentFocus: o } = n.data("glayerpanel");
-                if (o && e === t.getId()) {
-                    const e = n.gLayerPanel("getTitleOfLayer", $(o.row));
+                    { currentFocus } = n.data("glayerpanel");
+                if (currentFocus && e === t.getId()) {
+                    const e = n.gLayerPanel("getTitleOfLayer", $(currentFocus.row));
                     e.gAutoEdit("open", e.data("gautoedit"));
                 }
             }

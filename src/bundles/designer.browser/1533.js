@@ -3,9 +3,9 @@ module.exports = function (module, exports, require) {
         (require(8 /* Symbol */), require(4), require(13));
         var GObject = require(1);
         const i = require(156),
-            { FILE_FORMATS: a } = require(10 /* designerConfig */),
-            r = a.find((e) => e.default),
-            { COMMAND_SAVE: s } = require(591 /* COMMAND_SAVE */),
+            { FILE_FORMATS } = require(10 /* designerConfig */),
+            r = FILE_FORMATS.find((e) => e.default),
+            { COMMAND_SAVE } = require(591 /* COMMAND_SAVE */),
             l = require(1164);
         module.exports = class extends l {
             constructor(e, t) {
@@ -17,7 +17,7 @@ module.exports = function (module, exports, require) {
             }
             _requestWorkerToSave(e, t, n, i) {
                 return new Promise((a, l) => {
-                    const c = this._request(s.REQUEST, {
+                    const c = this._request(COMMAND_SAVE.REQUEST, {
                         id: e,
                         file: t,
                         metadata: i,
@@ -27,9 +27,9 @@ module.exports = function (module, exports, require) {
                     this._worker.addEventListener(
                         "message",
                         function (e) {
-                            const { cmd: t, id: n, data: o } = e.data;
-                            if ((t !== s.SUCCESS && t !== s.FAILED) || n !== c) return false;
-                            t === s.SUCCESS ? a(o.file) : t === s.FAILED && l();
+                            const { cmd, id, data } = e.data;
+                            if ((cmd !== COMMAND_SAVE.SUCCESS && cmd !== COMMAND_SAVE.FAILED) || id !== c) return false;
+                            cmd === COMMAND_SAVE.SUCCESS ? a(data.file) : cmd === COMMAND_SAVE.FAILED && l();
                             return true;
                         }.bind(this),
                         { once: true }

@@ -2,8 +2,8 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(58), require(19), require(193), require(8 /* Symbol */), require(196), require(20), require(34), require(4), require(13), require(26));
         var GObject = require(1);
-        const { gApi: i, AUTO_SAVE_ENABLED: a, AUTOSAVE_INTERVAL_DEFAULT: r, CloudIntegration: s, DESIGNER: l, EXTERNAL_APP: c } = require(10 /* designerConfig */),
-            { buildDialogDocumentHasUpdates: d } = require(40 /* GSaveAction */),
+        const { gApi, AUTO_SAVE_ENABLED, AUTOSAVE_INTERVAL_DEFAULT, CloudIntegration, DESIGNER, EXTERNAL_APP } = require(10 /* designerConfig */),
+            { buildDialogDocumentHasUpdates } = require(40 /* GSaveAction */),
             u = require(85),
             GSystemDialog = require(44),
             GGoogleDrive = require(556),
@@ -15,7 +15,7 @@ module.exports = function (module, exports, require) {
             _ = require(1534),
             b = require(86),
             w = require(217),
-            { SETUP: C, CODES: x } = require(591 /* COMMAND_SAVE */),
+            { SETUP, CODES } = require(591 /* COMMAND_SAVE */),
             S = require(1277);
         function E() {
             if (
@@ -31,8 +31,8 @@ module.exports = function (module, exports, require) {
             )
                 return (console.warn("[GAutoSaveManager] Worker initiation failed"), Promise.reject());
             (this._autoSaveWorker.postMessage({
-                cmd: C.ENDPOINT,
-                data: { url: i.url },
+                cmd: SETUP.ENDPOINT,
+                data: { url: gApi.url },
             }),
                 (this._autoSaveModel = new v(this._autoSaveWorker)),
                 this._updateStatus(gDesigner.getSetting(E.AUTO_SAVE_SETTING) ? E.Status.Stopped : E.Status.Disabled),
@@ -84,7 +84,7 @@ module.exports = function (module, exports, require) {
                 return this._status;
             }),
             (E.prototype._setInterval = function (e) {
-                const t = parseFloat(e) || r;
+                const t = parseFloat(e) || AUTOSAVE_INTERVAL_DEFAULT;
                 this._interval = 60 * t * 1e3;
             }),
             (E.prototype._shouldHandle = async function (e) {
@@ -97,24 +97,24 @@ module.exports = function (module, exports, require) {
                     if (!(await this._showWarnDialog())) return;
                 }
                 if ((this._resetDocumentTimeout(e, this.getStatus() === E.Status.Enabled), gDesigner.isOffline()))
-                    return (this._toggleOfflineAlert(true), Promise.reject(x.AUTOSAVE_OFFLINE_NOT_AVAILABLE));
+                    return (this._toggleOfflineAlert(true), Promise.reject(CODES.AUTOSAVE_OFFLINE_NOT_AVAILABLE));
                 this._offlineAlert && this._toggleOfflineAlert(false);
                 const t = [b.Saving, b.Syncing, b.Loading].includes(e.getStatus());
                 return this._autoSaveModel.has(e) || t
-                    ? x.AUTOSAVE_ALREADY_SAVING
+                    ? CODES.AUTOSAVE_ALREADY_SAVING
                     : e.isCloudFile() || e.isExternalFile()
                       ? this._isCDRFile(e)
-                          ? (this._executeDocumentFormatNotSupportedDialog(e), x.AUTOSAVE_CLOUD_SYNCHRONIZM_NOT_AVAILABLE)
+                          ? (this._executeDocumentFormatNotSupportedDialog(e), CODES.AUTOSAVE_CLOUD_SYNCHRONIZM_NOT_AVAILABLE)
                           : e.isWebFile() || e.isCloudSyncOn() || e.isExternalFile()
                             ? e.isExternalFile() && !(await this._executeExternalFileWarningDialog(e))
-                                ? x.AUTOSAVE_CLOUD_SYNCHRONIZM_NOT_AVAILABLE
+                                ? CODES.AUTOSAVE_CLOUD_SYNCHRONIZM_NOT_AVAILABLE
                                 : e.isModified()
                                   ? (await e.isUpdateAvailable())
-                                      ? (this._executeDocumentConflictResolutionDialog(e), x.AUTOSAVE_FILE_CONFLICT)
+                                      ? (this._executeDocumentConflictResolutionDialog(e), CODES.AUTOSAVE_FILE_CONFLICT)
                                       : this._runAndScheduleAutoSave(e)
-                                  : x.AUTOSAVE_NOT_MODIFIED
-                            : x.AUTOSAVE_LOCAL_FILES_WITHOUT_CID_NOT_AVAILABLE
-                      : (this._executeDocumentSyncDialog(e), x.AUTOSAVE_CLOUD_SYNCHRONIZM_NOT_AVAILABLE);
+                                  : CODES.AUTOSAVE_NOT_MODIFIED
+                            : CODES.AUTOSAVE_LOCAL_FILES_WITHOUT_CID_NOT_AVAILABLE
+                      : (this._executeDocumentSyncDialog(e), CODES.AUTOSAVE_CLOUD_SYNCHRONIZM_NOT_AVAILABLE);
             }),
             (E.prototype._executeDocumentSyncDialog = function (e) {
                 this._syncDialogShown[e.sessionId] ||
@@ -129,7 +129,7 @@ module.exports = function (module, exports, require) {
                     (this._dialogResolveDocumentConflicts &&
                         this._dialogResolveDocumentConflicts.gDialog("isOpen") &&
                         this._dialogResolveDocumentConflicts.gDialog("close"),
-                    (this._dialogResolveDocumentConflicts = d.call(
+                    (this._dialogResolveDocumentConflicts = buildDialogDocumentHasUpdates.call(
                         this,
                         e,
                         function (e) {
@@ -180,7 +180,7 @@ module.exports = function (module, exports, require) {
                 this.getStatus() !== E.Status.Disabled && (this._resetAllDocumentsTimeout(false), this._updateStatus(E.Status.Disabled));
             }),
             (E.prototype.enable = function () {
-                a &&
+                AUTO_SAVE_ENABLED &&
                     this.getStatus() !== E.Status.Enabled &&
                     !gDesigner.isOffline() &&
                     gDesigner.getSetting(E.AUTO_SAVE_SETTING) &&
@@ -472,7 +472,7 @@ module.exports = function (module, exports, require) {
                     GSystemDialog.custom({
                         title: GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.dialog-file-updated-out-app-waring.title"))
                             .replace("%file-name", e.getTitle() + "." + e.getExtension().toLowerCase())
-                            .replace("%app-name", l.TITLE),
+                            .replace("%app-name", DESIGNER.TITLE),
                         className: "g-auto-save-file-updated-out-app-warn-dialog",
                         icon: "info",
                         closeable: false,
@@ -504,7 +504,7 @@ module.exports = function (module, exports, require) {
             (E.prototype._getExternalStorageName = function (e) {
                 if (!e) return "";
                 const t = e.getStorageItem();
-                return t && t instanceof GGoogleDrive.Item ? s.cloudOptions.find((e) => e.type === c.GOOGLEDRIVE).name : "";
+                return t && t instanceof GGoogleDrive.Item ? CloudIntegration.cloudOptions.find((e) => e.type === EXTERNAL_APP.GOOGLEDRIVE).name : "";
             }),
             (E.prototype._shouldHideNotifications = function () {
                 return gContainer.getProperty(E.AUTO_SAVE_HIDE_NOTIFICATION_PROP_NAME);

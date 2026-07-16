@@ -4,29 +4,29 @@ module.exports = function (module, exports, require) {
         var GPlatform = require(15),
             i = require(882);
         const GSystemDialog = require(44),
-            { GSystem: r, GLocale: s, GLocaleKey: l, GObject: c, GNode: d } = require(1 /* GObject */),
+            { GSystem, GLocale, GLocaleKey, GObject, GNode } = require(1 /* GObject */),
             u = require(1191),
-            { getAnnotationType: p } = require(40 /* GSaveAction */);
+            { getAnnotationType } = require(40 /* GSaveAction */);
         require(85);
         function g(e) {
-            let { container: t, annotation: n, onSubmit: o, onCancel: i, onAssignTo: a, mentionData: r } = e;
-            ((this._containter = t),
-                (this._annotation = n),
-                (this._onSubmit = o),
-                (this._onCancel = i),
-                (this._onAssignTo = a),
+            let { container, annotation, onSubmit, onCancel, onAssignTo, mentionData } = e;
+            ((this._containter = container),
+                (this._annotation = annotation),
+                (this._onSubmit = onSubmit),
+                (this._onCancel = onCancel),
+                (this._onAssignTo = onAssignTo),
                 (this._shouldAssign = false),
                 (this._assignees = []),
                 (this._mentionsCollection = []),
-                (this._data = r.data),
-                (this._owner = r.owner),
-                (this._additionalMentions = r.additionalMentions || []),
-                (this._mentionData = r),
+                (this._data = mentionData.data),
+                (this._owner = mentionData.owner),
+                (this._additionalMentions = mentionData.additionalMentions || []),
+                (this._mentionData = mentionData),
                 this._init());
         }
         function h(e) {
             if (13 === e.keyCode)
-                if (r.operatingSystem !== r.OperatingSystem.OSX_IOS) {
+                if (GSystem.operatingSystem !== GSystem.OperatingSystem.OSX_IOS) {
                     if (!e.shiftKey) return true;
                 } else {
                     if (!e.altKey) return true;
@@ -37,15 +37,15 @@ module.exports = function (module, exports, require) {
                 }
             return false;
         }
-        (c.inherit(g, u),
+        (GObject.inherit(g, u),
             (g.prototype._init = function () {
                 var e = this._containter;
                 this._containter.addClass("reply-docker");
                 var t,
-                    n = p(this._annotation);
-                e.toggleClass("g-active", this._annotation.hasFlag(d.Flag.Active)).toggleClass(
+                    n = getAnnotationType(this._annotation);
+                e.toggleClass("g-active", this._annotation.hasFlag(GNode.Flag.Active)).toggleClass(
                     "g-selected",
-                    this._annotation.hasFlag(d.Flag.Selected)
+                    this._annotation.hasFlag(GNode.Flag.Selected)
                 );
                 const c = !this._annotation.isFillingCompleted();
                 e.on("focusout", (n) => {
@@ -56,7 +56,7 @@ module.exports = function (module, exports, require) {
                         h(e) && e.preventDefault();
                     })
                     .on("keypress", function (e) {
-                        r.operatingSystem === r.OperatingSystem.OSX_IOS && 13 === e.keyCode && e.altKey && e.preventDefault();
+                        GSystem.operatingSystem === GSystem.OperatingSystem.OSX_IOS && 13 === e.keyCode && e.altKey && e.preventDefault();
                     })
                     .on("keyup", (e) => {
                         const t = u.find(".mentions-autocomplete-list").data("assign");
@@ -89,7 +89,7 @@ module.exports = function (module, exports, require) {
                                 .addClass("label")
                                 .addClass("assignee-row-label")
                                 .append(this._assigneeCheckBox)
-                                .append($("<span>").html(s.get(new l("GAnnotationPanel", "text.assign-to"))))
+                                .append($("<span>").html(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.assign-to"))))
                                 .append(this._onlyOneAssignee)
                                 .append(this._assigneeSelector)
                         )
@@ -100,7 +100,7 @@ module.exports = function (module, exports, require) {
                         .append(
                             $("<button>")
                                 .addClass("annotations-cancelcomment")
-                                .text(s.get(new l("GAnnotationPanel", "text.cancel")))
+                                .text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.cancel")))
                                 .on("click", (e) => {
                                     (e.stopImmediatePropagation(),
                                         gDesigner.stats("replydocker_cancel-reply", n),
@@ -114,8 +114,8 @@ module.exports = function (module, exports, require) {
                                 .addClass("annotations-addcomment")
                                 .text(
                                     c
-                                        ? s.get(new l("GAnnotationPanel", "text.fill-contents"))
-                                        : s.get(new l("GAnnotationPanel", "text.comment"))
+                                        ? GLocale.get(new GLocaleKey("GAnnotationPanel", "text.fill-contents"))
+                                        : GLocale.get(new GLocaleKey("GAnnotationPanel", "text.comment"))
                                 )
                                 .on("click", () => {
                                     (gDesigner.stats("replydocker_add-reply", n), this._addContent());
@@ -125,7 +125,7 @@ module.exports = function (module, exports, require) {
                     e.attr("draggable", false));
                 const g = c && GPlatform.GPlatform.webBrowser !== GPlatform.GPlatform.constructor.WebBrowser.Safari;
                 ((this._input = $("<textarea>")
-                    .attr("placeholder", s.get(new l("GAnnotationPanel", c ? "text.write-annotation-here" : "text.write-reply-here")))
+                    .attr("placeholder", GLocale.get(new GLocaleKey("GAnnotationPanel", c ? "text.write-annotation-here" : "text.write-reply-here")))
                     .attr("rows", 1)
                     .attr("autofocus", g)
                     .addClass("annotations-comment-placeholder")

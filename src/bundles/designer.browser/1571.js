@@ -3,14 +3,14 @@ module.exports = function (module, exports, require) {
         (require(19), require(26));
         var designerConfig = require(10);
         const {
-                ANNOTATION_EVENT: i,
-                SHARE_EVENT: a,
-                USER_EVENT: r,
-                REVIEW_STATUS_CHANGED: s,
-                LOCK_REQUEST_EVENT: l,
-                LOCK_UPDATE_EVENT: c,
-                FILE_UPDATE_EVENT: d,
-                FILE_AUTO_SAVE_EVENT: u,
+                ANNOTATION_EVENT,
+                SHARE_EVENT,
+                USER_EVENT,
+                REVIEW_STATUS_CHANGED,
+                LOCK_REQUEST_EVENT,
+                LOCK_UPDATE_EVENT,
+                FILE_UPDATE_EVENT,
+                FILE_AUTO_SAVE_EVENT,
             } = designerConfig.gApi.COLLABORATION_EVENTS,
             p = require(393),
             g = require(78);
@@ -39,31 +39,31 @@ module.exports = function (module, exports, require) {
                 (t.setToken(e.getToken()),
                     t.connect("/v2/realtime/" + e.getId()),
                     designerConfig.ENABLE_COLLABORATION &&
-                        (t.on(i, (t) => {
+                        (t.on(ANNOTATION_EVENT, (t) => {
                             this._trigger(e, p.Type.AnnotationsUpdate, t.data);
                         }),
-                        t.on(r, (t) => {
+                        t.on(USER_EVENT, (t) => {
                             this._trigger(e, p.Type.UserUpdate, t.data);
                         }),
-                        t.on(s, (t) => {
+                        t.on(REVIEW_STATUS_CHANGED, (t) => {
                             this._trigger(e, p.Type.ReviewStatusChanged, t.data);
                         }),
-                        t.on(l, (t) => {
+                        t.on(LOCK_REQUEST_EVENT, (t) => {
                             this._trigger(e, p.Type.LockRequest, t.data);
                         }),
-                        t.on(c, (t) => {
+                        t.on(LOCK_UPDATE_EVENT, (t) => {
                             const n = t.data && t.data.lock ? new designerConfig.Lock(t.data.lock) : null;
                             this._trigger(e, p.Type.LockUpdated, n);
                         }),
-                        t.on(d, (t) => {
+                        t.on(FILE_UPDATE_EVENT, (t) => {
                             this._trigger(e, p.Type.FileUpdate, t.data);
                         })),
                     designerConfig.SHARE_ENGINE &&
-                        t.on(a, (t) => {
+                        t.on(SHARE_EVENT, (t) => {
                             this._trigger(e, p.Type.ShareUpdate, t.data);
                         }),
                     designerConfig.AUTO_SAVE_ENABLED &&
-                        t.on(u, (t) => {
+                        t.on(FILE_AUTO_SAVE_EVENT, (t) => {
                             this._trigger(e, p.Type.FileAutoSave, t.data);
                         }),
                     this._documents.set(e, { doc: e, ws: t }));

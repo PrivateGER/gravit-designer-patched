@@ -43,22 +43,22 @@ module.exports = function (module, exports, require) {
                 const o = t.targetTouches[0],
                     s = t.targetTouches[1];
                 if (!s) return true;
-                const { clientX: l, clientY: h } = o,
+                const { clientX, clientY } = o,
                     { clientX: f, clientY: C } = s;
                 if (
                     d &&
                     ((c =
-                        GObject.GMath.isEqualEps(d, l, designerConfig.MIN_TWO_FINGERS_TOUCH_MOVE_DISTANCE) &&
-                        GObject.GMath.isEqualEps(u, h, designerConfig.MIN_TWO_FINGERS_TOUCH_MOVE_DISTANCE) &&
+                        GObject.GMath.isEqualEps(d, clientX, designerConfig.MIN_TWO_FINGERS_TOUCH_MOVE_DISTANCE) &&
+                        GObject.GMath.isEqualEps(u, clientY, designerConfig.MIN_TWO_FINGERS_TOUCH_MOVE_DISTANCE) &&
                         GObject.GMath.isEqualEps(p, f, designerConfig.MIN_TWO_FINGERS_TOUCH_MOVE_DISTANCE) &&
                         GObject.GMath.isEqualEps(g, C, designerConfig.MIN_TWO_FINGERS_TOUCH_MOVE_DISTANCE)),
                     !c)
                 ) {
                     const e = GObject.GMath.ptDist(m, y, v, _),
-                        t = GObject.GMath.ptDist(l, h, f, C);
+                        t = GObject.GMath.ptDist(clientX, clientY, f, C);
                     if (GObject.GMath.isEqualEps(e, t, designerConfig.MIN_TWO_FINGERS_TOUCH_MOVE_DISTANCE)) {
-                        const e = ((0 == m ? 0 : l - m) + (0 == v ? 0 : f - v)) / w,
-                            t = ((0 == y ? 0 : h - y) + (0 == _ ? 0 : C - _)) / w;
+                        const e = ((0 == m ? 0 : clientX - m) + (0 == v ? 0 : f - v)) / w,
+                            t = ((0 == y ? 0 : clientY - y) + (0 == _ ? 0 : C - _)) / w;
                         n.scrollBy(-e, -t);
                     } else {
                         const r = t - e;
@@ -74,7 +74,7 @@ module.exports = function (module, exports, require) {
                         n.zoomAt(x, l);
                     }
                 }
-                return ((m = l), (y = h), (v = f), (_ = C), true);
+                return ((m = clientX), (y = clientY), (v = f), (_ = C), true);
             }
             end(e) {
                 if (

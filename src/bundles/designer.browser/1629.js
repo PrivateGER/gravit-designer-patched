@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
         (require(8 /* Symbol */), require(3));
         var GObject = require(1),
             a = o(require(443));
-        const { isExecutingOnMSTeamsSync: r } = a.default;
+        const { isExecutingOnMSTeamsSync } = a.default;
         var GCategory = require(18),
             l = require(31);
         const c = require(1152),
@@ -26,7 +26,7 @@ module.exports = function (module, exports, require) {
                 return "file";
             }),
             (u.prototype.isEnabled = function () {
-                if (!r()) return false;
+                if (!isExecutingOnMSTeamsSync()) return false;
                 const e = gDesigner.getActiveDocument();
                 if (!e) return false;
                 const t = e.getStorageItem();

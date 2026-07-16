@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         const o = require(1252),
             i = require(1187),
-            { gApi: a } = require(10 /* designerConfig */);
+            { gApi } = require(10 /* designerConfig */);
         module.exports = class extends i {
             constructor(e, t) {
                 (super(), (this._id = e), (this._url = t));
@@ -14,10 +14,10 @@ module.exports = function (module, exports, require) {
                     e.on("error", () => {
                         e.close();
                     }),
-                    a.isCookieEnabled &&
-                        !a.isCookieEnabled() &&
+                    gApi.isCookieEnabled &&
+                        !gApi.isCookieEnabled() &&
                         e.on("load", () => {
-                            e.postMessage({ cmd: "auth", token: a.getAuthorizationToken() }, a.url);
+                            e.postMessage({ cmd: "auth", token: gApi.getAuthorizationToken() }, gApi.url);
                         }));
             }
             _isOpen() {

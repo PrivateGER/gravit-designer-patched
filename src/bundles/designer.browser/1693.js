@@ -130,8 +130,8 @@ module.exports = function (module, exports, require) {
             }),
             (s.prototype._mouseMoveHandler = function (e) {
                 if ("touchmove" === e.type) {
-                    const { clientX: t, clientY: n } = e.changedTouches[0];
-                    if (Math.abs(t - this._startX) < designerConfig.MIN_TOUCH_MOVE_DISTANCE && Math.abs(n - this._startY) < designerConfig.MIN_TOUCH_MOVE_DISTANCE)
+                    const { clientX, clientY } = e.changedTouches[0];
+                    if (Math.abs(clientX - this._startX) < designerConfig.MIN_TOUCH_MOVE_DISTANCE && Math.abs(clientY - this._startY) < designerConfig.MIN_TOUCH_MOVE_DISTANCE)
                         return;
                 }
                 this._clearLongPressTimer();

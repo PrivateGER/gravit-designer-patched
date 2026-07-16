@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(8 /* Symbol */), require(196));
         var o = require(53),
             GObject = require(1);
-        const { gApi: a } = require(10 /* designerConfig */),
+        const { gApi } = require(10 /* designerConfig */),
             r = require(393),
             s = require(217),
             l = require(86);
@@ -51,7 +51,7 @@ module.exports = function (module, exports, require) {
             (c.prototype.getCurrentLock = async function () {
                 return (
                     this._currentLock ||
-                        ((this._currentLock = await a.lock.get(this._document.getId()).catch(() => null)),
+                        ((this._currentLock = await gApi.lock.get(this._document.getId()).catch(() => null)),
                         this._currentLock && this._fireLockUpdateEvent()),
                     this._currentLock
                 );
@@ -59,13 +59,13 @@ module.exports = function (module, exports, require) {
             (c.prototype.acquireLock = async function () {
                 return (await this.canLock())
                     ? (this._currentLock ||
-                          ((this._currentLock = await a.lock.acquire(this._document.getId()).catch(() => null)),
+                          ((this._currentLock = await gApi.lock.acquire(this._document.getId()).catch(() => null)),
                           this._currentLock && this._fireLockUpdateEvent()),
                       this._currentLock)
                     : null;
             }),
             (c.prototype.releaseLock = function () {
-                return a.lock.release(this._document.getId()).then(() => {
+                return gApi.lock.release(this._document.getId()).then(() => {
                     this._currentLock = null;
                 });
             }),
@@ -144,7 +144,7 @@ module.exports = function (module, exports, require) {
                 );
             }),
             (c.prototype.requestAccess = async function () {
-                return a.lock.request(this._document.getId()).then(() => (this._alreadyRequestedAccess = true));
+                return gApi.lock.request(this._document.getId()).then(() => (this._alreadyRequestedAccess = true));
             }),
             (c.prototype.hasAlreadyRequestedAccess = function () {
                 return this._alreadyRequestedAccess;

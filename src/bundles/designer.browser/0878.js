@@ -93,10 +93,10 @@ module.exports = function (module, exports, require) {
             }
             _wasMoved(e) {
                 const t = e.changedTouches[0],
-                    { clientX: n, clientY: o } = t;
+                    { clientX, clientY } = t;
                 return !(
-                    Math.abs(n - this._touchStartX) < designerConfig.MIN_TOUCH_MOVE_DISTANCE &&
-                    Math.abs(o - this._touchStartY) < designerConfig.MIN_TOUCH_MOVE_DISTANCE
+                    Math.abs(clientX - this._touchStartX) < designerConfig.MIN_TOUCH_MOVE_DISTANCE &&
+                    Math.abs(clientY - this._touchStartY) < designerConfig.MIN_TOUCH_MOVE_DISTANCE
                 );
             }
             _shouldHandle(e) {

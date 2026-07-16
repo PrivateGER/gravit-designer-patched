@@ -2,9 +2,9 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(8 /* Symbol */), require(4), require(13));
         var GObject = require(1);
-        const { FILE_FORMATS: i } = require(10 /* designerConfig */),
-            a = i.find((e) => e.default),
-            { COMMAND_SAVE: r } = require(591 /* COMMAND_SAVE */),
+        const { FILE_FORMATS } = require(10 /* designerConfig */),
+            a = FILE_FORMATS.find((e) => e.default),
+            { COMMAND_SAVE } = require(591 /* COMMAND_SAVE */),
             s = require(1164),
             GGoogleDrive = require(556);
         module.exports = class extends s {
@@ -17,7 +17,7 @@ module.exports = function (module, exports, require) {
             }
             _requestWorkerToSave(e, t, n, i) {
                 return new Promise((s, l) => {
-                    const c = this._request(r.REQUEST, {
+                    const c = this._request(COMMAND_SAVE.REQUEST, {
                         id: e,
                         file: t,
                         metadata: i,
@@ -27,9 +27,9 @@ module.exports = function (module, exports, require) {
                     this._worker.addEventListener(
                         "message",
                         function (e) {
-                            const { cmd: t, id: n, data: o } = e.data;
-                            if ((t !== r.SUCCESS && t !== r.FAILED) || n !== c) return false;
-                            t === r.SUCCESS ? s(o.file) : t === r.FAILED && l();
+                            const { cmd, id, data } = e.data;
+                            if ((cmd !== COMMAND_SAVE.SUCCESS && cmd !== COMMAND_SAVE.FAILED) || id !== c) return false;
+                            cmd === COMMAND_SAVE.SUCCESS ? s(data.file) : cmd === COMMAND_SAVE.FAILED && l();
                             return true;
                         }.bind(this),
                         { once: true }

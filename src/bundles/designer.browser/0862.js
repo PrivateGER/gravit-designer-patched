@@ -35,7 +35,7 @@ module.exports = function (module, exports, require) {
             d = o(require(802)),
             u = require(593);
         const p = require(156),
-            { FILE_FORMATS: g, FOLDER_FORMAT: h, MAX_FOLDER_DEPTH_FOR_CLOUD: f } = require(10 /* designerConfig */);
+            { FILE_FORMATS, FOLDER_FORMAT, MAX_FOLDER_DEPTH_FOR_CLOUD } = require(10 /* designerConfig */);
         let m;
         function y() {
             (d.default.apply(this, arguments),
@@ -103,7 +103,7 @@ module.exports = function (module, exports, require) {
                     e.forEach((e) => {
                         if (n.has(e.id)) return;
                         let o = { path: i(e), folder: e };
-                        if (o.path.length > f) for (let e = 0; e < o.path.length - f; e++) n.add(o.path[e]);
+                        if (o.path.length > MAX_FOLDER_DEPTH_FOR_CLOUD) for (let e = 0; e < o.path.length - MAX_FOLDER_DEPTH_FOR_CLOUD; e++) n.add(o.path[e]);
                         else t[e.id] = o;
                     }),
                     t
@@ -121,7 +121,7 @@ module.exports = function (module, exports, require) {
                     (t = t || this.CURRENT_FOLDER),
                     designerConfig.gApi
                         .listFiles({
-                            type: h,
+                            type: FOLDER_FORMAT,
                             parent: this._extractId(t),
                             sort: e + "",
                             limit: n > 0 ? n : 100,
@@ -152,7 +152,7 @@ module.exports = function (module, exports, require) {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "asc";
                 if (Object.keys(this.FOLDERS).length) return;
                 const t = await designerConfig.gApi.listFiles({
-                    type: h,
+                    type: FOLDER_FORMAT,
                     parent: "*",
                     sort: e + "",
                     limit: Number.MAX_SAFE_INTEGER,
@@ -323,8 +323,8 @@ module.exports = function (module, exports, require) {
                 const t = r.default.definePath(this.CURRENT_FOLDER);
                 return Promise.all(
                     e.map(async (e) => {
-                        const { id: n } = await designerConfig.gApi.copyFile(e.id, { parent: t });
-                        return { id: n, parent: t };
+                        const { id } = await designerConfig.gApi.copyFile(e.id, { parent: t });
+                        return { id: id, parent: t };
                     })
                 );
             }),
@@ -348,7 +348,7 @@ module.exports = function (module, exports, require) {
                     (t = t || this.CURRENT_FOLDER),
                     designerConfig.gApi
                         .listFiles({
-                            type: h,
+                            type: FOLDER_FORMAT,
                             parent: this._extractId(t),
                             name: '"'.concat(e, '"'),
                         })
@@ -378,17 +378,17 @@ module.exports = function (module, exports, require) {
             }));
         exports.default = y;
         const v = (exports.TYPES = Object.assign(
-                { FOLDER: h },
-                g.reduce((e, t) => ((e[t.ext.toUpperCase() + "_FILE"] = t), e), {})
+                { FOLDER: FOLDER_FORMAT },
+                FILE_FORMATS.reduce((e, t) => ((e[t.ext.toUpperCase() + "_FILE"] = t), e), {})
             )),
             _ = (exports.DEFAULT_TYPE = Object.values(v).find((e) => e.default));
-        ((exports.FILE_EXTENSIONS = g.map((e) => {
-            let { ext: t } = e;
-            return t.toUpperCase();
+        ((exports.FILE_EXTENSIONS = FILE_FORMATS.map((e) => {
+            let { ext } = e;
+            return ext.toUpperCase();
         })),
-            (exports.FILE_MIME_TYPES = g.map((e) => {
-                let { type: t } = e;
-                return t;
+            (exports.FILE_MIME_TYPES = FILE_FORMATS.map((e) => {
+                let { type } = e;
+                return type;
             })));
         exports.lookupByMimeType = (e) =>
             Object.values(v).find((t) => {

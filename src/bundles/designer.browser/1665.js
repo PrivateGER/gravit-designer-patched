@@ -7,7 +7,7 @@ module.exports = function (module, exports, require) {
             r = require(1188),
             s = require(85),
             GSystemDialog = require(44),
-            { SOFTWARE_UPDATE: c, DateAPI: d } = require(10 /* designerConfig */);
+            { SOFTWARE_UPDATE, DateAPI } = require(10 /* designerConfig */);
         function u() {}
         (GObject.GObject.inherit(u, i),
             (u.ID = "software-update-panel"),
@@ -58,7 +58,7 @@ module.exports = function (module, exports, require) {
                         .addClass("featured")
                         .append(n)
                         .append(
-                            c.SHOW_CHANGE_LOG
+                            SOFTWARE_UPDATE.SHOW_CHANGE_LOG
                                 ? $("<a></a>")
                                       .text(GObject.GLocale.get(new GObject.GLocaleKey("GSoftwareUpdatePanel", "text.see-release-notes")))
                                       .click((e) => {
@@ -173,7 +173,7 @@ module.exports = function (module, exports, require) {
             (u.prototype._createForceUpdateMessageDialog = function () {
                 let e,
                     t = false;
-                const n = d.minutesToMilliseconds(5),
+                const n = DateAPI.minutesToMilliseconds(5),
                     i = () => {
                         t ||
                             ((t = true),

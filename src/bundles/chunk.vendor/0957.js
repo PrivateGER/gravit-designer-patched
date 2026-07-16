@@ -52,8 +52,8 @@ module.exports = function (module, exports, require) {
                                     }, 5e4)),
                                 (this._ws.onmessage = (e) => {
                                     const t = JSON.parse(e.data),
-                                        { name: i, data: n } = t;
-                                    this.trigger(i, new o(i, n));
+                                        { name, data } = t;
+                                    this.trigger(name, new o(name, data));
                                 }),
                                 (this._ws.onclose = (e) => {
                                     if ((this._keepAlive && clearInterval(this._keepAlive), i && e.code !== r.NORMAL_CLOSURE)) {

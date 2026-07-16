@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
         (require(8 /* Symbol */), require(20), require(3), require(34));
         var GObject = require(1),
             a = o(require(443));
-        const { isExecutingOnMSTeamsSync: r } = a.default;
+        const { isExecutingOnMSTeamsSync } = a.default;
         var GCategory = require(18),
             l = require(31);
         const c = require(1152),
@@ -31,7 +31,7 @@ module.exports = function (module, exports, require) {
                 return !!this._isSupported() && gDesigner.getActiveDocument().getStorageItem().isCheckedOutByMe();
             }),
             (g.prototype._isSupported = function () {
-                if (!r()) return false;
+                if (!isExecutingOnMSTeamsSync()) return false;
                 const e = gDesigner.getActiveDocument();
                 if (!e) return false;
                 const t = e.getStorageItem();
@@ -54,8 +54,8 @@ module.exports = function (module, exports, require) {
                         n = t.getCloudClient(),
                         o = await n.getLibrarySettings();
                     await GFilesPanelViewSharepoint.openCheckInDialog(o).then(async (n) => {
-                        let { ok: o, comment: i, type: a } = n;
-                        o && (await t.checkIn(i, a), gDesigner.trigger(new p(p.Type.SynchronismUpdated, e)));
+                        let { ok, comment, type } = n;
+                        ok && (await t.checkIn(comment, type), gDesigner.trigger(new p(p.Type.SynchronismUpdated, e)));
                     });
                 } catch (e) {
                     GSystemDialog.alert(e.message);

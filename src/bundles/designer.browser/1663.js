@@ -29,7 +29,7 @@ module.exports = function (module, exports, require) {
             l = o(require(1664)),
             c = require(219),
             GClipAction = require(809),
-            { debounce: u, stringToBase64String: p } = require(40 /* GSaveAction */);
+            { debounce, stringToBase64String } = require(40 /* GSaveAction */);
         const g = l.default.getElements();
         module.exports = class {
             constructor(e) {
@@ -41,7 +41,7 @@ module.exports = function (module, exports, require) {
                     (this._IMAGE_ASSET_DRAINED = false),
                     (this._LOADING = false),
                     (this._wrapperWidth = 250),
-                    (this._debouncedResizeHandler = u(
+                    (this._debouncedResizeHandler = debounce(
                         function () {
                             var e = Array.from(this._parent.find(".assets-wrapper")).filter((e) => $(e).children().length),
                                 t = $(e).css("width") ? parseInt($(e).css("width").split("px")[0]) : 250;
@@ -602,7 +602,7 @@ module.exports = function (module, exports, require) {
             }
             _getPreviewURI(e) {
                 return e.content && !e.url_t
-                    ? "data:".concat(e.type || "image/svg+xml", ";base64,").concat(p(e.content))
+                    ? "data:".concat(e.type || "image/svg+xml", ";base64,").concat(stringToBase64String(e.content))
                     : e.url_t || e.url || e.image.thumb;
             }
             _onItemDragStartHandler(e, t, n) {

@@ -5,7 +5,7 @@ module.exports = function (module, exports, require) {
             i = require(67),
             GCategory = require(18),
             r = require(31);
-        const { TOUCH_LAYOUT: s } = require(10 /* designerConfig */),
+        const { TOUCH_LAYOUT } = require(10 /* designerConfig */),
             l = require(85);
         function c() {
             c.TOOLTIP_CONFIG = {
@@ -52,7 +52,7 @@ module.exports = function (module, exports, require) {
                 return (e && c.TOOLTIP_CONFIG[e]) || null;
             }),
             (c.prototype.isAvailable = function () {
-                return !!s && !gDesigner.getLicense().isGuest() && gContainer.getRuntime() !== l.Runtime.IPad;
+                return !!TOUCH_LAYOUT && !gDesigner.getLicense().isGuest() && gContainer.getRuntime() !== l.Runtime.IPad;
             }),
             (c.prototype.statsValue = function () {
                 return "".concat(c.ID, ".").concat(gDesigner.isTouchEnabled() ? "on" : "off");

@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(8 /* Symbol */);
-        const { GObject: o } = require(1 /* GObject */);
+        const { GObject } = require(1 /* GObject */);
         function i(e) {
             ((this._app = e), (this._collaborativeFile = null));
         }
-        (o.inherit(i, o),
+        (GObject.inherit(i, GObject),
             (i.prototype.getOrCreateCollaborativeFile = async function () {
                 throw "Not implemented";
             }),

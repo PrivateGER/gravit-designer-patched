@@ -52,17 +52,17 @@ module.exports = function (module, exports, require) {
                     o = gDesigner.getRightSidebars().getSidebar(SidebarsIds.SidebarsIds.GInspectorSidebar),
                     i = n && n.filter((e) => e && e.hasMixin(GObject.GStylable));
                 if (!(i && i.length > 0)) return;
-                const { pageX: r, pageY: l } = this._getLastCursorPoint();
+                const { pageX, pageY } = this._getLastCursorPoint();
                 switch (this._type) {
                     case c.Type.Fill:
                         i.find((e) => e.hasStyleFill() && !(e instanceof GObject.GText))
-                            ? o.openFillEyeDropper(r, l)
+                            ? o.openFillEyeDropper(pageX, pageY)
                             : i.find((e) => e instanceof GObject.GText)
-                              ? o.openTextColorEyeDropper(r, l)
-                              : i.find((e) => !e.hasStyleBorder()) || o.openBorderEyeDropper(r, l);
+                              ? o.openTextColorEyeDropper(pageX, pageY)
+                              : i.find((e) => !e.hasStyleBorder()) || o.openBorderEyeDropper(pageX, pageY);
                         break;
                     case c.Type.Border:
-                        i.find((e) => !e.hasStyleBorder()) || o.openBorderEyeDropper(r, l);
+                        i.find((e) => !e.hasStyleBorder()) || o.openBorderEyeDropper(pageX, pageY);
                 }
             }
             _getLastCursorPoint() {

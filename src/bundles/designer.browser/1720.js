@@ -42,9 +42,9 @@ module.exports = function (module, exports, require) {
                 );
             },
             update: function (e) {
-                const { disabled: t, hidden: n } = e,
+                const { disabled, hidden } = e,
                     o = $(this);
-                (t ? o.addClass("g-disabled") : o.removeClass("g-disabled"), n ? o.hide() : o.show());
+                (disabled ? o.addClass("g-disabled") : o.removeClass("g-disabled"), hidden ? o.hide() : o.show());
                 gDesigner.getShareManager().isShareProRestricted() && o.gPro();
                 const i = o.data("gunsharebutton");
                 return ((i.storeItem = e.storeItem), e.unshareCallback && (i.options.unshareCallback = e.unshareCallback), this);

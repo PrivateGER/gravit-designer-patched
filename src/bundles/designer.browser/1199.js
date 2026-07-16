@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(328), require(57), require(8 /* Symbol */), require(20), require(34), require(134), require(4), require(41), require(13), require(38));
         var GObject = require(1),
             i = require(381);
-        const { parseNativeFonts: a, getLocalFontsData: r, getFontFamily: s } = require(1200);
+        const { parseNativeFonts, getLocalFontsData, getFontFamily } = require(1200);
         function l(e) {
             i.call(this, e);
         }
@@ -57,9 +57,9 @@ module.exports = function (module, exports, require) {
                         });
             }),
             (l.prototype._processResolveFont = async function (e, t, n, o) {
-                const i = s(e, this._findInFontsList.bind(this));
+                const i = getFontFamily(e, this._findInFontsList.bind(this));
                 if (!i) return o.fail();
-                const r = i.isLocalFont ? await a(i.fonts) : i.fonts;
+                const r = i.isLocalFont ? await parseNativeFonts(i.fonts) : i.fonts;
                 if (!r || !Array.isArray(r) || !r.length) return o.fail();
                 const l = r.find(function (o) {
                     return (
@@ -84,13 +84,13 @@ module.exports = function (module, exports, require) {
                     ? this._createLocalFontListCallbacks.push(o)
                     : ((this._createLocalFontListCallbacks = [o]),
                       (this._createLocalFontListPromise = new Promise(async (e) => {
-                          let t = await r(),
+                          let t = await getLocalFontsData(),
                               n = [];
                           for (var o = 0; o < t.length; o++) {
                               const e = t[o],
                                   i = n.findIndex((t) => {
-                                      let { family: n } = t;
-                                      return n === e.family;
+                                      let { family } = t;
+                                      return family === e.family;
                                   });
                               -1 === i ? n.push({ family: e.family, fonts: [e], isLocalFont: true }) : n[i].fonts.push(e);
                           }
@@ -103,8 +103,8 @@ module.exports = function (module, exports, require) {
                       })),
                       this._createLocalFontListPromise.then(() => {
                           (this._createLocalFontListCallbacks.map((o) => {
-                              let { done: i } = o;
-                              (i(this._getFilteredFontsList.call(this, e, t, n), true, null),
+                              let { done } = o;
+                              (done(this._getFilteredFontsList.call(this, e, t, n), true, null),
                                   (this._createLocalFontListPromise = null),
                                   (this._createLocalFontListCallbacks = null));
                           }),

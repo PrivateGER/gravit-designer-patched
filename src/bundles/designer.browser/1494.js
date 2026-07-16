@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0), require(8 /* Symbol */), require(20), require(271), require(34), require(134), require(38));
-        const { isBeta: o } = require(803);
+        const { isBeta } = require(803);
         var i = require(1495);
         let a = 0,
             r = 0;
@@ -74,7 +74,7 @@ module.exports = function (module, exports, require) {
                             }
                         })(e, t),
                     n &&
-                        (("function" == typeof gdb_loaddesign || o) && console.log("updating stats:" + e + " value: " + (t || "null")),
+                        (("function" == typeof gdb_loaddesign || isBeta) && console.log("updating stats:" + e + " value: " + (t || "null")),
                         "undefined" != typeof _GLOBAL_GA_EVENTS && "undefined" != typeof ga))
                 ) {
                     var d = n;
@@ -98,7 +98,7 @@ module.exports = function (module, exports, require) {
                         t && (t.startsWith("/") ? (e += t) : (e = e + "/" + t)),
                         (e = s.modifyPageStatsForUserLicense(e)),
                         (e = await s.modifyPageStatsForAppMode(e)),
-                        ("function" == typeof gdb_loaddesign || o) && console.log("pagestats: " + e),
+                        ("function" == typeof gdb_loaddesign || isBeta) && console.log("pagestats: " + e),
                         window.ga(_GLOBAL_GA_EVENTS, "pageview", e),
                         (r = Date.now())));
             },

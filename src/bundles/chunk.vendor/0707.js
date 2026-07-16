@@ -42,11 +42,11 @@ module.exports = function (module, exports, require) {
                 }
                 constructor(e) {
                     let t,
-                        { type: i = "reminder", impl: o, gApi: A, now: c, campaign: p } = e;
-                    this._impl = o;
-                    const u = () => p || t || l.StoreCampaign.TrialSeries;
+                        { type: i = "reminder", impl, gApi, now, campaign } = e;
+                    this._impl = impl;
+                    const u = () => campaign || t || l.StoreCampaign.TrialSeries;
                     (h.setLanguage(this._impl.getLanguage()),
-                        A.setLanguage(this._impl.getLanguage()),
+                        gApi.setLanguage(this._impl.getLanguage()),
                         (this._htmlElement = n("<div></div>").addClass("g-cloud-ui g-cloud-ui-paywall-dialog g-dialog")),
                         (this._dialog = n("<div></div>")
                             .addClass("g-cloud-ui-paywall-dialog-content g-dialog-content g-cloud-ui-loading")
@@ -71,7 +71,7 @@ module.exports = function (module, exports, require) {
                     })
                         .getHTMLElement()
                         .appendTo(this._dialog);
-                    ((c = c || r.now()),
+                    ((now = now || r.now()),
                         Promise.all([this._impl.getLicense()])
                             .then((e) => {
                                 let [n] = e;
@@ -79,7 +79,7 @@ module.exports = function (module, exports, require) {
                                 let o = g,
                                     A = f;
                                 if ("subscribe" !== i) {
-                                    let e = r.millisecondsToDays(r.diff(c, new Date(n.expire)));
+                                    let e = r.millisecondsToDays(r.diff(now, new Date(n.expire)));
                                     if (
                                         ((o = h
                                             .getValue("GPaywallDialog", 1 === e ? "text.remaining-day" : "text.remaining-days")
@@ -105,7 +105,7 @@ module.exports = function (module, exports, require) {
                                                     });
                                                 },
                                             ],
-                                            t = r.millisecondsToDays(r.diff(new Date(n.created), c)),
+                                            t = r.millisecondsToDays(r.diff(new Date(n.created), now)),
                                             i = parseInt(((t - 1) / 15) % e.length) || 0;
                                         e[Math.max(i, 0)].call(this);
                                     }

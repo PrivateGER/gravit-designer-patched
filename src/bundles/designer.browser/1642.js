@@ -104,9 +104,9 @@ module.exports = function (module, exports, require) {
                     try {
                         if (Array.isArray(o) && o.length > 0) {
                             const e = this._getSingleLevelSelection(o),
-                                { hasHiddenPaintLayers: t, hasVisiblePaintLayers: n } = this._checkPaintLayersVisibility(e);
-                            if (!t && !n) return;
-                            t && n ? this._setVisibilityPaintLayersState(e, false) : this._setVisibilityPaintLayersState(e, t);
+                                { hasHiddenPaintLayers, hasVisiblePaintLayers } = this._checkPaintLayersVisibility(e);
+                            if (!hasHiddenPaintLayers && !hasVisiblePaintLayers) return;
+                            hasHiddenPaintLayers && hasVisiblePaintLayers ? this._setVisibilityPaintLayersState(e, false) : this._setVisibilityPaintLayersState(e, hasHiddenPaintLayers);
                         }
                     } finally {
                         t.endUpdate();

@@ -130,10 +130,10 @@ module.exports = function (module, exports, require) {
             De = require(86),
             Le = (require(18 /* GCategory */), require(442));
         const {
-            defaultLegacyUserSettings: { features: Ie },
+            defaultLegacyUserSettings: { features },
         } = designerConfig.defaultUserSettings;
         var ke = require(10 /* designerConfig */);
-        const { gApi: Oe } = ke;
+        const { gApi } = ke;
         var Fe = require(388),
             Re = require(1580);
         const Me = require(1581),
@@ -873,8 +873,8 @@ module.exports = function (module, exports, require) {
                 const n = ["path", "shape", "knife", "insert"],
                     o = ["special"];
                 return !gravit.tools.some((t) => {
-                    let { tool: i, group: a, category: r } = t;
-                    return i === e && (n.includes(a) || o.includes(r));
+                    let { tool, group, category } = t;
+                    return tool === e && (n.includes(group) || o.includes(category));
                 });
             }),
             (Je.prototype.executeAction = function (e, t, n, o) {
@@ -1043,9 +1043,9 @@ module.exports = function (module, exports, require) {
                 if ((Array.prototype.splice.apply(this._actions, [C, 0].concat(x)), this._createMainMenu(), gravit.tools)) {
                     for (
                         var S = (e) => {
-                                let { tool: t, pro: n = false, feature: o } = e;
+                                let { tool: t, pro: n = false, feature } = e;
                                 return () =>
-                                    !(!this.isEnabledProFeatures(o) && n) &&
+                                    !(!this.isEnabledProFeatures(feature) && n) &&
                                     !!this.canActivateTool(t, true) &&
                                     (gDesigner.stats("tools_activate_shortcut", GToolbar.getToolName(t) || "unknown_tool"),
                                     this.getToolManager().tempToolKeyActivate(t));
@@ -1632,7 +1632,7 @@ module.exports = function (module, exports, require) {
                 const t = e.getStorageItem();
                 t &&
                     t.isRegistrable() &&
-                    Oe.usage(t.getId()).catch((e) => {
+                    gApi.usage(t.getId()).catch((e) => {
                         console.error("gApi.usage error", e);
                     });
             }),
@@ -2155,12 +2155,12 @@ module.exports = function (module, exports, require) {
                 }
             }),
             (Je.prototype._userPropertiesChangedEvent = function (e) {
-                const { user: t } = e;
-                t &&
-                    t.getUID() &&
+                const { user } = e;
+                user &&
+                    user.getUID() &&
                     (i.GEditorOptions.userConfig = {
-                        userName: t.getFullUserName(),
-                        uid: t.getUID(),
+                        userName: user.getFullUserName(),
+                        uid: user.getUID(),
                     });
             }),
             (Je.prototype._beforeInstallUpdate = function (e) {
@@ -2239,7 +2239,7 @@ module.exports = function (module, exports, require) {
                 return (
                     Ce.clear(),
                     new Promise(async (e, n) => {
-                        (await (0, GSaveAction._tryAndCatch)(() => Oe.signout()),
+                        (await (0, GSaveAction._tryAndCatch)(() => gApi.signout()),
                             (this._user = null),
                             this.hasEventListeners(le) && this.trigger(new le(null)),
                             this.isEnabledSubscriptions() && (t || ((this._reloading = true), location.reload())),
@@ -2251,27 +2251,27 @@ module.exports = function (module, exports, require) {
                 return this._reloading;
             }),
             (Je.prototype.reload = function (e) {
-                let { title: t, subtitle: n, icon: o, footer: i, buttons: a, attachTimer: r } = e;
+                let { title, subtitle, icon, footer, buttons, attachTimer } = e;
                 this._initialized &&
                     (this._reloading ||
                         ((this._reloading = true),
                         GSystemDialog
                             .custom({
-                                icon: o,
-                                title: t,
-                                subtitle: n,
-                                footer: i,
-                                buttons: a,
+                                icon: icon,
+                                title: title,
+                                subtitle: subtitle,
+                                footer: footer,
+                                buttons: buttons,
                                 closeCallback: () => {
                                     const e = this.createCountdown(() => this.signout(true), 3e5);
-                                    r && r(e);
+                                    attachTimer && attachTimer(e);
                                 },
                             })
                             .css({ zIndex: 9999 })));
             }),
             (Je.prototype.clearCountdown = function (e) {
-                let { timeoutID: t, intervalID: n = 0 } = e;
-                (n && clearInterval(n), t && clearInterval(t), $(".g-timer[data-interval=".concat(n, "]")).remove());
+                let { timeoutID, intervalID: n = 0 } = e;
+                (n && clearInterval(n), timeoutID && clearInterval(timeoutID), $(".g-timer[data-interval=".concat(n, "]")).remove());
             }),
             (Je.prototype.createCountdown = function (e, t) {
                 let n = null;
@@ -2379,7 +2379,7 @@ module.exports = function (module, exports, require) {
             (Je.prototype.saveStats = function () {
                 if (this._user && this._user.stats) {
                     var e = Ue.toMD5(JSON.stringify(this._user.stats || ""));
-                    Ye !== e && (Oe.updateUser({ stats: this._user.stats }), (Ye = e));
+                    Ye !== e && (gApi.updateUser({ stats: this._user.stats }), (Ye = e));
                 }
             }),
             (Je.prototype.setEnv = function (e) {
@@ -2726,13 +2726,13 @@ module.exports = function (module, exports, require) {
                                 o &&
                                     (Object.assign(t, { productId: o }),
                                     n
-                                        ? await Oe.updateUserSettings({
+                                        ? await gApi.updateUserSettings({
                                               subscription: { annual: { productId: o } },
                                           })
                                         : gContainer.setCookie({
                                               name: "_gproductid",
                                               value: o || "",
-                                              url: Oe.url,
+                                              url: gApi.url,
                                           })),
                                 this.openPaymentDialog(null, Object.assign(t, { flow: e }))
                             );
@@ -2740,9 +2740,9 @@ module.exports = function (module, exports, require) {
                         if ("login_dialog" === e) this._user || Q.performLogin();
                         else {
                             if ("confirm_email" === e) {
-                                const { confirm_email: e, flow: o } = t;
+                                const { confirm_email, flow } = t;
                                 return this.getCloudCommunicationManager()
-                                    .confirmEmail(e)
+                                    .confirmEmail(confirm_email)
                                     .then(async () => {
                                         let e = await this.getUser();
                                         e &&
@@ -2758,7 +2758,7 @@ module.exports = function (module, exports, require) {
                                                         ),
                                                     icon: "ok",
                                                 }),
-                                                    o && "confirm_email" !== o && this.runDeepLink(o, t));
+                                                    flow && "confirm_email" !== flow && this.runDeepLink(flow, t));
                                             });
                                     })
                                     .catch((e) => {
@@ -2774,7 +2774,7 @@ module.exports = function (module, exports, require) {
                                     });
                             else if ("purchases" === e) {
                                 n &&
-                                    (await Oe.hasPurchases()) &&
+                                    (await gApi.hasPurchases()) &&
                                     this.executeWhenReady(() => {
                                         new GProfileDialog(n, "purchase").open();
                                     });
@@ -2782,7 +2782,7 @@ module.exports = function (module, exports, require) {
                             else if ("enterprise" === e) n || (this._enterpriseLoginForm = true);
                             else if ("reset_trial" === e) {
                                 const e = () => {
-                                    Oe.license.resetTrial().then(() => gDesigner.requestLicenseUpdate());
+                                    gApi.license.resetTrial().then(() => gDesigner.requestLicenseUpdate());
                                 };
                                 n
                                     ? e()
@@ -2797,7 +2797,7 @@ module.exports = function (module, exports, require) {
                             else if ("annot" === e)
                                 designerConfig.HAS_ANNOTATIONS &&
                                     this.executeWhenReady(() => {
-                                        const { annot: e } = t;
+                                        const { annot } = t;
                                         (this.setPartVisible(F.RightSidebars, true), this._rightSidebars.setActiveSidebar(GAnnotationsSidebar.ID));
                                     });
                             else if (e === Z.DeepLinking.CreateShare && "true" === t[Z.DeepLinking.CreateShare])
@@ -2820,7 +2820,7 @@ module.exports = function (module, exports, require) {
                                     });
                             else if (e === Z.DeepLinking.ActivateTrial && t[Z.DeepLinking.ActivateTrial]) {
                                 const e = t[Z.DeepLinking.ActivateTrial];
-                                Oe.license.activateTrial(e).then(() => be.checkLicense());
+                                gApi.license.activateTrial(e).then(() => be.checkLicense());
                             } else {
                                 if (e === Z.DeepLinking.SetPassword) return new Ve().execute(t);
                                 if (e === Z.DeepLinking.ResetPassword) return new He().execute(t);
@@ -2911,7 +2911,7 @@ module.exports = function (module, exports, require) {
                 return this.getLicense().getSubscriberUserType();
             }),
             (Je.prototype.isLegacyFeature = function (e) {
-                return !!e && Ie.includes(e);
+                return !!e && features.includes(e);
             }),
             (Je.prototype.isEnabledProFeatures = function (e) {
                 if (!this.isEnabledSubscriptions()) return true;
@@ -2928,7 +2928,7 @@ module.exports = function (module, exports, require) {
             (Je.prototype.preInit = async function (e) {
                 const t = this;
                 (await (async function () {
-                    e || (e = Oe.isEnabledSubscriptions());
+                    e || (e = gApi.isEnabledSubscriptions());
                     if (await e.catch(() => false))
                         return (
                             (t._enabledSubscriptions = true),
@@ -2965,10 +2965,10 @@ module.exports = function (module, exports, require) {
                 const e = async () => {
                     this.toggleLoading(true);
                     try {
-                        await Oe.license
+                        await gApi.license
                             .activateTrial()
                             .then(() => gDesigner.requestLicenseUpdate())
-                            .catch((e) => GSystemDialog.alert(Oe.formatError(e)));
+                            .catch((e) => GSystemDialog.alert(gApi.formatError(e)));
                     } finally {
                         this.toggleLoading(false);
                     }
@@ -2994,7 +2994,7 @@ module.exports = function (module, exports, require) {
                         (console.log("OFFLINE!!!"), (n = true));
                     };
                     try {
-                        (o.open("HEAD", Oe.url + "/connection/test", false),
+                        (o.open("HEAD", gApi.url + "/connection/test", false),
                             (o.withCredentials = designerConfig.CONNECTION_TEST_WITH_CREDENTIALS),
                             o.setRequestHeader("Accept", "text/plain"),
                             o.setRequestHeader("Content-Type", "text/plain"),
@@ -3039,7 +3039,7 @@ module.exports = function (module, exports, require) {
                                     (r === Qe && (Qe = null), t || ((e = true), n()));
                                 }, i));
                                 try {
-                                    (a.open("HEAD", Oe.url + "/connection/test", true),
+                                    (a.open("HEAD", gApi.url + "/connection/test", true),
                                         (a.withCredentials = designerConfig.CONNECTION_TEST_WITH_CREDENTIALS),
                                         (a.timeout = 2e3),
                                         a.setRequestHeader("Accept", "text/plain"),

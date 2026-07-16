@@ -5,6 +5,8 @@
 //      (names come from src/bundles/<bundle>/names.json)
 //   3. annotate inline require calls: require(820 /* GoogleTagManagerSettings */)
 //   4. replace minifier literals: !0 -> true, !1 -> false, void 0 -> undefined
+//   5. un-alias destructures: const { debounce: s } -> const { debounce }
+//      (renames the mangled local to the real property name it already carries)
 //
 // All edits are scope-aware AST renames applied as precise text splices — no
 // code generation. A module is skipped entirely if it uses eval, and a param
@@ -20,9 +22,19 @@ const ROOT = path.join(__dirname, "..");
 const BUNDLES_DIR = path.join(ROOT, "src", "bundles");
 const PARAM_NAMES = ["module", "exports", "require"];
 
+// Names we must never rename a binding TO (reserved words + confusing globals).
+const RESERVED = new Set(
+    (
+        "break case catch class const continue debugger default delete do else export extends finally for function if " +
+        "import in instanceof new return super switch this throw try typeof var void while with yield let static enum " +
+        "await implements package protected interface private public true false null arguments eval undefined NaN Infinity"
+    ).split(" ")
+);
+const isValidName = (s) => /^[A-Za-z_$][\w$]*$/.test(s) && !RESERVED.has(s);
+
 const bundles = process.argv.slice(2).length ? process.argv.slice(2) : fs.readdirSync(BUNDLES_DIR);
 
-const stats = { params: 0, requireVars: 0, annotations: 0, literals: 0, skippedEval: 0, skippedGlobal: 0 };
+const stats = { params: 0, requireVars: 0, destructures: 0, annotations: 0, literals: 0, skippedEval: 0, skippedGlobal: 0 };
 
 function refine(src, names) {
     if (/\beval\b/.test(src)) {
@@ -64,17 +76,28 @@ function refine(src, names) {
         },
     });
 
-    const renameBinding = (binding, newName) => {
-        if (!binding || usedNames.has(newName)) return false;
-        const ids = [
-            binding.identifier,
-            ...binding.referencePaths.map((r) => r.node),
-            ...binding.constantViolations.map((v) => v.node.left ?? v.node),
-        ];
-        for (const id of ids) {
-            if (id.type !== "Identifier") return false; // be conservative on odd shapes
+    const renameBinding = (binding, newName, { skipDeclNode = false } = {}) => {
+        if (!binding || usedNames.has(newName) || !isValidName(newName)) return false;
+        const refPaths = [...binding.referencePaths, ...binding.constantViolations];
+        // collect edits, but bail out on any node shape we don't fully understand
+        const pending = [];
+        for (const refPath of refPaths) {
+            const node = refPath.node.type === "Identifier" ? refPath.node : refPath.node.left;
+            if (!node || node.type !== "Identifier") return false;
+            const parent = refPath.parentPath;
+            // `{ x }` (shorthand property VALUE) — renaming the text would also
+            // change the property KEY, so expand to `{ x: newName }` instead.
+            if (parent && parent.isObjectProperty() && parent.node.shorthand && parent.node.value === node) {
+                pending.push({ start: node.start, end: node.end, text: `${node.name}: ${newName}` });
+            } else {
+                pending.push({ start: node.start, end: node.end, text: newName });
+            }
         }
-        for (const id of ids) edits.push({ start: id.start, end: id.end, text: newName });
+        if (!skipDeclNode) {
+            if (binding.identifier.type !== "Identifier") return false;
+            pending.push({ start: binding.identifier.start, end: binding.identifier.end, text: newName });
+        }
+        edits.push(...pending);
         usedNames.add(newName);
         return true;
     };
@@ -125,6 +148,30 @@ function refine(src, names) {
             },
         });
     }
+
+    // 5. destructure aliases: `const { debounce: s } = ...` keeps the real
+    // property name, so rename the mangled local `s` -> `debounce` and collapse
+    // the property to shorthand `{ debounce }`. Behavior-preserving: the key is
+    // the source of truth and property/variable namespaces don't collide.
+    fnPath.traverse({
+        ObjectProperty(propPath) {
+            const node = propPath.node;
+            if (node.shorthand || node.computed) return;
+            if (!propPath.parentPath.isObjectPattern()) return; // destructuring only
+            if (node.key.type !== "Identifier" || node.value.type !== "Identifier") return;
+            const keyName = node.key.name;
+            const alias = node.value.name;
+            if (alias.length > 2 || alias === keyName || !isValidName(keyName)) return;
+            const binding = propPath.scope.getBinding(alias);
+            if (!binding) return;
+            // collapse `key: alias` -> `key` at the declaration site, and rename
+            // every other reference of the binding to the key name
+            if (renameBinding(binding, keyName, { skipDeclNode: true })) {
+                edits.push({ start: node.start, end: node.end, text: keyName });
+                stats.destructures++;
+            }
+        },
+    });
 
     // 4. minifier literals
     traverse(ast, {

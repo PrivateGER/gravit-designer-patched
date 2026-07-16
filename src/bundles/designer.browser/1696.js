@@ -181,14 +181,14 @@ module.exports = function (module, exports, require) {
                     const e = $(this);
                     for (let n = 0; n < t.length; ++n) {
                         let o = e;
-                        const { group: i, options: a } = t[n];
-                        (i && ((o = $('<optgroup label="' + i + '"></optgroup>')), e.append(o)),
-                            a.forEach((e) => {
-                                let { type: t, name: n, isCompatible: i } = e;
+                        const { group, options } = t[n];
+                        (group && ((o = $('<optgroup label="' + group + '"></optgroup>')), e.append(o)),
+                            options.forEach((e) => {
+                                let { type, name, isCompatible } = e;
                                 o.append(
                                     $("<option></option>")
-                                        .attr("value", t)
-                                        .text("".concat(n).concat(i ? "" : " *"))
+                                        .attr("value", type)
+                                        .text("".concat(name).concat(isCompatible ? "" : " *"))
                                 );
                             }));
                     }

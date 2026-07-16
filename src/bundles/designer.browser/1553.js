@@ -17,29 +17,29 @@ module.exports = function (module, exports, require) {
             m = require(595),
             y = require(520),
             GCommonNames = require(119),
-            { gApi: _, CloudIntegration: b } = require(10 /* designerConfig */),
-            { decrypt: w } = require(40 /* GSaveAction */),
+            { gApi, CloudIntegration } = require(10 /* designerConfig */),
+            { decrypt } = require(40 /* GSaveAction */),
             GSystemDialog = require(44);
         let x;
         function S() {
             let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
                 t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
             (l.default.call(this, e), (this._accountId = t));
-            const { clientId: n = null, apiKey: o = null, appId: a = null, accessToken: r, expires: s, corporate: c = false } = this._settings;
+            const { clientId: n = null, apiKey: o = null, appId: a = null, accessToken, expires, corporate: c = false } = this._settings;
             if (
                 ((this._settings = Object.assign(this._settings, {
                     clientId: n,
                     apiKey: o,
                     appId: a,
-                    accessToken: r,
-                    expires: s,
+                    accessToken: accessToken,
+                    expires: expires,
                     corporate: c,
                 })),
                 this._settings.corporate && (this._securityLevel = y.SecurityLevel.Highest),
-                r &&
+                accessToken &&
                     (this._googleDriveClient = this._buildGoogleClient({
-                        accessToken: r,
-                        expires: s,
+                        accessToken: accessToken,
+                        expires: expires,
                         corporate: c,
                         accountId: t,
                     })),
@@ -118,7 +118,7 @@ module.exports = function (module, exports, require) {
         }
         (GObject.GObject.inherit(S, l.default),
             (S.LAST_TEAM_DRIVE_ID_PROP_NAME =
-                (b && b.cloudOptions && (b.cloudOptions.find((e) => "googledrive" === e.type) || {}).lastTeamDrivePropName) || null),
+                (CloudIntegration && CloudIntegration.cloudOptions && (CloudIntegration.cloudOptions.find((e) => "googledrive" === e.type) || {}).lastTeamDrivePropName) || null),
             (S.prototype._securityLevel = y.SecurityLevel.Lowest),
             (S.prototype._googlePickerLoaded = false),
             (S.prototype._googleDriveClient = null),
@@ -153,19 +153,19 @@ module.exports = function (module, exports, require) {
                 async function o(e, o) {
                     for (let n = 0; n < e.length; n++) {
                         let o = e[n];
-                        const { id: i, type: a } = o;
-                        "folder" !== a &&
-                            (await t._googleDriveClient.updateFileDetails(i, {
+                        const { id, type } = o;
+                        "folder" !== type &&
+                            (await t._googleDriveClient.updateFileDetails(id, {
                                 viewedByMeTime: new Date().toISOString(),
                             }));
                     }
-                    const { showMessage: a, folder: r } = await n(e);
-                    (a &&
+                    const { showMessage, folder } = await n(e);
+                    (showMessage &&
                         GSystemDialog.messageWithInfo({
                             mainMessage: GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "text.selected-files-folder-not-added")),
                             infoMessage: GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "text.selected-files-folder-not-added-additional")),
                         }),
-                        t.trigger(new l.default.DriveEvent(null, l.default.DriveEvent.Type.FolderSwitchRequired, { folder: r })),
+                        t.trigger(new l.default.DriveEvent(null, l.default.DriveEvent.Type.FolderSwitchRequired, { folder: folder })),
                         o());
                 }
                 return new Promise((t, a) => {
@@ -272,13 +272,13 @@ module.exports = function (module, exports, require) {
                     try {
                         if (this._apiKey && this._clientId) ((a = this._clientId), (o = this._apiKey), (r = this._appId));
                         else {
-                            var s = await _.cloudServices.googleDrive.getClientConfiguration();
+                            var s = await gApi.cloudServices.googleDrive.getClientConfiguration();
                             const {
-                                GOOGLE_DRIVE_PUBLIC_CLIENT_ID: e,
-                                GOOGLE_DRIVE_PUBLIC_API_KEY: t,
-                                GOOGLE_DRIVE_APP_ID: n,
-                            } = JSON.parse(w(s));
-                            ((a = e), (o = t), (r = n), (this._apiKey = o), (this._clientId = a), (this._appId = r));
+                                GOOGLE_DRIVE_PUBLIC_CLIENT_ID,
+                                GOOGLE_DRIVE_PUBLIC_API_KEY,
+                                GOOGLE_DRIVE_APP_ID,
+                            } = JSON.parse(decrypt(s));
+                            ((a = GOOGLE_DRIVE_PUBLIC_CLIENT_ID), (o = GOOGLE_DRIVE_PUBLIC_API_KEY), (r = GOOGLE_DRIVE_APP_ID), (this._apiKey = o), (this._clientId = a), (this._appId = r));
                         }
                     } catch (e) {
                         return t(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed")));
@@ -410,17 +410,17 @@ module.exports = function (module, exports, require) {
                             })),
                             e.hasValue("orderBy") && (a.orderBy = e.orderBy));
                         const i = await this._googleDriveClient.searchFiles(a);
-                        var { files: s, nextPageToken: l } = i;
-                        if (!s.length) return o(t);
-                        s = t.getSize() + s.length > n ? s.slice(0, Math.max(n - t.getSize(), 0)) : s;
-                        var c = await this._convertToCloudItems(s);
+                        var { files, nextPageToken } = i;
+                        if (!files.length) return o(t);
+                        files = t.getSize() + files.length > n ? files.slice(0, Math.max(n - t.getSize(), 0)) : files;
+                        var c = await this._convertToCloudItems(files);
                         return (
                             e.hasValue("parent") &&
                                 c.forEach((t) => {
                                     t.parent = e.parent;
                                 }),
-                            t.update({ nextPageToken: l, items: c }),
-                            t.getSize() < n && l && (t = await this._search(e, t)),
+                            t.update({ nextPageToken: nextPageToken, items: c }),
+                            t.getSize() < n && nextPageToken && (t = await this._search(e, t)),
                             o(t)
                         );
                     } catch (e) {
@@ -650,10 +650,10 @@ module.exports = function (module, exports, require) {
                                     nextPageToken: e.hasValue("nextPageToken") && e.nextPageToken,
                                 },
                                 l = await this._googleDriveClient.searchTeamDrives(i);
-                            var { drives: a, nextPageToken: r } = l;
-                            if (!a.length) return o(t);
-                            a = t.getSize() + a.length > n ? a.slice(0, Math.max(n - t.getSize(), 0)) : a;
-                            var s = await this._convertToCloudItems(a);
+                            var { drives, nextPageToken: r } = l;
+                            if (!drives.length) return o(t);
+                            drives = t.getSize() + drives.length > n ? drives.slice(0, Math.max(n - t.getSize(), 0)) : drives;
+                            var s = await this._convertToCloudItems(drives);
                             return (
                                 t.update({ nextPageToken: r, items: s }),
                                 t.getSize() < n && r && (t = await this.getStorages(e, t)),

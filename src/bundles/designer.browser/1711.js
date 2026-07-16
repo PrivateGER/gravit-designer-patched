@@ -6,7 +6,7 @@ module.exports = function (module, exports, require) {
             i = (require(15 /* GPlatform */), require(40 /* GSaveAction */), require(67), require(1351)),
             a = require(451 /* GVirtualTree */).GVirtualTree,
             r = (require(451 /* GVirtualTree */).GVirtualTreeNode, require(451 /* GVirtualTree */).GVirtualTreeNodeNamed),
-            { VTREE_FREE_HEIGHT: s } = require(10 /* designerConfig */);
+            { VTREE_FREE_HEIGHT } = require(10 /* designerConfig */);
         (require(173), require(450));
         function l() {}
         function c(e) {
@@ -44,14 +44,14 @@ module.exports = function (module, exports, require) {
             var o = h.call(this, e),
                 a = o ? o.node : null;
             if (a) {
-                var { hasSelection: r } = (0, i.getLayerOrItemStatus)(a),
-                    { titleGroup: s } = (0, i.buildLayerItemContainer)(n, a, r, t);
-                o.element = s;
+                var { hasSelection } = (0, i.getLayerOrItemStatus)(a),
+                    { titleGroup } = (0, i.buildLayerItemContainer)(n, a, hasSelection, t);
+                o.element = titleGroup;
             }
         }
         function m(e, t, n) {
-            var { newNode: o, vtree: i } = y.call(this, e, n);
-            return (i.appendNode(t, o), o);
+            var { newNode, vtree } = y.call(this, e, n);
+            return (vtree.appendNode(t, newNode), newNode);
         }
         function y(e, t) {
             return {
@@ -64,7 +64,7 @@ module.exports = function (module, exports, require) {
                 t = e.vtree;
             t.beginUpdate();
             for (
-                var { elementHits: n, filteredElementHits: i, submenus: a } = e.selections,
+                var { elementHits, filteredElementHits, submenus } = e.selections,
                     r = (t, n, o) => {
                         ((e.layersTreeNodeMap[o] = { element: null, node: n, treeNode: t }),
                             e.layersTreeNodeMapByNodes.set(n, {
@@ -74,17 +74,17 @@ module.exports = function (module, exports, require) {
                             }));
                     },
                     s = 0;
-                s < i.length;
+                s < filteredElementHits.length;
                 s++
             ) {
                 var l = GObject.GUtil.uuid(),
-                    c = i[s].element,
-                    d = (c instanceof GObject.GBlock ? c.getLabel() : c.getNodeNameTranslated(), "temp-" + n.indexOf(i[s]));
-                if (a[d]) {
+                    c = filteredElementHits[s].element,
+                    d = (c instanceof GObject.GBlock ? c.getLabel() : c.getNodeNameTranslated(), "temp-" + elementHits.indexOf(filteredElementHits[s]));
+                if (submenus[d]) {
                     r((p = m.call(this, l, null, true)), c, l);
-                    for (let e = 0; e < a[d].length; e++) {
+                    for (let e = 0; e < submenus[d].length; e++) {
                         var u = GObject.GUtil.uuid();
-                        r(m.call(this, u, p, false), a[d][e], u);
+                        r(m.call(this, u, p, false), submenus[d][e], u);
                     }
                 } else {
                     var p;

@@ -5,8 +5,8 @@ module.exports = function (module, exports, require) {
             i = require(1478),
             a = require(1241);
         function r(e) {
-            let { Id: t, Email: n, Title: o, UserId: i, UserPrincipalName: a } = e;
-            ((this._id = t), (this._email = n), (this._name = o), (this._userId = i), (this._userPrincipalName = a));
+            let { Id, Email, Title, UserId, UserPrincipalName } = e;
+            ((this._id = Id), (this._email = Email), (this._name = Title), (this._userId = UserId), (this._userPrincipalName = UserPrincipalName));
         }
         (GObject.GObject.inherit(r, i.GCloudUser),
             (r.ValidRoles = [a.GCloudRole.Type.Viewer, a.GCloudRole.Type.ContentEditor]),

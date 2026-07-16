@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = exports.GRegex = void 0));
-        const { NOTIFICATION_USER_MENTION_REGEX: o } = require(10 /* designerConfig */),
+        const { NOTIFICATION_USER_MENTION_REGEX } = require(10 /* designerConfig */),
             i = (exports.GRegex = {
                 String: {
                     InParenthesis: { NotNegativeNumberInTheEnd: /\(\d+\)$/ },
@@ -10,7 +10,7 @@ module.exports = function (module, exports, require) {
                     MentionInputRtrim: /\s+$/,
                     MentionInputRegexpEncode: /([.*+?^=!:${}()|\[\]\/\\])/g,
                     MentionInputHighlightRegString: "(?![^&;]+;)(?!<[^<>]*)(<%=term%>)(?![^<>]*>)(?![^&;]+;)",
-                    USERNAME_RE: o || /@[^\r\n\t\f\v\s,{#%'"*<()>}:`;,!&?$+^\/|=\]\[\\]+/g,
+                    USERNAME_RE: NOTIFICATION_USER_MENTION_REGEX || /@[^\r\n\t\f\v\s,{#%'"*<()>}:`;,!&?$+^\/|=\]\[\\]+/g,
                     EMAIL: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                     FileExtension: /\.[0-9a-z]+$/i,
                     MultipleDotsEnd: /\.+$/,

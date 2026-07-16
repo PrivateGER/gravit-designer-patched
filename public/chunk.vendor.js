@@ -36671,7 +36671,7 @@
         function (module, exports, require) {
             "use strict";
             (require(19), require(8 /* Symbol */), require(20), require(107), require(3), require(26), require(114));
-            const { DateAPI: n } = require(209 /* GLocale */),
+            const { DateAPI } = require(209 /* GLocale */),
                 GShareRoles = require(287);
             module.exports = {
                 sinceVersion: "3.4.5",
@@ -36681,9 +36681,9 @@
                         getPrice() {
                             let {
                                 productId: e = 220444,
-                                coupon: t,
-                                currency: i,
-                                country: n,
+                                coupon,
+                                currency,
+                                country,
                             } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                             const r = /trunk|bleed|^localhost$/.test(location.hostname)
                                     ? "https://gravit.plasmatrap.com"
@@ -36691,26 +36691,26 @@
                                 o = new URLSearchParams("?client_id=1577");
                             return e
                                 ? (o.set("product_id", e),
-                                  t && o.set("coupon", t),
-                                  i && o.set("currency", i),
-                                  n && o.set("country", n),
+                                  coupon && o.set("coupon", coupon),
+                                  currency && o.set("currency", currency),
+                                  country && o.set("country", country),
                                   o.set("price_rule", e),
                                   fetch("".concat(r, "/pricesystem/cb?").concat(o.toString()))
                                       .then((e) => (e.ok ? e.json() : Promise.reject()))
                                       .then((e) => {
                                           const {
                                               price: {
-                                                  gross: { value: t },
+                                                  gross: { value },
                                               },
                                               list_price: { gross: { value: i } = {} } = {},
-                                              currency: { iso: n },
-                                              locale: r,
+                                              currency: { iso },
+                                              locale,
                                           } = e.pop();
                                           return {
-                                              price: t,
+                                              price: value,
                                               listPrice: i,
-                                              currency: n,
-                                              locale: r,
+                                              currency: iso,
+                                              locale: locale,
                                           };
                                       }))
                                 : Promise.reject("Missing productId");
@@ -36766,18 +36766,18 @@
                         },
                     },
                     license: {
-                        offlineExpirationTime: n.daysToMilliseconds(15),
-                        offlineCountdown: n.daysToMilliseconds(7),
+                        offlineExpirationTime: DateAPI.daysToMilliseconds(15),
+                        offlineCountdown: DateAPI.daysToMilliseconds(7),
                     },
                     reminders: {
-                        offlineWarning: n.daysToMilliseconds(1),
-                        proOfferInFree: n.daysToMilliseconds(15),
-                        proOfferInTrial: n.daysToMilliseconds(5),
-                        proOfferInTrialExpired: n.daysToMilliseconds(15),
-                        proOfferInTrialExpireSoon: n.daysToMilliseconds(1),
-                        proOfferInTrialLastWarning: n.daysToMilliseconds(0),
-                        proOfferSpecialPrice: n.daysToMilliseconds(0),
-                        proExpireSoon: n.daysToMilliseconds(30),
+                        offlineWarning: DateAPI.daysToMilliseconds(1),
+                        proOfferInFree: DateAPI.daysToMilliseconds(15),
+                        proOfferInTrial: DateAPI.daysToMilliseconds(5),
+                        proOfferInTrialExpired: DateAPI.daysToMilliseconds(15),
+                        proOfferInTrialExpireSoon: DateAPI.daysToMilliseconds(1),
+                        proOfferInTrialLastWarning: DateAPI.daysToMilliseconds(0),
+                        proOfferSpecialPrice: DateAPI.daysToMilliseconds(0),
+                        proExpireSoon: DateAPI.daysToMilliseconds(30),
                     },
                     flags: {
                         welcomeMessage: false,
@@ -36820,36 +36820,36 @@
         function (module, exports, require) {
             "use strict";
             (require(20), require(151), require(34), require(247), require(91), require(4), require(41), require(13), require(38));
-            const { GLocale: n, GLocaleKey: r } = require(209 /* GLocale */),
+            const { GLocale, GLocaleKey } = require(209 /* GLocale */),
                 o = Object.values(require(287 /* GShareRoles */))
                     .filter((e) => !!e.mentionName)
                     .map((e) => e.mentionName),
                 {
-                    externalApps: a,
-                    supportedApps: s,
-                    REQUEST_NEW_FEATURE_URL: l,
-                    DOCUMENTATION_URL: h,
-                    SUPPORT_URL: A,
-                    DISCUSS_BETA_URL: c,
-                    PRODUCT_VECTOR_URL: p,
+                    externalApps,
+                    supportedApps,
+                    REQUEST_NEW_FEATURE_URL,
+                    DOCUMENTATION_URL,
+                    SUPPORT_URL,
+                    DISCUSS_BETA_URL,
+                    PRODUCT_VECTOR_URL,
                 } = require(374 /* SUPPORT_URL */);
             ((exports.getUserEmail = function (e) {
                 return !e.email && e.login && e.login.match(/^[^,\s"'<>@]+@[^,.\s"'<>@]+(?:\.[^,."'<>\s@]+)*$/) ? e.login : e.email;
             }),
                 (exports.getRequestNewFeatureUrl = function () {
-                    return l;
+                    return REQUEST_NEW_FEATURE_URL;
                 }),
                 (exports.getSupportUrl = function () {
-                    return A;
+                    return SUPPORT_URL;
                 }),
                 (exports.getDocumentationUrl = function () {
-                    return h;
+                    return DOCUMENTATION_URL;
                 }),
                 (exports.getDiscussBetaUrl = function () {
-                    return c;
+                    return DISCUSS_BETA_URL;
                 }),
                 (exports.getProductVectorUrl = function () {
-                    return p;
+                    return PRODUCT_VECTOR_URL;
                 }));
             const u = (e) => {
                 let t = (e = e.replace(/^[@\s]+/, "")).indexOf("@");
@@ -36860,21 +36860,21 @@
                     let t = e.name.trim().split(/\s/)[0];
                     return u(t);
                 }
-                return u(e.login || e.email || (t ? n.get(new r("GCommonNames", "text.unknown-user")) : "Unknown"));
+                return u(e.login || e.email || (t ? GLocale.get(new GLocaleKey("GCommonNames", "text.unknown-user")) : "Unknown"));
             };
             const d = (e) => "string" == typeof e && 0 === e.indexOf("sharepoint_"),
                 g = (e) => "string" == typeof e && 0 === e.indexOf("googledrive_"),
-                f = (e) => e.app && e.app === s.SharePoint;
+                f = (e) => e.app && e.app === supportedApps.SharePoint;
             ((exports.isSharePointFileId = d),
                 (exports.isGoogleDriveFileId = g),
                 (exports.isSharePointFile = f),
-                (exports.isGoogleDriveFile = (e) => e.app && e.app === s.GoogleDrive),
+                (exports.isGoogleDriveFile = (e) => e.app && e.app === supportedApps.GoogleDrive),
                 (exports.isExternalFile = (e) => f(e) || g(e)),
                 (exports.isExternalFileId = (e) => g(e) || d(e)),
                 (exports.sanitizeName = u),
                 (exports.sameDomain = (e, t) => e && t && e.email && t.email && e.email.split("@")[1] === t.email.split("@")[1]),
-                (exports.getExternalAppCodes = () => a.map((e) => e.code)),
-                (exports.getAppFromFileId = (e) => (d(e) ? s.SharePoint : g(e) ? s.GoogleDrive : null)),
+                (exports.getExternalAppCodes = () => externalApps.map((e) => e.code)),
+                (exports.getAppFromFileId = (e) => (d(e) ? supportedApps.SharePoint : g(e) ? supportedApps.GoogleDrive : null)),
                 (exports.coalesceString = function () {
                     for (var e = arguments.length, t = new Array(e), i = 0; i < e; i++) t[i] = arguments[i];
                     return t.find((e) => {
@@ -44074,8 +44074,8 @@
         function (module, exports, require) {
             "use strict";
             require(30);
-            const { ACCESS: n, INSPECT: r, COMMENT: o, COPY: a, SHARE: s, EDIT: l, OWNER: h, APPROVE: A, PASSWORD_PROTECT: c } = require(352),
-                { GLocale: p, GLocaleKey: u } = require(209 /* GLocale */),
+            const { ACCESS, INSPECT, COMMENT, COPY, SHARE, EDIT, OWNER, APPROVE, PASSWORD_PROTECT } = require(352),
+                { GLocale, GLocaleKey } = require(209 /* GLocale */),
                 d = (e) =>
                     Object.freeze(
                         Object.assign(
@@ -44095,14 +44095,14 @@
                                 get status() {
                                     return this.getStatus();
                                 },
-                                getName: (t) => p.get(new u("GShareRoles", "text.role-".concat(e.i18n || e.id, "-name")), null, t),
+                                getName: (t) => GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(e.i18n || e.id, "-name")), null, t),
                                 getDescription: (t) =>
-                                    p.get(new u("GShareRoles", "text.role-".concat(e.i18n || e.id, "-description")), null, t),
+                                    GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(e.i18n || e.id, "-description")), null, t),
                                 getInvitationMessage: (t) =>
-                                    p.get(new u("GShareRoles", "text.role-".concat(e.i18n || e.id, "-invitation-message")), null, t),
+                                    GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(e.i18n || e.id, "-invitation-message")), null, t),
                                 getInvitationInfo: (t) =>
-                                    p.get(new u("GShareRoles", "text.role-".concat(e.i18n || e.id, "-invitation-info")), null, t),
-                                getStatus: (t) => p.get(new u("GShareRoles", "text.role-".concat(e.i18n || e.id, "-status")), null, t),
+                                    GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(e.i18n || e.id, "-invitation-info")), null, t),
+                                getStatus: (t) => GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(e.i18n || e.id, "-status")), null, t),
                             },
                             e
                         )
@@ -44113,7 +44113,7 @@
                     i18n: "no-access",
                     level: 0,
                     permissions: {
-                        [n]: false,
+                        [ACCESS]: false,
                     },
                 }),
                 Viewer: d({
@@ -44121,7 +44121,7 @@
                     level: 1,
                     mentionName: "viewers",
                     permissions: {
-                        [n]: true,
+                        [ACCESS]: true,
                     },
                 }),
                 Developer: d({
@@ -44129,9 +44129,9 @@
                     level: 2,
                     mentionName: "developers",
                     permissions: {
-                        [n]: true,
-                        [r]: true,
-                        [a]: true,
+                        [ACCESS]: true,
+                        [INSPECT]: true,
+                        [COPY]: true,
                     },
                 }),
                 Reviewer: d({
@@ -44140,8 +44140,8 @@
                     mentionName: "reviewers",
                     pro: true,
                     permissions: {
-                        [n]: true,
-                        [o]: true,
+                        [ACCESS]: true,
+                        [COMMENT]: true,
                     },
                 }),
                 Approver: d({
@@ -44150,9 +44150,9 @@
                     mentionName: "approvers",
                     pro: true,
                     permissions: {
-                        [n]: true,
-                        [o]: true,
-                        [A]: true,
+                        [ACCESS]: true,
+                        [COMMENT]: true,
+                        [APPROVE]: true,
                     },
                 }),
                 CoAuthor: d({
@@ -44163,11 +44163,11 @@
                     assignable: false,
                     mentionName: "coauthors",
                     permissions: {
-                        [n]: true,
-                        [r]: true,
-                        [a]: true,
-                        [o]: true,
-                        [l]: true,
+                        [ACCESS]: true,
+                        [INSPECT]: true,
+                        [COPY]: true,
+                        [COMMENT]: true,
+                        [EDIT]: true,
                     },
                 }),
                 Owner: d({
@@ -44176,15 +44176,15 @@
                     mentionName: "owner",
                     assignable: false,
                     permissions: {
-                        [h]: true,
-                        [A]: true,
-                        [c]: true,
-                        [n]: true,
-                        [r]: true,
-                        [a]: true,
-                        [o]: true,
-                        [s]: true,
-                        [l]: true,
+                        [OWNER]: true,
+                        [APPROVE]: true,
+                        [PASSWORD_PROTECT]: true,
+                        [ACCESS]: true,
+                        [INSPECT]: true,
+                        [COPY]: true,
+                        [COMMENT]: true,
+                        [SHARE]: true,
+                        [EDIT]: true,
                     },
                 }),
             });
@@ -55526,17 +55526,17 @@
                 s = require(952);
             require(824);
             const {
-                    getUserName: l,
-                    isSharePointFileId: h,
-                    isGoogleDriveFileId: A,
-                    isSharePointFile: c,
-                    isGoogleDriveFile: p,
-                    isExternalFile: u,
-                    isExternalFileId: d,
-                    sameDomain: g,
-                    buildQueryParams: f,
+                    getUserName,
+                    isSharePointFileId,
+                    isGoogleDriveFileId,
+                    isSharePointFile,
+                    isGoogleDriveFile,
+                    isExternalFile,
+                    isExternalFileId,
+                    sameDomain,
+                    buildQueryParams,
                 } = require(254),
-                { providers: m } = require(253);
+                { providers } = require(253);
             if (
                 ((n.version = "v1"),
                 Object({
@@ -55570,7 +55570,7 @@
                 w,
                 E = {
                     beforeSendRequest: (e) => {
-                        let { url: t, query: i } = e;
+                        let { url, query } = e;
                     },
                     onError: (e, t, i) => {},
                 };
@@ -55673,8 +55673,8 @@
                     })
                         .then((i) => {
                             if (false === i.ok) {
-                                const { onError: n } = E || {};
-                                n && n.call(null, i, e, t);
+                                const { onError } = E || {};
+                                onError && onError.call(null, i, e, t);
                             }
                             return i;
                         })
@@ -55789,19 +55789,19 @@
                     })),
                 (n.getPrice = function () {
                     let {
-                        productId: e,
-                        coupon: t,
-                        currency: i,
-                        country: n,
-                        provider: r,
+                        productId,
+                        coupon,
+                        currency,
+                        country,
+                        provider,
                     } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    const o = m[r || a.Cleverbridge];
+                    const o = providers[provider || a.Cleverbridge];
                     return o
                         ? o.getPrice({
-                              productId: e,
-                              coupon: t,
-                              currency: i,
-                              country: n,
+                              productId: productId,
+                              coupon: coupon,
+                              currency: currency,
+                              country: country,
                           })
                         : Promise.resolve({});
                 }),
@@ -55815,8 +55815,8 @@
                 (n.subscription.getNextBillingDate = () => b("/subscription/nextbillingdate")),
                 (n.subscription.isLifetime = () =>
                     b("/subscription/lifetime").then((e) => {
-                        let { lifetime: t } = e;
-                        return !!t;
+                        let { lifetime } = e;
+                        return !!lifetime;
                     })),
                 (n.activateSubscription = function (e) {
                     let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : a.Cleverbridge;
@@ -55871,8 +55871,8 @@
                         a = n.listen("/payload", (e) => r.resolve(e), true);
                     if (t instanceof HTMLElement) {
                         let n = document.createElement("iframe"),
-                            { events: r } = i;
-                        (r && Object.keys(r).forEach((e) => n.addEventListener(e, r[e], false)), t.appendChild(n), n.setAttribute("src", e));
+                            { events } = i;
+                        (events && Object.keys(events).forEach((e) => n.addEventListener(e, events[e], false)), t.appendChild(n), n.setAttribute("src", e));
                     } else {
                         let i;
                         if ("_blank" === t) i = window.open(e, "Checkout");
@@ -56253,8 +56253,8 @@
                             });
                         return new Promise(function (e, t) {
                             window.addEventListener("message", function i(n) {
-                                const { data: { token: r } = {} } = n;
-                                if (r) {
+                                const { data: { token } = {} } = n;
+                                if (token) {
                                     if (n.source != p && !p && n.origin.indexOf("chrome-extension:") < 0)
                                         return (console.warn("Token was rejected because there is an invalid source", n.source), t());
                                     (p && p.close(), window.removeEventListener("message", i), e(n.data));
@@ -56262,12 +56262,12 @@
                             });
                         });
                     })((e || "").replace(/^(?!\/)/, "/"), t).then(function (e) {
-                        let { token: t, userSignup: i } = e;
+                        let { token: t, userSignup } = e;
                         return (
                             v || (R.gApiToken = t),
                             n.getUser().then((e) =>
                                 Object.assign(e, {
-                                    new: "true" == i,
+                                    new: "true" == userSignup,
                                 })
                             )
                         );
@@ -56344,16 +56344,16 @@
                         Object.assign(e, {
                             platform: t,
                         }),
-                        n.url + "/get-pro/learnmore" + f(e)
+                        n.url + "/get-pro/learnmore" + buildQueryParams(e)
                     );
                 }));
             const D = (e) => {
-                let { newtab: t, top: i, left: n, w: r, h: o, url: a, name: s } = e;
+                let { newtab, top, left, w: r, h: o, url: a, name } = e;
                 var l;
                 return (
-                    (l = t
-                        ? window.open(a, s)
-                        : window.open(a, s, "scrollbars=yes, width=" + r + ", height=" + o + ", top=" + i + ", left=" + n)) &&
+                    (l = newtab
+                        ? window.open(a, name)
+                        : window.open(a, name, "scrollbars=yes, width=" + r + ", height=" + o + ", top=" + top + ", left=" + left)) &&
                         l.focus &&
                         l.focus(),
                     l
@@ -56368,7 +56368,7 @@
                 (n.searchUnsplashPhotos = (e) => b("/unsplash/search/photos", e)),
                 (n.getUnsplashPhotoUrl = (e) => b("/unsplash/download/photo", e)),
                 (n.getExampleFiles = (e) => b("/example-files", e)),
-                (n.getUserName = (e) => l(e, true)),
+                (n.getUserName = (e) => getUserName(e, true)),
                 (n.listAutoSaves = (e) => b("/file/".concat(e, "/autosave/versions"))),
                 (n.getAutoSave = (e, t) => b("/file/".concat(e, "/autosave").concat(t ? "/version/".concat(t) : ""))),
                 (n.getAutoSaveThumbnail = (e, t) => b("/file/".concat(e, "/autosave/thumbnail").concat(t ? "/version/".concat(t) : ""))),
@@ -56392,13 +56392,13 @@
                         },
                     });
                 }),
-                (n.isSharePointFileId = h),
-                (n.isGoogleDriveFileId = A),
-                (n.isSharePointFile = c),
-                (n.isGoogleDriveFile = p),
-                (n.sameDomain = g),
-                (n.isExternalFileId = d),
-                (n.isExternalFile = u),
+                (n.isSharePointFileId = isSharePointFileId),
+                (n.isGoogleDriveFileId = isGoogleDriveFileId),
+                (n.isSharePointFile = isSharePointFile),
+                (n.isGoogleDriveFile = isGoogleDriveFile),
+                (n.sameDomain = sameDomain),
+                (n.isExternalFileId = isExternalFileId),
+                (n.isExternalFile = isExternalFile),
                 (n.getRichTooltipVideoURL = (e) => "".concat(n.url, "/rich-tooltip-video/").concat(e)),
                 (n.fetchTranslationsURL = (e, t) => b("/i18n-url/".concat(e, "/").concat(t))),
                 (n.cloudServices = {
@@ -60155,15 +60155,15 @@
                     };
                 }
                 constructor(e) {
-                    let { page: t, content: i, title: n, action: r, cmd: a = {}, closeable: s = true, withFooter: l = true } = e;
-                    ((this._page = t),
-                        (this._content = i),
-                        (this._title = n || o.getValue("GOfferDialogV1", "text.offerdialog-v1-default-title")),
+                    let { page, content, title, action, cmd: a = {}, closeable: s = true, withFooter: l = true } = e;
+                    ((this._page = page),
+                        (this._content = content),
+                        (this._title = title || o.getValue("GOfferDialogV1", "text.offerdialog-v1-default-title")),
                         (this._openPurchaseFlow = a.openPurchaseFlow),
                         (this._close = a.close),
                         (this._closeable = s),
                         (this._withFooter = l),
-                        (this._action = r),
+                        (this._action = action),
                         this._initUI());
                 }
                 _initUI() {
@@ -60227,11 +60227,11 @@
                 }
                 _initActionButton() {
                     if (!this._action) return;
-                    const { style: e, title: t, execute: i } = this._action;
+                    const { style, title: t, execute } = this._action;
                     n("<button>")
-                        .addClass(e || "")
+                        .addClass(style || "")
                         .text(t)
-                        .on("click", () => i())
+                        .on("click", () => execute())
                         .appendTo(this._ui.main);
                 }
                 _initFooter() {
@@ -65703,8 +65703,8 @@
                 getRole() {
                     if (this.role) {
                         const e = Object.values(GShareRoles).find((e) => {
-                            let { id: t } = e;
-                            return t === this.role;
+                            let { id } = e;
+                            return id === this.role;
                         });
                         if (e) return e;
                     }
@@ -65929,12 +65929,12 @@
         function (module, exports, require) {
             "use strict";
             (require(19), require(4), require(13), require(26));
-            const { Events: n, EventProperties: r, UserProperties: o } = require(431),
+            const { Events, EventProperties, UserProperties } = require(431),
                 a = require(979);
             module.exports = class {
                 constructor(e) {
-                    let { userId: t, apiKey: i } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                    ((this._userId = t), (this._amplitude = e), i && this.init(i));
+                    let { userId, apiKey } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                    ((this._userId = userId), (this._amplitude = e), apiKey && this.init(apiKey));
                 }
                 init(e) {
                     if (!a.Env.isTest())
@@ -65959,8 +65959,8 @@
                         const n = new this._amplitude.Identify();
                         if (e) for (let [t, i] of Object.entries(e)) n.set(t, i);
                         (t &&
-                            (n.set(o.PRODUCT_LICENSE_TYPE, t.userType || t.getSubscriberUserType()),
-                            n.set(o.PRODUCT_LICENSE_STATUS, t.userStatus || t.getSubscriberUserStatus())),
+                            (n.set(UserProperties.PRODUCT_LICENSE_TYPE, t.userType || t.getSubscriberUserType()),
+                            n.set(UserProperties.PRODUCT_LICENSE_STATUS, t.userStatus || t.getSubscriberUserStatus())),
                             this._amplitude.identify(n, {
                                 user_id: i || this._userId,
                             }));
@@ -65971,8 +65971,8 @@
                 _formatProperties(e, t) {
                     if (!Object.keys(t).length) return t;
                     const i = {},
-                        o = Object.keys(n).find((t) => n[t] === e);
-                    if (r[o]) for (let [e, n] of Object.entries(r[o])) t.hasOwnProperty(e) && (i[n] = t[e]);
+                        o = Object.keys(Events).find((t) => Events[t] === e);
+                    if (EventProperties[o]) for (let [e, n] of Object.entries(EventProperties[o])) t.hasOwnProperty(e) && (i[n] = t[e]);
                     return i;
                 }
             };
@@ -75842,7 +75842,7 @@
             const n = require(171),
                 r = require(375),
                 GOfferDialogV1 = require(526),
-                { learnmore: a } = require(253),
+                { learnmore } = require(253),
                 s = require(170),
                 l = require(325);
             require(417 /* gApi */).self();
@@ -75880,50 +75880,50 @@
                 }
                 constructor(e) {
                     let {
-                        title: t,
-                        product: i,
-                        dismiss: h,
-                        impl: A,
-                        closeable: c,
-                        page: p,
-                        campaign: u,
-                        withFooter: d,
+                        title,
+                        product,
+                        dismiss,
+                        impl,
+                        closeable,
+                        page,
+                        campaign,
+                        withFooter,
                         content: g = GOfferDialogV1.DEFAULT_CONTENT,
                     } = e;
-                    ((this._impl = A), s.setLanguage(this._impl.getLanguage()));
+                    ((this._impl = impl), s.setLanguage(this._impl.getLanguage()));
                     let f = null;
-                    h &&
+                    dismiss &&
                         (f = {
                             title: s.get(new l("GReminderDialog", "text.continue-as-free")),
                             execute: () => {
-                                (r("".concat(p, "_click_continuebutton")), this.close());
+                                (r("".concat(page, "_click_continuebutton")), this.close());
                             },
                         });
                     const m = new GOfferDialogV1({
-                        page: p,
-                        title: t,
+                        page: page,
+                        title: title,
                         content: g,
                         action: f,
-                        product: i,
+                        product: product,
                         cmd: {
                             close: this.close.bind(this),
                             openPurchaseFlow: () => {
                                 (this._impl.openPurchaseFlow({
                                     dialog: this,
                                     options: {
-                                        closeable: c,
+                                        closeable: closeable,
                                     },
                                 }),
-                                    c && this.close());
+                                    closeable && this.close());
                             },
                         },
-                        closeable: c,
-                        withFooter: d,
+                        closeable: closeable,
+                        withFooter: withFooter,
                     }).getHTMLElement();
                     ((this._htmlElement = n("<div></div>")
                         .addClass("g-cloud-ui-reminder-dialog g-dialog")
                         .append(n("<div></div>").addClass("g-cloud-ui-reminder-dialog-content g-dialog-content").append(m))),
-                        a || this._htmlElement.addClass("g-cloud-ui-no-learn-more"));
+                        learnmore || this._htmlElement.addClass("g-cloud-ui-no-learn-more"));
                 }
                 open() {
                     n(".g-cloud-ui-reminder-dialog").length ||
@@ -75988,11 +75988,11 @@
                 }
                 constructor(e) {
                     let t,
-                        { type: i = "reminder", impl: o, gApi: A, now: c, campaign: p } = e;
-                    this._impl = o;
-                    const u = () => p || t || l.StoreCampaign.TrialSeries;
+                        { type: i = "reminder", impl, gApi, now, campaign } = e;
+                    this._impl = impl;
+                    const u = () => campaign || t || l.StoreCampaign.TrialSeries;
                     (h.setLanguage(this._impl.getLanguage()),
-                        A.setLanguage(this._impl.getLanguage()),
+                        gApi.setLanguage(this._impl.getLanguage()),
                         (this._htmlElement = n("<div></div>").addClass("g-cloud-ui g-cloud-ui-paywall-dialog g-dialog")),
                         (this._dialog = n("<div></div>")
                             .addClass("g-cloud-ui-paywall-dialog-content g-dialog-content g-cloud-ui-loading")
@@ -76017,7 +76017,7 @@
                     })
                         .getHTMLElement()
                         .appendTo(this._dialog);
-                    ((c = c || r.now()),
+                    ((now = now || r.now()),
                         Promise.all([this._impl.getLicense()])
                             .then((e) => {
                                 let [n] = e;
@@ -76025,7 +76025,7 @@
                                 let o = g,
                                     A = f;
                                 if ("subscribe" !== i) {
-                                    let e = r.millisecondsToDays(r.diff(c, new Date(n.expire)));
+                                    let e = r.millisecondsToDays(r.diff(now, new Date(n.expire)));
                                     if (
                                         ((o = h
                                             .getValue("GPaywallDialog", 1 === e ? "text.remaining-day" : "text.remaining-days")
@@ -76051,7 +76051,7 @@
                                                     });
                                                 },
                                             ],
-                                            t = r.millisecondsToDays(r.diff(new Date(n.created), c)),
+                                            t = r.millisecondsToDays(r.diff(new Date(n.created), now)),
                                             i = parseInt(((t - 1) / 15) % e.length) || 0;
                                         e[Math.max(i, 0)].call(this);
                                     }
@@ -89178,11 +89178,11 @@
         function (module, exports, require) {
             "use strict";
             const {
-                    quotas: n,
+                    quotas,
                     share: { quotas: r },
                     defaultLegacyUserSettings: { quotas: o },
                     defaultUserSettings: {
-                        license: { offlineCountdown: a },
+                        license: { offlineCountdown },
                     },
                 } = require(253),
                 s = require(430),
@@ -89196,27 +89196,27 @@
                     let {
                         offline: t = false,
                         license: i = s.Free,
-                        expire: n,
-                        created: r,
-                        registered: o,
+                        expire,
+                        created,
+                        registered,
                         legacy: a = false,
-                        offlineExpire: l,
-                        specialPrice: A,
-                        deactivated: c,
+                        offlineExpire,
+                        specialPrice,
+                        deactivated,
                         quotas: p,
-                        metadata: u,
+                        metadata,
                     } = e;
                     ((this._offline = t),
                         (this._license = i),
-                        (this._created = h.toDate(r)),
-                        (this._registered = h.toDate(o)),
-                        (this._expire = h.toDate(n)),
+                        (this._created = h.toDate(created)),
+                        (this._registered = h.toDate(registered)),
+                        (this._expire = h.toDate(expire)),
                         (this._legacy = a),
-                        (this._offlineExpire = l),
-                        (this._specialPrice = h.toDate(A)),
-                        (this._deactivated = c),
+                        (this._offlineExpire = offlineExpire),
+                        (this._specialPrice = h.toDate(specialPrice)),
+                        (this._deactivated = deactivated),
                         (this._quotas = p),
-                        (this._metadata = u),
+                        (this._metadata = metadata),
                         (this.__isExpired = this.isExpired()),
                         (this.__isOfflinePeriodExpired = this.isOfflinePeriodExpired()),
                         (this.__isSpecialPriceExpired = this.isSpecialPriceExpired()),
@@ -89285,19 +89285,19 @@
                 }
                 getOfflineWarningDate() {
                     return this.getOfflineExpirationDate()
-                        ? h.addTime(this.getOfflineExpirationDate(), -a + h.daysToMilliseconds(1))
+                        ? h.addTime(this.getOfflineExpirationDate(), -offlineCountdown + h.daysToMilliseconds(1))
                         : null;
                 }
                 getQuotas() {
-                    let { free: e, pro: t } = this._quotas || {};
+                    let { free, pro } = this._quotas || {};
                     return (
-                        e || (e = this.isLegacy() ? o.free : n.free),
-                        t || (t = this.isLegacy() ? o.pro : n.pro),
-                        (t = t || n.pro),
-                        (e = e || n.free),
+                        free || (free = this.isLegacy() ? o.free : quotas.free),
+                        pro || (pro = this.isLegacy() ? o.pro : quotas.pro),
+                        (pro = pro || quotas.pro),
+                        (free = free || quotas.free),
                         {
-                            pro: t,
-                            free: e,
+                            pro: pro,
+                            free: free,
                         }
                     );
                 }
@@ -89412,9 +89412,9 @@
             "use strict";
             (require(30), require(20), require(107), require(247), require(91));
             const n = require(973),
-                { sanitizeName: r } = require(254),
+                { sanitizeName } = require(254),
                 o = require(583),
-                { GLocale: a, GLocaleKey: s } = require(209 /* GLocale */);
+                { GLocale, GLocaleKey } = require(209 /* GLocale */);
 
             function l() {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -89452,15 +89452,15 @@
                         const e = new Array();
                         if (this.name && this.name.trim()) {
                             let t = this.name.trim().split(/\s/)[0];
-                            e.push(r(t));
+                            e.push(sanitizeName(t));
                         }
                         if (this.last_name && this.last_name.trim()) {
                             let t = this.last_name.trim().split(/\s/)[0];
-                            e.push(r(t));
+                            e.push(sanitizeName(t));
                         }
                         return e.join(" ");
                     }
-                    return r(this.login || this.email || (e ? a.get(new s("GCommonNames", "text.unknown-user")) : "Unknown"));
+                    return sanitizeName(this.login || this.email || (e ? GLocale.get(new GLocaleKey("GCommonNames", "text.unknown-user")) : "Unknown"));
                 }),
                 (module.exports = l));
         },
@@ -89479,7 +89479,7 @@
             const n = require(170),
                 r = require(325);
             module.exports = (e) => {
-                let { accessToken: t, apiKey: i, appId: o, language: a = 0 } = e;
+                let { accessToken, apiKey, appId, language: a = 0 } = e;
                 n.setLanguage(a);
                 const s = new google.picker.DocsView()
                         .setIncludeFolders(true)
@@ -89494,14 +89494,14 @@
                         .setParent("root")
                         .setLabel(n.get(new r("GGoogleDrive", "text.team-drives-tab-title")));
                 return new google.picker.PickerBuilder()
-                    .setAppId(o)
-                    .setOAuthToken(t)
+                    .setAppId(appId)
+                    .setOAuthToken(accessToken)
                     .enableFeature(google.picker.Feature.SUPPORT_TEAM_DRIVES)
                     .enableFeature(google.picker.Feature.SUPPORT_DRIVES)
                     .addView(s)
                     .addView(l)
                     .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
-                    .setDeveloperKey(i)
+                    .setDeveloperKey(apiKey)
                     .setLocale(n.getLocaleTagISO6391())
                     .build();
             };
@@ -89510,18 +89510,18 @@
             "use strict";
             require(30);
             const {
-                TYPES: { TYPE: n },
-                ACTIONS: { ACTION: r },
+                TYPES: { TYPE },
+                ACTIONS: { ACTION },
             } = require(585);
             class o {
                 constructor(e) {
                     Object.assign(this, e);
                 }
                 getAction() {
-                    return this.change & r;
+                    return this.change & ACTION;
                 }
                 getType() {
-                    return this.change & n;
+                    return this.change & TYPE;
                 }
             }
             ((o.from = function (e) {
@@ -89532,13 +89532,13 @@
         function (module, exports, require) {
             "use strict";
             (require(58), require(71));
-            const { UNKNOWN: n, IN_REVIEW: r, AWAITING_APPROVAL: o, APPROVED: a, REOPENED: s } = require(586),
+            const { UNKNOWN, IN_REVIEW, AWAITING_APPROVAL, APPROVED, REOPENED } = require(586),
                 l = Object.freeze({
-                    [n]: [r],
-                    [r]: [o],
-                    [o]: [r, s, a],
-                    [s]: [r, o],
-                    [a]: [r, s],
+                    [UNKNOWN]: [IN_REVIEW],
+                    [IN_REVIEW]: [AWAITING_APPROVAL],
+                    [AWAITING_APPROVAL]: [IN_REVIEW, REOPENED, APPROVED],
+                    [REOPENED]: [IN_REVIEW, AWAITING_APPROVAL],
+                    [APPROVED]: [IN_REVIEW, REOPENED],
                 });
 
             function h(e) {
@@ -99287,11 +99287,11 @@
             module.exports = class {
                 constructor() {
                     let {
-                        public_stats: e,
-                        private_stats: t,
-                        team_stats: i,
+                        public_stats,
+                        private_stats,
+                        team_stats,
                     } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    ((this._public_stats = e), (this._private_stats = t), (this._team_stats = i));
+                    ((this._public_stats = public_stats), (this._private_stats = private_stats), (this._team_stats = team_stats));
                 }
                 getPrivateShareQuota() {
                     return (this._private_stats && parseInt(this._private_stats.quota)) || 0;
@@ -99761,8 +99761,8 @@
                         ),
                         i = Object.keys(t).length,
                         a = Object.values(GShareRoles).find((e) => {
-                            let { permissions: n } = e;
-                            const r = Object.entries(Object.assign({}, o.ALL_PERMISSIONS_DENIED, n));
+                            let { permissions } = e;
+                            const r = Object.entries(Object.assign({}, o.ALL_PERMISSIONS_DENIED, permissions));
                             if (r.length === i)
                                 return r.every((e) => {
                                     let [i, n] = e;
@@ -99915,8 +99915,8 @@
                                     }, 5e4)),
                                 (this._ws.onmessage = (e) => {
                                     const t = JSON.parse(e.data),
-                                        { name: i, data: n } = t;
-                                    this.trigger(i, new o(i, n));
+                                        { name, data } = t;
+                                    this.trigger(name, new o(name, data));
                                 }),
                                 (this._ws.onclose = (e) => {
                                     if ((this._keepAlive && clearInterval(this._keepAlive), i && e.code !== r.NORMAL_CLOSURE)) {
@@ -100030,12 +100030,12 @@
                     e.microsoftStoreServices = {
                         getAccessToken: () => e.GET("/microsoft/store/services/token").then((e) => e.token),
                         updateB2BKeys: (t) => {
-                            let { accessToken: i, keys: n } = t;
+                            let { accessToken, keys } = t;
                             return e.fetchJSON("/microsoft/store/services/b2b/keys", {
                                 method: "POST",
                                 body: {
-                                    accessToken: i,
-                                    keys: n,
+                                    accessToken: accessToken,
+                                    keys: keys,
                                 },
                             });
                         },
@@ -100153,21 +100153,21 @@
         function (module, exports, require) {
             "use strict";
             const {
-                getRequestNewFeatureUrl: n,
-                getSupportUrl: r,
-                getDocumentationUrl: o,
-                getDiscussBetaUrl: a,
-                getSubscriptionUrl: s,
-                getProductVectorUrl: l,
+                getRequestNewFeatureUrl,
+                getSupportUrl,
+                getDocumentationUrl,
+                getDiscussBetaUrl,
+                getSubscriptionUrl,
+                getProductVectorUrl,
             } = require(254);
             module.exports = function (e) {
                 e.link = {
-                    getRequestNewFeatureUrl: n,
-                    getSupportUrl: r,
-                    getDocumentationUrl: o,
-                    getDiscussBetaUrl: a,
-                    getSubscriptionUrl: s,
-                    getProductVectorUrl: l,
+                    getRequestNewFeatureUrl: getRequestNewFeatureUrl,
+                    getSupportUrl: getSupportUrl,
+                    getDocumentationUrl: getDocumentationUrl,
+                    getDiscussBetaUrl: getDiscussBetaUrl,
+                    getSubscriptionUrl: getSubscriptionUrl,
+                    getProductVectorUrl: getProductVectorUrl,
                 };
             };
         },
@@ -100184,10 +100184,10 @@
         },
         function (module, exports, require) {
             "use strict";
-            const { MaintenanceStatus: n } = require(971);
+            const { MaintenanceStatus } = require(971);
             module.exports = function (e) {
                 e.maintenance = {
-                    getStatus: () => e.GET("/maintenance/status").then((e) => new n(e)),
+                    getStatus: () => e.GET("/maintenance/status").then((e) => new MaintenanceStatus(e)),
                 };
             };
         },
@@ -100242,19 +100242,19 @@
                 o = require(417 /* gApi */).self(),
                 a = require(354),
                 s = require(170),
-                { TRIAL_MESSAGE_WEB_CONTENT_URL_TEMPLATE: l, UPGRADE_SCREEN_WEB_CONTENT_URL_TEMPLATE: h } = require(374 /* SUPPORT_URL */),
-                { DateAPI: A } = require(209 /* GLocale */);
+                { TRIAL_MESSAGE_WEB_CONTENT_URL_TEMPLATE, UPGRADE_SCREEN_WEB_CONTENT_URL_TEMPLATE } = require(374 /* SUPPORT_URL */),
+                { DateAPI } = require(209 /* GLocale */);
             module.exports = class {
                 constructor() {
                     throw new Error("No instance");
                 }
                 static async newProExpireSoon(e) {
-                    let { impl: t, now: i } = e;
+                    let { impl, now } = e;
                     return new GPaywallDialog({
                         type: "reminder/accessending",
-                        impl: t,
+                        impl: impl,
                         gApi: o,
-                        now: i,
+                        now: now,
                         campaign: a.StoreCampaign.TrialSeries,
                     });
                 }
@@ -100300,7 +100300,7 @@
                         dismiss: false,
                         content: {
                             type: n.ContentType.Web,
-                            data: l.replace("%lang", s.getLocaleTagISO6391()),
+                            data: TRIAL_MESSAGE_WEB_CONTENT_URL_TEMPLATE.replace("%lang", s.getLocaleTagISO6391()),
                         },
                     });
                 }
@@ -100316,7 +100316,7 @@
                             withFooter: false,
                             content: {
                                 type: n.ContentType.Web,
-                                data: h.replace("%lang", s.getLocaleTagISO6391()),
+                                data: UPGRADE_SCREEN_WEB_CONTENT_URL_TEMPLATE.replace("%lang", s.getLocaleTagISO6391()),
                             },
                             impl: t,
                         })
@@ -100324,7 +100324,7 @@
                 }
                 static _getNewTrialMessageTitle(e) {
                     let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : new Date();
-                    const i = e && e.expire && A.millisecondsToDays(A.diff(new Date(e.expire), t));
+                    const i = e && e.expire && DateAPI.millisecondsToDays(DateAPI.diff(new Date(e.expire), t));
                     return 0 === i
                         ? s.getValue("GReminderDialogFactory", "text.expires-today")
                         : i >= 1
@@ -100342,20 +100342,20 @@
                 GOfferDialogV1 = require(526);
             module.exports = class {
                 constructor(e) {
-                    let { page: t, content: i = "", title: a, cmd: s = {}, closeable: l = true } = e;
-                    const { openPurchaseFlow: h, close: A } = s;
-                    ((a = a || o.getValue("GOfferDialogV1", "text.offerdialog-v1-default-title")),
+                    let { page, content: i = "", title, cmd: s = {}, closeable: l = true } = e;
+                    const { openPurchaseFlow, close } = s;
+                    ((title = title || o.getValue("GOfferDialogV1", "text.offerdialog-v1-default-title")),
                         (this._dialog = n("<div></div>").addClass("g-cloud-ui-offer-dialog-v1")),
                         l &&
                             n("<div></div>")
                                 .addClass("g-cloud-ui-btn-close")
                                 .append(n("<span></span>").addClass("g-cloud-icon-close"))
-                                .on("click", () => A && A())
+                                .on("click", () => close && close())
                                 .appendTo(this._dialog));
                     let c = n("<header></header>").appendTo(this._dialog);
                     ((this._title = n("<span></span>").addClass("title g-cloud-ui-markable").appendTo(c)),
-                        Array.isArray(a) || (a = [a]),
-                        a.forEach((e) => {
+                        Array.isArray(title) || (title = [title]),
+                        title.forEach((e) => {
                             (n("<label></label>").html(e).appendTo(this._title), n("<br>").appendTo(this._title));
                         }));
                     let p = n("<main></main>").appendTo(this._dialog);
@@ -100380,7 +100380,7 @@
                         .addClass("g-cloud-ui-btn-pro highlighted")
                         .text(this._getFooterInfo().buy)
                         .on("click", () => {
-                            (r("".concat(t || "offer", "_click_buybutton")), h && h());
+                            (r("".concat(page || "offer", "_click_buybutton")), openPurchaseFlow && openPurchaseFlow());
                         })
                         .appendTo(d),
                         n("<div></div>").addClass("money-back").appendTo(d));
@@ -100420,13 +100420,13 @@
                 a = require(375),
                 s = (require(373), require(354)),
                 l = require(582),
-                { PasswordLength: h } = require(581),
+                { PasswordLength } = require(581),
                 A = require(978),
-                { Events: c } = (require(584), require(431)),
-                { learnmore: p } = require(253),
+                { Events } = (require(584), require(431)),
+                { learnmore } = require(253),
                 GOfflineDialog = require(980),
-                { PRIVACY_URL: d, SUPPORT_URL: g, IMPORT_EXPORT_DOCUMENTATION: f, VECTOR_PRODUCT_PAGE: m, CORELDRAW_PAGE: y } = require(374 /* SUPPORT_URL */),
-                { getSupportUrl: _, getSubscriptionUrl: v, getUrlWithQueryParams: b } = require(254),
+                { PRIVACY_URL, SUPPORT_URL, IMPORT_EXPORT_DOCUMENTATION, VECTOR_PRODUCT_PAGE, CORELDRAW_PAGE } = require(374 /* SUPPORT_URL */),
+                { getSupportUrl, getSubscriptionUrl, getUrlWithQueryParams } = require(254),
                 C = (require(430), /xmas/),
                 w = (e) => {
                     32 === (e.which || e.keyCode) && (e.preventDefault(), o(e.target).click());
@@ -100476,15 +100476,15 @@
             };
 
             function P(e) {
-                let { impl: t, gApi: i, anonymous: s, version: l, runtime: h, options: A = {}, flow: c, query: p = {} } = e;
-                ((this._impl = t),
-                    (this._gApi = i),
-                    (this._anonymous = !!s),
-                    (this._version = l),
-                    (this._runtimeCode = h),
+                let { impl, gApi, anonymous, version, runtime, options: A = {}, flow, query: p = {} } = e;
+                ((this._impl = impl),
+                    (this._gApi = gApi),
+                    (this._anonymous = !!anonymous),
+                    (this._version = version),
+                    (this._runtimeCode = runtime),
                     (this._options = A),
                     (this._closeable = true),
-                    (this._flow = c),
+                    (this._flow = flow),
                     (this._query = p),
                     n.setLanguage(this._impl.getLanguage()),
                     this._gApi.setLanguage(this._impl.getLanguage()));
@@ -100539,7 +100539,7 @@
                             o("<span></span>").html(
                                 n
                                     .get(new r("GLoginDialog", "text.tooltip-trouble-login"))
-                                    .replace("%support-link", '<span class="support-link">'.concat(_(), "</span>"))
+                                    .replace("%support-link", '<span class="support-link">'.concat(getSupportUrl(), "</span>"))
                             )
                         )),
                     this._helpTip.find(".support-link").on(
@@ -100549,7 +100549,7 @@
                             (a("login-signup_".concat(e, "_support"), null, false),
                                 this._impl.openExternalLink({
                                     dialog: this,
-                                    link: b(_(), this._getUTMCampaignParams()),
+                                    link: getUrlWithQueryParams(getSupportUrl(), this._getUTMCampaignParams()),
                                 }));
                         }.bind(this)
                     ),
@@ -100619,7 +100619,7 @@
                             .append(o("<div></div>").addClass("g-cloud-ui-login-dialog").append(this._dialog))
                             .append(this._modal)
                             .append(this._overlay),
-                        p || e.addClass("g-cloud-ui-no-learn-more"),
+                        learnmore || e.addClass("g-cloud-ui-no-learn-more"),
                         this.focus());
                 }),
                 (P.prototype._getFormattedVersion = function () {
@@ -100867,8 +100867,8 @@
                                 o("<span></span>").text(
                                     n
                                         .get(new r("GLoginDialog", "text.sign-up-password-min-max"))
-                                        .replace("%min-number", h.Minimum)
-                                        .replace("%max-number", h.Maximum)
+                                        .replace("%min-number", PasswordLength.Minimum)
+                                        .replace("%max-number", PasswordLength.Maximum)
                                 )
                             )
                             .appendTo(t),
@@ -100923,7 +100923,7 @@
                                                     a("login-signup_create-account_privacy-policy", null, true),
                                                     this._impl.openExternalLink({
                                                         dialog: this,
-                                                        link: b(d, this._getUTMCampaignParams()),
+                                                        link: getUrlWithQueryParams(PRIVACY_URL, this._getUTMCampaignParams()),
                                                     }),
                                                     false
                                                 )
@@ -100940,7 +100940,7 @@
                                     a("login-signup_create-account_terms-of-use", null, true),
                                     this._impl.openExternalLink({
                                         dialog: this,
-                                        link: b("https://www.corel.com/terms/", this._getUTMCampaignParams()),
+                                        link: getUrlWithQueryParams("https://www.corel.com/terms/", this._getUTMCampaignParams()),
                                     }),
                                     false
                                 )
@@ -100954,7 +100954,7 @@
                                     a("login-signup_create-account_eula", null, true),
                                     this._impl.openExternalLink({
                                         dialog: this,
-                                        link: b("https://www.corel.com/eula", this._getUTMCampaignParams()),
+                                        link: getUrlWithQueryParams("https://www.corel.com/eula", this._getUTMCampaignParams()),
                                     }),
                                     false
                                 )
@@ -101021,7 +101021,7 @@
                     return (
                         o("<span></span>")
                             .addClass("info")
-                            .html(n.getValue("GLoginDialog", "text.create-account-info").replace("%privacy-link", d))
+                            .html(n.getValue("GLoginDialog", "text.create-account-info").replace("%privacy-link", PRIVACY_URL))
                             .appendTo(g)
                             .find("a")
                             .on("click", (e) => {
@@ -101032,7 +101032,7 @@
                                     a("login-signup_create-account_".concat(i), null, true),
                                     this._impl.openExternalLink({
                                         dialog: this,
-                                        link: b(t, this._getUTMCampaignParams()),
+                                        link: getUrlWithQueryParams(t, this._getUTMCampaignParams()),
                                     }),
                                     false
                                 );
@@ -101210,7 +101210,7 @@
                     return (
                         o("<span></span>")
                             .addClass("info")
-                            .html(n.getValue("GLoginDialog", "text.create-account-info").replace("%privacy-link", d))
+                            .html(n.getValue("GLoginDialog", "text.create-account-info").replace("%privacy-link", PRIVACY_URL))
                             .appendTo(i)
                             .find("a")
                             .on("click", (e) => {
@@ -101221,7 +101221,7 @@
                                     a("login-signup_login_".concat(i), null, true),
                                     this._impl.openExternalLink({
                                         dialog: this,
-                                        link: b(t, this._getUTMCampaignParams()),
+                                        link: getUrlWithQueryParams(t, this._getUTMCampaignParams()),
                                     }),
                                     false
                                 );
@@ -101235,24 +101235,24 @@
                                 title: n.get(new r("GLoginDialog", "text.title-discontinued-eol-date")),
                                 content: n
                                     .get(new r("GLoginDialog", "text.title-discontinued-eol-date-details"))
-                                    .replace("%support-link", g),
+                                    .replace("%support-link", SUPPORT_URL),
                             },
                             {
                                 title: n.get(new r("GLoginDialog", "text.title-discontinued-avoid-losing-work")),
                                 content: n.get(new r("GLoginDialog", "text.title-discontinued-avoid-losing-work-details")),
                                 action: {
                                     text: n.get(new r("GLoginDialog", "text.title-discontinued-export-your-files")),
-                                    link: f,
+                                    link: IMPORT_EXPORT_DOCUMENTATION,
                                 },
                             },
                             {
                                 title: n.get(new r("GLoginDialog", "text.title-discontinued-sign-up-closed")),
                                 content: n
                                     .get(new r("GLoginDialog", "text.title-discontinued-sign-up-closed-details"))
-                                    .replace("%product-link", y),
+                                    .replace("%product-link", CORELDRAW_PAGE),
                                 action: {
                                     text: n.get(new r("GLoginDialog", "text.title-discontinued-sign-up-closed-learn-more")),
-                                    link: m,
+                                    link: VECTOR_PRODUCT_PAGE,
                                 },
                             },
                         ],
@@ -101285,20 +101285,20 @@
                                     coupon: this._coupon,
                                 })
                                 .then((t) => {
-                                    let { price: i, listPrice: o, locale: a, currency: s } = t,
+                                    let { price, listPrice, locale, currency } = t,
                                         l = "";
-                                    i && o && (l = 5 * parseInt(Math.floor((100 * (1 - i / o)) / 5)) + "%");
+                                    price && listPrice && (l = 5 * parseInt(Math.floor((100 * (1 - price / listPrice)) / 5)) + "%");
                                     const h = {
                                         style: "currency",
-                                        currency: s,
+                                        currency: currency,
                                     };
-                                    i &&
-                                        Math.round(i) === i &&
+                                    price &&
+                                        Math.round(price) === price &&
                                         Object.assign(h, {
                                             minimumFractionDigits: 0,
                                             maximumFractionDigits: 0,
                                         });
-                                    const A = i ? i.toLocaleString(a || n.getLocaleLanguageTag(navigator.language), h) : "";
+                                    const A = price ? price.toLocaleString(locale || n.getLocaleLanguageTag(navigator.language), h) : "";
                                     A &&
                                         l &&
                                         e.html(
@@ -101309,21 +101309,21 @@
                         (a.html(n.get(new r("GLoginDialog", "text.title-discontinued-thanks"))),
                             s.append(
                                 e.map((e) => {
-                                    let { title: t, content: i, action: n } = e;
+                                    let { title, content, action } = e;
                                     const r = o("<div></div>")
                                         .addClass("topic")
-                                        .append(o("<div></div>").text(t).css("font-size", "12pt").css("font-weight", "bold"))
-                                        .append(o("<div></div>").html(i).css("font-size", "12pt"));
+                                        .append(o("<div></div>").text(title).css("font-size", "12pt").css("font-weight", "bold"))
+                                        .append(o("<div></div>").html(content).css("font-size", "12pt"));
                                     return (
-                                        n &&
+                                        action &&
                                             r.append(
                                                 o("<button></button>")
                                                     .addClass("buynow round-corner")
-                                                    .text(n.text)
+                                                    .text(action.text)
                                                     .on("click", () => {
                                                         this._impl.openExternalLink({
                                                             dialog: this,
-                                                            link: n.link,
+                                                            link: action.link,
                                                         });
                                                     })
                                                     .css("width", "fit-content")
@@ -101382,9 +101382,9 @@
                                 event: "USER_SIGN_UP_EVENT",
                             })),
                             this._toggleLoading(true));
-                        const { flags: { welcomeMessage: t } = {} } = await this._gApi.getUserSettings().catch(() => Object.create({}));
+                        const { flags: { welcomeMessage } = {} } = await this._gApi.getUserSettings().catch(() => Object.create({}));
                         if (
-                            !t &&
+                            !welcomeMessage &&
                             e.new &&
                             (await this._gApi.updateUserSettings({
                                 flags: {
@@ -101590,7 +101590,7 @@
             const n = require(171),
                 r = require(170),
                 o = require(325),
-                { SUPPORT_URL: a } = require(374 /* SUPPORT_URL */);
+                { SUPPORT_URL } = require(374 /* SUPPORT_URL */);
 
             function s(e, t, i) {
                 ((this._dialog = n("<div></div>").addClass("g-dialog-content")),
@@ -101607,18 +101607,18 @@
                                 .addClass("buttons")
                                 .append(
                                     i.map((e) => {
-                                        let { label: t, onclick: i, highlighted: r } = e;
+                                        let { label, onclick, highlighted } = e;
                                         return n("<button></button>")
-                                            .append(n("<span></span>").text(t))
-                                            .addClass("g-cloud-ui-btn-pro " + (r ? "highlighted" : ""))
-                                            .on("click", () => i(this));
+                                            .append(n("<span></span>").text(label))
+                                            .addClass("g-cloud-ui-btn-pro " + (highlighted ? "highlighted" : ""))
+                                            .on("click", () => onclick(this));
                                     })
                                 )
                         )
                         .append(
                             n("<span></span>")
                                 .addClass("footer")
-                                .html(r.getValue("GOfflineDialog", "text.have-questions").replace("%link", a))
+                                .html(r.getValue("GOfflineDialog", "text.have-questions").replace("%link", SUPPORT_URL))
                         )
                         .appendTo(this._dialog));
             }
@@ -196203,24 +196203,24 @@
             (function (e, n) {
                 const r = require(250),
                     {
-                        UTSRoot: o,
-                        Page: a,
-                        Thread: s,
-                        Comment: l,
-                        Annotation: h,
-                        Shape: A,
-                        ShapeType: c,
-                        CommentType: p,
-                        AnnotationProperties: u,
-                        AuthorProperties: d,
+                        UTSRoot,
+                        Page,
+                        Thread,
+                        Comment,
+                        Annotation,
+                        Shape,
+                        ShapeType,
+                        CommentType,
+                        AnnotationProperties,
+                        AuthorProperties,
                     } = require(1096),
                     {
-                        CDAAnnotationsList: g,
-                        CDAAnnotation: f,
-                        CDAAnnotationBase: m,
-                        CDAComment: y,
-                        CDACommentType: _,
-                        CDAAnnotationType: v,
+                        CDAAnnotationsList,
+                        CDAAnnotation,
+                        CDAAnnotationBase,
+                        CDAComment,
+                        CDACommentType,
+                        CDAAnnotationType,
                     } = require(1097),
                     b = require(17),
                     C = require(179),
@@ -196341,32 +196341,32 @@
                 }
 
                 function q(e) {
-                    var t = new h();
+                    var t = new Annotation();
                     return (
                         J(t.Author, e),
                         j(t.Properties, e),
                         (function (e, t, i) {
                             switch (t["@"]) {
-                                case v.ARROW_ANNOT:
-                                    e.Type = c.ARROW;
+                                case CDAAnnotationType.ARROW_ANNOT:
+                                    e.Type = ShapeType.ARROW;
                                     break;
-                                case v.COLLABORATIVE_TXT:
-                                    e.Type = c.COLLABORATIVE_TEXT;
+                                case CDAAnnotationType.COLLABORATIVE_TXT:
+                                    e.Type = ShapeType.COLLABORATIVE_TEXT;
                                     break;
-                                case v.COMMENT_ANNOT:
-                                    e.Type = c.HOTSPOT;
+                                case CDAAnnotationType.COMMENT_ANNOT:
+                                    e.Type = ShapeType.HOTSPOT;
                                     break;
-                                case v.ELLIPSE_ANNOT:
-                                    e.Type = c.ELLIPSE;
+                                case CDAAnnotationType.ELLIPSE_ANNOT:
+                                    e.Type = ShapeType.ELLIPSE;
                                     break;
-                                case v.HIGHLIGHTER_ANNOT:
-                                    e.Type = c.HIGHLIGHTER;
+                                case CDAAnnotationType.HIGHLIGHTER_ANNOT:
+                                    e.Type = ShapeType.HIGHLIGHTER;
                                     break;
-                                case v.PENCIL_ANNOT:
-                                    e.Type = c.PENCIL;
+                                case CDAAnnotationType.PENCIL_ANNOT:
+                                    e.Type = ShapeType.PENCIL;
                                     break;
-                                case v.RECTANGLE_ANNOT:
-                                    e.Type = c.RECTANGLE;
+                                case CDAAnnotationType.RECTANGLE_ANNOT:
+                                    e.Type = ShapeType.RECTANGLE;
                             }
                             var n = D.restore(t);
                             if (!n) return;
@@ -196462,7 +196462,7 @@
                     let t = e.$;
                     return t
                         ? t.map((e) => {
-                              let t = new s();
+                              let t = new Thread();
                               t.Annotation = q(e);
                               let i = e.$ || [];
                               return (
@@ -196470,16 +196470,16 @@
                                       .filter((e) => "cmt" === e["@"])
                                       .map((e) =>
                                           (function (e) {
-                                              var t = new l();
+                                              var t = new Comment();
                                               switch ((J(t.Author, e), j(t.Properties, e), e.type)) {
-                                                  case _.Open:
-                                                      t.Properties.Type = p.REOPENED;
+                                                  case CDACommentType.Open:
+                                                      t.Properties.Type = CommentType.REOPENED;
                                                       break;
-                                                  case _.Close:
-                                                      t.Properties.Type = p.RESOLVED;
+                                                  case CDACommentType.Close:
+                                                      t.Properties.Type = CommentType.RESOLVED;
                                                       break;
                                                   default:
-                                                      t.Properties.Type = p.COMMON;
+                                                      t.Properties.Type = CommentType.COMMON;
                                               }
                                               return t;
                                           })(e)
@@ -196492,7 +196492,7 @@
 
                 function $(e) {
                     return (e || []).map((e) => {
-                        var t = new a();
+                        var t = new Page();
                         return (
                             (t.Properties.Guid = e.Guid || ""),
                             (t.Properties.CdaId = e.pgid || ""),
@@ -196542,28 +196542,28 @@
                 }
 
                 function ne(e) {
-                    var t = new f();
+                    var t = new CDAAnnotation();
                     switch (e.Annotation.Shape.Type) {
-                        case c.ARROW:
-                            t["@"] = v.ARROW_ANNOT;
+                        case ShapeType.ARROW:
+                            t["@"] = CDAAnnotationType.ARROW_ANNOT;
                             break;
-                        case c.COLLABORATIVE_TEXT:
-                            t["@"] = v.COLLABORATIVE_TXT;
+                        case ShapeType.COLLABORATIVE_TEXT:
+                            t["@"] = CDAAnnotationType.COLLABORATIVE_TXT;
                             break;
-                        case c.ELLIPSE:
-                            t["@"] = v.ELLIPSE_ANNOT;
+                        case ShapeType.ELLIPSE:
+                            t["@"] = CDAAnnotationType.ELLIPSE_ANNOT;
                             break;
-                        case c.HIGHLIGHTER:
-                            t["@"] = v.HIGHLIGHTER_ANNOT;
+                        case ShapeType.HIGHLIGHTER:
+                            t["@"] = CDAAnnotationType.HIGHLIGHTER_ANNOT;
                             break;
-                        case c.HOTSPOT:
-                            t["@"] = v.COMMENT_ANNOT;
+                        case ShapeType.HOTSPOT:
+                            t["@"] = CDAAnnotationType.COMMENT_ANNOT;
                             break;
-                        case c.PENCIL:
-                            t["@"] = v.PENCIL_ANNOT;
+                        case ShapeType.PENCIL:
+                            t["@"] = CDAAnnotationType.PENCIL_ANNOT;
                             break;
-                        case c.RECTANGLE:
-                            t["@"] = v.RECTANGLE_ANNOT;
+                        case ShapeType.RECTANGLE:
+                            t["@"] = CDAAnnotationType.RECTANGLE_ANNOT;
                     }
                     if (e) {
                         let i;
@@ -196580,10 +196580,10 @@
                                 if (t.Annotation && t.Comments)
                                     for (let i = t.Comments.length - 1; i >= 0; i--) {
                                         let n = t.Comments[i];
-                                        if (n.Properties.Type !== p.COMMON)
-                                            return void (n.Properties.Type === p.RESOLVED
+                                        if (n.Properties.Type !== CommentType.COMMON)
+                                            return void (n.Properties.Type === CommentType.RESOLVED
                                                 ? (e.rsv = true)
-                                                : n.Properties.Type === p.REOPENED && (e.rsv = false));
+                                                : n.Properties.Type === CommentType.REOPENED && (e.rsv = false));
                                     }
                                 e.rsv = void 0;
                             })(t, e),
@@ -196592,14 +196592,14 @@
                                 var n,
                                     r = new I(new F()),
                                     o = new GEditor(r);
-                                if (t.Type === c.ARROW) n = new S();
-                                else if (t.Type === c.COLLABORATIVE_TEXT) n = new T();
-                                else if (t.Type === c.ELLIPSE) n = new B();
-                                else if (t.Type === c.HIGHLIGHTER) n = new x();
-                                else if (t.Type === c.HOTSPOT) n = new w();
-                                else if (t.Type === c.PENCIL) n = new P();
+                                if (t.Type === ShapeType.ARROW) n = new S();
+                                else if (t.Type === ShapeType.COLLABORATIVE_TEXT) n = new T();
+                                else if (t.Type === ShapeType.ELLIPSE) n = new B();
+                                else if (t.Type === ShapeType.HIGHLIGHTER) n = new x();
+                                else if (t.Type === ShapeType.HOTSPOT) n = new w();
+                                else if (t.Type === ShapeType.PENCIL) n = new P();
                                 else {
-                                    if (t.Type !== c.RECTANGLE) return;
+                                    if (t.Type !== ShapeType.RECTANGLE) return;
                                     n = new E();
                                 }
                                 if ((o.insertElements([n], false, true, false), n.getPaintLayers())) {
@@ -196611,7 +196611,7 @@
                                             let t = new b(b.parseCSSColor(e));
                                             (a.setProperty("_pt", t),
                                                 i && i.CDA && !isNaN(i.CDA.FillOpacity) && a.setProperty("_op", Number(i.CDA.FillOpacity)));
-                                        } else t.Type !== c.HOTSPOT && a.setProperty("_op", 0);
+                                        } else t.Type !== ShapeType.HOTSPOT && a.setProperty("_op", 0);
                                     let r = t.StrokeColor;
                                     !r && i && i.CDA && i.CDA.StrokeColor && (r = i.CDA.StrokeColor);
                                     var s = n.getPaintLayers().getBorderLayers()[0];
@@ -196619,7 +196619,7 @@
                                         if (r) {
                                             let e = new b(b.parseCSSColor(r));
                                             (s.setProperty("_pt", e),
-                                                t.Type === c.ARROW &&
+                                                t.Type === ShapeType.ARROW &&
                                                     (t.ArrowStart ? s.setProperty("_bhm", "A") : s.setProperty("_bhm", void 0),
                                                     t.ArrowEnd ? s.setProperty("_btm", "A") : s.setProperty("_btm", void 0)),
                                                 t.StrokeWidth && s.setProperty("_bw", parseInt(t.StrokeWidth)),
@@ -196629,7 +196629,7 @@
                                                     s.setProperty("_op", Number(i.CDA.StrokeOpacity)));
                                         } else s.setProperty("_op", 0);
                                 }
-                                if ((n.initDefaultForLimitedRestore(), t.Curves && n instanceof R && t.Type !== c.HOTSPOT)) {
+                                if ((n.initDefaultForLimitedRestore(), t.Curves && n instanceof R && t.Type !== ShapeType.HOTSPOT)) {
                                     let e = new G(),
                                         i = t.Curves,
                                         r = 0;
@@ -196660,7 +196660,7 @@
                                     a && !a.isEmpty()
                                         ? n.transform(new N().translated(-s, -l).scaled(c, p).translated(t.TopLeftX, t.TopLeftY))
                                         : n.transform(new N().translated(-s, -l).translated(t.TopLeftX, t.TopLeftY));
-                                } else if (t.Type !== c.HOTSPOT) {
+                                } else if (t.Type !== ShapeType.HOTSPOT) {
                                     let e = new N(),
                                         i = n.getGeometryBBox(true);
                                     if (i) {
@@ -196690,17 +196690,17 @@
                             "anc" === t["@"] && (i = t.$[0]),
                             (t.$ = (e.Comments || []).map((e) =>
                                 (function (e) {
-                                    var t = new y();
+                                    var t = new CDAComment();
                                     if (((t["@"] = "cmt"), e)) {
                                         switch (e.Properties.Type) {
-                                            case p.RESOLVED:
-                                                t.type = _.Close;
+                                            case CommentType.RESOLVED:
+                                                t.type = CDACommentType.Close;
                                                 break;
-                                            case p.REOPENED:
-                                                t.type = _.Open;
+                                            case CommentType.REOPENED:
+                                                t.type = CDACommentType.Open;
                                                 break;
                                             default:
-                                                t.type = _.User;
+                                                t.type = CDACommentType.User;
                                         }
                                         (te(t, e.Author && e.Author.Properties), ie(t, e.Properties));
                                     }
@@ -196714,7 +196714,7 @@
 
                 function re(e) {
                     return e.map((e) => {
-                        var t = new g();
+                        var t = new CDAAnnotationsList();
                         return (
                             e.Properties &&
                                 ((t.Guid = e.Properties.Guid),
@@ -196743,7 +196743,7 @@
                         if (e.annotationsCollection) {
                             if (Y((e = e.annotationsCollection))) return e;
                         } else e instanceof Array || (e = e ? [e] : []);
-                        var i = new o();
+                        var i = new UTSRoot();
                         return ((i.Comments.FileId = t), (i.Comments.Pages = $(e)), JSON.parse(JSON.stringify(i)));
                     }),
                     (exports.UTStoCDA = function (e) {

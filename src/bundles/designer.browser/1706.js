@@ -12,7 +12,7 @@ module.exports = function (module, exports, require) {
             u = o(require(135)),
             p = require(451 /* GVirtualTree */).GVirtualTree,
             g = require(451 /* GVirtualTree */).GVirtualTreeNodeNamed,
-            { VTREE_FREE_HEIGHT: h, VTREE_FREE_HEIGHT_TOUCH: f } = require(10 /* designerConfig */),
+            { VTREE_FREE_HEIGHT, VTREE_FREE_HEIGHT_TOUCH } = require(10 /* designerConfig */),
             m = require(450),
             y = ["name"];
         function v() {}
@@ -131,13 +131,13 @@ module.exports = function (module, exports, require) {
                 r = G.call(this, e),
                 s = r ? r.node : null;
             if (s) {
-                var { parentHidden: u, isHidden: p, lockType: g, isOutlined: h, hasSelection: f } = (0, c.getLayerOrItemStatus)(s),
-                    { container: y, title: v, titleGroup: _ } = (0, c.buildLayerItemContainer)(n, s, f, t);
-                r.element = _;
+                var { parentHidden, isHidden, lockType, isOutlined, hasSelection } = (0, c.getLayerOrItemStatus)(s),
+                    { container, title, titleGroup } = (0, c.buildLayerItemContainer)(n, s, hasSelection, t);
+                r.element = titleGroup;
                 var b = this;
                 if (
                     (s.hasFlag(GObject.GElement.Flag.PartialLocked) ||
-                        _.attr("draggable", true)
+                        titleGroup.attr("draggable", true)
                             .attr("data-drag-mode", d.default.PRESS_AND_HOLD)
                             .on("dragstart", function (e) {
                                 if (o.options.startDraggingCallback) {
@@ -148,7 +148,7 @@ module.exports = function (module, exports, require) {
                                         (i = i || t[0].getNodeNameTranslated()) && (n = i);
                                         for (var a = 1; a < t.length; ++a)
                                             (i = (i = t[a].getProperty("name")) || t[a].getNodeNameTranslated()) && (n += ", " + i);
-                                        n.length && $(v).html(n);
+                                        n.length && $(title).html(n);
                                         var r = o.vtree,
                                             l = [];
                                         for (a = 0; a < t.length; ++a) {
@@ -158,7 +158,7 @@ module.exports = function (module, exports, require) {
                                         (r.setDragNodes(l),
                                             setTimeout(
                                                 function () {
-                                                    $(v).html(i);
+                                                    $(title).html(i);
                                                 }.bind(this),
                                                 0
                                             ));
@@ -178,12 +178,12 @@ module.exports = function (module, exports, require) {
                             false,
                             true
                         )),
-                        y.toggleClass("g-highlighted-row", w));
+                        container.toggleClass("g-highlighted-row", w));
                 }
-                !g &&
+                !lockType &&
                     gDesigner.getActiveDocument() &&
                     gDesigner.getApplicationManager().isEditingEnabled() &&
-                    $(_).gAutoEdit({
+                    $(titleGroup).gAutoEdit({
                         textSelector: "> .layer-title",
                         getContainer: function () {
                             return G.call(b, e).element;
@@ -217,17 +217,17 @@ module.exports = function (module, exports, require) {
                                     GObject.GLocale.get(new GObject.GLocaleKey("GLayerPanel", "action.reset-instance"))
                                 ));
                         })
-                        .appendTo(y);
-                var x = g ? "gravit-icon-lock" : "gravit-icon-unlock";
+                        .appendTo(container);
+                var x = lockType ? "gravit-icon-lock" : "gravit-icon-unlock";
                 ((x = gDesigner.isTouchEnabled() ? x + "-small" : x),
                     $("<span></span>")
                         .addClass("layer-action layer-lock " + x)
-                        .toggleClass("g-active", !!g)
+                        .toggleClass("g-active", !!lockType)
                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-lock")))
                         .on("click", function (e) {
                             (e.stopPropagation(), J.toggleLockStatusOfLayerOrItem(s));
                         })
-                        .appendTo(y)
+                        .appendTo(container)
                         .gRichTooltip(
                             l.GRichTooltipConfig.from({
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.layer-toggle-lock-tooltip-title")),
@@ -235,18 +235,18 @@ module.exports = function (module, exports, require) {
                                 learnMore: "/docs/organizing-your-designs/objects/#locking-objects",
                             })
                         ),
-                    y.toggleClass("layer-hidden", p));
-                var S = p ? "gravit-icon-hide" : "gravit-icon-display";
+                    container.toggleClass("layer-hidden", isHidden));
+                var S = isHidden ? "gravit-icon-hide" : "gravit-icon-display";
                 if (
                     ((S = gDesigner.isTouchEnabled() ? S + "-small" : S),
                     $("<span></span>")
                         .addClass("layer-action layer-visibility " + S)
-                        .toggleClass("g-active", p)
+                        .toggleClass("g-active", isHidden)
                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-visibility")))
                         .on("click", function (e) {
                             (e.stopPropagation(), J.toggleHideStatusOfLayerOrItem(s));
                         })
-                        .appendTo(y)
+                        .appendTo(container)
                         .gRichTooltip(
                             l.GRichTooltipConfig.from({
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.layer-toggle-visibility-tooltip-title")),
@@ -259,13 +259,13 @@ module.exports = function (module, exports, require) {
                     s instanceof GObject.GLayer)
                 ) {
                     $("<span></span>")
-                        .addClass("layer-action layer-outline gravit-icon-" + (h ? "ellipse" : "circle"))
-                        .toggleClass("g-active", h)
+                        .addClass("layer-action layer-outline gravit-icon-" + (isOutlined ? "ellipse" : "circle"))
+                        .toggleClass("g-active", isOutlined)
                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GLayerPanel", "action.toggle-outline")))
                         .on("click", function (e) {
                             (gDesigner.stats("layers_toggle_outline"), e.stopPropagation());
                             var t = $(this);
-                            u ||
+                            parentHidden ||
                                 i.GEditor.tryRunTransaction(
                                     s,
                                     function () {
@@ -283,7 +283,7 @@ module.exports = function (module, exports, require) {
                                     "/docs/organizing-your-designs/layer-groups/#extra-properties-of-the-layer-groups",
                             })
                         )
-                        .appendTo(y);
+                        .appendTo(container);
                     $("<span></span>")
                         .addClass("layer-color")
                         .gPatternChooser({
@@ -316,9 +316,9 @@ module.exports = function (module, exports, require) {
                         .on("chooserclose", function (e, t, n) {
                             o.options.patternChooserStatusChangeCallBack(false);
                         })
-                        .appendTo(y);
+                        .appendTo(container);
                 }
-                y.contextmenu(
+                container.contextmenu(
                     { context: m.LayerPanel },
                     function (e) {
                         if ($.inArray(s, gDesigner.getActiveDocument().getEditor().getSelection()) < 0) {
@@ -454,7 +454,7 @@ module.exports = function (module, exports, require) {
         function z(e) {
             var t = $(this).data("glayerpanel"),
                 n = $(this).data("glayerpanel").vtree;
-            let { onlyUpdateStyle: o } = t;
+            let { onlyUpdateStyle } = t;
             if (B(t, e.node)) {
                 var i = false;
                 if (e.node instanceof GObject.GLayer || e.node instanceof GObject.GItem)
@@ -468,7 +468,7 @@ module.exports = function (module, exports, require) {
                         var r = e.node.getPage(),
                             s = e.node.getScene(),
                             l = s && s.getActivePage();
-                        (l && r && l !== r) || ((i = true), o || (o = e.flag === GObject.GNode.Flag.Active));
+                        (l && r && l !== r) || ((i = true), onlyUpdateStyle || (onlyUpdateStyle = e.flag === GObject.GNode.Flag.Active));
                     } else if (!t.blockHighlight && e.flag === GObject.GNode.Flag.Highlighted) {
                         var c = e.node,
                             d = function (e) {
@@ -488,7 +488,7 @@ module.exports = function (module, exports, require) {
                 }
                 (e.node instanceof GObject.GPage && e.flag === GObject.GNode.Flag.Active && (X.call(this), q.call(this), (i = false)),
                     i &&
-                        (o
+                        (onlyUpdateStyle
                             ? setTimeout((t) => {
                                   Q.call(this, e.node);
                               })
@@ -506,7 +506,7 @@ module.exports = function (module, exports, require) {
             gDesigner.isTouchEnabled() &&
                 $(this)
                     .parent()
-                    .css("height", parseInt($(this).find(".vscroller").css("height"), 10) + h + "px");
+                    .css("height", parseInt($(this).find(".vscroller").css("height"), 10) + VTREE_FREE_HEIGHT + "px");
         }
         function X() {
             var e = $(this).data("glayerpanel");
@@ -540,7 +540,7 @@ module.exports = function (module, exports, require) {
                             nodeStyle: "layer-row",
                             expandStyle: "layer-arrow gravit-icon-right",
                             collapseStyle: "layer-arrow gravit-icon-down",
-                            freeHeight: h,
+                            freeHeight: VTREE_FREE_HEIGHT,
                             insertIntoStyle: "g-drop",
                             upSeparatorSpan1Style: "g-up-separator-span1",
                             upSeparatorSpan2Style: "g-up-separator-span2",
@@ -671,8 +671,8 @@ module.exports = function (module, exports, require) {
             },
             toggleLockStatusOfLayerOrItem: function (e) {
                 gDesigner.stats("layers_change_locktype");
-                const { parentLockType: t } = (0, c.getLayerOrItemStatus)(e);
-                if (!t || t === GObject.GBlock.LockType.Partial) {
+                const { parentLockType } = (0, c.getLayerOrItemStatus)(e);
+                if (!parentLockType || parentLockType === GObject.GBlock.LockType.Partial) {
                     let n = e.getProperty("lkt");
                     const o = e.getProperty("plkt");
                     if (
@@ -683,7 +683,7 @@ module.exports = function (module, exports, require) {
                                       GObject.GBlock.ProgramLck.NoNewChildren |
                                       GObject.GBlock.ProgramLck.NoDelete) || (n = null)
                             : (n = GObject.GBlock.LockType.Full),
-                        t !== GObject.GBlock.LockType.Partial || null !== n)
+                        parentLockType !== GObject.GBlock.LockType.Partial || null !== n)
                     ) {
                         const t = [];
                         if (GPlatform.GPlatform.modifiers.optionKey) {
@@ -743,7 +743,7 @@ module.exports = function (module, exports, require) {
                     t = e && e.vtree;
                 if (t) {
                     const e = gDesigner.isTouchEnabled();
-                    (t.setFreeHeight(e ? f : h), t.setAnimatedDragEnabled(e));
+                    (t.setFreeHeight(e ? VTREE_FREE_HEIGHT_TOUCH : VTREE_FREE_HEIGHT), t.setAnimatedDragEnabled(e));
                 }
             },
         };

@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
             const n = require(171),
                 r = require(170),
                 o = require(325),
-                { SUPPORT_URL: a } = require(374 /* SUPPORT_URL */);
+                { SUPPORT_URL } = require(374 /* SUPPORT_URL */);
 
             function s(e, t, i) {
                 ((this._dialog = n("<div></div>").addClass("g-dialog-content")),
@@ -21,18 +21,18 @@ module.exports = function (module, exports, require) {
                                 .addClass("buttons")
                                 .append(
                                     i.map((e) => {
-                                        let { label: t, onclick: i, highlighted: r } = e;
+                                        let { label, onclick, highlighted } = e;
                                         return n("<button></button>")
-                                            .append(n("<span></span>").text(t))
-                                            .addClass("g-cloud-ui-btn-pro " + (r ? "highlighted" : ""))
-                                            .on("click", () => i(this));
+                                            .append(n("<span></span>").text(label))
+                                            .addClass("g-cloud-ui-btn-pro " + (highlighted ? "highlighted" : ""))
+                                            .on("click", () => onclick(this));
                                     })
                                 )
                         )
                         .append(
                             n("<span></span>")
                                 .addClass("footer")
-                                .html(r.getValue("GOfflineDialog", "text.have-questions").replace("%link", a))
+                                .html(r.getValue("GOfflineDialog", "text.have-questions").replace("%link", SUPPORT_URL))
                         )
                         .appendTo(this._dialog));
             }

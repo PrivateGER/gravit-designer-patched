@@ -5,11 +5,11 @@ module.exports = function (module, exports, require) {
             GPlatform = require(15);
         class a {
             static error(e) {
-                let { showTitle: t = true, closeCallback: n } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                let { showTitle: t = true, closeCallback } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 return a.custom({
                     title: t ? GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.something-wrong")) : "",
                     subtitle: gApi.formatError(e),
-                    closeCallback: n,
+                    closeCallback: closeCallback,
                 });
             }
             static externalFileError(e) {
@@ -143,7 +143,7 @@ module.exports = function (module, exports, require) {
                     c.find("input:first-child").focus().select());
             }
             static alert(e, t) {
-                let { closeByEnter: n = true, className: a } = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
+                let { closeByEnter: n = true, className } = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
                 var r,
                     s = $("<div></div>").append($("<div></div>").addClass("message").html(e));
                 const l = () => {
@@ -157,7 +157,7 @@ module.exports = function (module, exports, require) {
                     }),
                     s.gDialog({
                         releaseOnClose: true,
-                        className: "g-system-dialog g-alert-dialog" + (a ? " " + a : ""),
+                        className: "g-system-dialog g-alert-dialog" + (className ? " " + className : ""),
                         buttons: [
                             $("<button></button>")
                                 .addClass("primary")
@@ -333,9 +333,9 @@ module.exports = function (module, exports, require) {
                     icon: i = "assets/icon/dialog/info.svg",
                     closeable: a = true,
                     buttons: r = [],
-                    details: s,
-                    options: l,
-                    setting: c,
+                    details,
+                    options,
+                    setting,
                     className: d = "",
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 const u = {},
@@ -346,8 +346,8 @@ module.exports = function (module, exports, require) {
                         closeCallback: (e) => {
                             e
                                 ? u.reject()
-                                : (c && gDesigner.setSetting(c, g.find('input[data-property="'.concat(c, '"]')).is(":checked")),
-                                  l ? u.resolve(parseInt(g.find('input[name="options"]:checked').val()) || 0) : u.resolve());
+                                : (setting && gDesigner.setSetting(setting, g.find('input[data-property="'.concat(setting, '"]')).is(":checked")),
+                                  options ? u.resolve(parseInt(g.find('input[name="options"]:checked').val()) || 0) : u.resolve());
                         },
                     }),
                     h = $("<header></header>").append($("<span/>").addClass("title").text(e)).appendTo(g);
@@ -374,15 +374,15 @@ module.exports = function (module, exports, require) {
                                         .append($("<span/>").addClass("label").text(t))
                                         .append($("<pre/>").addClass("message").text(n))
                                         .append(
-                                            s
+                                            details
                                                 ? $("<div/>")
                                                       .addClass("details")
                                                       .append(
                                                           $("<label/>")
-                                                              .append($("<span/>").text(s.label))
+                                                              .append($("<span/>").text(details.label))
                                                               .append($("<span/>").addClass("gravit-icon-down icon"))
                                                               .on("click", (e) => {
-                                                                  s.onClick && s.onClick.call(this);
+                                                                  details.onClick && details.onClick.call(this);
                                                                   const t = $(e.target).closest(".details");
                                                                   (t.find(".panel").toggleClass("collapsed"),
                                                                       t.find(".icon").toggleClass("gravit-icon-down gravit-icon-up"));
@@ -393,18 +393,18 @@ module.exports = function (module, exports, require) {
                                                               .addClass("panel collapsed")
                                                               .append(
                                                                   $("<ul/>").append(
-                                                                      s.items.map((e) => $("<li/>").append($("<span/>").text(e)))
+                                                                      details.items.map((e) => $("<li/>").append($("<span/>").text(e)))
                                                                   )
                                                               )
                                                       )
                                                 : ""
                                         )
                                         .append(
-                                            l
+                                            options
                                                 ? $("<div/>")
                                                       .addClass("options")
                                                       .append(
-                                                          l.values.map((e, t) => {
+                                                          options.values.map((e, t) => {
                                                               let n = $("<label/>")
                                                                   .append(
                                                                       $("<input/>")
@@ -414,21 +414,21 @@ module.exports = function (module, exports, require) {
                                                                           .prop(
                                                                               "checked",
                                                                               (e) =>
-                                                                                  e === (l.setting ? gDesigner.getSetting(l.setting, 0) : 0)
+                                                                                  e === (options.setting ? gDesigner.getSetting(options.setting, 0) : 0)
                                                                           )
                                                                           .on("change", () => {
-                                                                              l.onClick && l.onClick.call(this);
+                                                                              options.onClick && options.onClick.call(this);
                                                                           })
                                                                   )
                                                                   .append($("<span/>").text(e));
                                                               return (
-                                                                  l.tooltips &&
-                                                                      l.tooltips[t] &&
+                                                                  options.tooltips &&
+                                                                      options.tooltips[t] &&
                                                                       n.append(
                                                                           $("<span/>")
                                                                               .addClass("tooltip")
                                                                               .text("?")
-                                                                              .attr("data-title", l.tooltips[t])
+                                                                              .attr("data-title", options.tooltips[t])
                                                                       ),
                                                                   n
                                                               );
@@ -440,9 +440,9 @@ module.exports = function (module, exports, require) {
                                 .append(
                                     $("<footer/>")
                                         .append(
-                                            c
+                                            setting
                                                 ? $("<label/>")
-                                                      .append($("<input>").attr("type", "checkbox").attr("data-property", c))
+                                                      .append($("<input>").attr("type", "checkbox").attr("data-property", setting))
                                                       .append(
                                                           $("<span/>").text(
                                                               GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.do-not-show-again"))
@@ -459,7 +459,7 @@ module.exports = function (module, exports, require) {
                 );
             }
             static messageWithInfo(e) {
-                let { mainMessage: t, infoMessage: n } = e;
+                let { mainMessage, infoMessage } = e;
                 const i = $("<div />").gDialog({
                         releaseOnClose: true,
                         className: "g-system-dialog g-message-with-info-dialog",
@@ -472,8 +472,8 @@ module.exports = function (module, exports, require) {
                     }),
                     a = $("<div />").addClass("content").appendTo(i);
                 return (
-                    t && a.append($("<div />").addClass("main-message").html(t)),
-                    n &&
+                    mainMessage && a.append($("<div />").addClass("main-message").html(mainMessage)),
+                    infoMessage &&
                         a.append(
                             $("<div />")
                                 .addClass("info-message")
@@ -482,7 +482,7 @@ module.exports = function (module, exports, require) {
                                         .addClass("info-message-icon")
                                         .append($("<img/>").attr("src", "assets/icon/dialog/info.svg"))
                                 )
-                                .append($("<div />").addClass("info-message-content").html(n))
+                                .append($("<div />").addClass("info-message-content").html(infoMessage))
                         ),
                     i.gDialog("open", true)
                 );
@@ -492,14 +492,14 @@ module.exports = function (module, exports, require) {
                     title: t = "",
                     subtitle: n = "",
                     styles: i = {},
-                    footer: a,
-                    icon: r,
+                    footer,
+                    icon,
                     buttons: s = [],
-                    openCallback: l,
+                    openCallback,
                     closeCallback: c,
                     closeable: d = true,
                     className: u = "",
-                    dontShowAgainCb: p,
+                    dontShowAgainCb,
                 } = e;
                 var g = [];
                 const h = $("<div></div>").gDialog({
@@ -508,7 +508,7 @@ module.exports = function (module, exports, require) {
                     closeCallback: (e) => {
                         (g.length && (g.forEach((e) => Mousetrap.unbind(e)), (g = [])), c && c(e));
                     },
-                    openCallback: l,
+                    openCallback: openCallback,
                 });
                 (i.dialog && h.css(i.dialog),
                     d &&
@@ -517,21 +517,21 @@ module.exports = function (module, exports, require) {
                             .append($("<span></span>").addClass("gravit-icon-close"))
                             .on("click", () => h.gDialog("close"))
                             .appendTo(h),
-                    r && $("<div></div>").addClass("icon").append($("<div></div>").addClass(r)).appendTo(h));
+                    icon && $("<div></div>").addClass("icon").append($("<div></div>").addClass(icon)).appendTo(h));
                 let f = $("<div></div>")
                     .addClass("content")
                     .append($("<span></span>").addClass("title").html(t))
                     .append($("<span></span>").addClass("subtitle").html(n))
                     .appendTo(h);
-                if ((a && f.append($("<span></span>").addClass("footer").html(a)), s && s.length)) {
+                if ((footer && f.append($("<span></span>").addClass("footer").html(footer)), s && s.length)) {
                     var m = $("<div></div>").addClass("buttons");
-                    (p &&
+                    (dontShowAgainCb &&
                         m.prepend(
                             $("<label></label>").append([
                                 $("<input>")
                                     .attr("type", "checkbox")
                                     .on("change", function () {
-                                        p(this.checked);
+                                        dontShowAgainCb(this.checked);
                                     }),
                                 $("<span></span>")
                                     .addClass("dont-show-this-again-message")
@@ -541,31 +541,31 @@ module.exports = function (module, exports, require) {
                         m.append(
                             s.map((e) => {
                                 let {
-                                    label: t,
-                                    onclick: n,
-                                    highlighted: o,
+                                    label,
+                                    onclick,
+                                    highlighted,
                                     className: i,
-                                    position: a,
-                                    shortcut: r,
+                                    position,
+                                    shortcut,
                                     closeOnClick: s = false,
                                 } = e;
                                 var l = false,
                                     c = () => {
                                         l ||
                                             ((l = true),
-                                            r && (Mousetrap.unbind(r), g.splice(g.indexOf(r), 1)),
+                                            shortcut && (Mousetrap.unbind(shortcut), g.splice(g.indexOf(shortcut), 1)),
                                             g.length && (g.forEach((e) => Mousetrap.unbind(e)), (g = [])),
                                             s && h.gDialog("close"),
-                                            n && n(h));
+                                            onclick && onclick(h));
                                     },
                                     d = $("<button></button>")
-                                        .append($("<span></span>").text(t))
-                                        .addClass("g-pro-button " + (o ? "highlighted" : ""))
+                                        .append($("<span></span>").text(label))
+                                        .addClass("g-pro-button " + (highlighted ? "highlighted" : ""))
                                         .on("click", () => c());
                                 return (
-                                    r && (Mousetrap.bind(r, c), g.push(r)),
+                                    shortcut && (Mousetrap.bind(shortcut, c), g.push(shortcut)),
                                     i && ((i = i instanceof Array ? i : [i]), i.forEach((e) => d.addClass(e))),
-                                    a && d.css("float", a),
+                                    position && d.css("float", position),
                                     d
                                 );
                             })

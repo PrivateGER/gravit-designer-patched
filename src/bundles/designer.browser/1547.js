@@ -35,10 +35,10 @@ module.exports = function (module, exports, require) {
             })(require(862 /* GCommonNames */)),
             p = require(858);
         const g = require(156),
-            { CLOUD_DIALOG: h } = require(10 /* designerConfig */),
+            { CLOUD_DIALOG } = require(10 /* designerConfig */),
             { GPlatform: f } = require(15 /* GPlatform */),
             m = require(85),
-            { GRegex: y } = require(263 /* GRegex */),
+            { GRegex } = require(263 /* GRegex */),
             v = function () {
                 (r.default.apply(this, arguments), (this._lockEnter = false), this.panel.addClass("full-width"));
             };
@@ -313,7 +313,7 @@ module.exports = function (module, exports, require) {
                       (y = GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.updated"))));
                 var _ = e instanceof g && e.getSize(),
                     b = "";
-                if (_ && h.SHOW_FILE_SIZE_INFO) {
+                if (_ && CLOUD_DIALOG.SHOW_FILE_SIZE_INFO) {
                     var w = (0, GSaveAction.getSizeInfo)(_);
                     w.gb
                         ? (b += (b ? "" : " ") + "".concat(w.gb, " GB"))
@@ -798,7 +798,7 @@ module.exports = function (module, exports, require) {
                 this._lockEnter = e;
             }),
             (v.prototype._isUserInputValidFileName = function (e) {
-                return y.String.ValidFileName.test(e);
+                return GRegex.String.ValidFileName.test(e);
             }),
             (v.prototype._getSelectedFolderUIElement = function () {
                 return $(".g-gravit-folder.g-cloud-element.selected");

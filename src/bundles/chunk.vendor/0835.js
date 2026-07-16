@@ -1,13 +1,13 @@
 module.exports = function (module, exports, require) {
             "use strict";
             (require(58), require(71));
-            const { UNKNOWN: n, IN_REVIEW: r, AWAITING_APPROVAL: o, APPROVED: a, REOPENED: s } = require(586),
+            const { UNKNOWN, IN_REVIEW, AWAITING_APPROVAL, APPROVED, REOPENED } = require(586),
                 l = Object.freeze({
-                    [n]: [r],
-                    [r]: [o],
-                    [o]: [r, s, a],
-                    [s]: [r, o],
-                    [a]: [r, s],
+                    [UNKNOWN]: [IN_REVIEW],
+                    [IN_REVIEW]: [AWAITING_APPROVAL],
+                    [AWAITING_APPROVAL]: [IN_REVIEW, REOPENED, APPROVED],
+                    [REOPENED]: [IN_REVIEW, AWAITING_APPROVAL],
+                    [APPROVED]: [IN_REVIEW, REOPENED],
                 });
 
             function h(e) {

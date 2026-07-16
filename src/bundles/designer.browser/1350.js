@@ -3,8 +3,8 @@ module.exports = function (module, exports, require) {
         (require(30), require(8 /* Symbol */));
         const o = require(337),
             i = require(1338),
-            { gApi: a, PurchaseStatus: r } = require(10 /* designerConfig */),
-            { IS_TRUNK: s } = require(231 /* IS_TRUNK */);
+            { gApi, PurchaseStatus } = require(10 /* designerConfig */),
+            { IS_TRUNK } = require(231 /* IS_TRUNK */);
         let l;
         class c {
             static getInstance() {
@@ -16,15 +16,15 @@ module.exports = function (module, exports, require) {
                     (this._promiseCapabilities = {}),
                     new Promise((e, t) => {
                         (Object.assign(this._promiseCapabilities, { resolve: e, reject: t }),
-                            (this._ws = new a.WebSocketClient()),
+                            (this._ws = new gApi.WebSocketClient()),
                             this._ws.connect("/payload"),
                             this._ws.on("payload", async (t) => {
                                 try {
-                                    const { data: n } = t;
+                                    const { data } = t;
                                     (await this._tryCheckLicense(),
-                                        await this._tryFireEvent(n),
-                                        (n.licenseHasBeenUpgraded = this._shouldFireUserCompletedPurchaseEvent(n)),
-                                        e(n));
+                                        await this._tryFireEvent(data),
+                                        (data.licenseHasBeenUpgraded = this._shouldFireUserCompletedPurchaseEvent(data)),
+                                        e(data));
                                 } finally {
                                     this._ws.close();
                                 }
@@ -51,8 +51,8 @@ module.exports = function (module, exports, require) {
                 }
             }
             _shouldFireUserCompletedPurchaseEvent(e) {
-                const { statusId: t } = e;
-                return !(!s || t !== r.SuccessfulTestOrder) || t === r.Paid;
+                const { statusId } = e;
+                return !(!IS_TRUNK || statusId !== PurchaseStatus.SuccessfulTestOrder) || statusId === PurchaseStatus.Paid;
             }
         }
         module.exports = c;

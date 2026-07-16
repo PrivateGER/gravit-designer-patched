@@ -8,7 +8,7 @@ module.exports = function (module, exports, require) {
             s = o(require(44 /* GSystemDialog */)),
             l = o(require(443)),
             c = require(1243);
-        const { isPrivateChat: d, isTeamsChannel: u } = l.default;
+        const { isPrivateChat, isTeamsChannel } = l.default;
         function p(e) {
             if ("function" != typeof e) throw "GMSTeamsAppLoader constructor error: Wrong argument is provided";
             this._callback = e;
@@ -22,7 +22,7 @@ module.exports = function (module, exports, require) {
                         GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.unsupported-mobile-for-msteams-new"))
                     );
                 const e = [c.MS_TEAMS_COMMAND];
-                ((await d()) ? e.push(c.ONE_DRIVE_BUSINESS_COMMAND) : (await u()) && e.push(c.SHAREPOINT_COMMAND),
+                ((await isPrivateChat()) ? e.push(c.ONE_DRIVE_BUSINESS_COMMAND) : (await isTeamsChannel()) && e.push(c.SHAREPOINT_COMMAND),
                     r.default
                         .getInstance()
                         .authenticate(e)

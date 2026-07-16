@@ -191,19 +191,19 @@ module.exports = function (module, exports, require) {
                         D.UpdateEvent,
                         function () {
                             (B.getMenu().clearItems(), B.setEnabled(false));
-                            var { elementHits: e, filteredElementHits: t, submenus: n } = this._getHitsElments();
-                            if (!(e && e.length > 0 && e[0] instanceof GObject.GPage) && e && e.length > 0) {
+                            var { elementHits, filteredElementHits, submenus } = this._getHitsElments();
+                            if (!(elementHits && elementHits.length > 0 && elementHits[0] instanceof GObject.GPage) && elementHits && elementHits.length > 0) {
                                 B.setEnabled(true);
-                                for (var o = 0; o < t.length; o++) {
-                                    var r = t[o].element,
+                                for (var o = 0; o < filteredElementHits.length; o++) {
+                                    var r = filteredElementHits[o].element,
                                         s = r instanceof GObject.GBlock ? r.getLabel() : r.getNodeNameTranslated(),
-                                        l = "temp-" + e.indexOf(t[o]);
-                                    if (n[l]) {
+                                        l = "temp-" + elementHits.indexOf(filteredElementHits[o]);
+                                    if (submenus[l]) {
                                         var c = new D(D.Type.Menu, P);
                                         (c.setCaption((o + 1).toString() + ". " + s),
                                             c.setData(l),
                                             c.addEventListener(D.UpdateEvent, function () {
-                                                var e = n[this.getData()];
+                                                var e = submenus[this.getData()];
                                                 this.getMenu().clearItems();
                                                 for (var t = 0; t < e.length; t++)
                                                     this.getMenu().createAddItem(

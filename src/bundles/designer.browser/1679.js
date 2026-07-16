@@ -5,7 +5,7 @@ module.exports = function (module, exports, require) {
         var i = o(require(1249)),
             a = o(require(1155)),
             GObject = require(1);
-        const { gApi: s, IN_APP_PURCHASE: { CLEVERBRIDGE: { openCartInAPopup: l = false } = {} } = {} } = require(10 /* designerConfig */),
+        const { gApi, IN_APP_PURCHASE: { CLEVERBRIDGE: { openCartInAPopup: l = false } = {} } = {} } = require(10 /* designerConfig */),
             c = require(808),
             d = require(292),
             GProfileDialog = require(604),
@@ -51,7 +51,7 @@ module.exports = function (module, exports, require) {
                                           );
                                       {
                                           const n = gDesigner.now().getTime();
-                                          e = await s.getProduct(
+                                          e = await gApi.getProduct(
                                               Object.assign(
                                                   {
                                                       time: n,

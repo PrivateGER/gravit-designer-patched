@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(58), require(8 /* Symbol */), require(71));
         const o = require(177),
             i = require(805),
-            { gApi: a } = require(10 /* designerConfig */),
+            { gApi } = require(10 /* designerConfig */),
             r = {};
         let s = false;
         const l = (e) => {
@@ -31,7 +31,7 @@ module.exports = function (module, exports, require) {
                 return (
                     (async (e) => {
                         if (!r.hasOwnProperty(e)) {
-                            const t = await a.getUser(e, true).catch(() => Promise.resolve(null));
+                            const t = await gApi.getUser(e, true).catch(() => Promise.resolve(null));
                             r[e] = new o(t);
                         }
                         return r[e];

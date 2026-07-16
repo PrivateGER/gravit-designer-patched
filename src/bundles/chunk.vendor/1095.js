@@ -2,24 +2,24 @@ module.exports = function (module, exports, require) {
             (function (e, n) {
                 const r = require(250),
                     {
-                        UTSRoot: o,
-                        Page: a,
-                        Thread: s,
-                        Comment: l,
-                        Annotation: h,
-                        Shape: A,
-                        ShapeType: c,
-                        CommentType: p,
-                        AnnotationProperties: u,
-                        AuthorProperties: d,
+                        UTSRoot,
+                        Page,
+                        Thread,
+                        Comment,
+                        Annotation,
+                        Shape,
+                        ShapeType,
+                        CommentType,
+                        AnnotationProperties,
+                        AuthorProperties,
                     } = require(1096),
                     {
-                        CDAAnnotationsList: g,
-                        CDAAnnotation: f,
-                        CDAAnnotationBase: m,
-                        CDAComment: y,
-                        CDACommentType: _,
-                        CDAAnnotationType: v,
+                        CDAAnnotationsList,
+                        CDAAnnotation,
+                        CDAAnnotationBase,
+                        CDAComment,
+                        CDACommentType,
+                        CDAAnnotationType,
                     } = require(1097),
                     b = require(17),
                     C = require(179),
@@ -140,32 +140,32 @@ module.exports = function (module, exports, require) {
                 }
 
                 function q(e) {
-                    var t = new h();
+                    var t = new Annotation();
                     return (
                         J(t.Author, e),
                         j(t.Properties, e),
                         (function (e, t, i) {
                             switch (t["@"]) {
-                                case v.ARROW_ANNOT:
-                                    e.Type = c.ARROW;
+                                case CDAAnnotationType.ARROW_ANNOT:
+                                    e.Type = ShapeType.ARROW;
                                     break;
-                                case v.COLLABORATIVE_TXT:
-                                    e.Type = c.COLLABORATIVE_TEXT;
+                                case CDAAnnotationType.COLLABORATIVE_TXT:
+                                    e.Type = ShapeType.COLLABORATIVE_TEXT;
                                     break;
-                                case v.COMMENT_ANNOT:
-                                    e.Type = c.HOTSPOT;
+                                case CDAAnnotationType.COMMENT_ANNOT:
+                                    e.Type = ShapeType.HOTSPOT;
                                     break;
-                                case v.ELLIPSE_ANNOT:
-                                    e.Type = c.ELLIPSE;
+                                case CDAAnnotationType.ELLIPSE_ANNOT:
+                                    e.Type = ShapeType.ELLIPSE;
                                     break;
-                                case v.HIGHLIGHTER_ANNOT:
-                                    e.Type = c.HIGHLIGHTER;
+                                case CDAAnnotationType.HIGHLIGHTER_ANNOT:
+                                    e.Type = ShapeType.HIGHLIGHTER;
                                     break;
-                                case v.PENCIL_ANNOT:
-                                    e.Type = c.PENCIL;
+                                case CDAAnnotationType.PENCIL_ANNOT:
+                                    e.Type = ShapeType.PENCIL;
                                     break;
-                                case v.RECTANGLE_ANNOT:
-                                    e.Type = c.RECTANGLE;
+                                case CDAAnnotationType.RECTANGLE_ANNOT:
+                                    e.Type = ShapeType.RECTANGLE;
                             }
                             var n = D.restore(t);
                             if (!n) return;
@@ -261,7 +261,7 @@ module.exports = function (module, exports, require) {
                     let t = e.$;
                     return t
                         ? t.map((e) => {
-                              let t = new s();
+                              let t = new Thread();
                               t.Annotation = q(e);
                               let i = e.$ || [];
                               return (
@@ -269,16 +269,16 @@ module.exports = function (module, exports, require) {
                                       .filter((e) => "cmt" === e["@"])
                                       .map((e) =>
                                           (function (e) {
-                                              var t = new l();
+                                              var t = new Comment();
                                               switch ((J(t.Author, e), j(t.Properties, e), e.type)) {
-                                                  case _.Open:
-                                                      t.Properties.Type = p.REOPENED;
+                                                  case CDACommentType.Open:
+                                                      t.Properties.Type = CommentType.REOPENED;
                                                       break;
-                                                  case _.Close:
-                                                      t.Properties.Type = p.RESOLVED;
+                                                  case CDACommentType.Close:
+                                                      t.Properties.Type = CommentType.RESOLVED;
                                                       break;
                                                   default:
-                                                      t.Properties.Type = p.COMMON;
+                                                      t.Properties.Type = CommentType.COMMON;
                                               }
                                               return t;
                                           })(e)
@@ -291,7 +291,7 @@ module.exports = function (module, exports, require) {
 
                 function $(e) {
                     return (e || []).map((e) => {
-                        var t = new a();
+                        var t = new Page();
                         return (
                             (t.Properties.Guid = e.Guid || ""),
                             (t.Properties.CdaId = e.pgid || ""),
@@ -341,28 +341,28 @@ module.exports = function (module, exports, require) {
                 }
 
                 function ne(e) {
-                    var t = new f();
+                    var t = new CDAAnnotation();
                     switch (e.Annotation.Shape.Type) {
-                        case c.ARROW:
-                            t["@"] = v.ARROW_ANNOT;
+                        case ShapeType.ARROW:
+                            t["@"] = CDAAnnotationType.ARROW_ANNOT;
                             break;
-                        case c.COLLABORATIVE_TEXT:
-                            t["@"] = v.COLLABORATIVE_TXT;
+                        case ShapeType.COLLABORATIVE_TEXT:
+                            t["@"] = CDAAnnotationType.COLLABORATIVE_TXT;
                             break;
-                        case c.ELLIPSE:
-                            t["@"] = v.ELLIPSE_ANNOT;
+                        case ShapeType.ELLIPSE:
+                            t["@"] = CDAAnnotationType.ELLIPSE_ANNOT;
                             break;
-                        case c.HIGHLIGHTER:
-                            t["@"] = v.HIGHLIGHTER_ANNOT;
+                        case ShapeType.HIGHLIGHTER:
+                            t["@"] = CDAAnnotationType.HIGHLIGHTER_ANNOT;
                             break;
-                        case c.HOTSPOT:
-                            t["@"] = v.COMMENT_ANNOT;
+                        case ShapeType.HOTSPOT:
+                            t["@"] = CDAAnnotationType.COMMENT_ANNOT;
                             break;
-                        case c.PENCIL:
-                            t["@"] = v.PENCIL_ANNOT;
+                        case ShapeType.PENCIL:
+                            t["@"] = CDAAnnotationType.PENCIL_ANNOT;
                             break;
-                        case c.RECTANGLE:
-                            t["@"] = v.RECTANGLE_ANNOT;
+                        case ShapeType.RECTANGLE:
+                            t["@"] = CDAAnnotationType.RECTANGLE_ANNOT;
                     }
                     if (e) {
                         let i;
@@ -379,10 +379,10 @@ module.exports = function (module, exports, require) {
                                 if (t.Annotation && t.Comments)
                                     for (let i = t.Comments.length - 1; i >= 0; i--) {
                                         let n = t.Comments[i];
-                                        if (n.Properties.Type !== p.COMMON)
-                                            return void (n.Properties.Type === p.RESOLVED
+                                        if (n.Properties.Type !== CommentType.COMMON)
+                                            return void (n.Properties.Type === CommentType.RESOLVED
                                                 ? (e.rsv = true)
-                                                : n.Properties.Type === p.REOPENED && (e.rsv = false));
+                                                : n.Properties.Type === CommentType.REOPENED && (e.rsv = false));
                                     }
                                 e.rsv = void 0;
                             })(t, e),
@@ -391,14 +391,14 @@ module.exports = function (module, exports, require) {
                                 var n,
                                     r = new I(new F()),
                                     o = new GEditor(r);
-                                if (t.Type === c.ARROW) n = new S();
-                                else if (t.Type === c.COLLABORATIVE_TEXT) n = new T();
-                                else if (t.Type === c.ELLIPSE) n = new B();
-                                else if (t.Type === c.HIGHLIGHTER) n = new x();
-                                else if (t.Type === c.HOTSPOT) n = new w();
-                                else if (t.Type === c.PENCIL) n = new P();
+                                if (t.Type === ShapeType.ARROW) n = new S();
+                                else if (t.Type === ShapeType.COLLABORATIVE_TEXT) n = new T();
+                                else if (t.Type === ShapeType.ELLIPSE) n = new B();
+                                else if (t.Type === ShapeType.HIGHLIGHTER) n = new x();
+                                else if (t.Type === ShapeType.HOTSPOT) n = new w();
+                                else if (t.Type === ShapeType.PENCIL) n = new P();
                                 else {
-                                    if (t.Type !== c.RECTANGLE) return;
+                                    if (t.Type !== ShapeType.RECTANGLE) return;
                                     n = new E();
                                 }
                                 if ((o.insertElements([n], false, true, false), n.getPaintLayers())) {
@@ -410,7 +410,7 @@ module.exports = function (module, exports, require) {
                                             let t = new b(b.parseCSSColor(e));
                                             (a.setProperty("_pt", t),
                                                 i && i.CDA && !isNaN(i.CDA.FillOpacity) && a.setProperty("_op", Number(i.CDA.FillOpacity)));
-                                        } else t.Type !== c.HOTSPOT && a.setProperty("_op", 0);
+                                        } else t.Type !== ShapeType.HOTSPOT && a.setProperty("_op", 0);
                                     let r = t.StrokeColor;
                                     !r && i && i.CDA && i.CDA.StrokeColor && (r = i.CDA.StrokeColor);
                                     var s = n.getPaintLayers().getBorderLayers()[0];
@@ -418,7 +418,7 @@ module.exports = function (module, exports, require) {
                                         if (r) {
                                             let e = new b(b.parseCSSColor(r));
                                             (s.setProperty("_pt", e),
-                                                t.Type === c.ARROW &&
+                                                t.Type === ShapeType.ARROW &&
                                                     (t.ArrowStart ? s.setProperty("_bhm", "A") : s.setProperty("_bhm", void 0),
                                                     t.ArrowEnd ? s.setProperty("_btm", "A") : s.setProperty("_btm", void 0)),
                                                 t.StrokeWidth && s.setProperty("_bw", parseInt(t.StrokeWidth)),
@@ -428,7 +428,7 @@ module.exports = function (module, exports, require) {
                                                     s.setProperty("_op", Number(i.CDA.StrokeOpacity)));
                                         } else s.setProperty("_op", 0);
                                 }
-                                if ((n.initDefaultForLimitedRestore(), t.Curves && n instanceof R && t.Type !== c.HOTSPOT)) {
+                                if ((n.initDefaultForLimitedRestore(), t.Curves && n instanceof R && t.Type !== ShapeType.HOTSPOT)) {
                                     let e = new G(),
                                         i = t.Curves,
                                         r = 0;
@@ -459,7 +459,7 @@ module.exports = function (module, exports, require) {
                                     a && !a.isEmpty()
                                         ? n.transform(new N().translated(-s, -l).scaled(c, p).translated(t.TopLeftX, t.TopLeftY))
                                         : n.transform(new N().translated(-s, -l).translated(t.TopLeftX, t.TopLeftY));
-                                } else if (t.Type !== c.HOTSPOT) {
+                                } else if (t.Type !== ShapeType.HOTSPOT) {
                                     let e = new N(),
                                         i = n.getGeometryBBox(true);
                                     if (i) {
@@ -489,17 +489,17 @@ module.exports = function (module, exports, require) {
                             "anc" === t["@"] && (i = t.$[0]),
                             (t.$ = (e.Comments || []).map((e) =>
                                 (function (e) {
-                                    var t = new y();
+                                    var t = new CDAComment();
                                     if (((t["@"] = "cmt"), e)) {
                                         switch (e.Properties.Type) {
-                                            case p.RESOLVED:
-                                                t.type = _.Close;
+                                            case CommentType.RESOLVED:
+                                                t.type = CDACommentType.Close;
                                                 break;
-                                            case p.REOPENED:
-                                                t.type = _.Open;
+                                            case CommentType.REOPENED:
+                                                t.type = CDACommentType.Open;
                                                 break;
                                             default:
-                                                t.type = _.User;
+                                                t.type = CDACommentType.User;
                                         }
                                         (te(t, e.Author && e.Author.Properties), ie(t, e.Properties));
                                     }
@@ -513,7 +513,7 @@ module.exports = function (module, exports, require) {
 
                 function re(e) {
                     return e.map((e) => {
-                        var t = new g();
+                        var t = new CDAAnnotationsList();
                         return (
                             e.Properties &&
                                 ((t.Guid = e.Properties.Guid),
@@ -542,7 +542,7 @@ module.exports = function (module, exports, require) {
                         if (e.annotationsCollection) {
                             if (Y((e = e.annotationsCollection))) return e;
                         } else e instanceof Array || (e = e ? [e] : []);
-                        var i = new o();
+                        var i = new UTSRoot();
                         return ((i.Comments.FileId = t), (i.Comments.Pages = $(e)), JSON.parse(JSON.stringify(i)));
                     }),
                     (exports.UTStoCDA = function (e) {

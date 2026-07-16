@@ -10,7 +10,7 @@ module.exports = function (module, exports, require) {
             c = require(85),
             d = require(805),
             u = require(292),
-            { bypassEmailVerification: p } = designerConfig.defaultUserSettings;
+            { bypassEmailVerification } = designerConfig.defaultUserSettings;
         function g(e) {
             this._htmlElement = e;
         }
@@ -44,7 +44,7 @@ module.exports = function (module, exports, require) {
                 if (
                     (this._togglePanel(false),
                     this._interval && clearInterval(this._interval),
-                    !p &&
+                    !bypassEmailVerification &&
                         gDesigner.isEnabledSubscriptions() &&
                         !gDesigner.getLicense().isGuest() &&
                         e &&

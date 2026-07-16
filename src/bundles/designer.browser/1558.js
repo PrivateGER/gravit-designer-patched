@@ -5,7 +5,7 @@ module.exports = function (module, exports, require) {
             designerConfig = require(10),
             GCommonNames = require(119),
             GDocument = require(163);
-        const { debounce: s } = require(40 /* GSaveAction */),
+        const { debounce } = require(40 /* GSaveAction */),
             l = designerConfig.FILE_FORMATS.find((e) => e.default);
         var c = {},
             d = null;
@@ -38,7 +38,7 @@ module.exports = function (module, exports, require) {
                     this._initResizeHandler());
             }
             _initResizeHandler() {
-                ((this._debouncedResizeHandler = s(
+                ((this._debouncedResizeHandler = debounce(
                     function () {
                         this._initMasonryLayoutColumns(null, null, null, true);
                     }.bind(this),

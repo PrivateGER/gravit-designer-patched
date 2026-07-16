@@ -63,8 +63,8 @@ module.exports = function (module, exports, require) {
                         .append(r)
                         .appendTo($("body"));
                 if (n) {
-                    const { options: { className: e } = {} } = n;
-                    e && s.addClass("".concat(e, "-container"));
+                    const { options: { className } = {} } = n;
+                    className && s.addClass("".concat(className, "-container"));
                 }
                 return (o.push(this[0]), t.trigger("open"), s.addClass("visible"), a && a.openCallback && a.openCallback.call(this), this);
             },

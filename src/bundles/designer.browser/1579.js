@@ -7,16 +7,16 @@ module.exports = function (module, exports, require) {
             r = o(require(1187));
         class s extends designerConfig.GReminderDialog.Impl {
             open(e) {
-                let { dialog: t } = e;
-                this._dialog = t.getHTMLElement().gDialog({ releaseOnClose: true, nowrap: true }).gDialog("open");
+                let { dialog } = e;
+                this._dialog = dialog.getHTMLElement().gDialog({ releaseOnClose: true, nowrap: true }).gDialog("open");
             }
             async openPurchaseFlow(e) {
                 let { dialog: t, options: n = {} } = e;
                 await gDesigner.openPaymentDialog(null, n).catch(() => null);
             }
             openExternalLink(e) {
-                let { link: t } = e;
-                gContainer.openExternalLink(null, t);
+                let { link } = e;
+                gContainer.openExternalLink(null, link);
             }
             close() {
                 this._dialog.gDialog("close");

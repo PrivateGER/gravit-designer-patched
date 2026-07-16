@@ -12,7 +12,7 @@ module.exports = function (module, exports, require) {
             u = require(1348),
             GSystemDialog = require(44),
             g = require(177),
-            { DateAPI: h, ShareRoles: f } = require(10 /* designerConfig */);
+            { DateAPI, ShareRoles } = require(10 /* designerConfig */);
         function m() {}
         (GObject.GObject.inherit(m, i),
             (m.ID = "collaborative-text-panel"),
@@ -65,7 +65,7 @@ module.exports = function (module, exports, require) {
                     if (e)
                         if (e.getStatus() === u.Status.UpdateAvailable) (this._document.lock(), this._showUpdatePanel());
                         else if (e.getStatus() === u.Status.Updating) this._showUpdatingPanel();
-                        else if (gDesigner.getApplicationManager().hasRole(f.Owner)) this._showOwnerPanel();
+                        else if (gDesigner.getApplicationManager().hasRole(ShareRoles.Owner)) this._showOwnerPanel();
                         else if (await e.canLock())
                             switch (e.getStatus()) {
                                 case u.Status.Initial:
@@ -320,8 +320,8 @@ module.exports = function (module, exports, require) {
             (m.prototype._requestLock = function (e) {
                 if (!this.isEnabled()) return;
                 if (this._requestLockDialog) return;
-                const t = h.now(),
-                    n = h.minutesToMilliseconds(5);
+                const t = DateAPI.now(),
+                    n = DateAPI.minutesToMilliseconds(5);
                 (this._lastRequestLockTime && t - this._lastRequestLockTime < n) ||
                     ((this._lastRequestLockTime = t),
                     (this._requestLockDialog = GSystemDialog.custom({

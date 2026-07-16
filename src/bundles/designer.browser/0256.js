@@ -33,11 +33,11 @@ module.exports = function (module, exports, require) {
                         .addClass("buttons")
                         .append(
                             n.map((e) => {
-                                let { label: t, onclick: n, highlighted: o } = e;
+                                let { label, onclick, highlighted } = e;
                                 return $("<button></button>")
-                                    .append($("<span></span>").text(t))
-                                    .addClass("g-pro-button " + (o ? "highlighted" : ""))
-                                    .on("click", () => n(this));
+                                    .append($("<span></span>").text(label))
+                                    .addClass("g-pro-button " + (highlighted ? "highlighted" : ""))
+                                    .on("click", () => onclick(this));
                             })
                         )
                 );

@@ -21,7 +21,7 @@ module.exports = function (module, exports, require) {
         var o = require(176),
             IsFiniteNonNegativeNumber = require(0),
             GDocument = require(237);
-        const { GRegex: r } = require(263 /* GRegex */);
+        const { GRegex } = require(263 /* GRegex */);
         var s = require(1117).saveAs,
             l = false,
             c = null,
@@ -107,7 +107,7 @@ module.exports = function (module, exports, require) {
                 return "function" == typeof window.showSaveFilePicker && !this._isChromeOS();
             }),
             (u.prototype._isChromeOS = function () {
-                return r.NavigatorUserAgent.IS_CHROME_OS.test(navigator.userAgent || "");
+                return GRegex.NavigatorUserAgent.IS_CHROME_OS.test(navigator.userAgent || "");
             }),
             (u.prototype._hasDirectoryWriteAPI = function () {
                 return "function" == typeof window.chooseFileSystemEntries;
@@ -233,18 +233,18 @@ module.exports = function (module, exports, require) {
                 const n = {};
                 let o = "";
                 for (let i = 0, a = e.length; i < a; i++) {
-                    let { mime: a, ext: r } = e[i];
-                    a && r
-                        ? (t && "jpg" === r && (a = "x-really-an-image/jpeg"),
-                          void 0 !== n[a]
-                              ? (Array.isArray(n[a]) || (n[a] = [n[a]]),
-                                n[a].push(r.startsWith(".") ? r : ".".concat(r)),
+                    let { mime, ext } = e[i];
+                    mime && ext
+                        ? (t && "jpg" === ext && (mime = "x-really-an-image/jpeg"),
+                          void 0 !== n[mime]
+                              ? (Array.isArray(n[mime]) || (n[mime] = [n[mime]]),
+                                n[mime].push(ext.startsWith(".") ? ext : ".".concat(ext)),
                                 o && (o += ", "),
-                                (o += "*" + (r.startsWith(".") ? r : ".".concat(r))))
-                              : ((n[a] = r.startsWith(".") ? r : ".".concat(r)),
+                                (o += "*" + (ext.startsWith(".") ? ext : ".".concat(ext))))
+                              : ((n[mime] = ext.startsWith(".") ? ext : ".".concat(ext)),
                                 o && (o += ", "),
-                                (o += "*" + (r.startsWith(".") ? r : ".".concat(r)))))
-                        : console.warn('openPrompt warning: no mime or ext. given mime: "'.concat(a, '", given ext: "').concat(r, '"'));
+                                (o += "*" + (ext.startsWith(".") ? ext : ".".concat(ext)))))
+                        : console.warn('openPrompt warning: no mime or ext. given mime: "'.concat(mime, '", given ext: "').concat(ext, '"'));
                 }
                 return { description: o, accept: n };
             }),

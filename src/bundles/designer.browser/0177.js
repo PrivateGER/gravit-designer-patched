@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(30), require(20), require(107), require(3), require(247), require(91));
         var GRegex = require(263),
             designerConfig = require(10);
-        const { GObject: a } = require(1 /* GObject */),
+        const { GObject } = require(1 /* GObject */),
             r = require(733),
             s = require(589),
             l = {},
@@ -31,7 +31,7 @@ module.exports = function (module, exports, require) {
             let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
             Object.assign(this, e);
         }
-        (a.inheritAndMix(d, s, [r, designerConfig.User], true),
+        (GObject.inheritAndMix(d, s, [r, designerConfig.User], true),
             (d.equals = function (e, t) {
                 return new d(e).getUID() === new d(t).getUID();
             }),

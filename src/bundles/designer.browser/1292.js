@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(4), require(13), require(38));
-        const { GLocale: o, GLocaleKey: i } = require(1 /* GObject */);
+        const { GLocale, GLocaleKey } = require(1 /* GObject */);
         function a() {
             throw "No instantiate";
         }
@@ -27,12 +27,12 @@ module.exports = function (module, exports, require) {
                 return (
                     $(this)
                         .find(".g-collaborators-container")
-                        .attr("data-title", o.get(new i("GCollaborators", "text.you-are-offline-tooltip")))
+                        .attr("data-title", GLocale.get(new GLocaleKey("GCollaborators", "text.you-are-offline-tooltip")))
                         .empty()
                         .append(
                             $("<div/>").addClass("g-collaborator").addClass("offline").append($("<span/>").addClass("gravit-icon-offline"))
                         )
-                        .append($("<span/>").text(o.get(new i("GCollaborators", "text.you-are-offline")))),
+                        .append($("<span/>").text(GLocale.get(new GLocaleKey("GCollaborators", "text.you-are-offline")))),
                     this
                 );
             },

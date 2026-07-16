@@ -964,28 +964,28 @@ var GravitDesigner = (function (e) {
                     o = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
                 const i = t.getPrivateShareList();
                 i.forEach((t) => {
-                    const { id: i, copy: a, inspect: r, comment: s, owner: l, access: c, edit: p } = t;
-                    e.getUID() === i
+                    const { id, copy, inspect, comment, owner, access, edit } = t;
+                    e.getUID() === id
                         ? ((n = d.makeFromShare(t)),
-                          l
+                          owner
                               ? Object.assign(o, {
                                     owner: true,
                                     edit: true,
                                     inspect: true,
                                     copy: true,
-                                    comment: !!u,
+                                    comment: !!HAS_ANNOTATIONS,
                                     share: true,
                                 })
                               : Object.assign(o, {
                                     owner: false,
                                     share: false,
-                                    edit: p,
-                                    copy: a,
-                                    inspect: r,
-                                    comment: !!u && s,
-                                    sharing: c,
+                                    edit: edit,
+                                    copy: copy,
+                                    inspect: inspect,
+                                    comment: !!HAS_ANNOTATIONS && comment,
+                                    sharing: access,
                                 }))
-                        : c && Object.assign(o, { sharing: true });
+                        : access && Object.assign(o, { sharing: true });
                 });
                 const a = i.find((e) => e.owner);
                 if (a) {
@@ -1042,9 +1042,9 @@ var GravitDesigner = (function (e) {
             }),
             (exports.isSupportedScreenSize = function (e) {
                 if (!e && GObject.GSystem.hardware === GObject.GSystem.Hardware.Tablet) {
-                    return (window.screen.height > window.screen.width ? window.screen.height : window.screen.width) >= p;
+                    return (window.screen.height > window.screen.width ? window.screen.height : window.screen.width) >= MIN_SUPPORTED_SCREEN_SIZE;
                 }
-                return (e || window.screen.availWidth) >= p;
+                return (e || window.screen.availWidth) >= MIN_SUPPORTED_SCREEN_SIZE;
             }),
             (exports.isSymbol = h),
             (exports.isSymbolInstance = void 0),
@@ -1113,8 +1113,8 @@ var GravitDesigner = (function (e) {
                             (s > 0 || n.cancelled) && (e.removeEventListener(GObject.GImage.StatusEvent, c), a());
                         }, t);
                         const c = (t) => {
-                            let { status: d } = t;
-                            (r(d) &&
+                            let { status } = t;
+                            (r(status) &&
                                 --s <= 0 &&
                                 (l && (clearTimeout(l), (l = null)), e.removeEventListener(GObject.GImage.StatusEvent, c), o(true)),
                                 n.cancelled && (l && (clearTimeout(l), (l = null)), e.removeEventListener(GObject.GImage.StatusEvent, c), a()));
@@ -1237,7 +1237,7 @@ var GravitDesigner = (function (e) {
         var l = require(250),
             GSystemDialog = require(44);
         const d = require(433),
-            { HAS_ANNOTATIONS: u, MIN_SUPPORTED_SCREEN_SIZE: p } = require(10 /* designerConfig */);
+            { HAS_ANNOTATIONS, MIN_SUPPORTED_SCREEN_SIZE } = require(10 /* designerConfig */);
         exports.watchDog = {
             trap: (e, t, n, o) => (i) =>
                 ((e, t, n, o, i) =>
@@ -1420,11 +1420,11 @@ var GravitDesigner = (function (e) {
             GPlatform = require(15);
         class a {
             static error(e) {
-                let { showTitle: t = true, closeCallback: n } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                let { showTitle: t = true, closeCallback } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 return a.custom({
                     title: t ? GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.something-wrong")) : "",
                     subtitle: gApi.formatError(e),
-                    closeCallback: n,
+                    closeCallback: closeCallback,
                 });
             }
             static externalFileError(e) {
@@ -1558,7 +1558,7 @@ var GravitDesigner = (function (e) {
                     c.find("input:first-child").focus().select());
             }
             static alert(e, t) {
-                let { closeByEnter: n = true, className: a } = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
+                let { closeByEnter: n = true, className } = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
                 var r,
                     s = $("<div></div>").append($("<div></div>").addClass("message").html(e));
                 const l = () => {
@@ -1572,7 +1572,7 @@ var GravitDesigner = (function (e) {
                     }),
                     s.gDialog({
                         releaseOnClose: true,
-                        className: "g-system-dialog g-alert-dialog" + (a ? " " + a : ""),
+                        className: "g-system-dialog g-alert-dialog" + (className ? " " + className : ""),
                         buttons: [
                             $("<button></button>")
                                 .addClass("primary")
@@ -1748,9 +1748,9 @@ var GravitDesigner = (function (e) {
                     icon: i = "assets/icon/dialog/info.svg",
                     closeable: a = true,
                     buttons: r = [],
-                    details: s,
-                    options: l,
-                    setting: c,
+                    details,
+                    options,
+                    setting,
                     className: d = "",
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 const u = {},
@@ -1761,8 +1761,8 @@ var GravitDesigner = (function (e) {
                         closeCallback: (e) => {
                             e
                                 ? u.reject()
-                                : (c && gDesigner.setSetting(c, g.find('input[data-property="'.concat(c, '"]')).is(":checked")),
-                                  l ? u.resolve(parseInt(g.find('input[name="options"]:checked').val()) || 0) : u.resolve());
+                                : (setting && gDesigner.setSetting(setting, g.find('input[data-property="'.concat(setting, '"]')).is(":checked")),
+                                  options ? u.resolve(parseInt(g.find('input[name="options"]:checked').val()) || 0) : u.resolve());
                         },
                     }),
                     h = $("<header></header>").append($("<span/>").addClass("title").text(e)).appendTo(g);
@@ -1789,15 +1789,15 @@ var GravitDesigner = (function (e) {
                                         .append($("<span/>").addClass("label").text(t))
                                         .append($("<pre/>").addClass("message").text(n))
                                         .append(
-                                            s
+                                            details
                                                 ? $("<div/>")
                                                       .addClass("details")
                                                       .append(
                                                           $("<label/>")
-                                                              .append($("<span/>").text(s.label))
+                                                              .append($("<span/>").text(details.label))
                                                               .append($("<span/>").addClass("gravit-icon-down icon"))
                                                               .on("click", (e) => {
-                                                                  s.onClick && s.onClick.call(this);
+                                                                  details.onClick && details.onClick.call(this);
                                                                   const t = $(e.target).closest(".details");
                                                                   (t.find(".panel").toggleClass("collapsed"),
                                                                       t.find(".icon").toggleClass("gravit-icon-down gravit-icon-up"));
@@ -1808,18 +1808,18 @@ var GravitDesigner = (function (e) {
                                                               .addClass("panel collapsed")
                                                               .append(
                                                                   $("<ul/>").append(
-                                                                      s.items.map((e) => $("<li/>").append($("<span/>").text(e)))
+                                                                      details.items.map((e) => $("<li/>").append($("<span/>").text(e)))
                                                                   )
                                                               )
                                                       )
                                                 : ""
                                         )
                                         .append(
-                                            l
+                                            options
                                                 ? $("<div/>")
                                                       .addClass("options")
                                                       .append(
-                                                          l.values.map((e, t) => {
+                                                          options.values.map((e, t) => {
                                                               let n = $("<label/>")
                                                                   .append(
                                                                       $("<input/>")
@@ -1829,21 +1829,21 @@ var GravitDesigner = (function (e) {
                                                                           .prop(
                                                                               "checked",
                                                                               (e) =>
-                                                                                  e === (l.setting ? gDesigner.getSetting(l.setting, 0) : 0)
+                                                                                  e === (options.setting ? gDesigner.getSetting(options.setting, 0) : 0)
                                                                           )
                                                                           .on("change", () => {
-                                                                              l.onClick && l.onClick.call(this);
+                                                                              options.onClick && options.onClick.call(this);
                                                                           })
                                                                   )
                                                                   .append($("<span/>").text(e));
                                                               return (
-                                                                  l.tooltips &&
-                                                                      l.tooltips[t] &&
+                                                                  options.tooltips &&
+                                                                      options.tooltips[t] &&
                                                                       n.append(
                                                                           $("<span/>")
                                                                               .addClass("tooltip")
                                                                               .text("?")
-                                                                              .attr("data-title", l.tooltips[t])
+                                                                              .attr("data-title", options.tooltips[t])
                                                                       ),
                                                                   n
                                                               );
@@ -1855,9 +1855,9 @@ var GravitDesigner = (function (e) {
                                 .append(
                                     $("<footer/>")
                                         .append(
-                                            c
+                                            setting
                                                 ? $("<label/>")
-                                                      .append($("<input>").attr("type", "checkbox").attr("data-property", c))
+                                                      .append($("<input>").attr("type", "checkbox").attr("data-property", setting))
                                                       .append(
                                                           $("<span/>").text(
                                                               GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.do-not-show-again"))
@@ -1874,7 +1874,7 @@ var GravitDesigner = (function (e) {
                 );
             }
             static messageWithInfo(e) {
-                let { mainMessage: t, infoMessage: n } = e;
+                let { mainMessage, infoMessage } = e;
                 const i = $("<div />").gDialog({
                         releaseOnClose: true,
                         className: "g-system-dialog g-message-with-info-dialog",
@@ -1887,8 +1887,8 @@ var GravitDesigner = (function (e) {
                     }),
                     a = $("<div />").addClass("content").appendTo(i);
                 return (
-                    t && a.append($("<div />").addClass("main-message").html(t)),
-                    n &&
+                    mainMessage && a.append($("<div />").addClass("main-message").html(mainMessage)),
+                    infoMessage &&
                         a.append(
                             $("<div />")
                                 .addClass("info-message")
@@ -1897,7 +1897,7 @@ var GravitDesigner = (function (e) {
                                         .addClass("info-message-icon")
                                         .append($("<img/>").attr("src", "assets/icon/dialog/info.svg"))
                                 )
-                                .append($("<div />").addClass("info-message-content").html(n))
+                                .append($("<div />").addClass("info-message-content").html(infoMessage))
                         ),
                     i.gDialog("open", true)
                 );
@@ -1907,14 +1907,14 @@ var GravitDesigner = (function (e) {
                     title: t = "",
                     subtitle: n = "",
                     styles: i = {},
-                    footer: a,
-                    icon: r,
+                    footer,
+                    icon,
                     buttons: s = [],
-                    openCallback: l,
+                    openCallback,
                     closeCallback: c,
                     closeable: d = true,
                     className: u = "",
-                    dontShowAgainCb: p,
+                    dontShowAgainCb,
                 } = e;
                 var g = [];
                 const h = $("<div></div>").gDialog({
@@ -1923,7 +1923,7 @@ var GravitDesigner = (function (e) {
                     closeCallback: (e) => {
                         (g.length && (g.forEach((e) => Mousetrap.unbind(e)), (g = [])), c && c(e));
                     },
-                    openCallback: l,
+                    openCallback: openCallback,
                 });
                 (i.dialog && h.css(i.dialog),
                     d &&
@@ -1932,21 +1932,21 @@ var GravitDesigner = (function (e) {
                             .append($("<span></span>").addClass("gravit-icon-close"))
                             .on("click", () => h.gDialog("close"))
                             .appendTo(h),
-                    r && $("<div></div>").addClass("icon").append($("<div></div>").addClass(r)).appendTo(h));
+                    icon && $("<div></div>").addClass("icon").append($("<div></div>").addClass(icon)).appendTo(h));
                 let f = $("<div></div>")
                     .addClass("content")
                     .append($("<span></span>").addClass("title").html(t))
                     .append($("<span></span>").addClass("subtitle").html(n))
                     .appendTo(h);
-                if ((a && f.append($("<span></span>").addClass("footer").html(a)), s && s.length)) {
+                if ((footer && f.append($("<span></span>").addClass("footer").html(footer)), s && s.length)) {
                     var m = $("<div></div>").addClass("buttons");
-                    (p &&
+                    (dontShowAgainCb &&
                         m.prepend(
                             $("<label></label>").append([
                                 $("<input>")
                                     .attr("type", "checkbox")
                                     .on("change", function () {
-                                        p(this.checked);
+                                        dontShowAgainCb(this.checked);
                                     }),
                                 $("<span></span>")
                                     .addClass("dont-show-this-again-message")
@@ -1956,31 +1956,31 @@ var GravitDesigner = (function (e) {
                         m.append(
                             s.map((e) => {
                                 let {
-                                    label: t,
-                                    onclick: n,
-                                    highlighted: o,
+                                    label,
+                                    onclick,
+                                    highlighted,
                                     className: i,
-                                    position: a,
-                                    shortcut: r,
+                                    position,
+                                    shortcut,
                                     closeOnClick: s = false,
                                 } = e;
                                 var l = false,
                                     c = () => {
                                         l ||
                                             ((l = true),
-                                            r && (Mousetrap.unbind(r), g.splice(g.indexOf(r), 1)),
+                                            shortcut && (Mousetrap.unbind(shortcut), g.splice(g.indexOf(shortcut), 1)),
                                             g.length && (g.forEach((e) => Mousetrap.unbind(e)), (g = [])),
                                             s && h.gDialog("close"),
-                                            n && n(h));
+                                            onclick && onclick(h));
                                     },
                                     d = $("<button></button>")
-                                        .append($("<span></span>").text(t))
-                                        .addClass("g-pro-button " + (o ? "highlighted" : ""))
+                                        .append($("<span></span>").text(label))
+                                        .addClass("g-pro-button " + (highlighted ? "highlighted" : ""))
                                         .on("click", () => c());
                                 return (
-                                    r && (Mousetrap.bind(r, c), g.push(r)),
+                                    shortcut && (Mousetrap.bind(shortcut, c), g.push(shortcut)),
                                     i && ((i = i instanceof Array ? i : [i]), i.forEach((e) => d.addClass(e))),
-                                    a && d.css("float", a),
+                                    position && d.css("float", position),
                                     d
                                 );
                             })
@@ -2332,36 +2332,36 @@ var GravitDesigner = (function (e) {
         (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = exports.TOOLTIP_AREA = exports.GRichTooltipConfig = void 0), require(290), require(3));
         const o = (exports.GRichTooltipConfig = function (e) {
             let {
-                title: t,
-                description: n,
-                video: o,
-                pic: i,
-                isPro: a,
-                middle: r,
-                shortcut: s,
-                videoTimeout: l,
-                marginLeft: c,
-                side: d,
-                learnMore: u,
-                upgradeToProStatsValue: p,
-                forceShow: g,
-                flipHorizontal: h,
+                title,
+                description,
+                video,
+                pic,
+                isPro,
+                middle,
+                shortcut,
+                videoTimeout,
+                marginLeft,
+                side,
+                learnMore,
+                upgradeToProStatsValue,
+                forceShow,
+                flipHorizontal,
             } = e;
-            if (!t) throw new Error("");
-            ((this._title = t),
-                (this._description = n),
-                (this._video = o),
-                (this._pic = i),
-                (this._isPro = a),
-                (this._middle = r),
-                (this._marginLeft = c),
-                (this._shortcut = s),
-                (this._videoTimeout = l),
-                (this._side = d),
-                (this._learnMore = u),
-                (this._upgradeToProStatsValue = p),
-                (this._forceShow = g),
-                (this._flipHorizontal = h));
+            if (!title) throw new Error("");
+            ((this._title = title),
+                (this._description = description),
+                (this._video = video),
+                (this._pic = pic),
+                (this._isPro = isPro),
+                (this._middle = middle),
+                (this._marginLeft = marginLeft),
+                (this._shortcut = shortcut),
+                (this._videoTimeout = videoTimeout),
+                (this._side = side),
+                (this._learnMore = learnMore),
+                (this._upgradeToProStatsValue = upgradeToProStatsValue),
+                (this._forceShow = forceShow),
+                (this._flipHorizontal = flipHorizontal));
         });
         ((o.from = function (e) {
             return new o(e);
@@ -2704,10 +2704,10 @@ var GravitDesigner = (function (e) {
                 return window.localStorage.length;
             }),
             (y.prototype.setCookie = function (e) {
-                let { name: t, value: n } = e;
+                let { name, value } = e;
                 return navigator.cookieEnabled
-                    ? ((document.cookie = "".concat(t, "=").concat(n, "; path=/")),
-                      (document.cookie = "".concat(t, "=").concat(n, "; path=/; domain=").concat(designerConfig.DOMAIN)),
+                    ? ((document.cookie = "".concat(name, "=").concat(value, "; path=/")),
+                      (document.cookie = "".concat(name, "=").concat(value, "; path=/; domain=").concat(designerConfig.DOMAIN)),
                       Promise.resolve())
                     : Promise.reject();
             }),
@@ -4003,9 +4003,9 @@ var GravitDesigner = (function (e) {
                     try {
                         const n = {};
                         (e.setSynchronizing(true), e.updateStatus(f.Saving, n));
-                        const { progress: a } = n,
+                        const { progress } = n,
                             r = (e) => {
-                                a && a(e);
+                                progress && progress(e);
                             };
                         !(async function (t) {
                             var n = null;
@@ -4227,11 +4227,11 @@ var GravitDesigner = (function (e) {
                                     GSystemDialog.alert(e)
                                 );
                             case designerConfig.gApi.ERROR_CODES.ERR_SUBSCRIPTION_IS_ACTIVE:
-                                const { nextBillingDate: t } = await designerConfig.gApi.subscription.getNextBillingDate();
+                                const { nextBillingDate } = await designerConfig.gApi.subscription.getNextBillingDate();
                                 return GSystemDialog.alert(
                                     GObject.GLocale.get(new GObject.GLocaleKey("GCloudUtil", "text.err-subscription-is-active")).replace(
                                         "%date",
-                                        designerConfig.DateAPI.format(t)
+                                        designerConfig.DateAPI.format(nextBillingDate)
                                     )
                                 );
                             case designerConfig.gApi.ERROR_CODES.ERR_SUBSCRIPTION_IS_NOT_EXPIRED:
@@ -4800,7 +4800,7 @@ var GravitDesigner = (function (e) {
         (require(58), require(30), require(20), require(271), require(71), require(151), require(34), require(91), require(4), require(32), require(33));
         var GSaveAction = require(40),
             a = o(require(263 /* GRegex */));
-        const { FILE_ID_PREFIX: r } = require(10 /* designerConfig */);
+        const { FILE_ID_PREFIX } = require(10 /* designerConfig */);
         function s() {
             this._permissions = [];
         }
@@ -4962,11 +4962,11 @@ var GravitDesigner = (function (e) {
                     case s.Storage.Gravit:
                         return "";
                     case s.Storage.GoogleDrive:
-                        return r.GOOGLEDRIVE;
+                        return FILE_ID_PREFIX.GOOGLEDRIVE;
                     case s.Storage.SharePoint:
-                        return r.SHAREPOINT;
+                        return FILE_ID_PREFIX.SHAREPOINT;
                     case s.Storage.OneDriveBusiness:
-                        return r.ONEDRIVEBUSINESS;
+                        return FILE_ID_PREFIX.ONEDRIVEBUSINESS;
                 }
                 throw new Error("Unsupported storage!");
             }),
@@ -5357,20 +5357,20 @@ var GravitDesigner = (function (e) {
                 }
             }),
             (K.prototype._userLoggedEvent = function (e) {
-                const { user: t } = e;
-                t && this._editor && this._editor.setUID(new h.default(t).getUID());
+                const { user } = e;
+                user && this._editor && this._editor.setUID(new h.default(user).getUID());
             }),
             (K.prototype._handleDocumentEvent = function () {}),
             (K.prototype._handleStorageItemEvent = function () {}),
             (K.prototype._collaborationEvent = async function (e) {
                 if (this.isLockedByVersionHistory()) return;
-                const { type: t, data: n } = e;
-                switch (t) {
+                const { type, data } = e;
+                switch (type) {
                     case $.Type.ReviewStatusChanged:
-                        this.isCollaborative() && this.getStorageItem().setCollaborativeFileStatus(n.status);
+                        this.isCollaborative() && this.getStorageItem().setCollaborativeFileStatus(data.status);
                         break;
                     case $.Type.FileUpdate:
-                        if (n && n.metadata && n.metadata.sessionId && n.metadata.sessionId === this.sessionId) return;
+                        if (data && data.metadata && data.metadata.sessionId && data.metadata.sessionId === this.sessionId) return;
                         ((this._isUpdateAvailable = true),
                             (this._isIgnoringCurrentUpdate = false),
                             gDesigner.hasEventListeners(v) && gDesigner.trigger(new v(v.Type.UpdateAvailable, this)));
@@ -7082,7 +7082,7 @@ var GravitDesigner = (function (e) {
         (require(30), require(20), require(107), require(3), require(247), require(91));
         var GRegex = require(263),
             designerConfig = require(10);
-        const { GObject: a } = require(1 /* GObject */),
+        const { GObject } = require(1 /* GObject */),
             r = require(733),
             s = require(589),
             l = {},
@@ -7110,7 +7110,7 @@ var GravitDesigner = (function (e) {
             let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
             Object.assign(this, e);
         }
-        (a.inheritAndMix(d, s, [r, designerConfig.User], true),
+        (GObject.inheritAndMix(d, s, [r, designerConfig.User], true),
             (d.equals = function (e, t) {
                 return new d(e).getUID() === new d(t).getUID();
             }),
@@ -8187,8 +8187,8 @@ var GravitDesigner = (function (e) {
                 if (e) return GCommonNames.updateFileThumbnail(this.getId(), e.getImageAsBlob(), e.getMimeType(), t);
             }),
             (b.Item.prototype._checkUserQuotaLimit = async function () {
-                const { pro: e, free: t } = gDesigner.getLicense().getQuotas(),
-                    n = gDesigner.isEnabledProFeatures() ? e : t;
+                const { pro, free } = gDesigner.getLicense().getQuotas(),
+                    n = gDesigner.isEnabledProFeatures() ? pro : free;
                 if (n > 0) {
                     if ((await designerConfig.gApi.quota()) > n) {
                         const e = new Error(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.running-out-of-cloud-space")));
@@ -10530,11 +10530,11 @@ var GravitDesigner = (function (e) {
                         .addClass("buttons")
                         .append(
                             n.map((e) => {
-                                let { label: t, onclick: n, highlighted: o } = e;
+                                let { label, onclick, highlighted } = e;
                                 return $("<button></button>")
-                                    .append($("<span></span>").text(t))
-                                    .addClass("g-pro-button " + (o ? "highlighted" : ""))
-                                    .on("click", () => n(this));
+                                    .append($("<span></span>").text(label))
+                                    .addClass("g-pro-button " + (highlighted ? "highlighted" : ""))
+                                    .on("click", () => onclick(this));
                             })
                         )
                 );
@@ -10677,7 +10677,7 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = exports.GRegex = void 0));
-        const { NOTIFICATION_USER_MENTION_REGEX: o } = require(10 /* designerConfig */),
+        const { NOTIFICATION_USER_MENTION_REGEX } = require(10 /* designerConfig */),
             i = (exports.GRegex = {
                 String: {
                     InParenthesis: { NotNegativeNumberInTheEnd: /\(\d+\)$/ },
@@ -10686,7 +10686,7 @@ var GravitDesigner = (function (e) {
                     MentionInputRtrim: /\s+$/,
                     MentionInputRegexpEncode: /([.*+?^=!:${}()|\[\]\/\\])/g,
                     MentionInputHighlightRegString: "(?![^&;]+;)(?!<[^<>]*)(<%=term%>)(?![^<>]*>)(?![^&;]+;)",
-                    USERNAME_RE: o || /@[^\r\n\t\f\v\s,{#%'"*<()>}:`;,!&?$+^\/|=\]\[\\]+/g,
+                    USERNAME_RE: NOTIFICATION_USER_MENTION_REGEX || /@[^\r\n\t\f\v\s,{#%'"*<()>}:`;,!&?$+^\/|=\]\[\\]+/g,
                     EMAIL: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                     FileExtension: /\.[0-9a-z]+$/i,
                     MultipleDotsEnd: /\.+$/,
@@ -13649,11 +13649,11 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         require(3);
-        const { GEvent: o, GObject: i } = require(1 /* GObject */);
+        const { GEvent, GObject } = require(1 /* GObject */);
         function a(e, t) {
             ((this.type = e), (this.data = t));
         }
-        (i.inherit(a, o),
+        (GObject.inherit(a, GEvent),
             (a.prototype.type = null),
             (a.prototype.data = null),
             (a.Type = {
@@ -13711,7 +13711,7 @@ var GravitDesigner = (function (e) {
             a = require(394),
             r = require(135),
             s = require(863),
-            { SidebarsIds: l } = require(198 /* SidebarsIds */),
+            { SidebarsIds } = require(198 /* SidebarsIds */),
             c = require(807);
         function d(e, t, n) {
             ((this._htmlElement = e),
@@ -13761,8 +13761,8 @@ var GravitDesigner = (function (e) {
                             if (e) {
                                 const t =
                                     e.find((e) => {
-                                        let { def: t } = e;
-                                        return !!t;
+                                        let { def } = e;
+                                        return !!def;
                                     }) || e[0];
                                 t && this.setActiveTouchTool(t);
                             }
@@ -13862,7 +13862,7 @@ var GravitDesigner = (function (e) {
                                     this._updateBadge(e));
                             }.bind(this)
                         ),
-                            e.getId() === l.GInspectorSidebar &&
+                            e.getId() === SidebarsIds.GInspectorSidebar &&
                                 e.addEventListener(
                                     d.SidebarEvent,
                                     function (e) {
@@ -15078,8 +15078,8 @@ var GravitDesigner = (function (e) {
         "use strict";
         (require(290), require(38));
         const {
-                ShareRoles: o,
-                defaultUserSettings: { share: { defaults: { public: { role: i } = {}, private: { role: a } = {} } = {} } = {} } = {},
+                ShareRoles,
+                defaultUserSettings: { share: { defaults: { public: { role } = {}, private: { role: a } = {} } = {} } = {} } = {},
             } = require(10 /* designerConfig */),
             r = require(1067),
             s = require(1070),
@@ -15097,41 +15097,41 @@ var GravitDesigner = (function (e) {
             }),
             (c._makeFromShareRole = function (e) {
                 if (!e) return null;
-                const { id: t, name: n, description: o, status: i, pro: a, permissions: c = {}, assignable: d, level: u } = e,
+                const { id, name, description, status, pro, permissions: c = {}, assignable, level } = e,
                     p = new r({
-                        id: t,
-                        level: u,
-                        name: n,
-                        description: o,
-                        status: i,
-                        pro: a,
+                        id: id,
+                        level: level,
+                        name: name,
+                        description: description,
+                        status: status,
+                        pro: pro,
                         permissions: new s(c),
-                        assignable: d,
+                        assignable: assignable,
                     }),
                     g = l[p.id];
                 return (g && p.grant(g), p);
             }),
             (c.ROLES = {
                 get ALL() {
-                    return Object.values(o).map((e) => c.makeFromShareRole(e));
+                    return Object.values(ShareRoles).map((e) => c.makeFromShareRole(e));
                 },
                 get DEFAULT_PUBLIC_ROLE() {
-                    return c.makeFromShareRole(i);
+                    return c.makeFromShareRole(role);
                 },
                 get DEFAULT_PRIVATE_ROLE() {
                     return c.makeFromShareRole(a);
                 },
                 get NO_ACCESS_ROLE() {
-                    return c.makeFromShareRole(o.NoAccess);
+                    return c.makeFromShareRole(ShareRoles.NoAccess);
                 },
                 get APPROVER_ROLE() {
-                    return c.makeFromShareRole(o.Approver);
+                    return c.makeFromShareRole(ShareRoles.Approver);
                 },
                 get OWNER_ROLE() {
-                    return c.makeFromShareRole(o.Owner);
+                    return c.makeFromShareRole(ShareRoles.Owner);
                 },
                 get VIEWER_ROLE() {
-                    return c.makeFromShareRole(o.Viewer);
+                    return c.makeFromShareRole(ShareRoles.Viewer);
                 },
             }),
             (module.exports = c));
@@ -15823,11 +15823,11 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         require(8 /* Symbol */);
-        const { GObject: o } = require(1 /* GObject */);
+        const { GObject } = require(1 /* GObject */);
         function i(e) {
             ((this._app = e), (this._collaborativeFile = null));
         }
-        (o.inherit(i, o),
+        (GObject.inherit(i, GObject),
             (i.prototype.getOrCreateCollaborativeFile = async function () {
                 throw "Not implemented";
             }),
@@ -19885,8 +19885,8 @@ var GravitDesigner = (function (e) {
         "use strict";
         const o = [{ ext: "gvdesign", type: "application/gravit+design", default: true }],
             i = o.map((e) => {
-                let { ext: t } = e;
-                return t.toLowerCase();
+                let { ext } = e;
+                return ext.toLowerCase();
             });
         module.exports = {
             AmplitudeHelper: {
@@ -20296,8 +20296,8 @@ var GravitDesigner = (function (e) {
             w = require(86),
             C = require(790),
             x = require(554),
-            { FILE_FORMATS: S } = require(10 /* designerConfig */),
-            E = Object.values(S).find((e) => e.default),
+            { FILE_FORMATS } = require(10 /* designerConfig */),
+            E = Object.values(FILE_FORMATS).find((e) => e.default),
             A = 10,
             T = 50,
             G = 80,
@@ -20576,8 +20576,8 @@ var GravitDesigner = (function (e) {
                                 t.permissions &&
                                 t.permissions.length &&
                                 t.permissions.some((t) => {
-                                    let { email: o, role: i } = t;
-                                    if (e === o) return ((n = i), true);
+                                    let { email, role } = t;
+                                    if (e === email) return ((n = role), true);
                                 }),
                             n
                         );
@@ -20654,9 +20654,9 @@ var GravitDesigner = (function (e) {
                     n =
                         this._file.getMimeType() ||
                         ((o = t),
-                        Object.values(S).find((e) => {
-                            let { ext: t } = e;
-                            return !!t && t.toLowerCase() === o.toLowerCase();
+                        Object.values(FILE_FORMATS).find((e) => {
+                            let { ext } = e;
+                            return !!ext && ext.toLowerCase() === o.toLowerCase();
                         }) || E).type;
                 var o;
                 const i = e.thumbnail.getImageAsBlob(),
@@ -20879,13 +20879,13 @@ var GravitDesigner = (function (e) {
             T = require(393),
             G = require(336),
             P = require(434),
-            { SHOW_SIDEBAR_BADGE: D, NOTIFICATION_SETTINGS_ENABLED: L } = require(10 /* designerConfig */),
+            { SHOW_SIDEBAR_BADGE, NOTIFICATION_SETTINGS_ENABLED } = require(10 /* designerConfig */),
             I = require(86),
             k = require(217),
             O = require(1279),
             {
-                DateAPI: F,
-                FileStatus: { APPROVED: R },
+                DateAPI,
+                FileStatus: { APPROVED },
             } = require(10 /* designerConfig */),
             SidebarsIds = require(198);
         function N() {
@@ -20949,7 +20949,7 @@ var GravitDesigner = (function (e) {
             (N.prototype._storageItemFileStatusEvent = function (e) {
                 this._storageItem &&
                     this._storageItem === e.storageItem &&
-                    ((e.oldStatus !== R && e.newStatus !== R) || this._updatePropertyPanels(true));
+                    ((e.oldStatus !== APPROVED && e.newStatus !== APPROVED) || this._updatePropertyPanels(true));
             }),
             (N.prototype._toggleShowResolved = function (e) {
                 if (e !== this._showResolved) {
@@ -21080,7 +21080,7 @@ var GravitDesigner = (function (e) {
                                 },
                             ],
                         }),
-                    L &&
+                    NOTIFICATION_SETTINGS_ENABLED &&
                         this._optionsToolbar.gPropertyRow({
                             clickable: true,
                             isMenu: true,
@@ -21392,14 +21392,14 @@ var GravitDesigner = (function (e) {
                     t.setChecked(e.checked),
                     t.setCaption(e.caption),
                     t.addEventListener(l.default.ActivateEvent, (t) => {
-                        const { sender: n } = t;
+                        const { sender } = t;
                         (this._notificationMenu._items.forEach((e) => {
                             e.setChecked(false);
                         }),
-                            n.setChecked(true),
+                            sender.setChecked(true),
                             gDesigner.stats("annotations_settings_notifications", e.statType),
                             gApi.updateFileData(this._document.getId(), {
-                                notifications_disabled: this._notificationMenu.indexOf(n),
+                                notifications_disabled: this._notificationMenu.indexOf(sender),
                             }));
                     }),
                     t
@@ -21410,11 +21410,11 @@ var GravitDesigner = (function (e) {
             }),
             (N.prototype._collaborationEvent = function (e) {
                 if (e.type === T.Type.AnnotationsUpdate) {
-                    const { data: { lastUpdateTime: t } = {} } = e;
-                    if (t && this._document) {
+                    const { data: { lastUpdateTime } = {} } = e;
+                    if (lastUpdateTime && this._document) {
                         const e = this._document.getScene();
                         !e ||
-                            (e.getLastTimeAnnotationsFromCloudModified() && !F.lt(e.getLastTimeAnnotationsFromCloudModified(), t, false)) ||
+                            (e.getLastTimeAnnotationsFromCloudModified() && !DateAPI.lt(e.getLastTimeAnnotationsFromCloudModified(), lastUpdateTime, false)) ||
                             this.syncAnnotations();
                     }
                 } else e.type === T.Type.ReviewStatusChanged && this._updateToolbar();
@@ -21607,12 +21607,12 @@ var GravitDesigner = (function (e) {
             }),
             (N.prototype._updateToolbarButtons = function () {
                 this._annotationProperties.forEach((e, t) => {
-                    const { topArrow: n, properties: o } = e;
-                    if (o instanceof GAnnotationProperties) {
+                    const { topArrow, properties } = e;
+                    if (properties instanceof GAnnotationProperties) {
                         const e = gDesigner.isTouchEnabled()
                             ? N.ANNOTATION_PROPERTIES_ARROW_POSITION_TOUCH
                             : N.ANNOTATION_PROPERTIES_ARROW_POSITION;
-                        n.find(".arrow-top").css("right", e[t] + "%");
+                        topArrow.find(".arrow-top").css("right", e[t] + "%");
                     }
                 });
             }),
@@ -21694,7 +21694,7 @@ var GravitDesigner = (function (e) {
                 var t = { unread: 0, total: 0 },
                     n = this._annotationPanels.map((e) => e.properties.getPage()),
                     o = this._document && (this._document.isCloudFile() || this._document.isExternalFile());
-                if (D && !this._active) {
+                if (SHOW_SIDEBAR_BADGE && !this._active) {
                     var i = gDesigner.getSyncUser();
                     if (o) {
                         if (this._currentAnnotations) {
@@ -22140,17 +22140,17 @@ var GravitDesigner = (function (e) {
                         start: (l) =>
                             (function c() {
                                 return i.read().then((d) => {
-                                    let { done: u, value: p } = d;
-                                    if (u) return (l.close(), i.releaseLock(), void e(s));
+                                    let { done, value } = d;
+                                    if (done) return (l.close(), i.releaseLock(), void e(s));
                                     if ("function" == typeof t) {
                                         r += (function (e) {
                                             if (n) return new Uint8Array(o(e)).length;
                                             return e.length;
-                                        })(p);
+                                        })(value);
                                         const e = Math.floor((r / a) * 100);
                                         t(e);
                                     }
-                                    return (l.enqueue(p), c());
+                                    return (l.enqueue(value), c());
                                 });
                             })(),
                     });
@@ -22187,8 +22187,8 @@ var GravitDesigner = (function (e) {
         (require(30), require(8 /* Symbol */));
         var designerConfig = require(10);
         function i(e) {
-            const { accessToken: t, expires: n, corporate: o, accountId: a } = new i.Settings(e);
-            ((this.accessToken = t), (this.expires = n), (this.corporate = o), (this.accountId = a));
+            const { accessToken, expires, corporate, accountId } = new i.Settings(e);
+            ((this.accessToken = accessToken), (this.expires = expires), (this.corporate = corporate), (this.accountId = accountId));
         }
         ((i.Settings = function (e) {
             e || (e = {});
@@ -22394,7 +22394,7 @@ var GravitDesigner = (function (e) {
             GAccountPanel = require(1508),
             GChangePasswordPanel = require(1509),
             s = (require(1158), require(805)),
-            { gApi: l } = (require(177), require(10 /* designerConfig */));
+            { gApi } = (require(177), require(10 /* designerConfig */));
         function c(e, t) {
             let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
             ((this._user = e), (this._options = n), this._init(t, n));
@@ -22410,7 +22410,7 @@ var GravitDesigner = (function (e) {
             (c.prototype._init = async function (e) {
                 var t = this;
                 let n = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                const { closeable: s = true, tabs: d } = n;
+                const { closeable: s = true, tabs } = n;
                 gDesigner.getLicense();
                 ((this._dialog = $("<div></div>").gDialog({
                     closeCallback: () => this._close(),
@@ -22472,7 +22472,7 @@ var GravitDesigner = (function (e) {
                     },
                     f = function (e) {
                         let t = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
-                        return d && d.length ? d.includes(e) : t;
+                        return tabs && tabs.length ? tabs.includes(e) : t;
                     };
                 if (
                     (f(c.Tabs.Account) &&
@@ -22491,7 +22491,7 @@ var GravitDesigner = (function (e) {
                         ),
                     f(c.Tabs.Purchase))
                 ) {
-                    (await l.hasPurchases({ issued: "true" }).catch(() => false)) &&
+                    (await gApi.hasPurchases({ issued: "true" }).catch(() => false)) &&
                         h(
                             GObject.GLocale.get(new GObject.GLocaleKey("GProfileDialog", "text.purchases")),
                             "gravit-icon-purchase",
@@ -25642,9 +25642,9 @@ var GravitDesigner = (function (e) {
     ,
     function (module, exports, require) {
         "use strict";
-        const { GObject: o, GEventTarget: i, GEvent: a } = require(1 /* GObject */);
+        const { GObject, GEventTarget, GEvent } = require(1 /* GObject */);
         function r() {}
-        (o.inheritAndMix(r, o, [i]),
+        (GObject.inheritAndMix(r, GObject, [GEventTarget]),
             (r.prototype._role = null),
             (r.prototype.setRole = function (e) {
                 ((this._role = e), this.hasEventListeners(r.RoleChangedEvent) && this.trigger(new r.RoleChangedEvent(e, this)));
@@ -25655,7 +25655,7 @@ var GravitDesigner = (function (e) {
             (r.RoleChangedEvent = function (e, t) {
                 ((this.role = e), (this.target = t));
             }),
-            o.inherit(r.RoleChangedEvent, a),
+            GObject.inherit(r.RoleChangedEvent, GEvent),
             (module.exports = r));
     },
     function (module, exports, require) {
@@ -26112,10 +26112,10 @@ var GravitDesigner = (function (e) {
             }
             getLicense() {
                 if (this._cache.license) {
-                    const { lastUpdate: e } = this._cache;
+                    const { lastUpdate } = this._cache;
                     return (
                         (this._cache.license = Object.assign({}, this._cache.license, {
-                            lastUpdate: e,
+                            lastUpdate: lastUpdate,
                         })),
                         this._cache.license
                     );
@@ -43454,7 +43454,7 @@ var GravitDesigner = (function (e) {
             s = require(858);
         const l = require(1240),
             c = require(520),
-            { FILE_FORMATS: d } = require(10 /* designerConfig */);
+            { FILE_FORMATS } = require(10 /* designerConfig */);
         exports.WINDOW_STATUS_BLOCKED = "window-blocked";
         function u(e) {
             ((this._settings = e),
@@ -43722,8 +43722,8 @@ var GravitDesigner = (function (e) {
             }),
             (u.prototype.getSupportedExtensions = function () {
                 return this.getSupportedFileFormats().map((e) => {
-                    let { ext: t } = e;
-                    return t.toLowerCase();
+                    let { ext } = e;
+                    return ext.toLowerCase();
                 });
             }),
             (u.prototype.getSupportedMIMETypes = function () {
@@ -43744,7 +43744,7 @@ var GravitDesigner = (function (e) {
                 return [];
             }),
             (u.prototype.getSupportedFileFormats = function () {
-                return this._driveSettings && this._driveSettings.supportedFileFormats ? this._driveSettings.supportedFileFormats : d;
+                return this._driveSettings && this._driveSettings.supportedFileFormats ? this._driveSettings.supportedFileFormats : FILE_FORMATS;
             }),
             (u.prototype.getDefaultFileFormat = function () {
                 return this.getSupportedFileFormats().find((e) => e.default);
@@ -45483,10 +45483,10 @@ var GravitDesigner = (function (e) {
         "use strict";
         require(30);
         var IS_TRUNK = require(231);
-        const { License: i, LicenseType: a, DateAPI: r } = require(10 /* designerConfig */),
+        const { License, LicenseType, DateAPI } = require(10 /* designerConfig */),
             {
                 defaultUserSettings: {
-                    license: { offlineCountdown: s, offlineExpirationTime: l },
+                    license: { offlineCountdown, offlineExpirationTime },
                 },
             } = require(10 /* designerConfig */).defaultUserSettings,
             c = require(785),
@@ -45496,18 +45496,18 @@ var GravitDesigner = (function (e) {
                 return (c.updateLicense(e), this._newLicense(e));
             }
             static newDefaultLicense() {
-                return this._newLicense({ license: a.Default });
+                return this._newLicense({ license: LicenseType.Default });
             }
             static newOfflineLicense() {
                 const e = c.getLicense();
                 if (e) {
-                    const t = r.addTime(r.addTime(new Date(e.lastUpdate), e.offlineExpirationTime || l), e.offlineCountdown || s);
+                    const t = DateAPI.addTime(DateAPI.addTime(new Date(e.lastUpdate), e.offlineExpirationTime || offlineExpirationTime), e.offlineCountdown || offlineCountdown);
                     return this._newLicense(Object.assign(e, { offline: true, offlineExpire: t }));
                 }
-                return this._newLicense({ license: a.Default, offline: true });
+                return this._newLicense({ license: LicenseType.Default, offline: true });
             }
             static _newLicense(e) {
-                return this._isDevLicense() ? new d(e) : new i(e);
+                return this._isDevLicense() ? new d(e) : new License(e);
             }
             static _isDevLicense() {
                 if (IS_TRUNK.IS_TRUNK) return true;
@@ -45608,13 +45608,13 @@ var GravitDesigner = (function (e) {
             c = o(require(594));
         const d = require(1108),
             u = require(595),
-            { HTTP_STATUS_CODES: p } = require(10 /* designerConfig */);
+            { HTTP_STATUS_CODES } = require(10 /* designerConfig */);
         function g(e) {
             this.setTokenIssuer(e);
         }
         ((g.TRIAL_UNTIL_FAIL = 3),
             (g.isUsageLimitError = function (e) {
-                return !(!e || !e.error) && Number(e.error.code) === p.FORBIDDEN && e.error.errors.some((e) => "usageLimits" === e.domain);
+                return !(!e || !e.error) && Number(e.error.code) === HTTP_STATUS_CODES.FORBIDDEN && e.error.errors.some((e) => "usageLimits" === e.domain);
             }),
             (g.ExceptionCode = { LoginAborted: 1 }));
         class h extends c.default {
@@ -45675,21 +45675,21 @@ var GravitDesigner = (function (e) {
                         })
                             .then((e) => e.json())
                             .then((e) => {
-                                const { permissions: o, nextPageToken: a } = e;
-                                (o.length && (n = n.concat(o)),
-                                    a
+                                const { permissions, nextPageToken } = e;
+                                (permissions.length && (n = n.concat(permissions)),
+                                    nextPageToken
                                         ? setTimeout(function () {
-                                              l(a);
+                                              l(nextPageToken);
                                           })
                                         : i(
                                               t
                                                   ? n
                                                   : n.map((e) => {
-                                                        let { emailAddress: t, role: n } = e;
+                                                        let { emailAddress, role } = e;
                                                         return {
-                                                            email: t,
-                                                            role: s.default[n],
-                                                            externalRole: n,
+                                                            email: emailAddress,
+                                                            role: s.default[role],
+                                                            externalRole: role,
                                                         };
                                                     })
                                           ));
@@ -45711,10 +45711,10 @@ var GravitDesigner = (function (e) {
                     if (t.error) {
                         const {
                             error: {
-                                errors: [{ message: e }],
+                                errors: [{ message }],
                             },
                         } = t;
-                        return Promise.reject(e);
+                        return Promise.reject(message);
                     }
                     if (r.role === l.NoAccessId) return t;
                 }
@@ -45734,11 +45734,11 @@ var GravitDesigner = (function (e) {
                 if (!e) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.no-file-found")));
                 if (!this.getTokenIssuerSettings() || !this.getTokenIssuerSettings().corporate)
                     return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
-                const { role: n, domain: o } = t;
-                if (!n || !o) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.not-enough-parameters")));
+                const { role: n, domain } = t;
+                if (!n || !domain) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.not-enough-parameters")));
                 const a = {
                     type: "domain",
-                    domain: o,
+                    domain: domain,
                     role: l.default[n.id],
                     allowFileDiscovery: true,
                 };
@@ -45769,10 +45769,10 @@ var GravitDesigner = (function (e) {
                     : Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
             }),
             (g.prototype.removeShare = async function (e, t) {
-                let { id: n } = t;
+                let { id } = t;
                 if (!this.getTokenIssuerSettings() || !this.getTokenIssuerSettings().corporate)
                     return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
-                const o = new URL("https://www.googleapis.com/drive/v3/files/".concat(e, "/permissions/").concat(n)),
+                const o = new URL("https://www.googleapis.com/drive/v3/files/".concat(e, "/permissions/").concat(id)),
                     a = await this.getAccessToken(),
                     r = { fields: "*", supportsAllDrives: true };
                 for (var s in r) o.searchParams.append(s, r[s]);
@@ -45844,9 +45844,9 @@ var GravitDesigner = (function (e) {
                     fetch(e, Object.assign({ headers: new Headers(s), signal: n }, t)).then(async (i) => {
                         if (!i.ok) {
                             var r = await i.json();
-                            return i.status === p.UNAUTHORIZED && (await gContainer.getGoogleAPI().signIn(), 0 === o)
+                            return i.status === HTTP_STATUS_CODES.UNAUTHORIZED && (await gContainer.getGoogleAPI().signIn(), 0 === o)
                                 ? this._request(e, t, n, ++o)
-                                : i.status === p.FORBIDDEN && g.isUsageLimitError(r) && o < g.TRIAL_UNTIL_FAIL
+                                : i.status === HTTP_STATUS_CODES.FORBIDDEN && g.isUsageLimitError(r) && o < g.TRIAL_UNTIL_FAIL
                                   ? (await (0, GSaveAction.sleep)(1e3 * Math.pow(1 + o, 2)), this._request(e, t, n, ++o))
                                   : Promise.reject(r);
                         }
@@ -45863,9 +45863,9 @@ var GravitDesigner = (function (e) {
                 const d = await fetch(e, Object.assign({ headers: new Headers(c), signal: n }, t));
                 if (!d.ok) {
                     var u = await d.json();
-                    return d.status === p.UNAUTHORIZED && (await gContainer.getGoogleAPI().signIn(), 0 === i)
+                    return d.status === HTTP_STATUS_CODES.UNAUTHORIZED && (await gContainer.getGoogleAPI().signIn(), 0 === i)
                         ? this._requestWithProgress(e, t, n, o, ++i)
-                        : d.status === p.FORBIDDEN && g.isUsageLimitError(u) && i < g.TRIAL_UNTIL_FAIL
+                        : d.status === HTTP_STATUS_CODES.FORBIDDEN && g.isUsageLimitError(u) && i < g.TRIAL_UNTIL_FAIL
                           ? (await (0, GSaveAction.sleep)(1e3 * Math.pow(1 + i, 2)), this._requestWithProgress(e, t, n, o, ++i))
                           : Promise.reject(u);
                 }
@@ -45890,7 +45890,7 @@ var GravitDesigner = (function (e) {
                     .then(() => true)
                     .catch((e) => {
                         if (e.error) {
-                            if (e.error.code === p.NOT_FOUND) return false;
+                            if (e.error.code === HTTP_STATUS_CODES.NOT_FOUND) return false;
                             const t = new Error(e.error.message);
                             throw ((t.code = e.error.code), t);
                         }
@@ -45928,8 +45928,8 @@ var GravitDesigner = (function (e) {
             (g.prototype.supportsEmailDomainCheck = async function () {
                 const e = await this.getTokenInfo().catch(() => null);
                 if (!e) return false;
-                const { scope: t } = e;
-                return Array.isArray(t) ? t.some((e) => n(e)) : n(t);
+                const { scope } = e;
+                return Array.isArray(scope) ? scope.some((e) => n(e)) : n(scope);
                 function n(e) {
                     return e.indexOf("admin.directory.user") >= 0;
                 }
@@ -46191,8 +46191,8 @@ var GravitDesigner = (function (e) {
         "use strict";
         const o = require(1244),
             i = require(85),
-            { Runtime: a, msTeamsMode: r } = require(10 /* designerConfig */),
-            { storeVendor: s } = require(803),
+            { Runtime, msTeamsMode } = require(10 /* designerConfig */),
+            { storeVendor } = require(803),
             l = "darwin",
             c = "win32",
             d = "linux";
@@ -46203,17 +46203,17 @@ var GravitDesigner = (function (e) {
             }
             static getRuntime() {
                 let e;
-                if (r) e = a.TeamsApp;
-                else if (gContainer.getRuntime() === i.Runtime.PWA) ((e = a.PWA), s === o.GooglePlay && (e = a.PWAPlayStore));
-                else if (gContainer.getRuntime() === i.Runtime.Browser) e = a.Browser;
+                if (msTeamsMode) e = Runtime.TeamsApp;
+                else if (gContainer.getRuntime() === i.Runtime.PWA) ((e = Runtime.PWA), storeVendor === o.GooglePlay && (e = Runtime.PWAPlayStore));
+                else if (gContainer.getRuntime() === i.Runtime.Browser) e = Runtime.Browser;
                 else if (gContainer.getRuntime() === i.Runtime.Electron) {
                     var t = gContainer.getPlatform();
-                    ((e = t === l ? a.Mac : t === c ? a.Windows : t === d ? a.Linux : t),
-                        s && (s === o.Apple ? (e = a.AppleStore) : s === o.Windows && (e = a.WindowsStore)));
+                    ((e = t === l ? Runtime.Mac : t === c ? Runtime.Windows : t === d ? Runtime.Linux : t),
+                        storeVendor && (storeVendor === o.Apple ? (e = Runtime.AppleStore) : storeVendor === o.Windows && (e = Runtime.WindowsStore)));
                 } else
                     gContainer.getRuntime() === i.Runtime.Chrome
-                        ? ((e = a.ChromeApp), s === o.ChromeWeb && (e = a.ChromeWebStore))
-                        : gContainer.getRuntime() === i.Runtime.IPad && (e = a.iPadOS);
+                        ? ((e = Runtime.ChromeApp), storeVendor === o.ChromeWeb && (e = Runtime.ChromeWebStore))
+                        : gContainer.getRuntime() === i.Runtime.IPad && (e = Runtime.iPadOS);
                 return e;
             }
         }
@@ -46225,7 +46225,7 @@ var GravitDesigner = (function (e) {
         var GObject = require(1),
             GRegex = require(263),
             GSaveAction = require(40);
-        const { gApi: r, GLoginDialog: s, DESIGNER: { TITLE: l } = {} } = require(10 /* designerConfig */),
+        const { gApi, GLoginDialog, DESIGNER: { TITLE } = {} } = require(10 /* designerConfig */),
             c = require(85),
             d = require(1252),
             u = require(859),
@@ -46238,20 +46238,20 @@ var GravitDesigner = (function (e) {
         function h(e) {
             ((this._callback = e), (this._loginConfiguration = {}));
         }
-        (GObject.GObject.inherit(g, s.Impl),
+        (GObject.GObject.inherit(g, GLoginDialog.Impl),
             (g.prototype.openOAuth = function (e) {
-                let { dialog: t, provider: n } = e;
-                p(n)
-                    .then((e) => t._postLogin(e))
-                    .catch((e) => t._handleError(e));
+                let { dialog, provider } = e;
+                p(provider)
+                    .then((e) => dialog._postLogin(e))
+                    .catch((e) => dialog._handleError(e));
             }),
             (g.prototype.openPurchaseFlow = async function (e) {
                 let { dialog: t, options: n = {} } = e;
                 (await gDesigner.openPaymentDialog(null, n).catch(() => null), t.close());
             }),
             (g.prototype.openExternalLink = function (e) {
-                let { link: t } = e;
-                gContainer.openExternalLink(null, t);
+                let { link } = e;
+                gContainer.openExternalLink(null, link);
             }),
             (g.prototype.close = function () {
                 this._closeCallback();
@@ -46280,9 +46280,9 @@ var GravitDesigner = (function (e) {
                 ) {
                     this._frame = $("<div></div>").addClass("cross-frame").toggleClass("g-anonymous", i).appendTo($("body"));
                     const e = new g(() => this.close());
-                    new s({
+                    new GLoginDialog({
                         impl: e,
-                        gApi: r,
+                        gApi: gApi,
                         origin: location.origin,
                         anonymous: i,
                         version: l,
@@ -46298,8 +46298,8 @@ var GravitDesigner = (function (e) {
                                 .then((e) => this._crossFrame.postMessage({ cmd: "postLogin", user: e }, "*"))
                                 .catch((t) => this._handleOAuthError(e.provider, t)),
                         close: function () {
-                            let { token: t } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                            return e.close(t);
+                            let { token } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                            return e.close(token);
                         },
                     }).open(t)),
                         a && ((h = this._crossFrame.getFrame()), h.css({ position: "fixed", height: "300%" }), h.on("load", f)));
@@ -46309,7 +46309,7 @@ var GravitDesigner = (function (e) {
                 }
             }),
             (h.prototype._handleOAuthError = function (e, t) {
-                t && t.code === r.ERROR_CODES.ERR_POPUP_HAS_BEEN_BLOCKED
+                t && t.code === gApi.ERROR_CODES.ERR_POPUP_HAS_BEEN_BLOCKED
                     ? this._showPopupInfo(e)
                     : this._crossFrame.postMessage({ cmd: "error", error: t }, "*");
             }),
@@ -46328,7 +46328,7 @@ var GravitDesigner = (function (e) {
                                     .html(
                                         GObject.GLocale.get(new GObject.GLocaleKey("GEmbeddedLogin", "text.pop-has-been-blocked"))
                                             .replace("%provider", t)
-                                            .replace("%app", l)
+                                            .replace("%app", TITLE)
                                     )
                             )
                             .append(
@@ -46355,14 +46355,14 @@ var GravitDesigner = (function (e) {
             }),
             (h.prototype._buildURL = function () {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                const { anonymous: t = false, signup: n = false, closeable: s = true, flow: l, options: d = {}, runtime: u } = e;
+                const { anonymous: t = false, signup: n = false, closeable: s = true, flow, options: d = {}, runtime } = e;
                 let p, g, h, f;
                 if (gContainer.getRuntime() === c.Runtime.Electron) {
                     const e = gContainer.getPlatform();
                     (("darwin" !== e && "win32" !== e) || (p = window.btoa("designer://")),
                         (g = (0, GSaveAction.stringToBase64String)(gDesigner.getAssetsURL())));
                 } else g = (0, GSaveAction.stringToBase64String)(location.origin);
-                const m = new URL("".concat(r.url, "/pro/login")),
+                const m = new URL("".concat(gApi.url, "/pro/login")),
                     y = m.searchParams,
                     v = gDesigner.getSignupOptions();
                 (v &&
@@ -46376,9 +46376,9 @@ var GravitDesigner = (function (e) {
                     gDesigner.enterpriseLoginForm() && y.set("enterprise", "1"),
                     t && y.set("anonymous", t),
                     s || y.set("closeable", s),
-                    l && y.set("flow", l),
+                    flow && y.set("flow", flow),
                     gContainer.shouldBypassEmailVerification() && y.set("bypassEmailVerification", true),
-                    u && y.set("runtime", u));
+                    runtime && y.set("runtime", runtime));
                 var _ = new URL(window.location.href);
                 if (_.searchParams) ((h = _.searchParams.get("token")), (f = _.searchParams.get("d")));
                 else {
@@ -46396,7 +46396,7 @@ var GravitDesigner = (function (e) {
                 );
             }),
             (h.prototype.close = async function (e) {
-                e && r.setAuthorizationToken && r.setAuthorizationToken(e);
+                e && gApi.setAuthorizationToken && gApi.setAuthorizationToken(e);
                 const t = await gDesigner.getUser();
                 t &&
                     (this._isDeactivatedUser(t)
@@ -46600,7 +46600,7 @@ var GravitDesigner = (function (e) {
             d = o(require(802)),
             u = require(593);
         const p = require(156),
-            { FILE_FORMATS: g, FOLDER_FORMAT: h, MAX_FOLDER_DEPTH_FOR_CLOUD: f } = require(10 /* designerConfig */);
+            { FILE_FORMATS, FOLDER_FORMAT, MAX_FOLDER_DEPTH_FOR_CLOUD } = require(10 /* designerConfig */);
         let m;
         function y() {
             (d.default.apply(this, arguments),
@@ -46668,7 +46668,7 @@ var GravitDesigner = (function (e) {
                     e.forEach((e) => {
                         if (n.has(e.id)) return;
                         let o = { path: i(e), folder: e };
-                        if (o.path.length > f) for (let e = 0; e < o.path.length - f; e++) n.add(o.path[e]);
+                        if (o.path.length > MAX_FOLDER_DEPTH_FOR_CLOUD) for (let e = 0; e < o.path.length - MAX_FOLDER_DEPTH_FOR_CLOUD; e++) n.add(o.path[e]);
                         else t[e.id] = o;
                     }),
                     t
@@ -46686,7 +46686,7 @@ var GravitDesigner = (function (e) {
                     (t = t || this.CURRENT_FOLDER),
                     designerConfig.gApi
                         .listFiles({
-                            type: h,
+                            type: FOLDER_FORMAT,
                             parent: this._extractId(t),
                             sort: e + "",
                             limit: n > 0 ? n : 100,
@@ -46717,7 +46717,7 @@ var GravitDesigner = (function (e) {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "asc";
                 if (Object.keys(this.FOLDERS).length) return;
                 const t = await designerConfig.gApi.listFiles({
-                    type: h,
+                    type: FOLDER_FORMAT,
                     parent: "*",
                     sort: e + "",
                     limit: Number.MAX_SAFE_INTEGER,
@@ -46888,8 +46888,8 @@ var GravitDesigner = (function (e) {
                 const t = r.default.definePath(this.CURRENT_FOLDER);
                 return Promise.all(
                     e.map(async (e) => {
-                        const { id: n } = await designerConfig.gApi.copyFile(e.id, { parent: t });
-                        return { id: n, parent: t };
+                        const { id } = await designerConfig.gApi.copyFile(e.id, { parent: t });
+                        return { id: id, parent: t };
                     })
                 );
             }),
@@ -46913,7 +46913,7 @@ var GravitDesigner = (function (e) {
                     (t = t || this.CURRENT_FOLDER),
                     designerConfig.gApi
                         .listFiles({
-                            type: h,
+                            type: FOLDER_FORMAT,
                             parent: this._extractId(t),
                             name: '"'.concat(e, '"'),
                         })
@@ -46943,17 +46943,17 @@ var GravitDesigner = (function (e) {
             }));
         exports.default = y;
         const v = (exports.TYPES = Object.assign(
-                { FOLDER: h },
-                g.reduce((e, t) => ((e[t.ext.toUpperCase() + "_FILE"] = t), e), {})
+                { FOLDER: FOLDER_FORMAT },
+                FILE_FORMATS.reduce((e, t) => ((e[t.ext.toUpperCase() + "_FILE"] = t), e), {})
             )),
             _ = (exports.DEFAULT_TYPE = Object.values(v).find((e) => e.default));
-        ((exports.FILE_EXTENSIONS = g.map((e) => {
-            let { ext: t } = e;
-            return t.toUpperCase();
+        ((exports.FILE_EXTENSIONS = FILE_FORMATS.map((e) => {
+            let { ext } = e;
+            return ext.toUpperCase();
         })),
-            (exports.FILE_MIME_TYPES = g.map((e) => {
-                let { type: t } = e;
-                return t;
+            (exports.FILE_MIME_TYPES = FILE_FORMATS.map((e) => {
+                let { type } = e;
+                return type;
             })));
         exports.lookupByMimeType = (e) =>
             Object.values(v).find((t) => {
@@ -48735,10 +48735,10 @@ var GravitDesigner = (function (e) {
             }
             _wasMoved(e) {
                 const t = e.changedTouches[0],
-                    { clientX: n, clientY: o } = t;
+                    { clientX, clientY } = t;
                 return !(
-                    Math.abs(n - this._touchStartX) < designerConfig.MIN_TOUCH_MOVE_DISTANCE &&
-                    Math.abs(o - this._touchStartY) < designerConfig.MIN_TOUCH_MOVE_DISTANCE
+                    Math.abs(clientX - this._touchStartX) < designerConfig.MIN_TOUCH_MOVE_DISTANCE &&
+                    Math.abs(clientY - this._touchStartY) < designerConfig.MIN_TOUCH_MOVE_DISTANCE
                 );
             }
             _shouldHandle(e) {
@@ -49019,31 +49019,31 @@ var GravitDesigner = (function (e) {
         class i extends o {
             constructor() {
                 let {
-                    id: e,
-                    name: t,
-                    last_name: n,
-                    email: o,
-                    showText: i,
-                    avatar: a,
-                    role: r,
+                    id,
+                    name,
+                    last_name,
+                    email,
+                    showText,
+                    avatar,
+                    role,
                     fontWeight: s = "normal",
                     type: l = "contact",
                     trigger: c = "@",
                     additional: d = false,
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 (super({
-                    id: e,
-                    name: t,
-                    last_name: n,
-                    email: o,
-                    showText: i,
-                    avatar: a,
+                    id: id,
+                    name: name,
+                    last_name: last_name,
+                    email: email,
+                    showText: showText,
+                    avatar: avatar,
                     fontWeight: s,
                     type: l,
                     trigger: c,
                 }),
                     (this.value = ""),
-                    (this._role = r),
+                    (this._role = role),
                     (this._additional = d));
             }
             setValue(e) {
@@ -49234,11 +49234,11 @@ var GravitDesigner = (function (e) {
             }
             init() {
                 let {
-                    appId: e,
-                    apiKey: t,
-                    clientId: n,
-                    discoveryDocs: o,
-                    scope: i,
+                    appId,
+                    apiKey,
+                    clientId,
+                    discoveryDocs,
+                    scope,
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 throw "Not implemented";
             }
@@ -51319,21 +51319,21 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         require(290);
-        const { GObject: o, GLocale: i } = require(1 /* GObject */),
+        const { GObject, GLocale } = require(1 /* GObject */),
             a = require(1068);
         function r(e) {
-            let { id: t, level: n = 0, name: o, description: i, status: r, pro: s = false, assignable: l = true, permissions: c } = e;
+            let { id, level: n = 0, name, description, status, pro: s = false, assignable: l = true, permissions } = e;
             (a.call(this),
-                (this.id = t),
-                (this.name = o),
-                (this.description = i),
-                (this.status = r),
+                (this.id = id),
+                (this.name = name),
+                (this.description = description),
+                (this.status = status),
                 (this.pro = s),
-                (this.permissions = c),
+                (this.permissions = permissions),
                 (this.assignable = l),
                 (this.level = n));
         }
-        (o.inheritAndMix(r, o, [a]),
+        (GObject.inheritAndMix(r, GObject, [a]),
             (r.prototype.getPermissions = function () {
                 return this.permissions;
             }),
@@ -51381,12 +51381,12 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         (require(19), require(8 /* Symbol */), require(4), require(322), require(32), require(38), require(97), require(33), require(26));
-        const { GObject: o } = require(1 /* GObject */),
+        const { GObject } = require(1 /* GObject */),
             i = require(1069);
         function a() {
             ((this._resourceMap = new i()), (this._controlSubjectState = { locked: false }));
         }
-        (o.inherit(a, o),
+        (GObject.inherit(a, GObject),
             (a.prototype._controlSubjectState = null),
             (a.prototype.lockPermissions = function () {
                 ((this._controlSubjectState.locked = true), Object.freeze(this._controlSubjectState), Object.freeze(this._resourceMap));
@@ -51482,13 +51482,13 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         require(30);
-        const { GObject: o } = require(1 /* GObject */);
+        const { GObject } = require(1 /* GObject */);
         class i {
             constructor(e) {
                 Object.assign(this, e);
             }
         }
-        (o.inherit(i, o),
+        (GObject.inherit(i, GObject),
             (i.prototype.applyFrom = function (e) {
                 Object.assign(this, e);
             }),
@@ -51497,16 +51497,16 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         const {
-                ShareRoles: { CoAuthor: o, Developer: i, Reviewer: a, Approver: r, Owner: s },
-                GFileReviewActions: { ACTION_REQUEST_REVIEW: l, ACTION_REQUEST_APPROVAL: c, ACTION_REOPEN: d, ACTION_APPROVE: u },
+                ShareRoles: { CoAuthor, Developer, Reviewer, Approver, Owner },
+                GFileReviewActions: { ACTION_REQUEST_REVIEW, ACTION_REQUEST_APPROVAL, ACTION_REOPEN, ACTION_APPROVE },
             } = require(10 /* designerConfig */),
             p = require(434);
         module.exports = {
-            [r.id]: [l, d, u, p.RESOLVE_COMMENT_ANNOTATION, p.RESOLVE_ALL_COMMENT_ANNOTATION, p.REOPEN_COMMENT_ANNOTATION],
-            [o.id]: [p.DELETE_COMMENT_ANNOTATION],
-            [i.id]: [p.DELETE_COMMENT_ANNOTATION, p.RESOLVE_COMMENT_ANNOTATION, p.REOPEN_COMMENT_ANNOTATION],
-            [a.id]: [],
-            [s.id]: [l, c, p.DELETE_COMMENT_ANNOTATION, p.RESOLVE_COMMENT_ANNOTATION, p.REOPEN_COMMENT_ANNOTATION],
+            [Approver.id]: [ACTION_REQUEST_REVIEW, ACTION_REOPEN, ACTION_APPROVE, p.RESOLVE_COMMENT_ANNOTATION, p.RESOLVE_ALL_COMMENT_ANNOTATION, p.REOPEN_COMMENT_ANNOTATION],
+            [CoAuthor.id]: [p.DELETE_COMMENT_ANNOTATION],
+            [Developer.id]: [p.DELETE_COMMENT_ANNOTATION, p.RESOLVE_COMMENT_ANNOTATION, p.REOPEN_COMMENT_ANNOTATION],
+            [Reviewer.id]: [],
+            [Owner.id]: [ACTION_REQUEST_REVIEW, ACTION_REQUEST_APPROVAL, p.DELETE_COMMENT_ANNOTATION, p.RESOLVE_COMMENT_ANNOTATION, p.REOPEN_COMMENT_ANNOTATION],
         };
     },
     function (module, exports, require) {
@@ -52248,20 +52248,20 @@ var GravitDesigner = (function (e) {
         "use strict";
         require(3);
         var o = require(592);
-        const { isUTS: i, UTStoCDA: a } = require(1095);
+        const { isUTS, UTStoCDA } = require(1095);
         function r(e, t, n, r) {
             if (!t) throw new o("GCloudAnnotations: no cloud annotations id");
             if (!e) throw new o("GCloudAnnotations: empty cloud annotations result", t);
             if (
                 (null === e.annotationsCollection && (e.annotationsCollection = []),
-                !e.annotationsCollection || (!i(e.annotationsCollection) && !(e.annotationsCollection instanceof Array)))
+                !e.annotationsCollection || (!isUTS(e.annotationsCollection) && !(e.annotationsCollection instanceof Array)))
             )
                 throw new o("GCloudAnnotations: no annotationsCollection inside cloud annotations", t);
             if (!e.lastUpdateTime && 0 !== e.lastUpdateTime)
                 throw new o("GCloudAnnotations: no lastUpdateTime inside cloud annotations", t);
             ((this.annotationsCollection = e.annotationsCollection),
-                i(this.annotationsCollection)
-                    ? ((this.annotationsCollection = a(this.annotationsCollection)), r && (r.hasUTS = true))
+                isUTS(this.annotationsCollection)
+                    ? ((this.annotationsCollection = UTStoCDA(this.annotationsCollection)), r && (r.hasUTS = true))
                     : r && (r.hasUTS = false),
                 (this.lastUpdateTime = new Date(e.lastUpdateTime).getTime()),
                 (this.cid = t),
@@ -57534,17 +57534,17 @@ var GravitDesigner = (function (e) {
             }),
             (u.prototype._updateSettings = function (e, t) {
                 this._settings = t ? $.extend({ types: [] }, e) : $.extend({ types: [] }, this._settings, e);
-                const { types: n, singleOption: o } = this._settings;
-                if (o) this._toolbar.css("display", "none");
+                const { types, singleOption } = this._settings;
+                if (singleOption) this._toolbar.css("display", "none");
                 else {
                     "none" === this._toolbar.css("display") && this._toolbar.css("display", "");
                     const e = [];
                     for (let t = 0, o = u.PATTERN_TYPES.length; t < o; t++) {
                         var i = u.PATTERN_TYPES[t],
-                            a = !n.length;
+                            a = !types.length;
                         if (!a)
-                            for (var r = 0; r < n.length; ++r)
-                                if (i.isCompatible(n[r])) {
+                            for (var r = 0; r < types.length; ++r)
+                                if (i.isCompatible(types[r])) {
                                     a = true;
                                     break;
                                 }
@@ -59466,16 +59466,16 @@ var GravitDesigner = (function (e) {
                                 e(t));
                         })
                         .catch((e) => {
-                            const { id: a } = n;
-                            return !i && e && e.status && 404 === e.status && a
+                            const { id } = n;
+                            return !i && e && e.status && 404 === e.status && id
                                 ? this._getClient()
-                                      .findFileById(a)
+                                      .findFileById(id)
                                       .then((e) => {
-                                          let { relativeUrl: t, name: i, type: a } = e;
+                                          let { relativeUrl, name, type } = e;
                                           const r = Object.assign(n, {
-                                              name: i,
-                                              relativeUrl: t,
-                                              type: a,
+                                              name: name,
+                                              relativeUrl: relativeUrl,
+                                              type: type,
                                           });
                                           return (this.setFile(r), this._setExtension(), this.updateShadowFile(), o.call(this, true));
                                       })
@@ -59762,8 +59762,8 @@ var GravitDesigner = (function (e) {
             (b.Item.prototype.getMyPermissionsList = async function () {
                 const e = this._getClient(),
                     t = this.getFile(),
-                    { High: n, Low: o } = await e.getFileEffectiveBasePermissions(t).catch(() => ({ High: 0, Low: 0 }));
-                if (new l.default(n, o).hasPermission(l.default.Permissions.EditListItems)) {
+                    { High, Low } = await e.getFileEffectiveBasePermissions(t).catch(() => ({ High: 0, Low: 0 }));
+                if (new l.default(High, Low).hasPermission(l.default.Permissions.EditListItems)) {
                     const n = await e._getUser(),
                         o = await e.getFileCreator(t);
                     return [
@@ -62610,9 +62610,9 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = exports.dateToVersionFormat = exports.dateToFilePreviewFormat = void 0));
-        const { GLocale: o } = require(1 /* GObject */),
+        const { GLocale } = require(1 /* GObject */),
             i = (e) =>
-                o.toLocaleDate(e, {
+                GLocale.toLocaleDate(e, {
                     month: "short",
                     day: "numeric",
                     hour: "numeric",
@@ -62620,7 +62620,7 @@ var GravitDesigner = (function (e) {
                 });
         exports.dateToVersionFormat = i;
         const a = (e) =>
-            o.toLocaleDate(new Date(e), {
+            GLocale.toLocaleDate(new Date(e), {
                 month: "numeric",
                 day: "numeric",
                 year: "2-digit",
@@ -62665,15 +62665,15 @@ var GravitDesigner = (function (e) {
             s = require(336),
             l = require(868),
             {
-                GFileReviewFlow: c,
-                gApi: d,
-                FileStatus: u,
-                FILE_REVIEW_ENABLED: p,
-                Notification: g,
+                GFileReviewFlow,
+                gApi,
+                FileStatus,
+                FILE_REVIEW_ENABLED,
+                Notification,
                 NotificationConstants: { FILE_REVIEW_FLOW: h = [] },
             } = require(10 /* designerConfig */);
         function f() {
-            if (!p) return this;
+            if (!FILE_REVIEW_ENABLED) return this;
             (gDesigner.addEventListener(i, this._documentEvent, this),
                 gDesigner.addEventListener(s.FileStatusUpdate, this._storageItemFileStatusEvent, this),
                 gDesigner.addEventListener(l, this._handleShareEvent, this),
@@ -62690,8 +62690,8 @@ var GravitDesigner = (function (e) {
                 e.removeEventListener(a, this._collaborationEvent, this);
             }),
             (f.prototype._storageItemFileStatusEvent = async function (e) {
-                let { storageItem: t, newStatus: n } = e;
-                this._fileId === t.getId() && this._doc.isCollaborative() && this._setStatus(n) && this.trigger(new f.UpdateEvent());
+                let { storageItem, newStatus } = e;
+                this._fileId === storageItem.getId() && this._doc.isCollaborative() && this._setStatus(newStatus) && this.trigger(new f.UpdateEvent());
             }),
             (f.prototype._handleShareEvent = async function (e) {
                 switch (e.type) {
@@ -62714,9 +62714,9 @@ var GravitDesigner = (function (e) {
                 }
             }),
             (f.prototype._collaborationEvent = async function (e) {
-                const { type: t, sender: n } = e;
-                if (n === gDesigner.getActiveDocument())
-                    switch (t) {
+                const { type, sender } = e;
+                if (sender === gDesigner.getActiveDocument())
+                    switch (type) {
                         case a.Type.ShareUpdate:
                         case a.Type.UserUpdate:
                             (await this._updateCollaboratorRoleListIfInitialized(),
@@ -62743,8 +62743,8 @@ var GravitDesigner = (function (e) {
                 return (
                     this._status !== e &&
                     ((this._status = e),
-                    (void 0 !== this._status && null !== this._status) || (this._status = u.IN_REVIEW),
-                    void 0 !== c && c.constructor && (this._flow = new c(this._status)),
+                    (void 0 !== this._status && null !== this._status) || (this._status = FileStatus.IN_REVIEW),
+                    void 0 !== GFileReviewFlow && GFileReviewFlow.constructor && (this._flow = new GFileReviewFlow(this._status)),
                     true)
                 );
             }),
@@ -62758,13 +62758,13 @@ var GravitDesigner = (function (e) {
             (f.prototype._shouldStatusDisabledForApproverWithCurrentStatus = function (e) {
                 if (this._isCurrentUserApprover())
                     switch (this._status) {
-                        case u.IN_REVIEW:
-                        case u.REOPENED:
+                        case FileStatus.IN_REVIEW:
+                        case FileStatus.REOPENED:
                             return true;
-                        case u.APPROVED:
-                            return e === u.IN_REVIEW || e === u.AWAITING_APPROVAL;
-                        case u.AWAITING_APPROVAL:
-                            return e === u.IN_REVIEW;
+                        case FileStatus.APPROVED:
+                            return e === FileStatus.IN_REVIEW || e === FileStatus.AWAITING_APPROVAL;
+                        case FileStatus.AWAITING_APPROVAL:
+                            return e === FileStatus.IN_REVIEW;
                     }
                 return false;
             }),
@@ -62773,7 +62773,7 @@ var GravitDesigner = (function (e) {
             }),
             (f.prototype.updateReviewStatus = function (e) {
                 return this.canUpdateToStatus(e) && this._fileId
-                    ? d.updateStatus(this._fileId, e)
+                    ? gApi.updateStatus(this._fileId, e)
                     : Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GFileReviewManager", "text.cant-update-file-to-status")));
             }),
             (f.prototype.canUpdateToStatus = function (e) {
@@ -62801,11 +62801,11 @@ var GravitDesigner = (function (e) {
                 );
             }),
             (f.prototype.getDocumentReviewHistory = async function (e) {
-                const t = await d.annotations.getDesignHistory(e).catch(() => []),
+                const t = await gApi.annotations.getDesignHistory(e).catch(() => []),
                     n = [];
                 for (let e = 0; e < t.length; e++) {
                     const o = t[e],
-                        i = g.from(o);
+                        i = Notification.from(o);
                     h.includes(i.getAction()) && n.push(i);
                 }
                 return n;
@@ -62817,7 +62817,7 @@ var GravitDesigner = (function (e) {
         (require(58), require(8 /* Symbol */), require(71));
         const o = require(177),
             i = require(805),
-            { gApi: a } = require(10 /* designerConfig */),
+            { gApi } = require(10 /* designerConfig */),
             r = {};
         let s = false;
         const l = (e) => {
@@ -62845,7 +62845,7 @@ var GravitDesigner = (function (e) {
                 return (
                     (async (e) => {
                         if (!r.hasOwnProperty(e)) {
-                            const t = await a.getUser(e, true).catch(() => Promise.resolve(null));
+                            const t = await gApi.getUser(e, true).catch(() => Promise.resolve(null));
                             r[e] = new o(t);
                         }
                         return r[e];
@@ -63197,9 +63197,9 @@ var GravitDesigner = (function (e) {
                 e &&
                     e.prompt &&
                     e.prompt().then(function (e) {
-                        let { outcome: t } = e;
-                        "dismissed" === t ||
-                            ("accepted" === t &&
+                        let { outcome } = e;
+                        "dismissed" === outcome ||
+                            ("accepted" === outcome &&
                                 (gContainer.removeProperty(l.installPWA3timesAWeekPropName),
                                 gContainer.removeProperty(l.closedInstallPWADialogDatePropName),
                                 gDesigner.closeInstallPwaDialog()));
@@ -64239,7 +64239,7 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         require(8 /* Symbol */);
-        const { gApi: o } = require(10 /* designerConfig */);
+        const { gApi } = require(10 /* designerConfig */);
         module.exports = class {
             canMakePayments() {
                 return true;
@@ -64261,12 +64261,12 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         (require(4), require(32), require(33));
-        const { GObject: o } = require(1 /* GObject */),
-            { GPlatform: i } = require(15 /* GPlatform */);
+        const { GObject } = require(1 /* GObject */),
+            { GPlatform } = require(15 /* GPlatform */);
         function a() {
             this._children = [];
         }
-        (o.inherit(a, o),
+        (GObject.inherit(a, GObject),
             (a.prototype._children = null),
             (a.prototype.clear = function () {
                 (this._clearChildren(), this._clearOwnData());
@@ -64290,7 +64290,7 @@ var GravitDesigner = (function (e) {
             }),
             (a.prototype._scrollToElement = function (e) {
                 if (!e || !e[0]) return;
-                const t = i.webBrowser === i.constructor.WebBrowser.Firefox,
+                const t = GPlatform.webBrowser === GPlatform.constructor.WebBrowser.Firefox,
                     n = t ? "start" : "nearest",
                     o = t ? "auto" : "smooth";
                 "function" == typeof e[0].scrollIntoView && e[0].scrollIntoView({ behavior: o, block: n });
@@ -64323,7 +64323,7 @@ var GravitDesigner = (function (e) {
         var o = require(176),
             IsFiniteNonNegativeNumber = require(0),
             GDocument = require(237);
-        const { GRegex: r } = require(263 /* GRegex */);
+        const { GRegex } = require(263 /* GRegex */);
         var s = require(1117).saveAs,
             l = false,
             c = null,
@@ -64409,7 +64409,7 @@ var GravitDesigner = (function (e) {
                 return "function" == typeof window.showSaveFilePicker && !this._isChromeOS();
             }),
             (u.prototype._isChromeOS = function () {
-                return r.NavigatorUserAgent.IS_CHROME_OS.test(navigator.userAgent || "");
+                return GRegex.NavigatorUserAgent.IS_CHROME_OS.test(navigator.userAgent || "");
             }),
             (u.prototype._hasDirectoryWriteAPI = function () {
                 return "function" == typeof window.chooseFileSystemEntries;
@@ -64535,18 +64535,18 @@ var GravitDesigner = (function (e) {
                 const n = {};
                 let o = "";
                 for (let i = 0, a = e.length; i < a; i++) {
-                    let { mime: a, ext: r } = e[i];
-                    a && r
-                        ? (t && "jpg" === r && (a = "x-really-an-image/jpeg"),
-                          void 0 !== n[a]
-                              ? (Array.isArray(n[a]) || (n[a] = [n[a]]),
-                                n[a].push(r.startsWith(".") ? r : ".".concat(r)),
+                    let { mime, ext } = e[i];
+                    mime && ext
+                        ? (t && "jpg" === ext && (mime = "x-really-an-image/jpeg"),
+                          void 0 !== n[mime]
+                              ? (Array.isArray(n[mime]) || (n[mime] = [n[mime]]),
+                                n[mime].push(ext.startsWith(".") ? ext : ".".concat(ext)),
                                 o && (o += ", "),
-                                (o += "*" + (r.startsWith(".") ? r : ".".concat(r))))
-                              : ((n[a] = r.startsWith(".") ? r : ".".concat(r)),
+                                (o += "*" + (ext.startsWith(".") ? ext : ".".concat(ext))))
+                              : ((n[mime] = ext.startsWith(".") ? ext : ".".concat(ext)),
                                 o && (o += ", "),
-                                (o += "*" + (r.startsWith(".") ? r : ".".concat(r)))))
-                        : console.warn('openPrompt warning: no mime or ext. given mime: "'.concat(a, '", given ext: "').concat(r, '"'));
+                                (o += "*" + (ext.startsWith(".") ? ext : ".".concat(ext)))))
+                        : console.warn('openPrompt warning: no mime or ext. given mime: "'.concat(mime, '", given ext: "').concat(ext, '"'));
                 }
                 return { description: o, accept: n };
             }),
@@ -64822,7 +64822,7 @@ var GravitDesigner = (function (e) {
         (require(328), require(57), require(8 /* Symbol */), require(20), require(34), require(134), require(4), require(41), require(13), require(38));
         var GObject = require(1),
             i = require(381);
-        const { parseNativeFonts: a, getLocalFontsData: r, getFontFamily: s } = require(1200);
+        const { parseNativeFonts, getLocalFontsData, getFontFamily } = require(1200);
         function l(e) {
             i.call(this, e);
         }
@@ -64876,9 +64876,9 @@ var GravitDesigner = (function (e) {
                         });
             }),
             (l.prototype._processResolveFont = async function (e, t, n, o) {
-                const i = s(e, this._findInFontsList.bind(this));
+                const i = getFontFamily(e, this._findInFontsList.bind(this));
                 if (!i) return o.fail();
-                const r = i.isLocalFont ? await a(i.fonts) : i.fonts;
+                const r = i.isLocalFont ? await parseNativeFonts(i.fonts) : i.fonts;
                 if (!r || !Array.isArray(r) || !r.length) return o.fail();
                 const l = r.find(function (o) {
                     return (
@@ -64903,13 +64903,13 @@ var GravitDesigner = (function (e) {
                     ? this._createLocalFontListCallbacks.push(o)
                     : ((this._createLocalFontListCallbacks = [o]),
                       (this._createLocalFontListPromise = new Promise(async (e) => {
-                          let t = await r(),
+                          let t = await getLocalFontsData(),
                               n = [];
                           for (var o = 0; o < t.length; o++) {
                               const e = t[o],
                                   i = n.findIndex((t) => {
-                                      let { family: n } = t;
-                                      return n === e.family;
+                                      let { family } = t;
+                                      return family === e.family;
                                   });
                               -1 === i ? n.push({ family: e.family, fonts: [e], isLocalFont: true }) : n[i].fonts.push(e);
                           }
@@ -64922,8 +64922,8 @@ var GravitDesigner = (function (e) {
                       })),
                       this._createLocalFontListPromise.then(() => {
                           (this._createLocalFontListCallbacks.map((o) => {
-                              let { done: i } = o;
-                              (i(this._getFilteredFontsList.call(this, e, t, n), true, null),
+                              let { done } = o;
+                              (done(this._getFilteredFontsList.call(this, e, t, n), true, null),
                                   (this._createLocalFontListPromise = null),
                                   (this._createLocalFontListCallbacks = null));
                           }),
@@ -65738,15 +65738,15 @@ var GravitDesigner = (function (e) {
             m = {};
         const y = (exports.TEAMS_COMMANDS = p.default.COMMANDS),
             v = (exports.GSharePointClient = function (e) {
-                let { tenant: t, domain: n, clientID: o, id: i, authTenant: a, corporate: r, token: s, relativePath: l } = e;
-                ((this.TOKEN = f || s),
-                    (this.BASE_URL = t),
-                    (this.AUTH_TENANT = a || t),
-                    (this.DOMAIN = n),
-                    (this.CLIENT_ID = o),
-                    (this.SETTINGS_ID = i),
-                    (this.CORPORATE = r || false),
-                    (this.RELATIVE_PATH = l),
+                let { tenant, domain, clientID, id, authTenant, corporate, token, relativePath } = e;
+                ((this.TOKEN = f || token),
+                    (this.BASE_URL = tenant),
+                    (this.AUTH_TENANT = authTenant || tenant),
+                    (this.DOMAIN = domain),
+                    (this.CLIENT_ID = clientID),
+                    (this.SETTINGS_ID = id),
+                    (this.CORPORATE = corporate || false),
+                    (this.RELATIVE_PATH = relativePath),
                     (this.HEADERS = v.requestHeaders));
             });
         ((v.prototype.setTenantURL = function (e) {
@@ -65832,8 +65832,8 @@ var GravitDesigner = (function (e) {
                         (t.type = v.getFileType({ name: e.Name })),
                         (t.mimeType = e._mimetype || e.mimeType || t.type));
                     const n = designerConfig.FILE_FORMATS.find((e) => {
-                        let { type: n } = e;
-                        return n === t.type;
+                        let { type } = e;
+                        return type === t.type;
                     });
                     return (
                         (t.extension = n && n.ext),
@@ -65908,8 +65908,8 @@ var GravitDesigner = (function (e) {
             (v.getFileType = function (e) {
                 return e.name.toLowerCase().endsWith(".cdrapp")
                     ? designerConfig.FILE_FORMATS.find((e) => {
-                          let { ext: t } = e;
-                          return "cdrapp" === t;
+                          let { ext } = e;
+                          return "cdrapp" === ext;
                       }).type
                     : e.name.toLowerCase().endsWith(".cdr")
                       ? designerConfig.FILE_FORMATS.find((e) => {
@@ -66020,11 +66020,11 @@ var GravitDesigner = (function (e) {
                 return (
                     n > 0 && (i += "&$top=".concat(n)),
                     this.get(i).then((t) => {
-                        let { value: n } = t;
+                        let { value } = t;
                         const o = [];
-                        if (!n || !n.length) return o;
-                        for (let t = 0, i = n.length; t < i; t++) {
-                            let i = n[t];
+                        if (!value || !value.length) return o;
+                        for (let t = 0, i = value.length; t < i; t++) {
+                            let i = value[t];
                             if (!i.Exists) continue;
                             const a = v.convertFolderToCloudItem(i);
                             ((a.parent = e), o.push(a));
@@ -66045,10 +66045,10 @@ var GravitDesigner = (function (e) {
                 return this.get(n);
             }),
             (v.prototype._createQueryFilesURL = function (e) {
-                const { folderRelativeUrl: t, orderBy: n, limit: o, skip: i } = e,
-                    a = this.getSanitizedFolderRelativePath(t),
+                const { folderRelativeUrl, orderBy, limit, skip } = e,
+                    a = this.getSanitizedFolderRelativePath(folderRelativeUrl),
                     r = this.getAPIEndpointURL("/_api/web/GetFolderByServerRelativeUrl('".concat(a, "')/Files"));
-                return (r.searchParams.append("$orderby", n), r.searchParams.append("$top", o), r.searchParams.append("$skip", i), r);
+                return (r.searchParams.append("$orderby", orderBy), r.searchParams.append("$top", limit), r.searchParams.append("$skip", skip), r);
             }),
             (v.prototype.findFileById = function (e) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
@@ -66067,8 +66067,8 @@ var GravitDesigner = (function (e) {
                                 },
                             } = e,
                             n = t.Cells.find((e) => {
-                                let { Key: t } = e;
-                                return "Filename" === t;
+                                let { Key } = e;
+                                return "Filename" === Key;
                             }).Value;
                         return {
                             name: t.Cells.find((e) => {
@@ -66440,8 +66440,8 @@ var GravitDesigner = (function (e) {
                                   }, 1e3);
                                   async function b(e) {
                                       let i = e.originalEvent.data;
-                                      const { cmd: r } = i;
-                                      if (r && "saveToken" === r)
+                                      const { cmd } = i;
+                                      if (cmd && "saveToken" === cmd)
                                           ((n.TOKEN = f =
                                               {
                                                   expires: Math.floor(Date.now() / 1e3) + 3600,
@@ -66455,14 +66455,14 @@ var GravitDesigner = (function (e) {
                                               $(window).off("message", b),
                                               (n._connect = null),
                                               s());
-                                      else if (r && "saveTokenError" === r) {
-                                          const { error: e } = i;
-                                          if ("User login is required" === e) return;
+                                      else if (cmd && "saveTokenError" === cmd) {
+                                          const { error } = i;
+                                          if ("User login is required" === error) return;
                                           if ((console.error(">>saveTokenError data", i), c && clearTimeout(c), u))
                                               return void (c = setTimeout(function () {
                                                   (h(y), v._logoutAndClearAdalCache(o), t(false));
                                               }, a));
-                                          (v._logoutAndClearAdalCache(o), h(y), (n._connect = null), l(e));
+                                          (v._logoutAndClearAdalCache(o), h(y), (n._connect = null), l(error));
                                       }
                                   }
                                   u &&
@@ -66564,10 +66564,10 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         require(30);
-        const { FILE_FORMATS: o } = require(10 /* designerConfig */);
+        const { FILE_FORMATS } = require(10 /* designerConfig */);
         class i {
             constructor() {
-                ((this.onlyListFilesOwnedByUser = false), (this.supportedFileFormats = o));
+                ((this.onlyListFilesOwnedByUser = false), (this.supportedFileFormats = FILE_FORMATS));
             }
             static from() {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -66620,7 +66620,7 @@ var GravitDesigner = (function (e) {
             s = o(require(443)),
             l = require(1243),
             GSaveAction = require(40);
-        const { getAuthenticator: d, getTeamsContext: u } = s.default;
+        const { getAuthenticator, getTeamsContext } = s.default;
         function p() {}
         ((p.Error = {
             NOT_REGISTERED: 1,
@@ -66691,7 +66691,7 @@ var GravitDesigner = (function (e) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 const n = this;
                 return new Promise((o, a) => {
-                    d()
+                    getAuthenticator()
                         .then((r) =>
                             r.authenticate({
                                 url: ""
@@ -66703,8 +66703,8 @@ var GravitDesigner = (function (e) {
                                 successCallback: async function (e) {
                                     const i = {};
                                     for (let t in e) {
-                                        const { expires: n, accessToken: o } = e[t];
-                                        i[t] = { token: o, expires: Number(n) };
+                                        const { expires, accessToken } = e[t];
+                                        i[t] = { token: accessToken, expires: Number(expires) };
                                     }
                                     (await n.setTokens(Object.assign(t, i)), o(i));
                                 },
@@ -66744,7 +66744,7 @@ var GravitDesigner = (function (e) {
             (p.prototype._getValidCachedTokens = async function () {
                 const e = this._getCachedTokens();
                 if (!e) return null;
-                const t = await u(),
+                const t = await getTeamsContext(),
                     n = {};
                 if (e.userId !== t.loginHint) return n;
                 const o = Object.keys(e);
@@ -66767,7 +66767,7 @@ var GravitDesigner = (function (e) {
             }),
             (p.prototype.setTokens = async function (e) {
                 let t = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
-                const n = (await u()).loginHint,
+                const n = (await getTeamsContext()).loginHint,
                     o = await this._getValidCachedTokens();
                 ((this._tokens = Object.assign({ userId: n }, o, e)),
                     t && localStorage.setItem(p.CACHED_TOKENS_PROPERTY_NAME, (0, GSaveAction.stringToBase64String)(JSON.stringify(this._tokens))));
@@ -66876,8 +66876,8 @@ var GravitDesigner = (function (e) {
             (s.prototype._importTrialCount = 0),
             (s.prototype.import = function (e) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                const { silent: n } = t;
-                return !n && this.busy()
+                const { silent } = t;
+                return !silent && this.busy()
                     ? this._importTrialCount++ > 100
                         ? void e()
                         : (setTimeout(
@@ -67114,8 +67114,8 @@ var GravitDesigner = (function (e) {
                     (t.forEach((e, t) => o.set(t, e)), (e = n.toString()));
                 }
                 if (((this._iframe = $("<iframe></iframe>").addClass("cross-frame").attr("src", e).appendTo($("body"))), this._settings)) {
-                    const { id: e, className: t, css: n } = this._settings;
-                    (e && this._iframe.attr("id", e), t && this._iframe.addClass(t), n && this._iframe.css(n));
+                    const { id, className, css } = this._settings;
+                    (id && this._iframe.attr("id", id), className && this._iframe.addClass(className), css && this._iframe.css(css));
                 }
                 let n = this.close.bind(this);
                 return (
@@ -67123,10 +67123,10 @@ var GravitDesigner = (function (e) {
                     (this._messageHandler = async (e) => {
                         if (e.originalEvent.source !== this._iframe[0].contentWindow) return;
                         let t = e.originalEvent.data;
-                        const { cmd: i } = t;
-                        if (i) {
-                            if (this._settings[i]) return void this._settings[i](t);
-                            switch (i) {
+                        const { cmd } = t;
+                        if (cmd) {
+                            if (this._settings[cmd]) return void this._settings[cmd](t);
+                            switch (cmd) {
                                 case "close":
                                     n(t);
                                     break;
@@ -67156,8 +67156,8 @@ var GravitDesigner = (function (e) {
                                         gDesigner
                                             .openPaymentDialog(null, s)
                                             .then(function () {
-                                                let { reinstate: e } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                                                (a && !e) || n({ closeable: r });
+                                                let { reinstate } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                                                (a && !reinstate) || n({ closeable: r });
                                             })
                                             .catch(() => {
                                                 n({ closeable: r });
@@ -67615,16 +67615,16 @@ var GravitDesigner = (function (e) {
                             }
                         } else if (t && t.presetLayout) {
                             let n = gDesigner.createScene(),
-                                { unit: o, dpi: i, width: a, height: r } = t.presetLayout,
+                                { unit, dpi, width, height } = t.presetLayout,
                                 s = t.presetCategory
                                     .toLowerCase()
                                     .replace(/[\t-\r \/\xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]/g, "-");
-                            (n.setProperties(["ut", "dpi"], [o, i || GObject.GLength.DPI]),
+                            (n.setProperties(["ut", "dpi"], [unit, dpi || GObject.GLength.DPI]),
                                 n
                                     .getActivePage()
                                     .setProperties(
                                         ["bck", "w", "h"],
-                                        [GObject.GRGBColor.WHITE, new GObject.GLength(a, o).toPoint(), new GObject.GLength(r, o).toPoint()]
+                                        [GObject.GRGBColor.WHITE, new GObject.GLength(width, unit).toPoint(), new GObject.GLength(height, unit).toPoint()]
                                     ),
                                 e.setTitle(t.presetLayout.id),
                                 e.setScene(n),
@@ -69937,7 +69937,7 @@ var GravitDesigner = (function (e) {
             h = require(1526),
             f = require(450);
         const m = require(607),
-            { SidebarsIds: y } = require(198 /* SidebarsIds */);
+            { SidebarsIds } = require(198 /* SidebarsIds */);
         var v = null,
             _ = null,
             b = null,
@@ -70037,7 +70037,7 @@ var GravitDesigner = (function (e) {
                                                 (this._validateInsertation(this._elements[e].getEffects(), t) &&
                                                     this._elements[e].getEffects().appendChild(t),
                                                     n._addEffectMenu.close());
-                                                const i = gDesigner.getRightSidebars().getSidebar(y.GInspectorSidebar);
+                                                const i = gDesigner.getRightSidebars().getSidebar(SidebarsIds.GInspectorSidebar);
                                                 i.trigger(new c.default(c.default.Type.ChildAdded, i));
                                             }
                                         }.bind(this),
@@ -70172,7 +70172,7 @@ var GravitDesigner = (function (e) {
                                 }.bind(this),
                                 GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "action.remove"))
                             ));
-                        const o = gDesigner.getRightSidebars().getSidebar(y.GInspectorSidebar);
+                        const o = gDesigner.getRightSidebars().getSidebar(SidebarsIds.GInspectorSidebar);
                         o.trigger(new c.default(c.default.Type.ChildRemoved, o));
                     }.bind(this),
                     w = null,
@@ -70579,7 +70579,7 @@ var GravitDesigner = (function (e) {
                                 ),
                                 $(this._toolbar).gAccordion("toggleOpen", true),
                                 $(this._toolbar).gAccordion("init", $(this._panel)));
-                            const r = gDesigner.getRightSidebars().getSidebar(y.GInspectorSidebar);
+                            const r = gDesigner.getRightSidebars().getSidebar(SidebarsIds.GInspectorSidebar);
                             r.trigger(new c.default(c.default.Type.ChildAdded, r));
                         }).bind(this)();
                     }.bind(this),
@@ -72584,7 +72584,7 @@ var GravitDesigner = (function (e) {
         var GObject = require(1),
             i = (require(15 /* GPlatform */), require(1267)),
             a = require(123),
-            { replaceImage: r, setOriginSize: s, cropImage: l } = (require(173), require(219), require(1268 /* GDocument */));
+            { replaceImage, setOriginSize, cropImage } = (require(173), require(219), require(1268 /* GDocument */));
         function c() {}
         (GObject.GObject.inherit(c, a),
             (c.prototype._panel = null),
@@ -72613,7 +72613,7 @@ var GravitDesigner = (function (e) {
                                         .css("padding", "0")
                                         .append($("<span></span>").addClass("gravit-icon-replaceimg"))
                                         .on("click", () => {
-                                            (r(this._image, this._document), gDesigner.stats("image_replace_image"));
+                                            (replaceImage(this._image, this._document), gDesigner.stats("image_replace_image"));
                                         }),
                                 },
                                 {
@@ -72625,7 +72625,7 @@ var GravitDesigner = (function (e) {
                                         .attr("data-action", "reset-size")
                                         .append($("<span></span>").addClass("gravit-icon-expand"))
                                         .on("click", () => {
-                                            (s(this._image), gDesigner.stats("image_reset_size"));
+                                            (setOriginSize(this._image), gDesigner.stats("image_reset_size"));
                                         }),
                                 },
                                 {
@@ -72639,7 +72639,7 @@ var GravitDesigner = (function (e) {
                                         .append($("<span></span>").addClass("gravit-icon-crop"))
                                         .on("click", () => {
                                             var t = e.find('button[data-action="handle-crop"]');
-                                            (l(this._image, t.data("no-crop")), gDesigner.stats("image_change_croptype"));
+                                            (cropImage(this._image, t.data("no-crop")), gDesigner.stats("image_change_croptype"));
                                         }),
                                 },
                                 {
@@ -75119,8 +75119,8 @@ var GravitDesigner = (function (e) {
             u = require(135),
             GSystemDialog = require(44);
         const g = require(148),
-            { toCapitalize: h } = require(40 /* GSaveAction */),
-            { LISTS_FEATURE: f } = require(10 /* designerConfig */);
+            { toCapitalize } = require(40 /* GSaveAction */),
+            { LISTS_FEATURE } = require(10 /* designerConfig */);
         var m = "#2635#";
         const y = {
             None: {
@@ -75182,28 +75182,28 @@ var GravitDesigner = (function (e) {
                                 .addClass("list-type-options")
                                 .append(
                                     Object.values(y).map((e) => {
-                                        let { label: t, value: n, types: o } = e;
+                                        let { label, value, types } = e;
                                         return $("<div></div>")
                                             .addClass("list-type-group")
-                                            .attr("value", n)
+                                            .attr("value", value)
                                             .append(
                                                 $("<div/>")
                                                     .addClass("list-type-group-header")
                                                     .append($("<span/>").addClass("gravit-icon-check"))
-                                                    .append($("<span/>").text(t))
+                                                    .append($("<span/>").text(label))
                                             )
-                                            .on("click", o ? null : () => this._assignMarker(null))
+                                            .on("click", types ? null : () => this._assignMarker(null))
                                             .append(
                                                 $("<div/>")
                                                     .addClass("list-type-group-container")
                                                     .append(
-                                                        o
-                                                            ? o.map((e) => {
-                                                                  let { value: t, icon: n } = e;
+                                                        types
+                                                            ? types.map((e) => {
+                                                                  let { value: t, icon } = e;
                                                                   return $("<div></div>")
                                                                       .addClass("list-type-option")
                                                                       .attr("value", t)
-                                                                      .append($("<div/>").addClass(n))
+                                                                      .append($("<div/>").addClass(icon))
                                                                       .on("click", (e) => {
                                                                           const t = $(e.target).closest(".list-type-option").attr("value");
                                                                           (gDesigner.stats("textproperties_change_list-type", t),
@@ -75616,7 +75616,7 @@ var GravitDesigner = (function (e) {
                                 .addClass("g-button")
                                 .addClass("decoration-buttons")
                                 .attr("data-property", e)
-                                .attr("data-title", h(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.decoration-".concat(u)))))
+                                .attr("data-title", toCapitalize(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.decoration-".concat(u)))))
                                 .on("click", function () {
                                     (gDesigner.stats("textproperties_change_decoration", u), t._toggleFormatting(u));
                                 })
@@ -75913,7 +75913,7 @@ var GravitDesigner = (function (e) {
                             ],
                         })
                         .appendTo(this._advancedSettings),
-                    f &&
+                    LISTS_FEATURE &&
                         ($("<div></div>")
                             .addClass("list-type-properties")
                             .gPropertyRow({
@@ -76725,8 +76725,8 @@ var GravitDesigner = (function (e) {
                     (x &&
                         x === GObject.GFont.Style.Italic &&
                         (xe = r.some((e) => {
-                            let { weight: t, styles: n } = e;
-                            return t === GObject.GFont.Weight.Bold && n.some((e) => 0 === e.indexOf(GObject.GFont.Style.Italic));
+                            let { weight, styles } = e;
+                            return weight === GObject.GFont.Weight.Bold && styles.some((e) => 0 === e.indexOf(GObject.GFont.Style.Italic));
                         }))),
                     this._panel
                         .find('[data-property="decoration-bold"]')
@@ -76829,8 +76829,8 @@ var GravitDesigner = (function (e) {
                                 })
                                 .sort((e, t) => e.name.localeCompare(t.name))
                                 .map((e) => {
-                                    let { name: t, tag: n } = e;
-                                    return $("<option/>").attr("value", n).text(t);
+                                    let { name, tag } = e;
+                                    return $("<option/>").attr("value", tag).text(name);
                                 })
                         ),
                         n)
@@ -77790,8 +77790,8 @@ var GravitDesigner = (function (e) {
         "use strict";
         (require(58), require(19), require(193), require(8 /* Symbol */), require(196), require(20), require(34), require(4), require(13), require(26));
         var GObject = require(1);
-        const { gApi: i, AUTO_SAVE_ENABLED: a, AUTOSAVE_INTERVAL_DEFAULT: r, CloudIntegration: s, DESIGNER: l, EXTERNAL_APP: c } = require(10 /* designerConfig */),
-            { buildDialogDocumentHasUpdates: d } = require(40 /* GSaveAction */),
+        const { gApi, AUTO_SAVE_ENABLED, AUTOSAVE_INTERVAL_DEFAULT, CloudIntegration, DESIGNER, EXTERNAL_APP } = require(10 /* designerConfig */),
+            { buildDialogDocumentHasUpdates } = require(40 /* GSaveAction */),
             u = require(85),
             GSystemDialog = require(44),
             GGoogleDrive = require(556),
@@ -77803,7 +77803,7 @@ var GravitDesigner = (function (e) {
             _ = require(1534),
             b = require(86),
             w = require(217),
-            { SETUP: C, CODES: x } = require(591 /* COMMAND_SAVE */),
+            { SETUP, CODES } = require(591 /* COMMAND_SAVE */),
             S = require(1277);
         function E() {
             if (
@@ -77819,8 +77819,8 @@ var GravitDesigner = (function (e) {
             )
                 return (console.warn("[GAutoSaveManager] Worker initiation failed"), Promise.reject());
             (this._autoSaveWorker.postMessage({
-                cmd: C.ENDPOINT,
-                data: { url: i.url },
+                cmd: SETUP.ENDPOINT,
+                data: { url: gApi.url },
             }),
                 (this._autoSaveModel = new v(this._autoSaveWorker)),
                 this._updateStatus(gDesigner.getSetting(E.AUTO_SAVE_SETTING) ? E.Status.Stopped : E.Status.Disabled),
@@ -77872,7 +77872,7 @@ var GravitDesigner = (function (e) {
                 return this._status;
             }),
             (E.prototype._setInterval = function (e) {
-                const t = parseFloat(e) || r;
+                const t = parseFloat(e) || AUTOSAVE_INTERVAL_DEFAULT;
                 this._interval = 60 * t * 1e3;
             }),
             (E.prototype._shouldHandle = async function (e) {
@@ -77885,24 +77885,24 @@ var GravitDesigner = (function (e) {
                     if (!(await this._showWarnDialog())) return;
                 }
                 if ((this._resetDocumentTimeout(e, this.getStatus() === E.Status.Enabled), gDesigner.isOffline()))
-                    return (this._toggleOfflineAlert(true), Promise.reject(x.AUTOSAVE_OFFLINE_NOT_AVAILABLE));
+                    return (this._toggleOfflineAlert(true), Promise.reject(CODES.AUTOSAVE_OFFLINE_NOT_AVAILABLE));
                 this._offlineAlert && this._toggleOfflineAlert(false);
                 const t = [b.Saving, b.Syncing, b.Loading].includes(e.getStatus());
                 return this._autoSaveModel.has(e) || t
-                    ? x.AUTOSAVE_ALREADY_SAVING
+                    ? CODES.AUTOSAVE_ALREADY_SAVING
                     : e.isCloudFile() || e.isExternalFile()
                       ? this._isCDRFile(e)
-                          ? (this._executeDocumentFormatNotSupportedDialog(e), x.AUTOSAVE_CLOUD_SYNCHRONIZM_NOT_AVAILABLE)
+                          ? (this._executeDocumentFormatNotSupportedDialog(e), CODES.AUTOSAVE_CLOUD_SYNCHRONIZM_NOT_AVAILABLE)
                           : e.isWebFile() || e.isCloudSyncOn() || e.isExternalFile()
                             ? e.isExternalFile() && !(await this._executeExternalFileWarningDialog(e))
-                                ? x.AUTOSAVE_CLOUD_SYNCHRONIZM_NOT_AVAILABLE
+                                ? CODES.AUTOSAVE_CLOUD_SYNCHRONIZM_NOT_AVAILABLE
                                 : e.isModified()
                                   ? (await e.isUpdateAvailable())
-                                      ? (this._executeDocumentConflictResolutionDialog(e), x.AUTOSAVE_FILE_CONFLICT)
+                                      ? (this._executeDocumentConflictResolutionDialog(e), CODES.AUTOSAVE_FILE_CONFLICT)
                                       : this._runAndScheduleAutoSave(e)
-                                  : x.AUTOSAVE_NOT_MODIFIED
-                            : x.AUTOSAVE_LOCAL_FILES_WITHOUT_CID_NOT_AVAILABLE
-                      : (this._executeDocumentSyncDialog(e), x.AUTOSAVE_CLOUD_SYNCHRONIZM_NOT_AVAILABLE);
+                                  : CODES.AUTOSAVE_NOT_MODIFIED
+                            : CODES.AUTOSAVE_LOCAL_FILES_WITHOUT_CID_NOT_AVAILABLE
+                      : (this._executeDocumentSyncDialog(e), CODES.AUTOSAVE_CLOUD_SYNCHRONIZM_NOT_AVAILABLE);
             }),
             (E.prototype._executeDocumentSyncDialog = function (e) {
                 this._syncDialogShown[e.sessionId] ||
@@ -77917,7 +77917,7 @@ var GravitDesigner = (function (e) {
                     (this._dialogResolveDocumentConflicts &&
                         this._dialogResolveDocumentConflicts.gDialog("isOpen") &&
                         this._dialogResolveDocumentConflicts.gDialog("close"),
-                    (this._dialogResolveDocumentConflicts = d.call(
+                    (this._dialogResolveDocumentConflicts = buildDialogDocumentHasUpdates.call(
                         this,
                         e,
                         function (e) {
@@ -77968,7 +77968,7 @@ var GravitDesigner = (function (e) {
                 this.getStatus() !== E.Status.Disabled && (this._resetAllDocumentsTimeout(false), this._updateStatus(E.Status.Disabled));
             }),
             (E.prototype.enable = function () {
-                a &&
+                AUTO_SAVE_ENABLED &&
                     this.getStatus() !== E.Status.Enabled &&
                     !gDesigner.isOffline() &&
                     gDesigner.getSetting(E.AUTO_SAVE_SETTING) &&
@@ -78260,7 +78260,7 @@ var GravitDesigner = (function (e) {
                     GSystemDialog.custom({
                         title: GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.dialog-file-updated-out-app-waring.title"))
                             .replace("%file-name", e.getTitle() + "." + e.getExtension().toLowerCase())
-                            .replace("%app-name", l.TITLE),
+                            .replace("%app-name", DESIGNER.TITLE),
                         className: "g-auto-save-file-updated-out-app-warn-dialog",
                         icon: "info",
                         closeable: false,
@@ -78292,7 +78292,7 @@ var GravitDesigner = (function (e) {
             (E.prototype._getExternalStorageName = function (e) {
                 if (!e) return "";
                 const t = e.getStorageItem();
-                return t && t instanceof GGoogleDrive.Item ? s.cloudOptions.find((e) => e.type === c.GOOGLEDRIVE).name : "";
+                return t && t instanceof GGoogleDrive.Item ? CloudIntegration.cloudOptions.find((e) => e.type === EXTERNAL_APP.GOOGLEDRIVE).name : "";
             }),
             (E.prototype._shouldHideNotifications = function () {
                 return gContainer.getProperty(E.AUTO_SAVE_HIDE_NOTIFICATION_PROP_NAME);
@@ -79084,7 +79084,7 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         (require(4), require(13), require(38));
-        const { GLocale: o, GLocaleKey: i } = require(1 /* GObject */);
+        const { GLocale, GLocaleKey } = require(1 /* GObject */);
         function a() {
             throw "No instantiate";
         }
@@ -79110,12 +79110,12 @@ var GravitDesigner = (function (e) {
                 return (
                     $(this)
                         .find(".g-collaborators-container")
-                        .attr("data-title", o.get(new i("GCollaborators", "text.you-are-offline-tooltip")))
+                        .attr("data-title", GLocale.get(new GLocaleKey("GCollaborators", "text.you-are-offline-tooltip")))
                         .empty()
                         .append(
                             $("<div/>").addClass("g-collaborator").addClass("offline").append($("<span/>").addClass("gravit-icon-offline"))
                         )
-                        .append($("<span/>").text(o.get(new i("GCollaborators", "text.you-are-offline")))),
+                        .append($("<span/>").text(GLocale.get(new GLocaleKey("GCollaborators", "text.you-are-offline")))),
                     this
                 );
             },
@@ -79192,7 +79192,7 @@ var GravitDesigner = (function (e) {
         "use strict";
         (require(20), require(3), require(34), require(4), require(13));
         var GObject = require(1);
-        const { FILE_FORMATS: i, CLOUD_SYNC_FEATURE: { NEW_LAYOUT: a } = {} } = require(10 /* designerConfig */),
+        const { FILE_FORMATS, CLOUD_SYNC_FEATURE: { NEW_LAYOUT } = {} } = require(10 /* designerConfig */),
             GCategory = require(18),
             s = require(31),
             GCommonNames = require(119),
@@ -79201,7 +79201,7 @@ var GravitDesigner = (function (e) {
             GDocument = require(163),
             GSaveAsAction = require(445),
             GSystemDialog = require(44),
-            h = i.find((e) => e.default).ext;
+            h = FILE_FORMATS.find((e) => e.default).ext;
         function f() {}
         (GObject.GObject.inherit(f, s),
             (f.ID = "sync"),
@@ -79227,7 +79227,7 @@ var GravitDesigner = (function (e) {
                 }
             }),
             (f.prototype.isAvailable = function () {
-                return !!a;
+                return !!NEW_LAYOUT;
             }),
             (f.prototype.getTitle = function () {
                 const e = gDesigner.getActiveDocument();
@@ -80885,9 +80885,9 @@ var GravitDesigner = (function (e) {
                 } else {
                     const e = this.panel.find(".g-recent-files-list"),
                         t = e.hasClass("extended-list"),
-                        { totalRows: n, firstHeight: o } = this._getGridData(e);
-                    if (n > 1 && !t) {
-                        const t = o + 10;
+                        { totalRows, firstHeight } = this._getGridData(e);
+                    if (totalRows > 1 && !t) {
+                        const t = firstHeight + 10;
                         e.css("max-height", t + "px");
                     } else e.css("max-height", "1000px");
                 }
@@ -81032,19 +81032,19 @@ var GravitDesigner = (function (e) {
                 (d &&
                     d.length &&
                     d.forEach((e) => {
-                        let { title: t, icon: n, execute: o } = e;
+                        let { title, icon, execute } = e;
                         return $("<div/>")
                             .addClass("g-files-top-cloud-refresh-content")
                             .append(
                                 $("<div/>")
                                     .addClass("container")
-                                    .append(n ? $("<div/>").addClass("icon").addClass(n) : "")
-                                    .append($("<div/>").addClass("text").text(t))
+                                    .append(icon ? $("<div/>").addClass("icon").addClass(icon) : "")
+                                    .append($("<div/>").addClass("text").text(title))
                             )
                             .appendTo(s)
                             .click(() => {
-                                (gDesigner.stats("filespanel-view_execute_action", t),
-                                    o(this.filesPanel.getContextSource()).catch((e) => {
+                                (gDesigner.stats("filespanel-view_execute_action", title),
+                                    execute(this.filesPanel.getContextSource()).catch((e) => {
                                         "string" == typeof e ? c.default.alert(e) : console.error(e);
                                     }));
                             });
@@ -82347,19 +82347,19 @@ var GravitDesigner = (function (e) {
                         D.UpdateEvent,
                         function () {
                             (B.getMenu().clearItems(), B.setEnabled(false));
-                            var { elementHits: e, filteredElementHits: t, submenus: n } = this._getHitsElments();
-                            if (!(e && e.length > 0 && e[0] instanceof GObject.GPage) && e && e.length > 0) {
+                            var { elementHits, filteredElementHits, submenus } = this._getHitsElments();
+                            if (!(elementHits && elementHits.length > 0 && elementHits[0] instanceof GObject.GPage) && elementHits && elementHits.length > 0) {
                                 B.setEnabled(true);
-                                for (var o = 0; o < t.length; o++) {
-                                    var r = t[o].element,
+                                for (var o = 0; o < filteredElementHits.length; o++) {
+                                    var r = filteredElementHits[o].element,
                                         s = r instanceof GObject.GBlock ? r.getLabel() : r.getNodeNameTranslated(),
-                                        l = "temp-" + e.indexOf(t[o]);
-                                    if (n[l]) {
+                                        l = "temp-" + elementHits.indexOf(filteredElementHits[o]);
+                                    if (submenus[l]) {
                                         var c = new D(D.Type.Menu, P);
                                         (c.setCaption((o + 1).toString() + ". " + s),
                                             c.setData(l),
                                             c.addEventListener(D.UpdateEvent, function () {
-                                                var e = n[this.getData()];
+                                                var e = submenus[this.getData()];
                                                 this.getMenu().clearItems();
                                                 for (var t = 0; t < e.length; t++)
                                                     this.getMenu().createAddItem(
@@ -84136,15 +84136,15 @@ var GravitDesigner = (function (e) {
             h = require(1323),
             f = require(86),
             {
-                DESIGNER: m,
-                SHARE_ENGINE: y,
-                HAS_ANNOTATIONS: v,
-                gApi: _,
-                ShareRoles: b,
-                SharePermissions: w,
-                Share: C,
-                LEGACY_SHARE_DIALOG: x,
-                ENABLE_REQUEST_ACCESS: S,
+                DESIGNER,
+                SHARE_ENGINE,
+                HAS_ANNOTATIONS,
+                gApi,
+                ShareRoles,
+                SharePermissions,
+                Share,
+                LEGACY_SHARE_DIALOG,
+                ENABLE_REQUEST_ACCESS,
             } = require(10 /* designerConfig */),
             E = require(433),
             A = require(1324),
@@ -84153,9 +84153,9 @@ var GravitDesigner = (function (e) {
             P = require(868),
             D = require(536),
             GDocument = require(237),
-            I = require(x ? 1566 : 1567);
+            I = require(LEGACY_SHARE_DIALOG ? 1566 : 1567);
         function k() {
-            (y && (gDesigner.addEventListener(c, this._userEvent, this), gDesigner.addEventListener(d, this._documentEvent, this)),
+            (SHARE_ENGINE && (gDesigner.addEventListener(c, this._userEvent, this), gDesigner.addEventListener(d, this._documentEvent, this)),
                 (this._states = new Map()),
                 (this._isDefaulNotificationAlreadyShown = new Map()));
         }
@@ -84220,27 +84220,27 @@ var GravitDesigner = (function (e) {
                     }
             }),
             (k.prototype.isPermissionRequestEnabled = function () {
-                return S && !gDesigner.getLicense().isGuest();
+                return ENABLE_REQUEST_ACCESS && !gDesigner.getLicense().isGuest();
             }),
             (k.prototype.getRole = function (e) {
                 e = e || gDesigner.getActiveDocument();
-                const { role: t } = this._getState(e);
-                return t || E.ROLES.NO_ACCESS_ROLE;
+                const { role } = this._getState(e);
+                return role || E.ROLES.NO_ACCESS_ROLE;
             }),
             (k.prototype._collaborationEvent = async function (e) {
-                const { sender: t, type: n } = e;
-                if (t === gDesigner.getActiveDocument())
-                    switch (n) {
+                const { sender, type } = e;
+                if (sender === gDesigner.getActiveDocument())
+                    switch (type) {
                         case g.Type.ShareUpdate:
-                            (this.resetCollaboratorsCached(t), this._getState(t).sharing || (await this._updateState(t)));
-                            const e = this.getRole(t);
-                            if (await this._checkAccessAndUpdateState(t)) {
-                                const n = this.getRole(t);
-                                e.equals(n) || (t.getStatus() !== f.Loading && this._showRoleNotification(t));
+                            (this.resetCollaboratorsCached(sender), this._getState(sender).sharing || (await this._updateState(sender)));
+                            const e = this.getRole(sender);
+                            if (await this._checkAccessAndUpdateState(sender)) {
+                                const n = this.getRole(sender);
+                                e.equals(n) || (sender.getStatus() !== f.Loading && this._showRoleNotification(sender));
                             }
                             break;
                         case g.Type.UserUpdate:
-                            this._updateRealtimeCollaborators(t);
+                            this._updateRealtimeCollaborators(sender);
                     }
             }),
             (k.prototype._userEvent = async function () {
@@ -84270,7 +84270,7 @@ var GravitDesigner = (function (e) {
                     return;
                 const t = e.isDocumentFromTemplate() && e.isShared();
                 let n;
-                if (t) n = { name: m.TITLE };
+                if (t) n = { name: DESIGNER.TITLE };
                 else {
                     const t = await gDesigner.getUser(),
                         o = await this._getFileExtended(e);
@@ -84292,11 +84292,11 @@ var GravitDesigner = (function (e) {
                     e.setOwner(n);
                     const o = [];
                     if (t) o.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.template-shared-by")).replace("%name", n.name));
-                    else if ((o.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.shared-by")).replace("%name", n.name)), !x)) {
+                    else if ((o.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.shared-by")).replace("%name", n.name)), !LEGACY_SHARE_DIALOG)) {
                         const t = this.getRole(e);
                         t && t.getStatus() && o.push(t.getStatus());
                     }
-                    if (x) {
+                    if (LEGACY_SHARE_DIALOG) {
                         const t = this._getState(e);
                         t.copy || t.inspect
                             ? (t.copy || o.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.save-warning"))),
@@ -84319,7 +84319,7 @@ var GravitDesigner = (function (e) {
                 return !!(await this._getFileExtended(e).catch(() => false));
             }),
             (k.prototype.getRealtimeCollaborators = async function (e) {
-                return _.realtime
+                return gApi.realtime
                     .getCollaborators(e.id, { anonymous: false })
                     .then((t) =>
                         t.map((t) => {
@@ -84327,7 +84327,7 @@ var GravitDesigner = (function (e) {
                                 const n = e.getPrivateShare(t.access_id);
                                 if (n) return E.makeFromShare(n);
                                 const o = e.getPublicShare();
-                                return o ? E.makeFromShare(o) : E.makeFromShareRole(b.NoAccess);
+                                return o ? E.makeFromShare(o) : E.makeFromShareRole(ShareRoles.NoAccess);
                             })(t);
                             return new A(Object.assign(t, { role: n }));
                         })
@@ -84365,7 +84365,7 @@ var GravitDesigner = (function (e) {
                                     const n = e.getPrivateShare(t.getUID());
                                     if (n) return E.makeFromShare(n);
                                     const o = e.getPublicShare();
-                                    return o ? E.makeFromShare(o) : E.makeFromShareRole(b.NoAccess);
+                                    return o ? E.makeFromShare(o) : E.makeFromShareRole(ShareRoles.NoAccess);
                                 })(n);
                             return (n.setRole(o), n);
                         })
@@ -84451,24 +84451,24 @@ var GravitDesigner = (function (e) {
                 if (!t) throw new r.default("File object is required");
                 const o = (0, GSaveAction.getFileStateAndRole)(e, t, n);
                 let i = o.role;
-                const { state: a } = o;
+                const { state } = o;
                 if (!i) {
                     const e = t.getPublicShare();
                     if (e) {
-                        const { copy: t, inspect: n, comment: o, edit: r } = e;
+                        const { copy, inspect, comment, edit } = e;
                         ((i = E.makeFromShare(e)),
-                            Object.assign(a, {
+                            Object.assign(state, {
                                 owner: false,
-                                edit: r,
-                                copy: t,
-                                inspect: n,
-                                comment: !!v && o,
+                                edit: edit,
+                                copy: copy,
+                                inspect: inspect,
+                                comment: !!HAS_ANNOTATIONS && comment,
                             }));
                     }
                 }
-                a.role = i || E.ROLES.NO_ACCESS_ROLE;
+                state.role = i || E.ROLES.NO_ACCESS_ROLE;
                 const l = await this.getRealtimeCollaborators(t);
-                Object.assign(a, { realtimeCollaborators: l });
+                Object.assign(state, { realtimeCollaborators: l });
             }),
             (k.prototype._updateRealtimeCollaborators = async function (e) {
                 const t = await this._getFileExtended(e);
@@ -84509,9 +84509,9 @@ var GravitDesigner = (function (e) {
                     });
                     if (o) return o.getRole().level;
                     const e = n.getPublicShare();
-                    return e ? e.getRole().level : new E.makeFromShareRole(b.NoAccess);
+                    return e ? e.getRole().level : new E.makeFromShareRole(ShareRoles.NoAccess);
                 }
-                return new E.makeFromShareRole(b.NoAccess).level;
+                return new E.makeFromShareRole(ShareRoles.NoAccess).level;
             }),
             (k.prototype._requestAccessIfAbsent = async function (e) {
                 return !e.isShareable() || !!(await this._canAccess(e)) || (this._openRequestAccessDialog(e), false);
@@ -84520,13 +84520,13 @@ var GravitDesigner = (function (e) {
                 if (!e.isShareable()) return;
                 if (!e.getFocusAnnotationId()) return;
                 const t = this.getRole(e);
-                (t && t.is(b.Owner)) || t.hasPermission(w.COMMENT) || this._requestPermissionToComment(e);
+                (t && t.is(ShareRoles.Owner)) || t.hasPermission(SharePermissions.COMMENT) || this._requestPermissionToComment(e);
             }),
             (k.prototype._requestPermissionToComment = function (e) {
                 if (this._requestPermissionDialog) return;
                 const t = this.getRole(e);
                 t &&
-                    !t.is(b.NoAccess) &&
+                    !t.is(ShareRoles.NoAccess) &&
                     (this._requestPermissionDialog = this._createRequestDialog(e, {
                         className: "g-request-permission-dialog",
                         openCallback: () => {
@@ -84577,21 +84577,21 @@ var GravitDesigner = (function (e) {
             (k.prototype._createRequestDialog = function (e) {
                 let {
                     className: t = "",
-                    title: n,
-                    subtitle: o,
-                    closeCallback: a,
-                    requestButton: { label: r, permissions: s = {} } = {},
-                    statType: c,
+                    title,
+                    subtitle,
+                    closeCallback,
+                    requestButton: { label, permissions: s = {} } = {},
+                    statType,
                 } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 var d = [];
                 return (
                     this.isPermissionRequestEnabled() &&
                         d.push({
-                            label: r,
+                            label: label,
                             onclick: (t) => {
-                                gDesigner.stats("permission-dialog_".concat(c, "_request-access"));
+                                gDesigner.stats("permission-dialog_".concat(statType, "_request-access"));
                                 const n = Object.assign(s, { isToken: !e.getId() });
-                                _.requestPermission(e.getId() || e.getFailedDocumentIdOrToken(), n)
+                                gApi.requestPermission(e.getId() || e.getFailedDocumentIdOrToken(), n)
                                     .then(() => {
                                         (t.gDialog("close"), (this._requestEmailHasBeenSent = true));
                                     })
@@ -84603,7 +84603,7 @@ var GravitDesigner = (function (e) {
                     d.push({
                         label: GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")),
                         onclick: async (t) => {
-                            (gDesigner.stats("permission-dialog_".concat(c, "_click-ok")),
+                            (gDesigner.stats("permission-dialog_".concat(statType, "_click-ok")),
                                 t.gDialog("close"),
                                 (await this._isUserUnableToOperateSystem(e)) && gDesigner.signout(true));
                         },
@@ -84613,9 +84613,9 @@ var GravitDesigner = (function (e) {
                         icon: "error",
                         closeable: false,
                         className: t,
-                        closeCallback: a,
-                        title: n,
-                        subtitle: o,
+                        closeCallback: closeCallback,
+                        title: title,
+                        subtitle: subtitle,
                         buttons: d,
                     })
                 );
@@ -84638,14 +84638,14 @@ var GravitDesigner = (function (e) {
                         a = [],
                         r = [];
                     (t.forEach((t) => {
-                        let { email: i, role: a, externalRole: r } = t;
-                        if (i) {
+                        let { email, role: a, externalRole } = t;
+                        if (email) {
                             let t = false;
                             (o.some((n) => {
                                 let { email: o, role: a } = n;
-                                if (i && i === o && e.rolesMatch(r, a)) return ((t = true), t);
+                                if (email && email === o && e.rolesMatch(externalRole, a)) return ((t = true), t);
                             }),
-                                t || n.push({ email: i, role: a }));
+                                t || n.push({ email: email, role: a }));
                         }
                     }),
                         o.forEach((e) => {
@@ -84654,21 +84654,21 @@ var GravitDesigner = (function (e) {
                                 let { email: o } = t;
                                 if (e.email === o) return ((n = true), n);
                             }),
-                                n || E.makeFromShare(e).is(b.NoAccess) || a.push({ email: e.email }));
+                                n || E.makeFromShare(e).is(ShareRoles.NoAccess) || a.push({ email: e.email }));
                         }),
                         n.length &&
                             r.concat(
                                 n.map(async (t) => {
                                     let { email: n, role: o } = t;
                                     if (i.getEmail() === n) return null;
-                                    const a = Object.values(b).find((e) => {
-                                            let { id: t } = e;
-                                            return t === o;
+                                    const a = Object.values(ShareRoles).find((e) => {
+                                            let { id } = e;
+                                            return id === o;
                                         }),
-                                        r = o && a ? a : b.NoAccess,
-                                        s = new C().assignRole(r);
+                                        r = o && a ? a : ShareRoles.NoAccess,
+                                        s = new Share().assignRole(r);
                                     try {
-                                        return await _.shareWithUser(e.getId(), n, s);
+                                        return await gApi.shareWithUser(e.getId(), n, s);
                                     } catch (e) {
                                         return null;
                                     }
@@ -84678,7 +84678,7 @@ var GravitDesigner = (function (e) {
                         r.concat(
                             a.map(async (t) => {
                                 let { email: n } = t;
-                                return _.shareWithUser(e.getId(), n, new C().assignRole(b.NoAccess));
+                                return gApi.shareWithUser(e.getId(), n, new Share().assignRole(ShareRoles.NoAccess));
                             })
                         );
                     return Promise.all(r);
@@ -84694,7 +84694,7 @@ var GravitDesigner = (function (e) {
                 return null;
             }),
             (k.prototype.isShareProRestricted = function () {
-                return C.isPro() && !gDesigner.isEnabledProFeatures();
+                return Share.isPro() && !gDesigner.isEnabledProFeatures();
             }),
             (module.exports = k));
     },
@@ -84718,44 +84718,44 @@ var GravitDesigner = (function (e) {
         (require(20), require(34));
         const o = require(177),
             {
-                SharePermissions: { COMMENT: i, EDIT: a },
-                ShareRoles: r,
+                SharePermissions: { COMMENT, EDIT },
+                ShareRoles,
             } = require(10 /* designerConfig */),
-            { GLocale: s, GLocaleKey: l } = require(1 /* GObject */);
+            { GLocale, GLocaleKey } = require(1 /* GObject */);
         module.exports = class extends o {
             constructor() {
                 let {
-                    access_id: e,
-                    file_id: t,
-                    accessed: n,
-                    name: o,
-                    last_name: i,
-                    avatar: a,
+                    access_id,
+                    file_id,
+                    accessed,
+                    name,
+                    last_name,
+                    avatar,
                     anonymous: r = false,
-                    role: s,
+                    role,
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 (super({
-                    file_id: t,
-                    accessed: n,
-                    name: o,
-                    last_name: i,
-                    avatar: a,
+                    file_id: file_id,
+                    accessed: accessed,
+                    name: name,
+                    last_name: last_name,
+                    avatar: avatar,
                     anonymous: r,
                 }),
-                    (this.id = e),
-                    (this._role = s));
+                    (this.id = access_id),
+                    (this._role = role));
             }
             getTooltip() {
                 const e = this.getRole();
-                return e.is(r.Owner)
-                    ? s.get(new l("GCollaborators", "text.owner-tooltip")).replace("%username", this.getFullUserName())
-                    : s
-                          .get(new l("GCollaborators", e.hasPermission(a) ? "text.can-edit-tooltip" : "text.can-comment-tooltip"))
+                return e.is(ShareRoles.Owner)
+                    ? GLocale.get(new GLocaleKey("GCollaborators", "text.owner-tooltip")).replace("%username", this.getFullUserName())
+                    : GLocale
+                          .get(new GLocaleKey("GCollaborators", e.hasPermission(EDIT) ? "text.can-edit-tooltip" : "text.can-comment-tooltip"))
                           .replace("%username", this.getFullUserName());
             }
             getIcon() {
                 const e = this.getRole();
-                return e.hasPermission(i) && !e.hasPermission(a) ? "gravit-icon-avatar-comment" : null;
+                return e.hasPermission(COMMENT) && !e.hasPermission(EDIT) ? "gravit-icon-avatar-comment" : null;
             }
         };
     },
@@ -84961,8 +84961,8 @@ var GravitDesigner = (function (e) {
             }
             async _getShowTrialMessage() {
                 try {
-                    const { showTrialMessage: e } = (await designerConfig.gApi.client.getConfiguration()) || {};
-                    return !!e;
+                    const { showTrialMessage } = (await designerConfig.gApi.client.getConfiguration()) || {};
+                    return !!showTrialMessage;
                 } catch (e) {
                     console.error("Failed to load client configuration. Skipping trial reminders");
                 }
@@ -85563,7 +85563,7 @@ var GravitDesigner = (function (e) {
             GPlatform = require(15),
             r = o(require(443)),
             s = o(require(1330));
-        const { isExecutingOnMSTeamsSync: l } = r.default;
+        const { isExecutingOnMSTeamsSync } = r.default;
         var c = require(863),
             GFitAllAction = require(449),
             GCategory = require(18),
@@ -85596,7 +85596,7 @@ var GravitDesigner = (function (e) {
                 return this._isSupported();
             }),
             (h.prototype._isSupported = function () {
-                return !l();
+                return !isExecutingOnMSTeamsSync();
             }),
             (h.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-toggle-full-screen" : null;
@@ -86035,16 +86035,16 @@ var GravitDesigner = (function (e) {
                 throw new Error("Unknown input property: " + e);
             }),
             (_.prototype._windowEvent = function (e) {
-                const { type: t, window: n } = e;
-                if (t !== g.WindowEvent.Type.Activated)
+                const { type, window } = e;
+                if (type !== g.WindowEvent.Type.Activated)
                     return void (
-                        t === g.WindowEvent.Type.Removed &&
+                        type === g.WindowEvent.Type.Removed &&
                         this._lastScene &&
                         (this._lastScene.removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._propertiesUpdateEventHandler, this),
                         this._lastScene.removeEventListener(GObject.GNode.AfterFlagChangeEvent, this._pageActivationEventHandler, this),
                         (this._lastScene = null))
                     );
-                if (n.getDocument() !== gDesigner.getActiveDocument()) return;
+                if (window.getDocument() !== gDesigner.getActiveDocument()) return;
                 const o = gDesigner.getActiveDocument().getScene();
                 (o.addEventListener(GObject.GNode.AfterFlagChangeEvent, this._pageActivationEventHandler, this),
                     o.addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._propertiesUpdateEventHandler, this),
@@ -86061,16 +86061,16 @@ var GravitDesigner = (function (e) {
                 this.updatePropertiesAvailability(gDesigner.getActiveDocument().getScene().getActivePage());
             }),
             (_.prototype._pageActivationEventHandler = function (e) {
-                let { node: t, flag: n } = e;
-                if (t instanceof GObject.GPage && n === GObject.GNode.Flag.Active) {
+                let { node, flag } = e;
+                if (node instanceof GObject.GPage && flag === GObject.GNode.Flag.Active) {
                     const e = gDesigner.getWindows().getActiveWindow().getView().getViewConfiguration().paintMode,
-                        n = !t.isFixedSized();
+                        n = !node.isFixedSized();
                     if (n && e === GObject.GScenePaintConfiguration.PaintMode.Output)
                         (gDesigner.setPaintMode(GObject.GScenePaintConfiguration.PaintMode.Full),
                             this._updatePageSetting(f.PAGE_CLIP_CONTENT_DISABLED));
                     else if (!n) {
                         var o =
-                            t.getProperty(f.PAGE_CLIP_PROPERTY_NAME, true) ||
+                            node.getProperty(f.PAGE_CLIP_PROPERTY_NAME, true) ||
                             (designerConfig.PAGE_CLIP_DEFAULT ? f.PAGE_CLIP_CONTENT_ENABLED : f.PAGE_CLIP_CONTENT_DISABLED);
                         gDesigner.setPaintMode(
                             o === f.PAGE_CLIP_CONTENT_ENABLED
@@ -86078,12 +86078,12 @@ var GravitDesigner = (function (e) {
                                 : GObject.GScenePaintConfiguration.PaintMode.Full
                         );
                     }
-                    this.updatePropertiesAvailability(t);
+                    this.updatePropertiesAvailability(node);
                 }
             }),
             (_.prototype._propertiesUpdateEventHandler = function (e) {
-                let { node: t, temporary: n, properties: o } = e;
-                if (!n && t instanceof GObject.GPage && (o.indexOf("w") >= 0 || o.indexOf("h") >= 0)) {
+                let { node: t, temporary, properties } = e;
+                if (!temporary && t instanceof GObject.GPage && (properties.indexOf("w") >= 0 || properties.indexOf("h") >= 0)) {
                     var a = gDesigner.getWindows().getActiveWindow().getView().getViewConfiguration().paintMode,
                         r = !t.isFixedSized();
                     r && a === GObject.GScenePaintConfiguration.PaintMode.Output
@@ -86740,9 +86740,9 @@ var GravitDesigner = (function (e) {
                 const e = gDesigner.getLeftSidebars().getActiveSidebar(),
                     t = gDesigner.getLeftSidebars().getSidebar(SidebarsIds.SidebarsIds.GOutlineSidebar),
                     n = t.getLayerPanel(),
-                    { currentFocus: o } = n.data("glayerpanel");
-                if (o && e === t.getId()) {
-                    const e = n.gLayerPanel("getTitleOfLayer", $(o.row));
+                    { currentFocus } = n.data("glayerpanel");
+                if (currentFocus && e === t.getId()) {
+                    const e = n.gLayerPanel("getTitleOfLayer", $(currentFocus.row));
                     e.gAutoEdit("open", e.data("gautoedit"));
                 }
             }
@@ -86884,7 +86884,7 @@ var GravitDesigner = (function (e) {
         "use strict";
         (require(19), require(96), require(8 /* Symbol */), require(20), require(34), require(247), require(91), require(4), require(41), require(13), require(32), require(38), require(33), require(26));
         var GObject = require(1);
-        const { TRANSLATION_MANAGER: i } = require(10 /* designerConfig */);
+        const { TRANSLATION_MANAGER } = require(10 /* designerConfig */);
         function a() {}
         (GObject.GObject.inherit(a, GObject.GObject),
             (a.prototype._translationBase = null),
@@ -87085,7 +87085,7 @@ var GravitDesigner = (function (e) {
                 );
             }),
             (a.prototype.isConsideringExtension = function () {
-                return !!i.CONSIDER_EXTENSION;
+                return !!TRANSLATION_MANAGER.CONSIDER_EXTENSION;
             }),
             (module.exports = a));
     },
@@ -87243,7 +87243,7 @@ var GravitDesigner = (function (e) {
         (require(8 /* Symbol */), require(196));
         var o = require(53),
             GObject = require(1);
-        const { gApi: a } = require(10 /* designerConfig */),
+        const { gApi } = require(10 /* designerConfig */),
             r = require(393),
             s = require(217),
             l = require(86);
@@ -87291,7 +87291,7 @@ var GravitDesigner = (function (e) {
             (c.prototype.getCurrentLock = async function () {
                 return (
                     this._currentLock ||
-                        ((this._currentLock = await a.lock.get(this._document.getId()).catch(() => null)),
+                        ((this._currentLock = await gApi.lock.get(this._document.getId()).catch(() => null)),
                         this._currentLock && this._fireLockUpdateEvent()),
                     this._currentLock
                 );
@@ -87299,13 +87299,13 @@ var GravitDesigner = (function (e) {
             (c.prototype.acquireLock = async function () {
                 return (await this.canLock())
                     ? (this._currentLock ||
-                          ((this._currentLock = await a.lock.acquire(this._document.getId()).catch(() => null)),
+                          ((this._currentLock = await gApi.lock.acquire(this._document.getId()).catch(() => null)),
                           this._currentLock && this._fireLockUpdateEvent()),
                       this._currentLock)
                     : null;
             }),
             (c.prototype.releaseLock = function () {
-                return a.lock.release(this._document.getId()).then(() => {
+                return gApi.lock.release(this._document.getId()).then(() => {
                     this._currentLock = null;
                 });
             }),
@@ -87384,7 +87384,7 @@ var GravitDesigner = (function (e) {
                 );
             }),
             (c.prototype.requestAccess = async function () {
-                return a.lock.request(this._document.getId()).then(() => (this._alreadyRequestedAccess = true));
+                return gApi.lock.request(this._document.getId()).then(() => (this._alreadyRequestedAccess = true));
             }),
             (c.prototype.hasAlreadyRequestedAccess = function () {
                 return this._alreadyRequestedAccess;
@@ -87455,8 +87455,8 @@ var GravitDesigner = (function (e) {
         (require(30), require(8 /* Symbol */));
         const o = require(337),
             i = require(1338),
-            { gApi: a, PurchaseStatus: r } = require(10 /* designerConfig */),
-            { IS_TRUNK: s } = require(231 /* IS_TRUNK */);
+            { gApi, PurchaseStatus } = require(10 /* designerConfig */),
+            { IS_TRUNK } = require(231 /* IS_TRUNK */);
         let l;
         class c {
             static getInstance() {
@@ -87468,15 +87468,15 @@ var GravitDesigner = (function (e) {
                     (this._promiseCapabilities = {}),
                     new Promise((e, t) => {
                         (Object.assign(this._promiseCapabilities, { resolve: e, reject: t }),
-                            (this._ws = new a.WebSocketClient()),
+                            (this._ws = new gApi.WebSocketClient()),
                             this._ws.connect("/payload"),
                             this._ws.on("payload", async (t) => {
                                 try {
-                                    const { data: n } = t;
+                                    const { data } = t;
                                     (await this._tryCheckLicense(),
-                                        await this._tryFireEvent(n),
-                                        (n.licenseHasBeenUpgraded = this._shouldFireUserCompletedPurchaseEvent(n)),
-                                        e(n));
+                                        await this._tryFireEvent(data),
+                                        (data.licenseHasBeenUpgraded = this._shouldFireUserCompletedPurchaseEvent(data)),
+                                        e(data));
                                 } finally {
                                     this._ws.close();
                                 }
@@ -87503,8 +87503,8 @@ var GravitDesigner = (function (e) {
                 }
             }
             _shouldFireUserCompletedPurchaseEvent(e) {
-                const { statusId: t } = e;
-                return !(!s || t !== r.SuccessfulTestOrder) || t === r.Paid;
+                const { statusId } = e;
+                return !(!IS_TRUNK || statusId !== PurchaseStatus.SuccessfulTestOrder) || statusId === PurchaseStatus.Paid;
             }
         }
         module.exports = c;
@@ -87539,25 +87539,25 @@ var GravitDesigner = (function (e) {
                     .toggleClass("g-has-selection", n)
                     .toggleClass("g-selected", t.hasFlag(GObject.GNode.Flag.Selected));
                 var u,
-                    { icon: p, overlayIcon: g } = i(t, a);
-                p &&
-                    ("<svg" === p.substr(0, 4)
+                    { icon, overlayIcon } = i(t, a);
+                icon &&
+                    ("<svg" === icon.substr(0, 4)
                         ? (u = $("<span></span>")
                               .addClass("layer-icon")
                               .append(
-                                  $(p).addClass("layer-icon").attr({ width: "16px", height: "16px" }).css({
+                                  $(icon).addClass("layer-icon").attr({ width: "16px", height: "16px" }).css({
                                       verticalAlign: "middle",
                                       paddingLeft: "1px",
                                       opacity: "initial",
                                   })
                               )
                               .insertBefore(c))
-                        : (gDesigner.isTouchEnabled() && (p += "-small"),
+                        : (gDesigner.isTouchEnabled() && (icon += "-small"),
                           (u = $("<span></span>")
-                              .addClass("layer-icon " + p)
+                              .addClass("layer-icon " + icon)
                               .css({ opacity: "initial" })
                               .insertBefore(c))));
-                g && u && g.appendTo(u);
+                overlayIcon && u && overlayIcon.appendTo(u);
                 return { container: r, title: c, titleGroup: s };
             }),
             (exports.getIconByLayerType = i),
@@ -87645,63 +87645,63 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        const { GLocale: o, GLocaleKey: i } = require(1 /* GObject */),
+        const { GLocale, GLocaleKey } = require(1 /* GObject */),
             a = require(883);
         module.exports = {
             createAdditionalMentions: function () {
                 return {
                     MENTION_ALL_REVIEWERS: new a({
-                        name: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-reviewers-name")),
-                        showText: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-reviewers-show-text")),
+                        name: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-reviewers-name")),
+                        showText: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-reviewers-show-text")),
                         id: "@reviewers",
                         avatar: "assets/icon/notification-icon.svg",
                         fontWeight: "bold",
                         type: "contact",
-                        role: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-reviewers-role")),
+                        role: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-reviewers-role")),
                         email: "",
                         additional: true,
                     }),
                     MENTION_ALL_APPROVERS: new a({
-                        name: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-approvers-name")),
-                        showText: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-approvers-show-text")),
+                        name: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-approvers-name")),
+                        showText: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-approvers-show-text")),
                         id: "@approvers",
                         avatar: "assets/icon/notification-icon.svg",
                         fontWeight: "bold",
                         type: "contact",
-                        role: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-approvers-role")),
+                        role: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-approvers-role")),
                         email: "",
                         additional: true,
                     }),
                     MENTION_ALL_CO_AUTHORS: new a({
-                        name: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-co-author-name")),
-                        showText: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-co-author-show-text")),
+                        name: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-co-author-name")),
+                        showText: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-co-author-show-text")),
                         id: "@coauthors",
                         avatar: "assets/icon/notification-icon.svg",
                         fontWeight: "bold",
                         type: "contact",
-                        role: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-co-author-role")),
+                        role: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-co-author-role")),
                         email: "",
                         additional: true,
                     }),
                     MENTION_ALL: new a({
-                        name: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-name")),
-                        showText: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-show-text")),
+                        name: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-name")),
+                        showText: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-show-text")),
                         id: "@all",
                         avatar: "assets/icon/notification-icon.svg",
                         fontWeight: "bold",
                         type: "contact",
-                        role: o.get(new i("GAnnotationPanel", "text.additional-collaborators-all-role")),
+                        role: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-role")),
                         email: "",
                         additional: true,
                     }),
                     MENTION_OWNER: new a({
-                        name: o.get(new i("GAnnotationPanel", "text.additional-collaborators-owner-name")),
-                        showText: o.get(new i("GAnnotationPanel", "text.additional-collaborators-owner-show-text")),
+                        name: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-owner-name")),
+                        showText: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-owner-show-text")),
                         id: "@owner",
                         avatar: "assets/icon/notification-icon.svg",
                         fontWeight: "bold",
                         type: "contact",
-                        role: o.get(new i("GAnnotationPanel", "text.additional-collaborators-owner-role")),
+                        role: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-owner-role")),
                         email: "",
                         additional: true,
                     }),
@@ -87900,68 +87900,68 @@ var GravitDesigner = (function (e) {
             c = o(require(358)),
             d = o(require(1324)),
             u = o(require(883));
-        const { GSystem: p, GLocale: g, GLocaleKey: h, GUtil: f, GComment: m, GAnnotation: y, GObject: v, GNode: _ } = require(1 /* GObject */),
-            { NEW_COMMENT_READ_TIMEOUT: b, ANNOTATION_PERMANENT_LINK: w, IS_COREL: C } = ((0, GAnnotationPanel.createAdditionalMentions)(), require(10 /* designerConfig */)),
+        const { GSystem, GLocale, GLocaleKey, GUtil, GComment, GAnnotation, GObject, GNode } = require(1 /* GObject */),
+            { NEW_COMMENT_READ_TIMEOUT, ANNOTATION_PERMANENT_LINK, IS_COREL } = ((0, GAnnotationPanel.createAdditionalMentions)(), require(10 /* designerConfig */)),
             x = require(1191),
             S = require(1166),
             E = require(434),
-            { getAnnotationType: A } = require(40 /* GSaveAction */);
+            { getAnnotationType } = require(40 /* GSaveAction */);
         function T(e) {
             let {
-                container: t,
-                annotation: n,
-                relatedNodesCount: o,
-                sidebarActive: i,
-                isLastRow: a,
-                mentionData: r,
-                onMouseEnter: s,
-                onMouseLeave: l,
-                onChange: c,
-                onToggleState: d,
-                onResolve: u,
-                onReopen: p,
-                onDelete: g,
-                onCancel: h,
-                onExpandClick: f,
-                onCopyPermalinkClick: m,
-                onAssignTo: y,
-                mainAnnotObject: v,
-                isCommentingEditingEnable: _,
-                hasResolveAccess: b,
-                hasReopenAccess: w,
+                container,
+                annotation,
+                relatedNodesCount,
+                sidebarActive,
+                isLastRow,
+                mentionData,
+                onMouseEnter,
+                onMouseLeave,
+                onChange,
+                onToggleState,
+                onResolve,
+                onReopen,
+                onDelete,
+                onCancel,
+                onExpandClick,
+                onCopyPermalinkClick,
+                onAssignTo,
+                mainAnnotObject,
+                isCommentingEditingEnable,
+                hasResolveAccess,
+                hasReopenAccess,
             } = e;
-            ((this._container = t),
-                (this._annotation = n),
-                (this._relatedNodesCount = o),
-                (this._sidebarActive = i),
-                (this._isLastRow = a),
-                (this._onMouseEnter = s),
-                (this._onMouseLeave = l),
-                (this._onChange = c),
-                (this._onToggleState = d),
-                (this._onResolve = u),
-                (this._onReopen = p),
-                (this._onDelete = g),
-                (this._onCancel = h),
-                (this._onExpandClick = f),
-                (this._onCopyPermalinkClick = m),
-                (this._onAssignTo = y),
-                (this._mainAnnotObject = v),
+            ((this._container = container),
+                (this._annotation = annotation),
+                (this._relatedNodesCount = relatedNodesCount),
+                (this._sidebarActive = sidebarActive),
+                (this._isLastRow = isLastRow),
+                (this._onMouseEnter = onMouseEnter),
+                (this._onMouseLeave = onMouseLeave),
+                (this._onChange = onChange),
+                (this._onToggleState = onToggleState),
+                (this._onResolve = onResolve),
+                (this._onReopen = onReopen),
+                (this._onDelete = onDelete),
+                (this._onCancel = onCancel),
+                (this._onExpandClick = onExpandClick),
+                (this._onCopyPermalinkClick = onCopyPermalinkClick),
+                (this._onAssignTo = onAssignTo),
+                (this._mainAnnotObject = mainAnnotObject),
                 (this._shouldAssign = false),
                 (this._assignees = []),
                 (this._mentionsCollection = []),
-                (this._data = r.data),
-                (this._owner = r.owner),
-                (this._additionalMentions = r.additionalMentions),
-                (this._mentionData = r),
-                (this._isCommentingEditingEnable = _),
-                (this._hasResolveAccess = b),
-                (this._hasReopenAccess = w),
+                (this._data = mentionData.data),
+                (this._owner = mentionData.owner),
+                (this._additionalMentions = mentionData.additionalMentions),
+                (this._mentionData = mentionData),
+                (this._isCommentingEditingEnable = isCommentingEditingEnable),
+                (this._hasResolveAccess = hasResolveAccess),
+                (this._hasReopenAccess = hasReopenAccess),
                 this._init());
         }
         function G(e) {
             if (13 !== e.keyCode) return false;
-            if (p.operatingSystem !== p.OperatingSystem.OSX_IOS) {
+            if (GSystem.operatingSystem !== GSystem.OperatingSystem.OSX_IOS) {
                 if (!e.shiftKey) return true;
             } else {
                 if (!e.altKey) return true;
@@ -87980,9 +87980,9 @@ var GravitDesigner = (function (e) {
             return Object.values(t).find((t) => t.getUID() === e);
         }
         function L(e) {
-            return f.xss(e);
+            return GUtil.xss(e);
         }
-        (v.inherit(T, x),
+        (GObject.inherit(T, x),
             (T.prototype._isRead = false),
             (T.prototype._isTypeResolved = false),
             (T.prototype._isTypeReopened = false),
@@ -87991,7 +87991,7 @@ var GravitDesigner = (function (e) {
                 var e,
                     t = this._container,
                     n = this._annotation,
-                    o = A(this._annotation instanceof m ? this._annotation._parent : this._annotation),
+                    o = getAnnotationType(this._annotation instanceof GComment ? this._annotation._parent : this._annotation),
                     i = this,
                     r = gDesigner.getSyncUser(),
                     s = c.default.isOwner(r, n),
@@ -88017,7 +88017,7 @@ var GravitDesigner = (function (e) {
                         );
                     });
                 var x = n.getProperty("name");
-                x = x || n.getProperty("login") || n.getProperty("email").split("@")[0] || g.get(new h("GAnnotationPanel", "text.empty"));
+                x = x || n.getProperty("login") || n.getProperty("email").split("@")[0] || GLocale.get(new GLocaleKey("GAnnotationPanel", "text.empty"));
                 var T = $("<span></span>").html(L(x)).addClass("annotation-title").appendTo(b);
                 gDesigner
                     .getShareManager()
@@ -88027,7 +88027,7 @@ var GravitDesigner = (function (e) {
                         new S(t).build().addClass("g-user-comment-preview").insertBefore(T);
                     });
                 var P = new Date(n.getProperty("mtime") || n.getProperty("time")),
-                    D = g.toLocaleDate(P, {
+                    D = GLocale.toLocaleDate(P, {
                         year: "numeric",
                         month: "numeric",
                         day: "numeric",
@@ -88042,19 +88042,19 @@ var GravitDesigner = (function (e) {
                     .addClass("annotation-comment-content")
                     .css("userSelect", "text")
                     .appendTo(this._annotationCommentContainer);
-                if (n instanceof m)
+                if (n instanceof GComment)
                     switch ((this._updateParentAnnotResolvedStatus(n.getParent()), n.getProperty("type"))) {
-                        case m.Type.User:
+                        case GComment.Type.User:
                             ((e = this._generateCommentContentHTML(n)), I.html(e.html), this._updateReadUnreadStatus(v));
                             break;
-                        case m.Type.Open:
-                            (I.addClass("automatic").text(g.get(new h("GAnnotationPanel", "text.re-opened"))),
+                        case GComment.Type.Open:
+                            (I.addClass("automatic").text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.re-opened"))),
                                 this._updateReadUnreadStatus(v),
                                 (this._isTypeReopened = true),
                                 (this._isTypeResolved = false));
                             break;
-                        case m.Type.Close:
-                            (I.addClass("automatic").text(g.get(new h("GAnnotationPanel", "text.marked-as-resolved"))),
+                        case GComment.Type.Close:
+                            (I.addClass("automatic").text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.marked-as-resolved"))),
                                 (this._isRead = true),
                                 (this._isTypeResolved = true),
                                 (this._isTypeReopened = false));
@@ -88086,7 +88086,7 @@ var GravitDesigner = (function (e) {
                         })
                         .on("keypress", function (e) {
                             i.isEditMode() &&
-                                p.operatingSystem === p.OperatingSystem.OSX_IOS &&
+                                GSystem.operatingSystem === GSystem.OperatingSystem.OSX_IOS &&
                                 13 === e.keyCode &&
                                 e.altKey &&
                                 e.preventDefault();
@@ -88145,7 +88145,7 @@ var GravitDesigner = (function (e) {
                                 .addClass("label")
                                 .addClass("assignee-row-label")
                                 .append(this._assigneeCheckBox)
-                                .append($("<span>").html(g.get(new h("GAnnotationPanel", "text.assign-to"))))
+                                .append($("<span>").html(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.assign-to"))))
                                 .append(this._onlyOneAssignee)
                                 .append(this._assigneeSelector)
                         )
@@ -88157,7 +88157,7 @@ var GravitDesigner = (function (e) {
                         .append(
                             $("<button>")
                                 .addClass("annotations-cancelcomment")
-                                .text(g.get(new h("GAnnotationPanel", "text.cancel")))
+                                .text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.cancel")))
                                 .on("mousedown", (e) => {
                                     e.preventDefault();
                                 })
@@ -88171,7 +88171,7 @@ var GravitDesigner = (function (e) {
                         .append(
                             $("<button>")
                                 .addClass("annotations-addcomment")
-                                .text(g.get(new h("GAnnotationPanel", "text.fill-contents")))
+                                .text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.fill-contents")))
                                 .on("mousedown", (e) => {
                                     e.preventDefault();
                                 })
@@ -88186,10 +88186,10 @@ var GravitDesigner = (function (e) {
                                 })
                         ),
                     $(t)
-                        .toggleClass("g-active", n.hasFlag(_.Flag.Active))
+                        .toggleClass("g-active", n.hasFlag(GNode.Flag.Active))
                         .toggleClass(
                             "g-selected",
-                            n.hasFlag(_.Flag.Selected) || (n instanceof m && n.getParent().hasFlag(_.Flag.Selected))
+                            n.hasFlag(GNode.Flag.Selected) || (n instanceof GComment && n.getParent().hasFlag(GNode.Flag.Selected))
                         ),
                     this._relatedNodesCount > 1)
                 )
@@ -88207,19 +88207,19 @@ var GravitDesigner = (function (e) {
                     const e = $("<div></div>").addClass("annotation-collapse-empty");
                     v.prepend(e);
                 }
-                (n.hasFlag(_.Flag.Selected) || (n instanceof m && n.getParent().hasFlag(_.Flag.Selected))) &&
+                (n.hasFlag(GNode.Flag.Selected) || (n instanceof GComment && n.getParent().hasFlag(GNode.Flag.Selected))) &&
                     (this.setCollapseState(true), this.setVisiblity(true));
                 var F = $("<span>").addClass("annotation-action-group").appendTo(v);
-                if (this._isCommentingEditingEnable && n.hasMixin(y)) {
+                if (this._isCommentingEditingEnable && n.hasMixin(GAnnotation)) {
                     var R = n.getProperty("rsv"),
                         M = false,
                         N = "";
                     (R
                         ? ((M = true),
                           (N = f
-                              ? g.get(new h("GAnnotationPanel", "text.reopen"))
-                              : g.get(new h("GAnnotationPanel", "text.marked-as-resolved"))))
-                        : ((M = false), (N = g.get(new h("GAnnotationPanel", "text.resolve")))),
+                              ? GLocale.get(new GLocaleKey("GAnnotationPanel", "text.reopen"))
+                              : GLocale.get(new GLocaleKey("GAnnotationPanel", "text.marked-as-resolved"))))
+                        : ((M = false), (N = GLocale.get(new GLocaleKey("GAnnotationPanel", "text.resolve")))),
                         (!R && !f) ||
                             (n.getProperty("asgn") || []).length ||
                             $("<span>")
@@ -88253,7 +88253,7 @@ var GravitDesigner = (function (e) {
                         });
                 if (
                     (t.data("annotmenu", U),
-                    n.hasMixin(y) &&
+                    n.hasMixin(GAnnotation) &&
                         (u || f) &&
                         !(n.getProperty("asgn") || []).length &&
                         (n.getProperty("rsv")
@@ -88266,13 +88266,13 @@ var GravitDesigner = (function (e) {
                                               U.gOverlay("close"),
                                               this._onReopen(n));
                                       })
-                                      .append($("<span>").text(g.get(new h("GAnnotationPanel", "text.reopen"))))
+                                      .append($("<span>").text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.reopen"))))
                               )
                             : U.append(
                                   $("<label>")
                                       .append(
                                           $("<span>")
-                                              .addClass("icon ".concat(C ? "gravit-icon-resolved" : "gravit-icon-resolve"))
+                                              .addClass("icon ".concat(IS_COREL ? "gravit-icon-resolved" : "gravit-icon-resolve"))
                                               .addClass("annot-menu-icon")
                                       )
                                       .on("click", (e) => {
@@ -88281,10 +88281,10 @@ var GravitDesigner = (function (e) {
                                               U.gOverlay("close"),
                                               this._onResolve(n));
                                       })
-                                      .append($("<span>").text(g.get(new h("GAnnotationPanel", "text.resolve"))))
+                                      .append($("<span>").text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.resolve"))))
                               )),
                     s &&
-                        ((n.hasMixin(y) && !n.getProperty("rsv")) || (n instanceof m && !n.getParent().getProperty("rsv"))) &&
+                        ((n.hasMixin(GAnnotation) && !n.getProperty("rsv")) || (n instanceof GComment && !n.getParent().getProperty("rsv"))) &&
                         n.isFillingCompleted())
                 ) {
                     const e = n.getProperty("text").trim().length > 0;
@@ -88310,7 +88310,7 @@ var GravitDesigner = (function (e) {
                                             U.gOverlay("close"));
                                     }.bind(I)
                                 )
-                                .append($("<span>").text(g.get(new h("GAnnotationPanel", e ? "text.edit-comment" : "text.add-comment"))))
+                                .append($("<span>").text(GLocale.get(new GLocaleKey("GAnnotationPanel", e ? "text.edit-comment" : "text.add-comment"))))
                         );
                 }
                 s &&
@@ -88324,16 +88324,16 @@ var GravitDesigner = (function (e) {
                                     U.gOverlay("close"),
                                     this._onDelete(n));
                             })
-                            .append($("<span>").text(g.get(new h("GAnnotationPanel", "text.delete"))))
+                            .append($("<span>").text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.delete"))))
                     );
                 const j = gDesigner.getActiveDocument();
-                (w &&
+                (ANNOTATION_PERMANENT_LINK &&
                     j &&
                     j.isShareable() &&
                     U.append(
                         $("<label/>")
                             .append($("<span/>").addClass("icon gravit-icon-copy-annot").addClass("annot-menu-icon"))
-                            .append($("<span>").text(g.get(new h("GAnnotationPanel", "text.copy-permalink"))))
+                            .append($("<span>").text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.copy-permalink"))))
                             .on("click", async (e) => {
                                 (e.stopPropagation(), gDesigner.stats("commentdocker_option_copy-permalink", o));
                                 const t = $("<span/>").addClass("g-loading").appendTo($(e.target).closest("label"));
@@ -88344,14 +88344,14 @@ var GravitDesigner = (function (e) {
                                 }
                             })
                     ),
-                    (n.hasMixin(y) || n.getProperty("type") === m.Type.User) &&
+                    (n.hasMixin(GAnnotation) || n.getProperty("type") === GComment.Type.User) &&
                         U.find(".annot-menu-icon").length &&
                         B.on("click", (e) => {
                             (e.stopPropagation(), B.addClass("g-active"), U.gOverlay("open", $(e.target).closest("span").closest("span")));
                         }).appendTo(F));
             }),
             (T.prototype.isCollapsible = function () {
-                return this._annotation.hasMixin(y);
+                return this._annotation.hasMixin(GAnnotation);
             }),
             (T.prototype.setCollapseState = function (e) {
                 if (this.isCollapsible())
@@ -88412,7 +88412,7 @@ var GravitDesigner = (function (e) {
                                 $("<span/>").addClass("dot").text("·"),
                                 $("<span/>")
                                     .addClass("text-new")
-                                    .text(g.get(new h("GAnnotationPanel", "text.unread-comment"))),
+                                    .text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.unread-comment"))),
                             ])
                             .appendTo(e)),
                         this._container.addClass("new-element")),
@@ -88424,7 +88424,7 @@ var GravitDesigner = (function (e) {
                                     a && a.remove(),
                                     (this._isRead = true),
                                     this._container.addClass("new-element"));
-                            }, b));
+                            }, NEW_COMMENT_READ_TIMEOUT));
                 }
             }),
             (T.prototype.scrollIntoView = function () {
@@ -88456,7 +88456,7 @@ var GravitDesigner = (function (e) {
                         l.show(),
                         l
                             .find(".annotations-addcomment")
-                            .text(g.get(new h("GAnnotationPanel", t ? "text.edit-comment" : "text.add-comment"))),
+                            .text(GLocale.get(new GLocaleKey("GAnnotationPanel", t ? "text.edit-comment" : "text.add-comment"))),
                         setTimeout(() => s.focus()),
                         e.addClass("g-edit-mode"));
                 }
@@ -88527,29 +88527,29 @@ var GravitDesigner = (function (e) {
         var GPlatform = require(15),
             i = require(882);
         const GSystemDialog = require(44),
-            { GSystem: r, GLocale: s, GLocaleKey: l, GObject: c, GNode: d } = require(1 /* GObject */),
+            { GSystem, GLocale, GLocaleKey, GObject, GNode } = require(1 /* GObject */),
             u = require(1191),
-            { getAnnotationType: p } = require(40 /* GSaveAction */);
+            { getAnnotationType } = require(40 /* GSaveAction */);
         require(85);
         function g(e) {
-            let { container: t, annotation: n, onSubmit: o, onCancel: i, onAssignTo: a, mentionData: r } = e;
-            ((this._containter = t),
-                (this._annotation = n),
-                (this._onSubmit = o),
-                (this._onCancel = i),
-                (this._onAssignTo = a),
+            let { container, annotation, onSubmit, onCancel, onAssignTo, mentionData } = e;
+            ((this._containter = container),
+                (this._annotation = annotation),
+                (this._onSubmit = onSubmit),
+                (this._onCancel = onCancel),
+                (this._onAssignTo = onAssignTo),
                 (this._shouldAssign = false),
                 (this._assignees = []),
                 (this._mentionsCollection = []),
-                (this._data = r.data),
-                (this._owner = r.owner),
-                (this._additionalMentions = r.additionalMentions || []),
-                (this._mentionData = r),
+                (this._data = mentionData.data),
+                (this._owner = mentionData.owner),
+                (this._additionalMentions = mentionData.additionalMentions || []),
+                (this._mentionData = mentionData),
                 this._init());
         }
         function h(e) {
             if (13 === e.keyCode)
-                if (r.operatingSystem !== r.OperatingSystem.OSX_IOS) {
+                if (GSystem.operatingSystem !== GSystem.OperatingSystem.OSX_IOS) {
                     if (!e.shiftKey) return true;
                 } else {
                     if (!e.altKey) return true;
@@ -88560,15 +88560,15 @@ var GravitDesigner = (function (e) {
                 }
             return false;
         }
-        (c.inherit(g, u),
+        (GObject.inherit(g, u),
             (g.prototype._init = function () {
                 var e = this._containter;
                 this._containter.addClass("reply-docker");
                 var t,
-                    n = p(this._annotation);
-                e.toggleClass("g-active", this._annotation.hasFlag(d.Flag.Active)).toggleClass(
+                    n = getAnnotationType(this._annotation);
+                e.toggleClass("g-active", this._annotation.hasFlag(GNode.Flag.Active)).toggleClass(
                     "g-selected",
-                    this._annotation.hasFlag(d.Flag.Selected)
+                    this._annotation.hasFlag(GNode.Flag.Selected)
                 );
                 const c = !this._annotation.isFillingCompleted();
                 e.on("focusout", (n) => {
@@ -88579,7 +88579,7 @@ var GravitDesigner = (function (e) {
                         h(e) && e.preventDefault();
                     })
                     .on("keypress", function (e) {
-                        r.operatingSystem === r.OperatingSystem.OSX_IOS && 13 === e.keyCode && e.altKey && e.preventDefault();
+                        GSystem.operatingSystem === GSystem.OperatingSystem.OSX_IOS && 13 === e.keyCode && e.altKey && e.preventDefault();
                     })
                     .on("keyup", (e) => {
                         const t = u.find(".mentions-autocomplete-list").data("assign");
@@ -88612,7 +88612,7 @@ var GravitDesigner = (function (e) {
                                 .addClass("label")
                                 .addClass("assignee-row-label")
                                 .append(this._assigneeCheckBox)
-                                .append($("<span>").html(s.get(new l("GAnnotationPanel", "text.assign-to"))))
+                                .append($("<span>").html(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.assign-to"))))
                                 .append(this._onlyOneAssignee)
                                 .append(this._assigneeSelector)
                         )
@@ -88623,7 +88623,7 @@ var GravitDesigner = (function (e) {
                         .append(
                             $("<button>")
                                 .addClass("annotations-cancelcomment")
-                                .text(s.get(new l("GAnnotationPanel", "text.cancel")))
+                                .text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.cancel")))
                                 .on("click", (e) => {
                                     (e.stopImmediatePropagation(),
                                         gDesigner.stats("replydocker_cancel-reply", n),
@@ -88637,8 +88637,8 @@ var GravitDesigner = (function (e) {
                                 .addClass("annotations-addcomment")
                                 .text(
                                     c
-                                        ? s.get(new l("GAnnotationPanel", "text.fill-contents"))
-                                        : s.get(new l("GAnnotationPanel", "text.comment"))
+                                        ? GLocale.get(new GLocaleKey("GAnnotationPanel", "text.fill-contents"))
+                                        : GLocale.get(new GLocaleKey("GAnnotationPanel", "text.comment"))
                                 )
                                 .on("click", () => {
                                     (gDesigner.stats("replydocker_add-reply", n), this._addContent());
@@ -88648,7 +88648,7 @@ var GravitDesigner = (function (e) {
                     e.attr("draggable", false));
                 const g = c && GPlatform.GPlatform.webBrowser !== GPlatform.GPlatform.constructor.WebBrowser.Safari;
                 ((this._input = $("<textarea>")
-                    .attr("placeholder", s.get(new l("GAnnotationPanel", c ? "text.write-annotation-here" : "text.write-reply-here")))
+                    .attr("placeholder", GLocale.get(new GLocaleKey("GAnnotationPanel", c ? "text.write-annotation-here" : "text.write-reply-here")))
                     .attr("rows", 1)
                     .attr("autofocus", g)
                     .addClass("annotations-comment-placeholder")
@@ -89054,7 +89054,7 @@ var GravitDesigner = (function (e) {
             GSystemDialog = require(44),
             C = require(10 /* designerConfig */).LOCAL_FONTS_API_ENABLED;
         const x = require(1482),
-            { base64StringToString: S } = require(40 /* GSaveAction */);
+            { base64StringToString } = require(40 /* GSaveAction */);
         function E() {
             ((this._storage = new s()),
                 "serviceWorker" in navigator &&
@@ -89120,7 +89120,7 @@ var GravitDesigner = (function (e) {
                     else if (o.searchParams.get("directlink")) {
                         t = o.searchParams.get("directlink");
                         try {
-                            (e = JSON.parse(S(decodeURIComponent(t))).type) === r.OpenFileRequest.Type.Preset
+                            (e = JSON.parse(base64StringToString(decodeURIComponent(t))).type) === r.OpenFileRequest.Type.Preset
                                 ? (i = new r.OpenFileRequest(r.OpenFileRequest.Type.Preset, t))
                                 : e === r.OpenFileRequest.Type.Template && (i = new r.OpenFileRequest(r.OpenFileRequest.Type.Template, t));
                         } catch (e) {
@@ -89150,7 +89150,7 @@ var GravitDesigner = (function (e) {
                     else if (s.directlink) {
                         t = s.directlink;
                         try {
-                            (e = JSON.parse(S(decodeURIComponent(t))).type) === r.OpenFileRequest.Type.Preset
+                            (e = JSON.parse(base64StringToString(decodeURIComponent(t))).type) === r.OpenFileRequest.Type.Preset
                                 ? (i = new r.OpenFileRequest(r.OpenFileRequest.Type.Preset, t))
                                 : e === r.OpenFileRequest.Type.Template && (i = new r.OpenFileRequest(r.OpenFileRequest.Type.Template, t));
                         } catch (e) {
@@ -89206,7 +89206,7 @@ var GravitDesigner = (function (e) {
                                 ((d = await gApi.getProviderContentDetails(p)),
                                     d && n(new m.Item(o, d.id, d.name, d, p), { loadingData: s }));
                             else if (u === r.OpenFileRequest.Type.Preset) {
-                                let e = JSON.parse(S(decodeURIComponent(p))),
+                                let e = JSON.parse(base64StringToString(decodeURIComponent(p))),
                                     t =
                                         e &&
                                         (function (e) {
@@ -89239,15 +89239,15 @@ var GravitDesigner = (function (e) {
                                               loadingData: s,
                                           }));
                             } else if (u === r.OpenFileRequest.Type.Template) {
-                                let e = JSON.parse(S(decodeURIComponent(p))),
-                                    { file: t, data: i } = await y.loadDesignData(e.id),
-                                    a = GDocument.FileTypes.find((e) => e.mime === t.type).ext;
-                                t &&
-                                    i &&
-                                    n(new l(o, i, "".concat(t.name, ".").concat(a), t.id), {
+                                let e = JSON.parse(base64StringToString(decodeURIComponent(p))),
+                                    { file, data } = await y.loadDesignData(e.id),
+                                    a = GDocument.FileTypes.find((e) => e.mime === file.type).ext;
+                                file &&
+                                    data &&
+                                    n(new l(o, data, "".concat(file.name, ".").concat(a), file.id), {
                                         content: e,
-                                        file: t,
-                                        category: t.path,
+                                        file: file,
+                                        category: file.path,
                                         loadingData: s,
                                     });
                             } else {
@@ -92414,12 +92414,12 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         require(8 /* Symbol */);
-        const { GFontManager: o } = require(1 /* GObject */);
+        const { GFontManager } = require(1 /* GObject */);
         module.exports = class {
             constructor(e) {
                 ((this._fontManager = e),
-                    this._fontManager.addEventListener(o.FontAvailableEvent, this._fontEvent, this),
-                    this._fontManager.addEventListener(o.FontUnavailableEvent, this._fontEvent, this),
+                    this._fontManager.addEventListener(GFontManager.FontAvailableEvent, this._fontEvent, this),
+                    this._fontManager.addEventListener(GFontManager.FontUnavailableEvent, this._fontEvent, this),
                     (this._promise = new Promise((e) => {
                         this._resolver = e;
                     })));
@@ -92429,8 +92429,8 @@ var GravitDesigner = (function (e) {
             }
             _checkPendingFonts() {
                 this._fontManager.hasPendingFonts() ||
-                    (this._fontManager.removeEventListener(o.FontAvailableEvent, this._fontEvent, this),
-                    this._fontManager.removeEventListener(o.FontUnavailableEvent, this._fontEvent, this),
+                    (this._fontManager.removeEventListener(GFontManager.FontAvailableEvent, this._fontEvent, this),
+                    this._fontManager.removeEventListener(GFontManager.FontUnavailableEvent, this._fontEvent, this),
                     this._resolver());
             }
             waitForAllPendingFonts() {
@@ -93682,8 +93682,8 @@ var GravitDesigner = (function (e) {
             i = require(1478),
             a = require(1241);
         function r(e) {
-            let { Id: t, Email: n, Title: o, UserId: i, UserPrincipalName: a } = e;
-            ((this._id = t), (this._email = n), (this._name = o), (this._userId = i), (this._userPrincipalName = a));
+            let { Id, Email, Title, UserId, UserPrincipalName } = e;
+            ((this._id = Id), (this._email = Email), (this._name = Title), (this._userId = UserId), (this._userPrincipalName = UserPrincipalName));
         }
         (GObject.GObject.inherit(r, i.GCloudUser),
             (r.ValidRoles = [a.GCloudRole.Type.Viewer, a.GCloudRole.Type.ContentEditor]),
@@ -93757,16 +93757,16 @@ var GravitDesigner = (function (e) {
         "use strict";
         require(271);
         const designerConfig = require(10),
-            { IS_LOCALHOST: i, IS_RC: a } = require(231 /* IS_TRUNK */);
+            { IS_LOCALHOST, IS_RC } = require(231 /* IS_TRUNK */);
         designerConfig.IS_TEAMS = "teams.coreldraw.app" === window.location.hostname;
         const r = window.location.hostname.endsWith(".ngrok.io");
         (designerConfig.IS_TEAMS
             ? (designerConfig.gApi.url = designerConfig.cloudTeamsURL)
-            : i || r
+            : IS_LOCALHOST || r
               ? (designerConfig.trunkwebcdr && (designerConfig.gApi.webcdr = designerConfig.cloudTrunkURL + "/api/webcdr"), (designerConfig.gApi.url = designerConfig.cloudTrunkURL))
               : designerConfig.IS_BETA
                 ? (designerConfig.cloudBetaURL && (designerConfig.gApi.url = designerConfig.cloudBetaURL), designerConfig.betaWebcdr && (designerConfig.gApi.webcdr = designerConfig.betaWebcdr))
-                : a
+                : IS_RC
                   ? (designerConfig.cloudRCURL && (designerConfig.gApi.url = designerConfig.cloudRCURL), designerConfig.stagingWebcdr && (designerConfig.gApi.webcdr = designerConfig.stagingWebcdr))
                   : designerConfig.IS_TRUNK && ((designerConfig.gApi.url = designerConfig.cloudTrunkURL), designerConfig.trunkwebcdr && (designerConfig.gApi.webcdr = designerConfig.trunkwebcdr)),
             !designerConfig.gApi.webcdr && designerConfig.webcdr && (designerConfig.gApi.webcdr = designerConfig.webcdr),
@@ -96799,8 +96799,8 @@ var GravitDesigner = (function (e) {
         const o = require(1117).saveAs;
         function i() {}
         ((i.prototype.download = async function () {
-            let { buffer: e, name: t, extension: n, mime: i } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-            o(new Blob([e], i), "".concat(t, ".").concat(n));
+            let { buffer, name, extension, mime } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+            o(new Blob([buffer], mime), "".concat(name, ".").concat(extension));
         }),
             (module.exports = i));
     },
@@ -96839,9 +96839,9 @@ var GravitDesigner = (function (e) {
             g = o(require(1485)),
             h = o(require(1486)),
             f = o(require(1487));
-        const { nodeEnv: m, isBeta: y, storeVendor: v, isCorel: _, isTeams: b } = require(803),
+        const { nodeEnv, isBeta, storeVendor, isCorel, isTeams } = require(803),
             w = require(231 /* IS_TRUNK */),
-            C = !v,
+            C = !storeVendor,
             x = require(859);
         require(1488);
         require(1489);
@@ -97039,10 +97039,10 @@ var GravitDesigner = (function (e) {
             GBetaFlow = require(1686),
             Zn = require(1687),
             eo = require(1255),
-            { isExecutingOnMSTeams: to, isExecutingOnMSTeamsSync: no, isTeamsChannel: oo, getTeamsLocale: io } = p.default;
+            { isExecutingOnMSTeams, isExecutingOnMSTeamsSync, isTeamsChannel, getTeamsLocale } = p.default;
         (require(18 /* GCategory */), require(1688), require(1154), require(1689), require(1690), require(1691), require(1693), require(1694));
         var ao = window;
-        const ro = !!/^trunk/.test("production") && !y;
+        const ro = !!/^trunk/.test("production") && !isBeta;
         ((ao.gApi = require(10 /* designerConfig */).gApi), (ao.gApi.webcdr = null));
         const so = async () => S.checkMaintenance();
         (so(),
@@ -97053,30 +97053,30 @@ var GravitDesigner = (function (e) {
                 GObject.GTranslationEvents.addEventListener(
                     GObject.GTranslationNotificationEvent,
                     (e) => {
-                        let { project: t, type: n, content: o, data: i } = e;
-                        if (t === GObject.GTranslation.Projects.Designer)
-                            switch (n) {
+                        let { project, type, content, data } = e;
+                        if (project === GObject.GTranslation.Projects.Designer)
+                            switch (type) {
                                 case GObject.GTranslationNotificationEvent.Type.Warning:
                                     gContainer.getRuntime() === kn.Runtime.Electron
-                                        ? console.error(o)
-                                        : console.error({ content: o, data: i });
+                                        ? console.error(content)
+                                        : console.error({ content: content, data: data });
                             }
                     },
                     void 0
                 )),
-            y &&
-                (_ && b && designerConfig.cloudTeamsURL ? (ao.gApi.url = designerConfig.cloudTeamsURL) : designerConfig.cloudBetaURL && (ao.gApi.url = designerConfig.cloudBetaURL),
+            isBeta &&
+                (isCorel && isTeams && designerConfig.cloudTeamsURL ? (ao.gApi.url = designerConfig.cloudTeamsURL) : designerConfig.cloudBetaURL && (ao.gApi.url = designerConfig.cloudBetaURL),
                 designerConfig.betaWebsocketURL && (ao.gApi.websocketURL = designerConfig.betaWebsocketURL)),
             w.IS_PRODUCTION && (designerConfig.cloudURL && (ao.gApi.url = designerConfig.cloudURL), designerConfig.websocketURL && (ao.gApi.websocketURL = designerConfig.websocketURL)),
             (ao.gApi.lang = GObject.GLocale.getLanguage()));
         let lo = null;
         ((ao.gravit = null), require(1738), (ao.gDesigner = new GCommonNames()), ao.gDesigner.getUser(), (ao.gQA = h.default));
         const co = ao.gDesigner.isOfflineAsync();
-        ao.gInAppPurchase = Yn.newInAppPurchase(v);
-        const { GA: { customDimensions: uo } = {} } = require(10 /* designerConfig */);
+        ao.gInAppPurchase = Yn.newInAppPurchase(storeVendor);
+        const { GA: { customDimensions } = {} } = require(10 /* designerConfig */);
         (gDesigner.addEventListener(Wn, (e) => {
-            let { user: t } = e;
-            t && !gDesigner.isAnonymous() && "undefined" != typeof dataLayer && uo && uo.forEach((e) => dataLayer.push({ [e]: void 0 }));
+            let { user } = e;
+            user && !gDesigner.isAnonymous() && "undefined" != typeof dataLayer && customDimensions && customDimensions.forEach((e) => dataLayer.push({ [e]: void 0 }));
         }),
             (gDesigner._translationManager = Xn));
         var po = $("<div></div>").addClass("g-drag-image").appendTo($("body"));
@@ -97097,11 +97097,11 @@ var GravitDesigner = (function (e) {
                 (window.onerror = function (e, t, n, o, i) {
                     Mn.isPluginError(i)
                         ? GSystemDialog.alert(i.message)
-                        : ("production" === m || "trunk" === m || "lts" === m || "rc" === m) && Rn.isOnline();
+                        : ("production" === nodeEnv || "trunk" === nodeEnv || "lts" === nodeEnv || "rc" === nodeEnv) && Rn.isOnline();
                 }),
                 x.getRuntimeCode() === designerConfig.Runtime.WindowsStore.code && new Qn().init(),
-                y && !_ && new GBetaFlow().init(),
-                _
+                isBeta && !isCorel && new GBetaFlow().init(),
+                isCorel
                     ? (gContainer.setCookie({
                           name: "_access_token",
                           value: "b03f5f7f11d50a3a",
@@ -97203,13 +97203,13 @@ var GravitDesigner = (function (e) {
                 value: "3.15.0",
                 url: designerConfig.gApi.url,
             }),
-                gDesigner.setEnv(m),
-                gContainer.getRuntime() === kn.Runtime.Electron || _ || designerConfig.gApi.initRecaptcha(),
+                gDesigner.setEnv(nodeEnv),
+                gContainer.getRuntime() === kn.Runtime.Electron || isCorel || designerConfig.gApi.initRecaptcha(),
                 (async function (e, t) {
                     const n = await gDesigner.getUser();
                     (0, g.default)(e, t, gDesigner.getAppBaseUrl(), n);
-                })(gContainer.getRuntime(), v),
-                !y ||
+                })(gContainer.getRuntime(), storeVendor),
+                !isBeta ||
                     (gContainer.getRuntime() !== kn.Runtime.Browser && gContainer.getRuntime() !== kn.Runtime.PWA) ||
                     ((h = window),
                     (b = document),
@@ -97223,7 +97223,7 @@ var GravitDesigner = (function (e) {
                     ((S = b.createElement("script")).async = 1),
                     (S.src = "https://static.hotjar.com/c/hotjar-" + h._hjSettings.hjid + ".js?sv=" + h._hjSettings.hjsv),
                     w.appendChild(S)),
-                gDesigner.setStoreVendor(v),
+                gDesigner.setStoreVendor(storeVendor),
                 gDesigner.setVersion("3.15.0"),
                 gDesigner.setCommitSHA("566771f4dff3952a55c0d9d3c130f7e787dfdfa7"),
                 gDesigner.setBuildNum("8795"),
@@ -97239,7 +97239,7 @@ var GravitDesigner = (function (e) {
             const io = async () => {
                 (await new Promise((e) => gContainer.initLanguage(e)),
                     gDesigner.hasEventListeners(Hn) && gDesigner.trigger(new Hn(Hn.Status.Init)),
-                    gDesigner.setIsBeta(y),
+                    gDesigner.setIsBeta(isBeta),
                     (gravit = {
                         plugins: [],
                         actions: [new ae(), new yt(), new re(), new xe(), new Se()]
@@ -97263,7 +97263,7 @@ var GravitDesigner = (function (e) {
                                 new Ft(Ft.Source.FILES),
                                 new GLinkImageAction(),
                                 new xt(new GImportFontsAction()),
-                                _ ? new xt(new GExportAction()) : new GExportAction(),
+                                isCorel ? new xt(new GExportAction()) : new GExportAction(),
                             ])
                             .concat(
                                 GDocument.FileTypes.filter(
@@ -97275,7 +97275,7 @@ var GravitDesigner = (function (e) {
                                 new GSaveAsAction("pdf", { dpi: 96 }),
                                 new GSaveAsAction("pdf", { dpi: 150 }),
                                 new xt(new GSaveAsAction("pdf", { dpi: 300 })),
-                                _ ? new xt(new GExportAction({ format: "pdf" })) : new GExportAction({ format: "pdf" }),
+                                isCorel ? new xt(new GExportAction({ format: "pdf" })) : new GExportAction({ format: "pdf" }),
                             ])
                             .concat(
                                 [
@@ -97421,29 +97421,29 @@ var GravitDesigner = (function (e) {
                             ])
                             .concat(
                                 ft.Links.filter((e) => "eula" !== e.name).map((e) => new ft(e)),
-                                _ ? [] : new wt(),
+                                isCorel ? [] : new wt(),
                                 new Dt(),
                                 new mt()
                             )
-                            .concat(...(no() ? [] : kn.GravitLanguages.map((e) => new ht(e, Xn.getTranslationRealName(e)))))
+                            .concat(...(isExecutingOnMSTeamsSync() ? [] : kn.GravitLanguages.map((e) => new ht(e, Xn.getTranslationRealName(e)))))
                             .concat([
-                                ...(_ ? [new Nt("STAGING", ro), new Nt("BETA", y)] : []),
+                                ...(isCorel ? [new Nt("STAGING", ro), new Nt("BETA", isBeta)] : []),
                                 new bt(),
                                 ...(C ? [new Ct()] : []),
                                 ...ft.Links.filter((e) => "eula" === e.name).map((e) => new ft(e)),
                                 new Mt(),
-                                ...(_ ? [new Ot()] : []),
+                                ...(isCorel ? [new Ot()] : []),
                                 new Bt(),
                             ])
                             .concat([new It(), new kt()]),
                         sidebars: [new dn(), ...(designerConfig.HAS_ANNOTATIONS ? [new GAnnotationsSidebar()] : []), new GOutlineSidebar(), new GLibrarySidebar(), new GSymbolsSidebar()],
                         panels: [],
-                        footer: [new GSoftwareUpdatePanel(), new GNotificationPanel(), ...(_ ? [new GCollaborativeTextPanel(), new Ln()] : [])],
+                        footer: [new GSoftwareUpdatePanel(), new GNotificationPanel(), ...(isCorel ? [new GCollaborativeTextPanel(), new Ln()] : [])],
                         tools: [
                             {
                                 tool: r.GPointerTool,
                                 toolString: "GPointerTool",
-                                title: _
+                                title: isCorel
                                     ? GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "tool.pointer"))
                                     : GObject.GLocale.get(new GObject.GLocaleKey("GPointerTool", "name")),
                                 group: "select",
@@ -97464,7 +97464,7 @@ var GravitDesigner = (function (e) {
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GSubSelectTool", "name")),
                                 group: "select",
                                 key: "D",
-                                icon: _ ? "gravit-icon-cursor-subselect" : "gravit-icon-cursor",
+                                icon: isCorel ? "gravit-icon-cursor-subselect" : "gravit-icon-cursor",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
                                     title: GObject.GLocale.get(new GObject.GLocaleKey("GSubSelectTool", "tooltip-title")),
                                     description: GObject.GLocale.get(new GObject.GLocaleKey("GSubSelectTool", "tooltip-description")),
@@ -97607,7 +97607,7 @@ var GravitDesigner = (function (e) {
                                 tool: r.GLineTool,
                                 toolString: "GLineTool",
                                 title: GObject.GLocale.get(
-                                    _ ? new GObject.GLocaleKey("GCommonNames", "tool.line") : new GObject.GLocaleKey("GLineTool", "name")
+                                    isCorel ? new GObject.GLocaleKey("GCommonNames", "tool.line") : new GObject.GLocaleKey("GLineTool", "name")
                                 ),
                                 group: "shape",
                                 key: "L",
@@ -97768,17 +97768,17 @@ var GravitDesigner = (function (e) {
                         ],
                     }),
                     "function" != typeof window.gdb_initsavestepsaction ||
-                        y ||
+                        isBeta ||
                         IS_TRUNK.IS_RC ||
                         window.gdb_initsavestepsaction(window.gravit.actions, Pe),
                     "function" == typeof window.gdb_initsetupsystemdateaction &&
                         window.gdb_initsetupsystemdateaction(window.gravit.actions),
                     "function" != typeof window.gdb_inittranslationtoolaction ||
-                        y ||
+                        isBeta ||
                         IS_TRUNK.IS_RC ||
                         window.gdb_inittranslationtoolaction(window.gravit.actions, Pe),
                     "function" != typeof window.gdb_initrecordgravitaction ||
-                        y ||
+                        isBeta ||
                         IS_TRUNK.IS_RC ||
                         window.gdb_initrecordgravitaction(window.gravit.actions, Pe));
                 let t = new In(e._storage);
@@ -97829,14 +97829,14 @@ var GravitDesigner = (function (e) {
                     }),
                     gDesigner.updateRecentDocumentsAction(),
                     Fn.init());
-                let o = gDesigner.getSetting("webcdr_choice", y ? "BETA" : "STAGING");
+                let o = gDesigner.getSetting("webcdr_choice", isBeta ? "BETA" : "STAGING");
                 if (
                     (ro
                         ? designerConfig.trunkwebcdr &&
                           (IS_TRUNK.IS_LOCALHOST
                               ? (ao.gApi.webcdr = o && "BETA" === o ? designerConfig.cloudBetaURL + "/api/webcdr" : designerConfig.cloudTrunkURL + "/api/webcdr")
                               : (ao.gApi.webcdr = o && "BETA" === o ? designerConfig.betaWebcdr : designerConfig.trunkwebcdr))
-                        : y
+                        : isBeta
                           ? (ao.gApi.webcdr = o && "BETA" === o ? designerConfig.betaWebcdr : designerConfig.stagingWebcdr)
                           : designerConfig.webcdr && (ao.gApi.webcdr = designerConfig.webcdr),
                     $("body").removeClass("loading"),
@@ -97875,7 +97875,7 @@ var GravitDesigner = (function (e) {
                     (0, GSaveAction.isSupportedScreenSize)()
                         ? !(0, GSaveAction.isSupportedScreenSize)(document.body.clientWidth) &&
                           designerConfig.msTeamsMode &&
-                          (await oo()) &&
+                          (await isTeamsChannel()) &&
                           GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.unsupported-windows-size-msteams")))
                         : designerConfig.msTeamsMode
                           ? GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.unsupported-screen-size-msteams")))
@@ -97897,11 +97897,11 @@ var GravitDesigner = (function (e) {
                     ao.gMemoryManager.start());
             };
             if (
-                ("function" != typeof gdb_initSetupSystemDate || y || (await gdb_initSetupSystemDate()),
+                ("function" != typeof gdb_initSetupSystemDate || isBeta || (await gdb_initSetupSystemDate()),
                 await Wn,
                 await (0, GSaveAction._tryAndCatch)(() => Kn.init()),
                 await null,
-                _ || gDesigner.isEnabledSubscriptions())
+                isCorel || gDesigner.isEnabledSubscriptions())
             ) {
                 const e = async () => {
                     const e = await gDesigner.getUser();
@@ -97915,8 +97915,8 @@ var GravitDesigner = (function (e) {
                         e && !e.isAnonymous() && (await (0, GSaveAction._tryAndCatch)(() => gDesigner.signout(true, true)));
                         const o = new URL(window.location.href).searchParams.get("token");
                         if (o) {
-                            const { enterprise: e } = await designerConfig.gApi.checkEnterpriseToken(o).catch({ enterprise: false });
-                            e && gDesigner.setEnterpriseLoginForm(true);
+                            const { enterprise } = await designerConfig.gApi.checkEnterpriseToken(o).catch({ enterprise: false });
+                            enterprise && gDesigner.setEnterpriseLoginForm(true);
                         }
                         (await gContainer.preLogin().catch((e) => {
                             console.warn("gContainer preLogin error", e);
@@ -97937,7 +97937,7 @@ var GravitDesigner = (function (e) {
                                     gDesigner.showInstallPwaDialog();
                                 }));
                 };
-                if (designerConfig.msTeamsMode) (await to()) ? new u.default(io).load() : window.location.replace(window.location.origin);
+                if (designerConfig.msTeamsMode) (await isExecutingOnMSTeams()) ? new u.default(io).load() : window.location.replace(window.location.origin);
                 else if (navigator.onLine || gDesigner.isEnabledProFeatures("offline")) await e();
                 else {
                     const t = GSystemDialog.custom({
@@ -97969,7 +97969,7 @@ var GravitDesigner = (function (e) {
             s = o(require(44 /* GSystemDialog */)),
             l = o(require(443)),
             c = require(1243);
-        const { isPrivateChat: d, isTeamsChannel: u } = l.default;
+        const { isPrivateChat, isTeamsChannel } = l.default;
         function p(e) {
             if ("function" != typeof e) throw "GMSTeamsAppLoader constructor error: Wrong argument is provided";
             this._callback = e;
@@ -97983,7 +97983,7 @@ var GravitDesigner = (function (e) {
                         GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.unsupported-mobile-for-msteams-new"))
                     );
                 const e = [c.MS_TEAMS_COMMAND];
-                ((await d()) ? e.push(c.ONE_DRIVE_BUSINESS_COMMAND) : (await u()) && e.push(c.SHAREPOINT_COMMAND),
+                ((await isPrivateChat()) ? e.push(c.ONE_DRIVE_BUSINESS_COMMAND) : (await isTeamsChannel()) && e.push(c.SHAREPOINT_COMMAND),
                     r.default
                         .getInstance()
                         .authenticate(e)
@@ -98005,9 +98005,9 @@ var GravitDesigner = (function (e) {
                     i.push({ hardware: u() }),
                     await (0, GSaveAction._tryAndCatch)(async () => {
                         if (o && !o.isAnonymous()) {
-                            l && l.forEach((e) => dataLayer.push({ [e]: void 0 }));
-                            const { type: e = "EWOSU", token: t } = o;
-                            i.push({ [e]: t });
+                            customDimensions && customDimensions.forEach((e) => dataLayer.push({ [e]: void 0 }));
+                            const { type: e = "EWOSU", token } = o;
+                            i.push({ [e]: token });
                         }
                     }));
                 var c = a.default.getRuntimeCode();
@@ -98021,9 +98021,9 @@ var GravitDesigner = (function (e) {
             a = o(require(859)),
             GSaveAction = require(40),
             s = require(803);
-        const { GA: { customDimensions: l } = {}, GoogleTagManagerSettings: c } = require(10 /* designerConfig */);
+        const { GA: { customDimensions } = {}, GoogleTagManagerSettings } = require(10 /* designerConfig */);
         window.dataLayer = [];
-        const d = c.getContainerId(s.nodeEnv);
+        const d = GoogleTagManagerSettings.getContainerId(s.nodeEnv);
         !(function (e, t, n, o, i) {
             ((e[o] = e[o] || []), e[o].push({ "gtm.start": new Date().getTime(), event: "gtm.js" }));
             var a = t.getElementsByTagName(n)[0],
@@ -98939,7 +98939,7 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         require(8 /* Symbol */);
-        const { gApi: o } = require(10 /* designerConfig */),
+        const { gApi } = require(10 /* designerConfig */),
             i = require(536);
         class a {
             static async checkMaintenance() {
@@ -98952,7 +98952,7 @@ var GravitDesigner = (function (e) {
                 return false;
             }
         }
-        ((a._cache = new i(() => o.maintenance.getStatus(), 6e4)), (module.exports = a));
+        ((a._cache = new i(() => gApi.maintenance.getStatus(), 6e4)), (module.exports = a));
     },
     function (module, exports, require) {
         "use strict";
@@ -99086,10 +99086,10 @@ var GravitDesigner = (function (e) {
             De = require(86),
             Le = (require(18 /* GCategory */), require(442));
         const {
-            defaultLegacyUserSettings: { features: Ie },
+            defaultLegacyUserSettings: { features },
         } = designerConfig.defaultUserSettings;
         var ke = require(10 /* designerConfig */);
-        const { gApi: Oe } = ke;
+        const { gApi } = ke;
         var Fe = require(388),
             Re = require(1580);
         const Me = require(1581),
@@ -99829,8 +99829,8 @@ var GravitDesigner = (function (e) {
                 const n = ["path", "shape", "knife", "insert"],
                     o = ["special"];
                 return !gravit.tools.some((t) => {
-                    let { tool: i, group: a, category: r } = t;
-                    return i === e && (n.includes(a) || o.includes(r));
+                    let { tool, group, category } = t;
+                    return tool === e && (n.includes(group) || o.includes(category));
                 });
             }),
             (Je.prototype.executeAction = function (e, t, n, o) {
@@ -99999,9 +99999,9 @@ var GravitDesigner = (function (e) {
                 if ((Array.prototype.splice.apply(this._actions, [C, 0].concat(x)), this._createMainMenu(), gravit.tools)) {
                     for (
                         var S = (e) => {
-                                let { tool: t, pro: n = false, feature: o } = e;
+                                let { tool: t, pro: n = false, feature } = e;
                                 return () =>
-                                    !(!this.isEnabledProFeatures(o) && n) &&
+                                    !(!this.isEnabledProFeatures(feature) && n) &&
                                     !!this.canActivateTool(t, true) &&
                                     (gDesigner.stats("tools_activate_shortcut", GToolbar.getToolName(t) || "unknown_tool"),
                                     this.getToolManager().tempToolKeyActivate(t));
@@ -100588,7 +100588,7 @@ var GravitDesigner = (function (e) {
                 const t = e.getStorageItem();
                 t &&
                     t.isRegistrable() &&
-                    Oe.usage(t.getId()).catch((e) => {
+                    gApi.usage(t.getId()).catch((e) => {
                         console.error("gApi.usage error", e);
                     });
             }),
@@ -101111,12 +101111,12 @@ var GravitDesigner = (function (e) {
                 }
             }),
             (Je.prototype._userPropertiesChangedEvent = function (e) {
-                const { user: t } = e;
-                t &&
-                    t.getUID() &&
+                const { user } = e;
+                user &&
+                    user.getUID() &&
                     (i.GEditorOptions.userConfig = {
-                        userName: t.getFullUserName(),
-                        uid: t.getUID(),
+                        userName: user.getFullUserName(),
+                        uid: user.getUID(),
                     });
             }),
             (Je.prototype._beforeInstallUpdate = function (e) {
@@ -101195,7 +101195,7 @@ var GravitDesigner = (function (e) {
                 return (
                     Ce.clear(),
                     new Promise(async (e, n) => {
-                        (await (0, GSaveAction._tryAndCatch)(() => Oe.signout()),
+                        (await (0, GSaveAction._tryAndCatch)(() => gApi.signout()),
                             (this._user = null),
                             this.hasEventListeners(le) && this.trigger(new le(null)),
                             this.isEnabledSubscriptions() && (t || ((this._reloading = true), location.reload())),
@@ -101207,27 +101207,27 @@ var GravitDesigner = (function (e) {
                 return this._reloading;
             }),
             (Je.prototype.reload = function (e) {
-                let { title: t, subtitle: n, icon: o, footer: i, buttons: a, attachTimer: r } = e;
+                let { title, subtitle, icon, footer, buttons, attachTimer } = e;
                 this._initialized &&
                     (this._reloading ||
                         ((this._reloading = true),
                         GSystemDialog
                             .custom({
-                                icon: o,
-                                title: t,
-                                subtitle: n,
-                                footer: i,
-                                buttons: a,
+                                icon: icon,
+                                title: title,
+                                subtitle: subtitle,
+                                footer: footer,
+                                buttons: buttons,
                                 closeCallback: () => {
                                     const e = this.createCountdown(() => this.signout(true), 3e5);
-                                    r && r(e);
+                                    attachTimer && attachTimer(e);
                                 },
                             })
                             .css({ zIndex: 9999 })));
             }),
             (Je.prototype.clearCountdown = function (e) {
-                let { timeoutID: t, intervalID: n = 0 } = e;
-                (n && clearInterval(n), t && clearInterval(t), $(".g-timer[data-interval=".concat(n, "]")).remove());
+                let { timeoutID, intervalID: n = 0 } = e;
+                (n && clearInterval(n), timeoutID && clearInterval(timeoutID), $(".g-timer[data-interval=".concat(n, "]")).remove());
             }),
             (Je.prototype.createCountdown = function (e, t) {
                 let n = null;
@@ -101335,7 +101335,7 @@ var GravitDesigner = (function (e) {
             (Je.prototype.saveStats = function () {
                 if (this._user && this._user.stats) {
                     var e = Ue.toMD5(JSON.stringify(this._user.stats || ""));
-                    Ye !== e && (Oe.updateUser({ stats: this._user.stats }), (Ye = e));
+                    Ye !== e && (gApi.updateUser({ stats: this._user.stats }), (Ye = e));
                 }
             }),
             (Je.prototype.setEnv = function (e) {
@@ -101682,13 +101682,13 @@ var GravitDesigner = (function (e) {
                                 o &&
                                     (Object.assign(t, { productId: o }),
                                     n
-                                        ? await Oe.updateUserSettings({
+                                        ? await gApi.updateUserSettings({
                                               subscription: { annual: { productId: o } },
                                           })
                                         : gContainer.setCookie({
                                               name: "_gproductid",
                                               value: o || "",
-                                              url: Oe.url,
+                                              url: gApi.url,
                                           })),
                                 this.openPaymentDialog(null, Object.assign(t, { flow: e }))
                             );
@@ -101696,9 +101696,9 @@ var GravitDesigner = (function (e) {
                         if ("login_dialog" === e) this._user || Q.performLogin();
                         else {
                             if ("confirm_email" === e) {
-                                const { confirm_email: e, flow: o } = t;
+                                const { confirm_email, flow } = t;
                                 return this.getCloudCommunicationManager()
-                                    .confirmEmail(e)
+                                    .confirmEmail(confirm_email)
                                     .then(async () => {
                                         let e = await this.getUser();
                                         e &&
@@ -101714,7 +101714,7 @@ var GravitDesigner = (function (e) {
                                                         ),
                                                     icon: "ok",
                                                 }),
-                                                    o && "confirm_email" !== o && this.runDeepLink(o, t));
+                                                    flow && "confirm_email" !== flow && this.runDeepLink(flow, t));
                                             });
                                     })
                                     .catch((e) => {
@@ -101730,7 +101730,7 @@ var GravitDesigner = (function (e) {
                                     });
                             else if ("purchases" === e) {
                                 n &&
-                                    (await Oe.hasPurchases()) &&
+                                    (await gApi.hasPurchases()) &&
                                     this.executeWhenReady(() => {
                                         new GProfileDialog(n, "purchase").open();
                                     });
@@ -101738,7 +101738,7 @@ var GravitDesigner = (function (e) {
                             else if ("enterprise" === e) n || (this._enterpriseLoginForm = true);
                             else if ("reset_trial" === e) {
                                 const e = () => {
-                                    Oe.license.resetTrial().then(() => gDesigner.requestLicenseUpdate());
+                                    gApi.license.resetTrial().then(() => gDesigner.requestLicenseUpdate());
                                 };
                                 n
                                     ? e()
@@ -101753,7 +101753,7 @@ var GravitDesigner = (function (e) {
                             else if ("annot" === e)
                                 designerConfig.HAS_ANNOTATIONS &&
                                     this.executeWhenReady(() => {
-                                        const { annot: e } = t;
+                                        const { annot } = t;
                                         (this.setPartVisible(F.RightSidebars, true), this._rightSidebars.setActiveSidebar(GAnnotationsSidebar.ID));
                                     });
                             else if (e === Z.DeepLinking.CreateShare && "true" === t[Z.DeepLinking.CreateShare])
@@ -101776,7 +101776,7 @@ var GravitDesigner = (function (e) {
                                     });
                             else if (e === Z.DeepLinking.ActivateTrial && t[Z.DeepLinking.ActivateTrial]) {
                                 const e = t[Z.DeepLinking.ActivateTrial];
-                                Oe.license.activateTrial(e).then(() => be.checkLicense());
+                                gApi.license.activateTrial(e).then(() => be.checkLicense());
                             } else {
                                 if (e === Z.DeepLinking.SetPassword) return new Ve().execute(t);
                                 if (e === Z.DeepLinking.ResetPassword) return new He().execute(t);
@@ -101867,7 +101867,7 @@ var GravitDesigner = (function (e) {
                 return this.getLicense().getSubscriberUserType();
             }),
             (Je.prototype.isLegacyFeature = function (e) {
-                return !!e && Ie.includes(e);
+                return !!e && features.includes(e);
             }),
             (Je.prototype.isEnabledProFeatures = function (e) {
                 if (!this.isEnabledSubscriptions()) return true;
@@ -101884,7 +101884,7 @@ var GravitDesigner = (function (e) {
             (Je.prototype.preInit = async function (e) {
                 const t = this;
                 (await (async function () {
-                    e || (e = Oe.isEnabledSubscriptions());
+                    e || (e = gApi.isEnabledSubscriptions());
                     if (await e.catch(() => false))
                         return (
                             (t._enabledSubscriptions = true),
@@ -101921,10 +101921,10 @@ var GravitDesigner = (function (e) {
                 const e = async () => {
                     this.toggleLoading(true);
                     try {
-                        await Oe.license
+                        await gApi.license
                             .activateTrial()
                             .then(() => gDesigner.requestLicenseUpdate())
-                            .catch((e) => GSystemDialog.alert(Oe.formatError(e)));
+                            .catch((e) => GSystemDialog.alert(gApi.formatError(e)));
                     } finally {
                         this.toggleLoading(false);
                     }
@@ -101950,7 +101950,7 @@ var GravitDesigner = (function (e) {
                         (console.log("OFFLINE!!!"), (n = true));
                     };
                     try {
-                        (o.open("HEAD", Oe.url + "/connection/test", false),
+                        (o.open("HEAD", gApi.url + "/connection/test", false),
                             (o.withCredentials = designerConfig.CONNECTION_TEST_WITH_CREDENTIALS),
                             o.setRequestHeader("Accept", "text/plain"),
                             o.setRequestHeader("Content-Type", "text/plain"),
@@ -101995,7 +101995,7 @@ var GravitDesigner = (function (e) {
                                     (r === Qe && (Qe = null), t || ((e = true), n()));
                                 }, i));
                                 try {
-                                    (a.open("HEAD", Oe.url + "/connection/test", true),
+                                    (a.open("HEAD", gApi.url + "/connection/test", true),
                                         (a.withCredentials = designerConfig.CONNECTION_TEST_WITH_CREDENTIALS),
                                         (a.timeout = 2e3),
                                         a.setRequestHeader("Accept", "text/plain"),
@@ -102144,8 +102144,8 @@ var GravitDesigner = (function (e) {
                 document.addEventListener("mousemove", this._mouseMoveEventHandler.bind(this), true);
             }
             _mouseMoveEventHandler(e) {
-                let { pageX: t, pageY: n } = e;
-                this._lastMousePoint = new GObject.GPoint(t, n);
+                let { pageX, pageY } = e;
+                this._lastMousePoint = new GObject.GPoint(pageX, pageY);
             }
             getLastCursorPoint() {
                 return this._lastMousePoint;
@@ -102170,7 +102170,7 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0), require(8 /* Symbol */), require(20), require(271), require(34), require(134), require(38));
-        const { isBeta: o } = require(803);
+        const { isBeta } = require(803);
         var i = require(1495);
         let a = 0,
             r = 0;
@@ -102243,7 +102243,7 @@ var GravitDesigner = (function (e) {
                             }
                         })(e, t),
                     n &&
-                        (("function" == typeof gdb_loaddesign || o) && console.log("updating stats:" + e + " value: " + (t || "null")),
+                        (("function" == typeof gdb_loaddesign || isBeta) && console.log("updating stats:" + e + " value: " + (t || "null")),
                         "undefined" != typeof _GLOBAL_GA_EVENTS && "undefined" != typeof ga))
                 ) {
                     var d = n;
@@ -102267,7 +102267,7 @@ var GravitDesigner = (function (e) {
                         t && (t.startsWith("/") ? (e += t) : (e = e + "/" + t)),
                         (e = s.modifyPageStatsForUserLicense(e)),
                         (e = await s.modifyPageStatsForAppMode(e)),
-                        ("function" == typeof gdb_loaddesign || o) && console.log("pagestats: " + e),
+                        ("function" == typeof gdb_loaddesign || isBeta) && console.log("pagestats: " + e),
                         window.ga(_GLOBAL_GA_EVENTS, "pageview", e),
                         (r = Date.now())));
             },
@@ -104404,7 +104404,7 @@ var GravitDesigner = (function (e) {
         "use strict";
         (require(20), require(34));
         var designerConfig = require(10);
-        const { GLocale: i, GLocaleKey: a } = require(1 /* GObject */);
+        const { GLocale, GLocaleKey } = require(1 /* GObject */);
         function r(e) {
             this._htmlElement = e;
         }
@@ -104412,7 +104412,7 @@ var GravitDesigner = (function (e) {
             const e = $("<div></div>").addClass("container").appendTo(this._htmlElement);
             $("<p></p>")
                 .html(
-                    i
+                    GLocale
                         .getValue("GBanner", "text.access-expire")
                         .replace(
                             "%link",
@@ -104498,8 +104498,8 @@ var GravitDesigner = (function (e) {
             k = require(392),
             O = require(805),
             {
-                InParenthesis: { NotNegativeNumberInTheEnd: F },
-                NotNegativeNumber: R,
+                InParenthesis: { NotNegativeNumberInTheEnd },
+                NotNegativeNumber,
             } = GRegex.GRegex.String,
             M = [
                 {
@@ -104688,10 +104688,10 @@ var GravitDesigner = (function (e) {
                                 t.getFileFormatVersion() && n.setFileFormatVersion(t.getFileFormatVersion());
                                 const o = t.getTitle();
                                 let i;
-                                if (new RegExp(F).test(o)) {
-                                    const e = o.match(F),
-                                        t = parseInt(e[0].match(R)[0]);
-                                    i = o.replace(F, "(".concat(t + 1, ")"));
+                                if (new RegExp(NotNegativeNumberInTheEnd).test(o)) {
+                                    const e = o.match(NotNegativeNumberInTheEnd),
+                                        t = parseInt(e[0].match(NotNegativeNumber)[0]);
+                                    i = o.replace(NotNegativeNumberInTheEnd, "(".concat(t + 1, ")"));
                                 } else i = "".concat(o, "(1)");
                                 const a = gDesigner.getDocuments().indexOf(t);
                                 (n.setTitle(i), gDesigner.addDocument(n, a + 1));
@@ -104703,8 +104703,8 @@ var GravitDesigner = (function (e) {
                                       i = new E.default();
                                   (i.setCurrentFolder(A.default.from({ id: e })),
                                       i.copyPaste([n.getFile()]).then(function (e) {
-                                          let [{ id: t }] = e;
-                                          return i.openFile(t, o + 1);
+                                          let [{ id }] = e;
+                                          return i.openFile(id, o + 1);
                                       }));
                               })()
                             : o();
@@ -105113,39 +105113,39 @@ var GravitDesigner = (function (e) {
                         let r,
                             s,
                             {
-                                title: l,
-                                callback: d,
-                                shortcut: u,
-                                requiresPro: p,
-                                separator: g,
-                                icon: h,
+                                title,
+                                callback,
+                                shortcut,
+                                requiresPro,
+                                separator,
+                                icon,
                                 id: f,
-                                needsAction: m,
-                                stats: y,
-                                isEnabled: v,
-                                isVisible: _,
+                                needsAction,
+                                stats,
+                                isEnabled,
+                                isVisible,
                             } = a;
-                        const b = l instanceof GObject.GLocaleKey ? GObject.GLocale.get(l) : l;
-                        if ((f && (r = "function" == typeof f ? f() : f), g)) {
+                        const b = title instanceof GObject.GLocaleKey ? GObject.GLocale.get(title) : title;
+                        if ((f && (r = "function" == typeof f ? f() : f), separator)) {
                             const t = n.createAddDivider();
-                            return (_ instanceof Function ? t.setVisible(_(e)) : "boolean" == typeof _ && t.setVisible(_), t);
+                            return (isVisible instanceof Function ? t.setVisible(isVisible(e)) : "boolean" == typeof isVisible && t.setVisible(isVisible), t);
                         }
-                        (d
+                        (callback
                             ? (s = n.createAddItem(b, () => {
-                                  d.call(o, e, t);
+                                  callback.call(o, e, t);
                               }))
-                            : ((s = n.createAddItem(b)), m && s.setAction(gDesigner.getAction(r))),
-                            u && s.setShortcutHint(u),
-                            p && s.setPro(p, r),
-                            v instanceof Function && s.setEnabled(v(e)),
-                            _ instanceof Function ? s.setVisible(_(e)) : "boolean" == typeof _ && s.setVisible(_),
-                            h && ("function" == typeof h ? s.setIcon(h()) : s.setIcon(h)),
+                            : ((s = n.createAddItem(b)), needsAction && s.setAction(gDesigner.getAction(r))),
+                            shortcut && s.setShortcutHint(shortcut),
+                            requiresPro && s.setPro(requiresPro, r),
+                            isEnabled instanceof Function && s.setEnabled(isEnabled(e)),
+                            isVisible instanceof Function ? s.setVisible(isVisible(e)) : "boolean" == typeof isVisible && s.setVisible(isVisible),
+                            icon && ("function" == typeof icon ? s.setIcon(icon()) : s.setIcon(icon)),
                             s.addEventListener(c.default.BeforeActivateEvent, () => {
                                 (!(function (e) {
                                     e && gDesigner.stats(e);
                                     (o._contextMenu.gOverlay("close"), (o._contextMenu = null), n.clearItems());
-                                })(y),
-                                    v && s.setEnabled(v(e)));
+                                })(stats),
+                                    isEnabled && s.setEnabled(isEnabled(e)));
                             }),
                             s.setCaption(b));
                     }),
@@ -105679,7 +105679,7 @@ var GravitDesigner = (function (e) {
         var o = require(357),
             GObject = require(1),
             GSaveAction = require(40);
-        const { gApi: r, LINKS: s, DESIGNER: { TITLE: l } = {}, SubscriptionStatus: c } = require(10 /* designerConfig */),
+        const { gApi, LINKS, DESIGNER: { TITLE } = {}, SubscriptionStatus } = require(10 /* designerConfig */),
             d = (require(173), require(337)),
             u = ["number", "name", "price", "date"];
         function p(e, t) {
@@ -105770,7 +105770,7 @@ var GravitDesigner = (function (e) {
                         .appendTo(this._container),
                     this._container.find(".cb-link").on("click", (e) => {
                         (gDesigner.stats("profile-dialog_purchase-panel_cleverbridge-link"),
-                            gContainer.openExternalLink(e, s.CLEVERBRIDGE_SUPPORT_URL));
+                            gContainer.openExternalLink(e, LINKS.CLEVERBRIDGE_SUPPORT_URL));
                     }),
                     $(this._purchaseList).scroll((e) => {
                         let t = $(e.currentTarget);
@@ -105798,7 +105798,7 @@ var GravitDesigner = (function (e) {
                 if (-1 !== this._query.skip) {
                     this._toggleLoading(true);
                     try {
-                        let t = await r.listPurchasedProducts(this._query),
+                        let t = await gApi.listPurchasedProducts(this._query),
                             n = t.length;
                         ((this._query.skip = n > 0 ? (n < 10 ? -1 : this._query.skip + n) : -1),
                             e && this._purchaseList.empty(),
@@ -105832,8 +105832,8 @@ var GravitDesigner = (function (e) {
                 const u =
                     e.name ||
                     (n
-                        ? GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.pro-subscription-lifetime")).replace("%app", l)
-                        : GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.pro-subscription")).replace("%app", l));
+                        ? GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.pro-subscription-lifetime")).replace("%app", TITLE)
+                        : GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.pro-subscription")).replace("%app", TITLE));
                 $("<div></div>").addClass("header").append($("<label></label>").addClass("title").text(u)).appendTo(t);
                 (e.invoice &&
                     $("<div></div>")
@@ -105869,7 +105869,7 @@ var GravitDesigner = (function (e) {
                 if (e.subscription && !e.refunded) {
                     let a = p;
                     (g.text(p + "..."),
-                        r
+                        gApi
                             .getSubscriptionByPurchase(e.purchase_id, e.provider)
                             .then((u) => {
                                 const p = (e, n, o, a, r) => {
@@ -105912,7 +105912,7 @@ var GravitDesigner = (function (e) {
                                         s
                                     );
                                 };
-                                if (u.status === c.Active)
+                                if (u.status === SubscriptionStatus.Active)
                                     (n
                                         ? g.text(a + ".")
                                         : g.text(
@@ -105924,13 +105924,13 @@ var GravitDesigner = (function (e) {
                                         p(
                                             GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.prompt-cancel-title")),
                                             GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.prompt-cancel-info"))
-                                                .replace("%app", l)
+                                                .replace("%app", TITLE)
                                                 .replace("%date", GObject.GLocale.toLocaleDate(new Date(u.endDate))),
                                             GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "cancel")),
                                             async (n) => {
                                                 this._toggleLoading(true);
                                                 try {
-                                                    (await r
+                                                    (await gApi
                                                         .deactivateSubscription(u.id, e.provider)
                                                         .then(() => {
                                                             (gDesigner.stats("profile-dialog_purchase-panel_cancel-subscription"),
@@ -105971,7 +105971,7 @@ var GravitDesigner = (function (e) {
                                         async (n) => {
                                             this._toggleLoading(true);
                                             try {
-                                                (await r
+                                                (await gApi
                                                     .activateSubscription(u.id, e.provider)
                                                     .then(() => {
                                                         (gDesigner.stats("profile-dialog_purchase-panel_activate-subscription"),
@@ -106010,7 +106010,7 @@ var GravitDesigner = (function (e) {
         (require(8 /* Symbol */), require(196), require(20), require(3), require(34), require(91), require(4), require(13), require(38));
         var designerConfig = require(10),
             GObject = require(1);
-        const { bypassEmailVerification: a } = designerConfig.defaultUserSettings,
+        const { bypassEmailVerification } = designerConfig.defaultUserSettings,
             GSystemDialog = require(44),
             s = function (e) {
                 return e.json().then(function (t) {
@@ -106173,13 +106173,13 @@ var GravitDesigner = (function (e) {
                 let s = this._user.getFirstName(),
                     l = this._user.getLastName();
                 if (!l) {
-                    let { first: e, last: t } = ((e) => {
+                    let { first, last } = ((e) => {
                         let t = (e || "").split(" "),
                             n = t.slice(0, t.length - 1).join(" "),
                             o = t.slice(-1).join("");
                         return (n.trim().length || ((n = o), (o = "")), { first: n, last: o });
                     })(s);
-                    ((s = e), (l = t || ""));
+                    ((s = first), (l = last || ""));
                 }
                 let c = $("<div></div>").addClass("group-section").appendTo(t);
                 (a(GObject.GLocale.get(new GObject.GLocaleKey("GAccountPanel", "text.first-name")), s, "name")
@@ -106232,7 +106232,7 @@ var GravitDesigner = (function (e) {
                         .then(() => {
                             t.email &&
                                 this._user.getEmail() !== t.email &&
-                                !a &&
+                                !bypassEmailVerification &&
                                 GSystemDialog.alert(
                                     GObject.GLocale.get(new GObject.GLocaleKey("GAccountPanel", "text.user-email-message")).replace("%email", t.email)
                                 );
@@ -106294,7 +106294,7 @@ var GravitDesigner = (function (e) {
             this._container = $("<div></div>").addClass("g-change-password-panel");
             const {
                 changePasswordOptions: {
-                    autoClose: l,
+                    autoClose,
                     title: c = GObject.GLocale.get(new GObject.GLocaleKey("GChangePasswordPanel", "text.change-password")),
                     info: d = GObject.GLocale.get(new GObject.GLocaleKey("GChangePasswordPanel", "text.reset-password-info")),
                 } = {},
@@ -106313,12 +106313,12 @@ var GravitDesigner = (function (e) {
                         .addClass("highlight")
                         .text(GObject.GLocale.get(new GObject.GLocaleKey("GChangePasswordPanel", "text.assign")))
                         .on("click", () => {
-                            const { token: e } = this._options,
+                            const { token } = this._options,
                                 t = this._container.find('[data-property="new_password"] > input').val().trim(),
                                 n = this._container.find('[data-property="confirm_password"] > input').val().trim();
                             (gDesigner.stats("profile-dialog_change-password-panel_change-password"),
                                 designerConfig.gApi
-                                    .updatePassword({ password: t, confirm_password: n }, e)
+                                    .updatePassword({ password: t, confirm_password: n }, token)
                                     .then(() =>
                                         this._messageHandler(
                                             GObject.GLocale.get(new GObject.GLocaleKey("GChangePasswordPanel", "text.reset-password-done")),
@@ -106327,7 +106327,7 @@ var GravitDesigner = (function (e) {
                                     )
                                     .then(() => this._toggleLoading(false))
                                     .then(() => {
-                                        l && this._parent.close();
+                                        autoClose && this._parent.close();
                                     })
                                     .catch((e) => this._messageHandler(designerConfig.gApi.formatError(e))));
                         })
@@ -106372,7 +106372,7 @@ var GravitDesigner = (function (e) {
             a = require(257);
         class r {
             constructor(e) {
-                let { closeCallback: t } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                let { closeCallback } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 var n = this;
                 ((this._dialog = $("<div/>")
                     .addClass("g-save-chooser")
@@ -106415,7 +106415,7 @@ var GravitDesigner = (function (e) {
                         releaseOnClose: true,
                         className: "g-save-chooser-dialog",
                         closeTimeout: 0,
-                        closeCallback: t,
+                        closeCallback: closeCallback,
                     }));
             }
             open() {
@@ -106647,13 +106647,13 @@ var GravitDesigner = (function (e) {
                         const t = {};
                         r.excludeAcceptAllOptions = true;
                         for (let n = 0, o = e.length; n < o; n++) {
-                            const { mime: o, ext: i } = e[n];
-                            o && i
-                                ? void 0 !== t[o]
-                                    ? (Array.isArray(t[o]) || (t[o] = [t[o]]), t[o].push(i.startsWith(".") ? i : ".".concat(i)))
-                                    : (t[o] = i.startsWith(".") ? i : ".".concat(i))
+                            const { mime, ext } = e[n];
+                            mime && ext
+                                ? void 0 !== t[mime]
+                                    ? (Array.isArray(t[mime]) || (t[mime] = [t[mime]]), t[mime].push(ext.startsWith(".") ? ext : ".".concat(ext)))
+                                    : (t[mime] = ext.startsWith(".") ? ext : ".".concat(ext))
                                 : console.warn(
-                                      'openPrompt warning: no mime or ext. given mime: "'.concat(o, '", given ext: "').concat(i, '"')
+                                      'openPrompt warning: no mime or ext. given mime: "'.concat(mime, '", given ext: "').concat(ext, '"')
                                   );
                         }
                         r.types = [{ accept: t }];
@@ -110531,7 +110531,7 @@ var GravitDesigner = (function (e) {
             c = require(85),
             d = require(805),
             u = require(292),
-            { bypassEmailVerification: p } = designerConfig.defaultUserSettings;
+            { bypassEmailVerification } = designerConfig.defaultUserSettings;
         function g(e) {
             this._htmlElement = e;
         }
@@ -110565,7 +110565,7 @@ var GravitDesigner = (function (e) {
                 if (
                     (this._togglePanel(false),
                     this._interval && clearInterval(this._interval),
-                    !p &&
+                    !bypassEmailVerification &&
                         gDesigner.isEnabledSubscriptions() &&
                         !gDesigner.getLicense().isGuest() &&
                         e &&
@@ -111321,16 +111321,16 @@ var GravitDesigner = (function (e) {
                     designerConfig.DateAPI.lt(g.version.modified, e.version.modified, false) && ((h = e), (m = true));
                 }
                 const y = (e, t, a) => {
-                    let { version: s, thumbnail: d, autosave: u } = e;
+                    let { version, thumbnail, autosave } = e;
                     return $("<div />")
                         .addClass("version-history-item")
-                        .addClass((c ? l === s.versionId : ((m && u) || (!m && !u)) && s.latest) ? "vhi-initial" : "")
-                        .addClass(n || s.latest ? "" : "vhi-disabled")
-                        .addClass((c ? l === s.versionId : s.versionId === h.version.versionId) ? "vhi-active" : "")
+                        .addClass((c ? l === version.versionId : ((m && autosave) || (!m && !autosave)) && version.latest) ? "vhi-initial" : "")
+                        .addClass(n || version.latest ? "" : "vhi-disabled")
+                        .addClass((c ? l === version.versionId : version.versionId === h.version.versionId) ? "vhi-active" : "")
                         .append(
                             $("<div />")
                                 .addClass("vhi-thumbnail")
-                                .css("background-image", "url(" + d.url_t + ")")
+                                .css("background-image", "url(" + thumbnail.url_t + ")")
                         )
                         .append(
                             $("<div />")
@@ -111339,7 +111339,7 @@ var GravitDesigner = (function (e) {
                                     $("<div />")
                                         .addClass("vhi-title")
                                         .text(
-                                            s.versionId === h.version.versionId
+                                            version.versionId === h.version.versionId
                                                 ? GObject.GLocale.get(new GObject.GLocaleKey("GVersionHistoryProperties", "text.current-version"))
                                                 : GObject.GLocale.get(new GObject.GLocaleKey("GVersionHistoryProperties", "text.version")).replace(
                                                       "%version",
@@ -111350,7 +111350,7 @@ var GravitDesigner = (function (e) {
                                 .append(
                                     $("<div />")
                                         .addClass("vhi-updated")
-                                        .text((0, r.dateToVersionFormat)(s.modified))
+                                        .text((0, r.dateToVersionFormat)(version.modified))
                                 )
                         )
                         .append(
@@ -111359,7 +111359,7 @@ var GravitDesigner = (function (e) {
                                 .addClass("gravit-icon-settings")
                                 .on("click", function (e) {
                                     (e.stopPropagation(),
-                                        (n || s.latest) &&
+                                        (n || version.latest) &&
                                             ($(this).find(".vhi-settings-list").toggle(),
                                             gDesigner.stats("version-history-panel_click_setting-icon")));
                                 })
@@ -111377,7 +111377,7 @@ var GravitDesigner = (function (e) {
                                                     (e.stopPropagation(),
                                                         gDesigner.stats("version-history-panel_show-preview_from-settings-menu"),
                                                         gDesigner.intercomStats("Preview version from history"),
-                                                        o._showPreview(s.versionId, d.name, $(this).closest(".version-history-item"), u),
+                                                        o._showPreview(version.versionId, thumbnail.name, $(this).closest(".version-history-item"), autosave),
                                                         $(this).parent(".vhi-settings-list").hide());
                                                 })
                                         )
@@ -111389,7 +111389,7 @@ var GravitDesigner = (function (e) {
                                                     (e.stopPropagation(),
                                                         gDesigner.stats("version-history-panel_restore-version_from-settings-menu"),
                                                         gDesigner.intercomStats("Open version from history"),
-                                                        o._applyVersion(s.versionId, d.name, u),
+                                                        o._applyVersion(version.versionId, thumbnail.name, autosave),
                                                         $(this).parent(".vhi-settings-list").hide());
                                                 })
                                         )
@@ -111408,7 +111408,7 @@ var GravitDesigner = (function (e) {
                                 e
                                     ? $(t).data("dblclicked", e - 1)
                                     : (gDesigner.stats("version-history-panel_show-preview_from-main-panel"),
-                                      o._showPreview(s.versionId, d.name, $(t), u),
+                                      o._showPreview(version.versionId, thumbnail.name, $(t), autosave),
                                       gDesigner.intercomStats("Preview version from history"));
                             }, 500);
                         })
@@ -111421,11 +111421,11 @@ var GravitDesigner = (function (e) {
                                 );
                             ($(this).data("dblclicked", 2),
                                 gDesigner.stats("version-history-panel_apply-version"),
-                                o._applyVersion(s.versionId, d.name, u),
+                                o._applyVersion(version.versionId, thumbnail.name, autosave),
                                 gDesigner.intercomStats("Open version from history"));
                         })
                         .on("mouseenter", function () {
-                            (n || s.latest) && $(this).addClass("show-icon");
+                            (n || version.latest) && $(this).addClass("show-icon");
                         })
                         .on("mouseleave", function () {
                             ($(this).removeClass("show-icon"), $(this).find(".vhi-settings-list").hide());
@@ -111451,22 +111451,22 @@ var GravitDesigner = (function (e) {
                 this._panel.css("height", e);
             }),
             (y.prototype._documentStatusEventHandler = function (e) {
-                let { status: t } = e;
-                t === g.default.LoadFailed && this._closePreview();
+                let { status } = e;
+                status === g.default.LoadFailed && this._closePreview();
             }),
             (y.prototype._documentEvent = function (e) {
-                let { document: t, type: n } = e;
-                if (n === p.default.Type.AutoSaveSynchronized) return void this._updateVersionHistory(this._fileId);
+                let { document, type } = e;
+                if (type === p.default.Type.AutoSaveSynchronized) return void this._updateVersionHistory(this._fileId);
                 if (this._loadingPreview) return;
-                const o = t.getStorageItem() instanceof c.default.Item,
-                    i = t.getScene();
-                ((o && t.getStorageItem().getId() !== this._fileId) || (!o && i && i.getProperty("cid") !== this._fileId)) && this.close();
+                const o = document.getStorageItem() instanceof c.default.Item,
+                    i = document.getScene();
+                ((o && document.getStorageItem().getId() !== this._fileId) || (!o && i && i.getProperty("cid") !== this._fileId)) && this.close();
             }),
             (y.prototype._storageEventHandler = function (e) {
-                let { type: t, storageItem: n } = e;
+                let { type: t, storageItem } = e;
                 t === f.default.Type.VersionUpdate &&
-                    n instanceof c.default.Item &&
-                    this._fileId === n.getId() &&
+                    storageItem instanceof c.default.Item &&
+                    this._fileId === storageItem.getId() &&
                     this._updateVersionHistory(this._fileId);
             }),
             (y.prototype._showPreview = async function (e, t, n, o) {
@@ -111722,9 +111722,9 @@ var GravitDesigner = (function (e) {
         "use strict";
         (require(8 /* Symbol */), require(4), require(13), require(38));
         var GObject = require(1);
-        const { FILE_FORMATS: i, gApi: a } = require(10 /* designerConfig */),
-            r = i.find((e) => e.default),
-            { COMMAND_SAVE: s, COMMAND_SYNC_IMAGES: l } = require(591 /* COMMAND_SAVE */),
+        const { FILE_FORMATS, gApi } = require(10 /* designerConfig */),
+            r = FILE_FORMATS.find((e) => e.default),
+            { COMMAND_SAVE, COMMAND_SYNC_IMAGES } = require(591 /* COMMAND_SAVE */),
             c = require(1164);
         module.exports = class extends c {
             constructor(e, t) {
@@ -111732,12 +111732,12 @@ var GravitDesigner = (function (e) {
             }
             async updateFileSceneAndMetadata(e, t, n, o) {
                 await this._syncSceneImages(e, n);
-                const { sceneSnapshot: i, urls: r } = await this._saveScene(e, t, n);
+                const { sceneSnapshot, urls } = await this._saveScene(e, t, n);
                 return (
-                    console.log({ documentId: e, file: t, sceneSnapshot: i, urls: r }),
-                    await this._saveThumbnail(o.thumbnail.getImageAsBlob(), r.url_t),
-                    await a.commitAutoSaveFileUpdate(t.id),
-                    a.getFile(e + "?edit")
+                    console.log({ documentId: e, file: t, sceneSnapshot: sceneSnapshot, urls: urls }),
+                    await this._saveThumbnail(o.thumbnail.getImageAsBlob(), urls.url_t),
+                    await gApi.commitAutoSaveFileUpdate(t.id),
+                    gApi.getFile(e + "?edit")
                 );
             }
             _syncSceneImages(e, t) {
@@ -111753,21 +111753,21 @@ var GravitDesigner = (function (e) {
                                 });
                         }));
                     const s = Object.create(t),
-                        c = this._request(l.REQUEST, {
+                        c = this._request(COMMAND_SYNC_IMAGES.REQUEST, {
                             id: e,
                             images: r,
                             entries: i,
-                            cloudURL: a.url,
+                            cloudURL: gApi.url,
                         });
                     this._worker.addEventListener(
                         "message",
                         function (e) {
-                            const { cmd: t, id: i, data: a } = e.data;
-                            if (t !== l.SUCCESS || i !== c) return false;
+                            const { cmd, id, data } = e.data;
+                            if (cmd !== COMMAND_SYNC_IMAGES.SUCCESS || id !== c) return false;
                             let r = s.getDictionary();
                             s.setCloudSynchronization(null);
                             let d = new GObject.GDictionary();
-                            return (d.deserialize(a), r.merge(d), n(), true);
+                            return (d.deserialize(data), r.merge(d), n(), true);
                         }.bind(this),
                         { once: true }
                     );
@@ -111777,7 +111777,7 @@ var GravitDesigner = (function (e) {
                 return new Promise((i, a) => {
                     let l = GObject.GNode.serialize(n, { save: true });
                     const c = Object.create(n),
-                        d = this._request(s.REQUEST, {
+                        d = this._request(COMMAND_SAVE.REQUEST, {
                             id: e,
                             file: t,
                             scene: l,
@@ -111787,8 +111787,8 @@ var GravitDesigner = (function (e) {
                         "message",
                         function (e) {
                             const { cmd: t, id: n, data: o } = e.data;
-                            if ((t !== s.SUCCESS && t !== s.FAILED) || n !== d) return false;
-                            t === s.SUCCESS ? i({ sceneSnapshot: c, urls: o.urls }) : t === s.FAILED && a();
+                            if ((t !== COMMAND_SAVE.SUCCESS && t !== COMMAND_SAVE.FAILED) || n !== d) return false;
+                            t === COMMAND_SAVE.SUCCESS ? i({ sceneSnapshot: c, urls: o.urls }) : t === COMMAND_SAVE.FAILED && a();
                             return true;
                         }.bind(this),
                         { once: true }
@@ -111811,9 +111811,9 @@ var GravitDesigner = (function (e) {
         "use strict";
         (require(8 /* Symbol */), require(4), require(13));
         var GObject = require(1);
-        const { FILE_FORMATS: i } = require(10 /* designerConfig */),
-            a = i.find((e) => e.default),
-            { COMMAND_SAVE: r } = require(591 /* COMMAND_SAVE */),
+        const { FILE_FORMATS } = require(10 /* designerConfig */),
+            a = FILE_FORMATS.find((e) => e.default),
+            { COMMAND_SAVE } = require(591 /* COMMAND_SAVE */),
             s = require(1164),
             GGoogleDrive = require(556);
         module.exports = class extends s {
@@ -111826,7 +111826,7 @@ var GravitDesigner = (function (e) {
             }
             _requestWorkerToSave(e, t, n, i) {
                 return new Promise((s, l) => {
-                    const c = this._request(r.REQUEST, {
+                    const c = this._request(COMMAND_SAVE.REQUEST, {
                         id: e,
                         file: t,
                         metadata: i,
@@ -111836,9 +111836,9 @@ var GravitDesigner = (function (e) {
                     this._worker.addEventListener(
                         "message",
                         function (e) {
-                            const { cmd: t, id: n, data: o } = e.data;
-                            if ((t !== r.SUCCESS && t !== r.FAILED) || n !== c) return false;
-                            t === r.SUCCESS ? s(o.file) : t === r.FAILED && l();
+                            const { cmd, id, data } = e.data;
+                            if ((cmd !== COMMAND_SAVE.SUCCESS && cmd !== COMMAND_SAVE.FAILED) || id !== c) return false;
+                            cmd === COMMAND_SAVE.SUCCESS ? s(data.file) : cmd === COMMAND_SAVE.FAILED && l();
                             return true;
                         }.bind(this),
                         { once: true }
@@ -111852,9 +111852,9 @@ var GravitDesigner = (function (e) {
         (require(8 /* Symbol */), require(4), require(13));
         var GObject = require(1);
         const i = require(156),
-            { FILE_FORMATS: a } = require(10 /* designerConfig */),
-            r = a.find((e) => e.default),
-            { COMMAND_SAVE: s } = require(591 /* COMMAND_SAVE */),
+            { FILE_FORMATS } = require(10 /* designerConfig */),
+            r = FILE_FORMATS.find((e) => e.default),
+            { COMMAND_SAVE } = require(591 /* COMMAND_SAVE */),
             l = require(1164);
         module.exports = class extends l {
             constructor(e, t) {
@@ -111866,7 +111866,7 @@ var GravitDesigner = (function (e) {
             }
             _requestWorkerToSave(e, t, n, i) {
                 return new Promise((a, l) => {
-                    const c = this._request(s.REQUEST, {
+                    const c = this._request(COMMAND_SAVE.REQUEST, {
                         id: e,
                         file: t,
                         metadata: i,
@@ -111876,9 +111876,9 @@ var GravitDesigner = (function (e) {
                     this._worker.addEventListener(
                         "message",
                         function (e) {
-                            const { cmd: t, id: n, data: o } = e.data;
-                            if ((t !== s.SUCCESS && t !== s.FAILED) || n !== c) return false;
-                            t === s.SUCCESS ? a(o.file) : t === s.FAILED && l();
+                            const { cmd, id, data } = e.data;
+                            if ((cmd !== COMMAND_SAVE.SUCCESS && cmd !== COMMAND_SAVE.FAILED) || id !== c) return false;
+                            cmd === COMMAND_SAVE.SUCCESS ? a(data.file) : cmd === COMMAND_SAVE.FAILED && l();
                             return true;
                         }.bind(this),
                         { once: true }
@@ -111935,7 +111935,7 @@ var GravitDesigner = (function (e) {
             l = require(123);
         const c = require(358),
             d = require(86),
-            { SHOW_SIDEBAR_BADGE: u } = require(10 /* designerConfig */);
+            { SHOW_SIDEBAR_BADGE } = require(10 /* designerConfig */);
         function p() {
             this._elements = [];
         }
@@ -112026,7 +112026,7 @@ var GravitDesigner = (function (e) {
             }),
             (p.prototype._updateCommentCount = function (e, t) {
                 var n = this._toolbar.find(".g-badge");
-                u && e > 0
+                SHOW_SIDEBAR_BADGE && e > 0
                     ? (0 === n.length && ((n = $("<span/>").addClass("g-badge comment-count")), this._toolbar.append(n)),
                       t > 0 ? n.addClass("unread") : n.removeClass("unread"),
                       n.text(e))
@@ -112639,22 +112639,22 @@ var GravitDesigner = (function (e) {
         var o = require(16);
         (require(58), require(8 /* Symbol */), require(71), require(4), require(13));
         var i = o(require(1155));
-        const { GLocale: a, GLocaleKey: r, GObject: s } = require(1 /* GObject */),
+        const { GLocale, GLocaleKey, GObject } = require(1 /* GObject */),
             l = require(392),
             c = require(1165),
             d = require(123),
             u = require(78),
             GSaveAction = require(447),
             {
-                FileStatus: { IN_REVIEW: g, AWAITING_APPROVAL: h, APPROVED: f, REOPENED: m },
-                GFileReviewActions: { ACTION_REQUEST_REVIEW: y, ACTION_REQUEST_APPROVAL: v, ACTION_REOPEN: _, ACTION_APPROVE: b },
-                FileReviewStatusAvailable: w,
-                ShareRoles: C,
-                FILE_REVIEW_ENABLED: x,
+                FileStatus: { IN_REVIEW, AWAITING_APPROVAL, APPROVED, REOPENED },
+                GFileReviewActions: { ACTION_REQUEST_REVIEW, ACTION_REQUEST_APPROVAL, ACTION_REOPEN, ACTION_APPROVE },
+                FileReviewStatusAvailable,
+                ShareRoles,
+                FILE_REVIEW_ENABLED,
             } = require(10 /* designerConfig */),
             GFileStatusHistoryDialog = require(1538);
         function E() {}
-        (s.inherit(E, d),
+        (GObject.inherit(E, d),
             (E.prototype.init = function (e, t) {
                 ((this._container = e), (this._fileStatusHistoryDialog = new GFileStatusHistoryDialog()), this._init());
             }),
@@ -112677,10 +112677,10 @@ var GravitDesigner = (function (e) {
                 );
             }),
             (E.prototype.isAvailable = function () {
-                return !!x;
+                return !!FILE_REVIEW_ENABLED;
             }),
             (E.prototype._init = function () {
-                x &&
+                FILE_REVIEW_ENABLED &&
                     ((this._updatingStatus = false),
                     this._container.addClass("g-annotation-review-docker"),
                     this._buildMainPanel($("<div/>").addClass("panel").addClass("main-panel").hide()),
@@ -112690,65 +112690,65 @@ var GravitDesigner = (function (e) {
                 const t = this._getAppManager();
                 var n;
                 switch (e) {
-                    case g:
+                    case IN_REVIEW:
                         return (
-                            (n = await t.hasAccess(y, true)),
+                            (n = await t.hasAccess(ACTION_REQUEST_REVIEW, true)),
                             {
                                 status: e,
-                                getLabel: () => a.get(new r("GReviewDockerProperties", "text.review-title")),
-                                getDescription: () => a.get(new r("GReviewDockerProperties", "text.review-description")),
+                                getLabel: () => GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.review-title")),
+                                getDescription: () => GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.review-description")),
                                 getIcon: () => null,
                                 getIconLabel: () => null,
-                                isAvailable: async () => n && !!this._reviewManager && this._reviewManager.canUpdateToStatus(g),
+                                isAvailable: async () => n && !!this._reviewManager && this._reviewManager.canUpdateToStatus(IN_REVIEW),
                             }
                         );
-                    case m:
+                    case REOPENED:
                         return (
-                            (n = await t.hasAccess(_, true)),
+                            (n = await t.hasAccess(ACTION_REOPEN, true)),
                             {
                                 status: e,
-                                getLabel: () => a.get(new r("GReviewDockerProperties", n ? "text.reopen-title" : "text.reopened-title")),
-                                getDescription: () => a.get(new r("GReviewDockerProperties", "text.reopen-description")),
+                                getLabel: () => GLocale.get(new GLocaleKey("GReviewDockerProperties", n ? "text.reopen-title" : "text.reopened-title")),
+                                getDescription: () => GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.reopen-description")),
                                 getIcon: () => null,
                                 getIconLabel: () => null,
-                                isAvailable: async () => n && !!this._reviewManager && this._reviewManager.canUpdateToStatus(m),
+                                isAvailable: async () => n && !!this._reviewManager && this._reviewManager.canUpdateToStatus(REOPENED),
                             }
                         );
-                    case h:
-                        const i = t.hasRole(C.Owner),
+                    case AWAITING_APPROVAL:
+                        const i = t.hasRole(ShareRoles.Owner),
                             s = await this._reviewManager.hasApprovers();
                         return (
-                            (n = await t.hasAccess(v, true)),
+                            (n = await t.hasAccess(ACTION_REQUEST_APPROVAL, true)),
                             {
                                 status: e,
                                 getLabel: () =>
-                                    a.get(
-                                        new r(
+                                    GLocale.get(
+                                        new GLocaleKey(
                                             "GReviewDockerProperties",
                                             n ? "text.request-approval-title" : "text.requested-approval-title"
                                         )
                                     ),
-                                getDescription: () => a.get(new r("GReviewDockerProperties", "text.request-approval-description")),
+                                getDescription: () => GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.request-approval-description")),
                                 getIcon: () => (i && !s ? "info" : null),
                                 getIconLabel: () =>
-                                    i && !s ? a.get(new r("GReviewDockerProperties", "text.request-approval-tooltip")) : null,
+                                    i && !s ? GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.request-approval-tooltip")) : null,
                                 isAvailable: async () => {
-                                    const e = !!this._reviewManager && this._reviewManager.canUpdateToStatus(h);
+                                    const e = !!this._reviewManager && this._reviewManager.canUpdateToStatus(AWAITING_APPROVAL);
                                     return s && n && e;
                                 },
                             }
                         );
-                    case f:
-                        n = await t.hasAccess(b, true);
+                    case APPROVED:
+                        n = await t.hasAccess(ACTION_APPROVE, true);
                         var o = this._getStatus();
                         return {
                             status: e,
                             getLabel: () =>
-                                a.get(new r("GReviewDockerProperties", n && e !== o ? "text.approve-title" : "text.approved-title")),
-                            getDescription: () => a.get(new r("GReviewDockerProperties", "text.approved-description")),
+                                GLocale.get(new GLocaleKey("GReviewDockerProperties", n && e !== o ? "text.approve-title" : "text.approved-title")),
+                            getDescription: () => GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.approved-description")),
                             getIcon: () => null,
                             getIconLabel: () => null,
-                            isAvailable: async () => n && !!this._reviewManager && this._reviewManager.canUpdateToStatus(f),
+                            isAvailable: async () => n && !!this._reviewManager && this._reviewManager.canUpdateToStatus(APPROVED),
                         };
                 }
             }),
@@ -112762,14 +112762,14 @@ var GravitDesigner = (function (e) {
                 this._mainPanel = e;
                 let t = $("<div/>").addClass("row").addClass("header").appendTo(this._mainPanel);
                 ($("<div/>")
-                    .text(a.get(new r("GReviewDockerProperties", "text.current-status")))
+                    .text(GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.current-status")))
                     .addClass("status")
                     .click(() => {
                         ((this._opened = false), this._container.gDialog("close"));
                     })
                     .appendTo(t),
                     $("<div/>")
-                        .text(a.get(new r("GReviewDockerProperties", "text.status-history")))
+                        .text(GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.status-history")))
                         .addClass("history-actions")
                         .hide()
                         .click(() => {
@@ -112780,11 +112780,11 @@ var GravitDesigner = (function (e) {
                 let n = $("<div/>").addClass("row").addClass("footer").hide().appendTo(this._mainPanel);
                 ($("<div/>")
                     .addClass("footer-title")
-                    .text(a.get(new r("GReviewDockerProperties", "text.please-share-to-start")))
+                    .text(GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.please-share-to-start")))
                     .appendTo(n),
                     $("<div/>")
                         .addClass("footer-action")
-                        .text(a.get(new r("GReviewDockerProperties", "text.share-design-now")))
+                        .text(GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.share-design-now")))
                         .addClass("footer-action")
                         .click(() => this._requestShare())
                         .appendTo(n),
@@ -112831,14 +112831,14 @@ var GravitDesigner = (function (e) {
                 const n = !(!this._document || !this._document.getStorageItem());
                 (e
                     .find(".footer-title")
-                    .text(a.get(new r("GReviewDockerProperties", n ? "text.please-share-to-start" : "text-please-save-share-to-start"))),
+                    .text(GLocale.get(new GLocaleKey("GReviewDockerProperties", n ? "text.please-share-to-start" : "text-please-save-share-to-start"))),
                     e
                         .find(".footer-action")
-                        .text(a.get(new r("GReviewDockerProperties", n ? "text.share-design-now" : "text.save-share-design-now"))),
+                        .text(GLocale.get(new GLocaleKey("GReviewDockerProperties", n ? "text.share-design-now" : "text.save-share-design-now"))),
                     this._isDocumentSane() ? (e.hide(), t.show()) : (e.show(), t.hide()));
             }),
             (E.prototype._updateUI = async function () {
-                w.includes(this._getStatus()) &&
+                FileReviewStatusAvailable.includes(this._getStatus()) &&
                     (this._statusSelectorContainer.empty(),
                     this._mainPanel && this._mainPanel.hide(),
                     this._document &&
@@ -112848,7 +112848,7 @@ var GravitDesigner = (function (e) {
                         this._mainPanel.show()));
             }),
             (E.prototype._getStatus = function () {
-                return (this._reviewManager && this._reviewManager.getStatus()) || g;
+                return (this._reviewManager && this._reviewManager.getStatus()) || IN_REVIEW;
             }),
             (E.prototype._isDocumentSane = function () {
                 return !!this._document && this._getAppManager().isSharing() && this._document.isCollaborative();
@@ -112887,13 +112887,13 @@ var GravitDesigner = (function (e) {
                                       "reviewdocker_design",
                                       ((e) => {
                                           switch (e) {
-                                              case g:
+                                              case IN_REVIEW:
                                                   return "InReview";
-                                              case h:
+                                              case AWAITING_APPROVAL:
                                                   return "RequestApproval";
-                                              case f:
+                                              case APPROVED:
                                                   return "Approved";
-                                              case m:
+                                              case REOPENED:
                                                   return "ReOpened";
                                           }
                                       })(e.status)
@@ -112919,8 +112919,8 @@ var GravitDesigner = (function (e) {
                 };
                 if (this._isDocumentSane() && n) {
                     this._selectedItemContainer.removeClass("disabled");
-                    for (let e = 0; e < w.length; e++) {
-                        var i = w[e],
+                    for (let e = 0; e < FileReviewStatusAvailable.length; e++) {
+                        var i = FileReviewStatusAvailable[e],
                             a = await this._getDAOStatus(i);
                         await o(a);
                     }
@@ -112962,14 +112962,14 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         (require(8 /* Symbol */), require(20), require(34), require(4), require(13), require(38));
-        const { GLocale: o, GLocaleKey: i } = require(1 /* GObject */),
+        const { GLocale, GLocaleKey } = require(1 /* GObject */),
             a = require(1166),
             r = require(177),
             {
-                gApi: s,
-                Notification: l,
+                gApi,
+                Notification,
                 NotificationConstants: {
-                    ACTIONS: { ACTION_APPROVE: c, ACTION_REQUEST_APPROVE: d, ACTION_REOPEN: u, ACTION_IN_REVIEW: p } = {},
+                    ACTIONS: { ACTION_APPROVE, ACTION_REQUEST_APPROVE, ACTION_REOPEN, ACTION_IN_REVIEW } = {},
                 },
             } = require(10 /* designerConfig */);
         function g() {
@@ -112978,23 +112978,23 @@ var GravitDesigner = (function (e) {
         ((g.prototype._updateHistoryList = async function () {
             const e = this._container.find(".list");
             (e.empty(), e.addClass("loading"));
-            var t = await s.annotations.getDesignHistory(gDesigner.getActiveDocument().getId()).catch((e) => []);
+            var t = await gApi.annotations.getDesignHistory(gDesigner.getActiveDocument().getId()).catch((e) => []);
             (e.append(
                 t.map((e) => {
-                    const t = l.from(e);
+                    const t = Notification.from(e);
                     var n;
                     switch (t.getAction()) {
-                        case c:
-                            n = o.get(new i("GFileStatusHistoryDialog", "text.action-approved"));
+                        case ACTION_APPROVE:
+                            n = GLocale.get(new GLocaleKey("GFileStatusHistoryDialog", "text.action-approved"));
                             break;
-                        case d:
-                            n = o.get(new i("GFileStatusHistoryDialog", "text.action-request-approval"));
+                        case ACTION_REQUEST_APPROVE:
+                            n = GLocale.get(new GLocaleKey("GFileStatusHistoryDialog", "text.action-request-approval"));
                             break;
-                        case u:
-                            n = o.get(new i("GFileStatusHistoryDialog", "text.action-reopened"));
+                        case ACTION_REOPEN:
+                            n = GLocale.get(new GLocaleKey("GFileStatusHistoryDialog", "text.action-reopened"));
                             break;
-                        case p:
-                            n = o.get(new i("GFileStatusHistoryDialog", "text.action-in-review"));
+                        case ACTION_IN_REVIEW:
+                            n = GLocale.get(new GLocaleKey("GFileStatusHistoryDialog", "text.action-in-review"));
                     }
                     if (n) {
                         var r = $("<span></span>").addClass("annotation-title-group"),
@@ -113002,7 +113002,7 @@ var GravitDesigner = (function (e) {
                                 .html(n.replace("%name", this._getUserNameFromNotification(t)))
                                 .addClass("annotation-title")
                                 .appendTo(r),
-                            g = o.toLocaleDate(t.created, {
+                            g = GLocale.toLocaleDate(t.created, {
                                 year: "numeric",
                                 month: "numeric",
                                 day: "numeric",
@@ -113033,7 +113033,7 @@ var GravitDesigner = (function (e) {
                 let e = $("<div/>").addClass("row").addClass("header").appendTo(this._container);
                 ($("<div/>")
                     .addClass("title")
-                    .text(o.get(new i("GFileStatusHistoryDialog", "text.status-history")))
+                    .text(GLocale.get(new GLocaleKey("GFileStatusHistoryDialog", "text.status-history")))
                     .appendTo(e),
                     $("<div></div>")
                         .addClass("btn-close")
@@ -113184,13 +113184,13 @@ var GravitDesigner = (function (e) {
                 (this._touchToolbar.empty(),
                     this.removeClassName("align-active"),
                     this._sidebars.forEach((o) => {
-                        let { sidebar: i, container: a } = o;
-                        const r = i.getTouchTools(e);
-                        i &&
-                            i.isVisible() &&
+                        let { sidebar, container } = o;
+                        const r = sidebar.getTouchTools(e);
+                        sidebar &&
+                            sidebar.isVisible() &&
                             r &&
                             r.forEach((e) => {
-                                e.sidebar = i.getId();
+                                e.sidebar = sidebar.getId();
                                 const o = !!this._activeTouchTool && e.id == this._activeTouchTool.id;
                                 o && (n = e);
                                 let r = e.panel;
@@ -113199,7 +113199,7 @@ var GravitDesigner = (function (e) {
                                     "dimension.align" === e.id && o && this.addClassName("align-active"),
                                     r.forEach((t) => {
                                         let n;
-                                        ((n = "string" == typeof t ? a.find(t) : $(t)),
+                                        ((n = "string" == typeof t ? container.find(t) : $(t)),
                                             n.attr("g-touch-tool", e.id).toggleClass("g-active", o).addClass("g-touch-toolbar-panel"));
                                     }),
                                     e.toolbar)
@@ -113208,7 +113208,7 @@ var GravitDesigner = (function (e) {
                                     (Array.isArray(e.toolbar) || (t = [e.toolbar]),
                                         t.forEach((t) => {
                                             let n;
-                                            ((n = "string" == typeof t ? a.find(t) : $(t)),
+                                            ((n = "string" == typeof t ? container.find(t) : $(t)),
                                                 n.attr("g-touch-tool", e.id).toggleClass("g-active", o).addClass("g-touch-toolbar-label"));
                                         }));
                                 }
@@ -113229,12 +113229,12 @@ var GravitDesigner = (function (e) {
                                             this._activeTouchTool && this._activeTouchTool.id == e.id
                                                 ? this._isActiveSidebarDeactivatable() &&
                                                   (this.setActiveTouchTool(null),
-                                                  this._htmlElement.css("width", i.getDefaultWidth() + "px"))
-                                                : this._tryActivateSidebar(i) &&
+                                                  this._htmlElement.css("width", sidebar.getDefaultWidth() + "px"))
+                                                : this._tryActivateSidebar(sidebar) &&
                                                   (this.setActiveTouchTool(e),
                                                   e.panelWidth
                                                       ? this._htmlElement.css("width", e.panelWidth)
-                                                      : this._htmlElement.css("width", i.getDefaultWidth() + "px"),
+                                                      : this._htmlElement.css("width", sidebar.getDefaultWidth() + "px"),
                                                   ".appearance-toolbar" !== e.toolbar
                                                       ? this._htmlElement.find(".appearance-properties-panel").addClass("display-none")
                                                       : this._htmlElement
@@ -115901,8 +115901,8 @@ var GravitDesigner = (function (e) {
             g = require(339),
             h = require(257),
             f = require(85),
-            { GSystem: m, GMath: y } = require(1 /* GObject */),
-            { FILE_FORMATS: v } = require(10 /* designerConfig */);
+            { GSystem, GMath } = require(1 /* GObject */),
+            { FILE_FORMATS } = require(10 /* designerConfig */);
         module.exports = function (e) {
             ((e.prototype._windowButton = null),
                 (e.prototype._nativeButton = null),
@@ -115912,7 +115912,7 @@ var GravitDesigner = (function (e) {
                         this._windowButton || (this._windowButton = this._createWindowButton().hide().insertBefore(this._exportButton)),
                         this._nativeButton ||
                             (gContainer.getRuntime() === f.Runtime.Electron &&
-                                m.operatingSystem !== m.OperatingSystem.OSX_IOS &&
+                                GSystem.operatingSystem !== GSystem.OperatingSystem.OSX_IOS &&
                                 (this._nativeButton = this._createNativeButton().appendTo(this._htmlElement.find(".export-section")))));
                     (!gDesigner.getApplicationManager().isEditingEnabled() ? this._updateTouchSimpleUI() : this._updateTouchFullUI(),
                         this._updateActiveWindow(),
@@ -115970,7 +115970,7 @@ var GravitDesigner = (function (e) {
                             getActiveItem: () => {
                                 var e = gDesigner.getWindows().getActiveWindow(),
                                     n = 100 * (e && e.getView()).getZoom(),
-                                    o = n && y.round(n, false, 0),
+                                    o = n && GMath.round(n, false, 0),
                                     i = o && gDesigner.getAction("".concat(s.ID, ".").concat(o)),
                                     a = i && i.getTitle();
                                 return a && t.findItem(a);
@@ -116023,7 +116023,7 @@ var GravitDesigner = (function (e) {
                         icon: "gravit-icon-save",
                         split: true,
                         menu: [
-                            gDesigner.getAction("".concat(GSaveAsAction.ID, ".").concat(v.find((e) => e.default).ext)),
+                            gDesigner.getAction("".concat(GSaveAsAction.ID, ".").concat(FILE_FORMATS.find((e) => e.default).ext)),
                             gDesigner.getAction("".concat(c.ID, ".").concat(c.Actions.SaveAs)),
                             gDesigner.getAction(GCloudSynchronizationAction.ID),
                         ].reduce((e, t) => (e.createAddItem(t), e), new p()),
@@ -116144,7 +116144,7 @@ var GravitDesigner = (function (e) {
             GFilesPanel = require(1545),
             m = require(1558 /* GCommonNames */),
             GPresets = require(1153),
-            { youtubePlaylist: v } = require(1302),
+            { youtubePlaylist } = require(1302),
             GLoginPanel = require(446);
         require(220 /* GCommonNames */);
         const b = require(859),
@@ -116692,20 +116692,20 @@ var GravitDesigner = (function (e) {
             }),
             (C.prototype.open = function (e) {
                 let {
-                    closable: t,
-                    cb: n,
-                    showCloudOptions: o,
-                    openFromCloud: i,
-                    defaultOption: a,
-                    newOrFromTemplate: r,
-                    documentToSave: s,
-                    cancelSaveCallback: l,
-                    defaultFilename: c,
-                    closeCallback: d,
-                    nativeCloud: u,
-                    showExampleFiles: p,
+                    closable,
+                    cb,
+                    showCloudOptions,
+                    openFromCloud,
+                    defaultOption,
+                    newOrFromTemplate,
+                    documentToSave,
+                    cancelSaveCallback,
+                    defaultFilename,
+                    closeCallback,
+                    nativeCloud,
+                    showExampleFiles,
                 } = e;
-                ((this._cb = n || null), (this._closeCallback = d), (this._openFromCloud = i));
+                ((this._cb = cb || null), (this._closeCallback = closeCallback), (this._openFromCloud = openFromCloud));
                 GCommonNames.isOnline();
                 var g = function () {
                         (this._dialog.find(".sidebar").css("display", ""),
@@ -116715,21 +116715,21 @@ var GravitDesigner = (function (e) {
                             this._dialog.find(".sidebar").find(".version").css("display", ""));
                     }.bind(this),
                     f = function () {
-                        (this._dialog.find(".cloud-option").css("display", o ? "" : "none"),
+                        (this._dialog.find(".cloud-option").css("display", showCloudOptions ? "" : "none"),
                             this._dialog.find(".option.start-option").trigger("click"),
                             this._dialog.find(".frame").removeClass("cloud-frame"),
                             this._dialog.find(".g-dialog-content").removeClass("cloud-dialog"),
                             this._dialog.parent().removeClass("cloud-files-dialog"),
-                            o &&
-                                i &&
+                            showCloudOptions &&
+                                openFromCloud &&
                                 (this._dialog.find(".sidebar").css("display", "none"),
                                 this._dialog.addClass("cloud-dialog"),
                                 this._dialog.parent().addClass("cloud-files-dialog"),
                                 this._dialog.find(".frame").addClass("cloud-frame"),
-                                this._dialog.find(".cloud-option").trigger("click", [s, l, c, u, p])),
-                            a && this._dialog.find("." + a).trigger("click"));
+                                this._dialog.find(".cloud-option").trigger("click", [documentToSave, cancelSaveCallback, defaultFilename, nativeCloud, showExampleFiles])),
+                            defaultOption && this._dialog.find("." + defaultOption).trigger("click"));
                     }.bind(this);
-                (this._dialog.gDialog("open", t),
+                (this._dialog.gDialog("open", closable),
                     g(),
                     f(),
                     this._updateUI(),
@@ -116941,18 +116941,18 @@ var GravitDesigner = (function (e) {
                 var t = this;
                 let {
                     closeCallback: n = GSaveAction.fakeFunction,
-                    documentToSave: o,
+                    documentToSave,
                     cancelSave: i = GSaveAction.fakeFunction,
-                    defaultFilename: a,
-                    readyStateChange: s,
-                    showExampleFiles: l,
-                    GUISettings: c,
-                    saveMode: u,
+                    defaultFilename,
+                    readyStateChange,
+                    showExampleFiles,
+                    GUISettings,
+                    saveMode,
                     driveSettings: p = null,
-                    isDashboard: g,
+                    isDashboard,
                     isCorporateStoragesEnabled: h = true,
                 } = e;
-                ((this._GUISettings = c || new T.GUISettings()),
+                ((this._GUISettings = GUISettings || new T.GUISettings()),
                     (this._driveSettings = p || new f.default()),
                     (this.SELECTION = []),
                     (this.TEMP_SELECTION = []),
@@ -116960,12 +116960,12 @@ var GravitDesigner = (function (e) {
                     (this.CURRENT_UPDATE_OPERATION_ID = -1),
                     (this.MODE = d.GFilesPanelClipboardModes.DEFAULT),
                     (this.BUILD_IN_PROGRESS = false),
-                    (this.DEFAULT_FILENAME = a),
+                    (this.DEFAULT_FILENAME = defaultFilename),
                     (this._newClipBoard = false),
-                    (this._showExampleFiles = l),
-                    (this._isDashboard = g),
+                    (this._showExampleFiles = showExampleFiles),
+                    (this._isDashboard = isDashboard),
                     (this._isCorporateStoragesEnabled = h),
-                    (this.readyStateChange = s),
+                    (this.readyStateChange = readyStateChange),
                     (this.search = (0, GSaveAction.debounce)(this.search, 200)));
                 var m = (e) =>
                     function () {
@@ -116973,20 +116973,20 @@ var GravitDesigner = (function (e) {
                     };
                 ((this._onCancelSaveCallback = i && m(i)),
                     (this._onCloseCallback = n && m(n)),
-                    (this._documentToSave = o),
-                    (this._isSaveMode = u || this._documentToSave));
+                    (this._documentToSave = documentToSave),
+                    (this._isSaveMode = saveMode || this._documentToSave));
             }),
             (T.prototype._init = async function (e) {
-                let { parentComponent: t, nativeCloud: n, initCallback: o } = e;
+                let { parentComponent, nativeCloud, initCallback } = e;
                 return (
                     (this.USER = await gDesigner.getUser()),
-                    (this.panel = $("<div/>").addClass("g-files-panel").appendTo(t)),
-                    this.initLayout(n)
+                    (this.panel = $("<div/>").addClass("g-files-panel").appendTo(parentComponent)),
+                    this.initLayout(nativeCloud)
                         .then(() => {
-                            o && o();
+                            initCallback && initCallback();
                         })
                         .catch((e) => {
-                            o && o(e);
+                            initCallback && initCallback(e);
                         })
                 );
             }),
@@ -117382,9 +117382,9 @@ var GravitDesigner = (function (e) {
                     if (!(t = this.drive.getFileFormat(e)))
                         return u(Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.file-not-supported"))));
                 } else t || (t = this.drive.getFileFormat(e) || GCommonNames.DEFAULT_TYPE);
-                var { ext: a, type: r, mime: s, version: l } = t;
-                r = r || s;
-                const d = this._triggerFileDownload(e, n, a, r, l);
+                var { ext, type, mime, version } = t;
+                type = type || mime;
+                const d = this._triggerFileDownload(e, n, ext, type, version);
                 function u(t) {
                     return { promise: t, file: e, cancel: () => n.cancel && n.cancel() };
                 }
@@ -117519,8 +117519,8 @@ var GravitDesigner = (function (e) {
                     }));
                 const _ = await Promise.all(
                     v.map((e) => {
-                        let { file: t, promise: n } = e;
-                        return n.catch((e) => Object.create({ file: t, status: "rejected", error: e }));
+                        let { file, promise } = e;
+                        return promise.catch((e) => Object.create({ file: file, status: "rejected", error: e }));
                     })
                 );
                 if (g) return void d.updateStatus(p.default.DownloadCancelled);
@@ -117762,8 +117762,8 @@ var GravitDesigner = (function (e) {
             }),
             (T.prototype.getCloudSettingsById = function (e) {
                 return this.CLOUD_SETTINGS.find((t) => {
-                    let { id: n } = t;
-                    return n === e;
+                    let { id } = t;
+                    return id === e;
                 });
             }),
             (T.prototype.updateCloudItemForUserPermission = function (e) {
@@ -117838,10 +117838,10 @@ var GravitDesigner = (function (e) {
                         t && this.view.updateUserDetails(t);
                     }
                 } else if (e.type === h.default.DriveEvent.Type.FolderSwitchRequired) {
-                    const { folder: t } = e.data;
-                    this.drive.isRootFolder(t)
+                    const { folder } = e.data;
+                    this.drive.isRootFolder(folder)
                         ? (this.isRootFolder() || this.navigateToRoot(false), this.updateFilesList(true, true))
-                        : (this.drive.setCurrentFolder(t), this.updateFilesList(true, true), this.view.navigateToFolder(t));
+                        : (this.drive.setCurrentFolder(folder), this.updateFilesList(true, true), this.view.navigateToFolder(folder));
                 }
             }),
             (T.prototype.getCreateCloudAccountOptions = async function () {
@@ -118265,10 +118265,10 @@ var GravitDesigner = (function (e) {
             })(require(862 /* GCommonNames */)),
             p = require(858);
         const g = require(156),
-            { CLOUD_DIALOG: h } = require(10 /* designerConfig */),
+            { CLOUD_DIALOG } = require(10 /* designerConfig */),
             { GPlatform: f } = require(15 /* GPlatform */),
             m = require(85),
-            { GRegex: y } = require(263 /* GRegex */),
+            { GRegex } = require(263 /* GRegex */),
             v = function () {
                 (r.default.apply(this, arguments), (this._lockEnter = false), this.panel.addClass("full-width"));
             };
@@ -118543,7 +118543,7 @@ var GravitDesigner = (function (e) {
                       (y = GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.updated"))));
                 var _ = e instanceof g && e.getSize(),
                     b = "";
-                if (_ && h.SHOW_FILE_SIZE_INFO) {
+                if (_ && CLOUD_DIALOG.SHOW_FILE_SIZE_INFO) {
                     var w = (0, GSaveAction.getSizeInfo)(_);
                     w.gb
                         ? (b += (b ? "" : " ") + "".concat(w.gb, " GB"))
@@ -119028,7 +119028,7 @@ var GravitDesigner = (function (e) {
                 this._lockEnter = e;
             }),
             (v.prototype._isUserInputValidFileName = function (e) {
-                return y.String.ValidFileName.test(e);
+                return GRegex.String.ValidFileName.test(e);
             }),
             (v.prototype._getSelectedFolderUIElement = function () {
                 return $(".g-gravit-folder.g-cloud-element.selected");
@@ -119434,29 +119434,29 @@ var GravitDesigner = (function (e) {
             m = require(595),
             y = require(520),
             GCommonNames = require(119),
-            { gApi: _, CloudIntegration: b } = require(10 /* designerConfig */),
-            { decrypt: w } = require(40 /* GSaveAction */),
+            { gApi, CloudIntegration } = require(10 /* designerConfig */),
+            { decrypt } = require(40 /* GSaveAction */),
             GSystemDialog = require(44);
         let x;
         function S() {
             let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
                 t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
             (l.default.call(this, e), (this._accountId = t));
-            const { clientId: n = null, apiKey: o = null, appId: a = null, accessToken: r, expires: s, corporate: c = false } = this._settings;
+            const { clientId: n = null, apiKey: o = null, appId: a = null, accessToken, expires, corporate: c = false } = this._settings;
             if (
                 ((this._settings = Object.assign(this._settings, {
                     clientId: n,
                     apiKey: o,
                     appId: a,
-                    accessToken: r,
-                    expires: s,
+                    accessToken: accessToken,
+                    expires: expires,
                     corporate: c,
                 })),
                 this._settings.corporate && (this._securityLevel = y.SecurityLevel.Highest),
-                r &&
+                accessToken &&
                     (this._googleDriveClient = this._buildGoogleClient({
-                        accessToken: r,
-                        expires: s,
+                        accessToken: accessToken,
+                        expires: expires,
                         corporate: c,
                         accountId: t,
                     })),
@@ -119535,7 +119535,7 @@ var GravitDesigner = (function (e) {
         }
         (GObject.GObject.inherit(S, l.default),
             (S.LAST_TEAM_DRIVE_ID_PROP_NAME =
-                (b && b.cloudOptions && (b.cloudOptions.find((e) => "googledrive" === e.type) || {}).lastTeamDrivePropName) || null),
+                (CloudIntegration && CloudIntegration.cloudOptions && (CloudIntegration.cloudOptions.find((e) => "googledrive" === e.type) || {}).lastTeamDrivePropName) || null),
             (S.prototype._securityLevel = y.SecurityLevel.Lowest),
             (S.prototype._googlePickerLoaded = false),
             (S.prototype._googleDriveClient = null),
@@ -119570,19 +119570,19 @@ var GravitDesigner = (function (e) {
                 async function o(e, o) {
                     for (let n = 0; n < e.length; n++) {
                         let o = e[n];
-                        const { id: i, type: a } = o;
-                        "folder" !== a &&
-                            (await t._googleDriveClient.updateFileDetails(i, {
+                        const { id, type } = o;
+                        "folder" !== type &&
+                            (await t._googleDriveClient.updateFileDetails(id, {
                                 viewedByMeTime: new Date().toISOString(),
                             }));
                     }
-                    const { showMessage: a, folder: r } = await n(e);
-                    (a &&
+                    const { showMessage, folder } = await n(e);
+                    (showMessage &&
                         GSystemDialog.messageWithInfo({
                             mainMessage: GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "text.selected-files-folder-not-added")),
                             infoMessage: GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "text.selected-files-folder-not-added-additional")),
                         }),
-                        t.trigger(new l.default.DriveEvent(null, l.default.DriveEvent.Type.FolderSwitchRequired, { folder: r })),
+                        t.trigger(new l.default.DriveEvent(null, l.default.DriveEvent.Type.FolderSwitchRequired, { folder: folder })),
                         o());
                 }
                 return new Promise((t, a) => {
@@ -119689,13 +119689,13 @@ var GravitDesigner = (function (e) {
                     try {
                         if (this._apiKey && this._clientId) ((a = this._clientId), (o = this._apiKey), (r = this._appId));
                         else {
-                            var s = await _.cloudServices.googleDrive.getClientConfiguration();
+                            var s = await gApi.cloudServices.googleDrive.getClientConfiguration();
                             const {
-                                GOOGLE_DRIVE_PUBLIC_CLIENT_ID: e,
-                                GOOGLE_DRIVE_PUBLIC_API_KEY: t,
-                                GOOGLE_DRIVE_APP_ID: n,
-                            } = JSON.parse(w(s));
-                            ((a = e), (o = t), (r = n), (this._apiKey = o), (this._clientId = a), (this._appId = r));
+                                GOOGLE_DRIVE_PUBLIC_CLIENT_ID,
+                                GOOGLE_DRIVE_PUBLIC_API_KEY,
+                                GOOGLE_DRIVE_APP_ID,
+                            } = JSON.parse(decrypt(s));
+                            ((a = GOOGLE_DRIVE_PUBLIC_CLIENT_ID), (o = GOOGLE_DRIVE_PUBLIC_API_KEY), (r = GOOGLE_DRIVE_APP_ID), (this._apiKey = o), (this._clientId = a), (this._appId = r));
                         }
                     } catch (e) {
                         return t(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed")));
@@ -119827,17 +119827,17 @@ var GravitDesigner = (function (e) {
                             })),
                             e.hasValue("orderBy") && (a.orderBy = e.orderBy));
                         const i = await this._googleDriveClient.searchFiles(a);
-                        var { files: s, nextPageToken: l } = i;
-                        if (!s.length) return o(t);
-                        s = t.getSize() + s.length > n ? s.slice(0, Math.max(n - t.getSize(), 0)) : s;
-                        var c = await this._convertToCloudItems(s);
+                        var { files, nextPageToken } = i;
+                        if (!files.length) return o(t);
+                        files = t.getSize() + files.length > n ? files.slice(0, Math.max(n - t.getSize(), 0)) : files;
+                        var c = await this._convertToCloudItems(files);
                         return (
                             e.hasValue("parent") &&
                                 c.forEach((t) => {
                                     t.parent = e.parent;
                                 }),
-                            t.update({ nextPageToken: l, items: c }),
-                            t.getSize() < n && l && (t = await this._search(e, t)),
+                            t.update({ nextPageToken: nextPageToken, items: c }),
+                            t.getSize() < n && nextPageToken && (t = await this._search(e, t)),
                             o(t)
                         );
                     } catch (e) {
@@ -120067,10 +120067,10 @@ var GravitDesigner = (function (e) {
                                     nextPageToken: e.hasValue("nextPageToken") && e.nextPageToken,
                                 },
                                 l = await this._googleDriveClient.searchTeamDrives(i);
-                            var { drives: a, nextPageToken: r } = l;
-                            if (!a.length) return o(t);
-                            a = t.getSize() + a.length > n ? a.slice(0, Math.max(n - t.getSize(), 0)) : a;
-                            var s = await this._convertToCloudItems(a);
+                            var { drives, nextPageToken: r } = l;
+                            if (!drives.length) return o(t);
+                            drives = t.getSize() + drives.length > n ? drives.slice(0, Math.max(n - t.getSize(), 0)) : drives;
+                            var s = await this._convertToCloudItems(drives);
                             return (
                                 t.update({ nextPageToken: r, items: s }),
                                 t.getSize() < n && r && (t = await this.getStorages(e, t)),
@@ -120299,7 +120299,7 @@ var GravitDesigner = (function (e) {
             designerConfig = require(10),
             GCommonNames = require(119),
             GDocument = require(163);
-        const { debounce: s } = require(40 /* GSaveAction */),
+        const { debounce } = require(40 /* GSaveAction */),
             l = designerConfig.FILE_FORMATS.find((e) => e.default);
         var c = {},
             d = null;
@@ -120332,7 +120332,7 @@ var GravitDesigner = (function (e) {
                     this._initResizeHandler());
             }
             _initResizeHandler() {
-                ((this._debouncedResizeHandler = s(
+                ((this._debouncedResizeHandler = debounce(
                     function () {
                         this._initMasonryLayoutColumns(null, null, null, true);
                     }.bind(this),
@@ -120689,7 +120689,7 @@ var GravitDesigner = (function (e) {
             a = require(53),
             r = o(require(1561)),
             s = o(require(177));
-        const { gApi: l } = require(10 /* designerConfig */);
+        const { gApi } = require(10 /* designerConfig */);
         module.exports = class {
             constructor(e, t) {
                 let n = arguments.length > 2 && void 0 !== arguments[2] && arguments[2];
@@ -120767,7 +120767,7 @@ var GravitDesigner = (function (e) {
                           name: r.default.ANONYMOUS_USERNAME,
                           value: encodeURIComponent(JSON.stringify(e)),
                       })
-                    : await l.updateUser(e),
+                    : await gApi.updateUser(e),
                     await this._updateUserProperties(t),
                     this.close());
             }
@@ -120960,7 +120960,7 @@ var GravitDesigner = (function (e) {
             F = require(1320),
             R = require(566),
             M = require(31),
-            { replaceImage: N, setOriginSize: B, cropImage: U } = require(1268 /* GDocument */),
+            { replaceImage, setOriginSize, cropImage } = require(1268 /* GDocument */),
             j = require(78);
         const K = require(876);
         ((GContextMenu.prototype._contextMenuContainerTouch = null),
@@ -121134,7 +121134,7 @@ var GravitDesigner = (function (e) {
                         caption: GObject.GLocale.get(new GObject.GLocaleKey("GContextMenu", "text.crop")),
                         click: (e) => {
                             var t = gDesigner.getActiveDocument().getEditor().hasSelectionDetail();
-                            (U(this._getFirstSelectedImageElement(), t), gDesigner.stats("touchmenu_crop-image"));
+                            (cropImage(this._getFirstSelectedImageElement(), t), gDesigner.stats("touchmenu_crop-image"));
                         },
                         icon: "gravit-icon-crop",
                         update: (e) => {
@@ -121145,7 +121145,7 @@ var GravitDesigner = (function (e) {
                     {
                         caption: GObject.GLocale.get(new GObject.GLocaleKey("GContextMenu", "text.original-size")),
                         click: (e) => {
-                            (B(this._getFirstSelectedImageElement()), gDesigner.stats("touchmenu_original-size"));
+                            (setOriginSize(this._getFirstSelectedImageElement()), gDesigner.stats("touchmenu_original-size"));
                         },
                         icon: "gravit-icon-expand",
                     },
@@ -121153,7 +121153,7 @@ var GravitDesigner = (function (e) {
                         caption: GObject.GLocale.get(new GObject.GLocaleKey("GContextMenu", "text.replace-image")),
                         click: (e) => {
                             (gDesigner.stats("touchmenu_replace-image"),
-                                N(this._getFirstSelectedImageElement(), gDesigner.getActiveDocument()));
+                                replaceImage(this._getFirstSelectedImageElement(), gDesigner.getActiveDocument()));
                         },
                         icon: "gravit-icon-replaceimg",
                     },
@@ -121475,11 +121475,11 @@ var GravitDesigner = (function (e) {
         const s = require(78),
             l = require(441),
             {
-                PRODUCT_NAME: c,
-                PRODUCT_APP_NAME: d,
-                PRODUCT_BUILD_NUMBER: u,
-                PRODUCT_LANGUAGE: p,
-                PRODUCT_ENVIRONMENT: g,
+                PRODUCT_NAME,
+                PRODUCT_APP_NAME,
+                PRODUCT_BUILD_NUMBER,
+                PRODUCT_LANGUAGE,
+                PRODUCT_ENVIRONMENT,
             } = i.AmplitudeData.UserProperties;
         module.exports = class {
             constructor(e) {
@@ -121492,11 +121492,11 @@ var GravitDesigner = (function (e) {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : gDesigner.getLicense();
                 this._amplitudeHelper.updateUserProperties(
                     {
-                        [c]: i.default.DESIGNER.TITLE,
-                        [d]: i.default.DESIGNER.TITLE,
-                        [u]: gDesigner.getVersion(),
-                        [p]: GObject.GLocale.lookupLocale(GObject.GLocale.getLanguage()).toUpperCase(),
-                        [g]: "production",
+                        [PRODUCT_NAME]: i.default.DESIGNER.TITLE,
+                        [PRODUCT_APP_NAME]: i.default.DESIGNER.TITLE,
+                        [PRODUCT_BUILD_NUMBER]: gDesigner.getVersion(),
+                        [PRODUCT_LANGUAGE]: GObject.GLocale.lookupLocale(GObject.GLocale.getLanguage()).toUpperCase(),
+                        [PRODUCT_ENVIRONMENT]: "production",
                     },
                     e
                 );
@@ -121514,8 +121514,8 @@ var GravitDesigner = (function (e) {
                         });
                         break;
                     case s.Type.Saving:
-                        const { referer: t } = e.data;
-                        this._isSimplifiedExporting(t) ? this._documentExported(e) : this._documentSaved(e);
+                        const { referer } = e.data;
+                        this._isSimplifiedExporting(referer) ? this._documentExported(e) : this._documentSaved(e);
                 }
             }
             _documentExported(e) {
@@ -121587,18 +121587,18 @@ var GravitDesigner = (function (e) {
         (require(19), require(168 /* PDFFetchStream */), require(30), require(8 /* Symbol */), require(196), require(3), require(91), require(4), require(13), require(32), require(38), require(169 /* PDFNetworkStream */), require(33), require(26), require(125), require(126), require(114));
         var GObject = require(1);
         const {
-                gApi: i,
-                IS_TRUNK: a,
-                IS_BETA: r,
-                NODE_ENV: s,
-                trunkURL: l,
-                betaURL: c,
-                ltsURL: d,
-                rcURL: u,
-                prodURL: p,
-                HAS_ANNOTATIONS: g,
+                gApi,
+                IS_TRUNK,
+                IS_BETA,
+                NODE_ENV,
+                trunkURL,
+                betaURL,
+                ltsURL,
+                rcURL,
+                prodURL,
+                HAS_ANNOTATIONS,
             } = require(10 /* designerConfig */),
-            { sleep: h, watchDog: f } = require(40 /* GSaveAction */),
+            { sleep, watchDog } = require(40 /* GSaveAction */),
             GSystemDialog = require(44),
             y = require(85),
             v = [
@@ -121607,7 +121607,7 @@ var GravitDesigner = (function (e) {
                     label: new GObject.GLocaleKey("GShareDialog", "text.allow-to-save-label"),
                     info: new GObject.GLocaleKey("GShareDialog", "text.allow-to-save-info"),
                     pro: false,
-                    sharePermissions: { copy: true, comment: !!g },
+                    sharePermissions: { copy: true, comment: !!HAS_ANNOTATIONS },
                     analyticsRef: "save",
                 },
                 {
@@ -121616,7 +121616,7 @@ var GravitDesigner = (function (e) {
                     info: new GObject.GLocaleKey("GShareDialog", "text.allow-to-inspect-info"),
                     pro: true,
                     default: true,
-                    sharePermissions: { inspect: true, comment: !!g },
+                    sharePermissions: { inspect: true, comment: !!HAS_ANNOTATIONS },
                     analyticsRef: "inspect",
                 },
             ];
@@ -121700,7 +121700,7 @@ var GravitDesigner = (function (e) {
                                                     .copyToClipboard(n.trim())
                                                     .then(async () => {
                                                         const e = t.find(".share-copied");
-                                                        (e.addClass("visible"), await h(2e3), e.removeClass("visible"));
+                                                        (e.addClass("visible"), await sleep(2e3), e.removeClass("visible"));
                                                     })
                                                     .catch((e) => {
                                                         GSystemDialog.alert(
@@ -121719,21 +121719,21 @@ var GravitDesigner = (function (e) {
                                 .append(
                                     v.map((e) => {
                                         let {
-                                            id: t,
-                                            label: n,
-                                            info: i,
-                                            sharePermissions: a,
-                                            shareBy: r,
-                                            pro: s,
+                                            id,
+                                            label,
+                                            info,
+                                            sharePermissions,
+                                            shareBy,
+                                            pro,
                                             default: l,
-                                            analyticsRef: c,
+                                            analyticsRef,
                                         } = e;
-                                        const d = $("<div/>").attr("id", t).addClass("share-setting-container"),
+                                        const d = $("<div/>").attr("id", id).addClass("share-setting-container"),
                                             u = (e) => {
                                                 this._toggleLoading(true);
                                                 const t = $(e.target).closest("input").is(":checked");
                                                 gDesigner.stats("sharedialog_click_${analyticsRef}", t);
-                                                const n = Object.entries(a).reduce((e, n) => ((e[n[0]] = n[1] && t), e), {}),
+                                                const n = Object.entries(sharePermissions).reduce((e, n) => ((e[n[0]] = n[1] && t), e), {}),
                                                     o = Object.assign(this._getSharePermissions(), n, {
                                                         access: true,
                                                     });
@@ -121744,15 +121744,15 @@ var GravitDesigner = (function (e) {
                                                             this._toggleLoading(false);
                                                         }));
                                             },
-                                            p = () => gDesigner.stats("sharedialog_nonprotriespro_".concat(c));
+                                            p = () => gDesigner.stats("sharedialog_nonprotriespro_".concat(analyticsRef));
                                         return (
                                             $("<label/>")
                                                 .addClass("share-setting-input")
                                                 .append(
                                                     $("<input>")
                                                         .attr("type", "checkbox")
-                                                        .on("click", s ? f.trap(u, null, p) : u)
-                                                        .on("mousedown", s ? f.trap(null, null, p) : () => {})
+                                                        .on("click", pro ? watchDog.trap(u, null, p) : u)
+                                                        .on("mousedown", pro ? watchDog.trap(null, null, p) : () => {})
                                                 )
                                                 .append(
                                                     $("<div/>")
@@ -121760,13 +121760,13 @@ var GravitDesigner = (function (e) {
                                                         .append(
                                                             $("<span/>")
                                                                 .addClass("title")
-                                                                .text(GObject.GLocale.get(n))
-                                                                .append(s ? $("<span></span>").gPro() : "")
+                                                                .text(GObject.GLocale.get(label))
+                                                                .append(pro ? $("<span></span>").gPro() : "")
                                                         )
-                                                        .append($("<span/>").addClass("subtitle").text(GObject.GLocale.get(i)))
+                                                        .append($("<span/>").addClass("subtitle").text(GObject.GLocale.get(info)))
                                                 )
                                                 .appendTo(d),
-                                            r && this._buildShareByInput(r).appendTo(d),
+                                            shareBy && this._buildShareByInput(shareBy).appendTo(d),
                                             d
                                         );
                                     })
@@ -121782,7 +121782,7 @@ var GravitDesigner = (function (e) {
                         .on("click", () => this.close())
                         .appendTo(this._dialog),
                     this._toggleLoading(true),
-                    i
+                    gApi
                         .getFile(t.getId(), true)
                         .then(async (e) => {
                             if (((this._file = e), this._updateProperties(), this._shareList && this._shareList.length))
@@ -121803,7 +121803,7 @@ var GravitDesigner = (function (e) {
                         }));
             }
             _handleException(e) {
-                GSystemDialog.alert(i.formatError(e));
+                GSystemDialog.alert(gApi.formatError(e));
             }
             _isSharingByLink() {
                 return true;
@@ -121821,7 +121821,7 @@ var GravitDesigner = (function (e) {
                                 let { sharePermissions: n } = t;
                                 Object.entries(n).forEach((t) => {
                                     let [n, o] = t;
-                                    Object.assign(e, { [n]: f.check(e[n], o) });
+                                    Object.assign(e, { [n]: watchDog.check(e[n], o) });
                                 });
                             }),
                         e
@@ -121836,19 +121836,19 @@ var GravitDesigner = (function (e) {
                           (this._shareList && this._shareList.length
                               ? await Promise.all(
                                     this._shareList.map((t) => {
-                                        let { token: n } = t;
-                                        return i.updateShare(n, e);
+                                        let { token } = t;
+                                        return gApi.updateShare(token, e);
                                     })
                                 )
-                              : await i.createShare(this._file.id, e)))
+                              : await gApi.createShare(this._file.id, e)))
                     : this._isSharingByLink() &&
                       (await Promise.all(
                           this._shareList.map((e) => {
                               let { token: t } = e;
-                              return i.deleteShare(t);
+                              return gApi.deleteShare(t);
                           })
                       )),
-                    (this._file = await i.getFile(this._file.id, true)),
+                    (this._file = await gApi.getFile(this._file.id, true)),
                     this._updateProperties());
             }
             _updateProperties() {
@@ -121879,15 +121879,15 @@ var GravitDesigner = (function (e) {
             _getOrigin() {
                 return gContainer.getRuntime() === y.Runtime.Browser || gContainer.getRuntime() === y.Runtime.PWA
                     ? location.origin
-                    : a
-                      ? l
-                      : r
-                        ? c
-                        : "rc" === s
-                          ? u
-                          : "lts" === s
-                            ? d
-                            : p;
+                    : IS_TRUNK
+                      ? trunkURL
+                      : IS_BETA
+                        ? betaURL
+                        : "rc" === NODE_ENV
+                          ? rcURL
+                          : "lts" === NODE_ENV
+                            ? ltsURL
+                            : prodURL;
             }
             _buildShareByInput(e) {
                 if ("user" === e) return $("<div/>").css("display", "none").addClass("share-emails").gShareUserInput();
@@ -121909,24 +121909,24 @@ var GravitDesigner = (function (e) {
         var GObject = require(1),
             GPlatform = require(15);
         const {
-                FileExtended: a,
-                gApi: r,
-                trunkURL: s,
-                betaURL: l,
-                ltsURL: c,
-                rcURL: d,
-                prodURL: u,
-                DateAPI: p,
-                ShareRoles: g,
-                Share: h,
-                REMOVE_GUEST_USER_WHEN_ROLE_IS_NO_ACCESS: f,
-                ENABLE_GUEST_ACCESS: m,
+                FileExtended,
+                gApi,
+                trunkURL,
+                betaURL,
+                ltsURL,
+                rcURL,
+                prodURL,
+                DateAPI,
+                ShareRoles,
+                Share,
+                REMOVE_GUEST_USER_WHEN_ROLE_IS_NO_ACCESS,
+                ENABLE_GUEST_ACCESS,
                 defaultUserSettings: {
                     share: { defaults: { private: { pro: y = true } = {} } = {}, quotas: { free: { private: v = 0 } = {} } = {} } = {},
                 } = {},
             } = require(10 /* designerConfig */),
-            { IS_TRUNK: _, IS_BETA: b, IS_RC: w, IS_LTS: C } = require(231 /* IS_TRUNK */),
-            { sleep: x } = require(40 /* GSaveAction */),
+            { IS_TRUNK, IS_BETA, IS_RC, IS_LTS } = require(231 /* IS_TRUNK */),
+            { sleep } = require(40 /* GSaveAction */),
             S = require(177),
             GSystemDialog = require(44),
             A = require(85),
@@ -121938,7 +121938,7 @@ var GravitDesigner = (function (e) {
         class I {
             constructor(e, t, n) {
                 ((this._user = e),
-                    (this._sharedFile = new a()),
+                    (this._sharedFile = new FileExtended()),
                     (this._initialSharedFile = null),
                     (this._statistics = null),
                     (this._storageItem = t),
@@ -121963,7 +121963,7 @@ var GravitDesigner = (function (e) {
                 if (!this._sharedFile.getPublicShare()) {
                     const t = G.ROLES.DEFAULT_PUBLIC_ROLE;
                     if (t) {
-                        const n = new h().assignRole(t);
+                        const n = new Share().assignRole(t);
                         return this._storageItem.supportsExternalSharing()
                             ? this._storageItem
                                   .requestExternalShare(null, n)
@@ -121973,7 +121973,7 @@ var GravitDesigner = (function (e) {
                     }
                 }
                 function e(e) {
-                    return r
+                    return gApi
                         .createShare(this._storageItem.getId(), e)
                         .then(
                             () => (
@@ -122029,7 +122029,7 @@ var GravitDesigner = (function (e) {
                                                         .copyToClipboard(n.trim())
                                                         .then(async () => {
                                                             const e = t.find(".share-copied");
-                                                            (e.addClass("visible"), await x(2e3), e.removeClass("visible"));
+                                                            (e.addClass("visible"), await sleep(2e3), e.removeClass("visible"));
                                                         })
                                                         .catch((e) => {
                                                             GSystemDialog.alert(
@@ -122096,7 +122096,7 @@ var GravitDesigner = (function (e) {
                         ((this._sharedFile = e), this._initialSharedFile || (this._initialSharedFile = this._sharedFile.clone()));
                     })
                     .then(async () => {
-                        this._statistics = await r.getSharingStatistics();
+                        this._statistics = await gApi.getSharingStatistics();
                     });
             }
             _setSelectedPrivateShare(e) {
@@ -122108,7 +122108,7 @@ var GravitDesigner = (function (e) {
                 }
             }
             _handleException(e) {
-                (console.error(e.stack ? e.stack : e), GSystemDialog.alert(r.formatError(e)), this._toggleLoading(false));
+                (console.error(e.stack ? e.stack : e), GSystemDialog.alert(gApi.formatError(e)), this._toggleLoading(false));
             }
             _getPrivateAndInvitedShareList() {
                 const e = this._sharedFile.getPrivateShareList().filter((e) => !e.owner || e.id !== this._user.getUID()),
@@ -122117,9 +122117,9 @@ var GravitDesigner = (function (e) {
             }
             _getShareListLayout(e) {
                 return GObject.GUtil.bubbleSort(e, (e, t) => {
-                    let { created: n } = e,
+                    let { created } = e,
                         { created: o } = t;
-                    return p.gt(n, o, false) ? 1 : p.lt(n, o, false) ? -1 : 0;
+                    return DateAPI.gt(created, o, false) ? 1 : DateAPI.lt(created, o, false) ? -1 : 0;
                 }).map((e) => {
                     const t = new S(e),
                         n = t.getUID(),
@@ -122134,7 +122134,7 @@ var GravitDesigner = (function (e) {
                                       click: () => {
                                           (gDesigner.stats("sharedialog_private-share_resend"),
                                               this._toggleLoading(true),
-                                              r.share
+                                              gApi.share
                                                   .sendInvitationEmails(this._storageItem.getId(), [i])
                                                   .then(() => {
                                                       GSystemDialog.alert(
@@ -122169,7 +122169,7 @@ var GravitDesigner = (function (e) {
                             .on("rolechange", (t) => {
                                 const r = $(t.target).closest(".g-role-selector").gRoleSelector("role");
                                 r
-                                    ? f && a && r.is(g.NoAccess)
+                                    ? REMOVE_GUEST_USER_WHEN_ROLE_IS_NO_ACCESS && a && r.is(ShareRoles.NoAccess)
                                         ? this._unshareWithUser({ id: n, email: i, role: r })
                                         : this._shareWithUser({ id: n, email: i, role: r }, e.assignRole(r)).catch(() => {
                                               $(t.target).closest(".g-role-selector").gRoleSelector("restoreRole");
@@ -122221,15 +122221,15 @@ var GravitDesigner = (function (e) {
             _getOrigin() {
                 return gContainer.getRuntime() === A.Runtime.Browser || gContainer.getRuntime() === A.Runtime.PWA
                     ? location.origin
-                    : _
-                      ? s
-                      : b
-                        ? l
-                        : w
-                          ? d
-                          : C
-                            ? c
-                            : u;
+                    : IS_TRUNK
+                      ? trunkURL
+                      : IS_BETA
+                        ? betaURL
+                        : IS_RC
+                          ? rcURL
+                          : IS_LTS
+                            ? ltsURL
+                            : prodURL;
             }
             _buildShareByLink() {
                 const e = this._createShareSetting({
@@ -122262,7 +122262,7 @@ var GravitDesigner = (function (e) {
                                     : a.call(this)
                             );
                         function a() {
-                            r.updateShare(i.token, i.assignRole(n))
+                            gApi.updateShare(i.token, i.assignRole(n))
                                 .then(() => this._loadShare())
                                 .then(() => this._updateProperties())
                                 .catch((e) => this._handleException(e))
@@ -122362,7 +122362,7 @@ var GravitDesigner = (function (e) {
                 } catch (e) {}
                 const i = (e) => {
                     this._toggleLoading(true);
-                    const n = new h().assignRole(t),
+                    const n = new Share().assignRole(t),
                         o = this._dialog.find(".share-settings-header-input"),
                         i = o.find(".g-role-selector"),
                         a = o.find(".private-share-email-input");
@@ -122378,7 +122378,7 @@ var GravitDesigner = (function (e) {
                         });
                 };
                 try {
-                    let t = await r
+                    let t = await gApi
                         .listUsers({ q: e, all: true })
                         .then((e) => e.filter((e) => e.id !== this._user.getUID()).map((e) => new S(e)));
                     const a = t && t.length > 0;
@@ -122391,12 +122391,12 @@ var GravitDesigner = (function (e) {
                                     e.corporate_provider &&
                                     e.corporate_provider === this._storageItem.getCloudClient().getCorporateProviderName()
                             ));
-                        const e = (this._sharedFile.getPrivateShareList() || []).filter((e) => e.role !== g.Owner.id).map((e) => e.id);
+                        const e = (this._sharedFile.getPrivateShareList() || []).filter((e) => e.role !== ShareRoles.Owner.id).map((e) => e.id);
                         e &&
                             e.length &&
                             ((t = t.filter((t) => {
-                                let { id: n } = t;
-                                return !e.includes(n);
+                                let { id } = t;
+                                return !e.includes(id);
                             })),
                             (s = false));
                     }
@@ -122420,23 +122420,23 @@ var GravitDesigner = (function (e) {
                 }
             }
             _createShareSetting(e) {
-                let { icon: t, label: n, defaultRole: o, removeCallback: i, buttons: a } = e;
+                let { icon, label, defaultRole, removeCallback, buttons } = e;
                 return $("<div/>")
                     .addClass("share-setting")
-                    .append(t || "")
-                    .append($("<span/>").addClass("label").text(n))
-                    .append($("<div/>").gRoleSelector({ defaultRole: o, buttons: a }))
-                    .append(i ? $("<div/>").addClass("gravit-icon-x-delete").on("click", i) : "");
+                    .append(icon || "")
+                    .append($("<span/>").addClass("label").text(label))
+                    .append($("<div/>").gRoleSelector({ defaultRole: defaultRole, buttons: buttons }))
+                    .append(removeCallback ? $("<div/>").addClass("gravit-icon-x-delete").on("click", removeCallback) : "");
             }
             _getAvatar(e) {
                 const t = e.getUserColor(),
-                    { avatar: n } = e,
+                    { avatar } = e,
                     o = $("<div/>").addClass("avatar");
                 return (
                     this._shouldShowAvatar(e)
-                        ? this._isSVGAvatar(n)
-                            ? $(n).appendTo(o)
-                            : o.css({ backgroundImage: 'url("'.concat(n, '")') })
+                        ? this._isSVGAvatar(avatar)
+                            ? $(avatar).appendTo(o)
+                            : o.css({ backgroundImage: 'url("'.concat(avatar, '")') })
                         : ((e.getFirstName() && !e.guest) || (e.name = e.getFullUserName()),
                           o.css("border-color", t).css("background-color", t).append($("<span/>").text(e.getUserNameInitials()))),
                     o
@@ -122531,21 +122531,21 @@ var GravitDesigner = (function (e) {
                           ? gDesigner.stats("sharedialog_private-share_".concat(l ? "corporate-" : "", "googledrive"))
                           : s.indexOf("GSharePointStorage") >= 0 &&
                             gDesigner.stats("sharedialog_private-share_".concat(l ? "corporate-" : "", "sharepoint")),
-                    r
+                    gApi
                         .shareWithUser(this._storageItem.getId(), n, a)
                         .then(async (e) => (await this._loadShare(), this._updateProperties(), this._setSelectedPrivateShare(e.user_id), e))
                         .catch((t) => {
                             if (t.status)
                                 switch (t.status) {
-                                    case r.HTTP_STATUS_CODES.CONFLICT:
+                                    case gApi.HTTP_STATUS_CODES.CONFLICT:
                                         return void GSystemDialog.alert(
                                             GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.you-can-not-invite-yourself"))
                                         );
-                                    case r.HTTP_STATUS_CODES.NOT_FOUND:
+                                    case gApi.HTTP_STATUS_CODES.NOT_FOUND:
                                         return void GSystemDialog.alert(
                                             GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.invalid-email")).replace("%email", e)
                                         );
-                                    case r.HTTP_STATUS_CODES.FORBIDDEN:
+                                    case gApi.HTTP_STATUS_CODES.FORBIDDEN:
                                         return void ("only same domain users allowed" === t.message
                                             ? GSystemDialog.alert(
                                                   GObject.GLocale.get(
@@ -122560,13 +122560,13 @@ var GravitDesigner = (function (e) {
                 );
             }
             _unshareWithUser(e) {
-                const { email: t, role: n } = e,
-                    { id: o = t } = e;
+                const { email, role } = e,
+                    { id: o = email } = e;
                 return (
                     this._toggleLoading(true),
                     this._storageItem.supportsExternalSharing()
                         ? this._storageItem
-                              .requestExternalUnShare(t, n)
+                              .requestExternalUnShare(email, role)
                               .then(() => i.call(this))
                               .catch((e) => {
                                   this._handleException(e);
@@ -122574,7 +122574,7 @@ var GravitDesigner = (function (e) {
                         : i.call(this)
                 );
                 function i() {
-                    return r
+                    return gApi
                         .unshareWithUser(this._storageItem.getId(), o)
                         .then(() => this._setSelectedPrivateShare(null))
                         .then(() => this._loadShare())
@@ -122594,7 +122594,7 @@ var GravitDesigner = (function (e) {
             }
             _canResendInvitationEmail(e) {
                 const t = G.makeFromShare(e);
-                if (t && !t.is(g.NoAccess)) {
+                if (t && !t.is(ShareRoles.NoAccess)) {
                     return (
                         (this._initialSharedFile &&
                             this._initialSharedFile
@@ -122611,12 +122611,12 @@ var GravitDesigner = (function (e) {
             }
             async _sendInvitationEmails() {
                 const e = this._getNewAddedShareEmails();
-                if (e && e.length > 0) return m ? this._sendGuestInvitation(e) : this._sendUserInvitation(e);
+                if (e && e.length > 0) return ENABLE_GUEST_ACCESS ? this._sendGuestInvitation(e) : this._sendUserInvitation(e);
             }
             _sendUserInvitation(e) {
                 return (
                     gDesigner.stats("sharedialog_private-share_invite"),
-                    r.share.sendInvitationEmails(this._storageItem.getId(), e).then(() => {
+                    gApi.share.sendInvitationEmails(this._storageItem.getId(), e).then(() => {
                         this._showSentInvitationEmailAlert(e);
                     })
                 );
@@ -122626,13 +122626,13 @@ var GravitDesigner = (function (e) {
                     n = e.slice();
                 return Promise.all(
                     n.map((e) =>
-                        r.signupGuestUser({ email: e, file_id: this._storageItem.getId() }).catch(() => {
+                        gApi.signupGuestUser({ email: e, file_id: this._storageItem.getId() }).catch(() => {
                             t.push(e);
                         })
                     )
                 )
                     .then(() => {
-                        if (t.length) return r.share.sendInvitationEmails(this._storageItem.getId(), t).catch(() => {});
+                        if (t.length) return gApi.share.sendInvitationEmails(this._storageItem.getId(), t).catch(() => {});
                     })
                     .then(() => {
                         this._showSentInvitationEmailAlert(e);
@@ -122748,8 +122748,8 @@ var GravitDesigner = (function (e) {
                     : null;
             }),
             (u.prototype._userLoggedEvent = function (e) {
-                const { user: t } = e;
-                (t ? (this._initializeUserCache(), this._userCache.setCacheValue(t)) : this._removeUserCache(), this._resetAllCache());
+                const { user } = e;
+                (user ? (this._initializeUserCache(), this._userCache.setCacheValue(user)) : this._removeUserCache(), this._resetAllCache());
             }),
             (u.prototype._removeUserCache = function () {
                 this._userCache = null;
@@ -122792,8 +122792,8 @@ var GravitDesigner = (function (e) {
                     }
             }),
             (u.prototype._collaborationEvent = function (e) {
-                const { sender: t, type: n } = e;
-                n === c.Type.ShareUpdate && this._updateDocState(t);
+                const { sender, type } = e;
+                type === c.Type.ShareUpdate && this._updateDocState(sender);
             }),
             (u.prototype._getFileExtended = async function (e) {
                 const t = (e = e || gDesigner.getActiveDocument()) && e.getStorageItem();
@@ -122846,16 +122846,16 @@ var GravitDesigner = (function (e) {
             l = require(1323),
             c = require(441),
             {
-                SHARE_ENGINE: d,
-                HAS_ANNOTATIONS: u,
-                ShareRoles: p,
-                FileStatus: { APPROVED: g },
-                FILE_REVIEW_ENABLED: h,
-                LEGACY_SHARE_DIALOG: f,
+                SHARE_ENGINE,
+                HAS_ANNOTATIONS,
+                ShareRoles,
+                FileStatus: { APPROVED },
+                FILE_REVIEW_ENABLED,
+                LEGACY_SHARE_DIALOG,
             } = require(10 /* designerConfig */);
         function m(e) {
             ((this._state = new r()),
-                d && gDesigner.addEventListener(l, this._shareStateChangedEvent, this),
+                SHARE_ENGINE && gDesigner.addEventListener(l, this._shareStateChangedEvent, this),
                 gDesigner.addEventListener(a, this._applicationStatusEvent, this),
                 gDesigner.addEventListener(c, this._licenseChangedEvent, this),
                 this._init(e));
@@ -122866,39 +122866,39 @@ var GravitDesigner = (function (e) {
             (m.prototype._shareStateChangedEvent = function (e) {
                 const t = new r(Object.assign({}, this._state)),
                     {
-                        owner: n,
-                        share: o,
-                        sharing: i,
-                        edit: a,
-                        inspect: s,
-                        copy: l,
-                        comment: c,
-                        isPrivate: d,
-                        role: p,
+                        owner,
+                        share,
+                        sharing,
+                        edit,
+                        inspect,
+                        copy,
+                        comment,
+                        isPrivate,
+                        role,
                         realtimeCollaborators: g = [],
                     } = e.state;
-                (n
+                (owner
                     ? Object.assign(t, {
                           edit: true,
                           saveAs: true,
                           export: true,
                           inspect: true,
                           copyPaste: true,
-                          comment: !!u,
+                          comment: !!HAS_ANNOTATIONS,
                       })
                     : Object.assign(t, {
-                          edit: a,
-                          saveAs: l,
-                          export: l,
-                          copyPaste: l,
-                          inspect: s,
-                          comment: c,
+                          edit: edit,
+                          saveAs: copy,
+                          export: copy,
+                          copyPaste: copy,
+                          inspect: inspect,
+                          comment: comment,
                       }),
                     Object.assign(t, {
-                        isShareEnabled: o,
-                        isSharing: i,
-                        isPrivateSharing: d,
-                        role: p,
+                        isShareEnabled: share,
+                        isSharing: sharing,
+                        isPrivateSharing: isPrivate,
+                        role: role,
                         realtimeCollaborators: g,
                     }),
                     this._setState(t, e.document));
@@ -122914,22 +122914,22 @@ var GravitDesigner = (function (e) {
             }),
             (m.prototype._licenseChangedEvent = function (e) {}),
             (m.prototype.isShareEnabled = function () {
-                return !!this._state.isShareEnabled && d;
+                return !!this._state.isShareEnabled && SHARE_ENGINE;
             }),
             (m.prototype.isShareEngineEnabled = function () {
-                return d;
+                return SHARE_ENGINE;
             }),
             (m.prototype.isSharing = function () {
-                return !!this._state.isSharing && d;
+                return !!this._state.isSharing && SHARE_ENGINE;
             }),
             (m.prototype.isPrivateSharing = function () {
-                return this._state.isPrivateSharing && !!d;
+                return this._state.isPrivateSharing && !!SHARE_ENGINE;
             }),
             (m.prototype.getRealtimeCollaborators = function () {
-                return (d && this._state.realtimeCollaborators) || [];
+                return (SHARE_ENGINE && this._state.realtimeCollaborators) || [];
             }),
             (m.prototype.isEditingEnabled = function () {
-                return !gDesigner.getLicense().isGuest() && (this._state.edit || (!!f && this._state.inspect));
+                return !gDesigner.getLicense().isGuest() && (this._state.edit || (!!LEGACY_SHARE_DIALOG && this._state.inspect));
             }),
             (m.prototype.isSavingAsEnabled = function () {
                 return !gDesigner.getLicense().isGuest() && this._state.saveAs;
@@ -122947,16 +122947,16 @@ var GravitDesigner = (function (e) {
                 return this.isInspectEnabled();
             }),
             (m.prototype.isCommentingEnabled = function () {
-                return this._state.comment && u;
+                return this._state.comment && HAS_ANNOTATIONS;
             }),
             (m.prototype.isCommentingEditingEnabled = function () {
                 if (!this.isCommentingEnabled()) return false;
-                if (h) {
+                if (FILE_REVIEW_ENABLED) {
                     var e = true,
                         t = gDesigner.getActiveDocument(),
                         n = t && t.getStorageItem(),
                         o = n && n.getFile();
-                    return (o && o.status === g && (e = false), e);
+                    return (o && o.status === APPROVED && (e = false), e);
                 }
                 return true;
             }),
@@ -122966,7 +122966,7 @@ var GravitDesigner = (function (e) {
             (m.prototype.hasAccess = async function (e) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
                 const n = gDesigner.getShareManager().getRole();
-                return !(!n || !((!t && n.is(p.Owner)) || (await n.can(e))));
+                return !(!n || !((!t && n.is(ShareRoles.Owner)) || (await n.can(e))));
             }),
             (m.prototype.hasPermission = function (e, t) {
                 const n = gDesigner.getShareManager().getRole(e);
@@ -123014,7 +123014,7 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         (require(30), require(3));
-        const { HAS_ANNOTATIONS: o } = require(10 /* designerConfig */);
+        const { HAS_ANNOTATIONS } = require(10 /* designerConfig */);
         function i() {
             let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
             Object.assign(
@@ -123029,7 +123029,7 @@ var GravitDesigner = (function (e) {
                     save: true,
                     export: true,
                     inspect: true,
-                    comment: !!o,
+                    comment: !!HAS_ANNOTATIONS,
                     copyPaste: true,
                     isDocumentTabManagementEnabled: true,
                 },
@@ -123046,7 +123046,7 @@ var GravitDesigner = (function (e) {
             (i.prototype.saveAs = true),
             (i.prototype.export = true),
             (i.prototype.inspect = true),
-            (i.prototype.comment = !!o),
+            (i.prototype.comment = !!HAS_ANNOTATIONS),
             (i.prototype.copyPaste = true),
             (i.prototype.toString = function () {
                 return "Object [GApplicationState]";
@@ -123058,14 +123058,14 @@ var GravitDesigner = (function (e) {
         (require(19), require(26));
         var designerConfig = require(10);
         const {
-                ANNOTATION_EVENT: i,
-                SHARE_EVENT: a,
-                USER_EVENT: r,
-                REVIEW_STATUS_CHANGED: s,
-                LOCK_REQUEST_EVENT: l,
-                LOCK_UPDATE_EVENT: c,
-                FILE_UPDATE_EVENT: d,
-                FILE_AUTO_SAVE_EVENT: u,
+                ANNOTATION_EVENT,
+                SHARE_EVENT,
+                USER_EVENT,
+                REVIEW_STATUS_CHANGED,
+                LOCK_REQUEST_EVENT,
+                LOCK_UPDATE_EVENT,
+                FILE_UPDATE_EVENT,
+                FILE_AUTO_SAVE_EVENT,
             } = designerConfig.gApi.COLLABORATION_EVENTS,
             p = require(393),
             g = require(78);
@@ -123094,31 +123094,31 @@ var GravitDesigner = (function (e) {
                 (t.setToken(e.getToken()),
                     t.connect("/v2/realtime/" + e.getId()),
                     designerConfig.ENABLE_COLLABORATION &&
-                        (t.on(i, (t) => {
+                        (t.on(ANNOTATION_EVENT, (t) => {
                             this._trigger(e, p.Type.AnnotationsUpdate, t.data);
                         }),
-                        t.on(r, (t) => {
+                        t.on(USER_EVENT, (t) => {
                             this._trigger(e, p.Type.UserUpdate, t.data);
                         }),
-                        t.on(s, (t) => {
+                        t.on(REVIEW_STATUS_CHANGED, (t) => {
                             this._trigger(e, p.Type.ReviewStatusChanged, t.data);
                         }),
-                        t.on(l, (t) => {
+                        t.on(LOCK_REQUEST_EVENT, (t) => {
                             this._trigger(e, p.Type.LockRequest, t.data);
                         }),
-                        t.on(c, (t) => {
+                        t.on(LOCK_UPDATE_EVENT, (t) => {
                             const n = t.data && t.data.lock ? new designerConfig.Lock(t.data.lock) : null;
                             this._trigger(e, p.Type.LockUpdated, n);
                         }),
-                        t.on(d, (t) => {
+                        t.on(FILE_UPDATE_EVENT, (t) => {
                             this._trigger(e, p.Type.FileUpdate, t.data);
                         })),
                     designerConfig.SHARE_ENGINE &&
-                        t.on(a, (t) => {
+                        t.on(SHARE_EVENT, (t) => {
                             this._trigger(e, p.Type.ShareUpdate, t.data);
                         }),
                     designerConfig.AUTO_SAVE_ENABLED &&
-                        t.on(u, (t) => {
+                        t.on(FILE_AUTO_SAVE_EVENT, (t) => {
                             this._trigger(e, p.Type.FileAutoSave, t.data);
                         }),
                     this._documents.set(e, { doc: e, ws: t }));
@@ -123147,8 +123147,8 @@ var GravitDesigner = (function (e) {
                 return this._fetch({ id: e, data: t, shareToken: n });
             }
             _fetch(e) {
-                let { id: t, data: n, shareToken: o } = e;
-                const i = n ? () => gApi.updateAnnotations(t, n, o) : () => gApi.getAnnotations(t, o);
+                let { id, data, shareToken } = e;
+                const i = data ? () => gApi.updateAnnotations(id, data, shareToken) : () => gApi.getAnnotations(id, shareToken);
                 return this._promiseManager.pushPromise(i);
             }
         };
@@ -123238,7 +123238,7 @@ var GravitDesigner = (function (e) {
         "use strict";
         const o = require(1252),
             i = require(1187),
-            { gApi: a } = require(10 /* designerConfig */);
+            { gApi } = require(10 /* designerConfig */);
         module.exports = class extends i {
             constructor(e, t) {
                 (super(), (this._id = e), (this._url = t));
@@ -123250,10 +123250,10 @@ var GravitDesigner = (function (e) {
                     e.on("error", () => {
                         e.close();
                     }),
-                    a.isCookieEnabled &&
-                        !a.isCookieEnabled() &&
+                    gApi.isCookieEnabled &&
+                        !gApi.isCookieEnabled() &&
                         e.on("load", () => {
-                            e.postMessage({ cmd: "auth", token: a.getAuthorizationToken() }, a.url);
+                            e.postMessage({ cmd: "auth", token: gApi.getAuthorizationToken() }, gApi.url);
                         }));
             }
             _isOpen() {
@@ -123308,8 +123308,8 @@ var GravitDesigner = (function (e) {
         function s() {}
         (GObject.GObject.inherit(s, designerConfig.GPaywallDialog.Impl),
             (s.prototype.open = function (e) {
-                let { dialog: t } = e;
-                this._dialog = t.getHTMLElement().gDialog({ releaseOnClose: true, nowrap: true }).gDialog("open");
+                let { dialog } = e;
+                this._dialog = dialog.getHTMLElement().gDialog({ releaseOnClose: true, nowrap: true }).gDialog("open");
             }),
             (s.prototype.close = function () {
                 let { licenseHasBeenUpgraded: e = false } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -123320,8 +123320,8 @@ var GravitDesigner = (function (e) {
                 (await gDesigner.openPaymentDialog(null, n).catch(() => null), t.close());
             }),
             (s.prototype.openExternalLink = function (e) {
-                let { link: t } = e;
-                gContainer.openExternalLink(null, t);
+                let { link } = e;
+                gContainer.openExternalLink(null, link);
             }),
             (s.prototype.getProduct = function () {
                 return Promise.resolve({
@@ -123395,16 +123395,16 @@ var GravitDesigner = (function (e) {
             r = o(require(1187));
         class s extends designerConfig.GReminderDialog.Impl {
             open(e) {
-                let { dialog: t } = e;
-                this._dialog = t.getHTMLElement().gDialog({ releaseOnClose: true, nowrap: true }).gDialog("open");
+                let { dialog } = e;
+                this._dialog = dialog.getHTMLElement().gDialog({ releaseOnClose: true, nowrap: true }).gDialog("open");
             }
             async openPurchaseFlow(e) {
                 let { dialog: t, options: n = {} } = e;
                 await gDesigner.openPaymentDialog(null, n).catch(() => null);
             }
             openExternalLink(e) {
-                let { link: t } = e;
-                gContainer.openExternalLink(null, t);
+                let { link } = e;
+                gContainer.openExternalLink(null, link);
             }
             close() {
                 this._dialog.gDialog("close");
@@ -123704,22 +123704,22 @@ var GravitDesigner = (function (e) {
                 const o = t.targetTouches[0],
                     s = t.targetTouches[1];
                 if (!s) return true;
-                const { clientX: l, clientY: h } = o,
+                const { clientX, clientY } = o,
                     { clientX: f, clientY: C } = s;
                 if (
                     d &&
                     ((c =
-                        GObject.GMath.isEqualEps(d, l, designerConfig.MIN_TWO_FINGERS_TOUCH_MOVE_DISTANCE) &&
-                        GObject.GMath.isEqualEps(u, h, designerConfig.MIN_TWO_FINGERS_TOUCH_MOVE_DISTANCE) &&
+                        GObject.GMath.isEqualEps(d, clientX, designerConfig.MIN_TWO_FINGERS_TOUCH_MOVE_DISTANCE) &&
+                        GObject.GMath.isEqualEps(u, clientY, designerConfig.MIN_TWO_FINGERS_TOUCH_MOVE_DISTANCE) &&
                         GObject.GMath.isEqualEps(p, f, designerConfig.MIN_TWO_FINGERS_TOUCH_MOVE_DISTANCE) &&
                         GObject.GMath.isEqualEps(g, C, designerConfig.MIN_TWO_FINGERS_TOUCH_MOVE_DISTANCE)),
                     !c)
                 ) {
                     const e = GObject.GMath.ptDist(m, y, v, _),
-                        t = GObject.GMath.ptDist(l, h, f, C);
+                        t = GObject.GMath.ptDist(clientX, clientY, f, C);
                     if (GObject.GMath.isEqualEps(e, t, designerConfig.MIN_TWO_FINGERS_TOUCH_MOVE_DISTANCE)) {
-                        const e = ((0 == m ? 0 : l - m) + (0 == v ? 0 : f - v)) / w,
-                            t = ((0 == y ? 0 : h - y) + (0 == _ ? 0 : C - _)) / w;
+                        const e = ((0 == m ? 0 : clientX - m) + (0 == v ? 0 : f - v)) / w,
+                            t = ((0 == y ? 0 : clientY - y) + (0 == _ ? 0 : C - _)) / w;
                         n.scrollBy(-e, -t);
                     } else {
                         const r = t - e;
@@ -123735,7 +123735,7 @@ var GravitDesigner = (function (e) {
                         n.zoomAt(x, l);
                     }
                 }
-                return ((m = l), (y = h), (v = f), (_ = C), true);
+                return ((m = clientX), (y = clientY), (v = f), (_ = C), true);
             }
             end(e) {
                 if (
@@ -123783,15 +123783,15 @@ var GravitDesigner = (function (e) {
             _startLongPressEvent(e) {
                 const t = e.getOriginalEvent();
                 if ((this._dropLongPressEvent(), e.areThereMultipleTouchPoints())) return;
-                const { clientX: n, clientY: o, target: a } = t.targetTouches[0];
+                const { clientX, clientY, target } = t.targetTouches[0];
                 this._longPressEventTimeout = setTimeout(() => {
                     const e = jQuery.Event("contextmenu", {
-                        pageX: n,
-                        pageY: o,
-                        clientX: n,
-                        clientY: o,
+                        pageX: clientX,
+                        pageY: clientY,
+                        clientX: clientX,
+                        clientY: clientY,
                     });
-                    $(a).trigger(e);
+                    $(target).trigger(e);
                 }, designerConfig.LONG_PRESS_TIME_OUT);
             }
             _dropLongPressEvent() {
@@ -123899,32 +123899,32 @@ var GravitDesigner = (function (e) {
                             k("keydown", L[e]));
                     },
                     o = (e) => {
-                        let { key: o, icon: a, dblclick: r, actionClass: l } = e;
+                        let { key, icon, dblclick, actionClass } = e;
                         const c = s({
-                            name: a ? null : GPlatform.GKey.toLocalizedShort(o, true),
-                            icon: a,
-                            actionClass: "g-virtual-key" + (l ? " " + l : ""),
+                            name: icon ? null : GPlatform.GKey.toLocalizedShort(key, true),
+                            icon: icon,
+                            actionClass: "g-virtual-key" + (actionClass ? " " + actionClass : ""),
                             mousedown: (e) => {
-                                (e.stopImmediatePropagation(), this._isHoldingKey(o) || n(o));
+                                (e.stopImmediatePropagation(), this._isHoldingKey(key) || n(key));
                             },
                             click: (e) => {
                                 (e.stopImmediatePropagation(),
-                                    this._isHoldingKey(o) || (t(o), gDesigner.stats("virtualkey_assistantbar_click", o)));
+                                    this._isHoldingKey(key) || (t(key), gDesigner.stats("virtualkey_assistantbar_click", key)));
                             },
-                            dblclick: r,
+                            dblclick: dblclick,
                             mouseup: (e) => {
-                                (e.stopImmediatePropagation(), this._isHoldingKey(o) || t(o));
+                                (e.stopImmediatePropagation(), this._isHoldingKey(key) || t(key));
                             },
                             touchstart: () => {
-                                this._isHoldingKey(o) || n(o);
+                                this._isHoldingKey(key) || n(key);
                             },
                             touchend: () => {
-                                this._isHoldingKey(o) || t(o);
+                                this._isHoldingKey(key) || t(key);
                             },
                             touchcancel: () => {
-                                this._isHoldingKey(o) || t(o);
+                                this._isHoldingKey(key) || t(key);
                             },
-                            active: () => !!this._keyState[L[o]] || this._isHoldingKey(o),
+                            active: () => !!this._keyState[L[key]] || this._isHoldingKey(key),
                         });
                         return (new D(c[0]), c);
                     },
@@ -123932,13 +123932,13 @@ var GravitDesigner = (function (e) {
                         let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "";
                         return e.reduce(
                             (e, t) => {
-                                let { icon: n, action: o, isEnabled: i } = t;
-                                const a = e.createAddItem(o);
+                                let { icon: n, action, isEnabled } = t;
+                                const a = e.createAddItem(action);
                                 return (
                                     n && a.setIcon(n),
-                                    i &&
+                                    isEnabled &&
                                         a.addEventListener(d.default.UpdateEvent, () => {
-                                            a.setEnabled(i());
+                                            a.setEnabled(isEnabled());
                                         }),
                                     e
                                 );
@@ -123949,51 +123949,51 @@ var GravitDesigner = (function (e) {
                     s = (e) => {
                         let {
                             action: t,
-                            name: n,
-                            menu: o,
+                            name,
+                            menu,
                             icon: i,
-                            click: a,
+                            click,
                             dblclick: r,
-                            mousedown: s,
-                            mouseup: l,
-                            touchstart: c,
-                            touchmove: d,
-                            touchend: u,
-                            touchcancel: p,
+                            mousedown,
+                            mouseup,
+                            touchstart,
+                            touchmove,
+                            touchend,
+                            touchcancel,
                             split: g = false,
-                            active: h,
+                            active,
                             actionClass: f,
                         } = e;
                         const m = $("<div/>").addClass("toolbar-button").toggleClass("split", !!g),
                             y = $("<button/>").addClass("action-button").appendTo(m);
                         if (
                             (f && y.addClass(f),
-                            h && (m.data("active", h), m.toggleClass("g-active", !!h())),
+                            active && (m.data("active", active), m.toggleClass("g-active", !!active())),
                             t &&
                                 (m.data("action", t),
                                 i || (i = t.getIcon()),
-                                a || (a = () => gDesigner.executeAction(t.getId(), void 0, "assistantbar"))),
-                            n && $("<span/>").text(n).appendTo(y),
+                                click || (click = () => gDesigner.executeAction(t.getId(), void 0, "assistantbar"))),
+                            name && $("<span/>").text(name).appendTo(y),
                             i && $("<span/>").addClass(i).appendTo(y),
-                            a && y.on("click", a),
+                            click && y.on("click", click),
                             r && y.on("dblclick", r),
-                            s && m.on("mousedown", s),
-                            l && m.on("mouseup", l),
-                            c && m.on("touchstart", c),
-                            d && m.on("touchmove", d),
-                            u && m.on("touchend", u),
-                            p && m.on("touchcancel", p),
-                            o)
+                            mousedown && m.on("mousedown", mousedown),
+                            mouseup && m.on("mouseup", mouseup),
+                            touchstart && m.on("touchstart", touchstart),
+                            touchmove && m.on("touchmove", touchmove),
+                            touchend && m.on("touchend", touchend),
+                            touchcancel && m.on("touchcancel", touchcancel),
+                            menu)
                         ) {
                             let e;
-                            ((o.__which = "assistantbar"),
+                            ((menu.__which = "assistantbar"),
                                 (e = g
                                     ? $("<button/>")
                                           .addClass("dropdown-button")
                                           .append($("<span></span>").addClass("gravit-icon-touch-arrow-up"))
                                           .appendTo(m)
                                     : y.append($("<span></span>").addClass("gravit-icon-touch-arrow-up"))),
-                                e.gMenuButton({ menu: o, touch: true }));
+                                e.gMenuButton({ menu: menu, touch: true }));
                         }
                         return m;
                     },
@@ -124749,16 +124749,16 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         require(8 /* Symbol */);
-        const { PasswordlessAuthenticationActions: o, gApi: i } = require(10 /* designerConfig */),
+        const { PasswordlessAuthenticationActions, gApi } = require(10 /* designerConfig */),
             GSystemDialog = require(44),
             GProfileDialog = require(604),
             s = require(337),
-            { GLocale: l, GLocaleKey: c } = require(1 /* GObject */);
+            { GLocale, GLocaleKey } = require(1 /* GObject */);
         module.exports = class {
             async execute() {
-                let { [o.SetPassword]: e } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                let { [PasswordlessAuthenticationActions.SetPassword]: e } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 try {
-                    (await i.passwordlessAuthentication.authenticateWithSetPasswordToken(e), await s.checkLicense());
+                    (await gApi.passwordlessAuthentication.authenticateWithSetPasswordToken(e), await s.checkLicense());
                     const t = await gDesigner.getUser();
                     t &&
                         gDesigner.executeWhenReady(() => {
@@ -124768,8 +124768,8 @@ var GravitDesigner = (function (e) {
                                 closeable: false,
                                 changePasswordOptions: {
                                     autoClose: true,
-                                    title: l.get(new c("GChangePasswordPanel", "text.set-password")),
-                                    info: l.get(new c("GChangePasswordPanel", "text.set-password-info")),
+                                    title: GLocale.get(new GLocaleKey("GChangePasswordPanel", "text.set-password")),
+                                    info: GLocale.get(new GLocaleKey("GChangePasswordPanel", "text.set-password-info")),
                                 },
                             }).open();
                         });
@@ -124784,15 +124784,15 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         require(8 /* Symbol */);
-        const { PasswordlessAuthenticationActions: o, gApi: i } = require(10 /* designerConfig */),
+        const { PasswordlessAuthenticationActions, gApi } = require(10 /* designerConfig */),
             GSystemDialog = require(44),
             GProfileDialog = require(604),
             s = require(337);
         module.exports = class {
             async execute() {
-                let { [o.ResetPassword]: e } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                let { [PasswordlessAuthenticationActions.ResetPassword]: e } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 try {
-                    (await i.passwordlessAuthentication.authenticateWithResetPasswordToken(e), await s.checkLicense());
+                    (await gApi.passwordlessAuthentication.authenticateWithResetPasswordToken(e), await s.checkLicense());
                     const t = await gDesigner.getUser();
                     t &&
                         gDesigner.executeWhenReady(() => {
@@ -124812,15 +124812,15 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         require(8 /* Symbol */);
-        const { PasswordlessAuthenticationActions: o, gApi: i } = require(10 /* designerConfig */),
+        const { PasswordlessAuthenticationActions, gApi } = require(10 /* designerConfig */),
             a = require(337),
             GSystemDialog = require(44);
         module.exports = class {
             async execute() {
-                let { [o.PasswordlessToken]: e } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                let { [PasswordlessAuthenticationActions.PasswordlessToken]: e } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 try {
                     return (
-                        await i.passwordlessAuthentication.authenticateWithPasswordlessToken(e),
+                        await gApi.passwordlessAuthentication.authenticateWithPasswordlessToken(e),
                         await a.checkLicense(),
                         gDesigner.getUser()
                     );
@@ -125813,16 +125813,16 @@ var GravitDesigner = (function (e) {
             }
             execute() {
                 const e = gDesigner.getLeftSidebars().getSidebar(SidebarsIds.SidebarsIds.GOutlineSidebar).getLayerPanel(),
-                    { vtree: t, currentFocus: n } = e.data("glayerpanel");
-                if (!n) return;
+                    { vtree, currentFocus } = e.data("glayerpanel");
+                if (!currentFocus) return;
                 let o;
                 if (
-                    (!this._isReverse && n.firstChild ? (o = n.firstChild) : this._isReverse && n.parent && n.parent.row && (o = n.parent),
+                    (!this._isReverse && currentFocus.firstChild ? (o = currentFocus.firstChild) : this._isReverse && currentFocus.parent && currentFocus.parent.row && (o = currentFocus.parent),
                     o)
                 ) {
-                    const i = e.gLayerPanel("getItem", n),
+                    const i = e.gLayerPanel("getItem", currentFocus),
                         r = e.gLayerPanel("getItem", o);
-                    (i.removeFlag(GObject.GNode.Flag.Selected), r.setFlag(GObject.GNode.Flag.Selected), t.expandAndFocus(r));
+                    (i.removeFlag(GObject.GNode.Flag.Selected), r.setFlag(GObject.GNode.Flag.Selected), vtree.expandAndFocus(r));
                 }
             }
             toString() {
@@ -126516,7 +126516,7 @@ var GravitDesigner = (function (e) {
             d = o(require(44 /* GSystemDialog */)),
             u = o(require(443)),
             p = o(require(1341));
-        const { isExecutingOnMSTeamsSync: g } = u.default;
+        const { isExecutingOnMSTeamsSync } = u.default;
         class h extends l.default {
             constructor() {
                 (super(),
@@ -126546,7 +126546,7 @@ var GravitDesigner = (function (e) {
                 return !!gDesigner.getActiveDocument() && r.default.enabled && !this._isErrorMessageDisplaying && !this._isLoading;
             }
             isVisible() {
-                return !g();
+                return !isExecutingOnMSTeamsSync();
             }
             execute() {
                 if (this._isInPlayMode) return this._exitPlayMode();
@@ -126877,7 +126877,7 @@ var GravitDesigner = (function (e) {
             d = require(85),
             GCommonNames = require(119);
         const GSystemDialog = require(44),
-            { isExecutingOnMSTeamsSync: g } = a.default;
+            { isExecutingOnMSTeamsSync } = a.default;
         function h(e, t) {
             ((this._locale = e), (this._title = h.Translations[e] || t));
         }
@@ -126908,7 +126908,7 @@ var GravitDesigner = (function (e) {
                 return true;
             }),
             (h.prototype.isVisible = function () {
-                return !g();
+                return !isExecutingOnMSTeamsSync();
             }),
             (h.prototype.execute = function () {
                 if (GObject.GLocale.getLanguage() !== this._locale) {
@@ -126946,14 +126946,14 @@ var GravitDesigner = (function (e) {
         var GObject = require(1),
             i = (require(18 /* GCategory */), require(31));
         function a(e) {
-            let { name: t, category: n, group: i, link: a, icon: r, builder: s } = e;
-            ((this._name = t),
-                (this._category = n),
-                (this._group = i),
-                (this._link = a),
-                (this._builder = s),
-                (this._title = new GObject.GLocaleKey("GOpenLinkAction", "title." + t)),
-                (this._icon = r));
+            let { name, category, group, link, icon, builder } = e;
+            ((this._name = name),
+                (this._category = category),
+                (this._group = group),
+                (this._link = link),
+                (this._builder = builder),
+                (this._title = new GObject.GLocaleKey("GOpenLinkAction", "title." + name)),
+                (this._icon = icon));
         }
         ((a.Links = require(1622)),
             GObject.GObject.inherit(a, i),
@@ -127219,7 +127219,7 @@ var GravitDesigner = (function (e) {
         const GCategory = require(18),
             a = require(31),
             r = require(85),
-            { CLOUD_SYNC_FEATURE: { NEW_LAYOUT: s } = {} } = require(10 /* designerConfig */);
+            { CLOUD_SYNC_FEATURE: { NEW_LAYOUT } = {} } = require(10 /* designerConfig */);
         function l() {}
         (GObject.GObject.inherit(l, a),
             (l.ID = "sync.info"),
@@ -127261,7 +127261,7 @@ var GravitDesigner = (function (e) {
             }),
             (l.prototype.isAvailable = function () {
                 return (
-                    !!s && gContainer.getRuntime() === r.Runtime.Electron && GObject.GSystem.operatingSystem === GObject.GSystem.OperatingSystem.OSX_IOS
+                    !!NEW_LAYOUT && gContainer.getRuntime() === r.Runtime.Electron && GObject.GSystem.operatingSystem === GObject.GSystem.OperatingSystem.OSX_IOS
                 );
             }),
             (l.prototype.toString = function () {
@@ -127311,7 +127311,7 @@ var GravitDesigner = (function (e) {
         (require(8 /* Symbol */), require(3));
         var GObject = require(1),
             a = o(require(443));
-        const { isExecutingOnMSTeamsSync: r } = a.default;
+        const { isExecutingOnMSTeamsSync } = a.default;
         var GCategory = require(18),
             l = require(31);
         const c = require(1152),
@@ -127333,7 +127333,7 @@ var GravitDesigner = (function (e) {
                 return "file";
             }),
             (u.prototype.isEnabled = function () {
-                if (!r()) return false;
+                if (!isExecutingOnMSTeamsSync()) return false;
                 const e = gDesigner.getActiveDocument();
                 if (!e) return false;
                 const t = e.getStorageItem();
@@ -127363,7 +127363,7 @@ var GravitDesigner = (function (e) {
         (require(8 /* Symbol */), require(20), require(3), require(34));
         var GObject = require(1),
             a = o(require(443));
-        const { isExecutingOnMSTeamsSync: r } = a.default;
+        const { isExecutingOnMSTeamsSync } = a.default;
         var GCategory = require(18),
             l = require(31);
         const c = require(1152),
@@ -127390,7 +127390,7 @@ var GravitDesigner = (function (e) {
                 return !!this._isSupported() && gDesigner.getActiveDocument().getStorageItem().isCheckedOutByMe();
             }),
             (g.prototype._isSupported = function () {
-                if (!r()) return false;
+                if (!isExecutingOnMSTeamsSync()) return false;
                 const e = gDesigner.getActiveDocument();
                 if (!e) return false;
                 const t = e.getStorageItem();
@@ -127413,8 +127413,8 @@ var GravitDesigner = (function (e) {
                         n = t.getCloudClient(),
                         o = await n.getLibrarySettings();
                     await GFilesPanelViewSharepoint.openCheckInDialog(o).then(async (n) => {
-                        let { ok: o, comment: i, type: a } = n;
-                        o && (await t.checkIn(i, a), gDesigner.trigger(new p(p.Type.SynchronismUpdated, e)));
+                        let { ok, comment, type } = n;
+                        ok && (await t.checkIn(comment, type), gDesigner.trigger(new p(p.Type.SynchronismUpdated, e)));
                     });
                 } catch (e) {
                     GSystemDialog.alert(e.message);
@@ -127467,8 +127467,8 @@ var GravitDesigner = (function (e) {
                                         .addClass("field")
                                         .append(
                                             r.map((e) => {
-                                                let { text: t, value: n, selected: o } = e;
-                                                return $("<option/>").attr("value", n).text(GObject.GLocale.get(t)).prop("selected", !!o);
+                                                let { text, value, selected } = e;
+                                                return $("<option/>").attr("value", value).text(GObject.GLocale.get(text)).prop("selected", !!selected);
                                             })
                                         )
                                 )
@@ -127603,7 +127603,7 @@ var GravitDesigner = (function (e) {
             i = require(67),
             GCategory = require(18),
             r = require(31);
-        const { TOUCH_LAYOUT: s } = require(10 /* designerConfig */),
+        const { TOUCH_LAYOUT } = require(10 /* designerConfig */),
             l = require(85);
         function c() {
             c.TOOLTIP_CONFIG = {
@@ -127650,7 +127650,7 @@ var GravitDesigner = (function (e) {
                 return (e && c.TOOLTIP_CONFIG[e]) || null;
             }),
             (c.prototype.isAvailable = function () {
-                return !!s && !gDesigner.getLicense().isGuest() && gContainer.getRuntime() !== l.Runtime.IPad;
+                return !!TOUCH_LAYOUT && !gDesigner.getLicense().isGuest() && gContainer.getRuntime() !== l.Runtime.IPad;
             }),
             (c.prototype.statsValue = function () {
                 return "".concat(c.ID, ".").concat(gDesigner.isTouchEnabled() ? "on" : "off");
@@ -127733,7 +127733,7 @@ var GravitDesigner = (function (e) {
         var GObject = require(1),
             i = require(31),
             GCategory = require(18);
-        const { gApi: r } = require(10 /* designerConfig */);
+        const { gApi } = require(10 /* designerConfig */);
         var s = require(337);
         function l() {}
         (GObject.GObject.inherit(l, i),
@@ -127758,9 +127758,9 @@ var GravitDesigner = (function (e) {
                 return gDesigner.isBeta();
             }),
             (l.prototype.execute = async function () {
-                const e = await r.getUserSettings(),
+                const e = await gApi.getUserSettings(),
                     t = (e.flags && e.flags.betaProLicense) || false;
-                r.updateUserSettings({ flags: { betaProLicense: !t } }).then(() => {
+                gApi.updateUserSettings({ flags: { betaProLicense: !t } }).then(() => {
                     s.checkLicense();
                 });
             }),
@@ -127838,7 +127838,7 @@ var GravitDesigner = (function (e) {
         const GCategory = require(18),
             a = require(31),
             r = require(1640),
-            { IS_TRUNK: s, IS_LOCALHOST: l } = require(231 /* IS_TRUNK */);
+            { IS_TRUNK, IS_LOCALHOST } = require(231 /* IS_TRUNK */);
         function c() {}
         (GObject.GObject.inherit(c, a),
             (c.ID = "help.translationtool"),
@@ -127860,7 +127860,7 @@ var GravitDesigner = (function (e) {
                 return true;
             }),
             (c.prototype.isVisible = function () {
-                return !(!s && !l);
+                return !(!IS_TRUNK && !IS_LOCALHOST);
             }),
             (c.prototype.execute = function () {
                 (this._translationTool || (this._translationTool = new r()), this._translationTool.init());
@@ -128217,7 +128217,7 @@ var GravitDesigner = (function (e) {
             a = require(31);
         var r = require(219),
             s = require(85);
-        const { IS_TRUNK: l, IS_LOCALHOST: c, IS_BETA: d } = require(231 /* IS_TRUNK */);
+        const { IS_TRUNK, IS_LOCALHOST, IS_BETA } = require(231 /* IS_TRUNK */);
         function u(e) {
             let t = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
             ((this._serverName = e), (this._isDefault = !!t));
@@ -128248,7 +128248,7 @@ var GravitDesigner = (function (e) {
                 return true;
             }),
             (u.prototype.isVisible = function () {
-                return !!(l || d || c);
+                return !!(IS_TRUNK || IS_BETA || IS_LOCALHOST);
             }),
             (u.prototype.execute = function () {
                 (gDesigner.setSetting("webcdr_choice", this._serverName), this._reloadApp());
@@ -128369,9 +128369,9 @@ var GravitDesigner = (function (e) {
                     try {
                         if (Array.isArray(o) && o.length > 0) {
                             const e = this._getSingleLevelSelection(o),
-                                { hasHiddenPaintLayers: t, hasVisiblePaintLayers: n } = this._checkPaintLayersVisibility(e);
-                            if (!t && !n) return;
-                            t && n ? this._setVisibilityPaintLayersState(e, false) : this._setVisibilityPaintLayersState(e, t);
+                                { hasHiddenPaintLayers, hasVisiblePaintLayers } = this._checkPaintLayersVisibility(e);
+                            if (!hasHiddenPaintLayers && !hasVisiblePaintLayers) return;
+                            hasHiddenPaintLayers && hasVisiblePaintLayers ? this._setVisibilityPaintLayersState(e, false) : this._setVisibilityPaintLayersState(e, hasHiddenPaintLayers);
                         }
                     } finally {
                         t.endUpdate();
@@ -128387,14 +128387,14 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         require(3);
-        const { GObject: o, GLocaleKey: i } = require(1 /* GObject */),
+        const { GObject, GLocaleKey } = require(1 /* GObject */),
             a = require(31),
             GCategory = require(18),
             s = require(1644);
         function l() {}
-        (o.inherit(l, a),
+        (GObject.inherit(l, a),
             (l.ID = "help.shortcuts"),
-            (l.TITLE = new i("GShowShortcutsAction", "title")),
+            (l.TITLE = new GLocaleKey("GShowShortcutsAction", "title")),
             (l.prototype.getId = function () {
                 return l.ID;
             }),
@@ -128528,17 +128528,17 @@ var GravitDesigner = (function (e) {
                     o = gDesigner.getRightSidebars().getSidebar(SidebarsIds.SidebarsIds.GInspectorSidebar),
                     i = n && n.filter((e) => e && e.hasMixin(GObject.GStylable));
                 if (!(i && i.length > 0)) return;
-                const { pageX: r, pageY: l } = this._getLastCursorPoint();
+                const { pageX, pageY } = this._getLastCursorPoint();
                 switch (this._type) {
                     case c.Type.Fill:
                         i.find((e) => e.hasStyleFill() && !(e instanceof GObject.GText))
-                            ? o.openFillEyeDropper(r, l)
+                            ? o.openFillEyeDropper(pageX, pageY)
                             : i.find((e) => e instanceof GObject.GText)
-                              ? o.openTextColorEyeDropper(r, l)
-                              : i.find((e) => !e.hasStyleBorder()) || o.openBorderEyeDropper(r, l);
+                              ? o.openTextColorEyeDropper(pageX, pageY)
+                              : i.find((e) => !e.hasStyleBorder()) || o.openBorderEyeDropper(pageX, pageY);
                         break;
                     case c.Type.Border:
-                        i.find((e) => !e.hasStyleBorder()) || o.openBorderEyeDropper(r, l);
+                        i.find((e) => !e.hasStyleBorder()) || o.openBorderEyeDropper(pageX, pageY);
                 }
             }
             _getLastCursorPoint() {
@@ -129934,8 +129934,8 @@ var GravitDesigner = (function (e) {
             g = require(135),
             h = (require(446 /* GLoginPanel */), require(44 /* GSystemDialog */)),
             f = require(257);
-        const { FILE_FORMATS: m, CLOUD_SYNC_FEATURE: { NEW_LAYOUT: y } = {} } = require(10 /* designerConfig */);
-        var v = "." + m.find((e) => e.default).ext;
+        const { FILE_FORMATS, CLOUD_SYNC_FEATURE: { NEW_LAYOUT } = {} } = require(10 /* designerConfig */);
+        var v = "." + FILE_FORMATS.find((e) => e.default).ext;
         function _() {}
         (GObject.GObject.inherit(_, r),
             (_.prototype._panel = null),
@@ -129944,7 +129944,7 @@ var GravitDesigner = (function (e) {
             (_.prototype.init = function (e, t) {
                 ((this._panel = e.addClass("scene-properties-panel")),
                     t.addClass("scene-properties-toolbar"),
-                    y || gDesigner.addEventListener(p, this._synchronismUpdated, this));
+                    NEW_LAYOUT || gDesigner.addEventListener(p, this._synchronismUpdated, this));
                 var n = function (e) {
                     let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
                     var n = this;
@@ -130282,7 +130282,7 @@ var GravitDesigner = (function (e) {
                         })
                         .appendTo(e),
                     $("<hr/>").appendTo(e),
-                    !y)
+                    !NEW_LAYOUT)
                 ) {
                     let t = $("<div></div>")
                         .addClass("actions")
@@ -130485,7 +130485,7 @@ var GravitDesigner = (function (e) {
                             o = n.attr("data-property").substr("gm-".length);
                         n.prop("checked", (!o && !i) || o === i);
                     }),
-                    !y)
+                    !NEW_LAYOUT)
                 ) {
                     var a = this._document.isCloudFile()
                             ? !this._document.getScene().getProperty("cid")
@@ -131575,7 +131575,7 @@ var GravitDesigner = (function (e) {
             l = o(require(1664)),
             c = require(219),
             GClipAction = require(809),
-            { debounce: u, stringToBase64String: p } = require(40 /* GSaveAction */);
+            { debounce, stringToBase64String } = require(40 /* GSaveAction */);
         const g = l.default.getElements();
         module.exports = class {
             constructor(e) {
@@ -131587,7 +131587,7 @@ var GravitDesigner = (function (e) {
                     (this._IMAGE_ASSET_DRAINED = false),
                     (this._LOADING = false),
                     (this._wrapperWidth = 250),
-                    (this._debouncedResizeHandler = u(
+                    (this._debouncedResizeHandler = debounce(
                         function () {
                             var e = Array.from(this._parent.find(".assets-wrapper")).filter((e) => $(e).children().length),
                                 t = $(e).css("width") ? parseInt($(e).css("width").split("px")[0]) : 250;
@@ -132148,7 +132148,7 @@ var GravitDesigner = (function (e) {
             }
             _getPreviewURI(e) {
                 return e.content && !e.url_t
-                    ? "data:".concat(e.type || "image/svg+xml", ";base64,").concat(p(e.content))
+                    ? "data:".concat(e.type || "image/svg+xml", ";base64,").concat(stringToBase64String(e.content))
                     : e.url_t || e.url || e.image.thumb;
             }
             _onItemDragStartHandler(e, t, n) {
@@ -132305,7 +132305,7 @@ var GravitDesigner = (function (e) {
             r = require(1188),
             s = require(85),
             GSystemDialog = require(44),
-            { SOFTWARE_UPDATE: c, DateAPI: d } = require(10 /* designerConfig */);
+            { SOFTWARE_UPDATE, DateAPI } = require(10 /* designerConfig */);
         function u() {}
         (GObject.GObject.inherit(u, i),
             (u.ID = "software-update-panel"),
@@ -132356,7 +132356,7 @@ var GravitDesigner = (function (e) {
                         .addClass("featured")
                         .append(n)
                         .append(
-                            c.SHOW_CHANGE_LOG
+                            SOFTWARE_UPDATE.SHOW_CHANGE_LOG
                                 ? $("<a></a>")
                                       .text(GObject.GLocale.get(new GObject.GLocaleKey("GSoftwareUpdatePanel", "text.see-release-notes")))
                                       .click((e) => {
@@ -132471,7 +132471,7 @@ var GravitDesigner = (function (e) {
             (u.prototype._createForceUpdateMessageDialog = function () {
                 let e,
                     t = false;
-                const n = d.minutesToMilliseconds(5),
+                const n = DateAPI.minutesToMilliseconds(5),
                     i = () => {
                         t ||
                             ((t = true),
@@ -132562,7 +132562,7 @@ var GravitDesigner = (function (e) {
         (require(8 /* Symbol */), require(20), require(3), require(34), require(4), require(13));
         var GObject = require(1);
         const {
-                DESIGNER: { TITLE: i },
+                DESIGNER: { TITLE },
             } = require(10 /* designerConfig */),
             a = require(606),
             r = require(394),
@@ -132639,7 +132639,7 @@ var GravitDesigner = (function (e) {
                                     $("<span/>")
                                         .addClass("title")
                                         .text(
-                                            GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.title-welcome")).replace("%app", i)
+                                            GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.title-welcome")).replace("%app", TITLE)
                                         )
                                 )
                                 .append(
@@ -132671,7 +132671,7 @@ var GravitDesigner = (function (e) {
                                         .addClass("footer")
                                         .html(
                                             GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.footer")).replace("%app", () =>
-                                                $("<span/>").attr("id", "learnmore-link").addClass("link").text(i).prop("outerHTML")
+                                                $("<span/>").attr("id", "learnmore-link").addClass("link").text(TITLE).prop("outerHTML")
                                             )
                                         )
                                 )
@@ -132769,7 +132769,7 @@ var GravitDesigner = (function (e) {
             u = require(1348),
             GSystemDialog = require(44),
             g = require(177),
-            { DateAPI: h, ShareRoles: f } = require(10 /* designerConfig */);
+            { DateAPI, ShareRoles } = require(10 /* designerConfig */);
         function m() {}
         (GObject.GObject.inherit(m, i),
             (m.ID = "collaborative-text-panel"),
@@ -132822,7 +132822,7 @@ var GravitDesigner = (function (e) {
                     if (e)
                         if (e.getStatus() === u.Status.UpdateAvailable) (this._document.lock(), this._showUpdatePanel());
                         else if (e.getStatus() === u.Status.Updating) this._showUpdatingPanel();
-                        else if (gDesigner.getApplicationManager().hasRole(f.Owner)) this._showOwnerPanel();
+                        else if (gDesigner.getApplicationManager().hasRole(ShareRoles.Owner)) this._showOwnerPanel();
                         else if (await e.canLock())
                             switch (e.getStatus()) {
                                 case u.Status.Initial:
@@ -133077,8 +133077,8 @@ var GravitDesigner = (function (e) {
             (m.prototype._requestLock = function (e) {
                 if (!this.isEnabled()) return;
                 if (this._requestLockDialog) return;
-                const t = h.now(),
-                    n = h.minutesToMilliseconds(5);
+                const t = DateAPI.now(),
+                    n = DateAPI.minutesToMilliseconds(5);
                 (this._lastRequestLockTime && t - this._lastRequestLockTime < n) ||
                     ((this._lastRequestLockTime = t),
                     (this._requestLockDialog = GSystemDialog.custom({
@@ -133380,10 +133380,10 @@ var GravitDesigner = (function (e) {
         module.exports = class {
             static setupInAppLinkReloadAppForOnce() {
                 const e = function (t) {
-                    let { type: n, data: i } = t;
-                    if (n === o.Type.OpenInAppLink) {
+                    let { type, data } = t;
+                    if (type === o.Type.OpenInAppLink) {
                         gContainer.removeEventListener(o, e);
-                        const t = i.params,
+                        const t = data.params,
                             n = new URL(window.location.href);
                         for (let e in t) n.searchParams.set(e, t[e]);
                         window.location.href = n.toString();
@@ -133739,20 +133739,20 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         require(3);
-        var { ipcRenderer: o } = require(881);
+        var { ipcRenderer } = require(881);
         const i = require(1349);
         function a() {}
         ((a.prototype.installUpdate = function () {
-            (console.info(this.toString() + " Firing install update"), o.send(i.CommandInstallUpdate));
+            (console.info(this.toString() + " Firing install update"), ipcRenderer.send(i.CommandInstallUpdate));
         }),
             (a.prototype.checkForUpdates = function () {
-                (console.info(this.toString() + " Firing checking update"), o.send(i.CommandCheckForUpdates));
+                (console.info(this.toString() + " Firing checking update"), ipcRenderer.send(i.CommandCheckForUpdates));
             }),
             (a.prototype.downloadUpdate = function () {
-                (console.info(this.toString() + " Firing download update"), o.send(i.CommandDownloadUpdate));
+                (console.info(this.toString() + " Firing download update"), ipcRenderer.send(i.CommandDownloadUpdate));
             }),
             (a.prototype.on = function (e, t) {
-                o.on(e, t);
+                ipcRenderer.on(e, t);
             }),
             (a.prototype.toString = function () {
                 return "[Object GElectronUpdateServiceClient]";
@@ -133785,7 +133785,7 @@ var GravitDesigner = (function (e) {
         var i = o(require(1249)),
             a = o(require(1155)),
             GObject = require(1);
-        const { gApi: s, IN_APP_PURCHASE: { CLEVERBRIDGE: { openCartInAPopup: l = false } = {} } = {} } = require(10 /* designerConfig */),
+        const { gApi, IN_APP_PURCHASE: { CLEVERBRIDGE: { openCartInAPopup: l = false } = {} } = {} } = require(10 /* designerConfig */),
             c = require(808),
             d = require(292),
             GProfileDialog = require(604),
@@ -133831,7 +133831,7 @@ var GravitDesigner = (function (e) {
                                           );
                                       {
                                           const n = gDesigner.now().getTime();
-                                          e = await s.getProduct(
+                                          e = await gApi.getProduct(
                                               Object.assign(
                                                   {
                                                       time: n,
@@ -133984,7 +133984,7 @@ var GravitDesigner = (function (e) {
         "use strict";
         require(8 /* Symbol */);
         const GSystemDialog = require(44),
-            { gApi: i } = require(10 /* designerConfig */),
+            { gApi } = require(10 /* designerConfig */),
             a = require(1350);
         module.exports = class {
             async open(e) {
@@ -133992,7 +133992,7 @@ var GravitDesigner = (function (e) {
                     gContainer.openExternalLink(null, e);
                     return a.getInstance().waitForPurchase();
                 } catch (e) {
-                    GSystemDialog.alert(i.formatError(e));
+                    GSystemDialog.alert(gApi.formatError(e));
                 }
             }
         };
@@ -134004,26 +134004,26 @@ var GravitDesigner = (function (e) {
             i = require(292),
             a = require(291),
             {
-                gApi: r,
-                MicrosoftB2BKeyType: s,
-                PaymentProviders: l,
-                DateAPI: c,
-                IN_APP_PURCHASE: { WINDOWS: { production: d, trunk: u, rc: p, beta: g, lts: h } = {} } = {},
+                gApi,
+                MicrosoftB2BKeyType,
+                PaymentProviders,
+                DateAPI,
+                IN_APP_PURCHASE: { WINDOWS: { production, trunk, rc, beta, lts } = {} } = {},
             } = require(10 /* designerConfig */),
-            { IS_PRODUCTION: f, IS_LTS: m, IS_RC: y, IS_BETA: v } = require(231 /* IS_TRUNK */),
+            { IS_PRODUCTION, IS_LTS, IS_RC, IS_BETA } = require(231 /* IS_TRUNK */),
             {
-                ERROR_CODES: { ERR_MICROSOFT_STORE_SERVICES_B2B_KEY_NOT_FOUND: _ },
-            } = r;
+                ERROR_CODES: { ERR_MICROSOFT_STORE_SERVICES_B2B_KEY_NOT_FOUND },
+            } = gApi;
         module.exports = class extends o {
             constructor() {
                 if ((super(), !window.napi)) return;
-                const { remote: e } = require(881),
-                    t = e.getCurrentWindow().getNativeWindowHandle();
+                const { remote } = require(881),
+                    t = remote.getCurrentWindow().getNativeWindowHandle();
                 ((this._store = new window.napi.windowsStore.StoreContext()),
                     this._store.initialize(t),
                     gDesigner.addEventListener(i, this._userLoggedEvent, this),
                     gDesigner.addEventListener(a, this._networkAvailabilityChangedEvent, this),
-                    (this._intervalId = setInterval(() => this.syncLicense(), c.daysToMilliseconds(1))));
+                    (this._intervalId = setInterval(() => this.syncLicense(), DateAPI.daysToMilliseconds(1))));
             }
             async purchase(e, t) {
                 try {
@@ -134034,7 +134034,7 @@ var GravitDesigner = (function (e) {
                 return new Promise((t, n) => {
                     const o = setTimeout(() => {
                         n();
-                    }, c.minutesToMilliseconds(3));
+                    }, DateAPI.minutesToMilliseconds(3));
                     this._store.requestPurchaseAsync(e.productId, (e, i) => {
                         (clearTimeout(o),
                             e
@@ -134059,7 +134059,7 @@ var GravitDesigner = (function (e) {
                         const a = Object.values(o).find((e) => e.inAppOfferToken === i);
                         if (!a) return t();
                         e({
-                            provider: l.WindowsStore,
+                            provider: PaymentProviders.WindowsStore,
                             formattedPrice: a.price.formattedRecurrencePrice,
                             currency: a.price.currencyCode,
                             productId: a.storeId,
@@ -134070,27 +134070,27 @@ var GravitDesigner = (function (e) {
             async syncLicense() {
                 const e = await gDesigner.getUser();
                 if (e)
-                    return r.microsoftStoreServices
+                    return gApi.microsoftStoreServices
                         .syncLicense()
                         .then(() => gDesigner.requestLicenseUpdate())
                         .catch(async (t) => {
-                            if (t.cloud && t.code === _) {
-                                const t = await r.microsoftStoreServices.getAccessToken(),
+                            if (t.cloud && t.code === ERR_MICROSOFT_STORE_SERVICES_B2B_KEY_NOT_FOUND) {
+                                const t = await gApi.microsoftStoreServices.getAccessToken(),
                                     n = await this._createB2BKeyForPurchaseAPI(e, t),
                                     o = await this._createB2BKeyForCollectionsAPI(e, t);
                                 return (
-                                    await r.microsoftStoreServices.updateB2BKeys({
+                                    await gApi.microsoftStoreServices.updateB2BKeys({
                                         accessToken: t,
-                                        keys: { [s.Purchase]: n, [s.Collections]: o },
+                                        keys: { [MicrosoftB2BKeyType.Purchase]: n, [MicrosoftB2BKeyType.Collections]: o },
                                     }),
-                                    r.microsoftStoreServices.syncLicense().then(() => gDesigner.requestLicenseUpdate())
+                                    gApi.microsoftStoreServices.syncLicense().then(() => gDesigner.requestLicenseUpdate())
                                 );
                             }
                             throw t;
                         });
             }
             _getInAppOfferToken() {
-                return f ? d : v ? g : m ? h : y ? p : u;
+                return IS_PRODUCTION ? production : IS_BETA ? beta : IS_LTS ? lts : IS_RC ? rc : trunk;
             }
             _createB2BKeyForPurchaseAPI(e, t) {
                 return new Promise(async (n, o) => {
@@ -134128,7 +134128,7 @@ var GravitDesigner = (function (e) {
         (require(8 /* Symbol */), require(527));
         const o = require(292),
             i = require(1685),
-            { gApi: a, DateAPI: r } = require(10 /* designerConfig */);
+            { gApi, DateAPI } = require(10 /* designerConfig */);
         module.exports = class {
             init() {
                 gDesigner.addEventListener(o, this._userLoggedEvent, this);
@@ -134145,11 +134145,11 @@ var GravitDesigner = (function (e) {
                 }
             }
             async _shouldShowWindowsStoreAnnouncement(e) {
-                const { flags: { windowsStoreAnnouncement: t = false } = {} } = await a.getUserSettings().catch(() => ({}));
-                return !(t || !r.lt(e.created, Date.now()));
+                const { flags: { windowsStoreAnnouncement: t = false } = {} } = await gApi.getUserSettings().catch(() => ({}));
+                return !(t || !DateAPI.lt(e.created, Date.now()));
             }
             _updateWindowStoreAnnouncementFlag() {
-                a.updateUserSettings({ flags: { windowsStoreAnnouncement: true } });
+                gApi.updateUserSettings({ flags: { windowsStoreAnnouncement: true } });
             }
             _showWindowsStoreAnnouncement() {
                 gDesigner.executeWhenReady(() => {
@@ -134201,7 +134201,7 @@ var GravitDesigner = (function (e) {
         (require(8 /* Symbol */), require(20), require(34));
         var GObject = require(1);
         const GSystemDialog = require(44),
-            { DESIGNER: { TITLE: a } = {} } = require(10 /* designerConfig */);
+            { DESIGNER: { TITLE } = {} } = require(10 /* designerConfig */);
         module.exports = class {
             async init() {
                 (await this._shouldOpenWarningDialog()) && gDesigner.executeWhenReady(() => this._openWarningDialog());
@@ -134211,7 +134211,7 @@ var GravitDesigner = (function (e) {
                     icon: "info",
                     closeable: false,
                     className: "g-beta-warning-dialog",
-                    title: GObject.GLocale.get(new GObject.GLocaleKey("GBetaFlow", "text.title")).replace("%app", a),
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GBetaFlow", "text.title")).replace("%app", TITLE),
                     subtitle: GObject.GLocale.get(new GObject.GLocaleKey("GBetaFlow", "text.message")),
                     buttons: [
                         {
@@ -134236,11 +134236,11 @@ var GravitDesigner = (function (e) {
         (require(20), require(34));
         var GObject = require(1),
             a = o(require(44 /* GSystemDialog */));
-        const { DateAPI: r, DESIGNER: { TITLE: s } = {} } = require(10 /* designerConfig */),
+        const { DateAPI, DESIGNER: { TITLE } = {} } = require(10 /* designerConfig */),
             l = require(78),
-            c = r.minutesToMilliseconds(1),
+            c = DateAPI.minutesToMilliseconds(1),
             d = 0.8,
-            u = r.minutesToMilliseconds(30);
+            u = DateAPI.minutesToMilliseconds(30);
         module.exports = class {
             constructor() {
                 let {
@@ -134248,7 +134248,7 @@ var GravitDesigner = (function (e) {
                     memoryUsageThreshold: t = d,
                     autostartTime: n = u,
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                ((this._memoryCheckInterval = Math.max(e, r.minutesToMilliseconds(1))),
+                ((this._memoryCheckInterval = Math.max(e, DateAPI.minutesToMilliseconds(1))),
                     (this._memoryUsageThreshold = t),
                     (this._autostartTime = n));
             }
@@ -134288,7 +134288,7 @@ var GravitDesigner = (function (e) {
                         className: "g-memory-warn-dialog",
                         closeable: false,
                         icon: "info",
-                        title: GObject.GLocale.get(new GObject.GLocaleKey("GMemoryManager", "text.title")).replace("%app", s),
+                        title: GObject.GLocale.get(new GObject.GLocaleKey("GMemoryManager", "text.title")).replace("%app", TITLE),
                         subtitle: GObject.GLocale.get(new GObject.GLocaleKey("GMemoryManager", "text.subtitle")),
                         buttons: [
                             {
@@ -134557,8 +134557,8 @@ var GravitDesigner = (function (e) {
             }),
             (s.prototype._mouseMoveHandler = function (e) {
                 if ("touchmove" === e.type) {
-                    const { clientX: t, clientY: n } = e.changedTouches[0];
-                    if (Math.abs(t - this._startX) < designerConfig.MIN_TOUCH_MOVE_DISTANCE && Math.abs(n - this._startY) < designerConfig.MIN_TOUCH_MOVE_DISTANCE)
+                    const { clientX, clientY } = e.changedTouches[0];
+                    if (Math.abs(clientX - this._startX) < designerConfig.MIN_TOUCH_MOVE_DISTANCE && Math.abs(clientY - this._startY) < designerConfig.MIN_TOUCH_MOVE_DISTANCE)
                         return;
                 }
                 this._clearLongPressTimer();
@@ -134899,14 +134899,14 @@ var GravitDesigner = (function (e) {
                     const e = $(this);
                     for (let n = 0; n < t.length; ++n) {
                         let o = e;
-                        const { group: i, options: a } = t[n];
-                        (i && ((o = $('<optgroup label="' + i + '"></optgroup>')), e.append(o)),
-                            a.forEach((e) => {
-                                let { type: t, name: n, isCompatible: i } = e;
+                        const { group, options } = t[n];
+                        (group && ((o = $('<optgroup label="' + group + '"></optgroup>')), e.append(o)),
+                            options.forEach((e) => {
+                                let { type, name, isCompatible } = e;
                                 o.append(
                                     $("<option></option>")
-                                        .attr("value", t)
-                                        .text("".concat(n).concat(i ? "" : " *"))
+                                        .attr("value", type)
+                                        .text("".concat(name).concat(isCompatible ? "" : " *"))
                                 );
                             }));
                     }
@@ -135326,7 +135326,7 @@ var GravitDesigner = (function (e) {
             s = require(1199),
             l = require(85),
             GSystemDialog = require(44);
-        const { GPlatform: d } = require(15 /* GPlatform */);
+        const { GPlatform } = require(15 /* GPlatform */);
         function u() {}
         (GObject.GObject.inheritAndMix(u, GObject.GObject),
             (u.DISABLE_LOCAL_FONTS_ACCESS_WARING = "disable-local-fonts-access-warning"),
@@ -135344,7 +135344,7 @@ var GravitDesigner = (function (e) {
                         },
                     ];
                     let t = GObject.GLocale.get(new GObject.GLocaleKey("GLocalFontsProvider", "text.permission-required-subtitle-others"));
-                    (d.webBrowser === d.constructor.WebBrowser.Edge &&
+                    (GPlatform.webBrowser === GPlatform.constructor.WebBrowser.Edge &&
                         (t = GObject.GLocale.get(new GObject.GLocaleKey("GLocalFontsProvider", "text.permission-required-subtitle-edge"))),
                         GSystemDialog.custom({
                             icon: "error",
@@ -136219,8 +136219,8 @@ var GravitDesigner = (function (e) {
                         e.list
                             .map((e) => ("object" != typeof e ? { title: e, data: e } : e))
                             .forEach((e) => {
-                                let { title: n, data: o } = e;
-                                return t.createAddItem(n).setData(o);
+                                let { title, data } = e;
+                                return t.createAddItem(title).setData(data);
                             });
                         const n = $(this);
                         n.addClass("g-input-select")
@@ -136401,7 +136401,7 @@ var GravitDesigner = (function (e) {
             u = o(require(135)),
             p = require(451 /* GVirtualTree */).GVirtualTree,
             g = require(451 /* GVirtualTree */).GVirtualTreeNodeNamed,
-            { VTREE_FREE_HEIGHT: h, VTREE_FREE_HEIGHT_TOUCH: f } = require(10 /* designerConfig */),
+            { VTREE_FREE_HEIGHT, VTREE_FREE_HEIGHT_TOUCH } = require(10 /* designerConfig */),
             m = require(450),
             y = ["name"];
         function v() {}
@@ -136520,13 +136520,13 @@ var GravitDesigner = (function (e) {
                 r = G.call(this, e),
                 s = r ? r.node : null;
             if (s) {
-                var { parentHidden: u, isHidden: p, lockType: g, isOutlined: h, hasSelection: f } = (0, c.getLayerOrItemStatus)(s),
-                    { container: y, title: v, titleGroup: _ } = (0, c.buildLayerItemContainer)(n, s, f, t);
-                r.element = _;
+                var { parentHidden, isHidden, lockType, isOutlined, hasSelection } = (0, c.getLayerOrItemStatus)(s),
+                    { container, title, titleGroup } = (0, c.buildLayerItemContainer)(n, s, hasSelection, t);
+                r.element = titleGroup;
                 var b = this;
                 if (
                     (s.hasFlag(GObject.GElement.Flag.PartialLocked) ||
-                        _.attr("draggable", true)
+                        titleGroup.attr("draggable", true)
                             .attr("data-drag-mode", d.default.PRESS_AND_HOLD)
                             .on("dragstart", function (e) {
                                 if (o.options.startDraggingCallback) {
@@ -136537,7 +136537,7 @@ var GravitDesigner = (function (e) {
                                         (i = i || t[0].getNodeNameTranslated()) && (n = i);
                                         for (var a = 1; a < t.length; ++a)
                                             (i = (i = t[a].getProperty("name")) || t[a].getNodeNameTranslated()) && (n += ", " + i);
-                                        n.length && $(v).html(n);
+                                        n.length && $(title).html(n);
                                         var r = o.vtree,
                                             l = [];
                                         for (a = 0; a < t.length; ++a) {
@@ -136547,7 +136547,7 @@ var GravitDesigner = (function (e) {
                                         (r.setDragNodes(l),
                                             setTimeout(
                                                 function () {
-                                                    $(v).html(i);
+                                                    $(title).html(i);
                                                 }.bind(this),
                                                 0
                                             ));
@@ -136567,12 +136567,12 @@ var GravitDesigner = (function (e) {
                             false,
                             true
                         )),
-                        y.toggleClass("g-highlighted-row", w));
+                        container.toggleClass("g-highlighted-row", w));
                 }
-                !g &&
+                !lockType &&
                     gDesigner.getActiveDocument() &&
                     gDesigner.getApplicationManager().isEditingEnabled() &&
-                    $(_).gAutoEdit({
+                    $(titleGroup).gAutoEdit({
                         textSelector: "> .layer-title",
                         getContainer: function () {
                             return G.call(b, e).element;
@@ -136606,17 +136606,17 @@ var GravitDesigner = (function (e) {
                                     GObject.GLocale.get(new GObject.GLocaleKey("GLayerPanel", "action.reset-instance"))
                                 ));
                         })
-                        .appendTo(y);
-                var x = g ? "gravit-icon-lock" : "gravit-icon-unlock";
+                        .appendTo(container);
+                var x = lockType ? "gravit-icon-lock" : "gravit-icon-unlock";
                 ((x = gDesigner.isTouchEnabled() ? x + "-small" : x),
                     $("<span></span>")
                         .addClass("layer-action layer-lock " + x)
-                        .toggleClass("g-active", !!g)
+                        .toggleClass("g-active", !!lockType)
                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-lock")))
                         .on("click", function (e) {
                             (e.stopPropagation(), J.toggleLockStatusOfLayerOrItem(s));
                         })
-                        .appendTo(y)
+                        .appendTo(container)
                         .gRichTooltip(
                             l.GRichTooltipConfig.from({
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.layer-toggle-lock-tooltip-title")),
@@ -136624,18 +136624,18 @@ var GravitDesigner = (function (e) {
                                 learnMore: "/docs/organizing-your-designs/objects/#locking-objects",
                             })
                         ),
-                    y.toggleClass("layer-hidden", p));
-                var S = p ? "gravit-icon-hide" : "gravit-icon-display";
+                    container.toggleClass("layer-hidden", isHidden));
+                var S = isHidden ? "gravit-icon-hide" : "gravit-icon-display";
                 if (
                     ((S = gDesigner.isTouchEnabled() ? S + "-small" : S),
                     $("<span></span>")
                         .addClass("layer-action layer-visibility " + S)
-                        .toggleClass("g-active", p)
+                        .toggleClass("g-active", isHidden)
                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-visibility")))
                         .on("click", function (e) {
                             (e.stopPropagation(), J.toggleHideStatusOfLayerOrItem(s));
                         })
-                        .appendTo(y)
+                        .appendTo(container)
                         .gRichTooltip(
                             l.GRichTooltipConfig.from({
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.layer-toggle-visibility-tooltip-title")),
@@ -136648,13 +136648,13 @@ var GravitDesigner = (function (e) {
                     s instanceof GObject.GLayer)
                 ) {
                     $("<span></span>")
-                        .addClass("layer-action layer-outline gravit-icon-" + (h ? "ellipse" : "circle"))
-                        .toggleClass("g-active", h)
+                        .addClass("layer-action layer-outline gravit-icon-" + (isOutlined ? "ellipse" : "circle"))
+                        .toggleClass("g-active", isOutlined)
                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GLayerPanel", "action.toggle-outline")))
                         .on("click", function (e) {
                             (gDesigner.stats("layers_toggle_outline"), e.stopPropagation());
                             var t = $(this);
-                            u ||
+                            parentHidden ||
                                 i.GEditor.tryRunTransaction(
                                     s,
                                     function () {
@@ -136672,7 +136672,7 @@ var GravitDesigner = (function (e) {
                                     "/docs/organizing-your-designs/layer-groups/#extra-properties-of-the-layer-groups",
                             })
                         )
-                        .appendTo(y);
+                        .appendTo(container);
                     $("<span></span>")
                         .addClass("layer-color")
                         .gPatternChooser({
@@ -136705,9 +136705,9 @@ var GravitDesigner = (function (e) {
                         .on("chooserclose", function (e, t, n) {
                             o.options.patternChooserStatusChangeCallBack(false);
                         })
-                        .appendTo(y);
+                        .appendTo(container);
                 }
-                y.contextmenu(
+                container.contextmenu(
                     { context: m.LayerPanel },
                     function (e) {
                         if ($.inArray(s, gDesigner.getActiveDocument().getEditor().getSelection()) < 0) {
@@ -136843,7 +136843,7 @@ var GravitDesigner = (function (e) {
         function z(e) {
             var t = $(this).data("glayerpanel"),
                 n = $(this).data("glayerpanel").vtree;
-            let { onlyUpdateStyle: o } = t;
+            let { onlyUpdateStyle } = t;
             if (B(t, e.node)) {
                 var i = false;
                 if (e.node instanceof GObject.GLayer || e.node instanceof GObject.GItem)
@@ -136857,7 +136857,7 @@ var GravitDesigner = (function (e) {
                         var r = e.node.getPage(),
                             s = e.node.getScene(),
                             l = s && s.getActivePage();
-                        (l && r && l !== r) || ((i = true), o || (o = e.flag === GObject.GNode.Flag.Active));
+                        (l && r && l !== r) || ((i = true), onlyUpdateStyle || (onlyUpdateStyle = e.flag === GObject.GNode.Flag.Active));
                     } else if (!t.blockHighlight && e.flag === GObject.GNode.Flag.Highlighted) {
                         var c = e.node,
                             d = function (e) {
@@ -136877,7 +136877,7 @@ var GravitDesigner = (function (e) {
                 }
                 (e.node instanceof GObject.GPage && e.flag === GObject.GNode.Flag.Active && (X.call(this), q.call(this), (i = false)),
                     i &&
-                        (o
+                        (onlyUpdateStyle
                             ? setTimeout((t) => {
                                   Q.call(this, e.node);
                               })
@@ -136895,7 +136895,7 @@ var GravitDesigner = (function (e) {
             gDesigner.isTouchEnabled() &&
                 $(this)
                     .parent()
-                    .css("height", parseInt($(this).find(".vscroller").css("height"), 10) + h + "px");
+                    .css("height", parseInt($(this).find(".vscroller").css("height"), 10) + VTREE_FREE_HEIGHT + "px");
         }
         function X() {
             var e = $(this).data("glayerpanel");
@@ -136929,7 +136929,7 @@ var GravitDesigner = (function (e) {
                             nodeStyle: "layer-row",
                             expandStyle: "layer-arrow gravit-icon-right",
                             collapseStyle: "layer-arrow gravit-icon-down",
-                            freeHeight: h,
+                            freeHeight: VTREE_FREE_HEIGHT,
                             insertIntoStyle: "g-drop",
                             upSeparatorSpan1Style: "g-up-separator-span1",
                             upSeparatorSpan2Style: "g-up-separator-span2",
@@ -137060,8 +137060,8 @@ var GravitDesigner = (function (e) {
             },
             toggleLockStatusOfLayerOrItem: function (e) {
                 gDesigner.stats("layers_change_locktype");
-                const { parentLockType: t } = (0, c.getLayerOrItemStatus)(e);
-                if (!t || t === GObject.GBlock.LockType.Partial) {
+                const { parentLockType } = (0, c.getLayerOrItemStatus)(e);
+                if (!parentLockType || parentLockType === GObject.GBlock.LockType.Partial) {
                     let n = e.getProperty("lkt");
                     const o = e.getProperty("plkt");
                     if (
@@ -137072,7 +137072,7 @@ var GravitDesigner = (function (e) {
                                       GObject.GBlock.ProgramLck.NoNewChildren |
                                       GObject.GBlock.ProgramLck.NoDelete) || (n = null)
                             : (n = GObject.GBlock.LockType.Full),
-                        t !== GObject.GBlock.LockType.Partial || null !== n)
+                        parentLockType !== GObject.GBlock.LockType.Partial || null !== n)
                     ) {
                         const t = [];
                         if (GPlatform.GPlatform.modifiers.optionKey) {
@@ -137132,7 +137132,7 @@ var GravitDesigner = (function (e) {
                     t = e && e.vtree;
                 if (t) {
                     const e = gDesigner.isTouchEnabled();
-                    (t.setFreeHeight(e ? f : h), t.setAnimatedDragEnabled(e));
+                    (t.setFreeHeight(e ? VTREE_FREE_HEIGHT_TOUCH : VTREE_FREE_HEIGHT), t.setAnimatedDragEnabled(e));
                 }
             },
         };
@@ -137362,7 +137362,7 @@ var GravitDesigner = (function (e) {
             i = (require(15 /* GPlatform */), require(40 /* GSaveAction */), require(67), require(1351)),
             a = require(451 /* GVirtualTree */).GVirtualTree,
             r = (require(451 /* GVirtualTree */).GVirtualTreeNode, require(451 /* GVirtualTree */).GVirtualTreeNodeNamed),
-            { VTREE_FREE_HEIGHT: s } = require(10 /* designerConfig */);
+            { VTREE_FREE_HEIGHT } = require(10 /* designerConfig */);
         (require(173), require(450));
         function l() {}
         function c(e) {
@@ -137400,14 +137400,14 @@ var GravitDesigner = (function (e) {
             var o = h.call(this, e),
                 a = o ? o.node : null;
             if (a) {
-                var { hasSelection: r } = (0, i.getLayerOrItemStatus)(a),
-                    { titleGroup: s } = (0, i.buildLayerItemContainer)(n, a, r, t);
-                o.element = s;
+                var { hasSelection } = (0, i.getLayerOrItemStatus)(a),
+                    { titleGroup } = (0, i.buildLayerItemContainer)(n, a, hasSelection, t);
+                o.element = titleGroup;
             }
         }
         function m(e, t, n) {
-            var { newNode: o, vtree: i } = y.call(this, e, n);
-            return (i.appendNode(t, o), o);
+            var { newNode, vtree } = y.call(this, e, n);
+            return (vtree.appendNode(t, newNode), newNode);
         }
         function y(e, t) {
             return {
@@ -137420,7 +137420,7 @@ var GravitDesigner = (function (e) {
                 t = e.vtree;
             t.beginUpdate();
             for (
-                var { elementHits: n, filteredElementHits: i, submenus: a } = e.selections,
+                var { elementHits, filteredElementHits, submenus } = e.selections,
                     r = (t, n, o) => {
                         ((e.layersTreeNodeMap[o] = { element: null, node: n, treeNode: t }),
                             e.layersTreeNodeMapByNodes.set(n, {
@@ -137430,17 +137430,17 @@ var GravitDesigner = (function (e) {
                             }));
                     },
                     s = 0;
-                s < i.length;
+                s < filteredElementHits.length;
                 s++
             ) {
                 var l = GObject.GUtil.uuid(),
-                    c = i[s].element,
-                    d = (c instanceof GObject.GBlock ? c.getLabel() : c.getNodeNameTranslated(), "temp-" + n.indexOf(i[s]));
-                if (a[d]) {
+                    c = filteredElementHits[s].element,
+                    d = (c instanceof GObject.GBlock ? c.getLabel() : c.getNodeNameTranslated(), "temp-" + elementHits.indexOf(filteredElementHits[s]));
+                if (submenus[d]) {
                     r((p = m.call(this, l, null, true)), c, l);
-                    for (let e = 0; e < a[d].length; e++) {
+                    for (let e = 0; e < submenus[d].length; e++) {
                         var u = GObject.GUtil.uuid();
-                        r(m.call(this, u, p, false), a[d][e], u);
+                        r(m.call(this, u, p, false), submenus[d][e], u);
                     }
                 } else {
                     var p;
@@ -138468,20 +138468,20 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         (require(19), require(8 /* Symbol */), require(4), require(41), require(32), require(97), require(33), require(26));
-        const { GObject: o } = require(1 /* GObject */),
-            { GPlatform: i } = require(15 /* GPlatform */),
+        const { GObject } = require(1 /* GObject */),
+            { GPlatform } = require(15 /* GPlatform */),
             a = require(1355),
             r = require(1191),
             GAnnotationPanel = require(1356),
             l = require(1357 /* GAnnotationPanel */),
-            { handleCollabsData: c } = (require(536), require(882)),
+            { handleCollabsData } = (require(536), require(882)),
             d = require(1354),
             u = require(434);
         function p() {
             for (var e = arguments.length, t = new Array(e), n = 0; n < e; n++) t[n] = arguments[n];
             (a.call(this, ...t), r.call(this));
         }
-        (o.inheritAndMix(p, a, [r]),
+        (GObject.inheritAndMix(p, a, [r]),
             (p.prototype._checkTreeSanity = function () {
                 return !!$(this._container).data("gannotationpanel");
             }),
@@ -138526,7 +138526,7 @@ var GravitDesigner = (function (e) {
                     o = gDesigner.getShareManager();
                 (e.collaboratorsCache && o.resetCollaboratorsCached(n),
                     (this._collaboratorsCache = o.getCollaboratorsCached(n)),
-                    (this._mentionData = await c(this._collaboratorsCache)));
+                    (this._mentionData = await handleCollabsData(this._collaboratorsCache)));
             }),
             (p.prototype._afterInvalidationEnd = function () {
                 (this.scrollIntoView(), this._updateCommentStats());
@@ -139180,7 +139180,7 @@ var GravitDesigner = (function (e) {
             l = o(require(135)),
             c = require(451 /* GVirtualTree */).GVirtualTree,
             d = (require(451 /* GVirtualTree */).GVirtualTreeNode, require(451 /* GVirtualTree */).GVirtualTreeNodeNamed),
-            { VTREE_FREE_HEIGHT: u, VTREE_FREE_HEIGHT_TOUCH: p } = require(10 /* designerConfig */),
+            { VTREE_FREE_HEIGHT, VTREE_FREE_HEIGHT_TOUCH } = require(10 /* designerConfig */),
             g = (require(173), require(450));
         function h() {}
         function f(e, t, n, o, i) {
@@ -139481,7 +139481,7 @@ var GravitDesigner = (function (e) {
             gDesigner.isTouchEnabled() &&
                 $(this)
                     .parent()
-                    .css("height", parseInt($(this).find(".vscroller").css("height"), 10) + u + "px");
+                    .css("height", parseInt($(this).find(".vscroller").css("height"), 10) + VTREE_FREE_HEIGHT + "px");
         }
         function M() {
             var e = $(this).data("gpagepanel");
@@ -139495,7 +139495,7 @@ var GravitDesigner = (function (e) {
                         {
                             nodeStyle: "page-row",
                             collapseStyle: "page-arrow gravit-icon-down",
-                            freeHeight: u,
+                            freeHeight: VTREE_FREE_HEIGHT,
                             insertIntoStyle: "g-drop",
                             upSeparatorSpan1Style: "g-up-separator-span1",
                             upSeparatorSpan2Style: "g-up-separator-span2",
@@ -139605,7 +139605,7 @@ var GravitDesigner = (function (e) {
                     t = e && e.vtree;
                 if (t) {
                     const e = gDesigner.isTouchEnabled();
-                    (t.setFreeHeight(e ? p : u), t.setAnimatedDragEnabled(e));
+                    (t.setFreeHeight(e ? VTREE_FREE_HEIGHT_TOUCH : VTREE_FREE_HEIGHT), t.setAnimatedDragEnabled(e));
                 }
             },
         };
@@ -139926,16 +139926,16 @@ var GravitDesigner = (function (e) {
                 );
             },
             update: function (e) {
-                const { isPrivate: t, isSharing: n, disabled: i } = e,
+                const { isPrivate, isSharing, disabled } = e,
                     a = $(this);
-                i ? a.addClass("g-disabled") : a.removeClass("g-disabled");
+                disabled ? a.addClass("g-disabled") : a.removeClass("g-disabled");
                 gDesigner.getShareManager().isShareProRestricted() && a.gPro();
                 const r = a.data("gsharebutton");
                 a.find(".icon")
-                    .css("display", n ? "" : "none")
-                    .toggleClass("gravit-icon-private-share", t)
-                    .toggleClass("gravit-icon-public-share", !t);
-                const s = n
+                    .css("display", isSharing ? "" : "none")
+                    .toggleClass("gravit-icon-private-share", isPrivate)
+                    .toggleClass("gravit-icon-public-share", !isPrivate);
+                const s = isSharing
                     ? new GObject.GLocaleKey("GToolbar", "text.shared")
                     : r.options.defaultText
                       ? r.options.defaultText
@@ -140000,9 +140000,9 @@ var GravitDesigner = (function (e) {
                 );
             },
             update: function (e) {
-                const { disabled: t, hidden: n } = e,
+                const { disabled, hidden } = e,
                     o = $(this);
-                (t ? o.addClass("g-disabled") : o.removeClass("g-disabled"), n ? o.hide() : o.show());
+                (disabled ? o.addClass("g-disabled") : o.removeClass("g-disabled"), hidden ? o.hide() : o.show());
                 gDesigner.getShareManager().isShareProRestricted() && o.gPro();
                 const i = o.data("gunsharebutton");
                 return ((i.storeItem = e.storeItem), e.unshareCallback && (i.options.unshareCallback = e.unshareCallback), this);
@@ -140703,8 +140703,8 @@ var GravitDesigner = (function (e) {
                         .append(r)
                         .appendTo($("body"));
                 if (n) {
-                    const { options: { className: e } = {} } = n;
-                    e && s.addClass("".concat(e, "-container"));
+                    const { options: { className } = {} } = n;
+                    className && s.addClass("".concat(className, "-container"));
                 }
                 return (o.push(this[0]), t.trigger("open"), s.addClass("visible"), a && a.openCallback && a.openCallback.call(this), this);
             },
@@ -140860,56 +140860,56 @@ var GravitDesigner = (function (e) {
                 },
                 createTooltipContent: function (e) {
                     const {
-                        title: t,
-                        isPro: n,
-                        shortcut: o,
-                        video: i,
-                        pic: a,
-                        description: r,
-                        videoTimeout: c,
-                        enhanced: d,
-                        learnMore: u,
-                        upgradeToProStatsValue: p,
+                        title,
+                        isPro,
+                        shortcut,
+                        video,
+                        pic,
+                        description,
+                        videoTimeout,
+                        enhanced,
+                        learnMore,
+                        upgradeToProStatsValue,
                     } = e;
-                    let g = r;
+                    let g = description;
                     const h = gDesigner.getLicense(),
                         f = (h.isPro() || h.isTrial()) && h.isExpired(),
-                        m = u
+                        m = learnMore
                             ? '<a href="'
-                                  .concat(u, '" target="_blank">')
+                                  .concat(learnMore, '" target="_blank">')
                                   .concat(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.learn-more")), "</a>")
                             : "";
                     g = g ? "".concat(g, " ").concat(m) : m;
                     const y = $("<div />")
                         .addClass("g-tooltip-content-wrapper")
-                        .toggleClass("g-pro", n)
+                        .toggleClass("g-pro", isPro)
                         .append(
                             $("<div />")
                                 .addClass("g-tooltip-content-header")
-                                .toggleClass("simple", !d)
+                                .toggleClass("simple", !enhanced)
                                 .append(
-                                    o && o.length
-                                        ? $("<div />").addClass("g-tooltip-content-shortcut").text(GPlatform.GKey.shortcutToString(o))
+                                    shortcut && shortcut.length
+                                        ? $("<div />").addClass("g-tooltip-content-shortcut").text(GPlatform.GKey.shortcutToString(shortcut))
                                         : ""
                                 )
                                 .append(
                                     $("<div />")
-                                        .toggleClass("limit-width", !(!o || !o.length))
+                                        .toggleClass("limit-width", !(!shortcut || !shortcut.length))
                                         .addClass("g-tooltip-content-title")
-                                        .text(t)
+                                        .text(title)
                                 )
                         )
-                        .append(d && g ? $("<div />").addClass("g-tooltip-content-description").html(g) : "")
-                        .append(d && i && i.length ? $("<div />").addClass("g-tooltip-content-video loading") : "")
+                        .append(enhanced && g ? $("<div />").addClass("g-tooltip-content-description").html(g) : "")
+                        .append(enhanced && video && video.length ? $("<div />").addClass("g-tooltip-content-video loading") : "")
                         .append(
-                            d && a && a.length
+                            enhanced && pic && pic.length
                                 ? $("<div />")
                                       .addClass("g-tooltip-content-picture")
-                                      .append($("<img />").attr("width", 298).attr("height", 160).attr("src", a))
+                                      .append($("<img />").attr("width", 298).attr("height", 160).attr("src", pic))
                                 : ""
                         )
                         .append(
-                            d && n && f
+                            enhanced && isPro && f
                                 ? $("<div />")
                                       .addClass("g-tooltip-content-footer")
                                       .append(
@@ -140926,20 +140926,20 @@ var GravitDesigner = (function (e) {
                                               )
                                       )
                                       .on("click", () => {
-                                          (gDesigner.openPaymentDialog(), gDesigner.stats("action_tooltips_upgradetopro", p));
+                                          (gDesigner.openPaymentDialog(), gDesigner.stats("action_tooltips_upgradetopro", upgradeToProStatsValue));
                                       })
                                 : ""
                         );
                     return (
-                        d &&
-                            i &&
+                        enhanced &&
+                            video &&
                             setTimeout(() => {
                                 const e = y.find(".g-tooltip-content-video");
                                 if (e.length) {
                                     const t = $("<video />")
                                         .attr("width", 298)
                                         .attr("height", 160)
-                                        .attr("src", i)
+                                        .attr("src", video)
                                         .attr("autoplay", true)
                                         .attr("loop", true);
                                     (t.on("loadeddata", function () {
@@ -140947,7 +140947,7 @@ var GravitDesigner = (function (e) {
                                     }),
                                         e.append(t));
                                 }
-                            }, c),
+                            }, videoTimeout),
                         y
                     );
                 },
@@ -141629,7 +141629,7 @@ var GravitDesigner = (function (e) {
         const o = {
             init: function () {
                 let {
-                    feature: e,
+                    feature,
                     pro: t = true,
                     badgeAlwaysVisible: n = false,
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -141637,7 +141637,7 @@ var GravitDesigner = (function (e) {
                     var o = $(this);
                     if ((o.toggleClass("pro", !!t), o.toggleClass("badge-always-visible", !!n), t)) {
                         const t = gDesigner.getLicense(),
-                            n = t.isLegacy() && gDesigner.isLegacyFeature(e),
+                            n = t.isLegacy() && gDesigner.isLegacyFeature(feature),
                             i = t.isTrial() && !n;
                         if ((o.toggleClass("trial", i), "option" === o.prop("tagName").toLowerCase())) {
                             const e = o.closest("select");
@@ -141645,7 +141645,7 @@ var GravitDesigner = (function (e) {
                                 i && !e.hasClass("has-trial-option") && e.addClass("has-trial-option"));
                         }
                     }
-                    o.toggleClass("legacy-feature", gDesigner.isLegacyFeature(e));
+                    o.toggleClass("legacy-feature", gDesigner.isLegacyFeature(feature));
                 });
             },
         };
@@ -141660,7 +141660,7 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         (require(290), require(4), require(41), require(13), require(38));
-        const { watchDog: o } = require(40 /* GSaveAction */),
+        const { watchDog } = require(40 /* GSaveAction */),
             i = require(433),
             a = {
                 init: function (e) {
@@ -141697,7 +141697,7 @@ var GravitDesigner = (function (e) {
                                                         )
                                                         .on(
                                                             "click",
-                                                            o.trap(
+                                                            watchDog.trap(
                                                                 () => {
                                                                     (a.role.call(this, e),
                                                                         $(this).trigger("rolechange", e),
@@ -141717,17 +141717,17 @@ var GravitDesigner = (function (e) {
                                         .addClass("g-role-selector-buttons")
                                         .append(
                                             e.buttons.map((e) => {
-                                                let { icon: t, label: o, click: i, closeOnClick: a } = e;
+                                                let { icon, label, click, closeOnClick } = e;
                                                 return $("<div/>")
                                                     .addClass("g-role-selector-button")
                                                     .append(
                                                         $("<span/>")
                                                             .addClass("icon")
-                                                            .addClass(t || "")
+                                                            .addClass(icon || "")
                                                     )
-                                                    .append($("<span/>").addClass("label").text(o))
+                                                    .append($("<span/>").addClass("label").text(label))
                                                     .on("click", () => {
-                                                        (i(), a && n.gOverlay("close"));
+                                                        (click(), closeOnClick && n.gOverlay("close"));
                                                     });
                                             })
                                         )

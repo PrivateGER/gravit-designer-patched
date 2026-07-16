@@ -9,8 +9,8 @@ module.exports = function (module, exports, require) {
                 document.addEventListener("mousemove", this._mouseMoveEventHandler.bind(this), true);
             }
             _mouseMoveEventHandler(e) {
-                let { pageX: t, pageY: n } = e;
-                this._lastMousePoint = new GObject.GPoint(t, n);
+                let { pageX, pageY } = e;
+                this._lastMousePoint = new GObject.GPoint(pageX, pageY);
             }
             getLastCursorPoint() {
                 return this._lastMousePoint;

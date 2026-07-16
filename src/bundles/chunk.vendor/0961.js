@@ -6,12 +6,12 @@ module.exports = function (module, exports, require) {
                     e.microsoftStoreServices = {
                         getAccessToken: () => e.GET("/microsoft/store/services/token").then((e) => e.token),
                         updateB2BKeys: (t) => {
-                            let { accessToken: i, keys: n } = t;
+                            let { accessToken, keys } = t;
                             return e.fetchJSON("/microsoft/store/services/b2b/keys", {
                                 method: "POST",
                                 body: {
-                                    accessToken: i,
-                                    keys: n,
+                                    accessToken: accessToken,
+                                    keys: keys,
                                 },
                             });
                         },

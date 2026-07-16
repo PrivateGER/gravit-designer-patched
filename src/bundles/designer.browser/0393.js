@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(3);
-        const { GEvent: o, GObject: i } = require(1 /* GObject */);
+        const { GEvent, GObject } = require(1 /* GObject */);
         function a(e, t) {
             ((this.type = e), (this.data = t));
         }
-        (i.inherit(a, o),
+        (GObject.inherit(a, GEvent),
             (a.prototype.type = null),
             (a.prototype.data = null),
             (a.Type = {

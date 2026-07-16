@@ -592,17 +592,17 @@ module.exports = function (module, exports, require) {
             }),
             (u.prototype._updateSettings = function (e, t) {
                 this._settings = t ? $.extend({ types: [] }, e) : $.extend({ types: [] }, this._settings, e);
-                const { types: n, singleOption: o } = this._settings;
-                if (o) this._toolbar.css("display", "none");
+                const { types, singleOption } = this._settings;
+                if (singleOption) this._toolbar.css("display", "none");
                 else {
                     "none" === this._toolbar.css("display") && this._toolbar.css("display", "");
                     const e = [];
                     for (let t = 0, o = u.PATTERN_TYPES.length; t < o; t++) {
                         var i = u.PATTERN_TYPES[t],
-                            a = !n.length;
+                            a = !types.length;
                         if (!a)
-                            for (var r = 0; r < n.length; ++r)
-                                if (i.isCompatible(n[r])) {
+                            for (var r = 0; r < types.length; ++r)
+                                if (i.isCompatible(types[r])) {
                                     a = true;
                                     break;
                                 }

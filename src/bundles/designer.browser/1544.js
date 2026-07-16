@@ -16,7 +16,7 @@ module.exports = function (module, exports, require) {
             GFilesPanel = require(1545),
             m = require(1558 /* GCommonNames */),
             GPresets = require(1153),
-            { youtubePlaylist: v } = require(1302),
+            { youtubePlaylist } = require(1302),
             GLoginPanel = require(446);
         require(220 /* GCommonNames */);
         const b = require(859),
@@ -564,20 +564,20 @@ module.exports = function (module, exports, require) {
             }),
             (C.prototype.open = function (e) {
                 let {
-                    closable: t,
-                    cb: n,
-                    showCloudOptions: o,
-                    openFromCloud: i,
-                    defaultOption: a,
-                    newOrFromTemplate: r,
-                    documentToSave: s,
-                    cancelSaveCallback: l,
-                    defaultFilename: c,
-                    closeCallback: d,
-                    nativeCloud: u,
-                    showExampleFiles: p,
+                    closable,
+                    cb,
+                    showCloudOptions,
+                    openFromCloud,
+                    defaultOption,
+                    newOrFromTemplate,
+                    documentToSave,
+                    cancelSaveCallback,
+                    defaultFilename,
+                    closeCallback,
+                    nativeCloud,
+                    showExampleFiles,
                 } = e;
-                ((this._cb = n || null), (this._closeCallback = d), (this._openFromCloud = i));
+                ((this._cb = cb || null), (this._closeCallback = closeCallback), (this._openFromCloud = openFromCloud));
                 GCommonNames.isOnline();
                 var g = function () {
                         (this._dialog.find(".sidebar").css("display", ""),
@@ -587,21 +587,21 @@ module.exports = function (module, exports, require) {
                             this._dialog.find(".sidebar").find(".version").css("display", ""));
                     }.bind(this),
                     f = function () {
-                        (this._dialog.find(".cloud-option").css("display", o ? "" : "none"),
+                        (this._dialog.find(".cloud-option").css("display", showCloudOptions ? "" : "none"),
                             this._dialog.find(".option.start-option").trigger("click"),
                             this._dialog.find(".frame").removeClass("cloud-frame"),
                             this._dialog.find(".g-dialog-content").removeClass("cloud-dialog"),
                             this._dialog.parent().removeClass("cloud-files-dialog"),
-                            o &&
-                                i &&
+                            showCloudOptions &&
+                                openFromCloud &&
                                 (this._dialog.find(".sidebar").css("display", "none"),
                                 this._dialog.addClass("cloud-dialog"),
                                 this._dialog.parent().addClass("cloud-files-dialog"),
                                 this._dialog.find(".frame").addClass("cloud-frame"),
-                                this._dialog.find(".cloud-option").trigger("click", [s, l, c, u, p])),
-                            a && this._dialog.find("." + a).trigger("click"));
+                                this._dialog.find(".cloud-option").trigger("click", [documentToSave, cancelSaveCallback, defaultFilename, nativeCloud, showExampleFiles])),
+                            defaultOption && this._dialog.find("." + defaultOption).trigger("click"));
                     }.bind(this);
-                (this._dialog.gDialog("open", t),
+                (this._dialog.gDialog("open", closable),
                     g(),
                     f(),
                     this._updateUI(),

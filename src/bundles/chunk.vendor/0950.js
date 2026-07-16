@@ -29,8 +29,8 @@ module.exports = function (module, exports, require) {
                         ),
                         i = Object.keys(t).length,
                         a = Object.values(GShareRoles).find((e) => {
-                            let { permissions: n } = e;
-                            const r = Object.entries(Object.assign({}, o.ALL_PERMISSIONS_DENIED, n));
+                            let { permissions } = e;
+                            const r = Object.entries(Object.assign({}, o.ALL_PERMISSIONS_DENIED, permissions));
                             if (r.length === i)
                                 return r.every((e) => {
                                     let [i, n] = e;

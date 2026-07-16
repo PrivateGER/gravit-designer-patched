@@ -3,18 +3,18 @@ module.exports = function (module, exports, require) {
         (require(19), require(168 /* PDFFetchStream */), require(30), require(8 /* Symbol */), require(196), require(3), require(91), require(4), require(13), require(32), require(38), require(169 /* PDFNetworkStream */), require(33), require(26), require(125), require(126), require(114));
         var GObject = require(1);
         const {
-                gApi: i,
-                IS_TRUNK: a,
-                IS_BETA: r,
-                NODE_ENV: s,
-                trunkURL: l,
-                betaURL: c,
-                ltsURL: d,
-                rcURL: u,
-                prodURL: p,
-                HAS_ANNOTATIONS: g,
+                gApi,
+                IS_TRUNK,
+                IS_BETA,
+                NODE_ENV,
+                trunkURL,
+                betaURL,
+                ltsURL,
+                rcURL,
+                prodURL,
+                HAS_ANNOTATIONS,
             } = require(10 /* designerConfig */),
-            { sleep: h, watchDog: f } = require(40 /* GSaveAction */),
+            { sleep, watchDog } = require(40 /* GSaveAction */),
             GSystemDialog = require(44),
             y = require(85),
             v = [
@@ -23,7 +23,7 @@ module.exports = function (module, exports, require) {
                     label: new GObject.GLocaleKey("GShareDialog", "text.allow-to-save-label"),
                     info: new GObject.GLocaleKey("GShareDialog", "text.allow-to-save-info"),
                     pro: false,
-                    sharePermissions: { copy: true, comment: !!g },
+                    sharePermissions: { copy: true, comment: !!HAS_ANNOTATIONS },
                     analyticsRef: "save",
                 },
                 {
@@ -32,7 +32,7 @@ module.exports = function (module, exports, require) {
                     info: new GObject.GLocaleKey("GShareDialog", "text.allow-to-inspect-info"),
                     pro: true,
                     default: true,
-                    sharePermissions: { inspect: true, comment: !!g },
+                    sharePermissions: { inspect: true, comment: !!HAS_ANNOTATIONS },
                     analyticsRef: "inspect",
                 },
             ];
@@ -116,7 +116,7 @@ module.exports = function (module, exports, require) {
                                                     .copyToClipboard(n.trim())
                                                     .then(async () => {
                                                         const e = t.find(".share-copied");
-                                                        (e.addClass("visible"), await h(2e3), e.removeClass("visible"));
+                                                        (e.addClass("visible"), await sleep(2e3), e.removeClass("visible"));
                                                     })
                                                     .catch((e) => {
                                                         GSystemDialog.alert(
@@ -135,21 +135,21 @@ module.exports = function (module, exports, require) {
                                 .append(
                                     v.map((e) => {
                                         let {
-                                            id: t,
-                                            label: n,
-                                            info: i,
-                                            sharePermissions: a,
-                                            shareBy: r,
-                                            pro: s,
+                                            id,
+                                            label,
+                                            info,
+                                            sharePermissions,
+                                            shareBy,
+                                            pro,
                                             default: l,
-                                            analyticsRef: c,
+                                            analyticsRef,
                                         } = e;
-                                        const d = $("<div/>").attr("id", t).addClass("share-setting-container"),
+                                        const d = $("<div/>").attr("id", id).addClass("share-setting-container"),
                                             u = (e) => {
                                                 this._toggleLoading(true);
                                                 const t = $(e.target).closest("input").is(":checked");
                                                 gDesigner.stats("sharedialog_click_${analyticsRef}", t);
-                                                const n = Object.entries(a).reduce((e, n) => ((e[n[0]] = n[1] && t), e), {}),
+                                                const n = Object.entries(sharePermissions).reduce((e, n) => ((e[n[0]] = n[1] && t), e), {}),
                                                     o = Object.assign(this._getSharePermissions(), n, {
                                                         access: true,
                                                     });
@@ -160,15 +160,15 @@ module.exports = function (module, exports, require) {
                                                             this._toggleLoading(false);
                                                         }));
                                             },
-                                            p = () => gDesigner.stats("sharedialog_nonprotriespro_".concat(c));
+                                            p = () => gDesigner.stats("sharedialog_nonprotriespro_".concat(analyticsRef));
                                         return (
                                             $("<label/>")
                                                 .addClass("share-setting-input")
                                                 .append(
                                                     $("<input>")
                                                         .attr("type", "checkbox")
-                                                        .on("click", s ? f.trap(u, null, p) : u)
-                                                        .on("mousedown", s ? f.trap(null, null, p) : () => {})
+                                                        .on("click", pro ? watchDog.trap(u, null, p) : u)
+                                                        .on("mousedown", pro ? watchDog.trap(null, null, p) : () => {})
                                                 )
                                                 .append(
                                                     $("<div/>")
@@ -176,13 +176,13 @@ module.exports = function (module, exports, require) {
                                                         .append(
                                                             $("<span/>")
                                                                 .addClass("title")
-                                                                .text(GObject.GLocale.get(n))
-                                                                .append(s ? $("<span></span>").gPro() : "")
+                                                                .text(GObject.GLocale.get(label))
+                                                                .append(pro ? $("<span></span>").gPro() : "")
                                                         )
-                                                        .append($("<span/>").addClass("subtitle").text(GObject.GLocale.get(i)))
+                                                        .append($("<span/>").addClass("subtitle").text(GObject.GLocale.get(info)))
                                                 )
                                                 .appendTo(d),
-                                            r && this._buildShareByInput(r).appendTo(d),
+                                            shareBy && this._buildShareByInput(shareBy).appendTo(d),
                                             d
                                         );
                                     })
@@ -198,7 +198,7 @@ module.exports = function (module, exports, require) {
                         .on("click", () => this.close())
                         .appendTo(this._dialog),
                     this._toggleLoading(true),
-                    i
+                    gApi
                         .getFile(t.getId(), true)
                         .then(async (e) => {
                             if (((this._file = e), this._updateProperties(), this._shareList && this._shareList.length))
@@ -219,7 +219,7 @@ module.exports = function (module, exports, require) {
                         }));
             }
             _handleException(e) {
-                GSystemDialog.alert(i.formatError(e));
+                GSystemDialog.alert(gApi.formatError(e));
             }
             _isSharingByLink() {
                 return true;
@@ -237,7 +237,7 @@ module.exports = function (module, exports, require) {
                                 let { sharePermissions: n } = t;
                                 Object.entries(n).forEach((t) => {
                                     let [n, o] = t;
-                                    Object.assign(e, { [n]: f.check(e[n], o) });
+                                    Object.assign(e, { [n]: watchDog.check(e[n], o) });
                                 });
                             }),
                         e
@@ -252,19 +252,19 @@ module.exports = function (module, exports, require) {
                           (this._shareList && this._shareList.length
                               ? await Promise.all(
                                     this._shareList.map((t) => {
-                                        let { token: n } = t;
-                                        return i.updateShare(n, e);
+                                        let { token } = t;
+                                        return gApi.updateShare(token, e);
                                     })
                                 )
-                              : await i.createShare(this._file.id, e)))
+                              : await gApi.createShare(this._file.id, e)))
                     : this._isSharingByLink() &&
                       (await Promise.all(
                           this._shareList.map((e) => {
                               let { token: t } = e;
-                              return i.deleteShare(t);
+                              return gApi.deleteShare(t);
                           })
                       )),
-                    (this._file = await i.getFile(this._file.id, true)),
+                    (this._file = await gApi.getFile(this._file.id, true)),
                     this._updateProperties());
             }
             _updateProperties() {
@@ -295,15 +295,15 @@ module.exports = function (module, exports, require) {
             _getOrigin() {
                 return gContainer.getRuntime() === y.Runtime.Browser || gContainer.getRuntime() === y.Runtime.PWA
                     ? location.origin
-                    : a
-                      ? l
-                      : r
-                        ? c
-                        : "rc" === s
-                          ? u
-                          : "lts" === s
-                            ? d
-                            : p;
+                    : IS_TRUNK
+                      ? trunkURL
+                      : IS_BETA
+                        ? betaURL
+                        : "rc" === NODE_ENV
+                          ? rcURL
+                          : "lts" === NODE_ENV
+                            ? ltsURL
+                            : prodURL;
             }
             _buildShareByInput(e) {
                 if ("user" === e) return $("<div/>").css("display", "none").addClass("share-emails").gShareUserInput();

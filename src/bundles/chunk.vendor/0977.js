@@ -25,13 +25,13 @@ module.exports = function (module, exports, require) {
                 a = require(375),
                 s = (require(373), require(354)),
                 l = require(582),
-                { PasswordLength: h } = require(581),
+                { PasswordLength } = require(581),
                 A = require(978),
-                { Events: c } = (require(584), require(431)),
-                { learnmore: p } = require(253),
+                { Events } = (require(584), require(431)),
+                { learnmore } = require(253),
                 GOfflineDialog = require(980),
-                { PRIVACY_URL: d, SUPPORT_URL: g, IMPORT_EXPORT_DOCUMENTATION: f, VECTOR_PRODUCT_PAGE: m, CORELDRAW_PAGE: y } = require(374 /* SUPPORT_URL */),
-                { getSupportUrl: _, getSubscriptionUrl: v, getUrlWithQueryParams: b } = require(254),
+                { PRIVACY_URL, SUPPORT_URL, IMPORT_EXPORT_DOCUMENTATION, VECTOR_PRODUCT_PAGE, CORELDRAW_PAGE } = require(374 /* SUPPORT_URL */),
+                { getSupportUrl, getSubscriptionUrl, getUrlWithQueryParams } = require(254),
                 C = (require(430), /xmas/),
                 w = (e) => {
                     32 === (e.which || e.keyCode) && (e.preventDefault(), o(e.target).click());
@@ -81,15 +81,15 @@ module.exports = function (module, exports, require) {
             };
 
             function P(e) {
-                let { impl: t, gApi: i, anonymous: s, version: l, runtime: h, options: A = {}, flow: c, query: p = {} } = e;
-                ((this._impl = t),
-                    (this._gApi = i),
-                    (this._anonymous = !!s),
-                    (this._version = l),
-                    (this._runtimeCode = h),
+                let { impl, gApi, anonymous, version, runtime, options: A = {}, flow, query: p = {} } = e;
+                ((this._impl = impl),
+                    (this._gApi = gApi),
+                    (this._anonymous = !!anonymous),
+                    (this._version = version),
+                    (this._runtimeCode = runtime),
                     (this._options = A),
                     (this._closeable = true),
-                    (this._flow = c),
+                    (this._flow = flow),
                     (this._query = p),
                     n.setLanguage(this._impl.getLanguage()),
                     this._gApi.setLanguage(this._impl.getLanguage()));
@@ -144,7 +144,7 @@ module.exports = function (module, exports, require) {
                             o("<span></span>").html(
                                 n
                                     .get(new r("GLoginDialog", "text.tooltip-trouble-login"))
-                                    .replace("%support-link", '<span class="support-link">'.concat(_(), "</span>"))
+                                    .replace("%support-link", '<span class="support-link">'.concat(getSupportUrl(), "</span>"))
                             )
                         )),
                     this._helpTip.find(".support-link").on(
@@ -154,7 +154,7 @@ module.exports = function (module, exports, require) {
                             (a("login-signup_".concat(e, "_support"), null, false),
                                 this._impl.openExternalLink({
                                     dialog: this,
-                                    link: b(_(), this._getUTMCampaignParams()),
+                                    link: getUrlWithQueryParams(getSupportUrl(), this._getUTMCampaignParams()),
                                 }));
                         }.bind(this)
                     ),
@@ -224,7 +224,7 @@ module.exports = function (module, exports, require) {
                             .append(o("<div></div>").addClass("g-cloud-ui-login-dialog").append(this._dialog))
                             .append(this._modal)
                             .append(this._overlay),
-                        p || e.addClass("g-cloud-ui-no-learn-more"),
+                        learnmore || e.addClass("g-cloud-ui-no-learn-more"),
                         this.focus());
                 }),
                 (P.prototype._getFormattedVersion = function () {
@@ -472,8 +472,8 @@ module.exports = function (module, exports, require) {
                                 o("<span></span>").text(
                                     n
                                         .get(new r("GLoginDialog", "text.sign-up-password-min-max"))
-                                        .replace("%min-number", h.Minimum)
-                                        .replace("%max-number", h.Maximum)
+                                        .replace("%min-number", PasswordLength.Minimum)
+                                        .replace("%max-number", PasswordLength.Maximum)
                                 )
                             )
                             .appendTo(t),
@@ -528,7 +528,7 @@ module.exports = function (module, exports, require) {
                                                     a("login-signup_create-account_privacy-policy", null, true),
                                                     this._impl.openExternalLink({
                                                         dialog: this,
-                                                        link: b(d, this._getUTMCampaignParams()),
+                                                        link: getUrlWithQueryParams(PRIVACY_URL, this._getUTMCampaignParams()),
                                                     }),
                                                     false
                                                 )
@@ -545,7 +545,7 @@ module.exports = function (module, exports, require) {
                                     a("login-signup_create-account_terms-of-use", null, true),
                                     this._impl.openExternalLink({
                                         dialog: this,
-                                        link: b("https://www.corel.com/terms/", this._getUTMCampaignParams()),
+                                        link: getUrlWithQueryParams("https://www.corel.com/terms/", this._getUTMCampaignParams()),
                                     }),
                                     false
                                 )
@@ -559,7 +559,7 @@ module.exports = function (module, exports, require) {
                                     a("login-signup_create-account_eula", null, true),
                                     this._impl.openExternalLink({
                                         dialog: this,
-                                        link: b("https://www.corel.com/eula", this._getUTMCampaignParams()),
+                                        link: getUrlWithQueryParams("https://www.corel.com/eula", this._getUTMCampaignParams()),
                                     }),
                                     false
                                 )
@@ -626,7 +626,7 @@ module.exports = function (module, exports, require) {
                     return (
                         o("<span></span>")
                             .addClass("info")
-                            .html(n.getValue("GLoginDialog", "text.create-account-info").replace("%privacy-link", d))
+                            .html(n.getValue("GLoginDialog", "text.create-account-info").replace("%privacy-link", PRIVACY_URL))
                             .appendTo(g)
                             .find("a")
                             .on("click", (e) => {
@@ -637,7 +637,7 @@ module.exports = function (module, exports, require) {
                                     a("login-signup_create-account_".concat(i), null, true),
                                     this._impl.openExternalLink({
                                         dialog: this,
-                                        link: b(t, this._getUTMCampaignParams()),
+                                        link: getUrlWithQueryParams(t, this._getUTMCampaignParams()),
                                     }),
                                     false
                                 );
@@ -815,7 +815,7 @@ module.exports = function (module, exports, require) {
                     return (
                         o("<span></span>")
                             .addClass("info")
-                            .html(n.getValue("GLoginDialog", "text.create-account-info").replace("%privacy-link", d))
+                            .html(n.getValue("GLoginDialog", "text.create-account-info").replace("%privacy-link", PRIVACY_URL))
                             .appendTo(i)
                             .find("a")
                             .on("click", (e) => {
@@ -826,7 +826,7 @@ module.exports = function (module, exports, require) {
                                     a("login-signup_login_".concat(i), null, true),
                                     this._impl.openExternalLink({
                                         dialog: this,
-                                        link: b(t, this._getUTMCampaignParams()),
+                                        link: getUrlWithQueryParams(t, this._getUTMCampaignParams()),
                                     }),
                                     false
                                 );
@@ -840,24 +840,24 @@ module.exports = function (module, exports, require) {
                                 title: n.get(new r("GLoginDialog", "text.title-discontinued-eol-date")),
                                 content: n
                                     .get(new r("GLoginDialog", "text.title-discontinued-eol-date-details"))
-                                    .replace("%support-link", g),
+                                    .replace("%support-link", SUPPORT_URL),
                             },
                             {
                                 title: n.get(new r("GLoginDialog", "text.title-discontinued-avoid-losing-work")),
                                 content: n.get(new r("GLoginDialog", "text.title-discontinued-avoid-losing-work-details")),
                                 action: {
                                     text: n.get(new r("GLoginDialog", "text.title-discontinued-export-your-files")),
-                                    link: f,
+                                    link: IMPORT_EXPORT_DOCUMENTATION,
                                 },
                             },
                             {
                                 title: n.get(new r("GLoginDialog", "text.title-discontinued-sign-up-closed")),
                                 content: n
                                     .get(new r("GLoginDialog", "text.title-discontinued-sign-up-closed-details"))
-                                    .replace("%product-link", y),
+                                    .replace("%product-link", CORELDRAW_PAGE),
                                 action: {
                                     text: n.get(new r("GLoginDialog", "text.title-discontinued-sign-up-closed-learn-more")),
-                                    link: m,
+                                    link: VECTOR_PRODUCT_PAGE,
                                 },
                             },
                         ],
@@ -890,20 +890,20 @@ module.exports = function (module, exports, require) {
                                     coupon: this._coupon,
                                 })
                                 .then((t) => {
-                                    let { price: i, listPrice: o, locale: a, currency: s } = t,
+                                    let { price, listPrice, locale, currency } = t,
                                         l = "";
-                                    i && o && (l = 5 * parseInt(Math.floor((100 * (1 - i / o)) / 5)) + "%");
+                                    price && listPrice && (l = 5 * parseInt(Math.floor((100 * (1 - price / listPrice)) / 5)) + "%");
                                     const h = {
                                         style: "currency",
-                                        currency: s,
+                                        currency: currency,
                                     };
-                                    i &&
-                                        Math.round(i) === i &&
+                                    price &&
+                                        Math.round(price) === price &&
                                         Object.assign(h, {
                                             minimumFractionDigits: 0,
                                             maximumFractionDigits: 0,
                                         });
-                                    const A = i ? i.toLocaleString(a || n.getLocaleLanguageTag(navigator.language), h) : "";
+                                    const A = price ? price.toLocaleString(locale || n.getLocaleLanguageTag(navigator.language), h) : "";
                                     A &&
                                         l &&
                                         e.html(
@@ -914,21 +914,21 @@ module.exports = function (module, exports, require) {
                         (a.html(n.get(new r("GLoginDialog", "text.title-discontinued-thanks"))),
                             s.append(
                                 e.map((e) => {
-                                    let { title: t, content: i, action: n } = e;
+                                    let { title, content, action } = e;
                                     const r = o("<div></div>")
                                         .addClass("topic")
-                                        .append(o("<div></div>").text(t).css("font-size", "12pt").css("font-weight", "bold"))
-                                        .append(o("<div></div>").html(i).css("font-size", "12pt"));
+                                        .append(o("<div></div>").text(title).css("font-size", "12pt").css("font-weight", "bold"))
+                                        .append(o("<div></div>").html(content).css("font-size", "12pt"));
                                     return (
-                                        n &&
+                                        action &&
                                             r.append(
                                                 o("<button></button>")
                                                     .addClass("buynow round-corner")
-                                                    .text(n.text)
+                                                    .text(action.text)
                                                     .on("click", () => {
                                                         this._impl.openExternalLink({
                                                             dialog: this,
-                                                            link: n.link,
+                                                            link: action.link,
                                                         });
                                                     })
                                                     .css("width", "fit-content")
@@ -987,9 +987,9 @@ module.exports = function (module, exports, require) {
                                 event: "USER_SIGN_UP_EVENT",
                             })),
                             this._toggleLoading(true));
-                        const { flags: { welcomeMessage: t } = {} } = await this._gApi.getUserSettings().catch(() => Object.create({}));
+                        const { flags: { welcomeMessage } = {} } = await this._gApi.getUserSettings().catch(() => Object.create({}));
                         if (
-                            !t &&
+                            !welcomeMessage &&
                             e.new &&
                             (await this._gApi.updateUserSettings({
                                 flags: {

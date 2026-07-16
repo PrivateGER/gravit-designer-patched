@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             i = require(31),
             GCategory = require(18);
-        const { gApi: r } = require(10 /* designerConfig */);
+        const { gApi } = require(10 /* designerConfig */);
         var s = require(337);
         function l() {}
         (GObject.GObject.inherit(l, i),
@@ -29,9 +29,9 @@ module.exports = function (module, exports, require) {
                 return gDesigner.isBeta();
             }),
             (l.prototype.execute = async function () {
-                const e = await r.getUserSettings(),
+                const e = await gApi.getUserSettings(),
                     t = (e.flags && e.flags.betaProLicense) || false;
-                r.updateUserSettings({ flags: { betaProLicense: !t } }).then(() => {
+                gApi.updateUserSettings({ flags: { betaProLicense: !t } }).then(() => {
                     s.checkLicense();
                 });
             }),

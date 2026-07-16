@@ -49,8 +49,8 @@ module.exports = function (module, exports, require) {
                     : null;
             }),
             (u.prototype._userLoggedEvent = function (e) {
-                const { user: t } = e;
-                (t ? (this._initializeUserCache(), this._userCache.setCacheValue(t)) : this._removeUserCache(), this._resetAllCache());
+                const { user } = e;
+                (user ? (this._initializeUserCache(), this._userCache.setCacheValue(user)) : this._removeUserCache(), this._resetAllCache());
             }),
             (u.prototype._removeUserCache = function () {
                 this._userCache = null;
@@ -93,8 +93,8 @@ module.exports = function (module, exports, require) {
                     }
             }),
             (u.prototype._collaborationEvent = function (e) {
-                const { sender: t, type: n } = e;
-                n === c.Type.ShareUpdate && this._updateDocState(t);
+                const { sender, type } = e;
+                type === c.Type.ShareUpdate && this._updateDocState(sender);
             }),
             (u.prototype._getFileExtended = async function (e) {
                 const t = (e = e || gDesigner.getActiveDocument()) && e.getStorageItem();

@@ -15,15 +15,15 @@ module.exports = function (module, exports, require) {
             h = require(1323),
             f = require(86),
             {
-                DESIGNER: m,
-                SHARE_ENGINE: y,
-                HAS_ANNOTATIONS: v,
-                gApi: _,
-                ShareRoles: b,
-                SharePermissions: w,
-                Share: C,
-                LEGACY_SHARE_DIALOG: x,
-                ENABLE_REQUEST_ACCESS: S,
+                DESIGNER,
+                SHARE_ENGINE,
+                HAS_ANNOTATIONS,
+                gApi,
+                ShareRoles,
+                SharePermissions,
+                Share,
+                LEGACY_SHARE_DIALOG,
+                ENABLE_REQUEST_ACCESS,
             } = require(10 /* designerConfig */),
             E = require(433),
             A = require(1324),
@@ -32,9 +32,9 @@ module.exports = function (module, exports, require) {
             P = require(868),
             D = require(536),
             GDocument = require(237),
-            I = require(x ? 1566 : 1567);
+            I = require(LEGACY_SHARE_DIALOG ? 1566 : 1567);
         function k() {
-            (y && (gDesigner.addEventListener(c, this._userEvent, this), gDesigner.addEventListener(d, this._documentEvent, this)),
+            (SHARE_ENGINE && (gDesigner.addEventListener(c, this._userEvent, this), gDesigner.addEventListener(d, this._documentEvent, this)),
                 (this._states = new Map()),
                 (this._isDefaulNotificationAlreadyShown = new Map()));
         }
@@ -99,27 +99,27 @@ module.exports = function (module, exports, require) {
                     }
             }),
             (k.prototype.isPermissionRequestEnabled = function () {
-                return S && !gDesigner.getLicense().isGuest();
+                return ENABLE_REQUEST_ACCESS && !gDesigner.getLicense().isGuest();
             }),
             (k.prototype.getRole = function (e) {
                 e = e || gDesigner.getActiveDocument();
-                const { role: t } = this._getState(e);
-                return t || E.ROLES.NO_ACCESS_ROLE;
+                const { role } = this._getState(e);
+                return role || E.ROLES.NO_ACCESS_ROLE;
             }),
             (k.prototype._collaborationEvent = async function (e) {
-                const { sender: t, type: n } = e;
-                if (t === gDesigner.getActiveDocument())
-                    switch (n) {
+                const { sender, type } = e;
+                if (sender === gDesigner.getActiveDocument())
+                    switch (type) {
                         case g.Type.ShareUpdate:
-                            (this.resetCollaboratorsCached(t), this._getState(t).sharing || (await this._updateState(t)));
-                            const e = this.getRole(t);
-                            if (await this._checkAccessAndUpdateState(t)) {
-                                const n = this.getRole(t);
-                                e.equals(n) || (t.getStatus() !== f.Loading && this._showRoleNotification(t));
+                            (this.resetCollaboratorsCached(sender), this._getState(sender).sharing || (await this._updateState(sender)));
+                            const e = this.getRole(sender);
+                            if (await this._checkAccessAndUpdateState(sender)) {
+                                const n = this.getRole(sender);
+                                e.equals(n) || (sender.getStatus() !== f.Loading && this._showRoleNotification(sender));
                             }
                             break;
                         case g.Type.UserUpdate:
-                            this._updateRealtimeCollaborators(t);
+                            this._updateRealtimeCollaborators(sender);
                     }
             }),
             (k.prototype._userEvent = async function () {
@@ -149,7 +149,7 @@ module.exports = function (module, exports, require) {
                     return;
                 const t = e.isDocumentFromTemplate() && e.isShared();
                 let n;
-                if (t) n = { name: m.TITLE };
+                if (t) n = { name: DESIGNER.TITLE };
                 else {
                     const t = await gDesigner.getUser(),
                         o = await this._getFileExtended(e);
@@ -171,11 +171,11 @@ module.exports = function (module, exports, require) {
                     e.setOwner(n);
                     const o = [];
                     if (t) o.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.template-shared-by")).replace("%name", n.name));
-                    else if ((o.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.shared-by")).replace("%name", n.name)), !x)) {
+                    else if ((o.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.shared-by")).replace("%name", n.name)), !LEGACY_SHARE_DIALOG)) {
                         const t = this.getRole(e);
                         t && t.getStatus() && o.push(t.getStatus());
                     }
-                    if (x) {
+                    if (LEGACY_SHARE_DIALOG) {
                         const t = this._getState(e);
                         t.copy || t.inspect
                             ? (t.copy || o.push(GObject.GLocale.get(new GObject.GLocaleKey("GShareManager", "text.save-warning"))),
@@ -198,7 +198,7 @@ module.exports = function (module, exports, require) {
                 return !!(await this._getFileExtended(e).catch(() => false));
             }),
             (k.prototype.getRealtimeCollaborators = async function (e) {
-                return _.realtime
+                return gApi.realtime
                     .getCollaborators(e.id, { anonymous: false })
                     .then((t) =>
                         t.map((t) => {
@@ -206,7 +206,7 @@ module.exports = function (module, exports, require) {
                                 const n = e.getPrivateShare(t.access_id);
                                 if (n) return E.makeFromShare(n);
                                 const o = e.getPublicShare();
-                                return o ? E.makeFromShare(o) : E.makeFromShareRole(b.NoAccess);
+                                return o ? E.makeFromShare(o) : E.makeFromShareRole(ShareRoles.NoAccess);
                             })(t);
                             return new A(Object.assign(t, { role: n }));
                         })
@@ -244,7 +244,7 @@ module.exports = function (module, exports, require) {
                                     const n = e.getPrivateShare(t.getUID());
                                     if (n) return E.makeFromShare(n);
                                     const o = e.getPublicShare();
-                                    return o ? E.makeFromShare(o) : E.makeFromShareRole(b.NoAccess);
+                                    return o ? E.makeFromShare(o) : E.makeFromShareRole(ShareRoles.NoAccess);
                                 })(n);
                             return (n.setRole(o), n);
                         })
@@ -330,24 +330,24 @@ module.exports = function (module, exports, require) {
                 if (!t) throw new r.default("File object is required");
                 const o = (0, GSaveAction.getFileStateAndRole)(e, t, n);
                 let i = o.role;
-                const { state: a } = o;
+                const { state } = o;
                 if (!i) {
                     const e = t.getPublicShare();
                     if (e) {
-                        const { copy: t, inspect: n, comment: o, edit: r } = e;
+                        const { copy, inspect, comment, edit } = e;
                         ((i = E.makeFromShare(e)),
-                            Object.assign(a, {
+                            Object.assign(state, {
                                 owner: false,
-                                edit: r,
-                                copy: t,
-                                inspect: n,
-                                comment: !!v && o,
+                                edit: edit,
+                                copy: copy,
+                                inspect: inspect,
+                                comment: !!HAS_ANNOTATIONS && comment,
                             }));
                     }
                 }
-                a.role = i || E.ROLES.NO_ACCESS_ROLE;
+                state.role = i || E.ROLES.NO_ACCESS_ROLE;
                 const l = await this.getRealtimeCollaborators(t);
-                Object.assign(a, { realtimeCollaborators: l });
+                Object.assign(state, { realtimeCollaborators: l });
             }),
             (k.prototype._updateRealtimeCollaborators = async function (e) {
                 const t = await this._getFileExtended(e);
@@ -388,9 +388,9 @@ module.exports = function (module, exports, require) {
                     });
                     if (o) return o.getRole().level;
                     const e = n.getPublicShare();
-                    return e ? e.getRole().level : new E.makeFromShareRole(b.NoAccess);
+                    return e ? e.getRole().level : new E.makeFromShareRole(ShareRoles.NoAccess);
                 }
-                return new E.makeFromShareRole(b.NoAccess).level;
+                return new E.makeFromShareRole(ShareRoles.NoAccess).level;
             }),
             (k.prototype._requestAccessIfAbsent = async function (e) {
                 return !e.isShareable() || !!(await this._canAccess(e)) || (this._openRequestAccessDialog(e), false);
@@ -399,13 +399,13 @@ module.exports = function (module, exports, require) {
                 if (!e.isShareable()) return;
                 if (!e.getFocusAnnotationId()) return;
                 const t = this.getRole(e);
-                (t && t.is(b.Owner)) || t.hasPermission(w.COMMENT) || this._requestPermissionToComment(e);
+                (t && t.is(ShareRoles.Owner)) || t.hasPermission(SharePermissions.COMMENT) || this._requestPermissionToComment(e);
             }),
             (k.prototype._requestPermissionToComment = function (e) {
                 if (this._requestPermissionDialog) return;
                 const t = this.getRole(e);
                 t &&
-                    !t.is(b.NoAccess) &&
+                    !t.is(ShareRoles.NoAccess) &&
                     (this._requestPermissionDialog = this._createRequestDialog(e, {
                         className: "g-request-permission-dialog",
                         openCallback: () => {
@@ -456,21 +456,21 @@ module.exports = function (module, exports, require) {
             (k.prototype._createRequestDialog = function (e) {
                 let {
                     className: t = "",
-                    title: n,
-                    subtitle: o,
-                    closeCallback: a,
-                    requestButton: { label: r, permissions: s = {} } = {},
-                    statType: c,
+                    title,
+                    subtitle,
+                    closeCallback,
+                    requestButton: { label, permissions: s = {} } = {},
+                    statType,
                 } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 var d = [];
                 return (
                     this.isPermissionRequestEnabled() &&
                         d.push({
-                            label: r,
+                            label: label,
                             onclick: (t) => {
-                                gDesigner.stats("permission-dialog_".concat(c, "_request-access"));
+                                gDesigner.stats("permission-dialog_".concat(statType, "_request-access"));
                                 const n = Object.assign(s, { isToken: !e.getId() });
-                                _.requestPermission(e.getId() || e.getFailedDocumentIdOrToken(), n)
+                                gApi.requestPermission(e.getId() || e.getFailedDocumentIdOrToken(), n)
                                     .then(() => {
                                         (t.gDialog("close"), (this._requestEmailHasBeenSent = true));
                                     })
@@ -482,7 +482,7 @@ module.exports = function (module, exports, require) {
                     d.push({
                         label: GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")),
                         onclick: async (t) => {
-                            (gDesigner.stats("permission-dialog_".concat(c, "_click-ok")),
+                            (gDesigner.stats("permission-dialog_".concat(statType, "_click-ok")),
                                 t.gDialog("close"),
                                 (await this._isUserUnableToOperateSystem(e)) && gDesigner.signout(true));
                         },
@@ -492,9 +492,9 @@ module.exports = function (module, exports, require) {
                         icon: "error",
                         closeable: false,
                         className: t,
-                        closeCallback: a,
-                        title: n,
-                        subtitle: o,
+                        closeCallback: closeCallback,
+                        title: title,
+                        subtitle: subtitle,
                         buttons: d,
                     })
                 );
@@ -517,14 +517,14 @@ module.exports = function (module, exports, require) {
                         a = [],
                         r = [];
                     (t.forEach((t) => {
-                        let { email: i, role: a, externalRole: r } = t;
-                        if (i) {
+                        let { email, role: a, externalRole } = t;
+                        if (email) {
                             let t = false;
                             (o.some((n) => {
                                 let { email: o, role: a } = n;
-                                if (i && i === o && e.rolesMatch(r, a)) return ((t = true), t);
+                                if (email && email === o && e.rolesMatch(externalRole, a)) return ((t = true), t);
                             }),
-                                t || n.push({ email: i, role: a }));
+                                t || n.push({ email: email, role: a }));
                         }
                     }),
                         o.forEach((e) => {
@@ -533,21 +533,21 @@ module.exports = function (module, exports, require) {
                                 let { email: o } = t;
                                 if (e.email === o) return ((n = true), n);
                             }),
-                                n || E.makeFromShare(e).is(b.NoAccess) || a.push({ email: e.email }));
+                                n || E.makeFromShare(e).is(ShareRoles.NoAccess) || a.push({ email: e.email }));
                         }),
                         n.length &&
                             r.concat(
                                 n.map(async (t) => {
                                     let { email: n, role: o } = t;
                                     if (i.getEmail() === n) return null;
-                                    const a = Object.values(b).find((e) => {
-                                            let { id: t } = e;
-                                            return t === o;
+                                    const a = Object.values(ShareRoles).find((e) => {
+                                            let { id } = e;
+                                            return id === o;
                                         }),
-                                        r = o && a ? a : b.NoAccess,
-                                        s = new C().assignRole(r);
+                                        r = o && a ? a : ShareRoles.NoAccess,
+                                        s = new Share().assignRole(r);
                                     try {
-                                        return await _.shareWithUser(e.getId(), n, s);
+                                        return await gApi.shareWithUser(e.getId(), n, s);
                                     } catch (e) {
                                         return null;
                                     }
@@ -557,7 +557,7 @@ module.exports = function (module, exports, require) {
                         r.concat(
                             a.map(async (t) => {
                                 let { email: n } = t;
-                                return _.shareWithUser(e.getId(), n, new C().assignRole(b.NoAccess));
+                                return gApi.shareWithUser(e.getId(), n, new Share().assignRole(ShareRoles.NoAccess));
                             })
                         );
                     return Promise.all(r);
@@ -573,7 +573,7 @@ module.exports = function (module, exports, require) {
                 return null;
             }),
             (k.prototype.isShareProRestricted = function () {
-                return C.isPro() && !gDesigner.isEnabledProFeatures();
+                return Share.isPro() && !gDesigner.isEnabledProFeatures();
             }),
             (module.exports = k));
     };

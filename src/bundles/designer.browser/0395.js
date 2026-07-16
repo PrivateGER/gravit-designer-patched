@@ -6,7 +6,7 @@ module.exports = function (module, exports, require) {
             a = require(394),
             r = require(135),
             s = require(863),
-            { SidebarsIds: l } = require(198 /* SidebarsIds */),
+            { SidebarsIds } = require(198 /* SidebarsIds */),
             c = require(807);
         function d(e, t, n) {
             ((this._htmlElement = e),
@@ -56,8 +56,8 @@ module.exports = function (module, exports, require) {
                             if (e) {
                                 const t =
                                     e.find((e) => {
-                                        let { def: t } = e;
-                                        return !!t;
+                                        let { def } = e;
+                                        return !!def;
                                     }) || e[0];
                                 t && this.setActiveTouchTool(t);
                             }
@@ -157,7 +157,7 @@ module.exports = function (module, exports, require) {
                                     this._updateBadge(e));
                             }.bind(this)
                         ),
-                            e.getId() === l.GInspectorSidebar &&
+                            e.getId() === SidebarsIds.GInspectorSidebar &&
                                 e.addEventListener(
                                     d.SidebarEvent,
                                     function (e) {

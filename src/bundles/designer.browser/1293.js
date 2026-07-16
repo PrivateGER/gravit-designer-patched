@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(20), require(3), require(34), require(4), require(13));
         var GObject = require(1);
-        const { FILE_FORMATS: i, CLOUD_SYNC_FEATURE: { NEW_LAYOUT: a } = {} } = require(10 /* designerConfig */),
+        const { FILE_FORMATS, CLOUD_SYNC_FEATURE: { NEW_LAYOUT } = {} } = require(10 /* designerConfig */),
             GCategory = require(18),
             s = require(31),
             GCommonNames = require(119),
@@ -11,7 +11,7 @@ module.exports = function (module, exports, require) {
             GDocument = require(163),
             GSaveAsAction = require(445),
             GSystemDialog = require(44),
-            h = i.find((e) => e.default).ext;
+            h = FILE_FORMATS.find((e) => e.default).ext;
         function f() {}
         (GObject.GObject.inherit(f, s),
             (f.ID = "sync"),
@@ -37,7 +37,7 @@ module.exports = function (module, exports, require) {
                 }
             }),
             (f.prototype.isAvailable = function () {
-                return !!a;
+                return !!NEW_LAYOUT;
             }),
             (f.prototype.getTitle = function () {
                 const e = gDesigner.getActiveDocument();

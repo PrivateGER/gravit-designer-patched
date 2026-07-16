@@ -4,24 +4,24 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GPlatform = require(15);
         const {
-                FileExtended: a,
-                gApi: r,
-                trunkURL: s,
-                betaURL: l,
-                ltsURL: c,
-                rcURL: d,
-                prodURL: u,
-                DateAPI: p,
-                ShareRoles: g,
-                Share: h,
-                REMOVE_GUEST_USER_WHEN_ROLE_IS_NO_ACCESS: f,
-                ENABLE_GUEST_ACCESS: m,
+                FileExtended,
+                gApi,
+                trunkURL,
+                betaURL,
+                ltsURL,
+                rcURL,
+                prodURL,
+                DateAPI,
+                ShareRoles,
+                Share,
+                REMOVE_GUEST_USER_WHEN_ROLE_IS_NO_ACCESS,
+                ENABLE_GUEST_ACCESS,
                 defaultUserSettings: {
                     share: { defaults: { private: { pro: y = true } = {} } = {}, quotas: { free: { private: v = 0 } = {} } = {} } = {},
                 } = {},
             } = require(10 /* designerConfig */),
-            { IS_TRUNK: _, IS_BETA: b, IS_RC: w, IS_LTS: C } = require(231 /* IS_TRUNK */),
-            { sleep: x } = require(40 /* GSaveAction */),
+            { IS_TRUNK, IS_BETA, IS_RC, IS_LTS } = require(231 /* IS_TRUNK */),
+            { sleep } = require(40 /* GSaveAction */),
             S = require(177),
             GSystemDialog = require(44),
             A = require(85),
@@ -33,7 +33,7 @@ module.exports = function (module, exports, require) {
         class I {
             constructor(e, t, n) {
                 ((this._user = e),
-                    (this._sharedFile = new a()),
+                    (this._sharedFile = new FileExtended()),
                     (this._initialSharedFile = null),
                     (this._statistics = null),
                     (this._storageItem = t),
@@ -58,7 +58,7 @@ module.exports = function (module, exports, require) {
                 if (!this._sharedFile.getPublicShare()) {
                     const t = G.ROLES.DEFAULT_PUBLIC_ROLE;
                     if (t) {
-                        const n = new h().assignRole(t);
+                        const n = new Share().assignRole(t);
                         return this._storageItem.supportsExternalSharing()
                             ? this._storageItem
                                   .requestExternalShare(null, n)
@@ -68,7 +68,7 @@ module.exports = function (module, exports, require) {
                     }
                 }
                 function e(e) {
-                    return r
+                    return gApi
                         .createShare(this._storageItem.getId(), e)
                         .then(
                             () => (
@@ -124,7 +124,7 @@ module.exports = function (module, exports, require) {
                                                         .copyToClipboard(n.trim())
                                                         .then(async () => {
                                                             const e = t.find(".share-copied");
-                                                            (e.addClass("visible"), await x(2e3), e.removeClass("visible"));
+                                                            (e.addClass("visible"), await sleep(2e3), e.removeClass("visible"));
                                                         })
                                                         .catch((e) => {
                                                             GSystemDialog.alert(
@@ -191,7 +191,7 @@ module.exports = function (module, exports, require) {
                         ((this._sharedFile = e), this._initialSharedFile || (this._initialSharedFile = this._sharedFile.clone()));
                     })
                     .then(async () => {
-                        this._statistics = await r.getSharingStatistics();
+                        this._statistics = await gApi.getSharingStatistics();
                     });
             }
             _setSelectedPrivateShare(e) {
@@ -203,7 +203,7 @@ module.exports = function (module, exports, require) {
                 }
             }
             _handleException(e) {
-                (console.error(e.stack ? e.stack : e), GSystemDialog.alert(r.formatError(e)), this._toggleLoading(false));
+                (console.error(e.stack ? e.stack : e), GSystemDialog.alert(gApi.formatError(e)), this._toggleLoading(false));
             }
             _getPrivateAndInvitedShareList() {
                 const e = this._sharedFile.getPrivateShareList().filter((e) => !e.owner || e.id !== this._user.getUID()),
@@ -212,9 +212,9 @@ module.exports = function (module, exports, require) {
             }
             _getShareListLayout(e) {
                 return GObject.GUtil.bubbleSort(e, (e, t) => {
-                    let { created: n } = e,
+                    let { created } = e,
                         { created: o } = t;
-                    return p.gt(n, o, false) ? 1 : p.lt(n, o, false) ? -1 : 0;
+                    return DateAPI.gt(created, o, false) ? 1 : DateAPI.lt(created, o, false) ? -1 : 0;
                 }).map((e) => {
                     const t = new S(e),
                         n = t.getUID(),
@@ -229,7 +229,7 @@ module.exports = function (module, exports, require) {
                                       click: () => {
                                           (gDesigner.stats("sharedialog_private-share_resend"),
                                               this._toggleLoading(true),
-                                              r.share
+                                              gApi.share
                                                   .sendInvitationEmails(this._storageItem.getId(), [i])
                                                   .then(() => {
                                                       GSystemDialog.alert(
@@ -264,7 +264,7 @@ module.exports = function (module, exports, require) {
                             .on("rolechange", (t) => {
                                 const r = $(t.target).closest(".g-role-selector").gRoleSelector("role");
                                 r
-                                    ? f && a && r.is(g.NoAccess)
+                                    ? REMOVE_GUEST_USER_WHEN_ROLE_IS_NO_ACCESS && a && r.is(ShareRoles.NoAccess)
                                         ? this._unshareWithUser({ id: n, email: i, role: r })
                                         : this._shareWithUser({ id: n, email: i, role: r }, e.assignRole(r)).catch(() => {
                                               $(t.target).closest(".g-role-selector").gRoleSelector("restoreRole");
@@ -316,15 +316,15 @@ module.exports = function (module, exports, require) {
             _getOrigin() {
                 return gContainer.getRuntime() === A.Runtime.Browser || gContainer.getRuntime() === A.Runtime.PWA
                     ? location.origin
-                    : _
-                      ? s
-                      : b
-                        ? l
-                        : w
-                          ? d
-                          : C
-                            ? c
-                            : u;
+                    : IS_TRUNK
+                      ? trunkURL
+                      : IS_BETA
+                        ? betaURL
+                        : IS_RC
+                          ? rcURL
+                          : IS_LTS
+                            ? ltsURL
+                            : prodURL;
             }
             _buildShareByLink() {
                 const e = this._createShareSetting({
@@ -357,7 +357,7 @@ module.exports = function (module, exports, require) {
                                     : a.call(this)
                             );
                         function a() {
-                            r.updateShare(i.token, i.assignRole(n))
+                            gApi.updateShare(i.token, i.assignRole(n))
                                 .then(() => this._loadShare())
                                 .then(() => this._updateProperties())
                                 .catch((e) => this._handleException(e))
@@ -457,7 +457,7 @@ module.exports = function (module, exports, require) {
                 } catch (e) {}
                 const i = (e) => {
                     this._toggleLoading(true);
-                    const n = new h().assignRole(t),
+                    const n = new Share().assignRole(t),
                         o = this._dialog.find(".share-settings-header-input"),
                         i = o.find(".g-role-selector"),
                         a = o.find(".private-share-email-input");
@@ -473,7 +473,7 @@ module.exports = function (module, exports, require) {
                         });
                 };
                 try {
-                    let t = await r
+                    let t = await gApi
                         .listUsers({ q: e, all: true })
                         .then((e) => e.filter((e) => e.id !== this._user.getUID()).map((e) => new S(e)));
                     const a = t && t.length > 0;
@@ -486,12 +486,12 @@ module.exports = function (module, exports, require) {
                                     e.corporate_provider &&
                                     e.corporate_provider === this._storageItem.getCloudClient().getCorporateProviderName()
                             ));
-                        const e = (this._sharedFile.getPrivateShareList() || []).filter((e) => e.role !== g.Owner.id).map((e) => e.id);
+                        const e = (this._sharedFile.getPrivateShareList() || []).filter((e) => e.role !== ShareRoles.Owner.id).map((e) => e.id);
                         e &&
                             e.length &&
                             ((t = t.filter((t) => {
-                                let { id: n } = t;
-                                return !e.includes(n);
+                                let { id } = t;
+                                return !e.includes(id);
                             })),
                             (s = false));
                     }
@@ -515,23 +515,23 @@ module.exports = function (module, exports, require) {
                 }
             }
             _createShareSetting(e) {
-                let { icon: t, label: n, defaultRole: o, removeCallback: i, buttons: a } = e;
+                let { icon, label, defaultRole, removeCallback, buttons } = e;
                 return $("<div/>")
                     .addClass("share-setting")
-                    .append(t || "")
-                    .append($("<span/>").addClass("label").text(n))
-                    .append($("<div/>").gRoleSelector({ defaultRole: o, buttons: a }))
-                    .append(i ? $("<div/>").addClass("gravit-icon-x-delete").on("click", i) : "");
+                    .append(icon || "")
+                    .append($("<span/>").addClass("label").text(label))
+                    .append($("<div/>").gRoleSelector({ defaultRole: defaultRole, buttons: buttons }))
+                    .append(removeCallback ? $("<div/>").addClass("gravit-icon-x-delete").on("click", removeCallback) : "");
             }
             _getAvatar(e) {
                 const t = e.getUserColor(),
-                    { avatar: n } = e,
+                    { avatar } = e,
                     o = $("<div/>").addClass("avatar");
                 return (
                     this._shouldShowAvatar(e)
-                        ? this._isSVGAvatar(n)
-                            ? $(n).appendTo(o)
-                            : o.css({ backgroundImage: 'url("'.concat(n, '")') })
+                        ? this._isSVGAvatar(avatar)
+                            ? $(avatar).appendTo(o)
+                            : o.css({ backgroundImage: 'url("'.concat(avatar, '")') })
                         : ((e.getFirstName() && !e.guest) || (e.name = e.getFullUserName()),
                           o.css("border-color", t).css("background-color", t).append($("<span/>").text(e.getUserNameInitials()))),
                     o
@@ -626,21 +626,21 @@ module.exports = function (module, exports, require) {
                           ? gDesigner.stats("sharedialog_private-share_".concat(l ? "corporate-" : "", "googledrive"))
                           : s.indexOf("GSharePointStorage") >= 0 &&
                             gDesigner.stats("sharedialog_private-share_".concat(l ? "corporate-" : "", "sharepoint")),
-                    r
+                    gApi
                         .shareWithUser(this._storageItem.getId(), n, a)
                         .then(async (e) => (await this._loadShare(), this._updateProperties(), this._setSelectedPrivateShare(e.user_id), e))
                         .catch((t) => {
                             if (t.status)
                                 switch (t.status) {
-                                    case r.HTTP_STATUS_CODES.CONFLICT:
+                                    case gApi.HTTP_STATUS_CODES.CONFLICT:
                                         return void GSystemDialog.alert(
                                             GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.you-can-not-invite-yourself"))
                                         );
-                                    case r.HTTP_STATUS_CODES.NOT_FOUND:
+                                    case gApi.HTTP_STATUS_CODES.NOT_FOUND:
                                         return void GSystemDialog.alert(
                                             GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.invalid-email")).replace("%email", e)
                                         );
-                                    case r.HTTP_STATUS_CODES.FORBIDDEN:
+                                    case gApi.HTTP_STATUS_CODES.FORBIDDEN:
                                         return void ("only same domain users allowed" === t.message
                                             ? GSystemDialog.alert(
                                                   GObject.GLocale.get(
@@ -655,13 +655,13 @@ module.exports = function (module, exports, require) {
                 );
             }
             _unshareWithUser(e) {
-                const { email: t, role: n } = e,
-                    { id: o = t } = e;
+                const { email, role } = e,
+                    { id: o = email } = e;
                 return (
                     this._toggleLoading(true),
                     this._storageItem.supportsExternalSharing()
                         ? this._storageItem
-                              .requestExternalUnShare(t, n)
+                              .requestExternalUnShare(email, role)
                               .then(() => i.call(this))
                               .catch((e) => {
                                   this._handleException(e);
@@ -669,7 +669,7 @@ module.exports = function (module, exports, require) {
                         : i.call(this)
                 );
                 function i() {
-                    return r
+                    return gApi
                         .unshareWithUser(this._storageItem.getId(), o)
                         .then(() => this._setSelectedPrivateShare(null))
                         .then(() => this._loadShare())
@@ -689,7 +689,7 @@ module.exports = function (module, exports, require) {
             }
             _canResendInvitationEmail(e) {
                 const t = G.makeFromShare(e);
-                if (t && !t.is(g.NoAccess)) {
+                if (t && !t.is(ShareRoles.NoAccess)) {
                     return (
                         (this._initialSharedFile &&
                             this._initialSharedFile
@@ -706,12 +706,12 @@ module.exports = function (module, exports, require) {
             }
             async _sendInvitationEmails() {
                 const e = this._getNewAddedShareEmails();
-                if (e && e.length > 0) return m ? this._sendGuestInvitation(e) : this._sendUserInvitation(e);
+                if (e && e.length > 0) return ENABLE_GUEST_ACCESS ? this._sendGuestInvitation(e) : this._sendUserInvitation(e);
             }
             _sendUserInvitation(e) {
                 return (
                     gDesigner.stats("sharedialog_private-share_invite"),
-                    r.share.sendInvitationEmails(this._storageItem.getId(), e).then(() => {
+                    gApi.share.sendInvitationEmails(this._storageItem.getId(), e).then(() => {
                         this._showSentInvitationEmailAlert(e);
                     })
                 );
@@ -721,13 +721,13 @@ module.exports = function (module, exports, require) {
                     n = e.slice();
                 return Promise.all(
                     n.map((e) =>
-                        r.signupGuestUser({ email: e, file_id: this._storageItem.getId() }).catch(() => {
+                        gApi.signupGuestUser({ email: e, file_id: this._storageItem.getId() }).catch(() => {
                             t.push(e);
                         })
                     )
                 )
                     .then(() => {
-                        if (t.length) return r.share.sendInvitationEmails(this._storageItem.getId(), t).catch(() => {});
+                        if (t.length) return gApi.share.sendInvitationEmails(this._storageItem.getId(), t).catch(() => {});
                     })
                     .then(() => {
                         this._showSentInvitationEmailAlert(e);

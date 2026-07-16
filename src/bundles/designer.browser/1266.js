@@ -5,7 +5,7 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             i = (require(15 /* GPlatform */), require(1267)),
             a = require(123),
-            { replaceImage: r, setOriginSize: s, cropImage: l } = (require(173), require(219), require(1268 /* GDocument */));
+            { replaceImage, setOriginSize, cropImage } = (require(173), require(219), require(1268 /* GDocument */));
         function c() {}
         (GObject.GObject.inherit(c, a),
             (c.prototype._panel = null),
@@ -34,7 +34,7 @@ module.exports = function (module, exports, require) {
                                         .css("padding", "0")
                                         .append($("<span></span>").addClass("gravit-icon-replaceimg"))
                                         .on("click", () => {
-                                            (r(this._image, this._document), gDesigner.stats("image_replace_image"));
+                                            (replaceImage(this._image, this._document), gDesigner.stats("image_replace_image"));
                                         }),
                                 },
                                 {
@@ -46,7 +46,7 @@ module.exports = function (module, exports, require) {
                                         .attr("data-action", "reset-size")
                                         .append($("<span></span>").addClass("gravit-icon-expand"))
                                         .on("click", () => {
-                                            (s(this._image), gDesigner.stats("image_reset_size"));
+                                            (setOriginSize(this._image), gDesigner.stats("image_reset_size"));
                                         }),
                                 },
                                 {
@@ -60,7 +60,7 @@ module.exports = function (module, exports, require) {
                                         .append($("<span></span>").addClass("gravit-icon-crop"))
                                         .on("click", () => {
                                             var t = e.find('button[data-action="handle-crop"]');
-                                            (l(this._image, t.data("no-crop")), gDesigner.stats("image_change_croptype"));
+                                            (cropImage(this._image, t.data("no-crop")), gDesigner.stats("image_change_croptype"));
                                         }),
                                 },
                                 {

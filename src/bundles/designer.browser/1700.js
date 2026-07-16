@@ -8,7 +8,7 @@ module.exports = function (module, exports, require) {
             s = require(1199),
             l = require(85),
             GSystemDialog = require(44);
-        const { GPlatform: d } = require(15 /* GPlatform */);
+        const { GPlatform } = require(15 /* GPlatform */);
         function u() {}
         (GObject.GObject.inheritAndMix(u, GObject.GObject),
             (u.DISABLE_LOCAL_FONTS_ACCESS_WARING = "disable-local-fonts-access-warning"),
@@ -26,7 +26,7 @@ module.exports = function (module, exports, require) {
                         },
                     ];
                     let t = GObject.GLocale.get(new GObject.GLocaleKey("GLocalFontsProvider", "text.permission-required-subtitle-others"));
-                    (d.webBrowser === d.constructor.WebBrowser.Edge &&
+                    (GPlatform.webBrowser === GPlatform.constructor.WebBrowser.Edge &&
                         (t = GObject.GLocale.get(new GObject.GLocaleKey("GLocalFontsProvider", "text.permission-required-subtitle-edge"))),
                         GSystemDialog.custom({
                             icon: "error",

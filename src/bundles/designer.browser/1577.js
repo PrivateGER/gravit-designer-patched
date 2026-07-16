@@ -8,8 +8,8 @@ module.exports = function (module, exports, require) {
         function s() {}
         (GObject.GObject.inherit(s, designerConfig.GPaywallDialog.Impl),
             (s.prototype.open = function (e) {
-                let { dialog: t } = e;
-                this._dialog = t.getHTMLElement().gDialog({ releaseOnClose: true, nowrap: true }).gDialog("open");
+                let { dialog } = e;
+                this._dialog = dialog.getHTMLElement().gDialog({ releaseOnClose: true, nowrap: true }).gDialog("open");
             }),
             (s.prototype.close = function () {
                 let { licenseHasBeenUpgraded: e = false } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -20,8 +20,8 @@ module.exports = function (module, exports, require) {
                 (await gDesigner.openPaymentDialog(null, n).catch(() => null), t.close());
             }),
             (s.prototype.openExternalLink = function (e) {
-                let { link: t } = e;
-                gContainer.openExternalLink(null, t);
+                let { link } = e;
+                gContainer.openExternalLink(null, link);
             }),
             (s.prototype.getProduct = function () {
                 return Promise.resolve({

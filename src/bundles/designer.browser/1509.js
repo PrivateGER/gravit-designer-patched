@@ -41,7 +41,7 @@ module.exports = function (module, exports, require) {
             this._container = $("<div></div>").addClass("g-change-password-panel");
             const {
                 changePasswordOptions: {
-                    autoClose: l,
+                    autoClose,
                     title: c = GObject.GLocale.get(new GObject.GLocaleKey("GChangePasswordPanel", "text.change-password")),
                     info: d = GObject.GLocale.get(new GObject.GLocaleKey("GChangePasswordPanel", "text.reset-password-info")),
                 } = {},
@@ -60,12 +60,12 @@ module.exports = function (module, exports, require) {
                         .addClass("highlight")
                         .text(GObject.GLocale.get(new GObject.GLocaleKey("GChangePasswordPanel", "text.assign")))
                         .on("click", () => {
-                            const { token: e } = this._options,
+                            const { token } = this._options,
                                 t = this._container.find('[data-property="new_password"] > input').val().trim(),
                                 n = this._container.find('[data-property="confirm_password"] > input').val().trim();
                             (gDesigner.stats("profile-dialog_change-password-panel_change-password"),
                                 designerConfig.gApi
-                                    .updatePassword({ password: t, confirm_password: n }, e)
+                                    .updatePassword({ password: t, confirm_password: n }, token)
                                     .then(() =>
                                         this._messageHandler(
                                             GObject.GLocale.get(new GObject.GLocaleKey("GChangePasswordPanel", "text.reset-password-done")),
@@ -74,7 +74,7 @@ module.exports = function (module, exports, require) {
                                     )
                                     .then(() => this._toggleLoading(false))
                                     .then(() => {
-                                        l && this._parent.close();
+                                        autoClose && this._parent.close();
                                     })
                                     .catch((e) => this._messageHandler(designerConfig.gApi.formatError(e))));
                         })

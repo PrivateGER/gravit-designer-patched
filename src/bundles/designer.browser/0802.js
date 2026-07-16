@@ -22,7 +22,7 @@ module.exports = function (module, exports, require) {
             s = require(858);
         const l = require(1240),
             c = require(520),
-            { FILE_FORMATS: d } = require(10 /* designerConfig */);
+            { FILE_FORMATS } = require(10 /* designerConfig */);
         exports.WINDOW_STATUS_BLOCKED = "window-blocked";
         function u(e) {
             ((this._settings = e),
@@ -290,8 +290,8 @@ module.exports = function (module, exports, require) {
             }),
             (u.prototype.getSupportedExtensions = function () {
                 return this.getSupportedFileFormats().map((e) => {
-                    let { ext: t } = e;
-                    return t.toLowerCase();
+                    let { ext } = e;
+                    return ext.toLowerCase();
                 });
             }),
             (u.prototype.getSupportedMIMETypes = function () {
@@ -312,7 +312,7 @@ module.exports = function (module, exports, require) {
                 return [];
             }),
             (u.prototype.getSupportedFileFormats = function () {
-                return this._driveSettings && this._driveSettings.supportedFileFormats ? this._driveSettings.supportedFileFormats : d;
+                return this._driveSettings && this._driveSettings.supportedFileFormats ? this._driveSettings.supportedFileFormats : FILE_FORMATS;
             }),
             (u.prototype.getDefaultFileFormat = function () {
                 return this.getSupportedFileFormats().find((e) => e.default);

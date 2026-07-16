@@ -3,8 +3,8 @@ module.exports = function (module, exports, require) {
         (require(30), require(8 /* Symbol */));
         var designerConfig = require(10);
         function i(e) {
-            const { accessToken: t, expires: n, corporate: o, accountId: a } = new i.Settings(e);
-            ((this.accessToken = t), (this.expires = n), (this.corporate = o), (this.accountId = a));
+            const { accessToken, expires, corporate, accountId } = new i.Settings(e);
+            ((this.accessToken = accessToken), (this.expires = expires), (this.corporate = corporate), (this.accountId = accountId));
         }
         ((i.Settings = function (e) {
             e || (e = {});

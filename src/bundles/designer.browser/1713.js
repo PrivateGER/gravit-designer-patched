@@ -1,20 +1,20 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(19), require(8 /* Symbol */), require(4), require(41), require(32), require(97), require(33), require(26));
-        const { GObject: o } = require(1 /* GObject */),
-            { GPlatform: i } = require(15 /* GPlatform */),
+        const { GObject } = require(1 /* GObject */),
+            { GPlatform } = require(15 /* GPlatform */),
             a = require(1355),
             r = require(1191),
             GAnnotationPanel = require(1356),
             l = require(1357 /* GAnnotationPanel */),
-            { handleCollabsData: c } = (require(536), require(882)),
+            { handleCollabsData } = (require(536), require(882)),
             d = require(1354),
             u = require(434);
         function p() {
             for (var e = arguments.length, t = new Array(e), n = 0; n < e; n++) t[n] = arguments[n];
             (a.call(this, ...t), r.call(this));
         }
-        (o.inheritAndMix(p, a, [r]),
+        (GObject.inheritAndMix(p, a, [r]),
             (p.prototype._checkTreeSanity = function () {
                 return !!$(this._container).data("gannotationpanel");
             }),
@@ -59,7 +59,7 @@ module.exports = function (module, exports, require) {
                     o = gDesigner.getShareManager();
                 (e.collaboratorsCache && o.resetCollaboratorsCached(n),
                     (this._collaboratorsCache = o.getCollaboratorsCached(n)),
-                    (this._mentionData = await c(this._collaboratorsCache)));
+                    (this._mentionData = await handleCollabsData(this._collaboratorsCache)));
             }),
             (p.prototype._afterInvalidationEnd = function () {
                 (this.scrollIntoView(), this._updateCommentStats());

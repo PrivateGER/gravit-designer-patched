@@ -14,8 +14,8 @@ module.exports = function (module, exports, require) {
             g = require(135),
             h = (require(446 /* GLoginPanel */), require(44 /* GSystemDialog */)),
             f = require(257);
-        const { FILE_FORMATS: m, CLOUD_SYNC_FEATURE: { NEW_LAYOUT: y } = {} } = require(10 /* designerConfig */);
-        var v = "." + m.find((e) => e.default).ext;
+        const { FILE_FORMATS, CLOUD_SYNC_FEATURE: { NEW_LAYOUT } = {} } = require(10 /* designerConfig */);
+        var v = "." + FILE_FORMATS.find((e) => e.default).ext;
         function _() {}
         (GObject.GObject.inherit(_, r),
             (_.prototype._panel = null),
@@ -24,7 +24,7 @@ module.exports = function (module, exports, require) {
             (_.prototype.init = function (e, t) {
                 ((this._panel = e.addClass("scene-properties-panel")),
                     t.addClass("scene-properties-toolbar"),
-                    y || gDesigner.addEventListener(p, this._synchronismUpdated, this));
+                    NEW_LAYOUT || gDesigner.addEventListener(p, this._synchronismUpdated, this));
                 var n = function (e) {
                     let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
                     var n = this;
@@ -362,7 +362,7 @@ module.exports = function (module, exports, require) {
                         })
                         .appendTo(e),
                     $("<hr/>").appendTo(e),
-                    !y)
+                    !NEW_LAYOUT)
                 ) {
                     let t = $("<div></div>")
                         .addClass("actions")
@@ -565,7 +565,7 @@ module.exports = function (module, exports, require) {
                             o = n.attr("data-property").substr("gm-".length);
                         n.prop("checked", (!o && !i) || o === i);
                     }),
-                    !y)
+                    !NEW_LAYOUT)
                 ) {
                     var a = this._document.isCloudFile()
                             ? !this._document.getScene().getProperty("cid")

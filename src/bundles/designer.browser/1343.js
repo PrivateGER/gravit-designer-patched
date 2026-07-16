@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(19), require(96), require(8 /* Symbol */), require(20), require(34), require(247), require(91), require(4), require(41), require(13), require(32), require(38), require(33), require(26));
         var GObject = require(1);
-        const { TRANSLATION_MANAGER: i } = require(10 /* designerConfig */);
+        const { TRANSLATION_MANAGER } = require(10 /* designerConfig */);
         function a() {}
         (GObject.GObject.inherit(a, GObject.GObject),
             (a.prototype._translationBase = null),
@@ -203,7 +203,7 @@ module.exports = function (module, exports, require) {
                 );
             }),
             (a.prototype.isConsideringExtension = function () {
-                return !!i.CONSIDER_EXTENSION;
+                return !!TRANSLATION_MANAGER.CONSIDER_EXTENSION;
             }),
             (module.exports = a));
     };

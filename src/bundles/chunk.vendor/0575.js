@@ -16,8 +16,8 @@ module.exports = function (module, exports, require) {
                 getRole() {
                     if (this.role) {
                         const e = Object.values(GShareRoles).find((e) => {
-                            let { id: t } = e;
-                            return t === this.role;
+                            let { id } = e;
+                            return id === this.role;
                         });
                         if (e) return e;
                     }

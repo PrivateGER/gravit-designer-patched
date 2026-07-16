@@ -7,20 +7,20 @@ module.exports = function (module, exports, require) {
                 GOfferDialogV1 = require(526);
             module.exports = class {
                 constructor(e) {
-                    let { page: t, content: i = "", title: a, cmd: s = {}, closeable: l = true } = e;
-                    const { openPurchaseFlow: h, close: A } = s;
-                    ((a = a || o.getValue("GOfferDialogV1", "text.offerdialog-v1-default-title")),
+                    let { page, content: i = "", title, cmd: s = {}, closeable: l = true } = e;
+                    const { openPurchaseFlow, close } = s;
+                    ((title = title || o.getValue("GOfferDialogV1", "text.offerdialog-v1-default-title")),
                         (this._dialog = n("<div></div>").addClass("g-cloud-ui-offer-dialog-v1")),
                         l &&
                             n("<div></div>")
                                 .addClass("g-cloud-ui-btn-close")
                                 .append(n("<span></span>").addClass("g-cloud-icon-close"))
-                                .on("click", () => A && A())
+                                .on("click", () => close && close())
                                 .appendTo(this._dialog));
                     let c = n("<header></header>").appendTo(this._dialog);
                     ((this._title = n("<span></span>").addClass("title g-cloud-ui-markable").appendTo(c)),
-                        Array.isArray(a) || (a = [a]),
-                        a.forEach((e) => {
+                        Array.isArray(title) || (title = [title]),
+                        title.forEach((e) => {
                             (n("<label></label>").html(e).appendTo(this._title), n("<br>").appendTo(this._title));
                         }));
                     let p = n("<main></main>").appendTo(this._dialog);
@@ -45,7 +45,7 @@ module.exports = function (module, exports, require) {
                         .addClass("g-cloud-ui-btn-pro highlighted")
                         .text(this._getFooterInfo().buy)
                         .on("click", () => {
-                            (r("".concat(t || "offer", "_click_buybutton")), h && h());
+                            (r("".concat(page || "offer", "_click_buybutton")), openPurchaseFlow && openPurchaseFlow());
                         })
                         .appendTo(d),
                         n("<div></div>").addClass("money-back").appendTo(d));

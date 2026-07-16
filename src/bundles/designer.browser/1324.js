@@ -3,44 +3,44 @@ module.exports = function (module, exports, require) {
         (require(20), require(34));
         const o = require(177),
             {
-                SharePermissions: { COMMENT: i, EDIT: a },
-                ShareRoles: r,
+                SharePermissions: { COMMENT, EDIT },
+                ShareRoles,
             } = require(10 /* designerConfig */),
-            { GLocale: s, GLocaleKey: l } = require(1 /* GObject */);
+            { GLocale, GLocaleKey } = require(1 /* GObject */);
         module.exports = class extends o {
             constructor() {
                 let {
-                    access_id: e,
-                    file_id: t,
-                    accessed: n,
-                    name: o,
-                    last_name: i,
-                    avatar: a,
+                    access_id,
+                    file_id,
+                    accessed,
+                    name,
+                    last_name,
+                    avatar,
                     anonymous: r = false,
-                    role: s,
+                    role,
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 (super({
-                    file_id: t,
-                    accessed: n,
-                    name: o,
-                    last_name: i,
-                    avatar: a,
+                    file_id: file_id,
+                    accessed: accessed,
+                    name: name,
+                    last_name: last_name,
+                    avatar: avatar,
                     anonymous: r,
                 }),
-                    (this.id = e),
-                    (this._role = s));
+                    (this.id = access_id),
+                    (this._role = role));
             }
             getTooltip() {
                 const e = this.getRole();
-                return e.is(r.Owner)
-                    ? s.get(new l("GCollaborators", "text.owner-tooltip")).replace("%username", this.getFullUserName())
-                    : s
-                          .get(new l("GCollaborators", e.hasPermission(a) ? "text.can-edit-tooltip" : "text.can-comment-tooltip"))
+                return e.is(ShareRoles.Owner)
+                    ? GLocale.get(new GLocaleKey("GCollaborators", "text.owner-tooltip")).replace("%username", this.getFullUserName())
+                    : GLocale
+                          .get(new GLocaleKey("GCollaborators", e.hasPermission(EDIT) ? "text.can-edit-tooltip" : "text.can-comment-tooltip"))
                           .replace("%username", this.getFullUserName());
             }
             getIcon() {
                 const e = this.getRole();
-                return e.hasPermission(i) && !e.hasPermission(a) ? "gravit-icon-avatar-comment" : null;
+                return e.hasPermission(COMMENT) && !e.hasPermission(EDIT) ? "gravit-icon-avatar-comment" : null;
             }
         };
     };

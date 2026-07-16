@@ -28,15 +28,15 @@ module.exports = function (module, exports, require) {
             _startLongPressEvent(e) {
                 const t = e.getOriginalEvent();
                 if ((this._dropLongPressEvent(), e.areThereMultipleTouchPoints())) return;
-                const { clientX: n, clientY: o, target: a } = t.targetTouches[0];
+                const { clientX, clientY, target } = t.targetTouches[0];
                 this._longPressEventTimeout = setTimeout(() => {
                     const e = jQuery.Event("contextmenu", {
-                        pageX: n,
-                        pageY: o,
-                        clientX: n,
-                        clientY: o,
+                        pageX: clientX,
+                        pageY: clientY,
+                        clientX: clientX,
+                        clientY: clientY,
                     });
-                    $(a).trigger(e);
+                    $(target).trigger(e);
                 }, designerConfig.LONG_PRESS_TIME_OUT);
             }
             _dropLongPressEvent() {

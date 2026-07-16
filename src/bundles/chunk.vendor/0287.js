@@ -1,8 +1,8 @@
 module.exports = function (module, exports, require) {
             "use strict";
             require(30);
-            const { ACCESS: n, INSPECT: r, COMMENT: o, COPY: a, SHARE: s, EDIT: l, OWNER: h, APPROVE: A, PASSWORD_PROTECT: c } = require(352),
-                { GLocale: p, GLocaleKey: u } = require(209 /* GLocale */),
+            const { ACCESS, INSPECT, COMMENT, COPY, SHARE, EDIT, OWNER, APPROVE, PASSWORD_PROTECT } = require(352),
+                { GLocale, GLocaleKey } = require(209 /* GLocale */),
                 d = (e) =>
                     Object.freeze(
                         Object.assign(
@@ -22,14 +22,14 @@ module.exports = function (module, exports, require) {
                                 get status() {
                                     return this.getStatus();
                                 },
-                                getName: (t) => p.get(new u("GShareRoles", "text.role-".concat(e.i18n || e.id, "-name")), null, t),
+                                getName: (t) => GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(e.i18n || e.id, "-name")), null, t),
                                 getDescription: (t) =>
-                                    p.get(new u("GShareRoles", "text.role-".concat(e.i18n || e.id, "-description")), null, t),
+                                    GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(e.i18n || e.id, "-description")), null, t),
                                 getInvitationMessage: (t) =>
-                                    p.get(new u("GShareRoles", "text.role-".concat(e.i18n || e.id, "-invitation-message")), null, t),
+                                    GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(e.i18n || e.id, "-invitation-message")), null, t),
                                 getInvitationInfo: (t) =>
-                                    p.get(new u("GShareRoles", "text.role-".concat(e.i18n || e.id, "-invitation-info")), null, t),
-                                getStatus: (t) => p.get(new u("GShareRoles", "text.role-".concat(e.i18n || e.id, "-status")), null, t),
+                                    GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(e.i18n || e.id, "-invitation-info")), null, t),
+                                getStatus: (t) => GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(e.i18n || e.id, "-status")), null, t),
                             },
                             e
                         )
@@ -40,7 +40,7 @@ module.exports = function (module, exports, require) {
                     i18n: "no-access",
                     level: 0,
                     permissions: {
-                        [n]: false,
+                        [ACCESS]: false,
                     },
                 }),
                 Viewer: d({
@@ -48,7 +48,7 @@ module.exports = function (module, exports, require) {
                     level: 1,
                     mentionName: "viewers",
                     permissions: {
-                        [n]: true,
+                        [ACCESS]: true,
                     },
                 }),
                 Developer: d({
@@ -56,9 +56,9 @@ module.exports = function (module, exports, require) {
                     level: 2,
                     mentionName: "developers",
                     permissions: {
-                        [n]: true,
-                        [r]: true,
-                        [a]: true,
+                        [ACCESS]: true,
+                        [INSPECT]: true,
+                        [COPY]: true,
                     },
                 }),
                 Reviewer: d({
@@ -67,8 +67,8 @@ module.exports = function (module, exports, require) {
                     mentionName: "reviewers",
                     pro: true,
                     permissions: {
-                        [n]: true,
-                        [o]: true,
+                        [ACCESS]: true,
+                        [COMMENT]: true,
                     },
                 }),
                 Approver: d({
@@ -77,9 +77,9 @@ module.exports = function (module, exports, require) {
                     mentionName: "approvers",
                     pro: true,
                     permissions: {
-                        [n]: true,
-                        [o]: true,
-                        [A]: true,
+                        [ACCESS]: true,
+                        [COMMENT]: true,
+                        [APPROVE]: true,
                     },
                 }),
                 CoAuthor: d({
@@ -90,11 +90,11 @@ module.exports = function (module, exports, require) {
                     assignable: false,
                     mentionName: "coauthors",
                     permissions: {
-                        [n]: true,
-                        [r]: true,
-                        [a]: true,
-                        [o]: true,
-                        [l]: true,
+                        [ACCESS]: true,
+                        [INSPECT]: true,
+                        [COPY]: true,
+                        [COMMENT]: true,
+                        [EDIT]: true,
                     },
                 }),
                 Owner: d({
@@ -103,15 +103,15 @@ module.exports = function (module, exports, require) {
                     mentionName: "owner",
                     assignable: false,
                     permissions: {
-                        [h]: true,
-                        [A]: true,
-                        [c]: true,
-                        [n]: true,
-                        [r]: true,
-                        [a]: true,
-                        [o]: true,
-                        [s]: true,
-                        [l]: true,
+                        [OWNER]: true,
+                        [APPROVE]: true,
+                        [PASSWORD_PROTECT]: true,
+                        [ACCESS]: true,
+                        [INSPECT]: true,
+                        [COPY]: true,
+                        [COMMENT]: true,
+                        [SHARE]: true,
+                        [EDIT]: true,
                     },
                 }),
             });

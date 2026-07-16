@@ -18,8 +18,8 @@ module.exports = function (module, exports, require) {
                     (t.forEach((e, t) => o.set(t, e)), (e = n.toString()));
                 }
                 if (((this._iframe = $("<iframe></iframe>").addClass("cross-frame").attr("src", e).appendTo($("body"))), this._settings)) {
-                    const { id: e, className: t, css: n } = this._settings;
-                    (e && this._iframe.attr("id", e), t && this._iframe.addClass(t), n && this._iframe.css(n));
+                    const { id, className, css } = this._settings;
+                    (id && this._iframe.attr("id", id), className && this._iframe.addClass(className), css && this._iframe.css(css));
                 }
                 let n = this.close.bind(this);
                 return (
@@ -27,10 +27,10 @@ module.exports = function (module, exports, require) {
                     (this._messageHandler = async (e) => {
                         if (e.originalEvent.source !== this._iframe[0].contentWindow) return;
                         let t = e.originalEvent.data;
-                        const { cmd: i } = t;
-                        if (i) {
-                            if (this._settings[i]) return void this._settings[i](t);
-                            switch (i) {
+                        const { cmd } = t;
+                        if (cmd) {
+                            if (this._settings[cmd]) return void this._settings[cmd](t);
+                            switch (cmd) {
                                 case "close":
                                     n(t);
                                     break;
@@ -60,8 +60,8 @@ module.exports = function (module, exports, require) {
                                         gDesigner
                                             .openPaymentDialog(null, s)
                                             .then(function () {
-                                                let { reinstate: e } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                                                (a && !e) || n({ closeable: r });
+                                                let { reinstate } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                                                (a && !reinstate) || n({ closeable: r });
                                             })
                                             .catch(() => {
                                                 n({ closeable: r });

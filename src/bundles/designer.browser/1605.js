@@ -30,16 +30,16 @@ module.exports = function (module, exports, require) {
             }
             execute() {
                 const e = gDesigner.getLeftSidebars().getSidebar(SidebarsIds.SidebarsIds.GOutlineSidebar).getLayerPanel(),
-                    { vtree: t, currentFocus: n } = e.data("glayerpanel");
-                if (!n) return;
+                    { vtree, currentFocus } = e.data("glayerpanel");
+                if (!currentFocus) return;
                 let o;
                 if (
-                    (!this._isReverse && n.firstChild ? (o = n.firstChild) : this._isReverse && n.parent && n.parent.row && (o = n.parent),
+                    (!this._isReverse && currentFocus.firstChild ? (o = currentFocus.firstChild) : this._isReverse && currentFocus.parent && currentFocus.parent.row && (o = currentFocus.parent),
                     o)
                 ) {
-                    const i = e.gLayerPanel("getItem", n),
+                    const i = e.gLayerPanel("getItem", currentFocus),
                         r = e.gLayerPanel("getItem", o);
-                    (i.removeFlag(GObject.GNode.Flag.Selected), r.setFlag(GObject.GNode.Flag.Selected), t.expandAndFocus(r));
+                    (i.removeFlag(GObject.GNode.Flag.Selected), r.setFlag(GObject.GNode.Flag.Selected), vtree.expandAndFocus(r));
                 }
             }
             toString() {

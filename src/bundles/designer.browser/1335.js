@@ -6,7 +6,7 @@ module.exports = function (module, exports, require) {
             GPlatform = require(15),
             r = o(require(443)),
             s = o(require(1330));
-        const { isExecutingOnMSTeamsSync: l } = r.default;
+        const { isExecutingOnMSTeamsSync } = r.default;
         var c = require(863),
             GFitAllAction = require(449),
             GCategory = require(18),
@@ -39,7 +39,7 @@ module.exports = function (module, exports, require) {
                 return this._isSupported();
             }),
             (h.prototype._isSupported = function () {
-                return !l();
+                return !isExecutingOnMSTeamsSync();
             }),
             (h.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-toggle-full-screen" : null;

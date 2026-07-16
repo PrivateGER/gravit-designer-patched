@@ -1,12 +1,12 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(8 /* Symbol */);
-        const { GFontManager: o } = require(1 /* GObject */);
+        const { GFontManager } = require(1 /* GObject */);
         module.exports = class {
             constructor(e) {
                 ((this._fontManager = e),
-                    this._fontManager.addEventListener(o.FontAvailableEvent, this._fontEvent, this),
-                    this._fontManager.addEventListener(o.FontUnavailableEvent, this._fontEvent, this),
+                    this._fontManager.addEventListener(GFontManager.FontAvailableEvent, this._fontEvent, this),
+                    this._fontManager.addEventListener(GFontManager.FontUnavailableEvent, this._fontEvent, this),
                     (this._promise = new Promise((e) => {
                         this._resolver = e;
                     })));
@@ -16,8 +16,8 @@ module.exports = function (module, exports, require) {
             }
             _checkPendingFonts() {
                 this._fontManager.hasPendingFonts() ||
-                    (this._fontManager.removeEventListener(o.FontAvailableEvent, this._fontEvent, this),
-                    this._fontManager.removeEventListener(o.FontUnavailableEvent, this._fontEvent, this),
+                    (this._fontManager.removeEventListener(GFontManager.FontAvailableEvent, this._fontEvent, this),
+                    this._fontManager.removeEventListener(GFontManager.FontUnavailableEvent, this._fontEvent, this),
                     this._resolver());
             }
             waitForAllPendingFonts() {

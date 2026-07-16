@@ -22,7 +22,7 @@ module.exports = function (module, exports, require) {
             GSystemDialog = require(44),
             C = require(10 /* designerConfig */).LOCAL_FONTS_API_ENABLED;
         const x = require(1482),
-            { base64StringToString: S } = require(40 /* GSaveAction */);
+            { base64StringToString } = require(40 /* GSaveAction */);
         function E() {
             ((this._storage = new s()),
                 "serviceWorker" in navigator &&
@@ -88,7 +88,7 @@ module.exports = function (module, exports, require) {
                     else if (o.searchParams.get("directlink")) {
                         t = o.searchParams.get("directlink");
                         try {
-                            (e = JSON.parse(S(decodeURIComponent(t))).type) === r.OpenFileRequest.Type.Preset
+                            (e = JSON.parse(base64StringToString(decodeURIComponent(t))).type) === r.OpenFileRequest.Type.Preset
                                 ? (i = new r.OpenFileRequest(r.OpenFileRequest.Type.Preset, t))
                                 : e === r.OpenFileRequest.Type.Template && (i = new r.OpenFileRequest(r.OpenFileRequest.Type.Template, t));
                         } catch (e) {
@@ -118,7 +118,7 @@ module.exports = function (module, exports, require) {
                     else if (s.directlink) {
                         t = s.directlink;
                         try {
-                            (e = JSON.parse(S(decodeURIComponent(t))).type) === r.OpenFileRequest.Type.Preset
+                            (e = JSON.parse(base64StringToString(decodeURIComponent(t))).type) === r.OpenFileRequest.Type.Preset
                                 ? (i = new r.OpenFileRequest(r.OpenFileRequest.Type.Preset, t))
                                 : e === r.OpenFileRequest.Type.Template && (i = new r.OpenFileRequest(r.OpenFileRequest.Type.Template, t));
                         } catch (e) {
@@ -174,7 +174,7 @@ module.exports = function (module, exports, require) {
                                 ((d = await gApi.getProviderContentDetails(p)),
                                     d && n(new m.Item(o, d.id, d.name, d, p), { loadingData: s }));
                             else if (u === r.OpenFileRequest.Type.Preset) {
-                                let e = JSON.parse(S(decodeURIComponent(p))),
+                                let e = JSON.parse(base64StringToString(decodeURIComponent(p))),
                                     t =
                                         e &&
                                         (function (e) {
@@ -207,15 +207,15 @@ module.exports = function (module, exports, require) {
                                               loadingData: s,
                                           }));
                             } else if (u === r.OpenFileRequest.Type.Template) {
-                                let e = JSON.parse(S(decodeURIComponent(p))),
-                                    { file: t, data: i } = await y.loadDesignData(e.id),
-                                    a = GDocument.FileTypes.find((e) => e.mime === t.type).ext;
-                                t &&
-                                    i &&
-                                    n(new l(o, i, "".concat(t.name, ".").concat(a), t.id), {
+                                let e = JSON.parse(base64StringToString(decodeURIComponent(p))),
+                                    { file, data } = await y.loadDesignData(e.id),
+                                    a = GDocument.FileTypes.find((e) => e.mime === file.type).ext;
+                                file &&
+                                    data &&
+                                    n(new l(o, data, "".concat(file.name, ".").concat(a), file.id), {
                                         content: e,
-                                        file: t,
-                                        category: t.path,
+                                        file: file,
+                                        category: file.path,
                                         loadingData: s,
                                     });
                             } else {

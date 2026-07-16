@@ -19,17 +19,17 @@ module.exports = function (module, exports, require) {
                         start: (l) =>
                             (function c() {
                                 return i.read().then((d) => {
-                                    let { done: u, value: p } = d;
-                                    if (u) return (l.close(), i.releaseLock(), void e(s));
+                                    let { done, value } = d;
+                                    if (done) return (l.close(), i.releaseLock(), void e(s));
                                     if ("function" == typeof t) {
                                         r += (function (e) {
                                             if (n) return new Uint8Array(o(e)).length;
                                             return e.length;
-                                        })(p);
+                                        })(value);
                                         const e = Math.floor((r / a) * 100);
                                         t(e);
                                     }
-                                    return (l.enqueue(p), c());
+                                    return (l.enqueue(value), c());
                                 });
                             })(),
                     });

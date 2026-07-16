@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(8 /* Symbol */), require(196), require(20), require(3), require(34), require(91), require(4), require(13), require(38));
         var designerConfig = require(10),
             GObject = require(1);
-        const { bypassEmailVerification: a } = designerConfig.defaultUserSettings,
+        const { bypassEmailVerification } = designerConfig.defaultUserSettings,
             GSystemDialog = require(44),
             s = function (e) {
                 return e.json().then(function (t) {
@@ -166,13 +166,13 @@ module.exports = function (module, exports, require) {
                 let s = this._user.getFirstName(),
                     l = this._user.getLastName();
                 if (!l) {
-                    let { first: e, last: t } = ((e) => {
+                    let { first, last } = ((e) => {
                         let t = (e || "").split(" "),
                             n = t.slice(0, t.length - 1).join(" "),
                             o = t.slice(-1).join("");
                         return (n.trim().length || ((n = o), (o = "")), { first: n, last: o });
                     })(s);
-                    ((s = e), (l = t || ""));
+                    ((s = first), (l = last || ""));
                 }
                 let c = $("<div></div>").addClass("group-section").appendTo(t);
                 (a(GObject.GLocale.get(new GObject.GLocaleKey("GAccountPanel", "text.first-name")), s, "name")
@@ -225,7 +225,7 @@ module.exports = function (module, exports, require) {
                         .then(() => {
                             t.email &&
                                 this._user.getEmail() !== t.email &&
-                                !a &&
+                                !bypassEmailVerification &&
                                 GSystemDialog.alert(
                                     GObject.GLocale.get(new GObject.GLocaleKey("GAccountPanel", "text.user-email-message")).replace("%email", t.email)
                                 );

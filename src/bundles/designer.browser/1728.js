@@ -116,56 +116,56 @@ module.exports = function (module, exports, require) {
                 },
                 createTooltipContent: function (e) {
                     const {
-                        title: t,
-                        isPro: n,
-                        shortcut: o,
-                        video: i,
-                        pic: a,
-                        description: r,
-                        videoTimeout: c,
-                        enhanced: d,
-                        learnMore: u,
-                        upgradeToProStatsValue: p,
+                        title,
+                        isPro,
+                        shortcut,
+                        video,
+                        pic,
+                        description,
+                        videoTimeout,
+                        enhanced,
+                        learnMore,
+                        upgradeToProStatsValue,
                     } = e;
-                    let g = r;
+                    let g = description;
                     const h = gDesigner.getLicense(),
                         f = (h.isPro() || h.isTrial()) && h.isExpired(),
-                        m = u
+                        m = learnMore
                             ? '<a href="'
-                                  .concat(u, '" target="_blank">')
+                                  .concat(learnMore, '" target="_blank">')
                                   .concat(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.learn-more")), "</a>")
                             : "";
                     g = g ? "".concat(g, " ").concat(m) : m;
                     const y = $("<div />")
                         .addClass("g-tooltip-content-wrapper")
-                        .toggleClass("g-pro", n)
+                        .toggleClass("g-pro", isPro)
                         .append(
                             $("<div />")
                                 .addClass("g-tooltip-content-header")
-                                .toggleClass("simple", !d)
+                                .toggleClass("simple", !enhanced)
                                 .append(
-                                    o && o.length
-                                        ? $("<div />").addClass("g-tooltip-content-shortcut").text(GPlatform.GKey.shortcutToString(o))
+                                    shortcut && shortcut.length
+                                        ? $("<div />").addClass("g-tooltip-content-shortcut").text(GPlatform.GKey.shortcutToString(shortcut))
                                         : ""
                                 )
                                 .append(
                                     $("<div />")
-                                        .toggleClass("limit-width", !(!o || !o.length))
+                                        .toggleClass("limit-width", !(!shortcut || !shortcut.length))
                                         .addClass("g-tooltip-content-title")
-                                        .text(t)
+                                        .text(title)
                                 )
                         )
-                        .append(d && g ? $("<div />").addClass("g-tooltip-content-description").html(g) : "")
-                        .append(d && i && i.length ? $("<div />").addClass("g-tooltip-content-video loading") : "")
+                        .append(enhanced && g ? $("<div />").addClass("g-tooltip-content-description").html(g) : "")
+                        .append(enhanced && video && video.length ? $("<div />").addClass("g-tooltip-content-video loading") : "")
                         .append(
-                            d && a && a.length
+                            enhanced && pic && pic.length
                                 ? $("<div />")
                                       .addClass("g-tooltip-content-picture")
-                                      .append($("<img />").attr("width", 298).attr("height", 160).attr("src", a))
+                                      .append($("<img />").attr("width", 298).attr("height", 160).attr("src", pic))
                                 : ""
                         )
                         .append(
-                            d && n && f
+                            enhanced && isPro && f
                                 ? $("<div />")
                                       .addClass("g-tooltip-content-footer")
                                       .append(
@@ -182,20 +182,20 @@ module.exports = function (module, exports, require) {
                                               )
                                       )
                                       .on("click", () => {
-                                          (gDesigner.openPaymentDialog(), gDesigner.stats("action_tooltips_upgradetopro", p));
+                                          (gDesigner.openPaymentDialog(), gDesigner.stats("action_tooltips_upgradetopro", upgradeToProStatsValue));
                                       })
                                 : ""
                         );
                     return (
-                        d &&
-                            i &&
+                        enhanced &&
+                            video &&
                             setTimeout(() => {
                                 const e = y.find(".g-tooltip-content-video");
                                 if (e.length) {
                                     const t = $("<video />")
                                         .attr("width", 298)
                                         .attr("height", 160)
-                                        .attr("src", i)
+                                        .attr("src", video)
                                         .attr("autoplay", true)
                                         .attr("loop", true);
                                     (t.on("loadeddata", function () {
@@ -203,7 +203,7 @@ module.exports = function (module, exports, require) {
                                     }),
                                         e.append(t));
                                 }
-                            }, c),
+                            }, videoTimeout),
                         y
                     );
                 },

@@ -5,7 +5,7 @@ module.exports = function (module, exports, require) {
         const GCategory = require(18),
             a = require(31),
             r = require(1640),
-            { IS_TRUNK: s, IS_LOCALHOST: l } = require(231 /* IS_TRUNK */);
+            { IS_TRUNK, IS_LOCALHOST } = require(231 /* IS_TRUNK */);
         function c() {}
         (GObject.GObject.inherit(c, a),
             (c.ID = "help.translationtool"),
@@ -27,7 +27,7 @@ module.exports = function (module, exports, require) {
                 return true;
             }),
             (c.prototype.isVisible = function () {
-                return !(!s && !l);
+                return !(!IS_TRUNK && !IS_LOCALHOST);
             }),
             (c.prototype.execute = function () {
                 (this._translationTool || (this._translationTool = new r()), this._translationTool.init());

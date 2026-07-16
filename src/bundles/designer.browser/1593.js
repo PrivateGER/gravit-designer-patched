@@ -1,15 +1,15 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(8 /* Symbol */);
-        const { PasswordlessAuthenticationActions: o, gApi: i } = require(10 /* designerConfig */),
+        const { PasswordlessAuthenticationActions, gApi } = require(10 /* designerConfig */),
             GSystemDialog = require(44),
             GProfileDialog = require(604),
             s = require(337);
         module.exports = class {
             async execute() {
-                let { [o.ResetPassword]: e } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                let { [PasswordlessAuthenticationActions.ResetPassword]: e } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 try {
-                    (await i.passwordlessAuthentication.authenticateWithResetPasswordToken(e), await s.checkLicense());
+                    (await gApi.passwordlessAuthentication.authenticateWithResetPasswordToken(e), await s.checkLicense());
                     const t = await gDesigner.getUser();
                     t &&
                         gDesigner.executeWhenReady(() => {

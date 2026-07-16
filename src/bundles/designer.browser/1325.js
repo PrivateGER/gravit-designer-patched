@@ -200,8 +200,8 @@ module.exports = function (module, exports, require) {
             }
             async _getShowTrialMessage() {
                 try {
-                    const { showTrialMessage: e } = (await designerConfig.gApi.client.getConfiguration()) || {};
-                    return !!e;
+                    const { showTrialMessage } = (await designerConfig.gApi.client.getConfiguration()) || {};
+                    return !!showTrialMessage;
                 } catch (e) {
                     console.error("Failed to load client configuration. Skipping trial reminders");
                 }

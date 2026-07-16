@@ -1,21 +1,21 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(290);
-        const { GObject: o, GLocale: i } = require(1 /* GObject */),
+        const { GObject, GLocale } = require(1 /* GObject */),
             a = require(1068);
         function r(e) {
-            let { id: t, level: n = 0, name: o, description: i, status: r, pro: s = false, assignable: l = true, permissions: c } = e;
+            let { id, level: n = 0, name, description, status, pro: s = false, assignable: l = true, permissions } = e;
             (a.call(this),
-                (this.id = t),
-                (this.name = o),
-                (this.description = i),
-                (this.status = r),
+                (this.id = id),
+                (this.name = name),
+                (this.description = description),
+                (this.status = status),
                 (this.pro = s),
-                (this.permissions = c),
+                (this.permissions = permissions),
                 (this.assignable = l),
                 (this.level = n));
         }
-        (o.inheritAndMix(r, o, [a]),
+        (GObject.inheritAndMix(r, GObject, [a]),
             (r.prototype.getPermissions = function () {
                 return this.permissions;
             }),

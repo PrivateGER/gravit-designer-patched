@@ -22,8 +22,8 @@ module.exports = function (module, exports, require) {
             w = require(86),
             C = require(790),
             x = require(554),
-            { FILE_FORMATS: S } = require(10 /* designerConfig */),
-            E = Object.values(S).find((e) => e.default),
+            { FILE_FORMATS } = require(10 /* designerConfig */),
+            E = Object.values(FILE_FORMATS).find((e) => e.default),
             A = 10,
             T = 50,
             G = 80,
@@ -302,8 +302,8 @@ module.exports = function (module, exports, require) {
                                 t.permissions &&
                                 t.permissions.length &&
                                 t.permissions.some((t) => {
-                                    let { email: o, role: i } = t;
-                                    if (e === o) return ((n = i), true);
+                                    let { email, role } = t;
+                                    if (e === email) return ((n = role), true);
                                 }),
                             n
                         );
@@ -380,9 +380,9 @@ module.exports = function (module, exports, require) {
                     n =
                         this._file.getMimeType() ||
                         ((o = t),
-                        Object.values(S).find((e) => {
-                            let { ext: t } = e;
-                            return !!t && t.toLowerCase() === o.toLowerCase();
+                        Object.values(FILE_FORMATS).find((e) => {
+                            let { ext } = e;
+                            return !!ext && ext.toLowerCase() === o.toLowerCase();
                         }) || E).type;
                 var o;
                 const i = e.thumbnail.getImageAsBlob(),

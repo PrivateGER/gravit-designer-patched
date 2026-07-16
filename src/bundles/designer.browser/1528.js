@@ -183,16 +183,16 @@ module.exports = function (module, exports, require) {
                     designerConfig.DateAPI.lt(g.version.modified, e.version.modified, false) && ((h = e), (m = true));
                 }
                 const y = (e, t, a) => {
-                    let { version: s, thumbnail: d, autosave: u } = e;
+                    let { version, thumbnail, autosave } = e;
                     return $("<div />")
                         .addClass("version-history-item")
-                        .addClass((c ? l === s.versionId : ((m && u) || (!m && !u)) && s.latest) ? "vhi-initial" : "")
-                        .addClass(n || s.latest ? "" : "vhi-disabled")
-                        .addClass((c ? l === s.versionId : s.versionId === h.version.versionId) ? "vhi-active" : "")
+                        .addClass((c ? l === version.versionId : ((m && autosave) || (!m && !autosave)) && version.latest) ? "vhi-initial" : "")
+                        .addClass(n || version.latest ? "" : "vhi-disabled")
+                        .addClass((c ? l === version.versionId : version.versionId === h.version.versionId) ? "vhi-active" : "")
                         .append(
                             $("<div />")
                                 .addClass("vhi-thumbnail")
-                                .css("background-image", "url(" + d.url_t + ")")
+                                .css("background-image", "url(" + thumbnail.url_t + ")")
                         )
                         .append(
                             $("<div />")
@@ -201,7 +201,7 @@ module.exports = function (module, exports, require) {
                                     $("<div />")
                                         .addClass("vhi-title")
                                         .text(
-                                            s.versionId === h.version.versionId
+                                            version.versionId === h.version.versionId
                                                 ? GObject.GLocale.get(new GObject.GLocaleKey("GVersionHistoryProperties", "text.current-version"))
                                                 : GObject.GLocale.get(new GObject.GLocaleKey("GVersionHistoryProperties", "text.version")).replace(
                                                       "%version",
@@ -212,7 +212,7 @@ module.exports = function (module, exports, require) {
                                 .append(
                                     $("<div />")
                                         .addClass("vhi-updated")
-                                        .text((0, r.dateToVersionFormat)(s.modified))
+                                        .text((0, r.dateToVersionFormat)(version.modified))
                                 )
                         )
                         .append(
@@ -221,7 +221,7 @@ module.exports = function (module, exports, require) {
                                 .addClass("gravit-icon-settings")
                                 .on("click", function (e) {
                                     (e.stopPropagation(),
-                                        (n || s.latest) &&
+                                        (n || version.latest) &&
                                             ($(this).find(".vhi-settings-list").toggle(),
                                             gDesigner.stats("version-history-panel_click_setting-icon")));
                                 })
@@ -239,7 +239,7 @@ module.exports = function (module, exports, require) {
                                                     (e.stopPropagation(),
                                                         gDesigner.stats("version-history-panel_show-preview_from-settings-menu"),
                                                         gDesigner.intercomStats("Preview version from history"),
-                                                        o._showPreview(s.versionId, d.name, $(this).closest(".version-history-item"), u),
+                                                        o._showPreview(version.versionId, thumbnail.name, $(this).closest(".version-history-item"), autosave),
                                                         $(this).parent(".vhi-settings-list").hide());
                                                 })
                                         )
@@ -251,7 +251,7 @@ module.exports = function (module, exports, require) {
                                                     (e.stopPropagation(),
                                                         gDesigner.stats("version-history-panel_restore-version_from-settings-menu"),
                                                         gDesigner.intercomStats("Open version from history"),
-                                                        o._applyVersion(s.versionId, d.name, u),
+                                                        o._applyVersion(version.versionId, thumbnail.name, autosave),
                                                         $(this).parent(".vhi-settings-list").hide());
                                                 })
                                         )
@@ -270,7 +270,7 @@ module.exports = function (module, exports, require) {
                                 e
                                     ? $(t).data("dblclicked", e - 1)
                                     : (gDesigner.stats("version-history-panel_show-preview_from-main-panel"),
-                                      o._showPreview(s.versionId, d.name, $(t), u),
+                                      o._showPreview(version.versionId, thumbnail.name, $(t), autosave),
                                       gDesigner.intercomStats("Preview version from history"));
                             }, 500);
                         })
@@ -283,11 +283,11 @@ module.exports = function (module, exports, require) {
                                 );
                             ($(this).data("dblclicked", 2),
                                 gDesigner.stats("version-history-panel_apply-version"),
-                                o._applyVersion(s.versionId, d.name, u),
+                                o._applyVersion(version.versionId, thumbnail.name, autosave),
                                 gDesigner.intercomStats("Open version from history"));
                         })
                         .on("mouseenter", function () {
-                            (n || s.latest) && $(this).addClass("show-icon");
+                            (n || version.latest) && $(this).addClass("show-icon");
                         })
                         .on("mouseleave", function () {
                             ($(this).removeClass("show-icon"), $(this).find(".vhi-settings-list").hide());
@@ -313,22 +313,22 @@ module.exports = function (module, exports, require) {
                 this._panel.css("height", e);
             }),
             (y.prototype._documentStatusEventHandler = function (e) {
-                let { status: t } = e;
-                t === g.default.LoadFailed && this._closePreview();
+                let { status } = e;
+                status === g.default.LoadFailed && this._closePreview();
             }),
             (y.prototype._documentEvent = function (e) {
-                let { document: t, type: n } = e;
-                if (n === p.default.Type.AutoSaveSynchronized) return void this._updateVersionHistory(this._fileId);
+                let { document, type } = e;
+                if (type === p.default.Type.AutoSaveSynchronized) return void this._updateVersionHistory(this._fileId);
                 if (this._loadingPreview) return;
-                const o = t.getStorageItem() instanceof c.default.Item,
-                    i = t.getScene();
-                ((o && t.getStorageItem().getId() !== this._fileId) || (!o && i && i.getProperty("cid") !== this._fileId)) && this.close();
+                const o = document.getStorageItem() instanceof c.default.Item,
+                    i = document.getScene();
+                ((o && document.getStorageItem().getId() !== this._fileId) || (!o && i && i.getProperty("cid") !== this._fileId)) && this.close();
             }),
             (y.prototype._storageEventHandler = function (e) {
-                let { type: t, storageItem: n } = e;
+                let { type: t, storageItem } = e;
                 t === f.default.Type.VersionUpdate &&
-                    n instanceof c.default.Item &&
-                    this._fileId === n.getId() &&
+                    storageItem instanceof c.default.Item &&
+                    this._fileId === storageItem.getId() &&
                     this._updateVersionHistory(this._fileId);
             }),
             (y.prototype._showPreview = async function (e, t, n, o) {

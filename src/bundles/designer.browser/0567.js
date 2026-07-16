@@ -28,13 +28,13 @@ module.exports = function (module, exports, require) {
             T = require(393),
             G = require(336),
             P = require(434),
-            { SHOW_SIDEBAR_BADGE: D, NOTIFICATION_SETTINGS_ENABLED: L } = require(10 /* designerConfig */),
+            { SHOW_SIDEBAR_BADGE, NOTIFICATION_SETTINGS_ENABLED } = require(10 /* designerConfig */),
             I = require(86),
             k = require(217),
             O = require(1279),
             {
-                DateAPI: F,
-                FileStatus: { APPROVED: R },
+                DateAPI,
+                FileStatus: { APPROVED },
             } = require(10 /* designerConfig */),
             SidebarsIds = require(198);
         function N() {
@@ -98,7 +98,7 @@ module.exports = function (module, exports, require) {
             (N.prototype._storageItemFileStatusEvent = function (e) {
                 this._storageItem &&
                     this._storageItem === e.storageItem &&
-                    ((e.oldStatus !== R && e.newStatus !== R) || this._updatePropertyPanels(true));
+                    ((e.oldStatus !== APPROVED && e.newStatus !== APPROVED) || this._updatePropertyPanels(true));
             }),
             (N.prototype._toggleShowResolved = function (e) {
                 if (e !== this._showResolved) {
@@ -229,7 +229,7 @@ module.exports = function (module, exports, require) {
                                 },
                             ],
                         }),
-                    L &&
+                    NOTIFICATION_SETTINGS_ENABLED &&
                         this._optionsToolbar.gPropertyRow({
                             clickable: true,
                             isMenu: true,
@@ -541,14 +541,14 @@ module.exports = function (module, exports, require) {
                     t.setChecked(e.checked),
                     t.setCaption(e.caption),
                     t.addEventListener(l.default.ActivateEvent, (t) => {
-                        const { sender: n } = t;
+                        const { sender } = t;
                         (this._notificationMenu._items.forEach((e) => {
                             e.setChecked(false);
                         }),
-                            n.setChecked(true),
+                            sender.setChecked(true),
                             gDesigner.stats("annotations_settings_notifications", e.statType),
                             gApi.updateFileData(this._document.getId(), {
-                                notifications_disabled: this._notificationMenu.indexOf(n),
+                                notifications_disabled: this._notificationMenu.indexOf(sender),
                             }));
                     }),
                     t
@@ -559,11 +559,11 @@ module.exports = function (module, exports, require) {
             }),
             (N.prototype._collaborationEvent = function (e) {
                 if (e.type === T.Type.AnnotationsUpdate) {
-                    const { data: { lastUpdateTime: t } = {} } = e;
-                    if (t && this._document) {
+                    const { data: { lastUpdateTime } = {} } = e;
+                    if (lastUpdateTime && this._document) {
                         const e = this._document.getScene();
                         !e ||
-                            (e.getLastTimeAnnotationsFromCloudModified() && !F.lt(e.getLastTimeAnnotationsFromCloudModified(), t, false)) ||
+                            (e.getLastTimeAnnotationsFromCloudModified() && !DateAPI.lt(e.getLastTimeAnnotationsFromCloudModified(), lastUpdateTime, false)) ||
                             this.syncAnnotations();
                     }
                 } else e.type === T.Type.ReviewStatusChanged && this._updateToolbar();
@@ -756,12 +756,12 @@ module.exports = function (module, exports, require) {
             }),
             (N.prototype._updateToolbarButtons = function () {
                 this._annotationProperties.forEach((e, t) => {
-                    const { topArrow: n, properties: o } = e;
-                    if (o instanceof GAnnotationProperties) {
+                    const { topArrow, properties } = e;
+                    if (properties instanceof GAnnotationProperties) {
                         const e = gDesigner.isTouchEnabled()
                             ? N.ANNOTATION_PROPERTIES_ARROW_POSITION_TOUCH
                             : N.ANNOTATION_PROPERTIES_ARROW_POSITION;
-                        n.find(".arrow-top").css("right", e[t] + "%");
+                        topArrow.find(".arrow-top").css("right", e[t] + "%");
                     }
                 });
             }),
@@ -843,7 +843,7 @@ module.exports = function (module, exports, require) {
                 var t = { unread: 0, total: 0 },
                     n = this._annotationPanels.map((e) => e.properties.getPage()),
                     o = this._document && (this._document.isCloudFile() || this._document.isExternalFile());
-                if (D && !this._active) {
+                if (SHOW_SIDEBAR_BADGE && !this._active) {
                     var i = gDesigner.getSyncUser();
                     if (o) {
                         if (this._currentAnnotations) {

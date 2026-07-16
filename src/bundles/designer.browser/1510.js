@@ -6,7 +6,7 @@ module.exports = function (module, exports, require) {
             a = require(257);
         class r {
             constructor(e) {
-                let { closeCallback: t } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                let { closeCallback } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 var n = this;
                 ((this._dialog = $("<div/>")
                     .addClass("g-save-chooser")
@@ -49,7 +49,7 @@ module.exports = function (module, exports, require) {
                         releaseOnClose: true,
                         className: "g-save-chooser-dialog",
                         closeTimeout: 0,
-                        closeCallback: t,
+                        closeCallback: closeCallback,
                     }));
             }
             open() {

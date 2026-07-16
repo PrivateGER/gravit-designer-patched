@@ -36,7 +36,7 @@ module.exports = function (module, exports, require) {
             F = require(1320),
             R = require(566),
             M = require(31),
-            { replaceImage: N, setOriginSize: B, cropImage: U } = require(1268 /* GDocument */),
+            { replaceImage, setOriginSize, cropImage } = require(1268 /* GDocument */),
             j = require(78);
         const K = require(876);
         ((GContextMenu.prototype._contextMenuContainerTouch = null),
@@ -210,7 +210,7 @@ module.exports = function (module, exports, require) {
                         caption: GObject.GLocale.get(new GObject.GLocaleKey("GContextMenu", "text.crop")),
                         click: (e) => {
                             var t = gDesigner.getActiveDocument().getEditor().hasSelectionDetail();
-                            (U(this._getFirstSelectedImageElement(), t), gDesigner.stats("touchmenu_crop-image"));
+                            (cropImage(this._getFirstSelectedImageElement(), t), gDesigner.stats("touchmenu_crop-image"));
                         },
                         icon: "gravit-icon-crop",
                         update: (e) => {
@@ -221,7 +221,7 @@ module.exports = function (module, exports, require) {
                     {
                         caption: GObject.GLocale.get(new GObject.GLocaleKey("GContextMenu", "text.original-size")),
                         click: (e) => {
-                            (B(this._getFirstSelectedImageElement()), gDesigner.stats("touchmenu_original-size"));
+                            (setOriginSize(this._getFirstSelectedImageElement()), gDesigner.stats("touchmenu_original-size"));
                         },
                         icon: "gravit-icon-expand",
                     },
@@ -229,7 +229,7 @@ module.exports = function (module, exports, require) {
                         caption: GObject.GLocale.get(new GObject.GLocaleKey("GContextMenu", "text.replace-image")),
                         click: (e) => {
                             (gDesigner.stats("touchmenu_replace-image"),
-                                N(this._getFirstSelectedImageElement(), gDesigner.getActiveDocument()));
+                                replaceImage(this._getFirstSelectedImageElement(), gDesigner.getActiveDocument()));
                         },
                         icon: "gravit-icon-replaceimg",
                     },

@@ -1,21 +1,21 @@
 module.exports = function (module, exports, require) {
             "use strict";
             const {
-                getRequestNewFeatureUrl: n,
-                getSupportUrl: r,
-                getDocumentationUrl: o,
-                getDiscussBetaUrl: a,
-                getSubscriptionUrl: s,
-                getProductVectorUrl: l,
+                getRequestNewFeatureUrl,
+                getSupportUrl,
+                getDocumentationUrl,
+                getDiscussBetaUrl,
+                getSubscriptionUrl,
+                getProductVectorUrl,
             } = require(254);
             module.exports = function (e) {
                 e.link = {
-                    getRequestNewFeatureUrl: n,
-                    getSupportUrl: r,
-                    getDocumentationUrl: o,
-                    getDiscussBetaUrl: a,
-                    getSubscriptionUrl: s,
-                    getProductVectorUrl: l,
+                    getRequestNewFeatureUrl: getRequestNewFeatureUrl,
+                    getSupportUrl: getSupportUrl,
+                    getDocumentationUrl: getDocumentationUrl,
+                    getDiscussBetaUrl: getDiscussBetaUrl,
+                    getSubscriptionUrl: getSubscriptionUrl,
+                    getProductVectorUrl: getProductVectorUrl,
                 };
             };
         };

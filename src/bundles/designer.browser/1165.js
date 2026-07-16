@@ -8,15 +8,15 @@ module.exports = function (module, exports, require) {
             s = require(336),
             l = require(868),
             {
-                GFileReviewFlow: c,
-                gApi: d,
-                FileStatus: u,
-                FILE_REVIEW_ENABLED: p,
-                Notification: g,
+                GFileReviewFlow,
+                gApi,
+                FileStatus,
+                FILE_REVIEW_ENABLED,
+                Notification,
                 NotificationConstants: { FILE_REVIEW_FLOW: h = [] },
             } = require(10 /* designerConfig */);
         function f() {
-            if (!p) return this;
+            if (!FILE_REVIEW_ENABLED) return this;
             (gDesigner.addEventListener(i, this._documentEvent, this),
                 gDesigner.addEventListener(s.FileStatusUpdate, this._storageItemFileStatusEvent, this),
                 gDesigner.addEventListener(l, this._handleShareEvent, this),
@@ -33,8 +33,8 @@ module.exports = function (module, exports, require) {
                 e.removeEventListener(a, this._collaborationEvent, this);
             }),
             (f.prototype._storageItemFileStatusEvent = async function (e) {
-                let { storageItem: t, newStatus: n } = e;
-                this._fileId === t.getId() && this._doc.isCollaborative() && this._setStatus(n) && this.trigger(new f.UpdateEvent());
+                let { storageItem, newStatus } = e;
+                this._fileId === storageItem.getId() && this._doc.isCollaborative() && this._setStatus(newStatus) && this.trigger(new f.UpdateEvent());
             }),
             (f.prototype._handleShareEvent = async function (e) {
                 switch (e.type) {
@@ -57,9 +57,9 @@ module.exports = function (module, exports, require) {
                 }
             }),
             (f.prototype._collaborationEvent = async function (e) {
-                const { type: t, sender: n } = e;
-                if (n === gDesigner.getActiveDocument())
-                    switch (t) {
+                const { type, sender } = e;
+                if (sender === gDesigner.getActiveDocument())
+                    switch (type) {
                         case a.Type.ShareUpdate:
                         case a.Type.UserUpdate:
                             (await this._updateCollaboratorRoleListIfInitialized(),
@@ -86,8 +86,8 @@ module.exports = function (module, exports, require) {
                 return (
                     this._status !== e &&
                     ((this._status = e),
-                    (void 0 !== this._status && null !== this._status) || (this._status = u.IN_REVIEW),
-                    void 0 !== c && c.constructor && (this._flow = new c(this._status)),
+                    (void 0 !== this._status && null !== this._status) || (this._status = FileStatus.IN_REVIEW),
+                    void 0 !== GFileReviewFlow && GFileReviewFlow.constructor && (this._flow = new GFileReviewFlow(this._status)),
                     true)
                 );
             }),
@@ -101,13 +101,13 @@ module.exports = function (module, exports, require) {
             (f.prototype._shouldStatusDisabledForApproverWithCurrentStatus = function (e) {
                 if (this._isCurrentUserApprover())
                     switch (this._status) {
-                        case u.IN_REVIEW:
-                        case u.REOPENED:
+                        case FileStatus.IN_REVIEW:
+                        case FileStatus.REOPENED:
                             return true;
-                        case u.APPROVED:
-                            return e === u.IN_REVIEW || e === u.AWAITING_APPROVAL;
-                        case u.AWAITING_APPROVAL:
-                            return e === u.IN_REVIEW;
+                        case FileStatus.APPROVED:
+                            return e === FileStatus.IN_REVIEW || e === FileStatus.AWAITING_APPROVAL;
+                        case FileStatus.AWAITING_APPROVAL:
+                            return e === FileStatus.IN_REVIEW;
                     }
                 return false;
             }),
@@ -116,7 +116,7 @@ module.exports = function (module, exports, require) {
             }),
             (f.prototype.updateReviewStatus = function (e) {
                 return this.canUpdateToStatus(e) && this._fileId
-                    ? d.updateStatus(this._fileId, e)
+                    ? gApi.updateStatus(this._fileId, e)
                     : Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GFileReviewManager", "text.cant-update-file-to-status")));
             }),
             (f.prototype.canUpdateToStatus = function (e) {
@@ -144,11 +144,11 @@ module.exports = function (module, exports, require) {
                 );
             }),
             (f.prototype.getDocumentReviewHistory = async function (e) {
-                const t = await d.annotations.getDesignHistory(e).catch(() => []),
+                const t = await gApi.annotations.getDesignHistory(e).catch(() => []),
                     n = [];
                 for (let e = 0; e < t.length; e++) {
                     const o = t[e],
-                        i = g.from(o);
+                        i = Notification.from(o);
                     h.includes(i.getAction()) && n.push(i);
                 }
                 return n;

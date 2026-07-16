@@ -28,25 +28,25 @@ module.exports = function (module, exports, require) {
                     .toggleClass("g-has-selection", n)
                     .toggleClass("g-selected", t.hasFlag(GObject.GNode.Flag.Selected));
                 var u,
-                    { icon: p, overlayIcon: g } = i(t, a);
-                p &&
-                    ("<svg" === p.substr(0, 4)
+                    { icon, overlayIcon } = i(t, a);
+                icon &&
+                    ("<svg" === icon.substr(0, 4)
                         ? (u = $("<span></span>")
                               .addClass("layer-icon")
                               .append(
-                                  $(p).addClass("layer-icon").attr({ width: "16px", height: "16px" }).css({
+                                  $(icon).addClass("layer-icon").attr({ width: "16px", height: "16px" }).css({
                                       verticalAlign: "middle",
                                       paddingLeft: "1px",
                                       opacity: "initial",
                                   })
                               )
                               .insertBefore(c))
-                        : (gDesigner.isTouchEnabled() && (p += "-small"),
+                        : (gDesigner.isTouchEnabled() && (icon += "-small"),
                           (u = $("<span></span>")
-                              .addClass("layer-icon " + p)
+                              .addClass("layer-icon " + icon)
                               .css({ opacity: "initial" })
                               .insertBefore(c))));
-                g && u && g.appendTo(u);
+                overlayIcon && u && overlayIcon.appendTo(u);
                 return { container: r, title: c, titleGroup: s };
             }),
             (exports.getIconByLayerType = i),

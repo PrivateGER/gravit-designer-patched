@@ -16,10 +16,10 @@ module.exports = function (module, exports, require) {
             }
             getLicense() {
                 if (this._cache.license) {
-                    const { lastUpdate: e } = this._cache;
+                    const { lastUpdate } = this._cache;
                     return (
                         (this._cache.license = Object.assign({}, this._cache.license, {
-                            lastUpdate: e,
+                            lastUpdate: lastUpdate,
                         })),
                         this._cache.license
                     );

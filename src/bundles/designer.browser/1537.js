@@ -3,22 +3,22 @@ module.exports = function (module, exports, require) {
         var o = require(16);
         (require(58), require(8 /* Symbol */), require(71), require(4), require(13));
         var i = o(require(1155));
-        const { GLocale: a, GLocaleKey: r, GObject: s } = require(1 /* GObject */),
+        const { GLocale, GLocaleKey, GObject } = require(1 /* GObject */),
             l = require(392),
             c = require(1165),
             d = require(123),
             u = require(78),
             GSaveAction = require(447),
             {
-                FileStatus: { IN_REVIEW: g, AWAITING_APPROVAL: h, APPROVED: f, REOPENED: m },
-                GFileReviewActions: { ACTION_REQUEST_REVIEW: y, ACTION_REQUEST_APPROVAL: v, ACTION_REOPEN: _, ACTION_APPROVE: b },
-                FileReviewStatusAvailable: w,
-                ShareRoles: C,
-                FILE_REVIEW_ENABLED: x,
+                FileStatus: { IN_REVIEW, AWAITING_APPROVAL, APPROVED, REOPENED },
+                GFileReviewActions: { ACTION_REQUEST_REVIEW, ACTION_REQUEST_APPROVAL, ACTION_REOPEN, ACTION_APPROVE },
+                FileReviewStatusAvailable,
+                ShareRoles,
+                FILE_REVIEW_ENABLED,
             } = require(10 /* designerConfig */),
             GFileStatusHistoryDialog = require(1538);
         function E() {}
-        (s.inherit(E, d),
+        (GObject.inherit(E, d),
             (E.prototype.init = function (e, t) {
                 ((this._container = e), (this._fileStatusHistoryDialog = new GFileStatusHistoryDialog()), this._init());
             }),
@@ -41,10 +41,10 @@ module.exports = function (module, exports, require) {
                 );
             }),
             (E.prototype.isAvailable = function () {
-                return !!x;
+                return !!FILE_REVIEW_ENABLED;
             }),
             (E.prototype._init = function () {
-                x &&
+                FILE_REVIEW_ENABLED &&
                     ((this._updatingStatus = false),
                     this._container.addClass("g-annotation-review-docker"),
                     this._buildMainPanel($("<div/>").addClass("panel").addClass("main-panel").hide()),
@@ -54,65 +54,65 @@ module.exports = function (module, exports, require) {
                 const t = this._getAppManager();
                 var n;
                 switch (e) {
-                    case g:
+                    case IN_REVIEW:
                         return (
-                            (n = await t.hasAccess(y, true)),
+                            (n = await t.hasAccess(ACTION_REQUEST_REVIEW, true)),
                             {
                                 status: e,
-                                getLabel: () => a.get(new r("GReviewDockerProperties", "text.review-title")),
-                                getDescription: () => a.get(new r("GReviewDockerProperties", "text.review-description")),
+                                getLabel: () => GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.review-title")),
+                                getDescription: () => GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.review-description")),
                                 getIcon: () => null,
                                 getIconLabel: () => null,
-                                isAvailable: async () => n && !!this._reviewManager && this._reviewManager.canUpdateToStatus(g),
+                                isAvailable: async () => n && !!this._reviewManager && this._reviewManager.canUpdateToStatus(IN_REVIEW),
                             }
                         );
-                    case m:
+                    case REOPENED:
                         return (
-                            (n = await t.hasAccess(_, true)),
+                            (n = await t.hasAccess(ACTION_REOPEN, true)),
                             {
                                 status: e,
-                                getLabel: () => a.get(new r("GReviewDockerProperties", n ? "text.reopen-title" : "text.reopened-title")),
-                                getDescription: () => a.get(new r("GReviewDockerProperties", "text.reopen-description")),
+                                getLabel: () => GLocale.get(new GLocaleKey("GReviewDockerProperties", n ? "text.reopen-title" : "text.reopened-title")),
+                                getDescription: () => GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.reopen-description")),
                                 getIcon: () => null,
                                 getIconLabel: () => null,
-                                isAvailable: async () => n && !!this._reviewManager && this._reviewManager.canUpdateToStatus(m),
+                                isAvailable: async () => n && !!this._reviewManager && this._reviewManager.canUpdateToStatus(REOPENED),
                             }
                         );
-                    case h:
-                        const i = t.hasRole(C.Owner),
+                    case AWAITING_APPROVAL:
+                        const i = t.hasRole(ShareRoles.Owner),
                             s = await this._reviewManager.hasApprovers();
                         return (
-                            (n = await t.hasAccess(v, true)),
+                            (n = await t.hasAccess(ACTION_REQUEST_APPROVAL, true)),
                             {
                                 status: e,
                                 getLabel: () =>
-                                    a.get(
-                                        new r(
+                                    GLocale.get(
+                                        new GLocaleKey(
                                             "GReviewDockerProperties",
                                             n ? "text.request-approval-title" : "text.requested-approval-title"
                                         )
                                     ),
-                                getDescription: () => a.get(new r("GReviewDockerProperties", "text.request-approval-description")),
+                                getDescription: () => GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.request-approval-description")),
                                 getIcon: () => (i && !s ? "info" : null),
                                 getIconLabel: () =>
-                                    i && !s ? a.get(new r("GReviewDockerProperties", "text.request-approval-tooltip")) : null,
+                                    i && !s ? GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.request-approval-tooltip")) : null,
                                 isAvailable: async () => {
-                                    const e = !!this._reviewManager && this._reviewManager.canUpdateToStatus(h);
+                                    const e = !!this._reviewManager && this._reviewManager.canUpdateToStatus(AWAITING_APPROVAL);
                                     return s && n && e;
                                 },
                             }
                         );
-                    case f:
-                        n = await t.hasAccess(b, true);
+                    case APPROVED:
+                        n = await t.hasAccess(ACTION_APPROVE, true);
                         var o = this._getStatus();
                         return {
                             status: e,
                             getLabel: () =>
-                                a.get(new r("GReviewDockerProperties", n && e !== o ? "text.approve-title" : "text.approved-title")),
-                            getDescription: () => a.get(new r("GReviewDockerProperties", "text.approved-description")),
+                                GLocale.get(new GLocaleKey("GReviewDockerProperties", n && e !== o ? "text.approve-title" : "text.approved-title")),
+                            getDescription: () => GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.approved-description")),
                             getIcon: () => null,
                             getIconLabel: () => null,
-                            isAvailable: async () => n && !!this._reviewManager && this._reviewManager.canUpdateToStatus(f),
+                            isAvailable: async () => n && !!this._reviewManager && this._reviewManager.canUpdateToStatus(APPROVED),
                         };
                 }
             }),
@@ -126,14 +126,14 @@ module.exports = function (module, exports, require) {
                 this._mainPanel = e;
                 let t = $("<div/>").addClass("row").addClass("header").appendTo(this._mainPanel);
                 ($("<div/>")
-                    .text(a.get(new r("GReviewDockerProperties", "text.current-status")))
+                    .text(GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.current-status")))
                     .addClass("status")
                     .click(() => {
                         ((this._opened = false), this._container.gDialog("close"));
                     })
                     .appendTo(t),
                     $("<div/>")
-                        .text(a.get(new r("GReviewDockerProperties", "text.status-history")))
+                        .text(GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.status-history")))
                         .addClass("history-actions")
                         .hide()
                         .click(() => {
@@ -144,11 +144,11 @@ module.exports = function (module, exports, require) {
                 let n = $("<div/>").addClass("row").addClass("footer").hide().appendTo(this._mainPanel);
                 ($("<div/>")
                     .addClass("footer-title")
-                    .text(a.get(new r("GReviewDockerProperties", "text.please-share-to-start")))
+                    .text(GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.please-share-to-start")))
                     .appendTo(n),
                     $("<div/>")
                         .addClass("footer-action")
-                        .text(a.get(new r("GReviewDockerProperties", "text.share-design-now")))
+                        .text(GLocale.get(new GLocaleKey("GReviewDockerProperties", "text.share-design-now")))
                         .addClass("footer-action")
                         .click(() => this._requestShare())
                         .appendTo(n),
@@ -195,14 +195,14 @@ module.exports = function (module, exports, require) {
                 const n = !(!this._document || !this._document.getStorageItem());
                 (e
                     .find(".footer-title")
-                    .text(a.get(new r("GReviewDockerProperties", n ? "text.please-share-to-start" : "text-please-save-share-to-start"))),
+                    .text(GLocale.get(new GLocaleKey("GReviewDockerProperties", n ? "text.please-share-to-start" : "text-please-save-share-to-start"))),
                     e
                         .find(".footer-action")
-                        .text(a.get(new r("GReviewDockerProperties", n ? "text.share-design-now" : "text.save-share-design-now"))),
+                        .text(GLocale.get(new GLocaleKey("GReviewDockerProperties", n ? "text.share-design-now" : "text.save-share-design-now"))),
                     this._isDocumentSane() ? (e.hide(), t.show()) : (e.show(), t.hide()));
             }),
             (E.prototype._updateUI = async function () {
-                w.includes(this._getStatus()) &&
+                FileReviewStatusAvailable.includes(this._getStatus()) &&
                     (this._statusSelectorContainer.empty(),
                     this._mainPanel && this._mainPanel.hide(),
                     this._document &&
@@ -212,7 +212,7 @@ module.exports = function (module, exports, require) {
                         this._mainPanel.show()));
             }),
             (E.prototype._getStatus = function () {
-                return (this._reviewManager && this._reviewManager.getStatus()) || g;
+                return (this._reviewManager && this._reviewManager.getStatus()) || IN_REVIEW;
             }),
             (E.prototype._isDocumentSane = function () {
                 return !!this._document && this._getAppManager().isSharing() && this._document.isCollaborative();
@@ -251,13 +251,13 @@ module.exports = function (module, exports, require) {
                                       "reviewdocker_design",
                                       ((e) => {
                                           switch (e) {
-                                              case g:
+                                              case IN_REVIEW:
                                                   return "InReview";
-                                              case h:
+                                              case AWAITING_APPROVAL:
                                                   return "RequestApproval";
-                                              case f:
+                                              case APPROVED:
                                                   return "Approved";
-                                              case m:
+                                              case REOPENED:
                                                   return "ReOpened";
                                           }
                                       })(e.status)
@@ -283,8 +283,8 @@ module.exports = function (module, exports, require) {
                 };
                 if (this._isDocumentSane() && n) {
                     this._selectedItemContainer.removeClass("disabled");
-                    for (let e = 0; e < w.length; e++) {
-                        var i = w[e],
+                    for (let e = 0; e < FileReviewStatusAvailable.length; e++) {
+                        var i = FileReviewStatusAvailable[e],
                             a = await this._getDAOStatus(i);
                         await o(a);
                     }

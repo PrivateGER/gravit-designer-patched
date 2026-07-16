@@ -6,19 +6,19 @@ module.exports = function (module, exports, require) {
                 o = require(417 /* gApi */).self(),
                 a = require(354),
                 s = require(170),
-                { TRIAL_MESSAGE_WEB_CONTENT_URL_TEMPLATE: l, UPGRADE_SCREEN_WEB_CONTENT_URL_TEMPLATE: h } = require(374 /* SUPPORT_URL */),
-                { DateAPI: A } = require(209 /* GLocale */);
+                { TRIAL_MESSAGE_WEB_CONTENT_URL_TEMPLATE, UPGRADE_SCREEN_WEB_CONTENT_URL_TEMPLATE } = require(374 /* SUPPORT_URL */),
+                { DateAPI } = require(209 /* GLocale */);
             module.exports = class {
                 constructor() {
                     throw new Error("No instance");
                 }
                 static async newProExpireSoon(e) {
-                    let { impl: t, now: i } = e;
+                    let { impl, now } = e;
                     return new GPaywallDialog({
                         type: "reminder/accessending",
-                        impl: t,
+                        impl: impl,
                         gApi: o,
-                        now: i,
+                        now: now,
                         campaign: a.StoreCampaign.TrialSeries,
                     });
                 }
@@ -64,7 +64,7 @@ module.exports = function (module, exports, require) {
                         dismiss: false,
                         content: {
                             type: n.ContentType.Web,
-                            data: l.replace("%lang", s.getLocaleTagISO6391()),
+                            data: TRIAL_MESSAGE_WEB_CONTENT_URL_TEMPLATE.replace("%lang", s.getLocaleTagISO6391()),
                         },
                     });
                 }
@@ -80,7 +80,7 @@ module.exports = function (module, exports, require) {
                             withFooter: false,
                             content: {
                                 type: n.ContentType.Web,
-                                data: h.replace("%lang", s.getLocaleTagISO6391()),
+                                data: UPGRADE_SCREEN_WEB_CONTENT_URL_TEMPLATE.replace("%lang", s.getLocaleTagISO6391()),
                             },
                             impl: t,
                         })
@@ -88,7 +88,7 @@ module.exports = function (module, exports, require) {
                 }
                 static _getNewTrialMessageTitle(e) {
                     let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : new Date();
-                    const i = e && e.expire && A.millisecondsToDays(A.diff(new Date(e.expire), t));
+                    const i = e && e.expire && DateAPI.millisecondsToDays(DateAPI.diff(new Date(e.expire), t));
                     return 0 === i
                         ? s.getValue("GReminderDialogFactory", "text.expires-today")
                         : i >= 1

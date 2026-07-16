@@ -364,8 +364,8 @@ module.exports = function (module, exports, require) {
                 if (e) return GCommonNames.updateFileThumbnail(this.getId(), e.getImageAsBlob(), e.getMimeType(), t);
             }),
             (b.Item.prototype._checkUserQuotaLimit = async function () {
-                const { pro: e, free: t } = gDesigner.getLicense().getQuotas(),
-                    n = gDesigner.isEnabledProFeatures() ? e : t;
+                const { pro, free } = gDesigner.getLicense().getQuotas(),
+                    n = gDesigner.isEnabledProFeatures() ? pro : free;
                 if (n > 0) {
                     if ((await designerConfig.gApi.quota()) > n) {
                         const e = new Error(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.running-out-of-cloud-space")));

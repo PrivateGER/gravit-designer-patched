@@ -4,11 +4,11 @@ module.exports = function (module, exports, require) {
             module.exports = class {
                 constructor() {
                     let {
-                        public_stats: e,
-                        private_stats: t,
-                        team_stats: i,
+                        public_stats,
+                        private_stats,
+                        team_stats,
                     } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    ((this._public_stats = e), (this._private_stats = t), (this._team_stats = i));
+                    ((this._public_stats = public_stats), (this._private_stats = private_stats), (this._team_stats = team_stats));
                 }
                 getPrivateShareQuota() {
                     return (this._private_stats && parseInt(this._private_stats.quota)) || 0;

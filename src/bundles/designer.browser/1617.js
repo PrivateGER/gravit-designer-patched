@@ -11,7 +11,7 @@ module.exports = function (module, exports, require) {
             d = o(require(44 /* GSystemDialog */)),
             u = o(require(443)),
             p = o(require(1341));
-        const { isExecutingOnMSTeamsSync: g } = u.default;
+        const { isExecutingOnMSTeamsSync } = u.default;
         class h extends l.default {
             constructor() {
                 (super(),
@@ -41,7 +41,7 @@ module.exports = function (module, exports, require) {
                 return !!gDesigner.getActiveDocument() && r.default.enabled && !this._isErrorMessageDisplaying && !this._isLoading;
             }
             isVisible() {
-                return !g();
+                return !isExecutingOnMSTeamsSync();
             }
             execute() {
                 if (this._isInPlayMode) return this._exitPlayMode();

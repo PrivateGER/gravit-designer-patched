@@ -18,8 +18,8 @@ module.exports = function (module, exports, require) {
             (s.prototype._importTrialCount = 0),
             (s.prototype.import = function (e) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                const { silent: n } = t;
-                return !n && this.busy()
+                const { silent } = t;
+                return !silent && this.busy()
                     ? this._importTrialCount++ > 100
                         ? void e()
                         : (setTimeout(

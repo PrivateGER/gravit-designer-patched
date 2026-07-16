@@ -8,7 +8,7 @@ module.exports = function (module, exports, require) {
             s = o(require(443)),
             l = require(1243),
             GSaveAction = require(40);
-        const { getAuthenticator: d, getTeamsContext: u } = s.default;
+        const { getAuthenticator, getTeamsContext } = s.default;
         function p() {}
         ((p.Error = {
             NOT_REGISTERED: 1,
@@ -79,7 +79,7 @@ module.exports = function (module, exports, require) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 const n = this;
                 return new Promise((o, a) => {
-                    d()
+                    getAuthenticator()
                         .then((r) =>
                             r.authenticate({
                                 url: ""
@@ -91,8 +91,8 @@ module.exports = function (module, exports, require) {
                                 successCallback: async function (e) {
                                     const i = {};
                                     for (let t in e) {
-                                        const { expires: n, accessToken: o } = e[t];
-                                        i[t] = { token: o, expires: Number(n) };
+                                        const { expires, accessToken } = e[t];
+                                        i[t] = { token: accessToken, expires: Number(expires) };
                                     }
                                     (await n.setTokens(Object.assign(t, i)), o(i));
                                 },
@@ -132,7 +132,7 @@ module.exports = function (module, exports, require) {
             (p.prototype._getValidCachedTokens = async function () {
                 const e = this._getCachedTokens();
                 if (!e) return null;
-                const t = await u(),
+                const t = await getTeamsContext(),
                     n = {};
                 if (e.userId !== t.loginHint) return n;
                 const o = Object.keys(e);
@@ -155,7 +155,7 @@ module.exports = function (module, exports, require) {
             }),
             (p.prototype.setTokens = async function (e) {
                 let t = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
-                const n = (await u()).loginHint,
+                const n = (await getTeamsContext()).loginHint,
                     o = await this._getValidCachedTokens();
                 ((this._tokens = Object.assign({ userId: n }, o, e)),
                     t && localStorage.setItem(p.CACHED_TOKENS_PROPERTY_NAME, (0, GSaveAction.stringToBase64String)(JSON.stringify(this._tokens))));

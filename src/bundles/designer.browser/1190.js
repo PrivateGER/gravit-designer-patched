@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(8 /* Symbol */);
-        const { gApi: o } = require(10 /* designerConfig */);
+        const { gApi } = require(10 /* designerConfig */);
         module.exports = class {
             canMakePayments() {
                 return true;

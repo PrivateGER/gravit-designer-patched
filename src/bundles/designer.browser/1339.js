@@ -262,16 +262,16 @@ module.exports = function (module, exports, require) {
                 throw new Error("Unknown input property: " + e);
             }),
             (_.prototype._windowEvent = function (e) {
-                const { type: t, window: n } = e;
-                if (t !== g.WindowEvent.Type.Activated)
+                const { type, window } = e;
+                if (type !== g.WindowEvent.Type.Activated)
                     return void (
-                        t === g.WindowEvent.Type.Removed &&
+                        type === g.WindowEvent.Type.Removed &&
                         this._lastScene &&
                         (this._lastScene.removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._propertiesUpdateEventHandler, this),
                         this._lastScene.removeEventListener(GObject.GNode.AfterFlagChangeEvent, this._pageActivationEventHandler, this),
                         (this._lastScene = null))
                     );
-                if (n.getDocument() !== gDesigner.getActiveDocument()) return;
+                if (window.getDocument() !== gDesigner.getActiveDocument()) return;
                 const o = gDesigner.getActiveDocument().getScene();
                 (o.addEventListener(GObject.GNode.AfterFlagChangeEvent, this._pageActivationEventHandler, this),
                     o.addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._propertiesUpdateEventHandler, this),
@@ -288,16 +288,16 @@ module.exports = function (module, exports, require) {
                 this.updatePropertiesAvailability(gDesigner.getActiveDocument().getScene().getActivePage());
             }),
             (_.prototype._pageActivationEventHandler = function (e) {
-                let { node: t, flag: n } = e;
-                if (t instanceof GObject.GPage && n === GObject.GNode.Flag.Active) {
+                let { node, flag } = e;
+                if (node instanceof GObject.GPage && flag === GObject.GNode.Flag.Active) {
                     const e = gDesigner.getWindows().getActiveWindow().getView().getViewConfiguration().paintMode,
-                        n = !t.isFixedSized();
+                        n = !node.isFixedSized();
                     if (n && e === GObject.GScenePaintConfiguration.PaintMode.Output)
                         (gDesigner.setPaintMode(GObject.GScenePaintConfiguration.PaintMode.Full),
                             this._updatePageSetting(f.PAGE_CLIP_CONTENT_DISABLED));
                     else if (!n) {
                         var o =
-                            t.getProperty(f.PAGE_CLIP_PROPERTY_NAME, true) ||
+                            node.getProperty(f.PAGE_CLIP_PROPERTY_NAME, true) ||
                             (designerConfig.PAGE_CLIP_DEFAULT ? f.PAGE_CLIP_CONTENT_ENABLED : f.PAGE_CLIP_CONTENT_DISABLED);
                         gDesigner.setPaintMode(
                             o === f.PAGE_CLIP_CONTENT_ENABLED
@@ -305,12 +305,12 @@ module.exports = function (module, exports, require) {
                                 : GObject.GScenePaintConfiguration.PaintMode.Full
                         );
                     }
-                    this.updatePropertiesAvailability(t);
+                    this.updatePropertiesAvailability(node);
                 }
             }),
             (_.prototype._propertiesUpdateEventHandler = function (e) {
-                let { node: t, temporary: n, properties: o } = e;
-                if (!n && t instanceof GObject.GPage && (o.indexOf("w") >= 0 || o.indexOf("h") >= 0)) {
+                let { node: t, temporary, properties } = e;
+                if (!temporary && t instanceof GObject.GPage && (properties.indexOf("w") >= 0 || properties.indexOf("h") >= 0)) {
                     var a = gDesigner.getWindows().getActiveWindow().getView().getViewConfiguration().paintMode,
                         r = !t.isFixedSized();
                     r && a === GObject.GScenePaintConfiguration.PaintMode.Output

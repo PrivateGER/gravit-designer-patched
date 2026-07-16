@@ -40,15 +40,15 @@ module.exports = function (module, exports, require) {
             m = {};
         const y = (exports.TEAMS_COMMANDS = p.default.COMMANDS),
             v = (exports.GSharePointClient = function (e) {
-                let { tenant: t, domain: n, clientID: o, id: i, authTenant: a, corporate: r, token: s, relativePath: l } = e;
-                ((this.TOKEN = f || s),
-                    (this.BASE_URL = t),
-                    (this.AUTH_TENANT = a || t),
-                    (this.DOMAIN = n),
-                    (this.CLIENT_ID = o),
-                    (this.SETTINGS_ID = i),
-                    (this.CORPORATE = r || false),
-                    (this.RELATIVE_PATH = l),
+                let { tenant, domain, clientID, id, authTenant, corporate, token, relativePath } = e;
+                ((this.TOKEN = f || token),
+                    (this.BASE_URL = tenant),
+                    (this.AUTH_TENANT = authTenant || tenant),
+                    (this.DOMAIN = domain),
+                    (this.CLIENT_ID = clientID),
+                    (this.SETTINGS_ID = id),
+                    (this.CORPORATE = corporate || false),
+                    (this.RELATIVE_PATH = relativePath),
                     (this.HEADERS = v.requestHeaders));
             });
         ((v.prototype.setTenantURL = function (e) {
@@ -134,8 +134,8 @@ module.exports = function (module, exports, require) {
                         (t.type = v.getFileType({ name: e.Name })),
                         (t.mimeType = e._mimetype || e.mimeType || t.type));
                     const n = designerConfig.FILE_FORMATS.find((e) => {
-                        let { type: n } = e;
-                        return n === t.type;
+                        let { type } = e;
+                        return type === t.type;
                     });
                     return (
                         (t.extension = n && n.ext),
@@ -210,8 +210,8 @@ module.exports = function (module, exports, require) {
             (v.getFileType = function (e) {
                 return e.name.toLowerCase().endsWith(".cdrapp")
                     ? designerConfig.FILE_FORMATS.find((e) => {
-                          let { ext: t } = e;
-                          return "cdrapp" === t;
+                          let { ext } = e;
+                          return "cdrapp" === ext;
                       }).type
                     : e.name.toLowerCase().endsWith(".cdr")
                       ? designerConfig.FILE_FORMATS.find((e) => {
@@ -322,11 +322,11 @@ module.exports = function (module, exports, require) {
                 return (
                     n > 0 && (i += "&$top=".concat(n)),
                     this.get(i).then((t) => {
-                        let { value: n } = t;
+                        let { value } = t;
                         const o = [];
-                        if (!n || !n.length) return o;
-                        for (let t = 0, i = n.length; t < i; t++) {
-                            let i = n[t];
+                        if (!value || !value.length) return o;
+                        for (let t = 0, i = value.length; t < i; t++) {
+                            let i = value[t];
                             if (!i.Exists) continue;
                             const a = v.convertFolderToCloudItem(i);
                             ((a.parent = e), o.push(a));
@@ -347,10 +347,10 @@ module.exports = function (module, exports, require) {
                 return this.get(n);
             }),
             (v.prototype._createQueryFilesURL = function (e) {
-                const { folderRelativeUrl: t, orderBy: n, limit: o, skip: i } = e,
-                    a = this.getSanitizedFolderRelativePath(t),
+                const { folderRelativeUrl, orderBy, limit, skip } = e,
+                    a = this.getSanitizedFolderRelativePath(folderRelativeUrl),
                     r = this.getAPIEndpointURL("/_api/web/GetFolderByServerRelativeUrl('".concat(a, "')/Files"));
-                return (r.searchParams.append("$orderby", n), r.searchParams.append("$top", o), r.searchParams.append("$skip", i), r);
+                return (r.searchParams.append("$orderby", orderBy), r.searchParams.append("$top", limit), r.searchParams.append("$skip", skip), r);
             }),
             (v.prototype.findFileById = function (e) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
@@ -369,8 +369,8 @@ module.exports = function (module, exports, require) {
                                 },
                             } = e,
                             n = t.Cells.find((e) => {
-                                let { Key: t } = e;
-                                return "Filename" === t;
+                                let { Key } = e;
+                                return "Filename" === Key;
                             }).Value;
                         return {
                             name: t.Cells.find((e) => {
@@ -742,8 +742,8 @@ module.exports = function (module, exports, require) {
                                   }, 1e3);
                                   async function b(e) {
                                       let i = e.originalEvent.data;
-                                      const { cmd: r } = i;
-                                      if (r && "saveToken" === r)
+                                      const { cmd } = i;
+                                      if (cmd && "saveToken" === cmd)
                                           ((n.TOKEN = f =
                                               {
                                                   expires: Math.floor(Date.now() / 1e3) + 3600,
@@ -757,14 +757,14 @@ module.exports = function (module, exports, require) {
                                               $(window).off("message", b),
                                               (n._connect = null),
                                               s());
-                                      else if (r && "saveTokenError" === r) {
-                                          const { error: e } = i;
-                                          if ("User login is required" === e) return;
+                                      else if (cmd && "saveTokenError" === cmd) {
+                                          const { error } = i;
+                                          if ("User login is required" === error) return;
                                           if ((console.error(">>saveTokenError data", i), c && clearTimeout(c), u))
                                               return void (c = setTimeout(function () {
                                                   (h(y), v._logoutAndClearAdalCache(o), t(false));
                                               }, a));
-                                          (v._logoutAndClearAdalCache(o), h(y), (n._connect = null), l(e));
+                                          (v._logoutAndClearAdalCache(o), h(y), (n._connect = null), l(error));
                                       }
                                   }
                                   u &&

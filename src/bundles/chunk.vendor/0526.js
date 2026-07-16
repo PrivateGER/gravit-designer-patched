@@ -49,15 +49,15 @@ module.exports = function (module, exports, require) {
                     };
                 }
                 constructor(e) {
-                    let { page: t, content: i, title: n, action: r, cmd: a = {}, closeable: s = true, withFooter: l = true } = e;
-                    ((this._page = t),
-                        (this._content = i),
-                        (this._title = n || o.getValue("GOfferDialogV1", "text.offerdialog-v1-default-title")),
+                    let { page, content, title, action, cmd: a = {}, closeable: s = true, withFooter: l = true } = e;
+                    ((this._page = page),
+                        (this._content = content),
+                        (this._title = title || o.getValue("GOfferDialogV1", "text.offerdialog-v1-default-title")),
                         (this._openPurchaseFlow = a.openPurchaseFlow),
                         (this._close = a.close),
                         (this._closeable = s),
                         (this._withFooter = l),
-                        (this._action = r),
+                        (this._action = action),
                         this._initUI());
                 }
                 _initUI() {
@@ -121,11 +121,11 @@ module.exports = function (module, exports, require) {
                 }
                 _initActionButton() {
                     if (!this._action) return;
-                    const { style: e, title: t, execute: i } = this._action;
+                    const { style, title: t, execute } = this._action;
                     n("<button>")
-                        .addClass(e || "")
+                        .addClass(style || "")
                         .text(t)
-                        .on("click", () => i())
+                        .on("click", () => execute())
                         .appendTo(this._ui.main);
                 }
                 _initFooter() {

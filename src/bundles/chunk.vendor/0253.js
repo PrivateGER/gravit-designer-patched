@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
             "use strict";
             (require(19), require(8 /* Symbol */), require(20), require(107), require(3), require(26), require(114));
-            const { DateAPI: n } = require(209 /* GLocale */),
+            const { DateAPI } = require(209 /* GLocale */),
                 GShareRoles = require(287);
             module.exports = {
                 sinceVersion: "3.4.5",
@@ -11,9 +11,9 @@ module.exports = function (module, exports, require) {
                         getPrice() {
                             let {
                                 productId: e = 220444,
-                                coupon: t,
-                                currency: i,
-                                country: n,
+                                coupon,
+                                currency,
+                                country,
                             } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                             const r = /trunk|bleed|^localhost$/.test(location.hostname)
                                     ? "https://gravit.plasmatrap.com"
@@ -21,26 +21,26 @@ module.exports = function (module, exports, require) {
                                 o = new URLSearchParams("?client_id=1577");
                             return e
                                 ? (o.set("product_id", e),
-                                  t && o.set("coupon", t),
-                                  i && o.set("currency", i),
-                                  n && o.set("country", n),
+                                  coupon && o.set("coupon", coupon),
+                                  currency && o.set("currency", currency),
+                                  country && o.set("country", country),
                                   o.set("price_rule", e),
                                   fetch("".concat(r, "/pricesystem/cb?").concat(o.toString()))
                                       .then((e) => (e.ok ? e.json() : Promise.reject()))
                                       .then((e) => {
                                           const {
                                               price: {
-                                                  gross: { value: t },
+                                                  gross: { value },
                                               },
                                               list_price: { gross: { value: i } = {} } = {},
-                                              currency: { iso: n },
-                                              locale: r,
+                                              currency: { iso },
+                                              locale,
                                           } = e.pop();
                                           return {
-                                              price: t,
+                                              price: value,
                                               listPrice: i,
-                                              currency: n,
-                                              locale: r,
+                                              currency: iso,
+                                              locale: locale,
                                           };
                                       }))
                                 : Promise.reject("Missing productId");
@@ -96,18 +96,18 @@ module.exports = function (module, exports, require) {
                         },
                     },
                     license: {
-                        offlineExpirationTime: n.daysToMilliseconds(15),
-                        offlineCountdown: n.daysToMilliseconds(7),
+                        offlineExpirationTime: DateAPI.daysToMilliseconds(15),
+                        offlineCountdown: DateAPI.daysToMilliseconds(7),
                     },
                     reminders: {
-                        offlineWarning: n.daysToMilliseconds(1),
-                        proOfferInFree: n.daysToMilliseconds(15),
-                        proOfferInTrial: n.daysToMilliseconds(5),
-                        proOfferInTrialExpired: n.daysToMilliseconds(15),
-                        proOfferInTrialExpireSoon: n.daysToMilliseconds(1),
-                        proOfferInTrialLastWarning: n.daysToMilliseconds(0),
-                        proOfferSpecialPrice: n.daysToMilliseconds(0),
-                        proExpireSoon: n.daysToMilliseconds(30),
+                        offlineWarning: DateAPI.daysToMilliseconds(1),
+                        proOfferInFree: DateAPI.daysToMilliseconds(15),
+                        proOfferInTrial: DateAPI.daysToMilliseconds(5),
+                        proOfferInTrialExpired: DateAPI.daysToMilliseconds(15),
+                        proOfferInTrialExpireSoon: DateAPI.daysToMilliseconds(1),
+                        proOfferInTrialLastWarning: DateAPI.daysToMilliseconds(0),
+                        proOfferSpecialPrice: DateAPI.daysToMilliseconds(0),
+                        proExpireSoon: DateAPI.daysToMilliseconds(30),
                     },
                     flags: {
                         welcomeMessage: false,

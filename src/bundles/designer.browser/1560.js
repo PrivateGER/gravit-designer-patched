@@ -6,7 +6,7 @@ module.exports = function (module, exports, require) {
             a = require(53),
             r = o(require(1561)),
             s = o(require(177));
-        const { gApi: l } = require(10 /* designerConfig */);
+        const { gApi } = require(10 /* designerConfig */);
         module.exports = class {
             constructor(e, t) {
                 let n = arguments.length > 2 && void 0 !== arguments[2] && arguments[2];
@@ -84,7 +84,7 @@ module.exports = function (module, exports, require) {
                           name: r.default.ANONYMOUS_USERNAME,
                           value: encodeURIComponent(JSON.stringify(e)),
                       })
-                    : await l.updateUser(e),
+                    : await gApi.updateUser(e),
                     await this._updateUserProperties(t),
                     this.close());
             }

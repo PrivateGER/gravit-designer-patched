@@ -2,9 +2,9 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(8 /* Symbol */), require(4), require(13), require(38));
         var GObject = require(1);
-        const { FILE_FORMATS: i, gApi: a } = require(10 /* designerConfig */),
-            r = i.find((e) => e.default),
-            { COMMAND_SAVE: s, COMMAND_SYNC_IMAGES: l } = require(591 /* COMMAND_SAVE */),
+        const { FILE_FORMATS, gApi } = require(10 /* designerConfig */),
+            r = FILE_FORMATS.find((e) => e.default),
+            { COMMAND_SAVE, COMMAND_SYNC_IMAGES } = require(591 /* COMMAND_SAVE */),
             c = require(1164);
         module.exports = class extends c {
             constructor(e, t) {
@@ -12,12 +12,12 @@ module.exports = function (module, exports, require) {
             }
             async updateFileSceneAndMetadata(e, t, n, o) {
                 await this._syncSceneImages(e, n);
-                const { sceneSnapshot: i, urls: r } = await this._saveScene(e, t, n);
+                const { sceneSnapshot, urls } = await this._saveScene(e, t, n);
                 return (
-                    console.log({ documentId: e, file: t, sceneSnapshot: i, urls: r }),
-                    await this._saveThumbnail(o.thumbnail.getImageAsBlob(), r.url_t),
-                    await a.commitAutoSaveFileUpdate(t.id),
-                    a.getFile(e + "?edit")
+                    console.log({ documentId: e, file: t, sceneSnapshot: sceneSnapshot, urls: urls }),
+                    await this._saveThumbnail(o.thumbnail.getImageAsBlob(), urls.url_t),
+                    await gApi.commitAutoSaveFileUpdate(t.id),
+                    gApi.getFile(e + "?edit")
                 );
             }
             _syncSceneImages(e, t) {
@@ -33,21 +33,21 @@ module.exports = function (module, exports, require) {
                                 });
                         }));
                     const s = Object.create(t),
-                        c = this._request(l.REQUEST, {
+                        c = this._request(COMMAND_SYNC_IMAGES.REQUEST, {
                             id: e,
                             images: r,
                             entries: i,
-                            cloudURL: a.url,
+                            cloudURL: gApi.url,
                         });
                     this._worker.addEventListener(
                         "message",
                         function (e) {
-                            const { cmd: t, id: i, data: a } = e.data;
-                            if (t !== l.SUCCESS || i !== c) return false;
+                            const { cmd, id, data } = e.data;
+                            if (cmd !== COMMAND_SYNC_IMAGES.SUCCESS || id !== c) return false;
                             let r = s.getDictionary();
                             s.setCloudSynchronization(null);
                             let d = new GObject.GDictionary();
-                            return (d.deserialize(a), r.merge(d), n(), true);
+                            return (d.deserialize(data), r.merge(d), n(), true);
                         }.bind(this),
                         { once: true }
                     );
@@ -57,7 +57,7 @@ module.exports = function (module, exports, require) {
                 return new Promise((i, a) => {
                     let l = GObject.GNode.serialize(n, { save: true });
                     const c = Object.create(n),
-                        d = this._request(s.REQUEST, {
+                        d = this._request(COMMAND_SAVE.REQUEST, {
                             id: e,
                             file: t,
                             scene: l,
@@ -67,8 +67,8 @@ module.exports = function (module, exports, require) {
                         "message",
                         function (e) {
                             const { cmd: t, id: n, data: o } = e.data;
-                            if ((t !== s.SUCCESS && t !== s.FAILED) || n !== d) return false;
-                            t === s.SUCCESS ? i({ sceneSnapshot: c, urls: o.urls }) : t === s.FAILED && a();
+                            if ((t !== COMMAND_SAVE.SUCCESS && t !== COMMAND_SAVE.FAILED) || n !== d) return false;
+                            t === COMMAND_SAVE.SUCCESS ? i({ sceneSnapshot: c, urls: o.urls }) : t === COMMAND_SAVE.FAILED && a();
                             return true;
                         }.bind(this),
                         { once: true }

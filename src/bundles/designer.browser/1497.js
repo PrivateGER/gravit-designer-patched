@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(20), require(34));
         var designerConfig = require(10);
-        const { GLocale: i, GLocaleKey: a } = require(1 /* GObject */);
+        const { GLocale, GLocaleKey } = require(1 /* GObject */);
         function r(e) {
             this._htmlElement = e;
         }
@@ -10,7 +10,7 @@ module.exports = function (module, exports, require) {
             const e = $("<div></div>").addClass("container").appendTo(this._htmlElement);
             $("<p></p>")
                 .html(
-                    i
+                    GLocale
                         .getValue("GBanner", "text.access-expire")
                         .replace(
                             "%link",

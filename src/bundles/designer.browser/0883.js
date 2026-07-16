@@ -5,31 +5,31 @@ module.exports = function (module, exports, require) {
         class i extends o {
             constructor() {
                 let {
-                    id: e,
-                    name: t,
-                    last_name: n,
-                    email: o,
-                    showText: i,
-                    avatar: a,
-                    role: r,
+                    id,
+                    name,
+                    last_name,
+                    email,
+                    showText,
+                    avatar,
+                    role,
                     fontWeight: s = "normal",
                     type: l = "contact",
                     trigger: c = "@",
                     additional: d = false,
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 (super({
-                    id: e,
-                    name: t,
-                    last_name: n,
-                    email: o,
-                    showText: i,
-                    avatar: a,
+                    id: id,
+                    name: name,
+                    last_name: last_name,
+                    email: email,
+                    showText: showText,
+                    avatar: avatar,
                     fontWeight: s,
                     type: l,
                     trigger: c,
                 }),
                     (this.value = ""),
-                    (this._role = r),
+                    (this._role = role),
                     (this._additional = d));
             }
             setValue(e) {

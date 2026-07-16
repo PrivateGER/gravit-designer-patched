@@ -10,9 +10,9 @@ module.exports = function (module, exports, require) {
                     i.push({ hardware: u() }),
                     await (0, GSaveAction._tryAndCatch)(async () => {
                         if (o && !o.isAnonymous()) {
-                            l && l.forEach((e) => dataLayer.push({ [e]: void 0 }));
-                            const { type: e = "EWOSU", token: t } = o;
-                            i.push({ [e]: t });
+                            customDimensions && customDimensions.forEach((e) => dataLayer.push({ [e]: void 0 }));
+                            const { type: e = "EWOSU", token } = o;
+                            i.push({ [e]: token });
                         }
                     }));
                 var c = a.default.getRuntimeCode();
@@ -26,9 +26,9 @@ module.exports = function (module, exports, require) {
             a = o(require(859)),
             GSaveAction = require(40),
             s = require(803);
-        const { GA: { customDimensions: l } = {}, GoogleTagManagerSettings: c } = require(10 /* designerConfig */);
+        const { GA: { customDimensions } = {}, GoogleTagManagerSettings } = require(10 /* designerConfig */);
         window.dataLayer = [];
-        const d = c.getContainerId(s.nodeEnv);
+        const d = GoogleTagManagerSettings.getContainerId(s.nodeEnv);
         !(function (e, t, n, o, i) {
             ((e[o] = e[o] || []), e[o].push({ "gtm.start": new Date().getTime(), event: "gtm.js" }));
             var a = t.getElementsByTagName(n)[0],

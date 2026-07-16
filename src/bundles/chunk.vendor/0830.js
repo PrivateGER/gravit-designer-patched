@@ -2,9 +2,9 @@ module.exports = function (module, exports, require) {
             "use strict";
             (require(30), require(20), require(107), require(247), require(91));
             const n = require(973),
-                { sanitizeName: r } = require(254),
+                { sanitizeName } = require(254),
                 o = require(583),
-                { GLocale: a, GLocaleKey: s } = require(209 /* GLocale */);
+                { GLocale, GLocaleKey } = require(209 /* GLocale */);
 
             function l() {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -42,15 +42,15 @@ module.exports = function (module, exports, require) {
                         const e = new Array();
                         if (this.name && this.name.trim()) {
                             let t = this.name.trim().split(/\s/)[0];
-                            e.push(r(t));
+                            e.push(sanitizeName(t));
                         }
                         if (this.last_name && this.last_name.trim()) {
                             let t = this.last_name.trim().split(/\s/)[0];
-                            e.push(r(t));
+                            e.push(sanitizeName(t));
                         }
                         return e.join(" ");
                     }
-                    return r(this.login || this.email || (e ? a.get(new s("GCommonNames", "text.unknown-user")) : "Unknown"));
+                    return sanitizeName(this.login || this.email || (e ? GLocale.get(new GLocaleKey("GCommonNames", "text.unknown-user")) : "Unknown"));
                 }),
                 (module.exports = l));
         };

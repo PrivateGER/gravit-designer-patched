@@ -86,16 +86,16 @@ module.exports = function (module, exports, require) {
                                 e(t));
                         })
                         .catch((e) => {
-                            const { id: a } = n;
-                            return !i && e && e.status && 404 === e.status && a
+                            const { id } = n;
+                            return !i && e && e.status && 404 === e.status && id
                                 ? this._getClient()
-                                      .findFileById(a)
+                                      .findFileById(id)
                                       .then((e) => {
-                                          let { relativeUrl: t, name: i, type: a } = e;
+                                          let { relativeUrl, name, type } = e;
                                           const r = Object.assign(n, {
-                                              name: i,
-                                              relativeUrl: t,
-                                              type: a,
+                                              name: name,
+                                              relativeUrl: relativeUrl,
+                                              type: type,
                                           });
                                           return (this.setFile(r), this._setExtension(), this.updateShadowFile(), o.call(this, true));
                                       })
@@ -382,8 +382,8 @@ module.exports = function (module, exports, require) {
             (b.Item.prototype.getMyPermissionsList = async function () {
                 const e = this._getClient(),
                     t = this.getFile(),
-                    { High: n, Low: o } = await e.getFileEffectiveBasePermissions(t).catch(() => ({ High: 0, Low: 0 }));
-                if (new l.default(n, o).hasPermission(l.default.Permissions.EditListItems)) {
+                    { High, Low } = await e.getFileEffectiveBasePermissions(t).catch(() => ({ High: 0, Low: 0 }));
+                if (new l.default(High, Low).hasPermission(l.default.Permissions.EditListItems)) {
                     const n = await e._getUser(),
                         o = await e.getFileCreator(t);
                     return [

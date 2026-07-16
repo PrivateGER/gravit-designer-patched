@@ -1,20 +1,20 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(3);
-        var { ipcRenderer: o } = require(881);
+        var { ipcRenderer } = require(881);
         const i = require(1349);
         function a() {}
         ((a.prototype.installUpdate = function () {
-            (console.info(this.toString() + " Firing install update"), o.send(i.CommandInstallUpdate));
+            (console.info(this.toString() + " Firing install update"), ipcRenderer.send(i.CommandInstallUpdate));
         }),
             (a.prototype.checkForUpdates = function () {
-                (console.info(this.toString() + " Firing checking update"), o.send(i.CommandCheckForUpdates));
+                (console.info(this.toString() + " Firing checking update"), ipcRenderer.send(i.CommandCheckForUpdates));
             }),
             (a.prototype.downloadUpdate = function () {
-                (console.info(this.toString() + " Firing download update"), o.send(i.CommandDownloadUpdate));
+                (console.info(this.toString() + " Firing download update"), ipcRenderer.send(i.CommandDownloadUpdate));
             }),
             (a.prototype.on = function (e, t) {
-                o.on(e, t);
+                ipcRenderer.on(e, t);
             }),
             (a.prototype.toString = function () {
                 return "[Object GElectronUpdateServiceClient]";

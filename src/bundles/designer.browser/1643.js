@@ -1,14 +1,14 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(3);
-        const { GObject: o, GLocaleKey: i } = require(1 /* GObject */),
+        const { GObject, GLocaleKey } = require(1 /* GObject */),
             a = require(31),
             GCategory = require(18),
             s = require(1644);
         function l() {}
-        (o.inherit(l, a),
+        (GObject.inherit(l, a),
             (l.ID = "help.shortcuts"),
-            (l.TITLE = new i("GShowShortcutsAction", "title")),
+            (l.TITLE = new GLocaleKey("GShowShortcutsAction", "title")),
             (l.prototype.getId = function () {
                 return l.ID;
             }),

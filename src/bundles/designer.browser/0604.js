@@ -6,7 +6,7 @@ module.exports = function (module, exports, require) {
             GAccountPanel = require(1508),
             GChangePasswordPanel = require(1509),
             s = (require(1158), require(805)),
-            { gApi: l } = (require(177), require(10 /* designerConfig */));
+            { gApi } = (require(177), require(10 /* designerConfig */));
         function c(e, t) {
             let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
             ((this._user = e), (this._options = n), this._init(t, n));
@@ -22,7 +22,7 @@ module.exports = function (module, exports, require) {
             (c.prototype._init = async function (e) {
                 var t = this;
                 let n = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                const { closeable: s = true, tabs: d } = n;
+                const { closeable: s = true, tabs } = n;
                 gDesigner.getLicense();
                 ((this._dialog = $("<div></div>").gDialog({
                     closeCallback: () => this._close(),
@@ -84,7 +84,7 @@ module.exports = function (module, exports, require) {
                     },
                     f = function (e) {
                         let t = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
-                        return d && d.length ? d.includes(e) : t;
+                        return tabs && tabs.length ? tabs.includes(e) : t;
                     };
                 if (
                     (f(c.Tabs.Account) &&
@@ -103,7 +103,7 @@ module.exports = function (module, exports, require) {
                         ),
                     f(c.Tabs.Purchase))
                 ) {
-                    (await l.hasPurchases({ issued: "true" }).catch(() => false)) &&
+                    (await gApi.hasPurchases({ issued: "true" }).catch(() => false)) &&
                         h(
                             GObject.GLocale.get(new GObject.GLocaleKey("GProfileDialog", "text.purchases")),
                             "gravit-icon-purchase",

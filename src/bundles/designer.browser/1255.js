@@ -49,16 +49,16 @@ module.exports = function (module, exports, require) {
                             }
                         } else if (t && t.presetLayout) {
                             let n = gDesigner.createScene(),
-                                { unit: o, dpi: i, width: a, height: r } = t.presetLayout,
+                                { unit, dpi, width, height } = t.presetLayout,
                                 s = t.presetCategory
                                     .toLowerCase()
                                     .replace(/[\t-\r \/\xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]/g, "-");
-                            (n.setProperties(["ut", "dpi"], [o, i || GObject.GLength.DPI]),
+                            (n.setProperties(["ut", "dpi"], [unit, dpi || GObject.GLength.DPI]),
                                 n
                                     .getActivePage()
                                     .setProperties(
                                         ["bck", "w", "h"],
-                                        [GObject.GRGBColor.WHITE, new GObject.GLength(a, o).toPoint(), new GObject.GLength(r, o).toPoint()]
+                                        [GObject.GRGBColor.WHITE, new GObject.GLength(width, unit).toPoint(), new GObject.GLength(height, unit).toPoint()]
                                     ),
                                 e.setTitle(t.presetLayout.id),
                                 e.setScene(n),

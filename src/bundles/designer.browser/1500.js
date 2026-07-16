@@ -35,8 +35,8 @@ module.exports = function (module, exports, require) {
             k = require(392),
             O = require(805),
             {
-                InParenthesis: { NotNegativeNumberInTheEnd: F },
-                NotNegativeNumber: R,
+                InParenthesis: { NotNegativeNumberInTheEnd },
+                NotNegativeNumber,
             } = GRegex.GRegex.String,
             M = [
                 {
@@ -225,10 +225,10 @@ module.exports = function (module, exports, require) {
                                 t.getFileFormatVersion() && n.setFileFormatVersion(t.getFileFormatVersion());
                                 const o = t.getTitle();
                                 let i;
-                                if (new RegExp(F).test(o)) {
-                                    const e = o.match(F),
-                                        t = parseInt(e[0].match(R)[0]);
-                                    i = o.replace(F, "(".concat(t + 1, ")"));
+                                if (new RegExp(NotNegativeNumberInTheEnd).test(o)) {
+                                    const e = o.match(NotNegativeNumberInTheEnd),
+                                        t = parseInt(e[0].match(NotNegativeNumber)[0]);
+                                    i = o.replace(NotNegativeNumberInTheEnd, "(".concat(t + 1, ")"));
                                 } else i = "".concat(o, "(1)");
                                 const a = gDesigner.getDocuments().indexOf(t);
                                 (n.setTitle(i), gDesigner.addDocument(n, a + 1));
@@ -240,8 +240,8 @@ module.exports = function (module, exports, require) {
                                       i = new E.default();
                                   (i.setCurrentFolder(A.default.from({ id: e })),
                                       i.copyPaste([n.getFile()]).then(function (e) {
-                                          let [{ id: t }] = e;
-                                          return i.openFile(t, o + 1);
+                                          let [{ id }] = e;
+                                          return i.openFile(id, o + 1);
                                       }));
                               })()
                             : o();
@@ -650,39 +650,39 @@ module.exports = function (module, exports, require) {
                         let r,
                             s,
                             {
-                                title: l,
-                                callback: d,
-                                shortcut: u,
-                                requiresPro: p,
-                                separator: g,
-                                icon: h,
+                                title,
+                                callback,
+                                shortcut,
+                                requiresPro,
+                                separator,
+                                icon,
                                 id: f,
-                                needsAction: m,
-                                stats: y,
-                                isEnabled: v,
-                                isVisible: _,
+                                needsAction,
+                                stats,
+                                isEnabled,
+                                isVisible,
                             } = a;
-                        const b = l instanceof GObject.GLocaleKey ? GObject.GLocale.get(l) : l;
-                        if ((f && (r = "function" == typeof f ? f() : f), g)) {
+                        const b = title instanceof GObject.GLocaleKey ? GObject.GLocale.get(title) : title;
+                        if ((f && (r = "function" == typeof f ? f() : f), separator)) {
                             const t = n.createAddDivider();
-                            return (_ instanceof Function ? t.setVisible(_(e)) : "boolean" == typeof _ && t.setVisible(_), t);
+                            return (isVisible instanceof Function ? t.setVisible(isVisible(e)) : "boolean" == typeof isVisible && t.setVisible(isVisible), t);
                         }
-                        (d
+                        (callback
                             ? (s = n.createAddItem(b, () => {
-                                  d.call(o, e, t);
+                                  callback.call(o, e, t);
                               }))
-                            : ((s = n.createAddItem(b)), m && s.setAction(gDesigner.getAction(r))),
-                            u && s.setShortcutHint(u),
-                            p && s.setPro(p, r),
-                            v instanceof Function && s.setEnabled(v(e)),
-                            _ instanceof Function ? s.setVisible(_(e)) : "boolean" == typeof _ && s.setVisible(_),
-                            h && ("function" == typeof h ? s.setIcon(h()) : s.setIcon(h)),
+                            : ((s = n.createAddItem(b)), needsAction && s.setAction(gDesigner.getAction(r))),
+                            shortcut && s.setShortcutHint(shortcut),
+                            requiresPro && s.setPro(requiresPro, r),
+                            isEnabled instanceof Function && s.setEnabled(isEnabled(e)),
+                            isVisible instanceof Function ? s.setVisible(isVisible(e)) : "boolean" == typeof isVisible && s.setVisible(isVisible),
+                            icon && ("function" == typeof icon ? s.setIcon(icon()) : s.setIcon(icon)),
                             s.addEventListener(c.default.BeforeActivateEvent, () => {
                                 (!(function (e) {
                                     e && gDesigner.stats(e);
                                     (o._contextMenu.gOverlay("close"), (o._contextMenu = null), n.clearItems());
-                                })(y),
-                                    v && s.setEnabled(v(e)));
+                                })(stats),
+                                    isEnabled && s.setEnabled(isEnabled(e)));
                             }),
                             s.setCaption(b));
                     }),

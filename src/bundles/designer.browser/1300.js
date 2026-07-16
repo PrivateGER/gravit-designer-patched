@@ -320,9 +320,9 @@ module.exports = function (module, exports, require) {
                 } else {
                     const e = this.panel.find(".g-recent-files-list"),
                         t = e.hasClass("extended-list"),
-                        { totalRows: n, firstHeight: o } = this._getGridData(e);
-                    if (n > 1 && !t) {
-                        const t = o + 10;
+                        { totalRows, firstHeight } = this._getGridData(e);
+                    if (totalRows > 1 && !t) {
+                        const t = firstHeight + 10;
                         e.css("max-height", t + "px");
                     } else e.css("max-height", "1000px");
                 }
@@ -467,19 +467,19 @@ module.exports = function (module, exports, require) {
                 (d &&
                     d.length &&
                     d.forEach((e) => {
-                        let { title: t, icon: n, execute: o } = e;
+                        let { title, icon, execute } = e;
                         return $("<div/>")
                             .addClass("g-files-top-cloud-refresh-content")
                             .append(
                                 $("<div/>")
                                     .addClass("container")
-                                    .append(n ? $("<div/>").addClass("icon").addClass(n) : "")
-                                    .append($("<div/>").addClass("text").text(t))
+                                    .append(icon ? $("<div/>").addClass("icon").addClass(icon) : "")
+                                    .append($("<div/>").addClass("text").text(title))
                             )
                             .appendTo(s)
                             .click(() => {
-                                (gDesigner.stats("filespanel-view_execute_action", t),
-                                    o(this.filesPanel.getContextSource()).catch((e) => {
+                                (gDesigner.stats("filespanel-view_execute_action", title),
+                                    execute(this.filesPanel.getContextSource()).catch((e) => {
                                         "string" == typeof e ? c.default.alert(e) : console.error(e);
                                     }));
                             });

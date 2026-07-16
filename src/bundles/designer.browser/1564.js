@@ -31,11 +31,11 @@ module.exports = function (module, exports, require) {
         const s = require(78),
             l = require(441),
             {
-                PRODUCT_NAME: c,
-                PRODUCT_APP_NAME: d,
-                PRODUCT_BUILD_NUMBER: u,
-                PRODUCT_LANGUAGE: p,
-                PRODUCT_ENVIRONMENT: g,
+                PRODUCT_NAME,
+                PRODUCT_APP_NAME,
+                PRODUCT_BUILD_NUMBER,
+                PRODUCT_LANGUAGE,
+                PRODUCT_ENVIRONMENT,
             } = i.AmplitudeData.UserProperties;
         module.exports = class {
             constructor(e) {
@@ -48,11 +48,11 @@ module.exports = function (module, exports, require) {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : gDesigner.getLicense();
                 this._amplitudeHelper.updateUserProperties(
                     {
-                        [c]: i.default.DESIGNER.TITLE,
-                        [d]: i.default.DESIGNER.TITLE,
-                        [u]: gDesigner.getVersion(),
-                        [p]: GObject.GLocale.lookupLocale(GObject.GLocale.getLanguage()).toUpperCase(),
-                        [g]: "production",
+                        [PRODUCT_NAME]: i.default.DESIGNER.TITLE,
+                        [PRODUCT_APP_NAME]: i.default.DESIGNER.TITLE,
+                        [PRODUCT_BUILD_NUMBER]: gDesigner.getVersion(),
+                        [PRODUCT_LANGUAGE]: GObject.GLocale.lookupLocale(GObject.GLocale.getLanguage()).toUpperCase(),
+                        [PRODUCT_ENVIRONMENT]: "production",
                     },
                     e
                 );
@@ -70,8 +70,8 @@ module.exports = function (module, exports, require) {
                         });
                         break;
                     case s.Type.Saving:
-                        const { referer: t } = e.data;
-                        this._isSimplifiedExporting(t) ? this._documentExported(e) : this._documentSaved(e);
+                        const { referer } = e.data;
+                        this._isSimplifiedExporting(referer) ? this._documentExported(e) : this._documentSaved(e);
                 }
             }
             _documentExported(e) {

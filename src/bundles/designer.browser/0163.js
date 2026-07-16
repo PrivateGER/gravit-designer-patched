@@ -349,20 +349,20 @@ module.exports = function (module, exports, require) {
                 }
             }),
             (K.prototype._userLoggedEvent = function (e) {
-                const { user: t } = e;
-                t && this._editor && this._editor.setUID(new h.default(t).getUID());
+                const { user } = e;
+                user && this._editor && this._editor.setUID(new h.default(user).getUID());
             }),
             (K.prototype._handleDocumentEvent = function () {}),
             (K.prototype._handleStorageItemEvent = function () {}),
             (K.prototype._collaborationEvent = async function (e) {
                 if (this.isLockedByVersionHistory()) return;
-                const { type: t, data: n } = e;
-                switch (t) {
+                const { type, data } = e;
+                switch (type) {
                     case $.Type.ReviewStatusChanged:
-                        this.isCollaborative() && this.getStorageItem().setCollaborativeFileStatus(n.status);
+                        this.isCollaborative() && this.getStorageItem().setCollaborativeFileStatus(data.status);
                         break;
                     case $.Type.FileUpdate:
-                        if (n && n.metadata && n.metadata.sessionId && n.metadata.sessionId === this.sessionId) return;
+                        if (data && data.metadata && data.metadata.sessionId && data.metadata.sessionId === this.sessionId) return;
                         ((this._isUpdateAvailable = true),
                             (this._isIgnoringCurrentUpdate = false),
                             gDesigner.hasEventListeners(v) && gDesigner.trigger(new v(v.Type.UpdateAvailable, this)));

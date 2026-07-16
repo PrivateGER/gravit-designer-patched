@@ -5,10 +5,10 @@ module.exports = function (module, exports, require) {
         module.exports = class {
             static setupInAppLinkReloadAppForOnce() {
                 const e = function (t) {
-                    let { type: n, data: i } = t;
-                    if (n === o.Type.OpenInAppLink) {
+                    let { type, data } = t;
+                    if (type === o.Type.OpenInAppLink) {
                         gContainer.removeEventListener(o, e);
-                        const t = i.params,
+                        const t = data.params,
                             n = new URL(window.location.href);
                         for (let e in t) n.searchParams.set(e, t[e]);
                         window.location.href = n.toString();

@@ -34,8 +34,8 @@ module.exports = function (module, exports, require) {
             u = require(135),
             GSystemDialog = require(44);
         const g = require(148),
-            { toCapitalize: h } = require(40 /* GSaveAction */),
-            { LISTS_FEATURE: f } = require(10 /* designerConfig */);
+            { toCapitalize } = require(40 /* GSaveAction */),
+            { LISTS_FEATURE } = require(10 /* designerConfig */);
         var m = "#2635#";
         const y = {
             None: {
@@ -97,28 +97,28 @@ module.exports = function (module, exports, require) {
                                 .addClass("list-type-options")
                                 .append(
                                     Object.values(y).map((e) => {
-                                        let { label: t, value: n, types: o } = e;
+                                        let { label, value, types } = e;
                                         return $("<div></div>")
                                             .addClass("list-type-group")
-                                            .attr("value", n)
+                                            .attr("value", value)
                                             .append(
                                                 $("<div/>")
                                                     .addClass("list-type-group-header")
                                                     .append($("<span/>").addClass("gravit-icon-check"))
-                                                    .append($("<span/>").text(t))
+                                                    .append($("<span/>").text(label))
                                             )
-                                            .on("click", o ? null : () => this._assignMarker(null))
+                                            .on("click", types ? null : () => this._assignMarker(null))
                                             .append(
                                                 $("<div/>")
                                                     .addClass("list-type-group-container")
                                                     .append(
-                                                        o
-                                                            ? o.map((e) => {
-                                                                  let { value: t, icon: n } = e;
+                                                        types
+                                                            ? types.map((e) => {
+                                                                  let { value: t, icon } = e;
                                                                   return $("<div></div>")
                                                                       .addClass("list-type-option")
                                                                       .attr("value", t)
-                                                                      .append($("<div/>").addClass(n))
+                                                                      .append($("<div/>").addClass(icon))
                                                                       .on("click", (e) => {
                                                                           const t = $(e.target).closest(".list-type-option").attr("value");
                                                                           (gDesigner.stats("textproperties_change_list-type", t),
@@ -531,7 +531,7 @@ module.exports = function (module, exports, require) {
                                 .addClass("g-button")
                                 .addClass("decoration-buttons")
                                 .attr("data-property", e)
-                                .attr("data-title", h(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.decoration-".concat(u)))))
+                                .attr("data-title", toCapitalize(GObject.GLocale.get(new GObject.GLocaleKey("GTextProperties", "text.decoration-".concat(u)))))
                                 .on("click", function () {
                                     (gDesigner.stats("textproperties_change_decoration", u), t._toggleFormatting(u));
                                 })
@@ -828,7 +828,7 @@ module.exports = function (module, exports, require) {
                             ],
                         })
                         .appendTo(this._advancedSettings),
-                    f &&
+                    LISTS_FEATURE &&
                         ($("<div></div>")
                             .addClass("list-type-properties")
                             .gPropertyRow({
@@ -1640,8 +1640,8 @@ module.exports = function (module, exports, require) {
                     (x &&
                         x === GObject.GFont.Style.Italic &&
                         (xe = r.some((e) => {
-                            let { weight: t, styles: n } = e;
-                            return t === GObject.GFont.Weight.Bold && n.some((e) => 0 === e.indexOf(GObject.GFont.Style.Italic));
+                            let { weight, styles } = e;
+                            return weight === GObject.GFont.Weight.Bold && styles.some((e) => 0 === e.indexOf(GObject.GFont.Style.Italic));
                         }))),
                     this._panel
                         .find('[data-property="decoration-bold"]')
@@ -1744,8 +1744,8 @@ module.exports = function (module, exports, require) {
                                 })
                                 .sort((e, t) => e.name.localeCompare(t.name))
                                 .map((e) => {
-                                    let { name: t, tag: n } = e;
-                                    return $("<option/>").attr("value", n).text(t);
+                                    let { name, tag } = e;
+                                    return $("<option/>").attr("value", tag).text(name);
                                 })
                         ),
                         n)

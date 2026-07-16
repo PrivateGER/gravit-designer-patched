@@ -9,7 +9,7 @@ module.exports = function (module, exports, require) {
             l = o(require(135)),
             c = require(451 /* GVirtualTree */).GVirtualTree,
             d = (require(451 /* GVirtualTree */).GVirtualTreeNode, require(451 /* GVirtualTree */).GVirtualTreeNodeNamed),
-            { VTREE_FREE_HEIGHT: u, VTREE_FREE_HEIGHT_TOUCH: p } = require(10 /* designerConfig */),
+            { VTREE_FREE_HEIGHT, VTREE_FREE_HEIGHT_TOUCH } = require(10 /* designerConfig */),
             g = (require(173), require(450));
         function h() {}
         function f(e, t, n, o, i) {
@@ -310,7 +310,7 @@ module.exports = function (module, exports, require) {
             gDesigner.isTouchEnabled() &&
                 $(this)
                     .parent()
-                    .css("height", parseInt($(this).find(".vscroller").css("height"), 10) + u + "px");
+                    .css("height", parseInt($(this).find(".vscroller").css("height"), 10) + VTREE_FREE_HEIGHT + "px");
         }
         function M() {
             var e = $(this).data("gpagepanel");
@@ -324,7 +324,7 @@ module.exports = function (module, exports, require) {
                         {
                             nodeStyle: "page-row",
                             collapseStyle: "page-arrow gravit-icon-down",
-                            freeHeight: u,
+                            freeHeight: VTREE_FREE_HEIGHT,
                             insertIntoStyle: "g-drop",
                             upSeparatorSpan1Style: "g-up-separator-span1",
                             upSeparatorSpan2Style: "g-up-separator-span2",
@@ -434,7 +434,7 @@ module.exports = function (module, exports, require) {
                     t = e && e.vtree;
                 if (t) {
                     const e = gDesigner.isTouchEnabled();
-                    (t.setFreeHeight(e ? p : u), t.setAnimatedDragEnabled(e));
+                    (t.setFreeHeight(e ? VTREE_FREE_HEIGHT_TOUCH : VTREE_FREE_HEIGHT), t.setAnimatedDragEnabled(e));
                 }
             },
         };

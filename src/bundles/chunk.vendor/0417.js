@@ -25,17 +25,17 @@ module.exports = function (module, exports, require) {
                 s = require(952);
             require(824);
             const {
-                    getUserName: l,
-                    isSharePointFileId: h,
-                    isGoogleDriveFileId: A,
-                    isSharePointFile: c,
-                    isGoogleDriveFile: p,
-                    isExternalFile: u,
-                    isExternalFileId: d,
-                    sameDomain: g,
-                    buildQueryParams: f,
+                    getUserName,
+                    isSharePointFileId,
+                    isGoogleDriveFileId,
+                    isSharePointFile,
+                    isGoogleDriveFile,
+                    isExternalFile,
+                    isExternalFileId,
+                    sameDomain,
+                    buildQueryParams,
                 } = require(254),
-                { providers: m } = require(253);
+                { providers } = require(253);
             if (
                 ((n.version = "v1"),
                 Object({
@@ -69,7 +69,7 @@ module.exports = function (module, exports, require) {
                 w,
                 E = {
                     beforeSendRequest: (e) => {
-                        let { url: t, query: i } = e;
+                        let { url, query } = e;
                     },
                     onError: (e, t, i) => {},
                 };
@@ -172,8 +172,8 @@ module.exports = function (module, exports, require) {
                     })
                         .then((i) => {
                             if (false === i.ok) {
-                                const { onError: n } = E || {};
-                                n && n.call(null, i, e, t);
+                                const { onError } = E || {};
+                                onError && onError.call(null, i, e, t);
                             }
                             return i;
                         })
@@ -288,19 +288,19 @@ module.exports = function (module, exports, require) {
                     })),
                 (n.getPrice = function () {
                     let {
-                        productId: e,
-                        coupon: t,
-                        currency: i,
-                        country: n,
-                        provider: r,
+                        productId,
+                        coupon,
+                        currency,
+                        country,
+                        provider,
                     } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    const o = m[r || a.Cleverbridge];
+                    const o = providers[provider || a.Cleverbridge];
                     return o
                         ? o.getPrice({
-                              productId: e,
-                              coupon: t,
-                              currency: i,
-                              country: n,
+                              productId: productId,
+                              coupon: coupon,
+                              currency: currency,
+                              country: country,
                           })
                         : Promise.resolve({});
                 }),
@@ -314,8 +314,8 @@ module.exports = function (module, exports, require) {
                 (n.subscription.getNextBillingDate = () => b("/subscription/nextbillingdate")),
                 (n.subscription.isLifetime = () =>
                     b("/subscription/lifetime").then((e) => {
-                        let { lifetime: t } = e;
-                        return !!t;
+                        let { lifetime } = e;
+                        return !!lifetime;
                     })),
                 (n.activateSubscription = function (e) {
                     let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : a.Cleverbridge;
@@ -370,8 +370,8 @@ module.exports = function (module, exports, require) {
                         a = n.listen("/payload", (e) => r.resolve(e), true);
                     if (t instanceof HTMLElement) {
                         let n = document.createElement("iframe"),
-                            { events: r } = i;
-                        (r && Object.keys(r).forEach((e) => n.addEventListener(e, r[e], false)), t.appendChild(n), n.setAttribute("src", e));
+                            { events } = i;
+                        (events && Object.keys(events).forEach((e) => n.addEventListener(e, events[e], false)), t.appendChild(n), n.setAttribute("src", e));
                     } else {
                         let i;
                         if ("_blank" === t) i = window.open(e, "Checkout");
@@ -752,8 +752,8 @@ module.exports = function (module, exports, require) {
                             });
                         return new Promise(function (e, t) {
                             window.addEventListener("message", function i(n) {
-                                const { data: { token: r } = {} } = n;
-                                if (r) {
+                                const { data: { token } = {} } = n;
+                                if (token) {
                                     if (n.source != p && !p && n.origin.indexOf("chrome-extension:") < 0)
                                         return (console.warn("Token was rejected because there is an invalid source", n.source), t());
                                     (p && p.close(), window.removeEventListener("message", i), e(n.data));
@@ -761,12 +761,12 @@ module.exports = function (module, exports, require) {
                             });
                         });
                     })((e || "").replace(/^(?!\/)/, "/"), t).then(function (e) {
-                        let { token: t, userSignup: i } = e;
+                        let { token: t, userSignup } = e;
                         return (
                             v || (R.gApiToken = t),
                             n.getUser().then((e) =>
                                 Object.assign(e, {
-                                    new: "true" == i,
+                                    new: "true" == userSignup,
                                 })
                             )
                         );
@@ -843,16 +843,16 @@ module.exports = function (module, exports, require) {
                         Object.assign(e, {
                             platform: t,
                         }),
-                        n.url + "/get-pro/learnmore" + f(e)
+                        n.url + "/get-pro/learnmore" + buildQueryParams(e)
                     );
                 }));
             const D = (e) => {
-                let { newtab: t, top: i, left: n, w: r, h: o, url: a, name: s } = e;
+                let { newtab, top, left, w: r, h: o, url: a, name } = e;
                 var l;
                 return (
-                    (l = t
-                        ? window.open(a, s)
-                        : window.open(a, s, "scrollbars=yes, width=" + r + ", height=" + o + ", top=" + i + ", left=" + n)) &&
+                    (l = newtab
+                        ? window.open(a, name)
+                        : window.open(a, name, "scrollbars=yes, width=" + r + ", height=" + o + ", top=" + top + ", left=" + left)) &&
                         l.focus &&
                         l.focus(),
                     l
@@ -867,7 +867,7 @@ module.exports = function (module, exports, require) {
                 (n.searchUnsplashPhotos = (e) => b("/unsplash/search/photos", e)),
                 (n.getUnsplashPhotoUrl = (e) => b("/unsplash/download/photo", e)),
                 (n.getExampleFiles = (e) => b("/example-files", e)),
-                (n.getUserName = (e) => l(e, true)),
+                (n.getUserName = (e) => getUserName(e, true)),
                 (n.listAutoSaves = (e) => b("/file/".concat(e, "/autosave/versions"))),
                 (n.getAutoSave = (e, t) => b("/file/".concat(e, "/autosave").concat(t ? "/version/".concat(t) : ""))),
                 (n.getAutoSaveThumbnail = (e, t) => b("/file/".concat(e, "/autosave/thumbnail").concat(t ? "/version/".concat(t) : ""))),
@@ -891,13 +891,13 @@ module.exports = function (module, exports, require) {
                         },
                     });
                 }),
-                (n.isSharePointFileId = h),
-                (n.isGoogleDriveFileId = A),
-                (n.isSharePointFile = c),
-                (n.isGoogleDriveFile = p),
-                (n.sameDomain = g),
-                (n.isExternalFileId = d),
-                (n.isExternalFile = u),
+                (n.isSharePointFileId = isSharePointFileId),
+                (n.isGoogleDriveFileId = isGoogleDriveFileId),
+                (n.isSharePointFile = isSharePointFile),
+                (n.isGoogleDriveFile = isGoogleDriveFile),
+                (n.sameDomain = sameDomain),
+                (n.isExternalFileId = isExternalFileId),
+                (n.isExternalFile = isExternalFile),
                 (n.getRichTooltipVideoURL = (e) => "".concat(n.url, "/rich-tooltip-video/").concat(e)),
                 (n.fetchTranslationsURL = (e, t) => b("/i18n-url/".concat(e, "/").concat(t))),
                 (n.cloudServices = {

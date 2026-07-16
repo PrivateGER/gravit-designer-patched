@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(8 /* Symbol */), require(20), require(34));
         var GObject = require(1);
         const GSystemDialog = require(44),
-            { DESIGNER: { TITLE: a } = {} } = require(10 /* designerConfig */);
+            { DESIGNER: { TITLE } = {} } = require(10 /* designerConfig */);
         module.exports = class {
             async init() {
                 (await this._shouldOpenWarningDialog()) && gDesigner.executeWhenReady(() => this._openWarningDialog());
@@ -13,7 +13,7 @@ module.exports = function (module, exports, require) {
                     icon: "info",
                     closeable: false,
                     className: "g-beta-warning-dialog",
-                    title: GObject.GLocale.get(new GObject.GLocaleKey("GBetaFlow", "text.title")).replace("%app", a),
+                    title: GObject.GLocale.get(new GObject.GLocaleKey("GBetaFlow", "text.title")).replace("%app", TITLE),
                     subtitle: GObject.GLocale.get(new GObject.GLocaleKey("GBetaFlow", "text.message")),
                     buttons: [
                         {

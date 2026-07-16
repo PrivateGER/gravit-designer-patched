@@ -35,11 +35,13 @@ function canonical(src) {
         enter(p) {
             const n = p.node;
             switch (n.type) {
-                case "Identifier":
-                    // non-computed property keys/members keep their name (renames
-                    // never touch them); a bare `undefined` reference canonicalizes
-                    // to the same token as `void 0`; everything else is a placeholder
-                    if (p.key === "key" || (p.parentPath.isMemberExpression() && p.key === "property" && !n.computed)) {
+                case "Identifier": {
+                    // A name is a fixed property label (not a renameable variable)
+                    // only when it's an object-property key or a NON-computed member
+                    // access (`x.foo`). In `x[foo]` foo is a real variable reference.
+                    const isMemberProp = p.parentPath.isMemberExpression() && p.key === "property" && !p.parent.computed;
+                    const isPropKey = p.parentPath.isObjectProperty() && p.key === "key" && !p.parent.computed;
+                    if (isPropKey || isMemberProp) {
                         toks.push("P:" + n.name);
                     } else if (n.name === "undefined") {
                         toks.push("UNDEF");
@@ -47,6 +49,7 @@ function canonical(src) {
                         toks.push("ID");
                     }
                     return;
+                }
                 case "NumericLiteral":
                     toks.push("N:" + n.value);
                     return;

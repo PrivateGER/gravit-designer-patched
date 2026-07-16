@@ -33,13 +33,13 @@ module.exports = function (module, exports, require) {
             c = o(require(594));
         const d = require(1108),
             u = require(595),
-            { HTTP_STATUS_CODES: p } = require(10 /* designerConfig */);
+            { HTTP_STATUS_CODES } = require(10 /* designerConfig */);
         function g(e) {
             this.setTokenIssuer(e);
         }
         ((g.TRIAL_UNTIL_FAIL = 3),
             (g.isUsageLimitError = function (e) {
-                return !(!e || !e.error) && Number(e.error.code) === p.FORBIDDEN && e.error.errors.some((e) => "usageLimits" === e.domain);
+                return !(!e || !e.error) && Number(e.error.code) === HTTP_STATUS_CODES.FORBIDDEN && e.error.errors.some((e) => "usageLimits" === e.domain);
             }),
             (g.ExceptionCode = { LoginAborted: 1 }));
         class h extends c.default {
@@ -100,21 +100,21 @@ module.exports = function (module, exports, require) {
                         })
                             .then((e) => e.json())
                             .then((e) => {
-                                const { permissions: o, nextPageToken: a } = e;
-                                (o.length && (n = n.concat(o)),
-                                    a
+                                const { permissions, nextPageToken } = e;
+                                (permissions.length && (n = n.concat(permissions)),
+                                    nextPageToken
                                         ? setTimeout(function () {
-                                              l(a);
+                                              l(nextPageToken);
                                           })
                                         : i(
                                               t
                                                   ? n
                                                   : n.map((e) => {
-                                                        let { emailAddress: t, role: n } = e;
+                                                        let { emailAddress, role } = e;
                                                         return {
-                                                            email: t,
-                                                            role: s.default[n],
-                                                            externalRole: n,
+                                                            email: emailAddress,
+                                                            role: s.default[role],
+                                                            externalRole: role,
                                                         };
                                                     })
                                           ));
@@ -136,10 +136,10 @@ module.exports = function (module, exports, require) {
                     if (t.error) {
                         const {
                             error: {
-                                errors: [{ message: e }],
+                                errors: [{ message }],
                             },
                         } = t;
-                        return Promise.reject(e);
+                        return Promise.reject(message);
                     }
                     if (r.role === l.NoAccessId) return t;
                 }
@@ -159,11 +159,11 @@ module.exports = function (module, exports, require) {
                 if (!e) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.no-file-found")));
                 if (!this.getTokenIssuerSettings() || !this.getTokenIssuerSettings().corporate)
                     return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
-                const { role: n, domain: o } = t;
-                if (!n || !o) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.not-enough-parameters")));
+                const { role: n, domain } = t;
+                if (!n || !domain) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.not-enough-parameters")));
                 const a = {
                     type: "domain",
-                    domain: o,
+                    domain: domain,
                     role: l.default[n.id],
                     allowFileDiscovery: true,
                 };
@@ -194,10 +194,10 @@ module.exports = function (module, exports, require) {
                     : Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
             }),
             (g.prototype.removeShare = async function (e, t) {
-                let { id: n } = t;
+                let { id } = t;
                 if (!this.getTokenIssuerSettings() || !this.getTokenIssuerSettings().corporate)
                     return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
-                const o = new URL("https://www.googleapis.com/drive/v3/files/".concat(e, "/permissions/").concat(n)),
+                const o = new URL("https://www.googleapis.com/drive/v3/files/".concat(e, "/permissions/").concat(id)),
                     a = await this.getAccessToken(),
                     r = { fields: "*", supportsAllDrives: true };
                 for (var s in r) o.searchParams.append(s, r[s]);
@@ -269,9 +269,9 @@ module.exports = function (module, exports, require) {
                     fetch(e, Object.assign({ headers: new Headers(s), signal: n }, t)).then(async (i) => {
                         if (!i.ok) {
                             var r = await i.json();
-                            return i.status === p.UNAUTHORIZED && (await gContainer.getGoogleAPI().signIn(), 0 === o)
+                            return i.status === HTTP_STATUS_CODES.UNAUTHORIZED && (await gContainer.getGoogleAPI().signIn(), 0 === o)
                                 ? this._request(e, t, n, ++o)
-                                : i.status === p.FORBIDDEN && g.isUsageLimitError(r) && o < g.TRIAL_UNTIL_FAIL
+                                : i.status === HTTP_STATUS_CODES.FORBIDDEN && g.isUsageLimitError(r) && o < g.TRIAL_UNTIL_FAIL
                                   ? (await (0, GSaveAction.sleep)(1e3 * Math.pow(1 + o, 2)), this._request(e, t, n, ++o))
                                   : Promise.reject(r);
                         }
@@ -288,9 +288,9 @@ module.exports = function (module, exports, require) {
                 const d = await fetch(e, Object.assign({ headers: new Headers(c), signal: n }, t));
                 if (!d.ok) {
                     var u = await d.json();
-                    return d.status === p.UNAUTHORIZED && (await gContainer.getGoogleAPI().signIn(), 0 === i)
+                    return d.status === HTTP_STATUS_CODES.UNAUTHORIZED && (await gContainer.getGoogleAPI().signIn(), 0 === i)
                         ? this._requestWithProgress(e, t, n, o, ++i)
-                        : d.status === p.FORBIDDEN && g.isUsageLimitError(u) && i < g.TRIAL_UNTIL_FAIL
+                        : d.status === HTTP_STATUS_CODES.FORBIDDEN && g.isUsageLimitError(u) && i < g.TRIAL_UNTIL_FAIL
                           ? (await (0, GSaveAction.sleep)(1e3 * Math.pow(1 + i, 2)), this._requestWithProgress(e, t, n, o, ++i))
                           : Promise.reject(u);
                 }
@@ -315,7 +315,7 @@ module.exports = function (module, exports, require) {
                     .then(() => true)
                     .catch((e) => {
                         if (e.error) {
-                            if (e.error.code === p.NOT_FOUND) return false;
+                            if (e.error.code === HTTP_STATUS_CODES.NOT_FOUND) return false;
                             const t = new Error(e.error.message);
                             throw ((t.code = e.error.code), t);
                         }
@@ -353,8 +353,8 @@ module.exports = function (module, exports, require) {
             (g.prototype.supportsEmailDomainCheck = async function () {
                 const e = await this.getTokenInfo().catch(() => null);
                 if (!e) return false;
-                const { scope: t } = e;
-                return Array.isArray(t) ? t.some((e) => n(e)) : n(t);
+                const { scope } = e;
+                return Array.isArray(scope) ? scope.some((e) => n(e)) : n(scope);
                 function n(e) {
                     return e.indexOf("admin.directory.user") >= 0;
                 }

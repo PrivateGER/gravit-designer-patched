@@ -1,12 +1,12 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(4), require(32), require(33));
-        const { GObject: o } = require(1 /* GObject */),
-            { GPlatform: i } = require(15 /* GPlatform */);
+        const { GObject } = require(1 /* GObject */),
+            { GPlatform } = require(15 /* GPlatform */);
         function a() {
             this._children = [];
         }
-        (o.inherit(a, o),
+        (GObject.inherit(a, GObject),
             (a.prototype._children = null),
             (a.prototype.clear = function () {
                 (this._clearChildren(), this._clearOwnData());
@@ -30,7 +30,7 @@ module.exports = function (module, exports, require) {
             }),
             (a.prototype._scrollToElement = function (e) {
                 if (!e || !e[0]) return;
-                const t = i.webBrowser === i.constructor.WebBrowser.Firefox,
+                const t = GPlatform.webBrowser === GPlatform.constructor.WebBrowser.Firefox,
                     n = t ? "start" : "nearest",
                     o = t ? "auto" : "smooth";
                 "function" == typeof e[0].scrollIntoView && e[0].scrollIntoView({ behavior: o, block: n });

@@ -9,11 +9,11 @@ module.exports = function (module, exports, require) {
             }
             init() {
                 let {
-                    appId: e,
-                    apiKey: t,
-                    clientId: n,
-                    discoveryDocs: o,
-                    scope: i,
+                    appId,
+                    apiKey,
+                    clientId,
+                    discoveryDocs,
+                    scope,
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 throw "Not implemented";
             }

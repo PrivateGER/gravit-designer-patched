@@ -487,9 +487,9 @@ module.exports = function (module, exports, require) {
                     try {
                         const n = {};
                         (e.setSynchronizing(true), e.updateStatus(f.Saving, n));
-                        const { progress: a } = n,
+                        const { progress } = n,
                             r = (e) => {
-                                a && a(e);
+                                progress && progress(e);
                             };
                         !(async function (t) {
                             var n = null;
@@ -711,11 +711,11 @@ module.exports = function (module, exports, require) {
                                     GSystemDialog.alert(e)
                                 );
                             case designerConfig.gApi.ERROR_CODES.ERR_SUBSCRIPTION_IS_ACTIVE:
-                                const { nextBillingDate: t } = await designerConfig.gApi.subscription.getNextBillingDate();
+                                const { nextBillingDate } = await designerConfig.gApi.subscription.getNextBillingDate();
                                 return GSystemDialog.alert(
                                     GObject.GLocale.get(new GObject.GLocaleKey("GCloudUtil", "text.err-subscription-is-active")).replace(
                                         "%date",
-                                        designerConfig.DateAPI.format(t)
+                                        designerConfig.DateAPI.format(nextBillingDate)
                                     )
                                 );
                             case designerConfig.gApi.ERROR_CODES.ERR_SUBSCRIPTION_IS_NOT_EXPIRED:

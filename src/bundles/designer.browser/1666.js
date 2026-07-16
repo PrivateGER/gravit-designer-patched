@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(8 /* Symbol */), require(20), require(3), require(34), require(4), require(13));
         var GObject = require(1);
         const {
-                DESIGNER: { TITLE: i },
+                DESIGNER: { TITLE },
             } = require(10 /* designerConfig */),
             a = require(606),
             r = require(394),
@@ -80,7 +80,7 @@ module.exports = function (module, exports, require) {
                                     $("<span/>")
                                         .addClass("title")
                                         .text(
-                                            GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.title-welcome")).replace("%app", i)
+                                            GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.title-welcome")).replace("%app", TITLE)
                                         )
                                 )
                                 .append(
@@ -112,7 +112,7 @@ module.exports = function (module, exports, require) {
                                         .addClass("footer")
                                         .html(
                                             GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.footer")).replace("%app", () =>
-                                                $("<span/>").attr("id", "learnmore-link").addClass("link").text(i).prop("outerHTML")
+                                                $("<span/>").attr("id", "learnmore-link").addClass("link").text(TITLE).prop("outerHTML")
                                             )
                                         )
                                 )

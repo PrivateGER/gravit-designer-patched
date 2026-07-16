@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(290), require(4), require(41), require(13), require(38));
-        const { watchDog: o } = require(40 /* GSaveAction */),
+        const { watchDog } = require(40 /* GSaveAction */),
             i = require(433),
             a = {
                 init: function (e) {
@@ -38,7 +38,7 @@ module.exports = function (module, exports, require) {
                                                         )
                                                         .on(
                                                             "click",
-                                                            o.trap(
+                                                            watchDog.trap(
                                                                 () => {
                                                                     (a.role.call(this, e),
                                                                         $(this).trigger("rolechange", e),
@@ -58,17 +58,17 @@ module.exports = function (module, exports, require) {
                                         .addClass("g-role-selector-buttons")
                                         .append(
                                             e.buttons.map((e) => {
-                                                let { icon: t, label: o, click: i, closeOnClick: a } = e;
+                                                let { icon, label, click, closeOnClick } = e;
                                                 return $("<div/>")
                                                     .addClass("g-role-selector-button")
                                                     .append(
                                                         $("<span/>")
                                                             .addClass("icon")
-                                                            .addClass(t || "")
+                                                            .addClass(icon || "")
                                                     )
-                                                    .append($("<span/>").addClass("label").text(o))
+                                                    .append($("<span/>").addClass("label").text(label))
                                                     .on("click", () => {
-                                                        (i(), a && n.gOverlay("close"));
+                                                        (click(), closeOnClick && n.gOverlay("close"));
                                                     });
                                             })
                                         )

@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(8 /* Symbol */), require(527));
         const o = require(292),
             i = require(1685),
-            { gApi: a, DateAPI: r } = require(10 /* designerConfig */);
+            { gApi, DateAPI } = require(10 /* designerConfig */);
         module.exports = class {
             init() {
                 gDesigner.addEventListener(o, this._userLoggedEvent, this);
@@ -20,11 +20,11 @@ module.exports = function (module, exports, require) {
                 }
             }
             async _shouldShowWindowsStoreAnnouncement(e) {
-                const { flags: { windowsStoreAnnouncement: t = false } = {} } = await a.getUserSettings().catch(() => ({}));
-                return !(t || !r.lt(e.created, Date.now()));
+                const { flags: { windowsStoreAnnouncement: t = false } = {} } = await gApi.getUserSettings().catch(() => ({}));
+                return !(t || !DateAPI.lt(e.created, Date.now()));
             }
             _updateWindowStoreAnnouncementFlag() {
-                a.updateUserSettings({ flags: { windowsStoreAnnouncement: true } });
+                gApi.updateUserSettings({ flags: { windowsStoreAnnouncement: true } });
             }
             _showWindowsStoreAnnouncement() {
                 gDesigner.executeWhenReady(() => {

@@ -5,26 +5,26 @@ module.exports = function (module, exports, require) {
             i = require(292),
             a = require(291),
             {
-                gApi: r,
-                MicrosoftB2BKeyType: s,
-                PaymentProviders: l,
-                DateAPI: c,
-                IN_APP_PURCHASE: { WINDOWS: { production: d, trunk: u, rc: p, beta: g, lts: h } = {} } = {},
+                gApi,
+                MicrosoftB2BKeyType,
+                PaymentProviders,
+                DateAPI,
+                IN_APP_PURCHASE: { WINDOWS: { production, trunk, rc, beta, lts } = {} } = {},
             } = require(10 /* designerConfig */),
-            { IS_PRODUCTION: f, IS_LTS: m, IS_RC: y, IS_BETA: v } = require(231 /* IS_TRUNK */),
+            { IS_PRODUCTION, IS_LTS, IS_RC, IS_BETA } = require(231 /* IS_TRUNK */),
             {
-                ERROR_CODES: { ERR_MICROSOFT_STORE_SERVICES_B2B_KEY_NOT_FOUND: _ },
-            } = r;
+                ERROR_CODES: { ERR_MICROSOFT_STORE_SERVICES_B2B_KEY_NOT_FOUND },
+            } = gApi;
         module.exports = class extends o {
             constructor() {
                 if ((super(), !window.napi)) return;
-                const { remote: e } = require(881),
-                    t = e.getCurrentWindow().getNativeWindowHandle();
+                const { remote } = require(881),
+                    t = remote.getCurrentWindow().getNativeWindowHandle();
                 ((this._store = new window.napi.windowsStore.StoreContext()),
                     this._store.initialize(t),
                     gDesigner.addEventListener(i, this._userLoggedEvent, this),
                     gDesigner.addEventListener(a, this._networkAvailabilityChangedEvent, this),
-                    (this._intervalId = setInterval(() => this.syncLicense(), c.daysToMilliseconds(1))));
+                    (this._intervalId = setInterval(() => this.syncLicense(), DateAPI.daysToMilliseconds(1))));
             }
             async purchase(e, t) {
                 try {
@@ -35,7 +35,7 @@ module.exports = function (module, exports, require) {
                 return new Promise((t, n) => {
                     const o = setTimeout(() => {
                         n();
-                    }, c.minutesToMilliseconds(3));
+                    }, DateAPI.minutesToMilliseconds(3));
                     this._store.requestPurchaseAsync(e.productId, (e, i) => {
                         (clearTimeout(o),
                             e
@@ -60,7 +60,7 @@ module.exports = function (module, exports, require) {
                         const a = Object.values(o).find((e) => e.inAppOfferToken === i);
                         if (!a) return t();
                         e({
-                            provider: l.WindowsStore,
+                            provider: PaymentProviders.WindowsStore,
                             formattedPrice: a.price.formattedRecurrencePrice,
                             currency: a.price.currencyCode,
                             productId: a.storeId,
@@ -71,27 +71,27 @@ module.exports = function (module, exports, require) {
             async syncLicense() {
                 const e = await gDesigner.getUser();
                 if (e)
-                    return r.microsoftStoreServices
+                    return gApi.microsoftStoreServices
                         .syncLicense()
                         .then(() => gDesigner.requestLicenseUpdate())
                         .catch(async (t) => {
-                            if (t.cloud && t.code === _) {
-                                const t = await r.microsoftStoreServices.getAccessToken(),
+                            if (t.cloud && t.code === ERR_MICROSOFT_STORE_SERVICES_B2B_KEY_NOT_FOUND) {
+                                const t = await gApi.microsoftStoreServices.getAccessToken(),
                                     n = await this._createB2BKeyForPurchaseAPI(e, t),
                                     o = await this._createB2BKeyForCollectionsAPI(e, t);
                                 return (
-                                    await r.microsoftStoreServices.updateB2BKeys({
+                                    await gApi.microsoftStoreServices.updateB2BKeys({
                                         accessToken: t,
-                                        keys: { [s.Purchase]: n, [s.Collections]: o },
+                                        keys: { [MicrosoftB2BKeyType.Purchase]: n, [MicrosoftB2BKeyType.Collections]: o },
                                     }),
-                                    r.microsoftStoreServices.syncLicense().then(() => gDesigner.requestLicenseUpdate())
+                                    gApi.microsoftStoreServices.syncLicense().then(() => gDesigner.requestLicenseUpdate())
                                 );
                             }
                             throw t;
                         });
             }
             _getInAppOfferToken() {
-                return f ? d : v ? g : m ? h : y ? p : u;
+                return IS_PRODUCTION ? production : IS_BETA ? beta : IS_LTS ? lts : IS_RC ? rc : trunk;
             }
             _createB2BKeyForPurchaseAPI(e, t) {
                 return new Promise(async (n, o) => {

@@ -34,16 +34,16 @@ module.exports = function (module, exports, require) {
                 );
             },
             update: function (e) {
-                const { isPrivate: t, isSharing: n, disabled: i } = e,
+                const { isPrivate, isSharing, disabled } = e,
                     a = $(this);
-                i ? a.addClass("g-disabled") : a.removeClass("g-disabled");
+                disabled ? a.addClass("g-disabled") : a.removeClass("g-disabled");
                 gDesigner.getShareManager().isShareProRestricted() && a.gPro();
                 const r = a.data("gsharebutton");
                 a.find(".icon")
-                    .css("display", n ? "" : "none")
-                    .toggleClass("gravit-icon-private-share", t)
-                    .toggleClass("gravit-icon-public-share", !t);
-                const s = n
+                    .css("display", isSharing ? "" : "none")
+                    .toggleClass("gravit-icon-private-share", isPrivate)
+                    .toggleClass("gravit-icon-public-share", !isPrivate);
+                const s = isSharing
                     ? new GObject.GLocaleKey("GToolbar", "text.shared")
                     : r.options.defaultText
                       ? r.options.defaultText

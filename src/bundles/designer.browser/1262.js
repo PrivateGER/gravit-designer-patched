@@ -15,7 +15,7 @@ module.exports = function (module, exports, require) {
             h = require(1526),
             f = require(450);
         const m = require(607),
-            { SidebarsIds: y } = require(198 /* SidebarsIds */);
+            { SidebarsIds } = require(198 /* SidebarsIds */);
         var v = null,
             _ = null,
             b = null,
@@ -115,7 +115,7 @@ module.exports = function (module, exports, require) {
                                                 (this._validateInsertation(this._elements[e].getEffects(), t) &&
                                                     this._elements[e].getEffects().appendChild(t),
                                                     n._addEffectMenu.close());
-                                                const i = gDesigner.getRightSidebars().getSidebar(y.GInspectorSidebar);
+                                                const i = gDesigner.getRightSidebars().getSidebar(SidebarsIds.GInspectorSidebar);
                                                 i.trigger(new c.default(c.default.Type.ChildAdded, i));
                                             }
                                         }.bind(this),
@@ -250,7 +250,7 @@ module.exports = function (module, exports, require) {
                                 }.bind(this),
                                 GObject.GLocale.get(new GObject.GLocaleKey("GEffectProperties", "action.remove"))
                             ));
-                        const o = gDesigner.getRightSidebars().getSidebar(y.GInspectorSidebar);
+                        const o = gDesigner.getRightSidebars().getSidebar(SidebarsIds.GInspectorSidebar);
                         o.trigger(new c.default(c.default.Type.ChildRemoved, o));
                     }.bind(this),
                     w = null,
@@ -657,7 +657,7 @@ module.exports = function (module, exports, require) {
                                 ),
                                 $(this._toolbar).gAccordion("toggleOpen", true),
                                 $(this._toolbar).gAccordion("init", $(this._panel)));
-                            const r = gDesigner.getRightSidebars().getSidebar(y.GInspectorSidebar);
+                            const r = gDesigner.getRightSidebars().getSidebar(SidebarsIds.GInspectorSidebar);
                             r.trigger(new c.default(c.default.Type.ChildAdded, r));
                         }).bind(this)();
                     }.bind(this),

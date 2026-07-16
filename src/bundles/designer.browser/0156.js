@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
         (require(58), require(30), require(20), require(271), require(71), require(151), require(34), require(91), require(4), require(32), require(33));
         var GSaveAction = require(40),
             a = o(require(263 /* GRegex */));
-        const { FILE_ID_PREFIX: r } = require(10 /* designerConfig */);
+        const { FILE_ID_PREFIX } = require(10 /* designerConfig */);
         function s() {
             this._permissions = [];
         }
@@ -166,11 +166,11 @@ module.exports = function (module, exports, require) {
                     case s.Storage.Gravit:
                         return "";
                     case s.Storage.GoogleDrive:
-                        return r.GOOGLEDRIVE;
+                        return FILE_ID_PREFIX.GOOGLEDRIVE;
                     case s.Storage.SharePoint:
-                        return r.SHAREPOINT;
+                        return FILE_ID_PREFIX.SHAREPOINT;
                     case s.Storage.OneDriveBusiness:
-                        return r.ONEDRIVEBUSINESS;
+                        return FILE_ID_PREFIX.ONEDRIVEBUSINESS;
                 }
                 throw new Error("Unsupported storage!");
             }),

@@ -18,8 +18,8 @@ module.exports = function (module, exports, require) {
                         e.list
                             .map((e) => ("object" != typeof e ? { title: e, data: e } : e))
                             .forEach((e) => {
-                                let { title: n, data: o } = e;
-                                return t.createAddItem(n).setData(o);
+                                let { title, data } = e;
+                                return t.createAddItem(title).setData(data);
                             });
                         const n = $(this);
                         n.addClass("g-input-select")

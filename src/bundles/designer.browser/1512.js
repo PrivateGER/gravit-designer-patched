@@ -134,13 +134,13 @@ module.exports = function (module, exports, require) {
                         const t = {};
                         r.excludeAcceptAllOptions = true;
                         for (let n = 0, o = e.length; n < o; n++) {
-                            const { mime: o, ext: i } = e[n];
-                            o && i
-                                ? void 0 !== t[o]
-                                    ? (Array.isArray(t[o]) || (t[o] = [t[o]]), t[o].push(i.startsWith(".") ? i : ".".concat(i)))
-                                    : (t[o] = i.startsWith(".") ? i : ".".concat(i))
+                            const { mime, ext } = e[n];
+                            mime && ext
+                                ? void 0 !== t[mime]
+                                    ? (Array.isArray(t[mime]) || (t[mime] = [t[mime]]), t[mime].push(ext.startsWith(".") ? ext : ".".concat(ext)))
+                                    : (t[mime] = ext.startsWith(".") ? ext : ".".concat(ext))
                                 : console.warn(
-                                      'openPrompt warning: no mime or ext. given mime: "'.concat(o, '", given ext: "').concat(i, '"')
+                                      'openPrompt warning: no mime or ext. given mime: "'.concat(mime, '", given ext: "').concat(ext, '"')
                                   );
                         }
                         r.types = [{ accept: t }];

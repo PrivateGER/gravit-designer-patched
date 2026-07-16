@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
             const n = require(170),
                 r = require(325);
             module.exports = (e) => {
-                let { accessToken: t, apiKey: i, appId: o, language: a = 0 } = e;
+                let { accessToken, apiKey, appId, language: a = 0 } = e;
                 n.setLanguage(a);
                 const s = new google.picker.DocsView()
                         .setIncludeFolders(true)
@@ -18,14 +18,14 @@ module.exports = function (module, exports, require) {
                         .setParent("root")
                         .setLabel(n.get(new r("GGoogleDrive", "text.team-drives-tab-title")));
                 return new google.picker.PickerBuilder()
-                    .setAppId(o)
-                    .setOAuthToken(t)
+                    .setAppId(appId)
+                    .setOAuthToken(accessToken)
                     .enableFeature(google.picker.Feature.SUPPORT_TEAM_DRIVES)
                     .enableFeature(google.picker.Feature.SUPPORT_DRIVES)
                     .addView(s)
                     .addView(l)
                     .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
-                    .setDeveloperKey(i)
+                    .setDeveloperKey(apiKey)
                     .setLocale(n.getLocaleTagISO6391())
                     .build();
             };

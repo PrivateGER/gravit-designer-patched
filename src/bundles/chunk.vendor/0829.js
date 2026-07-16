@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
             "use strict";
             const {
-                    quotas: n,
+                    quotas,
                     share: { quotas: r },
                     defaultLegacyUserSettings: { quotas: o },
                     defaultUserSettings: {
-                        license: { offlineCountdown: a },
+                        license: { offlineCountdown },
                     },
                 } = require(253),
                 s = require(430),
@@ -19,27 +19,27 @@ module.exports = function (module, exports, require) {
                     let {
                         offline: t = false,
                         license: i = s.Free,
-                        expire: n,
-                        created: r,
-                        registered: o,
+                        expire,
+                        created,
+                        registered,
                         legacy: a = false,
-                        offlineExpire: l,
-                        specialPrice: A,
-                        deactivated: c,
+                        offlineExpire,
+                        specialPrice,
+                        deactivated,
                         quotas: p,
-                        metadata: u,
+                        metadata,
                     } = e;
                     ((this._offline = t),
                         (this._license = i),
-                        (this._created = h.toDate(r)),
-                        (this._registered = h.toDate(o)),
-                        (this._expire = h.toDate(n)),
+                        (this._created = h.toDate(created)),
+                        (this._registered = h.toDate(registered)),
+                        (this._expire = h.toDate(expire)),
                         (this._legacy = a),
-                        (this._offlineExpire = l),
-                        (this._specialPrice = h.toDate(A)),
-                        (this._deactivated = c),
+                        (this._offlineExpire = offlineExpire),
+                        (this._specialPrice = h.toDate(specialPrice)),
+                        (this._deactivated = deactivated),
                         (this._quotas = p),
-                        (this._metadata = u),
+                        (this._metadata = metadata),
                         (this.__isExpired = this.isExpired()),
                         (this.__isOfflinePeriodExpired = this.isOfflinePeriodExpired()),
                         (this.__isSpecialPriceExpired = this.isSpecialPriceExpired()),
@@ -108,19 +108,19 @@ module.exports = function (module, exports, require) {
                 }
                 getOfflineWarningDate() {
                     return this.getOfflineExpirationDate()
-                        ? h.addTime(this.getOfflineExpirationDate(), -a + h.daysToMilliseconds(1))
+                        ? h.addTime(this.getOfflineExpirationDate(), -offlineCountdown + h.daysToMilliseconds(1))
                         : null;
                 }
                 getQuotas() {
-                    let { free: e, pro: t } = this._quotas || {};
+                    let { free, pro } = this._quotas || {};
                     return (
-                        e || (e = this.isLegacy() ? o.free : n.free),
-                        t || (t = this.isLegacy() ? o.pro : n.pro),
-                        (t = t || n.pro),
-                        (e = e || n.free),
+                        free || (free = this.isLegacy() ? o.free : quotas.free),
+                        pro || (pro = this.isLegacy() ? o.pro : quotas.pro),
+                        (pro = pro || quotas.pro),
+                        (free = free || quotas.free),
                         {
-                            pro: t,
-                            free: e,
+                            pro: pro,
+                            free: free,
                         }
                     );
                 }

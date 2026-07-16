@@ -1,16 +1,16 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(8 /* Symbol */);
-        const { PasswordlessAuthenticationActions: o, gApi: i } = require(10 /* designerConfig */),
+        const { PasswordlessAuthenticationActions, gApi } = require(10 /* designerConfig */),
             GSystemDialog = require(44),
             GProfileDialog = require(604),
             s = require(337),
-            { GLocale: l, GLocaleKey: c } = require(1 /* GObject */);
+            { GLocale, GLocaleKey } = require(1 /* GObject */);
         module.exports = class {
             async execute() {
-                let { [o.SetPassword]: e } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                let { [PasswordlessAuthenticationActions.SetPassword]: e } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 try {
-                    (await i.passwordlessAuthentication.authenticateWithSetPasswordToken(e), await s.checkLicense());
+                    (await gApi.passwordlessAuthentication.authenticateWithSetPasswordToken(e), await s.checkLicense());
                     const t = await gDesigner.getUser();
                     t &&
                         gDesigner.executeWhenReady(() => {
@@ -20,8 +20,8 @@ module.exports = function (module, exports, require) {
                                 closeable: false,
                                 changePasswordOptions: {
                                     autoClose: true,
-                                    title: l.get(new c("GChangePasswordPanel", "text.set-password")),
-                                    info: l.get(new c("GChangePasswordPanel", "text.set-password-info")),
+                                    title: GLocale.get(new GLocaleKey("GChangePasswordPanel", "text.set-password")),
+                                    info: GLocale.get(new GLocaleKey("GChangePasswordPanel", "text.set-password-info")),
                                 },
                             }).open();
                         });

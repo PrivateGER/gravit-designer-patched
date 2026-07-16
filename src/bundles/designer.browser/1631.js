@@ -40,8 +40,8 @@ module.exports = function (module, exports, require) {
                                         .addClass("field")
                                         .append(
                                             r.map((e) => {
-                                                let { text: t, value: n, selected: o } = e;
-                                                return $("<option/>").attr("value", n).text(GObject.GLocale.get(t)).prop("selected", !!o);
+                                                let { text, value, selected } = e;
+                                                return $("<option/>").attr("value", value).text(GObject.GLocale.get(text)).prop("selected", !!selected);
                                             })
                                         )
                                 )

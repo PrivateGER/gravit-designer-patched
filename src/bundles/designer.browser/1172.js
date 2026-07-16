@@ -17,9 +17,9 @@ module.exports = function (module, exports, require) {
                 e &&
                     e.prompt &&
                     e.prompt().then(function (e) {
-                        let { outcome: t } = e;
-                        "dismissed" === t ||
-                            ("accepted" === t &&
+                        let { outcome } = e;
+                        "dismissed" === outcome ||
+                            ("accepted" === outcome &&
                                 (gContainer.removeProperty(l.installPWA3timesAWeekPropName),
                                 gContainer.removeProperty(l.closedInstallPWADialogDatePropName),
                                 gDesigner.closeInstallPwaDialog()));

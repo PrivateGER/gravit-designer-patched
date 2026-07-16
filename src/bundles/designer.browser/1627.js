@@ -5,7 +5,7 @@ module.exports = function (module, exports, require) {
         const GCategory = require(18),
             a = require(31),
             r = require(85),
-            { CLOUD_SYNC_FEATURE: { NEW_LAYOUT: s } = {} } = require(10 /* designerConfig */);
+            { CLOUD_SYNC_FEATURE: { NEW_LAYOUT } = {} } = require(10 /* designerConfig */);
         function l() {}
         (GObject.GObject.inherit(l, a),
             (l.ID = "sync.info"),
@@ -47,7 +47,7 @@ module.exports = function (module, exports, require) {
             }),
             (l.prototype.isAvailable = function () {
                 return (
-                    !!s && gContainer.getRuntime() === r.Runtime.Electron && GObject.GSystem.operatingSystem === GObject.GSystem.OperatingSystem.OSX_IOS
+                    !!NEW_LAYOUT && gContainer.getRuntime() === r.Runtime.Electron && GObject.GSystem.operatingSystem === GObject.GSystem.OperatingSystem.OSX_IOS
                 );
             }),
             (l.prototype.toString = function () {

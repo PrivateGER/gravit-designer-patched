@@ -11,7 +11,7 @@ module.exports = function (module, exports, require) {
             d = require(85),
             GCommonNames = require(119);
         const GSystemDialog = require(44),
-            { isExecutingOnMSTeamsSync: g } = a.default;
+            { isExecutingOnMSTeamsSync } = a.default;
         function h(e, t) {
             ((this._locale = e), (this._title = h.Translations[e] || t));
         }
@@ -42,7 +42,7 @@ module.exports = function (module, exports, require) {
                 return true;
             }),
             (h.prototype.isVisible = function () {
-                return !g();
+                return !isExecutingOnMSTeamsSync();
             }),
             (h.prototype.execute = function () {
                 if (GObject.GLocale.getLanguage() !== this._locale) {

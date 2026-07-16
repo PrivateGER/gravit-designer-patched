@@ -4,11 +4,11 @@ module.exports = function (module, exports, require) {
         (require(20), require(34));
         var GObject = require(1),
             a = o(require(44 /* GSystemDialog */));
-        const { DateAPI: r, DESIGNER: { TITLE: s } = {} } = require(10 /* designerConfig */),
+        const { DateAPI, DESIGNER: { TITLE } = {} } = require(10 /* designerConfig */),
             l = require(78),
-            c = r.minutesToMilliseconds(1),
+            c = DateAPI.minutesToMilliseconds(1),
             d = 0.8,
-            u = r.minutesToMilliseconds(30);
+            u = DateAPI.minutesToMilliseconds(30);
         module.exports = class {
             constructor() {
                 let {
@@ -16,7 +16,7 @@ module.exports = function (module, exports, require) {
                     memoryUsageThreshold: t = d,
                     autostartTime: n = u,
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                ((this._memoryCheckInterval = Math.max(e, r.minutesToMilliseconds(1))),
+                ((this._memoryCheckInterval = Math.max(e, DateAPI.minutesToMilliseconds(1))),
                     (this._memoryUsageThreshold = t),
                     (this._autostartTime = n));
             }
@@ -56,7 +56,7 @@ module.exports = function (module, exports, require) {
                         className: "g-memory-warn-dialog",
                         closeable: false,
                         icon: "info",
-                        title: GObject.GLocale.get(new GObject.GLocaleKey("GMemoryManager", "text.title")).replace("%app", s),
+                        title: GObject.GLocale.get(new GObject.GLocaleKey("GMemoryManager", "text.title")).replace("%app", TITLE),
                         subtitle: GObject.GLocale.get(new GObject.GLocaleKey("GMemoryManager", "text.subtitle")),
                         buttons: [
                             {

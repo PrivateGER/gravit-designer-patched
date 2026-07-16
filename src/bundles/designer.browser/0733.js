@@ -1,8 +1,8 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        const { GObject: o, GEventTarget: i, GEvent: a } = require(1 /* GObject */);
+        const { GObject, GEventTarget, GEvent } = require(1 /* GObject */);
         function r() {}
-        (o.inheritAndMix(r, o, [i]),
+        (GObject.inheritAndMix(r, GObject, [GEventTarget]),
             (r.prototype._role = null),
             (r.prototype.setRole = function (e) {
                 ((this._role = e), this.hasEventListeners(r.RoleChangedEvent) && this.trigger(new r.RoleChangedEvent(e, this)));
@@ -13,6 +13,6 @@ module.exports = function (module, exports, require) {
             (r.RoleChangedEvent = function (e, t) {
                 ((this.role = e), (this.target = t));
             }),
-            o.inherit(r.RoleChangedEvent, a),
+            GObject.inherit(r.RoleChangedEvent, GEvent),
             (module.exports = r));
     };

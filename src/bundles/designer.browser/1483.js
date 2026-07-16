@@ -33,9 +33,9 @@ module.exports = function (module, exports, require) {
             g = o(require(1485)),
             h = o(require(1486)),
             f = o(require(1487));
-        const { nodeEnv: m, isBeta: y, storeVendor: v, isCorel: _, isTeams: b } = require(803),
+        const { nodeEnv, isBeta, storeVendor, isCorel, isTeams } = require(803),
             w = require(231 /* IS_TRUNK */),
-            C = !v,
+            C = !storeVendor,
             x = require(859);
         require(1488);
         require(1489);
@@ -233,10 +233,10 @@ module.exports = function (module, exports, require) {
             GBetaFlow = require(1686),
             Zn = require(1687),
             eo = require(1255),
-            { isExecutingOnMSTeams: to, isExecutingOnMSTeamsSync: no, isTeamsChannel: oo, getTeamsLocale: io } = p.default;
+            { isExecutingOnMSTeams, isExecutingOnMSTeamsSync, isTeamsChannel, getTeamsLocale } = p.default;
         (require(18 /* GCategory */), require(1688), require(1154), require(1689), require(1690), require(1691), require(1693), require(1694));
         var ao = window;
-        const ro = !!/^trunk/.test("production") && !y;
+        const ro = !!/^trunk/.test("production") && !isBeta;
         ((ao.gApi = require(10 /* designerConfig */).gApi), (ao.gApi.webcdr = null));
         const so = async () => S.checkMaintenance();
         (so(),
@@ -247,30 +247,30 @@ module.exports = function (module, exports, require) {
                 GObject.GTranslationEvents.addEventListener(
                     GObject.GTranslationNotificationEvent,
                     (e) => {
-                        let { project: t, type: n, content: o, data: i } = e;
-                        if (t === GObject.GTranslation.Projects.Designer)
-                            switch (n) {
+                        let { project, type, content, data } = e;
+                        if (project === GObject.GTranslation.Projects.Designer)
+                            switch (type) {
                                 case GObject.GTranslationNotificationEvent.Type.Warning:
                                     gContainer.getRuntime() === kn.Runtime.Electron
-                                        ? console.error(o)
-                                        : console.error({ content: o, data: i });
+                                        ? console.error(content)
+                                        : console.error({ content: content, data: data });
                             }
                     },
                     void 0
                 )),
-            y &&
-                (_ && b && designerConfig.cloudTeamsURL ? (ao.gApi.url = designerConfig.cloudTeamsURL) : designerConfig.cloudBetaURL && (ao.gApi.url = designerConfig.cloudBetaURL),
+            isBeta &&
+                (isCorel && isTeams && designerConfig.cloudTeamsURL ? (ao.gApi.url = designerConfig.cloudTeamsURL) : designerConfig.cloudBetaURL && (ao.gApi.url = designerConfig.cloudBetaURL),
                 designerConfig.betaWebsocketURL && (ao.gApi.websocketURL = designerConfig.betaWebsocketURL)),
             w.IS_PRODUCTION && (designerConfig.cloudURL && (ao.gApi.url = designerConfig.cloudURL), designerConfig.websocketURL && (ao.gApi.websocketURL = designerConfig.websocketURL)),
             (ao.gApi.lang = GObject.GLocale.getLanguage()));
         let lo = null;
         ((ao.gravit = null), require(1738), (ao.gDesigner = new GCommonNames()), ao.gDesigner.getUser(), (ao.gQA = h.default));
         const co = ao.gDesigner.isOfflineAsync();
-        ao.gInAppPurchase = Yn.newInAppPurchase(v);
-        const { GA: { customDimensions: uo } = {} } = require(10 /* designerConfig */);
+        ao.gInAppPurchase = Yn.newInAppPurchase(storeVendor);
+        const { GA: { customDimensions } = {} } = require(10 /* designerConfig */);
         (gDesigner.addEventListener(Wn, (e) => {
-            let { user: t } = e;
-            t && !gDesigner.isAnonymous() && "undefined" != typeof dataLayer && uo && uo.forEach((e) => dataLayer.push({ [e]: void 0 }));
+            let { user } = e;
+            user && !gDesigner.isAnonymous() && "undefined" != typeof dataLayer && customDimensions && customDimensions.forEach((e) => dataLayer.push({ [e]: void 0 }));
         }),
             (gDesigner._translationManager = Xn));
         var po = $("<div></div>").addClass("g-drag-image").appendTo($("body"));
@@ -291,11 +291,11 @@ module.exports = function (module, exports, require) {
                 (window.onerror = function (e, t, n, o, i) {
                     Mn.isPluginError(i)
                         ? GSystemDialog.alert(i.message)
-                        : ("production" === m || "trunk" === m || "lts" === m || "rc" === m) && Rn.isOnline();
+                        : ("production" === nodeEnv || "trunk" === nodeEnv || "lts" === nodeEnv || "rc" === nodeEnv) && Rn.isOnline();
                 }),
                 x.getRuntimeCode() === designerConfig.Runtime.WindowsStore.code && new Qn().init(),
-                y && !_ && new GBetaFlow().init(),
-                _
+                isBeta && !isCorel && new GBetaFlow().init(),
+                isCorel
                     ? (gContainer.setCookie({
                           name: "_access_token",
                           value: "b03f5f7f11d50a3a",
@@ -397,13 +397,13 @@ module.exports = function (module, exports, require) {
                 value: "3.15.0",
                 url: designerConfig.gApi.url,
             }),
-                gDesigner.setEnv(m),
-                gContainer.getRuntime() === kn.Runtime.Electron || _ || designerConfig.gApi.initRecaptcha(),
+                gDesigner.setEnv(nodeEnv),
+                gContainer.getRuntime() === kn.Runtime.Electron || isCorel || designerConfig.gApi.initRecaptcha(),
                 (async function (e, t) {
                     const n = await gDesigner.getUser();
                     (0, g.default)(e, t, gDesigner.getAppBaseUrl(), n);
-                })(gContainer.getRuntime(), v),
-                !y ||
+                })(gContainer.getRuntime(), storeVendor),
+                !isBeta ||
                     (gContainer.getRuntime() !== kn.Runtime.Browser && gContainer.getRuntime() !== kn.Runtime.PWA) ||
                     ((h = window),
                     (b = document),
@@ -417,7 +417,7 @@ module.exports = function (module, exports, require) {
                     ((S = b.createElement("script")).async = 1),
                     (S.src = "https://static.hotjar.com/c/hotjar-" + h._hjSettings.hjid + ".js?sv=" + h._hjSettings.hjsv),
                     w.appendChild(S)),
-                gDesigner.setStoreVendor(v),
+                gDesigner.setStoreVendor(storeVendor),
                 gDesigner.setVersion("3.15.0"),
                 gDesigner.setCommitSHA("566771f4dff3952a55c0d9d3c130f7e787dfdfa7"),
                 gDesigner.setBuildNum("8795"),
@@ -433,7 +433,7 @@ module.exports = function (module, exports, require) {
             const io = async () => {
                 (await new Promise((e) => gContainer.initLanguage(e)),
                     gDesigner.hasEventListeners(Hn) && gDesigner.trigger(new Hn(Hn.Status.Init)),
-                    gDesigner.setIsBeta(y),
+                    gDesigner.setIsBeta(isBeta),
                     (gravit = {
                         plugins: [],
                         actions: [new ae(), new yt(), new re(), new xe(), new Se()]
@@ -457,7 +457,7 @@ module.exports = function (module, exports, require) {
                                 new Ft(Ft.Source.FILES),
                                 new GLinkImageAction(),
                                 new xt(new GImportFontsAction()),
-                                _ ? new xt(new GExportAction()) : new GExportAction(),
+                                isCorel ? new xt(new GExportAction()) : new GExportAction(),
                             ])
                             .concat(
                                 GDocument.FileTypes.filter(
@@ -469,7 +469,7 @@ module.exports = function (module, exports, require) {
                                 new GSaveAsAction("pdf", { dpi: 96 }),
                                 new GSaveAsAction("pdf", { dpi: 150 }),
                                 new xt(new GSaveAsAction("pdf", { dpi: 300 })),
-                                _ ? new xt(new GExportAction({ format: "pdf" })) : new GExportAction({ format: "pdf" }),
+                                isCorel ? new xt(new GExportAction({ format: "pdf" })) : new GExportAction({ format: "pdf" }),
                             ])
                             .concat(
                                 [
@@ -615,29 +615,29 @@ module.exports = function (module, exports, require) {
                             ])
                             .concat(
                                 ft.Links.filter((e) => "eula" !== e.name).map((e) => new ft(e)),
-                                _ ? [] : new wt(),
+                                isCorel ? [] : new wt(),
                                 new Dt(),
                                 new mt()
                             )
-                            .concat(...(no() ? [] : kn.GravitLanguages.map((e) => new ht(e, Xn.getTranslationRealName(e)))))
+                            .concat(...(isExecutingOnMSTeamsSync() ? [] : kn.GravitLanguages.map((e) => new ht(e, Xn.getTranslationRealName(e)))))
                             .concat([
-                                ...(_ ? [new Nt("STAGING", ro), new Nt("BETA", y)] : []),
+                                ...(isCorel ? [new Nt("STAGING", ro), new Nt("BETA", isBeta)] : []),
                                 new bt(),
                                 ...(C ? [new Ct()] : []),
                                 ...ft.Links.filter((e) => "eula" === e.name).map((e) => new ft(e)),
                                 new Mt(),
-                                ...(_ ? [new Ot()] : []),
+                                ...(isCorel ? [new Ot()] : []),
                                 new Bt(),
                             ])
                             .concat([new It(), new kt()]),
                         sidebars: [new dn(), ...(designerConfig.HAS_ANNOTATIONS ? [new GAnnotationsSidebar()] : []), new GOutlineSidebar(), new GLibrarySidebar(), new GSymbolsSidebar()],
                         panels: [],
-                        footer: [new GSoftwareUpdatePanel(), new GNotificationPanel(), ...(_ ? [new GCollaborativeTextPanel(), new Ln()] : [])],
+                        footer: [new GSoftwareUpdatePanel(), new GNotificationPanel(), ...(isCorel ? [new GCollaborativeTextPanel(), new Ln()] : [])],
                         tools: [
                             {
                                 tool: r.GPointerTool,
                                 toolString: "GPointerTool",
-                                title: _
+                                title: isCorel
                                     ? GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "tool.pointer"))
                                     : GObject.GLocale.get(new GObject.GLocaleKey("GPointerTool", "name")),
                                 group: "select",
@@ -658,7 +658,7 @@ module.exports = function (module, exports, require) {
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GSubSelectTool", "name")),
                                 group: "select",
                                 key: "D",
-                                icon: _ ? "gravit-icon-cursor-subselect" : "gravit-icon-cursor",
+                                icon: isCorel ? "gravit-icon-cursor-subselect" : "gravit-icon-cursor",
                                 richTooltipConfig: d.GRichTooltipConfig.from({
                                     title: GObject.GLocale.get(new GObject.GLocaleKey("GSubSelectTool", "tooltip-title")),
                                     description: GObject.GLocale.get(new GObject.GLocaleKey("GSubSelectTool", "tooltip-description")),
@@ -801,7 +801,7 @@ module.exports = function (module, exports, require) {
                                 tool: r.GLineTool,
                                 toolString: "GLineTool",
                                 title: GObject.GLocale.get(
-                                    _ ? new GObject.GLocaleKey("GCommonNames", "tool.line") : new GObject.GLocaleKey("GLineTool", "name")
+                                    isCorel ? new GObject.GLocaleKey("GCommonNames", "tool.line") : new GObject.GLocaleKey("GLineTool", "name")
                                 ),
                                 group: "shape",
                                 key: "L",
@@ -962,17 +962,17 @@ module.exports = function (module, exports, require) {
                         ],
                     }),
                     "function" != typeof window.gdb_initsavestepsaction ||
-                        y ||
+                        isBeta ||
                         IS_TRUNK.IS_RC ||
                         window.gdb_initsavestepsaction(window.gravit.actions, Pe),
                     "function" == typeof window.gdb_initsetupsystemdateaction &&
                         window.gdb_initsetupsystemdateaction(window.gravit.actions),
                     "function" != typeof window.gdb_inittranslationtoolaction ||
-                        y ||
+                        isBeta ||
                         IS_TRUNK.IS_RC ||
                         window.gdb_inittranslationtoolaction(window.gravit.actions, Pe),
                     "function" != typeof window.gdb_initrecordgravitaction ||
-                        y ||
+                        isBeta ||
                         IS_TRUNK.IS_RC ||
                         window.gdb_initrecordgravitaction(window.gravit.actions, Pe));
                 let t = new In(e._storage);
@@ -1023,14 +1023,14 @@ module.exports = function (module, exports, require) {
                     }),
                     gDesigner.updateRecentDocumentsAction(),
                     Fn.init());
-                let o = gDesigner.getSetting("webcdr_choice", y ? "BETA" : "STAGING");
+                let o = gDesigner.getSetting("webcdr_choice", isBeta ? "BETA" : "STAGING");
                 if (
                     (ro
                         ? designerConfig.trunkwebcdr &&
                           (IS_TRUNK.IS_LOCALHOST
                               ? (ao.gApi.webcdr = o && "BETA" === o ? designerConfig.cloudBetaURL + "/api/webcdr" : designerConfig.cloudTrunkURL + "/api/webcdr")
                               : (ao.gApi.webcdr = o && "BETA" === o ? designerConfig.betaWebcdr : designerConfig.trunkwebcdr))
-                        : y
+                        : isBeta
                           ? (ao.gApi.webcdr = o && "BETA" === o ? designerConfig.betaWebcdr : designerConfig.stagingWebcdr)
                           : designerConfig.webcdr && (ao.gApi.webcdr = designerConfig.webcdr),
                     $("body").removeClass("loading"),
@@ -1069,7 +1069,7 @@ module.exports = function (module, exports, require) {
                     (0, GSaveAction.isSupportedScreenSize)()
                         ? !(0, GSaveAction.isSupportedScreenSize)(document.body.clientWidth) &&
                           designerConfig.msTeamsMode &&
-                          (await oo()) &&
+                          (await isTeamsChannel()) &&
                           GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.unsupported-windows-size-msteams")))
                         : designerConfig.msTeamsMode
                           ? GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GSystemDialog", "text.unsupported-screen-size-msteams")))
@@ -1091,11 +1091,11 @@ module.exports = function (module, exports, require) {
                     ao.gMemoryManager.start());
             };
             if (
-                ("function" != typeof gdb_initSetupSystemDate || y || (await gdb_initSetupSystemDate()),
+                ("function" != typeof gdb_initSetupSystemDate || isBeta || (await gdb_initSetupSystemDate()),
                 await Wn,
                 await (0, GSaveAction._tryAndCatch)(() => Kn.init()),
                 await null,
-                _ || gDesigner.isEnabledSubscriptions())
+                isCorel || gDesigner.isEnabledSubscriptions())
             ) {
                 const e = async () => {
                     const e = await gDesigner.getUser();
@@ -1109,8 +1109,8 @@ module.exports = function (module, exports, require) {
                         e && !e.isAnonymous() && (await (0, GSaveAction._tryAndCatch)(() => gDesigner.signout(true, true)));
                         const o = new URL(window.location.href).searchParams.get("token");
                         if (o) {
-                            const { enterprise: e } = await designerConfig.gApi.checkEnterpriseToken(o).catch({ enterprise: false });
-                            e && gDesigner.setEnterpriseLoginForm(true);
+                            const { enterprise } = await designerConfig.gApi.checkEnterpriseToken(o).catch({ enterprise: false });
+                            enterprise && gDesigner.setEnterpriseLoginForm(true);
                         }
                         (await gContainer.preLogin().catch((e) => {
                             console.warn("gContainer preLogin error", e);
@@ -1131,7 +1131,7 @@ module.exports = function (module, exports, require) {
                                     gDesigner.showInstallPwaDialog();
                                 }));
                 };
-                if (designerConfig.msTeamsMode) (await to()) ? new u.default(io).load() : window.location.replace(window.location.origin);
+                if (designerConfig.msTeamsMode) (await isExecutingOnMSTeams()) ? new u.default(io).load() : window.location.replace(window.location.origin);
                 else if (navigator.onLine || gDesigner.isEnabledProFeatures("offline")) await e();
                 else {
                     const t = GSystemDialog.custom({

@@ -10,16 +10,16 @@ module.exports = function (module, exports, require) {
             l = require(1323),
             c = require(441),
             {
-                SHARE_ENGINE: d,
-                HAS_ANNOTATIONS: u,
-                ShareRoles: p,
-                FileStatus: { APPROVED: g },
-                FILE_REVIEW_ENABLED: h,
-                LEGACY_SHARE_DIALOG: f,
+                SHARE_ENGINE,
+                HAS_ANNOTATIONS,
+                ShareRoles,
+                FileStatus: { APPROVED },
+                FILE_REVIEW_ENABLED,
+                LEGACY_SHARE_DIALOG,
             } = require(10 /* designerConfig */);
         function m(e) {
             ((this._state = new r()),
-                d && gDesigner.addEventListener(l, this._shareStateChangedEvent, this),
+                SHARE_ENGINE && gDesigner.addEventListener(l, this._shareStateChangedEvent, this),
                 gDesigner.addEventListener(a, this._applicationStatusEvent, this),
                 gDesigner.addEventListener(c, this._licenseChangedEvent, this),
                 this._init(e));
@@ -30,39 +30,39 @@ module.exports = function (module, exports, require) {
             (m.prototype._shareStateChangedEvent = function (e) {
                 const t = new r(Object.assign({}, this._state)),
                     {
-                        owner: n,
-                        share: o,
-                        sharing: i,
-                        edit: a,
-                        inspect: s,
-                        copy: l,
-                        comment: c,
-                        isPrivate: d,
-                        role: p,
+                        owner,
+                        share,
+                        sharing,
+                        edit,
+                        inspect,
+                        copy,
+                        comment,
+                        isPrivate,
+                        role,
                         realtimeCollaborators: g = [],
                     } = e.state;
-                (n
+                (owner
                     ? Object.assign(t, {
                           edit: true,
                           saveAs: true,
                           export: true,
                           inspect: true,
                           copyPaste: true,
-                          comment: !!u,
+                          comment: !!HAS_ANNOTATIONS,
                       })
                     : Object.assign(t, {
-                          edit: a,
-                          saveAs: l,
-                          export: l,
-                          copyPaste: l,
-                          inspect: s,
-                          comment: c,
+                          edit: edit,
+                          saveAs: copy,
+                          export: copy,
+                          copyPaste: copy,
+                          inspect: inspect,
+                          comment: comment,
                       }),
                     Object.assign(t, {
-                        isShareEnabled: o,
-                        isSharing: i,
-                        isPrivateSharing: d,
-                        role: p,
+                        isShareEnabled: share,
+                        isSharing: sharing,
+                        isPrivateSharing: isPrivate,
+                        role: role,
                         realtimeCollaborators: g,
                     }),
                     this._setState(t, e.document));
@@ -78,22 +78,22 @@ module.exports = function (module, exports, require) {
             }),
             (m.prototype._licenseChangedEvent = function (e) {}),
             (m.prototype.isShareEnabled = function () {
-                return !!this._state.isShareEnabled && d;
+                return !!this._state.isShareEnabled && SHARE_ENGINE;
             }),
             (m.prototype.isShareEngineEnabled = function () {
-                return d;
+                return SHARE_ENGINE;
             }),
             (m.prototype.isSharing = function () {
-                return !!this._state.isSharing && d;
+                return !!this._state.isSharing && SHARE_ENGINE;
             }),
             (m.prototype.isPrivateSharing = function () {
-                return this._state.isPrivateSharing && !!d;
+                return this._state.isPrivateSharing && !!SHARE_ENGINE;
             }),
             (m.prototype.getRealtimeCollaborators = function () {
-                return (d && this._state.realtimeCollaborators) || [];
+                return (SHARE_ENGINE && this._state.realtimeCollaborators) || [];
             }),
             (m.prototype.isEditingEnabled = function () {
-                return !gDesigner.getLicense().isGuest() && (this._state.edit || (!!f && this._state.inspect));
+                return !gDesigner.getLicense().isGuest() && (this._state.edit || (!!LEGACY_SHARE_DIALOG && this._state.inspect));
             }),
             (m.prototype.isSavingAsEnabled = function () {
                 return !gDesigner.getLicense().isGuest() && this._state.saveAs;
@@ -111,16 +111,16 @@ module.exports = function (module, exports, require) {
                 return this.isInspectEnabled();
             }),
             (m.prototype.isCommentingEnabled = function () {
-                return this._state.comment && u;
+                return this._state.comment && HAS_ANNOTATIONS;
             }),
             (m.prototype.isCommentingEditingEnabled = function () {
                 if (!this.isCommentingEnabled()) return false;
-                if (h) {
+                if (FILE_REVIEW_ENABLED) {
                     var e = true,
                         t = gDesigner.getActiveDocument(),
                         n = t && t.getStorageItem(),
                         o = n && n.getFile();
-                    return (o && o.status === g && (e = false), e);
+                    return (o && o.status === APPROVED && (e = false), e);
                 }
                 return true;
             }),
@@ -130,7 +130,7 @@ module.exports = function (module, exports, require) {
             (m.prototype.hasAccess = async function (e) {
                 let t = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
                 const n = gDesigner.getShareManager().getRole();
-                return !(!n || !((!t && n.is(p.Owner)) || (await n.can(e))));
+                return !(!n || !((!t && n.is(ShareRoles.Owner)) || (await n.can(e))));
             }),
             (m.prototype.hasPermission = function (e, t) {
                 const n = gDesigner.getShareManager().getRole(e);

@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         require(8 /* Symbol */);
         const GSystemDialog = require(44),
-            { gApi: i } = require(10 /* designerConfig */),
+            { gApi } = require(10 /* designerConfig */),
             a = require(1350);
         module.exports = class {
             async open(e) {
@@ -10,7 +10,7 @@ module.exports = function (module, exports, require) {
                     gContainer.openExternalLink(null, e);
                     return a.getInstance().waitForPurchase();
                 } catch (e) {
-                    GSystemDialog.alert(i.formatError(e));
+                    GSystemDialog.alert(gApi.formatError(e));
                 }
             }
         };

@@ -75,18 +75,18 @@ module.exports = function (module, exports, require) {
                 var t = this;
                 let {
                     closeCallback: n = GSaveAction.fakeFunction,
-                    documentToSave: o,
+                    documentToSave,
                     cancelSave: i = GSaveAction.fakeFunction,
-                    defaultFilename: a,
-                    readyStateChange: s,
-                    showExampleFiles: l,
-                    GUISettings: c,
-                    saveMode: u,
+                    defaultFilename,
+                    readyStateChange,
+                    showExampleFiles,
+                    GUISettings,
+                    saveMode,
                     driveSettings: p = null,
-                    isDashboard: g,
+                    isDashboard,
                     isCorporateStoragesEnabled: h = true,
                 } = e;
-                ((this._GUISettings = c || new T.GUISettings()),
+                ((this._GUISettings = GUISettings || new T.GUISettings()),
                     (this._driveSettings = p || new f.default()),
                     (this.SELECTION = []),
                     (this.TEMP_SELECTION = []),
@@ -94,12 +94,12 @@ module.exports = function (module, exports, require) {
                     (this.CURRENT_UPDATE_OPERATION_ID = -1),
                     (this.MODE = d.GFilesPanelClipboardModes.DEFAULT),
                     (this.BUILD_IN_PROGRESS = false),
-                    (this.DEFAULT_FILENAME = a),
+                    (this.DEFAULT_FILENAME = defaultFilename),
                     (this._newClipBoard = false),
-                    (this._showExampleFiles = l),
-                    (this._isDashboard = g),
+                    (this._showExampleFiles = showExampleFiles),
+                    (this._isDashboard = isDashboard),
                     (this._isCorporateStoragesEnabled = h),
-                    (this.readyStateChange = s),
+                    (this.readyStateChange = readyStateChange),
                     (this.search = (0, GSaveAction.debounce)(this.search, 200)));
                 var m = (e) =>
                     function () {
@@ -107,20 +107,20 @@ module.exports = function (module, exports, require) {
                     };
                 ((this._onCancelSaveCallback = i && m(i)),
                     (this._onCloseCallback = n && m(n)),
-                    (this._documentToSave = o),
-                    (this._isSaveMode = u || this._documentToSave));
+                    (this._documentToSave = documentToSave),
+                    (this._isSaveMode = saveMode || this._documentToSave));
             }),
             (T.prototype._init = async function (e) {
-                let { parentComponent: t, nativeCloud: n, initCallback: o } = e;
+                let { parentComponent, nativeCloud, initCallback } = e;
                 return (
                     (this.USER = await gDesigner.getUser()),
-                    (this.panel = $("<div/>").addClass("g-files-panel").appendTo(t)),
-                    this.initLayout(n)
+                    (this.panel = $("<div/>").addClass("g-files-panel").appendTo(parentComponent)),
+                    this.initLayout(nativeCloud)
                         .then(() => {
-                            o && o();
+                            initCallback && initCallback();
                         })
                         .catch((e) => {
-                            o && o(e);
+                            initCallback && initCallback(e);
                         })
                 );
             }),
@@ -516,9 +516,9 @@ module.exports = function (module, exports, require) {
                     if (!(t = this.drive.getFileFormat(e)))
                         return u(Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.file-not-supported"))));
                 } else t || (t = this.drive.getFileFormat(e) || GCommonNames.DEFAULT_TYPE);
-                var { ext: a, type: r, mime: s, version: l } = t;
-                r = r || s;
-                const d = this._triggerFileDownload(e, n, a, r, l);
+                var { ext, type, mime, version } = t;
+                type = type || mime;
+                const d = this._triggerFileDownload(e, n, ext, type, version);
                 function u(t) {
                     return { promise: t, file: e, cancel: () => n.cancel && n.cancel() };
                 }
@@ -653,8 +653,8 @@ module.exports = function (module, exports, require) {
                     }));
                 const _ = await Promise.all(
                     v.map((e) => {
-                        let { file: t, promise: n } = e;
-                        return n.catch((e) => Object.create({ file: t, status: "rejected", error: e }));
+                        let { file, promise } = e;
+                        return promise.catch((e) => Object.create({ file: file, status: "rejected", error: e }));
                     })
                 );
                 if (g) return void d.updateStatus(p.default.DownloadCancelled);
@@ -896,8 +896,8 @@ module.exports = function (module, exports, require) {
             }),
             (T.prototype.getCloudSettingsById = function (e) {
                 return this.CLOUD_SETTINGS.find((t) => {
-                    let { id: n } = t;
-                    return n === e;
+                    let { id } = t;
+                    return id === e;
                 });
             }),
             (T.prototype.updateCloudItemForUserPermission = function (e) {
@@ -972,10 +972,10 @@ module.exports = function (module, exports, require) {
                         t && this.view.updateUserDetails(t);
                     }
                 } else if (e.type === h.default.DriveEvent.Type.FolderSwitchRequired) {
-                    const { folder: t } = e.data;
-                    this.drive.isRootFolder(t)
+                    const { folder } = e.data;
+                    this.drive.isRootFolder(folder)
                         ? (this.isRootFolder() || this.navigateToRoot(false), this.updateFilesList(true, true))
-                        : (this.drive.setCurrentFolder(t), this.updateFilesList(true, true), this.view.navigateToFolder(t));
+                        : (this.drive.setCurrentFolder(folder), this.updateFilesList(true, true), this.view.navigateToFolder(folder));
                 }
             }),
             (T.prototype.getCreateCloudAccountOptions = async function () {

@@ -14,8 +14,8 @@ module.exports = function (module, exports, require) {
             g = require(339),
             h = require(257),
             f = require(85),
-            { GSystem: m, GMath: y } = require(1 /* GObject */),
-            { FILE_FORMATS: v } = require(10 /* designerConfig */);
+            { GSystem, GMath } = require(1 /* GObject */),
+            { FILE_FORMATS } = require(10 /* designerConfig */);
         module.exports = function (e) {
             ((e.prototype._windowButton = null),
                 (e.prototype._nativeButton = null),
@@ -25,7 +25,7 @@ module.exports = function (module, exports, require) {
                         this._windowButton || (this._windowButton = this._createWindowButton().hide().insertBefore(this._exportButton)),
                         this._nativeButton ||
                             (gContainer.getRuntime() === f.Runtime.Electron &&
-                                m.operatingSystem !== m.OperatingSystem.OSX_IOS &&
+                                GSystem.operatingSystem !== GSystem.OperatingSystem.OSX_IOS &&
                                 (this._nativeButton = this._createNativeButton().appendTo(this._htmlElement.find(".export-section")))));
                     (!gDesigner.getApplicationManager().isEditingEnabled() ? this._updateTouchSimpleUI() : this._updateTouchFullUI(),
                         this._updateActiveWindow(),
@@ -83,7 +83,7 @@ module.exports = function (module, exports, require) {
                             getActiveItem: () => {
                                 var e = gDesigner.getWindows().getActiveWindow(),
                                     n = 100 * (e && e.getView()).getZoom(),
-                                    o = n && y.round(n, false, 0),
+                                    o = n && GMath.round(n, false, 0),
                                     i = o && gDesigner.getAction("".concat(s.ID, ".").concat(o)),
                                     a = i && i.getTitle();
                                 return a && t.findItem(a);
@@ -136,7 +136,7 @@ module.exports = function (module, exports, require) {
                         icon: "gravit-icon-save",
                         split: true,
                         menu: [
-                            gDesigner.getAction("".concat(GSaveAsAction.ID, ".").concat(v.find((e) => e.default).ext)),
+                            gDesigner.getAction("".concat(GSaveAsAction.ID, ".").concat(FILE_FORMATS.find((e) => e.default).ext)),
                             gDesigner.getAction("".concat(c.ID, ".").concat(c.Actions.SaveAs)),
                             gDesigner.getAction(GCloudSynchronizationAction.ID),
                         ].reduce((e, t) => (e.createAddItem(t), e), new p()),

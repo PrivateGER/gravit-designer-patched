@@ -147,28 +147,28 @@ module.exports = function (module, exports, require) {
                     o = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
                 const i = t.getPrivateShareList();
                 i.forEach((t) => {
-                    const { id: i, copy: a, inspect: r, comment: s, owner: l, access: c, edit: p } = t;
-                    e.getUID() === i
+                    const { id, copy, inspect, comment, owner, access, edit } = t;
+                    e.getUID() === id
                         ? ((n = d.makeFromShare(t)),
-                          l
+                          owner
                               ? Object.assign(o, {
                                     owner: true,
                                     edit: true,
                                     inspect: true,
                                     copy: true,
-                                    comment: !!u,
+                                    comment: !!HAS_ANNOTATIONS,
                                     share: true,
                                 })
                               : Object.assign(o, {
                                     owner: false,
                                     share: false,
-                                    edit: p,
-                                    copy: a,
-                                    inspect: r,
-                                    comment: !!u && s,
-                                    sharing: c,
+                                    edit: edit,
+                                    copy: copy,
+                                    inspect: inspect,
+                                    comment: !!HAS_ANNOTATIONS && comment,
+                                    sharing: access,
                                 }))
-                        : c && Object.assign(o, { sharing: true });
+                        : access && Object.assign(o, { sharing: true });
                 });
                 const a = i.find((e) => e.owner);
                 if (a) {
@@ -225,9 +225,9 @@ module.exports = function (module, exports, require) {
             }),
             (exports.isSupportedScreenSize = function (e) {
                 if (!e && GObject.GSystem.hardware === GObject.GSystem.Hardware.Tablet) {
-                    return (window.screen.height > window.screen.width ? window.screen.height : window.screen.width) >= p;
+                    return (window.screen.height > window.screen.width ? window.screen.height : window.screen.width) >= MIN_SUPPORTED_SCREEN_SIZE;
                 }
-                return (e || window.screen.availWidth) >= p;
+                return (e || window.screen.availWidth) >= MIN_SUPPORTED_SCREEN_SIZE;
             }),
             (exports.isSymbol = h),
             (exports.isSymbolInstance = void 0),
@@ -296,8 +296,8 @@ module.exports = function (module, exports, require) {
                             (s > 0 || n.cancelled) && (e.removeEventListener(GObject.GImage.StatusEvent, c), a());
                         }, t);
                         const c = (t) => {
-                            let { status: d } = t;
-                            (r(d) &&
+                            let { status } = t;
+                            (r(status) &&
                                 --s <= 0 &&
                                 (l && (clearTimeout(l), (l = null)), e.removeEventListener(GObject.GImage.StatusEvent, c), o(true)),
                                 n.cancelled && (l && (clearTimeout(l), (l = null)), e.removeEventListener(GObject.GImage.StatusEvent, c), a()));
@@ -420,7 +420,7 @@ module.exports = function (module, exports, require) {
         var l = require(250),
             GSystemDialog = require(44);
         const d = require(433),
-            { HAS_ANNOTATIONS: u, MIN_SUPPORTED_SCREEN_SIZE: p } = require(10 /* designerConfig */);
+            { HAS_ANNOTATIONS, MIN_SUPPORTED_SCREEN_SIZE } = require(10 /* designerConfig */);
         exports.watchDog = {
             trap: (e, t, n, o) => (i) =>
                 ((e, t, n, o, i) =>

@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
         var o = require(357),
             GObject = require(1),
             GSaveAction = require(40);
-        const { gApi: r, LINKS: s, DESIGNER: { TITLE: l } = {}, SubscriptionStatus: c } = require(10 /* designerConfig */),
+        const { gApi, LINKS, DESIGNER: { TITLE } = {}, SubscriptionStatus } = require(10 /* designerConfig */),
             d = (require(173), require(337)),
             u = ["number", "name", "price", "date"];
         function p(e, t) {
@@ -95,7 +95,7 @@ module.exports = function (module, exports, require) {
                         .appendTo(this._container),
                     this._container.find(".cb-link").on("click", (e) => {
                         (gDesigner.stats("profile-dialog_purchase-panel_cleverbridge-link"),
-                            gContainer.openExternalLink(e, s.CLEVERBRIDGE_SUPPORT_URL));
+                            gContainer.openExternalLink(e, LINKS.CLEVERBRIDGE_SUPPORT_URL));
                     }),
                     $(this._purchaseList).scroll((e) => {
                         let t = $(e.currentTarget);
@@ -123,7 +123,7 @@ module.exports = function (module, exports, require) {
                 if (-1 !== this._query.skip) {
                     this._toggleLoading(true);
                     try {
-                        let t = await r.listPurchasedProducts(this._query),
+                        let t = await gApi.listPurchasedProducts(this._query),
                             n = t.length;
                         ((this._query.skip = n > 0 ? (n < 10 ? -1 : this._query.skip + n) : -1),
                             e && this._purchaseList.empty(),
@@ -157,8 +157,8 @@ module.exports = function (module, exports, require) {
                 const u =
                     e.name ||
                     (n
-                        ? GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.pro-subscription-lifetime")).replace("%app", l)
-                        : GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.pro-subscription")).replace("%app", l));
+                        ? GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.pro-subscription-lifetime")).replace("%app", TITLE)
+                        : GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.pro-subscription")).replace("%app", TITLE));
                 $("<div></div>").addClass("header").append($("<label></label>").addClass("title").text(u)).appendTo(t);
                 (e.invoice &&
                     $("<div></div>")
@@ -194,7 +194,7 @@ module.exports = function (module, exports, require) {
                 if (e.subscription && !e.refunded) {
                     let a = p;
                     (g.text(p + "..."),
-                        r
+                        gApi
                             .getSubscriptionByPurchase(e.purchase_id, e.provider)
                             .then((u) => {
                                 const p = (e, n, o, a, r) => {
@@ -237,7 +237,7 @@ module.exports = function (module, exports, require) {
                                         s
                                     );
                                 };
-                                if (u.status === c.Active)
+                                if (u.status === SubscriptionStatus.Active)
                                     (n
                                         ? g.text(a + ".")
                                         : g.text(
@@ -249,13 +249,13 @@ module.exports = function (module, exports, require) {
                                         p(
                                             GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.prompt-cancel-title")),
                                             GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.prompt-cancel-info"))
-                                                .replace("%app", l)
+                                                .replace("%app", TITLE)
                                                 .replace("%date", GObject.GLocale.toLocaleDate(new Date(u.endDate))),
                                             GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "cancel")),
                                             async (n) => {
                                                 this._toggleLoading(true);
                                                 try {
-                                                    (await r
+                                                    (await gApi
                                                         .deactivateSubscription(u.id, e.provider)
                                                         .then(() => {
                                                             (gDesigner.stats("profile-dialog_purchase-panel_cancel-subscription"),
@@ -296,7 +296,7 @@ module.exports = function (module, exports, require) {
                                         async (n) => {
                                             this._toggleLoading(true);
                                             try {
-                                                (await r
+                                                (await gApi
                                                     .activateSubscription(u.id, e.provider)
                                                     .then(() => {
                                                         (gDesigner.stats("profile-dialog_purchase-panel_activate-subscription"),
