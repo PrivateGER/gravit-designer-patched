@@ -65,8 +65,12 @@ npm start                      # serves on port 3100 (override with PORT=...)
   shape/sticker/illustration market API is gone, so categories are empty.
 - **Unsplash photos**: the proxy API is gone; the integration is disabled in
   the bundle (`ENABLE_UNSPLASH_INTEGRATION`).
-- **Documentation links** now point at the Wayback Machine's archive of
-  `documentation.corelvector.com`.
+- **Documentation** is bundled: `public/docs/` is a self-contained mirror of
+  `documentation.corelvector.com` (102 pages + assets, recovered from the
+  Wayback Machine), and the app's help links point at `/docs/...`. The
+  Wayback crawler never captured roughly a third of the images and most
+  tutorial videos; those show as missing on some pages — that content is
+  lost everywhere, including on archive.org itself.
 - **UI translations**: the locale-pack CDN was never archived, so the app
   always falls back to its bundled English strings.
 - Anything requiring real cloud accounts: sharing, collaboration, comments,
@@ -77,4 +81,6 @@ npm start                      # serves on port 3100 (override with PORT=...)
 The bundle's calls to Corel's Google Tag Manager container and Google
 reCAPTCHA have been neutered (script injection removed in
 `designer.browser.js` / `chunk.vendor.js`), so the app no longer phones home
-to third-party analytics.
+to third-party analytics. The mirrored documentation is likewise scrubbed:
+Google Analytics removed and the Montserrat webfont self-hosted, so `/docs`
+pages make no external requests either.

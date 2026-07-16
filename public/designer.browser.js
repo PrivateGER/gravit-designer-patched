@@ -273,7 +273,7 @@ var GravitDesigner = (function (e) {
             (i.msTeamsMode = !1),
             (i.thirdPartyCookieWarningLink = "https://support.gravit.linusrath.de/hc/en-us/articles/1500005394122"),
             (i.LINKS.BLENDING_MODES_DOCUMENTATION_URL =
-                "https://web.archive.org/web/2023/https://documentation.corelvector.com/colors-gradients-textures/blending-modes"),
+                "/docs/colors-gradients-textures/blending-modes"),
             (i.AmplitudeHelper = n(584)),
             (i.AmplitudeData = n(431)),
             (e.exports = i));
@@ -16018,7 +16018,7 @@ var GravitDesigner = (function (e) {
                 (w.TOOLTIP_CONFIG = {
                     [s.TOOLTIP_AREA.MAIN_MENU.TRY_PRO_COMMON]: s.GRichTooltipConfig.from({
                         title: a.GLocale.get(new a.GLocaleKey("GSaveAsAction", "text.try-this-feature-pro-tooltip-title")),
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/import-export/export/#quick-exporting",
+                        learnMore: "/docs/import-export/export/#quick-exporting",
                         upgradeToProStatsValue: "file.save-as.pdf.300",
                         middle: !1,
                         side: !0,
@@ -16276,7 +16276,7 @@ var GravitDesigner = (function (e) {
                     title: o.GLocale.get(new o.GLocaleKey("GSaveAction", "tooltip-title")),
                     description: o.GLocale.get(new o.GLocaleKey("GSaveAction", "tooltip-description")),
                     shortcut: w.SHORTCUT,
-                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/working-with-files/save-and-open-files/#save",
+                    learnMore: "/docs/basics/working-with-files/save-and-open-files/#save",
                 }),
             };
         }
@@ -22628,7 +22628,7 @@ var GravitDesigner = (function (e) {
                 [a.TOOLTIP_AREA.TOOLBAR]: a.GRichTooltipConfig.from({
                     title: o.GLocale.get(new o.GLocaleKey("GCreateSymbolAction", "tooltip-title")),
                     description: o.GLocale.get(new o.GLocaleKey("GCreateSymbolAction", "tooltip-description")),
-                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/symbols/",
+                    learnMore: "/docs/organizing-your-designs/symbols/",
                 }),
             };
         }
@@ -43952,7 +43952,7 @@ var GravitDesigner = (function (e) {
                     title: o.GLocale.get(new o.GLocaleKey("GClipAction", "tooltip-title")),
                     description: o.GLocale.get(new o.GLocaleKey("GClipAction", "tooltip-description")),
                     video: s.gApi.getRichTooltipVideoURL("Clip.mp4"),
-                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/clipping-masking/",
+                    learnMore: "/docs/organizing-your-designs/clipping-masking/",
                 }),
             };
         }
@@ -44039,7 +44039,7 @@ var GravitDesigner = (function (e) {
                     title: o.GLocale.get(new o.GLocaleKey("GConvertToPathAction", "tooltip-title")),
                     description: o.GLocale.get(new o.GLocaleKey("GConvertToPathAction", "tooltip-description")),
                     shortcut: l.SHORTCUT,
-                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/modify-paths/#convert-to-path-raw-path",
+                    learnMore: "/docs/basics/modify-paths/#convert-to-path-raw-path",
                 }),
             };
         }
@@ -44109,7 +44109,7 @@ var GravitDesigner = (function (e) {
                     title: o.GLocale.get(new o.GLocaleKey("GGroupAction", "tooltip-title")),
                     description: o.GLocale.get(new o.GLocaleKey("GGroupAction", "tooltip-description")),
                     shortcut: c.SHORTCUT,
-                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/groups/",
+                    learnMore: "/docs/organizing-your-designs/groups/",
                 }),
             };
         }
@@ -46440,12 +46440,12 @@ var GravitDesigner = (function (e) {
                         title: o.GLocale.get(new o.GLocaleKey("GExportAction", "tooltip-title")),
                         description: o.GLocale.get(new o.GLocaleKey("GExportAction", "tooltip-description")),
                         shortcut: g.SHORTCUT,
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/import-export/export/",
+                        learnMore: "/docs/import-export/export/",
                     }),
                     [a.TOOLTIP_AREA.MAIN_MENU.TRY_PRO_COMMON]: a.GRichTooltipConfig.from({
                         title: o.GLocale.get(new o.GLocaleKey("GExportAction", "text.try-this-feature-pro-tooltip-title")),
                         description: o.GLocale.get(new o.GLocaleKey("GExportAction", "text.try-this-feature-pro-tooltip-description")),
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/import-export/export/#advanced-export",
+                        learnMore: "/docs/import-export/export/#advanced-export",
                         upgradeToProStatsValue: "file.export",
                         middle: !1,
                         side: !0,
@@ -46455,7 +46455,7 @@ var GravitDesigner = (function (e) {
                         description: o.GLocale.get(
                             new o.GLocaleKey("GExportAction", "text.try-export-pdf-advanced-setting-tooltip-description")
                         ),
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/import-export/export/#advanced-export",
+                        learnMore: "/docs/import-export/export/#advanced-export",
                         upgradeToProStatsValue: "file.export.pdf",
                         middle: !1,
                         side: !0,
@@ -47452,32 +47452,32 @@ var GravitDesigner = (function (e) {
                         [o.GEditor.ArrangeAlignType.AlignLeft]: r.GRichTooltipConfig.from({
                             title: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-left-tooltip-title")),
                             description: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-left-tooltip-description")),
-                            learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/arrange-objects/align/#align-left",
+                            learnMore: "/docs/arrange-objects/align/#align-left",
                         }),
                         [o.GEditor.ArrangeAlignType.AlignCenter]: r.GRichTooltipConfig.from({
                             title: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-center-tooltip-title")),
                             description: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-center-tooltip-description")),
-                            learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/arrange-objects/align/#align-center",
+                            learnMore: "/docs/arrange-objects/align/#align-center",
                         }),
                         [o.GEditor.ArrangeAlignType.AlignRight]: r.GRichTooltipConfig.from({
                             title: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-right-tooltip-title")),
                             description: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-right-tooltip-description")),
-                            learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/arrange-objects/align/#align-right",
+                            learnMore: "/docs/arrange-objects/align/#align-right",
                         }),
                         [o.GEditor.ArrangeAlignType.AlignTop]: r.GRichTooltipConfig.from({
                             title: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-top-tooltip-title")),
                             description: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-top-tooltip-description")),
-                            learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/arrange-objects/align/#align-top",
+                            learnMore: "/docs/arrange-objects/align/#align-top",
                         }),
                         [o.GEditor.ArrangeAlignType.AlignMiddle]: r.GRichTooltipConfig.from({
                             title: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-middle-tooltip-title")),
                             description: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-middle-tooltip-description")),
-                            learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/arrange-objects/align/#align-middle",
+                            learnMore: "/docs/arrange-objects/align/#align-middle",
                         }),
                         [o.GEditor.ArrangeAlignType.AlignBottom]: r.GRichTooltipConfig.from({
                             title: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-bottom-tooltip-title")),
                             description: i.GLocale.get(new i.GLocaleKey("GAlignAction", "text.align-bottom-tooltip-description")),
-                            learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/arrange-objects/align/#align-bottom",
+                            learnMore: "/docs/arrange-objects/align/#align-bottom",
                         }),
                     },
                 }));
@@ -47585,12 +47585,12 @@ var GravitDesigner = (function (e) {
                         [l.Type.Horizontal]: a.GRichTooltipConfig.from({
                             title: i.GLocale.get(new i.GLocaleKey("GDistributeAction", "text.horizontal-tooltip-title")),
                             description: i.GLocale.get(new i.GLocaleKey("GDistributeAction", "text.horizontal-tooltip-description")),
-                            learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/arrange-objects/distribute/",
+                            learnMore: "/docs/arrange-objects/distribute/",
                         }),
                         [l.Type.Vertical]: a.GRichTooltipConfig.from({
                             title: i.GLocale.get(new i.GLocaleKey("GDistributeAction", "text.vertical-tooltip-title")),
                             description: i.GLocale.get(new i.GLocaleKey("GDistributeAction", "text.vertical-tooltip-description")),
-                            learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/arrange-objects/distribute/",
+                            learnMore: "/docs/arrange-objects/distribute/",
                         }),
                     },
                 }));
@@ -47757,14 +47757,14 @@ var GravitDesigner = (function (e) {
                             description: i.GLocale.get(new i.GLocaleKey("GArrangeAction", "bring-forward-tooltip-description")),
                             shortcut: d.SHORTCUT[o.GEditor.ArrangeOrderType.BringForward],
                             video: r.gApi.getRichTooltipVideoURL("Bring_Forward.mp4"),
-                            learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/arrange-objects/stacking-order/",
+                            learnMore: "/docs/arrange-objects/stacking-order/",
                         }),
                         [o.GEditor.ArrangeOrderType.SendBackward]: s.GRichTooltipConfig.from({
                             title: i.GLocale.get(new i.GLocaleKey("GArrangeAction", "send-backward-tooltip-title")),
                             description: i.GLocale.get(new i.GLocaleKey("GArrangeAction", "send-backward-tooltip-description")),
                             shortcut: d.SHORTCUT[o.GEditor.ArrangeOrderType.SendBackward],
                             video: r.gApi.getRichTooltipVideoURL("Send_Backward.mp4"),
-                            learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/arrange-objects/stacking-order/",
+                            learnMore: "/docs/arrange-objects/stacking-order/",
                         }),
                     },
                 }));
@@ -47828,7 +47828,7 @@ var GravitDesigner = (function (e) {
                     title: o.GLocale.get(new o.GLocaleKey("GSplitAction", "tooltip-title")),
                     description: o.GLocale.get(new o.GLocaleKey("GSplitAction", "tooltip-description")),
                     shortcut: c.SHORTCUT,
-                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/groups/",
+                    learnMore: "/docs/organizing-your-designs/groups/",
                 }),
             };
         }
@@ -47958,7 +47958,7 @@ var GravitDesigner = (function (e) {
                             title: i.GLocale.get(new i.GLocaleKey("GTransformAction", "rotate-90-left-tooltip-title")),
                             description: i.GLocale.get(new i.GLocaleKey("GTransformAction", "rotate-90-left-tooltip-description")),
                             learnMore:
-                                "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/moving-transforming-and-arranging-objects/#rotating-objects",
+                                "/docs/basics/moving-transforming-and-arranging-objects/#rotating-objects",
                         }),
                         [l.Type.Rotate180Left]: null,
                         [l.Type.Rotate45Right]: null,
@@ -47966,20 +47966,20 @@ var GravitDesigner = (function (e) {
                             title: i.GLocale.get(new i.GLocaleKey("GTransformAction", "rotate-90-right-tooltip-title")),
                             description: i.GLocale.get(new i.GLocaleKey("GTransformAction", "rotate-90-right-tooltip-description")),
                             learnMore:
-                                "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/moving-transforming-and-arranging-objects/#rotating-objects",
+                                "/docs/basics/moving-transforming-and-arranging-objects/#rotating-objects",
                         }),
                         [l.Type.Rotate180Right]: null,
                         [l.Type.FlipVertical]: a.GRichTooltipConfig.from({
                             title: i.GLocale.get(new i.GLocaleKey("GTransformAction", "flip-vertical-tooltip-title")),
                             description: i.GLocale.get(new i.GLocaleKey("GTransformAction", "flip-vertical-tooltip-description")),
                             learnMore:
-                                "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/moving-transforming-and-arranging-objects/#flipping-objects",
+                                "/docs/basics/moving-transforming-and-arranging-objects/#flipping-objects",
                         }),
                         [l.Type.FlipHorizontal]: a.GRichTooltipConfig.from({
                             title: i.GLocale.get(new i.GLocaleKey("GTransformAction", "flip-horizontal-tooltip-title")),
                             description: i.GLocale.get(new i.GLocaleKey("GTransformAction", "flip-horizontal-tooltip-description")),
                             learnMore:
-                                "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/moving-transforming-and-arranging-objects/#flipping-objects",
+                                "/docs/basics/moving-transforming-and-arranging-objects/#flipping-objects",
                         }),
                     },
                 }));
@@ -48131,7 +48131,7 @@ var GravitDesigner = (function (e) {
                 [a.TOOLTIP_AREA.TOOLBAR]: a.GRichTooltipConfig.from({
                     title: o.GLocale.get(new o.GLocaleKey("GVectorizeBorderAction", "tooltip-title")),
                     description: o.GLocale.get(new o.GLocaleKey("GVectorizeBorderAction", "tooltip-description")),
-                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/modify-paths/#vectorize-borders",
+                    learnMore: "/docs/basics/modify-paths/#vectorize-borders",
                 }),
             };
         }
@@ -59264,7 +59264,7 @@ var GravitDesigner = (function (e) {
                                                     new i.GLocaleKey("GPatternChooser", "text.color-picker-tooltip-description")
                                                 ),
                                                 learnMore:
-                                                    "https://web.archive.org/web/2023/https://documentation.corelvector.com/colors-gradients-textures/color-picker-fill-types/",
+                                                    "/docs/colors-gradients-textures/color-picker-fill-types/",
                                             })
                                         );
                                 if (
@@ -60905,7 +60905,7 @@ var GravitDesigner = (function (e) {
                             title: a.GLocale.get(new a.GLocaleKey("GAppearanceProperties", "text.blend-tooltip-title")),
                             description: a.GLocale.get(new a.GLocaleKey("GAppearanceProperties", "text.blend-tooltip-description")),
                             middle: !1,
-                            learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/colors-gradients-textures/blending-modes/",
+                            learnMore: "/docs/colors-gradients-textures/blending-modes/",
                         })
                     )
                     .on("change", function (t) {
@@ -61085,7 +61085,7 @@ var GravitDesigner = (function (e) {
                                                     middle: !1,
                                                     isPro: !gDesigner.isEnabledProFeatures() || !(i.isPro() && !i.isExpired()),
                                                     learnMore:
-                                                        "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/shared-styles/",
+                                                        "/docs/organizing-your-designs/shared-styles/",
                                                 })
                                             )
                                     )
@@ -61690,7 +61690,7 @@ var GravitDesigner = (function (e) {
                                                     new r.GLocaleKey("GBorderPaintLayerProperties", "text.miter-limit-tooltip-description")
                                                 ),
                                                 learnMore:
-                                                    "https://web.archive.org/web/2023/https://documentation.corelvector.com/colors-gradients-textures/borders/#miter-limit",
+                                                    "/docs/colors-gradients-textures/borders/#miter-limit",
                                             })
                                         ),
                                 },
@@ -61862,7 +61862,7 @@ var GravitDesigner = (function (e) {
                                     new r.GLocaleKey("GBorderPaintLayerProperties", "text.advanced-stroke-settings-tooltip-description")
                                 ),
                                 learnMore:
-                                    "https://web.archive.org/web/2023/https://documentation.corelvector.com/colors-gradients-textures/borders/#advanced-stroke-settings",
+                                    "/docs/colors-gradients-textures/borders/#advanced-stroke-settings",
                             })
                         )
                         .appendTo(this._toolbar),
@@ -61897,7 +61897,7 @@ var GravitDesigner = (function (e) {
                                 description: r.GLocale.get(
                                     new r.GLocaleKey("GBorderPaintLayerProperties", "text.remove-border-tooltip-description")
                                 ),
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/colors-gradients-textures/borders/",
+                                learnMore: "/docs/colors-gradients-textures/borders/",
                             })
                         )
                         .appendTo(this._toolbar),
@@ -61946,7 +61946,7 @@ var GravitDesigner = (function (e) {
                                 description: r.GLocale.get(
                                     new r.GLocaleKey("GBorderPaintLayerProperties", "text.add-border-tooltip-description")
                                 ),
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/colors-gradients-textures/borders/",
+                                learnMore: "/docs/colors-gradients-textures/borders/",
                             })
                         )
                         .appendTo(this._toolbar),
@@ -62166,7 +62166,7 @@ var GravitDesigner = (function (e) {
                                         description: r.GLocale.get(
                                             new r.GLocaleKey("GBorderPaintLayerProperties", "text.border-width-tooltip-description")
                                         ),
-                                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/colors-gradients-textures/borders/",
+                                        learnMore: "/docs/colors-gradients-textures/borders/",
                                     })
                                 );
                         if ("_vs" === t)
@@ -67659,7 +67659,7 @@ var GravitDesigner = (function (e) {
                             new i.GLocaleKey("GVersionsHistoryAction", "text.try-this-feature-pro-tooltip-description")
                         ),
                         learnMore:
-                            "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/working-with-files/working-with-gravit-cloud/#version-history",
+                            "/docs/basics/working-with-files/working-with-Corel%20Vector-cloud/#version-history",
                         upgradeToProStatsValue: "gravit-versions-history",
                         middle: !1,
                         side: !0,
@@ -68303,7 +68303,7 @@ var GravitDesigner = (function (e) {
                             l.GRichTooltipConfig.from({
                                 title: a.GLocale.get(new a.GLocaleKey("GOutlineSidebar", "text.multipage-tooltip-title")),
                                 description: a.GLocale.get(new a.GLocaleKey("GOutlineSidebar", "text.multipage-tooltip-description")),
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/pages/#page-panel",
+                                learnMore: "/docs/organizing-your-designs/pages/#page-panel",
                             })
                         )),
                     (this._pageMenuOptionButton = $("<button></button>")
@@ -68326,7 +68326,7 @@ var GravitDesigner = (function (e) {
                             l.GRichTooltipConfig.from({
                                 title: a.GLocale.get(new a.GLocaleKey("GOutlineSidebar", "text.delete-page-tooltip-title")),
                                 description: a.GLocale.get(new a.GLocaleKey("GOutlineSidebar", "text.delete-page-tooltip-description")),
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/pages/#page-panel",
+                                learnMore: "/docs/organizing-your-designs/pages/#page-panel",
                             })
                         ),
                     $("<button></button>")
@@ -68345,7 +68345,7 @@ var GravitDesigner = (function (e) {
                             l.GRichTooltipConfig.from({
                                 title: a.GLocale.get(new a.GLocaleKey("GOutlineSidebar", "text.create-new-page-tooltip-title")),
                                 description: a.GLocale.get(new a.GLocaleKey("GOutlineSidebar", "text.create-new-page-tooltip-description")),
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/pages/#page-panel",
+                                learnMore: "/docs/organizing-your-designs/pages/#page-panel",
                             })
                         ));
                 var t,
@@ -68528,7 +68528,7 @@ var GravitDesigner = (function (e) {
                             l.GRichTooltipConfig.from({
                                 title: a.GLocale.get(new a.GLocaleKey("GOutlineSidebar", "text.delete-layer-tooltip-title")),
                                 description: a.GLocale.get(new a.GLocaleKey("GOutlineSidebar", "text.delete-layer-tooltip-description")),
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/objects/#deleting-objects",
+                                learnMore: "/docs/organizing-your-designs/objects/#deleting-objects",
                             })
                         ),
                     $("<button></button>")
@@ -68541,7 +68541,7 @@ var GravitDesigner = (function (e) {
                                 title: a.GLocale.get(new a.GLocaleKey("GOutlineSidebar", "text.new-layer-tooltip-title")),
                                 description: a.GLocale.get(new a.GLocaleKey("GOutlineSidebar", "text.new-layer-tooltip-description")),
                                 learnMore:
-                                    "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/layer-groups/#adding-a-layer-group",
+                                    "/docs/organizing-your-designs/layer-groups/#adding-a-layer-group",
                             })
                         )),
                     this._layerToolbar.appendTo(e));
@@ -69236,7 +69236,7 @@ var GravitDesigner = (function (e) {
                                     new r.GLocaleKey("GFillPaintLayerProperties", "text.fill-rule-tooltip-description")
                                 ),
                                 learnMore:
-                                    "https://web.archive.org/web/2023/https://documentation.corelvector.com/colors-gradients-textures/fills/#advanced-fill-settings",
+                                    "/docs/colors-gradients-textures/fills/#advanced-fill-settings",
                             })
                         )
                         .appendTo(this._toolbar),
@@ -69271,7 +69271,7 @@ var GravitDesigner = (function (e) {
                                 description: r.GLocale.get(
                                     new r.GLocaleKey("GFillPaintLayerProperties", "text.remove-layer-tooltip-description")
                                 ),
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/colors-gradients-textures/fills/",
+                                learnMore: "/docs/colors-gradients-textures/fills/",
                             })
                         )
                         .appendTo(this._toolbar),
@@ -69309,7 +69309,7 @@ var GravitDesigner = (function (e) {
                                 description: r.GLocale.get(
                                     new r.GLocaleKey("GFillPaintLayerProperties", "text.add-layer-tooltip-description")
                                 ),
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/colors-gradients-textures/fills/",
+                                learnMore: "/docs/colors-gradients-textures/fills/",
                             })
                         )
                         .appendTo(this._toolbar),
@@ -70013,7 +70013,7 @@ var GravitDesigner = (function (e) {
                                     description: a.GLocale.get(
                                         new a.GLocaleKey("GEffectProperties", "text.add-effect-tooltip-description")
                                     ),
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/effects/",
+                                    learnMore: "/docs/effects/",
                                 })
                             )
                     ),
@@ -74562,7 +74562,7 @@ var GravitDesigner = (function (e) {
                                                 new o.GLocaleKey("GCommonNames", "text.corner-radius-slider-tooltip-description")
                                             ),
                                             learnMore:
-                                                "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/shapes-paths/#advanced-corner-settings",
+                                                "/docs/basics/shapes-paths/#advanced-corner-settings",
                                         }),
                                     })
                                     .on("mousedown", function () {
@@ -76208,7 +76208,7 @@ var GravitDesigner = (function (e) {
                                 new i.GLocaleKey("GTextProperties", "text.advanced-properties-icon-tooltip-description")
                             ),
                             isPro: !gDesigner.isEnabledProFeatures() || !(e.isPro() && !e.isExpired()),
-                            learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/working-with-text/advanced-text-properties/",
+                            learnMore: "/docs/working-with-text/advanced-text-properties/",
                         })
                     );
             }),
@@ -78094,7 +78094,7 @@ var GravitDesigner = (function (e) {
                                         $("<a />")
                                             .attr(
                                                 "href",
-                                                "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/working-with-files/save-and-open-files/#auto-save"
+                                                "/docs/basics/working-with-files/save-and-open-files/#auto-save"
                                             )
                                             .attr("target", "_blank")
                                             .text(o.GLocale.get(new o.GLocaleKey("GCommonNames", "text.learn-more")))
@@ -78373,7 +78373,7 @@ var GravitDesigner = (function (e) {
                     title: o.GLocale.get(new o.GLocaleKey("GLinkImageAction", "tooltip-title")),
                     description: o.GLocale.get(new o.GLocaleKey("GLinkImageAction", "tooltip-description")),
                     middle: !1,
-                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/working-with-images/insert-images/#link-image",
+                    learnMore: "/docs/working-with-images/insert-images/#link-image",
                 }),
             };
         }
@@ -78561,7 +78561,7 @@ var GravitDesigner = (function (e) {
                     description: i.GLocale.get(new i.GLocaleKey("GPlaceImportAction", "tooltip-description")),
                     middle: !1,
                     video: l.gApi.getRichTooltipVideoURL("Place_Image.mp4"),
-                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/working-with-images/insert-images/#place-image",
+                    learnMore: "/docs/working-with-images/insert-images/#place-image",
                 }),
             };
         }
@@ -78843,7 +78843,7 @@ var GravitDesigner = (function (e) {
                     description: o.GLocale.get(new o.GLocaleKey("GToggleSnapAction", "tooltip-description")),
                     shortcut: l.SHORTCUT,
                     middle: !1,
-                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/design-aids/snaping/",
+                    learnMore: "/docs/design-aids/snaping/",
                 }),
             };
         }
@@ -78904,7 +78904,7 @@ var GravitDesigner = (function (e) {
                     title: o.GLocale.get(new o.GLocaleKey("GToggleSnapZonesAction", "tooltip-title")),
                     description: o.GLocale.get(new o.GLocaleKey("GToggleSnapZonesAction", "tooltip-description")),
                     middle: !1,
-                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/design-aids/snaping/#h.357kb75pbg9h",
+                    learnMore: "/docs/design-aids/snaping/#h.357kb75pbg9h",
                 }),
             };
         }
@@ -79616,13 +79616,13 @@ var GravitDesigner = (function (e) {
                         title: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.property-x-y-tooltip-title")),
                         description: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.property-x-y-tooltip-description")),
                         middle: !1,
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/property-panel/#objects-position",
+                        learnMore: "/docs/basics/property-panel/#objects-position",
                     }),
                     f = r.GRichTooltipConfig.from({
                         title: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.property-w-h-tooltip-title")),
                         description: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.property-w-h-tooltip-description")),
                         middle: !1,
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/property-panel/#objects-size",
+                        learnMore: "/docs/basics/property-panel/#objects-size",
                     }),
                     m = r.GRichTooltipConfig.from({
                         title: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.keep-ratio-tooltip-title")),
@@ -79632,13 +79632,13 @@ var GravitDesigner = (function (e) {
                         title: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.transform-button-tooltip-title")),
                         description: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.transform-button-tooltip-description")),
                         middle: !1,
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/transform-panel/",
+                        learnMore: "/docs/basics/transform-panel/",
                     }),
                     v = r.GRichTooltipConfig.from({
                         title: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.rotate-angle-tooltip-title")),
                         description: a.GLocale.get(new a.GLocaleKey("GDimensionProperties", "text.rotate-angle-tooltip-description")),
                         middle: !1,
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/property-panel/#objects-angle",
+                        learnMore: "/docs/basics/property-panel/#objects-angle",
                     });
                 ($("<div/>")
                     .addClass("transform-titile")
@@ -79711,7 +79711,7 @@ var GravitDesigner = (function (e) {
                                                         description: a.GLocale.get(
                                                             new a.GLocaleKey("GDimensionProperties", "text.anchor-left-tooltip-description")
                                                         ),
-                                                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/design-aids/anchoring/",
+                                                        learnMore: "/docs/design-aids/anchoring/",
                                                     })
                                                 )
                                         )
@@ -79745,7 +79745,7 @@ var GravitDesigner = (function (e) {
                                                                 "text.anchor-center-tooltip-description"
                                                             )
                                                         ),
-                                                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/design-aids/anchoring/",
+                                                        learnMore: "/docs/design-aids/anchoring/",
                                                     })
                                                 )
                                         )
@@ -79779,7 +79779,7 @@ var GravitDesigner = (function (e) {
                                                                 "text.anchor-right-tooltip-description"
                                                             )
                                                         ),
-                                                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/design-aids/anchoring/",
+                                                        learnMore: "/docs/design-aids/anchoring/",
                                                     })
                                                 )
                                         ),
@@ -79816,7 +79816,7 @@ var GravitDesigner = (function (e) {
                                                         description: a.GLocale.get(
                                                             new a.GLocaleKey("GDimensionProperties", "text.anchor-top-tooltip-description")
                                                         ),
-                                                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/design-aids/anchoring/",
+                                                        learnMore: "/docs/design-aids/anchoring/",
                                                     })
                                                 )
                                         )
@@ -79850,7 +79850,7 @@ var GravitDesigner = (function (e) {
                                                                 "text.anchor-middle-tooltip-description"
                                                             )
                                                         ),
-                                                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/design-aids/anchoring/",
+                                                        learnMore: "/docs/design-aids/anchoring/",
                                                     })
                                                 )
                                         )
@@ -79884,7 +79884,7 @@ var GravitDesigner = (function (e) {
                                                                 "text.anchor-bottom-tooltip-description"
                                                             )
                                                         ),
-                                                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/design-aids/anchoring/",
+                                                        learnMore: "/docs/design-aids/anchoring/",
                                                     })
                                                 )
                                         ),
@@ -86181,7 +86181,7 @@ var GravitDesigner = (function (e) {
                 const n = l.GRichTooltipConfig.from({
                     title: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.margin-tooltip-title")),
                     description: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.margin-tooltip-description")),
-                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/pages/#margins-7",
+                    learnMore: "/docs/organizing-your-designs/pages/#margins-7",
                 });
                 ($("<div></div>")
                     .attr("data-property-row", "fixed-size")
@@ -86251,7 +86251,7 @@ var GravitDesigner = (function (e) {
                                             middle: !1,
                                             isPro: !gDesigner.isEnabledProFeatures() || !(o.isPro() && !o.isExpired()),
                                             learnMore:
-                                                "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/pages/#master-pages",
+                                                "/docs/organizing-your-designs/pages/#master-pages",
                                         })
                                     ),
                             },
@@ -86265,7 +86265,7 @@ var GravitDesigner = (function (e) {
                             l.GRichTooltipConfig.from({
                                 title: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.rotate-canvas-tooltip-title")),
                                 description: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.rotate-canvas-tooltip-description")),
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/pages/#orientation-4",
+                                learnMore: "/docs/organizing-your-designs/pages/#orientation-4",
                             })
                         ),
                     e
@@ -86275,7 +86275,7 @@ var GravitDesigner = (function (e) {
                             l.GRichTooltipConfig.from({
                                 title: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.trim-canvas-tooltip-title")),
                                 description: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.trim-canvas-tooltip-description")),
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/pages/#trim-canvas-5",
+                                learnMore: "/docs/organizing-your-designs/pages/#trim-canvas-5",
                             })
                         ),
                     e
@@ -86295,7 +86295,7 @@ var GravitDesigner = (function (e) {
                                 title: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.bleed-tooltip-title")),
                                 description: i.GLocale.get(new i.GLocaleKey("GPageProperties", "text.bleed-tooltip-description")),
                                 middle: !1,
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/pages/#bleed-6",
+                                learnMore: "/docs/organizing-your-designs/pages/#bleed-6",
                             })
                         ),
                     gDesigner
@@ -97455,7 +97455,7 @@ var GravitDesigner = (function (e) {
                                     middle: !1,
                                     shortcut: ["V"],
                                     video: ao.gApi.getRichTooltipVideoURL("Pointer_Tool.mp4"),
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/tools/selection-tools/#pointer-tool",
+                                    learnMore: "/docs/tools/selection-tools/#pointer-tool",
                                 }),
                             },
                             {
@@ -97471,7 +97471,7 @@ var GravitDesigner = (function (e) {
                                     middle: !1,
                                     shortcut: ["D"],
                                     video: ao.gApi.getRichTooltipVideoURL("Subselect_Tool.mp4"),
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/tools/selection-tools/#subselect-tool",
+                                    learnMore: "/docs/tools/selection-tools/#subselect-tool",
                                 }),
                             },
                             {
@@ -97488,7 +97488,7 @@ var GravitDesigner = (function (e) {
                                     middle: !1,
                                     shortcut: ["O"],
                                     video: ao.gApi.getRichTooltipVideoURL("Lasso_Tool.mp4"),
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/tools/selection-tools/#lasso-tool",
+                                    learnMore: "/docs/tools/selection-tools/#lasso-tool",
                                 }),
                             },
                             {
@@ -97502,7 +97502,7 @@ var GravitDesigner = (function (e) {
                                     title: s.GLocale.get(new s.GLocaleKey("GLayerTool", "tooltip-title")),
                                     description: s.GLocale.get(new s.GLocaleKey("GLayerTool", "tooltip-description")),
                                     middle: !1,
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/tools/selection-tools/#layer-tool",
+                                    learnMore: "/docs/tools/selection-tools/#layer-tool",
                                 }),
                             },
                             {
@@ -97518,7 +97518,7 @@ var GravitDesigner = (function (e) {
                                     description: s.GLocale.get(new s.GLocaleKey("GSliceTool", "tooltip-description")),
                                     middle: !1,
                                     shortcut: ["S"],
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/tools/selection-tools/#slice-tool",
+                                    learnMore: "/docs/tools/selection-tools/#slice-tool",
                                 }),
                             },
                             {
@@ -97534,7 +97534,7 @@ var GravitDesigner = (function (e) {
                                     middle: !1,
                                     shortcut: ["P"],
                                     video: ao.gApi.getRichTooltipVideoURL("Pen_Too.mp4"),
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/tools/drawing-tools/#pen-tool",
+                                    learnMore: "/docs/tools/drawing-tools/#pen-tool",
                                 }),
                             },
                             {
@@ -97553,7 +97553,7 @@ var GravitDesigner = (function (e) {
                                     shortcut: ["B"],
                                     isPro: gDesigner.isProTooltipNeeded("bezigon"),
                                     video: ao.gApi.getRichTooltipVideoURL("Bezigon_Tool.mp4"),
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/tools/drawing-tools/#bezigon-tool",
+                                    learnMore: "/docs/tools/drawing-tools/#bezigon-tool",
                                 }),
                             },
                             {
@@ -97570,7 +97570,7 @@ var GravitDesigner = (function (e) {
                                     middle: !1,
                                     shortcut: ["K"],
                                     video: ao.gApi.getRichTooltipVideoURL("Knife_Tool.mp4"),
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/tools/other-tools/#knife-tool",
+                                    learnMore: "/docs/tools/other-tools/#knife-tool",
                                 }),
                             },
                             {
@@ -97585,7 +97585,7 @@ var GravitDesigner = (function (e) {
                                     description: s.GLocale.get(new s.GLocaleKey("GFreehandTool", "tooltip-description")),
                                     middle: !1,
                                     video: ao.gApi.getRichTooltipVideoURL("Freehand_Tool.mp4"),
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/tools/drawing-tools/#freehand-tool",
+                                    learnMore: "/docs/tools/drawing-tools/#freehand-tool",
                                 }),
                             },
                             {
@@ -97600,7 +97600,7 @@ var GravitDesigner = (function (e) {
                                     description: s.GLocale.get(new s.GLocaleKey("GMagicTool", "tooltip-description")),
                                     middle: !1,
                                     video: ao.gApi.getRichTooltipVideoURL("Freehand_Shaping_Tool.mp4"),
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/tools/other-tools/#freehand-shaping-tool",
+                                    learnMore: "/docs/tools/other-tools/#freehand-shaping-tool",
                                 }),
                             },
                             {
@@ -97618,7 +97618,7 @@ var GravitDesigner = (function (e) {
                                     middle: !1,
                                     shortcut: ["L"],
                                     video: ao.gApi.getRichTooltipVideoURL("Line_Tool.mp4"),
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/shapes-paths/#line",
+                                    learnMore: "/docs/basics/shapes-paths/#line",
                                 }),
                             },
                             {
@@ -97635,7 +97635,7 @@ var GravitDesigner = (function (e) {
                                     middle: !1,
                                     shortcut: ["R"],
                                     video: ao.gApi.getRichTooltipVideoURL("Rectangle_Tool.mp4"),
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/shapes-paths/#rectangle-r",
+                                    learnMore: "/docs/basics/shapes-paths/#rectangle-r",
                                 }),
                             },
                             {
@@ -97651,7 +97651,7 @@ var GravitDesigner = (function (e) {
                                     middle: !1,
                                     shortcut: ["E"],
                                     video: ao.gApi.getRichTooltipVideoURL("Ellipse_Tool.mp4"),
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/shapes-paths/#ellipse-e",
+                                    learnMore: "/docs/basics/shapes-paths/#ellipse-e",
                                 }),
                             },
                             {
@@ -97665,7 +97665,7 @@ var GravitDesigner = (function (e) {
                                     title: s.GLocale.get(new s.GLocaleKey("GPolygonTool", "tooltip-title")),
                                     description: s.GLocale.get(new s.GLocaleKey("GPolygonTool", "tooltip-description")),
                                     middle: !1,
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/shapes-paths/#polygon",
+                                    learnMore: "/docs/basics/shapes-paths/#polygon",
                                 }),
                             },
                             {
@@ -97679,7 +97679,7 @@ var GravitDesigner = (function (e) {
                                     title: s.GLocale.get(new s.GLocaleKey("GTriangleTool", "tooltip-title")),
                                     description: s.GLocale.get(new s.GLocaleKey("GTriangleTool", "tooltip-description")),
                                     middle: !1,
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/shapes-paths/#triangle-star",
+                                    learnMore: "/docs/basics/shapes-paths/#triangle-star",
                                 }),
                             },
                             {
@@ -97693,7 +97693,7 @@ var GravitDesigner = (function (e) {
                                     title: s.GLocale.get(new s.GLocaleKey("GStarTool", "tooltip-title")),
                                     description: s.GLocale.get(new s.GLocaleKey("GStarTool", "tooltip-description")),
                                     middle: !1,
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/shapes-paths/#triangle-star",
+                                    learnMore: "/docs/basics/shapes-paths/#triangle-star",
                                 }),
                             },
                             {
@@ -97709,7 +97709,7 @@ var GravitDesigner = (function (e) {
                                     middle: !1,
                                     video: ao.gApi.getRichTooltipVideoURL("Text_Tool.mp4"),
                                     shortcut: ["T"],
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/working-with-text/",
+                                    learnMore: "/docs/working-with-text/",
                                 }),
                             },
                             {
@@ -97724,7 +97724,7 @@ var GravitDesigner = (function (e) {
                                     description: s.GLocale.get(new s.GLocaleKey("GHandTool", "tooltip-description")),
                                     middle: !1,
                                     shortcut: ["H"],
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/tools/other-tools/#pan",
+                                    learnMore: "/docs/tools/other-tools/#pan",
                                 }),
                             },
                             {
@@ -97739,7 +97739,7 @@ var GravitDesigner = (function (e) {
                                     description: s.GLocale.get(new s.GLocaleKey("GZoomTool", "tooltip-description")),
                                     middle: !1,
                                     shortcut: ["Z"],
-                                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/tools/other-tools/#zoom-tool",
+                                    learnMore: "/docs/tools/other-tools/#zoom-tool",
                                 }),
                             },
                         ],
@@ -110673,7 +110673,7 @@ var GravitDesigner = (function (e) {
                             a.GRichTooltipConfig.from({
                                 title: o.GLocale.get(new o.GLocaleKey("GExportProperties", "text.create-slice-tooltip-title")),
                                 description: o.GLocale.get(new o.GLocaleKey("GExportProperties", "text.create-slice-tooltip-description")),
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/import-export/export/#slices",
+                                learnMore: "/docs/import-export/export/#slices",
                             })
                         )),
                     $("<button></button>")
@@ -110686,7 +110686,7 @@ var GravitDesigner = (function (e) {
                                 title: o.GLocale.get(new o.GLocaleKey("GExportProperties", "text.add-export-tooltip-title")),
                                 description: o.GLocale.get(new o.GLocaleKey("GExportProperties", "text.add-export-tooltip-description")),
                                 learnMore:
-                                    "https://web.archive.org/web/2023/https://documentation.corelvector.com/import-export/export/#mass-exporting-assets-and-slices",
+                                    "/docs/import-export/export/#mass-exporting-assets-and-slices",
                             })
                         ),
                     (this._sizeMenu = new r()),
@@ -114479,7 +114479,7 @@ var GravitDesigner = (function (e) {
                                       description: _core.GLocale.get(
                                           new _core.GLocaleKey("GToolbar", "text.undoList-button-tooltip-description")
                                       ),
-                                      learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/tools-toolbar/",
+                                      learnMore: "/docs/basics/tools-toolbar/",
                                       isPro: !g,
                                   })
                               ),
@@ -125517,28 +125517,28 @@ var GravitDesigner = (function (e) {
                         description: i.GLocale.getValue("GMergeSubAction", "tooltip.union.description"),
                         video: u.gApi.getRichTooltipVideoURL("Boolean_Union.mp4"),
                         middle: !1,
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/compound-shapes-boolean-operations/",
+                        learnMore: "/docs/basics/compound-shapes-boolean-operations/",
                     }),
                     [p.Type.Subtract]: c.GRichTooltipConfig.from({
                         title: i.GLocale.getValue("GMergeSubAction", "tooltip.substract.title"),
                         description: i.GLocale.getValue("GMergeSubAction", "tooltip.substract.description"),
                         video: u.gApi.getRichTooltipVideoURL("Boolean_Subtract.mp4"),
                         middle: !1,
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/compound-shapes-boolean-operations/",
+                        learnMore: "/docs/basics/compound-shapes-boolean-operations/",
                     }),
                     [p.Type.Intersect]: c.GRichTooltipConfig.from({
                         title: i.GLocale.getValue("GMergeSubAction", "tooltip.intersect.title"),
                         description: i.GLocale.getValue("GMergeSubAction", "tooltip.intersect.description"),
                         video: u.gApi.getRichTooltipVideoURL("Boolean_Intersect.mp4"),
                         middle: !1,
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/compound-shapes-boolean-operations/",
+                        learnMore: "/docs/basics/compound-shapes-boolean-operations/",
                     }),
                     [p.Type.Difference]: c.GRichTooltipConfig.from({
                         title: i.GLocale.getValue("GMergeSubAction", "tooltip.difference.title"),
                         description: i.GLocale.getValue("GMergeSubAction", "tooltip.difference.description"),
                         video: u.gApi.getRichTooltipVideoURL("Boolean_Difference.mp4"),
                         middle: !1,
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/compound-shapes-boolean-operations/",
+                        learnMore: "/docs/basics/compound-shapes-boolean-operations/",
                     }),
                 },
             }),
@@ -125924,7 +125924,7 @@ var GravitDesigner = (function (e) {
                 [i.TOOLTIP_AREA.MAIN_MENU.TRY_PRO_COMMON]: i.GRichTooltipConfig.from({
                     title: o.GLocale.get(new o.GLocaleKey("GImportFontsAction", "text.try-this-feature-pro-tooltip-title")),
                     description: o.GLocale.get(new o.GLocaleKey("GImportFontsAction", "text.try-this-feature-pro-tooltip-description")),
-                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/import-export/import/#import-fonts",
+                    learnMore: "/docs/import-export/import/#import-fonts",
                     upgradeToProStatsValue: "font.import",
                     middle: !1,
                     side: !0,
@@ -127610,7 +127610,7 @@ var GravitDesigner = (function (e) {
                 [i.TOOLTIP_AREA.MAIN_MENU.TRY_PRO_COMMON]: i.GRichTooltipConfig.from({
                     title: o.GLocale.get(new o.GLocaleKey("GToggleTouchAction", "text.try-this-feature-pro-tooltip-title")),
                     description: o.GLocale.get(new o.GLocaleKey("GToggleTouchAction", "text.try-this-feature-pro-tooltip-description")),
-                    learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/touch-interface/",
+                    learnMore: "/docs/touch-interface/",
                     upgradeToProStatsValue: "view.toggle-touch",
                     middle: !1,
                     side: !0,
@@ -130205,7 +130205,7 @@ var GravitDesigner = (function (e) {
                                             description: o.GLocale.get(
                                                 new o.GLocaleKey("GSceneProperties", "text.grid-tooltip-description-off")
                                             ),
-                                            learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/design-aids/grid/",
+                                            learnMore: "/docs/design-aids/grid/",
                                         })
                                     ),
                                 },
@@ -130218,7 +130218,7 @@ var GravitDesigner = (function (e) {
                                             description: o.GLocale.get(
                                                 new o.GLocaleKey("GSceneProperties", "text.grid-tooltip-description-on")
                                             ),
-                                            learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/design-aids/grid/",
+                                            learnMore: "/docs/design-aids/grid/",
                                         })
                                     ),
                                 },
@@ -130231,7 +130231,7 @@ var GravitDesigner = (function (e) {
                                             description: o.GLocale.get(
                                                 new o.GLocaleKey("GSceneProperties", "text.grid-tooltip-description-isometric")
                                             ),
-                                            learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/design-aids/grid/",
+                                            learnMore: "/docs/design-aids/grid/",
                                         })
                                     ),
                                 },
@@ -130716,42 +130716,42 @@ var GravitDesigner = (function (e) {
                         title: i.GLocale.get(new i.GLocaleKey("GTransformProperties", "text.move-tooltip-title")),
                         description: i.GLocale.get(new i.GLocaleKey("GTransformProperties", "text.move-tooltip-description")),
                         middle: !1,
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/transform-panel/#moving-objects",
+                        learnMore: "/docs/basics/transform-panel/#moving-objects",
                     }),
                     r = a.GRichTooltipConfig.from({
                         title: i.GLocale.get(new i.GLocaleKey("GTransformProperties", "text.scale-tooltip-title")),
                         description: i.GLocale.get(new i.GLocaleKey("GTransformProperties", "text.scale-tooltip-description")),
                         middle: !1,
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/transform-panel/#scaling-objects",
+                        learnMore: "/docs/basics/transform-panel/#scaling-objects",
                     }),
                     s = a.GRichTooltipConfig.from({
                         title: i.GLocale.get(new i.GLocaleKey("GTransformProperties", "text.rotate-tooltip-title")),
                         description: i.GLocale.get(new i.GLocaleKey("GTransformProperties", "text.rotate-tooltip-description")),
                         middle: !1,
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/transform-panel/#rotating-objects",
+                        learnMore: "/docs/basics/transform-panel/#rotating-objects",
                     }),
                     l = a.GRichTooltipConfig.from({
                         title: i.GLocale.get(new i.GLocaleKey("GTransformProperties", "text.rotate-axis-tooltip-title")),
                         description: i.GLocale.get(new i.GLocaleKey("GTransformProperties", "text.rotate-axis-tooltip-description")),
                         middle: !1,
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/transform-panel/#rotating-objects",
+                        learnMore: "/docs/basics/transform-panel/#rotating-objects",
                     }),
                     c = a.GRichTooltipConfig.from({
                         title: i.GLocale.get(new i.GLocaleKey("GTransformProperties", "text.skew-tooltip-title")),
                         description: i.GLocale.get(new i.GLocaleKey("GTransformProperties", "text.skew-tooltip-description")),
                         middle: !1,
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/transform-panel/#skewing-objects",
+                        learnMore: "/docs/basics/transform-panel/#skewing-objects",
                     }),
                     d = a.GRichTooltipConfig.from({
                         title: i.GLocale.get(new i.GLocaleKey("GTransformProperties", "text.copies-tooltip-title")),
                         description: i.GLocale.get(new i.GLocaleKey("GTransformProperties", "text.copies-tooltip-description")),
                         middle: !1,
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/transform-panel/#transform-and-copy-objects",
+                        learnMore: "/docs/basics/transform-panel/#transform-and-copy-objects",
                     }),
                     u = a.GRichTooltipConfig.from({
                         title: i.GLocale.get(new i.GLocaleKey("GTransformProperties", "text.transdorm-origin-tooltip-title")),
                         description: i.GLocale.get(new i.GLocaleKey("GTransformProperties", "text.transdorm-origin-tooltip-description")),
-                        learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/basics/transform-panel/#reference-point",
+                        learnMore: "/docs/basics/transform-panel/#reference-point",
                     });
                 ($("<div></div>")
                     .gPropertyRow({
@@ -131270,7 +131270,7 @@ var GravitDesigner = (function (e) {
                             r.GRichTooltipConfig.from({
                                 title: i.GLocale.get(new i.GLocaleKey("GSymbolsSidebar", "text.delete-symbol-tooltip-title")),
                                 description: i.GLocale.get(new i.GLocaleKey("GSymbolsSidebar", "text.delete-symbol-tooltip-description")),
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/symbols/#symbols-panel",
+                                learnMore: "/docs/organizing-your-designs/symbols/#symbols-panel",
                             })
                         ),
                     (this._newSymbolButton = $("<button></button>")
@@ -131292,7 +131292,7 @@ var GravitDesigner = (function (e) {
                             r.GRichTooltipConfig.from({
                                 title: i.GLocale.get(new i.GLocaleKey("GSymbolsSidebar", "text.create-symbol-tooltip-title")),
                                 description: i.GLocale.get(new i.GLocaleKey("GSymbolsSidebar", "text.create-symbol-tooltip-description")),
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/symbols/#symbols-panel",
+                                learnMore: "/docs/organizing-your-designs/symbols/#symbols-panel",
                             })
                         )));
                 var t = this,
@@ -136621,7 +136621,7 @@ var GravitDesigner = (function (e) {
                             l.GRichTooltipConfig.from({
                                 title: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.layer-toggle-lock-tooltip-title")),
                                 description: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.layer-toggle-lock-tooltip-description")),
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/objects/#locking-objects",
+                                learnMore: "/docs/organizing-your-designs/objects/#locking-objects",
                             })
                         ),
                     y.toggleClass("layer-hidden", p));
@@ -136642,7 +136642,7 @@ var GravitDesigner = (function (e) {
                                 description: a.GLocale.get(
                                     new a.GLocaleKey("GCommonNames", "text.layer-toggle-visibility-tooltip-description")
                                 ),
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/objects/#hiding-objects",
+                                learnMore: "/docs/organizing-your-designs/objects/#hiding-objects",
                             })
                         ),
                     s instanceof a.GLayer)
@@ -136669,7 +136669,7 @@ var GravitDesigner = (function (e) {
                             l.GRichTooltipConfig.from({
                                 title: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.layer-toggle-outline-tooltip-title")),
                                 learnMore:
-                                    "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/layer-groups/#extra-properties-of-the-layer-groups",
+                                    "/docs/organizing-your-designs/layer-groups/#extra-properties-of-the-layer-groups",
                             })
                         )
                         .appendTo(y);
@@ -139364,7 +139364,7 @@ var GravitDesigner = (function (e) {
                             s.GRichTooltipConfig.from({
                                 title: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.page-toggle-lock-tooltip-title")),
                                 description: a.GLocale.get(new a.GLocaleKey("GCommonNames", "text.page-toggle-lock-tooltip-description")),
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/pages/#page-panel",
+                                learnMore: "/docs/organizing-your-designs/pages/#page-panel",
                             })
                         ));
                 var b = !1 === l.getProperty("vis");
@@ -139393,7 +139393,7 @@ var GravitDesigner = (function (e) {
                                 description: a.GLocale.get(
                                     new a.GLocaleKey("GCommonNames", "text.page-toggle-visibility-tooltip-description")
                                 ),
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/pages/#page-panel",
+                                learnMore: "/docs/organizing-your-designs/pages/#page-panel",
                             })
                         ),
                     p.contextmenu(
@@ -139690,7 +139690,7 @@ var GravitDesigner = (function (e) {
                                     new o.GLocaleKey("GCommonNames", "text.symbol-panel-symbol-tooltip-description")
                                 ),
                                 middle: !1,
-                                learnMore: "https://web.archive.org/web/2023/https://documentation.corelvector.com/organizing-your-designs/symbols/#symbols-panel",
+                                learnMore: "/docs/organizing-your-designs/symbols/#symbols-panel",
                             })
                         ),
                     r = $("<span></span>").addClass("symbol-title-group");
