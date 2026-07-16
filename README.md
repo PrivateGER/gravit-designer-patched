@@ -20,10 +20,11 @@ the defunct Corel cloud, and stripped of its dead licensing checks.
     - `GET /file` — empty cloud file listing ("Open Recent")
     - `WS /license` — answers the app's keep-alive pings
 
-  Endpoints that intentionally 404 and are handled by the app's fallbacks:
-  `GET /license` (falls back to the patched default license) and
-  `GET /i18n-url/...` (translation packs are gone; the app falls back to its
-  bundled English strings).
+    Endpoints that intentionally 404 and are handled by the app's fallbacks:
+    `GET /license` (falls back to the patched default license) and
+    `GET /i18n-url/...` (translation packs are gone; the app falls back to its
+    bundled English strings).
+
 - `public/cacher.js` — the original Workbox service worker, patched to load a
   self-hosted Workbox runtime from `public/workbox/` instead of the Google CDN.
 
@@ -41,12 +42,31 @@ node scripts/precompress.js    # optional: pre-build .br/.gz for the big bundles
 npm start                      # serves on port 3100 (override with PORT=...)
 ```
 
+## Working on the app code
+
+The two patched webpack bundles are split into one file per module under
+`src/bundles/designer.browser/` (965 modules) and `src/bundles/chunk.vendor/`
+(756 modules), with an `INDEX.md` in each mapping module ids to class/string
+hints. This is the preferred way to modify the app:
+
+1. Find the module (grep `src/bundles/` or skim `INDEX.md`).
+2. Edit the module file (each is a valid standalone `module.exports = ...`).
+3. `npm run build` — reassembles `public/<bundle>.js`, syntax-checks it,
+   bumps the service-worker precache revision in `cacher.js`, and refreshes
+   the `.br`/`.gz` variants. Commit `src/bundles/` and `public/` together.
+
+The build is byte-exact: rebuilding without edits reproduces the committed
+bundles bit-for-bit (module order, holes, and glue text are preserved via
+each bundle's `manifest.json`). `npm run split -- <name>` regenerates a
+bundle's split from `public/<name>.js` if you ever patch the bundle directly.
+
 ## Maintenance notes
 
 - **Service worker cache busting:** `public/cacher.js` precaches ~1300 files,
-  keyed by `revision` strings. If you edit any precached file (notably
-  `designer.browser.js` or `chunk.vendor.js`), you MUST change its `revision`
-  in `cacher.js`, or returning browsers will keep the old cached copy forever.
+  keyed by `revision` strings. `npm run build` handles this for the two split
+  bundles; if you edit any _other_ precached file, you MUST change its
+  `revision` in `cacher.js` manually, or returning browsers will keep the old
+  cached copy forever.
 - **Pre-compression:** `scripts/precompress.js` writes `.br`/`.gz` next to the
   root JS/CSS bundles (gitignored, rebuilt in the Docker image). The server
   prefers them and falls back to on-the-fly gzip.

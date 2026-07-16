@@ -6,9 +6,12 @@
         "ws": "^8.18.2"
     },
     "devDependencies": {
+        "acorn": "^8.17.0",
         "prettier": "^3.6.2"
     },
     "scripts": {
-        "start": "node server.js"
+        "start": "node server.js",
+        "build": "node scripts/build-bundle.js",
+        "split": "node scripts/split-bundle.js"
     }
 }

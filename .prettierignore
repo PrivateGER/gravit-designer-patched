@@ -3,3 +3,5 @@ node_modules
 *.min.js
 package-lock.json
 public/assets
+public/docs
+src/bundles
