@@ -366,7 +366,7 @@ module.exports = function (module, exports, require) {
                 var e = $("<div></div>").addClass("presets-container"),
                     t = $("<div/>").addClass("header").appendTo(e),
                     n = $("<div></div>").addClass("presets").appendTo($("<div/>").addClass("presets-frame").appendTo(e));
-                (GPresets.getPresets(true).forEach((e, t) => {
+                GPresets.getPresets(true).forEach((e, t) => {
                     $("<div/>")
                         .addClass("preset")
                         .data("preset", e)
@@ -397,26 +397,9 @@ module.exports = function (module, exports, require) {
                                 ])
                         )
                         .appendTo(n);
-                }),
-                    $("<div/>")
-                        .addClass("preset")
-                        .append(
-                            $("<p/>")
-                                .addClass("title")
-                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.templates-option")))
-                        )
-                        .append(
-                            $("<div/>")
-                                .addClass("icon")
-                                .on("click", () => {
-                                    this._isSpectatorMode() ||
-                                        this._dialog.find(".sidebar-options").find(".templates-option").trigger("click");
-                                })
-                                .css("padding-bottom", "42px")
-                                .append($("<img/>").attr("src", "assets/img/new-document/preset-templates-white.svg"))
-                                .append($("<img/>").attr("src", "assets/img/new-document/preset-templates-black.svg").addClass("hover"))
-                        )
-                        .appendTo(n));
+                });
+                // "New from Template" preset tile removed: the template backend was
+                // never archived, so the tile led to an empty/broken dialog.
                 var o = (e) => (13 === e.keyCode ? this._newDocumentCustomSize() : void 0);
                 return (
                     $("<div/>")

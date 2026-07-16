@@ -29,7 +29,10 @@ module.exports = function (module, exports, require) {
                 return c.isOnline();
             }),
             (u.prototype.isVisible = function () {
-                return !!gDesigner.getApplicationManager().isEditingEnabled();
+                // The panel's only living content source is the Unsplash proxy
+                // (window.UNSPLASH_ENABLED via /config.js); without it every
+                // category is dead, so hide the whole LIBRARIES tab.
+                return true === window.UNSPLASH_ENABLED && !!gDesigner.getApplicationManager().isEditingEnabled();
             }),
             (u.prototype.getOrientation = function () {
                 return s.Orientation.Left;

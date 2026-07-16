@@ -49458,7 +49458,11 @@ var GravitDesigner = (function (e) {
             static async _shouldFetchTranslation(e, t) {
                 if (t.keyValue === GObject.GLocale.getLanguage())
                     try {
-                        const n = await fetch(await this._getCDNURL(e, t), {
+                        // The translation CDN is gone; _getCDNURL resolves null. Skip
+                        // the HEAD probe instead of requesting the literal URL "null".
+                        const i = await this._getCDNURL(e, t);
+                        if (!i) return false;
+                        const n = await fetch(i, {
                             method: "HEAD",
                         }).then((e) => {
                             if (e.ok) return e.headers.get("etag");
@@ -49471,8 +49475,12 @@ var GravitDesigner = (function (e) {
                 return (e.startsWith("W/") && (e = e.substring(3, e.length - 1)), e === t);
             }
             static async _fetchTranslation(e, t) {
-                if (!(await this._shouldFetchTranslation(e, t))) return;
-                return await fetch(await this._getCDNURL(e, t)).then((e) => e.json());
+                // No URL means the locale pack is unavailable (dead CDN): return
+                // undefined so setLanguage takes its existing English-fallback path
+                // without a network round-trip to "/null".
+                const n = await this._getCDNURL(e, t);
+                if (!n || !(await this._shouldFetchTranslation(e, t))) return;
+                return await fetch(n).then((e) => e.json());
             }
             static async _getCDNURL(e, t) {
                 const n = t.abbreviation,
@@ -116494,7 +116502,7 @@ var GravitDesigner = (function (e) {
                 var e = $("<div></div>").addClass("presets-container"),
                     t = $("<div/>").addClass("header").appendTo(e),
                     n = $("<div></div>").addClass("presets").appendTo($("<div/>").addClass("presets-frame").appendTo(e));
-                (GPresets.getPresets(true).forEach((e, t) => {
+                GPresets.getPresets(true).forEach((e, t) => {
                     $("<div/>")
                         .addClass("preset")
                         .data("preset", e)
@@ -116525,26 +116533,9 @@ var GravitDesigner = (function (e) {
                                 ])
                         )
                         .appendTo(n);
-                }),
-                    $("<div/>")
-                        .addClass("preset")
-                        .append(
-                            $("<p/>")
-                                .addClass("title")
-                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.templates-option")))
-                        )
-                        .append(
-                            $("<div/>")
-                                .addClass("icon")
-                                .on("click", () => {
-                                    this._isSpectatorMode() ||
-                                        this._dialog.find(".sidebar-options").find(".templates-option").trigger("click");
-                                })
-                                .css("padding-bottom", "42px")
-                                .append($("<img/>").attr("src", "assets/img/new-document/preset-templates-white.svg"))
-                                .append($("<img/>").attr("src", "assets/img/new-document/preset-templates-black.svg").addClass("hover"))
-                        )
-                        .appendTo(n));
+                });
+                // "New from Template" preset tile removed: the template backend was
+                // never archived, so the tile led to an empty/broken dialog.
                 var o = (e) => (13 === e.keyCode ? this._newDocumentCustomSize() : void 0);
                 return (
                     $("<div/>")
@@ -127052,6 +127043,11 @@ var GravitDesigner = (function (e) {
             (s.prototype.isEnabled = function () {
                 return GCommonNames.isOnline() && !gDesigner.isOffline(6e5) && gDesigner.getApplicationManager().isCreatingNewDocumentEnabled();
             }),
+            // The template listing/content API was never archived (see README
+            // "Known-dead features"), so hide this action from the File menu.
+            (s.prototype.isAvailable = function () {
+                return false;
+            }),
             (s.prototype.execute = function () {
                 (gContainer.newDocumentActionPerformed(),
                     gDesigner.openNewDocumentDialog({
@@ -131455,7 +131451,10 @@ var GravitDesigner = (function (e) {
                 return c.isOnline();
             }),
             (u.prototype.isVisible = function () {
-                return !!gDesigner.getApplicationManager().isEditingEnabled();
+                // The panel's only living content source is the Unsplash proxy
+                // (window.UNSPLASH_ENABLED via /config.js); without it every
+                // category is dead, so hide the whole LIBRARIES tab.
+                return true === window.UNSPLASH_ENABLED && !!gDesigner.getApplicationManager().isEditingEnabled();
             }),
             (u.prototype.getOrientation = function () {
                 return s.Orientation.Left;
@@ -132288,10 +132287,15 @@ var GravitDesigner = (function (e) {
         var designerConfig = require(10);
         class i {
             static getElements() {
-                return i.isUnsplashIntegrationEnabled() ? designerConfig.ELEMENTS : designerConfig.ELEMENTS.filter((e) => "element.image" !== e.path);
+                // Only the Unsplash Photos category has a living backend (the
+                // local server proxies it when UNSPLASH_ACCESS_KEY is set). The
+                // elements market (shapes/stickers/icons/...) was never archived,
+                // so its categories are hidden rather than shown empty.
+                return i.isUnsplashIntegrationEnabled() ? designerConfig.ELEMENTS.filter((e) => "element.image" === e.path) : [];
             }
             static isUnsplashIntegrationEnabled() {
-                return designerConfig.ENABLE_UNSPLASH_INTEGRATION;
+                // Set by /config.js (served by server.js) before the bundles load.
+                return true === window.UNSPLASH_ENABLED;
             }
         }
         module.exports = i;

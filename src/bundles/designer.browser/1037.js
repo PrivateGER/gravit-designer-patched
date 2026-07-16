@@ -25,7 +25,11 @@ module.exports = function (module, exports, require) {
             static async _shouldFetchTranslation(e, t) {
                 if (t.keyValue === GObject.GLocale.getLanguage())
                     try {
-                        const n = await fetch(await this._getCDNURL(e, t), {
+                        // The translation CDN is gone; _getCDNURL resolves null. Skip
+                        // the HEAD probe instead of requesting the literal URL "null".
+                        const i = await this._getCDNURL(e, t);
+                        if (!i) return false;
+                        const n = await fetch(i, {
                             method: "HEAD",
                         }).then((e) => {
                             if (e.ok) return e.headers.get("etag");
@@ -38,8 +42,12 @@ module.exports = function (module, exports, require) {
                 return (e.startsWith("W/") && (e = e.substring(3, e.length - 1)), e === t);
             }
             static async _fetchTranslation(e, t) {
-                if (!(await this._shouldFetchTranslation(e, t))) return;
-                return await fetch(await this._getCDNURL(e, t)).then((e) => e.json());
+                // No URL means the locale pack is unavailable (dead CDN): return
+                // undefined so setLanguage takes its existing English-fallback path
+                // without a network round-trip to "/null".
+                const n = await this._getCDNURL(e, t);
+                if (!n || !(await this._shouldFetchTranslation(e, t))) return;
+                return await fetch(n).then((e) => e.json());
             }
             static async _getCDNURL(e, t) {
                 const n = t.abbreviation,

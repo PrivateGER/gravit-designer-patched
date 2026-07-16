@@ -24,6 +24,11 @@ module.exports = function (module, exports, require) {
             (s.prototype.isEnabled = function () {
                 return GCommonNames.isOnline() && !gDesigner.isOffline(6e5) && gDesigner.getApplicationManager().isCreatingNewDocumentEnabled();
             }),
+            // The template listing/content API was never archived (see README
+            // "Known-dead features"), so hide this action from the File menu.
+            (s.prototype.isAvailable = function () {
+                return false;
+            }),
             (s.prototype.execute = function () {
                 (gContainer.newDocumentActionPerformed(),
                     gDesigner.openNewDocumentDialog({

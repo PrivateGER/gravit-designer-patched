@@ -17,7 +17,12 @@ the defunct Corel cloud, and stripped of its dead licensing checks.
     - `GET /user`, `PUT /user`, `GET /user/settings` — a placeholder user with a
       far-future trial so the app stays unlocked
     - `GET /subscription/test` — subscriptions disabled (hides purchase flows)
-    - `GET /file` — empty cloud file listing ("Open Recent")
+    - `GET /file` — empty cloud file listing (cloud storage is gone)
+    - `GET /market` — empty elements-market listing (the market API was never
+      archived; an empty list keeps the library panel's search working)
+    - `GET /config.js` — runtime flags for the frontend (currently
+      `window.UNSPLASH_ENABLED`), loaded by `index.html` before the bundles
+    - `GET /unsplash/*` — optional Unsplash proxy, see below
     - `WS /license` — answers the app's keep-alive pings
 
     Endpoints that intentionally 404 and are handled by the app's fallbacks:
@@ -41,6 +46,24 @@ npm ci
 node scripts/precompress.js    # optional: pre-build .br/.gz for the big bundles
 npm start                      # serves on port 3100 (override with PORT=...)
 ```
+
+### Unsplash photos (optional)
+
+The original app reached Unsplash through Corel's server-side proxy, which is
+gone — but the Unsplash API itself is alive. `server.js` re-implements the
+proxy (`/unsplash/featured`, `/unsplash/search/photos`,
+`/unsplash/download/photo`): register a free app at
+<https://unsplash.com/developers> and start the server with
+
+```sh
+UNSPLASH_ACCESS_KEY=your-access-key npm start   # or set it in the environment for docker compose
+```
+
+and the library panel's **Photos** category works again (browse, search,
+drag-and-drop insert). Downloads are reported to Unsplash per their API
+guidelines, and responses are cached for 10 minutes to stay inside the free
+tier's 50 requests/hour. Without a key the whole LIBRARIES tab stays hidden,
+since it has no other living content source.
 
 ## Working on the app code
 
@@ -110,16 +133,23 @@ are always preserved regardless, so hand-added names are safe.
   with literal `%20`, which 404'd and broke the whole service-worker install —
   don't reintroduce that.
 
-## Known-dead features (backend is gone)
+## Known-dead features (backend is gone, UI hidden)
 
-- **Templates** ("New from template"): the template listing/content API and the
-  category thumbnails were never archived. The dialog will show empty/broken
-  content.
+Dead features are hidden in the UI rather than left to show empty or broken
+content:
+
+- **Templates** ("New from template"): the template listing/content API and
+  the category thumbnails were never archived. The File-menu action
+  (`GNewFromTemplateAction.isAvailable`, module `1623`) and the welcome
+  dialog's "New from Template" tile (module `1544`) are removed.
 - **Elements library content**: category icons are mirrored locally
-  (`assets/libraries/`, recovered via the Wayback Machine), but the actual
-  shape/sticker/illustration market API is gone, so categories are empty.
-- **Unsplash photos**: the proxy API is gone; the integration is disabled in
-  the bundle (`ENABLE_UNSPLASH_INTEGRATION`).
+  (`assets/libraries/`, recovered via the Wayback Machine), but the
+  shape/sticker/illustration market API is gone. The dead categories are
+  hidden (module `1664`); the LIBRARIES sidebar tab only appears at all when
+  the Unsplash proxy is configured (module `1662`), since Unsplash Photos is
+  its only living category.
+- **Unsplash photos**: revived via the optional local proxy — see "Unsplash
+  photos" above. Hidden when no API key is configured.
 - **Documentation** is bundled: `public/docs/` is a self-contained mirror of
   `documentation.corelvector.com` (102 pages + assets, recovered from the
   Wayback Machine), and the app's help links point at `/docs/...`. The
@@ -139,3 +169,9 @@ reCAPTCHA have been neutered (script injection removed in
 to third-party analytics. The mirrored documentation is likewise scrubbed:
 Google Analytics removed and the Montserrat webfont self-hosted, so `/docs`
 pages make no external requests either.
+
+The one opt-in exception: with `UNSPLASH_ACCESS_KEY` configured, browsing the
+library panel's Photos category loads thumbnails and images directly from
+`images.unsplash.com` (hotlinking is required by Unsplash's API guidelines).
+API calls go through the local server; the browser never talks to
+`api.unsplash.com` and the key is never exposed to the client.

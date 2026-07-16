@@ -40,6 +40,10 @@
     <link rel="manifest" href="manifest.json" crossorigin="use-credentials" />
   </head>
   <body class="loading">
+    <!-- Server-generated runtime flags (e.g. window.UNSPLASH_ENABLED); must
+         load before the app bundles. Not precached: offline it fails closed
+         and optional integrations simply stay hidden. -->
+    <script src="config.js"></script>
     <script src="jquery.js"></script>
     <script src="chunk.vendor.js"></script>
     <script src="designer.browser.js"></script>

@@ -84,6 +84,118 @@ wss.on("connection", (ws, req) => {
     });
 });
 
+// ---------------------------------------------------------------------------
+// Unsplash proxy (optional). The original app never talked to Unsplash
+// directly — it went through Corel's server-side proxy, which is gone. If
+// UNSPLASH_ACCESS_KEY is set (free key from https://unsplash.com/developers),
+// these endpoints re-implement that proxy against the official Unsplash API
+// and the library panel's Photos category comes back to life. Without a key
+// the integration stays hidden in the UI (see /config.js below).
+const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY || "";
+// Overridable for testing against a mock API.
+const UNSPLASH_API_BASE = process.env.UNSPLASH_API_BASE || "https://api.unsplash.com";
+const UNSPLASH_PAGE_SIZE = 30;
+
+// Small response cache to stay well inside Unsplash's 50 requests/hour demo
+// rate limit (repeat category browsing and paging hit the same URLs).
+const unsplashCache = new Map();
+const UNSPLASH_CACHE_TTL = 10 * 60 * 1000;
+
+async function unsplashFetch(pathAndQuery) {
+    const cached = unsplashCache.get(pathAndQuery);
+    if (cached && Date.now() - cached.time < UNSPLASH_CACHE_TTL) return cached.data;
+    const response = await fetch(UNSPLASH_API_BASE + pathAndQuery, {
+        headers: { Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`, "Accept-Version": "v1" },
+    });
+    if (!response.ok) {
+        const err = new Error(`Unsplash API responded ${response.status}`);
+        // Auth/rate-limit problems are our misconfiguration, not the client's.
+        err.status = response.status === 401 || response.status === 403 ? 502 : response.status;
+        throw err;
+    }
+    const data = await response.json();
+    if (unsplashCache.size >= 500) unsplashCache.clear();
+    unsplashCache.set(pathAndQuery, { time: Date.now(), data });
+    return data;
+}
+
+// Shape a photo the way the app's library panel expects (see
+// src/bundles/designer.browser/1663.js: id, path prefix "element.image.",
+// image.thumb/width/height for the masonry layout, user.name/profile for
+// the attribution link).
+function toLibraryAsset(photo) {
+    return {
+        id: photo.id,
+        path: "element.image.unsplash",
+        width: photo.width,
+        height: photo.height,
+        image: { thumb: photo.urls.small, width: photo.width, height: photo.height },
+        user: { name: photo.user.name, profile: photo.user.links.html },
+    };
+}
+
+app.get("/unsplash/featured", async (req, res, next) => {
+    if (!UNSPLASH_ACCESS_KEY) return res.json([]);
+    try {
+        const page = parseInt(req.query.page, 10) || 1;
+        const photos = await unsplashFetch(`/photos?page=${page}&per_page=${UNSPLASH_PAGE_SIZE}&order_by=popular`);
+        res.json(photos.map(toLibraryAsset));
+    } catch (e) {
+        next(e);
+    }
+});
+
+app.get("/unsplash/search/photos", async (req, res, next) => {
+    if (!UNSPLASH_ACCESS_KEY) return res.json([]);
+    try {
+        const page = parseInt(req.query.page, 10) || 1;
+        const query = String(req.query.query || "").trim();
+        if (!query) return res.json([]);
+        const result = await unsplashFetch(`/search/photos?query=${encodeURIComponent(query)}&page=${page}&per_page=${UNSPLASH_PAGE_SIZE}`);
+        res.json((result.results || []).map(toLibraryAsset));
+    } catch (e) {
+        next(e);
+    }
+});
+
+// Returns the image URL for a photo as a JSON string — the app fetches the
+// response's JSON value directly (gApi.getUnsplashPhotoUrl in module 1663).
+app.get("/unsplash/download/photo", async (req, res, next) => {
+    if (!UNSPLASH_ACCESS_KEY) return res.status(404).json({ error: "Unsplash integration is not configured" });
+    try {
+        const id = String(req.query.id || "");
+        if (!/^[A-Za-z0-9_-]+$/.test(id)) return res.status(400).json({ error: "invalid photo id" });
+        const photo = await unsplashFetch(`/photos/${id}`);
+        // Unsplash API guidelines require reporting downloads; fire-and-forget.
+        if (photo.links && photo.links.download_location) {
+            fetch(photo.links.download_location, {
+                headers: { Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`, "Accept-Version": "v1" },
+            }).catch(() => {});
+        }
+        const size = String(req.query.size || "regular");
+        res.json(photo.urls[size] || photo.urls.regular);
+    } catch (e) {
+        next(e);
+    }
+});
+
+// The elements-market API (shapes/stickers/icons...) was never archived. An
+// empty listing keeps the library panel's combined search working — it
+// concatenates market results with Unsplash results and a failed market call
+// would discard both.
+app.get("/market", (req, res) => {
+    res.json([]);
+});
+
+// Runtime config, loaded by index.html before the app bundles. The bundle's
+// library UI checks window.UNSPLASH_ENABLED (modules 1662/1664) so features
+// with no backend stay hidden instead of showing empty categories.
+app.get("/config.js", (req, res) => {
+    res.type("application/javascript");
+    res.setHeader("Cache-Control", "no-cache");
+    res.send(`window.UNSPLASH_ENABLED = ${Boolean(UNSPLASH_ACCESS_KEY)};\n`);
+});
+
 app.get("/connection/test", (req, res) => {
     res.send("OK");
 });
@@ -173,9 +285,11 @@ app.put("/user", (req, res) => {
 app.get("/user", (req, res) => {
     const { lang } = req.query;
 
+    // Indices match the app's GLocaleLanguage enum (chunk.vendor module 0701):
+    // English=0, German=1, Chinese=2, ...
     const languages = {
-        0: "de-DE",
-        1: "en",
+        0: "en",
+        1: "de-DE",
         2: "zh-CN",
         3: "pt-BR",
         4: "es-ES",
@@ -200,7 +314,11 @@ app.get("/user", (req, res) => {
         email_expire: null,
         login: null,
         name: "Placeholder User",
-        avatar: "https://s3.plasmatrap.com/plasmatrap/8482ae21-71f2-4324-8e3e-5fdc5be66d4d.gif",
+        // Self-hosted so the app makes no external requests (app icon as
+        // placeholder). The ?v= marker makes the app treat it as a real
+        // picture avatar (GUser.hasOwnPictureAvatar, module 0177) and render
+        // the image instead of falling back to initials.
+        avatar: "/assets/prerendered/icon128.png?v=1",
         admin: null,
         flash: null,
         last_seen: "2025-06-14T09:28:26.899Z",
