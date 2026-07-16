@@ -87,8 +87,13 @@ for (const bundle of bundleNames) {
         let name = null;
 
         // high-confidence library self-signatures (exact shapes from core-js /
-        // babel runtime) — these label vendor plumbing so readers can skip it
-        if (/__esModule \? [a-z] : \{ default: [a-z] \}/.test(src) && !/WeakMap|_getRequireWildcardCache/.test(src)) {
+        // babel runtime) — these label vendor plumbing so readers can skip it.
+        // Only for small modules: a large module CONTAINING an inlined helper
+        // must not be labeled as one (module 1491, 170KB, once got tagged
+        // "_interopRequireWildcard" this way).
+        if (src.length > 2000) {
+            // not plumbing-sized; skip the signature checks
+        } else if (/__esModule \? [a-z] : \{ default: [a-z] \}/.test(src) && !/WeakMap|_getRequireWildcardCache/.test(src)) {
             name = "_interopRequireDefault";
         } else if (/__esModule/.test(src) && /_getRequireWildcardCache|new WeakMap\(\)/.test(src) && /default: [a-z]/.test(src)) {
             name = "_interopRequireWildcard";

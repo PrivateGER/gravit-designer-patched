@@ -33,12 +33,14 @@ const isValidName = (s) => /^[A-Za-z_$][\w$]*$/.test(s) && !RESERVED.has(s);
 function usage() {
     console.error("usage: npm run rename -- <bundle>/<module> <old>:<new> [<old>:<new> ...]");
     console.error("       disambiguate same-named bindings with <old>@<declLine>:<new>");
+    console.error("       npm run rename -- <bundle>/<module> --list   (list all bindings, change nothing)");
     console.error("   e.g. npm run rename -- designer.browser/1663 e:asset t@57:category");
     process.exit(2);
 }
 
 const [target, ...specArgs] = process.argv.slice(2);
 if (!target || !specArgs.length || !target.includes("/")) usage();
+const listOnly = specArgs.includes("--list");
 const [bundle, moduleArg] = target.split("/");
 const dir = path.join(BUNDLES_DIR, bundle);
 if (!fs.existsSync(dir)) {
@@ -53,14 +55,16 @@ if (!moduleFile) {
 const filePath = path.join(dir, moduleFile);
 const relPath = `src/bundles/${bundle}/${moduleFile}`;
 
-const specs = specArgs.map((s) => {
-    const m = s.match(/^([A-Za-z_$][\w$]*)(?:@(\d+))?:([A-Za-z_$][\w$]*)$/);
-    if (!m) {
-        console.error(`bad rename spec "${s}" (expected old:new or old@line:new)`);
-        process.exit(2);
-    }
-    return { oldName: m[1], line: m[2] ? parseInt(m[2], 10) : null, newName: m[3] };
-});
+const specs = listOnly
+    ? []
+    : specArgs.map((s) => {
+          const m = s.match(/^([A-Za-z_$][\w$]*)(?:@(\d+))?:([A-Za-z_$][\w$]*)$/);
+          if (!m) {
+              console.error(`bad rename spec "${s}" (expected old:new or old@line:new)`);
+              process.exit(2);
+          }
+          return { oldName: m[1], line: m[2] ? parseInt(m[2], 10) : null, newName: m[3] };
+      });
 for (const { newName } of specs) {
     if (!isValidName(newName)) {
         console.error(`"${newName}" is a reserved word or not a valid identifier`);
@@ -94,6 +98,19 @@ traverse(ast, {
 // to B. Occurrences outside the subtree (sibling functions) are unaffected.
 function nameUsedInRange(name, start, end) {
     return varIdents.some((v) => v.name === name && v.start >= start && v.start < end);
+}
+
+if (listOnly) {
+    const srcLines = src.split("\n");
+    const rows = [...bindings].sort((a, b) => a.identifier.start - b.identifier.start);
+    for (const b of rows) {
+        const l = b.identifier.loc.start.line;
+        console.log(
+            `${b.identifier.name}@${l}  (${b.kind}, ${b.references} ref${b.references === 1 ? "" : "s"})  ${srcLines[l - 1].trim().slice(0, 100)}`
+        );
+    }
+    console.log(`\n${rows.length} bindings in ${relPath} (nothing changed)`);
+    process.exit(0);
 }
 
 const edits = [];
