@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(96), require(4), require(13), require(32), require(33));
+        (require(96 /* polyfill:JSON */), require(4), require(13), require(32), require(33));
         var GObject = require(1);
         function i(e, t, n, i) {
             ((this._dialog = $("<div></div>")),

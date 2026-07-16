@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
             "use strict";
-            require(30);
+            require(30 /* polyfill:Object */);
             class n {
                 constructor() {
                     let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};

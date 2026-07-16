@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         function o(e) {
             Object.assign(this, e);
         }
-        (require(30),
+        (require(30 /* polyfill:Object */),
             require(3),
             (o.prototype.def = false),
             (o.prototype.id = null),

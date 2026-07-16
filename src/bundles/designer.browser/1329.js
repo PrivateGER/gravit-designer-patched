@@ -1,8 +1,8 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16),
-            i = o(require(880)),
-            a = o(require(1189));
+        var _interopRequireDefault = require(16),
+            i = _interopRequireDefault(require(880)),
+            a = _interopRequireDefault(require(1189));
         class r extends i.default {
             canActivate() {
                 return true;

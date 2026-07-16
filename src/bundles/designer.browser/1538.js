@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(8 /* Symbol */), require(20), require(34), require(4), require(13), require(38));
+        (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(4), require(13), require(38));
         const { GLocale, GLocaleKey } = require(1 /* GObject */),
             a = require(1166),
             r = require(177),

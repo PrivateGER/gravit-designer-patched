@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(19), require(168 /* PDFFetchStream */), require(30), require(8 /* Symbol */), require(196), require(3), require(91), require(4), require(13), require(32), require(38), require(169 /* PDFNetworkStream */), require(33), require(26), require(125), require(126), require(114));
+        (require(19), require(168 /* PDFFetchStream */), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(3), require(91 /* polyfill:String */), require(4), require(13), require(32), require(38), require(169 /* PDFNetworkStream */), require(33), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1);
         const {
                 gApi,

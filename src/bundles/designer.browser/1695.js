@@ -1,10 +1,10 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(4), require(13));
         var GPlatform = require(15),
-            a = o(require(1340)),
-            r = o(require(1344)),
+            a = _interopRequireDefault(require(1340)),
+            r = _interopRequireDefault(require(1344)),
             s = {
                 init: function (e) {
                     e = $.extend({ selector: null, submitCallback: null, noDblClickEdit: false }, e);

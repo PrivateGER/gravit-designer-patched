@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
             GPlatform = require(15),
-            r = o(require(443)),
-            s = o(require(1330));
+            r = _interopRequireDefault(require(443 /* _interopRequireWildcard */)),
+            s = _interopRequireDefault(require(1330));
         const { isExecutingOnMSTeamsSync } = r.default;
         var c = require(863),
             GFitAllAction = require(449),

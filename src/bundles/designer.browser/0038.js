@@ -1,4 +1,4 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        require(680);
+        require(680 /* polyfill:Iterator */);
     };

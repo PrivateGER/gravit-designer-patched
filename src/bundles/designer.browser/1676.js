@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(58), require(96), require(865), require(193), require(8 /* Symbol */), require(3), require(4), require(97));
+        (require(58 /* polyfill:Array */), require(96 /* polyfill:JSON */), require(865 /* polyfill:Number */), require(193), require(8 /* Symbol */), require(3), require(4), require(97));
         var GObject = require(1),
             designerConfig = require(10),
             GSaveAction = require(40);

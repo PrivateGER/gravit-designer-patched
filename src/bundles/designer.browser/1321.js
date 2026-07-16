@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(30), require(3));
+        (require(30 /* polyfill:Object */), require(3));
         var GObject = require(1);
         function i(e, t) {
             ((this.notification = Object.assign({ popup: false, annonymous: false }, e || {})), (this.builder = t));

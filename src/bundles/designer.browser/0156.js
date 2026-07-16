@@ -1,9 +1,9 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(30), require(20), require(271), require(71), require(151), require(34), require(91), require(4), require(32), require(33));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(30 /* polyfill:Object */), require(20 /* polyfill:RegExp */), require(271 /* polyfill:String */), require(71 /* polyfill:String */), require(151), require(34), require(91 /* polyfill:String */), require(4), require(32), require(33));
         var GSaveAction = require(40),
-            a = o(require(263 /* GRegex */));
+            a = _interopRequireDefault(require(263 /* GRegex */));
         const { FILE_ID_PREFIX } = require(10 /* designerConfig */);
         function s() {
             this._permissions = [];

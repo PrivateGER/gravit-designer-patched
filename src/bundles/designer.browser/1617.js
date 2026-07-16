@@ -1,16 +1,16 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(20), require(107), require(34));
+        var _interopRequireDefault = require(16);
+        (require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(34));
         var GObject = require(1),
             GPlatform = require(15),
-            r = o(require(1618)),
-            s = o(require(85)),
-            l = o(require(31)),
-            c = o(require(18 /* GCategory */)),
-            d = o(require(44 /* GSystemDialog */)),
-            u = o(require(443)),
-            p = o(require(1341));
+            r = _interopRequireDefault(require(1618)),
+            s = _interopRequireDefault(require(85)),
+            l = _interopRequireDefault(require(31)),
+            c = _interopRequireDefault(require(18 /* GCategory */)),
+            d = _interopRequireDefault(require(44 /* GSystemDialog */)),
+            u = _interopRequireDefault(require(443 /* _interopRequireWildcard */)),
+            p = _interopRequireDefault(require(1341));
         const { isExecutingOnMSTeamsSync } = u.default;
         class h extends l.default {
             constructor() {

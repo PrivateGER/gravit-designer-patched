@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports.cdrFormatVersionToReleaseYear = function (e) {
                 return parseFloat(e) + 2e3 - 2;
@@ -12,8 +12,8 @@ module.exports = function (module, exports, require) {
             require(193),
             require(8 /* Symbol */));
         var GObject = require(1),
-            a = o(require(217)),
-            r = o(require(86));
+            a = _interopRequireDefault(require(217)),
+            r = _interopRequireDefault(require(86));
         const s = require(1101),
             l = (exports.prepareCDRforSaving = async function (e, t, n, o, l) {
                 if (!gDesigner.getCDRIntegrationEngine()) return (t(), false);

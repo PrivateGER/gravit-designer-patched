@@ -1,9 +1,9 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = exports.GoogleToCloudRoleMap = void 0));
         var designerConfig = require(10),
-            a = o(require(788));
+            a = _interopRequireDefault(require(788));
         const r = (exports.GoogleToCloudRoleMap = {
             [a.default.Reader]: designerConfig.ShareRoles.Viewer.id,
             [a.default.Commenter]: designerConfig.ShareRoles.Reviewer.id,

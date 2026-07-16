@@ -1,8 +1,8 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GPlatform = require(15),
-            a = o(require(85));
+            a = _interopRequireDefault(require(85));
         class r {
             static isSupported() {
                 return r.isRuntimeSupported() && r.isWebBrowserSupported() && r.isPWAEventSupported();

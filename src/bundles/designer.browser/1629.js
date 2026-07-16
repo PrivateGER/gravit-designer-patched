@@ -1,9 +1,9 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(8 /* Symbol */), require(3));
         var GObject = require(1),
-            a = o(require(443));
+            a = _interopRequireDefault(require(443 /* _interopRequireWildcard */));
         const { isExecutingOnMSTeamsSync } = a.default;
         var GCategory = require(18),
             l = require(31);

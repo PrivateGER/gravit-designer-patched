@@ -153,7 +153,7 @@ var GravitDesigner = (function (e) {
     ,
     function (module, exports, require) {
         "use strict";
-        (require(618), require(627), require(628), require(629), require(630), require(631));
+        (require(618), require(627 /* polyfill:Promise */), require(628 /* polyfill:Promise */), require(629 /* polyfill:Promise */), require(630 /* polyfill:Promise */), require(631 /* polyfill:Promise */));
     },
     ,
     function (module, exports, require) {
@@ -282,7 +282,7 @@ var GravitDesigner = (function (e) {
     ,
     function (module, exports, require) {
         "use strict";
-        require(679);
+        require(679 /* polyfill:Iterator */);
     },
     ,
     ,
@@ -588,11 +588,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
             GPlatform = require(15),
-            r = o(require(844));
+            r = _interopRequireDefault(require(844));
         function s() {}
         (GObject.GObject.inherit(s, GObject.GObject),
             (s.SHORTCUT_DELAY = 500),
@@ -687,7 +687,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(670);
+        require(670 /* polyfill:Iterator */);
     },
     function (module, exports, require) {
         "use strict";
@@ -812,13 +812,13 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(680);
+        require(680 /* polyfill:Iterator */);
     },
     ,
     function (module, exports, require) {
         "use strict";
-        (require(91), require(842));
-        var o = require(16);
+        (require(91 /* polyfill:String */), require(842 /* polyfill:String */));
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports._cloneChildrenIntoReceiver = E),
             (exports._mergeChildren = x),
@@ -1204,19 +1204,19 @@ var GravitDesigner = (function (e) {
                 return e.substring(t.length);
             }),
             (exports.watchDog = void 0),
-            require(58),
+            require(58 /* polyfill:Array */),
             require(19),
             require(180),
-            require(181),
-            require(30),
+            require(181 /* polyfill:ArrayBuffer */),
+            require(30 /* polyfill:Object */),
             require(8 /* Symbol */),
             require(356),
-            require(20),
+            require(20 /* polyfill:RegExp */),
             require(3),
-            require(271),
-            require(71),
+            require(271 /* polyfill:String */),
+            require(71 /* polyfill:String */),
             require(151),
-            require(134),
+            require(134 /* polyfill:String */),
             require(1041),
             require(218),
             require(189),
@@ -1231,7 +1231,7 @@ var GravitDesigner = (function (e) {
             require(97),
             require(33));
         var GObject = require(1),
-            a = o(require(84)),
+            a = _interopRequireDefault(require(84)),
             r = require(1042);
         const s = require(1043);
         var l = require(250),
@@ -1395,7 +1395,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(682);
+        require(682 /* polyfill:Iterator */);
     },
     ,
     function (module, exports, require) {
@@ -1415,7 +1415,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(19), require(30), require(57), require(8 /* Symbol */), require(20), require(34), require(4), require(13), require(32), require(38), require(33), require(26));
+        (require(19), require(30 /* polyfill:Object */), require(57), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(4), require(13), require(32), require(38), require(33), require(26));
         var GObject = require(1),
             GPlatform = require(15);
         class a {
@@ -2600,13 +2600,13 @@ var GravitDesigner = (function (e) {
     ,
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(19), require(168 /* PDFFetchStream */), require(96), require(8 /* Symbol */), require(3), require(71), require(4), require(13), require(169 /* PDFNetworkStream */), require(26), require(125), require(126), require(114));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(19), require(168 /* PDFFetchStream */), require(96 /* polyfill:JSON */), require(8 /* Symbol */), require(3), require(71 /* polyfill:String */), require(4), require(13), require(169 /* PDFNetworkStream */), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1),
             GCommonNames = require(1036),
             designerConfig = require(10),
-            s = o(require(734)),
-            l = (o(require(355)), o(require(1037))),
+            s = _interopRequireDefault(require(734)),
+            l = (_interopRequireDefault(require(355)), _interopRequireDefault(require(1037))),
             c = require(255),
             d = require(590),
             GCategory = require(18),
@@ -3133,7 +3133,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(684);
+        require(684 /* polyfill:Iterator */);
     },
     function (module, exports, require) {
         var o, i, a, r, s, l, c, d, u, p, g, h, f, m, y, v, _, b, w;
@@ -3416,12 +3416,12 @@ var GravitDesigner = (function (e) {
     ,
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = o(require(31)),
-            r = o(require(567 /* GAnnotationsSidebar */)),
-            s = o(require(10 /* designerConfig */));
+            a = _interopRequireDefault(require(31)),
+            r = _interopRequireDefault(require(567 /* GAnnotationsSidebar */)),
+            s = _interopRequireDefault(require(10 /* designerConfig */));
         function l() {}
         (GObject.GObject.inherit(l, a.default),
             (l.prototype.isEnabled = function () {
@@ -3434,7 +3434,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(20);
+        require(20 /* polyfill:RegExp */);
         var o,
             i,
             a = require(25),
@@ -3518,12 +3518,12 @@ var GravitDesigner = (function (e) {
         "use strict";
         (require(19),
             require(180),
-            require(181),
+            require(181 /* polyfill:ArrayBuffer */),
             require(8 /* Symbol */),
-            require(20),
-            require(107),
+            require(20 /* polyfill:RegExp */),
+            require(107 /* polyfill:RegExp */),
             require(34),
-            require(134),
+            require(134 /* polyfill:String */),
             require(218),
             require(189),
             require(190),
@@ -3535,7 +3535,7 @@ var GravitDesigner = (function (e) {
             require(38),
             require(26),
             require(125),
-            require(126),
+            require(126 /* polyfill:URL */),
             require(114));
         var designerConfig = require(10),
             GObject = require(1),
@@ -4796,10 +4796,10 @@ var GravitDesigner = (function (e) {
     ,
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(30), require(20), require(271), require(71), require(151), require(34), require(91), require(4), require(32), require(33));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(30 /* polyfill:Object */), require(20 /* polyfill:RegExp */), require(271 /* polyfill:String */), require(71 /* polyfill:String */), require(151), require(34), require(91 /* polyfill:String */), require(4), require(32), require(33));
         var GSaveAction = require(40),
-            a = o(require(263 /* GRegex */));
+            a = _interopRequireDefault(require(263 /* GRegex */));
         const { FILE_ID_PREFIX } = require(10 /* designerConfig */);
         function s() {
             this._permissions = [];
@@ -5008,17 +5008,17 @@ var GravitDesigner = (function (e) {
     ,
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58),
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */),
             require(19),
-            require(328),
+            require(328 /* polyfill:Array */),
             require(180),
-            require(181),
-            require(30),
+            require(181 /* polyfill:ArrayBuffer */),
+            require(30 /* polyfill:Object */),
             require(8 /* Symbol */),
-            require(196),
-            require(20),
-            require(71),
+            require(196 /* polyfill:Promise */),
+            require(20 /* polyfill:RegExp */),
+            require(71 /* polyfill:String */),
             require(151),
             require(34),
             require(851),
@@ -5042,10 +5042,10 @@ var GravitDesigner = (function (e) {
             l = require(797),
             designerConfig = require(10),
             GSaveAction = require(40),
-            u = o(require(1468)),
-            p = o(require(1470)),
-            g = o(require(1471)),
-            h = o(require(177)),
+            u = _interopRequireDefault(require(1468)),
+            p = _interopRequireDefault(require(1470)),
+            g = _interopRequireDefault(require(1471)),
+            h = _interopRequireDefault(require(177)),
             PDFNodeStream = require(165);
         const m = require(1472);
         var y = require(388),
@@ -7030,7 +7030,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(683);
+        require(683 /* polyfill:Iterator */);
     },
     ,
     function (module, exports) {
@@ -7079,7 +7079,7 @@ var GravitDesigner = (function (e) {
     ,
     function (module, exports, require) {
         "use strict";
-        (require(30), require(20), require(107), require(3), require(247), require(91));
+        (require(30 /* polyfill:Object */), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(3), require(247), require(91 /* polyfill:String */));
         var GRegex = require(263),
             designerConfig = require(10);
         const { GObject } = require(1 /* GObject */),
@@ -7792,7 +7792,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(353)("Uint8", function (e) {
+        require(353 /* polyfill:Object */)("Uint8", function (e) {
             return function (t, n, o) {
                 return e(this, t, n, o);
             };
@@ -7823,15 +7823,15 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(19), require(96), require(30), require(8 /* Symbol */), require(4), require(41), require(13), require(26));
+        var _interopRequireDefault = require(16);
+        (require(19), require(96 /* polyfill:JSON */), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(4), require(41), require(13), require(26));
         var GObject = require(1),
             designerConfig = require(10),
-            r = o(require(336)),
-            s = o(require(44 /* GSystemDialog */)),
+            r = _interopRequireDefault(require(336)),
+            s = _interopRequireDefault(require(44 /* GSystemDialog */)),
             GSaveAction = require(40),
-            c = o(require(554)),
-            d = o(require(555)),
+            c = _interopRequireDefault(require(554)),
+            d = _interopRequireDefault(require(555)),
             GDocument = require(237),
             GCommonNames = require(119);
         const g = require(436),
@@ -9273,11 +9273,11 @@ var GravitDesigner = (function (e) {
     ,
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(8 /* Symbol */);
         var GObject = require(1),
             designerConfig = require(10),
-            r = o(require(1091)),
+            r = _interopRequireDefault(require(1091)),
             PDFNodeStream = require(165),
             l = require(219),
             String = require(9),
@@ -10089,7 +10089,7 @@ var GravitDesigner = (function (e) {
     ,
     function (module, exports, require) {
         "use strict";
-        (require(328), require(20), require(34), require(38));
+        (require(328 /* polyfill:Array */), require(20 /* polyfill:RegExp */), require(34), require(38));
         var GObject = require(1),
             GMissingFontsDialog = require(841),
             a = require(217),
@@ -10497,7 +10497,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(8 /* Symbol */), require(20), require(3), require(34), require(38));
+        (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(38));
         var GObject = require(1),
             GPlatform = require(15),
             GSaveAction = require(40),
@@ -10970,7 +10970,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(20);
+        require(20 /* polyfill:RegExp */);
         var o = require(29),
             i = require(79),
             a = require(306),
@@ -11595,7 +11595,7 @@ var GravitDesigner = (function (e) {
     ,
     function (module, exports, require) {
         "use strict";
-        require(669);
+        require(669 /* polyfill:Iterator */);
     },
     function (module, exports, require) {
         "use strict";
@@ -11944,7 +11944,7 @@ var GravitDesigner = (function (e) {
     ,
     function (module, exports, require) {
         "use strict";
-        (require(30), require(3), require(4), require(13));
+        (require(30 /* polyfill:Object */), require(3), require(4), require(13));
         var GObject = require(1),
             GPlatform = require(15),
             a = require(67),
@@ -12394,7 +12394,7 @@ var GravitDesigner = (function (e) {
         function o(e) {
             Object.assign(this, e);
         }
-        (require(30),
+        (require(30 /* polyfill:Object */),
             require(3),
             (o.prototype.def = false),
             (o.prototype.id = null),
@@ -12956,7 +12956,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(58), require(19), require(8 /* Symbol */), require(71), require(4), require(41), require(13), require(32), require(38), require(97), require(33), require(26));
+        (require(58 /* polyfill:Array */), require(19), require(8 /* Symbol */), require(71 /* polyfill:String */), require(4), require(41), require(13), require(32), require(38), require(97), require(33), require(26));
         var GObject = require(1),
             i = require(53),
             GSaveAction = require(40),
@@ -13323,9 +13323,9 @@ var GravitDesigner = (function (e) {
         function o(e) {
             this._providerManager = e;
         }
-        (require(20),
+        (require(20 /* polyfill:RegExp */),
             require(34),
-            require(134),
+            require(134 /* polyfill:String */),
             (o.Errors = { UnknownError: 0, ConnectionError: 1 }),
             (o.prototype._providerManager = null),
             (o.prototype._enabled = true),
@@ -13705,7 +13705,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(58), require(57), require(4), require(13), require(32), require(33));
+        (require(58 /* polyfill:Array */), require(57), require(4), require(13), require(32), require(33));
         var GObject = require(1),
             GPlatform = require(15),
             a = require(394),
@@ -14656,7 +14656,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(19), require(677));
+        (require(19), require(677 /* polyfill:String */));
         var o = require(25),
             RegExp = require(23),
             a = require(411),
@@ -15138,7 +15138,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(30);
+        require(30 /* polyfill:Object */);
         const o = require(1072);
         module.exports = Object.assign({}, o);
     },
@@ -15964,13 +15964,13 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         (require(32), require(33));
-        var o = require(16),
-            i = o(require(1504));
-        (require(58), require(30), require(8 /* Symbol */), require(20), require(3), require(271), require(71), require(34), require(4), require(41), require(13), require(38));
+        var _interopRequireDefault = require(16),
+            i = _interopRequireDefault(require(1504));
+        (require(58 /* polyfill:Array */), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(271 /* polyfill:String */), require(71 /* polyfill:String */), require(34), require(4), require(41), require(13), require(38));
         var GObject = require(1),
             GPlatform = require(15),
             s = require(67),
-            l = o(require(1248)),
+            l = _interopRequireDefault(require(1248)),
             designerConfig = require(10);
         function d(e, t) {
             var n = Object.keys(e);
@@ -16177,10 +16177,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GObject = require(1),
-            a = o(require(119 /* GCommonNames */)),
-            r = o(require(860));
+            a = _interopRequireDefault(require(119 /* GCommonNames */)),
+            r = _interopRequireDefault(require(860));
         function s(e) {
             let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : () => {};
             ((this._cb = e), (this._showFormCb = t), this._run());
@@ -20274,17 +20274,17 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(30), require(57), require(8 /* Symbol */), require(196), require(356), require(20), require(3), require(34), require(4), require(41), require(13), require(97));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(30 /* polyfill:Object */), require(57), require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(356), require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(41), require(13), require(97));
         var GObject = require(1),
             GSaveAction = require(40),
-            r = o(require(847)),
-            s = o(require(848 /* GGoogleDrive */)),
-            l = o(require(44 /* GSystemDialog */)),
+            r = _interopRequireDefault(require(847)),
+            s = _interopRequireDefault(require(848 /* GGoogleDrive */)),
+            l = _interopRequireDefault(require(44 /* GSystemDialog */)),
             designerConfig = require(10),
-            d = o(require(787)),
-            u = o(require(789)),
-            p = o(require(555));
+            d = _interopRequireDefault(require(787)),
+            u = _interopRequireDefault(require(789)),
+            p = _interopRequireDefault(require(555));
         const g = require(388),
             GCommonNames = require(119),
             f = require(595),
@@ -20851,15 +20851,15 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(8 /* Symbol */), require(3), require(71), require(4), require(41), require(13), require(32), require(38), require(97), require(33));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(8 /* Symbol */), require(3), require(71 /* polyfill:String */), require(4), require(41), require(13), require(32), require(38), require(97), require(33));
         var i = require(53),
             GObject = require(1),
             GPlatform = require(15),
-            s = o(require(238)),
-            l = o(require(339)),
+            s = _interopRequireDefault(require(238)),
+            l = _interopRequireDefault(require(339)),
             c = require(67),
-            d = o(require(340)),
+            d = _interopRequireDefault(require(340)),
             GSettingsDialog = require(1275),
             p = require(444),
             g = require(78),
@@ -21880,11 +21880,11 @@ var GravitDesigner = (function (e) {
             let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
             Object.assign(this, e);
         }
-        (require(30), (o.prototype.getUID = function () {}), (module.exports = o));
+        (require(30 /* polyfill:Object */), (o.prototype.getUID = function () {}), (module.exports = o));
     },
     function (module, exports, require) {
         "use strict";
-        (require(20), require(34), require(134), require(4), require(41), require(13), require(32), require(33));
+        (require(20 /* polyfill:RegExp */), require(34), require(134 /* polyfill:String */), require(4), require(41), require(13), require(32), require(33));
         var GObject = require(1),
             i = require(1075),
             a = require(381);
@@ -22089,7 +22089,7 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         function o() {}
-        (require(30),
+        (require(30 /* polyfill:Object */),
             Object.assign(o, {
                 SETUP: { ENDPOINT: "SETUP_URL_ENDPOINT" },
                 COMMAND_SAVE: {
@@ -22158,7 +22158,7 @@ var GravitDesigner = (function (e) {
             }),
             require(19),
             require(180),
-            require(181),
+            require(181 /* polyfill:ArrayBuffer */),
             require(57),
             require(8 /* Symbol */),
             require(218),
@@ -22184,7 +22184,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(30), require(8 /* Symbol */));
+        (require(30 /* polyfill:Object */), require(8 /* Symbol */));
         var designerConfig = require(10);
         function i(e) {
             const { accessToken, expires, corporate, accountId } = new i.Settings(e);
@@ -22388,7 +22388,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(58), require(8 /* Symbol */), require(71), require(4), require(13), require(38));
+        (require(58 /* polyfill:Array */), require(8 /* Symbol */), require(71 /* polyfill:String */), require(4), require(13), require(38));
         var GObject = require(1);
         const GPurchasePanel = require(1507),
             GAccountPanel = require(1508),
@@ -25484,7 +25484,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(353)("Uint32", function (e) {
+        require(353 /* polyfill:Object */)("Uint32", function (e) {
             return function (t, n, o) {
                 return e(this, t, n, o);
             };
@@ -26096,7 +26096,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(30), require(8 /* Symbol */));
+        (require(30 /* polyfill:Object */), require(8 /* Symbol */));
         module.exports = new (class {
             constructor() {
                 ((this._cache = {}), (this._initiliazed = false));
@@ -26150,10 +26150,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = exports.GoogleToCloudRoleMap = void 0));
         var designerConfig = require(10),
-            a = o(require(788));
+            a = _interopRequireDefault(require(788));
         const r = (exports.GoogleToCloudRoleMap = {
             [a.default.Reader]: designerConfig.ShareRoles.Viewer.id,
             [a.default.Commenter]: designerConfig.ShareRoles.Reviewer.id,
@@ -26179,10 +26179,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = exports.NoAccessId = exports.CloudToGoogleRoleMap = void 0));
         var designerConfig = require(10),
-            a = o(require(788));
+            a = _interopRequireDefault(require(788));
         const r = (exports.NoAccessId = "NoAccess"),
             s = (exports.CloudToGoogleRoleMap = {
                 [designerConfig.ShareRoles.Viewer.id]: a.default.Reader,
@@ -43432,16 +43432,16 @@ var GravitDesigner = (function (e) {
     ,
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports.default = exports.WINDOW_STATUS_BLOCKED = void 0),
-            require(58),
+            require(58 /* polyfill:Array */),
             require(19),
-            require(96),
+            require(96 /* polyfill:JSON */),
             require(57),
             require(8 /* Symbol */),
-            require(71),
-            require(134),
+            require(71 /* polyfill:String */),
+            require(134 /* polyfill:String */),
             require(4),
             require(41),
             require(13),
@@ -43449,8 +43449,8 @@ var GravitDesigner = (function (e) {
             require(97),
             require(26));
         var GObject = require(1),
-            a = o(require(355)),
-            r = o(require(594)),
+            a = _interopRequireDefault(require(355)),
+            r = _interopRequireDefault(require(594)),
             s = require(858);
         const l = require(1240),
             c = require(520),
@@ -44193,12 +44193,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = o(require(18 /* GCategory */)),
-            s = o(require(31)),
-            l = o(require(1281));
+            r = _interopRequireDefault(require(18 /* GCategory */)),
+            s = _interopRequireDefault(require(31)),
+            l = _interopRequireDefault(require(1281));
         class c extends l.default {
             static getActionSubId(e) {
                 return "".concat(c.ID, ".").concat(e);
@@ -45123,7 +45123,7 @@ var GravitDesigner = (function (e) {
     ,
     function (module, exports, require) {
         "use strict";
-        (require(96), require(4), require(13), require(32), require(33));
+        (require(96 /* polyfill:JSON */), require(4), require(13), require(32), require(33));
         var GObject = require(1);
         function i(e, t, n, i) {
             ((this._dialog = $("<div></div>")),
@@ -45280,7 +45280,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(1039);
+        require(1039 /* polyfill:String */);
         var o = require(25),
             i = require(735);
         o(
@@ -45354,7 +45354,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports.updateFileFn =
                 exports.syncImagesToCloud =
@@ -45365,13 +45365,13 @@ var GravitDesigner = (function (e) {
                     void 0),
             require(19),
             require(180),
-            require(181),
-            require(96),
-            require(30),
+            require(181 /* polyfill:ArrayBuffer */),
+            require(96 /* polyfill:JSON */),
+            require(30 /* polyfill:Object */),
             require(8 /* Symbol */),
-            require(20),
+            require(20 /* polyfill:RegExp */),
             require(3),
-            require(134),
+            require(134 /* polyfill:String */),
             require(218),
             require(189),
             require(190),
@@ -45379,7 +45379,7 @@ var GravitDesigner = (function (e) {
             require(192),
             require(26),
             require(114));
-        var i = o(require(227));
+        var i = _interopRequireDefault(require(227));
         const a = require(435),
             r = (exports.syncImagesToCloud = async function (e, t, n, o, r, s, l, c, d) {
                 try {
@@ -45481,7 +45481,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(30);
+        require(30 /* polyfill:Object */);
         var IS_TRUNK = require(231);
         const { License, LicenseType, DateAPI } = require(10 /* designerConfig */),
             {
@@ -45521,7 +45521,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports.cdrFormatVersionToReleaseYear = function (e) {
                 return parseFloat(e) + 2e3 - 2;
@@ -45533,8 +45533,8 @@ var GravitDesigner = (function (e) {
             require(193),
             require(8 /* Symbol */));
         var GObject = require(1),
-            a = o(require(217)),
-            r = o(require(86));
+            a = _interopRequireDefault(require(217)),
+            r = _interopRequireDefault(require(86));
         const s = require(1101),
             l = (exports.prepareCDRforSaving = async function (e, t, n, o, l) {
                 if (!gDesigner.getCDRIntegrationEngine()) return (t(), false);
@@ -45576,12 +45576,12 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         require(557);
-        var o = require(16);
-        (require(19), require(96), require(30), require(8 /* Symbol */), require(20), require(3), require(34), require(4), require(41), require(38), require(97), require(26), require(125), require(126), require(114));
+        var _interopRequireDefault = require(16);
+        (require(19), require(96 /* polyfill:JSON */), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(41), require(38), require(97), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1),
             GSaveAction = require(40),
             r = require(593),
-            s = o(require(787)),
+            s = _interopRequireDefault(require(787)),
             l = (function (e, t) {
                 if ("function" == typeof WeakMap)
                     var n = new WeakMap(),
@@ -45605,7 +45605,7 @@ var GravitDesigner = (function (e) {
                     return r;
                 })(e, t);
             })(require(789)),
-            c = o(require(594));
+            c = _interopRequireDefault(require(594));
         const d = require(1108),
             u = require(595),
             { HTTP_STATUS_CODES } = require(10 /* designerConfig */);
@@ -46221,7 +46221,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(19), require(30), require(8 /* Symbol */), require(20), require(3), require(34), require(4), require(13), require(32), require(33), require(26), require(125), require(126), require(114));
+        (require(19), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(13), require(32), require(33), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1),
             GRegex = require(263),
             GSaveAction = require(40);
@@ -46422,7 +46422,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(30), require(3));
+        (require(30 /* polyfill:Object */), require(3));
         var GObject = require(1),
             GPlatform = require(15),
             a = require(67),
@@ -46565,7 +46565,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports.lookupByMimeType =
                 exports.lookupByExtension =
@@ -46575,14 +46575,14 @@ var GravitDesigner = (function (e) {
                 exports.FILE_EXTENSIONS =
                 exports.DEFAULT_TYPE =
                     void 0),
-            require(58),
+            require(58 /* polyfill:Array */),
             require(19),
             require(168 /* PDFFetchStream */),
-            require(96),
-            require(30),
+            require(96 /* polyfill:JSON */),
+            require(30 /* polyfill:Object */),
             require(57),
             require(8 /* Symbol */),
-            require(71),
+            require(71 /* polyfill:String */),
             require(4),
             require(41),
             require(13),
@@ -46593,11 +46593,11 @@ var GravitDesigner = (function (e) {
             require(26));
         var GObject = require(1),
             designerConfig = require(10),
-            r = o(require(119 /* GCommonNames */)),
-            s = o(require(220 /* GCommonNames */)),
-            l = o(require(163 /* GDocument */)),
-            c = o(require(86)),
-            d = o(require(802)),
+            r = _interopRequireDefault(require(119 /* GCommonNames */)),
+            s = _interopRequireDefault(require(220 /* GCommonNames */)),
+            l = _interopRequireDefault(require(163 /* GDocument */)),
+            c = _interopRequireDefault(require(86)),
+            d = _interopRequireDefault(require(802)),
             u = require(593);
         const p = require(156),
             { FILE_FORMATS, FOLDER_FORMAT, MAX_FOLDER_DEPTH_FOR_CLOUD } = require(10 /* designerConfig */);
@@ -47571,7 +47571,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(328), require(3));
+        (require(328 /* polyfill:Array */), require(3));
         var o = require(53),
             GObject = require(1),
             a = require(67),
@@ -48327,7 +48327,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(20), require(3), require(34));
+        (require(20 /* polyfill:RegExp */), require(3), require(34));
         var GObject = require(1),
             GPlatform = require(15),
             GCategory = require(18),
@@ -48642,9 +48642,9 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             designerConfig = require(10),
-            a = o(require(1582));
+            a = _interopRequireDefault(require(1582));
         module.exports = class {
             constructor(e) {
                 ((this._target = e),
@@ -48748,7 +48748,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(30), require(4), require(322));
+        (require(30 /* polyfill:Object */), require(4), require(322));
         var GObject = require(1),
             GPlatform = require(15);
         const a = require(880);
@@ -48873,7 +48873,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports.getCollabInfo = c),
             (exports.handleCollabsData = async function (e) {
@@ -48985,12 +48985,12 @@ var GravitDesigner = (function (e) {
                 });
             }),
             (exports.updateAssignee = d),
-            require(58),
+            require(58 /* polyfill:Array */),
             require(19),
             require(168 /* PDFFetchStream */),
             require(8 /* Symbol */),
-            require(20),
-            require(71),
+            require(20 /* polyfill:RegExp */),
+            require(71 /* polyfill:String */),
             require(34),
             require(4),
             require(41),
@@ -49001,7 +49001,7 @@ var GravitDesigner = (function (e) {
             require(33),
             require(26));
         var designerConfig = require(10),
-            a = o(require(883)),
+            a = _interopRequireDefault(require(883)),
             GAnnotationPanel = require(1353);
         const s = (0, GAnnotationPanel.createAdditionalMentions)(),
             l = {};
@@ -49014,7 +49014,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(30);
+        require(30 /* polyfill:Object */);
         const o = require(177);
         class i extends o {
             constructor() {
@@ -49225,7 +49225,7 @@ var GravitDesigner = (function (e) {
     ,
     function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.GGoogleAPI = exports.GDefaultGoogleAPI = void 0), require(19), require(30), require(8 /* Symbol */), require(26));
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.GGoogleAPI = exports.GDefaultGoogleAPI = void 0), require(19), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(26));
         var designerConfig = require(10),
             GObject = require(1);
         class a {
@@ -49433,11 +49433,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(19), require(8 /* Symbol */), require(134), require(4), require(13), require(26));
+        var _interopRequireDefault = require(16);
+        (require(19), require(8 /* Symbol */), require(134 /* polyfill:String */), require(4), require(13), require(26));
         var GObject = require(1),
             designerConfig = require(10),
-            r = o(require(536));
+            r = _interopRequireDefault(require(536));
         class s {
             static async setLanguage(e) {
                 try {
@@ -49538,7 +49538,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(353)("Float64", function (e) {
+        require(353 /* polyfill:Object */)("Float64", function (e) {
             return function (t, n, o) {
                 return e(this, t, n, o);
             };
@@ -51481,7 +51481,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(30);
+        require(30 /* polyfill:Object */);
         const { GObject } = require(1 /* GObject */);
         class i {
             constructor(e) {
@@ -51642,7 +51642,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(19), require(8 /* Symbol */), require(20), require(107), require(3), require(34), require(4), require(13), require(26));
+        (require(19), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(3), require(34), require(4), require(13), require(26));
         var designerConfig = require(10),
             GObject = require(1),
             a = require(10 /* designerConfig */);
@@ -52409,7 +52409,7 @@ var GravitDesigner = (function (e) {
             RegExp = require(23),
             r = require(27),
             s = require(232),
-            l = require(558),
+            l = require(558 /* polyfill:Object */),
             c = require(1106),
             d = require(1107),
             u = require(46),
@@ -52534,7 +52534,7 @@ var GravitDesigner = (function (e) {
             a = require(27),
             r = require(277),
             s = require(79),
-            l = require(558),
+            l = require(558 /* polyfill:Object */),
             c = require(121),
             d = require(146),
             u = require(35),
@@ -52625,7 +52625,7 @@ var GravitDesigner = (function (e) {
         "use strict";
         var o = require(27),
             i = require(232),
-            a = require(558).getWeakData,
+            a = require(558 /* polyfill:Object */).getWeakData,
             r = require(146),
             s = require(37),
             l = require(194),
@@ -52726,7 +52726,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(96), require(57), require(20), require(151), require(38));
+        (require(96 /* polyfill:JSON */), require(57), require(20 /* polyfill:RegExp */), require(151), require(38));
         var i = function () {
             ((this.interval = 1e3), (this.maxInterval = 6e4));
         };
@@ -56565,7 +56565,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(180), require(181), require(57), require(20), require(34), require(134), require(4), require(41), require(32), require(38), require(33));
+        (require(180), require(181 /* polyfill:ArrayBuffer */), require(57), require(20 /* polyfill:RegExp */), require(34), require(134 /* polyfill:String */), require(4), require(41), require(32), require(38), require(33));
         var GObject = require(1),
             i = require(381),
             a = require(255),
@@ -56942,7 +56942,7 @@ var GravitDesigner = (function (e) {
     ,
     function (module, exports, require) {
         "use strict";
-        (require(193), require(57), require(20), require(107), require(34), require(134), require(4), require(13), require(32), require(38), require(33));
+        (require(193), require(57), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(34), require(134 /* polyfill:String */), require(4), require(13), require(32), require(38), require(33));
         var o = require(53),
             GObject = require(1),
             GPlatform = require(15),
@@ -59380,15 +59380,15 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(30), require(8 /* Symbol */), require(196), require(3));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(3));
         var GObject = require(1),
             a = require(847),
-            r = o(require(1239)),
-            s = o(require(388)),
-            l = o(require(1481)),
+            r = _interopRequireDefault(require(1239)),
+            s = _interopRequireDefault(require(388)),
+            l = _interopRequireDefault(require(1481)),
             designerConfig = require(10),
-            d = o(require(594));
+            d = _interopRequireDefault(require(594));
         const u = require(86),
             p = require(336),
             g = require(436),
@@ -60604,8 +60604,8 @@ var GravitDesigner = (function (e) {
             }),
             require(19),
             require(180),
-            require(181),
-            require(20),
+            require(181 /* polyfill:ArrayBuffer */),
+            require(20 /* polyfill:RegExp */),
             require(34),
             require(247),
             require(218),
@@ -60865,12 +60865,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(19), require(30), require(193), require(57), require(3), require(4), require(13), require(26));
+        var _interopRequireDefault = require(16);
+        (require(19), require(30 /* polyfill:Object */), require(193), require(57), require(3), require(4), require(13), require(26));
         var i = require(53),
             GObject = require(1),
             r = require(67),
-            s = o(require(340)),
+            s = _interopRequireDefault(require(340)),
             l = require(123),
             c = require(857);
         require(173);
@@ -61266,17 +61266,17 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(19), require(57), require(4), require(13), require(26));
         var GPlatform = require(15),
             a = require(53),
             GObject = require(1),
             s = require(67),
-            l = o(require(340)),
-            c = o(require(807)),
-            d = o(require(198 /* SidebarsIds */)),
+            l = _interopRequireDefault(require(340)),
+            c = _interopRequireDefault(require(807)),
+            d = _interopRequireDefault(require(198 /* SidebarsIds */)),
             u = require(1161),
-            p = o(require(565)),
+            p = _interopRequireDefault(require(565)),
             designerConfig = require(10),
             h = require(123),
             f = require(450);
@@ -62657,7 +62657,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(58), require(8 /* Symbol */), require(71), require(4), require(13), require(38), require(97));
+        (require(58 /* polyfill:Array */), require(8 /* Symbol */), require(71 /* polyfill:String */), require(4), require(13), require(38), require(97));
         var GObject = require(1);
         const i = require(78),
             a = require(393),
@@ -62814,7 +62814,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(58), require(8 /* Symbol */), require(71));
+        (require(58 /* polyfill:Array */), require(8 /* Symbol */), require(71 /* polyfill:String */));
         const o = require(177),
             i = require(805),
             { gApi } = require(10 /* designerConfig */),
@@ -62932,10 +62932,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(20), require(34));
+        var _interopRequireDefault = require(16);
+        (require(20 /* polyfill:RegExp */), require(34));
         var GObject = require(1),
-            a = o(require(31));
+            a = _interopRequireDefault(require(31));
         class r extends a.default {
             static getSubActionId(e, t) {
                 return "".concat(e, ".").concat(t);
@@ -63034,7 +63034,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(20), require(3), require(34));
+        (require(20 /* polyfill:RegExp */), require(3), require(34));
         var GObject = require(1),
             GPlatform = require(15),
             SidebarsIds = require(198),
@@ -63103,7 +63103,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(20), require(3), require(34));
+        (require(20 /* polyfill:RegExp */), require(3), require(34));
         var GObject = require(1),
             GPlatform = require(15),
             a = require(67),
@@ -63180,12 +63180,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = (require(15 /* GPlatform */), o(require(31))),
-            r = (o(require(85)), o(require(18 /* GCategory */))),
-            s = o(require(1173));
+            a = (require(15 /* GPlatform */), _interopRequireDefault(require(31))),
+            r = (_interopRequireDefault(require(85)), _interopRequireDefault(require(18 /* GCategory */))),
+            s = _interopRequireDefault(require(1173));
         function l() {}
         (GObject.GObject.inherit(l, a.default),
             (l.ID = "file.install-to-desktop"),
@@ -63236,9 +63236,9 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GPlatform = require(15),
-            a = o(require(85));
+            a = _interopRequireDefault(require(85));
         class r {
             static isSupported() {
                 return r.isRuntimeSupported() && r.isWebBrowserSupported() && r.isPWAEventSupported();
@@ -63272,7 +63272,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(1559);
+        require(1559 /* polyfill:Iterator */);
     },
     function (module, exports, require) {
         "use strict";
@@ -64302,15 +64302,15 @@ var GravitDesigner = (function (e) {
     ,
     function (module, exports, require) {
         "use strict";
-        (require(1196),
+        (require(1196 /* polyfill:Array */),
             require(19),
             require(1197),
             require(180),
-            require(181),
+            require(181 /* polyfill:ArrayBuffer */),
             require(8 /* Symbol */),
-            require(20),
-            require(107),
-            require(134),
+            require(20 /* polyfill:RegExp */),
+            require(107 /* polyfill:RegExp */),
+            require(134 /* polyfill:String */),
             require(218),
             require(189),
             require(190),
@@ -64819,7 +64819,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(328), require(57), require(8 /* Symbol */), require(20), require(34), require(134), require(4), require(41), require(13), require(38));
+        (require(328 /* polyfill:Array */), require(57), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(134 /* polyfill:String */), require(4), require(41), require(13), require(38));
         var GObject = require(1),
             i = require(381);
         const { parseNativeFonts, getLocalFontsData, getFontFamily } = require(1200);
@@ -64954,7 +64954,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(290), require(1381), require(19), require(57), require(8 /* Symbol */), require(20), require(34), require(26));
+        (require(290), require(1381), require(19), require(57), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(26));
         var GObject = require(1);
         function i(e) {
             function t(e) {
@@ -65698,40 +65698,40 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(842);
-        var o = require(16);
+        require(842 /* polyfill:String */);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports.default = exports.TEAMS_COMMANDS = exports.GSharePointClient = void 0),
-            require(58),
+            require(58 /* polyfill:Array */),
             require(19),
-            require(96),
-            require(30),
+            require(96 /* polyfill:JSON */),
+            require(30 /* polyfill:Object */),
             require(57),
             require(8 /* Symbol */),
             require(356),
-            require(20),
-            require(107),
+            require(20 /* polyfill:RegExp */),
+            require(107 /* polyfill:RegExp */),
             require(3),
-            require(271),
+            require(271 /* polyfill:String */),
             require(34),
-            require(134),
-            require(91),
+            require(134 /* polyfill:String */),
+            require(91 /* polyfill:String */),
             require(4),
             require(13),
             require(38),
             require(26),
             require(125),
-            require(126),
+            require(126 /* polyfill:URL */),
             require(114));
         var GObject = require(1),
-            a = o(require(1476)),
+            a = _interopRequireDefault(require(1476)),
             r = require(802),
-            s = o(require(119 /* GCommonNames */)),
+            s = _interopRequireDefault(require(119 /* GCommonNames */)),
             designerConfig = require(10),
             c = require(593),
-            d = o(require(594)),
-            u = o(require(1477)),
-            p = o(require(1242 /* GMSTeamsAuthenticator */)),
+            d = _interopRequireDefault(require(594)),
+            u = _interopRequireDefault(require(1477)),
+            p = _interopRequireDefault(require(1242 /* GMSTeamsAuthenticator */)),
             GSaveAction = require(40);
         const h = require(156);
         let f = null,
@@ -66563,7 +66563,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(30);
+        require(30 /* polyfill:Object */);
         const { FILE_FORMATS } = require(10 /* designerConfig */);
         class i {
             constructor() {
@@ -66612,12 +66612,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(96), require(30), require(8 /* Symbol */));
+        var _interopRequireDefault = require(16);
+        (require(96 /* polyfill:JSON */), require(30 /* polyfill:Object */), require(8 /* Symbol */));
         var GObject = require(1),
             a = require(1479),
-            r = o(require(44 /* GSystemDialog */)),
-            s = o(require(443)),
+            r = _interopRequireDefault(require(44 /* GSystemDialog */)),
+            s = _interopRequireDefault(require(443 /* _interopRequireWildcard */)),
             l = require(1243),
             GSaveAction = require(40);
         const { getAuthenticator, getTeamsContext } = s.default;
@@ -67002,7 +67002,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports.shouldShowExternalFileError = function (e) {
                 return e instanceof s.Item && !e.hasFileSettings();
@@ -67028,7 +67028,7 @@ var GravitDesigner = (function (e) {
             require(38));
         var GSaveAction = require(40),
             designerConfig = require(10),
-            r = o(require(1248));
+            r = _interopRequireDefault(require(1248));
         const s = require(388);
     },
     function (module, exports, require) {
@@ -67052,9 +67052,9 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0));
-        var i = o(require(1493));
+        var i = _interopRequireDefault(require(1493));
         class a extends i.default {
             constructor() {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -67096,7 +67096,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(19), require(30), require(8 /* Symbol */), require(3), require(4), require(32), require(33), require(26), require(125), require(126), require(114));
+        (require(19), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(3), require(4), require(32), require(33), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         const GProfileDialog = require(604);
         module.exports = class {
             constructor() {
@@ -67188,7 +67188,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(19), require(180), require(181), require(8 /* Symbol */), require(91), require(218), require(189), require(190), require(191), require(192), require(4), require(41), require(13), require(38));
+        (require(19), require(180), require(181 /* polyfill:ArrayBuffer */), require(8 /* Symbol */), require(91 /* polyfill:String */), require(218), require(189), require(190), require(191), require(192), require(4), require(41), require(13), require(38));
         var GObject = require(1),
             i = require(797),
             GSaveAction = require(40),
@@ -67509,7 +67509,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(19), require(3), require(26), require(125), require(126), require(114));
+        (require(19), require(3), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1);
         const GCategory = require(18),
             a = require(31),
@@ -67566,13 +67566,13 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(20), require(34));
-        var i = o(require(78)),
-            a = o(require(86)),
-            r = o(require(449 /* GFitAllAction */)),
-            s = o(require(85)),
-            l = o(require(237 /* GDocument */)),
+        var _interopRequireDefault = require(16);
+        (require(20 /* polyfill:RegExp */), require(34));
+        var i = _interopRequireDefault(require(78)),
+            a = _interopRequireDefault(require(86)),
+            r = _interopRequireDefault(require(449 /* GFitAllAction */)),
+            s = _interopRequireDefault(require(85)),
+            l = _interopRequireDefault(require(237 /* GDocument */)),
             GObject = require(1);
         module.exports = class {
             static handleOpenFileRequest(e, t) {
@@ -67640,15 +67640,15 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = o(require(31)),
-            r = o(require(18 /* GCategory */)),
-            s = o(require(119 /* GCommonNames */)),
-            l = o(require(1159)),
-            c = o(require(219)),
-            d = o(require(256 /* GOfflineDialog */)),
+            a = _interopRequireDefault(require(31)),
+            r = _interopRequireDefault(require(18 /* GCategory */)),
+            s = _interopRequireDefault(require(119 /* GCommonNames */)),
+            l = _interopRequireDefault(require(1159)),
+            c = _interopRequireDefault(require(219)),
+            d = _interopRequireDefault(require(256 /* GOfflineDialog */)),
             u = require(67);
         function p() {
             ((this._title = new GObject.GLocaleKey("GVersionsHistoryAction", "title")),
@@ -68155,14 +68155,14 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(596), require(30), require(57), require(8 /* Symbol */), require(3), require(4), require(41), require(13), require(32), require(33));
+        var _interopRequireDefault = require(16);
+        (require(596 /* polyfill:Array */), require(30 /* polyfill:Object */), require(57), require(8 /* Symbol */), require(3), require(4), require(41), require(13), require(32), require(33));
         var i = require(53),
             GObject = require(1),
             GPlatform = require(15),
-            s = o(require(340)),
+            s = _interopRequireDefault(require(340)),
             l = require(67),
-            c = o(require(442)),
+            c = _interopRequireDefault(require(442)),
             d = require(78),
             u = require(217),
             p = require(86),
@@ -69112,18 +69112,18 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(57), require(4), require(13));
         var GPlatform = require(15),
             a = require(53),
             GObject = require(1),
             designerConfig = require(10),
             l = require(67),
-            c = o(require(340)),
-            d = o(require(807)),
-            u = o(require(198 /* SidebarsIds */)),
+            c = _interopRequireDefault(require(340)),
+            d = _interopRequireDefault(require(807)),
+            u = _interopRequireDefault(require(198 /* SidebarsIds */)),
             p = require(1161),
-            g = o(require(565)),
+            g = _interopRequireDefault(require(565)),
             h = require(123),
             f = require(450);
         const m = require(607),
@@ -69922,16 +69922,16 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(328), require(96), require(865), require(193), require(57), require(3), require(4), require(13));
+        var _interopRequireDefault = require(16);
+        (require(328 /* polyfill:Array */), require(96 /* polyfill:JSON */), require(865 /* polyfill:Number */), require(193), require(57), require(3), require(4), require(13));
         var i = require(53),
             GObject = require(1),
             GPlatform = require(15),
             s = require(67),
-            l = o(require(340)),
-            c = o(require(807)),
+            l = _interopRequireDefault(require(340)),
+            c = _interopRequireDefault(require(807)),
             d = require(1161),
-            u = o(require(565)),
+            u = _interopRequireDefault(require(565)),
             p = require(123),
             g = require(1263),
             h = require(1526),
@@ -74840,11 +74840,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(3), require(4), require(13));
         var GObject = require(1),
             a = require(53),
-            r = o(require(340)),
+            r = _interopRequireDefault(require(340)),
             s = require(123),
             l = (require(173), require(135));
         function c() {
@@ -75085,19 +75085,19 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(58),
+        (require(58 /* polyfill:Array */),
             require(19),
             require(168 /* PDFFetchStream */),
-            require(328),
-            require(96),
+            require(328 /* polyfill:Array */),
+            require(96 /* polyfill:JSON */),
             require(193),
             require(57),
             require(8 /* Symbol */),
-            require(20),
+            require(20 /* polyfill:RegExp */),
             require(3),
-            require(71),
+            require(71 /* polyfill:String */),
             require(247),
-            require(134),
+            require(134 /* polyfill:String */),
             require(4),
             require(322),
             require(41),
@@ -77277,13 +77277,13 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(57), require(8 /* Symbol */), require(4), require(13), require(32), require(33));
         var GObject = require(1),
             a = require(53),
             designerConfig = require(10),
             GAutoSave = require(1276),
-            l = o(require(1278)),
+            l = _interopRequireDefault(require(1278)),
             c = require(85),
             d = null;
         function u() {
@@ -77788,7 +77788,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(58), require(19), require(193), require(8 /* Symbol */), require(196), require(20), require(34), require(4), require(13), require(26));
+        (require(58 /* polyfill:Array */), require(19), require(193), require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(20 /* polyfill:RegExp */), require(34), require(4), require(13), require(26));
         var GObject = require(1);
         const { gApi, AUTO_SAVE_ENABLED, AUTOSAVE_INTERVAL_DEFAULT, CloudIntegration, DESIGNER, EXTERNAL_APP } = require(10 /* designerConfig */),
             { buildDialogDocumentHasUpdates } = require(40 /* GSaveAction */),
@@ -78436,11 +78436,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(71), require(4), require(41), require(13), require(38));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(71 /* polyfill:String */), require(4), require(41), require(13), require(38));
         var GPlatform = require(15),
-            a = o(require(31)),
-            r = o(require(1168));
+            a = _interopRequireDefault(require(31)),
+            r = _interopRequireDefault(require(1168));
         class s extends a.default {
             constructor(e) {
                 (super(), (this.Type = e.Type));
@@ -78544,12 +78544,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(3), require(4), require(41));
         var GObject = require(1),
             GPlatform = require(15),
             r = require(67),
-            s = o(require(85)),
+            s = _interopRequireDefault(require(85)),
             designerConfig = require(10),
             GCategory = require(18),
             GDocument = require(163),
@@ -78620,7 +78620,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(20), require(3), require(34));
+        (require(20 /* polyfill:RegExp */), require(3), require(34));
         var GObject = require(1),
             GPlatform = require(15),
             a = require(67),
@@ -78785,7 +78785,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(20), require(3), require(34));
+        (require(20 /* polyfill:RegExp */), require(3), require(34));
         var GObject = require(1),
             GCategory = require(18),
             a = require(31);
@@ -79190,7 +79190,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(20), require(3), require(34), require(4), require(13));
+        (require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(13));
         var GObject = require(1);
         const { FILE_FORMATS, CLOUD_SYNC_FEATURE: { NEW_LAYOUT } = {} } = require(10 /* designerConfig */),
             GCategory = require(18),
@@ -79359,12 +79359,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(57), require(20), require(107), require(3), require(4), require(13));
+        var _interopRequireDefault = require(16);
+        (require(57), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(3), require(4), require(13));
         var i = require(53),
             GObject = require(1),
             r = require(67),
-            s = o(require(340)),
+            s = _interopRequireDefault(require(340)),
             GAlignAction = require(866),
             GDistributeAction = require(867),
             d = require(123),
@@ -80430,13 +80430,13 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
             GPlatform = require(15),
-            r = o(require(18 /* GCategory */)),
-            s = o(require(31)),
-            l = o(require(442));
+            r = _interopRequireDefault(require(18 /* GCategory */)),
+            s = _interopRequireDefault(require(31)),
+            l = _interopRequireDefault(require(442));
         function c() {}
         (GObject.GObject.inherit(c, s.default),
             (c.ID = "view.outline-view"),
@@ -80545,10 +80545,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = o(require(813));
+            r = _interopRequireDefault(require(813));
         function s() {}
         (GObject.GObject.inherit(s, r.default),
             (s.ID = "".concat(r.default.ID, ".safari")),
@@ -80565,18 +80565,18 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(19), require(596), require(328), require(8 /* Symbol */), require(20), require(71), require(34), require(4), require(41), require(13), require(32), require(38), require(97), require(33), require(26));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(19), require(596 /* polyfill:Array */), require(328 /* polyfill:Array */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(71 /* polyfill:String */), require(34), require(4), require(41), require(13), require(32), require(38), require(97), require(33), require(26));
         var GObject = require(1),
             GPlatform = require(15),
-            r = o(require(85)),
+            r = _interopRequireDefault(require(85)),
             s = require(858),
-            l = o(require(802)),
-            c = o(require(44 /* GSystemDialog */)),
+            l = _interopRequireDefault(require(802)),
+            c = _interopRequireDefault(require(44 /* GSystemDialog */)),
             GSaveAction = require(40),
-            u = o(require(177)),
+            u = _interopRequireDefault(require(177)),
             designerConfig = require(10),
-            g = o(require(355)),
+            g = _interopRequireDefault(require(355)),
             configBase = require(519);
         const f = require(1548),
             m = require(1166),
@@ -82122,7 +82122,7 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         function o() {}
-        (require(30),
+        (require(30 /* polyfill:Object */),
             require(57),
             (o.prototype.type = null),
             (o.prototype.hasKey = function (e) {
@@ -82744,10 +82744,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(3), require(38));
         var GObject = require(1),
-            a = o(require(609));
+            a = _interopRequireDefault(require(609));
         function r(e) {
             ((this._type = e), a.default.call(this, r.getId(e), r.getTitle(e)));
         }
@@ -82806,10 +82806,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(3), require(38));
         var GObject = require(1),
-            a = o(require(609));
+            a = _interopRequireDefault(require(609));
         function r() {
             a.default.call(this, r.ID, r.TITLE);
         }
@@ -82834,10 +82834,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = o(require(609));
+            a = _interopRequireDefault(require(609));
         function r() {
             a.default.call(this, r.ID, r.TITLE);
         }
@@ -82857,10 +82857,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = o(require(609));
+            a = _interopRequireDefault(require(609));
         function r() {
             a.default.call(this, r.ID, r.TITLE);
         }
@@ -82880,10 +82880,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = o(require(609));
+            a = _interopRequireDefault(require(609));
         function r() {
             a.default.call(this, r.ID, r.TITLE);
         }
@@ -82903,10 +82903,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = o(require(609));
+            a = _interopRequireDefault(require(609));
         function r() {
             a.default.call(this, r.ID, r.TITLE);
         }
@@ -83106,7 +83106,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(58), require(19), require(8 /* Symbol */), require(71), require(4), require(41), require(32), require(38), require(33), require(26));
+        (require(58 /* polyfill:Array */), require(19), require(8 /* Symbol */), require(71 /* polyfill:String */), require(4), require(41), require(32), require(38), require(33), require(26));
         var o = require(53),
             GObject = require(1),
             GPlatform = require(15),
@@ -83775,7 +83775,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(19), require(865), require(193), require(3), require(4), require(13), require(26));
+        (require(19), require(865 /* polyfill:Number */), require(193), require(3), require(4), require(13), require(26));
         var GObject = require(1),
             GPlatform = require(15),
             GSaveAction = require(40),
@@ -84107,7 +84107,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(30), require(3));
+        (require(30 /* polyfill:Object */), require(3));
         var GObject = require(1);
         function i(e, t) {
             ((this.notification = Object.assign({ popup: false, annonymous: false }, e || {})), (this.builder = t));
@@ -84121,11 +84121,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(19), require(30), require(8 /* Symbol */), require(20), require(3), require(34), require(4), require(13), require(32), require(38), require(97), require(33), require(26), require(125), require(126), require(114));
+        var _interopRequireDefault = require(16);
+        (require(19), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(13), require(32), require(38), require(97), require(33), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1),
-            a = o(require(256 /* GOfflineDialog */)),
-            r = o(require(355)),
+            a = _interopRequireDefault(require(256 /* GOfflineDialog */)),
+            r = _interopRequireDefault(require(355)),
             GSaveAction = require(40);
         const GSystemDialog = require(44),
             c = require(292),
@@ -84715,7 +84715,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(20), require(34));
+        (require(20 /* polyfill:RegExp */), require(34));
         const o = require(177),
             {
                 SharePermissions: { COMMENT, EDIT },
@@ -84761,7 +84761,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(30), require(8 /* Symbol */), require(20), require(527), require(107), require(4), require(32), require(33));
+        (require(30 /* polyfill:Object */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(527), require(107 /* polyfill:RegExp */), require(4), require(32), require(33));
         var designerConfig = require(10);
         const i = require(1326),
             a = require(1578),
@@ -85034,9 +85034,9 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
-            i = o(require(880)),
-            a = o(require(1189));
+        var _interopRequireDefault = require(16),
+            i = _interopRequireDefault(require(880)),
+            a = _interopRequireDefault(require(1189));
         class r extends i.default {
             canActivate() {
                 return true;
@@ -85076,7 +85076,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(20), require(3), require(34), require(4), require(41));
+        (require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(41));
         var GObject = require(1),
             i = require(53),
             GPlatform = require(15),
@@ -85328,14 +85328,14 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(3), require(4), require(41));
         var GObject = require(1),
             a = require(53),
             GPlatform = require(15),
             designerConfig = require(10),
             GSaveAction = require(40),
-            c = o(require(44 /* GSystemDialog */)),
+            c = _interopRequireDefault(require(44 /* GSystemDialog */)),
             GAnnotationsSidebar = require(567),
             GCategory = require(18),
             p = require(31);
@@ -85557,12 +85557,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
             GPlatform = require(15),
-            r = o(require(443)),
-            s = o(require(1330));
+            r = _interopRequireDefault(require(443 /* _interopRequireWildcard */)),
+            s = _interopRequireDefault(require(1330));
         const { isExecutingOnMSTeamsSync } = r.default;
         var c = require(863),
             GFitAllAction = require(449),
@@ -85773,14 +85773,14 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(20), require(3), require(71), require(34), require(4), require(41), require(13), require(32), require(33));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(20 /* polyfill:RegExp */), require(3), require(71 /* polyfill:String */), require(34), require(4), require(41), require(13), require(32), require(33));
         var GObject = require(1),
             a = require(53),
             GSaveAction = require(40),
             designerConfig = require(10),
             l = require(67),
-            c = o(require(340)),
+            c = _interopRequireDefault(require(340)),
             d = require(123),
             GPresets = require(1153),
             p = require(135),
@@ -86714,10 +86714,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GPlatform = require(15),
             GObject = require(1),
-            r = o(require(18 /* GCategory */)),
+            r = _interopRequireDefault(require(18 /* GCategory */)),
             SidebarsIds = require(198);
         const l = require(31);
         class c extends l {
@@ -86754,11 +86754,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = o(require(31)),
-            s = o(require(18 /* GCategory */)),
+            r = _interopRequireDefault(require(31)),
+            s = _interopRequireDefault(require(18 /* GCategory */)),
             SidebarsIds = require(198);
         class c extends r.default {
             constructor(e) {
@@ -86831,11 +86831,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = o(require(18 /* GCategory */)),
-            r = o(require(31));
+            a = _interopRequireDefault(require(18 /* GCategory */)),
+            r = _interopRequireDefault(require(31));
         const s = "designer.settings.enhanced-tooltips.enabled";
         let l = true;
         function c() {
@@ -86882,7 +86882,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(19), require(96), require(8 /* Symbol */), require(20), require(34), require(247), require(91), require(4), require(41), require(13), require(32), require(38), require(33), require(26));
+        (require(19), require(96 /* polyfill:JSON */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(247), require(91 /* polyfill:String */), require(4), require(41), require(13), require(32), require(38), require(33), require(26));
         var GObject = require(1);
         const { TRANSLATION_MANAGER } = require(10 /* designerConfig */);
         function a() {}
@@ -87091,11 +87091,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GPlatform = require(15),
             GObject = require(1),
-            r = o(require(18 /* GCategory */)),
-            s = o(require(31)),
+            r = _interopRequireDefault(require(18 /* GCategory */)),
+            s = _interopRequireDefault(require(31)),
             SidebarsIds = require(198);
         class c extends s.default {
             constructor(e) {
@@ -87181,11 +87181,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = o(require(18 /* GCategory */)),
-            s = o(require(1281)),
+            r = _interopRequireDefault(require(18 /* GCategory */)),
+            s = _interopRequireDefault(require(1281)),
             SidebarsIds = require(198);
         class c extends s.default {
             getId() {
@@ -87240,7 +87240,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(8 /* Symbol */), require(196));
+        (require(8 /* Symbol */), require(196 /* polyfill:Promise */));
         var o = require(53),
             GObject = require(1);
         const { gApi } = require(10 /* designerConfig */),
@@ -87452,7 +87452,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(30), require(8 /* Symbol */));
+        (require(30 /* polyfill:Object */), require(8 /* Symbol */));
         const o = require(337),
             i = require(1338),
             { gApi, PurchaseStatus } = require(10 /* designerConfig */),
@@ -87641,7 +87641,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(1707);
+        require(1707 /* polyfill:Iterator */);
     },
     function (module, exports, require) {
         "use strict";
@@ -87715,7 +87715,7 @@ var GravitDesigner = (function (e) {
             let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
             Object.assign(this, { fileCache: true, collaboratorsCache: true }, e);
         }
-        (require(30),
+        (require(30 /* polyfill:Object */),
             require(3),
             (o.NO_CACHE_INVALIDATION = Object.freeze(new o({ fileCache: false, collaboratorsCache: false }))),
             (o.prototype.collaboratorsCache = true),
@@ -87890,16 +87890,16 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(19), require(30), require(8 /* Symbol */), require(20), require(71), require(151), require(34), require(91), require(4), require(41), require(13), require(32), require(38), require(33), require(26));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(19), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(71 /* polyfill:String */), require(151), require(34), require(91 /* polyfill:String */), require(4), require(41), require(13), require(32), require(38), require(33), require(26));
         var designerConfig = require(10),
             a = require(882),
             GAnnotationPanel = require(1353),
             GRegex = require(263),
             l = require(67),
-            c = o(require(358)),
-            d = o(require(1324)),
-            u = o(require(883));
+            c = _interopRequireDefault(require(358)),
+            d = _interopRequireDefault(require(1324)),
+            u = _interopRequireDefault(require(883));
         const { GSystem, GLocale, GLocaleKey, GUtil, GComment, GAnnotation, GObject, GNode } = require(1 /* GObject */),
             { NEW_COMMENT_READ_TIMEOUT, ANNOTATION_PERMANENT_LINK, IS_COREL } = ((0, GAnnotationPanel.createAdditionalMentions)(), require(10 /* designerConfig */)),
             x = require(1191),
@@ -88523,7 +88523,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(58), require(19), require(71), require(91), require(4), require(41), require(13), require(26));
+        (require(58 /* polyfill:Array */), require(19), require(71 /* polyfill:String */), require(91 /* polyfill:String */), require(4), require(41), require(13), require(26));
         var GPlatform = require(15),
             i = require(882);
         const GSystemDialog = require(44),
@@ -89032,7 +89032,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(58), require(19), require(96), require(8 /* Symbol */), require(20), require(3), require(4), require(13), require(26), require(125), require(126), require(114));
+        (require(58 /* polyfill:Array */), require(19), require(96 /* polyfill:JSON */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(4), require(13), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var IsFiniteNonNegativeNumber = require(0),
             String = require(9),
             a = require(47),
@@ -89360,9 +89360,9 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
-        var i = o(require(1195));
+        var i = _interopRequireDefault(require(1195));
         function a(e, t, n, o) {
             (i.default.Item.call(this, e, t, n), (this._fileId = o));
         }
@@ -89575,13 +89575,13 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         (require(19),
-            require(596),
+            require(596 /* polyfill:Array */),
             require(180),
-            require(181),
+            require(181 /* polyfill:ArrayBuffer */),
             require(57),
-            require(20),
+            require(20 /* polyfill:RegExp */),
             require(34),
-            require(134),
+            require(134 /* polyfill:String */),
             require(218),
             require(692),
             require(189),
@@ -90129,7 +90129,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(353)("Int8", function (e) {
+        require(353 /* polyfill:Object */)("Int8", function (e) {
             return function (t, n, o) {
                 return e(this, t, n, o);
             };
@@ -92345,7 +92345,7 @@ var GravitDesigner = (function (e) {
     ,
     function (module, exports, require) {
         "use strict";
-        (require(30), require(8 /* Symbol */));
+        (require(30 /* polyfill:Object */), require(8 /* Symbol */));
         var o = require(1469),
             designerConfig = require(10);
         module.exports = new (class {
@@ -92516,7 +92516,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(58), require(8 /* Symbol */), require(20), require(71), require(34));
+        (require(58 /* polyfill:Array */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(71 /* polyfill:String */), require(34));
         var GObject = require(1),
             GSaveAction = require(40);
         function a(e, t) {
@@ -93710,7 +93710,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.GCloudUser = r), (exports.default = void 0), require(58), require(3), require(71));
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.GCloudUser = r), (exports.default = void 0), require(58 /* polyfill:Array */), require(3), require(71 /* polyfill:String */));
         var o = require(1241);
         const IsFiniteNonNegativeNumber = require(0),
             a = require(177);
@@ -93755,7 +93755,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(271);
+        require(271 /* polyfill:String */);
         const designerConfig = require(10),
             { IS_LOCALHOST, IS_RC } = require(231 /* IS_TRUNK */);
         designerConfig.IS_TEAMS = "teams.coreldraw.app" === window.location.hostname;
@@ -96806,15 +96806,15 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58),
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */),
             require(19),
             require(168 /* PDFFetchStream */),
-            require(30),
+            require(30 /* polyfill:Object */),
             require(8 /* Symbol */),
-            require(196),
-            require(20),
-            require(107),
+            require(196 /* polyfill:Promise */),
+            require(20 /* polyfill:RegExp */),
+            require(107 /* polyfill:RegExp */),
             require(34),
             require(4),
             require(41),
@@ -96825,7 +96825,7 @@ var GravitDesigner = (function (e) {
             require(33),
             require(26),
             require(125),
-            require(126),
+            require(126 /* polyfill:URL */),
             require(114));
         var designerConfig = require(10),
             IS_TRUNK = require(231),
@@ -96834,11 +96834,11 @@ var GravitDesigner = (function (e) {
             GPlatform = require(15),
             GSaveAction = require(40),
             d = require(67),
-            u = o(require(1484)),
-            p = o(require(443)),
-            g = o(require(1485)),
-            h = o(require(1486)),
-            f = o(require(1487));
+            u = _interopRequireDefault(require(1484)),
+            p = _interopRequireDefault(require(443 /* _interopRequireWildcard */)),
+            g = _interopRequireDefault(require(1485)),
+            h = _interopRequireDefault(require(1486)),
+            f = _interopRequireDefault(require(1487));
         const { nodeEnv, isBeta, storeVendor, isCorel, isTeams } = require(803),
             w = require(231 /* IS_TRUNK */),
             C = !storeVendor,
@@ -97961,13 +97961,13 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(8 /* Symbol */);
-        var i = o(require(176)),
+        var i = _interopRequireDefault(require(176)),
             GObject = require(1),
-            r = o(require(1242 /* GMSTeamsAuthenticator */)),
-            s = o(require(44 /* GSystemDialog */)),
-            l = o(require(443)),
+            r = _interopRequireDefault(require(1242 /* GMSTeamsAuthenticator */)),
+            s = _interopRequireDefault(require(44 /* GSystemDialog */)),
+            l = _interopRequireDefault(require(443 /* _interopRequireWildcard */)),
             c = require(1243);
         const { isPrivateChat, isTeamsChannel } = l.default;
         function p(e) {
@@ -97995,7 +97995,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports.default = async function (e, t, n, o) {
                 var i = void 0 !== window.dataLayer ? window.dataLayer : [],
@@ -98018,7 +98018,7 @@ var GravitDesigner = (function (e) {
             require(32),
             require(33));
         var GObject = require(1),
-            a = o(require(859)),
+            a = _interopRequireDefault(require(859)),
             GSaveAction = require(40),
             s = require(803);
         const { GA: { customDimensions } = {}, GoogleTagManagerSettings } = require(10 /* designerConfig */);
@@ -98045,12 +98045,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(30), require(4), require(41));
+        var _interopRequireDefault = require(16);
+        (require(30 /* polyfill:Object */), require(4), require(41));
         var i = require(1154),
-            a = o(require(389 /* GDocument */)),
-            r = o(require(163 /* GDocument */)),
-            s = o(require(1245)),
+            a = _interopRequireDefault(require(389 /* GDocument */)),
+            r = _interopRequireDefault(require(163 /* GDocument */)),
+            s = _interopRequireDefault(require(1245)),
             GObject = require(1);
         module.exports = {
             debugDownloadPNG: function () {
@@ -98102,12 +98102,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(57), require(3), require(4), require(32), require(33));
         var i,
             designerConfig = require(10),
             GSaveAction = require(40),
-            s = o(require(565));
+            s = _interopRequireDefault(require(565));
         !(function (e) {
             var t = (function () {
                 function e() {
@@ -98957,20 +98957,20 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         require(557);
-        var o = require(16);
-        (require(58),
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */),
             require(19),
             require(168 /* PDFFetchStream */),
-            require(596),
-            require(96),
-            require(30),
+            require(596 /* polyfill:Array */),
+            require(96 /* polyfill:JSON */),
+            require(30 /* polyfill:Object */),
             require(57),
             require(8 /* Symbol */),
-            require(20),
+            require(20 /* polyfill:RegExp */),
             require(3),
-            require(71),
+            require(71 /* polyfill:String */),
             require(34),
-            require(134),
+            require(134 /* polyfill:String */),
             require(4),
             require(41),
             require(13),
@@ -98985,7 +98985,7 @@ var GravitDesigner = (function (e) {
             GPlatform = require(15),
             designerConfig = require(10),
             l = require(357),
-            c = o(require(1492)),
+            c = _interopRequireDefault(require(1492)),
             d = require(1246),
             GSaveAction = require(40),
             p = require(1247),
@@ -99012,13 +99012,13 @@ var GravitDesigner = (function (e) {
                     return r;
                 })(e, t);
             })(require(1739)),
-            h = (o(require(1249)), o(require(1155))),
-            f = o(require(556 /* GGoogleDrive */)),
-            m = o(require(734)),
-            y = o(require(1494)),
-            v = o(require(1496)),
-            _ = o(require(1497)),
-            b = o(require(1498));
+            h = (_interopRequireDefault(require(1249)), _interopRequireDefault(require(1155))),
+            f = _interopRequireDefault(require(556 /* GGoogleDrive */)),
+            m = _interopRequireDefault(require(734)),
+            y = _interopRequireDefault(require(1494)),
+            v = _interopRequireDefault(require(1496)),
+            _ = _interopRequireDefault(require(1497)),
+            b = _interopRequireDefault(require(1498));
         var GDocument = require(163),
             C = require(238),
             x = require(339),
@@ -99055,7 +99055,7 @@ var GravitDesigner = (function (e) {
             Z = require(85),
             GSystemDialog = require(44),
             GAutoSave = require(1276),
-            ne = require(1564),
+            _interopRequireWildcard = require(1564),
             oe = require(1250),
             ie = require(291),
             GPaste = require(1313),
@@ -102108,7 +102108,7 @@ var GravitDesigner = (function (e) {
                     userId: null == e ? void 0 : e.id,
                     apiKey: window.AMPLITUDE_API_KEY,
                 })),
-                    new ne(this._amplitudeHelper));
+                    new _interopRequireWildcard(this._amplitudeHelper));
             }),
             (Je.prototype._updateState = function () {
                 var e, t, n, o, i, a, r;
@@ -102169,7 +102169,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0), require(8 /* Symbol */), require(20), require(271), require(34), require(134), require(38));
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(271 /* polyfill:String */), require(34), require(134 /* polyfill:String */), require(38));
         const { isBeta } = require(803);
         var i = require(1495);
         let a = 0,
@@ -104402,7 +104402,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(20), require(34));
+        (require(20 /* polyfill:RegExp */), require(34));
         var designerConfig = require(10);
         const { GLocale, GLocaleKey } = require(1 /* GObject */);
         function r(e) {
@@ -104463,32 +104463,32 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(19), require(57), require(8 /* Symbol */), require(356), require(20), require(107), require(3), require(151), require(34), require(91), require(4), require(41), require(13), require(26));
+        var _interopRequireDefault = require(16);
+        (require(19), require(57), require(8 /* Symbol */), require(356), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(3), require(151), require(34), require(91 /* polyfill:String */), require(4), require(41), require(13), require(26));
         var GObject = require(1),
             GPlatform = require(15),
             designerConfig = require(10),
             s = require(357),
-            l = o(require(238)),
-            c = o(require(339)),
-            d = o(require(1501)),
-            u = o(require(1502)),
-            p = o(require(603)),
-            g = o(require(78)),
-            h = o(require(217)),
-            f = o(require(86)),
-            m = o(require(119 /* GCommonNames */)),
-            y = o(require(447 /* GSaveAction */)),
-            v = o(require(448)),
-            _ = o(require(861 /* GExportAction */)),
-            b = o(require(1254 /* GOpenSharedFileAction */)),
-            w = o(require(1256 /* GVersionsHistoryAction */)),
-            C = o(require(388)),
-            x = o(require(220 /* GCommonNames */)),
-            S = o(require(44 /* GSystemDialog */)),
-            E = o(require(862 /* GCommonNames */)),
-            A = o(require(156)),
-            T = o(require(163 /* GDocument */)),
+            l = _interopRequireDefault(require(238)),
+            c = _interopRequireDefault(require(339)),
+            d = _interopRequireDefault(require(1501)),
+            u = _interopRequireDefault(require(1502)),
+            p = _interopRequireDefault(require(603)),
+            g = _interopRequireDefault(require(78)),
+            h = _interopRequireDefault(require(217)),
+            f = _interopRequireDefault(require(86)),
+            m = _interopRequireDefault(require(119 /* GCommonNames */)),
+            y = _interopRequireDefault(require(447 /* GSaveAction */)),
+            v = _interopRequireDefault(require(448)),
+            _ = _interopRequireDefault(require(861 /* GExportAction */)),
+            b = _interopRequireDefault(require(1254 /* GOpenSharedFileAction */)),
+            w = _interopRequireDefault(require(1256 /* GVersionsHistoryAction */)),
+            C = _interopRequireDefault(require(388)),
+            x = _interopRequireDefault(require(220 /* GCommonNames */)),
+            S = _interopRequireDefault(require(44 /* GSystemDialog */)),
+            E = _interopRequireDefault(require(862 /* GCommonNames */)),
+            A = _interopRequireDefault(require(156)),
+            T = _interopRequireDefault(require(163 /* GDocument */)),
             GRegex = require(263),
             P = require(1517);
         const D = require(257);
@@ -105252,7 +105252,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(20), require(3), require(271), require(34), require(4), require(13));
+        (require(20 /* polyfill:RegExp */), require(3), require(271 /* polyfill:String */), require(34), require(4), require(13));
         var o = require(53),
             GObject = require(1),
             GPlatform = require(15),
@@ -105675,7 +105675,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(290), require(8 /* Symbol */), require(20), require(34), require(4), require(13), require(32), require(38), require(33));
+        (require(290), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(4), require(13), require(32), require(38), require(33));
         var o = require(357),
             GObject = require(1),
             GSaveAction = require(40);
@@ -106007,7 +106007,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(8 /* Symbol */), require(196), require(20), require(3), require(34), require(91), require(4), require(13), require(38));
+        (require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(20 /* polyfill:RegExp */), require(3), require(34), require(91 /* polyfill:String */), require(4), require(13), require(38));
         var designerConfig = require(10),
             GObject = require(1);
         const { bypassEmailVerification } = designerConfig.defaultUserSettings,
@@ -106253,7 +106253,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(20), require(3), require(34), require(91), require(4), require(13));
+        (require(20 /* polyfill:RegExp */), require(3), require(34), require(91 /* polyfill:String */), require(4), require(13));
         var designerConfig = require(10),
             GObject = require(1);
         function a(e, t, n) {
@@ -106513,7 +106513,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(1196), require(19), require(1197), require(180), require(181), require(8 /* Symbol */), require(134), require(218), require(189), require(190), require(191), require(192), require(4), require(32), require(38), require(33));
+        (require(1196 /* polyfill:Array */), require(19), require(1197), require(180), require(181 /* polyfill:ArrayBuffer */), require(8 /* Symbol */), require(134 /* polyfill:String */), require(218), require(189), require(190), require(191), require(192), require(4), require(32), require(38), require(33));
         var o = require(176),
             IsFiniteNonNegativeNumber = require(0);
         require(10 /* designerConfig */);
@@ -106762,7 +106762,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(19), require(596), require(30), require(57), require(8 /* Symbol */), require(20), require(34), require(4), require(41), require(13), require(38), require(97), require(26));
+        (require(19), require(596 /* polyfill:Array */), require(30 /* polyfill:Object */), require(57), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(4), require(41), require(13), require(38), require(97), require(26));
         var GObject = require(1),
             i = require(797),
             GPlatform = require(15),
@@ -110521,11 +110521,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(8 /* Symbol */), require(20), require(3), require(34));
+        var _interopRequireDefault = require(16);
+        (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34));
         var designerConfig = require(10),
             GObject = require(1),
-            r = o(require(78));
+            r = _interopRequireDefault(require(78));
         const GSystemDialog = require(44),
             l = require(863),
             c = require(85),
@@ -111138,21 +111138,21 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(19), require(57), require(8 /* Symbol */), require(20), require(3), require(34), require(4), require(13), require(26));
+        var _interopRequireDefault = require(16);
+        (require(19), require(57), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(13), require(26));
         var GObject = require(1),
             designerConfig = require(10),
             r = require(1163),
-            s = o(require(123)),
-            l = o(require(1159)),
-            c = o(require(220 /* GCommonNames */)),
-            d = o(require(163 /* GDocument */)),
-            u = o(require(219)),
-            p = o(require(78)),
-            g = o(require(86)),
-            h = o(require(217)),
-            f = o(require(336)),
-            m = o(require(67));
+            s = _interopRequireDefault(require(123)),
+            l = _interopRequireDefault(require(1159)),
+            c = _interopRequireDefault(require(220 /* GCommonNames */)),
+            d = _interopRequireDefault(require(163 /* GDocument */)),
+            u = _interopRequireDefault(require(219)),
+            p = _interopRequireDefault(require(78)),
+            g = _interopRequireDefault(require(86)),
+            h = _interopRequireDefault(require(217)),
+            f = _interopRequireDefault(require(336)),
+            m = _interopRequireDefault(require(67));
         function y() {}
         (GObject.GObject.inherit(y, s.default),
             (y.ID = "version-history"),
@@ -111636,7 +111636,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(58), require(8 /* Symbol */));
+        (require(58 /* polyfill:Array */), require(8 /* Symbol */));
         const o = require(86),
             i = require(78),
             a = require(1531),
@@ -111926,7 +111926,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(58), require(3), require(71), require(4), require(41), require(13), require(32), require(97), require(33));
+        (require(58 /* polyfill:Array */), require(3), require(71 /* polyfill:String */), require(4), require(41), require(13), require(32), require(97), require(33));
         var o = require(53),
             GObject = require(1),
             GPlatform = require(15),
@@ -112193,11 +112193,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(19), require(8 /* Symbol */), require(3), require(71), require(4), require(13), require(32), require(97), require(33), require(26));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(19), require(8 /* Symbol */), require(3), require(71 /* polyfill:String */), require(4), require(13), require(32), require(97), require(33), require(26));
         var i = require(53),
             GObject = require(1),
-            r = o(require(358)),
+            r = _interopRequireDefault(require(358)),
             s = require(123);
         const l = require(393),
             c = require(392),
@@ -112636,9 +112636,9 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(8 /* Symbol */), require(71), require(4), require(13));
-        var i = o(require(1155));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(8 /* Symbol */), require(71 /* polyfill:String */), require(4), require(13));
+        var i = _interopRequireDefault(require(1155));
         const { GLocale, GLocaleKey, GObject } = require(1 /* GObject */),
             l = require(392),
             c = require(1165),
@@ -112961,7 +112961,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(8 /* Symbol */), require(20), require(34), require(4), require(13), require(38));
+        (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(4), require(13), require(38));
         const { GLocale, GLocaleKey } = require(1 /* GObject */),
             a = require(1166),
             r = require(177),
@@ -116128,15 +116128,15 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(57), require(8 /* Symbol */), require(71), require(4), require(13), require(32), require(33));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(57), require(8 /* Symbol */), require(71 /* polyfill:String */), require(4), require(13), require(32), require(33));
         var GObject = require(1),
             designerConfig = require(10),
             r = require(357),
             GSaveAction = require(40),
-            l = o(require(256 /* GOfflineDialog */)),
-            c = o(require(44 /* GSystemDialog */)),
-            d = o(require(734)),
+            l = _interopRequireDefault(require(256 /* GOfflineDialog */)),
+            c = _interopRequireDefault(require(44 /* GSystemDialog */)),
+            d = _interopRequireDefault(require(734)),
             GDocument = require(163),
             p = require(813),
             g = require(1299),
@@ -116866,22 +116866,22 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(19),
             require(168 /* PDFFetchStream */),
-            require(328),
+            require(328 /* polyfill:Array */),
             require(180),
-            require(181),
-            require(96),
-            require(30),
+            require(181 /* polyfill:ArrayBuffer */),
+            require(96 /* polyfill:JSON */),
+            require(30 /* polyfill:Object */),
             require(8 /* Symbol */),
             require(356),
-            require(20),
+            require(20 /* polyfill:RegExp */),
             require(3),
-            require(271),
+            require(271 /* polyfill:String */),
             require(34),
             require(851),
-            require(91),
+            require(91 /* polyfill:String */),
             require(218),
             require(189),
             require(190),
@@ -116903,17 +116903,17 @@ var GravitDesigner = (function (e) {
             l = require(1552),
             GCommonNames = require(862),
             d = require(858),
-            u = o(require(1556)),
-            p = o(require(86)),
-            g = o(require(119 /* GCommonNames */)),
-            h = o(require(802)),
-            f = o(require(1240)),
-            m = o(require(445 /* GSaveAsAction */)),
-            y = o(require(44 /* GSystemDialog */)),
-            v = o(require(355)),
+            u = _interopRequireDefault(require(1556)),
+            p = _interopRequireDefault(require(86)),
+            g = _interopRequireDefault(require(119 /* GCommonNames */)),
+            h = _interopRequireDefault(require(802)),
+            f = _interopRequireDefault(require(1240)),
+            m = _interopRequireDefault(require(445 /* GSaveAsAction */)),
+            y = _interopRequireDefault(require(44 /* GSystemDialog */)),
+            v = _interopRequireDefault(require(355)),
             designerConfig = require(10),
             configBase = require(519),
-            w = o(require(1557));
+            w = _interopRequireDefault(require(1557));
         const C = require(156),
             x = require(78);
         var S = designerConfig.CloudIntegration.cloudOptions,
@@ -118206,7 +118206,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             Object.defineProperty(exports, "GFilesPanelViewBase", {
                 enumerable: true,
@@ -118221,8 +118221,8 @@ var GravitDesigner = (function (e) {
                 },
             }),
             (exports.default = void 0));
-        var i = o(require(1547 /* GFilesPanel */)),
-            a = o(require(1300 /* GFilesPanel */));
+        var i = _interopRequireDefault(require(1547 /* GFilesPanel */)),
+            a = _interopRequireDefault(require(1300 /* GFilesPanel */));
         exports.default = {
             GFilesPanelViewNative: i.default,
             GFilesPanelViewBase: a.default,
@@ -118231,15 +118231,15 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         (require(19), require(557), require(26));
-        var o = require(16);
-        (require(96), require(8 /* Symbol */), require(356), require(20), require(107), require(3), require(271), require(34), require(851), require(91), require(4), require(322), require(13), require(32), require(33));
+        var _interopRequireDefault = require(16);
+        (require(96 /* polyfill:JSON */), require(8 /* Symbol */), require(356), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(3), require(271 /* polyfill:String */), require(34), require(851), require(91 /* polyfill:String */), require(4), require(322), require(13), require(32), require(33));
         var GObject = require(1),
             GPlatform = require(15),
-            r = o(require(1300 /* GFilesPanel */)),
+            r = _interopRequireDefault(require(1300 /* GFilesPanel */)),
             s = require(1163),
             GSaveAction = require(40),
             c = require(593),
-            d = o(require(44 /* GSystemDialog */)),
+            d = _interopRequireDefault(require(44 /* GSystemDialog */)),
             u = (function (e, t) {
                 if ("function" == typeof WeakMap)
                     var n = new WeakMap(),
@@ -119037,7 +119037,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(8 /* Symbol */), require(196), require(4), require(13), require(38));
+        (require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(4), require(13), require(38));
         const o = require(156);
         function i(e, t, n) {
             var o;
@@ -119248,12 +119248,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(8 /* Symbol */), require(20), require(34), require(4), require(41), require(13));
+        var _interopRequireDefault = require(16);
+        (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(4), require(41), require(13));
         var GObject = require(1),
             a = require(1163),
-            r = o(require(1090)),
-            s = o(require(358)),
+            r = _interopRequireDefault(require(1090)),
+            s = _interopRequireDefault(require(358)),
             GSaveAction = require(40),
             designerConfig = require(10);
         const IsFiniteNonNegativeNumber = require(0),
@@ -119407,9 +119407,9 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = exports.GGoogleDrive = exports.GCloudDrive = void 0));
-        var i = o(require(862 /* GCommonNames */));
+        var i = _interopRequireDefault(require(862 /* GCommonNames */));
         const a = (exports.GCloudDrive = i.default);
         var GGoogleDrive = require(1553);
         exports.GGoogleDrive = GGoogleDrive;
@@ -119417,14 +119417,14 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(96), require(30), require(8 /* Symbol */), require(196), require(4), require(13), require(32), require(38), require(33));
+        var _interopRequireDefault = require(16);
+        (require(96 /* polyfill:JSON */), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(4), require(13), require(32), require(38), require(33));
         var GObject = require(1),
-            a = o(require(163 /* GDocument */)),
-            r = o(require(78)),
-            s = o(require(86)),
-            l = o(require(802)),
-            c = o(require(355));
+            a = _interopRequireDefault(require(163 /* GDocument */)),
+            r = _interopRequireDefault(require(78)),
+            s = _interopRequireDefault(require(86)),
+            l = _interopRequireDefault(require(802)),
+            c = _interopRequireDefault(require(355));
         const d = require(1554),
             u = require(1301),
             GGoogleDrive = require(556),
@@ -120177,7 +120177,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(30), require(4), require(38), require(97));
+        (require(30 /* polyfill:Object */), require(4), require(38), require(97));
         const o = require(156),
             i = require(1301);
         function a(e) {
@@ -120219,10 +120219,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(20), require(34), require(91), require(4), require(13));
+        var _interopRequireDefault = require(16);
+        (require(20 /* polyfill:RegExp */), require(34), require(91 /* polyfill:String */), require(4), require(13));
         var GObject = require(1),
-            a = o(require(44 /* GSystemDialog */));
+            a = _interopRequireDefault(require(44 /* GSystemDialog */));
         function r(e, t, n, o) {
             let r = arguments.length > 4 && void 0 !== arguments[4] ? arguments[4] : {};
             var s = this;
@@ -120294,7 +120294,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(168 /* PDFFetchStream */), require(57), require(8 /* Symbol */), require(196), require(4), require(41), require(13), require(32), require(38), require(169 /* PDFNetworkStream */), require(1175), require(33));
+        (require(168 /* PDFFetchStream */), require(57), require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(4), require(41), require(13), require(32), require(38), require(169 /* PDFNetworkStream */), require(1175), require(33));
         var GObject = require(1),
             designerConfig = require(10),
             GCommonNames = require(119),
@@ -120683,12 +120683,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(96), require(30), require(8 /* Symbol */));
+        var _interopRequireDefault = require(16);
+        (require(96 /* polyfill:JSON */), require(30 /* polyfill:Object */), require(8 /* Symbol */));
         var GObject = require(1),
             a = require(53),
-            r = o(require(1561)),
-            s = o(require(177));
+            r = _interopRequireDefault(require(1561)),
+            s = _interopRequireDefault(require(177));
         const { gApi } = require(10 /* designerConfig */);
         module.exports = class {
             constructor(e, t) {
@@ -120801,12 +120801,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
             GPlatform = require(15),
-            r = o(require(1172)),
-            s = o(require(1173));
+            r = _interopRequireDefault(require(1172)),
+            s = _interopRequireDefault(require(1173));
         function l(e) {
             const t = (e) => {
                 if (GPlatform.GKey.translateKey(e.keyCode) === GPlatform.GKey.Constant.ESC)
@@ -121445,8 +121445,8 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         (require(19), require(557), require(26));
-        var o = require(16);
-        (require(8 /* Symbol */), require(271));
+        var _interopRequireDefault = require(16);
+        (require(8 /* Symbol */), require(271 /* polyfill:String */));
         var i = (function (e, t) {
                 if ("function" == typeof WeakMap)
                     var n = new WeakMap(),
@@ -121470,7 +121470,7 @@ var GravitDesigner = (function (e) {
                     return r;
                 })(e, t);
             })(require(10 /* designerConfig */)),
-            a = o(require(389 /* GDocument */)),
+            a = _interopRequireDefault(require(389 /* GDocument */)),
             GObject = require(1);
         const s = require(78),
             l = require(441),
@@ -121546,7 +121546,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(30), require(3));
+        (require(30 /* polyfill:Object */), require(3));
         const o = require(433);
         function i() {
             let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -121584,7 +121584,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(19), require(168 /* PDFFetchStream */), require(30), require(8 /* Symbol */), require(196), require(3), require(91), require(4), require(13), require(32), require(38), require(169 /* PDFNetworkStream */), require(33), require(26), require(125), require(126), require(114));
+        (require(19), require(168 /* PDFFetchStream */), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(3), require(91 /* polyfill:String */), require(4), require(13), require(32), require(38), require(169 /* PDFNetworkStream */), require(33), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1);
         const {
                 gApi,
@@ -121905,7 +121905,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(58), require(19), require(30), require(8 /* Symbol */), require(196), require(20), require(3), require(71), require(34), require(91), require(4), require(41), require(13), require(38), require(26), require(125), require(126), require(114));
+        (require(58 /* polyfill:Array */), require(19), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(20 /* polyfill:RegExp */), require(3), require(71 /* polyfill:String */), require(34), require(91 /* polyfill:String */), require(4), require(41), require(13), require(38), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1),
             GPlatform = require(15);
         const {
@@ -122699,7 +122699,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(58), require(19), require(8 /* Symbol */), require(20), require(107), require(71), require(134), require(4), require(41), require(26));
+        (require(58 /* polyfill:Array */), require(19), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(71 /* polyfill:String */), require(134 /* polyfill:String */), require(4), require(41), require(26));
         var designerConfig = require(10);
         const i = require(292),
             GCommonNames = require(220),
@@ -122836,9 +122836,9 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(30), require(8 /* Symbol */));
-        var i = o(require(11));
+        var _interopRequireDefault = require(16);
+        (require(30 /* polyfill:Object */), require(8 /* Symbol */));
+        var i = _interopRequireDefault(require(11));
         require(1322 /* GShareManager */);
         const a = require(808),
             r = require(1570),
@@ -123013,7 +123013,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(30), require(3));
+        (require(30 /* polyfill:Object */), require(3));
         const { HAS_ANNOTATIONS } = require(10 /* designerConfig */);
         function i() {
             let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -123135,7 +123135,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16)(require(1573));
+        var o = require(16 /* _interopRequireDefault */)(require(1573));
         module.exports = class {
             constructor(e, t) {
                 this._promiseManager = new o.default();
@@ -123155,7 +123155,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(8 /* Symbol */), require(196));
+        (require(8 /* Symbol */), require(196 /* polyfill:Promise */));
         module.exports = class {
             constructor() {
                 this._promiseQueue = [];
@@ -123190,7 +123190,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(19), require(96), require(3), require(26), require(125), require(126), require(114));
+        (require(19), require(96 /* polyfill:JSON */), require(3), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var designerConfig = require(10),
             GSaveAction = require(40);
         const a = require(1186),
@@ -123263,7 +123263,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(30);
+        require(30 /* polyfill:Object */);
         const o = require(1186);
         module.exports = class extends o {
             constructor(e) {
@@ -123300,11 +123300,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(30), require(8 /* Symbol */));
+        var _interopRequireDefault = require(16);
+        (require(30 /* polyfill:Object */), require(8 /* Symbol */));
         var designerConfig = require(10),
             GObject = require(1),
-            r = o(require(1187));
+            r = _interopRequireDefault(require(1187));
         function s() {}
         (GObject.GObject.inherit(s, designerConfig.GPaywallDialog.Impl),
             (s.prototype.open = function (e) {
@@ -123388,11 +123388,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(30), require(8 /* Symbol */));
+        var _interopRequireDefault = require(16);
+        (require(30 /* polyfill:Object */), require(8 /* Symbol */));
         var designerConfig = require(10),
             GObject = require(1),
-            r = o(require(1187));
+            r = _interopRequireDefault(require(1187));
         class s extends designerConfig.GReminderDialog.Impl {
             open(e) {
                 let { dialog } = e;
@@ -123661,12 +123661,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
             designerConfig = require(10),
-            s = o(require(880)),
-            l = o(require(1189));
+            s = _interopRequireDefault(require(880)),
+            l = _interopRequireDefault(require(1189));
         let c = false,
             d = 0,
             u = 0,
@@ -123755,9 +123755,9 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             designerConfig = require(10),
-            a = o(require(880));
+            a = _interopRequireDefault(require(880));
         class r extends a.default {
             canActivate(e) {
                 return e.isThereOneTouchPointOnTheTarget();
@@ -123802,34 +123802,34 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(19), require(168 /* PDFFetchStream */), require(20), require(71), require(247), require(4), require(13), require(32), require(38), require(169 /* PDFNetworkStream */), require(33), require(26));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(19), require(168 /* PDFFetchStream */), require(20 /* polyfill:RegExp */), require(71 /* polyfill:String */), require(247), require(4), require(13), require(32), require(38), require(169 /* PDFNetworkStream */), require(33), require(26));
         var GPlatform = require(15),
             a = require(53),
             GObject = require(1),
-            s = o(require(78)),
-            l = o(require(1330)),
-            c = o(require(238)),
-            d = o(require(339)),
-            u = o(require(1331 /* GCutCopyAction */)),
-            p = o(require(877)),
-            g = o(require(1183)),
-            h = o(require(1184)),
-            f = o(require(875)),
-            m = o(require(876)),
-            y = o(require(1332)),
-            v = o(require(811 /* GGroupAction */)),
-            _ = o(require(870 /* GSplitAction */)),
-            b = o(require(1333)),
-            w = o(require(1334)),
-            C = o(require(869 /* GArrangeAction */)),
-            x = o(require(1335)),
-            S = o(require(810 /* GConvertToPathAction */)),
-            E = o(require(1336)),
-            A = o(require(1337)),
-            T = o(require(1590)),
-            G = o(require(878)),
-            P = o(require(879));
+            s = _interopRequireDefault(require(78)),
+            l = _interopRequireDefault(require(1330)),
+            c = _interopRequireDefault(require(238)),
+            d = _interopRequireDefault(require(339)),
+            u = _interopRequireDefault(require(1331 /* GCutCopyAction */)),
+            p = _interopRequireDefault(require(877)),
+            g = _interopRequireDefault(require(1183)),
+            h = _interopRequireDefault(require(1184)),
+            f = _interopRequireDefault(require(875)),
+            m = _interopRequireDefault(require(876)),
+            y = _interopRequireDefault(require(1332)),
+            v = _interopRequireDefault(require(811 /* GGroupAction */)),
+            _ = _interopRequireDefault(require(870 /* GSplitAction */)),
+            b = _interopRequireDefault(require(1333)),
+            w = _interopRequireDefault(require(1334)),
+            C = _interopRequireDefault(require(869 /* GArrangeAction */)),
+            x = _interopRequireDefault(require(1335)),
+            S = _interopRequireDefault(require(810 /* GConvertToPathAction */)),
+            E = _interopRequireDefault(require(1336)),
+            A = _interopRequireDefault(require(1337)),
+            T = _interopRequireDefault(require(1590)),
+            G = _interopRequireDefault(require(878)),
+            P = _interopRequireDefault(require(879));
         class D extends G.default {
             constructor(e) {
                 (super(e), this.addGesture(new P.default()), this.setDelayedTouchEventsEnabled(false));
@@ -124719,7 +124719,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16)(require(879));
+        var o = require(16 /* _interopRequireDefault */)(require(879));
         const i = require(878);
         module.exports = class extends i {
             constructor(e) {
@@ -125330,15 +125330,15 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(19), require(4), require(32), require(33), require(26));
         var GObject = require(1),
             GPlatform = require(15),
-            r = o(require(18 /* GCategory */)),
-            s = o(require(1168)),
+            r = _interopRequireDefault(require(18 /* GCategory */)),
+            s = _interopRequireDefault(require(1168)),
             GSaveAction = require(40),
             c = require(67),
-            d = o(require(812)),
+            d = _interopRequireDefault(require(812)),
             designerConfig = require(10);
         class p extends s.default {
             constructor(e) {
@@ -125664,12 +125664,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = o(require(1339 /* GPageProperties */)),
-            r = o(require(31)),
-            s = o(require(18 /* GCategory */));
+            a = _interopRequireDefault(require(1339 /* GPageProperties */)),
+            r = _interopRequireDefault(require(31)),
+            s = _interopRequireDefault(require(18 /* GCategory */));
         function l() {}
         (GObject.GObject.inherit(l, r.default),
             (l.ID = "view.fast-view"),
@@ -125783,12 +125783,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GPlatform = require(15),
             GObject = require(1),
             SidebarsIds = require(198),
-            s = o(require(18 /* GCategory */)),
-            l = o(require(31));
+            s = _interopRequireDefault(require(18 /* GCategory */)),
+            l = _interopRequireDefault(require(31));
         class c extends l.default {
             constructor() {
                 let e = arguments.length > 0 && void 0 !== arguments[0] && arguments[0];
@@ -125833,12 +125833,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GPlatform = require(15),
             GObject = require(1),
             SidebarsIds = require(198),
-            s = o(require(18 /* GCategory */)),
-            l = o(require(31));
+            s = _interopRequireDefault(require(18 /* GCategory */)),
+            l = _interopRequireDefault(require(31));
         class c extends l.default {
             getId() {
                 return c.ID;
@@ -125873,12 +125873,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GPlatform = require(15),
             GObject = require(1),
             SidebarsIds = require(198),
-            s = o(require(18 /* GCategory */)),
-            l = o(require(31));
+            s = _interopRequireDefault(require(18 /* GCategory */)),
+            l = _interopRequireDefault(require(31));
         class c extends l.default {
             getId() {
                 return c.ID;
@@ -125972,7 +125972,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(19), require(30), require(3), require(26), require(125), require(126), require(114));
+        (require(19), require(30 /* polyfill:Object */), require(3), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1),
             GPlatform = require(15),
             a = require(797),
@@ -126377,7 +126377,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(19), require(328), require(3), require(26));
+        (require(19), require(328 /* polyfill:Array */), require(3), require(26));
         var GObject = require(1),
             GSaveAction = require(40),
             GCategory = require(18),
@@ -126505,17 +126505,17 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(20), require(107), require(34));
+        var _interopRequireDefault = require(16);
+        (require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(34));
         var GObject = require(1),
             GPlatform = require(15),
-            r = o(require(1618)),
-            s = o(require(85)),
-            l = o(require(31)),
-            c = o(require(18 /* GCategory */)),
-            d = o(require(44 /* GSystemDialog */)),
-            u = o(require(443)),
-            p = o(require(1341));
+            r = _interopRequireDefault(require(1618)),
+            s = _interopRequireDefault(require(85)),
+            l = _interopRequireDefault(require(31)),
+            c = _interopRequireDefault(require(18 /* GCategory */)),
+            d = _interopRequireDefault(require(44 /* GSystemDialog */)),
+            u = _interopRequireDefault(require(443 /* _interopRequireWildcard */)),
+            p = _interopRequireDefault(require(1341));
         const { isExecutingOnMSTeamsSync } = u.default;
         class h extends l.default {
             constructor() {
@@ -126866,10 +126866,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = o(require(443)),
+            a = _interopRequireDefault(require(443 /* _interopRequireWildcard */)),
             designerConfig = require(10),
             GCategory = require(18),
             l = require(31),
@@ -127214,7 +127214,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(20), require(3), require(34));
+        (require(20 /* polyfill:RegExp */), require(3), require(34));
         var GObject = require(1);
         const GCategory = require(18),
             a = require(31),
@@ -127307,10 +127307,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(8 /* Symbol */), require(3));
         var GObject = require(1),
-            a = o(require(443));
+            a = _interopRequireDefault(require(443 /* _interopRequireWildcard */));
         const { isExecutingOnMSTeamsSync } = a.default;
         var GCategory = require(18),
             l = require(31);
@@ -127359,10 +127359,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(8 /* Symbol */), require(20), require(3), require(34));
+        var _interopRequireDefault = require(16);
+        (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34));
         var GObject = require(1),
-            a = o(require(443));
+            a = _interopRequireDefault(require(443 /* _interopRequireWildcard */));
         const { isExecutingOnMSTeamsSync } = a.default;
         var GCategory = require(18),
             l = require(31);
@@ -127427,10 +127427,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(8 /* Symbol */), require(4), require(13));
         var GObject = require(1),
-            a = o(require(1239));
+            a = _interopRequireDefault(require(1239));
         const r = [
             {
                 text: new GObject.GLocaleKey("GFilesPanelViewSharepoint", "text.checkin-type-minor"),
@@ -127771,13 +127771,13 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(8 /* Symbol */), require(3), require(4), require(41));
         var GObject = require(1),
-            a = o(require(18 /* GCategory */)),
-            r = o(require(163 /* GDocument */)),
-            s = o(require(85)),
-            l = o(require(106));
+            a = _interopRequireDefault(require(18 /* GCategory */)),
+            r = _interopRequireDefault(require(163 /* GDocument */)),
+            s = _interopRequireDefault(require(85)),
+            l = _interopRequireDefault(require(106));
         function c(e) {
             this._source = e;
         }
@@ -127872,11 +127872,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(19), require(57), require(8 /* Symbol */), require(71), require(91), require(4), require(41), require(13), require(38), require(26), require(125), require(126), require(114));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(19), require(57), require(8 /* Symbol */), require(71 /* polyfill:String */), require(91 /* polyfill:String */), require(4), require(41), require(13), require(38), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1),
-            a = o(require(1343)),
-            r = o(require(44 /* GSystemDialog */)),
+            a = _interopRequireDefault(require(1343)),
+            r = _interopRequireDefault(require(44 /* GSystemDialog */)),
             GSaveAction = require(40);
         function l() {}
         (GObject.GObject.inherit(l, GObject.GObject),
@@ -128265,13 +128265,13 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(4), require(32), require(33));
         var GObject = require(1),
             a = require(53),
             GPlatform = require(15),
-            s = o(require(31)),
-            l = o(require(18 /* GCategory */));
+            s = _interopRequireDefault(require(31)),
+            l = _interopRequireDefault(require(18 /* GCategory */));
         class c extends s.default {
             constructor(e) {
                 (super(),
@@ -128476,11 +128476,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(4), require(41), require(13));
         var GPlatform = require(15),
             GObject = require(1),
-            r = o(require(18 /* GCategory */)),
+            r = _interopRequireDefault(require(18 /* GCategory */)),
             SidebarsIds = require(198);
         const l = require(31);
         class c extends l {
@@ -128553,13 +128553,13 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(4), require(13));
         var GObject = require(1),
             GPlatform = require(15),
             r = require(53),
-            s = o(require(18 /* GCategory */)),
-            l = o(require(31));
+            s = _interopRequireDefault(require(18 /* GCategory */)),
+            l = _interopRequireDefault(require(31));
         class c extends l.default {
             constructor() {
                 (super(), (this._lastIsCheckedValue = true));
@@ -128613,13 +128613,13 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(20), require(34), require(4), require(32), require(33));
+        var _interopRequireDefault = require(16);
+        (require(20 /* polyfill:RegExp */), require(34), require(4), require(32), require(33));
         var GObject = require(1),
             a = require(53),
             GPlatform = require(15),
-            s = o(require(31)),
-            l = o(require(18 /* GCategory */));
+            s = _interopRequireDefault(require(31)),
+            l = _interopRequireDefault(require(18 /* GCategory */));
         class c extends s.default {
             constructor() {
                 (super(), (this._opacityLevel = null), (this._timeoutId = null), (this._currentValue = ""));
@@ -128724,13 +128724,13 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = o(require(18 /* GCategory */)),
-            s = o(require(1168)),
+            r = _interopRequireDefault(require(18 /* GCategory */)),
+            s = _interopRequireDefault(require(1168)),
             SidebarsIds = require(198),
-            c = o(require(1345));
+            c = _interopRequireDefault(require(1345));
         class d extends s.default {
             constructor(e) {
                 (super(e), (this._title = new GObject.GLocaleKey("GChangeAnchorPointsJointTypeSubAction", "title.".concat(this._type))));
@@ -128793,11 +128793,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = o(require(31)),
-            s = o(require(18 /* GCategory */));
+            r = _interopRequireDefault(require(31)),
+            s = _interopRequireDefault(require(18 /* GCategory */));
         class l extends r.default {
             getId() {
                 return l.ID;
@@ -128833,11 +128833,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = o(require(31)),
-            s = o(require(18 /* GCategory */)),
+            r = _interopRequireDefault(require(31)),
+            s = _interopRequireDefault(require(18 /* GCategory */)),
             SidebarsIds = require(198);
         class c extends r.default {
             getId() {
@@ -128868,11 +128868,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = o(require(31)),
-            s = o(require(18 /* GCategory */));
+            r = _interopRequireDefault(require(31)),
+            s = _interopRequireDefault(require(18 /* GCategory */));
         class l extends r.default {
             constructor(e) {
                 (super(), (this._type = e), (this._title = new GObject.GLocaleKey("GChangeActiveWindowAction", "title.".concat(this._type))));
@@ -128933,12 +128933,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(19), require(4), require(13), require(32), require(38), require(33), require(26));
         var GObject = require(1),
             GPlatform = require(15),
-            r = o(require(31)),
-            s = o(require(18 /* GCategory */));
+            r = _interopRequireDefault(require(31)),
+            s = _interopRequireDefault(require(18 /* GCategory */));
         class l extends r.default {
             getId() {
                 return l.ID;
@@ -129026,13 +129026,13 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = o(require(31)),
-            s = o(require(18 /* GCategory */)),
+            r = _interopRequireDefault(require(31)),
+            s = _interopRequireDefault(require(18 /* GCategory */)),
             SidebarsIds = require(198),
-            c = o(require(1170));
+            c = _interopRequireDefault(require(1170));
         class d extends r.default {
             getId() {
                 return d.ID;
@@ -130612,7 +130612,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(865), require(193), require(57), require(3), require(4), require(13));
+        (require(865 /* polyfill:Number */), require(193), require(57), require(3), require(4), require(13));
         var o = require(53),
             GObject = require(1),
             a = require(67),
@@ -131189,12 +131189,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(3), require(4), require(41));
         var GObject = require(1),
             a = require(53),
             r = require(67),
-            s = o(require(340)),
+            s = _interopRequireDefault(require(340)),
             l = require(78),
             GCreateSymbolAction = require(608),
             d = require(566),
@@ -131426,10 +131426,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = o(require(340)),
+            a = _interopRequireDefault(require(340)),
             r = require(806),
             s = require(395),
             GCommonNames = require(1663),
@@ -131546,16 +131546,16 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(19),
             require(168 /* PDFFetchStream */),
-            require(30),
+            require(30 /* polyfill:Object */),
             require(57),
             require(8 /* Symbol */),
-            require(20),
+            require(20 /* polyfill:RegExp */),
             require(34),
-            require(134),
-            require(91),
+            require(134 /* polyfill:String */),
+            require(91 /* polyfill:String */),
             require(4),
             require(41),
             require(13),
@@ -131566,13 +131566,13 @@ var GravitDesigner = (function (e) {
             require(33),
             require(26),
             require(125),
-            require(126),
+            require(126 /* polyfill:URL */),
             require(114));
         var i = require(1201),
             GObject = require(1),
             GPlatform = require(15),
             designerConfig = require(10),
-            l = o(require(1664)),
+            l = _interopRequireDefault(require(1664)),
             c = require(219),
             GClipAction = require(809),
             { debounce, stringToBase64String } = require(40 /* GSaveAction */);
@@ -132298,7 +132298,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(8 /* Symbol */), require(20), require(3), require(34), require(4), require(13));
+        (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(13));
         var GObject = require(1);
         const i = require(606),
             a = require(394),
@@ -132559,7 +132559,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(8 /* Symbol */), require(20), require(3), require(34), require(4), require(13));
+        (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(13));
         var GObject = require(1);
         const {
                 DESIGNER: { TITLE },
@@ -132757,7 +132757,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(8 /* Symbol */), require(196), require(20), require(3), require(34));
+        (require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(20 /* polyfill:RegExp */), require(3), require(34));
         var GObject = require(1);
         const i = require(606),
             a = require(394),
@@ -133375,7 +133375,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(19), require(3), require(26), require(125), require(126), require(114));
+        (require(19), require(3), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         const o = require(1347);
         module.exports = class {
             static setupInAppLinkReloadAppForOnce() {
@@ -133509,7 +133509,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(58), require(96), require(865), require(193), require(8 /* Symbol */), require(3), require(4), require(97));
+        (require(58 /* polyfill:Array */), require(96 /* polyfill:JSON */), require(865 /* polyfill:Number */), require(193), require(8 /* Symbol */), require(3), require(4), require(97));
         var GObject = require(1),
             designerConfig = require(10),
             GSaveAction = require(40);
@@ -133780,10 +133780,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(30), require(8 /* Symbol */), require(196));
-        var i = o(require(1249)),
-            a = o(require(1155)),
+        var _interopRequireDefault = require(16);
+        (require(30 /* polyfill:Object */), require(8 /* Symbol */), require(196 /* polyfill:Promise */));
+        var i = _interopRequireDefault(require(1249)),
+            a = _interopRequireDefault(require(1155)),
             GObject = require(1);
         const { gApi, IN_APP_PURCHASE: { CLEVERBRIDGE: { openCartInAPopup: l = false } = {} } = {} } = require(10 /* designerConfig */),
             c = require(808),
@@ -133892,7 +133892,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(19), require(8 /* Symbol */), require(20), require(3), require(34), require(26), require(125), require(126), require(114));
+        (require(19), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1),
             designerConfig = require(10);
         const GOfflineDialog = require(256),
@@ -133999,7 +133999,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(8 /* Symbol */), require(196), require(4), require(13));
+        (require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(4), require(13));
         const o = require(1190),
             i = require(292),
             a = require(291),
@@ -134198,7 +134198,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(8 /* Symbol */), require(20), require(34));
+        (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34));
         var GObject = require(1);
         const GSystemDialog = require(44),
             { DESIGNER: { TITLE } = {} } = require(10 /* designerConfig */);
@@ -134232,10 +134232,10 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(20), require(34));
+        var _interopRequireDefault = require(16);
+        (require(20 /* polyfill:RegExp */), require(34));
         var GObject = require(1),
-            a = o(require(44 /* GSystemDialog */));
+            a = _interopRequireDefault(require(44 /* GSystemDialog */));
         const { DateAPI, DESIGNER: { TITLE } = {} } = require(10 /* designerConfig */),
             l = require(78),
             c = DateAPI.minutesToMilliseconds(1),
@@ -134308,7 +134308,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(20), require(151));
+        (require(20 /* polyfill:RegExp */), require(151));
         var GObject = require(1);
         ((GObject.GUtil.image2Canvas = function (e, t) {
             if ("string" == typeof e) {
@@ -134614,11 +134614,11 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(4), require(13));
         var GPlatform = require(15),
-            a = o(require(1340)),
-            r = o(require(1344)),
+            a = _interopRequireDefault(require(1340)),
+            r = _interopRequireDefault(require(1344)),
             s = {
                 init: function (e) {
                     e = $.extend({ selector: null, submitCallback: null, noDblClickEdit: false }, e);
@@ -135581,7 +135581,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        (require(19), require(8 /* Symbol */), require(20), require(851), require(4), require(41), require(13), require(26));
+        (require(19), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(851), require(4), require(41), require(13), require(26));
         var GObject = require(1),
             GSaveAction = require(40),
             a = require(1200),
@@ -135896,12 +135896,12 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(193), require(20), require(3), require(34));
+        var _interopRequireDefault = require(16);
+        (require(193), require(20 /* polyfill:RegExp */), require(3), require(34));
         var GObject = require(1),
             GPlatform = require(15);
         require(1259);
-        var r = o(require(1278)),
+        var r = _interopRequireDefault(require(1278)),
             s = {
                 value: function (e) {
                     var t = $(this),
@@ -136389,16 +136389,16 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(19), require(57), require(91), require(4), require(13), require(97), require(26));
+        var _interopRequireDefault = require(16);
+        (require(19), require(57), require(91 /* polyfill:String */), require(4), require(13), require(97), require(26));
         var i = require(53),
             GObject = require(1),
             GPlatform = require(15),
             GSaveAction = require(40),
             l = require(67),
             c = require(1351),
-            d = o(require(565)),
-            u = o(require(135)),
+            d = _interopRequireDefault(require(565)),
+            u = _interopRequireDefault(require(135)),
             p = require(451 /* GVirtualTree */).GVirtualTree,
             g = require(451 /* GVirtualTree */).GVirtualTreeNodeNamed,
             { VTREE_FREE_HEIGHT, VTREE_FREE_HEIGHT_TOUCH } = require(10 /* designerConfig */),
@@ -137543,13 +137543,13 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(19), require(8 /* Symbol */), require(20), require(107), require(71), require(4), require(41), require(13), require(32), require(38), require(97), require(1175), require(33), require(26));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(19), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(71 /* polyfill:String */), require(4), require(41), require(13), require(32), require(38), require(97), require(1175), require(33), require(26));
         var i = require(53),
             GObject = require(1),
             r = require(882),
             designerConfig = require(10),
-            l = o(require(1354));
+            l = _interopRequireDefault(require(1354));
         const GSystemDialog = require(44),
             d = require(358),
             u = require(1355),
@@ -138621,7 +138621,7 @@ var GravitDesigner = (function (e) {
     function (module, exports, require) {
         "use strict";
         (require(57),
-            require(20),
+            require(20 /* polyfill:RegExp */),
             require(3),
             require(34),
             (function (e) {
@@ -138706,9 +138706,9 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(57), require(356), require(20), require(3), require(71), require(34), require(91), require(4), require(41), require(13), require(32), require(38), require(33));
-        var i = o(require(883)),
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(57), require(356), require(20 /* polyfill:RegExp */), require(3), require(71 /* polyfill:String */), require(34), require(91 /* polyfill:String */), require(4), require(41), require(13), require(32), require(38), require(33));
+        var i = _interopRequireDefault(require(883)),
             GRegex = require(263),
             r = 8,
             s = 9,
@@ -139171,13 +139171,13 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(19), require(57), require(91), require(4), require(13), require(26));
+        var _interopRequireDefault = require(16);
+        (require(19), require(57), require(91 /* polyfill:String */), require(4), require(13), require(26));
         var i = require(53),
             GObject = require(1),
-            r = (require(15 /* GPlatform */), o(require(565))),
+            r = (require(15 /* GPlatform */), _interopRequireDefault(require(565))),
             s = require(67),
-            l = o(require(135)),
+            l = _interopRequireDefault(require(135)),
             c = require(451 /* GVirtualTree */).GVirtualTree,
             d = (require(451 /* GVirtualTree */).GVirtualTreeNode, require(451 /* GVirtualTree */).GVirtualTreeNodeNamed),
             { VTREE_FREE_HEIGHT, VTREE_FREE_HEIGHT_TOUCH } = require(10 /* designerConfig */),
@@ -140338,9 +140338,9 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GObject = require(1),
-            a = o(require(565)),
+            a = _interopRequireDefault(require(565)),
             r = {
                 init: function (e) {
                     return (
@@ -140744,17 +140744,17 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(290), require(57), require(4), require(13));
         var i,
             a,
             r,
             GPlatform = require(15),
             GObject = require(1),
-            c = o(require(11)),
+            c = _interopRequireDefault(require(11)),
             designerConfig = require(10),
             u = require(67),
-            p = o(require(1342)),
+            p = _interopRequireDefault(require(1342)),
             g = {
                 init: function (e) {
                     if (e) {
@@ -141890,7 +141890,7 @@ var GravitDesigner = (function (e) {
     },
     function (module, exports, require) {
         "use strict";
-        require(91);
+        require(91 /* polyfill:String */);
         const o = {
             init: function () {
                 return (

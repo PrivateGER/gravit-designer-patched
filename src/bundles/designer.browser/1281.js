@@ -1,10 +1,10 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(71), require(4), require(41), require(13), require(38));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(71 /* polyfill:String */), require(4), require(41), require(13), require(38));
         var GPlatform = require(15),
-            a = o(require(31)),
-            r = o(require(1168));
+            a = _interopRequireDefault(require(31)),
+            r = _interopRequireDefault(require(1168));
         class s extends a.default {
             constructor(e) {
                 (super(), (this.Type = e.Type));

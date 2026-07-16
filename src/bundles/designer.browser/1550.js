@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(8 /* Symbol */), require(20), require(34), require(4), require(41), require(13));
+        var _interopRequireDefault = require(16);
+        (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(4), require(41), require(13));
         var GObject = require(1),
             a = require(1163),
-            r = o(require(1090)),
-            s = o(require(358)),
+            r = _interopRequireDefault(require(1090)),
+            s = _interopRequireDefault(require(358)),
             GSaveAction = require(40),
             designerConfig = require(10);
         const IsFiniteNonNegativeNumber = require(0),

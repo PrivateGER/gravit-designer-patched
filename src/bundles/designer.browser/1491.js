@@ -1,20 +1,20 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(557);
-        var o = require(16);
-        (require(58),
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */),
             require(19),
             require(168 /* PDFFetchStream */),
-            require(596),
-            require(96),
-            require(30),
+            require(596 /* polyfill:Array */),
+            require(96 /* polyfill:JSON */),
+            require(30 /* polyfill:Object */),
             require(57),
             require(8 /* Symbol */),
-            require(20),
+            require(20 /* polyfill:RegExp */),
             require(3),
-            require(71),
+            require(71 /* polyfill:String */),
             require(34),
-            require(134),
+            require(134 /* polyfill:String */),
             require(4),
             require(41),
             require(13),
@@ -29,7 +29,7 @@ module.exports = function (module, exports, require) {
             GPlatform = require(15),
             designerConfig = require(10),
             l = require(357),
-            c = o(require(1492)),
+            c = _interopRequireDefault(require(1492)),
             d = require(1246),
             GSaveAction = require(40),
             p = require(1247),
@@ -56,13 +56,13 @@ module.exports = function (module, exports, require) {
                     return r;
                 })(e, t);
             })(require(1739)),
-            h = (o(require(1249)), o(require(1155))),
-            f = o(require(556 /* GGoogleDrive */)),
-            m = o(require(734)),
-            y = o(require(1494)),
-            v = o(require(1496)),
-            _ = o(require(1497)),
-            b = o(require(1498));
+            h = (_interopRequireDefault(require(1249)), _interopRequireDefault(require(1155))),
+            f = _interopRequireDefault(require(556 /* GGoogleDrive */)),
+            m = _interopRequireDefault(require(734)),
+            y = _interopRequireDefault(require(1494)),
+            v = _interopRequireDefault(require(1496)),
+            _ = _interopRequireDefault(require(1497)),
+            b = _interopRequireDefault(require(1498));
         var GDocument = require(163),
             C = require(238),
             x = require(339),
@@ -99,7 +99,7 @@ module.exports = function (module, exports, require) {
             Z = require(85),
             GSystemDialog = require(44),
             GAutoSave = require(1276),
-            ne = require(1564),
+            _interopRequireWildcard = require(1564),
             oe = require(1250),
             ie = require(291),
             GPaste = require(1313),
@@ -3152,7 +3152,7 @@ module.exports = function (module, exports, require) {
                     userId: null == e ? void 0 : e.id,
                     apiKey: window.AMPLITUDE_API_KEY,
                 })),
-                    new ne(this._amplitudeHelper));
+                    new _interopRequireWildcard(this._amplitudeHelper));
             }),
             (Je.prototype._updateState = function () {
                 var e, t, n, o, i, a, r;

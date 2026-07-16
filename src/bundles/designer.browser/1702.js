@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(193), require(20), require(3), require(34));
+        var _interopRequireDefault = require(16);
+        (require(193), require(20 /* polyfill:RegExp */), require(3), require(34));
         var GObject = require(1),
             GPlatform = require(15);
         require(1259);
-        var r = o(require(1278)),
+        var r = _interopRequireDefault(require(1278)),
             s = {
                 value: function (e) {
                     var t = $(this),

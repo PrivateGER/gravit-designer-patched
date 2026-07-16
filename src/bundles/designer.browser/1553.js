@@ -1,13 +1,13 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(96), require(30), require(8 /* Symbol */), require(196), require(4), require(13), require(32), require(38), require(33));
+        var _interopRequireDefault = require(16);
+        (require(96 /* polyfill:JSON */), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(4), require(13), require(32), require(38), require(33));
         var GObject = require(1),
-            a = o(require(163 /* GDocument */)),
-            r = o(require(78)),
-            s = o(require(86)),
-            l = o(require(802)),
-            c = o(require(355));
+            a = _interopRequireDefault(require(163 /* GDocument */)),
+            r = _interopRequireDefault(require(78)),
+            s = _interopRequireDefault(require(86)),
+            l = _interopRequireDefault(require(802)),
+            c = _interopRequireDefault(require(355));
         const d = require(1554),
             u = require(1301),
             GGoogleDrive = require(556),

@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(58), require(8 /* Symbol */), require(71), require(4), require(13), require(38));
+        (require(58 /* polyfill:Array */), require(8 /* Symbol */), require(71 /* polyfill:String */), require(4), require(13), require(38));
         var GObject = require(1);
         const GPurchasePanel = require(1507),
             GAccountPanel = require(1508),

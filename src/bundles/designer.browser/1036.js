@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.GGoogleAPI = exports.GDefaultGoogleAPI = void 0), require(19), require(30), require(8 /* Symbol */), require(26));
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.GGoogleAPI = exports.GDefaultGoogleAPI = void 0), require(19), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(26));
         var designerConfig = require(10),
             GObject = require(1);
         class a {

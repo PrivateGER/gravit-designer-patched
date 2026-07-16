@@ -1,33 +1,33 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(19), require(168 /* PDFFetchStream */), require(20), require(71), require(247), require(4), require(13), require(32), require(38), require(169 /* PDFNetworkStream */), require(33), require(26));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(19), require(168 /* PDFFetchStream */), require(20 /* polyfill:RegExp */), require(71 /* polyfill:String */), require(247), require(4), require(13), require(32), require(38), require(169 /* PDFNetworkStream */), require(33), require(26));
         var GPlatform = require(15),
             a = require(53),
             GObject = require(1),
-            s = o(require(78)),
-            l = o(require(1330)),
-            c = o(require(238)),
-            d = o(require(339)),
-            u = o(require(1331 /* GCutCopyAction */)),
-            p = o(require(877)),
-            g = o(require(1183)),
-            h = o(require(1184)),
-            f = o(require(875)),
-            m = o(require(876)),
-            y = o(require(1332)),
-            v = o(require(811 /* GGroupAction */)),
-            _ = o(require(870 /* GSplitAction */)),
-            b = o(require(1333)),
-            w = o(require(1334)),
-            C = o(require(869 /* GArrangeAction */)),
-            x = o(require(1335)),
-            S = o(require(810 /* GConvertToPathAction */)),
-            E = o(require(1336)),
-            A = o(require(1337)),
-            T = o(require(1590)),
-            G = o(require(878)),
-            P = o(require(879));
+            s = _interopRequireDefault(require(78)),
+            l = _interopRequireDefault(require(1330)),
+            c = _interopRequireDefault(require(238)),
+            d = _interopRequireDefault(require(339)),
+            u = _interopRequireDefault(require(1331 /* GCutCopyAction */)),
+            p = _interopRequireDefault(require(877)),
+            g = _interopRequireDefault(require(1183)),
+            h = _interopRequireDefault(require(1184)),
+            f = _interopRequireDefault(require(875)),
+            m = _interopRequireDefault(require(876)),
+            y = _interopRequireDefault(require(1332)),
+            v = _interopRequireDefault(require(811 /* GGroupAction */)),
+            _ = _interopRequireDefault(require(870 /* GSplitAction */)),
+            b = _interopRequireDefault(require(1333)),
+            w = _interopRequireDefault(require(1334)),
+            C = _interopRequireDefault(require(869 /* GArrangeAction */)),
+            x = _interopRequireDefault(require(1335)),
+            S = _interopRequireDefault(require(810 /* GConvertToPathAction */)),
+            E = _interopRequireDefault(require(1336)),
+            A = _interopRequireDefault(require(1337)),
+            T = _interopRequireDefault(require(1590)),
+            G = _interopRequireDefault(require(878)),
+            P = _interopRequireDefault(require(879));
         class D extends G.default {
             constructor(e) {
                 (super(e), this.addGesture(new P.default()), this.setDelayedTouchEventsEnabled(false));

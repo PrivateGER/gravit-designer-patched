@@ -1,15 +1,15 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports.default = exports.WINDOW_STATUS_BLOCKED = void 0),
-            require(58),
+            require(58 /* polyfill:Array */),
             require(19),
-            require(96),
+            require(96 /* polyfill:JSON */),
             require(57),
             require(8 /* Symbol */),
-            require(71),
-            require(134),
+            require(71 /* polyfill:String */),
+            require(134 /* polyfill:String */),
             require(4),
             require(41),
             require(13),
@@ -17,8 +17,8 @@ module.exports = function (module, exports, require) {
             require(97),
             require(26));
         var GObject = require(1),
-            a = o(require(355)),
-            r = o(require(594)),
+            a = _interopRequireDefault(require(355)),
+            r = _interopRequireDefault(require(594)),
             s = require(858);
         const l = require(1240),
             c = require(520),

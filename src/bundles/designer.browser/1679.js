@@ -1,9 +1,9 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(30), require(8 /* Symbol */), require(196));
-        var i = o(require(1249)),
-            a = o(require(1155)),
+        var _interopRequireDefault = require(16);
+        (require(30 /* polyfill:Object */), require(8 /* Symbol */), require(196 /* polyfill:Promise */));
+        var i = _interopRequireDefault(require(1249)),
+            a = _interopRequireDefault(require(1155)),
             GObject = require(1);
         const { gApi, IN_APP_PURCHASE: { CLEVERBRIDGE: { openCartInAPopup: l = false } = {} } = {} } = require(10 /* designerConfig */),
             c = require(808),

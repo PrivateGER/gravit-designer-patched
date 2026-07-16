@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(91), require(842));
-        var o = require(16);
+        (require(91 /* polyfill:String */), require(842 /* polyfill:String */));
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports._cloneChildrenIntoReceiver = E),
             (exports._mergeChildren = x),
@@ -387,19 +387,19 @@ module.exports = function (module, exports, require) {
                 return e.substring(t.length);
             }),
             (exports.watchDog = void 0),
-            require(58),
+            require(58 /* polyfill:Array */),
             require(19),
             require(180),
-            require(181),
-            require(30),
+            require(181 /* polyfill:ArrayBuffer */),
+            require(30 /* polyfill:Object */),
             require(8 /* Symbol */),
             require(356),
-            require(20),
+            require(20 /* polyfill:RegExp */),
             require(3),
-            require(271),
-            require(71),
+            require(271 /* polyfill:String */),
+            require(71 /* polyfill:String */),
             require(151),
-            require(134),
+            require(134 /* polyfill:String */),
             require(1041),
             require(218),
             require(189),
@@ -414,7 +414,7 @@ module.exports = function (module, exports, require) {
             require(97),
             require(33));
         var GObject = require(1),
-            a = o(require(84)),
+            a = _interopRequireDefault(require(84)),
             r = require(1042);
         const s = require(1043);
         var l = require(250),

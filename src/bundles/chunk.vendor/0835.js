@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
             "use strict";
-            (require(58), require(71));
+            (require(58 /* polyfill:Array */), require(71 /* polyfill:String */));
             const { UNKNOWN, IN_REVIEW, AWAITING_APPROVAL, APPROVED, REOPENED } = require(586),
                 l = Object.freeze({
                     [UNKNOWN]: [IN_REVIEW],

@@ -1,8 +1,8 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(30), require(8 /* Symbol */));
-        var i = o(require(11));
+        var _interopRequireDefault = require(16);
+        (require(30 /* polyfill:Object */), require(8 /* Symbol */));
+        var i = _interopRequireDefault(require(11));
         require(1322 /* GShareManager */);
         const a = require(808),
             r = require(1570),

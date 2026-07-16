@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
             "use strict";
-            (require(8 /* Symbol */), require(20), require(3), require(34), require(38));
+            (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(38));
             const n = require(171),
                 r = require(170),
                 o = require(325),

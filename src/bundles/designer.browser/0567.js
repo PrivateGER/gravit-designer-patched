@@ -1,14 +1,14 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(8 /* Symbol */), require(3), require(71), require(4), require(41), require(13), require(32), require(38), require(97), require(33));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(8 /* Symbol */), require(3), require(71 /* polyfill:String */), require(4), require(41), require(13), require(32), require(38), require(97), require(33));
         var i = require(53),
             GObject = require(1),
             GPlatform = require(15),
-            s = o(require(238)),
-            l = o(require(339)),
+            s = _interopRequireDefault(require(238)),
+            l = _interopRequireDefault(require(339)),
             c = require(67),
-            d = o(require(340)),
+            d = _interopRequireDefault(require(340)),
             GSettingsDialog = require(1275),
             p = require(444),
             g = require(78),

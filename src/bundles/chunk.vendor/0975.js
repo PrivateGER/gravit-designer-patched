@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
             "use strict";
-            (require(8 /* Symbol */), require(20), require(34));
+            (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34));
             const n = require(706),
                 GPaywallDialog = require(707),
                 o = require(417 /* gApi */).self(),

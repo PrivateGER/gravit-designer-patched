@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(20), require(3), require(34), require(4), require(13));
+        (require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(13));
         var GObject = require(1);
         const { FILE_FORMATS, CLOUD_SYNC_FEATURE: { NEW_LAYOUT } = {} } = require(10 /* designerConfig */),
             GCategory = require(18),

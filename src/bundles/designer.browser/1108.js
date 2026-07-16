@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(96), require(57), require(20), require(151), require(38));
+        (require(96 /* polyfill:JSON */), require(57), require(20 /* polyfill:RegExp */), require(151), require(38));
         var i = function () {
             ((this.interval = 1e3), (this.maxInterval = 6e4));
         };

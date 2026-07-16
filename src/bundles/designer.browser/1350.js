@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(30), require(8 /* Symbol */));
+        (require(30 /* polyfill:Object */), require(8 /* Symbol */));
         const o = require(337),
             i = require(1338),
             { gApi, PurchaseStatus } = require(10 /* designerConfig */),

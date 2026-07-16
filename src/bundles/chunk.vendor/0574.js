@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
             "use strict";
-            (require(19), require(30), require(4), require(13), require(32), require(38), require(33), require(26));
+            (require(19), require(30 /* polyfill:Object */), require(4), require(13), require(32), require(38), require(33), require(26));
             const n = require(575),
                 r = require(951);
             class o extends r {

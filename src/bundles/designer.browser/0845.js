@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports.updateFileFn =
                 exports.syncImagesToCloud =
@@ -11,13 +11,13 @@ module.exports = function (module, exports, require) {
                     void 0),
             require(19),
             require(180),
-            require(181),
-            require(96),
-            require(30),
+            require(181 /* polyfill:ArrayBuffer */),
+            require(96 /* polyfill:JSON */),
+            require(30 /* polyfill:Object */),
             require(8 /* Symbol */),
-            require(20),
+            require(20 /* polyfill:RegExp */),
             require(3),
-            require(134),
+            require(134 /* polyfill:String */),
             require(218),
             require(189),
             require(190),
@@ -25,7 +25,7 @@ module.exports = function (module, exports, require) {
             require(192),
             require(26),
             require(114));
-        var i = o(require(227));
+        var i = _interopRequireDefault(require(227));
         const a = require(435),
             r = (exports.syncImagesToCloud = async function (e, t, n, o, r, s, l, c, d) {
                 try {

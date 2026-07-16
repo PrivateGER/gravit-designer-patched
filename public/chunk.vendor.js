@@ -36670,7 +36670,7 @@
         ,
         function (module, exports, require) {
             "use strict";
-            (require(19), require(8 /* Symbol */), require(20), require(107), require(3), require(26), require(114));
+            (require(19), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(3), require(26), require(114));
             const { DateAPI } = require(209 /* GLocale */),
                 GShareRoles = require(287);
             module.exports = {
@@ -36819,7 +36819,7 @@
         },
         function (module, exports, require) {
             "use strict";
-            (require(20), require(151), require(34), require(247), require(91), require(4), require(41), require(13), require(38));
+            (require(20 /* polyfill:RegExp */), require(151), require(34), require(247), require(91 /* polyfill:String */), require(4), require(41), require(13), require(38));
             const { GLocale, GLocaleKey } = require(209 /* GLocale */),
                 o = Object.values(require(287 /* GShareRoles */))
                     .filter((e) => !!e.mentionName)
@@ -41112,7 +41112,7 @@
             "use strict";
 
             function n() {}
-            (require(20),
+            (require(20 /* polyfill:RegExp */),
                 require(3),
                 require(151),
                 (n.getTypeId = function (e) {
@@ -44073,7 +44073,7 @@
         ,
         function (module, exports, require) {
             "use strict";
-            require(30);
+            require(30 /* polyfill:Object */);
             const { ACCESS, INSPECT, COMMENT, COPY, SHARE, EDIT, OWNER, APPROVE, PASSWORD_PROTECT } = require(352),
                 { GLocale, GLocaleKey } = require(209 /* GLocale */),
                 d = (e) =>
@@ -51679,7 +51679,7 @@
         ,
         function (module, exports, require) {
             "use strict";
-            (require(30), require(4), require(41), require(13), require(32), require(97), require(33));
+            (require(30 /* polyfill:Object */), require(4), require(41), require(13), require(32), require(97), require(33));
             for (
                 var n = require(685),
                     r = require(686),
@@ -55501,13 +55501,13 @@
         },
         function (module, exports, require) {
             "use strict";
-            (require(58),
+            (require(58 /* polyfill:Array */),
                 require(19),
-                require(96),
-                require(30),
+                require(96 /* polyfill:JSON */),
+                require(30 /* polyfill:Object */),
                 require(8 /* Symbol */),
-                require(20),
-                require(107),
+                require(20 /* polyfill:RegExp */),
+                require(107 /* polyfill:RegExp */),
                 require(3),
                 require(151),
                 require(34),
@@ -55517,7 +55517,7 @@
                 require(33),
                 require(26),
                 require(125),
-                require(126),
+                require(126 /* polyfill:URL */),
                 require(114));
             const n = exports,
                 r = require(938),
@@ -65626,7 +65626,7 @@
         ,
         function (module, exports, require) {
             "use strict";
-            (require(19), require(30), require(4), require(13), require(32), require(38), require(33), require(26));
+            (require(19), require(30 /* polyfill:Object */), require(4), require(13), require(32), require(38), require(33), require(26));
             const n = require(575),
                 r = require(951);
             class o extends r {
@@ -65687,7 +65687,7 @@
         },
         function (module, exports, require) {
             "use strict";
-            (require(58), require(19), require(168 /* PDFFetchStream */), require(30), require(71), require(4), require(41), require(13), require(169 /* PDFNetworkStream */), require(26));
+            (require(58 /* polyfill:Array */), require(19), require(168 /* PDFFetchStream */), require(30 /* polyfill:Object */), require(71 /* polyfill:String */), require(4), require(41), require(13), require(169 /* PDFNetworkStream */), require(26));
             const n = require(352),
                 GShareRoles = require(287),
                 o = require(950),
@@ -65814,7 +65814,7 @@
         },
         function (module, exports, require) {
             "use strict";
-            require(30);
+            require(30 /* polyfill:Object */);
             module.exports = class {
                 constructor(e) {
                     Object.assign(this, e);
@@ -75536,7 +75536,7 @@
             "use strict";
 
             function n() {}
-            (require(58),
+            (require(58 /* polyfill:Array */),
                 require(8 /* Symbol */),
                 (n.extend = function (e, t) {
                     var i = false,
@@ -75573,8 +75573,8 @@
             var r;
             (require(19),
                 require(180),
-                require(181),
-                require(20),
+                require(181 /* polyfill:ArrayBuffer */),
+                require(20 /* polyfill:RegExp */),
                 require(151),
                 require(692),
                 require(189),
@@ -75682,7 +75682,7 @@
         ,
         function (module, exports, require) {
             "use strict";
-            (require(96), require(30), require(4), require(41), require(13), require(32), require(38), require(33));
+            (require(96 /* polyfill:JSON */), require(30 /* polyfill:Object */), require(4), require(41), require(13), require(32), require(38), require(33));
             var n = require(524),
                 r = require(940),
                 o = require(943),
@@ -75946,7 +75946,7 @@
         },
         function (module, exports, require) {
             "use strict";
-            (require(19), require(30), require(57), require(8 /* Symbol */), require(20), require(34), require(26));
+            (require(19), require(30 /* polyfill:Object */), require(57), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(26));
             const n = require(171),
                 r = require(373),
                 o = (e) => new Promise((t) => setTimeout(t, e)),
@@ -89410,7 +89410,7 @@
         },
         function (module, exports, require) {
             "use strict";
-            (require(30), require(20), require(107), require(247), require(91));
+            (require(30 /* polyfill:Object */), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(247), require(91 /* polyfill:String */));
             const n = require(973),
                 { sanitizeName } = require(254),
                 o = require(583),
@@ -89508,7 +89508,7 @@
         },
         function (module, exports, require) {
             "use strict";
-            require(30);
+            require(30 /* polyfill:Object */);
             const {
                 TYPES: { TYPE },
                 ACTIONS: { ACTION },
@@ -89531,7 +89531,7 @@
         },
         function (module, exports, require) {
             "use strict";
-            (require(58), require(71));
+            (require(58 /* polyfill:Array */), require(71 /* polyfill:String */));
             const { UNKNOWN, IN_REVIEW, AWAITING_APPROVAL, APPROVED, REOPENED } = require(586),
                 l = Object.freeze({
                     [UNKNOWN]: [IN_REVIEW],
@@ -99376,7 +99376,7 @@
         },
         function (module, exports, require) {
             "use strict";
-            (require(19), require(193), require(3), require(91), require(4), require(13), require(26));
+            (require(19), require(193), require(3), require(91 /* polyfill:String */), require(4), require(13), require(26));
             var n = require(686),
                 r = require(269),
                 o = require(701),
@@ -99732,7 +99732,7 @@
         },
         function (module, exports, require) {
             "use strict";
-            (require(19), require(168 /* PDFFetchStream */), require(30), require(4), require(322), require(13), require(169 /* PDFNetworkStream */), require(26));
+            (require(19), require(168 /* PDFFetchStream */), require(30 /* polyfill:Object */), require(4), require(322), require(13), require(169 /* PDFNetworkStream */), require(26));
             const GShareRoles = require(287),
                 r = require(352);
             class o {
@@ -99776,7 +99776,7 @@
         },
         function (module, exports, require) {
             "use strict";
-            require(30);
+            require(30 /* polyfill:Object */);
             class n {
                 constructor() {
                     let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
@@ -100236,7 +100236,7 @@
         },
         function (module, exports, require) {
             "use strict";
-            (require(8 /* Symbol */), require(20), require(34));
+            (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34));
             const n = require(706),
                 GPaywallDialog = require(707),
                 o = require(417 /* gApi */).self(),
@@ -100395,24 +100395,24 @@
         },
         function (module, exports, require) {
             "use strict";
-            (require(58),
+            (require(58 /* polyfill:Array */),
                 require(19),
-                require(30),
+                require(30 /* polyfill:Object */),
                 require(57),
                 require(8 /* Symbol */),
-                require(20),
+                require(20 /* polyfill:RegExp */),
                 require(527),
-                require(107),
-                require(71),
+                require(107 /* polyfill:RegExp */),
+                require(71 /* polyfill:String */),
                 require(151),
                 require(34),
-                require(91),
+                require(91 /* polyfill:String */),
                 require(4),
                 require(41),
                 require(13),
                 require(26),
                 require(125),
-                require(126),
+                require(126 /* polyfill:URL */),
                 require(114));
             const n = require(170),
                 r = require(325),
@@ -101529,7 +101529,7 @@
         },
         function (module, exports, require) {
             "use strict";
-            (require(20), require(107));
+            (require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */));
             module.exports = class {
                 static isAvailable() {
                     return void 0 !== window.grecaptcha && /^(prod|trunk)/.test(window.env || "") && "localhost" !== location.hostname;
@@ -101538,7 +101538,7 @@
         },
         function (module, exports, require) {
             "use strict";
-            (require(20), require(107));
+            (require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */));
             const n = /^prod/.test("production"),
                 r = /^rc/.test("production"),
                 o = /^trunk/.test("production"),
@@ -101586,7 +101586,7 @@
         },
         function (module, exports, require) {
             "use strict";
-            (require(8 /* Symbol */), require(20), require(3), require(34), require(38));
+            (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(38));
             const n = require(171),
                 r = require(170),
                 o = require(325),

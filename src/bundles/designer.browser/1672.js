@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(19), require(3), require(26), require(125), require(126), require(114));
+        (require(19), require(3), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         const o = require(1347);
         module.exports = class {
             static setupInAppLinkReloadAppForOnce() {

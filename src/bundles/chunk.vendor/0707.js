@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
             "use strict";
-            (require(19), require(30), require(57), require(8 /* Symbol */), require(20), require(34), require(26));
+            (require(19), require(30 /* polyfill:Object */), require(57), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(26));
             const n = require(171),
                 r = require(373),
                 o = (e) => new Promise((t) => setTimeout(t, e)),

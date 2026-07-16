@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(96), require(30), require(8 /* Symbol */));
+        var _interopRequireDefault = require(16);
+        (require(96 /* polyfill:JSON */), require(30 /* polyfill:Object */), require(8 /* Symbol */));
         var GObject = require(1),
             a = require(53),
-            r = o(require(1561)),
-            s = o(require(177));
+            r = _interopRequireDefault(require(1561)),
+            s = _interopRequireDefault(require(177));
         const { gApi } = require(10 /* designerConfig */);
         module.exports = class {
             constructor(e, t) {

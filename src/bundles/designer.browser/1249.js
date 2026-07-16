@@ -1,8 +1,8 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0));
-        var i = o(require(1493));
+        var i = _interopRequireDefault(require(1493));
         class a extends i.default {
             constructor() {
                 let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};

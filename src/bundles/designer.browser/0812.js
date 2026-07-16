@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = o(require(18 /* GCategory */)),
-            s = o(require(31)),
-            l = o(require(1281));
+            r = _interopRequireDefault(require(18 /* GCategory */)),
+            s = _interopRequireDefault(require(31)),
+            l = _interopRequireDefault(require(1281));
         class c extends l.default {
             static getActionSubId(e) {
                 return "".concat(c.ID, ".").concat(e);

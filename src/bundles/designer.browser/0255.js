@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(328), require(20), require(34), require(38));
+        (require(328 /* polyfill:Array */), require(20 /* polyfill:RegExp */), require(34), require(38));
         var GObject = require(1),
             GMissingFontsDialog = require(841),
             a = require(217),

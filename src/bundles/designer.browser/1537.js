@@ -1,8 +1,8 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(8 /* Symbol */), require(71), require(4), require(13));
-        var i = o(require(1155));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(8 /* Symbol */), require(71 /* polyfill:String */), require(4), require(13));
+        var i = _interopRequireDefault(require(1155));
         const { GLocale, GLocaleKey, GObject } = require(1 /* GObject */),
             l = require(392),
             c = require(1165),

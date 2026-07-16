@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(168 /* PDFFetchStream */), require(57), require(8 /* Symbol */), require(196), require(4), require(41), require(13), require(32), require(38), require(169 /* PDFNetworkStream */), require(1175), require(33));
+        (require(168 /* PDFFetchStream */), require(57), require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(4), require(41), require(13), require(32), require(38), require(169 /* PDFNetworkStream */), require(1175), require(33));
         var GObject = require(1),
             designerConfig = require(10),
             GCommonNames = require(119),

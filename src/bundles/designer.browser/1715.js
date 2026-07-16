@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(57),
-            require(20),
+            require(20 /* polyfill:RegExp */),
             require(3),
             require(34),
             (function (e) {

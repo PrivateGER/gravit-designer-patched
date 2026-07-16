@@ -1,14 +1,14 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(19), require(4), require(32), require(33), require(26));
         var GObject = require(1),
             GPlatform = require(15),
-            r = o(require(18 /* GCategory */)),
-            s = o(require(1168)),
+            r = _interopRequireDefault(require(18 /* GCategory */)),
+            s = _interopRequireDefault(require(1168)),
             GSaveAction = require(40),
             c = require(67),
-            d = o(require(812)),
+            d = _interopRequireDefault(require(812)),
             designerConfig = require(10);
         class p extends s.default {
             constructor(e) {

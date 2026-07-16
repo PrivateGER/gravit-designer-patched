@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports.lookupByMimeType =
                 exports.lookupByExtension =
@@ -10,14 +10,14 @@ module.exports = function (module, exports, require) {
                 exports.FILE_EXTENSIONS =
                 exports.DEFAULT_TYPE =
                     void 0),
-            require(58),
+            require(58 /* polyfill:Array */),
             require(19),
             require(168 /* PDFFetchStream */),
-            require(96),
-            require(30),
+            require(96 /* polyfill:JSON */),
+            require(30 /* polyfill:Object */),
             require(57),
             require(8 /* Symbol */),
-            require(71),
+            require(71 /* polyfill:String */),
             require(4),
             require(41),
             require(13),
@@ -28,11 +28,11 @@ module.exports = function (module, exports, require) {
             require(26));
         var GObject = require(1),
             designerConfig = require(10),
-            r = o(require(119 /* GCommonNames */)),
-            s = o(require(220 /* GCommonNames */)),
-            l = o(require(163 /* GDocument */)),
-            c = o(require(86)),
-            d = o(require(802)),
+            r = _interopRequireDefault(require(119 /* GCommonNames */)),
+            s = _interopRequireDefault(require(220 /* GCommonNames */)),
+            l = _interopRequireDefault(require(163 /* GDocument */)),
+            c = _interopRequireDefault(require(86)),
+            d = _interopRequireDefault(require(802)),
             u = require(593);
         const p = require(156),
             { FILE_FORMATS, FOLDER_FORMAT, MAX_FOLDER_DEPTH_FOR_CLOUD } = require(10 /* designerConfig */);

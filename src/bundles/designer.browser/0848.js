@@ -1,12 +1,12 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(557);
-        var o = require(16);
-        (require(19), require(96), require(30), require(8 /* Symbol */), require(20), require(3), require(34), require(4), require(41), require(38), require(97), require(26), require(125), require(126), require(114));
+        var _interopRequireDefault = require(16);
+        (require(19), require(96 /* polyfill:JSON */), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(41), require(38), require(97), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1),
             GSaveAction = require(40),
             r = require(593),
-            s = o(require(787)),
+            s = _interopRequireDefault(require(787)),
             l = (function (e, t) {
                 if ("function" == typeof WeakMap)
                     var n = new WeakMap(),
@@ -30,7 +30,7 @@ module.exports = function (module, exports, require) {
                     return r;
                 })(e, t);
             })(require(789)),
-            c = o(require(594));
+            c = _interopRequireDefault(require(594));
         const d = require(1108),
             u = require(595),
             { HTTP_STATUS_CODES } = require(10 /* designerConfig */);

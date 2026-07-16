@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(30), require(8 /* Symbol */), require(20), require(527), require(107), require(4), require(32), require(33));
+        (require(30 /* polyfill:Object */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(527), require(107 /* polyfill:RegExp */), require(4), require(32), require(33));
         var designerConfig = require(10);
         const i = require(1326),
             a = require(1578),

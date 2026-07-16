@@ -1,20 +1,20 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(19), require(57), require(8 /* Symbol */), require(20), require(3), require(34), require(4), require(13), require(26));
+        var _interopRequireDefault = require(16);
+        (require(19), require(57), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(13), require(26));
         var GObject = require(1),
             designerConfig = require(10),
             r = require(1163),
-            s = o(require(123)),
-            l = o(require(1159)),
-            c = o(require(220 /* GCommonNames */)),
-            d = o(require(163 /* GDocument */)),
-            u = o(require(219)),
-            p = o(require(78)),
-            g = o(require(86)),
-            h = o(require(217)),
-            f = o(require(336)),
-            m = o(require(67));
+            s = _interopRequireDefault(require(123)),
+            l = _interopRequireDefault(require(1159)),
+            c = _interopRequireDefault(require(220 /* GCommonNames */)),
+            d = _interopRequireDefault(require(163 /* GDocument */)),
+            u = _interopRequireDefault(require(219)),
+            p = _interopRequireDefault(require(78)),
+            g = _interopRequireDefault(require(86)),
+            h = _interopRequireDefault(require(217)),
+            f = _interopRequireDefault(require(336)),
+            m = _interopRequireDefault(require(67));
         function y() {}
         (GObject.GObject.inherit(y, s.default),
             (y.ID = "version-history"),

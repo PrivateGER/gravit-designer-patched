@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = (require(15 /* GPlatform */), o(require(31))),
-            r = (o(require(85)), o(require(18 /* GCategory */))),
-            s = o(require(1173));
+            a = (require(15 /* GPlatform */), _interopRequireDefault(require(31))),
+            r = (_interopRequireDefault(require(85)), _interopRequireDefault(require(18 /* GCategory */))),
+            s = _interopRequireDefault(require(1173));
         function l() {}
         (GObject.GObject.inherit(l, a.default),
             (l.ID = "file.install-to-desktop"),

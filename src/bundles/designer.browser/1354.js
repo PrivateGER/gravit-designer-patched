@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
             let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
             Object.assign(this, { fileCache: true, collaboratorsCache: true }, e);
         }
-        (require(30),
+        (require(30 /* polyfill:Object */),
             require(3),
             (o.NO_CACHE_INVALIDATION = Object.freeze(new o({ fileCache: false, collaboratorsCache: false }))),
             (o.prototype.collaboratorsCache = true),

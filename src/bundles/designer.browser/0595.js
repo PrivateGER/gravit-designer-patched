@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(30), require(8 /* Symbol */));
+        (require(30 /* polyfill:Object */), require(8 /* Symbol */));
         var designerConfig = require(10);
         function i(e) {
             const { accessToken, expires, corporate, accountId } = new i.Settings(e);

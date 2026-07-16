@@ -1,9 +1,9 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GObject = require(1),
-            a = o(require(119 /* GCommonNames */)),
-            r = o(require(860));
+            a = _interopRequireDefault(require(119 /* GCommonNames */)),
+            r = _interopRequireDefault(require(860));
         function s(e) {
             let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : () => {};
             ((this._cb = e), (this._showFormCb = t), this._run());

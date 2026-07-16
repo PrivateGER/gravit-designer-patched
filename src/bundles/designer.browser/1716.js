@@ -1,8 +1,8 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(57), require(356), require(20), require(3), require(71), require(34), require(91), require(4), require(41), require(13), require(32), require(38), require(33));
-        var i = o(require(883)),
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(57), require(356), require(20 /* polyfill:RegExp */), require(3), require(71 /* polyfill:String */), require(34), require(91 /* polyfill:String */), require(4), require(41), require(13), require(32), require(38), require(33));
+        var i = _interopRequireDefault(require(883)),
             GRegex = require(263),
             r = 8,
             s = 9,

@@ -1,16 +1,16 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(30), require(57), require(8 /* Symbol */), require(196), require(356), require(20), require(3), require(34), require(4), require(41), require(13), require(97));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(30 /* polyfill:Object */), require(57), require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(356), require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(41), require(13), require(97));
         var GObject = require(1),
             GSaveAction = require(40),
-            r = o(require(847)),
-            s = o(require(848 /* GGoogleDrive */)),
-            l = o(require(44 /* GSystemDialog */)),
+            r = _interopRequireDefault(require(847)),
+            s = _interopRequireDefault(require(848 /* GGoogleDrive */)),
+            l = _interopRequireDefault(require(44 /* GSystemDialog */)),
             designerConfig = require(10),
-            d = o(require(787)),
-            u = o(require(789)),
-            p = o(require(555));
+            d = _interopRequireDefault(require(787)),
+            u = _interopRequireDefault(require(789)),
+            p = _interopRequireDefault(require(555));
         const g = require(388),
             GCommonNames = require(119),
             f = require(595),

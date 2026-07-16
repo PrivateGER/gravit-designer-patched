@@ -1,16 +1,16 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58),
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */),
             require(19),
-            require(328),
+            require(328 /* polyfill:Array */),
             require(180),
-            require(181),
-            require(30),
+            require(181 /* polyfill:ArrayBuffer */),
+            require(30 /* polyfill:Object */),
             require(8 /* Symbol */),
-            require(196),
-            require(20),
-            require(71),
+            require(196 /* polyfill:Promise */),
+            require(20 /* polyfill:RegExp */),
+            require(71 /* polyfill:String */),
             require(151),
             require(34),
             require(851),
@@ -34,10 +34,10 @@ module.exports = function (module, exports, require) {
             l = require(797),
             designerConfig = require(10),
             GSaveAction = require(40),
-            u = o(require(1468)),
-            p = o(require(1470)),
-            g = o(require(1471)),
-            h = o(require(177)),
+            u = _interopRequireDefault(require(1468)),
+            p = _interopRequireDefault(require(1470)),
+            g = _interopRequireDefault(require(1471)),
+            h = _interopRequireDefault(require(177)),
             PDFNodeStream = require(165);
         const m = require(1472);
         var y = require(388),

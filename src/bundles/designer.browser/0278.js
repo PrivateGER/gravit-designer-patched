@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        require(20);
+        require(20 /* polyfill:RegExp */);
         var o = require(29),
             i = require(79),
             a = require(306),

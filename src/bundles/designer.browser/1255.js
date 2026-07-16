@@ -1,12 +1,12 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(20), require(34));
-        var i = o(require(78)),
-            a = o(require(86)),
-            r = o(require(449 /* GFitAllAction */)),
-            s = o(require(85)),
-            l = o(require(237 /* GDocument */)),
+        var _interopRequireDefault = require(16);
+        (require(20 /* polyfill:RegExp */), require(34));
+        var i = _interopRequireDefault(require(78)),
+            a = _interopRequireDefault(require(86)),
+            r = _interopRequireDefault(require(449 /* GFitAllAction */)),
+            s = _interopRequireDefault(require(85)),
+            l = _interopRequireDefault(require(237 /* GDocument */)),
             GObject = require(1);
         module.exports = class {
             static handleOpenFileRequest(e, t) {

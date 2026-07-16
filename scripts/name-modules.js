@@ -30,22 +30,37 @@ const vote = (map, id, name, weight) => {
     votes.set(name, (votes.get(name) || 0) + weight);
 };
 
+// The vote/locale heuristics read the mangled shapes (n(123).GFoo, single-char
+// require vars) that refine-bundle.js consumes. Once the bundles are refined
+// those patterns are gone, so voting on refined source produces WRONG names.
+// Detect that and fall back to signatures-only (which are refine-stable).
+// The correct pipeline order is: split -> name -> refine.
+const refined = fs.readdirSync(BUNDLES_DIR).some((b) =>
+    fs
+        .readdirSync(path.join(BUNDLES_DIR, b))
+        .filter((f) => /^\d+\.js$/.test(f))
+        .slice(0, 20)
+        .some((f) => /function \(module, exports, require\)/.test(fs.readFileSync(path.join(BUNDLES_DIR, b, f), "utf8")))
+);
+if (refined) console.warn("note: bundles look refined — voting disabled, applying signatures only (re-split for full naming)");
+
 // pass 1: cross-module votes from require usage — pooled across ALL bundles,
 // because webpack module ids are global across chunks
 const crossVotes = new Map(); // id -> Map(name -> votes)
-for (const bundle of fs.readdirSync(BUNDLES_DIR)) {
-    const dir = path.join(BUNDLES_DIR, bundle);
-    for (const f of fs.readdirSync(dir).filter((f) => /^\d+\.js$/.test(f))) {
-        const src = fs.readFileSync(path.join(dir, f), "utf8");
-        // n(123).GFoo  /  require(123).GFoo
-        for (const m of src.matchAll(/\b[a-z$_]{1,10}\((\d+)\)\.([A-Z][A-Za-z0-9_]{3,})\b/g)) vote(crossVotes, m[1], m[2], 2);
-        // const { GFoo, GBar } = n(123)
-        for (const m of src.matchAll(/\{([^{}]{4,120})\}\s*=\s*[a-z$_]{1,10}\((\d+)\)/g)) {
-            const props = m[1].match(/\b[A-Z][A-Za-z0-9_]{3,}\b/g) || [];
-            for (const p of props) vote(crossVotes, m[2], p, 1);
+if (!refined)
+    for (const bundle of fs.readdirSync(BUNDLES_DIR)) {
+        const dir = path.join(BUNDLES_DIR, bundle);
+        for (const f of fs.readdirSync(dir).filter((f) => /^\d+\.js$/.test(f))) {
+            const src = fs.readFileSync(path.join(dir, f), "utf8");
+            // n(123).GFoo  /  require(123).GFoo
+            for (const m of src.matchAll(/\b[a-z$_]{1,10}\((\d+)\)\.([A-Z][A-Za-z0-9_]{3,})\b/g)) vote(crossVotes, m[1], m[2], 2);
+            // const { GFoo, GBar } = n(123)
+            for (const m of src.matchAll(/\{([^{}]{4,120})\}\s*=\s*[a-z$_]{1,10}\((\d+)\)/g)) {
+                const props = m[1].match(/\b[A-Z][A-Za-z0-9_]{3,}\b/g) || [];
+                for (const p of props) vote(crossVotes, m[2], p, 1);
+            }
         }
     }
-}
 
 for (const bundle of bundleNames) {
     const dir = path.join(BUNDLES_DIR, bundle);
@@ -60,8 +75,19 @@ for (const bundle of bundleNames) {
         const src = fs.readFileSync(path.join(dir, f), "utf8");
         let name = null;
 
+        // high-confidence library self-signatures (exact shapes from core-js /
+        // babel runtime) — these label vendor plumbing so readers can skip it
+        if (/__esModule \? [a-z] : \{ default: [a-z] \}/.test(src) && !/WeakMap|_getRequireWildcardCache/.test(src)) {
+            name = "_interopRequireDefault";
+        } else if (/__esModule/.test(src) && /_getRequireWildcardCache|new WeakMap\(\)/.test(src) && /default: [a-z]/.test(src)) {
+            name = "_interopRequireWildcard";
+        } else {
+            const poly = src.match(/target: "([A-Za-z][\w.]*)"[\s\S]{0,80}?(?:proto: |stat: |global: )/);
+            if (poly) name = "polyfill:" + poly[1];
+        }
+
         // surviving declarations (rare but authoritative)
-        const decl = src.match(/\b(?:class|function) (G[A-Z][A-Za-z0-9_]{2,})\b/);
+        const decl = !name && src.match(/\b(?:class|function) (G[A-Z][A-Za-z0-9_]{2,})\b/);
         if (decl) name = decl[1];
 
         // cross-module votes

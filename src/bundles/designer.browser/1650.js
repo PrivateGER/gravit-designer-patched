@@ -1,10 +1,10 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = o(require(31)),
-            s = o(require(18 /* GCategory */)),
+            r = _interopRequireDefault(require(31)),
+            s = _interopRequireDefault(require(18 /* GCategory */)),
             SidebarsIds = require(198);
         class c extends r.default {
             getId() {

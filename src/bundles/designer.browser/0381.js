@@ -3,9 +3,9 @@ module.exports = function (module, exports, require) {
         function o(e) {
             this._providerManager = e;
         }
-        (require(20),
+        (require(20 /* polyfill:RegExp */),
             require(34),
-            require(134),
+            require(134 /* polyfill:String */),
             (o.Errors = { UnknownError: 0, ConnectionError: 1 }),
             (o.prototype._providerManager = null),
             (o.prototype._enabled = true),

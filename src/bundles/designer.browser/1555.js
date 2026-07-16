@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(30), require(4), require(38), require(97));
+        (require(30 /* polyfill:Object */), require(4), require(38), require(97));
         const o = require(156),
             i = require(1301);
         function a(e) {

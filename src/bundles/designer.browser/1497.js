@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(20), require(34));
+        (require(20 /* polyfill:RegExp */), require(34));
         var designerConfig = require(10);
         const { GLocale, GLocaleKey } = require(1 /* GObject */);
         function r(e) {

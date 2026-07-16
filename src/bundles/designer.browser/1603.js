@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = o(require(1339 /* GPageProperties */)),
-            r = o(require(31)),
-            s = o(require(18 /* GCategory */));
+            a = _interopRequireDefault(require(1339 /* GPageProperties */)),
+            r = _interopRequireDefault(require(31)),
+            s = _interopRequireDefault(require(18 /* GCategory */));
         function l() {}
         (GObject.GObject.inherit(l, r.default),
             (l.ID = "view.fast-view"),

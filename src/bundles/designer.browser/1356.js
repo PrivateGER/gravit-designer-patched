@@ -1,15 +1,15 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(19), require(30), require(8 /* Symbol */), require(20), require(71), require(151), require(34), require(91), require(4), require(41), require(13), require(32), require(38), require(33), require(26));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(19), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(71 /* polyfill:String */), require(151), require(34), require(91 /* polyfill:String */), require(4), require(41), require(13), require(32), require(38), require(33), require(26));
         var designerConfig = require(10),
             a = require(882),
             GAnnotationPanel = require(1353),
             GRegex = require(263),
             l = require(67),
-            c = o(require(358)),
-            d = o(require(1324)),
-            u = o(require(883));
+            c = _interopRequireDefault(require(358)),
+            d = _interopRequireDefault(require(1324)),
+            u = _interopRequireDefault(require(883));
         const { GSystem, GLocale, GLocaleKey, GUtil, GComment, GAnnotation, GObject, GNode } = require(1 /* GObject */),
             { NEW_COMMENT_READ_TIMEOUT, ANNOTATION_PERMANENT_LINK, IS_COREL } = ((0, GAnnotationPanel.createAdditionalMentions)(), require(10 /* designerConfig */)),
             x = require(1191),

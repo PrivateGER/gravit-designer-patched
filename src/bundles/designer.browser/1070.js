@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        require(30);
+        require(30 /* polyfill:Object */);
         const { GObject } = require(1 /* GObject */);
         class i {
             constructor(e) {

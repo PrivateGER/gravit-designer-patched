@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(57), require(3), require(4), require(32), require(33));
         var i,
             designerConfig = require(10),
             GSaveAction = require(40),
-            s = o(require(565));
+            s = _interopRequireDefault(require(565));
         !(function (e) {
             var t = (function () {
                 function e() {

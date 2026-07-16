@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
             "use strict";
-            (require(58), require(19), require(168 /* PDFFetchStream */), require(30), require(71), require(4), require(41), require(13), require(169 /* PDFNetworkStream */), require(26));
+            (require(58 /* polyfill:Array */), require(19), require(168 /* PDFFetchStream */), require(30 /* polyfill:Object */), require(71 /* polyfill:String */), require(4), require(41), require(13), require(169 /* PDFNetworkStream */), require(26));
             const n = require(352),
                 GShareRoles = require(287),
                 o = require(950),

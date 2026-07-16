@@ -1,10 +1,10 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(19), require(8 /* Symbol */), require(134), require(4), require(13), require(26));
+        var _interopRequireDefault = require(16);
+        (require(19), require(8 /* Symbol */), require(134 /* polyfill:String */), require(4), require(13), require(26));
         var GObject = require(1),
             designerConfig = require(10),
-            r = o(require(536));
+            r = _interopRequireDefault(require(536));
         class s {
             static async setLanguage(e) {
                 try {

@@ -1,12 +1,12 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(8 /* Symbol */);
-        var i = o(require(176)),
+        var i = _interopRequireDefault(require(176)),
             GObject = require(1),
-            r = o(require(1242 /* GMSTeamsAuthenticator */)),
-            s = o(require(44 /* GSystemDialog */)),
-            l = o(require(443)),
+            r = _interopRequireDefault(require(1242 /* GMSTeamsAuthenticator */)),
+            s = _interopRequireDefault(require(44 /* GSystemDialog */)),
+            l = _interopRequireDefault(require(443 /* _interopRequireWildcard */)),
             c = require(1243);
         const { isPrivateChat, isTeamsChannel } = l.default;
         function p(e) {

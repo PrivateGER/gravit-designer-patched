@@ -1,12 +1,12 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(57), require(8 /* Symbol */), require(4), require(13), require(32), require(33));
         var GObject = require(1),
             a = require(53),
             designerConfig = require(10),
             GAutoSave = require(1276),
-            l = o(require(1278)),
+            l = _interopRequireDefault(require(1278)),
             c = require(85),
             d = null;
         function u() {

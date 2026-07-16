@@ -1,13 +1,13 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(32), require(33));
-        var o = require(16),
-            i = o(require(1504));
-        (require(58), require(30), require(8 /* Symbol */), require(20), require(3), require(271), require(71), require(34), require(4), require(41), require(13), require(38));
+        var _interopRequireDefault = require(16),
+            i = _interopRequireDefault(require(1504));
+        (require(58 /* polyfill:Array */), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(271 /* polyfill:String */), require(71 /* polyfill:String */), require(34), require(4), require(41), require(13), require(38));
         var GObject = require(1),
             GPlatform = require(15),
             s = require(67),
-            l = o(require(1248)),
+            l = _interopRequireDefault(require(1248)),
             designerConfig = require(10);
         function d(e, t) {
             var n = Object.keys(e);

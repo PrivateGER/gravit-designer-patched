@@ -1,10 +1,10 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(30), require(8 /* Symbol */));
+        var _interopRequireDefault = require(16);
+        (require(30 /* polyfill:Object */), require(8 /* Symbol */));
         var designerConfig = require(10),
             GObject = require(1),
-            r = o(require(1187));
+            r = _interopRequireDefault(require(1187));
         function s() {}
         (GObject.GObject.inherit(s, designerConfig.GPaywallDialog.Impl),
             (s.prototype.open = function (e) {

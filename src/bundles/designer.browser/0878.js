@@ -1,8 +1,8 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             designerConfig = require(10),
-            a = o(require(1582));
+            a = _interopRequireDefault(require(1582));
         module.exports = class {
             constructor(e) {
                 ((this._target = e),

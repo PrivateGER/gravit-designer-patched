@@ -1,9 +1,9 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(3), require(38));
         var GObject = require(1),
-            a = o(require(609));
+            a = _interopRequireDefault(require(609));
         function r(e) {
             ((this._type = e), a.default.call(this, r.getId(e), r.getTitle(e)));
         }

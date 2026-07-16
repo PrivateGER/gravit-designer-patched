@@ -37,7 +37,7 @@ module.exports = function (module, exports, require) {
             }),
             require(19),
             require(180),
-            require(181),
+            require(181 /* polyfill:ArrayBuffer */),
             require(57),
             require(8 /* Symbol */),
             require(218),

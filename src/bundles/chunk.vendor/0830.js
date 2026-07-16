@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
             "use strict";
-            (require(30), require(20), require(107), require(247), require(91));
+            (require(30 /* polyfill:Object */), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(247), require(91 /* polyfill:String */));
             const n = require(973),
                 { sanitizeName } = require(254),
                 o = require(583),

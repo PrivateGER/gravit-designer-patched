@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(57), require(20), require(107), require(3), require(4), require(13));
+        var _interopRequireDefault = require(16);
+        (require(57), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(3), require(4), require(13));
         var i = require(53),
             GObject = require(1),
             r = require(67),
-            s = o(require(340)),
+            s = _interopRequireDefault(require(340)),
             GAlignAction = require(866),
             GDistributeAction = require(867),
             d = require(123),

@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports.default = async function (e, t, n, o) {
                 var i = void 0 !== window.dataLayer ? window.dataLayer : [],
@@ -23,7 +23,7 @@ module.exports = function (module, exports, require) {
             require(32),
             require(33));
         var GObject = require(1),
-            a = o(require(859)),
+            a = _interopRequireDefault(require(859)),
             GSaveAction = require(40),
             s = require(803);
         const { GA: { customDimensions } = {}, GoogleTagManagerSettings } = require(10 /* designerConfig */);

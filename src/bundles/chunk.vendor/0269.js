@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
             "use strict";
 
             function n() {}
-            (require(20),
+            (require(20 /* polyfill:RegExp */),
                 require(3),
                 require(151),
                 (n.getTypeId = function (e) {

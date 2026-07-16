@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(96), require(30), require(8 /* Symbol */));
+        var _interopRequireDefault = require(16);
+        (require(96 /* polyfill:JSON */), require(30 /* polyfill:Object */), require(8 /* Symbol */));
         var GObject = require(1),
             a = require(1479),
-            r = o(require(44 /* GSystemDialog */)),
-            s = o(require(443)),
+            r = _interopRequireDefault(require(44 /* GSystemDialog */)),
+            s = _interopRequireDefault(require(443 /* _interopRequireWildcard */)),
             l = require(1243),
             GSaveAction = require(40);
         const { getAuthenticator, getTeamsContext } = s.default;

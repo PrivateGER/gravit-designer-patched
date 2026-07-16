@@ -1,9 +1,9 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(20), require(34), require(91), require(4), require(13));
+        var _interopRequireDefault = require(16);
+        (require(20 /* polyfill:RegExp */), require(34), require(91 /* polyfill:String */), require(4), require(13));
         var GObject = require(1),
-            a = o(require(44 /* GSystemDialog */));
+            a = _interopRequireDefault(require(44 /* GSystemDialog */));
         function r(e, t, n, o) {
             let r = arguments.length > 4 && void 0 !== arguments[4] ? arguments[4] : {};
             var s = this;

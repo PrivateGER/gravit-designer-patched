@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(19), require(30), require(8 /* Symbol */), require(3), require(4), require(32), require(33), require(26), require(125), require(126), require(114));
+        (require(19), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(3), require(4), require(32), require(33), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         const GProfileDialog = require(604);
         module.exports = class {
             constructor() {

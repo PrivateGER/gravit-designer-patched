@@ -1,15 +1,15 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(19),
             require(168 /* PDFFetchStream */),
-            require(30),
+            require(30 /* polyfill:Object */),
             require(57),
             require(8 /* Symbol */),
-            require(20),
+            require(20 /* polyfill:RegExp */),
             require(34),
-            require(134),
-            require(91),
+            require(134 /* polyfill:String */),
+            require(91 /* polyfill:String */),
             require(4),
             require(41),
             require(13),
@@ -20,13 +20,13 @@ module.exports = function (module, exports, require) {
             require(33),
             require(26),
             require(125),
-            require(126),
+            require(126 /* polyfill:URL */),
             require(114));
         var i = require(1201),
             GObject = require(1),
             GPlatform = require(15),
             designerConfig = require(10),
-            l = o(require(1664)),
+            l = _interopRequireDefault(require(1664)),
             c = require(219),
             GClipAction = require(809),
             { debounce, stringToBase64String } = require(40 /* GSaveAction */);

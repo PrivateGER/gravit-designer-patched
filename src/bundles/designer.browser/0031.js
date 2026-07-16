@@ -1,10 +1,10 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
             GPlatform = require(15),
-            r = o(require(844));
+            r = _interopRequireDefault(require(844));
         function s() {}
         (GObject.GObject.inherit(s, GObject.GObject),
             (s.SHORTCUT_DELAY = 500),

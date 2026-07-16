@@ -1,10 +1,10 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(19), require(57), require(8 /* Symbol */), require(71), require(91), require(4), require(41), require(13), require(38), require(26), require(125), require(126), require(114));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(19), require(57), require(8 /* Symbol */), require(71 /* polyfill:String */), require(91 /* polyfill:String */), require(4), require(41), require(13), require(38), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1),
-            a = o(require(1343)),
-            r = o(require(44 /* GSystemDialog */)),
+            a = _interopRequireDefault(require(1343)),
+            r = _interopRequireDefault(require(44 /* GSystemDialog */)),
             GSaveAction = require(40);
         function l() {}
         (GObject.GObject.inherit(l, GObject.GObject),

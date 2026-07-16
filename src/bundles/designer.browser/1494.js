@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0), require(8 /* Symbol */), require(20), require(271), require(34), require(134), require(38));
+        (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(271 /* polyfill:String */), require(34), require(134 /* polyfill:String */), require(38));
         const { isBeta } = require(803);
         var i = require(1495);
         let a = 0,

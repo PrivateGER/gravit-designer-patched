@@ -1,9 +1,9 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = o(require(813));
+            r = _interopRequireDefault(require(813));
         function s() {}
         (GObject.GObject.inherit(s, r.default),
             (s.ID = "".concat(r.default.ID, ".safari")),

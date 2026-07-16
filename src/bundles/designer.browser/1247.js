@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports.shouldShowExternalFileError = function (e) {
                 return e instanceof s.Item && !e.hasFileSettings();
@@ -26,6 +26,6 @@ module.exports = function (module, exports, require) {
             require(38));
         var GSaveAction = require(40),
             designerConfig = require(10),
-            r = o(require(1248));
+            r = _interopRequireDefault(require(1248));
         const s = require(388);
     };

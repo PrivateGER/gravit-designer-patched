@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
             GPlatform = require(15),
-            r = o(require(1172)),
-            s = o(require(1173));
+            r = _interopRequireDefault(require(1172)),
+            s = _interopRequireDefault(require(1173));
         function l(e) {
             const t = (e) => {
                 if (GPlatform.GKey.translateKey(e.keyCode) === GPlatform.GKey.Constant.ESC)

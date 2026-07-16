@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(19), require(677));
+        (require(19), require(677 /* polyfill:String */));
         var o = require(25),
             RegExp = require(23),
             a = require(411),

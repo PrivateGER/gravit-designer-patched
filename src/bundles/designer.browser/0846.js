@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        require(30);
+        require(30 /* polyfill:Object */);
         var IS_TRUNK = require(231);
         const { License, LicenseType, DateAPI } = require(10 /* designerConfig */),
             {

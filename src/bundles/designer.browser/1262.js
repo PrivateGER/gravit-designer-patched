@@ -1,15 +1,15 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(328), require(96), require(865), require(193), require(57), require(3), require(4), require(13));
+        var _interopRequireDefault = require(16);
+        (require(328 /* polyfill:Array */), require(96 /* polyfill:JSON */), require(865 /* polyfill:Number */), require(193), require(57), require(3), require(4), require(13));
         var i = require(53),
             GObject = require(1),
             GPlatform = require(15),
             s = require(67),
-            l = o(require(340)),
-            c = o(require(807)),
+            l = _interopRequireDefault(require(340)),
+            c = _interopRequireDefault(require(807)),
             d = require(1161),
-            u = o(require(565)),
+            u = _interopRequireDefault(require(565)),
             p = require(123),
             g = require(1263),
             h = require(1526),

@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        require(91);
+        require(91 /* polyfill:String */);
         const o = {
             init: function () {
                 return (

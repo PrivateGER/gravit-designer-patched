@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
             "use strict";
-            (require(20), require(151), require(34), require(247), require(91), require(4), require(41), require(13), require(38));
+            (require(20 /* polyfill:RegExp */), require(151), require(34), require(247), require(91 /* polyfill:String */), require(4), require(41), require(13), require(38));
             const { GLocale, GLocaleKey } = require(209 /* GLocale */),
                 o = Object.values(require(287 /* GShareRoles */))
                     .filter((e) => !!e.mentionName)

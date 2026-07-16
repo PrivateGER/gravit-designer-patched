@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         var o = require(27),
             i = require(232),
-            a = require(558).getWeakData,
+            a = require(558 /* polyfill:Object */).getWeakData,
             r = require(146),
             s = require(37),
             l = require(194),

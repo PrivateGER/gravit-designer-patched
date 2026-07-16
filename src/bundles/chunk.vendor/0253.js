@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
             "use strict";
-            (require(19), require(8 /* Symbol */), require(20), require(107), require(3), require(26), require(114));
+            (require(19), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(3), require(26), require(114));
             const { DateAPI } = require(209 /* GLocale */),
                 GShareRoles = require(287);
             module.exports = {

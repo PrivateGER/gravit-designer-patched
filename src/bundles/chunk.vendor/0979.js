@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
             "use strict";
-            (require(20), require(107));
+            (require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */));
             const n = /^prod/.test("production"),
                 r = /^rc/.test("production"),
                 o = /^trunk/.test("production"),

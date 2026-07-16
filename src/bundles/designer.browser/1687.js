@@ -1,9 +1,9 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(20), require(34));
+        var _interopRequireDefault = require(16);
+        (require(20 /* polyfill:RegExp */), require(34));
         var GObject = require(1),
-            a = o(require(44 /* GSystemDialog */));
+            a = _interopRequireDefault(require(44 /* GSystemDialog */));
         const { DateAPI, DESIGNER: { TITLE } = {} } = require(10 /* designerConfig */),
             l = require(78),
             c = DateAPI.minutesToMilliseconds(1),

@@ -1,14 +1,14 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58),
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */),
             require(19),
             require(168 /* PDFFetchStream */),
-            require(30),
+            require(30 /* polyfill:Object */),
             require(8 /* Symbol */),
-            require(196),
-            require(20),
-            require(107),
+            require(196 /* polyfill:Promise */),
+            require(20 /* polyfill:RegExp */),
+            require(107 /* polyfill:RegExp */),
             require(34),
             require(4),
             require(41),
@@ -19,7 +19,7 @@ module.exports = function (module, exports, require) {
             require(33),
             require(26),
             require(125),
-            require(126),
+            require(126 /* polyfill:URL */),
             require(114));
         var designerConfig = require(10),
             IS_TRUNK = require(231),
@@ -28,11 +28,11 @@ module.exports = function (module, exports, require) {
             GPlatform = require(15),
             GSaveAction = require(40),
             d = require(67),
-            u = o(require(1484)),
-            p = o(require(443)),
-            g = o(require(1485)),
-            h = o(require(1486)),
-            f = o(require(1487));
+            u = _interopRequireDefault(require(1484)),
+            p = _interopRequireDefault(require(443 /* _interopRequireWildcard */)),
+            g = _interopRequireDefault(require(1485)),
+            h = _interopRequireDefault(require(1486)),
+            f = _interopRequireDefault(require(1487));
         const { nodeEnv, isBeta, storeVendor, isCorel, isTeams } = require(803),
             w = require(231 /* IS_TRUNK */),
             C = !storeVendor,

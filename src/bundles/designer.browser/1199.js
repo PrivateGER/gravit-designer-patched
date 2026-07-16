@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(328), require(57), require(8 /* Symbol */), require(20), require(34), require(134), require(4), require(41), require(13), require(38));
+        (require(328 /* polyfill:Array */), require(57), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(134 /* polyfill:String */), require(4), require(41), require(13), require(38));
         var GObject = require(1),
             i = require(381);
         const { parseNativeFonts, getLocalFontsData, getFontFamily } = require(1200);

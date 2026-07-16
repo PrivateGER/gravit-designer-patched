@@ -1,12 +1,12 @@
 module.exports = function (module, exports, require) {
             "use strict";
-            (require(58),
+            (require(58 /* polyfill:Array */),
                 require(19),
-                require(96),
-                require(30),
+                require(96 /* polyfill:JSON */),
+                require(30 /* polyfill:Object */),
                 require(8 /* Symbol */),
-                require(20),
-                require(107),
+                require(20 /* polyfill:RegExp */),
+                require(107 /* polyfill:RegExp */),
                 require(3),
                 require(151),
                 require(34),
@@ -16,7 +16,7 @@ module.exports = function (module, exports, require) {
                 require(33),
                 require(26),
                 require(125),
-                require(126),
+                require(126 /* polyfill:URL */),
                 require(114));
             const n = exports,
                 r = require(938),

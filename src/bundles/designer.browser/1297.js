@@ -1,12 +1,12 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
             GPlatform = require(15),
-            r = o(require(18 /* GCategory */)),
-            s = o(require(31)),
-            l = o(require(442));
+            r = _interopRequireDefault(require(18 /* GCategory */)),
+            s = _interopRequireDefault(require(31)),
+            l = _interopRequireDefault(require(442));
         function c() {}
         (GObject.GObject.inherit(c, s.default),
             (c.ID = "view.outline-view"),

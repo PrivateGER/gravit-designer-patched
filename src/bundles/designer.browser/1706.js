@@ -1,15 +1,15 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(19), require(57), require(91), require(4), require(13), require(97), require(26));
+        var _interopRequireDefault = require(16);
+        (require(19), require(57), require(91 /* polyfill:String */), require(4), require(13), require(97), require(26));
         var i = require(53),
             GObject = require(1),
             GPlatform = require(15),
             GSaveAction = require(40),
             l = require(67),
             c = require(1351),
-            d = o(require(565)),
-            u = o(require(135)),
+            d = _interopRequireDefault(require(565)),
+            u = _interopRequireDefault(require(135)),
             p = require(451 /* GVirtualTree */).GVirtualTree,
             g = require(451 /* GVirtualTree */).GVirtualTreeNodeNamed,
             { VTREE_FREE_HEIGHT, VTREE_FREE_HEIGHT_TOUCH } = require(10 /* designerConfig */),

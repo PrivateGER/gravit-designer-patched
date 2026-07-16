@@ -1,12 +1,12 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(4), require(13));
         var GObject = require(1),
             GPlatform = require(15),
             r = require(53),
-            s = o(require(18 /* GCategory */)),
-            l = o(require(31));
+            s = _interopRequireDefault(require(18 /* GCategory */)),
+            l = _interopRequireDefault(require(31));
         class c extends l.default {
             constructor() {
                 (super(), (this._lastIsCheckedValue = true));

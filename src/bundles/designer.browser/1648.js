@@ -1,12 +1,12 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = o(require(18 /* GCategory */)),
-            s = o(require(1168)),
+            r = _interopRequireDefault(require(18 /* GCategory */)),
+            s = _interopRequireDefault(require(1168)),
             SidebarsIds = require(198),
-            c = o(require(1345));
+            c = _interopRequireDefault(require(1345));
         class d extends s.default {
             constructor(e) {
                 (super(e), (this._title = new GObject.GLocaleKey("GChangeAnchorPointsJointTypeSubAction", "title.".concat(this._type))));

@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16)(require(879));
+        var o = require(16 /* _interopRequireDefault */)(require(879));
         const i = require(878);
         module.exports = class extends i {
             constructor(e) {

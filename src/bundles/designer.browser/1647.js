@@ -1,12 +1,12 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(20), require(34), require(4), require(32), require(33));
+        var _interopRequireDefault = require(16);
+        (require(20 /* polyfill:RegExp */), require(34), require(4), require(32), require(33));
         var GObject = require(1),
             a = require(53),
             GPlatform = require(15),
-            s = o(require(31)),
-            l = o(require(18 /* GCategory */));
+            s = _interopRequireDefault(require(31)),
+            l = _interopRequireDefault(require(18 /* GCategory */));
         class c extends s.default {
             constructor() {
                 (super(), (this._opacityLevel = null), (this._timeoutId = null), (this._currentValue = ""));

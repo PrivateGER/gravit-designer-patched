@@ -1,14 +1,14 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = o(require(31)),
-            r = o(require(18 /* GCategory */)),
-            s = o(require(119 /* GCommonNames */)),
-            l = o(require(1159)),
-            c = o(require(219)),
-            d = o(require(256 /* GOfflineDialog */)),
+            a = _interopRequireDefault(require(31)),
+            r = _interopRequireDefault(require(18 /* GCategory */)),
+            s = _interopRequireDefault(require(119 /* GCommonNames */)),
+            l = _interopRequireDefault(require(1159)),
+            c = _interopRequireDefault(require(219)),
+            d = _interopRequireDefault(require(256 /* GOfflineDialog */)),
             u = require(67);
         function p() {
             ((this._title = new GObject.GLocaleKey("GVersionsHistoryAction", "title")),

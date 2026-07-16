@@ -5,8 +5,8 @@ module.exports = function (module, exports, require) {
             var r;
             (require(19),
                 require(180),
-                require(181),
-                require(20),
+                require(181 /* polyfill:ArrayBuffer */),
+                require(20 /* polyfill:RegExp */),
                 require(151),
                 require(692),
                 require(189),

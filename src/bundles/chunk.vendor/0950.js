@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
             "use strict";
-            (require(19), require(168 /* PDFFetchStream */), require(30), require(4), require(322), require(13), require(169 /* PDFNetworkStream */), require(26));
+            (require(19), require(168 /* PDFFetchStream */), require(30 /* polyfill:Object */), require(4), require(322), require(13), require(169 /* PDFNetworkStream */), require(26));
             const GShareRoles = require(287),
                 r = require(352);
             class o {

@@ -1,4 +1,4 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(618), require(627), require(628), require(629), require(630), require(631));
+        (require(618), require(627 /* polyfill:Promise */), require(628 /* polyfill:Promise */), require(629 /* polyfill:Promise */), require(630 /* polyfill:Promise */), require(631 /* polyfill:Promise */));
     };

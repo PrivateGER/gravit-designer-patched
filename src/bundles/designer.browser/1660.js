@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(865), require(193), require(57), require(3), require(4), require(13));
+        (require(865 /* polyfill:Number */), require(193), require(57), require(3), require(4), require(13));
         var o = require(53),
             GObject = require(1),
             a = require(67),

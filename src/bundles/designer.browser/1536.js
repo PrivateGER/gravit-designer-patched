@@ -1,10 +1,10 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(58), require(19), require(8 /* Symbol */), require(3), require(71), require(4), require(13), require(32), require(97), require(33), require(26));
+        var _interopRequireDefault = require(16);
+        (require(58 /* polyfill:Array */), require(19), require(8 /* Symbol */), require(3), require(71 /* polyfill:String */), require(4), require(13), require(32), require(97), require(33), require(26));
         var i = require(53),
             GObject = require(1),
-            r = o(require(358)),
+            r = _interopRequireDefault(require(358)),
             s = require(123);
         const l = require(393),
             c = require(392),

@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
             "use strict";
 
             function n() {}
-            (require(58),
+            (require(58 /* polyfill:Array */),
                 require(8 /* Symbol */),
                 (n.extend = function (e, t) {
                     var i = false,

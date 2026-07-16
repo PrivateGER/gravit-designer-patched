@@ -1,15 +1,15 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(19), require(557), require(26));
-        var o = require(16);
-        (require(96), require(8 /* Symbol */), require(356), require(20), require(107), require(3), require(271), require(34), require(851), require(91), require(4), require(322), require(13), require(32), require(33));
+        var _interopRequireDefault = require(16);
+        (require(96 /* polyfill:JSON */), require(8 /* Symbol */), require(356), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(3), require(271 /* polyfill:String */), require(34), require(851), require(91 /* polyfill:String */), require(4), require(322), require(13), require(32), require(33));
         var GObject = require(1),
             GPlatform = require(15),
-            r = o(require(1300 /* GFilesPanel */)),
+            r = _interopRequireDefault(require(1300 /* GFilesPanel */)),
             s = require(1163),
             GSaveAction = require(40),
             c = require(593),
-            d = o(require(44 /* GSystemDialog */)),
+            d = _interopRequireDefault(require(44 /* GSystemDialog */)),
             u = (function (e, t) {
                 if ("function" == typeof WeakMap)
                     var n = new WeakMap(),

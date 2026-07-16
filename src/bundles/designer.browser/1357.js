@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(58), require(19), require(71), require(91), require(4), require(41), require(13), require(26));
+        (require(58 /* polyfill:Array */), require(19), require(71 /* polyfill:String */), require(91 /* polyfill:String */), require(4), require(41), require(13), require(26));
         var GPlatform = require(15),
             i = require(882);
         const GSystemDialog = require(44),

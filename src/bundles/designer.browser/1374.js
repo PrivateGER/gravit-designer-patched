@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(58), require(19), require(96), require(8 /* Symbol */), require(20), require(3), require(4), require(13), require(26), require(125), require(126), require(114));
+        (require(58 /* polyfill:Array */), require(19), require(96 /* polyfill:JSON */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(4), require(13), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var IsFiniteNonNegativeNumber = require(0),
             String = require(9),
             a = require(47),

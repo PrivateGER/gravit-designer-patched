@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16)(require(1573));
+        var o = require(16 /* _interopRequireDefault */)(require(1573));
         module.exports = class {
             constructor(e, t) {
                 this._promiseManager = new o.default();

@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(1196), require(19), require(1197), require(180), require(181), require(8 /* Symbol */), require(134), require(218), require(189), require(190), require(191), require(192), require(4), require(32), require(38), require(33));
+        (require(1196 /* polyfill:Array */), require(19), require(1197), require(180), require(181 /* polyfill:ArrayBuffer */), require(8 /* Symbol */), require(134 /* polyfill:String */), require(218), require(189), require(190), require(191), require(192), require(4), require(32), require(38), require(33));
         var o = require(176),
             IsFiniteNonNegativeNumber = require(0);
         require(10 /* designerConfig */);

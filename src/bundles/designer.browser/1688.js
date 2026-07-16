@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(20), require(151));
+        (require(20 /* polyfill:RegExp */), require(151));
         var GObject = require(1);
         ((GObject.GUtil.image2Canvas = function (e, t) {
             if ("string" == typeof e) {

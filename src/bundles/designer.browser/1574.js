@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(19), require(96), require(3), require(26), require(125), require(126), require(114));
+        (require(19), require(96 /* polyfill:JSON */), require(3), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var designerConfig = require(10),
             GSaveAction = require(40);
         const a = require(1186),

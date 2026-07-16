@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(30), require(4), require(41));
+        var _interopRequireDefault = require(16);
+        (require(30 /* polyfill:Object */), require(4), require(41));
         var i = require(1154),
-            a = o(require(389 /* GDocument */)),
-            r = o(require(163 /* GDocument */)),
-            s = o(require(1245)),
+            a = _interopRequireDefault(require(389 /* GDocument */)),
+            r = _interopRequireDefault(require(163 /* GDocument */)),
+            s = _interopRequireDefault(require(1245)),
             GObject = require(1);
         module.exports = {
             debugDownloadPNG: function () {

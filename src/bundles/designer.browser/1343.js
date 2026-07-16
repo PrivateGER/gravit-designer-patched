@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(19), require(96), require(8 /* Symbol */), require(20), require(34), require(247), require(91), require(4), require(41), require(13), require(32), require(38), require(33), require(26));
+        (require(19), require(96 /* polyfill:JSON */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(247), require(91 /* polyfill:String */), require(4), require(41), require(13), require(32), require(38), require(33), require(26));
         var GObject = require(1);
         const { TRANSLATION_MANAGER } = require(10 /* designerConfig */);
         function a() {}

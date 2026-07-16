@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(8 /* Symbol */), require(196), require(20), require(3), require(34), require(91), require(4), require(13), require(38));
+        (require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(20 /* polyfill:RegExp */), require(3), require(34), require(91 /* polyfill:String */), require(4), require(13), require(38));
         var designerConfig = require(10),
             GObject = require(1);
         const { bypassEmailVerification } = designerConfig.defaultUserSettings,

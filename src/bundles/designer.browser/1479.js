@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        require(271);
+        require(271 /* polyfill:String */);
         const designerConfig = require(10),
             { IS_LOCALHOST, IS_RC } = require(231 /* IS_TRUNK */);
         designerConfig.IS_TEAMS = "teams.coreldraw.app" === window.location.hostname;

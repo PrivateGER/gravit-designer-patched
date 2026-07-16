@@ -84,8 +84,16 @@ so they're no longer raw minifier output:
 
 To improve a module further, just rename its variables by hand and
 `npm run build`; the identifiers are already scoped correctly by the tools
-above. When re-refining freshly re-split bundles, run
-`name → refine → verify-refine → build` in that order.
+above.
+
+**Pipeline ordering matters.** The vote-based naming in `npm run name` reads
+the mangled shapes (`n(123).GFoo`, single-letter require vars) that
+`npm run refine` then rewrites, so full naming only works on freshly re-split
+bundles — run `split → name → refine → verify-refine → build` in that order.
+Run against already-refined bundles, `npm run name` prints a note and applies
+only the refine-stable heuristics (library signatures like `polyfill:RegExp`
+and `_interopRequireDefault`, plus locale-key names). Names in `names.json`
+are always preserved regardless, so hand-added names are safe.
 
 ## Maintenance notes
 

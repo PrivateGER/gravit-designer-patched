@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(3), require(4), require(41));
         var GObject = require(1),
             a = require(53),
             r = require(67),
-            s = o(require(340)),
+            s = _interopRequireDefault(require(340)),
             l = require(78),
             GCreateSymbolAction = require(608),
             d = require(566),

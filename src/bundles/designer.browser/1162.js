@@ -1,16 +1,16 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(19), require(57), require(4), require(13), require(26));
         var GPlatform = require(15),
             a = require(53),
             GObject = require(1),
             s = require(67),
-            l = o(require(340)),
-            c = o(require(807)),
-            d = o(require(198 /* SidebarsIds */)),
+            l = _interopRequireDefault(require(340)),
+            c = _interopRequireDefault(require(807)),
+            d = _interopRequireDefault(require(198 /* SidebarsIds */)),
             u = require(1161),
-            p = o(require(565)),
+            p = _interopRequireDefault(require(565)),
             designerConfig = require(10),
             h = require(123),
             f = require(450);

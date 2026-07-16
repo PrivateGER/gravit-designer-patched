@@ -1,12 +1,12 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(8 /* Symbol */), require(3), require(4), require(41));
         var GObject = require(1),
-            a = o(require(18 /* GCategory */)),
-            r = o(require(163 /* GDocument */)),
-            s = o(require(85)),
-            l = o(require(106));
+            a = _interopRequireDefault(require(18 /* GCategory */)),
+            r = _interopRequireDefault(require(163 /* GDocument */)),
+            s = _interopRequireDefault(require(85)),
+            l = _interopRequireDefault(require(106));
         function c(e) {
             this._source = e;
         }

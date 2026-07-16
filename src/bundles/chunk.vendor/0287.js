@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
             "use strict";
-            require(30);
+            require(30 /* polyfill:Object */);
             const { ACCESS, INSPECT, COMMENT, COPY, SHARE, EDIT, OWNER, APPROVE, PASSWORD_PROTECT } = require(352),
                 { GLocale, GLocaleKey } = require(209 /* GLocale */),
                 d = (e) =>

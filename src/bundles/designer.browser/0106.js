@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = o(require(31)),
-            r = o(require(567 /* GAnnotationsSidebar */)),
-            s = o(require(10 /* designerConfig */));
+            a = _interopRequireDefault(require(31)),
+            r = _interopRequireDefault(require(567 /* GAnnotationsSidebar */)),
+            s = _interopRequireDefault(require(10 /* designerConfig */));
         function l() {}
         (GObject.GObject.inherit(l, a.default),
             (l.prototype.isEnabled = function () {

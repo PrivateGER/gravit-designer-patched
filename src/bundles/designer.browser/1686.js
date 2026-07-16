@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(8 /* Symbol */), require(20), require(34));
+        (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34));
         var GObject = require(1);
         const GSystemDialog = require(44),
             { DESIGNER: { TITLE } = {} } = require(10 /* designerConfig */);

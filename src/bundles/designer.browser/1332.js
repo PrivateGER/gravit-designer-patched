@@ -1,13 +1,13 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (require(3), require(4), require(41));
         var GObject = require(1),
             a = require(53),
             GPlatform = require(15),
             designerConfig = require(10),
             GSaveAction = require(40),
-            c = o(require(44 /* GSystemDialog */)),
+            c = _interopRequireDefault(require(44 /* GSystemDialog */)),
             GAnnotationsSidebar = require(567),
             GCategory = require(18),
             p = require(31);

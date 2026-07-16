@@ -1,13 +1,13 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(19),
-            require(596),
+            require(596 /* polyfill:Array */),
             require(180),
-            require(181),
+            require(181 /* polyfill:ArrayBuffer */),
             require(57),
-            require(20),
+            require(20 /* polyfill:RegExp */),
             require(34),
-            require(134),
+            require(134 /* polyfill:String */),
             require(218),
             require(692),
             require(189),

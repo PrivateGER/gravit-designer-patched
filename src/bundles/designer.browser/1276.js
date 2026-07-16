@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(58), require(19), require(193), require(8 /* Symbol */), require(196), require(20), require(34), require(4), require(13), require(26));
+        (require(58 /* polyfill:Array */), require(19), require(193), require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(20 /* polyfill:RegExp */), require(34), require(4), require(13), require(26));
         var GObject = require(1);
         const { gApi, AUTO_SAVE_ENABLED, AUTOSAVE_INTERVAL_DEFAULT, CloudIntegration, DESIGNER, EXTERNAL_APP } = require(10 /* designerConfig */),
             { buildDialogDocumentHasUpdates } = require(40 /* GSaveAction */),

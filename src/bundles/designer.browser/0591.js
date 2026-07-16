@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         "use strict";
         function o() {}
-        (require(30),
+        (require(30 /* polyfill:Object */),
             Object.assign(o, {
                 SETUP: { ENDPOINT: "SETUP_URL_ENDPOINT" },
                 COMMAND_SAVE: {

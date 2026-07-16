@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(19), require(30), require(3), require(26), require(125), require(126), require(114));
+        (require(19), require(30 /* polyfill:Object */), require(3), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1),
             GPlatform = require(15),
             a = require(797),

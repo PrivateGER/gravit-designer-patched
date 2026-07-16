@@ -1,8 +1,8 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16),
+        var _interopRequireDefault = require(16),
             GObject = require(1),
-            a = o(require(565)),
+            a = _interopRequireDefault(require(565)),
             r = {
                 init: function (e) {
                     return (

@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports.getCollabInfo = c),
             (exports.handleCollabsData = async function (e) {
@@ -112,12 +112,12 @@ module.exports = function (module, exports, require) {
                 });
             }),
             (exports.updateAssignee = d),
-            require(58),
+            require(58 /* polyfill:Array */),
             require(19),
             require(168 /* PDFFetchStream */),
             require(8 /* Symbol */),
-            require(20),
-            require(71),
+            require(20 /* polyfill:RegExp */),
+            require(71 /* polyfill:String */),
             require(34),
             require(4),
             require(41),
@@ -128,7 +128,7 @@ module.exports = function (module, exports, require) {
             require(33),
             require(26));
         var designerConfig = require(10),
-            a = o(require(883)),
+            a = _interopRequireDefault(require(883)),
             GAnnotationPanel = require(1353);
         const s = (0, GAnnotationPanel.createAdditionalMentions)(),
             l = {};

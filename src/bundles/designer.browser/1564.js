@@ -1,8 +1,8 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(19), require(557), require(26));
-        var o = require(16);
-        (require(8 /* Symbol */), require(271));
+        var _interopRequireDefault = require(16);
+        (require(8 /* Symbol */), require(271 /* polyfill:String */));
         var i = (function (e, t) {
                 if ("function" == typeof WeakMap)
                     var n = new WeakMap(),
@@ -26,7 +26,7 @@ module.exports = function (module, exports, require) {
                     return r;
                 })(e, t);
             })(require(10 /* designerConfig */)),
-            a = o(require(389 /* GDocument */)),
+            a = _interopRequireDefault(require(389 /* GDocument */)),
             GObject = require(1);
         const s = require(78),
             l = require(441),

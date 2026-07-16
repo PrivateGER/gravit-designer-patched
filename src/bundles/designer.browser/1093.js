@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(19), require(8 /* Symbol */), require(20), require(107), require(3), require(34), require(4), require(13), require(26));
+        (require(19), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(3), require(34), require(4), require(13), require(26));
         var designerConfig = require(10),
             GObject = require(1),
             a = require(10 /* designerConfig */);

@@ -1,10 +1,10 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
+        var _interopRequireDefault = require(16);
         require(8 /* Symbol */);
         var GObject = require(1),
             designerConfig = require(10),
-            r = o(require(1091)),
+            r = _interopRequireDefault(require(1091)),
             PDFNodeStream = require(165),
             l = require(219),
             String = require(9),

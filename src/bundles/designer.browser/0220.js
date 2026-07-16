@@ -1,14 +1,14 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        var o = require(16);
-        (require(19), require(96), require(30), require(8 /* Symbol */), require(4), require(41), require(13), require(26));
+        var _interopRequireDefault = require(16);
+        (require(19), require(96 /* polyfill:JSON */), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(4), require(41), require(13), require(26));
         var GObject = require(1),
             designerConfig = require(10),
-            r = o(require(336)),
-            s = o(require(44 /* GSystemDialog */)),
+            r = _interopRequireDefault(require(336)),
+            s = _interopRequireDefault(require(44 /* GSystemDialog */)),
             GSaveAction = require(40),
-            c = o(require(554)),
-            d = o(require(555)),
+            c = _interopRequireDefault(require(554)),
+            d = _interopRequireDefault(require(555)),
             GDocument = require(237),
             GCommonNames = require(119);
         const g = require(436),

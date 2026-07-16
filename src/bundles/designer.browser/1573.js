@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        (require(8 /* Symbol */), require(196));
+        (require(8 /* Symbol */), require(196 /* polyfill:Promise */));
         module.exports = class {
             constructor() {
                 this._promiseQueue = [];

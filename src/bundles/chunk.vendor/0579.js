@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
             "use strict";
-            require(30);
+            require(30 /* polyfill:Object */);
             module.exports = class {
                 constructor(e) {
                     Object.assign(this, e);

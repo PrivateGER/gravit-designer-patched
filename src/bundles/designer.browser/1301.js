@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         "use strict";
         function o() {}
-        (require(30),
+        (require(30 /* polyfill:Object */),
             require(57),
             (o.prototype.type = null),
             (o.prototype.hasKey = function (e) {
